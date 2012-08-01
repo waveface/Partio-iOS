@@ -107,6 +107,18 @@
 /* title in attachments view */
 "ATTACHMENTS_VIEW_TITLE" = "附加檔案";
 
+/* Authentication Error Description */
+"AUTH_ERROR_ALREADY_REGISTERED" = "電子郵件已註冊。請重新輸入新的電子郵件帳號。";
+
+/* Authentication Error Description */
+"AUTH_ERROR_INVALID_EMAIL_FORMAT" = "電子郵件格式錯誤";
+
+/* Authentication Error Description */
+"AUTH_ERROR_INVALID_EMAIL_PWD" = "電子郵件或密碼不符";
+
+/* Authentication Error Description */
+"AUTH_ERROR_INVALID_PWD_FORMAT" = "密碼格式錯誤";
+
 /* Prompt for Cover Image picker */
 "CHANGE_REPRESENTING_FILE_PROMPT" = "選擇喜歡的相片作為封面。";
 

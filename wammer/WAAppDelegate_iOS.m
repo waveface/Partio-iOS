@@ -519,7 +519,16 @@
 	
 		if (error) {
 		
-			NSString *message = [error localizedDescription];
+			NSString *message = nil;
+			if ([error code] == 0x9) {
+				message = NSLocalizedString(@"AUTH_ERROR_INVALID_EMAIL_FORMAT", @"Authentication Error Description");
+			} else if ([error code] == 0xb) {
+				message = NSLocalizedString(@"AUTH_ERROR_INVALID_PWD_FORMAT", @"Authentication Error Description");
+			} else if ([error code] == 0x1001) {
+				message = NSLocalizedString(@"AUTH_ERROR_INVALID_EMAIL_PWD", @"Authentication Error Description");
+			} else if ([error code] == 0x1002) {
+				message = NSLocalizedString(@"AUTH_ERROR_ALREADY_REGISTERED", @"Authentication Error Description");
+			}
 			IRAction *okAction = [IRAction actionWithTitle:NSLocalizedString(@"ACTION_OKAY", @"Alert Dismissal Action") block:nil];
 		
 			IRAlertView *alertView = [IRAlertView alertViewWithTitle:nil message:message cancelAction:okAction otherActions:nil];
@@ -557,6 +566,7 @@
 				WATutorialViewController *tutorialVC = [WATutorialViewController controllerWithOption:options completion:^(BOOL didFinish, NSError *error) {
 
 					handleAuthSuccess();
+					[wAppDelegate clearViewHierarchy];
 					[wAppDelegate recreateViewHierarchy];
 					
 				}];
@@ -582,6 +592,7 @@
 			} else {
 			
 				handleAuthSuccess();
+				[wAppDelegate clearViewHierarchy];
 				[wAppDelegate recreateViewHierarchy];
 			
 			}

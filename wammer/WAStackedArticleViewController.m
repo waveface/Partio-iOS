@@ -46,6 +46,7 @@
 @property (nonatomic, readwrite, retain) UIButton *textStackCellFoldingToggle;
 
 @property (nonatomic, readwrite, retain) NSArray *headerBarButtonItems;
+@property (nonatomic, readwrite, strong) WAArticleDateItem *articleDateItem;
 
 - (void) adjustWrapperViewBoundsWithWindowInterfaceBounds:(CGRect)newInterfaceBounds animated:(BOOL)animate;
 
@@ -68,6 +69,7 @@
 @synthesize textStackCellFoldingToggleWrapperView = _textStackCellFoldingToggleWrapperView;
 @synthesize textStackCellFoldingToggle = _textStackCellFoldingToggle;
 @synthesize headerBarButtonItems = _headerBarButtonItems;
+@synthesize articleDateItem = _articleDateItem;
 
 - (id) initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
 
@@ -77,9 +79,9 @@
 	
 	__weak WAStackedArticleViewController *wSelf = self;
 	
-	WAArticleDateItem *articleDateItem = [WAArticleDateItem instanceFromNib];
+	self.articleDateItem = [WAArticleDateItem instanceFromNib];
 	
-	[articleDateItem.dateLabel irBind:@"text" toObject:wSelf keyPath:@"article.presentationDate" options:[NSDictionary dictionaryWithObjectsAndKeys:
+	[self.articleDateItem.dateLabel irBind:@"text" toObject:wSelf keyPath:@"article.presentationDate" options:[NSDictionary dictionaryWithObjectsAndKeys:
 	
 		[^ (NSDate *fromDate, NSDate *toDate, NSString *changeKind) {
 
@@ -89,7 +91,7 @@
 	
 	nil]];
 	
-	[articleDateItem.deviceLabel irBind:@"text" toObject:wSelf keyPath:@"article.creationDeviceName" options:[NSDictionary dictionaryWithObjectsAndKeys:
+	[self.articleDateItem.deviceLabel irBind:@"text" toObject:wSelf keyPath:@"article.creationDeviceName" options:[NSDictionary dictionaryWithObjectsAndKeys:
 	
 		[^ (NSString *fromValue, NSString *toValue, NSString *changeKind) {
 
@@ -107,7 +109,7 @@
 			
 			NSMutableArray *barButtonItems = [NSMutableArray arrayWithObjects:
 				[IRBarButtonItem itemWithSystemItem:UIBarButtonSystemItemFlexibleSpace wiredAction:nil],
-				articleDateItem,
+				self.articleDateItem,
 			nil];
 			
 			if (WAAdvancedFeaturesEnabled()) {
@@ -142,7 +144,7 @@
 			
 			self.headerBarButtonItems = [NSArray arrayWithObjects:
 				[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil],
-				articleDateItem,
+				self.articleDateItem,
 			nil];
 
 			NSMutableArray *barButtonItems = [NSMutableArray arrayWithObjects:
@@ -168,6 +170,11 @@
 }
 
 - (void) dealloc {
+
+	// dateLabel & deviceLabel will not be deallocated automatically because they are weak references
+	// so we need to call irUnbind manually to avoid sending notification to deallocated object (self).
+	[self.articleDateItem.dateLabel irUnbind:@"text"];
+	[self.articleDateItem.deviceLabel irUnbind:@"text"];
 
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 	
