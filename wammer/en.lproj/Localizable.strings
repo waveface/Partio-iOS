@@ -185,6 +185,15 @@
 /* Failed, underlying error description %@ */
 "ERROR_ARTICLE_ENTITY_SYNC_FAILURE_WITH_UNDERLYING_ERROR_DESCRIPTION_FORMAT" = "A necessary task failed: %@ — Your post has been saved as a draft.";
 
+/* Message for an alert view to show user his FB account has been connected to another Stream user */
+"FACEBOOK_CONNECT_ACCOUNT_OCCUPIED_MESSAGE" = "The Facebook account you’re using has already been registered, please use another Facebook account.";
+
+/* Message for an alert view to show user he already connects to another FB account. */
+"FACEBOOK_CONNECT_FAIL_MESSAGE" = "Your Stream account has already been connected to one Facebook account.";
+
+/* Title for an alert view to show facebook connection failure */
+"FACEBOOK_CONNECT_FAIL_TITLE" = "Cann't import from Facebook";
+
 /* Message for alert view asking if user wants to connect her Facebook account */
 "FACEBOOK_CONNECT_REQUEST_MESSAGE" = "Stream will start importing ports from your Facebook account";
 
