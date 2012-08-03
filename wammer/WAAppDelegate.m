@@ -30,7 +30,6 @@
 
 + (Class) preferredClusterClass;
 - (IRKeychainInternetPasswordItem *) currentKeychainItem;
-- (void) configureRemoteResourceDownloadOperation:(IRRemoteResourceDownloadOperation *)anOperation;
 
 @end
 
@@ -67,8 +66,6 @@
 
 - (void) bootstrap {
 
-	__weak WAAppDelegate *nrSelf  = self;
-	
 	WARegisterUserDefaults();
 	
   [IRRelativeDateFormatter sharedFormatter].approximationMaxTokenCount = 1;
@@ -76,7 +73,21 @@
 	[IRRemoteResourcesManager sharedManager].delegate = self;
 	[IRRemoteResourcesManager sharedManager].queue.maxConcurrentOperationCount = 4;
 	[IRRemoteResourcesManager sharedManager].onRemoteResourceDownloadOperationWillBegin = ^ (IRRemoteResourceDownloadOperation *anOperation) {
-		[nrSelf configureRemoteResourceDownloadOperation:anOperation];
+		
+		NSMutableURLRequest *originalRequest = [anOperation underlyingRequest];
+		
+		NSURLRequest *transformedRequest = [[WARemoteInterface sharedInterface].engine transformedRequestWithRequest:originalRequest usingMethodName:@"loadedResource"];
+		
+		originalRequest.URL = transformedRequest.URL;
+		originalRequest.allHTTPHeaderFields = transformedRequest.allHTTPHeaderFields;
+		originalRequest.HTTPMethod = transformedRequest.HTTPMethod;
+		originalRequest.HTTPBodyStream = transformedRequest.HTTPBodyStream;
+		originalRequest.HTTPBody = transformedRequest.HTTPBody;
+		
+		dispatch_async( dispatch_get_main_queue(), ^ {
+			[((WAAppDelegate *)[UIApplication sharedApplication].delegate) endNetworkActivity];
+		});
+		
 	};
 	
 	[[NSHTTPCookieStorage sharedHTTPCookieStorage] setCookieAcceptPolicy:NSHTTPCookieAcceptPolicyOnlyFromMainDocumentDomain];
@@ -231,20 +242,6 @@
 	}
 	
 	return givenURL;
-
-}
-
-- (void) configureRemoteResourceDownloadOperation:(IRRemoteResourceDownloadOperation *)anOperation {
-
-	NSMutableURLRequest *originalRequest = [anOperation underlyingRequest];
-	
-	NSURLRequest *transformedRequest = [[WARemoteInterface sharedInterface].engine transformedRequestWithRequest:originalRequest usingMethodName:@"loadedResource"];
-		
-	originalRequest.URL = transformedRequest.URL;
-	originalRequest.allHTTPHeaderFields = transformedRequest.allHTTPHeaderFields;
-	originalRequest.HTTPMethod = transformedRequest.HTTPMethod;
-	originalRequest.HTTPBodyStream = transformedRequest.HTTPBodyStream;
-	originalRequest.HTTPBody = transformedRequest.HTTPBody;
 
 }
 
