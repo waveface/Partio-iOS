@@ -245,6 +245,10 @@
 	originalRequest.HTTPMethod = transformedRequest.HTTPMethod;
 	originalRequest.HTTPBodyStream = transformedRequest.HTTPBodyStream;
 	originalRequest.HTTPBody = transformedRequest.HTTPBody;
+	
+	dispatch_async( dispatch_get_main_queue(), ^ {
+		[((WAAppDelegate *)[UIApplication sharedApplication].delegate) endNetworkActivity];
+	});
 
 }
 
