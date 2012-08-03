@@ -17,6 +17,8 @@
 
 #import "WFPresentation.h"
 
+#import <AssetsLibrary/AssetsLibrary.h>
+
 @interface WAArticleView ()
 
 + (IRRelativeDateFormatter *) relativeDateFormatter;
@@ -55,6 +57,7 @@
 	self.article = inArticle;
 
 	UIImage *representingImage = [article.representingFile smallestPresentableImage];
+	
 	NSString *dateString = nil;
 	if ([article.creationDate compare:[NSDate dateWithTimeIntervalSinceNow:-24*60*60]] == NSOrderedDescending) {
 		
@@ -84,9 +87,30 @@
 	relativeCreationDateLabel.text = postDescription;
 	articleDescriptionLabel.text = inArticle.text;
 	previewBadge.preview = shownPreview;
-	mainImageView.image = representingImage;
-	
+
 	[mainImageView irUnbind:@"image"];
+	if (![article.representingFile smallestPresentableImage] && [article.representingFile assetURL]) {
+		
+		ALAssetsLibrary * const library = [[self class] assetsLibrary];
+		[library assetForURL:[NSURL URLWithString:article.representingFile.assetURL] resultBlock:^(ALAsset *asset) {
+			
+			dispatch_async(dispatch_get_main_queue(), ^{
+				
+				mainImageView.image = [UIImage imageWithCGImage:[asset aspectRatioThumbnail]];
+				
+			});
+			
+		} failureBlock:^(NSError *error) {
+			
+			NSLog(@"Unable to retrieve assets for URL %@", article.representingFile.assetURL);
+			
+		}];
+		
+	} else {
+	 
+		mainImageView.image = representingImage;
+	}
+	
 	[mainImageView irBind:@"image" toObject:inArticle keyPath:@"representingFile.smallestPresentableImage" options:[NSDictionary dictionaryWithObjectsAndKeys:
 	
 		(id)kCFBooleanTrue, kIRBindingsAssignOnMainThreadOption,
@@ -226,6 +250,20 @@
 
 	return formatter;
 
+}
+
++ (ALAssetsLibrary *) assetsLibrary {
+	
+	static ALAssetsLibrary *library = nil;
+	static dispatch_once_t onceToken = 0;
+	dispatch_once(&onceToken, ^{
+		
+		library = [ALAssetsLibrary new];
+		
+	});
+	
+	return library;
+	
 }
 
 @end
