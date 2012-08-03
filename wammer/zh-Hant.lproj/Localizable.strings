@@ -185,6 +185,15 @@
 /* Failed, underlying error description %@ */
 "ERROR_ARTICLE_ENTITY_SYNC_FAILURE_WITH_UNDERLYING_ERROR_DESCRIPTION_FORMAT" = "上傳時發生錯誤：%@。本文已存成草稿。";
 
+/* Message for an alert view to show user his FB account has been connected to another Stream user */
+"FACEBOOK_CONNECT_ACCOUNT_OCCUPIED_MESSAGE" = "這個 Facebook 帳號已經被使用，請您再試試看其他的Facebook帳號。";
+
+/* Message for an alert view to show user he already connects to another FB account. */
+"FACEBOOK_CONNECT_FAIL_MESSAGE" = "你已經連結其他 Facebook 帳號，請登出目前 Facebook 帳號並重新啟動同步。";
+
+/* Title for an alert view to show facebook connection failure */
+"FACEBOOK_CONNECT_FAIL_TITLE" = "無法同步Facebook";
+
 /* Message for alert view asking if user wants to connect her Facebook account */
 "FACEBOOK_CONNECT_REQUEST_MESSAGE" = "啟動之後，Stream將會開始同步您在Facebook上的新貼文。";
 

@@ -117,6 +117,16 @@
 	
 }
 
+- (NSString *) errorString:(NSUInteger) code
+{
+	if (code == 0x1002) {
+		return NSLocalizedString(@"FACEBOOK_CONNECT_ACCOUNT_OCCUPIED_MESSAGE", @"Message for an alert view to show user his FB account has been connected to another Stream user");
+	} else if (code == 0x2004) {
+		return NSLocalizedString(@"FACEBOOK_CONNECT_FAIL_MESSAGE", @"Message for an alert view to show user he already connects to another FB account.");
+	}
+	return nil;
+}
+
 - (IRAlertView *) newFacebookConnectAlertView {
 
 	__weak WAFacebookConnectionSwitch * const wSelf = self;
@@ -146,12 +156,11 @@
 
 - (void) handleFacebookConnect:(id)sender {
 
-	__weak WARemoteInterface * const ri = [WARemoteInterface sharedInterface];
 	__weak WAFacebookInterface * const fi = [WAFacebookInterface sharedInterface];
 	__weak WAFacebookConnectionSwitch * const wSelf = self;
 	
 	NSString *initialToken = fi.facebook.accessToken;
-
+	
 	if ([initialToken length]) {
 	
 		WAOverlayBezel *busyBezel = [WAOverlayBezel bezelWithStyle:WAActivityIndicatorBezelStyle];
@@ -195,11 +204,7 @@
 						
 						[busyBezel dismissWithAnimation:WAOverlayBezelAnimationNone];
 						
-						WAOverlayBezel *errorBezel = [WAOverlayBezel bezelWithStyle:WAErrorBezelStyle];
-						[errorBezel showWithAnimation:WAOverlayBezelAnimationFade];
-						dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 2.0 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
-							[errorBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
-						});
+						[[[IRAlertView alloc] initWithTitle:NSLocalizedString(@"FACEBOOK_CONNECT_FAIL_TITLE", @"Title for an alert view to show facebook connection failure") message:[wSelf errorString:[error code]] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
 						
 						[wSelf setEnabled:YES];
 						[wSelf setOn:NO animated:YES];
@@ -208,12 +213,7 @@
 
 				} else {
 				
-					WAOverlayBezel *errorBezel = [WAOverlayBezel bezelWithStyle:WAErrorBezelStyle];
-					[errorBezel showWithAnimation:WAOverlayBezelAnimationFade];
-					dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 2.0 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
-						[errorBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
-					});
-					
+					[[[IRAlertView alloc] initWithTitle:NSLocalizedString(@"FACEBOOK_CONNECT_FAIL_TITLE", @"Title for an alert view to show facebook connection failure") message:[wSelf errorString:[error code]] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
 					[wSelf setEnabled:YES];
 					[wSelf setOn:NO animated:YES];
 					
@@ -247,12 +247,7 @@
 				} onFailure:^(NSError *error) {
 					
 					[busyBezel dismissWithAnimation:WAOverlayBezelAnimationNone];
-					
-					WAOverlayBezel *errorBezel = [WAOverlayBezel bezelWithStyle:WAErrorBezelStyle];
-					[errorBezel showWithAnimation:WAOverlayBezelAnimationFade];
-					dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 2.0 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
-						[errorBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
-					});
+					[[[IRAlertView alloc] initWithTitle:NSLocalizedString(@"FACEBOOK_CONNECT_FAIL_TITLE", @"Title for an alert view to show facebook connection failure") message:[wSelf errorString:[error code]] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
 					
 					[wSelf setEnabled:YES];
 					[wSelf setOn:NO animated:YES];
@@ -261,11 +256,7 @@
 
 			} else {
 			
-				WAOverlayBezel *errorBezel = [WAOverlayBezel bezelWithStyle:WAErrorBezelStyle];
-				[errorBezel showWithAnimation:WAOverlayBezelAnimationFade];
-				dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 2.0 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
-					[errorBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
-				});
+				[[[IRAlertView alloc] initWithTitle:NSLocalizedString(@"FACEBOOK_CONNECT_FAIL_TITLE", @"Title for an alert view to show facebook connection failure") message:[wSelf errorString:[error code]] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
 				
 				[wSelf setEnabled:YES];
 				[wSelf setOn:NO animated:YES];
