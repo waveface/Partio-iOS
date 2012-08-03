@@ -130,7 +130,12 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 	if ([fullAttachmentList count] > [attachmentList count]) {
 		// dedup
 		for (NSDictionary *attachment in attachmentList) {
-			[fullAttachmentList removeObject:[attachment objectForKey:@"object_id"]];
+			NSDictionary *imageMeta = [attachment objectForKey:@"image_meta"];
+			if (imageMeta && [imageMeta objectForKey:@"small"] && [imageMeta objectForKey:@"medium"]) {
+				[fullAttachmentList removeObject:[attachment objectForKey:@"object_id"]];
+			} else {
+				[attachmentList removeObject:attachment];
+			}
 		}
 		
 		for (NSString *objectID in fullAttachmentList) {
