@@ -62,7 +62,7 @@
 		return (BOOL)![wSelf.representedFile.assetURL isEqual:assetURLString];
 	};
 	
-	if (assetURLString) {
+	if (!file.smallestPresentableImage && assetURLString) {
 	
 		[self irUnbind:@"image"];
 		
