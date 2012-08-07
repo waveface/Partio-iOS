@@ -17,7 +17,7 @@
 
 NSString * const kWAArticleEntitySyncingErrorDomain = @"com.waveface.wammer.WAArticle.entitySyncing.error";
 NSError * WAArticleEntitySyncingError (NSUInteger code, NSString *descriptionKey, NSString *reasonKey) {
-	return [NSError irErrorWithDomain:kWAArticleEntitySyncingErrorDomain code:0 descriptionLocalizationKey:descriptionKey reasonLocalizationKey:reasonKey userInfo:nil];
+	return [NSError irErrorWithDomain:kWAArticleEntitySyncingErrorDomain code:code descriptionLocalizationKey:descriptionKey reasonLocalizationKey:reasonKey userInfo:nil];
 }
 
 NSString * const kWAArticleSyncStrategy = @"WAArticleSyncStrategy";
@@ -125,16 +125,18 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 	NSString *representingFileID = [incomingRepresentation objectForKey:@"cover_attach"];
 
 	NSMutableArray *fullAttachmentList = [[incomingRepresentation objectForKey:@"attachment_id_array"] mutableCopy];
-	NSMutableArray *attachmentList = [[incomingRepresentation objectForKey:@"attachments"] mutableCopy];
+	NSArray *incomingAttachmentList = [[incomingRepresentation objectForKey:@"attachments"] copy];
+	NSMutableArray *returnedAttachmentList = [incomingAttachmentList mutableCopy];
 	
-	if ([fullAttachmentList count] > [attachmentList count]) {
+	if ([fullAttachmentList count] > [incomingAttachmentList count]) {
+
 		// dedup
-		for (NSDictionary *attachment in attachmentList) {
+		for (NSDictionary *attachment in incomingAttachmentList) {
 			NSDictionary *imageMeta = [attachment objectForKey:@"image_meta"];
 			if (imageMeta && [imageMeta objectForKey:@"small"] && [imageMeta objectForKey:@"medium"]) {
 				[fullAttachmentList removeObject:[attachment objectForKey:@"object_id"]];
 			} else {
-				[attachmentList removeObject:attachment];
+				[returnedAttachmentList removeObject:attachment];
 			}
 		}
 		
@@ -160,9 +162,9 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 															@"unknown.jpeg", @"file_name",
 															@"image", @"type",
 															nil];
-			[attachmentList addObject:attach];
+			[returnedAttachmentList addObject:attach];
 		}
-		[returnedDictionary setObject:attachmentList forKey:@"attachments"];
+		[returnedDictionary setObject:returnedAttachmentList forKey:@"attachments"];
 	}
 	
 	if ([creatorID length])
@@ -548,11 +550,39 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 		[context setObject:localDate forKey:kPostLocalModDate];
 		
 		NSComparisonResult comparisonResult = [remoteDate compare:localDate];
-		callback([NSValue valueWithBytes:&(NSComparisonResult){ comparisonResult } objCType:@encode(__typeof__(NSComparisonResult))]);
+		if (comparisonResult == NSOrderedDescending || comparisonResult == NSOrderedSame) {
+
+			callback(WAArticleEntitySyncingError(1, @"Remote copy is newer, skipping sync", nil));
+
+		} else {
+
+			callback([NSValue valueWithBytes:&(NSComparisonResult){ comparisonResult } objCType:@encode(__typeof__(NSComparisonResult))]);
+
+		}
 		
 	} completionBlock: ^ (id results) {
 	
 		NSCParameterAssert(results);
+		
+		if ([results isKindOfClass:[NSError class]]) {
+
+			if ([[(NSError*)results domain] isEqualToString:kWAArticleEntitySyncingErrorDomain] &&
+					[(NSError*)results code] == 1) {
+
+				WADataStore *ds = [WADataStore defaultStore];
+			
+				[ds performBlock:^{
+
+					NSManagedObjectContext *context = [ds disposableMOC];
+					WAArticle *savedPost = (WAArticle *)[context irManagedObjectForURI:postEntityURL];
+					savedPost.dirty = (id)kCFBooleanFalse;
+					NSError *savingError = nil;
+					[context save:&savingError];
+				
+				} waitUntilDone:NO];
+			
+			}
+		}
 	
 	}]];
 	
