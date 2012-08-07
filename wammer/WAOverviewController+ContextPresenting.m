@@ -148,7 +148,7 @@ NSString * const kPresentedArticle = @"WAOverviewController_presentedArticle";
 		
 		enclosingView.opaque = NO;
 								
-		CGRect toolbarRect = UIEdgeInsetsInsetRect(enclosingView.bounds, (UIEdgeInsets){ 0, 28, 0, 0 });
+		CGRect toolbarRect = UIEdgeInsetsInsetRect(enclosingView.bounds, (UIEdgeInsets){ 0, 0, 0, 0 });
 		toolbarRect.size.height = 44;
 		
 		UIToolbar *toolbar = [[UIToolbar alloc] initWithFrame:toolbarRect];
