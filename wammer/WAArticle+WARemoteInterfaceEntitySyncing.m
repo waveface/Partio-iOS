@@ -17,7 +17,7 @@
 
 NSString * const kWAArticleEntitySyncingErrorDomain = @"com.waveface.wammer.WAArticle.entitySyncing.error";
 NSError * WAArticleEntitySyncingError (NSUInteger code, NSString *descriptionKey, NSString *reasonKey) {
-	return [NSError irErrorWithDomain:kWAArticleEntitySyncingErrorDomain code:0 descriptionLocalizationKey:descriptionKey reasonLocalizationKey:reasonKey userInfo:nil];
+	return [NSError irErrorWithDomain:kWAArticleEntitySyncingErrorDomain code:code descriptionLocalizationKey:descriptionKey reasonLocalizationKey:reasonKey userInfo:nil];
 }
 
 NSString * const kWAArticleSyncStrategy = @"WAArticleSyncStrategy";
@@ -548,11 +548,39 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 		[context setObject:localDate forKey:kPostLocalModDate];
 		
 		NSComparisonResult comparisonResult = [remoteDate compare:localDate];
-		callback([NSValue valueWithBytes:&(NSComparisonResult){ comparisonResult } objCType:@encode(__typeof__(NSComparisonResult))]);
+		if (comparisonResult == NSOrderedDescending || comparisonResult == NSOrderedSame) {
+
+			callback(WAArticleEntitySyncingError(1, @"Remote copy is newer, skipping sync", nil));
+
+		} else {
+
+			callback([NSValue valueWithBytes:&(NSComparisonResult){ comparisonResult } objCType:@encode(__typeof__(NSComparisonResult))]);
+
+		}
 		
 	} completionBlock: ^ (id results) {
 	
 		NSCParameterAssert(results);
+		
+		if ([results isKindOfClass:[NSError class]]) {
+
+			if ([[(NSError*)results domain] isEqualToString:kWAArticleEntitySyncingErrorDomain] &&
+					[(NSError*)results code] == 1) {
+
+				WADataStore *ds = [WADataStore defaultStore];
+			
+				[ds performBlock:^{
+
+					NSManagedObjectContext *context = [ds disposableMOC];
+					WAArticle *savedPost = (WAArticle *)[context irManagedObjectForURI:postEntityURL];
+					savedPost.dirty = (id)kCFBooleanFalse;
+					NSError *savingError = nil;
+					[context save:&savingError];
+				
+				} waitUntilDone:NO];
+			
+			}
+		}
 	
 	}]];
 	
