@@ -125,16 +125,18 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 	NSString *representingFileID = [incomingRepresentation objectForKey:@"cover_attach"];
 
 	NSMutableArray *fullAttachmentList = [[incomingRepresentation objectForKey:@"attachment_id_array"] mutableCopy];
-	NSMutableArray *attachmentList = [[incomingRepresentation objectForKey:@"attachments"] mutableCopy];
+	NSArray *incomingAttachmentList = [[incomingRepresentation objectForKey:@"attachments"] copy];
+	NSMutableArray *returnedAttachmentList = [incomingAttachmentList mutableCopy];
 	
-	if ([fullAttachmentList count] > [attachmentList count]) {
+	if ([fullAttachmentList count] > [incomingAttachmentList count]) {
+
 		// dedup
-		for (NSDictionary *attachment in attachmentList) {
+		for (NSDictionary *attachment in incomingAttachmentList) {
 			NSDictionary *imageMeta = [attachment objectForKey:@"image_meta"];
 			if (imageMeta && [imageMeta objectForKey:@"small"] && [imageMeta objectForKey:@"medium"]) {
 				[fullAttachmentList removeObject:[attachment objectForKey:@"object_id"]];
 			} else {
-				[attachmentList removeObject:attachment];
+				[returnedAttachmentList removeObject:attachment];
 			}
 		}
 		
@@ -160,9 +162,9 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 															@"unknown.jpeg", @"file_name",
 															@"image", @"type",
 															nil];
-			[attachmentList addObject:attach];
+			[returnedAttachmentList addObject:attach];
 		}
-		[returnedDictionary setObject:attachmentList forKey:@"attachments"];
+		[returnedDictionary setObject:returnedAttachmentList forKey:@"attachments"];
 	}
 	
 	if ([creatorID length])
