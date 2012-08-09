@@ -206,6 +206,13 @@ NSString * const kDismissesSelfIfCameraCancelled = @"-[WACompositionViewControll
 		NSCParameterAssert(![articleID isTemporaryID]);
 		
 		NSURL *articleURI = [articleID URIRepresentation];
+		NSString *savedFilePath = nil;
+		if (image) {
+			NSData *imageData = UIImageJPEGRepresentation(image, 1.0f);
+			savedFilePath = [[[WADataStore defaultStore] persistentFileURLForData:imageData extension:@"jpeg"] path];
+			image = nil;
+			imageData = nil;
+		}
 		
 		[self.managedObjectContext performBlock:^{
 		
@@ -222,9 +229,8 @@ NSString * const kDismissesSelfIfCameraCancelled = @"-[WACompositionViewControll
 			[[article mutableOrderedSetValueForKey:@"files"] addObject:file];
 			[article didChangeValueForKey:@"files"];
 			
-			if (image) {
-				NSData *imageData = UIImageJPEGRepresentation(image, 1.0f);
-				file.resourceFilePath = [[[WADataStore defaultStore] persistentFileURLForData:imageData extension:@"jpeg"] path];
+			if (savedFilePath) {
+				file.resourceFilePath = savedFilePath;
 			}
 			
 			if (representedAsset) {
@@ -234,7 +240,7 @@ NSString * const kDismissesSelfIfCameraCancelled = @"-[WACompositionViewControll
 			file.resourceType = (NSString *)kUTTypeImage;
 			
 			article.dirty = (id)kCFBooleanTrue;
-			
+
 			NSError *savingError = nil;
 			if (![context save:&savingError])
 				NSLog(@"Error saving: %s %@", __PRETTY_FUNCTION__, savingError);
@@ -285,10 +291,7 @@ NSString * const kDismissesSelfIfCameraCancelled = @"-[WACompositionViewControll
 	
 	objc_setAssociatedObject(self, &kDismissesSelfIfCameraCancelled, (dismissesSelfIfCameraCancelled ? (id)kCFBooleanTrue : (id)kCFBooleanFalse), OBJC_ASSOCIATION_ASSIGN);
 	
-	IRAction *photoPickerAction = [self newPresentImagePickerControllerActionAnimated:animate sender:sender];
 	IRAction *cameraAction = [self newPresentCameraCaptureControllerActionAnimated:animate sender:sender];
-	
-	[availableActions addObject:photoPickerAction];
 	
 	if (cameraAction)
 		[availableActions addObject:cameraAction];
@@ -297,37 +300,43 @@ NSString * const kDismissesSelfIfCameraCancelled = @"-[WACompositionViewControll
 	
 		[cameraAction invoke];
 	
-	} else if (usesCamera && photoPickerAction) {
-	
-		[photoPickerAction invoke];
-	
-	} else if ([availableActions count] == 1) {
-		
-		//	With only one action we don’t even need to show the action sheet
-		
-		dispatch_async(dispatch_get_main_queue(), ^ {
-			[(IRAction *)[availableActions objectAtIndex:0] invoke];
-		});
-		
 	} else {
-	
-		IRActionSheetController *controller = [IRActionSheetController actionSheetControllerWithTitle:nil cancelAction:nil destructiveAction:nil otherActions:availableActions];
-		IRActionSheet *actionSheet = (IRActionSheet *)[controller singleUseActionSheet];
 		
-		if ([sender isKindOfClass:[UIView class]]) {
+		IRAction *photoPickerAction = [self newPresentImagePickerControllerActionAnimated:animate sender:sender];
+		[availableActions addObject:photoPickerAction];
+
+		if (usesCamera && photoPickerAction) {
+	
+			[photoPickerAction invoke];
+		
+		} else if ([availableActions count] == 1) {
 			
-			[actionSheet showFromRect:((UIView *)sender).bounds inView:((UIView *)sender) animated:YES];
+			//	With only one action we don’t even need to show the action sheet
 			
-		} else if ([sender isKindOfClass:[UIBarButtonItem class]]) {
-			
-			[actionSheet showFromBarButtonItem:((UIBarButtonItem *)sender) animated:YES];
+			dispatch_async(dispatch_get_main_queue(), ^ {
+				[(IRAction *)[availableActions objectAtIndex:0] invoke];
+			});
 			
 		} else {
+		
+			IRActionSheetController *controller = [IRActionSheetController actionSheetControllerWithTitle:nil cancelAction:nil destructiveAction:nil otherActions:availableActions];
+			IRActionSheet *actionSheet = (IRActionSheet *)[controller singleUseActionSheet];
 			
-			[NSException raise:NSInternalInconsistencyException format:@"Sender %@ is neither a view or a bar button item.  Don’t know what to do.", sender];
-		
+			if ([sender isKindOfClass:[UIView class]]) {
+				
+				[actionSheet showFromRect:((UIView *)sender).bounds inView:((UIView *)sender) animated:YES];
+				
+			} else if ([sender isKindOfClass:[UIBarButtonItem class]]) {
+				
+				[actionSheet showFromBarButtonItem:((UIBarButtonItem *)sender) animated:YES];
+				
+			} else {
+				
+				[NSException raise:NSInternalInconsistencyException format:@"Sender %@ is neither a view or a bar button item.  Don’t know what to do.", sender];
+			
+			}
+			
 		}
-		
 	}
 	
 }
