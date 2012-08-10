@@ -206,13 +206,6 @@ NSString * const kDismissesSelfIfCameraCancelled = @"-[WACompositionViewControll
 		NSCParameterAssert(![articleID isTemporaryID]);
 		
 		NSURL *articleURI = [articleID URIRepresentation];
-		NSString *savedFilePath = nil;
-		if (image) {
-			NSData *imageData = UIImageJPEGRepresentation(image, 1.0f);
-			savedFilePath = [[[WADataStore defaultStore] persistentFileURLForData:imageData extension:@"jpeg"] path];
-			image = nil;
-			imageData = nil;
-		}
 		
 		[self.managedObjectContext performBlock:^{
 		
@@ -229,8 +222,9 @@ NSString * const kDismissesSelfIfCameraCancelled = @"-[WACompositionViewControll
 			[[article mutableOrderedSetValueForKey:@"files"] addObject:file];
 			[article didChangeValueForKey:@"files"];
 			
-			if (savedFilePath) {
-				file.resourceFilePath = savedFilePath;
+			if (image) {
+				NSData *imageData = UIImageJPEGRepresentation(image, 1.0f);
+				file.resourceFilePath = [[[WADataStore defaultStore] persistentFileURLForData:imageData extension:@"jpeg"] path];
 			}
 			
 			if (representedAsset) {
