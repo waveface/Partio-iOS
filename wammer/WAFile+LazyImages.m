@@ -225,7 +225,7 @@ static NSString * const kMemoryWarningObserverCreationDisabled = @"-[WAFile(Lazy
 		[self irAssociateObject:nil usingKey:&kWAFileResourceImage policy:OBJC_ASSOCIATION_ASSIGN changingObservedKey:nil];
 	}
 
-	image = [UIImage imageWithData:[NSData dataWithContentsOfMappedFile:filePath]];
+	image = [UIImage imageWithData:[NSData dataWithContentsOfFile:filePath options:NSDataReadingMappedIfSafe error:nil]];
 	image.irRepresentedObject = [NSValue valueWithNonretainedObject:self];
 	
 	[self irAssociateObject:image usingKey:key policy:OBJC_ASSOCIATION_RETAIN_NONATOMIC changingObservedKey:nil];
