@@ -160,11 +160,11 @@ static NSString * const kNumberOfFiles = @"-[WASyncManager(FullQualityFileSync) 
 	if (!ri.userToken)
 		return NO;
 	
-	BOOL const hasReachableCloud = [ri hasReachableCloud];
+//	BOOL const hasReachableCloud = [ri hasReachableCloud];
 	BOOL const hasReachableStation = [ri hasReachableStation];
-	BOOL const endpointAvailable = hasReachableStation || hasReachableCloud;
+//	BOOL const endpointAvailable = hasReachableStation || hasReachableCloud;
 	BOOL const hasWiFiConnection = [ri hasWiFiConnection];
-	BOOL const canSync = endpointAvailable && hasWiFiConnection;
+	BOOL const canSync = hasReachableStation && hasWiFiConnection;
 	
 	return canSync;
 

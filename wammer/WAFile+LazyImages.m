@@ -220,7 +220,12 @@ static NSString * const kMemoryWarningObserverCreationDisabled = @"-[WAFile(Lazy
 	if (image)
 		return image;
 	
-	image = [UIImage imageWithData:[NSData dataWithContentsOfMappedFile:filePath]];
+	// resource image is no longer needed if thumbnail has been created
+	if (key != &kWAFileResourceImage) {
+		[self irAssociateObject:nil usingKey:&kWAFileResourceImage policy:OBJC_ASSOCIATION_ASSIGN changingObservedKey:nil];
+	}
+
+	image = [UIImage imageWithData:[NSData dataWithContentsOfFile:filePath options:NSDataReadingMappedIfSafe error:nil]];
 	image.irRepresentedObject = [NSValue valueWithNonretainedObject:self];
 	
 	[self irAssociateObject:image usingKey:key policy:OBJC_ASSOCIATION_RETAIN_NONATOMIC changingObservedKey:nil];
