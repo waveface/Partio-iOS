@@ -119,6 +119,9 @@
 /* Authentication Error Description */
 "AUTH_ERROR_INVALID_PWD_FORMAT" = "密碼格式錯誤";
 
+/* Unknown Error */
+"AUTH_UNKNOWN_ERROR" = "未知錯誤";
+
 /* Prompt for Cover Image picker */
 "CHANGE_REPRESENTING_FILE_PROMPT" = "選擇喜歡的相片作為封面。";
 

@@ -119,6 +119,9 @@
 /* Authentication Error Description */
 "AUTH_ERROR_INVALID_PWD_FORMAT" = "Password format is invalid.";
 
+/* Unknown Error */
+"AUTH_UNKNOWN_ERROR" = "Unknown error";
+
 /* Prompt for Cover Image picker */
 "CHANGE_REPRESENTING_FILE_PROMPT" = "Select a new Cover Photo for this post.";
 

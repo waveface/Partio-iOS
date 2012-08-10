@@ -528,6 +528,8 @@
 				message = NSLocalizedString(@"AUTH_ERROR_INVALID_EMAIL_PWD", @"Authentication Error Description");
 			} else if ([error code] == 0x1002) {
 				message = NSLocalizedString(@"AUTH_ERROR_ALREADY_REGISTERED", @"Authentication Error Description");
+			} else {
+				message = NSLocalizedString(@"AUTH_UNKNOWN_ERROR", @"Unknown Error");
 			}
 			IRAction *okAction = [IRAction actionWithTitle:NSLocalizedString(@"ACTION_OKAY", @"Alert Dismissal Action") block:nil];
 		
