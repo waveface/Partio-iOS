@@ -85,7 +85,6 @@
 	} else {
 	
 		WAArticle *article = [WAArticle objectInsertingIntoContext:returnedController.managedObjectContext withRemoteDictionary:[NSDictionary dictionary]];
-		article.dirty = (id)kCFBooleanTrue;
 		article.draft = (id)kCFBooleanTrue;
 		article.creationDate = [NSDate date];
 		
