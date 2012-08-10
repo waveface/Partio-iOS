@@ -81,7 +81,7 @@ void WARegisterUserDefaults () {
 NSDictionary * WAPresetDefaults () {
 
 	NSURL *defaultsURL = [[NSBundle mainBundle] URLForResource:@"WADefaults" withExtension:@"plist"];
-	NSData *defaultsData = [NSData dataWithContentsOfMappedFile:[defaultsURL path]];
+	NSData *defaultsData = [NSData dataWithContentsOfFile:[defaultsURL path] options:NSDataReadingMappedIfSafe error:nil];
 	NSDictionary *defaultsObject = [NSPropertyListSerialization propertyListFromData:defaultsData mutabilityOption:NSPropertyListImmutable format:nil errorDescription:nil];
 	
 	return defaultsObject;

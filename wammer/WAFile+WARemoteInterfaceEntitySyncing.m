@@ -416,21 +416,26 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
 			NSString *thumbnailFilePath = file.thumbnailFilePath;
 			if (!isValidPath(thumbnailFilePath)) {
 			
-				UIImage *smallestImage = [file smallestPresentableImage];
-				NSCParameterAssert(smallestImage);
+				UIImage *bestImage = [file bestPresentableImage];
+				if (!bestImage) {
+					NSLog(@"bestImage of file %@ does not exist", [file identifier]);
+					callback(nil);
+					return;
+				}
+				NSCParameterAssert(bestImage);
 
-				CGSize imageSize = smallestImage.size;
+				CGSize imageSize = bestImage.size;
 				CGFloat const sideLength = 1024;
 				
 				if ((imageSize.width > sideLength) || (imageSize.height > sideLength)) {
 				
-					UIImage *thumbnailImage = [[smallestImage irStandardImage] irScaledImageWithSize:IRGravitize((CGRect){ CGPointZero, (CGSize){ sideLength, sideLength } }, smallestImage.size, kCAGravityResizeAspect).size];
+					UIImage *thumbnailImage = [[bestImage irStandardImage] irScaledImageWithSize:IRGravitize((CGRect){ CGPointZero, (CGSize){ sideLength, sideLength } }, bestImage.size, kCAGravityResizeAspect).size];
 					
 					thumbnailFilePath = [[ds persistentFileURLForData:UIImageJPEGRepresentation(thumbnailImage, 0.85f) extension:@"jpeg"] path];
 					
 				} else {
 
-					thumbnailFilePath = [[ds persistentFileURLForData:UIImageJPEGRepresentation([smallestImage irStandardImage], 0.85f) extension:@"jpeg"] path];
+					thumbnailFilePath = [[ds persistentFileURLForData:UIImageJPEGRepresentation([bestImage irStandardImage], 0.85f) extension:@"jpeg"] path];
 				
 				}
 				

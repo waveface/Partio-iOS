@@ -113,7 +113,7 @@ NSString * kWAOpenGraphElementImageImage = @"image";
 	if (!imageFilePath)
 		return nil;
 	
-	image = [UIImage imageWithData:[NSData dataWithContentsOfMappedFile:imageFilePath]];
+	image = [UIImage imageWithData:[NSData dataWithContentsOfFile:imageFilePath options:NSDataReadingMappedIfSafe error:nil]];
 	image.irRepresentedObject = [NSValue valueWithNonretainedObject:self];
 
 	[self irAssociateObject:image usingKey:&kWAOpenGraphElementImageImage policy:OBJC_ASSOCIATION_RETAIN_NONATOMIC changingObservedKey:nil];

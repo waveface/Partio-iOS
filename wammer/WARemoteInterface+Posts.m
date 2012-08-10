@@ -311,14 +311,14 @@
 	NSParameterAssert(groupID);
 	NSParameterAssert(postIDs);
 	
-	[self.engine fireAPIRequestNamed:@"posts/fetchByFilter" withArguments:[NSDictionary dictionaryWithObjectsAndKeys:
+	NSMutableDictionary *postListEntity = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+																				 groupID, @"group_id",
+																				 [postIDs JSONString], @"post_id_list",
+																				 nil];
 	
-		groupID, @"group_id",
-		[postIDs JSONString], @"post_id_list",
+	[self.engine fireAPIRequestNamed:@"posts/fetchByFilter" withArguments:nil options:WARemoteInterfaceEnginePostFormEncodedOptionsDictionary(postListEntity, nil) validator:WARemoteInterfaceGenericNoErrorValidator() successHandler:^(NSDictionary *inResponseOrNil, IRWebAPIRequestContext *inResponseContext) {
 	
-	nil] options:nil validator:WARemoteInterfaceGenericNoErrorValidator() successHandler:^(NSDictionary *inResponseOrNil, IRWebAPIRequestContext *inResponseContext) {
-	
-    if (!successBlock)
+    if (!successBlock)	
       return;
     
     successBlock([inResponseOrNil objectForKey:@"posts"]);
