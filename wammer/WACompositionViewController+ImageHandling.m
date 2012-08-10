@@ -233,8 +233,6 @@ NSString * const kDismissesSelfIfCameraCancelled = @"-[WACompositionViewControll
 				
 			file.resourceType = (NSString *)kUTTypeImage;
 			
-			article.dirty = (id)kCFBooleanTrue;
-
 			NSError *savingError = nil;
 			if (![context save:&savingError])
 				NSLog(@"Error saving: %s %@", __PRETTY_FUNCTION__, savingError);
