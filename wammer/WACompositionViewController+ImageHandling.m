@@ -223,8 +223,41 @@ NSString * const kDismissesSelfIfCameraCancelled = @"-[WACompositionViewControll
 			[article didChangeValueForKey:@"files"];
 			
 			if (image) {
-				NSData *imageData = UIImageJPEGRepresentation(image, 1.0f);
-				file.resourceFilePath = [[[WADataStore defaultStore] persistentFileURLForData:imageData extension:@"jpeg"] path];
+
+				WADataStore *ds = [WADataStore defaultStore];
+				CGSize imageSize = image.size;
+				UIImage *standardImage = [image irStandardImage];
+
+				CGFloat const smallSideLength = 512;
+
+				if ((imageSize.width > smallSideLength) || (imageSize.height > smallSideLength)) {
+
+					UIImage *smallThumbnailImage = [standardImage irScaledImageWithSize:IRGravitize((CGRect){ CGPointZero, (CGSize){ smallSideLength, smallSideLength } }, image.size, kCAGravityResizeAspect).size];
+
+					file.smallThumbnailFilePath = [[ds persistentFileURLForData:UIImageJPEGRepresentation(smallThumbnailImage, 0.85f) extension:@"jpeg"] path];
+
+				} else {
+
+					file.smallThumbnailFilePath = [[ds persistentFileURLForData:UIImageJPEGRepresentation(standardImage, 0.85f) extension:@"jpeg"] path];
+
+				}
+
+				CGFloat const mediumSideLength = 1024;
+
+				if ((imageSize.width > mediumSideLength) || (imageSize.height > mediumSideLength)) {
+
+					UIImage *thumbnailImage = [standardImage irScaledImageWithSize:IRGravitize((CGRect){ CGPointZero, (CGSize){ mediumSideLength, mediumSideLength } }, image.size, kCAGravityResizeAspect).size];
+
+					file.thumbnailFilePath = [[ds persistentFileURLForData:UIImageJPEGRepresentation(thumbnailImage, 0.85f) extension:@"jpeg"] path];
+
+				} else {
+
+					file.thumbnailFilePath = [[ds persistentFileURLForData:UIImageJPEGRepresentation(standardImage, 0.85f) extension:@"jpeg"] path];
+
+				}
+
+				file.resourceFilePath = [[ds persistentFileURLForData:UIImageJPEGRepresentation(image, 1.0f) extension:@"jpeg"] path];
+
 			}
 			
 			if (representedAsset) {
@@ -232,7 +265,7 @@ NSString * const kDismissesSelfIfCameraCancelled = @"-[WACompositionViewControll
 			}
 				
 			file.resourceType = (NSString *)kUTTypeImage;
-			
+
 			NSError *savingError = nil;
 			if (![context save:&savingError])
 				NSLog(@"Error saving: %s %@", __PRETTY_FUNCTION__, savingError);
