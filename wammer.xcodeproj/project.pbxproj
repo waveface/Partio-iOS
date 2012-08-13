@@ -77,6 +77,7 @@
 		4B733BB514987A81005CAE8D /* IASKPSTextFieldSpecifierViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4B733BA014987A81005CAE8D /* IASKPSTextFieldSpecifierViewCell.xib */; };
 		4B733BB614987A81005CAE8D /* IASKPSToggleSwitchSpecifierViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4B733BA114987A81005CAE8D /* IASKPSToggleSwitchSpecifierViewCell.xib */; };
 		4B733BB714987A81005CAE8D /* IASKSpecifierValuesView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4B733BA214987A81005CAE8D /* IASKSpecifierValuesView.xib */; };
+		4B7420FC15D8B59900586559 /* fopenfix.c in Sources */ = {isa = PBXBuildFile; fileRef = 4B7420FA15D8B59000586559 /* fopenfix.c */; };
 		4B87177815C7D4A200C9612D /* Unfav@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 4B87177715C7D4A200C9612D /* Unfav@2x~iphone.png */; };
 		4B87177A15C7D4AF00C9612D /* Fav@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 4B87177915C7D4AF00C9612D /* Fav@2x~iphone.png */; };
 		4B8CA96A14BBE7BA006E06BB /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B8CA96914BBE7BA006E06BB /* SenTestingKit.framework */; };
@@ -1174,6 +1175,7 @@
 		4B733BA014987A81005CAE8D /* IASKPSTextFieldSpecifierViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = IASKPSTextFieldSpecifierViewCell.xib; sourceTree = "<group>"; };
 		4B733BA114987A81005CAE8D /* IASKPSToggleSwitchSpecifierViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = IASKPSToggleSwitchSpecifierViewCell.xib; sourceTree = "<group>"; };
 		4B733BA214987A81005CAE8D /* IASKSpecifierValuesView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = IASKSpecifierValuesView.xib; sourceTree = "<group>"; };
+		4B7420FA15D8B59000586559 /* fopenfix.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = fopenfix.c; sourceTree = "<group>"; };
 		4B87177715C7D4A200C9612D /* Unfav@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Unfav@2x~iphone.png"; path = "resources/Unfav@2x~iphone.png"; sourceTree = "<group>"; };
 		4B87177915C7D4AF00C9612D /* Fav@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Fav@2x~iphone.png"; path = "resources/Fav@2x~iphone.png"; sourceTree = "<group>"; };
 		4B8CA96814BBE7BA006E06BB /* wammer-iOS-Test.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "wammer-iOS-Test.octest"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -2203,6 +2205,7 @@
 		4B8CA97014BBE7BA006E06BB /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				4B7420FA15D8B59000586559 /* fopenfix.c */,
 				4B8CA97214BBE7BA006E06BB /* InfoPlist.strings */,
 				4B8CA97114BBE7BA006E06BB /* wammer-iOS-Tests-Info.plist */,
 				4B8CA97814BBE7BA006E06BB /* wammer-iOS-Tests-Prefix.pch */,
@@ -4313,6 +4316,7 @@
 				4B284E5415AD244200D138C5 /* WAFile.m in Sources */,
 				4B284E5515AD24C500D138C5 /* WATests_iOS.m in Sources */,
 				4B3225E915BE4CE400934DA4 /* WAArticleTests.m in Sources */,
+				4B7420FC15D8B59900586559 /* fopenfix.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4869,6 +4873,8 @@
 					"\"$(SRCROOT)/external/CrashlyticsSDK\"",
 				);
 				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_GENERATE_TEST_COVERAGE_FILES = YES;
+				GCC_INSTRUMENT_PROGRAM_FLOW_ARCS = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "wammer-iOS-Tests/wammer-iOS-Tests-Prefix.pch";
 				INFOPLIST_FILE = "wammer-iOS-Tests/wammer-iOS-Tests-Info.plist";
@@ -4879,6 +4885,7 @@
 					"\"$(SRCROOT)/wammer/facebook-ios-sdk\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_AFTER_BUILD = YES;
 				WRAPPER_EXTENSION = octest;
 			};
 			name = Debug;
@@ -4895,6 +4902,8 @@
 					"\"$(SRCROOT)/external/CrashlyticsSDK\"",
 				);
 				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_GENERATE_TEST_COVERAGE_FILES = YES;
+				GCC_INSTRUMENT_PROGRAM_FLOW_ARCS = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "wammer-iOS-Tests/wammer-iOS-Tests-Prefix.pch";
 				INFOPLIST_FILE = "wammer-iOS-Tests/wammer-iOS-Tests-Info.plist";
@@ -4905,6 +4914,7 @@
 					"\"$(SRCROOT)/wammer/facebook-ios-sdk\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_AFTER_BUILD = YES;
 				WRAPPER_EXTENSION = octest;
 			};
 			name = Release;
@@ -4979,7 +4989,7 @@
 				SDKROOT = iphoneos;
 				STRIP_INSTALLED_PRODUCT = NO;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				VALID_ARCHS = armv7;
+				VALID_ARCHS = "i386 armv7";
 				VERSIONING_SYSTEM = "apple-generic";
 				WF_USES_CRASHLYTICS = 1;
 				WF_USES_GOOGLEANALYTICS = 0;
@@ -5035,7 +5045,7 @@
 				STRIP_INSTALLED_PRODUCT = NO;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
-				VALID_ARCHS = armv7;
+				VALID_ARCHS = "i386 armv7";
 				VERSIONING_SYSTEM = "apple-generic";
 				WF_USES_CRASHLYTICS = 1;
 				WF_USES_GOOGLEANALYTICS = 0;
