@@ -314,7 +314,14 @@
 		NSArray *allPhotoImageViews = self.photoImageViews;
 		NSUInteger numberOfFiles = [allFiles count];
 		NSUInteger numberOfPhotoImageViews = [allPhotoImageViews count];
-		
+
+		for (WAFile *file in allFiles) {
+
+			[file smallThumbnailFilePath];
+			[file thumbnailFilePath];
+
+		}
+
 		NSMutableArray *displayedFiles = [[allFiles subarrayWithRange:(NSRange){ 0, MIN(numberOfPhotoImageViews, numberOfFiles)}] mutableCopy];
 		
 		WAFile *coverFile = post.representingFile;
