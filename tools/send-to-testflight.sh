@@ -17,7 +17,7 @@ TARGET_NAME="wammer-iOS"
 # IPA_NAME="$PROJECT_NAME.app.ipa"
 IPA_NAME=build/Debug-iphoneos/wammer-iOS-Debug-$VERSION_MARKETING$'\n'$VERSION_BUILD.ipa
 #DSYM_ZIP_NAME="$PROJECT_NAME.app.dSYM.zip"
-DSYM_ZIP_NAME=workspace/build/Debug-iphoneos/wammer-iOS-Debug-$VERSION_MARKETING$'\n'$VERSION_BUILD-dSYM.zip
+DSYM_ZIP_NAME=build/Debug-iphoneos/wammer-iOS-Debug-$VERSION_MARKETING$'\n'$VERSION_BUILD-dSYM.zip
 GIT_INFO="` git log --oneline --after={1.weeks.ago} --format="- %h %s (%an)" | grep -v "Merge branch" `"
 
 TF_API_URI="http://testflightapp.com/api/builds.json"
