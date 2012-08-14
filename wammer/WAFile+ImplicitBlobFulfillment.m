@@ -97,11 +97,21 @@
 	NSURL *ownURL = [[self objectID] URIRepresentation];
 	Class class = [self class];
 	
+	__weak WAFile *wSelf = self;
 	[[IRRemoteResourcesManager sharedManager] retrieveResourceAtURL:blobURL usingPriority:priority forced:NO withCompletionBlock:^(NSURL *tempFileURLOrNil) {
 	
-		if (!tempFileURLOrNil)
+		if (!tempFileURLOrNil) {
+			double delayInSeconds = 5.0;
+			if ([[WARemoteInterface sharedInterface] hasReachableStation]) {
+				delayInSeconds = 1.0;
+			}
+			dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+			dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+				[wSelf scheduleRetrievalForBlobURL:blobURL blobKeyPath:blobURLKeyPath filePathKeyPath:filePathKeyPath usingPriority:NSOperationQueuePriorityVeryLow];
+			});
 			return;
-		
+		}
+
 		if (!class)
 			return;
 		
