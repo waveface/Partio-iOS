@@ -13,11 +13,10 @@ BUILD_SDK="iphoneos"
 SYMROOT="Deploy"
 PRODUCT_NAME="$PROJECT_NAME.app"
 TARGET_NAME="wammer-iOS"
-#DSYM_NAME="$PROJECT_NAME.app.dSYM"
-# IPA_NAME="$PROJECT_NAME.app.ipa"
-IPA_NAME=build/Debug-iphoneos/wammer-iOS-Debug-$VERSION_MARKETING$'\n'$VERSION_BUILD.ipa
-#DSYM_ZIP_NAME="$PROJECT_NAME.app.dSYM.zip"
-DSYM_ZIP_NAME=build/Debug-iphoneos/wammer-iOS-Debug-$VERSION_MARKETING$'\n'$VERSION_BUILD-dSYM.zip
+
+IPA_NAME=build/$BUILD_CONFIGURATION-$BUILD_SDK/wammer-iOS-$BUILD_CONFIGURATION-$VERSION_MARKETING$'\n'$VERSION_BUILD.ipa
+DSYM_ZIP_NAME=build/$BUILD_CONFIGURATION-$BUILD_SDK/wammer-iOS-$BUILD_CONFIGURATION-$VERSION_MARKETING$'\n'$VERSION_BUILD-dSYM.zip
+
 GIT_INFO="` git log --oneline --after={1.weeks.ago} --format="- %h %s (%an)" | grep -v "Merge branch" `"
 
 TF_API_URI="http://testflightapp.com/api/builds.json"
