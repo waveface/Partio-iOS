@@ -192,24 +192,10 @@
 	
 	zapModal(rootVC);
 	
+	UIViewController *loginBackgroundVC = [[UIViewController alloc] init];
+	loginBackgroundVC.view = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"LoginBackgroundWithImage"]];
 	
-	IRViewController *emptyVC = [[IRViewController alloc] init];
-	__weak IRViewController *wEmptyVC = emptyVC;
-	
-	emptyVC.onShouldAutorotateToInterfaceOrientation = ^ (UIInterfaceOrientation toOrientation) {
-		
-		return YES;
-		
-	};
-	
-	emptyVC.onLoadView = ^ {
-	
-		wEmptyVC.view = [[UIView alloc] initWithFrame:(CGRect){ 0, 0, 1024, 1024 }];
-		wEmptyVC.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"WAPatternBlackPaper"]];
-		
-	};
-	
-	self.window.rootViewController = emptyVC;
+	self.window.rootViewController = loginBackgroundVC;
 	
 	[rootVC didReceiveMemoryWarning];
 	
@@ -265,12 +251,18 @@
 
 	dispatch_async(dispatch_get_main_queue(), ^ {
 
-		[self presentAuthenticationRequestWithReason:nil allowingCancellation:NO removingPriorData:YES clearingNavigationHierarchy:YES onAuthSuccess:^(NSString *userIdentifier, NSString *userToken, NSString *primaryGroupIdentifier) {
-		
-			[self updateCurrentCredentialsWithUserIdentifier:userIdentifier token:userToken primaryGroup:primaryGroupIdentifier];
+		[self presentAuthenticationRequestWithReason:nil
+														allowingCancellation:NO
+															 removingPriorData:YES
+										 clearingNavigationHierarchy:YES
+																	 onAuthSuccess:
+		 ^(NSString *userIdentifier, NSString *userToken, NSString *primaryGroupIdentifier) {
+			[self updateCurrentCredentialsWithUserIdentifier:userIdentifier
+																								 token:userToken
+																					primaryGroup:primaryGroupIdentifier];
 			[self bootstrapPersistentStoreWithUserIdentifier:userIdentifier];
-			
-		} runningOnboardingProcess:YES];
+		 }
+												runningOnboardingProcess:YES];
 		
 	});
 
@@ -460,7 +452,14 @@
 
 }
 
-- (BOOL) presentAuthenticationRequestWithReason:(NSString *)aReason allowingCancellation:(BOOL)allowsCancellation removingPriorData:(BOOL)eraseAuthInfo clearingNavigationHierarchy:(BOOL)zapEverything onAuthSuccess:(void (^)(NSString *userIdentifier, NSString *userToken, NSString *primaryGroupIdentifier))successBlock runningOnboardingProcess:(BOOL)shouldRunOnboardingChecksIfUserUnchanged {
+- (BOOL) presentAuthenticationRequestWithReason:(NSString *)aReason
+													 allowingCancellation:(BOOL)allowsCancellation
+															removingPriorData:(BOOL)eraseAuthInfo
+										clearingNavigationHierarchy:(BOOL)zapEverything
+																	onAuthSuccess:(void (^)(NSString *userIdentifier,
+																													NSString *userToken,
+																													NSString *primaryGroupIdentifier))successBlock
+											 runningOnboardingProcess:(BOOL)shouldRunOnboardingChecksIfUserUnchanged {
 
 	if ([self isRunningAuthRequest])
 		return NO;
