@@ -357,19 +357,61 @@
 
 }
 
+- (void) setPresentableImageWithFile:(WAFile *)file forCell:(WACompositionViewPhotoCell *) cell{
+	NSString *assetURLString = file.assetURL;
+	
+	if (!file.smallestPresentableImage && assetURLString) {
+		
+		[cell irUnbind:@"image"];
+		
+		BOOL (^cellImageSet)(void) = ^ {
+			return (BOOL)!!(cell.image);
+		};
+		
+		ALAssetsLibrary * const library = [[self class] assetsLibrary];
+		NSURL *assetURL = [NSURL URLWithString:assetURLString];
+		
+		[library assetForURL:assetURL resultBlock:^(ALAsset *asset) {
+			
+			if (cellImageSet())
+				return;
+			
+			dispatch_async(dispatch_get_main_queue(), ^{
+				
+				if (cellImageSet())
+					return;
+				
+				cell.image = [UIImage imageWithCGImage:[asset aspectRatioThumbnail]];
+				
+			});
+			
+		} failureBlock:^(NSError *error) {
+			
+		}];
+	} else {
+		[cell irBind:@"image" toObject:file keyPath:@"smallestPresentableImage"
+			 options:[NSDictionary dictionaryWithObjectsAndKeys: (id)kCFBooleanTrue, kIRBindingsAssignOnMainThreadOption, nil]];
+		
+		cell.image = [file smallestPresentableImage];
+		
+	}
+	
+	return;
+}
+
 - (AQGridViewCell *) gridView:(AQGridView *)gridView cellForItemAtIndex:(NSUInteger)index {
 
 	static NSString * const identifier = @"photoCell";
 	
 	WACompositionViewPhotoCell *cell = (WACompositionViewPhotoCell *)[gridView dequeueReusableCellWithIdentifier:identifier];
-	WAFile *representedFile = [self.article.files objectAtIndex:index];
+	__block WAFile *representedFile = [self.article.files objectAtIndex:index];
 	
 	NSParameterAssert(representedFile);
 	NSParameterAssert(representedFile.article);
 	
 	if (!cell) {
 	
-		cell = [WACompositionViewPhotoCell cellRepresentingFile:representedFile reuseIdentifier:identifier];
+		cell = [WACompositionViewPhotoCell cellWithReusingIdentifier:identifier];
 		cell.frame = (CGRect){
 			CGPointZero,
 			[self portraitGridCellSizeForGridView:gridView]
@@ -377,13 +419,10 @@
 				
 	}
 	
-	cell.representedFile = representedFile;
+	[self setPresentableImageWithFile:representedFile forCell:cell];
 	cell.clipsToBounds = NO;
 	cell.selectionStyle = AQGridViewCellSelectionStyleNone;
-	
-	NSParameterAssert(cell.representedFile);
-	NSParameterAssert(cell.representedFile.article);
-	
+		
 	__weak WACompositionViewPhotoCell *wCell = cell;
 	
 	cell.onRemove = ^ {
@@ -391,14 +430,13 @@
 		if (!wCell)
 			return;
 	
-		WAFile *file = wCell.representedFile;
-		WAArticle *article = file.article;
+		WAArticle *article = representedFile.article;
 		
 		[[UIApplication sharedApplication] beginIgnoringInteractionEvents];
 		[[UIApplication sharedApplication] performSelector:@selector(endIgnoringInteractionEvents) withObject:nil afterDelay:0.5f];
 		
 		[article willChangeValueForKey:@"files"];
-		[[article mutableOrderedSetValueForKey:@"files"] removeObject:file];
+		[[article mutableOrderedSetValueForKey:@"files"] removeObject:representedFile];
 		[article didChangeValueForKey:@"files"];
 			
 	};
@@ -507,6 +545,23 @@
 	
 	[self adjustPhotos];
 
+}
+
++ (ALAssetsLibrary *) assetsLibrary {
+	
+	static ALAssetsLibrary *library = nil;
+	if (library != nil)
+		return library;
+	
+	static dispatch_once_t onceToken = 0;
+	dispatch_once(&onceToken, ^{
+		
+		library = [ALAssetsLibrary new];
+		
+	});
+	
+	return library;
+	
 }
 
 @end
