@@ -72,7 +72,7 @@
 		
 	NSFetchRequest *fr = [[WADataStore defaultStore] newFetchRequestForAllArticles];
 	fr.sortDescriptors = [NSArray arrayWithObjects:
-		[NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:YES],
+		[NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:NO],
 	nil];
 	
 	self.managedObjectContext = [[WADataStore defaultStore] defaultAutoUpdatedMOC];
