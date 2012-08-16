@@ -41,7 +41,23 @@
 #import "WAWelcomeViewController.h"
 #import "WATutorialViewController.h"
 
+@interface WALoginBackgroundViewController : UIViewController
 
+@end
+
+@implementation WALoginBackgroundViewController
+
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
+	return YES;
+}
+
+- (void)viewDidLoad {
+	
+	self.view = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"LoginBackgroundWithImage"]];
+
+}
+
+@end
 @interface WAAppDelegate_iOS () <WAApplicationRootViewControllerDelegate>
 
 - (void) handleObservedAuthenticationFailure:(NSNotification *)aNotification;
@@ -179,25 +195,7 @@
 
 - (void) clearViewHierarchy {
 
-	UIViewController *rootVC = self.window.rootViewController;
-	
-	__block void (^zapModal)(UIViewController *) = [^ (UIViewController *aVC) {
-	
-		if (aVC.presentedViewController)
-			zapModal(aVC.presentedViewController);
-		
-		[aVC dismissViewControllerAnimated:NO completion:nil];
-	
-	} copy];
-	
-	zapModal(rootVC);
-	
-	UIViewController *loginBackgroundVC = [[UIViewController alloc] init];
-	loginBackgroundVC.view = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"LoginBackgroundWithImage"]];
-	
-	self.window.rootViewController = loginBackgroundVC;
-	
-	[rootVC didReceiveMemoryWarning];
+	self.window.rootViewController = [[WALoginBackgroundViewController alloc] init];
 	
 }
 
