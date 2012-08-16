@@ -46,15 +46,23 @@
 
 @implementation WALoginBackgroundViewController
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
-	if (UIInterfaceOrientationIsLandscape(toInterfaceOrientation)) {
-		self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"LoginBackground-Landscape"]];
-	} else {
-		self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"LoginBackground-Portrait"]];
-	}
-	return YES;
+- (UIColor *)decoratedBackgroundColor: (UIInterfaceOrientation) currentInterfaceOrientation {
+	if (UIInterfaceOrientationIsPortrait(currentInterfaceOrientation) ||
+			currentInterfaceOrientation ==0)
+		return [UIColor colorWithPatternImage:[UIImage imageNamed:@"LoginBackground-Portrait"]];
+	else
+		return [UIColor colorWithPatternImage:[UIImage imageNamed:@"LoginBackground-Landscape"]];
+
 }
 
+- (void)viewDidLoad {
+	self.view.backgroundColor = [self decoratedBackgroundColor:[[UIDevice currentDevice] orientation]];
+}
+
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
+	
+	self.view.backgroundColor = [self decoratedBackgroundColor:toInterfaceOrientation];
+}
 
 @end
 
