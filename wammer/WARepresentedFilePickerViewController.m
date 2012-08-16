@@ -12,6 +12,7 @@
 #import "WAImageView.h"
 #import "WACompositionViewPhotoCell.h"
 #import "UIImage+IRAdditions.h"
+#import <AssetsLibrary/AssetsLibrary.h>
 
 @interface WARepresentedFilePickerViewController () <NSFetchedResultsControllerDelegate, AQGridViewDelegate, AQGridViewDataSource>
 @property (nonatomic, strong) AQGridView *view;
@@ -137,6 +138,49 @@
 
 }
 
+- (void) setPresentableImageWithFile:(WAFile *)file forCell:(WACompositionViewPhotoCell *) cell{
+	NSString *assetURLString = file.assetURL;
+	
+	if (!file.smallestPresentableImage && assetURLString) {
+		
+		[cell irUnbind:@"image"];
+		
+		BOOL (^cellImageSet)(void) = ^ {
+			return (BOOL)!!(cell.image);
+		};
+		
+		ALAssetsLibrary * const library = [[self class] assetsLibrary];
+		NSURL *assetURL = [NSURL URLWithString:assetURLString];
+		
+		[library assetForURL:assetURL resultBlock:^(ALAsset *asset) {
+			
+			if (cellImageSet())
+				return;
+			
+			dispatch_async(dispatch_get_main_queue(), ^{
+				
+				if (cellImageSet())
+					return;
+				
+				cell.image = [UIImage imageWithCGImage:[asset aspectRatioThumbnail]];
+				
+			});
+			
+		} failureBlock:^(NSError *error) {
+			
+		}];
+	} else {
+		[cell irBind:@"image" toObject:file keyPath:@"smallestPresentableImage"
+			 options:[NSDictionary dictionaryWithObjectsAndKeys: (id)kCFBooleanTrue, kIRBindingsAssignOnMainThreadOption, nil]];
+		
+		cell.image = [file smallestPresentableImage];
+		
+	}
+	
+	return;
+}
+
+
 - (AQGridViewCell *) gridView:(AQGridView *)gridView cellForItemAtIndex:(NSUInteger)index  {
 
 	NSString * const identifier = @"Cell";
@@ -144,13 +188,13 @@
 	WACompositionViewPhotoCell *cell = (WACompositionViewPhotoCell *)[gridView dequeueReusableCellWithIdentifier:identifier];
 	
 	if (![cell isKindOfClass:[WACompositionViewPhotoCell class]]) {
-		cell = [WACompositionViewPhotoCell cellRepresentingFile:representedFile reuseIdentifier:identifier];
+		cell = [WACompositionViewPhotoCell cellWithReusingIdentifier:identifier];
 		cell.frame = (CGRect){ CGPointZero, (CGSize){ 72.0f, 72.0f } };
 	}
 	
 	cell.canRemove = NO;
-	cell.representedFile = representedFile;
 	cell.style = WACompositionViewPhotoCellBorderedPlainStyle;
+	[self setPresentableImageWithFile:representedFile forCell:cell];
 	
 	[cell setNeedsLayout];
 	
@@ -231,6 +275,23 @@
 
 	return self.view.contentSize;
 
+}
+
++ (ALAssetsLibrary *) assetsLibrary {
+	
+	static ALAssetsLibrary *library = nil;
+	if (library != nil)
+		return library;
+	
+	static dispatch_once_t onceToken = 0;
+	dispatch_once(&onceToken, ^{
+		
+		library = [ALAssetsLibrary new];
+		
+	});
+	
+	return library;
+	
 }
 
 @end

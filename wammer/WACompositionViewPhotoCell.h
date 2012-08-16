@@ -21,12 +21,11 @@ enum {
 
 @interface WACompositionViewPhotoCell : AQGridViewCell
 
-+ (WACompositionViewPhotoCell *) cellRepresentingFile:(WAFile *)aFile reuseIdentifier:(NSString *)reuseIdentifier;
++ (WACompositionViewPhotoCell *) cellWithReusingIdentifier:(NSString *)identifier;
 
 @property (nonatomic, readwrite, assign) BOOL canRemove;	//	Default is YES
 @property (nonatomic, readwrite, assign) WACompositionViewPhotoCellStyle style;
 
-@property (nonatomic, readwrite, weak) WAFile *representedFile;
 @property (nonatomic, readwrite, strong) UIImage *image;
 
 @property (nonatomic, readonly, strong) UIImageView *imageContainer;

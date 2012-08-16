@@ -197,28 +197,17 @@ static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePag
 	[self.paginatedView reloadViews];
 	self.paginationSlider.numberOfPages = self.paginatedView.numberOfPages;
 	
-	//	TBD: Cache contents of the previous screen, and then do some page index matching
-	//	Instead of going back to the last current page, since we might have nothing left on the current page
-	//	And things can get garbled very quickly
 	
-	if (self.presentedArticle) {
-	
-		[self.paginatedView scrollToPageAtIndex:[self gridIndexOfArticle:self.presentedArticle] animated:NO];
-	
+	if (lastPageGrid) {
+			
+		IRDiscreteLayoutGrid *bestGrid = [result bestGridMatchingItemsInInstance:lastPageGrid];
+		if (bestGrid)
+			[self.paginatedView scrollToPageAtIndex:[result.grids indexOfObject:bestGrid] animated:NO];
+		
 	} else {
 	
-		if (lastPageGrid) {
-			
-			IRDiscreteLayoutGrid *bestGrid = [result bestGridMatchingItemsInInstance:lastPageGrid];
-			if (bestGrid)
-				[self.paginatedView scrollToPageAtIndex:[result.grids indexOfObject:bestGrid] animated:NO];
-		
-		} else {
-	
-			if ((self.paginatedView.numberOfPages - 1) >= lastCurrentPage)
-				[self.paginatedView scrollToPageAtIndex:lastCurrentPage animated:NO];
-		
-		}
+		if ((self.paginatedView.numberOfPages - 1) >= lastCurrentPage)
+			[self.paginatedView scrollToPageAtIndex:lastCurrentPage animated:NO];
 		
 	}
 

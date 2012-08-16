@@ -7,6 +7,7 @@
 //
 
 #import <QuartzCore/QuartzCore.h>
+#import <AssetsLibrary/AssetsLibrary.h>
 
 #import "WAArticleViewController_FullScreen_Photo.h"
 #import "AQGridView.h"
@@ -144,6 +145,58 @@
 
 }
 
+- (void) setPresentableImageWithFile:(WAFile *)file forCell:(WACompositionViewPhotoCell *) cell{
+	cell.image = nil;
+
+	NSUInteger numberOfItems = [self.article.files count];
+
+	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad && numberOfItems <= 4) {
+	
+		[cell irBind:@"image" toObject:file keyPath:@"bestPresentableImage"
+			 options:[NSDictionary dictionaryWithObjectsAndKeys: (id)kCFBooleanTrue, kIRBindingsAssignOnMainThreadOption, nil]];
+
+		cell.image = [file bestPresentableImage];
+	} else {
+		[cell irBind:@"image" toObject:file keyPath:@"smallestPresentableImage"
+			 options:[NSDictionary dictionaryWithObjectsAndKeys: (id)kCFBooleanTrue, kIRBindingsAssignOnMainThreadOption, nil]];
+
+		cell.image = [file smallestPresentableImage];
+	}
+	
+	NSString *assetURLString = file.assetURL;
+	if (!cell.image && assetURLString) {
+
+		[cell irUnbind:@"image"];
+		
+		BOOL (^cellImageSet)(void) = ^ {
+			return (BOOL)!!(cell.image);
+		};
+
+		ALAssetsLibrary * const library = [[self class] assetsLibrary];
+		NSURL *assetURL = [NSURL URLWithString:assetURLString];
+	
+		[library assetForURL:assetURL resultBlock:^(ALAsset *asset) {
+		
+			if (cellImageSet())
+				return;
+		
+			dispatch_async(dispatch_get_main_queue(), ^{
+			
+				if (cellImageSet())
+					return;
+			
+				cell.image = [UIImage imageWithCGImage:[asset aspectRatioThumbnail]];
+			
+			});
+		
+		} failureBlock:^(NSError *error) {
+		
+		}];
+	}
+
+	return;
+}
+
 - (AQGridViewCell *) gridView:(AQGridView *)aGV cellForItemAtIndex:(NSUInteger) index {
 
 	WAFile *representedFile = [self itemAtIndex:index];
@@ -152,15 +205,16 @@
 	WACompositionViewPhotoCell *dequeuedCell = (WACompositionViewPhotoCell *)[aGV dequeueReusableCellWithIdentifier:identifier];
 	
 	if (dequeuedCell) {
-	
-		dequeuedCell.representedFile = representedFile;
-	
+
+		[self setPresentableImageWithFile:representedFile forCell:dequeuedCell];
+		
 	} else {
 	
-		dequeuedCell = [WACompositionViewPhotoCell cellRepresentingFile:representedFile reuseIdentifier:identifier];
+		dequeuedCell = [WACompositionViewPhotoCell cellWithReusingIdentifier:identifier];
 		
 		dequeuedCell.style = WACompositionViewPhotoCellBorderedPlainStyle;
 		dequeuedCell.canRemove = NO;
+		[self setPresentableImageWithFile:representedFile forCell:dequeuedCell];
 		
 	}
 	
@@ -391,6 +445,23 @@
 
 	return YES;
 
+}
+
++ (ALAssetsLibrary *) assetsLibrary {
+	
+	static ALAssetsLibrary *library = nil;
+	if (library != nil)
+		return library;
+	
+	static dispatch_once_t onceToken = 0;
+	dispatch_once(&onceToken, ^{
+		
+		library = [ALAssetsLibrary new];
+		
+	});
+	
+	return library;
+	
 }
 
 @end
