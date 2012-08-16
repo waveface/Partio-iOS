@@ -84,6 +84,10 @@
 		4B8CA97414BBE7BA006E06BB /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4B8CA97214BBE7BA006E06BB /* InfoPlist.strings */; };
 		4B8DFB7214FDFC34000B41C5 /* libsqlite3.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B8DFB7114FDFC34000B41C5 /* libsqlite3.0.dylib */; };
 		4B8DFB7414FDFC3D000B41C5 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B8DFB7314FDFC3D000B41C5 /* CFNetwork.framework */; };
+		4BAE345215DCA30200A9109D /* LoginBackground-Landscape.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BAE344E15DCA30200A9109D /* LoginBackground-Landscape.png */; };
+		4BAE345315DCA30200A9109D /* LoginBackground-Landscape@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BAE344F15DCA30200A9109D /* LoginBackground-Landscape@2x.png */; };
+		4BAE345415DCA30200A9109D /* LoginBackground-Portrait.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BAE345015DCA30200A9109D /* LoginBackground-Portrait.png */; };
+		4BAE345515DCA30200A9109D /* LoginBackground-Portrait@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BAE345115DCA30200A9109D /* LoginBackground-Portrait@2x.png */; };
 		4BB1B6B115C14648002A4BE2 /* Fav~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BB1B6AD15C14648002A4BE2 /* Fav~iphone.png */; };
 		4BB1B6B315C14648002A4BE2 /* Unfav~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BB1B6AF15C14648002A4BE2 /* Unfav~iphone.png */; };
 		4BD77BB915A2C10500CA8486 /* WABackoffHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 130F09EF159C3C74001796D0 /* WABackoffHandler.m */; };
@@ -436,10 +440,6 @@
 		FFCCDF6F15B41B0000AEBB85 /* Icon-72@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FFCCDE6215B41B0000AEBB85 /* Icon-72@2x.png */; };
 		FFCCDF7015B41B0000AEBB85 /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = FFCCDE6315B41B0000AEBB85 /* Icon.png */; };
 		FFCCDF7115B41B0000AEBB85 /* Icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FFCCDE6415B41B0000AEBB85 /* Icon@2x.png */; };
-		FFCCDF8215B41B0000AEBB85 /* LoginBackgroundWithImage.png in Resources */ = {isa = PBXBuildFile; fileRef = FFCCDE7515B41B0000AEBB85 /* LoginBackgroundWithImage.png */; };
-		FFCCDF8315B41B0000AEBB85 /* LoginBackgroundWithImage@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FFCCDE7615B41B0000AEBB85 /* LoginBackgroundWithImage@2x.png */; };
-		FFCCDF8415B41B0000AEBB85 /* LoginBackgroundWithImageLandscape.png in Resources */ = {isa = PBXBuildFile; fileRef = FFCCDE7715B41B0000AEBB85 /* LoginBackgroundWithImageLandscape.png */; };
-		FFCCDF8515B41B0000AEBB85 /* LoginBackgroundWithImageLandscape@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FFCCDE7815B41B0000AEBB85 /* LoginBackgroundWithImageLandscape@2x.png */; };
 		FFCCDF8915B41B0000AEBB85 /* Logotype.png in Resources */ = {isa = PBXBuildFile; fileRef = FFCCDE7C15B41B0000AEBB85 /* Logotype.png */; };
 		FFCCDF8A15B41B0000AEBB85 /* Logotype@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FFCCDE7D15B41B0000AEBB85 /* Logotype@2x.png */; };
 		FFCCDF8B15B41B0000AEBB85 /* NotePressed.png in Resources */ = {isa = PBXBuildFile; fileRef = FFCCDE7E15B41B0000AEBB85 /* NotePressed.png */; };
@@ -1096,6 +1096,10 @@
 		4B8DFB7114FDFC34000B41C5 /* libsqlite3.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.0.dylib; path = usr/lib/libsqlite3.0.dylib; sourceTree = SDKROOT; };
 		4B8DFB7314FDFC3D000B41C5 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
 		4B989DC1141F395D00DD13C9 /* WAPostViewCellPhone-WebLink.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "WAPostViewCellPhone-WebLink.xib"; sourceTree = "<group>"; };
+		4BAE344E15DCA30200A9109D /* LoginBackground-Landscape.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "LoginBackground-Landscape.png"; path = "Resources/LoginBackground-Landscape.png"; sourceTree = "<group>"; };
+		4BAE344F15DCA30200A9109D /* LoginBackground-Landscape@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "LoginBackground-Landscape@2x.png"; path = "Resources/LoginBackground-Landscape@2x.png"; sourceTree = "<group>"; };
+		4BAE345015DCA30200A9109D /* LoginBackground-Portrait.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "LoginBackground-Portrait.png"; path = "Resources/LoginBackground-Portrait.png"; sourceTree = "<group>"; };
+		4BAE345115DCA30200A9109D /* LoginBackground-Portrait@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "LoginBackground-Portrait@2x.png"; path = "Resources/LoginBackground-Portrait@2x.png"; sourceTree = "<group>"; };
 		4BB1B6AD15C14648002A4BE2 /* Fav~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Fav~iphone.png"; path = "Resources/Fav~iphone.png"; sourceTree = "<group>"; };
 		4BB1B6AF15C14648002A4BE2 /* Unfav~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Unfav~iphone.png"; path = "Resources/Unfav~iphone.png"; sourceTree = "<group>"; };
 		4BCA9E9F13FCE9DC00978CE9 /* WAPostViewCellPhone-Default.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "WAPostViewCellPhone-Default.xib"; sourceTree = "<group>"; };
@@ -1562,10 +1566,6 @@
 		FFCCDE6215B41B0000AEBB85 /* Icon-72@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon-72@2x.png"; path = "Resources/Icon-72@2x.png"; sourceTree = "<group>"; };
 		FFCCDE6315B41B0000AEBB85 /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Icon.png; path = Resources/Icon.png; sourceTree = "<group>"; };
 		FFCCDE6415B41B0000AEBB85 /* Icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon@2x.png"; path = "Resources/Icon@2x.png"; sourceTree = "<group>"; };
-		FFCCDE7515B41B0000AEBB85 /* LoginBackgroundWithImage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = LoginBackgroundWithImage.png; path = Resources/LoginBackgroundWithImage.png; sourceTree = "<group>"; };
-		FFCCDE7615B41B0000AEBB85 /* LoginBackgroundWithImage@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "LoginBackgroundWithImage@2x.png"; path = "Resources/LoginBackgroundWithImage@2x.png"; sourceTree = "<group>"; };
-		FFCCDE7715B41B0000AEBB85 /* LoginBackgroundWithImageLandscape.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = LoginBackgroundWithImageLandscape.png; path = Resources/LoginBackgroundWithImageLandscape.png; sourceTree = "<group>"; };
-		FFCCDE7815B41B0000AEBB85 /* LoginBackgroundWithImageLandscape@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "LoginBackgroundWithImageLandscape@2x.png"; path = "Resources/LoginBackgroundWithImageLandscape@2x.png"; sourceTree = "<group>"; };
 		FFCCDE7C15B41B0000AEBB85 /* Logotype.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Logotype.png; path = Resources/Logotype.png; sourceTree = "<group>"; };
 		FFCCDE7D15B41B0000AEBB85 /* Logotype@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Logotype@2x.png"; path = "Resources/Logotype@2x.png"; sourceTree = "<group>"; };
 		FFCCDE7E15B41B0000AEBB85 /* NotePressed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = NotePressed.png; path = Resources/NotePressed.png; sourceTree = "<group>"; };
@@ -2730,10 +2730,10 @@
 				FFCCDE6215B41B0000AEBB85 /* Icon-72@2x.png */,
 				FFCCDE6315B41B0000AEBB85 /* Icon.png */,
 				FFCCDE6415B41B0000AEBB85 /* Icon@2x.png */,
-				FFCCDE7515B41B0000AEBB85 /* LoginBackgroundWithImage.png */,
-				FFCCDE7615B41B0000AEBB85 /* LoginBackgroundWithImage@2x.png */,
-				FFCCDE7715B41B0000AEBB85 /* LoginBackgroundWithImageLandscape.png */,
-				FFCCDE7815B41B0000AEBB85 /* LoginBackgroundWithImageLandscape@2x.png */,
+				4BAE344E15DCA30200A9109D /* LoginBackground-Landscape.png */,
+				4BAE344F15DCA30200A9109D /* LoginBackground-Landscape@2x.png */,
+				4BAE345015DCA30200A9109D /* LoginBackground-Portrait.png */,
+				4BAE345115DCA30200A9109D /* LoginBackground-Portrait@2x.png */,
 				FFCCDE7C15B41B0000AEBB85 /* Logotype.png */,
 				FFCCDE7D15B41B0000AEBB85 /* Logotype@2x.png */,
 				FFCCDE7E15B41B0000AEBB85 /* NotePressed.png */,
@@ -3615,10 +3615,6 @@
 				FFCCDF6F15B41B0000AEBB85 /* Icon-72@2x.png in Resources */,
 				FFCCDF7015B41B0000AEBB85 /* Icon.png in Resources */,
 				FFCCDF7115B41B0000AEBB85 /* Icon@2x.png in Resources */,
-				FFCCDF8215B41B0000AEBB85 /* LoginBackgroundWithImage.png in Resources */,
-				FFCCDF8315B41B0000AEBB85 /* LoginBackgroundWithImage@2x.png in Resources */,
-				FFCCDF8415B41B0000AEBB85 /* LoginBackgroundWithImageLandscape.png in Resources */,
-				FFCCDF8515B41B0000AEBB85 /* LoginBackgroundWithImageLandscape@2x.png in Resources */,
 				FFCCDF8915B41B0000AEBB85 /* Logotype.png in Resources */,
 				FFCCDF8A15B41B0000AEBB85 /* Logotype@2x.png in Resources */,
 				FFCCDF8B15B41B0000AEBB85 /* NotePressed.png in Resources */,
@@ -3766,6 +3762,10 @@
 				4BFC156615C7D9DC00DB02F8 /* Fav~ipad.png in Resources */,
 				4BFC156915C7D9E800DB02F8 /* Unfav@2x~ipad.png in Resources */,
 				4BFC156A15C7D9E800DB02F8 /* Unfav~ipad.png in Resources */,
+				4BAE345215DCA30200A9109D /* LoginBackground-Landscape.png in Resources */,
+				4BAE345315DCA30200A9109D /* LoginBackground-Landscape@2x.png in Resources */,
+				4BAE345415DCA30200A9109D /* LoginBackground-Portrait.png in Resources */,
+				4BAE345515DCA30200A9109D /* LoginBackground-Portrait@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

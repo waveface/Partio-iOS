@@ -42,18 +42,19 @@
 #import "WATutorialViewController.h"
 
 @interface WALoginBackgroundViewController : UIViewController
-
 @end
 
 @implementation WALoginBackgroundViewController
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
+	if (UIInterfaceOrientationIsLandscape(toInterfaceOrientation)) {
+		self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"LoginBackground-Landscape"]];
+	} else {
+		self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"LoginBackground-Portrait"]];
+	}
 	return YES;
 }
 
-- (void)viewDidLoad {
-	self.view = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"LoginBackgroundWithImage"]];
-}
 
 @end
 
