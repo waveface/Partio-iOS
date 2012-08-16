@@ -14,7 +14,6 @@
 #import "WADefines.h"
 #import "WAPreviewBadge.h"
 #import "WARemoteInterface.h"
-#import "WAFile+ImplicitBlobFulfillment.h"
 
 
 @interface WAPostViewCellPhone () <IRTableViewCellPrototype>
@@ -351,7 +350,6 @@
 			wSelf.originLabel.text = [NSString stringWithFormat:NSLocalizedString(@"NUMBER_OF_PHOTOS_CREATE_TIME_FROM_DEVICE", @"iPhone Timeline"), self.accessibilityHint, timeString, deviceName];
 		} else {
 			for (WAFile *file in allFiles) {
-				[file setDisplaying:NO];
 				[file irObserve:@"smallThumbnailFilePath" options:NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew context:nil withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
 					if (!fromValue && toValue) {
 						if (downloadCompleted()) {
@@ -443,8 +441,6 @@
 			}
 				
 			WAFile *file = (WAFile *)[displayedFiles objectAtIndex:idx];
-			
-			[file setDisplaying:YES];
 			
 			[iv irUnbind:@"image"];
 

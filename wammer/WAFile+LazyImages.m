@@ -8,6 +8,7 @@
 
 #import "WAFile+LazyImages.h"
 #import "WAFile+WAConstants.h"
+#import "WAFile+ImplicitBlobFulfillment.h"
 
 #import "UIKit+IRAdditions.h"
 
@@ -181,6 +182,8 @@ static NSString * const kMemoryWarningObserverCreationDisabled = @"-[WAFile(Lazy
 
 	[self createMemoryWarningObserverIfAppropriate];
 	
+	[self setDisplaying:YES];
+
 	return [self imageAssociatedWithKey:&kWAFileThumbnailImage filePath:self.thumbnailFilePath];
 		
 }
@@ -201,6 +204,8 @@ static NSString * const kMemoryWarningObserverCreationDisabled = @"-[WAFile(Lazy
 
 	[self createMemoryWarningObserverIfAppropriate];
 	
+	[self setDisplaying:YES];
+
 	return [self imageAssociatedWithKey:&kWAFileSmallThumbnailImage filePath:self.smallThumbnailFilePath];
 		
 }
