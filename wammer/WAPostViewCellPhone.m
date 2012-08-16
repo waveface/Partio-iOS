@@ -14,6 +14,7 @@
 #import "WADefines.h"
 #import "WAPreviewBadge.h"
 #import "WARemoteInterface.h"
+#import "WAFile+ImplicitBlobFulfillment.h"
 
 
 @interface WAPostViewCellPhone () <IRTableViewCellPrototype>
@@ -344,6 +345,7 @@
 
 		__weak WAPostViewCellPhone *wSelf = self;
 		for (WAFile *file in allFiles) {
+			[file setDisplaying:NO];
 			if (![file smallThumbnailFilePath]) {
 				[file irObserve:@"smallThumbnailFilePath" options:NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew context:nil withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
 					if (!fromValue && toValue) {
@@ -387,16 +389,19 @@
 		}
 
 		if (downloadCompleted()) {
-			self.originLabel.textColor = [UIColor lightGrayColor];
-			self.originLabel.text = [NSString stringWithFormat:NSLocalizedString(@"NUMBER_OF_PHOTOS_CREATE_TIME_FROM_DEVICE", @"iPhone Timeline"), self.accessibilityHint, timeString, deviceName];
+			wSelf.originLabel.textColor = [UIColor lightGrayColor];
+			wSelf.originLabel.text = [NSString stringWithFormat:NSLocalizedString(@"NUMBER_OF_PHOTOS_CREATE_TIME_FROM_DEVICE", @"iPhone Timeline"), self.accessibilityHint, timeString, deviceName];
+		} else if ([[WARemoteInterface sharedInterface] hasReachableCloud]) {
+			wSelf.originLabel.textColor = [UIColor colorWithRed:0x6c/255.0 green:0xbc/255.0 blue:0xd3/255.0 alpha:1.0];
+			//			self.originLabel.text = [NSString stringWithFormat:NSLocalizedString(@"DOWNLOADING_PHOTOS", @"Downloading Status on iPhone Timeline")];
+			wSelf.originLabel.text = [NSString stringWithFormat:@"small:%d/%d  medium:%d/%d", numberOfDownloadedSmallThumbnails, numberOfFiles, numberOfDownloadedMediumThumbnails, numberOfFiles];
 		} else {
-			self.originLabel.textColor = [UIColor colorWithRed:0x6c/255.0 green:0xbc/255.0 blue:0xd3/255.0 alpha:1.0];
-//			self.originLabel.text = [NSString stringWithFormat:NSLocalizedString(@"DOWNLOADING_PHOTOS", @"Downloading Status on iPhone Timeline")];
-			self.originLabel.text = [NSString stringWithFormat:@"small:%d/%d  medium:%d/%d", numberOfDownloadedSmallThumbnails, numberOfFiles, numberOfDownloadedMediumThumbnails, numberOfFiles];
+			wSelf.originLabel.textColor = [UIColor colorWithRed:0x6c/255.0 green:0xbc/255.0 blue:0xd3/255.0 alpha:1.0];
+			wSelf.originLabel.text = [NSString stringWithFormat:NSLocalizedString(@"UNABLE_TO_DOWNLOADING_PHOTOS", @"Downloading Status on iPhone Timeline")];
 		}
 
 		[[WARemoteInterface sharedInterface] irObserve:@"networkState" options:NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew context:nil withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
-			if (![fromValue isEqual:toValue] && ![[WARemoteInterface sharedInterface] hasReachableCloud]) {
+			if (![[WARemoteInterface sharedInterface] hasReachableCloud] && !downloadCompleted()) {
 				self.originLabel.textColor = [UIColor colorWithRed:0x6c/255.0 green:0xbc/255.0 blue:0xd3/255.0 alpha:1.0];
 				self.originLabel.text = [NSString stringWithFormat:NSLocalizedString(@"UNABLE_TO_DOWNLOADING_PHOTOS", @"Downloading Status on iPhone Timeline")];
 			}
@@ -430,6 +435,8 @@
 			}
 				
 			WAFile *file = (WAFile *)[displayedFiles objectAtIndex:idx];
+			
+			[file setDisplaying:YES];
 			
 			[iv irUnbind:@"image"];
 

@@ -11,6 +11,7 @@
 @interface WAFile (ImplicitBlobFulfillment)
 
 @property (nonatomic, readonly, assign) BOOL attemptsBlobRetrieval;
+@property (nonatomic, readwrite, assign) BOOL displaying;
 
 - (void) setAttemptsBlobRetrieval:(BOOL)attemptsBlobRetrieval notify:(BOOL) firesKVONotifications;
 

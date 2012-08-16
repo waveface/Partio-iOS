@@ -15,6 +15,14 @@
 
 @implementation WAFile (ImplicitBlobFulfillment)
 
+- (void) setDisplaying:(BOOL)displaying {
+	[self irAssociateObject:(id)(displaying ? kCFBooleanTrue : kCFBooleanFalse) usingKey:&kWAFileDisplaying policy:OBJC_ASSOCIATION_ASSIGN changingObservedKey:nil];
+}
+
+- (BOOL) displaying {
+	return [objc_getAssociatedObject(self, &kWAFileDisplaying) boolValue];
+}
+
 - (BOOL) attemptsBlobRetrieval {
 
 	return [objc_getAssociatedObject(self, &kWAFileAttemptsBlobRetrieval) boolValue];
@@ -50,11 +58,19 @@
 	if ([key isEqualToString:kWAFileLargeThumbnailFilePath])
 		return NSOperationQueuePriorityLow;
 	
-	if ([key isEqualToString:kWAFileThumbnailFilePath])
+	if ([key isEqualToString:kWAFileThumbnailFilePath]) {
+		if ([self displaying]) {
+			return NSOperationQueuePriorityHigh;
+		}
 		return NSOperationQueuePriorityNormal;
+	}
 	
-	if ([key isEqualToString:kWAFileSmallThumbnailFilePath])
-		return NSOperationQueuePriorityHigh;
+	if ([key isEqualToString:kWAFileSmallThumbnailFilePath]) {
+		if ([self displaying]) {
+			return NSOperationQueuePriorityVeryHigh;
+		}
+		return NSOperationQueuePriorityNormal;
+	}
 	
 	return NSOperationQueuePriorityNormal;
 
@@ -107,7 +123,7 @@
 			}
 			dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
 			dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-				[wSelf scheduleRetrievalForBlobURL:blobURL blobKeyPath:blobURLKeyPath filePathKeyPath:filePathKeyPath usingPriority:NSOperationQueuePriorityVeryLow];
+				[wSelf scheduleRetrievalForBlobURL:blobURL blobKeyPath:blobURLKeyPath filePathKeyPath:filePathKeyPath usingPriority:priority];
 			});
 			return;
 		}
