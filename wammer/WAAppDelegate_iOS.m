@@ -41,6 +41,34 @@
 #import "WAWelcomeViewController.h"
 #import "WATutorialViewController.h"
 
+@interface WALoginBackgroundViewController : UIViewController
+@end
+
+@implementation WALoginBackgroundViewController
+
+- (UIColor *)decoratedBackgroundColor: (UIInterfaceOrientation) currentInterfaceOrientation {
+	if (UIInterfaceOrientationIsPortrait(currentInterfaceOrientation) ||
+			currentInterfaceOrientation == 0)
+		return [UIColor colorWithPatternImage:[UIImage imageNamed:@"LoginBackground-Portrait"]];
+	else
+		return [UIColor colorWithPatternImage:[UIImage imageNamed:@"LoginBackground-Landscape"]];
+
+}
+
+- (void)viewDidLoad {
+	self.view.backgroundColor = [self decoratedBackgroundColor:[[UIDevice currentDevice] orientation]];
+}
+
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
+	return YES;
+}
+
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
+	
+	self.view.backgroundColor = [self decoratedBackgroundColor:toInterfaceOrientation];
+}
+
+@end
 
 @interface WAAppDelegate_iOS () <WAApplicationRootViewControllerDelegate>
 
@@ -179,39 +207,7 @@
 
 - (void) clearViewHierarchy {
 
-	UIViewController *rootVC = self.window.rootViewController;
-	
-	__block void (^zapModal)(UIViewController *) = [^ (UIViewController *aVC) {
-	
-		if (aVC.presentedViewController)
-			zapModal(aVC.presentedViewController);
-		
-		[aVC dismissViewControllerAnimated:NO completion:nil];
-	
-	} copy];
-	
-	zapModal(rootVC);
-	
-	
-	IRViewController *emptyVC = [[IRViewController alloc] init];
-	__weak IRViewController *wEmptyVC = emptyVC;
-	
-	emptyVC.onShouldAutorotateToInterfaceOrientation = ^ (UIInterfaceOrientation toOrientation) {
-		
-		return YES;
-		
-	};
-	
-	emptyVC.onLoadView = ^ {
-	
-		wEmptyVC.view = [[UIView alloc] initWithFrame:(CGRect){ 0, 0, 1024, 1024 }];
-		wEmptyVC.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"WAPatternBlackPaper"]];
-		
-	};
-	
-	self.window.rootViewController = emptyVC;
-	
-	[rootVC didReceiveMemoryWarning];
+	self.window.rootViewController = [[WALoginBackgroundViewController alloc] init];
 	
 }
 
@@ -265,12 +261,18 @@
 
 	dispatch_async(dispatch_get_main_queue(), ^ {
 
-		[self presentAuthenticationRequestWithReason:nil allowingCancellation:NO removingPriorData:YES clearingNavigationHierarchy:YES onAuthSuccess:^(NSString *userIdentifier, NSString *userToken, NSString *primaryGroupIdentifier) {
-		
-			[self updateCurrentCredentialsWithUserIdentifier:userIdentifier token:userToken primaryGroup:primaryGroupIdentifier];
+		[self presentAuthenticationRequestWithReason:nil
+														allowingCancellation:NO
+															 removingPriorData:YES
+										 clearingNavigationHierarchy:YES
+																	 onAuthSuccess:
+		 ^(NSString *userIdentifier, NSString *userToken, NSString *primaryGroupIdentifier) {
+			[self updateCurrentCredentialsWithUserIdentifier:userIdentifier
+																								 token:userToken
+																					primaryGroup:primaryGroupIdentifier];
 			[self bootstrapPersistentStoreWithUserIdentifier:userIdentifier];
-			
-		} runningOnboardingProcess:YES];
+		 }
+												runningOnboardingProcess:YES];
 		
 	});
 
@@ -460,7 +462,14 @@
 
 }
 
-- (BOOL) presentAuthenticationRequestWithReason:(NSString *)aReason allowingCancellation:(BOOL)allowsCancellation removingPriorData:(BOOL)eraseAuthInfo clearingNavigationHierarchy:(BOOL)zapEverything onAuthSuccess:(void (^)(NSString *userIdentifier, NSString *userToken, NSString *primaryGroupIdentifier))successBlock runningOnboardingProcess:(BOOL)shouldRunOnboardingChecksIfUserUnchanged {
+- (BOOL) presentAuthenticationRequestWithReason:(NSString *)aReason
+													 allowingCancellation:(BOOL)allowsCancellation
+															removingPriorData:(BOOL)eraseAuthInfo
+										clearingNavigationHierarchy:(BOOL)zapEverything
+																	onAuthSuccess:(void (^)(NSString *userIdentifier,
+																													NSString *userToken,
+																													NSString *primaryGroupIdentifier))successBlock
+											 runningOnboardingProcess:(BOOL)shouldRunOnboardingChecksIfUserUnchanged {
 
 	if ([self isRunningAuthRequest])
 		return NO;
@@ -474,15 +483,17 @@
 	if (zapEverything)
 		[self clearViewHierarchy];
 	
-	[self handleAuthRequest:aReason withOptions:nil completion:^(BOOL didFinish, NSError *error) {
-	
-		WARemoteInterface * const ri = [WARemoteInterface sharedInterface];
-	
-		if (didFinish)
-			if (successBlock)
-				successBlock(ri.userIdentifier, ri.userToken, ri.primaryGroupIdentifier);
-		
-	}];
+	[self handleAuthRequest:aReason
+							withOptions:nil
+							 completion:^(BOOL didFinish, NSError *error)
+	 {
+	 WARemoteInterface * const ri = [WARemoteInterface sharedInterface];
+	 
+	 if (didFinish)
+		 if (successBlock)
+			 successBlock(ri.userIdentifier, ri.userToken, ri.primaryGroupIdentifier);
+	 
+	 }];
 	
 	return YES;
 
@@ -605,21 +616,18 @@
 			
 		}
 		
-		return;
+		return; // WAT
 		
-		[welcomeVC dismissViewControllerAnimated:NO completion:^{
-			
+		[welcomeVC dismissViewControllerAnimated:NO
+																	completion:
+		 ^{
 			UIViewController *rootVC = wAppDelegate.window.rootViewController;
-			
-			[rootVC presentViewController:welcomeVC.navigationController animated:NO completion:^{
-				
-				[welcomeVC dismissViewControllerAnimated:YES completion:^{
-					
-					//	?
-					
-					welcomeVC = nil;
-					
-				}];
+			[rootVC presentViewController:welcomeVC.navigationController
+													 animated:NO
+												 completion:
+			 ^{
+				 [welcomeVC dismissViewControllerAnimated:YES
+																			completion:^{ welcomeVC = nil;}];  // WAT?
 				
 			}];
 			
