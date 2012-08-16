@@ -206,6 +206,20 @@
 }
 
 - (void) clearViewHierarchy {
+	
+	UIViewController *rootVC = self.window.rootViewController;
+	
+	__block void (^zapModal)(UIViewController *) = [^ (UIViewController *aVC) {
+		
+		if (aVC.presentedViewController)
+			zapModal(aVC.presentedViewController);
+		
+		[aVC dismissViewControllerAnimated:NO completion:nil];
+		// WASlidingSplitViewController
+		
+	} copy];
+	
+	zapModal(rootVC);
 
 	self.window.rootViewController = [[WALoginBackgroundViewController alloc] init];
 	
