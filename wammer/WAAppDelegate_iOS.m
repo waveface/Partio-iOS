@@ -48,7 +48,7 @@
 
 - (UIColor *)decoratedBackgroundColor: (UIInterfaceOrientation) currentInterfaceOrientation {
 	if (UIInterfaceOrientationIsPortrait(currentInterfaceOrientation) ||
-			currentInterfaceOrientation ==0)
+			currentInterfaceOrientation == 0)
 		return [UIColor colorWithPatternImage:[UIImage imageNamed:@"LoginBackground-Portrait"]];
 	else
 		return [UIColor colorWithPatternImage:[UIImage imageNamed:@"LoginBackground-Landscape"]];
@@ -57,6 +57,10 @@
 
 - (void)viewDidLoad {
 	self.view.backgroundColor = [self decoratedBackgroundColor:[[UIDevice currentDevice] orientation]];
+}
+
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
+	return YES;
 }
 
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
