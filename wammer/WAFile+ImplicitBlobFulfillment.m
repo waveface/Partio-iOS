@@ -15,6 +15,14 @@
 
 @implementation WAFile (ImplicitBlobFulfillment)
 
+- (void) setDisplaying:(BOOL)displaying {
+	[self irAssociateObject:(id)(displaying ? kCFBooleanTrue : kCFBooleanFalse) usingKey:&kWAFileDisplaying policy:OBJC_ASSOCIATION_ASSIGN changingObservedKey:nil];
+}
+
+- (BOOL) displaying {
+	return [objc_getAssociatedObject(self, &kWAFileDisplaying) boolValue];
+}
+
 - (BOOL) attemptsBlobRetrieval {
 
 	return [objc_getAssociatedObject(self, &kWAFileAttemptsBlobRetrieval) boolValue];
@@ -50,11 +58,19 @@
 	if ([key isEqualToString:kWAFileLargeThumbnailFilePath])
 		return NSOperationQueuePriorityLow;
 	
-	if ([key isEqualToString:kWAFileThumbnailFilePath])
+	if ([key isEqualToString:kWAFileThumbnailFilePath]) {
+		if ([self displaying]) {
+			return NSOperationQueuePriorityHigh;
+		}
 		return NSOperationQueuePriorityNormal;
+	}
 	
-	if ([key isEqualToString:kWAFileSmallThumbnailFilePath])
-		return NSOperationQueuePriorityHigh;
+	if ([key isEqualToString:kWAFileSmallThumbnailFilePath]) {
+		if ([self displaying]) {
+			return NSOperationQueuePriorityVeryHigh;
+		}
+		return NSOperationQueuePriorityNormal;
+	}
 	
 	return NSOperationQueuePriorityNormal;
 
@@ -97,11 +113,21 @@
 	NSURL *ownURL = [[self objectID] URIRepresentation];
 	Class class = [self class];
 	
+	__weak WAFile *wSelf = self;
 	[[IRRemoteResourcesManager sharedManager] retrieveResourceAtURL:blobURL usingPriority:priority forced:NO withCompletionBlock:^(NSURL *tempFileURLOrNil) {
 	
-		if (!tempFileURLOrNil)
+		if (!tempFileURLOrNil) {
+			double delayInSeconds = 5.0;
+			if ([[WARemoteInterface sharedInterface] hasReachableStation]) {
+				delayInSeconds = 1.0;
+			}
+			dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+			dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+				[wSelf scheduleRetrievalForBlobURL:blobURL blobKeyPath:blobURLKeyPath filePathKeyPath:filePathKeyPath usingPriority:priority];
+			});
 			return;
-		
+		}
+
 		if (!class)
 			return;
 		

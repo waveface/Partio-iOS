@@ -164,6 +164,9 @@
 /* Title for confirming a post deletion */
 "DELETE_POST_CONFIRMATION_TITLE" = "Delete Now?";
 
+/* Downloading Status on iPhone Timeline */
+"DOWNLOADING_PHOTOS" = "Loading...";
+
 /* State for drafts without content text */
 "DRAFT_STATE_NO_CONTENT" = "(No Content)";
 
@@ -344,6 +347,9 @@
 
 /* Alert on no location service enabled when open photo library */
 "TURN_ON_LOCATION_SERVICE" = "Turn On Location Services to Allow Stream to Access Your Photo Library";
+
+/* Downloading Status on iPhone Timeline */
+"UNABLE_TO_DOWNLOADING_PHOTOS" = "No Internet connection. Loading incomplete...";
 
 /* Settings for User popover */
 "USER_INFO_CONTROLLER_TITLE" = "User";
