@@ -333,77 +333,85 @@
 
 		self.accessibilityHint = [NSString stringWithFormat:photoInfo, [post.files count]];
 
-		__block NSUInteger numberOfDownloadedSmallThumbnails = 0;
-		__block NSUInteger numberOfDownloadedMediumThumbnails = 0;
-
 		BOOL (^downloadCompleted)(void)	= ^ {
-			if (numberOfDownloadedSmallThumbnails == numberOfFiles && numberOfDownloadedMediumThumbnails == numberOfFiles) {
-				return YES;
+			for (WAFile *file in allFiles) {
+				if (![file smallThumbnailFilePath]) {
+					return NO;
+				}
+				if (![file thumbnailFilePath]) {
+					return NO;
+				}
 			}
-			return NO;
+			return YES;
 		};
 
 		__weak WAPostViewCellPhone *wSelf = self;
-		for (WAFile *file in allFiles) {
-			[file setDisplaying:NO];
-			if (![file smallThumbnailFilePath]) {
-				[file irObserve:@"smallThumbnailFilePath" options:NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew context:nil withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
-					if (!fromValue && toValue) {
-						numberOfDownloadedSmallThumbnails += 1;
-						if (downloadCompleted()) {
-							dispatch_async(dispatch_get_main_queue(), ^{
-								WAArticle *article = wSelf.representedObject;
-								wSelf.originLabel.textColor = [UIColor lightGrayColor];
-								wSelf.originLabel.text = [NSString stringWithFormat:NSLocalizedString(@"NUMBER_OF_PHOTOS_CREATE_TIME_FROM_DEVICE", @"iPhone Timeline"), wSelf.accessibilityHint, [[[wSelf class] timeFormatter] stringFromDate:article.presentationDate], article.creationDeviceName];
-							});
-						} else {
-							dispatch_async(dispatch_get_main_queue(), ^{
-								wSelf.originLabel.text = [NSString stringWithFormat:@"small:%d/%d  medium:%d/%d", numberOfDownloadedSmallThumbnails, numberOfFiles, numberOfDownloadedMediumThumbnails, numberOfFiles];
-							});
-						}
-					}
-				}];
-			} else {
-				numberOfDownloadedSmallThumbnails += 1;
-			}
-			if (![file thumbnailFilePath]) {
-				[file irObserve:@"thumbnailFilePath" options:NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew context:nil withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
-					if (!fromValue && toValue) {
-						numberOfDownloadedMediumThumbnails += 1;
-						if (downloadCompleted()) {
-							dispatch_async(dispatch_get_main_queue(), ^{
-								WAArticle *article = wSelf.representedObject;
-								wSelf.originLabel.textColor = [UIColor lightGrayColor];
-								wSelf.originLabel.text = [NSString stringWithFormat:NSLocalizedString(@"NUMBER_OF_PHOTOS_CREATE_TIME_FROM_DEVICE", @"iPhone Timeline"), wSelf.accessibilityHint, [[[wSelf class] timeFormatter] stringFromDate:article.presentationDate], article.creationDeviceName];
-							});
-						} else {
-							dispatch_async(dispatch_get_main_queue(), ^{
-								wSelf.originLabel.text = [NSString stringWithFormat:@"small:%d/%d  medium:%d/%d", numberOfDownloadedSmallThumbnails, numberOfFiles, numberOfDownloadedMediumThumbnails, numberOfFiles];
-							});
-						}
-					}
-				}];
-			} else {
-				numberOfDownloadedMediumThumbnails += 1;
-			}
-		}
-
 		if (downloadCompleted()) {
 			wSelf.originLabel.textColor = [UIColor lightGrayColor];
 			wSelf.originLabel.text = [NSString stringWithFormat:NSLocalizedString(@"NUMBER_OF_PHOTOS_CREATE_TIME_FROM_DEVICE", @"iPhone Timeline"), self.accessibilityHint, timeString, deviceName];
-		} else if ([[WARemoteInterface sharedInterface] hasReachableCloud]) {
-			wSelf.originLabel.textColor = [UIColor colorWithRed:0x6c/255.0 green:0xbc/255.0 blue:0xd3/255.0 alpha:1.0];
-			//			self.originLabel.text = [NSString stringWithFormat:NSLocalizedString(@"DOWNLOADING_PHOTOS", @"Downloading Status on iPhone Timeline")];
-			wSelf.originLabel.text = [NSString stringWithFormat:@"small:%d/%d  medium:%d/%d", numberOfDownloadedSmallThumbnails, numberOfFiles, numberOfDownloadedMediumThumbnails, numberOfFiles];
 		} else {
-			wSelf.originLabel.textColor = [UIColor colorWithRed:0x6c/255.0 green:0xbc/255.0 blue:0xd3/255.0 alpha:1.0];
-			wSelf.originLabel.text = [NSString stringWithFormat:NSLocalizedString(@"UNABLE_TO_DOWNLOADING_PHOTOS", @"Downloading Status on iPhone Timeline")];
+			for (WAFile *file in allFiles) {
+				[file setDisplaying:NO];
+				[file irObserve:@"smallThumbnailFilePath" options:NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew context:nil withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
+					if (!fromValue && toValue) {
+						if (downloadCompleted()) {
+							dispatch_async(dispatch_get_main_queue(), ^{
+								WAArticle *article = wSelf.representedObject;
+								wSelf.originLabel.textColor = [UIColor lightGrayColor];
+								wSelf.originLabel.text = [NSString stringWithFormat:NSLocalizedString(@"NUMBER_OF_PHOTOS_CREATE_TIME_FROM_DEVICE", @"iPhone Timeline"), wSelf.accessibilityHint, [[[wSelf class] timeFormatter] stringFromDate:article.presentationDate], article.creationDeviceName];
+							});
+						} else {
+							dispatch_async(dispatch_get_main_queue(), ^{
+								wSelf.originLabel.text = NSLocalizedString(@"DOWNLOADING_PHOTOS", @"Downloading Status on iPhone Timeline");
+							});
+						}
+					}
+				}];
+				[file irObserve:@"thumbnailFilePath" options:NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew context:nil withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
+					if (!fromValue && toValue) {
+						if (downloadCompleted()) {
+							dispatch_async(dispatch_get_main_queue(), ^{
+								WAArticle *article = wSelf.representedObject;
+								wSelf.originLabel.textColor = [UIColor lightGrayColor];
+								wSelf.originLabel.text = [NSString stringWithFormat:NSLocalizedString(@"NUMBER_OF_PHOTOS_CREATE_TIME_FROM_DEVICE", @"iPhone Timeline"), wSelf.accessibilityHint, [[[wSelf class] timeFormatter] stringFromDate:article.presentationDate], article.creationDeviceName];
+							});
+						} else {
+							dispatch_async(dispatch_get_main_queue(), ^{
+								wSelf.originLabel.text = NSLocalizedString(@"DOWNLOADING_PHOTOS", @"Downloading Status on iPhone Timeline");
+							});
+						}
+					}
+				}];
+			}
+			if ([[WARemoteInterface sharedInterface] hasReachableCloud]) {
+				wSelf.originLabel.textColor = [UIColor colorWithRed:0x6c/255.0 green:0xbc/255.0 blue:0xd3/255.0 alpha:1.0];
+				wSelf.originLabel.text = [NSString stringWithFormat:NSLocalizedString(@"DOWNLOADING_PHOTOS", @"Downloading Status on iPhone Timeline")];
+			} else {
+				wSelf.originLabel.textColor = [UIColor colorWithRed:0x6c/255.0 green:0xbc/255.0 blue:0xd3/255.0 alpha:1.0];
+				wSelf.originLabel.text = [NSString stringWithFormat:NSLocalizedString(@"UNABLE_TO_DOWNLOADING_PHOTOS", @"Downloading Status on iPhone Timeline")];
+			}
 		}
 
 		[[WARemoteInterface sharedInterface] irObserve:@"networkState" options:NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew context:nil withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
-			if (![[WARemoteInterface sharedInterface] hasReachableCloud] && !downloadCompleted()) {
-				self.originLabel.textColor = [UIColor colorWithRed:0x6c/255.0 green:0xbc/255.0 blue:0xd3/255.0 alpha:1.0];
-				self.originLabel.text = [NSString stringWithFormat:NSLocalizedString(@"UNABLE_TO_DOWNLOADING_PHOTOS", @"Downloading Status on iPhone Timeline")];
+			if (downloadCompleted()) {
+				dispatch_async(dispatch_get_main_queue(), ^{
+					WAArticle *article = wSelf.representedObject;
+					wSelf.originLabel.textColor = [UIColor lightGrayColor];
+					wSelf.originLabel.text = [NSString stringWithFormat:NSLocalizedString(@"NUMBER_OF_PHOTOS_CREATE_TIME_FROM_DEVICE", @"iPhone Timeline"), wSelf.accessibilityHint, [[[wSelf class] timeFormatter] stringFromDate:article.presentationDate], article.creationDeviceName];
+				});
+			} else {
+				if ([[WARemoteInterface sharedInterface] hasReachableCloud]) {
+					dispatch_async(dispatch_get_main_queue(), ^{
+						wSelf.originLabel.textColor = [UIColor colorWithRed:0x6c/255.0 green:0xbc/255.0 blue:0xd3/255.0 alpha:1.0];
+						wSelf.originLabel.text = [NSString stringWithFormat:NSLocalizedString(@"DOWNLOADING_PHOTOS", @"Downloading Status on iPhone Timeline")];
+					});
+				}
+				else {
+					dispatch_async(dispatch_get_main_queue(), ^{
+						self.originLabel.textColor = [UIColor colorWithRed:0x6c/255.0 green:0xbc/255.0 blue:0xd3/255.0 alpha:1.0];
+						self.originLabel.text = [NSString stringWithFormat:NSLocalizedString(@"UNABLE_TO_DOWNLOADING_PHOTOS", @"Downloading Status on iPhone Timeline")];
+					});
+				}
 			}
 		}];
 

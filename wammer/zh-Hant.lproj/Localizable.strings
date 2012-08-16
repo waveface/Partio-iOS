@@ -165,7 +165,7 @@
 "DELETE_POST_CONFIRMATION_TITLE" = "是否要刪除貼文？";
 
 /* Downloading Status on iPhone Timeline */
-"DOWNLOADING_PHOTOS" = "DOWNLOADING_PHOTOS";
+"DOWNLOADING_PHOTOS" = "內容下載中...";
 
 /* State for drafts without content text */
 "DRAFT_STATE_NO_CONTENT" = "（沒有內容）";

@@ -165,7 +165,7 @@
 "DELETE_POST_CONFIRMATION_TITLE" = "Delete Now?";
 
 /* Downloading Status on iPhone Timeline */
-"DOWNLOADING_PHOTOS" = "DOWNLOADING_PHOTOS";
+"DOWNLOADING_PHOTOS" = "Loading...";
 
 /* State for drafts without content text */
 "DRAFT_STATE_NO_CONTENT" = "(No Content)";
