@@ -338,18 +338,29 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 				  * If the modifiedDate is later then current lastNewPostsUpdateDate, then we update these articles.
 				  * If not, don't change them. It won't cause a data store change, and won't cause the timeline refresh */
 				 BOOL changed = NO;
+				 NSMutableArray *newFiles = [[NSMutableArray alloc] init];
 				 for (WAArticle *article in touchedArticles) {
 					 NSComparisonResult dateComparison = [article.modificationDate compare:usedDate];
 					 if (dateComparison == NSOrderedSame || dateComparison == NSOrderedAscending)
 						 continue;
+					 changed = YES;
 					 if ([ds isUpdatingArticle:[[article objectID] URIRepresentation]]) {
-						 changed = YES;
 						 [context refreshObject:article mergeChanges:NO];
+					 } else {
+						 for (WAFile *file in article.files) {
+							 [newFiles addObject:file];
+						 }
 					 }
 				 }
 				 
-				 if (changed)
+				 if (changed) {
 					 [context save:nil];
+					 // start downloading thumbnails for files of updated articles
+					 for (WAFile *file in newFiles) {
+						 [file smallThumbnailFilePath];
+						 [file thumbnailFilePath];
+					 }
+				 }
 				 
 			 } waitUntilDone:YES];
 			 
@@ -388,11 +399,24 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 				 
 				 NSArray *touchedArticles = [WAArticle insertOrUpdateObjectsUsingContext:context withRemoteResponse:changedArticleReps usingMapping:nil options:IRManagedObjectOptionIndividualOperations];
 				 
-				 for (WAArticle *article in touchedArticles)
-					 if ([ds isUpdatingArticle:[[article objectID] URIRepresentation]])
+				 NSMutableArray *newFiles = [[NSMutableArray alloc] init];
+				 for (WAArticle *article in touchedArticles) {
+					 if ([ds isUpdatingArticle:[[article objectID] URIRepresentation]]) {
 						 [context refreshObject:article mergeChanges:NO];
+					 } else {
+						 for (WAFile *file in article.files) {
+							 [newFiles addObject:file];
+						 }
+					 }
+				 }
 				 
 				 [context save:nil];
+				 
+				 // start downloading thumbnails for files of updated articles
+				 for (WAFile *file in newFiles) {
+					 [file smallThumbnailFilePath];
+					 [file thumbnailFilePath];
+				 }
 			 }
 					waitUntilDone:YES];
 			 

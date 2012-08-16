@@ -167,7 +167,9 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 	nil];
 	
 	[self setScrollToTopmostPost:NO];
-	 
+
+	[[WARemoteInterface sharedInterface] performAutomaticRemoteUpdatesNow];
+
 	return self;
   
 }
