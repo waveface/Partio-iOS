@@ -52,9 +52,6 @@
 [submodule "external/WFPresentation"]
 	path = external/WFPresentation
 	url = git://github.com/waveface/WFPresentation.git
-[submodule "external/MagicKit"]
-	path = external/MagicKit
-	url = git://github.com/iridia/MagicKit.git
 [submodule "external/IRObjectQueue"]
 	path = external/IRObjectQueue
 	url = git://github.com/iridia/IRObjectQueue.git
