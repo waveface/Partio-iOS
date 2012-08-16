@@ -360,6 +360,7 @@
 							});
 						} else {
 							dispatch_async(dispatch_get_main_queue(), ^{
+								wSelf.originLabel.textColor = [UIColor colorWithRed:0x6c/255.0 green:0xbc/255.0 blue:0xd3/255.0 alpha:1.0];
 								wSelf.originLabel.text = NSLocalizedString(@"DOWNLOADING_PHOTOS", @"Downloading Status on iPhone Timeline");
 							});
 						}
@@ -375,6 +376,7 @@
 							});
 						} else {
 							dispatch_async(dispatch_get_main_queue(), ^{
+								wSelf.originLabel.textColor = [UIColor colorWithRed:0x6c/255.0 green:0xbc/255.0 blue:0xd3/255.0 alpha:1.0];
 								wSelf.originLabel.text = NSLocalizedString(@"DOWNLOADING_PHOTOS", @"Downloading Status on iPhone Timeline");
 							});
 						}
