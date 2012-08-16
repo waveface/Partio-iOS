@@ -52,12 +52,11 @@
 }
 
 - (void)viewDidLoad {
-	
 	self.view = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"LoginBackgroundWithImage"]];
-
 }
 
 @end
+
 @interface WAAppDelegate_iOS () <WAApplicationRootViewControllerDelegate>
 
 - (void) handleObservedAuthenticationFailure:(NSNotification *)aNotification;
@@ -471,15 +470,17 @@
 	if (zapEverything)
 		[self clearViewHierarchy];
 	
-	[self handleAuthRequest:aReason withOptions:nil completion:^(BOOL didFinish, NSError *error) {
-	
-		WARemoteInterface * const ri = [WARemoteInterface sharedInterface];
-	
-		if (didFinish)
-			if (successBlock)
-				successBlock(ri.userIdentifier, ri.userToken, ri.primaryGroupIdentifier);
-		
-	}];
+	[self handleAuthRequest:aReason
+							withOptions:nil
+							 completion:^(BOOL didFinish, NSError *error)
+	 {
+	 WARemoteInterface * const ri = [WARemoteInterface sharedInterface];
+	 
+	 if (didFinish)
+		 if (successBlock)
+			 successBlock(ri.userIdentifier, ri.userToken, ri.primaryGroupIdentifier);
+	 
+	 }];
 	
 	return YES;
 
@@ -602,21 +603,18 @@
 			
 		}
 		
-		return;
+		return; // WAT
 		
-		[welcomeVC dismissViewControllerAnimated:NO completion:^{
-			
+		[welcomeVC dismissViewControllerAnimated:NO
+																	completion:
+		 ^{
 			UIViewController *rootVC = wAppDelegate.window.rootViewController;
-			
-			[rootVC presentViewController:welcomeVC.navigationController animated:NO completion:^{
-				
-				[welcomeVC dismissViewControllerAnimated:YES completion:^{
-					
-					//	?
-					
-					welcomeVC = nil;
-					
-				}];
+			[rootVC presentViewController:welcomeVC.navigationController
+													 animated:NO
+												 completion:
+			 ^{
+				 [welcomeVC dismissViewControllerAnimated:YES
+																			completion:^{ welcomeVC = nil;}];  // WAT?
 				
 			}];
 			
