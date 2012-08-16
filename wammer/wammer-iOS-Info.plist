@@ -10,6 +10,8 @@
 	<array/>
 	<key>CFBundleExecutable</key>
 	<string>${EXECUTABLE_NAME}</string>
+	<key>CFBundleGetInfoString</key>
+	<string></string>
 	<key>CFBundleIconFiles</key>
 	<array>
 		<string>Icon-72.png</string>
@@ -79,9 +81,6 @@
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
-		<string>UIInterfaceOrientationPortraitUpsideDown</string>
-		<string>UIInterfaceOrientationLandscapeLeft</string>
-		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
 	<key>UISupportedInterfaceOrientations~ipad</key>
 	<array>
@@ -97,8 +96,6 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
-	<key>CFBundleGetInfoString</key>
-	<string></string>
 	<key>UIViewEdgeAntialiasing</key>
 	<true/>
 	<key>UTExportedTypeDeclarations</key>
