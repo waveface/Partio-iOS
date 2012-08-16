@@ -6,7 +6,7 @@
 	url = git://github.com/iridia/MGSplitViewController.git
 [submodule "external/AQGridView"]
 	path = external/AQGridView
-	url = git://github.com/iridia/AQGridView.git
+	url = git://github.com/waveface/AQGridView.git
 [submodule "external/IRWebAPIKit"]
 	path = external/IRWebAPIKit
 	url = git://github.com/waveface/IRWebAPIKit.git
