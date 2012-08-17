@@ -7,6 +7,7 @@
 //
 
 #import "WACompositionViewController.h"
+#import "WAFile.h"
 
 
 @class ALAsset;
@@ -24,6 +25,7 @@
 - (void) presentCameraCapturePickerController:(UIViewController *)controller sender:(id)sender animated:(BOOL)animated;
 - (void) dismissCameraCapturePickerController:(UIViewController *)controller animated:(BOOL)animated;
 
+- (void) makeAssociatedImagesOfFile:(WAFile *)file withResourceImage:(UIImage *)resourceImage representedAsset:(ALAsset *)representedAsset;
 - (void) handleIncomingSelectedAssetImage:(UIImage *)image representedAsset:(ALAsset *)photoLibraryAsset;
 
 - (BOOL) shouldDismissSelfOnCameraCancellation;

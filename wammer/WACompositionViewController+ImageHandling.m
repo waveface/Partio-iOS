@@ -10,6 +10,7 @@
 #import "UIKit+IRAdditions.h"
 #import "AssetsLibrary+IRAdditions.h"
 #import "WADataStore.h"
+#import "WADefines.h"
 
 #import <objc/runtime.h>
 #import "WACompositionViewController+SubclassEyesOnly.h"
@@ -197,6 +198,67 @@ NSString * const kDismissesSelfIfCameraCancelled = @"-[WACompositionViewControll
 		
 }
 
+- (void) makeAssociatedImagesOfFile:(WAFile *)file withResourceImage:(UIImage *)resourceImage representedAsset:(ALAsset *)representedAsset {
+
+	NSParameterAssert(resourceImage||representedAsset);
+
+	if (file.resourceFilePath) {
+		return;
+	}
+
+	__weak WACompositionViewController *wSelf = self;
+	
+	[self.managedObjectContext performBlock:^{
+		
+		WADataStore *ds = [WADataStore defaultStore];
+		UIImage *image = nil;
+		if (resourceImage) {
+			image = resourceImage;
+		} else if (representedAsset) {
+			image = [[representedAsset defaultRepresentation] irImage];
+		}
+
+		CGSize imageSize = image.size;
+		UIImage *standardImage = [image irStandardImage];
+		
+		CGFloat const smallSideLength = kWAFileSmallImageSideLength;
+		
+		if ((imageSize.width > smallSideLength) || (imageSize.height > smallSideLength)) {
+			
+			UIImage *smallThumbnailImage = [standardImage irScaledImageWithSize:IRGravitize((CGRect){ CGPointZero, (CGSize){ smallSideLength, smallSideLength } }, image.size, kCAGravityResizeAspect).size];
+			
+			file.smallThumbnailFilePath = [[ds persistentFileURLForData:UIImageJPEGRepresentation(smallThumbnailImage, 0.85f) extension:@"jpeg"] path];
+			
+		} else {
+			
+			file.smallThumbnailFilePath = [[ds persistentFileURLForData:UIImageJPEGRepresentation(standardImage, 0.85f) extension:@"jpeg"] path];
+			
+		}
+		
+		CGFloat const mediumSideLength = kWAFileMediumImageSideLength;
+		
+		if ((imageSize.width > mediumSideLength) || (imageSize.height > mediumSideLength)) {
+			
+			UIImage *thumbnailImage = [standardImage irScaledImageWithSize:IRGravitize((CGRect){ CGPointZero, (CGSize){ mediumSideLength, mediumSideLength } }, image.size, kCAGravityResizeAspect).size];
+			
+			file.thumbnailFilePath = [[ds persistentFileURLForData:UIImageJPEGRepresentation(thumbnailImage, 0.85f) extension:@"jpeg"] path];
+			
+		} else {
+			
+			file.thumbnailFilePath = [[ds persistentFileURLForData:UIImageJPEGRepresentation(standardImage, 0.85f) extension:@"jpeg"] path];
+			
+		}
+		
+		file.resourceFilePath = [[ds persistentFileURLForData:UIImageJPEGRepresentation(image, 1.0f) extension:@"jpeg"] path];
+		
+		NSError *savingError = nil;
+		if (![wSelf.managedObjectContext save:&savingError])
+			NSLog(@"Error saving: %s %@", __PRETTY_FUNCTION__, savingError);
+		
+	}];
+
+}
+
 - (void) handleIncomingSelectedAssetImage:(UIImage *)image representedAsset:(ALAsset *)representedAsset {
 
 	if (image || representedAsset) {
@@ -206,8 +268,9 @@ NSString * const kDismissesSelfIfCameraCancelled = @"-[WACompositionViewControll
 		NSCParameterAssert(![articleID isTemporaryID]);
 		
 		NSURL *articleURI = [articleID URIRepresentation];
+		__weak WACompositionViewController* wSelf = self;
 		
-		[self.managedObjectContext performBlock:^{
+		[context performBlock:^{
 		
 			WAArticle *article = (WAArticle *)[context irManagedObjectForURI:articleURI];
 			NSCParameterAssert(article);
@@ -223,16 +286,16 @@ NSString * const kDismissesSelfIfCameraCancelled = @"-[WACompositionViewControll
 			[article didChangeValueForKey:@"files"];
 			
 			if (image) {
-				NSData *imageData = UIImageJPEGRepresentation(image, 1.0f);
-				file.resourceFilePath = [[[WADataStore defaultStore] persistentFileURLForData:imageData extension:@"jpeg"] path];
+				[wSelf makeAssociatedImagesOfFile:file withResourceImage:image representedAsset:nil];
 			}
 			
 			if (representedAsset) {
+				[wSelf makeAssociatedImagesOfFile:file withResourceImage:nil representedAsset:representedAsset];
 				file.assetURL = [[[representedAsset defaultRepresentation] url] absoluteString];
 			}
 				
 			file.resourceType = (NSString *)kUTTypeImage;
-			
+
 			NSError *savingError = nil;
 			if (![context save:&savingError])
 				NSLog(@"Error saving: %s %@", __PRETTY_FUNCTION__, savingError);
