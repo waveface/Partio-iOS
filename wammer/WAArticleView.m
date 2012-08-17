@@ -55,8 +55,15 @@
 - (void) configureWithArticle:(WAArticle *)inArticle {
 
 	self.article = inArticle;
+	
+	BOOL isFavorite = [inArticle.favorite isEqualToNumber:(NSNumber *)kCFBooleanTrue];
 
-	UIImage *representingImage = [article.representingFile smallestPresentableImage];
+	UIImage *representingImage;
+	
+	if (isFavorite)
+		representingImage = [article.representingFile bestPresentableImage];
+	else
+		representingImage = [article.representingFile smallestPresentableImage];
 	
 	NSString *dateString = nil;
 	if ([article.creationDate compare:[NSDate dateWithTimeIntervalSinceNow:-24*60*60]] == NSOrderedDescending) {
@@ -111,11 +118,18 @@
 		mainImageView.image = representingImage;
 	}
 	
-	[mainImageView irBind:@"image" toObject:inArticle keyPath:@"representingFile.smallestPresentableImage" options:[NSDictionary dictionaryWithObjectsAndKeys:
-	
-		(id)kCFBooleanTrue, kIRBindingsAssignOnMainThreadOption,
-	
-	nil]];
+	if (isFavorite)
+		[mainImageView irBind:@"image"
+					 toObject:inArticle
+					  keyPath:@"representingFile.bestPresentableImage"
+					  options:[NSDictionary dictionaryWithObjectsAndKeys: (id)kCFBooleanTrue,
+							   kIRBindingsAssignOnMainThreadOption, nil]];
+	else
+		[mainImageView irBind:@"image"
+					 toObject:inArticle
+					  keyPath:@"representingFile.smallestPresentableImage"
+					  options:[NSDictionary dictionaryWithObjectsAndKeys: (id)kCFBooleanTrue,
+							   kIRBindingsAssignOnMainThreadOption, nil]];
 	
 	avatarView.image = inArticle.owner.avatar;
 	deviceDescriptionLabel.text = inArticle.creationDeviceName;

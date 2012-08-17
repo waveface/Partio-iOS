@@ -409,7 +409,10 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
 	}
 		
 	if (needsSendingThumbnailImage && canSendThumbnailImage) {
-
+		
+		/* this probably won't happen since all selected photos will be generated with thumbnails while composition
+		 */
+		
 		[operations addObject:[IRAsyncBarrierOperation operationWithWorker:^(IRAsyncOperationCallback callback) {
 			
 			WAFile *file = (WAFile *)[context irManagedObjectForURI:ownURL];
@@ -418,7 +421,9 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
 
 			if (!isValidPath(thumbnailFilePath)) {
 				
-				UIImage *bestImage = [file bestPresentableImage];
+				UIImage *bestImage = [file resourceImage];
+				if (! bestImage)
+					bestImage = [file bestPresentableImage];
 				if (!bestImage) {
 					NSLog(@"bestImage of file %@ does not exist", [file identifier]);
 					callback(nil);
