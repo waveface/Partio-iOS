@@ -119,11 +119,15 @@
 	}
 	
 	if (isFavorite)
-		[mainImageView irBind:@"image" toObject:inArticle keyPath:@"representingFile.bestPresentableImage"
+		[mainImageView irBind:@"image"
+					 toObject:inArticle
+					  keyPath:@"representingFile.bestPresentableImage"
 					  options:[NSDictionary dictionaryWithObjectsAndKeys: (id)kCFBooleanTrue,
 							   kIRBindingsAssignOnMainThreadOption, nil]];
 	else
-		[mainImageView irBind:@"image" toObject:inArticle keyPath:@"representingFile.smallestPresentableImage"
+		[mainImageView irBind:@"image"
+					 toObject:inArticle
+					  keyPath:@"representingFile.smallestPresentableImage"
 					  options:[NSDictionary dictionaryWithObjectsAndKeys: (id)kCFBooleanTrue,
 							   kIRBindingsAssignOnMainThreadOption, nil]];
 	
