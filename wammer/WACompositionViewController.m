@@ -22,7 +22,8 @@
 #import "WANavigationBar.h"
 #import "WANavigationController.h"
 #import "WAPreviewBadge.h"
-
+#import "WAOverlayBezel.h"
+#import "WACompositionViewController+ImageHandling.h"
 
 @interface WACompositionViewController () <UITextViewDelegate, IRTextAttributorDelegate>
 
@@ -145,6 +146,32 @@
 		
 	}];
 
+	// for crash recovery
+	// however, if user tap done button before all blocks pushed into managedObjectContext,
+	// the application will crash again.
+	for (WAFile *file in self.article.files) {
+
+    if (!file.resourceFilePath) {
+
+			ALAssetsLibrary * const library = [[self class] assetsLibrary];
+			[library assetForURL:[NSURL URLWithString:file.assetURL] resultBlock:^(ALAsset *asset) {
+				
+				[self.managedObjectContext performBlock:^{
+					
+					[self makeAssociatedImagesOfFile:file withResourceImage:nil representedAsset:asset];
+					
+				}];
+				
+			} failureBlock:^(NSError *error) {
+				
+				NSLog(@"Unable to retrieve assets for URL %@", file.assetURL);
+				
+			}];
+
+		}
+
+	}
+	
 }
 
 - (void) dealloc {
@@ -451,6 +478,9 @@ static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandl
 
 - (void) handleDone:(UIBarButtonItem *)sender {
 
+	// disable user interactions
+	[[UIApplication sharedApplication] beginIgnoringInteractionEvents];
+	
 	self.article.text = self.contentTextView.text;
 	self.article.modificationDate = [NSDate date];
 	
@@ -458,9 +488,30 @@ static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandl
 	if (![self.managedObjectContext save:&savingError])
 		NSLog(@"Error saving: %@", savingError);
 	
-	if (self.completionBlock)
-		self.completionBlock([[self.article objectID] URIRepresentation]);
+	[self.contentTextView resignFirstResponder];
+	
+	WAOverlayBezel *busyBezel = [WAOverlayBezel bezelWithStyle:WAActivityIndicatorBezelStyle];
+	[busyBezel show];
+
+	__weak WACompositionViewController *wSelf = self;
+	[self.managedObjectContext performBlock:^{
+
+		for (WAFile *file in wSelf.article.files) {
+			NSParameterAssert(file.resourceFilePath);
+		}
+
+		dispatch_async(dispatch_get_main_queue(), ^ {
+
+			if (self.completionBlock)
+				self.completionBlock([[self.article objectID] URIRepresentation]);
+
+			[busyBezel dismiss];
+
+			[[UIApplication sharedApplication] endIgnoringInteractionEvents];
+		});
 		
+	}];
+	
 	if ([self.article.previews count])
 		WAPostAppEvent(@"Create Preview", [NSDictionary dictionaryWithObjectsAndKeys:@"link",@"category",@"create", @"action", nil]);
 	else if ([self.article.files count])
@@ -558,6 +609,20 @@ static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandl
 	
 	[self adjustContainerViewWithInterfaceBounds:((UIWindow *)[[UIApplication sharedApplication].windows objectAtIndex:0]).irInterfaceBounds];
 
+}
+
++ (ALAssetsLibrary *) assetsLibrary {
+	
+	static ALAssetsLibrary *library = nil;
+	static dispatch_once_t onceToken = 0;
+	dispatch_once(&onceToken, ^{
+		
+    library = [ALAssetsLibrary new];
+		
+	});
+	
+	return library;
+	
 }
 
 @end

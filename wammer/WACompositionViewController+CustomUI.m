@@ -47,7 +47,7 @@
 		//	POINT OF NO RETURN
 		
 		WADataStore *ds = [WADataStore defaultStore];
-		NSManagedObjectContext *moc = [ds disposableMOC];
+		NSManagedObjectContext *moc = [ds defaultAutoUpdatedMOC];
 		WAArticle *article = (WAArticle *)[moc irManagedObjectForURI:anArticleURLOrNil];
 		if (article) {
 			article.draft = (id)kCFBooleanFalse;

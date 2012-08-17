@@ -78,6 +78,10 @@ extern void WAPostAppEvent (NSString *eventTitle, NSDictionary *userInfo);
 extern NSString * const kWADucklingsEnabled;
 extern BOOL WADucklingsEnabled (void);
 
+extern CGFloat const kWAFileSmallImageSideLength;
+extern CGFloat const kWAFileMediumImageSideLength;
+extern CGFloat const kWAFileLargeImageSideLength;
+
 #if TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR
 	#import "WADefines+iOS.h"
 #else

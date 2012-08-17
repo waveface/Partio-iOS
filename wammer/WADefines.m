@@ -72,6 +72,10 @@ NSString * const kWACallbackActionSetRemoteEndpointURL = @"setRemoteEndpointURL"
 NSString * const kWACallbackActionSetUserRegistrationEndpointURL = @"setUserRegistrationEndpointURL";
 NSString * const kWACallbackActionSetUserPasswordResetEndpointURL = @"setUserPasswordResetEndpointURL";
 
+CGFloat const kWAFileSmallImageSideLength = 512;
+CGFloat const kWAFileMediumImageSideLength = 1024;
+CGFloat const kWAFileLargeImageSideLength = 2048;
+
 void WARegisterUserDefaults () {
 
 	[[NSUserDefaults standardUserDefaults] registerDefaults:WAPresetDefaults()];
