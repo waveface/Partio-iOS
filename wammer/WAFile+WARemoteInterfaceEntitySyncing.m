@@ -347,11 +347,64 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
 	NSManagedObjectContext *context = [ds disposableMOC];
 	context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
 
-	if (!isValidPath(self.thumbnailFilePath)) {
-		canSendThumbnailImage = NO;
-	}
 	if (!isValidPath(self.resourceFilePath)) {
-		canSendResourceImage = NO;
+		
+		if ([self.assetURL length]) {
+			
+			NSURL *capturedURL = [NSURL URLWithString:self.assetURL];
+			
+			[operations addObject:[IRAsyncBarrierOperation operationWithWorker:^(IRAsyncOperationCallback callback) {
+				
+				NSParameterAssert(![NSThread isMainThread]);
+				
+				[[ALAssetsLibrary new] assetForURL:capturedURL resultBlock:^(ALAsset *asset) {
+					
+					NSParameterAssert(![NSThread isMainThread]);
+					
+					if (asset) {
+						
+						UIImage *assetImage = [[asset defaultRepresentation] irImage];
+						NSData *assetImageData = UIImageJPEGRepresentation(assetImage, 1.0f);
+						NSURL *fileURL = [[WADataStore defaultStore] persistentFileURLForData:assetImageData extension:@"jpeg"];
+						
+						WAFile *file = (WAFile *)[context irManagedObjectForURI:ownURL];
+						file.resourceFilePath = [fileURL path];
+						
+						NSError *error = nil;
+						
+						BOOL didSave = [context save:&error];
+						NSCAssert2(didSave, @"Unable to copy asset %@: %@", [[asset defaultRepresentation] url], error);
+						
+						callback(didSave ? (id)kCFBooleanTrue : (id)kCFBooleanFalse);
+						
+					}
+					
+				} failureBlock:^(NSError *error) {
+					
+					NSParameterAssert(![NSThread isMainThread]);
+					
+					NSLog(@"Error: %@", error);
+					
+					callback(error);
+					
+				}];
+				
+			} trampoline:^(IRAsyncOperationInvoker block) {
+				
+				[context performBlock:block];
+				
+			} callback:nil callbackTrampoline:^(IRAsyncOperationInvoker block) {
+				
+				[context performBlock:block];
+				
+			}]];
+			
+		} else {
+			
+			NSLog(@"Resource file path %@ is not valid.  Skipping.", self.resourceFilePath);
+			canSendResourceImage = NO;
+			
+		}
 	}
 		
 	if (needsSendingThumbnailImage && canSendThumbnailImage) {
@@ -361,7 +414,41 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
 			WAFile *file = (WAFile *)[context irManagedObjectForURI:ownURL];
 			
 			NSString *thumbnailFilePath = file.thumbnailFilePath;
-			
+
+			if (!isValidPath(thumbnailFilePath)) {
+				
+				UIImage *bestImage = [file bestPresentableImage];
+				if (!bestImage) {
+					NSLog(@"bestImage of file %@ does not exist", [file identifier]);
+					callback(nil);
+					return;
+				}
+				NSCParameterAssert(bestImage);
+				
+				CGSize imageSize = bestImage.size;
+				CGFloat const sideLength = 1024;
+				
+				if ((imageSize.width > sideLength) || (imageSize.height > sideLength)) {
+					
+					UIImage *thumbnailImage = [[bestImage irStandardImage] irScaledImageWithSize:IRGravitize((CGRect){ CGPointZero, (CGSize){ sideLength, sideLength } }, bestImage.size, kCAGravityResizeAspect).size];
+					
+					thumbnailFilePath = [[ds persistentFileURLForData:UIImageJPEGRepresentation(thumbnailImage, 0.85f) extension:@"jpeg"] path];
+					
+				} else {
+					
+					thumbnailFilePath = [[ds persistentFileURLForData:UIImageJPEGRepresentation([bestImage irStandardImage], 0.85f) extension:@"jpeg"] path];
+					
+				}
+				
+				file.thumbnailFilePath = thumbnailFilePath;
+				
+				NSError *error = nil;
+				
+				BOOL didSave = [context save:&error];
+				NSCAssert1(didSave, @"Generated thumbnail could not be saved: %@", error);
+				
+			}
+
 			NSParameterAssert(thumbnailFilePath);
 			NSParameterAssert([[NSFileManager defaultManager] fileExistsAtPath:thumbnailFilePath]);
 			

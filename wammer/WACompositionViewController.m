@@ -478,6 +478,9 @@ static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandl
 
 - (void) handleDone:(UIBarButtonItem *)sender {
 
+	// disable user interactions
+	[[UIApplication sharedApplication] beginIgnoringInteractionEvents];
+	
 	self.article.text = self.contentTextView.text;
 	self.article.modificationDate = [NSDate date];
 	
@@ -504,6 +507,7 @@ static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandl
 
 			[busyBezel dismiss];
 
+			[[UIApplication sharedApplication] endIgnoringInteractionEvents];
 		});
 		
 	}];
