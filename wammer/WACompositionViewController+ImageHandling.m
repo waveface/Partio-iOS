@@ -10,6 +10,7 @@
 #import "UIKit+IRAdditions.h"
 #import "AssetsLibrary+IRAdditions.h"
 #import "WADataStore.h"
+#import "WADefines.h"
 
 #import <objc/runtime.h>
 #import "WACompositionViewController+SubclassEyesOnly.h"
@@ -220,7 +221,7 @@ NSString * const kDismissesSelfIfCameraCancelled = @"-[WACompositionViewControll
 		CGSize imageSize = image.size;
 		UIImage *standardImage = [image irStandardImage];
 		
-		CGFloat const smallSideLength = 512;
+		CGFloat const smallSideLength = kWAFileSmallImageSideLength;
 		
 		if ((imageSize.width > smallSideLength) || (imageSize.height > smallSideLength)) {
 			
@@ -234,7 +235,7 @@ NSString * const kDismissesSelfIfCameraCancelled = @"-[WACompositionViewControll
 			
 		}
 		
-		CGFloat const mediumSideLength = 1024;
+		CGFloat const mediumSideLength = kWAFileMediumImageSideLength;
 		
 		if ((imageSize.width > mediumSideLength) || (imageSize.height > mediumSideLength)) {
 			

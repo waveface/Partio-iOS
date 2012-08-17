@@ -13,6 +13,7 @@
 #import "WAFile+WARemoteInterfaceEntitySyncing.h"
 #import "WADataStore.h"
 #import "WARemoteInterface.h"
+#import "WADefines.h"
 
 #import "UIImage+IRAdditions.h"
 #import "UIImage+WAAdditions.h"
@@ -426,7 +427,7 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
 				NSCParameterAssert(bestImage);
 				
 				CGSize imageSize = bestImage.size;
-				CGFloat const sideLength = 1024;
+				CGFloat const sideLength = kWAFileMediumImageSideLength;
 				
 				if ((imageSize.width > sideLength) || (imageSize.height > sideLength)) {
 					
