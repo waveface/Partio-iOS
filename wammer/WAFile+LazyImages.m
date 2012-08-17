@@ -87,9 +87,11 @@ static NSString * const kMemoryWarningObserverCreationDisabled = @"-[WAFile(Lazy
 
 - (UIImage *) bestPresentableImage {
 
+	/* We don't need to show resource image in anywhere, since it is too waste memory
 	if (self.resourceImage)
 		return self.resourceImage;
-	
+	*/
+	 
 	if (self.largeThumbnailImage)
 		return self.largeThumbnailImage;
 	
