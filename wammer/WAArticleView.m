@@ -119,9 +119,13 @@
 	}
 	
 	if (isFavorite)
-		[mainImageView irBind:@"image" toObject:inArticle keyPath:@"representingFile.bestPresentableImage" options:[NSDictionary dictionaryWithObjectsAndKeys: (id)kCFBooleanTrue, kIRBindingsAssignOnMainThreadOption, nil]];
+		[mainImageView irBind:@"image" toObject:inArticle keyPath:@"representingFile.bestPresentableImage"
+					  options:[NSDictionary dictionaryWithObjectsAndKeys: (id)kCFBooleanTrue,
+							   kIRBindingsAssignOnMainThreadOption, nil]];
 	else
-		[mainImageView irBind:@"image" toObject:inArticle keyPath:@"representingFile.smallestPresentableImage" options:[NSDictionary dictionaryWithObjectsAndKeys: (id)kCFBooleanTrue, kIRBindingsAssignOnMainThreadOption, nil]];
+		[mainImageView irBind:@"image" toObject:inArticle keyPath:@"representingFile.smallestPresentableImage"
+					  options:[NSDictionary dictionaryWithObjectsAndKeys: (id)kCFBooleanTrue,
+							   kIRBindingsAssignOnMainThreadOption, nil]];
 	
 	avatarView.image = inArticle.owner.avatar;
 	deviceDescriptionLabel.text = inArticle.creationDeviceName;
