@@ -41,6 +41,12 @@
 
 }
 
+- (BOOL) shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
+	
+	return isPad();
+	
+}
+
 - (void) viewDidLoad {
 
 	[super viewDidLoad];
