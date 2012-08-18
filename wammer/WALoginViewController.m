@@ -35,6 +35,12 @@
 
 }
 
+- (BOOL) shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
+	
+	return isPad();
+	
+}
+
 + (WALogInViewController *) controllerWithCompletion:(WALogInViewControllerCallback)block {
 
 	WALogInViewController *controller = (WALogInViewController *)[[self storyboard] instantiateInitialViewController];

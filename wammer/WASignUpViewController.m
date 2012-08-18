@@ -31,6 +31,12 @@
 
 }
 
+- (BOOL) shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
+	
+	return isPad();
+	
+}
+
 + (WASignUpViewController *) controllerWithCompletion:(WASignUpViewControllerCallback)block {
 
 	WASignUpViewController *controller = (WASignUpViewController *)[[self storyboard] instantiateInitialViewController];
