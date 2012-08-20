@@ -12,6 +12,7 @@
 
 @property (nonatomic, readwrite, assign) WATutorialInstantiationOption option;
 @property (nonatomic, readwrite, copy) WATutorialViewControllerCallback callback;
+@property (nonatomic, weak) IBOutlet UIPageControl *pageControl;
 
 @property (nonatomic, readonly, strong) NSArray *pages;
 - (NSArray *) copyPages;
@@ -30,6 +31,7 @@
 @synthesize option = _option;
 @synthesize callback = _callback;
 @synthesize pages = _pages;
+@synthesize pageControl = _pageControl;
 
 + (WATutorialViewController *) controllerWithOption:(WATutorialInstantiationOption)option completion:(WATutorialViewControllerCallback)block {
 
@@ -61,6 +63,9 @@
 	_pages = [self copyPages];
 	[self.paginatedView reloadViews];
 	
+	[_pageControl setNumberOfPages:[_pages count]];
+	[_pageControl setCurrentPage:0];
+	
 	UIImage * (^stretch)(UIImage *) = ^ (UIImage *image) {
 	
 		return [image stretchableImageWithLeftCapWidth:5.0f topCapHeight:0.0f];
@@ -85,6 +90,8 @@
 	};
 	
 	heckleAll(self.goButton);
+	
+	[self.view bringSubviewToFront:self.pageControl];
 
 }
 
@@ -114,8 +121,7 @@
 
 - (void) paginatedView:(IRPaginatedView *)paginatedView didShowView:(UIView *)aView atIndex:(NSUInteger)index {
 
-	//	?
-
+	[self.pageControl setCurrentPage:index];
 }
 
 - (NSArray *) copyPages {
