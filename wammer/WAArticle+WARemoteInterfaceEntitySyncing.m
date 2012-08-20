@@ -341,7 +341,7 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 				 NSMutableArray *newFiles = [[NSMutableArray alloc] init];
 				 for (WAArticle *article in touchedArticles) {
 					 NSComparisonResult dateComparison = [article.modificationDate compare:usedDate];
-					 if (dateComparison == NSOrderedSame || dateComparison == NSOrderedAscending)
+					 if (usedDate && (dateComparison == NSOrderedSame || dateComparison == NSOrderedAscending))
 						 continue;
 					 changed = YES;
 					 if ([ds isUpdatingArticle:[[article objectID] URIRepresentation]]) {
