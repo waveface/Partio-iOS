@@ -363,15 +363,32 @@ static NSString * const kNetworkState = @"-[WARemoteInterface(Reachability) netw
 	BOOL hasStationAvailable = NO, hasCloudAvailable = NO;
 	
 	for (NSURL *hostURL in self.monitoredHosts) {
-		if (WAReachabilityStateAvailable == [self reachabilityStateForHost:hostURL]) {
-			if ([hostURL isEqual:cloudHost]) {
-				hasCloudAvailable = YES;
-			} else {
-				hasStationAvailable = YES;
-			}
+		switch ([self reachabilityStateForHost:hostURL]) {
+			case WAReachabilityStateAvailable:
+				if ([hostURL isEqual:cloudHost]) {
+					hasCloudAvailable = YES;
+				} else {
+					hasStationAvailable = YES;
+				}
+				break;
+
+			case WAReachabilityStateUnknown:
+				// assume cloud is reachable by default
+				if ([hostURL isEqual:cloudHost]) {
+					hasCloudAvailable = YES;
+				}
+				break;
+				
+			default:
+				break;
 		}
 	}
 	
+	// assume cloud is reachable before calling findMyStation
+	if (!self.monitoredHosts) {
+		hasCloudAvailable = YES;
+	}
+
 	BOOL answer = (hasCloudAvailable ? WACloudReachable : 0) | (hasStationAvailable ? WAStationReachable : 0);
 	
 	return answer;
