@@ -124,6 +124,10 @@
 	[self.pageControl setCurrentPage:index];
 }
 
+- (IBAction) currentPageChanged:(id)sender {
+	[self.paginatedView scrollToPageAtIndex:self.pageControl.currentPage animated:YES];
+}
+
 - (NSArray *) copyPages {
 
 	NSMutableArray *array = [NSMutableArray array];
