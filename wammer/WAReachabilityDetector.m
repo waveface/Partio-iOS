@@ -15,6 +15,7 @@
 
 
 NSString * const kWAReachabilityDetectorDidUpdateStatusNotification = @"WAReachabilityDetectorDidUpdateStatusNotification";
+NSUInteger const kWAReachabliityDetectorDefaultLiveness = 3;
 
 
 @interface WAReachabilityDetector ()
@@ -26,6 +27,7 @@ NSString * const kWAReachabilityDetectorDidUpdateStatusNotification = @"WAReacha
 @property (nonatomic, readwrite, assign) SCNetworkReachabilityRef reachability;
 @property (nonatomic, readwrite, assign) WAReachabilityState state;
 @property (nonatomic, readwrite, strong) WABackoffHandler *backOffHandler;
+@property (nonatomic, readwrite, assign) NSUInteger liveness;
 
 - (void) handleApplicationDidEnterBackground:(NSNotification *)note;
 - (void) noteReachabilityFlagsChanged:(SCNetworkReachabilityFlags)flags;
@@ -60,6 +62,7 @@ static void WASCReachabilityCallback (SCNetworkReachabilityRef target, SCNetwork
 @synthesize reachability;
 @synthesize state;
 @synthesize backOffHandler;
+@synthesize liveness;
 
 + (void) load {
 
@@ -128,6 +131,7 @@ static void WASCReachabilityCallback (SCNetworkReachabilityRef target, SCNetwork
 		return nil;
 	
 	state = WAReachabilityStateUnknown;
+	liveness = kWAReachabliityDetectorDefaultLiveness;
 	return self;
 
 }
@@ -249,11 +253,18 @@ static void WASCReachabilityCallback (SCNetworkReachabilityRef target, SCNetwork
 			
 			if ([results isEqual:(id)kCFBooleanTrue]) {
 			
+				wSelf.liveness = kWAReachabliityDetectorDefaultLiveness;
 				wSelf.state = WAReachabilityStateAvailable;
 			
 			} else {
 			
-				wSelf.state = WAReachabilityStateNotAvailable;
+				if (wSelf.liveness > 0) {
+					wSelf.liveness -= 1;
+				}
+
+				if (wSelf.liveness == 0) {
+					wSelf.state = WAReachabilityStateNotAvailable;
+				}
 			
 			}
 		
