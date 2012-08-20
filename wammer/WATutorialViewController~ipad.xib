@@ -61,10 +61,11 @@
 						<string key="NSFrameSize">{540, 600}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSWindow"/>
+						<reference key="NSNextKeyView" ref="982601766"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<object class="NSColor" key="IBUIBackgroundColor">
 							<int key="NSColorSpace">1</int>
-							<bytes key="NSRGB">MC45MDk4MDM5MjE2IDAuOTA1ODgyMzUyOSAwLjg5NDExNzY0NzEAA</bytes>
+							<bytes key="NSRGB">MC44NDMxMzcyNTQ5IDAuODM5MjE1Njg2MyAwLjgyMzUyOTQxMTgAA</bytes>
 						</object>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 					</object>
@@ -112,7 +113,7 @@
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<object class="NSColor" key="IBUIBackgroundColor">
 							<int key="NSColorSpace">1</int>
-							<bytes key="NSRGB">MC45MDk4MDM5MjE2IDAuOTA1ODgyMzUyOSAwLjg5NDExNzY0NzEAA</bytes>
+							<bytes key="NSRGB">MC44NDMxMzcyNTQ5IDAuODM5MjE1Njg2MyAwLjgyMzUyOTQxMTgAA</bytes>
 						</object>
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -149,7 +150,7 @@
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<object class="NSColor" key="IBUIBackgroundColor">
 							<int key="NSColorSpace">1</int>
-							<bytes key="NSRGB">MC45MDk4MDM5MjE2IDAuOTA1ODgyMzUyOSAwLjg5NDExNzY0NzEAA</bytes>
+							<bytes key="NSRGB">MC44NDMxMzcyNTQ5IDAuODM5MjE1Njg2MyAwLjgyMzUyOTQxMTgAA</bytes>
 						</object>
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -186,7 +187,7 @@
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<object class="NSColor" key="IBUIBackgroundColor">
 							<int key="NSColorSpace">1</int>
-							<bytes key="NSRGB">MC45MDk4MDM5MjE2IDAuOTA1ODgyMzUyOSAwLjg5NDExNzY0NzEAA</bytes>
+							<bytes key="NSRGB">MC44NDMxMzcyNTQ5IDAuODM5MjE1Njg2MyAwLjgyMzUyOTQxMTgAA</bytes>
 						</object>
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -224,7 +225,7 @@
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<object class="NSColor" key="IBUIBackgroundColor">
 							<int key="NSColorSpace">1</int>
-							<bytes key="NSRGB">MC45MDk4MDM5MjE2IDAuOTA1ODgyMzUyOSAwLjg5NDExNzY0NzEAA</bytes>
+							<bytes key="NSRGB">MC44NDMxMzcyNTQ5IDAuODM5MjE1Njg2MyAwLjgyMzUyOTQxMTgAA</bytes>
 						</object>
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -243,7 +244,7 @@
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<object class="NSColor" key="IBUIBackgroundColor">
 							<int key="NSColorSpace">1</int>
-							<bytes key="NSRGB">MC45MDk4MDM5MjE2IDAuOTA1ODgyMzUyOSAwLjg5NDExNzY0NzEAA</bytes>
+							<bytes key="NSRGB">MC44NDMxMzcyNTQ5IDAuODM5MjE1Njg2MyAwLjgyMzUyOTQxMTgAA</bytes>
 						</object>
 						<bool key="IBUIClipsSubviews">YES</bool>
 						<bool key="IBUIMultipleTouchEnabled">YES</bool>
@@ -395,7 +396,7 @@
 				<string key="NSReuseIdentifierKey">_NS:9</string>
 				<object class="NSColor" key="IBUIBackgroundColor">
 					<int key="NSColorSpace">1</int>
-					<bytes key="NSRGB">MC45MDk4MDM5MjE2IDAuOTA1ODgyMzUyOSAwLjg5NDExNzY0NzEAA</bytes>
+					<bytes key="NSRGB">MC44NDMxMzcyNTQ5IDAuODM5MjE1Njg2MyAwLjgyMzUyOTQxMTgAA</bytes>
 				</object>
 				<object class="IBUISimulatedStatusBarMetrics" key="IBUISimulatedStatusBarMetrics"/>
 				<reference key="IBUISimulatedDestinationMetrics" ref="363402888"/>
@@ -723,17 +724,20 @@
 				<object class="IBPartialClassDescription">
 					<string key="className">WATutorialViewController</string>
 					<string key="superclassName">UIViewController</string>
-					<object class="NSMutableDictionary" key="actions">
-						<string key="NS.key.0">handleGo:</string>
-						<string key="NS.object.0">id</string>
-					</object>
-					<object class="NSMutableDictionary" key="actionInfosByName">
-						<string key="NS.key.0">handleGo:</string>
-						<object class="IBActionInfo" key="NS.object.0">
+					<dictionary class="NSMutableDictionary" key="actions">
+						<string key="currentPageChanged:">id</string>
+						<string key="handleGo:">id</string>
+					</dictionary>
+					<dictionary class="NSMutableDictionary" key="actionInfosByName">
+						<object class="IBActionInfo" key="currentPageChanged:">
+							<string key="name">currentPageChanged:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="handleGo:">
 							<string key="name">handleGo:</string>
 							<string key="candidateClassName">id</string>
 						</object>
-					</object>
+					</dictionary>
 					<dictionary class="NSMutableDictionary" key="outlets">
 						<string key="goButton">UIButton</string>
 						<string key="pageControl">UIPageControl</string>
