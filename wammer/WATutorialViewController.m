@@ -21,17 +21,6 @@
 
 
 @implementation WATutorialViewController
-@synthesize paginatedView = _paginatedView;
-@synthesize pageWelcomeToStream = _pageWelcomeToStream;
-@synthesize pageReliveYourMoments = _pageReliveYourMoments;
-@synthesize pageInstallStation = _pageInstallStation;
-@synthesize pageToggleFacebook = _pageToggleFacebook;
-@synthesize pageStartStream = _pageStartStream;
-@synthesize goButton = _goButton;
-@synthesize option = _option;
-@synthesize callback = _callback;
-@synthesize pages = _pages;
-@synthesize pageControl = _pageControl;
 
 + (WATutorialViewController *) controllerWithOption:(WATutorialInstantiationOption)option completion:(WATutorialViewControllerCallback)block {
 
