@@ -282,6 +282,11 @@ static NSString * const kNetworkState = @"-[WARemoteInterface(Reachability) netw
     
       dispatch_async(dispatch_get_main_queue(), ^ {
       
+				// for network unavailable case while entering app
+				if (!wSelf.monitoredHosts) {
+					wSelf.monitoredHosts = [NSArray arrayWithObject:wSelf.engine.context.baseURL];
+				}
+
         [wSelf endPostponingDataRetrievalTimerFiring];
 
         //[AppDelegate() endNetworkActivity];
