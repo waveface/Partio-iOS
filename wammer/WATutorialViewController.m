@@ -12,6 +12,7 @@
 
 @property (nonatomic, readwrite, assign) WATutorialInstantiationOption option;
 @property (nonatomic, readwrite, copy) WATutorialViewControllerCallback callback;
+@property (nonatomic, weak) IBOutlet UIPageControl *pageControl;
 
 @property (nonatomic, readonly, strong) NSArray *pages;
 - (NSArray *) copyPages;
@@ -20,16 +21,6 @@
 
 
 @implementation WATutorialViewController
-@synthesize paginatedView = _paginatedView;
-@synthesize pageWelcomeToStream = _pageWelcomeToStream;
-@synthesize pageReliveYourMoments = _pageReliveYourMoments;
-@synthesize pageInstallStation = _pageInstallStation;
-@synthesize pageToggleFacebook = _pageToggleFacebook;
-@synthesize pageStartStream = _pageStartStream;
-@synthesize goButton = _goButton;
-@synthesize option = _option;
-@synthesize callback = _callback;
-@synthesize pages = _pages;
 
 + (WATutorialViewController *) controllerWithOption:(WATutorialInstantiationOption)option completion:(WATutorialViewControllerCallback)block {
 
@@ -61,6 +52,9 @@
 	_pages = [self copyPages];
 	[self.paginatedView reloadViews];
 	
+	[_pageControl setNumberOfPages:[_pages count]];
+	[_pageControl setCurrentPage:0];
+	
 	UIImage * (^stretch)(UIImage *) = ^ (UIImage *image) {
 	
 		return [image stretchableImageWithLeftCapWidth:5.0f topCapHeight:0.0f];
@@ -85,6 +79,8 @@
 	};
 	
 	heckleAll(self.goButton);
+	
+	[self.view bringSubviewToFront:self.pageControl];
 
 }
 
@@ -114,8 +110,11 @@
 
 - (void) paginatedView:(IRPaginatedView *)paginatedView didShowView:(UIView *)aView atIndex:(NSUInteger)index {
 
-	//	?
+	[self.pageControl setCurrentPage:index];
+}
 
+- (IBAction) currentPageChanged:(id)sender {
+	[self.paginatedView scrollToPageAtIndex:self.pageControl.currentPage animated:YES];
 }
 
 - (NSArray *) copyPages {
