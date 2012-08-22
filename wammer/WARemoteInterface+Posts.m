@@ -294,7 +294,9 @@
   } else if ([aFilter isKindOfClass:[NSDictionary class]]) {
     [arguments setObject:[(NSDictionary *)aFilter JSONString] forKey:@"filter_entity"];
   }
-  
+
+  [arguments setObject:[[NSArray arrayWithObjects:@"comment", @"preview", @"soul", @"content", nil] JSONString] forKey:@"component_options"];
+
   [self.engine fireAPIRequestNamed:@"posts/fetchByFilter" withArguments:arguments options:nil validator:WARemoteInterfaceGenericNoErrorValidator() successHandler:^(NSDictionary *inResponseOrNil, IRWebAPIRequestContext *inResponseContext) {
   
     if (!successBlock)
@@ -314,6 +316,7 @@
 	NSMutableDictionary *postListEntity = [NSMutableDictionary dictionaryWithObjectsAndKeys:
 																				 groupID, @"group_id",
 																				 [postIDs JSONString], @"post_id_list",
+																				 [[NSArray arrayWithObjects:@"comment", @"preview", @"soul", @"content", nil] JSONString], @"component_options",
 																				 nil];
 	
 	[self.engine fireAPIRequestNamed:@"posts/fetchByFilter" withArguments:nil options:WARemoteInterfaceEnginePostFormEncodedOptionsDictionary(postListEntity, nil) validator:WARemoteInterfaceGenericNoErrorValidator() successHandler:^(NSDictionary *inResponseOrNil, IRWebAPIRequestContext *inResponseContext) {
