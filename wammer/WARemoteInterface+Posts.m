@@ -130,67 +130,6 @@
 
 }
 
-- (void) retrievePostsCreatedSince:(NSDate *)date inGroup:(NSString *)groupID onProgress:(void(^)(NSArray *postReps, NSDate *continuation))progressBlock onSuccess:(void(^)(NSDate *continuation))successBlock onFailure:(void(^)(NSError *error))failureBlock {
-
-	if (!date)
-		date = [NSDate dateWithTimeIntervalSince1970:0];
-
-	NSParameterAssert(groupID);
-	
-	__block void (^getSince)(NSDate *) = [^ (NSDate *continuation) {
-	
-		[self retrievePostsInGroup:groupID relativeToPost:nil date:continuation withSearchLimits:self.defaultBatchSize filter:nil onSuccess:^ (NSArray *postReps) {
-		
-			if (![postReps count]) {
-				
-				if (successBlock)
-					successBlock(continuation);
-				
-				getSince = nil;
-				
-				return;
-			
-			}
-			
-			NSDate *latestTimestamp = continuation;
-			
-			for (NSDictionary *postRep in postReps) {
-				NSDate *timestamp = [[WADataStore defaultStore] dateFromISO8601String:[postRep objectForKey:@"timestamp"]];
-				latestTimestamp = [latestTimestamp laterDate:timestamp];
-				NSCParameterAssert(latestTimestamp);
-			}
-			
-			if (progressBlock)
-				progressBlock(postReps, latestTimestamp);
-			
-			if ([latestTimestamp isEqualToDate:continuation]) {
-			
-				if (successBlock)
-					successBlock(continuation);
-					
-				getSince = nil;
-				
-				return;
-			
-			}
-			
-			getSince(latestTimestamp);
-		
-		} onFailure:^ (NSError *error) {
-		
-			if (failureBlock)
-				failureBlock(error);
-			
-			getSince = nil;
-		
-		}];
-		
-	} copy];
-	
-	getSince(date);
-
-}
-
 - (void) retrieveLatestPostsInGroup:(NSString *)aGroupIdentifier withBatchLimit:(NSUInteger)maxNumberOfReturnedPosts onSuccess:(void (^)(NSArray *))successBlock onFailure:(void (^)(NSError *))failureBlock {
 
 	NSParameterAssert(aGroupIdentifier);
@@ -294,7 +233,9 @@
   } else if ([aFilter isKindOfClass:[NSDictionary class]]) {
     [arguments setObject:[(NSDictionary *)aFilter JSONString] forKey:@"filter_entity"];
   }
-  
+
+  [arguments setObject:[[NSArray arrayWithObjects:@"comment", @"preview", @"soul", @"content", nil] JSONString] forKey:@"component_options"];
+
   [self.engine fireAPIRequestNamed:@"posts/fetchByFilter" withArguments:arguments options:nil validator:WARemoteInterfaceGenericNoErrorValidator() successHandler:^(NSDictionary *inResponseOrNil, IRWebAPIRequestContext *inResponseContext) {
   
     if (!successBlock)
@@ -314,6 +255,7 @@
 	NSMutableDictionary *postListEntity = [NSMutableDictionary dictionaryWithObjectsAndKeys:
 																				 groupID, @"group_id",
 																				 [postIDs JSONString], @"post_id_list",
+																				 [[NSArray arrayWithObjects:@"comment", @"preview", @"soul", @"content", nil] JSONString], @"component_options",
 																				 nil];
 	
 	[self.engine fireAPIRequestNamed:@"posts/fetchByFilter" withArguments:nil options:WARemoteInterfaceEnginePostFormEncodedOptionsDictionary(postListEntity, nil) validator:WARemoteInterfaceGenericNoErrorValidator() successHandler:^(NSDictionary *inResponseOrNil, IRWebAPIRequestContext *inResponseContext) {
