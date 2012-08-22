@@ -399,69 +399,6 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 
 		}];
 
-//		[ri retrievePostsCreatedSince:usedDate
-//													inGroup:usedGroupIdentifier
-//											 onProgress:^(NSArray *changedArticleReps, NSDate *continuation)
-//		 {
-//		 
-//			 [ds performBlock:^{
-//				 
-//				 NSManagedObjectContext *context = [ds disposableMOC];
-//				 
-//				 NSArray *touchedArticles = [WAArticle insertOrUpdateObjectsUsingContext:context withRemoteResponse:changedArticleReps usingMapping:nil options:IRManagedObjectOptionIndividualOperations];
-//				 
-//				 /* Steven: we examin each touched article is really touched by checking its modifiedDate.
-//				  * If the modifiedDate is later then current lastNewPostsUpdateDate, then we update these articles.
-//				  * If not, don't change them. It won't cause a data store change, and won't cause the timeline refresh */
-//				 BOOL changed = NO;
-//				 NSMutableArray *newFiles = [[NSMutableArray alloc] init];
-//				 for (WAArticle *article in touchedArticles) {
-//					 NSComparisonResult dateComparison = [article.modificationDate compare:usedDate];
-//					 if (usedDate && (dateComparison == NSOrderedSame || dateComparison == NSOrderedAscending))
-//						 continue;
-//					 changed = YES;
-//					 if ([ds isUpdatingArticle:[[article objectID] URIRepresentation]]) {
-//						 [context refreshObject:article mergeChanges:NO];
-//					 } else {
-//						 for (WAFile *file in article.files) {
-//							 [newFiles addObject:file];
-//						 }
-//					 }
-//				 }
-//				 
-//				 if (changed) {
-//					 [context save:nil];
-//					 // start downloading thumbnails for files of updated articles
-//					 for (WAFile *file in newFiles) {
-//						 [file smallThumbnailFilePath];
-//						 [file thumbnailFilePath];
-//					 }
-//				 }
-//				 
-//			 } waitUntilDone:YES];
-//			 
-//			 if (continuation) {
-//				 [ds setLastNewPostsUpdateDate:continuation];
-//			 }
-//		 
-//		 }
-//												onSuccess:^(NSDate *continuation) {
-//													
-//													if (continuation) {
-//														[ds setLastNewPostsUpdateDate:continuation];
-//													}
-//													
-//													if (completionBlock)
-//														completionBlock(YES, nil);
-//													
-//												}
-//												onFailure:^(NSError *error) {
-//													
-//													if (completionBlock)
-//														completionBlock(NO, error);
-//													
-//												}];
-      
   } else if ([syncStrategy isEqual:kWAArticleSyncDeltaFetchStrategy]) {
 		
 		NSDate *usedDate = [ds lastChangedPostsUpdateDate];
