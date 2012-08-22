@@ -38,13 +38,15 @@
 
 @implementation WACompositionViewController
 
-@synthesize managedObjectContext, article;
-@synthesize containerView;
-@synthesize contentTextView;
-@synthesize completionBlock;
-@synthesize usesTransparentBackground;
-@synthesize textAttributor;
-@synthesize cancellationActionSheetController;
+@synthesize managedObjectContext = _managedObjectContext;
+@synthesize article = _article;
+@synthesize containerView = _containerView;
+@synthesize contentTextView = _contentTextView;
+@synthesize completionBlock = _completionBlock;
+@synthesize usesTransparentBackground = _usesTransparentBackground;
+@synthesize textAttributor = _textAttributor;
+@synthesize cancellationActionSheetController = _cancellationActionSheetController;
+@synthesize queue = _queue;
 
 + (id) alloc {
 
@@ -82,11 +84,11 @@
 	
 	} else {
 	
-		//	Else, make a new one.
+		WAArticle *article = [WAArticle objectInsertingIntoContext:returnedController.managedObjectContext withRemoteDictionary:[NSDictionary dictionary]];
+		article.draft = (id)kCFBooleanTrue;
+		article.creationDate = [NSDate date];
 		
-		returnedController.article = [WAArticle objectInsertingIntoContext:returnedController.managedObjectContext withRemoteDictionary:[NSDictionary dictionary]];
-		returnedController.article.draft = [NSNumber numberWithBool:YES];
-		returnedController.article.creationDate = [NSDate date];
+		returnedController.article = article;
 		
 	}
 	
@@ -107,7 +109,8 @@
 	self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(handleCancel:)];
 	self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"ACTION_DONE", @"In iPad composition view") style:UIBarButtonItemStyleDone target:self action:@selector(handleDone:)];
 	
-	//[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(handleDone:)];
+	_queue = [[NSOperationQueue alloc] init];
+	_queue.maxConcurrentOperationCount = 1;
 	
 	return self;
 
@@ -117,18 +120,22 @@
 
 	__weak WACompositionViewController *wSelf = self;
 	
-	[article irRemoveObserverBlocksForKeyPath:@"files"];
-	[article irRemoveObserverBlocksForKeyPath:@"previews"];
+	[_article irRemoveObserverBlocksForKeyPath:@"files"];
+	[_article irRemoveObserverBlocksForKeyPath:@"previews"];
 	
-	article = newArticle;
+	_article = newArticle;
 	
-	[article irObserve:@"files" options:NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew context:nil withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
+	[_article irObserve:@"files" options:NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew context:nil withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
 	
-		[wSelf handleFilesChangeKind:kind oldValue:fromValue newValue:toValue indices:indices isPrior:isPrior];
+		dispatch_async(dispatch_get_main_queue(), ^{
+			
+			[wSelf handleFilesChangeKind:kind oldValue:fromValue newValue:toValue indices:indices isPrior:isPrior];
 		
+		});
+	
 	}];
 	
-	[article irObserve:@"previews" options:NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew context:nil withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
+	[_article irObserve:@"previews" options:NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew context:nil withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
 	
 		CFRunLoopPerformBlock(CFRunLoopGetMain(), kCFRunLoopDefaultMode, ^{
 
@@ -142,12 +149,14 @@
 
 - (void) dealloc {
 
-	textAttributor.delegate = nil;
+	_textAttributor.delegate = nil;
 
-	[article irRemoveObserverBlocksForKeyPath:@"files"];
-	[article irRemoveObserverBlocksForKeyPath:@"previews"];
+	[_article irRemoveObserverBlocksForKeyPath:@"files"];
+	[_article irRemoveObserverBlocksForKeyPath:@"previews"];
 	
 	[self.navigationItem.rightBarButtonItem irUnbind:@"enabled"];
+	
+	[_queue cancelAllOperations];
 
 }
 
@@ -217,7 +226,7 @@ static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandl
 				case UIViewAnimationCurveEaseOut:return UIViewAnimationOptionCurveEaseOut;
 				case UIViewAnimationCurveEaseInOut: return UIViewAnimationOptionCurveEaseInOut;
 				case UIViewAnimationCurveLinear: return UIViewAnimationOptionCurveLinear;
-				default: return 0;
+				default: return UIViewAnimationOptionCurveLinear;
 			}
 		})());
 		
@@ -261,6 +270,8 @@ static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandl
 	
 	[self.contentTextView resignFirstResponder];
 	
+	[_textAttributor.queue cancelAllOperations];
+	
 	[super viewWillDisappear:animated];
 
 }
@@ -294,16 +305,16 @@ static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandl
 
 - (IRTextAttributor *) textAttributor {
 
-	if (textAttributor)
-		return textAttributor;
+	if (_textAttributor)
+		return _textAttributor;
 	
 	__weak WACompositionViewController *wSelf = self;
 	
-	textAttributor = [[IRTextAttributor alloc] init];
-	textAttributor.delegate = self;
-	textAttributor.discoveryBlock = IRTextAttributorDiscoveryBlockMakeWithRegularExpression([NSDataDetector dataDetectorWithTypes:NSTextCheckingTypeLink error:nil]);
+	_textAttributor = [[IRTextAttributor alloc] init];
+	_textAttributor.delegate = self;
+	_textAttributor.discoveryBlock = IRTextAttributorDiscoveryBlockMakeWithRegularExpression([NSDataDetector dataDetectorWithTypes:NSTextCheckingTypeLink error:nil]);
 	
-	textAttributor.attributionBlock = ^ (NSString *attributedString, IRTextAttributorAttributionCallback callback) {
+	_textAttributor.attributionBlock = ^ (NSString *attributedString, IRTextAttributorAttributionCallback callback) {
 	
 		if (!attributedString) {
 			callback(nil);
@@ -341,7 +352,7 @@ static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandl
 	
 	};
 	
-	return textAttributor;
+	return _textAttributor;
 
 }
 
@@ -450,9 +461,9 @@ static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandl
 	if (self.completionBlock)
 		self.completionBlock([[self.article objectID] URIRepresentation]);
 		
-	if([self.article.previews count])
+	if ([self.article.previews count])
 		WAPostAppEvent(@"Create Preview", [NSDictionary dictionaryWithObjectsAndKeys:@"link",@"category",@"create", @"action", nil]);
-	else if([self.article.files count])
+	else if ([self.article.files count])
 		WAPostAppEvent(@"Create Photo", [NSDictionary dictionaryWithObjectsAndKeys:@"photo",@"category",@"create", @"action", nil]);
 	else 
 		WAPostAppEvent(@"Create Text", [NSDictionary dictionaryWithObjectsAndKeys:@"text",@"category",@"create", @"action", nil]);
@@ -488,7 +499,7 @@ static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandl
 
 - (IRActionSheetController *) cancellationActionSheetController {
 
-	if (!cancellationActionSheetController) {
+	if (!_cancellationActionSheetController) {
 	
 		__weak WACompositionViewController *wSelf = self;
 	
@@ -513,17 +524,17 @@ static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandl
 		
 		}];
 			
-		cancellationActionSheetController = [IRActionSheetController actionSheetControllerWithTitle:nil cancelAction:nil destructiveAction:discardAction otherActions:[NSArray arrayWithObjects:
+		_cancellationActionSheetController = [IRActionSheetController actionSheetControllerWithTitle:nil cancelAction:nil destructiveAction:discardAction otherActions:[NSArray arrayWithObjects:
 			saveAsDraftAction,
 		nil]];
 			
-		cancellationActionSheetController.onActionSheetCancel = ^ {
+		_cancellationActionSheetController.onActionSheetCancel = ^ {
 		
 			wSelf.cancellationActionSheetController = nil;
 		
 		};
 		
-		cancellationActionSheetController.onActionSheetDidDismiss = ^ (IRAction *invokedAction) {
+		_cancellationActionSheetController.onActionSheetDidDismiss = ^ (IRAction *invokedAction) {
 			
 			wSelf.cancellationActionSheetController = nil;
 				
@@ -531,7 +542,7 @@ static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandl
 	
 	}
 	
-	return cancellationActionSheetController;
+	return _cancellationActionSheetController;
 	
 }
 

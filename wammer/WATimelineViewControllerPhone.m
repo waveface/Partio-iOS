@@ -10,6 +10,8 @@
 
 #import <objc/runtime.h>
 
+#import <TargetConditionals.h>
+
 #import "UIKit+IRAdditions.h"
 
 #import "WADefines.h"
@@ -45,6 +47,8 @@
 
 #import "WATimelineViewControllerPhone+RowHeightCaching.h"
 
+#import "UIViewController+IRDelayedUpdateAdditions.h"
+
 static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPostsViewControllerPhone_RepresentedObjectURI";
 
 @interface WATimelineViewControllerPhone () <NSFetchedResultsControllerDelegate, UIActionSheetDelegate, IASKSettingsDelegate, WAArticleDraftsViewControllerDelegate>
@@ -54,6 +58,7 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 @property (nonatomic, readwrite, retain) NSFetchedResultsController *fetchedResultsController;
 @property (nonatomic, readwrite, retain) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, readwrite, retain) IRActionSheetController *settingsActionSheetController;
+@property (nonatomic, readwrite) BOOL scrollToTopmostPost;
 
 - (void) refreshData;
 
@@ -74,6 +79,7 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 @synthesize fetchedResultsController;
 @synthesize managedObjectContext;
 @synthesize settingsActionSheetController;
+@synthesize scrollToTopmostPost;
 
 - (void) dealloc {
 	
@@ -125,28 +131,42 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 	UIBarButtonItem *zeroSpacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
 	zeroSpacer.width = -10;
 	
+	UIBarButtonItem *datePickUIButton = [[UIBarButtonItem alloc] initWithImage:transparentImage style:UIBarButtonItemStylePlain target:self action:@selector(handleDateSelect:)];
+	[datePickUIButton setAccessibilityLabel:NSLocalizedString(@"ACCESS_PICK_DATE", @"Accessibility label for date picker in iPhone timeline")];
+
+	UIBarButtonItem *composeUIButton = [[UIBarButtonItem alloc] initWithCustomView:noteButton];
+	[composeUIButton setAccessibilityLabel:NSLocalizedString(@"ACCESS_COMPOSE", @"Accessibility label for composer in iPhone timeline")];
+
+	UIBarButtonItem *cameraUIButton = [[UIBarButtonItem alloc] initWithCustomView:cameraButton];
+	[cameraButton setAccessibilityLabel:NSLocalizedString(@"ACCESS_CAMERA", @"Accessibility label for camera in iPhone timeline")];
+
+	UIBarButtonItem *userInfoUIButton = [[UIBarButtonItem alloc] initWithImage:transparentImage style:UIBarButtonItemStylePlain target:self action:@selector(handleUserInfo:)];
+	[userInfoUIButton setAccessibilityLabel:NSLocalizedString(@"ACCESS_ACCOUNT_INFO", @"Accessibility label for account info in iPhone timeline")];
+
+	
 	self.toolbarItems = [NSArray arrayWithObjects:
 	
 		alphaSpacer,
 		
-		[[UIBarButtonItem alloc] initWithImage:transparentImage style:UIBarButtonItemStylePlain target:self action:@selector(handleDateSelect:)],
+		datePickUIButton,
 		
 		omegaSpacer,
 		
-		[[UIBarButtonItem alloc] initWithCustomView:noteButton],
-
+		composeUIButton,
+						 
 		zeroSpacer,
 		
-		[[UIBarButtonItem alloc] initWithCustomView:cameraButton],
+		cameraUIButton,
 
 		omegaSpacer,
 		
-		[[UIBarButtonItem alloc] initWithImage:transparentImage style:UIBarButtonItemStylePlain target:self action:@selector(handleUserInfo:)],
+		userInfoUIButton,
 		
 		alphaSpacer,
 	
 	nil];
 	
+	[self setScrollToTopmostPost:NO];
 	 
 	return self;
   
@@ -334,7 +354,10 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
   NSError *fetchingError;
 	if (![fetchedResultsController performFetch:&fetchingError])
 		NSLog(@"error fetching: %@", fetchingError);
-		
+	
+	if ([self isViewLoaded])
+		[self.tableView reloadData];
+	
 	return fetchedResultsController;
 	
 }
@@ -345,9 +368,32 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 		
 }
 
+- (void) debugCreateArticle:(NSTimer *)timer {
+
+	WADataStore *ds = [WADataStore defaultStore];
+	NSManagedObjectContext *ctx = [ds disposableMOC];
+	
+	[WAArticle insertOrUpdateObjectsUsingContext:ctx withRemoteResponse:[NSArray arrayWithObjects:
+	
+		[NSDictionary dictionaryWithObjectsAndKeys:
+		
+			IRDataStoreNonce(), @"content",
+			[ds ISO8601StringFromDate:[NSDate date]], @"timestamp",
+		
+		nil],
+	
+	nil] usingMapping:nil options:0];
+	
+	[ctx save:nil];
+
+}
+
 - (void) viewDidLoad {
 
 	[super viewDidLoad];
+	
+	//	NSTimer *timer = [NSTimer scheduledTimerWithTimeInterval:5 target:self selector:@selector(debugCreateArticle:) userInfo:nil repeats:YES];
+	//	[timer fire];
 	
 	self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 		
@@ -412,6 +458,11 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 	
 	[self.navigationController setToolbarHidden:NO animated:animated];
 
+	if ([self scrollToTopmostPost]) {
+		[[self tableView] scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:YES];
+		[self setScrollToTopmostPost:NO];
+	}
+
 }
 
 - (void) viewWillDisappear:(BOOL)animated {
@@ -463,18 +514,8 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 	}
 		
 	[self.tableView resetPullDown];
-	//	self.tableView.contentOffset = UIEdgeInsetsZero;
 	
 	[super viewWillDisappear:animated];
-	
-}
-
-- (void) viewDidDisappear:(BOOL)animated {
-
-	[super viewDidDisappear:animated];
-
-	fetchedResultsController.delegate = nil;
-	self.fetchedResultsController = nil;
 	
 }
 
@@ -541,6 +582,8 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 	@autoreleasepool {
     
 		WAArticle *post = [self.fetchedResultsController objectAtIndexPath:indexPath];
+		NSCParameterAssert([post isKindOfClass:[WAArticle class]]);
+		
 		NSString *identifier = [WAPostViewCellPhone identifierRepresentingObject:post];
 		
 		id context = nil;
@@ -578,13 +621,9 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 
 - (void) controllerWillChangeContent:(NSFetchedResultsController *)controller {
 
-	if (controller != fetchedResultsController)
+	if (![self isViewLoaded])
 		return;
-
-	NSCParameterAssert([NSThread isMainThread]);
-	NSCParameterAssert([self isViewLoaded]);
-	NSCParameterAssert(self.view.window);
-		
+	
 	[self persistState];
 	[self.tableView beginUpdates];
 
@@ -592,12 +631,8 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 
 - (void) controller:(NSFetchedResultsController *)controller didChangeSection:(id<NSFetchedResultsSectionInfo>)sectionInfo atIndex:(NSUInteger)sectionIndex forChangeType:(NSFetchedResultsChangeType)type {
 
-	if (controller != fetchedResultsController)
+	if (![self isViewLoaded])
 		return;
-	
-	NSCParameterAssert([NSThread isMainThread]);
-	NSCParameterAssert([self isViewLoaded]);
-	NSCParameterAssert(self.view.window);
 	
 	switch (type) {
 		case NSFetchedResultsChangeDelete: {
@@ -617,15 +652,11 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 
 - (void) controller:(NSFetchedResultsController *)controller didChangeObject:(id)anObject atIndexPath:(NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type newIndexPath:(NSIndexPath *)newIndexPath {
 
-	if (controller != fetchedResultsController)
-		return;
-	
-	NSCParameterAssert([NSThread isMainThread]);
-	NSCParameterAssert([self isViewLoaded]);
-	NSCParameterAssert(self.view.window);
-	
 	[self removeCachedRowHeightForObject:anObject];
 
+	if (![self isViewLoaded])
+		return;
+	
 	switch (type) {
 		case NSFetchedResultsChangeDelete: {
 			NSParameterAssert(indexPath && !newIndexPath);
@@ -667,16 +698,11 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 }
 
 - (void) controllerDidChangeContent:(NSFetchedResultsController *)controller {
-	
-	if (controller != fetchedResultsController)
+
+	if (![self isViewLoaded])
 		return;
 	
-	NSCParameterAssert([NSThread isMainThread]);
-	NSCParameterAssert([self isViewLoaded]);
-	NSCParameterAssert(self.view.window);
-	
 	UITableView *tv = self.tableView;
-	
 	[tv endUpdates];
 	[self restoreState];
 	
@@ -704,42 +730,85 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 	NSCParameterAssert([self isViewLoaded]);
 	NSCParameterAssert(self.view.window);
 	
-	UIMenuController *menuController = [UIMenuController sharedMenuController];
-	if ([menuController isMenuVisible]) {
+	UIMenuController *mc = [UIMenuController sharedMenuController];
+	if ([mc isMenuVisible]) {
 	
-		[menuController setMenuVisible:NO animated:YES];
-		[tableView deselectRowAtIndexPath:indexPath animated:YES];
+		[mc setMenuVisible:NO animated:YES];
+		
+		NSIndexPath *selectedRowIP = [tableView indexPathForSelectedRow];
+		if (selectedRowIP)
+			[tableView deselectRowAtIndexPath:selectedRowIP animated:YES];
 		
 		return;
 		
 	}
 	
 	WAArticle *post = [self.fetchedResultsController objectAtIndexPath:indexPath];
-	NSURL *postURL = [[post objectID] URIRepresentation];
+	NSCParameterAssert([post isKindOfClass:[WAArticle class]]);
 	
-	if ([post.previews count])
-		WAPostAppEvent(@"View Preview Post", [NSDictionary dictionaryWithObjectsAndKeys:@"link",@"category",@"consume", @"action", nil]);
-	else if([post.files count])
-		WAPostAppEvent(@"View Photo Post", [NSDictionary dictionaryWithObjectsAndKeys:@"photo",@"category",@"consume", @"action", nil]);
-	else 
-		WAPostAppEvent(@"View Text Post", [NSDictionary dictionaryWithObjectsAndKeys:@"text",@"category",@"consume", @"action", nil]);
-	
-	UIViewController *pushedVC = [WAArticleViewController controllerForArticle:postURL usingPresentationStyle:WAFullFrameArticleStyleFromDiscreteStyle([WAArticleViewController suggestedDiscreteStyleForArticle:post])];
+	UIViewController *pushedVC = [WAArticleViewController controllerForArticle:post style:(WAFullScreenArticleStyle|WASuggestedStyleForArticle(post))];
 
- 	[self.navigationController pushViewController:pushedVC animated:YES];
+	[self.navigationController pushViewController:pushedVC animated:YES];
 
 }
 
 - (void) beginCompositionSessionWithURL:(NSURL *)anURL animated:(BOOL)animate onCompositionViewDidAppear:(void (^)(WACompositionViewController *))callback {
 
 	__block WACompositionViewController *compositionVC = [WACompositionViewController defaultAutoSubmittingCompositionViewControllerForArticle:anURL completion:^(NSURL *anURI) {
+		
+		if (![compositionVC.article hasMeaningfulContent] && [compositionVC shouldDismissSelfOnCameraCancellation]) {
+			
+			__block void (^dismissModal)(UIViewController *) = [^ (UIViewController *aVC) {
+			
+				if (aVC.modalViewController) {
+					dismissModal(aVC.modalViewController);
+					return;
+				}
+				
+				[aVC dismissModalViewControllerAnimated:NO];
+			
+			} copy];
+			
+			UIWindow *usedWindow = [[UIApplication sharedApplication] keyWindow];
+			
+			if ([compositionVC isViewLoaded] && compositionVC.view.window)
+				usedWindow = compositionVC.view.window;
+			
+			NSCParameterAssert(usedWindow);
+			
+			[CATransaction begin];
+			
+			dismissModal(compositionVC);
+			dismissModal = nil;
+			
+			[compositionVC dismissModalViewControllerAnimated:NO];
+			
+			CATransition *fadeTransition = [CATransition animation];
+			fadeTransition.duration = 0.3f;
+			fadeTransition.type = kCATransitionFade;
+			fadeTransition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+			fadeTransition.removedOnCompletion = YES;
+			fadeTransition.fillMode = kCAFillModeForwards;
+			
+			[usedWindow.layer addAnimation:fadeTransition forKey:kCATransition];
+			
+			[CATransaction commit];
+			
+		} else {
 	
-		[compositionVC dismissModalViewControllerAnimated:YES];
+			[compositionVC dismissModalViewControllerAnimated:YES];
+			
+			if (!anURL && [compositionVC.article hasMeaningfulContent]) {
+				[self setScrollToTopmostPost:YES];
+			}
+
+		}
+		
 		compositionVC = nil;
 		
 	}];
 	
-  [self presentViewController:[compositionVC wrappingNavigationController] animated:animate completion:^{
+	[self presentViewController:[compositionVC wrappingNavigationController] animated:animate completion:^{
 		
 		if (callback)
 			callback(compositionVC);
@@ -772,7 +841,6 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 		draftsVC.delegate = self;
 		
 		WANavigationController *navC = [[WANavigationController alloc] initWithRootViewController:draftsVC];
-		//	((WANavigationBar *)navC.navigationBar).customBackgroundView = [WANavigationBar defaultPatternBackgroundView];
 		
 		__weak WATimelineViewControllerPhone *wSelf = self;
 				
@@ -808,6 +876,13 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 	
 	if (anAction == @selector(removeArticle:))
 		return YES;
+
+#if TARGET_IPHONE_SIMULATOR
+	
+	if (anAction == @selector(makeDirty:))
+		return YES;
+
+#endif
 	
 	return NO;
 
@@ -834,7 +909,13 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 	menuController.arrowDirection = UIMenuControllerArrowDown;
 		
 	NSMutableArray *menuItems = [NSMutableArray array];
-		
+
+#if TARGET_IPHONE_SIMULATOR
+
+	[menuItems addObject:[[UIMenuItem alloc] initWithTitle:@"Make Dirty" action:@selector(makeDirty:)]];
+
+#endif
+
 	[menuItems addObject:[[UIMenuItem alloc] initWithTitle:([article.favorite isEqual:(id)kCFBooleanTrue] ?
 		NSLocalizedString(@"ACTION_UNMARK_FAVORITE", @"Action marking article as not favorite") :
 		NSLocalizedString(@"ACTION_MARK_FAVORITE", @"Action marking article as favorite")) action:@selector(toggleFavorite:)]];
@@ -871,6 +952,7 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 	NSAssert1(selectedIndexPath && article, @"Selected index path %@ and underlying object must exist", selectedIndexPath);
 	
 	article.favorite = (NSNumber *)([article.favorite isEqual:(id)kCFBooleanTrue] ? kCFBooleanFalse : kCFBooleanTrue);
+	article.dirty = (id)kCFBooleanTrue;
 	article.modificationDate = [NSDate date];
 	
 	NSError *savingError = nil;
@@ -879,11 +961,7 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 	
 	[[WARemoteInterface sharedInterface] beginPostponingDataRetrievalTimerFiring];
 	
-	[[WADataStore defaultStore] updateArticle:[[article objectID] URIRepresentation] withOptions:[NSDictionary dictionaryWithObjectsAndKeys:
-		
-		(id)kCFBooleanTrue, kWADataStoreArticleUpdateShowsBezels,
-		
-	nil] onSuccess:^{
+	[[WADataStore defaultStore] updateArticle:[[article objectID] URIRepresentation] withOptions:nil onSuccess:^{
 		
 		[[WARemoteInterface sharedInterface] endPostponingDataRetrievalTimerFiring];
 		
@@ -934,6 +1012,7 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 	IRAction *deleteAction = [IRAction actionWithTitle:NSLocalizedString(@"ACTION_DELETE", @"Title for deleting an article from the Timeline") block:^ {
 	
 		article.hidden = (id)kCFBooleanTrue;
+		article.dirty = (id)kCFBooleanTrue;
 		article.modificationDate = [NSDate date];
 		
 		NSError *savingError = nil;
@@ -942,12 +1021,7 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 		
 		[[WARemoteInterface sharedInterface] beginPostponingDataRetrievalTimerFiring];
 		
-		[[WADataStore defaultStore] updateArticle:[[article objectID] URIRepresentation] withOptions:[NSDictionary dictionaryWithObjectsAndKeys:
-			
-			(id)kCFBooleanTrue, kWADataStoreArticleUpdateShowsBezels,
-			(id)kCFBooleanTrue, kWADataStoreArticleUpdateVisibilityOnly,
-			
-		nil] onSuccess:^{
+		[[WADataStore defaultStore] updateArticle:[[article objectID] URIRepresentation] withOptions:nil onSuccess:^{
 			
 			[[WARemoteInterface sharedInterface] endPostponingDataRetrievalTimerFiring];
 			
@@ -965,6 +1039,18 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 	
 	[[controller managedActionSheet] showInView:self.navigationController.view];
 		
+}
+
+- (void) makeDirty:(id)sender {
+
+	NSIndexPath *selectedIndexPath = [self.tableView indexPathForSelectedRow];
+	WAArticle *article = [self.fetchedResultsController objectAtIndexPath:selectedIndexPath];
+	
+	NSAssert1(selectedIndexPath && article, @"Selected index path %@ and underlying object must exist", selectedIndexPath);
+	
+	article.dirty = (id)kCFBooleanTrue;
+	[article.managedObjectContext save:nil];
+
 }
 
 - (void) handleDateSelect:(UIBarButtonItem *)sender {
@@ -1085,9 +1171,7 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 		
 			(id)kCFBooleanTrue, WACompositionImageInsertionUsesCamera,
 			(id)kCFBooleanFalse, WACompositionImageInsertionAnimatePresentation,
-			
-			//	TBD
-			//	(id)kCFBooleanTrue, WACompositionImageInsertionCancellationTriggersSessionTermination,
+			(id)kCFBooleanTrue, WACompositionImageInsertionCancellationTriggersSessionTermination,
 		
 		nil] sender:compositionVC.view];
 		

@@ -46,6 +46,7 @@
 		NSAssert1(article, @"WAFile entity %@ must have already been associated with an article", pickedFile);
 		
 		article.representingFile = pickedFile;
+		article.dirty = (id)kCFBooleanTrue;
 		article.modificationDate = [NSDate date];
 		
 		NSCParameterAssert(article.representingFile == pickedFile);
@@ -66,11 +67,7 @@
 		
 		[[WARemoteInterface sharedInterface] beginPostponingDataRetrievalTimerFiring];
 	
-		[[WADataStore defaultStore] updateArticle:[[article objectID] URIRepresentation] withOptions:[NSDictionary dictionaryWithObjectsAndKeys:
-			
-			(id)kCFBooleanTrue, kWADataStoreArticleUpdateShowsBezels,
-			
-		nil] onSuccess:^{
+		[[WADataStore defaultStore] updateArticle:[[article objectID] URIRepresentation] withOptions:nil onSuccess:^{
 		
 			NSParameterAssert([NSThread isMainThread]);
 			

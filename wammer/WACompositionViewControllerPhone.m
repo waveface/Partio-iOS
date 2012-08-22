@@ -24,6 +24,8 @@
 
 #import "WADefines.h"
 
+#import "AGImagePickerController.h"
+#import "WACompositionViewController+ImageHandling.h"
 
 @interface WACompositionViewController (PhoneSubclassKnowledge) <IRTextAttributorDelegate>
 
@@ -148,28 +150,36 @@
 		
 	WAArticleAttachmentActivityView *activityView = self.articleAttachmentActivityView;
 
-	activityView.style = !![self.textAttributor.queue.operations count] ? WAArticleAttachmentActivityViewSpinnerStyle :
-		[self.article.previews count] ? WAArticleAttachmentActivityViewLinkStyle :
-		[self.article.files count] ? WAArticleAttachmentActivityViewAttachmentsStyle :
-		WAArticleAttachmentActivityViewDefaultStyle;
+	if ([self.textAttributor.queue.operations count]) {
 		
-	NSUInteger numberOfFiles = [self.article.files count];
-	
-	if (!numberOfFiles) {
+		activityView.style = WAArticleAttachmentActivityViewSpinnerStyle;
 		
-		[activityView setTitle:NSLocalizedString(@"ACTION_ADD",@"attachment activity view") forStyle:WAArticleAttachmentActivityViewAttachmentsStyle];
-	
+	} else if ([self.article.previews count]) {
+		
+		activityView.style = WAArticleAttachmentActivityViewLinkStyle;
+		[activityView setTitle:NSLocalizedString(@"WEB_PREVIEW", @"preview button in composition view") forStyle:WAArticleAttachmentActivityViewLinkStyle];
+		[activityView setAccessibilityLabel:NSLocalizedString(@"ACCESS_PREVIEW", @"accessibility label for webpage preview in composition view")];
+		
+	} else if ([self.article.files count] == 1) {
+		
+		activityView.style = WAArticleAttachmentActivityViewAttachmentsStyle;
+		[activityView setTitle:[NSString stringWithFormat:NSLocalizedString(@"COMPOSITION_ONE_PHOTO_BUTTON_CAPTION_FORMAT", @"add photo button in composition view"), 1] forStyle:WAArticleAttachmentActivityViewAttachmentsStyle];
+		[activityView setAccessibilityLabel:NSLocalizedString(@"ACCESS_ADD_PHOTO", @"accessibility label for adding photos in composition view")];
+		
+	} else if ([self.article.files count] > 1) {
+		
+		activityView.style = WAArticleAttachmentActivityViewAttachmentsStyle;
+		[activityView setTitle:[NSString stringWithFormat:NSLocalizedString(@"COMPOSITION_MANY_PHOTOS_BUTTON_CAPTION_FORMAT", @"add photo button in composition view"), [self.article.files count]] forStyle:WAArticleAttachmentActivityViewAttachmentsStyle];
+		[activityView setAccessibilityLabel:NSLocalizedString(@"ACCESS_ADD_PHOTO", @"accessibility label for adding photos in composition view")];
+		
 	} else {
-	
-		NSString *titleFormatString = (numberOfFiles > 1) ? NSLocalizedString(@"COMPOSITION_MANY_PHOTOS_BUTTON_CAPTION_FORMAT", nil) : NSLocalizedString(@"COMPOSITION_ONE_PHOTO_BUTTON_CAPTION_FORMAT", nil);
-		NSString *title = [NSString stringWithFormat:titleFormatString, numberOfFiles];
-	
-		[activityView setTitle:title forStyle:WAArticleAttachmentActivityViewAttachmentsStyle];
-	
-	}
 		
-	[activityView setTitle:NSLocalizedString(@"WEB_PREVIEW", @"attachment activity view") forStyle:WAArticleAttachmentActivityViewLinkStyle];
-	
+		activityView.style = WAArticleAttachmentActivityViewDefaultStyle;
+		[activityView setTitle:NSLocalizedString(@"ACTION_ADD", @"add photo button in composition view") forStyle:WAArticleAttachmentActivityViewDefaultStyle];
+		[activityView setAccessibilityLabel:NSLocalizedString(@"ACCESS_ADD_PHOTO", @"accessibility label for adding photos in composition view")];
+		
+	}
+
 	[activityView sizeToFit];
 
 }
@@ -263,82 +273,74 @@
 	
 		case WAArticleAttachmentActivityViewAttachmentsStyle: {
 		
-			if ([self.article.files count]) {
+			[self handleImageAttachmentInsertionRequestWithSender:view];
 			
-				[self presentMediaListViewController:[self newMediaListViewController] sender:view animated:YES];
+			__weak WACompositionViewControllerPhone *nrSelf = self;
 			
-			} else {
+			NSOrderedSet *capturedFiles = [self.article.files copy];
+			BOOL (^filesChanged)(void) = ^ {
+				return (BOOL)![nrSelf.article.files isEqual:capturedFiles];
+			};
 			
-				[self handleImageAttachmentInsertionRequestWithSender:view];
+			CALayer *crossfadeLayer = nrSelf.view.window.layer;
+			
+			void (^crossfade)(void(^)(void)) = ^ (void(^aBlock)(void)) {
+			
+				CATransition *transition = [CATransition animation];
+				transition.type = kCATransitionFade;
+				transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+				transition.duration = 0.3;
+				transition.removedOnCompletion = YES;
+				transition.fillMode = kCAFillModeForwards;
 				
-				__weak WACompositionViewControllerPhone *nrSelf = self;
+				[CATransaction begin];
+				[CATransaction setDisableActions:YES];
 				
-				NSOrderedSet *capturedFiles = [self.article.files copy];
-				BOOL (^filesChanged)(void) = ^ {
-					return (BOOL)![nrSelf.article.files isEqual:capturedFiles];
-				};
+				aBlock();
 				
-				CALayer *crossfadeLayer = nrSelf.view.window.layer;
+				[crossfadeLayer addAnimation:transition forKey:kCATransition];
 				
-				void (^crossfade)(void(^)(void)) = ^ (void(^aBlock)(void)) {
+				[CATransaction commit];
 				
-					CATransition *transition = [CATransition animation];
-					transition.type = kCATransitionFade;
-					transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
-					transition.duration = 0.3;
-					transition.removedOnCompletion = YES;
-					transition.fillMode = kCAFillModeForwards;
-					
-					[CATransaction begin];
-					[CATransaction setDisableActions:YES];
-					
-					aBlock();
-					
-					[crossfadeLayer addAnimation:transition forKey:kCATransition];
-					
-					[CATransaction commit];
-					
-				};
+			};
+			
+			
+			self.onDismissCameraCaptureControllerAnimated = ^ (IRImagePickerController *controller, BOOL animated, BOOL *overrideDefault) {
+			
+				nrSelf.onDismissCameraCaptureControllerAnimated = nil;
 				
+				if (!filesChanged())
+					return;
 				
-				self.onDismissCameraCaptureControllerAnimated = ^ (IRImagePickerController *controller, BOOL animated, BOOL *overrideDefault) {
+				*overrideDefault = YES;
 				
-					nrSelf.onDismissCameraCaptureControllerAnimated = nil;
-					
-					if (!filesChanged())
-						return;
-					
-					*overrideDefault = YES;
-					
-					crossfade(^ {
-					
-						[nrSelf dismissCameraCapturePickerController:controller animated:NO];
-						[nrSelf presentMediaListViewController:[nrSelf newMediaListViewController] sender:nil animated:NO];
-					
-					});
-									
-				};
+				crossfade(^ {
 				
-				self.onDismissImagePickerControllerAnimated = ^ (IRImagePickerController *controller, BOOL animated, BOOL *overrideDefault) {
+					[nrSelf dismissCameraCapturePickerController:controller animated:NO];
+					[nrSelf presentMediaListViewController:[nrSelf newMediaListViewController] sender:nil animated:NO];
 				
-					nrSelf.onDismissImagePickerControllerAnimated = nil;
+				});
+								
+			};
+			
+			self.onDismissImagePickerControllerAnimated = ^ (IRImagePickerController *controller, BOOL animated, BOOL *overrideDefault) {
+			
+				nrSelf.onDismissImagePickerControllerAnimated = nil;
 
-					if (!filesChanged())
-						return;
-					
-					*overrideDefault = YES;
+				if (!filesChanged())
+					return;
 				
-					crossfade(^ {
+				*overrideDefault = YES;
+			
+				crossfade(^ {
 
-						[nrSelf dismissImagePickerController:controller animated:NO];
-						[nrSelf presentMediaListViewController:[nrSelf newMediaListViewController] sender:nil animated:NO];
-					
-					});
+					[nrSelf dismissImagePickerController:controller animated:NO];
+					[nrSelf presentMediaListViewController:[nrSelf newMediaListViewController] sender:nil animated:NO];
 				
-				};
-				
-			}
-										 
+				});
+			
+			};
+														 
 			break;
 			
 		}

@@ -14,8 +14,6 @@
 
 
 NSString * const kWADataStoreArticleUpdateShowsBezels = @"WADataStoreArticleUpdateShowsBezels";
-NSString * const kWADataStoreArticleUpdateVisibilityOnly = @"WADataStoreArticleUpdateVisibilityOnly";
-
 
 @interface WADataStore (WARemoteInterfaceAdditions_Private)
 
@@ -61,7 +59,7 @@ NSString * const kWADataStoreArticleUpdateVisibilityOnly = @"WADataStoreArticleU
 		
 	nil];
 	
-	[WAArticle synchronizeWithOptions:options completion:^(BOOL didFinish, NSManagedObjectContext *temporalContext, NSArray *prospectiveUnsavedObjects, NSError *anError) {
+	[WAArticle synchronizeWithOptions:options completion:^(BOOL didFinish, NSError *anError) {
 	
 		if (didFinish) {
 
@@ -102,11 +100,9 @@ NSString * const kWADataStoreArticleUpdateVisibilityOnly = @"WADataStoreArticleU
 	
 	BOOL usesBezels = [[options objectForKey:kWADataStoreArticleUpdateShowsBezels] isEqual:(id)kCFBooleanTrue];
 	
-	BOOL updateVisibilityOnly = [[options objectForKey:kWADataStoreArticleUpdateVisibilityOnly] isEqual:(id)kCFBooleanTrue];
-
 	__weak WADataStore *wSelf = self;
 	
-	NSManagedObjectContext *context = [self defaultAutoUpdatedMOC];	//	Sigh
+	NSManagedObjectContext *context = [self disposableMOC];	//	Sigh
 	WAArticle *article = (WAArticle *)[context irManagedObjectForURI:anArticleURI];
 	
 	[[wSelf articlesCurrentlyBeingUpdated] addObject:anArticleURI];
@@ -141,8 +137,6 @@ NSString * const kWADataStoreArticleUpdateVisibilityOnly = @"WADataStoreArticleU
 	
 		dispatch_async(dispatch_get_main_queue(), ^{
 					
-			NSCParameterAssert([NSThread isMainThread]);
-		
 			if (usesBezels) {
 				
 				[busyBezel dismissWithAnimation:WAOverlayBezelAnimationNone];
@@ -153,48 +147,27 @@ NSString * const kWADataStoreArticleUpdateVisibilityOnly = @"WADataStoreArticleU
 				dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 2.0 * NSEC_PER_SEC), dispatch_get_main_queue(), ^(void){
 				
 					[resultBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
-					
-					fireCallback(didFinish, error);
 				
 				});
 				
-			} else {
-			
-				fireCallback(didFinish, error);
-			
 			}
+			
+			fireCallback(didFinish, error);
 		
 		});
 		
 	};
 	
+	[context performBlock:^ {
 	
-	if (updateVisibilityOnly) {
-	
-		[[WARemoteInterface sharedInterface] configurePost:article.identifier inGroup:article.group.identifier withVisibilityStatus:![article.hidden isEqual:(id)kCFBooleanTrue] onSuccess:^{
-		
-			dispatch_async(dispatch_get_main_queue(), ^{
-				handleResult(YES, nil);
-			});
-			
-		} onFailure:^(NSError *error) {
-		
-			dispatch_async(dispatch_get_main_queue(), ^{
-				handleResult(NO, error);
-			});
-			
-		}];
-	
-	} else {
-	
-		[article synchronizeWithCompletion:^(BOOL didFinish, NSManagedObjectContext *context, NSArray *objects, NSError *error) {
+		[article synchronizeWithCompletion:^(BOOL didFinish, NSError *error) {
 			
 			handleResult(didFinish, error);
-					
+			
 		}];
 		
-	}
-	
+	}];
+
 }
 
 - (BOOL) isUpdatingArticle:(NSURL *)anObjectURI {
@@ -264,12 +237,21 @@ NSString * const kWADataStoreArticleUpdateVisibilityOnly = @"WADataStoreArticleU
 			context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
 			
 			WAUser *user = [wSelf mainUserInContext:context];
-			NSCParameterAssert(user);
+			if (!user) {
+			
+				//	Fresh user with “seeding” database.
+				
+				if (failureBlock);
+					failureBlock();
+				
+				return;
+				
+			}
 			
 			NSArray *touchedUsers = [WAUser insertOrUpdateObjectsUsingContext:context withRemoteResponse:[NSArray arrayWithObject:userRep] usingMapping:nil options:0];
 			
 			NSCParameterAssert([touchedUsers count] == 1);
-			NSCParameterAssert([touchedUsers containsObject:user]);
+//			NSCParameterAssert([touchedUsers containsObject:user]);
 			
 			NSError *savingError = nil;
 			if (![context save:&savingError])

@@ -21,6 +21,7 @@
 	return [NSDictionary dictionaryWithObjectsAndKeys:
 		
 		@"WAOpenGraphElementImage", @"images",
+		@"WAOpenGraphElementImage", @"representingImage",
 	
 	nil];
 

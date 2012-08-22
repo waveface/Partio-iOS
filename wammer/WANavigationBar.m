@@ -10,69 +10,9 @@
 #import "IRGradientView.h"
 #import "IRLifetimeHelper.h"
 
-@interface WANavigationBar ()
-
-- (void) sharedInit;
-
-@end
-
-
 @implementation WANavigationBar
 @synthesize customBackgroundView;
-@synthesize suppressesDefaultAppearance;
 @synthesize onBarStyleContextChanged;
-
-- (id) initWithFrame:(CGRect)frame {
-
-	self = [super initWithFrame:frame];
-	if (!self)
-		return nil;
-	
-	[self sharedInit];
-	
-	return self;
-
-}
-
-- (id) initWithCoder:(NSCoder *)aDecoder {
-
-	self = [super initWithCoder:aDecoder];
-	if (!self)
-		return nil;
-
-	[self sharedInit];
-	
-	return self;
-
-}
-
-- (void) awakeFromNib {
-
-	[super awakeFromNib];
-	
-	[self sharedInit];
-
-}
-
-- (void) sharedInit {
-
-	self.backgroundColor = nil;
-	self.opaque = NO;
-  self.suppressesDefaultAppearance = NO;
-
-}
-
-- (void) drawRect:(CGRect)rect {
-  
-  if (self.suppressesDefaultAppearance) {
-  
-  } else {
-  
-    [super drawRect:rect];
-  
-  }
-		
-}
 
 - (void) setCustomBackgroundView:(UIView *)newCustomBackgroundView {
 
@@ -83,33 +23,21 @@
 		[customBackgroundView removeFromSuperview];
 		
 	customBackgroundView = newCustomBackgroundView;
-	
 	customBackgroundView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
 	customBackgroundView.frame = self.bounds;
-  
   customBackgroundView.userInteractionEnabled = NO;
 	
 	[self addSubview:customBackgroundView];
 	[self sendSubviewToBack:customBackgroundView];
-
-  self.suppressesDefaultAppearance = (BOOL)!!(customBackgroundView);
 
 }
 
 - (void) layoutSubviews {
 
   [super layoutSubviews];
-  
+	
   [self.customBackgroundView.superview sendSubviewToBack:self.customBackgroundView];
   
-}
-
-- (void) setSuppressesDefaultAppearance:(BOOL)flag {
-
-  suppressesDefaultAppearance = flag;
-  
-  [self setNeedsDisplay];
-
 }
 
 - (void) setBarStyle:(UIBarStyle)newBarStyle {

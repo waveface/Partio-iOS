@@ -6,6 +6,8 @@
 //  Copyright (c) 2011 Waveface. All rights reserved.
 //
 
+#import <UIKit/UIKit.h>
+
 #import "IRAsyncOperation.h"
 
 #import "WAFile+WARemoteInterfaceEntitySyncing.h"
@@ -15,6 +17,7 @@
 #import "UIImage+IRAdditions.h"
 #import "UIImage+WAAdditions.h"
 #import "QuartzCore+IRAdditions.h"
+#import "ALAssetRepresentation+IRAdditions.h"
 
 
 NSString * kWAFileEntitySyncingErrorDomain = @"com.waveface.wammer.file.entitySyncing";
@@ -171,7 +174,7 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
               [NSDictionary dictionaryWithObjectsAndKeys:
                 ownObjectID, @"object_id",
                 @"slide", @"target",
-                [NSNumber numberWithUnsignedInt:(i + 1)], @"page",
+                [NSNumber numberWithUnsignedInteger:(i + 1)], @"page",
               nil]
               
             ) absoluteString], @"thumbnailURL",
@@ -255,7 +258,7 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
 
 }
 
-+ (void) synchronizeWithCompletion:(void (^)(BOOL, NSManagedObjectContext *, NSArray *, NSError *))completionBlock {
++ (void) synchronizeWithCompletion:(void (^)(BOOL, NSError *))completionBlock {
 
   [self synchronizeWithOptions:nil completion:completionBlock];
   
@@ -277,10 +280,8 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
 
 	if (!WAIsSyncableObject(self)) {
 		
-		NSLog(@"%s: %@ is not syncable.", __PRETTY_FUNCTION__, self);
-		
 		if (completionBlock)
-			completionBlock(NO, nil, nil, nil);
+			completionBlock(NO, nil);
 		
 		return;
 	
@@ -316,6 +317,12 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
 	
 	}
 	
+	
+	/* Steven: for redmine #1701, there is a strange issue, when we check [self smallestPresentableImage] for needsSendingThumbnailImage here,
+	 * this will cause the second and other photos will not be copied from Asset Library, an unknown hang in operation queue. 
+	 * The root cause is unknown. But if we didn't call smallestPresetableImage here, it would work fine. As a workaround, we don't test this here
+	 * And not to invoke smallestPresentableImage for needsSendingThumbnailImage should be fine
+	 */
 	BOOL needsSendingResourceImage = !self.resourceURL;
 	BOOL needsSendingThumbnailImage = !self.thumbnailURL;
 	
@@ -336,17 +343,72 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
 	
 	};
 	
-	if (!isValidPath(self.resourceFilePath)) {
-		NSLog(@"Resource file path %@ is not valid.  Skipping.", self.resourceFilePath);
-		canSendResourceImage = NO;
-	}
-	
 	NSMutableArray *operations = [NSMutableArray array];
 	NSManagedObjectContext *context = [ds disposableMOC];
 	context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
-	
+
+	if (!isValidPath(self.resourceFilePath)) {
+
+		if ([self.assetURL length]) {
+			
+			NSURL *capturedURL = [NSURL URLWithString:self.assetURL];
+
+			[operations addObject:[IRAsyncBarrierOperation operationWithWorker:^(IRAsyncOperationCallback callback) {
+
+				NSParameterAssert(![NSThread isMainThread]);
+
+				[[ALAssetsLibrary new] assetForURL:capturedURL resultBlock:^(ALAsset *asset) {
+					
+					NSParameterAssert(![NSThread isMainThread]);
+
+					if (asset) {
+						
+						UIImage *assetImage = [[asset defaultRepresentation] irImage];
+						NSData *assetImageData = UIImageJPEGRepresentation(assetImage, 1.0f);
+						NSURL *fileURL = [[WADataStore defaultStore] persistentFileURLForData:assetImageData extension:@"jpeg"];
+						
+						WAFile *file = (WAFile *)[context irManagedObjectForURI:ownURL];
+						file.resourceFilePath = [fileURL path];
+						
+						NSError *error = nil;
+						
+						BOOL didSave = [context save:&error];
+						NSCAssert2(didSave, @"Unable to copy asset %@: %@", [[asset defaultRepresentation] url], error);
+						
+						callback(didSave ? (id)kCFBooleanTrue : (id)kCFBooleanFalse);
+						
+					}
+					
+				} failureBlock:^(NSError *error) {
+					
+					NSParameterAssert(![NSThread isMainThread]);
+					
+					NSLog(@"Error: %@", error);
+					
+					callback(error);
+					
+				}];
+
+			} trampoline:^(IRAsyncOperationInvoker block) {
+
+				[context performBlock:block];
+
+			} callback:nil callbackTrampoline:^(IRAsyncOperationInvoker block) {
+
+				[context performBlock:block];
+
+			}]];
+
+		} else {
+
+			NSLog(@"Resource file path %@ is not valid.  Skipping.", self.resourceFilePath);
+			canSendResourceImage = NO;
+
+		}
+	}
+		
 	if (needsSendingThumbnailImage && canSendThumbnailImage) {
-	
+
 		[operations addObject:[IRAsyncBarrierOperation operationWithWorker:^(IRAsyncOperationCallback callback) {
 			
 			WAFile *file = (WAFile *)[context irManagedObjectForURI:ownURL];
@@ -354,11 +416,29 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
 			NSString *thumbnailFilePath = file.thumbnailFilePath;
 			if (!isValidPath(thumbnailFilePath)) {
 			
-				UIImage *smallestImage = [file smallestPresentableImage];
-				CGSize usedThumbnailSize = IRGravitize((CGRect){ CGPointZero, (CGSize){ 1024, 1024 } }, smallestImage.size, kCAGravityResizeAspect).size;
+				UIImage *bestImage = [file bestPresentableImage];
+				if (!bestImage) {
+					NSLog(@"bestImage of file %@ does not exist", [file identifier]);
+					callback(nil);
+					return;
+				}
+				NSCParameterAssert(bestImage);
+
+				CGSize imageSize = bestImage.size;
+				CGFloat const sideLength = 1024;
 				
-				UIImage *thumbnailImage = [smallestImage irScaledImageWithSize:usedThumbnailSize];
-				thumbnailFilePath = [[ds persistentFileURLForData:UIImageJPEGRepresentation(thumbnailImage, 85.0f) extension:@"jpeg"] path];
+				if ((imageSize.width > sideLength) || (imageSize.height > sideLength)) {
+				
+					UIImage *thumbnailImage = [[bestImage irStandardImage] irScaledImageWithSize:IRGravitize((CGRect){ CGPointZero, (CGSize){ sideLength, sideLength } }, bestImage.size, kCAGravityResizeAspect).size];
+					
+					thumbnailFilePath = [[ds persistentFileURLForData:UIImageJPEGRepresentation(thumbnailImage, 0.85f) extension:@"jpeg"] path];
+					
+				} else {
+
+					thumbnailFilePath = [[ds persistentFileURLForData:UIImageJPEGRepresentation([bestImage irStandardImage], 0.85f) extension:@"jpeg"] path];
+				
+				}
+				
 				file.thumbnailFilePath = thumbnailFilePath;
 				
 				NSError *error = nil;
@@ -412,7 +492,7 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
 	}
 	
 	if (needsSendingResourceImage && canSendResourceImage) {
-	
+
 		[operations addObject:[IRAsyncBarrierOperation operationWithWorker:^(IRAsyncOperationCallback callback) {
 			
 			WAFile *file = (WAFile *)[context irManagedObjectForURI:ownURL];
@@ -440,6 +520,8 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
 					callback(attachmentIdentifier);
 
 				}];
+
+				[[WADataStore defaultStore] setLastSyncSuccessDate:[NSDate date]];
 				
 			} onFailure: ^ (NSError *error) {
 			
@@ -497,17 +579,17 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
 			NSCAssert1(didSave, @"File entity syncing should merge remote information: %@", error);
 		
 			if (completionBlock)
-				completionBlock(didSave, context, [NSArray arrayWithObject:file], didSave ? nil : error);
+				completionBlock(didSave, error);
 
 		} else if ([results isKindOfClass:[NSError class]]){
 		
 			if (completionBlock)
-				completionBlock(NO, nil, nil, (NSError *)results);
+				completionBlock(NO, (NSError *)results);
 
 		} else {
 		
 			if (completionBlock)
-				completionBlock(NO, nil, nil, nil);
+				completionBlock(NO, nil);
 
 		}
 
@@ -518,18 +600,28 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
 	}]];
 	
 	
-	__block NSOperationQueue *queue = [[NSOperationQueue alloc] init];
-	[operations addObject:[NSBlockOperation blockOperationWithBlock:^ {
-		queue = nil;
-	}]];
-	[queue setSuspended:YES];
 	[operations enumerateObjectsUsingBlock:^(IRAsyncBarrierOperation *op, NSUInteger idx, BOOL *stop) {
 		if (idx > 0)
 			[op addDependency:(IRAsyncBarrierOperation *)[operations objectAtIndex:(idx - 1)]];
 	}];
-	[queue addOperations:operations waitUntilFinished:NO];
-	[queue setSuspended:NO];
+	
+	[[[self class] sharedSyncQueue] addOperations:operations waitUntilFinished:NO];
 
+}
+
++ (NSOperationQueue *) sharedSyncQueue {
+	
+	static NSOperationQueue *queue = nil;
+	static dispatch_once_t onceToken;
+	dispatch_once(&onceToken, ^{
+    
+		queue = [NSOperationQueue new];
+		queue.maxConcurrentOperationCount = 1;
+		
+	});
+	
+	return queue;
+	
 }
 
 @end

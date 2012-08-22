@@ -29,6 +29,9 @@
 #import "WAUserInfoViewController.h"
 #import "WANavigationController.h"
 #import "IASKAppSettingsViewController.h"
+#import "WADiscreteLayoutHelpers.h"
+
+#import <AssetsLibrary/AssetsLibrary.h>
 
 @interface WAArticlesViewController () <NSFetchedResultsControllerDelegate, WAArticleDraftsViewControllerDelegate>
 
@@ -68,11 +71,10 @@
 		return nil;
 		
 	NSFetchRequest *fr = [[WADataStore defaultStore] newFetchRequestForAllArticles];
-	fr.fetchBatchSize = 100;
 	fr.sortDescriptors = [NSArray arrayWithObjects:
 		[NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:YES],
 	nil];
-		
+	
 	self.managedObjectContext = [[WADataStore defaultStore] defaultAutoUpdatedMOC];
 	self.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fr managedObjectContext:self.managedObjectContext sectionNameKeyPath:nil cacheName:nil];
 	
@@ -187,6 +189,13 @@
 
 }
 
+- (void) controller:(NSFetchedResultsController *)controller didChangeObject:(id)anObject atIndexPath:(NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type newIndexPath:(NSIndexPath *)newIndexPath {
+
+	NSCParameterAssert([anObject conformsToProtocol:@protocol(IRDiscreteLayoutItem)]);
+	
+	WADiscreteLayoutResetCachedValuesForItem((id<IRDiscreteLayoutItem>)anObject);
+
+}
 
 - (void) controllerDidChangeContent:(NSFetchedResultsController *)controller {
 

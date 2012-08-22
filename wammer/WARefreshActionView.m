@@ -13,10 +13,6 @@
 #import "WARemoteInterface.h"
 #import "WARemoteInterface+ScheduledDataRetrieval.h"
 
-#import "FIFactory.h"
-#import "FISoundEngine.h"
-#import "FISound.h"
-
 @interface WARefreshActionView ()
 
 - (void) updateStateAnimated:(BOOL)animate;
@@ -26,23 +22,13 @@
 @property (nonatomic, readwrite, retain) UIActivityIndicatorView *activityIndicatorView;
 
 @property (nonatomic, readwrite, assign) BOOL currentlyBusy;
-@property (nonatomic, readwrite, assign) BOOL requiresSoundEffectOnSessionEnd;
-
-@property (nonatomic, readwrite, retain) FIFactory *soundFactory;
-@property (nonatomic, readwrite, retain) FISoundEngine *soundEngine;
-@property (nonatomic, readwrite, retain) FISound *refreshStartSound;
-@property (nonatomic, readwrite, retain) FISound *refreshEndSound;
-
-- (void) playRefreshStartSoundEffect;
-- (void) playRefreshEndSoundEffect;
 
 @end
 
 
 @implementation WARefreshActionView
 @synthesize interface, actionButton, activityIndicatorView;
-@synthesize currentlyBusy, requiresSoundEffectOnSessionEnd;
-@synthesize soundFactory, soundEngine, refreshStartSound, refreshEndSound;
+@synthesize currentlyBusy;
 
 - (id) initWithFrame:(CGRect)frame {
 
@@ -176,71 +162,8 @@
 	if (currentlyBusy == newCurrentlyBusy)
 		return;
 	
-	if (currentlyBusy && !newCurrentlyBusy)
-	if (requiresSoundEffectOnSessionEnd) {
-		self.requiresSoundEffectOnSessionEnd = NO;
-		[self playRefreshEndSoundEffect];
-	}
-	
 	currentlyBusy = newCurrentlyBusy;
 
-}
-
-- (FIFactory *) soundFactory {
-
-	if (soundFactory)
-		return soundFactory;
-		
-	soundFactory = [[FIFactory alloc] init];
-	return soundFactory;
-
-}
-
-- (FISoundEngine *) soundEngine {
-
-	if (soundEngine)
-		return soundEngine;
-	
-	soundEngine = [self.soundFactory buildSoundEngine];
-	[soundEngine activateAudioSessionWithCategory:AVAudioSessionCategoryAmbient];
-	[soundEngine openAudioDevice];
-		
-	return soundEngine;
-
-}
-
-- (FISound *) refreshStartSound {
-
-	if (refreshStartSound)
-		return refreshStartSound;
-	
-	refreshStartSound = [self.soundFactory loadSoundNamed:@"WASoundRefreshStarted.caf"];
-	return refreshStartSound;
-
-}
-
-- (FISound *) refreshEndSound {
-
-	if (refreshEndSound)
-		return refreshEndSound;
-	
-	refreshEndSound = [self.soundFactory loadSoundNamed:@"WASoundRefreshEnded.caf"];
-	return refreshEndSound;
-
-}
-
-- (void) playRefreshStartSoundEffect {
-
-	[self soundEngine];
-	[self.refreshStartSound play];
-	
-}
-
-- (void) playRefreshEndSoundEffect {
-
-	[self soundEngine];
-	[self.refreshEndSound play];
-	
 }
 
 @end

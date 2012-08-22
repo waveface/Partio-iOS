@@ -12,25 +12,31 @@
 #import "QuartzCore+IRAdditions.h"
 
 
+@interface WANavigationController ()
+@property (nonatomic, readwrite, assign) BOOL poppingViewController;
+@end
+
+
 @implementation WANavigationController
 
 @synthesize onViewDidLoad;
 @synthesize willPushViewControllerAnimated, didPushViewControllerAnimated;
 @synthesize onDismissModalViewControllerAnimated;
 @synthesize disablesAutomaticKeyboardDismissal;
+@synthesize poppingViewController = _poppingViewController;
 
 + (id) alloc {
 
-  UIViewController *fauxVC = [[UIViewController alloc] init];
-  WANavigationController *fauxNavController = [super alloc];
-  fauxNavController = [fauxNavController initWithRootViewController:fauxVC];
-  
-  NSData *fauxNavCData = [NSKeyedArchiver archivedDataWithRootObject:fauxNavController];
-  NSKeyedUnarchiver *unarchiver = [[NSKeyedUnarchiver alloc] initForReadingWithData:fauxNavCData];
-  [unarchiver setClass:[WANavigationBar class] forClassName:@"UINavigationBar"];
+	UIViewController *fauxVC = [[UIViewController alloc] init];
+	WANavigationController *fauxNavController = [super alloc];
+	fauxNavController = [fauxNavController initWithRootViewController:fauxVC];
+	
+	NSData *fauxNavCData = [NSKeyedArchiver archivedDataWithRootObject:fauxNavController];
+	NSKeyedUnarchiver *unarchiver = [[NSKeyedUnarchiver alloc] initForReadingWithData:fauxNavCData];
+	[unarchiver setClass:[WANavigationBar class] forClassName:@"UINavigationBar"];
 
-  return [unarchiver decodeObjectForKey:@"root"];
-    
+	return [unarchiver decodeObjectForKey:@"root"];
+		
 }
 
 - (id) initWithRootViewController:(UIViewController *)presentedViewController {
@@ -53,11 +59,10 @@
 	[super viewDidLoad];
 	
 	WANavigationBar *navigationBar = (WANavigationBar *)self.navigationBar;
-	
+	[navigationBar setBackgroundImage:[UIImage imageNamed:@"WANavigationBar"] forBarMetrics:UIBarMetricsDefault];
+	[navigationBar setBackgroundImage:[UIImage imageNamed:@"WANavigationBarLandscapePhone"] forBarMetrics:UIBarMetricsLandscapePhone];
+				
 	if ([navigationBar isKindOfClass:[WANavigationBar class]]) {
-		
-		navigationBar.customBackgroundView = [WANavigationBar defaultShadowBackgroundView];
-		navigationBar.suppressesDefaultAppearance = NO;
 		
 		__weak WANavigationBar *wNavigationBar = navigationBar;
 		
@@ -93,6 +98,7 @@
 			
 			}
 			
+			[wNavigationBar layoutSubviews];
 			[wNavigationBar.layer addAnimation:((^ {
 			
 				//	This is here to compensate the lack of a smooth fade transition when we re-set the background images
@@ -135,7 +141,13 @@
 
 - (UIViewController *) popViewControllerAnimated:(BOOL)animated {
 
-	return [super popViewControllerAnimated:animated];
+	_poppingViewController = YES;
+
+	UIViewController *viewController = [super popViewControllerAnimated:animated];
+	
+	_poppingViewController = NO;
+	
+	return viewController;
 
 }
 
@@ -145,6 +157,39 @@
 
 	if (self.onDismissModalViewControllerAnimated)
 		self.onDismissModalViewControllerAnimated(self, animated);
+
+}
+
+- (NSUInteger) supportedInterfaceOrientations {
+
+	#if __IPHONE_OS_VERSION_MIN_REQUIRED < 60000
+		#define UIInterfaceOrientationMaskLandscapeLeft 16
+		#define UIInterfaceOrientationMaskLandscapeRight 8
+		#define UIInterfaceOrientationMaskPortrait 2
+		#define UIInterfaceOrientationMaskPortraitUpsideDown 4
+	#endif
+
+	UIViewController *topVC = self.topViewController;
+	
+	if (_poppingViewController)
+		if ([self.viewControllers count] > 1)
+			topVC = [self.viewControllers objectAtIndex:([self.viewControllers count] - 2)];
+	
+	NSUInteger mask = 0;
+	
+	if ([topVC shouldAutorotateToInterfaceOrientation:UIInterfaceOrientationPortrait])
+		mask |= UIInterfaceOrientationMaskPortrait;
+	
+	if ([topVC shouldAutorotateToInterfaceOrientation:UIInterfaceOrientationPortraitUpsideDown])
+		mask |= UIInterfaceOrientationMaskPortraitUpsideDown;
+	
+	if ([topVC shouldAutorotateToInterfaceOrientation:UIInterfaceOrientationLandscapeLeft])
+		mask |= UIInterfaceOrientationMaskLandscapeLeft;
+	
+	if ([topVC shouldAutorotateToInterfaceOrientation:UIInterfaceOrientationLandscapeRight])
+		mask |= UIInterfaceOrientationMaskLandscapeRight;
+	
+	return mask;
 
 }
 

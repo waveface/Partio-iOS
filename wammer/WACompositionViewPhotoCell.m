@@ -9,22 +9,30 @@
 #import "WACompositionViewPhotoCell.h"
 #import "QuartzCore+IRAdditions.h"
 
+#import <AssetsLibrary/AssetsLibrary.h>
+
 
 @interface WACompositionViewPhotoCell ()
-@property (nonatomic, readwrite, retain) UIImageView *imageContainer;
-@property (nonatomic, readwrite, retain) UIView *highlightOverlay;	//	Placed in the image container
-@property (nonatomic, readwrite, retain) UIButton *removeButton;
-@property (nonatomic, readwrite, retain) UIActivityIndicatorView *activityIndicator;
-@property (nonatomic, readwrite, strong) id representedFileHelper;
+
+@property (nonatomic, readwrite, strong) UIImageView *imageContainer;
+@property (nonatomic, readwrite, strong) UIView *highlightOverlay;	//	Placed in the image container
+@property (nonatomic, readwrite, strong) UIButton *removeButton;
+@property (nonatomic, readwrite, strong) UIActivityIndicatorView *activityIndicator;
+
++ (ALAssetsLibrary *) assetsLibrary;
 
 @end
 
 @implementation WACompositionViewPhotoCell
-@synthesize style;
-@synthesize image, imageContainer, removeButton, onRemove, highlightOverlay;
-@synthesize activityIndicator;
-@synthesize canRemove;
-@synthesize representedFile, representedFileHelper;
+@synthesize style = _style;
+@synthesize image = _image;
+@synthesize imageContainer = _imageContainer;
+@synthesize removeButton = _removeButton;
+@synthesize onRemove = _onRemove;
+@synthesize highlightOverlay = _highlightOverlay;
+@synthesize activityIndicator = _activityIndicator;
+@synthesize canRemove = _canRemove;
+@synthesize representedFile = _representedFile;
 
 + (WACompositionViewPhotoCell *) cellRepresentingFile:(WAFile *)aFile reuseIdentifier:(NSString *)identifier {
 
@@ -37,32 +45,59 @@
 
 - (void) setRepresentedFile:(WAFile *)file {
 
-	if (representedFile == file) {
+	//	Either use the asset, or use the smallest presentable image!
+
+//	if (_representedFile == file) {
+//		self.image = file.smallestPresentableImage;
+//		return;
+//	}
+	
+	self.image = nil;
+	
+	_representedFile = file;
+	
+	__weak WACompositionViewPhotoCell *wSelf = self;
+	NSString *assetURLString = _representedFile.assetURL;
+	BOOL (^representedFileAssetChanged)(void) = ^ {
+		return (BOOL)![wSelf.representedFile.assetURL isEqual:assetURLString];
+	};
+	
+	if (!file.smallestPresentableImage && assetURLString) {
+	
+		[self irUnbind:@"image"];
+		
+		ALAssetsLibrary * const library = [[self class] assetsLibrary];
+		NSURL *assetURL = [NSURL URLWithString:assetURLString];
+		
+		[library assetForURL:assetURL resultBlock:^(ALAsset *asset) {
+		
+			if (representedFileAssetChanged())
+				return;
+		
+			dispatch_async(dispatch_get_main_queue(), ^{
+			
+				if (representedFileAssetChanged())
+					return;
+			
+				self.image = [UIImage imageWithCGImage:[asset aspectRatioThumbnail]];
+				
+			});
+			
+		} failureBlock:^(NSError *error) {
+			
+		}];
+	
+	} else {
+	
+		[self irBind:@"image" toObject:file keyPath:@"smallestPresentableImage" options:[NSDictionary dictionaryWithObjectsAndKeys:
+		
+			(id)kCFBooleanTrue, kIRBindingsAssignOnMainThreadOption,
+		
+		nil]];
+		
 		self.image = file.smallestPresentableImage;
-		return;
+	
 	}
-	
-	if (self.representedFileHelper) {
-		[representedFile irRemoveObservingsHelper:self.representedFileHelper];
-		self.representedFileHelper = nil;
-	}
-	
-	representedFile = file;
-	
-	[self irBind:@"image" toObject:file keyPath:@"smallestPresentableImage" options:[NSDictionary dictionaryWithObjectsAndKeys:
-	
-		(id)kCFBooleanTrue, kIRBindingsAssignOnMainThreadOption,
-	
-	nil]];
-	
-	self.image = file.smallestPresentableImage;
-
-}
-
-- (void) dealloc {
-
-//	if (representedFile && representedFileHelper)
-//		[representedFile irRemoveObservingsHelper:representedFileHelper];
 
 }
 
@@ -138,11 +173,11 @@
 
 - (void) setImage:(UIImage *)newImage {
 
-	if (image == newImage)
+	if (_image == newImage)
 		return;
 	
 	[self willChangeValueForKey:@"image"];
-	image = newImage;
+	_image = newImage;
 	[self didChangeValueForKey:@"image"];
 	
 	self.imageContainer.image = newImage;
@@ -153,7 +188,7 @@
 
 - (void) setStyle:(WACompositionViewPhotoCellStyle)aStyle {
 
-	style = aStyle;
+	_style = aStyle;
 	
 	[self setNeedsLayout];
 
@@ -189,7 +224,7 @@
 	
 	}
 	
-	if (canRemove) {
+	if (_canRemove) {
 		self.removeButton.alpha = 1;
 		self.removeButton.enabled = YES;
 	} else {
@@ -244,7 +279,21 @@
 
 - (void) prepareForReuse {
 
-	self.image = nil;
+	//	self.image = nil;
+
+}
+
++ (ALAssetsLibrary *) assetsLibrary {
+
+	static ALAssetsLibrary *library = nil;
+	static dispatch_once_t onceToken = 0;
+	dispatch_once(&onceToken, ^{
+	
+		library = [ALAssetsLibrary new];
+			
+	});
+	
+	return library;
 
 }
 

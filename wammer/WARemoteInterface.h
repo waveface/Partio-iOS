@@ -37,7 +37,8 @@
 #import "WARemoteInterface+Previews.h"
 #import "WARemoteInterface+Footprints.h"
 #import "WARemoteInterface+Storages.h"
-
 #import "WARemoteInterface+ScheduledDataRetrieval.h"
 #import "WARemoteInterface+Reachability.h"
 #import "WARemoteInterface+Environment.h"
+#import "WARemoteInterface+Facebook.h"
+#import "WARemoteInterface+SocialNetworks.h"

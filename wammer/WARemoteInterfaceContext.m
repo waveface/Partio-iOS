@@ -77,8 +77,6 @@ NSString * const kWARemoteInterfaceContextNewBaseURL = @"WARemoteInterfaceContex
 
 - (id) initWithBaseURL:(NSURL *)inBaseURL {
 
-	//	?
-	
 	self = [super initWithBaseURL:inBaseURL];
 	if (!self)
 		return nil;

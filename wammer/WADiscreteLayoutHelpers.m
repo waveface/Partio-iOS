@@ -13,6 +13,12 @@
 
 NSArray * WADefaultLayoutGridsMake (void);
 
+static NSString * const kItemHasImage = @"WADiscreteLayoutItemHasImage()";
+static NSString * const kItemHasLink = @"WADiscreteLayoutItemHasLink()";
+static NSString * const kItemHasShortText = @"WADiscreteLayoutItemHasShortText()";
+static NSString * const kItemHasLongText = @"WADiscreteLayoutItemHasLongText()";
+static NSString * const kItemIsFavorite = @"WADiscreteLayoutItemIsFavorite()";
+
 BOOL WADiscreteLayoutItemHasMediaOfType (id<IRDiscreteLayoutItem> anItem, CFStringRef aMediaType) {
 	
 	for (id aMediaItem in [anItem representedMediaItems])
@@ -25,38 +31,92 @@ BOOL WADiscreteLayoutItemHasMediaOfType (id<IRDiscreteLayoutItem> anItem, CFStri
 	
 BOOL WADiscreteLayoutItemHasImage (id<IRDiscreteLayoutItem> anItem) {
 
-	if ([anItem isKindOfClass:[WAArticle class]])
-		return [((WAArticle *)anItem).files count];
+	id const cachedValue = objc_getAssociatedObject(anItem, &kItemHasImage);
+	if (cachedValue)
+		return (cachedValue == (id)kCFBooleanTrue);
 	
-	return WADiscreteLayoutItemHasMediaOfType(anItem, kUTTypeImage);
+	BOOL const answer = [anItem isKindOfClass:[WAArticle class]] ?
+		[((WAArticle *)anItem).files count] :
+		WADiscreteLayoutItemHasMediaOfType(anItem, kUTTypeImage);
+	
+	objc_setAssociatedObject(anItem, &kItemHasImage, (id)(answer ? kCFBooleanTrue : kCFBooleanFalse), OBJC_ASSOCIATION_ASSIGN);
+	
+	return answer;
 	
 };
 
 BOOL WADiscreteLayoutItemHasLink (id<IRDiscreteLayoutItem> anItem) {
 	
-	if ([anItem isKindOfClass:[WAArticle class]])
-		return [((WAArticle *)anItem).previews count];
+	id const cachedValue = objc_getAssociatedObject(anItem, &kItemHasLink);
+	if (cachedValue)
+		return (cachedValue == (id)kCFBooleanTrue);
 	
-	return WADiscreteLayoutItemHasMediaOfType(anItem, kUTTypeURL);
+	BOOL const answer = [anItem isKindOfClass:[WAArticle class]] ?
+		[((WAArticle *)anItem).previews count] :
+		WADiscreteLayoutItemHasMediaOfType(anItem, kUTTypeURL);
+	
+	objc_setAssociatedObject(anItem, &kItemHasLink, (id)(answer ? kCFBooleanTrue : kCFBooleanFalse), OBJC_ASSOCIATION_ASSIGN);
+	
+	return answer;
 	
 };
 
 BOOL WADiscreteLayoutItemHasShortText (id<IRDiscreteLayoutItem> anItem) {
 	
-	if ([anItem isKindOfClass:[WAArticle class]])
-		return ([((WAArticle *)anItem).text length] < 140);
+	id const cachedValue = objc_getAssociatedObject(anItem, &kItemHasShortText);
+	if (cachedValue)
+		return (cachedValue == (id)kCFBooleanTrue);
 	
-	return (BOOL)([[[anItem representedText] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] length] < 140);
+	BOOL const answer = [anItem isKindOfClass:[WAArticle class]] ?
+		([((WAArticle *)anItem).text length] < 140) :
+		([[[anItem representedText] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] length] < 140);
+	
+	objc_setAssociatedObject(anItem, &kItemHasShortText, (id)(answer ? kCFBooleanTrue : kCFBooleanFalse), OBJC_ASSOCIATION_ASSIGN);
+	
+	return answer;
 
 }
 	
 BOOL WADiscreteLayoutItemHasLongText (id<IRDiscreteLayoutItem> anItem) {
+
+	id const cachedValue = objc_getAssociatedObject(anItem, &kItemHasLongText);
+	if (cachedValue)
+		return (cachedValue == (id)kCFBooleanTrue);
 	
-	if ([anItem isKindOfClass:[WAArticle class]])
-		return ([((WAArticle *)anItem).text length] > 320);
+	BOOL const answer = [anItem isKindOfClass:[WAArticle class]] ?
+		([((WAArticle *)anItem).text length] > 320) :
+		([[[anItem representedText] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] length] > 320);
 	
-	return (BOOL)([[[anItem representedText] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] length] > 320);
+	objc_setAssociatedObject(anItem, &kItemHasLongText, (id)(answer ? kCFBooleanTrue : kCFBooleanFalse), OBJC_ASSOCIATION_ASSIGN);
+		
+	return answer;
 	
+}
+
+BOOL WADiscreteLayoutItemIsFavorite (id<IRDiscreteLayoutItem> anItem) {
+
+	id const cachedValue = objc_getAssociatedObject(anItem, &kItemIsFavorite);
+	if (cachedValue)
+		return (cachedValue == (id)kCFBooleanTrue);
+	
+	BOOL const answer = [anItem isKindOfClass:[WAArticle class]] ?
+		[((WAArticle *)anItem).favorite isEqualToNumber:(id)kCFBooleanTrue] :
+		NO;
+	
+	objc_setAssociatedObject(anItem, &kItemIsFavorite, (id)(answer ? kCFBooleanTrue : kCFBooleanFalse), OBJC_ASSOCIATION_ASSIGN);
+		
+	return answer;
+
+}
+
+void WADiscreteLayoutResetCachedValuesForItem (id<IRDiscreteLayoutItem> item) {
+
+	objc_setAssociatedObject(item, &kItemHasImage, nil, OBJC_ASSOCIATION_ASSIGN);
+	objc_setAssociatedObject(item, &kItemHasLink, nil, OBJC_ASSOCIATION_ASSIGN);
+	objc_setAssociatedObject(item, &kItemHasShortText, nil, OBJC_ASSOCIATION_ASSIGN);
+	objc_setAssociatedObject(item, &kItemHasLongText, nil, OBJC_ASSOCIATION_ASSIGN);
+	objc_setAssociatedObject(item, &kItemIsFavorite, nil, OBJC_ASSOCIATION_ASSIGN);
+
 }
 
 NSArray * WADefaultLayoutGrids (void) {
@@ -78,30 +138,21 @@ NSArray * WADefaultLayoutGridsMake (void) {
 	CGSize portraitSize = (CGSize){ 768, 1024 };
 	CGSize landscapeSize = (CGSize){ 1024, 768 };
 	
-	BOOL (^itemIsFavorite)(id<IRDiscreteLayoutItem>) = ^ (id<IRDiscreteLayoutItem> item) {
-	
-		if (![item isKindOfClass:[WAArticle class]])
-			return NO;
-		
-		return [((WAArticle *)item).favorite isEqualToNumber:(id)kCFBooleanTrue];
-	
-	};
-	
 	IRDiscreteLayoutAreaValidatorBlock notFave = ^ (IRDiscreteLayoutArea *self, id anItem) {
 	
-		return (BOOL)!itemIsFavorite(anItem);
+		return (BOOL)!WADiscreteLayoutItemIsFavorite(anItem);
 	
 	};
 	
 	IRDiscreteLayoutAreaValidatorBlock fave = ^ (IRDiscreteLayoutArea *self, id anItem) {
 	
-		return (BOOL)itemIsFavorite(anItem);
+		return (BOOL)WADiscreteLayoutItemIsFavorite(anItem);
 	
 	};
 	
 	IRDiscreteLayoutAreaValidatorBlock combo = ^ (IRDiscreteLayoutArea *self, id anItem) {
 	
-		if (itemIsFavorite(anItem))
+		if (WADiscreteLayoutItemIsFavorite(anItem))
 			return NO;
 	
 		return (BOOL)((WADiscreteLayoutItemHasLink(anItem) && WADiscreteLayoutItemHasLongText(anItem) && WADiscreteLayoutItemHasImage(anItem)) || WADiscreteLayoutItemHasImage(anItem));
@@ -183,7 +234,7 @@ NSArray * WADefaultLayoutGridsMake (void) {
 		
 	WALayoutAreaTemplateNameBlock annotationTop_verticalFave = templateName(
 		@"WFPreviewTemplate_Discrete_Plaintext",
-		@"WFPreviewTemplate-Discrete_Web_ImageWithDescription_Vertical",
+		@"WFPreviewTemplate-Discrete_Web_Image_Vertical",
 		@"WFPreviewTemplate-Discrete_Web_ImageWithDescription_Vertical_Fave");
 		
 	WALayoutAreaTemplateNameBlock annotationTop_horizontalFave = templateName(
@@ -227,8 +278,8 @@ NSArray * WADefaultLayoutGridsMake (void) {
 			
 			[[IRDiscreteLayoutGrid alloc] initWithIdentifier:@"5_non_faves_A_landscape" contentSize:landscapeSize layoutAreas:[NSArray arrayWithObjects:
 				area(@"A", notFave, layoutBlock(3, 2, 0, 0, 1, 1), singleXStack),
-				area(@"B", notFave, layoutBlock(3, 2, 1, 1, 1, 1), singleXStack),
-				area(@"C", notFave, layoutBlock(3, 2, 0, 1, 1, 1), singleXStack),
+				area(@"B", notFave, layoutBlock(3, 2, 0, 1, 1, 1), singleXStack),
+				area(@"C", notFave, layoutBlock(3, 2, 1, 1, 1, 1), singleXStack),
 				area(@"D", combo,		layoutBlock(3, 2, 1, 0, 2, 1), singleXStack),
 				area(@"E", notFave, layoutBlock(3, 2, 2, 1, 1, 1), singleXStack),
 			nil]]

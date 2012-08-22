@@ -7,6 +7,7 @@
 //
 
 #import "WAOverlayBezel.h"
+#import "IRLifetimeHelper.h"
 
 
 @interface WAOverlayBezel ()
@@ -46,7 +47,9 @@
 	self = [super initWithFrame:(CGRect){ CGPointZero, (CGSize){ 128, 128 }}];
 	if (!self)
 		return nil;
-		
+	
+	self.userInteractionEnabled = NO;
+	
 	self.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.65f];
 	self.layer.cornerRadius = 8.0f;
 	self.autoresizingMask = UIViewAutoresizingFlexibleTopMargin|UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleBottomMargin|UIViewAutoresizingFlexibleRightMargin;
@@ -96,6 +99,12 @@
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleDeviceOrientationDidChange:) name:UIDeviceOrientationDidChangeNotification object:nil];
 	
 	return self;
+
+}
+
+- (UIView *) hitTest:(CGPoint)point withEvent:(UIEvent *)event {
+
+	return nil;
 
 }
 
@@ -149,9 +158,13 @@
 	
 	UIApplication *app = [UIApplication sharedApplication];
 	UIWindow *window = app.keyWindow;
+
+#if TARGET_OS_IPHONE
 	
  	if (!window.rootViewController)
 		window = app.delegate.window;
+
+#endif
 	
 	if (!window.rootViewController)
 		window = [[UIApplication sharedApplication].windows objectAtIndex:0];
@@ -162,6 +175,14 @@
 	
 	[window addObserver:self forKeyPath:@"irInterfaceBounds" options:NSKeyValueObservingOptionNew context:nil];
 	[self observeValueForKeyPath:@"irInterfaceBounds" ofObject:nil change:nil context:nil];
+	
+	__weak WAOverlayBezel *wSelf = self;
+	
+	[window irPerformOnDeallocation:^ {
+	
+		wSelf.observedWindow = nil;
+	
+	}];
 	
 	self.observedWindow = window;
 
@@ -276,15 +297,17 @@
 	[self addSubview:self.captionLabel];
 	[self.captionLabel sizeToFit];
 	
+	CGSize captionSize = (CGSize){
+		MIN(MAX(0, (CGRectGetWidth(self.bounds) - 16)), CGRectGetWidth(self.captionLabel.frame)),
+		CGRectGetHeight(self.captionLabel.frame)
+	};
+
 	self.captionLabel.frame = CGRectIntegral((CGRect){
 		(CGPoint){
-			CGRectGetMidX(self.bounds) - (0.5f * CGRectGetWidth(self.captionLabel.frame)),
+			CGRectGetMidX(self.bounds) - (0.5f * captionSize.width),
 			CGRectGetMinY(self.bounds) + 10
 		},
-		(CGSize){
-			MIN(MAX(0, (CGRectGetWidth(self.bounds) - 16)), CGRectGetWidth(self.captionLabel.frame)),
-			CGRectGetHeight(self.captionLabel.frame)
-		}
+		captionSize
 	});
 	
 	if (!CATransform3DEqualToTransform(self.layer.transform, self.deviceOrientationTransform))

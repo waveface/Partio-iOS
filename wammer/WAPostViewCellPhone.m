@@ -92,6 +92,20 @@
 		
 		cell = [loadedObjects objectAtIndex:1];
 	
+	} else if ([identifier isEqualToString:@"PostCell-WebLinkOnly"]) {
+
+		UINib *nib = [UINib nibWithNibName:@"WAPostViewCellPhone-WebLinkOnly" bundle:[NSBundle mainBundle]];
+		NSArray *loadedObjects = [nib instantiateWithOwner:nil options:nil];
+
+		cell = [loadedObjects objectAtIndex:0];
+
+	} else if ([identifier isEqualToString:@"PostCell-WebLinkOnlyNoPhoto"]) {
+
+		UINib *nib = [UINib nibWithNibName:@"WAPostViewCellPhone-WebLinkOnly" bundle:[NSBundle mainBundle]];
+		NSArray *loadedObjects = [nib instantiateWithOwner:nil options:nil];
+
+		cell = [loadedObjects objectAtIndex:1];
+
 	} else if ([identifier isEqualToString:@"PostCell-TextOnly"]) {
 	
 		UINib *nib = [UINib nibWithNibName:@"WAPostViewCellPhone-Default" bundle:[NSBundle mainBundle]];
@@ -99,12 +113,33 @@
 		
 		cell = [loadedObjects objectAtIndex:0];
 	
+	} else if ([identifier isEqualToString:@"PostCell-Stacked-1-PhotoOnly"]) {
+
+		UINib *nib = [UINib nibWithNibName:@"WAPostViewCellPhone-ImageOnlyStack" bundle:[NSBundle mainBundle]];
+		NSArray *loadedObjects = [nib instantiateWithOwner:nil options:nil];
+
+		cell = [loadedObjects objectAtIndex:0];
+
+	} else if ([identifier isEqualToString:@"PostCell-Stacked-2-PhotoOnly"]) {
+
+		UINib *nib = [UINib nibWithNibName:@"WAPostViewCellPhone-ImageOnlyStack" bundle:[NSBundle mainBundle]];
+		NSArray *loadedObjects = [nib instantiateWithOwner:nil options:nil];
+
+		cell = [loadedObjects objectAtIndex:1];
+
+	} else if ([identifier isEqualToString:@"PostCell-Stacked-3-PhotoOnly"]) {
+
+		UINib *nib = [UINib nibWithNibName:@"WAPostViewCellPhone-ImageOnlyStack" bundle:[NSBundle mainBundle]];
+		NSArray *loadedObjects = [nib instantiateWithOwner:nil options:nil];
+
+		cell = [loadedObjects objectAtIndex:2];
+
 	}
 	
 	cell.selectedBackgroundView = ((^ {
 	
 		UIView *view = [[UIView alloc] initWithFrame:CGRectZero];
-		view.backgroundColor = [UIColor colorWithWhite:0.85 alpha:1];
+		view.backgroundColor = [UIColor colorWithWhite:0.65 alpha:1];
 		view.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
 		
 		return view;
@@ -128,10 +163,17 @@
 			
 			if (anyPreview.text || anyPreview.url || anyPreview.graphElement.text || anyPreview.graphElement.title) {
 			
-				if (anyPreview.graphElement.representingImage.imageRemoteURL)
-					return @"PostCell-WebLink";
-			
-				return @"PostCell-WebLinkNoPhoto";
+				if ([anyPreview.graphElement.representingImage.imageRemoteURL length] != 0) {
+					if ([article.text length] > 0) {
+						return @"PostCell-WebLink";
+					}
+					return @"PostCell-WebLinkOnly";
+				} else {
+					if ([article.text length] > 0) {
+						return @"PostCell-WebLinkNoPhoto";
+					}
+					return @"PostCell-WebLinkOnlyNoPhoto";
+				}
 			
 			}
 			
@@ -139,29 +181,58 @@
 		
 		}
 		
-		case 1:
-			return @"PostCell-Stacked-1-Photo";
+		case 1: {
+
+			if ([article.text length] > 0) {
+
+				return @"PostCell-Stacked-1-Photo";
+
+			} else {
+
+				return @"PostCell-Stacked-1-PhotoOnly";
+
+			}
+
+		}
 		
-		case 2:
-			return @"PostCell-Stacked-2-Photo";
+		case 2: {
+
+			if ([article.text length] > 0) {
+
+				return @"PostCell-Stacked-2-Photo";
+
+			} else {
+
+				return @"PostCell-Stacked-2-PhotoOnly";
+
+			}
+
+		}
 		
-		default:
-			return @"PostCell-Stacked-3-Photo";
-	
+		default: {
+
+			if ([article.text length] > 0) {
+
+				return @"PostCell-Stacked-3-Photo";
+
+			} else {
+
+				return @"PostCell-Stacked-3-PhotoOnly";
+
+			}
+
+		}
+
 	}
 	
 }
 
 - (CGFloat) heightForRowRepresentingObject:(WAArticle *)object inTableView:(UITableView *)tableView {
 
-//	BOOL isWebPost = !![object.previews count];
-//	BOOL isPhotoPost = !![object.files count];
-//	if (isWebPost)
-//		return 158;
-	
 	NSString *identifier = [[self class] identifierRepresentingObject:object];
 	WAPostViewCellPhone *prototype = (WAPostViewCellPhone *)[[self class] prototypeForIdentifier:identifier];
 	NSParameterAssert([prototype isKindOfClass:[WAPostViewCellPhone class]]);
+	
 	prototype.frame = (CGRect){
 		CGPointZero,
 		(CGSize){
@@ -198,20 +269,17 @@
 	
 	WAArticle *post = representedObject;
 	NSParameterAssert([post isKindOfClass:[WAArticle class]]);
-
-	BOOL postHasFiles = (BOOL)!![post.files count];
-	BOOL postHasPreview = (BOOL)!![post.previews count];
+	
+	BOOL const postHasFiles = (BOOL)!![post.files count];
+	BOOL const postHasPreview = (BOOL)!![post.previews count];
 	
 	NSDate *postDate = post.presentationDate;
-	NSString *relativeDateString = [[IRRelativeDateFormatter sharedFormatter] stringFromDate:postDate];
+	NSString *deviceName = post.creationDeviceName;
+	NSString *timeString = [[[self class] timeFormatter] stringFromDate:postDate];
 	
-	self.originLabel.text = [NSString stringWithFormat:NSLocalizedString(@"NUMBER_OF_PHOTOS_FROM_DEVICE", @"iPhone Timeline"),
-		relativeDateString,
-		post.creationDeviceName
-	];
-	
-	self.dateLabel.text = [relativeDateString lowercaseString];
-	self.commentLabel.text = ([post.text length]>0)? post.text : @"My life is a tapestry for rich and royal you.";
+	self.originLabel.text = [NSString stringWithFormat:NSLocalizedString(@"CREATE_TIME_FROM_DEVICE", @"iPhone Timeline"), timeString, deviceName];
+	self.dateLabel.text = [[[IRRelativeDateFormatter sharedFormatter] stringFromDate:postDate] lowercaseString];
+	self.commentLabel.text = post.text;
 	
 	if (postHasPreview) {
 
@@ -277,12 +345,32 @@
 			WAFile *file = (WAFile *)[displayedFiles objectAtIndex:idx];
 			
 			[iv irUnbind:@"image"];
-			
-			[iv irBind:@"image" toObject:file keyPath:@"smallestPresentableImage" options:[NSDictionary dictionaryWithObjectsAndKeys:
-			
-				(id)kCFBooleanTrue, kIRBindingsAssignOnMainThreadOption,
-			
-			nil]];
+
+			if (!file.smallestPresentableImage && file.assetURL) {
+
+				ALAssetsLibrary * const library = [[self class] assetsLibrary];
+				[library assetForURL:[NSURL URLWithString:file.assetURL] resultBlock:^(ALAsset *asset) {
+
+					dispatch_async(dispatch_get_main_queue(), ^{
+						
+						iv.image = [UIImage imageWithCGImage:[asset aspectRatioThumbnail]];
+						
+					});
+
+				} failureBlock:^(NSError *error) {
+
+					NSLog(@"Unable to retrieve assets for URL %@", file.assetURL);
+
+				}];
+
+			} else {
+
+				[iv irBind:@"image" toObject:file keyPath:@"smallestPresentableImage" options:[NSDictionary dictionaryWithObjectsAndKeys:
+																																											 
+					(id)kCFBooleanTrue, kIRBindingsAssignOnMainThreadOption,
+																																											 
+				nil]];
+			}
 			
 		}];
 		
@@ -295,10 +383,11 @@
 		self.accessibilityLabel = @"Photo";
 		
 		NSString *photoInfo = NSLocalizedString(@"PHOTO_PLURAL", @"in iPhone timeline");
-		if ( [post.files count]==1 )
+		if ([post.files count] == 1)
 			photoInfo = NSLocalizedString(@"PHOTO_SINGULAR", @"in iPhone timeline");
+		
 		self.accessibilityHint = [NSString stringWithFormat:photoInfo, [post.files count]];
-		self.originLabel.text = [self.accessibilityHint stringByAppendingString:self.originLabel.text];
+		self.originLabel.text = [NSString stringWithFormat:NSLocalizedString(@"NUMBER_OF_PHOTOS_CREATE_TIME_FROM_DEVICE", @"iPhone Timeline"), self.accessibilityHint, timeString, deviceName];
 		
   } else {
 		
@@ -316,10 +405,13 @@
 	UIColor *shadowColor;
 
 	if ([post.favorite isEqual:(id)kCFBooleanTrue]) {
+		
 		self.backgroundImageView.image = [UIImage imageNamed:@"tagFavorite"];
 		textColor = [UIColor whiteColor];
 		shadowColor = [UIColor colorWithHue:155/360 saturation:0.0 brightness:0.8 alpha:1.0];
+		
 	} else {
+		
 		self.backgroundImageView.image = [UIImage imageNamed:@"tagDefault"];
 		textColor = [UIColor colorWithHue:111/360 saturation:0.0 brightness:0.56 alpha:1.0];
 		shadowColor = [UIColor colorWithHue:111/360 saturation:0.0 brightness:1.0 alpha:1.0];
@@ -328,21 +420,99 @@
 	
 	self.dayLabel.textColor = textColor;
 	self.dayLabel.shadowColor = shadowColor;
+	
 	self.monthLabel.textColor = textColor;
 	self.monthLabel.shadowColor = shadowColor;
 	
-	//	TBD: optimize if slow
-	
-	NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-	
-	dateFormatter.dateFormat = @"dd";
-	self.dayLabel.text = [dateFormatter stringFromDate:postDate];
-	
-	dateFormatter.dateFormat = @"MMM";
-	self.monthLabel.text = [[dateFormatter stringFromDate:postDate] uppercaseString];
+	self.dayLabel.text = [[[self class] dayFormatter] stringFromDate:postDate];
+	self.monthLabel.text = [[[[self class] monthFormatter] stringFromDate:postDate] uppercaseString];
 	
 	[self setNeedsLayout];
 	
 }
 
++ (NSDateFormatter *) monthFormatter {
+
+	static dispatch_once_t onceToken;
+	static NSDateFormatter *formatter;
+	dispatch_once(&onceToken, ^{
+		formatter = [[NSDateFormatter alloc] init];
+		formatter.dateFormat = @"MMM";
+	});
+
+	return formatter;
+
+}
+
++ (NSDateFormatter *) dayFormatter {
+
+	static dispatch_once_t onceToken;
+	static NSDateFormatter *formatter;
+	dispatch_once(&onceToken, ^{
+		formatter = [[NSDateFormatter alloc] init];
+		formatter.dateFormat = @"dd";
+	});
+
+	return formatter;
+
+}
+
++ (NSDateFormatter *) timeFormatter {
+
+	static dispatch_once_t onceToken;
+	static NSDateFormatter *formatter;
+	dispatch_once(&onceToken, ^{
+		formatter = [[NSDateFormatter alloc] init];
+		formatter.dateStyle = NSDateFormatterNoStyle;
+		formatter.timeStyle = NSDateFormatterShortStyle;
+	});
+
+	return formatter;
+
+}
+
+- (void) setActive:(BOOL)active animated:(BOOL)animated {
+
+	CGFloat alpha = active ? 0.65f : 1.0f;
+	UIColor *backgroundColor = [UIColor colorWithWhite:0.5 alpha:1];
+	
+	for (UIImageView *iv in self.photoImageViews) {
+		iv.alpha = alpha;
+		iv.backgroundColor = backgroundColor;
+	}
+	
+	self.previewImageView.alpha = alpha;
+	self.previewImageView.backgroundColor = backgroundColor;
+
+}
+
+- (void) setHighlighted:(BOOL)highlighted animated:(BOOL)animated {
+
+	[super setHighlighted:highlighted animated:animated];
+	
+	[self setActive:(self.highlighted || self.selected) animated:animated];
+
+}
+
+- (void) setSelected:(BOOL)selected animated:(BOOL)animated {
+
+	[super setSelected:selected animated:animated];
+	
+	[self setActive:(self.highlighted || self.selected) animated:animated];
+
+}
+
++ (ALAssetsLibrary *) assetsLibrary {
+
+	static ALAssetsLibrary *library = nil;
+	static dispatch_once_t onceToken = 0;
+	dispatch_once(&onceToken, ^{
+
+    library = [ALAssetsLibrary new];
+
+	});
+
+	return library;
+
+}
 @end

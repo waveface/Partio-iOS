@@ -68,4 +68,16 @@
   
 }
 
+- (void)testPreferredLanguage {
+	
+	NSString *preferredLanguage = @"en";
+	
+	NSArray *preferredLanguages = [NSLocale preferredLanguages];
+	if ([preferredLanguages count] > 0 && [[preferredLanguages objectAtIndex:0] isEqualToString:@"zh-Hant"]) {
+		preferredLanguage = @"zh_tw";
+	}
+	
+	STAssertEquals(preferredLanguage, @"en", @"should rollback to basics");
+	
+}
 @end

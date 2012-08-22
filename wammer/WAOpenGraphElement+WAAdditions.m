@@ -34,18 +34,19 @@
 	WAOpenGraphElementImage *image = [self primitiveValueForKey:@"representingImage"];
 	[self didAccessValueForKey:@"representingImage"];
 	
-	if (!image) {
-	
-		[self willAccessValueForKey:@"images"];
-		NSOrderedSet *images = [self primitiveValueForKey:@"images"];
-		
-		if ([images count]) {
-			image = [[images array] objectAtIndex:0];
-		}
-
-		[self didAccessValueForKey:@"images"];
-	
-	}
+// avoid displaying preview thumbnails if thumbnail_url is empty
+//	if (!image) {
+//	
+//		[self willAccessValueForKey:@"images"];
+//		NSOrderedSet *images = [self primitiveValueForKey:@"images"];
+//		
+//		if ([images count]) {
+//			image = [[images array] objectAtIndex:0];
+//		}
+//
+//		[self didAccessValueForKey:@"images"];
+//	
+//	}
 	
 	return image;
 

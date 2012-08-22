@@ -1,9 +1,26 @@
-/* attachment activity view */
+/* Accessibility label for account info in iPhone timeline */
+"ACCESS_ACCOUNT_INFO" = "Account Info";
+
+/* accessibility label for adding photos in composition view */
+"ACCESS_ADD_PHOTO" = "Add Photo";
+
+/* Accessibility label for camera in iPhone timeline */
+"ACCESS_CAMERA" = "Camera";
+
+/* Accessibility label for composer in iPhone timeline */
+"ACCESS_COMPOSE" = "Stream";
+
+/* Accessibility label for date picker in iPhone timeline */
+"ACCESS_PICK_DATE" = "Pick Date";
+
+/* accessibility label for webpage preview in composition view */
+"ACCESS_PREVIEW" = "Preview";
+
+/* add photo button in composition view */
 "ACTION_ADD" = "add photo";
 
 /* Action title for Cancelling
    Action title for cancelling stuff
-   Cancel ation in login view
    Cancel.
    Title for cancelling an action */
 "ACTION_CANCEL" = "Cancel";
@@ -12,6 +29,9 @@
    Title for the action responsible for presenting a controller changing the representing file of an article */
 "ACTION_CHANGE_REPRESENTING_FILE" = "Change Cover";
 
+/* Short action title for connecting Facebook creds */
+"ACTION_CONNECT_FACEBOOK_SHORT" = "Start importing";
+
 /* Action deleting an article
    Title for deleting an article from the Overview
    Title for deleting an article from the Timeline */
@@ -19,6 +39,9 @@
 
 /* Action title for discarding a draft */
 "ACTION_DISCARD" = "Discard";
+
+/* Short action title for disconnecting Facebook creds */
+"ACTION_DISCONNECT_FACEBOOK" = "Stop importing";
 
 /* In iPad composition view */
 "ACTION_DONE" = "Stream!";
@@ -32,8 +55,7 @@
 /* No comment provided by engineer. */
 "ACTION_LATER" = "Later";
 
-/* Action marking article as favorite
-   Bar button item title to mark the article as a favorite */
+/* Action marking article as favorite */
 "ACTION_MARK_FAVORITE" = "Favorite";
 
 /* No comment provided by engineer. */
@@ -42,7 +64,7 @@
 /* Action title for creating a new post */
 "ACTION_NEW_POST" = "New Post";
 
-/* No comment provided by engineer. */
+/* Alert Dismissal Action */
 "ACTION_OKAY" = "OK";
 
 /* No comment provided by engineer. */
@@ -51,26 +73,11 @@
 /* No comment provided by engineer. */
 "ACTION_PRINT" = "Print";
 
-/* Action title for processing stuff */
-"ACTION_PROCESSING" = "Processing";
-
-/* Action title for registering */
-"ACTION_REGISTER_USER" = "Register";
-
 /* No comment provided by engineer. */
 "ACTION_RESET" = "Reset";
 
-/* Action title for resetting password in login view */
-"ACTION_RESET_PASSWORD" = "Forgot";
-
 /* Action title for saving a draft */
 "ACTION_SAVE_DRAFT" = "Save Draft";
-
-/* Action title for signing in */
-"ACTION_SIGN_IN" = "Login";
-
-/* Action title for signing in thru Facebook */
-"ACTION_SIGN_IN_WITH_FACEBOOK" = "Link to Facebook";
 
 /* Action title for Signing Out */
 "ACTION_SIGN_OUT" = "Logout";
@@ -78,8 +85,7 @@
 /* Button title for showing a camera capture controller */
 "ACTION_TAKE_PHOTO_WITH_CAMERA" = "Camera";
 
-/* Action marking article as not favorite
-   Bar button item title to unmark the article as a favorite */
+/* Action marking article as not favorite */
 "ACTION_UNMARK_FAVORITE" = "Unfavorite";
 
 /* No comment provided by engineer. */
@@ -98,11 +104,20 @@
    Title for application */
 "APP_TITLE" = "Stream";
 
-/* Title for login view */
-"AUTH_REQUEST_TITLE" = "Stream";
+/* title in attachments view */
+"ATTACHMENTS_VIEW_TITLE" = "Attachments";
 
-/* Title for the Facebook linking controller */
-"AUTH_WITH_FACEBOOK_REQUEST_TITLE" = "Facebook";
+/* Authentication Error Description */
+"AUTH_ERROR_ALREADY_REGISTERED" = "This Email has already been registered. Please enter a new Email.";
+
+/* Authentication Error Description */
+"AUTH_ERROR_INVALID_EMAIL_FORMAT" = "Email format is invalid.";
+
+/* Authentication Error Description */
+"AUTH_ERROR_INVALID_EMAIL_PWD" = "Email or password is invalid.";
+
+/* Authentication Error Description */
+"AUTH_ERROR_INVALID_PWD_FORMAT" = "Password format is invalid.";
 
 /* Prompt for Cover Image picker */
 "CHANGE_REPRESENTING_FILE_PROMPT" = "Select a new Cover Photo for this post.";
@@ -110,26 +125,22 @@
 /* Title for Cover Image picker */
 "CHANGE_REPRESENTING_FILE_TITLE" = "Pick Photo";
 
-/* “%@ Comments” */
-"COMMENTS_COUNT_MANY_FORMAT_STRING" = "%@ Notes";
-
-/* “%@ Comment” */
-"COMMENTS_COUNT_ONE_FORMAT_STRING" = "%@ Notes";
-
-/* “%@ Comment” or “No Comment” */
-"COMMENTS_COUNT_ZERO_FORMAT_STRING" = "No Notes";
-
-/* No comment provided by engineer. */
+/* add photo button in composition view */
 "COMPOSITION_MANY_PHOTOS_BUTTON_CAPTION_FORMAT" = "%i Photos";
 
-/* No comment provided by engineer. */
+/* add photo button in composition view */
 "COMPOSITION_ONE_PHOTO_BUTTON_CAPTION_FORMAT" = "%i Photo";
 
-/* No comment provided by engineer. */
+/* remove preview in iPad composition view
+   remove preview in iPhone composition view */
 "COMPOSITION_REMOVE_CURRENT_PREVIEW" = "Remove Preview";
 
 /* Title for the composition view */
 "COMPOSITION_TITLE" = "Compose";
+
+/* In iPad overview, (time, device)
+   iPhone Timeline */
+"CREATE_TIME_FROM_DEVICE" = "Posted at %1$@ from %2$@";
 
 /* in relative date format */
 "DATE_AFTER" = "%@ after";
@@ -174,24 +185,26 @@
 /* Failed, underlying error description %@ */
 "ERROR_ARTICLE_ENTITY_SYNC_FAILURE_WITH_UNDERLYING_ERROR_DESCRIPTION_FORMAT" = "A necessary task failed: %@ — Your post has been saved as a draft.";
 
-/* Description for authentication failure */
-"ERROR_AUTHENTICATION_FAILED_DESCRIPTION" = " ";
+/* Message for an alert view to show user his FB account has been connected to another Stream user */
+"FACEBOOK_CONNECT_ACCOUNT_OCCUPIED_MESSAGE" = "The Facebook account you’re using has already been registered, please use another Facebook account.";
 
-/* Recovery notion for authentication failure recovery */
-"ERROR_AUTHENTICATION_FAILED_RECOVERY_NOTION" = "Please reset your password, or register a new account.";
+/* Message for an alert view to show user he already connects to another FB account. */
+"FACEBOOK_CONNECT_FAIL_MESSAGE" = "Your Stream account has already been connected to one Facebook account.";
 
-/* Title for authentication failure in login view
-   Title for authentication failure in web view */
-"ERROR_AUTHENTICATION_FAILED_TITLE" = "Email or password is invalid";
+/* Title for an alert view to show facebook connection failure */
+"FACEBOOK_CONNECT_FAIL_TITLE" = "Cann't import from Facebook";
 
-/* Description for registration failure */
-"ERROR_USER_REGISTRATION_FAILED_DESCRIPTION" = "Waveface is unable to register your account: ";
+/* Message for alert view asking if user wants to connect her Facebook account */
+"FACEBOOK_CONNECT_REQUEST_MESSAGE" = "Stream will start importing ports from your Facebook account";
 
-/* Recovery notion for registration failure recovery */
-"ERROR_USER_REGISTRATION_FAILED_RECOVERY_NOTION" = "Please try registrating again later.";
+/* Title for alert view asking if user wants to connect her Facebook account */
+"FACEBOOK_CONNECT_REQUEST_TITLE" = "Confirm to import from Facebook";
 
-/* Title for registration failure */
-"ERROR_USER_REGISTRATION_FAILED_TITLE" = "Unable to Register";
+/* Message for alert view asking if user wants to disconnect her Facebook account */
+"FACEBOOK_DISCONNECT_REQUEST_MESSAGE" = "Stream will stop importing posts from your Facebook account";
+
+/* Title for alert view asking if user wants to disconnect her Facebook account */
+"FACEBOOK_DISCONNECT_REQUEST_TITLE" = "Confirm to stop importing";
 
 /* Display title for a fetch request working against all the articles */
 "FETCH_REQUEST_ALL_ARTICLES_DISPLAY_TITLE" = "All Posts";
@@ -235,29 +248,15 @@
 /* Plural noun for draft objects */
 "NOUN_DRAFTS" = "Drafts";
 
-/* Title for nick name
-   Title for nickname */
-"NOUN_NICKNAME" = "Name";
-
-/* Noun for Password
-   Title for password */
-"NOUN_PASSWORD" = "Password";
-
-/* Title for password confirmation */
-"NOUN_PASSWORD_CONFIRMATION" = "Confirm Password";
-
-/* Noun for Username
-   Title for username */
-"NOUN_USERNAME" = "Email";
-
 /* Photo information in cell */
 "NUMBER_OF_PHOTOS" = "%d photos";
 
-/* iPhone Timeline */
-"NUMBER_OF_PHOTOS_FROM_DEVICE" = "%1$@ from %2$@";
+/* In iPad overview
+   iPhone Timeline */
+"NUMBER_OF_PHOTOS_CREATE_TIME_FROM_DEVICE" = "%1$@ posted %2$@ from %3$@";
 
 /* In iPad overview */
-"PHOTO_NOUN " = "1 photo ";
+"PHOTO_NOUN" = "1 photo";
 
 /* in iPhone timeline */
 "PHOTO_PLURAL" = "%d photos";
@@ -266,7 +265,7 @@
 "PHOTO_SINGULAR" = "%d photo";
 
 /* In iPad overview */
-"PHOTOS_PLURAL " = "%d photos ";
+"PHOTOS_PLURAL" = "%d photos";
 
 /* Text to show for previews without a provider name */
 "PREVIEW_BADGE_PROVIDER_NAME_PLACEHOLDER" = "(No Provider)";
@@ -286,9 +285,6 @@
 /* REACHABILITY_STATE_UNKNOWN */
 "REACHABILITY_STATE_UNKNOWN" = "Offline";
 
-/* Title for registration request view */
-"REGISTER_REQUEST_TITLE" = "Register";
-
 /* No comment provided by engineer. */
 "RESET_SETTINGS_CONFIRMATION_DESCRIPTION" = "All settings will be reset. Unsaved changes will be lost.";
 
@@ -307,8 +303,14 @@
 /* Title to show explaining WiFi Sync */
 "SERVICE_INFO_WITHOUT_WIFI" = "⚠ Stream only sends your original photos via Wi-Fi connection. \n\nIf you don't have Stream installed on your PC, or it's not up and running, we keep the photos in a temporary cloud space for up to 30 days.";
 
+/* Title for view controller signing the user in */
+"SIGN_IN_CONTROLLER_TITLE" = "Log In";
+
 /* Confirmation text for Signing Out */
 "SIGN_OUT_CONFIRMATION" = "Are you sure?";
+
+/* Title for view controller signing the user up */
+"SIGN_UP_CONTROLLER_TITLE" = "Sign Up";
 
 /* No comment provided by engineer. */
 "STATE_LOADING_SINGLE_DOCUMENT" = "Loading Document…";
@@ -323,19 +325,22 @@
 "SYNC_BUTTON_CAPTION_WITH_STATION_CONNECTED" = "Syncing with Station";
 
 /* Caption to show when app is syncing data without station */
-"SYNC_BUTTON_NORMAL_TITLE" = "Syncing";
+"SYNC_BUTTON_NORMAL_TITLE" = "Syncing with Cloud";
 
 /* Caption to show when app is not syncing data, but sync is usable */
 "SYNC_BUTTON_USABLE_TITLE" = "Sync";
 
 /* In Account Info Sync Section */
-"SYNC_INFO_FOOTER" = "Last synced %@";
+"SYNC_INFO_FOOTER" = "Last Sync %@";
 
 /* Title on the text stack more / less toggle button for “Less” */
 "TEXT_ELEMENT_TOGGLE_LESS_TITLE" = "Less";
 
 /* Title on the text stack more / less toggle button for “More” */
 "TEXT_ELEMENT_TOGGLE_MORE_TITLE" = "More";
+
+/* Alert on no location service enabled when open photo library */
+"TURN_ON_LOCATION_SERVICE" = "Turn On Location Services to Allow Stream to Access Your Photo Library";
 
 /* Settings for User popover */
 "USER_INFO_CONTROLLER_TITLE" = "User";
@@ -364,7 +369,7 @@
 /* Title to show when user has no station, and have exhausted storage on the Cloud */
 "USER_INFO_NAG_LEVEL_3_WITHOUT_STATION" = "Your cloud storage is full.  To sync, install and run Stream for Windows on your PC.";
 
-/* attachment activity view */
+/* preview button in composition view */
 "WEB_PREVIEW" = "Web Preview";
 
 /* No comment provided by engineer. */
@@ -389,9 +394,30 @@
 "COMPOSITION_NO_PHOTO_REMINDER_TITLE" = "To add a photo, press the camera icon.";
 
 /* Class = "IBUILabel"; text = "COMPOSITION_NO_PHOTO_REMINDER_DESCRIPTION"; ObjectID = "26"; */
-"COMPOSITION_NO_PHOTO_REMINDER_DESCRIPTION" = "add more photos";
+"COMPOSITION_NO_PHOTO_REMINDER_DESCRIPTION" = " ";
+
+/* Class = "IBUITextField"; placeholder = "USERNAME_PLACEHOLDER"; ObjectID = "2Vk-4J-QH3"; */
+"USERNAME_PLACEHOLDER" = "me@example.com";
+
+/* Class = "IBUILabel"; text = "NOUN_PASSWORD"; ObjectID = "KhS-eb-yB8"; */
+"NOUN_PASSWORD" = "Password";
+
+/* Class = "IBUILabel"; text = "NOUN_USERNAME"; ObjectID = "afM-HJ-Q3v"; */
+"NOUN_USERNAME" = "Email";
+
+/* Class = "IBUITextField"; placeholder = "PASSWORD_PLACEHOLDER"; ObjectID = "g7o-DD-LvS"; */
+"PASSWORD_PLACEHOLDER" = "••••••••";
 
 /* Class = "IBUILabel"; text = "FEB"; ObjectID = "50"; */
+"FEB" = "FEB";
+
+/* Class = "IBUILabel"; text = "FEB"; ObjectID = "64"; */
+"FEB" = "FEB";
+
+/* Class = "IBUILabel"; text = "FEB"; ObjectID = "76"; */
+"FEB" = "FEB";
+
+/* Class = "IBUILabel"; text = "FEB"; ObjectID = "90"; */
 "FEB" = "FEB";
 
 /* Class = "IBUILabel"; text = "FEB"; ObjectID = "64"; */
@@ -409,6 +435,30 @@
 /* Class = "IBUILabel"; text = "FEB"; ObjectID = "114"; */
 "FEB" = "FEB";
 
+/* Class = "IBUILabel"; text = "FEB"; ObjectID = "110"; */
+"FEB" = "FEB";
+
+/* Class = "IBUILabel"; text = "FEB"; ObjectID = "114"; */
+"FEB" = "FEB";
+
+/* Class = "IBUITextField"; placeholder = "USERNAME_PLACEHOLDER"; ObjectID = "2Vk-4J-QH3"; */
+"USERNAME_PLACEHOLDER" = "me@example.com";
+
+/* Class = "IBUILabel"; text = "NOUN_PASSWORD"; ObjectID = "KhS-eb-yB8"; */
+"NOUN_PASSWORD" = "Password";
+
+/* Class = "IBUILabel"; text = "NOUN_NICKNAME"; ObjectID = "LGa-aa-QPo"; */
+"NOUN_NICKNAME" = "Name";
+
+/* Class = "IBUITextField"; placeholder = "NICKNAME_PLACEHOLDER"; ObjectID = "YnT-se-P50"; */
+"NICKNAME_PLACEHOLDER" = "John Appleseed";
+
+/* Class = "IBUILabel"; text = "NOUN_USERNAME"; ObjectID = "afM-HJ-Q3v"; */
+"NOUN_USERNAME" = "Email";
+
+/* Class = "IBUITextField"; placeholder = "PASSWORD_PLACEHOLDER"; ObjectID = "g7o-DD-LvS"; */
+"PASSWORD_PLACEHOLDER" = "••••••••";
+
 /* Class = "IBUILabel"; text = "STATE_LOADING_SINGLE_DOCUMENT"; ObjectID = "5"; */
 "STATE_LOADING_SINGLE_DOCUMENT" = "Loading Document…";
 
@@ -421,23 +471,32 @@
 /* Class = "IBUILabel"; text = "STATE_LOADING_SINGLE_DOCUMENT_PROGRESS"; ObjectID = "10"; */
 "STATE_LOADING_SINGLE_DOCUMENT_PROGRESS" = "%1 of %2";
 
-/* Class = "IBUILabel"; text = "ERROR_NO_STATION_FOUND_TITLE"; ObjectID = "3"; */
-"ERROR_NO_STATION_FOUND_TITLE" = "No Station";
+/* Class = "IBUIButton"; normalTitle = "ACTION_DISMISS_TUTORIAL"; ObjectID = "43"; */
+"ACTION_DISMISS_TUTORIAL" = "Finish";
 
-/* Class = "IBUILabel"; text = "ERROR_NO_STATION_FOUND_DESCRIPTION"; ObjectID = "6"; */
-"ERROR_NO_STATION_FOUND_DESCRIPTION" = "You need to install Waveface Station to use this app.\nIf you haven’t done so, download Waveface Station for Windows at http://waveface.com.";
+/* Class = "IBUILabel"; text = "FACEBOOK_IMPORT_TUTORIAL_SWITCH"; ObjectID = "55"; */
+"FACEBOOK_IMPORT_TUTORIAL_SWITCH" = "Facebook Import";
 
-/* Class = "IBUILabel"; text = "ERROR_NO_STATION_FOUND_TITLE"; ObjectID = "5"; */
-"ERROR_NO_STATION_FOUND_TITLE" = "No Station";
+/* Class = "IBUITextView"; text = "FACEBOOK_IMPORT_TUTORIAL"; ObjectID = "56"; */
+"FACEBOOK_IMPORT_TUTORIAL" = "Start importing your Facebook posts into Stream and safely backing them up on your PC. Future Facebook posts will then be imported automatically.\n\nTo turn this feature on or off, just go to the Account Info page of your Stream account.";
 
-/* Class = "IBUILabel"; text = "ERROR_NO_STATION_FOUND_DESCRIPTION"; ObjectID = "7"; */
-"ERROR_NO_STATION_FOUND_DESCRIPTION" = "You need to install Waveface Station to use this app.\nIf you haven’t done so, download Waveface Station for Windows at http://waveface.com.";
+/* Class = "IBUIButton"; normalTitle = "ACTION_DISMISS_TUTORIAL"; ObjectID = "43"; */
+"ACTION_DISMISS_TUTORIAL" = "Finish";
+
+/* Class = "IBUITextView"; text = "FACEBOOK_IMPORT_TUTORIAL_IPAD"; ObjectID = "46"; */
+"FACEBOOK_IMPORT_TUTORIAL_IPAD" = "Start importing your Facebook posts into Stream and safely backing them up on your PC. Future Facebook posts will then be imported automatically.\n\nTo turn this feature on or off, just go to the Account Info page of your Stream account.";
+
+/* Class = "IBUILabel"; text = "FACEBOOK_IMPORT_TUTORIAL_SWITCH_IPAD"; ObjectID = "49"; */
+"FACEBOOK_IMPORT_TUTORIAL_SWITCH_IPAD" = "Facebook Import";
 
 /* Class = "IBUITableViewSection"; footerTitle = "SERVICE_INFO_FOOTER"; ObjectID = "9vM-w4-lTb"; */
 "SERVICE_INFO_FOOTER" = "⚠ Stream uses Wi-Fi to send original size photos back to your PC. If you don't have Stream installed on your PC, or it's not up and running, we keep the photos in a temporary cloud space for up to 30 days.";
 
 /* Class = "IBUITableViewSection"; headerTitle = "SERVICE_INFO_HEADER"; ObjectID = "9vM-w4-lTb"; */
 "SERVICE_INFO_HEADER" = "Service Info";
+
+/* Class = "IBUILabel"; text = "FACEBOOK_CONNECT_TITLE"; ObjectID = "Fh9-Wq-UDR"; */
+"FACEBOOK_CONNECT_TITLE" = "Facebook Import";
 
 /* Class = "IBUITableViewSection"; headerTitle = "ACCOUNT_INFO_HEADER"; ObjectID = "Gw1-xy-FWK"; */
 "ACCOUNT_INFO_HEADER" = "Account Info";
@@ -460,6 +519,27 @@
 /* Class = "IBUILabel"; text = "NOUN_CURRENT_DEVICE"; ObjectID = "fZ9-vs-r6f"; */
 "NOUN_CURRENT_DEVICE" = "Device";
 
+/* Class = "IBUITableViewSection"; headerTitle = "SOCIAL_NETWORK_HEADER"; ObjectID = "qoR-fT-NMh"; */
+"SOCIAL_NETWORK_HEADER" = "Facebook Settings";
+
 /* Class = "IBUILabel"; text = "ACTION_CONTACT_DEVELOPER"; ObjectID = "vuN-4r-WXb"; */
 "ACTION_CONTACT_DEVELOPER" = "Contact";
+
+/* Class = "IBUIButton"; normalTitle = "ACTION_CONNECT_FACEBOOK"; ObjectID = "4"; */
+"ACTION_CONNECT_FACEBOOK" = "Connect with Facebook";
+
+/* Class = "IBUIButton"; normalTitle = "ACTION_SIGN_IN"; ObjectID = "8"; */
+"ACTION_SIGN_IN" = "Sign In";
+
+/* Class = "IBUIButton"; normalTitle = "ACTION_SIGN_UP"; ObjectID = "16"; */
+"ACTION_SIGN_UP" = "Sign Up";
+
+/* Class = "IBUIButton"; normalTitle = "ACTION_CONNECT_FACEBOOK"; ObjectID = "8"; */
+"ACTION_CONNECT_FACEBOOK" = "Connect with Facebook";
+
+/* Class = "IBUIButton"; normalTitle = "ACTION_SIGN_UP"; ObjectID = "9"; */
+"ACTION_SIGN_UP" = "Sign Up";
+
+/* Class = "IBUIButton"; normalTitle = "ACTION_SIGN_IN"; ObjectID = "10"; */
+"ACTION_SIGN_IN" = "Sign In";
 

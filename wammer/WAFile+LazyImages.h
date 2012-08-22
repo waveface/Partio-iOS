@@ -18,4 +18,10 @@
 - (UIImage *) smallestPresentableImage;	//	Conforms to KVO; automatically chooses the lowest resolution thing
 - (UIImage *) bestPresentableImage;	//	Conforms to KVO; automatically chooses the highest resolution thing
 
+- (void) createMemoryWarningObserverIfAppropriate;
+- (void) removeMemoryWarningObserverIfAppropriate;
+
+- (void) disableMemoryWarningObserverCreation;
+- (BOOL) isMemoryWarningObserverCreationDisabled;
+
 @end

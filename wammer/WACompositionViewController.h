@@ -8,7 +8,6 @@
 
 #import <UIKit/UIKit.h>
 #import <CoreData/CoreData.h>
-#import <AssetsLibrary/AssetsLibrary.h>
 
 @class IRImagePickerController, IRAction, WAArticle, IRTextAttributor;
 
@@ -17,15 +16,16 @@
 + (WACompositionViewController *) controllerWithArticle:(NSURL *)anArticleURLOrNil completion:(void(^)(NSURL *anArticleURLOrNil))aBlock;
 
 @property (nonatomic, readwrite, retain) IBOutlet UIView *containerView;
-- (void) adjustContainerViewWithInterfaceBounds:(CGRect)newBounds;
-
 @property (nonatomic, readwrite, retain) IBOutlet UITextView *contentTextView;
+
 @property (nonatomic, readonly, retain) IRTextAttributor *textAttributor;
-
-@property (nonatomic, readwrite, assign) BOOL usesTransparentBackground;
-
 @property (nonatomic, readonly, retain) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, readonly, retain) WAArticle *article;
+@property (nonatomic, readwrite, assign) BOOL usesTransparentBackground;
+
+@property (nonatomic, readonly, strong) NSOperationQueue *queue;
+
+- (void) adjustContainerViewWithInterfaceBounds:(CGRect)newBounds;
 
 @end
 

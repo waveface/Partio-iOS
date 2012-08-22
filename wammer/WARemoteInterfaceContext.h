@@ -6,14 +6,14 @@
 //  Copyright (c) 2011 Waveface. All rights reserved.
 //
 
-#import "IRWebAPIContext.h"
+#import "IRWebAPIEngineContext.h"
 
 
 extern NSString * const kWARemoteInterfaceContextDidChangeBaseURLNotification;
 extern NSString * const kWARemoteInterfaceContextOldBaseURL;	//	NSURL in user info
 extern NSString * const kWARemoteInterfaceContextNewBaseURL;	//	NSURL in user info
 
-@interface WARemoteInterfaceContext : IRWebAPIContext
+@interface WARemoteInterfaceContext : IRWebAPIEngineMutableContext
 
 + (WARemoteInterfaceContext *) context;
 

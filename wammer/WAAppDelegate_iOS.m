@@ -6,50 +6,40 @@
 //  Copyright (c) 2011 Waveface. All rights reserved.
 //
 
-#import "WAAppDelegate_iOS.h"
-
 #import <AVFoundation/AVFoundation.h>
 
-#import "WADefines.h"
+#import "WAAppDelegate_iOS.h"
 
+#import "WADefines.h"
 #import "WAAppDelegate.h"
+
+#import "WARemoteInterface.h"
 
 #import "WADataStore.h"
 #import "WADataStore+WARemoteInterfaceAdditions.h"
 
 #import "WANavigationController.h"
-
-#import "WAAuthenticationRequestViewController.h"
-#import "WARegisterRequestViewController.h"
-
-#import "WARemoteInterface.h"
-
 #import "WAApplicationRootViewControllerDelegate.h"
-
 #import "WANavigationBar.h"
-
-#import "UIView+IRAdditions.h"
-
-#import "IRAlertView.h"
-#import "IRAction.h"
-
 #import "WAOverviewController.h"
 #import "WATimelineViewControllerPhone.h"
 #import "WAUserInfoViewController.h"
-
-#import "WAStationDiscoveryFeedbackViewController.h"
-
-#import "IRLifetimeHelper.h"
 #import "WAOverlayBezel.h"
 
-#import "UIWindow+IRAdditions.h"
-
-#import "IASKSettingsReader.h"
-
-#import	"DCIntrospect.h"
+#import "Foundation+IRAdditions.h"
 #import "UIKit+IRAdditions.h"
 
-#import "WARegisterRequestViewController+SubclassEyesOnly.h"
+#import "IRSlidingSplitViewController.h"
+#import "WASlidingSplitViewController.h"
+
+#import "IASKSettingsReader.h"
+#import	"DCIntrospect.h"
+
+#import "WAFacebookInterface.h"
+#import "WAFacebookInterfaceSubclass.h"
+
+#import "WAWelcomeViewController.h"
+#import "WATutorialViewController.h"
 
 
 @interface WAAppDelegate_iOS () <WAApplicationRootViewControllerDelegate>
@@ -69,7 +59,6 @@
 - (BOOL) isRunningAuthRequest;
 
 @end
-
 
 @implementation WAAppDelegate_iOS
 @synthesize window = _window;
@@ -91,9 +80,9 @@
 	}
 
 	if (!WAApplicationHasDebuggerAttached()) {
-	
-		WF_TESTFLIGHT(^ {
 		
+		WF_TESTFLIGHT(^ {
+			
 			[TestFlight setOptions:[NSDictionary dictionaryWithObjectsAndKeys:
 				(id)kCFBooleanFalse, @"sendLogOnlyOnCrash",
 			nil]];
@@ -108,12 +97,12 @@
 			}];
 			
 			objc_setAssociatedObject([TestFlight class], &kWAAppEventNotification, observer, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-		
+			
 		});
 		
 		WF_CRASHLYTICS(^ {
 			
-			[Crashlytics startWithAPIKey:@"d79b0f823e42fdf1cdeb7e988a8453032fd85169"];
+			[Crashlytics startWithAPIKey:kWACrashlyticsAPIKey];
 			[Crashlytics sharedInstance].debugMode = YES;
 			
 		});
@@ -124,13 +113,14 @@
 			[GANTracker sharedTracker].debug = YES;
 			
 			id observer = [[NSNotificationCenter defaultCenter] addObserverForName:kWAAppEventNotification object:nil queue:nil usingBlock:^(NSNotification *note) {
+			
+				NSDictionary *userInfo = [note userInfo];
+				id category = [userInfo objectForKey:@"category"];
+				id action = [userInfo objectForKey:@"action"];
+				id label = [userInfo objectForKey:@"label"];
+				id value = [userInfo objectForKey:@"value"];
 				
-				[[GANTracker sharedTracker] 
-					trackEvent: [[note userInfo] objectForKey:@"category"]
-					action:	[[note userInfo] objectForKey:@"action"]
-					label:	[[note userInfo] objectForKey:@"label"]
-					value:	(NSInteger)[[note userInfo] objectForKey:@"value"]
-					withError:nil];
+				[[GANTracker sharedTracker] trackEvent:category action:action label:label value:value withError:nil];
 				
 			}];
 			
@@ -139,7 +129,7 @@
 		});
 		
 	}
-		
+	
 	AVAudioSession * const audioSession = [AVAudioSession sharedInstance];
 	[audioSession setCategory:AVAudioSessionCategoryAmbient error:nil];
 	[audioSession setActive:YES error:nil];
@@ -153,7 +143,8 @@
 	[self bootstrap];
 	
 	self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-	self.window.backgroundColor = [UIColor blackColor];
+	self.window.backgroundColor = [UIColor colorWithRed:0.87 green:0.87 blue:0.84 alpha:1.0];
+	
 	[self.window makeKeyAndVisible];
 	
 	if ([[NSUserDefaults standardUserDefaults] stringForKey:kWADebugPersistentStoreName]) {
@@ -179,8 +170,10 @@
 	}
 
 	WAPostAppEvent(@"AppVisit", [NSDictionary dictionaryWithObjectsAndKeys:@"app",@"category",@"visit", @"action", nil]);
-
-  return YES;
+	
+	[[WARemoteInterface sharedInterface] performAutomaticRemoteUpdatesNow];
+	
+	return YES;
 	
 }
 
@@ -230,12 +223,15 @@
 	
 		case UIUserInterfaceIdiomPad: {
 		
+			IRSlidingSplitViewController *ssVC = [WASlidingSplitViewController new];
+		
 			WAOverviewController *presentedViewController = [[WAOverviewController alloc] init];
 			WANavigationController *rootNavC = [[WANavigationController alloc] initWithRootViewController:presentedViewController];
 			
 			[presentedViewController setDelegate:self];
 			
-			self.window.rootViewController = rootNavC;
+			ssVC.masterViewController = rootNavC;
+			self.window.rootViewController = ssVC;
 		
 			break;
 		
@@ -256,23 +252,14 @@
 	
 	}
 	
-//	NSString *rootViewControllerClassName = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) ?
-//		@"WAOverviewController" :
-//		@"WATimelineViewControllerPhone";
-//	
-//	NSParameterAssert(rootViewControllerClassName);
-//	
-//	UIViewController *presentedViewController = [(UIViewController *)[NSClassFromString(rootViewControllerClassName) alloc] init];
-//	self.window.rootViewController = [[WANavigationController alloc] initWithRootViewController:presentedViewController];
-//		
-//	if ([presentedViewController conformsToProtocol:@protocol(WAApplicationRootViewController)])
-//		[(id<WAApplicationRootViewController>)presentedViewController setDelegate:self];
+	UIViewController *vc = self.window.rootViewController;
+	
+	[vc willRotateToInterfaceOrientation:vc.interfaceOrientation duration:0];
+	[vc willAnimateRotationToInterfaceOrientation:vc.interfaceOrientation duration:0];
+	[vc didRotateFromInterfaceOrientation:vc.interfaceOrientation];
+
 			
 }
-
-
-
-
 
 - (void) applicationRootViewControllerDidRequestReauthentication:(id<WAApplicationRootViewController>)controller {
 
@@ -339,6 +326,8 @@
 			[[NSUserDefaults standardUserDefaults] setObject:[params objectForKey:@"url"] forKey:kWARemoteEndpointURL];
 			[[NSUserDefaults standardUserDefaults] setObject:[params objectForKey:@"RegistrationUrl"] forKey:kWAUserRegistrationEndpointURL];
 			[[NSUserDefaults standardUserDefaults] setObject:[params objectForKey:@"PasswordResetUrl"] forKey:kWAUserPasswordResetEndpointURL];
+			[[NSUserDefaults standardUserDefaults] setObject:[params objectForKey:@"FacebookAuthUrl"] forKey:kWAUserFacebookAuthenticationEndpointURL];
+			[[NSUserDefaults standardUserDefaults] setObject:[params objectForKey:@"FacebookAppID"] forKey:kWAFacebookAppID];
 			[[NSUserDefaults standardUserDefaults] synchronize];
 
 			if (nrSelf.alreadyRequestingAuthentication) {
@@ -501,18 +490,21 @@
 
 - (void) handleAuthRequest:(NSString *)reason withOptions:(NSDictionary *)options completion:(void(^)(BOOL didFinish, NSError *error))block {
 
+	WARemoteInterface * const ri = [WARemoteInterface sharedInterface];
 	__weak WAAppDelegate_iOS *wAppDelegate = self;
-
+	
+	[ri.engine.queue cancelAllOperations];
+	
 	NSParameterAssert(!self.alreadyRequestingAuthentication);
 	self.alreadyRequestingAuthentication = YES;
 
-  NSString *lastUserID = [WARemoteInterface sharedInterface].userIdentifier;
-  BOOL (^userIDChanged)() = ^ {
+	NSString *lastUserID = [WARemoteInterface sharedInterface].userIdentifier;
+	BOOL (^userIDChanged)() = ^ {
 		
 		NSString *currentID = [WARemoteInterface sharedInterface].userIdentifier;
-    return (BOOL)![currentID isEqualToString:lastUserID];
+		return (BOOL)![currentID isEqualToString:lastUserID];
 		
-  };
+	};
 	
 	void (^handleAuthSuccess)(void) = ^ {
 	
@@ -523,41 +515,136 @@
 		
 	};
 	
-  WAAuthenticationRequestViewController *authRequestVC = [WAAuthenticationRequestViewController controllerWithCompletion: ^ (WAAuthenticationRequestViewController *self, NSError *anError) {
-  
-		if (anError) {
-			[self presentError:anError completion:nil];
+	__block WAWelcomeViewController *welcomeVC = [WAWelcomeViewController controllerWithCompletion:^(NSString *token, NSDictionary *userRep, NSArray *groupReps, NSError *error) {
+	
+		if (error) {
+		
+			NSString *message = nil;
+			if ([error code] == 0x9) {
+				message = NSLocalizedString(@"AUTH_ERROR_INVALID_EMAIL_FORMAT", @"Authentication Error Description");
+			} else if ([error code] == 0xb) {
+				message = NSLocalizedString(@"AUTH_ERROR_INVALID_PWD_FORMAT", @"Authentication Error Description");
+			} else if ([error code] == 0x1001) {
+				message = NSLocalizedString(@"AUTH_ERROR_INVALID_EMAIL_PWD", @"Authentication Error Description");
+			} else if ([error code] == 0x1002) {
+				message = NSLocalizedString(@"AUTH_ERROR_ALREADY_REGISTERED", @"Authentication Error Description");
+			}
+			IRAction *okAction = [IRAction actionWithTitle:NSLocalizedString(@"ACTION_OKAY", @"Alert Dismissal Action") block:nil];
+		
+			IRAlertView *alertView = [IRAlertView alertViewWithTitle:nil message:message cancelAction:okAction otherActions:nil];
+			[alertView show];
+		
+			welcomeVC = nil;
 			return;
+			
 		}
-
+		
+		NSString *userStatus = [userRep valueForKeyPath:@"state"];
+		NSString *userID = [userRep valueForKeyPath:@"user_id"];
+		
+		BOOL userNewlyCreated = [userStatus isEqual:@"created"];
+		BOOL userIsFromFacebook = ![[userRep valueForKeyPath:@"sns.@count"] isEqual:[NSNumber numberWithUnsignedInteger:0]];
+		
+		NSString *primaryGroupID = [[[groupReps filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary *bindings) {
+		
+			return [[evaluatedObject valueForKeyPath:@"creator_id"] isEqual:userID];
+			
+		}]] lastObject] valueForKeyPath:@"group_id"];
+		
+		WARemoteInterface * const ri = [WARemoteInterface sharedInterface];
+		
+		ri.userIdentifier = userID;
+		ri.userToken = token;
+		ri.primaryGroupIdentifier = primaryGroupID;
+		
 		if (userIDChanged()) {
 		
-			UINavigationController *navC = self.navigationController;
-			[wAppDelegate clearViewHierarchy];
+			if (userNewlyCreated) {
 			
-			handleAuthSuccess();
-			
-			[wAppDelegate recreateViewHierarchy];
-			[wAppDelegate.window.rootViewController presentViewController:navC animated:NO completion:nil];
+				WATutorialInstantiationOption options = userIsFromFacebook ? WATutorialInstantiationOptionShowFacebookIntegrationToggle : WATutorialInstantiationOptionDefault;
+				
+				WATutorialViewController *tutorialVC = [WATutorialViewController controllerWithOption:options completion:^(BOOL didFinish, NSError *error) {
 
+					handleAuthSuccess();
+					[wAppDelegate clearViewHierarchy];
+					[wAppDelegate recreateViewHierarchy];
+					
+				}];
+				
+				switch ([UIDevice currentDevice].userInterfaceIdiom) {
+				
+					case UIUserInterfaceIdiomPad: {
+						tutorialVC.modalPresentationStyle = UIModalPresentationFormSheet;
+						break;
+					}
+					
+					case UIUserInterfaceIdiomPhone:
+					default: {
+						tutorialVC.modalPresentationStyle = UIModalPresentationCurrentContext;
+					}
+
+				}
+
+			
+				[wAppDelegate clearViewHierarchy];
+				[wAppDelegate.window.rootViewController presentViewController:tutorialVC animated:NO completion:nil];
+
+			} else {
+			
+				handleAuthSuccess();
+				[wAppDelegate clearViewHierarchy];
+				[wAppDelegate recreateViewHierarchy];
+			
+			}
+			
 		} else {
-		
+			
 			handleAuthSuccess();
 			
 		}
-
-		[self dismissViewControllerAnimated:YES completion:nil];
 		
-  }];
+		return;
+		
+		[welcomeVC dismissViewControllerAnimated:NO completion:^{
+			
+			UIViewController *rootVC = wAppDelegate.window.rootViewController;
+			
+			[rootVC presentViewController:welcomeVC.navigationController animated:NO completion:^{
+				
+				[welcomeVC dismissViewControllerAnimated:YES completion:^{
+					
+					//	?
+					
+					welcomeVC = nil;
+					
+				}];
+				
+			}];
+			
+		}];
+				
+	}];
 	
-	authRequestVC.navigationItem.prompt = reason;
-  
-	WANavigationController *authRequestWrappingVC = [[WANavigationController alloc] initWithRootViewController:authRequestVC];
-	authRequestWrappingVC.modalPresentationStyle = UIModalPresentationFormSheet;
-	authRequestWrappingVC.disablesAutomaticKeyboardDismissal = NO;
+	UINavigationController *authRequestWrapperVC = [[UINavigationController alloc] initWithRootViewController:welcomeVC];
+	
+	switch ([UIDevice currentDevice].userInterfaceIdiom) {
+	
+		case UIUserInterfaceIdiomPad: {
+			authRequestWrapperVC.modalPresentationStyle = UIModalPresentationFormSheet;
+			break;
+		}
+		
+		case UIUserInterfaceIdiomPhone:
+		default: {
+			authRequestWrapperVC.modalPresentationStyle = UIModalPresentationCurrentContext;
+		}
 
-	[self.window.rootViewController presentViewController:authRequestWrappingVC animated:NO completion:nil];
-
+	}
+	
+	authRequestWrapperVC.navigationBar.tintColor =  [UIColor colorWithRed:98.0/255.0 green:176.0/255.0 blue:195.0/255.0 alpha:0.0];
+	
+	[self.window.rootViewController presentViewController:authRequestWrapperVC animated:NO completion:nil];
+	
 }
 
 - (BOOL) isRunningAuthRequest {
@@ -603,14 +690,24 @@ static unsigned int networkActivityStackingCount = 0;
 
 - (BOOL) application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
 
-  [[NSNotificationCenter defaultCenter] postNotificationName:kWAApplicationDidReceiveRemoteURLNotification object:url userInfo:[NSDictionary dictionaryWithObjectsAndKeys:
-  
-    url, @"url",
-    sourceApplication, @"sourceApplication",
-    annotation, @"annotation",
-  
-  nil]];
+	if ([[url scheme] hasPrefix:@"fb"]) {
+	
+		//	fb357087874306060://authorize/#access_token=BAAFExPZCm0AwBAE0Rrkx45WrF9P9rSjttvmKqWCHFXCiflQCCaaA57AxiD4SUxjESg0VdMilsRcynBzIaxljzcmenZAXephyorGP7h3Eg7o6lahje3ox5f8bRJf99FPkmUKaTVWQZDZD&expires_in=5105534&code=AQDk-SBy1kclksewM5uX1W0GlTd0_Jc8VQT6gXb0grblRTPBSN8YPgdTVqYmi1Vuv0hnmskQpIxkjTOKBxRt__VQ4IdiJdThklKvzcZprTjD5Lhgid2U-O9lZ6JFclAyNQGbpy1cdsMWEkHoW0vDLNTiJqyAk2qZ5qbi0atfKNdxHFDtK9ee7338KoDR_8nOaxMeymONNrceZfzrRj48EYYy
 
+		[[WAFacebookInterface sharedInterface].facebook handleOpenURL:url];
+		
+	} else {
+	
+		NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:
+			url, @"url",
+			sourceApplication, @"sourceApplication",
+			annotation, @"annotation",
+		nil];
+
+		[[NSNotificationCenter defaultCenter] postNotificationName:kWAApplicationDidReceiveRemoteURLNotification object:url userInfo:userInfo];
+		
+	}
+	
   return YES;
 
 }
@@ -623,6 +720,18 @@ static unsigned int networkActivityStackingCount = 0;
 	
 	nil]);
 
+}
+
+@end
+
+
+@implementation UINavigationController (KeyboardDismiss)
+
+// implement this method to avoid non-auto-dismissed keyboard bug on iPad
+// ref: http://stackoverflow.com/questions/3372333/ipad-keyboard-will-not-dismiss-if-modal-view-controller-presentation-style-is-ui
+- (BOOL)disablesAutomaticKeyboardDismissal
+{
+	return NO;
 }
 
 @end

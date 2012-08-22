@@ -17,9 +17,6 @@
 #import <Foundation/Foundation.h>
 #import <SystemConfiguration/SystemConfiguration.h>
 
-#ifndef __WAReachabilityDetector__
-#define __WAReachabilityDetector__
-
 enum WAReachabilityState {
   WAReachabilityStateUnknown = -1,
   WAReachabilityStateNotAvailable = 0,
@@ -28,7 +25,6 @@ enum WAReachabilityState {
 
 typedef struct sockaddr_in WASocketAddress;
 
-#endif
 
 @class WAReachabilityDetector;
 @protocol WAReachabilityDetectorDelegate <NSObject>
@@ -37,7 +33,7 @@ typedef struct sockaddr_in WASocketAddress;
 
 @end
 
-
+@class WABackoffHandler;
 @class IRRecurrenceMachine;
 @interface WAReachabilityDetector : NSObject
 
@@ -47,9 +43,9 @@ typedef struct sockaddr_in WASocketAddress;
 + (id) detectorForURL:(NSURL *)aHostURL;
 
 - (id) initWithAddress:(WASocketAddress)anAddress;	//	Detectors initialized by address struct refs will NOT handle application layer stuff
-- (id) initWithURL:(NSURL *)aHostURL;
+- (id) initWithURL:(NSURL *)aHostURL backOffHandler:(WABackoffHandler *)aBackOffHandler;
 
-@property (nonatomic, readwrite, assign) id<WAReachabilityDetectorDelegate> delegate;
+@property (nonatomic, readwrite, weak) id<WAReachabilityDetectorDelegate> delegate;
 
 @property (nonatomic, readonly, assign) WAReachabilityState state;
 @property (nonatomic, readonly, assign) WASocketAddress hostAddress;

@@ -30,7 +30,6 @@
 
 + (Class) preferredClusterClass;
 - (IRKeychainInternetPasswordItem *) currentKeychainItem;
-- (void) configureRemoteResourceDownloadOperation:(IRRemoteResourceDownloadOperation *)anOperation;
 
 @end
 
@@ -67,8 +66,6 @@
 
 - (void) bootstrap {
 
-	__weak WAAppDelegate *nrSelf  = self;
-	
 	WARegisterUserDefaults();
 	
   [IRRelativeDateFormatter sharedFormatter].approximationMaxTokenCount = 1;
@@ -76,9 +73,25 @@
 	[IRRemoteResourcesManager sharedManager].delegate = self;
 	[IRRemoteResourcesManager sharedManager].queue.maxConcurrentOperationCount = 4;
 	[IRRemoteResourcesManager sharedManager].onRemoteResourceDownloadOperationWillBegin = ^ (IRRemoteResourceDownloadOperation *anOperation) {
-		[nrSelf configureRemoteResourceDownloadOperation:anOperation];
+		
+		NSMutableURLRequest *originalRequest = [anOperation underlyingRequest];
+		
+		NSURLRequest *transformedRequest = [[WARemoteInterface sharedInterface].engine transformedRequestWithRequest:originalRequest usingMethodName:@"loadedResource"];
+		
+		originalRequest.URL = transformedRequest.URL;
+		originalRequest.allHTTPHeaderFields = transformedRequest.allHTTPHeaderFields;
+		originalRequest.HTTPMethod = transformedRequest.HTTPMethod;
+		originalRequest.HTTPBodyStream = transformedRequest.HTTPBodyStream;
+		originalRequest.HTTPBody = transformedRequest.HTTPBody;
+		
+//		dispatch_async( dispatch_get_main_queue(), ^ {
+//			[((WAAppDelegate *)[UIApplication sharedApplication].delegate) endNetworkActivity];
+//		});
+		
 	};
-
+	
+	[[NSHTTPCookieStorage sharedHTTPCookieStorage] setCookieAcceptPolicy:NSHTTPCookieAcceptPolicyOnlyFromMainDocumentDomain];
+	
 }
 
 - (BOOL) hasAuthenticationData {
@@ -118,17 +131,24 @@
 
 - (BOOL) removeAuthenticationData {
 
-  [[NSUserDefaults standardUserDefaults] removeObjectForKey:kWALastAuthenticatedUserTokenKeychainItem];
-  [[NSUserDefaults standardUserDefaults] removeObjectForKey:kWALastAuthenticatedUserIdentifier];
-  [[NSUserDefaults standardUserDefaults] removeObjectForKey:kWALastAuthenticatedUserPrimaryGroupIdentifier];
-  
-  [WARemoteInterface sharedInterface].userIdentifier = nil;
-  [WARemoteInterface sharedInterface].userToken = nil;
-  [WARemoteInterface sharedInterface].primaryGroupIdentifier = nil;
-  
-  BOOL didEraseAuthData = [[NSUserDefaults standardUserDefaults] synchronize];
+	NSUserDefaults *sud = [NSUserDefaults standardUserDefaults];
+	WARemoteInterface *ri = [WARemoteInterface sharedInterface];
 	
-  return didEraseAuthData;
+	[ri.engine.queue cancelAllOperations];
+
+	NSHTTPCookieStorage *cs = [NSHTTPCookieStorage sharedHTTPCookieStorage];
+	for (NSHTTPCookie *cookie in [[cs cookies] copy])
+		[cs deleteCookie:cookie];
+
+	[sud removeObjectForKey:kWALastAuthenticatedUserTokenKeychainItem];
+	[sud removeObjectForKey:kWALastAuthenticatedUserIdentifier];
+	[sud removeObjectForKey:kWALastAuthenticatedUserPrimaryGroupIdentifier];
+
+	ri.userIdentifier = nil;
+	ri.userToken = nil;
+	ri.primaryGroupIdentifier = nil;
+
+	return [sud synchronize];
 
 }
 
@@ -175,6 +195,7 @@
 
 - (void) remoteResourcesManager:(IRRemoteResourcesManager *)managed didBeginDownloadingResourceAtURL:(NSURL *)anURL {
 
+	// FIXME: beginNetworkActivity might be called again during request transformation and causes network activity indicator always visible
 	[self beginNetworkActivity];
 
 }
@@ -221,20 +242,6 @@
 	}
 	
 	return givenURL;
-
-}
-
-- (void) configureRemoteResourceDownloadOperation:(IRRemoteResourceDownloadOperation *)anOperation {
-
-	NSMutableURLRequest *originalRequest = [anOperation underlyingRequest];
-	
-	NSURLRequest *transformedRequest = [[WARemoteInterface sharedInterface].engine transformedRequestWithRequest:originalRequest usingMethodName:@"loadedResource"];
-		
-	originalRequest.URL = transformedRequest.URL;
-	originalRequest.allHTTPHeaderFields = transformedRequest.allHTTPHeaderFields;
-	originalRequest.HTTPMethod = transformedRequest.HTTPMethod;
-	originalRequest.HTTPBodyStream = transformedRequest.HTTPBodyStream;
-	originalRequest.HTTPBody = transformedRequest.HTTPBody;
 
 }
 
@@ -311,7 +318,10 @@
 		
 	}
 	
-	NSParameterAssert([user.identifier isEqual:identifier]);
+	if (![user.identifier isEqual:identifier]) {
+		user.identifier = identifier;
+		[user.managedObjectContext save:nil];
+	}
 	
 #if DEBUG
 

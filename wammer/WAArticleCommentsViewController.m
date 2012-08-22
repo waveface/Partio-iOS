@@ -178,6 +178,8 @@
 	}
 	
 	[self adjustWrapperViewBoundsWithWindow:self.view.window interfaceBounds:self.view.window.irInterfaceBounds animated:NO];
+	
+	[self.navigationController setToolbarHidden:YES animated:animated];
 
 }
 

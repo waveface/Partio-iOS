@@ -12,11 +12,10 @@ extern NSString *kWARemoteInterfaceDomain;
 extern void WARemoteInterfaceNotPorted (void);
 extern NSUInteger WARemoteInterfaceEndpointReturnCode (NSDictionary *response);
 extern NSString * WARemoteInterfaceEndpointReturnMessage (NSDictionary *response);
-extern NSError * WARemoteInterfaceGenericError (NSDictionary *response, NSDictionary *context);
+extern NSError * WARemoteInterfaceGenericError (NSDictionary *response, IRWebAPIRequestContext *context);
 extern IRWebAPICallback WARemoteInterfaceGenericFailureHandler (void(^aFailureBlock)(NSError *));
-extern IRWebAPIResposeValidator WARemoteInterfaceGenericNoErrorValidator (void);
+extern IRWebAPIResponseValidator WARemoteInterfaceGenericNoErrorValidator (void);
 
-extern NSString *kWARemoteInterfaceUnderlyingError;	//	Populated error from IRWebAPIEngine context
 extern NSString *kWARemoteInterfaceUnderlyingContext;	//	The IRWebAPIEngine context where the aforementioned error 
 extern NSString *kWARemoteInterfaceRemoteErrorCode;	//	Populated error from WFCloud defined in WARemoteInterfaceDefines
 

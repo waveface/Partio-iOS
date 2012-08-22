@@ -11,6 +11,7 @@
 #import "WARemoteInterface.h"
 #import "NSBlockOperation+NSCopying.h"
 #import "IRAsyncOperation.h"
+#import "WABackoffHandler.h"
 
 
 NSString * const kWAReachabilityDetectorDidUpdateStatusNotification = @"WAReachabilityDetectorDidUpdateStatusNotification";
@@ -24,7 +25,9 @@ NSString * const kWAReachabilityDetectorDidUpdateStatusNotification = @"WAReacha
 @property (nonatomic, readwrite, retain) IRRecurrenceMachine *recurrenceMachine;
 @property (nonatomic, readwrite, assign) SCNetworkReachabilityRef reachability;
 @property (nonatomic, readwrite, assign) WAReachabilityState state;
+@property (nonatomic, readwrite, strong) WABackoffHandler *backOffHandler;
 
+- (void) handleApplicationDidEnterBackground:(NSNotification *)note;
 - (void) noteReachabilityFlagsChanged:(SCNetworkReachabilityFlags)flags;
 
 - (void) sendUpdateNotification;
@@ -56,6 +59,7 @@ static void WASCReachabilityCallback (SCNetworkReachabilityRef target, SCNetwork
 @synthesize recurrenceMachine;
 @synthesize reachability;
 @synthesize state;
+@synthesize backOffHandler;
 
 + (void) load {
 
@@ -97,7 +101,23 @@ static void WASCReachabilityCallback (SCNetworkReachabilityRef target, SCNetwork
 
 + (id) detectorForURL:(NSURL *)aHostURL {
 
-  return [[self alloc] initWithURL:aHostURL];
+	if ([aHostURL isEqual:[WARemoteInterface sharedInterface].engine.context.baseURL]) {
+
+		// ping cloud every 30 seconds
+
+		return [[self alloc] initWithURL:aHostURL backOffHandler:[[WABackoffHandler alloc] initWithInitialBackoffInterval:30.0f valueFixed:YES]];
+
+	} else {
+
+		// use exponential back off to reduce unnecessary pings to unavailable stations
+		
+		WABackoffHandler *backoff = [[WABackoffHandler alloc] initWithInitialBackoffInterval:4.0f valueFixed:NO];
+		
+		WAReachabilityDetector *returnedObject = [[self alloc] initWithURL:aHostURL backOffHandler:backoff];
+		
+		return returnedObject;
+
+	}
 
 }
 
@@ -121,11 +141,14 @@ static void WASCReachabilityCallback (SCNetworkReachabilityRef target, SCNetwork
 	self.hostAddress = hostAddressRef;
 	[self recreateReachabilityRef];
 	
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleApplicationDidEnterBackground:) name:UIApplicationDidEnterBackgroundNotification object:nil];
+	
 	return self;
 
 }
 
-- (id) initWithURL:(NSURL *)aHostURL {
+- (id) initWithURL:(NSURL *)aHostURL backOffHandler:(WABackoffHandler *)aBackOffHandler
+{
 
   NSParameterAssert(aHostURL);
   
@@ -134,11 +157,25 @@ static void WASCReachabilityCallback (SCNetworkReachabilityRef target, SCNetwork
     return nil;
       
 	self.hostURL = aHostURL;
+	self.backOffHandler = aBackOffHandler;
+	[self.recurrenceMachine setRecurrenceInterval:[self.backOffHandler firstInterval]];
 	[self.recurrenceMachine addRecurringOperation:[self newPulseCheckerPrototype]];
 	[self.recurrenceMachine scheduleOperationsNow];
 	
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleApplicationDidEnterBackground:) name:UIApplicationDidEnterBackgroundNotification object:nil];
+	
 	return self;
 	
+}
+
+- (void) handleApplicationDidEnterBackground:(NSNotification *)note {
+
+	if (self.backOffHandler) {
+		
+		[self.recurrenceMachine setRecurrenceInterval:[self.backOffHandler firstInterval]];
+		
+	}
+
 }
 
 - (IRRecurrenceMachine *) recurrenceMachine {
@@ -147,7 +184,6 @@ static void WASCReachabilityCallback (SCNetworkReachabilityRef target, SCNetwork
 		return recurrenceMachine;
 	
 	recurrenceMachine = [[IRRecurrenceMachine alloc] init];
-	recurrenceMachine.recurrenceInterval = 5;
 	
 	return recurrenceMachine;
 
@@ -157,33 +193,50 @@ static void WASCReachabilityCallback (SCNetworkReachabilityRef target, SCNetwork
 
 	NSAssert1(self.hostURL, @"%s should only be invoked for detectors with an URL and no Internet address", __PRETTY_FUNCTION__);
 	
-	__block __typeof__(self) nrSelf = self;
-
+	__weak WAReachabilityDetector *wSelf = self;
+	
 	return [IRAsyncOperation operationWithWorkerBlock:^(void(^aCallback)(id)) {
 	
-    [nrSelf.recurrenceMachine beginPostponingOperations];
+		WARemoteInterface * const ri = [WARemoteInterface sharedInterface];
+		if (!ri.userToken)
+			return;
     
-    [[WARemoteInterface sharedInterface].engine fireAPIRequestNamed:@"reachability" withArguments:[NSDictionary dictionaryWithObjectsAndKeys:
+		[wSelf.recurrenceMachine beginPostponingOperations];
+
+//		if (![ri hasWiFiConnection] && ![self.hostURL isEqual:ri.engine.context.baseURL]) {
+//			[wSelf.recurrenceMachine endPostponingOperations];
+//			return;
+//		}
+
+    [ri.engine fireAPIRequestNamed:@"reachability" withArguments:[NSDictionary dictionaryWithObjectsAndKeys:
     
-      [WARemoteInterface sharedInterface].userIdentifier, @"user_id",
+      ri.userIdentifier, @"user_id",
       [hostURL absoluteString], @"for_host",
     
     nil] options:[NSDictionary dictionaryWithObjectsAndKeys:
     
       [NSURL URLWithString:@"reachability/ping" relativeToURL:hostURL], kIRWebAPIEngineRequestHTTPBaseURL,
-      [NSNumber numberWithDouble:10.0f], kIRWebAPIRequestTimeout,
+				  [NSNumber numberWithDouble:([self.hostURL isEqual:ri.engine.context.baseURL] ? 10.0f : 3.0f)], kIRWebAPIRequestTimeout,
     
-    nil] validator:^(NSDictionary *inResponseOrNil, NSDictionary *inResponseContext) {
+    nil] validator:^(NSDictionary *inResponseOrNil, IRWebAPIRequestContext *inResponseContext) {
     
-      //  Must have returned a status value
-      return (BOOL)!![inResponseOrNil objectForKey:@"status"];
+      //  Must have returned status value 200
+      NSNumber *httpStatusCode = [inResponseOrNil objectForKey:@"status"];
+      if (httpStatusCode) {
+          if ([httpStatusCode integerValue] == 200) {
+							[self.recurrenceMachine setRecurrenceInterval:[self.backOffHandler firstInterval]];
+              return YES;
+          }
+      }
+      return NO;
       
-    } successHandler:^(NSDictionary *inResponseOrNil, NSDictionary *inResponseContext, BOOL *outNotifyDelegate, BOOL *outShouldRetry) {
+    } successHandler:^(NSDictionary *inResponseOrNil, IRWebAPIRequestContext *inResponseContext) {
 
       aCallback((id)kCFBooleanTrue);
 			
-    } failureHandler:^(NSDictionary *inResponseOrNil, NSDictionary *inResponseContext, BOOL *outNotifyDelegate, BOOL *outShouldRetry) {
+    } failureHandler:^(NSDictionary *inResponseOrNil, IRWebAPIRequestContext *inResponseContext) {
     
+	  [self.recurrenceMachine setRecurrenceInterval:[self.backOffHandler nextInterval]];
       aCallback((id)kCFBooleanFalse);
       
     }];
@@ -192,15 +245,15 @@ static void WASCReachabilityCallback (SCNetworkReachabilityRef target, SCNetwork
 	
 		dispatch_async(dispatch_get_main_queue(), ^ {
 
-			[nrSelf.recurrenceMachine endPostponingOperations];
+			[wSelf.recurrenceMachine endPostponingOperations];
 			
 			if ([results isEqual:(id)kCFBooleanTrue]) {
 			
-				nrSelf.state = WAReachabilityStateAvailable;
+				wSelf.state = WAReachabilityStateAvailable;
 			
 			} else {
 			
-				nrSelf.state = WAReachabilityStateNotAvailable;
+				wSelf.state = WAReachabilityStateNotAvailable;
 			
 			}
 		
@@ -291,6 +344,8 @@ static void WASCReachabilityCallback (SCNetworkReachabilityRef target, SCNetwork
     CFRelease(reachability);
   }
   
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
+
 }
 
 - (NSString *) description {
@@ -378,7 +433,7 @@ NSString * NSLocalizedStringFromWAReachabilityState (WAReachabilityState aState)
     case WAReachabilityStateNotAvailable:
       return NSLocalizedString(@"REACHABILITY_STATE_NOT_AVAILABLE", @"REACHABILITY_STATE_NOT_AVAILABLE");
     default:
-      return [NSString stringWithFormat:@"%x", aState];
+      return [NSString stringWithFormat:@"%ld", (long)aState];
   };
 
 }

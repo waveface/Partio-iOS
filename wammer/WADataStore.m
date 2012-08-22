@@ -10,7 +10,13 @@
 
 
 NSString * const kMainUserEntityURIString = @"kMainUserEntityURIString";
+
+//	Deprecated, do not use
 NSString * const kLastContentSyncDateInTimeIntervalSince1970 = @"kLastContentSyncDateInTimeIntervalSince1970";
+
+NSString * const kLastSyncSuccessDate = @"WALastSyncSuccessDate";
+NSString * const kLastNewPostsUpdateDate = @"WALastNewPostsUpdateDate";
+NSString * const kLastChangedPostsUpdateDate = @"WALastChangedPostsUpdateDate";
 
 
 @interface WADataStore ()
@@ -116,8 +122,6 @@ NSString * const kLastContentSyncDateInTimeIntervalSince1970 = @"kLastContentSyn
 
 	#pragma unused(context)
 	
-	NSMutableDictionary *metadata = [[self metadata] mutableCopy];
-	
 	if (user) {
 	
 		NSParameterAssert(![[user objectID] isTemporaryID]);
@@ -125,70 +129,49 @@ NSString * const kLastContentSyncDateInTimeIntervalSince1970 = @"kLastContentSyn
 		NSURL *userEntityURI = [[user objectID] URIRepresentation];
 		NSString *userEntityURIString = [userEntityURI absoluteString];
 		
-		[metadata setObject:userEntityURIString forKey:kMainUserEntityURIString];
-	
+		[self setMetadata:userEntityURIString forKey:kMainUserEntityURIString];
+		
 	} else {
 	
-		[metadata removeObjectForKey:kMainUserEntityURIString];
+		[self setMetadata:nil forKey:kMainUserEntityURIString];
 		
 	}
 
-	[self setMetadata:metadata];
+}
+
+- (NSDate *) lastSyncSuccessDate {
+
+	return [self metadataForKey:kLastSyncSuccessDate];
 
 }
 
-- (NSDate *) lastContentSyncDate {
+- (void) setLastSyncSuccessDate:(NSDate *)date {
 
-	NSDictionary *metadata = [self metadata];
-	NSNumber *timeInterval = [metadata objectForKey:kLastContentSyncDateInTimeIntervalSince1970];
-	if (!timeInterval)
-		return nil;
-	
-	NSDate *date = [NSDate dateWithTimeIntervalSince1970:[timeInterval doubleValue]];
-	
-	return date;
+	[self setMetadata:date forKey:kLastSyncSuccessDate];
 
 }
 
-- (void) setLastContentSyncDate:(NSDate *)date {
-	
-	NSMutableDictionary *metadata = [[self metadata] mutableCopy];
-	
-	[metadata setObject:[NSNumber numberWithDouble:[date timeIntervalSince1970]] forKey:kLastContentSyncDateInTimeIntervalSince1970];
-	
-	[self setMetadata:metadata];
+- (NSDate *) lastNewPostsUpdateDate {
+
+	return [self metadataForKey:kLastNewPostsUpdateDate];
 
 }
 
-- (NSDictionary *) metadata {
+- (void) setLastNewPostsUpdateDate:(NSDate *)date {
 
-	NSPersistentStoreCoordinator *psc = self.persistentStoreCoordinator;
-	NSArray *stores = psc.persistentStores;
-	
-	if (![stores count])
-		return nil;
-	
-	NSPersistentStore *firstStore = [stores objectAtIndex:0];
-	NSDictionary *metadata = [psc metadataForPersistentStore:firstStore];
-	
-	return metadata;
-	
+	[self setMetadata:date forKey:kLastNewPostsUpdateDate];
+
 }
 
-- (void) setMetadata:(NSDictionary *)metadata {
+- (NSDate *) lastChangedPostsUpdateDate {
 
-	NSPersistentStoreCoordinator *psc = self.persistentStoreCoordinator;
-	NSArray *stores = psc.persistentStores;
-	
-	if (![stores count])
-		return;
-	
-	NSPersistentStore *firstStore = [stores objectAtIndex:0];
-	
-	[psc setMetadata:metadata forPersistentStore:firstStore];
-	
-	NSManagedObjectContext *context = [self disposableMOC];
-	[context save:nil];
+	return [self metadataForKey:kLastChangedPostsUpdateDate];
+
+}
+
+- (void) setLastChangedPostsUpdateDate:(NSDate *)date {
+
+	[self setMetadata:date forKey:kLastChangedPostsUpdateDate];
 
 }
 

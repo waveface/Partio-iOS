@@ -49,6 +49,11 @@ NSString * const kWARemoteInterfaceReachableHostsDidChangeNotification = @"WARem
 NSString * const kWARemoteInterfaceDidObserveAuthenticationFailureNotification = @"WARemoteInterfaceDidObserveAuthenticationFailureNotification";
 NSString * const kWASettingsDidRequestActionNotification = @"kWASettingsDidRequestActionNotification";
 
+NSString * const kWAFacebookDidLoginNotification = @"kWAFacebookDidLoginNotification";
+NSString * const kWAFacebookAppID = @"WAFacebookAppID";
+NSString * const kWAFacebookTokenKey = @"FBAccessTokenKey";
+NSString * const kWAFacebookExpirationDateKey = @"FBExpirationDateKey";
+
 NSString * const kWATestflightTeamToken = @"2e0589c9a03560bfeb93e215fdd9cbbb_MTg2ODAyMDExLTA5LTIyIDA0OjM4OjI1LjMzNTEyNg";
 NSString * const kWACrashlyticsAPIKey = @"d79b0f823e42fdf1cdeb7e988a8453032fd85169";
 NSString * const kWAGoogleAnalyticsAccountID = @"UA-27817516-3";
@@ -76,7 +81,7 @@ void WARegisterUserDefaults () {
 NSDictionary * WAPresetDefaults () {
 
 	NSURL *defaultsURL = [[NSBundle mainBundle] URLForResource:@"WADefaults" withExtension:@"plist"];
-	NSData *defaultsData = [NSData dataWithContentsOfMappedFile:[defaultsURL path]];
+	NSData *defaultsData = [NSData dataWithContentsOfFile:[defaultsURL path] options:NSDataReadingMappedIfSafe error:nil];
 	NSDictionary *defaultsObject = [NSPropertyListSerialization propertyListFromData:defaultsData mutabilityOption:NSPropertyListImmutable format:nil errorDescription:nil];
 	
 	return defaultsObject;

@@ -17,15 +17,20 @@
 
 #import "Foundation+IRAdditions.h"
 #import "UIKit+IRAdditions.h"
-#import "WABlobSyncManager.h"
+#import "WASyncManager.h"
 #import "IRMailComposeViewController.h"
 #import "IRRelativeDateFormatter+WAAdditions.h"
 
+#import "WASyncManager.h"
+
 @interface WAUserInfoViewController ()
+
 @property (nonatomic, readwrite, retain) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, retain) WAUser *user;
 
 - (void) handleRemoteInterfaceUpdateStatusChanged:(BOOL)syncing;
+
+@property (nonatomic, readonly, assign) BOOL syncing;
 
 @end
 
@@ -44,6 +49,7 @@
 @synthesize deviceNameLabel;
 @synthesize managedObjectContext;
 @synthesize user;
+@synthesize activity;
 
 + (id) controllerWithWrappingNavController:(UINavigationController **)outNavController {
 
@@ -102,25 +108,28 @@
 
   [super viewDidLoad];
 	
+	activity = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+	
+	activity.hidesWhenStopped = YES;
+	activity.hidden = YES;
+	
+	activity.autoresizingMask = UIViewAutoresizingFlexibleBottomMargin |
+	UIViewAutoresizingFlexibleHeight |
+	UIViewAutoresizingFlexibleLeftMargin |
+	UIViewAutoresizingFlexibleRightMargin |
+	UIViewAutoresizingFlexibleTopMargin |
+	UIViewAutoresizingFlexibleWidth;
+	
+	activity.frame = CGRectMake(300.0-10.0-18.0, 14.0, 20.0, 20.0);	
+
+	[self.syncTableViewCell insertSubview:activity atIndex:0];
+	self.navigationController.navigationBar.tintColor = [UIColor colorWithRed:98.0/255.0 green:176.0/255.0 blue:195.0/255.0 alpha:0.0];
   [self.tableView reloadData];
-	
-	switch (UI_USER_INTERFACE_IDIOM()){
-	
-		case UIUserInterfaceIdiomPhone: {
-		
-			self.tableView.backgroundView = [[UIView alloc] initWithFrame:CGRectZero];
-			self.tableView.backgroundView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"lightBackground"]];
-			
-			break;
-		
-		}
-		
-	}
 	
 	__weak WAUserInfoViewController *wSelf = self;
 	__weak WADataStore *wDataStore = [WADataStore defaultStore];
 	__weak WAUser *wMainUser = wSelf.user;
-	__weak WABlobSyncManager *wBlobSyncManager = [WABlobSyncManager sharedManager];
+	__weak WASyncManager *wBlobSyncManager = [WASyncManager sharedManager];
 	__weak WARemoteInterface *wRemoteInterface = [WARemoteInterface sharedInterface];
 	
 	NSKeyValueObservingOptions options = NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew;
@@ -128,13 +137,26 @@
 	
 	[self irObserveObject:ri keyPath:@"isPerformingAutomaticRemoteUpdates" options:options context:nil withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
 	
-		[wSelf handleRemoteInterfaceUpdateStatusChanged:[toValue boolValue]];
-		
+		[wSelf handleRemoteInterfaceUpdateStatusChanged:[wSelf isSyncing]];
+
 	}];
 	
-	[self irObserveObject:wDataStore keyPath:@"lastContentSyncDate" options:options context:nil withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
+	[self irObserveObject:wBlobSyncManager keyPath:@"operationQueue.operationCount" options:options context:nil withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
 
-		wSelf.lastSyncDateLabel.text = [[IRRelativeDateFormatter sharedFormatter] stringFromDate:wDataStore.lastContentSyncDate];
+		// avoid blinking sync table view
+		if (![wSelf isSyncing]) {
+
+			[wSelf handleRemoteInterfaceUpdateStatusChanged:[wSelf isSyncing]];
+
+		}
+
+	}];
+	
+	[self irObserveObject:wDataStore keyPath:@"lastSyncSuccessDate" options:options context:nil withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
+	
+//		NSDate *date = [wDataStore lastSyncSuccessDate];
+//
+//		wSelf.lastSyncDateLabel.text = date ? [[IRRelativeDateFormatter sharedFormatter] stringFromDate:date] : nil;
 		
 	}];
 	
@@ -244,7 +266,7 @@
 - (void) viewWillAppear:(BOOL)animated {
 
 	[super viewWillAppear:animated];
-
+	
 	[self.tableView reloadData];
 	
 }
@@ -305,22 +327,48 @@
 
 - (void) handleRemoteInterfaceUpdateStatusChanged:(BOOL)syncing {
 
+	if (![NSThread isMainThread]) {
+	
+		dispatch_async(dispatch_get_main_queue(), ^{
+		
+			[self handleRemoteInterfaceUpdateStatusChanged:syncing];
+			
+		});
+		
+		return;
+	
+	}
+	
 	UITableViewCell *cell = self.syncTableViewCell;
 	if (syncing) {
 		
 		WARemoteInterface *ri = [WARemoteInterface sharedInterface];
-		if( 1 == [ri.monitoredHosts count] )
+		if ([ri hasReachableStation]) {
+			
+			cell.textLabel.text = NSLocalizedString(@"SYNC_BUTTON_CAPTION_WITH_STATION_CONNECTED", @"Caption to show in account info when station is connected");
+		
+		} else {
+
 			cell.textLabel.text = NSLocalizedString(@"SYNC_BUTTON_NORMAL_TITLE", @"Caption to show when app is syncing data without station");
-		else 
-			cell.textLabel.text =NSLocalizedString(@"SYNC_BUTTON_CAPTION_WITH_STATION_CONNECTED", @"Caption to show in account info when station is connected");
+		
+		}
 
 		cell.selectionStyle = UITableViewCellSelectionStyleNone;
+		[self.activity startAnimating];
 		
 	} else {
 	
 		cell.textLabel.text = NSLocalizedString(@"SYNC_BUTTON_USABLE_TITLE", @"Caption to show when app is not syncing data, but sync is usable");
 		cell.selectionStyle = UITableViewCellSelectionStyleBlue;
-	
+		[self.activity stopAnimating];
+		
+		IRTableView *tv = self.tableView;
+		NSUInteger sectionIndex = [tv indexPathForCell:self.syncTableViewCell].section;
+
+		[tv beginUpdates];
+		[tv reloadSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:UITableViewRowAnimationNone];
+		[tv endUpdates];
+
 	}
 
 }
@@ -332,6 +380,7 @@
 	if (hitCell == syncTableViewCell) {
 	
 		[[WARemoteInterface sharedInterface] performAutomaticRemoteUpdatesNow];
+		[[WASyncManager sharedManager] performSyncNow];
 		
 	} else if (hitCell == stationNagCell) {
 	
@@ -426,17 +475,63 @@
 	}
 	
 	if ([superAnswer isEqualToString:@"SYNC_INFO_FOOTER"]) {
+	
 		WADataStore *dataStore = [WADataStore defaultStore];
-		return [NSString stringWithFormat:
-			NSLocalizedString(@"SYNC_INFO_FOOTER", @"In Account Info Sync Section"),
-			[[IRRelativeDateFormatter sharedFormatter] stringFromDate:[dataStore lastContentSyncDate]]
-		];
+		NSDate *date = [dataStore lastSyncSuccessDate];
+		
+		if (date) {
+		
+			NSString *dateString = [[IRRelativeDateFormatter sharedFormatter] stringFromDate:date];
+			
+			return [NSString stringWithFormat:
+				NSLocalizedString(@"SYNC_INFO_FOOTER", @"In Account Info Sync Section"),
+				dateString
+			];
+		
+		}
+		
+		return nil;
+		
 	}
 	
 	if ([superAnswer isEqualToString:@"VERSION"])
 		return [[NSBundle mainBundle] displayVersionString];
 	
 	return NSLocalizedString(superAnswer, nil);
+
+}
+
++ (NSSet *) keyPathsForValuesAffectingSyncing {
+
+	return [NSSet setWithObjects:
+	
+		@"remoteInterface.performingAutomaticRemoteUpdates",
+		@"syncManager.operationQueue.operationCount",
+	
+	nil];
+
+}
+
+- (WARemoteInterface *) remoteInterface {
+	
+	return [WARemoteInterface sharedInterface];
+
+}
+
+- (WASyncManager *) syncManager {
+
+	return [WASyncManager sharedManager];
+
+}
+
+- (BOOL) isSyncing {
+
+	WARemoteInterface * const ri = [WARemoteInterface sharedInterface];
+	WASyncManager * const sm = [WASyncManager sharedManager];
+	
+	NSLog(@"%s: %x, %x", __PRETTY_FUNCTION__, ri.performingAutomaticRemoteUpdates, sm.operationQueue.operationCount);
+	
+	return ri.performingAutomaticRemoteUpdates || sm.operationQueue.operationCount;
 
 }
 

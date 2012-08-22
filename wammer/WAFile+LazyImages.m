@@ -11,7 +11,67 @@
 
 #import "UIKit+IRAdditions.h"
 
+static NSString * const kMemoryWarningObserver = @"-[WAFile(LazyImages) handleDidReceiveMemoryWarning:]";
+static NSString * const kMemoryWarningObserverCreationDisabled = @"-[WAFile(LazyImages) isMemoryWarningObserverCreationDisabled]";
+
 @implementation WAFile (LazyImages)
+
+- (void) createMemoryWarningObserverIfAppropriate {
+
+	id observer = objc_getAssociatedObject(self, &kMemoryWarningObserver);
+	if (!observer && ![self isMemoryWarningObserverCreationDisabled]) {
+	
+		//	http://www.mikeash.com/pyblog/friday-qa-2011-09-30-automatic-reference-counting.html
+		
+		//	__weak refs are not good:
+		//	NSManagedObject does
+		//	override -retain.
+		
+		__unsafe_unretained WAFile *wSelf = self;
+	
+		id observer = [[NSNotificationCenter defaultCenter] addObserverForName:UIApplicationDidReceiveMemoryWarningNotification object:nil queue:nil usingBlock:^(NSNotification *note) {
+		
+			[wSelf handleDidReceiveMemoryWarning:note];
+			
+		}];
+		
+		objc_setAssociatedObject(self, &kMemoryWarningObserver, observer, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+	
+	}
+
+}
+
+- (void) removeMemoryWarningObserverIfAppropriate {
+	
+	id observer = objc_getAssociatedObject(self, &kMemoryWarningObserver);
+	
+	if (observer) {
+	
+		[[NSNotificationCenter defaultCenter] removeObserver:observer];
+		objc_setAssociatedObject(self, &kMemoryWarningObserver, nil, OBJC_ASSOCIATION_ASSIGN);
+	}
+
+}
+
+- (void) disableMemoryWarningObserverCreation {
+
+	objc_setAssociatedObject(self, &kMemoryWarningObserverCreationDisabled, (id)kCFBooleanTrue, OBJC_ASSOCIATION_ASSIGN);
+
+}
+
+- (BOOL) isMemoryWarningObserverCreationDisabled {
+
+	return (objc_getAssociatedObject(self, &kMemoryWarningObserverCreationDisabled) == (id)kCFBooleanTrue);
+
+}
+
+- (void) handleDidReceiveMemoryWarning:(NSNotification *)aNotification {
+
+	[self irAssociateObject:nil usingKey:&kWAFileThumbnailImage policy:OBJC_ASSOCIATION_ASSIGN changingObservedKey:nil];
+	[self irAssociateObject:nil usingKey:&kWAFileLargeThumbnailImage policy:OBJC_ASSOCIATION_ASSIGN changingObservedKey:nil];
+	[self irAssociateObject:nil usingKey:&kWAFileResourceImage policy:OBJC_ASSOCIATION_ASSIGN changingObservedKey:nil];
+
+}
 
 + (NSSet *) keyPathsForValuesAffectingBestPresentableImage {
 
@@ -79,8 +139,8 @@
 
 - (UIImage *) resourceImage {
 
-	NSCParameterAssert([NSThread isMainThread]);
-	
+	[self createMemoryWarningObserverIfAppropriate];
+
 	return [self imageAssociatedWithKey:&kWAFileResourceImage filePath:self.resourceFilePath];
 	
 }
@@ -99,7 +159,7 @@
 
 - (UIImage *) largeThumbnailImage {
 	
-	NSCParameterAssert([NSThread isMainThread]);
+	[self createMemoryWarningObserverIfAppropriate];
 	
 	return [self imageAssociatedWithKey:&kWAFileLargeThumbnailImage filePath:self.largeThumbnailFilePath];
 	
@@ -119,7 +179,7 @@
 
 - (UIImage *) thumbnailImage {
 
-	NSCParameterAssert([NSThread isMainThread]);
+	[self createMemoryWarningObserverIfAppropriate];
 	
 	return [self imageAssociatedWithKey:&kWAFileThumbnailImage filePath:self.thumbnailFilePath];
 		
@@ -139,8 +199,8 @@
 
 - (UIImage *) smallThumbnailImage {
 
-	NSCParameterAssert([NSThread isMainThread]);
-
+	[self createMemoryWarningObserverIfAppropriate];
+	
 	return [self imageAssociatedWithKey:&kWAFileSmallThumbnailImage filePath:self.smallThumbnailFilePath];
 		
 }
@@ -160,7 +220,12 @@
 	if (image)
 		return image;
 	
-	image = [UIImage imageWithData:[NSData dataWithContentsOfMappedFile:filePath]];
+	// resource image is no longer needed if thumbnail has been created
+	if (key != &kWAFileResourceImage) {
+		[self irAssociateObject:nil usingKey:&kWAFileResourceImage policy:OBJC_ASSOCIATION_ASSIGN changingObservedKey:nil];
+	}
+
+	image = [UIImage imageWithData:[NSData dataWithContentsOfFile:filePath options:NSDataReadingMappedIfSafe error:nil]];
 	image.irRepresentedObject = [NSValue valueWithNonretainedObject:self];
 	
 	[self irAssociateObject:image usingKey:key policy:OBJC_ASSOCIATION_RETAIN_NONATOMIC changingObservedKey:nil];
@@ -179,7 +244,7 @@
 	if (!self.resourceImage)
 		return nil;
 	
-	primitiveThumbnail = [self.resourceImage irScaledImageWithSize:IRCGSizeGetCenteredInRect(self.resourceImage.size, (CGRect){ CGPointZero, (CGSize){ 512, 512 } }, 0.0f, YES).size];
+	primitiveThumbnail = [[self.resourceImage irStandardImage] irScaledImageWithSize:IRCGSizeGetCenteredInRect(self.resourceImage.size, (CGRect){ CGPointZero, (CGSize){ 512, 512 } }, 0.0f, YES).size];
 	[self setPrimitiveValue:primitiveThumbnail forKey:@"thumbnail"];
 	
 	return self.thumbnail;

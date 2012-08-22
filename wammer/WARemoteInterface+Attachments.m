@@ -9,6 +9,8 @@
 #import "WARemoteInterface+Attachments.h"
 #import "WADataStore.h"
 
+#import "IRWebAPIEngine+FormMultipart.h"
+
 NSString * const kWARemoteAttachmentType = @"WARemoteAttachmentType";
 NSString * const kWARemoteAttachmentTitle = @"WARemoteAttachmentTitle";
 NSString * const kWARemoteAttachmentDescription = @"WARemoteAttachmentDescription";
@@ -105,7 +107,7 @@ NSString * const WARemoteAttachmentSmallSubtype = @"small";
 		sentRemoteOptions, kIRWebAPIEngineRequestContextFormMultipartFieldsKey,
 		@"POST", kIRWebAPIEngineRequestHTTPMethod,
 	
-	nil] validator:WARemoteInterfaceGenericNoErrorValidator() successHandler: ^ (NSDictionary *inResponseOrNil, NSDictionary *inResponseContext, BOOL *outNotifyDelegate, BOOL *outShouldRetry) {
+	nil] validator:WARemoteInterfaceGenericNoErrorValidator() successHandler: ^ (NSDictionary *inResponseOrNil, IRWebAPIRequestContext *inResponseContext) {
 	
 		if (successBlock)
 			successBlock([inResponseOrNil objectForKey:@"object_id"]);
@@ -129,7 +131,7 @@ NSString * const WARemoteAttachmentSmallSubtype = @"small";
 	
 		anIdentifier, @"object_id",
 	
-	nil] options:nil validator:WARemoteInterfaceGenericNoErrorValidator() successHandler:^(NSDictionary *inResponseOrNil, NSDictionary *inResponseContext, BOOL *outNotifyDelegate, BOOL *outShouldRetry) {
+	nil] options:nil validator:WARemoteInterfaceGenericNoErrorValidator() successHandler:^(NSDictionary *inResponseOrNil, IRWebAPIRequestContext *inResponseContext) {
 		
 		if (!successBlock)
 			return;
@@ -146,7 +148,7 @@ NSString * const WARemoteAttachmentSmallSubtype = @"small";
 	
 		anIdentifier, @"object_id",
 	
-	nil], nil) validator:WARemoteInterfaceGenericNoErrorValidator() successHandler:^(NSDictionary *inResponseOrNil, NSDictionary *inResponseContext, BOOL *outNotifyDelegate, BOOL *outShouldRetry) {
+	nil], nil) validator:WARemoteInterfaceGenericNoErrorValidator() successHandler:^(NSDictionary *inResponseOrNil, IRWebAPIRequestContext *inResponseContext) {
 		
 		if (successBlock)
 			successBlock();
@@ -162,7 +164,7 @@ NSString * const WARemoteAttachmentSmallSubtype = @"small";
 		anIdentifier, @"object_id",
 		@"large", @"image_meta",
 	
-	nil] options:nil validator:WARemoteInterfaceGenericNoErrorValidator() successHandler:^(NSDictionary *inResponseOrNil, NSDictionary *inResponseContext, BOOL *outNotifyDelegate, BOOL *outShouldRetry) {
+	nil] options:nil validator:WARemoteInterfaceGenericNoErrorValidator() successHandler:^(NSDictionary *inResponseOrNil, IRWebAPIRequestContext *inResponseContext) {
 		
 		if (successBlock)
 			successBlock([inResponseOrNil valueForKeyPath:@"redirect_to"]);

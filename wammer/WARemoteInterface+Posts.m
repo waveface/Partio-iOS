@@ -7,10 +7,11 @@
 //
 
 #import "WARemoteInterface+Posts.h"
+#import "WADataStore.h"
 
 @implementation WARemoteInterface (Posts)
 
-+ (NSDictionary *) postEntityWithGroupID:(NSString *)groupID postID:(NSString *)postID text:(NSString *)text attachments:(NSArray *)attachmentIDs mainAttachment:(NSString *)mainAttachmentID preview:(NSDictionary *)previewRep isFavorite:(BOOL)isFavorite isHidden:(BOOL)isHidden {
++ (NSDictionary *) postEntityWithGroupID:(NSString *)groupID postID:(NSString *)postID text:(NSString *)text attachments:(NSArray *)attachmentIDs mainAttachment:(NSString *)mainAttachmentID preview:(NSDictionary *)previewRep isFavorite:(BOOL)isFavorite isHidden:(BOOL)isHidden createTime:(NSDate *)createTime updateTime:(NSDate *)updateTime {
 
 	NSMutableDictionary *sentData = [NSMutableDictionary dictionary];
 
@@ -43,6 +44,23 @@
 	[sentData setObject:(isHidden ? @"true" : @"false") forKey:@"hidden"];
 	[sentData setObject:(isFavorite ? @"1" : @"0") forKey:@"favorite"];
 	
+	NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+	formatter.dateFormat = @"yyyy-MM-dd'T'HH:mm:ss'Z'";
+	formatter.locale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"];
+	formatter.timeZone = [NSTimeZone timeZoneForSecondsFromGMT:0];
+
+	if (createTime) {
+
+		[sentData setObject:[formatter stringFromDate:createTime] forKey:@"timestamp"];
+
+	}
+	
+	if (updateTime) {
+
+		[sentData setObject:[formatter stringFromDate:updateTime] forKey:@"update_time"];
+
+	}
+
 	return sentData;
 
 }
@@ -57,7 +75,7 @@
 		aGroupIdentifier, @"group_id",
 		anIdentifier, @"post_id",
 				
-	nil] options:nil validator:WARemoteInterfaceGenericNoErrorValidator() successHandler: ^ (NSDictionary *inResponseOrNil, NSDictionary *inResponseContext, BOOL *outNotifyDelegate, BOOL *outShouldRetry) {
+	nil] options:nil validator:WARemoteInterfaceGenericNoErrorValidator() successHandler: ^ (NSDictionary *inResponseOrNil, IRWebAPIRequestContext *inResponseContext) {
 	
 		if (!successBlock)
 			return;
@@ -92,14 +110,14 @@
 		aGroupIdentifier, @"group_id",
 		datum, @"datum",
     
-                [NSString stringWithFormat:@"%@%i", 
+                [NSString stringWithFormat:@"%@%ld",
                   (positiveOrNegativeNumberOfPostsToExpandSearching > 0) ? @"+" : @"",
-                  positiveOrNegativeNumberOfPostsToExpandSearching
+                  (long)positiveOrNegativeNumberOfPostsToExpandSearching
                 ], @"limit",
                 
 		@"", @"filter",
 				
-	nil] options:nil validator:WARemoteInterfaceGenericNoErrorValidator() successHandler: ^ (NSDictionary *inResponseOrNil, NSDictionary *inResponseContext, BOOL *outNotifyDelegate, BOOL *outShouldRetry) {
+	nil] options:nil validator:WARemoteInterfaceGenericNoErrorValidator() successHandler: ^ (NSDictionary *inResponseOrNil, IRWebAPIRequestContext *inResponseContext) {
 	
 		if (!successBlock)
 			return;
@@ -109,6 +127,67 @@
 		);
 		
 	} failureHandler:WARemoteInterfaceGenericFailureHandler(failureBlock)];
+
+}
+
+- (void) retrievePostsCreatedSince:(NSDate *)date inGroup:(NSString *)groupID onProgress:(void(^)(NSArray *postReps, NSDate *continuation))progressBlock onSuccess:(void(^)(NSDate *continuation))successBlock onFailure:(void(^)(NSError *error))failureBlock {
+
+	if (!date)
+		date = [NSDate dateWithTimeIntervalSince1970:0];
+
+	NSParameterAssert(groupID);
+	
+	__block void (^getSince)(NSDate *) = [^ (NSDate *continuation) {
+	
+		[self retrievePostsInGroup:groupID relativeToPost:nil date:continuation withSearchLimits:self.defaultBatchSize filter:nil onSuccess:^ (NSArray *postReps) {
+		
+			if (![postReps count]) {
+				
+				if (successBlock)
+					successBlock(continuation);
+				
+				getSince = nil;
+				
+				return;
+			
+			}
+			
+			NSDate *latestTimestamp = continuation;
+			
+			for (NSDictionary *postRep in postReps) {
+				NSDate *timestamp = [[WADataStore defaultStore] dateFromISO8601String:[postRep objectForKey:@"timestamp"]];
+				latestTimestamp = [latestTimestamp laterDate:timestamp];
+				NSCParameterAssert(latestTimestamp);
+			}
+			
+			if (progressBlock)
+				progressBlock(postReps, latestTimestamp);
+			
+			if ([latestTimestamp isEqualToDate:continuation]) {
+			
+				if (successBlock)
+					successBlock(continuation);
+					
+				getSince = nil;
+				
+				return;
+			
+			}
+			
+			getSince(latestTimestamp);
+		
+		} onFailure:^ (NSError *error) {
+		
+			if (failureBlock)
+				failureBlock(error);
+			
+			getSince = nil;
+		
+		}];
+		
+	} copy];
+	
+	getSince(date);
 
 }
 
@@ -119,9 +198,9 @@
 	[self.engine fireAPIRequestNamed:@"posts/getLatest" withArguments:[NSDictionary dictionaryWithObjectsAndKeys:
 	
 		aGroupIdentifier, @"group_id",
-		[NSNumber numberWithUnsignedInt:maxNumberOfReturnedPosts], @"limit",
+		[NSNumber numberWithUnsignedInteger:maxNumberOfReturnedPosts], @"limit",
 	
-	nil] options:nil validator:WARemoteInterfaceGenericNoErrorValidator() successHandler:^(NSDictionary *inResponseOrNil, NSDictionary *inResponseContext, BOOL *outNotifyDelegate, BOOL *outShouldRetry) {
+	nil] options:nil validator:WARemoteInterfaceGenericNoErrorValidator() successHandler:^(NSDictionary *inResponseOrNil, IRWebAPIRequestContext *inResponseContext) {
 	
 		if (!successBlock)
 			return;
@@ -134,13 +213,13 @@
 
 }
 
-- (void) createPostInGroup:(NSString *)aGroupIdentifier withContentText:(NSString *)contentTextOrNil attachments:(NSArray *)attachmentIdentifiersOrNil preview:(NSDictionary *)aPreviewRep onSuccess:(void (^)(NSDictionary *))successBlock onFailure:(void (^)(NSError *))failureBlock {
+- (void) createPostInGroup:(NSString *)aGroupIdentifier withContentText:(NSString *)contentTextOrNil attachments:(NSArray *)attachmentIdentifiersOrNil preview:(NSDictionary *)aPreviewRep createTime:(NSDate *)createTime updateTime:(NSDate *)updateTime favorite:(BOOL)isFavorite onSuccess:(void (^)(NSDictionary *))successBlock onFailure:(void (^)(NSError *))failureBlock {
 
 	NSParameterAssert(aGroupIdentifier);
 	
-	NSDictionary *postEntity = [[self class] postEntityWithGroupID:aGroupIdentifier postID:nil text:contentTextOrNil attachments:attachmentIdentifiersOrNil mainAttachment:nil preview:aPreviewRep isFavorite:NO isHidden:NO];
+	NSDictionary *postEntity = [[self class] postEntityWithGroupID:aGroupIdentifier postID:nil text:contentTextOrNil attachments:attachmentIdentifiersOrNil mainAttachment:nil preview:aPreviewRep isFavorite:isFavorite isHidden:NO createTime:createTime updateTime:updateTime];
 
-	[self.engine fireAPIRequestNamed:@"posts/new" withArguments:nil options:WARemoteInterfaceEnginePostFormEncodedOptionsDictionary(postEntity, nil) validator:WARemoteInterfaceGenericNoErrorValidator() successHandler:^(NSDictionary *inResponseOrNil, NSDictionary *inResponseContext, BOOL *outNotifyDelegate, BOOL *outShouldRetry) {
+	[self.engine fireAPIRequestNamed:@"posts/new" withArguments:nil options:WARemoteInterfaceEnginePostFormEncodedOptionsDictionary(postEntity, nil) validator:WARemoteInterfaceGenericNoErrorValidator() successHandler:^(NSDictionary *inResponseOrNil, IRWebAPIRequestContext *inResponseContext) {
 		
 		if (!successBlock)
 			return;
@@ -153,9 +232,9 @@
 
 }
 
-- (void) updatePost:(NSString *)postID inGroup:(NSString *)groupID withText:(NSString *)text attachments:(NSArray *)attachmentIDs mainAttachment:(NSString *)mainAttachmentID preview:(NSDictionary *)preview favorite:(BOOL)isFavorite hidden:(BOOL)isHidden replacingDataWithDate:(NSDate *)lastKnownModificationDate onSuccess:(void(^)(NSDictionary *postRep))successBlock onFailure:(void(^)(NSError *error))failureBlock {
+- (void) updatePost:(NSString *)postID inGroup:(NSString *)groupID withText:(NSString *)text attachments:(NSArray *)attachmentIDs mainAttachment:(NSString *)mainAttachmentID preview:(NSDictionary *)preview favorite:(BOOL)isFavorite hidden:(BOOL)isHidden replacingDataWithDate:(NSDate *)lastKnownModificationDate updateTime:(NSDate *)updateTime onSuccess:(void(^)(NSDictionary *postRep))successBlock onFailure:(void(^)(NSError *error))failureBlock {
 
-	NSMutableDictionary *postEntity = [[[self class] postEntityWithGroupID:groupID postID:postID text:text attachments:attachmentIDs mainAttachment:mainAttachmentID preview:preview isFavorite:isFavorite isHidden:isHidden] mutableCopy];
+	NSMutableDictionary *postEntity = [[[self class] postEntityWithGroupID:groupID postID:postID text:text attachments:attachmentIDs mainAttachment:mainAttachmentID preview:preview isFavorite:isFavorite isHidden:isHidden createTime:nil updateTime:updateTime] mutableCopy];
 	
 	if (lastKnownModificationDate) {
 	
@@ -169,7 +248,7 @@
 	
 	}
 	
-	[self.engine fireAPIRequestNamed:@"posts/update" withArguments:nil options:WARemoteInterfaceEnginePostFormEncodedOptionsDictionary(postEntity, nil) validator:WARemoteInterfaceGenericNoErrorValidator() successHandler:^(NSDictionary *inResponseOrNil, NSDictionary *inResponseContext, BOOL *outNotifyDelegate, BOOL *outShouldRetry) {
+	[self.engine fireAPIRequestNamed:@"posts/update" withArguments:nil options:WARemoteInterfaceEnginePostFormEncodedOptionsDictionary(postEntity, nil) validator:WARemoteInterfaceGenericNoErrorValidator() successHandler:^(NSDictionary *inResponseOrNil, IRWebAPIRequestContext *inResponseContext) {
 		
 		if (!successBlock)
 			return;
@@ -190,7 +269,7 @@
 		aPostIdentifier, @"post_id",
 		contentTextOrNil, @"content",
 	
-	nil], nil) validator:WARemoteInterfaceGenericNoErrorValidator() successHandler:^(NSDictionary *inResponseOrNil, NSDictionary *inResponseContext, BOOL *outNotifyDelegate, BOOL *outShouldRetry) {
+	nil], nil) validator:WARemoteInterfaceGenericNoErrorValidator() successHandler:^(NSDictionary *inResponseOrNil, IRWebAPIRequestContext *inResponseContext) {
 		
 		if (!successBlock)
 			return;
@@ -216,7 +295,7 @@
     [arguments setObject:[(NSDictionary *)aFilter JSONString] forKey:@"filter_entity"];
   }
   
-  [self.engine fireAPIRequestNamed:@"posts/fetchByFilter" withArguments:arguments options:nil validator:WARemoteInterfaceGenericNoErrorValidator() successHandler:^(NSDictionary *inResponseOrNil, NSDictionary *inResponseContext, BOOL *outNotifyDelegate, BOOL *outShouldRetry) {
+  [self.engine fireAPIRequestNamed:@"posts/fetchByFilter" withArguments:arguments options:nil validator:WARemoteInterfaceGenericNoErrorValidator() successHandler:^(NSDictionary *inResponseOrNil, IRWebAPIRequestContext *inResponseContext) {
   
     if (!successBlock)
       return;
@@ -232,14 +311,14 @@
 	NSParameterAssert(groupID);
 	NSParameterAssert(postIDs);
 	
-	[self.engine fireAPIRequestNamed:@"posts/fetchByFilter" withArguments:[NSDictionary dictionaryWithObjectsAndKeys:
+	NSMutableDictionary *postListEntity = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+																				 groupID, @"group_id",
+																				 [postIDs JSONString], @"post_id_list",
+																				 nil];
 	
-		groupID, @"group_id",
-		[postIDs JSONString], @"post_id_list",
+	[self.engine fireAPIRequestNamed:@"posts/fetchByFilter" withArguments:nil options:WARemoteInterfaceEnginePostFormEncodedOptionsDictionary(postListEntity, nil) validator:WARemoteInterfaceGenericNoErrorValidator() successHandler:^(NSDictionary *inResponseOrNil, IRWebAPIRequestContext *inResponseContext) {
 	
-	nil] options:nil validator:WARemoteInterfaceGenericNoErrorValidator() successHandler:^(NSDictionary *inResponseOrNil, NSDictionary *inResponseContext, BOOL *outNotifyDelegate, BOOL *outShouldRetry) {
-	
-    if (!successBlock)
+    if (!successBlock)	
       return;
     
     successBlock([inResponseOrNil objectForKey:@"posts"]);
@@ -258,7 +337,7 @@
 		aGroupIdentifier, @"group_id",
 		aPostIdentifier, @"post_id",
 	
-	nil], nil) validator:WARemoteInterfaceGenericNoErrorValidator() successHandler:^(NSDictionary *inResponseOrNil, NSDictionary *inResponseContext, BOOL *outNotifyDelegate, BOOL *outShouldRetry) {
+	nil], nil) validator:WARemoteInterfaceGenericNoErrorValidator() successHandler:^(NSDictionary *inResponseOrNil, IRWebAPIRequestContext *inResponseContext) {
 		
 		if (!successBlock)
 			return;
@@ -279,7 +358,7 @@
     aPostIdentifier, @"post_id",
     aToken, @"access_token",
   
-  nil] options:nil validator:WARemoteInterfaceGenericNoErrorValidator() successHandler:^(NSDictionary *inResponseOrNil, NSDictionary *inResponseContext, BOOL *outNotifyDelegate, BOOL *outShouldRetry) {
+  nil] options:nil validator:WARemoteInterfaceGenericNoErrorValidator() successHandler:^(NSDictionary *inResponseOrNil, IRWebAPIRequestContext *inResponseContext) {
   
     if (!successBlock)
       return;
@@ -299,7 +378,7 @@
 		postID, @"post_id",
 		groupID, @"group_id",
 	
-	nil], nil) validator:WARemoteInterfaceGenericNoErrorValidator() successHandler:^(NSDictionary *inResponseOrNil, NSDictionary *inResponseContext, BOOL *outNotifyDelegate, BOOL *outShouldRetry) {
+	nil], nil) validator:WARemoteInterfaceGenericNoErrorValidator() successHandler:^(NSDictionary *inResponseOrNil, IRWebAPIRequestContext *inResponseContext) {
 		
 		if (aSuccessBlock)
       aSuccessBlock();

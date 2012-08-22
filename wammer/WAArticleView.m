@@ -17,11 +17,16 @@
 
 #import "WFPresentation.h"
 
+#import <AssetsLibrary/AssetsLibrary.h>
+
 @interface WAArticleView ()
 
 + (IRRelativeDateFormatter *) relativeDateFormatter;
++ (NSDateFormatter *) absoluteDateFormatter;
 
 - (WFPresentationTemplate *) presentationTemplate;
+
+@property (nonatomic, readwrite, weak) WAArticle *article;
 
 @end
 
@@ -29,6 +34,7 @@
 @implementation WAArticleView
 
 @synthesize contextInfoContainer, previewBadge, textEmphasisView, avatarView, relativeCreationDateLabel, userNameLabel, articleDescriptionLabel, deviceDescriptionLabel, contextTextView, mainImageView, contextWebView, presentationTemplateName;
+@synthesize article;
 
 - (void) awakeFromNib {
 
@@ -46,77 +52,144 @@
 
 }
 
-- (void) configureWithArticle:(WAArticle *)article {
+- (void) configureWithArticle:(WAArticle *)inArticle {
 
-	UIImage *representingImage = article.representingFile.thumbnailImage;
-	NSString *relativeDateString = [[[self class] relativeDateFormatter] stringFromDate:article.creationDate];
+	self.article = inArticle;
+
+	UIImage *representingImage = [article.representingFile smallestPresentableImage];
+	
+	NSString *dateString = nil;
+	if ([article.creationDate compare:[NSDate dateWithTimeIntervalSinceNow:-24*60*60]] == NSOrderedDescending) {
+		
+		dateString = [[[self class] relativeDateFormatter] stringFromDate:article.creationDate];
+		
+	} else {
+	
+		dateString = [[[self class] absoluteDateFormatter] stringFromDate:article.creationDate];
+	
+	}
+	
 	WAPreview *shownPreview = [article.previews anyObject];
 	userNameLabel.text = article.owner.nickname;
 	
-	NSString *photoInformation = NSLocalizedString(@"PHOTO_NOUN ", @"In iPad overview");
-	 
-	if ([article.files count] >= 1) {
+	NSString *photoInformation = NSLocalizedString(@"PHOTO_NOUN", @"In iPad overview");
+		
+	if ([article.files count] > 1) {
 	
 		photoInformation  = [NSString localizedStringWithFormat:
-			NSLocalizedString(@"PHOTOS_PLURAL ", @"In iPad overview"),
-			[article.files count] ];
+			NSLocalizedString(@"PHOTOS_PLURAL", @"In iPad overview"),
+			[inArticle.files count]
+		];
+			
 	}
 	
-	relativeCreationDateLabel.text = [photoInformation stringByAppendingString:relativeDateString];
-	articleDescriptionLabel.text = article.text;
+	NSString *postDescription = [NSString localizedStringWithFormat:NSLocalizedString(@"NUMBER_OF_PHOTOS_CREATE_TIME_FROM_DEVICE", @"In iPad overview"), photoInformation, dateString, article.creationDeviceName];
+	relativeCreationDateLabel.text = postDescription;
+	articleDescriptionLabel.text = inArticle.text;
 	previewBadge.preview = shownPreview;
-	mainImageView.image = representingImage;
-	
+
 	[mainImageView irUnbind:@"image"];
-	[mainImageView irBind:@"image" toObject:article keyPath:@"representingFile.smallestPresentableImage" options:[NSDictionary dictionaryWithObjectsAndKeys:
+	if (![article.representingFile smallestPresentableImage] && [article.representingFile assetURL]) {
+		
+		ALAssetsLibrary * const library = [[self class] assetsLibrary];
+		[library assetForURL:[NSURL URLWithString:article.representingFile.assetURL] resultBlock:^(ALAsset *asset) {
+			
+			dispatch_async(dispatch_get_main_queue(), ^{
+				
+				mainImageView.image = [UIImage imageWithCGImage:[asset aspectRatioThumbnail]];
+				
+			});
+			
+		} failureBlock:^(NSError *error) {
+			
+			NSLog(@"Unable to retrieve assets for URL %@", article.representingFile.assetURL);
+			
+		}];
+		
+	} else {
+	 
+		mainImageView.image = representingImage;
+	}
+	
+	[mainImageView irBind:@"image" toObject:inArticle keyPath:@"representingFile.smallestPresentableImage" options:[NSDictionary dictionaryWithObjectsAndKeys:
 	
 		(id)kCFBooleanTrue, kIRBindingsAssignOnMainThreadOption,
 	
 	nil]];
 	
-	avatarView.image = article.owner.avatar;
-	deviceDescriptionLabel.text = article.creationDeviceName;
-	textEmphasisView.text = article.text;
-	textEmphasisView.hidden = !!(BOOL)[article.files count];
+	avatarView.image = inArticle.owner.avatar;
+	deviceDescriptionLabel.text = inArticle.creationDeviceName;
+	textEmphasisView.text = inArticle.text;
+	textEmphasisView.hidden = !!(BOOL)[inArticle.files count];
 	//contextInfoContainer.hidden = ![article.text length]; // if there's no note, display nothing.
 	
 	if (contextWebView) {
 	
-		self.layer.borderWidth = 1.0;
-		self.layer.borderColor = [[UIColor colorWithWhite:188.0/255.0 alpha:1.0] CGColor];
-		WFPresentationTemplate *pt = [self presentationTemplate];
-		NSMutableDictionary *replacements = [NSMutableDictionary dictionary];
-		
-		void (^hook)(NSString *, NSString *) = ^ (NSString *key, NSString *value) {
-			
-			[replacements setObject:(value ? value : @"")	forKey:key];
-			
-		};
-		
-		hook(@"$ADDITIONAL_HTML_CLASSES", [[NSArray arrayWithObjects:
-			(shownPreview ? @"preview" : @"no-preview"),
-			([article.text length] ? @"body" : @"no-body"),
-		nil] componentsJoinedByString:@" "]);
-		
-		hook(@"$TITLE", [article.text substringToIndex: MIN( 120, [article.text length])] );
-		hook(@"$ADDITIONAL_STYLES", nil);
-		hook(@"$BODY", article.text);
-		hook(@"$PREVIEW_TITLE", shownPreview.graphElement.title);
-		hook(@"$PREVIEW_PROVIDER", [shownPreview.graphElement providerCaption]);
-		hook(@"$PREVIEW_IMAGE", shownPreview.graphElement.representingImage.imageRemoteURL);
-		hook(@"$PREVIEW_BODY", shownPreview.graphElement.text);
-		hook(@"$FOOTER", relativeDateString);
-		
-		NSString *string = [pt documentWithReplacementVariables:replacements];
+		[contextWebView loadHTMLString:nil baseURL:nil];
+	
+		__weak UIWebView *wContextWebView = contextWebView;
+		__weak WAArticleView *wSelf = self;
+		__weak WAArticle *wArticle = inArticle;
+		__weak WAPreview *wPreview = shownPreview;
 		
 		CFRunLoopPerformBlock(CFRunLoopGetMain(), kCFRunLoopDefaultMode, ^{
-
-			[contextWebView loadHTMLString:string baseURL:pt.baseURL];
+		
+			if (!wSelf || !wArticle || !wContextWebView)
+				return;
+			
+			NSString *footerText = [NSString localizedStringWithFormat:NSLocalizedString(@"CREATE_TIME_FROM_DEVICE", @"In iPad overview, (time, device)"), dateString, wArticle.creationDeviceName];
+			
+			WFPresentationTemplate *pt = [wSelf presentationTemplate];
+			NSMutableDictionary *replacements = [NSMutableDictionary dictionary];
+			
+			void (^hook)(NSString *, NSString *) = ^ (NSString *key, NSString *value) {
+				
+				[replacements setObject:(value ? value : @"")	forKey:key];
+				
+			};
+			
+			hook(@"$ADDITIONAL_HTML_CLASSES", [[NSArray arrayWithObjects:
+				(wPreview ? @"preview" : @"no-preview"),
+				([wArticle.text length] ? @"body" : @"no-body"),
+			nil] componentsJoinedByString:@" "]);
+			
+			hook(@"$TITLE", [wArticle.text substringToIndex: MIN( 120, [wArticle.text length])] );
+			hook(@"$ADDITIONAL_STYLES", nil);
+			hook(@"$BODY", wArticle.text);
+			hook(@"$PREVIEW_TITLE", wPreview.graphElement.title);
+			hook(@"$PREVIEW_PROVIDER", [wPreview.graphElement providerCaption]);
+			hook(@"$PREVIEW_IMAGE", wPreview.graphElement.representingImage.imageRemoteURL);
+			hook(@"$PREVIEW_BODY", wPreview.graphElement.text);
+			hook(@"$FOOTER", footerText);
+			
+			NSString *string = [pt documentWithReplacementVariables:replacements];
+			
+			if (wContextWebView.window)
+				[wContextWebView loadHTMLString:string baseURL:pt.baseURL];
 			
 		});
 	
 	}
 	
+}
+
+- (void) willMoveToWindow:(UIWindow *)newWindow {
+
+	[super willMoveToWindow:newWindow];
+	
+	if (newWindow && self.article)
+		[self configureWithArticle:self.article];
+	
+	if (!newWindow)
+		[contextWebView stopLoading];
+
+}
+
+- (void) willMoveToSuperview:(UIView *)newSuperview {
+
+	if (!newSuperview)
+		[contextWebView stopLoading];
+
 }
 
 - (void) layoutSubviews {
@@ -162,6 +235,35 @@
 
 	return formatter;
 
+}
+
++ (NSDateFormatter *) absoluteDateFormatter {
+
+	static NSDateFormatter *formatter = nil;
+	static dispatch_once_t onceToken;
+	dispatch_once(&onceToken, ^{
+	
+		formatter = [[NSDateFormatter alloc] init];
+		formatter.dateStyle = NSDateFormatterLongStyle;
+			
+	});
+
+	return formatter;
+
+}
+
++ (ALAssetsLibrary *) assetsLibrary {
+	
+	static ALAssetsLibrary *library = nil;
+	static dispatch_once_t onceToken = 0;
+	dispatch_once(&onceToken, ^{
+		
+		library = [ALAssetsLibrary new];
+		
+	});
+	
+	return library;
+	
 }
 
 @end

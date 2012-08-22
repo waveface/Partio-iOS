@@ -56,7 +56,7 @@ NSString * const kContext = @"-[WATimelineViewControllerPhone(RowHeightCaching) 
 
 - (void) cacheRowHeight:(CGFloat)height forObject:(id)object context:(id)context {
 
-	id key = [object watvcpNonretainedObjectValue];
+	id key = [self cacheKeyForObject:object];
 	id cachedObject = [NSNumber numberWithFloat:height];
 	
 	objc_setAssociatedObject(cachedObject, &kContext, context, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
@@ -67,7 +67,7 @@ NSString * const kContext = @"-[WATimelineViewControllerPhone(RowHeightCaching) 
 
 - (CGFloat) cachedRowHeightForObject:(id)object context:(id *)outContext {
 
-	id key = [object watvcpNonretainedObjectValue];
+	id key = [self cacheKeyForObject:object];
 	id cachedObject = [[self rowHeightCache] objectForKey:key];
 	
 	if (outContext)
@@ -79,7 +79,7 @@ NSString * const kContext = @"-[WATimelineViewControllerPhone(RowHeightCaching) 
 
 - (void) removeCachedRowHeightForObject:(id)object {
 
-	id key = [object watvcpNonretainedObjectValue];
+	id key = [self cacheKeyForObject:object];
 	
 	[[self rowHeightCache] removeObjectForKey:key];
 
@@ -88,6 +88,15 @@ NSString * const kContext = @"-[WATimelineViewControllerPhone(RowHeightCaching) 
 - (void) removeCachedRowHeights {
 
 	[[self rowHeightCache] removeAllObjects];
+
+}
+
+- (id) cacheKeyForObject:(id)object {
+
+	if ([object isKindOfClass:[NSManagedObject class]])
+		return [(NSManagedObject *)object objectID];
+
+	return [object watvcpNonretainedObjectValue];
 
 }
 

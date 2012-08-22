@@ -1,9 +1,26 @@
-/* attachment activity view */
+/* Accessibility label for account info in iPhone timeline */
+"ACCESS_ACCOUNT_INFO" = "帳戶資訊";
+
+/* accessibility label for adding photos in composition view */
+"ACCESS_ADD_PHOTO" = "加照片";
+
+/* Accessibility label for camera in iPhone timeline */
+"ACCESS_CAMERA" = "照相";
+
+/* Accessibility label for composer in iPhone timeline */
+"ACCESS_COMPOSE" = "貼文";
+
+/* Accessibility label for date picker in iPhone timeline */
+"ACCESS_PICK_DATE" = "選日期";
+
+/* accessibility label for webpage preview in composition view */
+"ACCESS_PREVIEW" = "預覽";
+
+/* add photo button in composition view */
 "ACTION_ADD" = "加照片";
 
 /* Action title for Cancelling
    Action title for cancelling stuff
-   Cancel ation in login view
    Cancel.
    Title for cancelling an action */
 "ACTION_CANCEL" = "取消";
@@ -12,6 +29,9 @@
    Title for the action responsible for presenting a controller changing the representing file of an article */
 "ACTION_CHANGE_REPRESENTING_FILE" = "更換封面";
 
+/* Short action title for connecting Facebook creds */
+"ACTION_CONNECT_FACEBOOK_SHORT" = "同步";
+
 /* Action deleting an article
    Title for deleting an article from the Overview
    Title for deleting an article from the Timeline */
@@ -19,6 +39,9 @@
 
 /* Action title for discarding a draft */
 "ACTION_DISCARD" = "丟棄草稿";
+
+/* Short action title for disconnecting Facebook creds */
+"ACTION_DISCONNECT_FACEBOOK" = "停止";
 
 /* In iPad composition view */
 "ACTION_DONE" = "完成";
@@ -32,8 +55,7 @@
 /* No comment provided by engineer. */
 "ACTION_LATER" = "稍後再做";
 
-/* Action marking article as favorite
-   Bar button item title to mark the article as a favorite */
+/* Action marking article as favorite */
 "ACTION_MARK_FAVORITE" = "設為最愛";
 
 /* No comment provided by engineer. */
@@ -42,8 +64,8 @@
 /* Action title for creating a new post */
 "ACTION_NEW_POST" = "新文章";
 
-/* No comment provided by engineer. */
-"ACTION_OKAY" = "好";
+/* Alert Dismissal Action */
+"ACTION_OKAY" = "確定";
 
 /* No comment provided by engineer. */
 "ACTION_OPEN_IN_SAFARI" = "使用 Safari 打開";
@@ -51,26 +73,11 @@
 /* No comment provided by engineer. */
 "ACTION_PRINT" = "列印";
 
-/* Action title for processing stuff */
-"ACTION_PROCESSING" = "處理中";
-
-/* Action title for registering */
-"ACTION_REGISTER_USER" = "註冊";
-
 /* No comment provided by engineer. */
 "ACTION_RESET" = "重設";
 
-/* Action title for resetting password in login view */
-"ACTION_RESET_PASSWORD" = "重設密碼";
-
 /* Action title for saving a draft */
 "ACTION_SAVE_DRAFT" = "存成草稿";
-
-/* Action title for signing in */
-"ACTION_SIGN_IN" = "登入";
-
-/* Action title for signing in thru Facebook */
-"ACTION_SIGN_IN_WITH_FACEBOOK" = "使用 Facebook 帳戶登入";
 
 /* Action title for Signing Out */
 "ACTION_SIGN_OUT" = "登出";
@@ -78,8 +85,7 @@
 /* Button title for showing a camera capture controller */
 "ACTION_TAKE_PHOTO_WITH_CAMERA" = "相機";
 
-/* Action marking article as not favorite
-   Bar button item title to unmark the article as a favorite */
+/* Action marking article as not favorite */
 "ACTION_UNMARK_FAVORITE" = "取消最愛";
 
 /* No comment provided by engineer. */
@@ -98,11 +104,20 @@
    Title for application */
 "APP_TITLE" = "Stream";
 
-/* Title for login view */
-"AUTH_REQUEST_TITLE" = "Stream";
+/* title in attachments view */
+"ATTACHMENTS_VIEW_TITLE" = "附加檔案";
 
-/* Title for the Facebook linking controller */
-"AUTH_WITH_FACEBOOK_REQUEST_TITLE" = "連接 Facebook";
+/* Authentication Error Description */
+"AUTH_ERROR_ALREADY_REGISTERED" = "電子郵件已註冊。請重新輸入新的電子郵件帳號。";
+
+/* Authentication Error Description */
+"AUTH_ERROR_INVALID_EMAIL_FORMAT" = "電子郵件格式錯誤";
+
+/* Authentication Error Description */
+"AUTH_ERROR_INVALID_EMAIL_PWD" = "電子郵件或密碼不符";
+
+/* Authentication Error Description */
+"AUTH_ERROR_INVALID_PWD_FORMAT" = "密碼格式錯誤";
 
 /* Prompt for Cover Image picker */
 "CHANGE_REPRESENTING_FILE_PROMPT" = "選擇喜歡的相片作為封面。";
@@ -110,26 +125,22 @@
 /* Title for Cover Image picker */
 "CHANGE_REPRESENTING_FILE_TITLE" = "更換封面相片";
 
-/* “%@ Comments” */
-"COMMENTS_COUNT_MANY_FORMAT_STRING" = "%@ 則筆記";
-
-/* “%@ Comment” */
-"COMMENTS_COUNT_ONE_FORMAT_STRING" = "%@ 則筆記";
-
-/* “%@ Comment” or “No Comment” */
-"COMMENTS_COUNT_ZERO_FORMAT_STRING" = "沒有筆記";
-
-/* No comment provided by engineer. */
+/* add photo button in composition view */
 "COMPOSITION_MANY_PHOTOS_BUTTON_CAPTION_FORMAT" = "%i 張照片";
 
-/* No comment provided by engineer. */
+/* add photo button in composition view */
 "COMPOSITION_ONE_PHOTO_BUTTON_CAPTION_FORMAT" = "%i 張照片";
 
-/* No comment provided by engineer. */
+/* remove preview in iPad composition view
+   remove preview in iPhone composition view */
 "COMPOSITION_REMOVE_CURRENT_PREVIEW" = "移除網頁預覽";
 
 /* Title for the composition view */
 "COMPOSITION_TITLE" = "編輯";
+
+/* In iPad overview, (time, device)
+   iPhone Timeline */
+"CREATE_TIME_FROM_DEVICE" = "%1$@來自 %2$@";
 
 /* in relative date format */
 "DATE_AFTER" = "%@後";
@@ -174,24 +185,26 @@
 /* Failed, underlying error description %@ */
 "ERROR_ARTICLE_ENTITY_SYNC_FAILURE_WITH_UNDERLYING_ERROR_DESCRIPTION_FORMAT" = "上傳時發生錯誤：%@。本文已存成草稿。";
 
-/* Description for authentication failure */
-"ERROR_AUTHENTICATION_FAILED_DESCRIPTION" = " ";
+/* Message for an alert view to show user his FB account has been connected to another Stream user */
+"FACEBOOK_CONNECT_ACCOUNT_OCCUPIED_MESSAGE" = "這個 Facebook 帳號已經被使用，請您再試試看其他的Facebook帳號。";
 
-/* Recovery notion for authentication failure recovery */
-"ERROR_AUTHENTICATION_FAILED_RECOVERY_NOTION" = "您可以重設密碼或新增一個帳號";
+/* Message for an alert view to show user he already connects to another FB account. */
+"FACEBOOK_CONNECT_FAIL_MESSAGE" = "你已經連結其他 Facebook 帳號，請登出目前 Facebook 帳號並重新啟動同步。";
 
-/* Title for authentication failure in login view
-   Title for authentication failure in web view */
-"ERROR_AUTHENTICATION_FAILED_TITLE" = "無效的帳號密碼";
+/* Title for an alert view to show facebook connection failure */
+"FACEBOOK_CONNECT_FAIL_TITLE" = "無法同步Facebook";
 
-/* Description for registration failure */
-"ERROR_USER_REGISTRATION_FAILED_DESCRIPTION" = "Stream現在無法為您註冊";
+/* Message for alert view asking if user wants to connect her Facebook account */
+"FACEBOOK_CONNECT_REQUEST_MESSAGE" = "啟動之後，Stream將會開始同步您在Facebook上的新貼文。";
 
-/* Recovery notion for registration failure recovery */
-"ERROR_USER_REGISTRATION_FAILED_RECOVERY_NOTION" = "請稍候再嘗試登錄";
+/* Title for alert view asking if user wants to connect her Facebook account */
+"FACEBOOK_CONNECT_REQUEST_TITLE" = "確認同步Facebook";
 
-/* Title for registration failure */
-"ERROR_USER_REGISTRATION_FAILED_TITLE" = "無法註冊";
+/* Message for alert view asking if user wants to disconnect her Facebook account */
+"FACEBOOK_DISCONNECT_REQUEST_MESSAGE" = "確認取消後，Stream將會停止同步您在Facebook上的新貼文。";
+
+/* Title for alert view asking if user wants to disconnect her Facebook account */
+"FACEBOOK_DISCONNECT_REQUEST_TITLE" = "確認取消Facebook同步";
 
 /* Display title for a fetch request working against all the articles */
 "FETCH_REQUEST_ALL_ARTICLES_DISPLAY_TITLE" = "所有貼文";
@@ -235,29 +248,15 @@
 /* Plural noun for draft objects */
 "NOUN_DRAFTS" = "草稿";
 
-/* Title for nick name
-   Title for nickname */
-"NOUN_NICKNAME" = "使用者名稱";
-
-/* Noun for Password
-   Title for password */
-"NOUN_PASSWORD" = "密碼";
-
-/* Title for password confirmation */
-"NOUN_PASSWORD_CONFIRMATION" = "確認密碼";
-
-/* Noun for Username
-   Title for username */
-"NOUN_USERNAME" = "電子郵件";
-
 /* Photo information in cell */
 "NUMBER_OF_PHOTOS" = "%d 張照片";
 
-/* iPhone Timeline */
-"NUMBER_OF_PHOTOS_FROM_DEVICE" = "%1$@來自%2$@";
+/* In iPad overview
+   iPhone Timeline */
+"NUMBER_OF_PHOTOS_CREATE_TIME_FROM_DEVICE" = "%1$@於%2$@來自 %3$@";
 
 /* In iPad overview */
-"PHOTO_NOUN " = "一張照片";
+"PHOTO_NOUN" = "一張照片";
 
 /* in iPhone timeline */
 "PHOTO_PLURAL" = "%d 張照片";
@@ -266,7 +265,7 @@
 "PHOTO_SINGULAR" = "%d 張照片";
 
 /* In iPad overview */
-"PHOTOS_PLURAL " = "%d 張照片";
+"PHOTOS_PLURAL" = "%d 張照片";
 
 /* Text to show for previews without a provider name */
 "PREVIEW_BADGE_PROVIDER_NAME_PLACEHOLDER" = "（網址未知）";
@@ -286,9 +285,6 @@
 /* REACHABILITY_STATE_UNKNOWN */
 "REACHABILITY_STATE_UNKNOWN" = "不可用";
 
-/* Title for registration request view */
-"REGISTER_REQUEST_TITLE" = "註冊";
-
 /* No comment provided by engineer. */
 "RESET_SETTINGS_CONFIRMATION_DESCRIPTION" = "是否要清除所有設定？";
 
@@ -307,8 +303,14 @@
 /* Title to show explaining WiFi Sync */
 "SERVICE_INFO_WITHOUT_WIFI" = "⚠ 僅會在 Wi-Fi 連線時上傳原檔\n\n在 Wi-Fi 環境中，Stream 會幫您將原始檔案妥善保存。只要下載並且開啓 PC 上的 Stream，您有 30 天的時間將檔案從雲端送回 PC 保存。";
 
+/* Title for view controller signing the user in */
+"SIGN_IN_CONTROLLER_TITLE" = "登入";
+
 /* Confirmation text for Signing Out */
 "SIGN_OUT_CONFIRMATION" = "確定登出？";
+
+/* Title for view controller signing the user up */
+"SIGN_UP_CONTROLLER_TITLE" = "註冊";
 
 /* No comment provided by engineer. */
 "STATE_LOADING_SINGLE_DOCUMENT" = "正在載入文件…";
@@ -320,22 +322,25 @@
 "STREAM_ABOUT_TITLE" = "詳細資訊";
 
 /* Caption to show in account info when station is connected */
-"SYNC_BUTTON_CAPTION_WITH_STATION_CONNECTED" = "正在與 Station 同步中";
+"SYNC_BUTTON_CAPTION_WITH_STATION_CONNECTED" = "正在同步到 Station";
 
 /* Caption to show when app is syncing data without station */
-"SYNC_BUTTON_NORMAL_TITLE" = "正在同步";
+"SYNC_BUTTON_NORMAL_TITLE" = "正在同步到 Cloud";
 
 /* Caption to show when app is not syncing data, but sync is usable */
 "SYNC_BUTTON_USABLE_TITLE" = "現在同步";
 
 /* In Account Info Sync Section */
-"SYNC_INFO_FOOTER" = "上次同步%@";
+"SYNC_INFO_FOOTER" = "上次同步：%@";
 
 /* Title on the text stack more / less toggle button for “Less” */
 "TEXT_ELEMENT_TOGGLE_LESS_TITLE" = "更少";
 
 /* Title on the text stack more / less toggle button for “More” */
 "TEXT_ELEMENT_TOGGLE_MORE_TITLE" = "更多";
+
+/* Alert on no location service enabled when open photo library */
+"TURN_ON_LOCATION_SERVICE" = "Stream 須開啟定位服務才能存取相簿的內容";
 
 /* Settings for User popover */
 "USER_INFO_CONTROLLER_TITLE" = "帳戶資訊";
@@ -364,7 +369,7 @@
 /* Title to show when user has no station, and have exhausted storage on the Cloud */
 "USER_INFO_NAG_LEVEL_3_WITHOUT_STATION" = "您已有原始檔暫存在雲端上，請儘快下載與安裝Station，讓我們將檔案送回您的PC中";
 
-/* attachment activity view */
+/* preview button in composition view */
 "WEB_PREVIEW" = "預覽";
 
 /* No comment provided by engineer. */
@@ -391,7 +396,28 @@
 /* Class = "IBUILabel"; text = "COMPOSITION_NO_PHOTO_REMINDER_DESCRIPTION"; ObjectID = "26"; */
 "COMPOSITION_NO_PHOTO_REMINDER_DESCRIPTION" = "您可以插入一些照片";
 
+/* Class = "IBUITextField"; placeholder = "USERNAME_PLACEHOLDER"; ObjectID = "2Vk-4J-QH3"; */
+"USERNAME_PLACEHOLDER" = "me@example.com";
+
+/* Class = "IBUILabel"; text = "NOUN_PASSWORD"; ObjectID = "KhS-eb-yB8"; */
+"NOUN_PASSWORD" = "密碼";
+
+/* Class = "IBUILabel"; text = "NOUN_USERNAME"; ObjectID = "afM-HJ-Q3v"; */
+"NOUN_USERNAME" = "電子郵件";
+
+/* Class = "IBUITextField"; placeholder = "PASSWORD_PLACEHOLDER"; ObjectID = "g7o-DD-LvS"; */
+"PASSWORD_PLACEHOLDER" = "••••••••";
+
 /* Class = "IBUILabel"; text = "FEB"; ObjectID = "50"; */
+"FEB" = "FEB";
+
+/* Class = "IBUILabel"; text = "FEB"; ObjectID = "64"; */
+"FEB" = "FEB";
+
+/* Class = "IBUILabel"; text = "FEB"; ObjectID = "76"; */
+"FEB" = "FEB";
+
+/* Class = "IBUILabel"; text = "FEB"; ObjectID = "90"; */
 "FEB" = "FEB";
 
 /* Class = "IBUILabel"; text = "FEB"; ObjectID = "64"; */
@@ -409,6 +435,30 @@
 /* Class = "IBUILabel"; text = "FEB"; ObjectID = "114"; */
 "FEB" = "FEB";
 
+/* Class = "IBUILabel"; text = "FEB"; ObjectID = "110"; */
+"FEB" = "FEB";
+
+/* Class = "IBUILabel"; text = "FEB"; ObjectID = "114"; */
+"FEB" = "FEB";
+
+/* Class = "IBUITextField"; placeholder = "USERNAME_PLACEHOLDER"; ObjectID = "2Vk-4J-QH3"; */
+"USERNAME_PLACEHOLDER" = "me@example.com";
+
+/* Class = "IBUILabel"; text = "NOUN_PASSWORD"; ObjectID = "KhS-eb-yB8"; */
+"NOUN_PASSWORD" = "密碼";
+
+/* Class = "IBUILabel"; text = "NOUN_NICKNAME"; ObjectID = "LGa-aa-QPo"; */
+"NOUN_NICKNAME" = "使用者名稱";
+
+/* Class = "IBUITextField"; placeholder = "NICKNAME_PLACEHOLDER"; ObjectID = "YnT-se-P50"; */
+"NICKNAME_PLACEHOLDER" = "John Appleseed";
+
+/* Class = "IBUILabel"; text = "NOUN_USERNAME"; ObjectID = "afM-HJ-Q3v"; */
+"NOUN_USERNAME" = "電子郵件";
+
+/* Class = "IBUITextField"; placeholder = "PASSWORD_PLACEHOLDER"; ObjectID = "g7o-DD-LvS"; */
+"PASSWORD_PLACEHOLDER" = "••••••••";
+
 /* Class = "IBUILabel"; text = "STATE_LOADING_SINGLE_DOCUMENT"; ObjectID = "5"; */
 "STATE_LOADING_SINGLE_DOCUMENT" = "正在載入文件…";
 
@@ -421,23 +471,32 @@
 /* Class = "IBUILabel"; text = "STATE_LOADING_SINGLE_DOCUMENT_PROGRESS"; ObjectID = "10"; */
 "STATE_LOADING_SINGLE_DOCUMENT_PROGRESS" = "%1 / %2";
 
-/* Class = "IBUILabel"; text = "ERROR_NO_STATION_FOUND_TITLE"; ObjectID = "3"; */
-"ERROR_NO_STATION_FOUND_TITLE" = "尚未安裝 Station";
+/* Class = "IBUIButton"; normalTitle = "ACTION_DISMISS_TUTORIAL"; ObjectID = "43"; */
+"ACTION_DISMISS_TUTORIAL" = "完成";
 
-/* Class = "IBUILabel"; text = "ERROR_NO_STATION_FOUND_DESCRIPTION"; ObjectID = "6"; */
-"ERROR_NO_STATION_FOUND_DESCRIPTION" = "請到 http://waveface.com 下載 Windows Waveface Station，完成安裝與設定後即可使用行動版本。";
+/* Class = "IBUILabel"; text = "FACEBOOK_IMPORT_TUTORIAL_SWITCH"; ObjectID = "55"; */
+"FACEBOOK_IMPORT_TUTORIAL_SWITCH" = "Facebook同步";
 
-/* Class = "IBUILabel"; text = "ERROR_NO_STATION_FOUND_TITLE"; ObjectID = "5"; */
-"ERROR_NO_STATION_FOUND_TITLE" = "尚未安裝 Station";
+/* Class = "IBUITextView"; text = "FACEBOOK_IMPORT_TUTORIAL"; ObjectID = "56"; */
+"FACEBOOK_IMPORT_TUTORIAL" = "Stream可以將您過去張貼在Facebook上面的資料下載並且存放到您個人的時間軸上。未來您在Facebook上面的新貼文，都會同步備份到您的Stream。\n\n您可以在主畫面中的帳戶資訊，啓動或者停止這項同步功能。";
 
-/* Class = "IBUILabel"; text = "ERROR_NO_STATION_FOUND_DESCRIPTION"; ObjectID = "7"; */
-"ERROR_NO_STATION_FOUND_DESCRIPTION" = "請到 http://waveface.com 下載 Windows Waveface Station，完成安裝與設定後即可使用行動版本。";
+/* Class = "IBUIButton"; normalTitle = "ACTION_DISMISS_TUTORIAL"; ObjectID = "43"; */
+"ACTION_DISMISS_TUTORIAL" = "完成";
+
+/* Class = "IBUITextView"; text = "FACEBOOK_IMPORT_TUTORIAL_IPAD"; ObjectID = "46"; */
+"FACEBOOK_IMPORT_TUTORIAL_IPAD" = "Stream可以將您過去張貼在Facebook上面的資料下載並且存放到您個人的時間軸上。未來您在Facebook上面的新貼文，都會同步備份到您的Stream。\n\n您可以在主畫面中的帳戶資訊，啓動或者停止這項同步功能。";
+
+/* Class = "IBUILabel"; text = "FACEBOOK_IMPORT_TUTORIAL_SWITCH_IPAD"; ObjectID = "49"; */
+"FACEBOOK_IMPORT_TUTORIAL_SWITCH_IPAD" = "Facebook同步";
 
 /* Class = "IBUITableViewSection"; footerTitle = "SERVICE_INFO_FOOTER"; ObjectID = "9vM-w4-lTb"; */
 "SERVICE_INFO_FOOTER" = "⚠ 僅會在Wi-Fi連線時上傳原檔\n\n在 Wi-Fi 環境中，Stream 會幫您將原始檔案妥善保存。只要下載並且開啓 PC 上的 Stream，您有30天的時間將檔案從雲端送回PC保存";
 
 /* Class = "IBUITableViewSection"; headerTitle = "SERVICE_INFO_HEADER"; ObjectID = "9vM-w4-lTb"; */
 "SERVICE_INFO_HEADER" = "服務資訊";
+
+/* Class = "IBUILabel"; text = "FACEBOOK_CONNECT_TITLE"; ObjectID = "Fh9-Wq-UDR"; */
+"FACEBOOK_CONNECT_TITLE" = "Facebook同步";
 
 /* Class = "IBUITableViewSection"; headerTitle = "ACCOUNT_INFO_HEADER"; ObjectID = "Gw1-xy-FWK"; */
 "ACCOUNT_INFO_HEADER" = "帳戶資訊";
@@ -449,7 +508,7 @@
 "LOCAL_PENDING_OBJECTS_TITLE" = "本裝置尚未上傳原檔數量";
 
 /* Class = "IBUITableViewSection"; footerTitle = "SYNC_INFO_FOOTER"; ObjectID = "aHi-Wv-Eu2"; */
-"SYNC_INFO_FOOTER" = "上次同步%@";
+"SYNC_INFO_FOOTER" = "上次同步：%@";
 
 /* Class = "IBUILabel"; text = "NOUN_NICKNAME"; ObjectID = "btU-SG-jyB"; */
 "NOUN_NICKNAME" = "使用者名稱";
@@ -460,6 +519,27 @@
 /* Class = "IBUILabel"; text = "NOUN_CURRENT_DEVICE"; ObjectID = "fZ9-vs-r6f"; */
 "NOUN_CURRENT_DEVICE" = "裝置名稱";
 
+/* Class = "IBUITableViewSection"; headerTitle = "SOCIAL_NETWORK_HEADER"; ObjectID = "qoR-fT-NMh"; */
+"SOCIAL_NETWORK_HEADER" = "Facebook 設定";
+
 /* Class = "IBUILabel"; text = "ACTION_CONTACT_DEVELOPER"; ObjectID = "vuN-4r-WXb"; */
 "ACTION_CONTACT_DEVELOPER" = "聯絡我們";
+
+/* Class = "IBUIButton"; normalTitle = "ACTION_CONNECT_FACEBOOK"; ObjectID = "4"; */
+"ACTION_CONNECT_FACEBOOK" = "連結Facebook帳號";
+
+/* Class = "IBUIButton"; normalTitle = "ACTION_SIGN_IN"; ObjectID = "8"; */
+"ACTION_SIGN_IN" = "登入";
+
+/* Class = "IBUIButton"; normalTitle = "ACTION_SIGN_UP"; ObjectID = "16"; */
+"ACTION_SIGN_UP" = "註冊";
+
+/* Class = "IBUIButton"; normalTitle = "ACTION_CONNECT_FACEBOOK"; ObjectID = "8"; */
+"ACTION_CONNECT_FACEBOOK" = "連結Facebook帳號";
+
+/* Class = "IBUIButton"; normalTitle = "ACTION_SIGN_UP"; ObjectID = "9"; */
+"ACTION_SIGN_UP" = "註冊";
+
+/* Class = "IBUIButton"; normalTitle = "ACTION_SIGN_IN"; ObjectID = "10"; */
+"ACTION_SIGN_IN" = "登入";
 

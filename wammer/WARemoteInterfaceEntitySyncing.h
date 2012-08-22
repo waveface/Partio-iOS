@@ -12,7 +12,7 @@
 @class NSManagedObject, NSManagedObjectContext;
 @protocol WARemoteInterfaceEntitySyncing;
 
-typedef void (^WAEntitySyncCallback)(BOOL didFinish, NSManagedObjectContext *context, NSArray *objects, NSError *error);
+typedef void (^WAEntitySyncCallback)(BOOL didFinish, NSError *error);
 
 extern BOOL WAIsSyncableObject (NSManagedObject <WARemoteInterfaceEntitySyncing> *anObject);
 

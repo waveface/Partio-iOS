@@ -14,8 +14,8 @@
 + (id) fromNib {
 
 	NSArray *objects = nil;	
-	if ([[[[NSNib alloc] initWithNibNamed:NSStringFromClass([self class]) bundle:[NSBundle bundleForClass:[self class]]] autorelease] instantiateNibWithOwner:nil topLevelObjects:&objects]) {
-		return [[[objects lastObject] retain] autorelease];
+	if ([[[NSNib alloc] initWithNibNamed:NSStringFromClass([self class]) bundle:[NSBundle bundleForClass:[self class]]] instantiateNibWithOwner:nil topLevelObjects:&objects]) {
+		return [objects lastObject];
 	}
 	
 	return nil;

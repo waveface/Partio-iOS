@@ -34,7 +34,7 @@ enum {
 
 + (Class) preferredClusterClass;
 
-@property (nonatomic, readwrite, assign) id<WAImageViewDelegate> delegate;
+@property (nonatomic, readwrite, weak) id<WAImageViewDelegate> delegate;
 
 - (void) setImage:(UIImage *)anImage withOptions:(WAImageViewOptions)options;
 

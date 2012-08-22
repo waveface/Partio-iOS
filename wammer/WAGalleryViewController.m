@@ -224,7 +224,7 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 	if (fetchedResultsController)
 		return fetchedResultsController;
 		
-	NSFetchRequest *fetchRequest = [self.managedObjectContext.persistentStoreCoordinator.managedObjectModel fetchRequestFromTemplateWithName:@"WAFRImagesForArticle" substitutionVariables:[NSDictionary dictionaryWithObjectsAndKeys:
+	NSFetchRequest *fetchRequest = [self.managedObjectContext.persistentStoreCoordinator.managedObjectModel fetchRequestFromTemplateWithName:@"WAFRFilesForArticle" substitutionVariables:[NSDictionary dictionaryWithObjectsAndKeys:
 		self.article, @"Article",
 	nil]];
 	
@@ -330,6 +330,8 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 
 	self.paginatedView.scrollView.delaysContentTouches = NO;
 	self.paginatedView.scrollView.canCancelContentTouches = NO;
+	
+	[self.paginatedView.scrollView.panGestureRecognizer addTarget:self action:@selector(handlePan:)];
 
 }
 
@@ -502,6 +504,16 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 
 }
 
+- (void) handlePan:(UIPanGestureRecognizer *)panGR {
+
+	if (panGR.state == UIGestureRecognizerStateChanged) {
+	
+		[self setContextControlsHidden:YES animated:YES barringInteraction:NO completion:nil];
+	
+	}
+
+}
+
 - (void) paginatedView:(IRPaginatedView *)aPaginatedView didShowView:(UIView *)aView atIndex:(NSUInteger)index {
 
 	self.streamPickerView.selectedItemIndex = index;
@@ -555,30 +567,10 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 		callback(nil);
 		
 	} completionBlock:nil]];
-	
-//	IRPaginatedView *paginatedView = self.paginatedView;
-//	NSUInteger currentPage = paginatedView.currentPage;
-//	
-//	dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.25 * NSEC_PER_SEC), dispatch_get_main_queue(), ^ {
-//	
-//		if (paginatedView.currentPage != currentPage)
-//			return;
-//		
-//		WAGalleryImageView *pageView = [self.paginatedView existingPageAtIndex:currentPage];
-//		if (!pageView)
-//			return;
-//		
-//		WAFile *pageFile = [self representedFileAtIndex:currentPage];
-//		if (!pageFile)
-//			return;
-//		
-//		[self configureGalleryImageView:pageView withFile:pageFile degradeQuality:NO forceSync:NO];
-//	
-//	});
-	
+		
 }
 
-- (void) galleryImageViewDidBeginInteraction:(WAGalleryImageView *)imageView {
+- (void) galleryImageViewDidReceiveUserInteraction:(WAGalleryImageView *)imageView {
 
 	[self setContextControlsHidden:YES animated:YES barringInteraction:NO completion:nil];
 
@@ -595,7 +587,7 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 
 - (NSUInteger) numberOfViewsInPaginatedView:(IRPaginatedView *)paginatedView {
 
-	return [[self.fetchedResultsController fetchedObjects] count];
+	return [self.article.files count];
 
 }
 
@@ -608,6 +600,8 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 		view = [WAGalleryImageView viewForImage:nil];
 		[self.galleryViewCache setObject:view forKey:file];
 	}
+	
+	view.frame = (CGRect){ CGPointZero, aPaginatedView.bounds.size };
 	
 	return [self configureGalleryImageView:view withFile:file degradeQuality:YES forceSync:YES];
 
@@ -630,33 +624,14 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 		[aView setImage:[aFile bestPresentableImage] animated:NO synchronized:forceSynchronousImageDecode];
 		
 	}
-	
-#if 0
-
-	if (exclusivelyUsesThumbnail) {
 		
-		aView.layer.borderColor = [UIColor greenColor].CGColor;
-		aView.layer.borderWidth = 32;
-	
-	} else {
-	
-		aView.layer.borderColor = [UIColor redColor].CGColor;
-		aView.layer.borderWidth = 32;
-	
-	}
-	
-#endif
-	
 	aView.delegate = self;
+	
   [aView reset];
 	
 	return aView;
 
 }
-
-
-
-
 
 - (WAImageStreamPickerView *) streamPickerView {
 
@@ -685,7 +660,7 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 
 - (NSUInteger) numberOfItemsInImageStreamPickerView:(WAImageStreamPickerView *)picker {
 
-	return [self.fetchedResultsController.fetchedObjects count];
+	return [self.article.files count];
 
 }
 
@@ -707,10 +682,6 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 	[self.paginatedView scrollToPageAtIndex:picker.selectedItemIndex animated:NO];
 
 }
-
-
-
-
 
 - (BOOL) gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
 
@@ -739,7 +710,7 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 	
 	if (![currentPage isKindOfClass:[WAGalleryImageView class]])
 		return;
-		
+	
 	[currentPage handleDoubleTap:tapRecognizer];
 	
 }
@@ -822,26 +793,17 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 
 }
 
-
-
-
-
 - (UIImage *) currentImage {
 
 	return ((WAGalleryImageView *)[self.paginatedView existingPageAtIndex:self.paginatedView.currentPage]).image;
 
 }
 
-
-
-
-
 - (void) didReceiveMemoryWarning {
 
 	[super didReceiveMemoryWarning];
 	
 	[self.galleryViewCache removeAllObjects];
-	
 
 }
 

@@ -12,4 +12,6 @@
 
 @property (nonatomic, readwrite, retain) UIWindow *window;
 
+- (void) recreateViewHierarchy;
+
 @end

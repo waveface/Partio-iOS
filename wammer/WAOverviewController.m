@@ -27,7 +27,6 @@
 #import "WADataStore.h"
 #import "WAArticle+WARemoteInterfaceEntitySyncing.h"
 
-#import "WAGestureWindow.h"
 #import "WAButton.h"
 
 #import "WAArticle+DiscreteLayoutAdditions.h"
@@ -74,19 +73,19 @@ static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePag
 
 	[super viewDidLoad];
 	
-	self.view.backgroundColor = [UIColor colorWithRed:242.0/256.0 green:242.0/256.0 blue:242.0/256.0 alpha:1];
+	self.view.backgroundColor = [UIColor colorWithWhite:242.0/256.0 alpha:1];
 	self.view.opaque = YES;
 	
-	__weak IRPaginatedView *nrPaginatedView = self.paginatedView;
+	__weak IRPaginatedView *wPaginatedView = self.paginatedView;
 	self.paginatedView.backgroundColor = nil;
-	self.paginatedView.horizontalSpacing = 4.0f;
+	self.paginatedView.horizontalSpacing = 16.0f;
 	self.paginatedView.clipsToBounds = NO;
 	self.paginatedView.scrollView.clipsToBounds = NO;
 	self.paginatedView.scrollView.pagingEnabled = NO;
 	self.paginatedView.onPointInsideWithEvent = ^ (CGPoint aPoint, UIEvent *anEvent, BOOL superAnswer) {
 	
-		CGPoint convertedPoint = [nrPaginatedView.scrollView convertPoint:aPoint fromView:nrPaginatedView];
-		if ([nrPaginatedView.scrollView pointInside:convertedPoint withEvent:anEvent])
+		CGPoint convertedPoint = [wPaginatedView.scrollView convertPoint:aPoint fromView:wPaginatedView];
+		if ([wPaginatedView.scrollView pointInside:convertedPoint withEvent:anEvent])
 			return YES;
 		
 		return superAnswer;
@@ -225,6 +224,37 @@ static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePag
 
 }
 
+- (void) controller:(NSFetchedResultsController *)controller didChangeObject:(id)anObject atIndexPath:(NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type newIndexPath:(NSIndexPath *)newIndexPath {
+
+	[super controller:controller didChangeObject:anObject atIndexPath:indexPath forChangeType:type newIndexPath:newIndexPath];
+	
+	if ([anObject isKindOfClass:[WAArticle class]]) {
+	
+		WAArticle *article = (WAArticle *)anObject;
+	
+		switch (type) {
+		
+			case NSFetchedResultsChangeInsert:
+			case NSFetchedResultsChangeUpdate: {
+			
+				WAArticleViewController *aVC = [self cachedArticleViewControllerForArticle:article];
+				
+				if (aVC)
+					[self removeCachedArticleViewController:aVC];
+				
+				break;
+			
+			}
+			
+			default:
+				break;
+		
+		}
+	
+	}
+
+}
+
 - (void) enqueueInterfaceUpdate:(void(^)(void))aBlock sender:(WAArticleViewController *)controller {
 
 	[self enqueueInterfaceUpdate:aBlock maintainingPositionForLayoutItem:nil sender:controller completion:nil];
@@ -241,7 +271,10 @@ static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePag
 	NSParameterAssert([self isViewLoaded]);
 	NSParameterAssert(self.discreteLayoutResult);
 	
-	CGSize const contentSize = self.paginatedView.frame.size;
+	CGFloat const padding = 8;
+	CGSize contentSize = self.paginatedView.frame.size;
+	contentSize.width += 2 * padding;
+	contentSize.height += 2 * padding;
 	
 	NSUInteger const fromPage = self.paginatedView.currentPage;
 	IRDiscreteLayoutGrid * const fromUntransformedGrid = [self.discreteLayoutResult.grids objectAtIndex:fromPage];
@@ -288,6 +321,9 @@ static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePag
 		
 		CGRect fromRect = fromArea.layoutBlock ? fromArea.layoutBlock(fromArea, item) : CGRectNull;
 		CGRect toRect = toArea.layoutBlock ? toArea.layoutBlock(toArea, item) : CGRectNull;
+		
+		fromRect = CGRectOffset(fromRect, -1 * padding, -1 * padding);
+		toRect = CGRectOffset(toRect, -1 * padding, -1 * padding);
 		
 		[preconditionBlocks irEnqueueBlock:^{
 
@@ -435,19 +471,19 @@ static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePag
 
 - (NSUInteger) numberOfItemsForLayoutManager:(IRDiscreteLayoutManager *)manager {
 
-  return [self.fetchedResultsController.fetchedObjects count];
+  return [(id<NSFetchedResultsSectionInfo>)[self.fetchedResultsController.sections objectAtIndex:0] numberOfObjects];
 
 }
 
 - (id<IRDiscreteLayoutItem>) layoutManager:(IRDiscreteLayoutManager *)manager itemAtIndex:(NSUInteger)index {
 
-  return (id<IRDiscreteLayoutItem>)[self.fetchedResultsController.fetchedObjects objectAtIndex:index];
+  return (id<IRDiscreteLayoutItem>)[self.fetchedResultsController objectAtIndexPath:[NSIndexPath indexPathForRow:index inSection:0]];
 
 }
 
 - (NSInteger) layoutManager:(IRDiscreteLayoutManager *)manager indexOfLayoutItem:(id<IRDiscreteLayoutItem>)item {
 
-	return [self.fetchedResultsController.fetchedObjects indexOfObject:item];
+	return [self.fetchedResultsController indexPathForObject:item].row;
 
 }
 
@@ -542,13 +578,11 @@ static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePag
 
 	UIView *returnedView = [self newPageContainerView];
 	returnedView.bounds = aPaginatedView.bounds;
+	returnedView.clipsToBounds = YES;
 	
 	IRDiscreteLayoutGrid *viewGrid = (IRDiscreteLayoutGrid *)[self.discreteLayoutResult.grids objectAtIndex:index];
 	
 	NSMutableArray *pageElements = [NSMutableArray arrayWithCapacity:[viewGrid.layoutAreas count]];
-	
-	CGSize oldContentSize = viewGrid.contentSize;
-	viewGrid.contentSize = aPaginatedView.frame.size;
 	
 	for (IRDiscreteLayoutArea *area in viewGrid.layoutAreas) {
 		
@@ -556,16 +590,17 @@ static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePag
 	
 			UIView *placedSubview = (UIView *)(area.displayBlock(area, area.item));
 			NSParameterAssert(placedSubview);
-			placedSubview.frame = area.layoutBlock(area, area.item);
+			
+			//	placedSubview.frame = area.layoutBlock(area, area.item);
+			
 			placedSubview.autoresizingMask = UIViewAutoresizingNone;
+			
 			[pageElements addObject:placedSubview];
 			[returnedView addSubview:placedSubview];
 	
 		}
 		
 	}
-	
-	viewGrid.contentSize = oldContentSize;
 	
 	objc_setAssociatedObject(returnedView, &kWADiscreteArticlePageElements, pageElements, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 	
@@ -665,7 +700,11 @@ static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePag
 	IRDiscreteLayoutGrid *transformedGrid = [currentPageGrid transformedGridWithPrototype:[currentPageGrid bestCounteprartPrototypeForAspectRatio:[self currentAspectRatio]]];
 	
 	CGSize oldContentSize = transformedGrid.contentSize;
-	transformedGrid.contentSize = self.paginatedView.frame.size;
+	CGSize contentSize = self.paginatedView.frame.size;
+	CGFloat padding = 8;
+	contentSize.width += 2 * padding;
+	contentSize.height += 2 * padding;
+	transformedGrid.contentSize = contentSize;
 	
 	[transformedGrid.layoutAreas enumerateObjectsUsingBlock:^(IRDiscreteLayoutArea *area, NSUInteger idx, BOOL *stop) {
 	
@@ -674,6 +713,7 @@ static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePag
 		
 		UIView *itemView = (UIView *)[currentPageElements objectAtIndex:idx];
 		CGRect itemViewFrame = area.layoutBlock(area, area.item);
+		itemViewFrame = CGRectOffset(itemViewFrame, -1 * padding, -1 * padding);
 		
 		if (itemView.alpha != 1)
 			itemView.alpha = 1;
