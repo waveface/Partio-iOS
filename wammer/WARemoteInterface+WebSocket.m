@@ -21,6 +21,7 @@ static NSString * const kConnectionForWebSocket = @"-[WARemoteInterface(WebSocke
 static NSString * const kUrlForWebSocket = @"-[WARemoteInterface(WebSocket) urlForWebSocket]";
 static NSString * const kSuccessHandler = @"-[WARemoteInterface(WebSocket) successHandler]";
 static NSString * const kFailureHandler = @"-[WARemoteInterface(WebSocket) failureHandler]";
+static NSString * const kHandlerMap = @"-[WARemoteInterface(WebSocket) handlerMap]";
 
 
 @implementation WARemoteInterface (WebSocket)
@@ -33,6 +34,12 @@ static NSString * const kFailureHandler = @"-[WARemoteInterface(WebSocket) failu
 	
 	self.successHandler = successBlock;
 	self.failureHandler = failureBlock;
+	
+	WAWebSocketHandler errorHandler = ^(id resp) {
+		NSLog(@"Get an error response from we connection: %@", (NSString *) resp);
+	};
+	
+	self.handlerMap = [[NSMutableDictionary alloc] initWithObjectsAndKeys:errorHandler, @"error", nil];
 	
 	[self.connectionForWebSocket close];
 	self.connectionForWebSocket = [[SRWebSocket alloc] initWithURL:self.urlForWebSocket];
@@ -48,6 +55,14 @@ static NSString * const kFailureHandler = @"-[WARemoteInterface(WebSocket) failu
 
 - (SRWebSocket *) connectionForWebSocket {
 	return objc_getAssociatedObject(self, &kConnectionForWebSocket);
+}
+
+- (void) setHandlerMap:(NSDictionary *)handlerMap {
+	objc_setAssociatedObject(self, &kHandlerMap, handlerMap, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+- (NSDictionary *) handlerMap {
+	return objc_getAssociatedObject(self, &kHandlerMap);
 }
 
 
@@ -95,7 +110,25 @@ static NSString * const kFailureHandler = @"-[WARemoteInterface(WebSocket) failu
 }
 
 - (void) webSocket:(SRWebSocket *)webSocket didReceiveMessage:(id)message {
+	NSError *error = nil;
+	NSDictionary *result = [NSJSONSerialization JSONObjectWithData:[(NSString*)message dataUsingEncoding:NSUTF8StringEncoding] options:NSJSONReadingAllowFragments error:&error];
 	
+	if (!result) {
+		if (!error) {
+			NSLog(@"Failed to parse message from ws connection: %@", error);
+			
+			// Fail handler??
+		}
+	} else {
+		[result enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+			WAWebSocketHandler handler = [self.handlerMap objectForKey:key];
+			if (handler != nil) {
+				handler(obj);
+			} else {
+				NSLog(@"Cannot find corresponding handler for command: %@", (NSString*)key);
+			}
+		}];
+	}
 }
 
 - (void) webSocketDidOpen:(SRWebSocket *)webSocket {
