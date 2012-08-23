@@ -31,6 +31,7 @@
 - (NSUInteger) indexOfItem:(WAFile *)aFile;
 
 @property (nonatomic, readwrite, assign) BOOL requiresGalleryReload;
+@property (nonatomic, readwrite, assign) NSUInteger currentItemIndex;
 
 @end
 
@@ -76,7 +77,7 @@
 	self.gridView.clipsToBounds = NO;
 	
 	[allStackElements addObject:gridViewWrapper];
-		
+
 }
 
 - (void) viewDidUnload {
@@ -153,14 +154,13 @@
 	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad && numberOfItems <= 4) {
 	
 		[cell irBind:@"image" toObject:file keyPath:@"bestPresentableImage"
-			 options:[NSDictionary dictionaryWithObjectsAndKeys: (id)kCFBooleanTrue, kIRBindingsAssignOnMainThreadOption, nil]];
+					options:[NSDictionary dictionaryWithObjectsAndKeys: (id)kCFBooleanTrue, kIRBindingsAssignOnMainThreadOption, nil]];
 
-		cell.image = [file bestPresentableImage];
 	} else {
-		[cell irBind:@"image" toObject:file keyPath:@"smallestPresentableImage"
-			 options:[NSDictionary dictionaryWithObjectsAndKeys: (id)kCFBooleanTrue, kIRBindingsAssignOnMainThreadOption, nil]];
 
-		cell.image = [file smallestPresentableImage];
+		[cell irBind:@"image" toObject:file keyPath:@"smallestPresentableImage"
+					options:[NSDictionary dictionaryWithObjectsAndKeys: (id)kCFBooleanTrue, kIRBindingsAssignOnMainThreadOption, nil]];
+
 	}
 	
 	NSString *assetURLString = file.assetURL;
@@ -200,13 +200,23 @@
 - (AQGridViewCell *) gridView:(AQGridView *)aGV cellForItemAtIndex:(NSUInteger) index {
 
 	WAFile *representedFile = [self itemAtIndex:index];
-
 	NSString * const identifier = @"Cell";
 	WACompositionViewPhotoCell *dequeuedCell = (WACompositionViewPhotoCell *)[aGV dequeueReusableCellWithIdentifier:identifier];
 	
-	if (dequeuedCell) {
+	self.currentItemIndex = index;
 
-		[self setPresentableImageWithFile:representedFile forCell:dequeuedCell];
+	__weak WAArticleViewController_FullScreen_Photo *wSelf = self;
+
+	if (dequeuedCell) {
+		[dequeuedCell irUnbind:@"image"];
+		dequeuedCell.image = nil;
+		double delayInSeconds = 0.18 * ((index % 3) / 2.0 + 1);
+		dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+		dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+			if (abs(index - wSelf.currentItemIndex) <= 15) {
+				[wSelf setPresentableImageWithFile:representedFile forCell:dequeuedCell];
+			}
+		});
 		
 	} else {
 	
@@ -214,6 +224,7 @@
 		
 		dequeuedCell.style = WACompositionViewPhotoCellBorderedPlainStyle;
 		dequeuedCell.canRemove = NO;
+
 		[self setPresentableImageWithFile:representedFile forCell:dequeuedCell];
 		
 	}
