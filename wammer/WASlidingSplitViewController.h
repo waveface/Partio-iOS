@@ -6,7 +6,7 @@
 //  Copyright (c) 2012 Waveface. All rights reserved.
 //
 
-#import "IRSlidingSplitViewController.h"
+#import "IRSlidingSplitViewControllerSubclass.h"
 
 @interface WASlidingSplitViewController : IRSlidingSplitViewController
 
