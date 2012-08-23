@@ -54,7 +54,7 @@
 	url = git://github.com/waveface/WFPresentation.git
 [submodule "external/IRObjectQueue"]
 	path = external/IRObjectQueue
-	url = git://github.com/iridia/IRObjectQueue.git
+	url = git://github.com/waveface/IRObjectQueue.git
 [submodule "external/AGImagePickerController"]
 	path = external/AGImagePickerController
 	url = git@github.com:waveface/AGImagePickerController.git
