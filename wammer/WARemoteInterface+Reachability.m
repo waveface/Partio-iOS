@@ -18,6 +18,9 @@
 
 #import "WARemoteInterfaceContext.h"
 
+#import "WARemoteInterface+WebSocket.h"
+#import "WARemoteInterface+Notification.h"
+
 
 @interface WARemoteInterface (Reachability_Private) <WAReachabilityDetectorDelegate>
 
@@ -233,44 +236,71 @@ static NSString * const kNetworkState = @"-[WARemoteInterface(Reachability) netw
     //[((WAAppDelegate *)[UIApplication sharedApplication].delegate) beginNetworkActivity];
   
     [wSelf retrieveAssociatedStationsOfCurrentUserOnSuccess:^(NSArray *stationReps) {
-		
+
       dispatch_async(dispatch_get_main_queue(), ^ {
-		
-        wSelf.monitoredHosts = [[NSArray arrayWithObject:wSelf.engine.context.baseURL] arrayByAddingObjectsFromArray:[stationReps irMap: ^ (NSDictionary *aStationRep, NSUInteger index, BOOL *stop) {
-        
-          NSString *stationURLString = [aStationRep valueForKeyPath:@"location"];
-          if (!stationURLString)
-            return (id)nil;
-          
-          NSURL *baseURL = wSelf.engine.context.baseURL;
-				
-          NSURL *givenURL = [NSURL URLWithString:stationURLString];
-          if (!givenURL)
-            return (id)nil;
-						
-					if (![givenURL host])
+/*
+				NSArray *wsInterfaces = [NSArray arrayWithArray:[stationReps irMap: ^(NSDictionary *aStationRep, NSUInteger index, BOOL *stop) {
+					NSString *wsStationURLString = [aStationRep valueForKey:@"ws_location"];
+					if (!wsStationURLString)
 						return (id)nil;
+					
+					NSURL *givenURL = [NSURL URLWithString:wsStationURLString];
+					return (id)givenURL;
+
+				}]]; */
+	
+				// Testing code
+				NSArray *wsInterfaces = [NSArray arrayWithObject:[NSURL URLWithString:@"ws://192.168.1.169:8889"]];
+				
+				if ([wsInterfaces count] > 0) {
+ 					//TODO: Stop dataRetrievalTimer
+
+					NSLog(@"to connect websocket");
+					[[WARemoteInterface sharedInterface] openWebSocketConnectionForUrl: [wsInterfaces objectAtIndex:0] onSucces:^{
+						[[WARemoteInterface sharedInterface] subscribeNotification];
+					} onFailure:^(NSError *error) {
+						//TODO: handle failure, resume timer?
+					}];
+					
+					
+					wSelf.monitoredHosts = [NSArray arrayWithObject:wSelf.engine.context.baseURL];
+				} else {
+					wSelf.monitoredHosts = [[NSArray arrayWithObject:wSelf.engine.context.baseURL] arrayByAddingObjectsFromArray:[stationReps irMap: ^ (NSDictionary *aStationRep, NSUInteger index, BOOL *stop) {
+        
+						NSString *stationURLString = [aStationRep valueForKeyPath:@"location"];
+						if (!stationURLString)
+							return (id)nil;
+					          
+						NSURL *baseURL = wSelf.engine.context.baseURL;
+				
+						NSURL *givenURL = [NSURL URLWithString:stationURLString];
+						if (!givenURL)
+							return (id)nil;
+						
+						if (![givenURL host])
+							return (id)nil;
           
-          NSString *baseURLString = [[NSArray arrayWithObjects:
+						NSString *baseURLString = [[NSArray arrayWithObjects:
 		
-						[givenURL scheme] ? [[givenURL scheme] stringByAppendingString:@"://"] :
-						[baseURL scheme] ? [[baseURL scheme] stringByAppendingString:@"://"] : @"",
-						[baseURL host] ? [givenURL host] : @"",
-						[givenURL port] ? [@":" stringByAppendingString:[[givenURL port] stringValue]] : 
-						[baseURL port] ? [@":" stringByAppendingString:[[baseURL port] stringValue]] : @"",
-						[baseURL path] ? [baseURL path] : @"",
-						@"/", //  path needs trailing slash
+																				[givenURL scheme] ? [[givenURL scheme] stringByAppendingString:@"://"] :
+																				[baseURL scheme] ? [[baseURL scheme] stringByAppendingString:@"://"] : @"",
+																				[baseURL host] ? [givenURL host] : @"",
+																				[givenURL port] ? [@":" stringByAppendingString:[[givenURL port] stringValue]] :
+																				[baseURL port] ? [@":" stringByAppendingString:[[baseURL port] stringValue]] : @"",
+																				[baseURL path] ? [baseURL path] : @"",
+																				@"/", //  path needs trailing slash
             
-            //	[givenURL query] ? [@"?" stringByAppendingString:[givenURL query]] : @"",
-            //	[givenURL fragment] ? [@"#" stringByAppendingString:[givenURL fragment]] : @"",
+																				//	[givenURL query] ? [@"?" stringByAppendingString:[givenURL query]] : @"",
+																				//	[givenURL fragment] ? [@"#" stringByAppendingString:[givenURL fragment]] : @"",
           
-          nil] componentsJoinedByString:@""];
+																				nil] componentsJoinedByString:@""];
           
-          //  only take the location (host) + port, nothing else
+						//  only take the location (host) + port, nothing else
           
-          return (id)[NSURL URLWithString:baseURLString];
+						return (id)[NSURL URLWithString:baseURLString];
           
-        }]];
+					}]];
+				}
         
         [wSelf endPostponingDataRetrievalTimerFiring];
 				
