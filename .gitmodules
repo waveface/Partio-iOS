@@ -33,7 +33,7 @@
 	url = git://github.com/iridia/IRTextAttributor.git
 [submodule "external/IRRecurrenceMachine"]
 	path = external/IRRecurrenceMachine
-	url = git://github.com/iridia/IRRecurrenceMachine.git
+	url = git://github.com/waveface/IRRecurrenceMachine.git
 [submodule "external/InAppSettingsKit"]
 	path = external/InAppSettingsKit
 	url = git://github.com/futuretap/InAppSettingsKit
