@@ -32,6 +32,10 @@
 		4B1C660114EE2C0D003398AF /* DCFrameView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B1C65FA14EE2C0C003398AF /* DCFrameView.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		4B1C660214EE2C0D003398AF /* DCIntrospect.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B1C65FC14EE2C0D003398AF /* DCIntrospect.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		4B1C660314EE2C0D003398AF /* DCStatusBarOverlay.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B1C65FF14EE2C0D003398AF /* DCStatusBarOverlay.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		4B26970615E76362007E1054 /* WAWebSocketTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B26970515E76362007E1054 /* WAWebSocketTests.m */; };
+		4B26970A15E7672D007E1054 /* libSocketRocket.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8002CDDB15E5E73800D7BFF0 /* libSocketRocket.a */; };
+		4B26970B15E76A5F007E1054 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B8DFB7314FDFC3D000B41C5 /* CFNetwork.framework */; };
+		4B26970C15E76A99007E1054 /* libicucore.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 8002CDE515E5E85600D7BFF0 /* libicucore.dylib */; };
 		4B284E5415AD244200D138C5 /* WAFile.m in Sources */ = {isa = PBXBuildFile; fileRef = 13A1BFB315A572CE00526F39 /* WAFile.m */; };
 		4B284E5515AD24C500D138C5 /* WATests_iOS.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B8CA97614BBE7BA006E06BB /* WATests_iOS.m */; };
 		4B31BA9F1591A74C00DC1A70 /* AGImagePickerController+Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B31BA881591A74C00DC1A70 /* AGImagePickerController+Constants.m */; };
@@ -1054,6 +1058,8 @@
 		4B1C65FE14EE2C0D003398AF /* DCStatusBarOverlay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DCStatusBarOverlay.h; sourceTree = "<group>"; };
 		4B1C65FF14EE2C0D003398AF /* DCStatusBarOverlay.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DCStatusBarOverlay.m; sourceTree = "<group>"; };
 		4B225D181404F63900F9A1CE /* WAPostViewCellPhone-ImageStack.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "WAPostViewCellPhone-ImageStack.xib"; sourceTree = "<group>"; };
+		4B26970415E76362007E1054 /* WAWebSocketTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAWebSocketTests.h; sourceTree = "<group>"; };
+		4B26970515E76362007E1054 /* WAWebSocketTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAWebSocketTests.m; sourceTree = "<group>"; };
 		4B31BA871591A74C00DC1A70 /* AGImagePickerController+Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AGImagePickerController+Constants.h"; sourceTree = "<group>"; };
 		4B31BA881591A74C00DC1A70 /* AGImagePickerController+Constants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AGImagePickerController+Constants.m"; sourceTree = "<group>"; };
 		4B31BA891591A74C00DC1A70 /* AGImagePickerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AGImagePickerController.h; sourceTree = "<group>"; };
@@ -1808,6 +1814,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4B26970C15E76A99007E1054 /* libicucore.dylib in Frameworks */,
+				4B26970B15E76A5F007E1054 /* CFNetwork.framework in Frameworks */,
+				4B26970A15E7672D007E1054 /* libSocketRocket.a in Frameworks */,
 				FF586C721519B95E00F308E2 /* libJSONKitTouch.a in Frameworks */,
 				FF586BBA1519B59E00F308E2 /* libIRRecurrenceMachine.a in Frameworks */,
 				FF586BB11519B51700F308E2 /* libIRWebAPIKit.a in Frameworks */,
@@ -2060,6 +2069,8 @@
 				4B3225E815BE4CE400934DA4 /* WAArticleTests.m */,
 				4B8CA97514BBE7BA006E06BB /* WATests_iOS.h */,
 				4B8CA97614BBE7BA006E06BB /* WATests_iOS.m */,
+				4B26970415E76362007E1054 /* WAWebSocketTests.h */,
+				4B26970515E76362007E1054 /* WAWebSocketTests.m */,
 			);
 			name = "iOS Tests";
 			path = "wammer-iOS-Tests";
@@ -4046,6 +4057,7 @@
 				4B284E5515AD24C500D138C5 /* WATests_iOS.m in Sources */,
 				4B3225E915BE4CE400934DA4 /* WAArticleTests.m in Sources */,
 				4B7420FC15D8B59900586559 /* fopenfix.c in Sources */,
+				4B26970615E76362007E1054 /* WAWebSocketTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4601,18 +4613,36 @@
 		4B8CA97A14BBE7BA006E06BB /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
+				ALWAYS_SEARCH_USER_PATHS = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(DEVELOPER_LIBRARY_DIR)/Frameworks",
 					"\"$(SRCROOT)/external/CrashlyticsSDK\"",
+					"\"$(SYSTEM_APPS_DIR)/Xcode.app/Contents/Developer/Library/Frameworks\"",
 				);
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_GENERATE_TEST_COVERAGE_FILES = YES;
 				GCC_INSTRUMENT_PROGRAM_FLOW_ARCS = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "wammer-iOS-Tests/wammer-iOS-Tests-Prefix.pch";
+				HEADER_SEARCH_PATHS = (
+					"\"$(PROJECT_DIR)/external/IRFoundations\"/**",
+					"\"$(SDKROOT)/usr/include/libxml2\"/**",
+					"\"$(PROJECT_DIR)/external/IRWebAPIKit\"/**",
+					"\"$(PROJECT_DIR)/external/AQGridView/Classes\"",
+					"\"$(PROJECT_DIR)/external/IRKeychain\"/**",
+					"\"$(PROJECT_DIR)/external/IRDiscreteLayoutManager\"/**",
+					"\"$(PROJECT_DIR)/external/IRTextAttributor\"/**",
+					"\"$(PROJECT_DIR)/external/IRSlidingSplitViewController\"/**",
+					"\"$(PROJECT_DIR)/external/IRRecurrenceMachine\"/**",
+					"\"$(PROJECT_DIR)/external/IRObjectQueue\"/**",
+					"\"$(PROJECT_DIR)/external/TestflightSDK\"/**",
+					"\"$(PROJECT_DIR)/external/JSONKit\"/**",
+					"\"$(PROJECT_DIR)/external/WFPresentation/Bindings/Objective-C\"/**",
+					"\"$(PROJECT_DIR)/external/Facebook\"/**",
+					"\"$(PROJECT_DIR)/external/SocketRocket\"/**",
+				);
 				INFOPLIST_FILE = "wammer-iOS-Tests/wammer-iOS-Tests-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				LIBRARY_SEARCH_PATHS = (
@@ -4629,19 +4659,37 @@
 		4B8CA97B14BBE7BA006E06BB /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
+				ALWAYS_SEARCH_USER_PATHS = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				COPY_PHASE_STRIP = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(DEVELOPER_LIBRARY_DIR)/Frameworks",
 					"\"$(SRCROOT)/external/CrashlyticsSDK\"",
+					"\"$(SYSTEM_APPS_DIR)/Xcode.app/Contents/Developer/Library/Frameworks\"",
 				);
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_GENERATE_TEST_COVERAGE_FILES = YES;
 				GCC_INSTRUMENT_PROGRAM_FLOW_ARCS = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "wammer-iOS-Tests/wammer-iOS-Tests-Prefix.pch";
+				HEADER_SEARCH_PATHS = (
+					"\"$(PROJECT_DIR)/external/IRFoundations\"/**",
+					"\"$(SDKROOT)/usr/include/libxml2\"/**",
+					"\"$(PROJECT_DIR)/external/IRWebAPIKit\"/**",
+					"\"$(PROJECT_DIR)/external/AQGridView/Classes\"",
+					"\"$(PROJECT_DIR)/external/IRKeychain\"/**",
+					"\"$(PROJECT_DIR)/external/IRDiscreteLayoutManager\"/**",
+					"\"$(PROJECT_DIR)/external/IRTextAttributor\"/**",
+					"\"$(PROJECT_DIR)/external/IRSlidingSplitViewController\"/**",
+					"\"$(PROJECT_DIR)/external/IRRecurrenceMachine\"/**",
+					"\"$(PROJECT_DIR)/external/IRObjectQueue\"/**",
+					"\"$(PROJECT_DIR)/external/TestflightSDK\"/**",
+					"\"$(PROJECT_DIR)/external/JSONKit\"/**",
+					"\"$(PROJECT_DIR)/external/WFPresentation/Bindings/Objective-C\"/**",
+					"\"$(PROJECT_DIR)/external/Facebook\"/**",
+					"\"$(PROJECT_DIR)/external/SocketRocket\"/**",
+				);
 				INFOPLIST_FILE = "wammer-iOS-Tests/wammer-iOS-Tests-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				LIBRARY_SEARCH_PATHS = (
