@@ -585,6 +585,9 @@
 		ri.primaryGroupIdentifier = primaryGroupID;
 		
 		if (userIDChanged()) {
+
+			ri.monitoredHosts = nil;
+			[ri performAutomaticRemoteUpdatesNow];
 		
 			if (userNewlyCreated) {
 			
