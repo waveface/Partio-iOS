@@ -14,6 +14,7 @@
 #import "WAAppDelegate.h"
 
 #import "WARemoteInterface.h"
+#import "WASyncManager.h"
 
 #import "WADataStore.h"
 #import "WADataStore+WARemoteInterfaceAdditions.h"
@@ -281,10 +282,20 @@
 										 clearingNavigationHierarchy:YES
 																	 onAuthSuccess:
 		 ^(NSString *userIdentifier, NSString *userToken, NSString *primaryGroupIdentifier) {
-			[self updateCurrentCredentialsWithUserIdentifier:userIdentifier
+			 [self updateCurrentCredentialsWithUserIdentifier:userIdentifier
 																								 token:userToken
 																					primaryGroup:primaryGroupIdentifier];
-			[self bootstrapPersistentStoreWithUserIdentifier:userIdentifier];
+			 // bind to user's persistent store
+			 [self bootstrapPersistentStoreWithUserIdentifier:userIdentifier];
+
+			 // reset monitored hosts
+			 WARemoteInterface *ri = [WARemoteInterface sharedInterface];
+			 ri.monitoredHosts = nil;
+			 [ri performAutomaticRemoteUpdatesNow];
+
+			 // reset pending original objects
+			 [[WASyncManager sharedManager] reload];
+
 		 }
 												runningOnboardingProcess:YES];
 		
@@ -586,9 +597,6 @@
 		
 		if (userIDChanged()) {
 
-			ri.monitoredHosts = nil;
-			[ri performAutomaticRemoteUpdatesNow];
-		
 			if (userNewlyCreated) {
 			
 				WATutorialInstantiationOption options = userIsFromFacebook ? WATutorialInstantiationOptionShowFacebookIntegrationToggle : WATutorialInstantiationOptionDefault;
