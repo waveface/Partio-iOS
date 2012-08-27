@@ -10,12 +10,13 @@
 
 @implementation WAWebSocketTests {
 	SRWebSocket *webSocket;
+	NSInteger retCode;
 }
 
 -(void)setUp {
 	webSocket = [[SRWebSocket alloc] initWithURLRequest:
 							 [NSURLRequest requestWithURL:
-								[NSURL URLWithString:@"ws://192.168.1.250:8010"]]];
+								[NSURL URLWithString:@"ws://192.168.1.250:8009"]]];
 	webSocket.delegate = self;
 }
 
@@ -27,11 +28,24 @@
 -(void)testOpenConnection {
 	[webSocket open];
 	
-		//NSString *message = @"Mary has a little lamb.";
-		//[webSocket send:message];
 	
+	NSDate *loopUntil = [NSDate dateWithTimeIntervalSinceNow:10];
+	while ([loopUntil timeIntervalSinceNow] > 0) {
+		[[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode
+														 beforeDate:loopUntil];
+	}
+	
+	NSString *message = @"Mary has a little lamb.";
+	[webSocket send:message];
+	
+	loopUntil = [NSDate dateWithTimeIntervalSinceNow:10];
+	while ([loopUntil timeIntervalSinceNow] > 0) {
+		[[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode
+														 beforeDate:loopUntil];
+	}
 	
 	NSLog(@"%@", webSocket);
+	STAssertEquals((NSInteger)3000, retCode, @"Did recieve return code");
 }
 
 - (void)webSocket:(SRWebSocket *)webSocket didReceiveMessage:(id)message {
@@ -39,7 +53,8 @@
 }
 
 - (void)webSocket:(SRWebSocket *)webSocket didCloseWithCode:(NSInteger)code reason:(NSString *)reason wasClean:(BOOL)wasClean {
-	NSLog(@"%d", code);
+	NSLog(@"*** Code %d", code);
+	retCode = code;
 }
 
 - (void)webSocketDidOpen:(SRWebSocket *)aWebSocket {
