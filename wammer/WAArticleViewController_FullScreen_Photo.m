@@ -235,14 +235,15 @@
 	NSString * const identifier = @"Cell";
 	WACompositionViewPhotoCell *dequeuedCell = (WACompositionViewPhotoCell *)[aGV dequeueReusableCellWithIdentifier:identifier];
 	
+	NSUInteger const numOfBufferedPages = 3;
 	if (self.scrollVelocity.y > 0) {
-		if (index >= self.maxRowOfPhotosOnScreen * self.maxColumnOfPhotosOnScreen) {
-			WAFile *hiddenFile = [self itemAtIndex:index - self.maxRowOfPhotosOnScreen * self.maxColumnOfPhotosOnScreen];
+		if (index >= self.maxRowOfPhotosOnScreen * self.maxColumnOfPhotosOnScreen * numOfBufferedPages) {
+			WAFile *hiddenFile = [self itemAtIndex:index - self.maxRowOfPhotosOnScreen * self.maxColumnOfPhotosOnScreen * numOfBufferedPages];
 			[hiddenFile cleanImageCache];
 		}
 	} else {
-		if (index + self.maxRowOfPhotosOnScreen * self.maxColumnOfPhotosOnScreen < [self.article.files count]) {
-			WAFile *hiddenFile = [self itemAtIndex:index + self.maxRowOfPhotosOnScreen * self.maxColumnOfPhotosOnScreen];
+		if (index + self.maxRowOfPhotosOnScreen * self.maxColumnOfPhotosOnScreen * numOfBufferedPages < [self.article.files count]) {
+			WAFile *hiddenFile = [self itemAtIndex:index + self.maxRowOfPhotosOnScreen * self.maxColumnOfPhotosOnScreen * numOfBufferedPages];
 			[hiddenFile cleanImageCache];
 		}
 	}
