@@ -116,11 +116,6 @@
 	[self.stackView layoutSubviews];
 	[self.gridView reloadData];
 	
-	self.gridView.contentOffset = (CGPoint){
-		-1 * self.gridView.contentInset.left,
-		-1 * self.gridView.contentInset.top
-	};
-	
 }
 
 - (NSFetchedResultsController *) fetchedResultsController {
