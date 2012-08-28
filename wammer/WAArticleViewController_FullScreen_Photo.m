@@ -22,7 +22,7 @@
 #import "WAAppearance.h"
 
 
-@interface WAArticleViewController_FullScreen_Photo () <AQGridViewDelegate, AQGridViewDataSource, NSFetchedResultsControllerDelegate>
+@interface WAArticleViewController_FullScreen_Photo () <AQGridViewDelegate, AQGridViewDataSource, NSFetchedResultsControllerDelegate, UIScrollViewDelegate>
 
 @property (nonatomic, readwrite, retain) NSFetchedResultsController *fetchedResultsController;
 @property (nonatomic, readwrite, retain) AQGridView *gridView;
@@ -31,6 +31,10 @@
 - (NSUInteger) indexOfItem:(WAFile *)aFile;
 
 @property (nonatomic, readwrite, assign) BOOL requiresGalleryReload;
+@property (nonatomic, readwrite, assign) NSUInteger scrolledToItemIndex;
+@property (nonatomic, readwrite, assign) NSUInteger maxRowOfPhotosOnScreen;
+@property (nonatomic, readwrite, assign) NSUInteger maxColumnOfPhotosOnScreen;
+@property (nonatomic, readwrite, assign) CGPoint scrollVelocity;
 
 @end
 
@@ -71,17 +75,35 @@
 	gridBackgroundView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
 	[gridViewWrapper addSubview:gridBackgroundView];
 	[gridViewWrapper sendSubviewToBack:gridBackgroundView];
-	
+
 	gridViewWrapper.clipsToBounds = NO;
 	self.gridView.clipsToBounds = NO;
-	
+
 	[allStackElements addObject:gridViewWrapper];
-		
+
+	self.maxColumnOfPhotosOnScreen = 3;
+
+	// Although the number of rows changes when iPad changes orientation,
+	// we still keep this value because there's no good way to detect orientation in this view controller.
+	self.maxRowOfPhotosOnScreen = 5;
+
+	if (self.article.text) {
+		if (isPhone()) {
+			self.maxRowOfPhotosOnScreen = 4;
+		}
+	}
+
+	self.scrollVelocity = CGPointMake(0.0f, 0.0f);
+
 }
 
 - (void) viewDidUnload {
 	
 	self.gridView = nil;
+
+	for (WAFile *file in self.article.files) {
+    [file cleanImageCache];
+	}
 	
 	[super viewDidUnload];
 
@@ -93,11 +115,6 @@
 	
 	[self.stackView layoutSubviews];
 	[self.gridView reloadData];
-	
-	self.gridView.contentOffset = (CGPoint){
-		-1 * self.gridView.contentInset.left,
-		-1 * self.gridView.contentInset.top
-	};
 	
 }
 
@@ -150,17 +167,16 @@
 
 	NSUInteger numberOfItems = [self.article.files count];
 
-	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad && numberOfItems <= 4) {
+	if (isPad() && numberOfItems <= 4) {
 	
 		[cell irBind:@"image" toObject:file keyPath:@"bestPresentableImage"
-			 options:[NSDictionary dictionaryWithObjectsAndKeys: (id)kCFBooleanTrue, kIRBindingsAssignOnMainThreadOption, nil]];
+					options:[NSDictionary dictionaryWithObjectsAndKeys: (id)kCFBooleanTrue, kIRBindingsAssignOnMainThreadOption, nil]];
 
-		cell.image = [file bestPresentableImage];
 	} else {
-		[cell irBind:@"image" toObject:file keyPath:@"smallestPresentableImage"
-			 options:[NSDictionary dictionaryWithObjectsAndKeys: (id)kCFBooleanTrue, kIRBindingsAssignOnMainThreadOption, nil]];
 
-		cell.image = [file smallestPresentableImage];
+		[cell irBind:@"image" toObject:file keyPath:@"smallestPresentableImage"
+					options:[NSDictionary dictionaryWithObjectsAndKeys: (id)kCFBooleanTrue, kIRBindingsAssignOnMainThreadOption, nil]];
+
 	}
 	
 	NSString *assetURLString = file.assetURL;
@@ -197,6 +213,16 @@
 	return;
 }
 
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
+{
+	self.scrollVelocity = CGPointMake(0, 0);
+}
+
+- (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset
+{
+	self.scrollVelocity = velocity;
+}
+
 - (AQGridViewCell *) gridView:(AQGridView *)aGV cellForItemAtIndex:(NSUInteger) index {
 
 	WAFile *representedFile = [self itemAtIndex:index];
@@ -204,9 +230,56 @@
 	NSString * const identifier = @"Cell";
 	WACompositionViewPhotoCell *dequeuedCell = (WACompositionViewPhotoCell *)[aGV dequeueReusableCellWithIdentifier:identifier];
 	
-	if (dequeuedCell) {
+	NSUInteger const numOfBufferedPages = 3;
+	if (self.scrollVelocity.y > 0) {
+		if (index >= self.maxRowOfPhotosOnScreen * self.maxColumnOfPhotosOnScreen * numOfBufferedPages) {
+			WAFile *hiddenFile = [self itemAtIndex:index - self.maxRowOfPhotosOnScreen * self.maxColumnOfPhotosOnScreen * numOfBufferedPages];
+			[hiddenFile cleanImageCache];
+		}
+	} else {
+		if (index + self.maxRowOfPhotosOnScreen * self.maxColumnOfPhotosOnScreen * numOfBufferedPages < [self.article.files count]) {
+			WAFile *hiddenFile = [self itemAtIndex:index + self.maxRowOfPhotosOnScreen * self.maxColumnOfPhotosOnScreen * numOfBufferedPages];
+			[hiddenFile cleanImageCache];
+		}
+	}
 
-		[self setPresentableImageWithFile:representedFile forCell:dequeuedCell];
+	self.scrolledToItemIndex = index;
+
+	__weak WAArticleViewController_FullScreen_Photo *wSelf = self;
+
+	if (dequeuedCell) {
+		[dequeuedCell irUnbind:@"image"];
+		dequeuedCell.image = nil;
+
+		// magic formula of photo displaying tempo
+		double delayInSeconds = 0.18f;
+		if (fabs(self.scrollVelocity.y) > 0.8f) {
+			delayInSeconds *= ((index % 3) / 4.0f + 1);
+		} else {
+			delayInSeconds *= ((index % 3) / 8.0f);
+		}
+
+		dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+		dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+			NSUInteger lastScrolledItemIndex = wSelf.scrolledToItemIndex;
+			if (wSelf.scrollVelocity.y > 0) {
+				if (lastScrolledItemIndex < index) {
+					// scroll up and then scroll down
+					lastScrolledItemIndex = index;
+				}
+				if (lastScrolledItemIndex - index < wSelf.maxRowOfPhotosOnScreen * wSelf.maxColumnOfPhotosOnScreen) {
+					[wSelf setPresentableImageWithFile:representedFile forCell:dequeuedCell];
+				}
+			} else {
+				if (lastScrolledItemIndex > index + wSelf.maxColumnOfPhotosOnScreen - 1) {
+					// scroll down and then scroll up
+					lastScrolledItemIndex = index;
+				}
+				if (index + wSelf.maxColumnOfPhotosOnScreen - 1 - lastScrolledItemIndex < wSelf.maxRowOfPhotosOnScreen * wSelf.maxColumnOfPhotosOnScreen) {
+					[wSelf setPresentableImageWithFile:representedFile forCell:dequeuedCell];
+				}
+			}
+		});
 		
 	} else {
 	
@@ -214,6 +287,7 @@
 		
 		dequeuedCell.style = WACompositionViewPhotoCellBorderedPlainStyle;
 		dequeuedCell.canRemove = NO;
+
 		[self setPresentableImageWithFile:representedFile forCell:dequeuedCell];
 		
 	}

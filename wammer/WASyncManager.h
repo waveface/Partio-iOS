@@ -18,6 +18,7 @@
 - (void) endPostponingSync;
 
 - (void) performSyncNow;
+- (void) reload;
 
 @property (nonatomic, readonly, assign) NSUInteger numberOfFiles;
 @property (nonatomic, readonly, strong) IRRecurrenceMachine *recurrenceMachine;

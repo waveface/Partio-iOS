@@ -67,7 +67,7 @@
 	
 	if ([key isEqualToString:kWAFileSmallThumbnailFilePath]) {
 		if ([self displaying]) {
-			return NSOperationQueuePriorityVeryHigh;
+			return NSOperationQueuePriorityHigh;
 		}
 		return NSOperationQueuePriorityNormal;
 	}

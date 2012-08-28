@@ -108,7 +108,7 @@
 "ATTACHMENTS_VIEW_TITLE" = "Attachments";
 
 /* Authentication Error Description */
-"AUTH_ERROR_ALREADY_REGISTERED" = "This Email has already been registered. Please enter a new Email.";
+"AUTH_ERROR_ALREADY_REGISTERED" = "This email has already been registered. Please enter a new email.";
 
 /* Authentication Error Description */
 "AUTH_ERROR_INVALID_EMAIL_FORMAT" = "Email format is invalid.";
@@ -304,10 +304,10 @@
 "SECOND_SINGULAR" = "%d second";
 
 /* Title to show explaining WiFi Sync */
-"SERVICE_INFO_WITH_WIFI" = "Stream uses Wi-Fi to send original size photos back to your PC. \n\nIf you don't have Stream installed on your PC, or it's not up and running, we keep the photos in a temporary cloud space for up to 30 days.";
+"SERVICE_INFO_WITH_WIFI" = "Stream transfers original-sized photos back to your PC using Wi-Fi. These photos are available to you in the cloud for up to 30 days. To bring these photos home, install Stream for Windows on your PC. Visit waveface.com to find out more.";
 
 /* Title to show explaining WiFi Sync */
-"SERVICE_INFO_WITHOUT_WIFI" = "⚠ Stream only sends your original photos via Wi-Fi connection. \n\nIf you don't have Stream installed on your PC, or it's not up and running, we keep the photos in a temporary cloud space for up to 30 days.";
+"SERVICE_INFO_WITHOUT_WIFI" = "Stream only sends your original photos via Wi-Fi connection. \n\nIf you don't have Stream installed on your PC, or it's not up and running, we keep the photos in a temporary cloud space for up to 30 days.";
 
 /* Title for view controller signing the user in */
 "SIGN_IN_CONTROLLER_TITLE" = "Log In";
@@ -337,7 +337,7 @@
 "SYNC_BUTTON_USABLE_TITLE" = "Sync";
 
 /* In Account Info Sync Section */
-"SYNC_INFO_FOOTER" = "Last Sync %@";
+"SYNC_INFO_FOOTER" = "Last Sync: %@";
 
 /* Title on the text stack more / less toggle button for “Less” */
 "TEXT_ELEMENT_TOGGLE_LESS_TITLE" = "Less";
@@ -346,7 +346,7 @@
 "TEXT_ELEMENT_TOGGLE_MORE_TITLE" = "More";
 
 /* Alert on no location service enabled when open photo library */
-"TURN_ON_LOCATION_SERVICE" = "Turn On Location Services to Allow Stream to Access Your Photo Library";
+"TURN_ON_LOCATION_SERVICE" = "Turn on Location Services to allow Stream to access your Photo Library";
 
 /* Downloading Status on iPhone Timeline */
 "UNABLE_TO_DOWNLOADING_PHOTOS" = "No Internet connection. Loading incomplete...";
@@ -487,19 +487,19 @@
 "FACEBOOK_IMPORT_TUTORIAL_SWITCH" = "Facebook Import";
 
 /* Class = "IBUITextView"; text = "FACEBOOK_IMPORT_TUTORIAL"; ObjectID = "56"; */
-"FACEBOOK_IMPORT_TUTORIAL" = "Start importing your Facebook posts into Stream and safely backing them up on your PC. Future Facebook posts will then be imported automatically.\n\nTo turn this feature on or off, just go to the Account Info page of your Stream account.";
+"FACEBOOK_IMPORT_TUTORIAL" = "Start importing your Facebook posts into Stream! Future Facebook posts will then be imported automatically.\n\nTo turn this feature on or off, just go to the Account Info page of your Stream account.";
 
 /* Class = "IBUIButton"; normalTitle = "ACTION_DISMISS_TUTORIAL"; ObjectID = "43"; */
 "ACTION_DISMISS_TUTORIAL" = "Finish";
 
 /* Class = "IBUITextView"; text = "FACEBOOK_IMPORT_TUTORIAL_IPAD"; ObjectID = "46"; */
-"FACEBOOK_IMPORT_TUTORIAL_IPAD" = "Start importing your Facebook posts into Stream and safely backing them up on your PC. Future Facebook posts will then be imported automatically.\n\nTo turn this feature on or off, just go to the Account Info page of your Stream account.";
+"FACEBOOK_IMPORT_TUTORIAL_IPAD" = "Start importing your Facebook posts into Stream! Future Facebook posts will then be imported automatically.\n\nTo turn this feature on or off, just go to the Account Info page of your Stream account.";
 
 /* Class = "IBUILabel"; text = "FACEBOOK_IMPORT_TUTORIAL_SWITCH_IPAD"; ObjectID = "49"; */
 "FACEBOOK_IMPORT_TUTORIAL_SWITCH_IPAD" = "Facebook Import";
 
 /* Class = "IBUITableViewSection"; footerTitle = "SERVICE_INFO_FOOTER"; ObjectID = "9vM-w4-lTb"; */
-"SERVICE_INFO_FOOTER" = "⚠ Stream uses Wi-Fi to send original size photos back to your PC. If you don't have Stream installed on your PC, or it's not up and running, we keep the photos in a temporary cloud space for up to 30 days.";
+"SERVICE_INFO_FOOTER" = "Stream uses Wi-Fi to send original size photos back to your PC. If you don't have Stream installed on your PC, or it's not up and running, we keep the photos in a temporary cloud space for up to 30 days.";
 
 /* Class = "IBUITableViewSection"; headerTitle = "SERVICE_INFO_HEADER"; ObjectID = "9vM-w4-lTb"; */
 "SERVICE_INFO_HEADER" = "Service Info";
@@ -517,7 +517,7 @@
 "LOCAL_PENDING_OBJECTS_TITLE" = "Objects Pending";
 
 /* Class = "IBUITableViewSection"; footerTitle = "SYNC_INFO_FOOTER"; ObjectID = "aHi-Wv-Eu2"; */
-"SYNC_INFO_FOOTER" = "Last Sync %@";
+"SYNC_INFO_FOOTER" = "Last Sync: %@";
 
 /* Class = "IBUILabel"; text = "NOUN_NICKNAME"; ObjectID = "btU-SG-jyB"; */
 "NOUN_NICKNAME" = "Name";
