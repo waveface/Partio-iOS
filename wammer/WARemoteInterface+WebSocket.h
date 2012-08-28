@@ -8,14 +8,28 @@
 
 #import "WARemoteInterface.h"
 #import "SocketRocket/SRWebSocket.h"
-typedef void (^WAWebSocketHandler) (id);
-typedef void (^WAWebSocketCallback) (void);
-typedef void (^WAWebSocketFailure) (NSError *);
+
+typedef enum WAWebSocketResponseCode : NSUInteger {
+	WAWebSocketNormal = 1000,
+	WAWebSocketStationGoingAway,
+	WAWebSocketProtocolError,
+	WAWebSocketFormationError,
+	WAWebSocketNoStatus,
+	WAWebSocketAbnormalError,
+	WAWebSocketPolicyViolationError,
+	WAWebSocketMessageTooLargeError,
+	WAWebSocketHandshakeError,
+	WAWebSocketUnexpectedServerError
+} WAWebSocketResponseCode;
+
+typedef void (^WAWebSocketCommandHandler) (id);
+typedef void (^WAWebSocketConnectCallback) (void);
+typedef void (^WAWebSocketConnectFailure) (NSError *);
 
 @interface WARemoteInterface (WebSocket)
 @property (nonatomic, strong) SRWebSocket *connectionForWebSocket;
-@property (nonatomic, strong) NSMutableDictionary *handlerMap;
+@property (nonatomic, strong) NSMutableDictionary *commandHandlerMap;
 
-- (void) openWebSocketConnectionForUrl:(NSURL *)anURL onSucces:(WAWebSocketCallback)successBlock onFailure:(WAWebSocketFailure)failureBlock;
+- (void) openWebSocketConnectionForUrl:(NSURL *)anURL onSucces:(WAWebSocketConnectCallback)successBlock onFailure:(WAWebSocketConnectFailure)failureBlock;
 
 @end

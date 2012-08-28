@@ -7,6 +7,8 @@
 //
 
 #import "WARemoteInterface+Notification.h"
+#import "WADataStore.h"
+#import "WADataStore+WARemoteInterfaceAdditions.h"
 
 
 @implementation WARemoteInterface (Notification)
@@ -24,15 +26,43 @@
 
 - (void) subscribeNotification
 {
-	NSLog(@"notification subscription");
-	
-	WAWebSocketHandler notifyHandler = ^ (id resp) {
-		// TODO: handle the "notify" response
+	WAWebSocketCommandHandler notifyHandler = ^ (id resp) {
 		
+		NSDictionary *result = (NSDictionary *) resp;
+		
+		NSNumber *connected = [result objectForKey:@"connected"];
+		if (connected) {
+			if ([connected isEqualToNumber:[NSNumber numberWithBool:YES]]) {
+			} else {
+				// FIXME: handle failure?
+			}
+		}
+		
+		NSString *message = [result objectForKey:@"message"];
+		if (message) {
+			// TODO: handle message
+		}
+		
+		NSNumber *updated = [result objectForKey:@"updated"];
+		if (updated) {
+			if ([updated isEqualToNumber:[NSNumber numberWithBool:YES]]) {
+				// TODO: handle update
+				
+				/*
+				[[WADataStore defaultStore] updateArticlesOnSuccess:nil onFailure:nil];
+				
+				[[WADataStore defaultStore] updateCurrentUserOnSuccess:nil onFailure:nil];
+*/
+			}
+		}
 	};
-	[self.handlerMap setObject:notifyHandler forKey:@"notify"];
 	
-	NSDictionary *arguments = [[NSDictionary alloc] initWithObjectsAndKeys:self.apiKey, @"apikey", self.userToken, @"session_token", self.userIdentifier, @"user_id", nil];
+	[self.commandHandlerMap setObject:notifyHandler forKey:@"notify"];
+	
+	NSDictionary *arguments = [[NSDictionary alloc]
+														 initWithObjectsAndKeys: self.apiKey, @"apikey",
+																										 self.userToken, @"session_token",
+																										 self.userIdentifier, @"user_id", nil];
 	
 	NSString *rawData = [self composeJSONStringForCommand:@"subscribe" withArguments:arguments];
 	if (rawData) {

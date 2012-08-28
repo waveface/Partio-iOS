@@ -249,19 +249,17 @@ static NSString * const kNetworkState = @"-[WARemoteInterface(Reachability) netw
 
 				}]]; */
 	
-				// Testing code
-				NSArray *wsInterfaces = [NSArray arrayWithObject:[NSURL URLWithString:@"ws://192.168.1.169:8889"]];
+				// FIXME: Testing code
+				NSArray *wsInterfaces = [NSArray arrayWithObject:[NSURL URLWithString:@"ws://10.0.1.7:8889"]];
 				
 				if ([wsInterfaces count] > 0) {
- 					//TODO: Stop dataRetrievalTimer
+					[[WARemoteInterface sharedInterface] stopAutomaticRemoteUpdates];
 
-					NSLog(@"to connect websocket");
 					[[WARemoteInterface sharedInterface] openWebSocketConnectionForUrl: [wsInterfaces objectAtIndex:0] onSucces:^{
 						[[WARemoteInterface sharedInterface] subscribeNotification];
 					} onFailure:^(NSError *error) {
-						//TODO: handle failure, resume timer?
+						[[WARemoteInterface sharedInterface] rescheduleAutomaticRemoteUpdates];
 					}];
-					
 					
 					wSelf.monitoredHosts = [NSArray arrayWithObject:wSelf.engine.context.baseURL];
 				} else {

@@ -12,8 +12,8 @@
 
 @property (nonatomic, strong) NSURL *urlForWebSocket;
 
-@property (nonatomic, strong) WAWebSocketCallback successHandler;
-@property (nonatomic, strong) WAWebSocketFailure failureHandler;
+@property (nonatomic, strong) WAWebSocketConnectCallback successHandler;
+@property (nonatomic, strong) WAWebSocketConnectFailure failureHandler;
 
 @end
 
@@ -27,7 +27,12 @@ static NSString * const kHandlerMap = @"-[WARemoteInterface(WebSocket) handlerMa
 @implementation WARemoteInterface (WebSocket)
 @dynamic connectionForWebSocket;
 
-- (void) openWebSocketConnectionForUrl:(NSURL *)anURL onSucces:(WAWebSocketCallback)successBlock onFailure:(WAWebSocketFailure)failureBlock {
+- (void) connectionResponseWithCode:(NSUInteger)code andReason:(NSString*)message
+{
+	NSLog(@"Websocket connection failure with code: %d and reason: %@", code, message);
+}
+
+- (void) openWebSocketConnectionForUrl:(NSURL *)anURL onSucces:(WAWebSocketConnectCallback)successBlock onFailure:(WAWebSocketConnectFailure)failureBlock {
 	if (![self.urlForWebSocket isEqual:anURL]) {
 		self.urlForWebSocket = anURL;
 	}
@@ -35,11 +40,16 @@ static NSString * const kHandlerMap = @"-[WARemoteInterface(WebSocket) handlerMa
 	self.successHandler = successBlock;
 	self.failureHandler = failureBlock;
 	
-	WAWebSocketHandler errorHandler = ^(id resp) {
+	WAWebSocketCommandHandler errorHandler = ^(id resp) {
 		NSLog(@"Get an error response from we connection: %@", (NSString *) resp);
+		NSNumber *retCode = [(NSDictionary*)resp objectForKey:@"api_ret_code"];
+		NSString *message = [(NSDictionary*)resp objectForKey:@"api_ret_message"];
+		
+		if (retCode && ![retCode isEqualToNumber:[NSNumber numberWithInteger:WAWebSocketNormal]])
+			[self connectionResponseWithCode:[retCode integerValue] andReason:message];
 	};
 	
-	self.handlerMap = [[NSMutableDictionary alloc] initWithObjectsAndKeys:errorHandler, @"error", nil];
+	self.commandHandlerMap = [[NSMutableDictionary alloc] initWithObjectsAndKeys:errorHandler, @"result", nil];
 	
 	[self.connectionForWebSocket close];
 	self.connectionForWebSocket = [[SRWebSocket alloc] initWithURL:self.urlForWebSocket];
@@ -57,11 +67,11 @@ static NSString * const kHandlerMap = @"-[WARemoteInterface(WebSocket) handlerMa
 	return objc_getAssociatedObject(self, &kConnectionForWebSocket);
 }
 
-- (void) setHandlerMap:(NSDictionary *)handlerMap {
+- (void) setCommandHandlerMap:(NSDictionary *)handlerMap {
 	objc_setAssociatedObject(self, &kHandlerMap, handlerMap, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
-- (NSDictionary *) handlerMap {
+- (NSDictionary *) commandHandlerMap {
 	return objc_getAssociatedObject(self, &kHandlerMap);
 }
 
@@ -72,34 +82,10 @@ static NSString * const kHandlerMap = @"-[WARemoteInterface(WebSocket) handlerMa
 @implementation WARemoteInterface (WebSocket_Private)
 @dynamic urlForWebSocket, successHandler, failureHandler;
 
-#pragma mark - getters/setters of instance variables
-- (void) setUrlForWebSocket:(NSURL *)urlForWebSocket {
-	objc_setAssociatedObject(self, &kUrlForWebSocket, urlForWebSocket, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-}
-
-- (NSURL *) urlForWebSocket {
-	return objc_getAssociatedObject(self, &kUrlForWebSocket);
-}
-
-- (void) setSuccessHandler:(WAWebSocketCallback)successHandler {
-	objc_setAssociatedObject(self, &kSuccessHandler, successHandler, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-}
-
-- (WAWebSocketCallback) successHandler {
-	return objc_getAssociatedObject(self, &kSuccessHandler);
-}
-
-- (void) setFailureHandler:(WAWebSocketFailure)failureHandler {
-	objc_setAssociatedObject(self, &kFailureHandler, failureHandler, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-}
-
-- (WAWebSocketFailure) failureHandler {
-	return objc_getAssociatedObject(self, &kFailureHandler);
-}
 
 #pragma mark - SRWebSocket delegate methods
 - (void) webSocket:(SRWebSocket *)webSocket didCloseWithCode:(NSInteger)code reason:(NSString *)reason wasClean:(BOOL)wasClean {
-	
+	[self connectionResponseWithCode:code andReason:reason];
 }
 
 - (void) webSocket:(SRWebSocket *)webSocket didFailWithError:(NSError *)error {
@@ -111,21 +97,22 @@ static NSString * const kHandlerMap = @"-[WARemoteInterface(WebSocket) handlerMa
 
 - (void) webSocket:(SRWebSocket *)webSocket didReceiveMessage:(id)message {
 	NSError *error = nil;
+	NSLog(@"%@", message);
 	NSDictionary *result = [NSJSONSerialization JSONObjectWithData:[(NSString*)message dataUsingEncoding:NSUTF8StringEncoding] options:NSJSONReadingAllowFragments error:&error];
-	
+
 	if (!result) {
-		if (!error) {
+		if (error) {
 			NSLog(@"Failed to parse message from ws connection: %@", error);
 			
-			// Fail handler??
+			//FIXME: Fail to parse response JSON?
 		}
 	} else {
 		[result enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
-			WAWebSocketHandler handler = [self.handlerMap objectForKey:key];
+			WAWebSocketCommandHandler handler = [self.commandHandlerMap objectForKey:key];
 			if (handler != nil) {
 				handler(obj);
 			} else {
-				NSLog(@"Cannot find corresponding handler for command: %@", (NSString*)key);
+				NSLog(@"Not supported command: %@", (NSString*)key);
 			}
 		}];
 	}
@@ -137,5 +124,30 @@ static NSString * const kHandlerMap = @"-[WARemoteInterface(WebSocket) handlerMa
 	}
 }
 
+
+#pragma mark - getters/setters of instance variables
+- (void) setUrlForWebSocket:(NSURL *)urlForWebSocket {
+	objc_setAssociatedObject(self, &kUrlForWebSocket, urlForWebSocket, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+- (NSURL *) urlForWebSocket {
+	return objc_getAssociatedObject(self, &kUrlForWebSocket);
+}
+
+- (void) setSuccessHandler:(WAWebSocketConnectCallback)successHandler {
+	objc_setAssociatedObject(self, &kSuccessHandler, successHandler, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+- (WAWebSocketConnectCallback) successHandler {
+	return objc_getAssociatedObject(self, &kSuccessHandler);
+}
+
+- (void) setFailureHandler:(WAWebSocketConnectFailure)failureHandler {
+	objc_setAssociatedObject(self, &kFailureHandler, failureHandler, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+- (WAWebSocketConnectFailure) failureHandler {
+	return objc_getAssociatedObject(self, &kFailureHandler);
+}
 
 @end

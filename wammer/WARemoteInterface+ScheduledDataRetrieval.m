@@ -30,11 +30,22 @@
 
 - (void) rescheduleAutomaticRemoteUpdates {
 
-	[self.dataRetrievalTimer invalidate];
-	self.dataRetrievalTimer = nil;
+	if (self.dataRetrievalTimer != nil) {
+		[self.dataRetrievalTimer invalidate];
+		self.dataRetrievalTimer = nil;
+	}
 
 	self.dataRetrievalTimer = [NSTimer scheduledTimerWithTimeInterval:self.dataRetrievalInterval target:self selector:@selector(handleDataRetrievalTimerDidFire:) userInfo:nil repeats:NO];
 
+}
+
+- (void) stopAutomaticRemoteUpdates {
+	if (self.dataRetrievalTimer != nil) {
+		[self willChangeValueForKey:@"isPerformingAutomaticRemoteUpdates"];
+		[self.dataRetrievalTimer invalidate];
+		self.dataRetrievalTimer = nil;
+		[self didChangeValueForKey:@"isPerformingAutomaticRemoteUpdates"];
+	}
 }
 
 - (void) performAutomaticRemoteUpdatesNow {
@@ -149,7 +160,7 @@
 
 - (BOOL) isPerformingAutomaticRemoteUpdates {
 
-	return !!(self.automaticRemoteUpdatesPerformingCount);
+	return !!(self.dataRetrievalTimer) && !!(self.automaticRemoteUpdatesPerformingCount);
 
 }
 
