@@ -171,7 +171,7 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 				}
 				
 				if (imageView) {
-					[self configureGalleryImageView:imageView withFile:(WAFile *)anObject degradeQuality:YES forceSync:NO];
+					[self configureGalleryImageView:imageView withFile:(WAFile *)anObject degradeQuality:NO forceSync:NO];
 				}
 
 			}
@@ -514,60 +514,10 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 
 }
 
-- (void) paginatedView:(IRPaginatedView *)aPaginatedView didShowView:(UIView *)aView atIndex:(NSUInteger)index {
+- (NSUInteger) currentIndexForImageStreamPickerView {
 
-	self.streamPickerView.selectedItemIndex = index;
-	
-	__typeof__(self.paginatedView) const ownPaginatedView = self.paginatedView;
-	
-	[ownPaginatedView.scrollView.subviews enumerateObjectsUsingBlock: ^ (WAGalleryImageView *aPage, NSUInteger idx, BOOL *stop) {
-	
-		if (![aPage isKindOfClass:[WAGalleryImageView class]])
-			return;
-		
-		if (aPage == aView)
-			return;
-		
-		CGRect intersection = CGRectIntersection([ownPaginatedView convertRect:ownPaginatedView.bounds toView:aPage], aPage.bounds);
-		
-		if (CGRectEqualToRect(CGRectNull, intersection))
-			[aPage reset];
-		
-	}];
-	
-	//	Hides contest on page turns, but NOT stream picker changes
-	
-	if (ownPaginatedView.scrollView.panGestureRecognizer.state == UIGestureRecognizerStateChanged)
-		[self setContextControlsHidden:YES animated:YES barringInteraction:NO completion:nil];
-	
-	WAGalleryViewController *capturedSelf = self;
-	NSUInteger capturedCurrentPage = self.paginatedView.currentPage;
+	return self.paginatedView.currentPage;
 
-	[self.operationQueue cancelAllOperations];
-	[self.operationQueue addOperation:[IRAsyncOperation operationWithWorkerBlock:^(IRAsyncOperationCallback callback) {
-	
-		NSParameterAssert([NSThread isMainThread]);
-		
-		if (![capturedSelf isViewLoaded])
-			return;
-		
-		if (capturedSelf.paginatedView.currentPage != capturedCurrentPage)
-			return;
-			
-		WAGalleryImageView *pageView = (WAGalleryImageView *)[capturedSelf.paginatedView existingPageAtIndex:capturedCurrentPage];
-		if (!pageView)
-			return;
-		
-		WAFile *pageFile = [capturedSelf representedFileAtIndex:capturedCurrentPage];
-		if (!pageFile)
-			return;
-		
-		[capturedSelf configureGalleryImageView:pageView withFile:pageFile degradeQuality:NO forceSync:NO];
-		
-		callback(nil);
-		
-	} completionBlock:nil]];
-		
 }
 
 - (void) galleryImageViewDidReceiveUserInteraction:(WAGalleryImageView *)imageView {
@@ -591,6 +541,11 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 
 }
 
+- (void)paginatedView:(IRPaginatedView *)paginatedView didShowView:(UIView *)aView atIndex:(NSUInteger)index
+{
+	self.streamPickerView.selectedItemIndex = index;
+}
+
 - (UIView *) viewForPaginatedView:(IRPaginatedView *)aPaginatedView atIndex:(NSUInteger)index {
 
 	WAFile *file = [self representedFileAtIndex:index];
@@ -603,7 +558,7 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 	
 	view.frame = (CGRect){ CGPointZero, aPaginatedView.bounds.size };
 	
-	return [self configureGalleryImageView:view withFile:file degradeQuality:YES forceSync:YES];
+	return [self configureGalleryImageView:view withFile:file degradeQuality:NO forceSync:YES];
 
 }
 
@@ -617,11 +572,37 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 
 	if (exclusivelyUsesThumbnail) {
 		
-		[aView setImage:[aFile smallestPresentableImage] animated:NO synchronized:forceSynchronousImageDecode];
+		__weak WAGalleryViewController *wSelf = self;
+		[aFile irRemoveObserverBlocksForKeyPath:@"smallestPresentableImage"];
+		[aFile irObserve:@"smallestPresentableImage" options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:nil withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
+
+			dispatch_async(dispatch_get_main_queue(), ^{
+
+				[aView setImage:toValue animated:NO synchronized:forceSynchronousImageDecode];
+				[aView setNeedsLayout];
+				[wSelf.streamPickerView reloadData];
+				[wSelf.streamPickerView setNeedsLayout];
+
+			});
+
+		}];
 		
 	} else {
 		
-		[aView setImage:[aFile bestPresentableImage] animated:NO synchronized:forceSynchronousImageDecode];
+		__weak WAGalleryViewController *wSelf = self;
+		[aFile irRemoveObserverBlocksForKeyPath:@"bestPresentableImage"];
+		[aFile irObserve:@"bestPresentableImage" options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:nil withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
+
+			dispatch_async(dispatch_get_main_queue(), ^{
+
+				[aView setImage:toValue animated:NO synchronized:forceSynchronousImageDecode];
+				[aView setNeedsLayout];
+				[wSelf.streamPickerView reloadData];
+				[wSelf.streamPickerView setNeedsLayout];
+
+			});
+
+		}];
 		
 	}
 		
@@ -810,6 +791,10 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 - (void) viewDidUnload {
 
 	[self.paginatedView irRemoveObserverBlocksForKeyPath:@"currentPage"];
+	for (WAFile *file in self.article.files) {
+    [file irRemoveObserverBlocksForKeyPath:@"bestPresentableImage"];
+		[file irRemoveObserverBlocksForKeyPath:@"smallestPresentableImage"];
+	}
 
 	self.paginatedView = nil;
 	self.navigationBar = nil;
