@@ -88,7 +88,7 @@
 	self.maxRowOfPhotosOnScreen = 5;
 
 	if (self.article.text) {
-		if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone) {
+		if (isPhone()) {
 			self.maxRowOfPhotosOnScreen = 4;
 		}
 	}
@@ -167,7 +167,7 @@
 
 	NSUInteger numberOfItems = [self.article.files count];
 
-	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad && numberOfItems <= 4) {
+	if (isPad() && numberOfItems <= 4) {
 	
 		[cell irBind:@"image" toObject:file keyPath:@"bestPresentableImage"
 					options:[NSDictionary dictionaryWithObjectsAndKeys: (id)kCFBooleanTrue, kIRBindingsAssignOnMainThreadOption, nil]];
@@ -256,7 +256,7 @@
 		if (fabs(self.scrollVelocity.y) > 0.8f) {
 			delayInSeconds *= ((index % 3) / 4.0f + 1);
 		} else {
-			delayInSeconds *= ((index % 3) / 8.0f);;
+			delayInSeconds *= ((index % 3) / 8.0f);
 		}
 
 		dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
