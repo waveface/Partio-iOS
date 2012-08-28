@@ -105,7 +105,8 @@ static NSString * kWAImageStreamPickerComponentThumbnail = @"WAImageStreamPicker
 	
 	self.items = allItems;
 	
-	self.selectedItemIndex = [self.items count] ? 0 : NSNotFound;
+	NSUInteger currentIndex = [self.delegate currentIndexForImageStreamPickerView];
+	self.selectedItemIndex = currentIndex ? currentIndex : 0;
 	
 	[self setNeedsLayout];
 

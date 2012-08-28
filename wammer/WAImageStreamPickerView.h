@@ -30,6 +30,7 @@ enum {
 
 - (UIImage *) thumbnailForItem:(id)anItem inImageStreamPickerView:(WAImageStreamPickerView *)picker;
 - (void) imageStreamPickerView:(WAImageStreamPickerView *)picker didSelectItem:(id)anItem;
+- (NSUInteger) currentIndexForImageStreamPickerView;
 
 @end
 
