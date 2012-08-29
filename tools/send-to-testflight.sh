@@ -1,8 +1,7 @@
-#!/bin/bash --
+#!/usr/local/bin/zsh
+#!/bin/zsh
 
 PROJECT_NAME="Wammer-iOS"
-TF_API_TOKEN="267d14b54906a94ec9b58d775a4641e0_OTkxODY"
-TF_TEAM_TOKEN="2e0589c9a03560bfeb93e215fdd9cbbb_MTg2ODAyMDExLTA5LTIyIDA0OjM4OjI1LjMzNTEyNg"
 
 VERSION_MARKETING="`agvtool mvers -terse1`"
 VERSION_BUILD="`agvtool vers -terse`"
@@ -18,18 +17,20 @@ IPA_NAME=build/$BUILD_CONFIGURATION-$BUILD_SDK/wammer-iOS-$BUILD_CONFIGURATION-$
 DSYM_ZIP_NAME=build/$BUILD_CONFIGURATION-$BUILD_SDK/wammer-iOS-$BUILD_CONFIGURATION-$VERSION_MARKETING$'\n'$VERSION_BUILD-dSYM.zip
 
 GIT_LATEST_TAG="`git describe --abbrev=0 --tags`"
-GIT_LAST2_TAG=`expr $GIT_LATEST_TAG - 1`
-GIT_INFO="`git log --oneline --format="- %h %s (%an)" HEAD...$GIT_LAST2_TAG | grep -v "Merge branch" `"
+GIT_INFO="`git log --stat --summary HEAD...$GIT_LAST_TAG`"
 
-git tag $VERSION_BUILD
-git push origin $VERSION_BUILD
-
+TF_API_TOKEN="267d14b54906a94ec9b58d775a4641e0_OTkxODY"
+TF_TEAM_TOKEN="2e0589c9a03560bfeb93e215fdd9cbbb_MTg2ODAyMDExLTA5LTIyIDA0OjM4OjI1LjMzNTEyNg"
 TF_API_URI="http://testflightapp.com/api/builds.json"
 TF_NOTES="$PROJECT_NAME $VERSION_MARKETING ($VERSION_BUILD) # $COMMIT_SHA\n$GIT_INFO"
 TF_NOTIFY="True"
 TF_DIST_LISTS="Developer"
 
-curl  http://testflightapp.com/api/builds.json \
+if [[ `git tag -l $VERSION_BUILD` == "" ]]; then
+    `git tag $VERSION_BUILD`
+    `git push origin $VERSION_BUILD`
+
+    curl  http://testflightapp.com/api/builds.json \
      -F file=@"$IPA_NAME" \
      -F dsym=@"$DSYM_ZIP_NAME" \
      -F api_token="$TF_API_TOKEN" \
@@ -37,3 +38,6 @@ curl  http://testflightapp.com/api/builds.json \
      -F notes="$TF_NOTES" \
      -F notify="$TF_NOTIFY" \
      -F distribution_lists="$TF_DIST_LISTS"
+else
+    echo "tag '$VERSION_BUILD' already exists";
+fi
