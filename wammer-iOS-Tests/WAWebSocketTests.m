@@ -9,59 +9,62 @@
 #import "WAWebSocketTests.h"
 
 @implementation WAWebSocketTests {
-	SRWebSocket *webSocket;
-	NSInteger retCode;
+	NSURL *mockWebSocketServer;
+	NSDate *asyncWaitUntil;
 }
 
 -(void)setUp {
-	webSocket = [[SRWebSocket alloc] initWithURLRequest:
-							 [NSURLRequest requestWithURL:
-								[NSURL URLWithString:@"ws://192.168.1.250:8009"]]];
-	webSocket.delegate = self;
+	asyncWaitUntil = [NSDate dateWithTimeIntervalSinceNow:5];
+	
+	// TODO: create a mock server to handle the requests
+	mockWebSocketServer = [NSURL URLWithString:@"ws://localhost:8889"];
+	
+	[WARemoteInterface sharedInterface].apiKey = @"";
+	[WARemoteInterface sharedInterface].userIdentifier = @"";
+	[WARemoteInterface sharedInterface].userToken = @"";
 }
 
 -(void)tearDown {
-	[webSocket close];
-	webSocket = nil;
+//	[[WARemoteInterface sharedInterface] closeWebSocketConnectionWithCode:0 andReason:nil];
 }
 
--(void)testOpenConnection {
-	[webSocket open];
+-(void)testOpenConnectionSuccess {
+	__block BOOL complete = NO;
+	[[WARemoteInterface sharedInterface] openWebSocketConnectionForUrl:mockWebSocketServer onSucces:^{
+			// success
+		complete = YES;
+	} onFailure:^(NSError *error) {
+		complete = YES;
+		STFail(@"Websocket connection should be opened successfully.");
+	}];
 	
-	
-	NSDate *loopUntil = [NSDate dateWithTimeIntervalSinceNow:10];
-	while ([loopUntil timeIntervalSinceNow] > 0) {
-		[[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode
-														 beforeDate:loopUntil];
+	while (complete == NO && [asyncWaitUntil timeIntervalSinceNow] > 0) {
+		[[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:asyncWaitUntil];
 	}
 	
-	NSString *message = @"Mary has a little lamb.";
-	[webSocket send:message];
+	if (complete == NO) {
+		STFail(@"Websocket connection should be opened on time.");
+	}
+}
+
+- (void)testOpenConnectionFail {
+	__block BOOL complete = NO;
+
+	[[WARemoteInterface sharedInterface] openWebSocketConnectionForUrl:mockWebSocketServer onSucces:^{
+		complete = YES;
+		STFail(@"Websocket connection should fail to be opened.");
+	} onFailure:^(NSError *error) {
+		complete = YES;
+		// success
+	}];
 	
-	loopUntil = [NSDate dateWithTimeIntervalSinceNow:10];
-	while ([loopUntil timeIntervalSinceNow] > 0) {
-		[[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode
-														 beforeDate:loopUntil];
+	while (complete == NO && [asyncWaitUntil timeIntervalSinceNow] > 0) {
+		[[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:asyncWaitUntil];
 	}
 	
-	NSLog(@"%@", webSocket);
-	STAssertEquals((NSInteger)3000, retCode, @"Did recieve return code");
+	if (complete == NO) {
+		STFail(@"Websocket connection should be opened on time.");
+	}
 }
 
-- (void)webSocket:(SRWebSocket *)webSocket didReceiveMessage:(id)message {
-	NSLog(@"%@", message);
-}
-
-- (void)webSocket:(SRWebSocket *)webSocket didCloseWithCode:(NSInteger)code reason:(NSString *)reason wasClean:(BOOL)wasClean {
-	NSLog(@"*** Code %d", code);
-	retCode = code;
-}
-
-- (void)webSocketDidOpen:(SRWebSocket *)aWebSocket {
-	NSLog(@"%@ Web Socket Opened!", aWebSocket);
-}
-
-- (void)webSocket:(SRWebSocket *)webSocket didFailWithError:(NSError *)error {
-	NSLog(@"Failed with %@", error.description);
-}
 @end
