@@ -52,7 +52,9 @@ static NSString * const kHandlerMap = @"-[WARemoteInterface(WebSocket) handlerMa
 	self.commandHandlerMap = [[NSMutableDictionary alloc] initWithObjectsAndKeys:errorHandler, @"result", nil];
 	
 	[self.connectionForWebSocket close];
-	self.connectionForWebSocket = [[SRWebSocket alloc] initWithURL:self.urlForWebSocket];
+	if (!self.connectionForWebSocket) {
+		self.connectionForWebSocket = [[SRWebSocket alloc] initWithURL:self.urlForWebSocket];
+	}
 	self.connectionForWebSocket.delegate = self;
 	[self.connectionForWebSocket open];
 }
