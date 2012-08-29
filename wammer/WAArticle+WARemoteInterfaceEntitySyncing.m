@@ -351,7 +351,6 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 				 * If the modifiedDate is later then current lastNewPostsUpdateDate, then we update these articles.
 				 * If not, don't change them. It won't cause a data store change, and won't cause the timeline refresh */
 				BOOL changed = NO;
-				NSMutableArray *newFiles = [[NSMutableArray alloc] init];
 				for (WAArticle *article in touchedArticles) {
 					NSComparisonResult dateComparison = [article.modificationDate compare:usedDate];
 					if (usedDate && (dateComparison == NSOrderedSame || dateComparison == NSOrderedAscending))
@@ -359,19 +358,24 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 					changed = YES;
 					if ([ds isUpdatingArticle:[[article objectID] URIRepresentation]]) {
 						[context refreshObject:article mergeChanges:NO];
-					} else {
-						for (WAFile *file in article.files) {
-							[newFiles addObject:file];
-						}
 					}
 				}
 				
 				if (changed) {
 					[context save:nil];
-					// start downloading thumbnails for files of updated articles
-					for (WAFile *file in newFiles) {
-						[file smallThumbnailFilePath];
-						[file thumbnailFilePath];
+
+					// start downloading thumbnails for files of updated articles,
+					// files in newer articles are downloaded first (download queue is LIFO).
+					NSArray *sortedArticles = [touchedArticles sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
+						WAArticle *article1 = obj1;
+						WAArticle *article2 = obj2;
+						return [article1.creationDate compare:article2.creationDate];
+					}];
+					for (WAArticle *article in sortedArticles) {
+						for (WAFile *file in article.files) {
+							[file smallThumbnailFilePath];
+							[file thumbnailFilePath];
+						}
 					}
 				}
 				
@@ -412,23 +416,26 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 				 
 				 NSArray *touchedArticles = [WAArticle insertOrUpdateObjectsUsingContext:context withRemoteResponse:changedArticleReps usingMapping:nil options:IRManagedObjectOptionIndividualOperations];
 				 
-				 NSMutableArray *newFiles = [[NSMutableArray alloc] init];
 				 for (WAArticle *article in touchedArticles) {
 					 if ([ds isUpdatingArticle:[[article objectID] URIRepresentation]]) {
 						 [context refreshObject:article mergeChanges:NO];
-					 } else {
-						 for (WAFile *file in article.files) {
-							 [newFiles addObject:file];
-						 }
 					 }
 				 }
 				 
 				 [context save:nil];
 				 
-				 // start downloading thumbnails for files of updated articles
-				 for (WAFile *file in newFiles) {
-					 [file smallThumbnailFilePath];
-					 [file thumbnailFilePath];
+				 // start downloading thumbnails for files of updated articles,
+				 // files in newer articles are downloaded first (download queue is LIFO).
+				 NSArray *sortedArticles = [touchedArticles sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
+					 WAArticle *article1 = obj1;
+					 WAArticle *article2 = obj2;
+					 return [article1.creationDate compare:article2.creationDate];
+				 }];
+				 for (WAArticle *article in sortedArticles) {
+					 for (WAFile *file in article.files) {
+						 [file smallThumbnailFilePath];
+						 [file thumbnailFilePath];
+					 }
 				 }
 			 }
 					waitUntilDone:YES];

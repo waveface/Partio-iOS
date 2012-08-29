@@ -268,4 +268,21 @@
 
 }
 
+- (NSArray *) fetchFilesNeedingDownloadUsingContext:(NSManagedObjectContext *)aContext {
+
+	NSFetchRequest *fetchRequest = [self.persistentStoreCoordinator.managedObjectModel fetchRequestFromTemplateWithName:@"WAFRFilesNeedingDownload" substitutionVariables:[NSDictionary dictionary]];
+
+	fetchRequest.sortDescriptors = [NSArray arrayWithObjects:
+		[NSSortDescriptor sortDescriptorWithKey:@"article.creationDate" ascending:YES],
+	nil];
+
+	NSError *fetchingError = nil;
+	NSArray *fetchedFiles = [aContext executeFetchRequest:fetchRequest error:&fetchingError];
+	if (fetchingError) {
+		NSLog(@"%@", fetchingError);
+	}
+	return fetchedFiles;
+
+}
+
 @end
