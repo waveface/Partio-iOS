@@ -13,16 +13,6 @@
 
 @implementation WARemoteInterface (Notification)
 
-- (NSString *) composeJSONStringForCommand:(NSString*)command withArguments:(NSDictionary *)arguments {
-	NSDictionary *data = [[NSDictionary alloc] initWithObjectsAndKeys:arguments, command, nil];
-	if ([NSJSONSerialization isValidJSONObject:data]) {
-		NSError *error = nil;
-		NSData *jsonData = [NSJSONSerialization dataWithJSONObject:data options:NSJSONWritingPrettyPrinted error:&error];
-		if (jsonData)
-			return [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
-	}
-	return nil;
-}
 
 - (void) subscribeNotification
 {
@@ -32,8 +22,8 @@
 		
 		NSNumber *connected = [result objectForKey:@"connected"];
 		if (connected) {
-			if ([connected isEqualToNumber:[NSNumber numberWithBool:YES]]) {
-			} else {
+			if (![connected isEqualToNumber:[NSNumber numberWithBool:YES]]) {
+				NSLog(@"Websocket server responses with connection failure.");
 				// FIXME: handle failure?
 			}
 		}
@@ -48,11 +38,9 @@
 			if ([updated isEqualToNumber:[NSNumber numberWithBool:YES]]) {
 				// TODO: handle update
 				
-				/*
 				[[WADataStore defaultStore] updateArticlesOnSuccess:nil onFailure:nil];
 				
 				[[WADataStore defaultStore] updateCurrentUserOnSuccess:nil onFailure:nil];
-*/
 			}
 		}
 	};
@@ -60,9 +48,7 @@
 	[self.commandHandlerMap setObject:notifyHandler forKey:@"notify"];
 	
 	NSDictionary *arguments = [[NSDictionary alloc]
-														 initWithObjectsAndKeys: self.apiKey, @"apikey",
-																										 self.userToken, @"session_token",
-																										 self.userIdentifier, @"user_id", nil];
+														 initWithObjectsAndKeys: @"value", @"key", nil];
 	
 	NSString *rawData = [self composeJSONStringForCommand:@"subscribe" withArguments:arguments];
 	if (rawData) {

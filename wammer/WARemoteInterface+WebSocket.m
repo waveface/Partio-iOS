@@ -7,6 +7,7 @@
 //
 
 #import "WARemoteInterface+WebSocket.h"
+#import "WARemoteInterfaceDefines.h"
 
 @interface WARemoteInterface (WebSocket_Private) <SRWebSocketDelegate>
 
@@ -14,6 +15,8 @@
 
 @property (nonatomic, strong) WAWebSocketConnectCallback successHandler;
 @property (nonatomic, strong) WAWebSocketConnectFailure failureHandler;
+
+NSError * WARemoteInterfaceWebSocketError (NSUInteger code, NSString *message);
 
 @end
 
@@ -24,12 +27,49 @@ static NSString * const kFailureHandler = @"-[WARemoteInterface(WebSocket) failu
 static NSString * const kHandlerMap = @"-[WARemoteInterface(WebSocket) handlerMap]";
 
 
+
 @implementation WARemoteInterface (WebSocket)
-@dynamic connectionForWebSocket;
+@dynamic connectionForWebSocket, webSocketState;
+
+- (NSString *) composeJSONStringForCommand:(NSString*)command withArguments:(NSDictionary *)arguments {
+	NSDictionary *data = [[NSDictionary alloc] initWithObjectsAndKeys:arguments, command, nil];
+	if ([NSJSONSerialization isValidJSONObject:data]) {
+		NSError *error = nil;
+		NSData *jsonData = [NSJSONSerialization dataWithJSONObject:data options:NSJSONWritingPrettyPrinted error:&error];
+		if (jsonData)
+			return [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+	}
+	return nil;
+}
+
+NSError * WARemoteInterfaceWebSocketError (NSUInteger code, NSString *message) {
+	NSMutableDictionary *errorUserInfo = [NSMutableDictionary dictionary];
+	
+	[errorUserInfo setObject:[NSNumber numberWithUnsignedInt:code] forKey:kWARemoteInterfaceRemoteErrorCode];
+	[errorUserInfo setObject:message forKey:NSLocalizedDescriptionKey];
+	
+	return [NSError errorWithDomain:kWARemoteInterfaceDomain code:code userInfo:errorUserInfo];
+}
 
 - (void) connectionResponseWithCode:(NSUInteger)code andReason:(NSString*)message
 {
 	NSLog(@"Websocket connection failure with code: %d and reason: %@", code, message);
+	
+	switch (code) {
+		case WAWebSocketStationGoingAway:
+		case WAWebSocketHandshakeError:
+			if (self.failureHandler) {
+				NSError *error = WARemoteInterfaceWebSocketError(code, message);
+				self.failureHandler(error);
+			}
+			break;
+			
+		case WAWebSocketAbnormalError:
+		case 0: // normally closed
+		default:
+			[self reconnectWebSocket];
+			break;
+	}
 }
 
 - (void) openWebSocketConnectionForUrl:(NSURL *)anURL onSucces:(WAWebSocketConnectCallback)successBlock onFailure:(WAWebSocketConnectFailure)failureBlock {
@@ -51,14 +91,29 @@ static NSString * const kHandlerMap = @"-[WARemoteInterface(WebSocket) handlerMa
 	
 	self.commandHandlerMap = [[NSMutableDictionary alloc] initWithObjectsAndKeys:errorHandler, @"result", nil];
 	
-	[self.connectionForWebSocket close];
-	self.connectionForWebSocket = [[SRWebSocket alloc] initWithURL:self.urlForWebSocket];
-	self.connectionForWebSocket.delegate = self;
-	[self.connectionForWebSocket open];
+	[self reconnectWebSocket];
 }
 
+- (void) closeWebSocketConnectionWithCode:(NSInteger)code andReason:(NSString*)reason
+{
+	if (self.connectionForWebSocket)
+		[self.connectionForWebSocket closeWithCode:code reason:reason];
+}
 
-#pragma mark - getters/setters of instance variables
+- (void) reconnectWebSocket
+{
+	if (self.connectionForWebSocket) {
+		// We need to zero out the delegate to prevent an infinite looping hell
+		self.connectionForWebSocket.delegate = nil;
+		[self.connectionForWebSocket close];
+		self.connectionForWebSocket = nil;
+	}
+	self.connectionForWebSocket = [[SRWebSocket alloc] initWithURL:self.urlForWebSocket];
+	self.connectionForWebSocket.delegate = self;
+	[self.connectionForWebSocket open];	// re-connect
+}
+
+#pragma mark - getters/setters of properties
 - (void) setConnectionForWebSocket:(SRWebSocket *)connectionForWebSocket {
 	objc_setAssociatedObject(self, &kConnectionForWebSocket, connectionForWebSocket, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
@@ -75,6 +130,22 @@ static NSString * const kHandlerMap = @"-[WARemoteInterface(WebSocket) handlerMa
 	return objc_getAssociatedObject(self, &kHandlerMap);
 }
 
+- (BOOL) webSocketConnected
+{
+	if (!self.connectionForWebSocket)
+		return WAWebSocketClosed;
+	
+	if ([self.connectionForWebSocket readyState] == SR_CONNECTING)
+		return WAWebSocketConnecting;
+	
+	if ([self.connectionForWebSocket readyState] == SR_OPEN)
+		return WAWebSocketOpen;
+	
+	if ([self.connectionForWebSocket readyState] == SR_CLOSING)
+		return WAWebSocketClosing;
+		
+	return WAWebSocketClosed;
+}
 
 @end
 
@@ -119,13 +190,19 @@ static NSString * const kHandlerMap = @"-[WARemoteInterface(WebSocket) handlerMa
 }
 
 - (void) webSocketDidOpen:(SRWebSocket *)webSocket {
+	NSDictionary *arguments = [[NSDictionary alloc] initWithObjectsAndKeys: self.apiKey, @"apikey",
+																																					self.userToken, @"session_token",
+																																				  self.userIdentifier, @"user_id", nil ];
+	NSString *cmdString = [self composeJSONStringForCommand:@"connect" withArguments:arguments];
+	[self.connectionForWebSocket send:cmdString];
+	
 	if (self.successHandler) {
 		self.successHandler();
 	}
 }
 
 
-#pragma mark - getters/setters of instance variables
+#pragma mark - getters/setters of properties
 - (void) setUrlForWebSocket:(NSURL *)urlForWebSocket {
 	objc_setAssociatedObject(self, &kUrlForWebSocket, urlForWebSocket, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }

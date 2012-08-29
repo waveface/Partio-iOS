@@ -23,7 +23,7 @@
 
 
 @interface WARemoteInterface (Reachability_Private) <WAReachabilityDetectorDelegate>
-
+NSURL *refiningStationLocation(NSString *stationUrlString, NSURL *baseUrl) ;
 @property (nonatomic, readonly, retain) NSMutableDictionary *monitoredHostsToReachabilityDetectors;
 
 @end
@@ -223,6 +223,36 @@ static NSString * const kNetworkState = @"-[WARemoteInterface(Reachability) netw
 
 }
 
+NSURL *refiningStationLocation(NSString *stationUrlString, NSURL *baseUrl) {
+	NSURL *givenURL = [NSURL URLWithString:stationUrlString];
+	if (!givenURL)
+		return (id)nil;
+	
+	if (![givenURL host])
+		return (id)nil;
+	
+	NSString *baseURLString = [[NSArray arrayWithObjects:
+															
+															[givenURL scheme] ? [[givenURL scheme] stringByAppendingString:@"://"] :
+															[baseUrl scheme] ? [[baseUrl scheme] stringByAppendingString:@"://"] : @"",
+															[baseUrl host] ? [givenURL host] : @"",
+															[givenURL port] ? [@":" stringByAppendingString:[[givenURL port] stringValue]] :
+															[baseUrl port] ? [@":" stringByAppendingString:[[baseUrl port] stringValue]] : @"",
+															[baseUrl path] ? [baseUrl path] : @"",
+															@"/", //  path needs trailing slash
+															
+															//	[givenURL query] ? [@"?" stringByAppendingString:[givenURL query]] : @"",
+															//	[givenURL fragment] ? [@"#" stringByAppendingString:[givenURL fragment]] : @"",
+															
+															nil] componentsJoinedByString:@""];
+	
+	//  only take the location (host) + port, nothing else
+	
+	return (id)[NSURL URLWithString:baseURLString];
+
+	
+}
+
 - (void(^)(void)) defaultScheduledMonitoredHostsUpdatingBlock {
 
   __weak WARemoteInterface *wSelf = self;
@@ -238,66 +268,51 @@ static NSString * const kNetworkState = @"-[WARemoteInterface(Reachability) netw
     [wSelf retrieveAssociatedStationsOfCurrentUserOnSuccess:^(NSArray *stationReps) {
 
       dispatch_async(dispatch_get_main_queue(), ^ {
-/*
-				NSArray *wsInterfaces = [NSArray arrayWithArray:[stationReps irMap: ^(NSDictionary *aStationRep, NSUInteger index, BOOL *stop) {
+
+				NSArray *wsStations = [NSArray arrayWithArray:[stationReps irMap: ^(NSDictionary *aStationRep, NSUInteger index, BOOL *stop) {
 					NSString *wsStationURLString = [aStationRep valueForKey:@"ws_location"];
 					if (!wsStationURLString)
 						return (id)nil;
-					
-					NSURL *givenURL = [NSURL URLWithString:wsStationURLString];
-					return (id)givenURL;
 
-				}]]; */
-	
-				// FIXME: Testing code
-				NSArray *wsInterfaces = [NSArray arrayWithObject:[NSURL URLWithString:@"ws://10.0.1.7:8889"]];
-				
-				if ([wsInterfaces count] > 0) {
+					NSURL *wsURL = [NSURL URLWithString:wsStationURLString];
+					
+					NSURL *stationURL = refiningStationLocation([aStationRep valueForKey:@"location"], wSelf.engine.context.baseURL);
+					
+					return (id)[[NSDictionary alloc] initWithObjectsAndKeys:stationURL, @"location", wsURL, @"ws_location", nil];
+
+				}]];
+					
+				if ([wsStations count] > 0) {
+					NSURL *wsURL = [(NSDictionary*)[wsStations objectAtIndex:0] objectForKey:@"ws_location"];
+					NSURL *stURL = [(NSDictionary*)[wsStations objectAtIndex:0] objectForKey:@"location"];
+					
 					[[WARemoteInterface sharedInterface] stopAutomaticRemoteUpdates];
 
-					[[WARemoteInterface sharedInterface] openWebSocketConnectionForUrl: [wsInterfaces objectAtIndex:0] onSucces:^{
+					[[WARemoteInterface sharedInterface] openWebSocketConnectionForUrl: wsURL onSucces:^{
+
 						[[WARemoteInterface sharedInterface] subscribeNotification];
+						// We only scan the reachability detector for cloud and the first station that supports websocket
+						wSelf.monitoredHosts = [NSArray arrayWithObjects:wSelf.engine.context.baseURL, stURL, nil];
+						
 					} onFailure:^(NSError *error) {
-						[[WARemoteInterface sharedInterface] rescheduleAutomaticRemoteUpdates];
+						
+						wSelf.monitoredHosts = [NSArray arrayWithObject:wSelf.engine.context.baseURL];
+						[[WARemoteInterface sharedInterface] performAutomaticRemoteUpdatesNow];
+
 					}];
 					
-					wSelf.monitoredHosts = [NSArray arrayWithObject:wSelf.engine.context.baseURL];
+
 				} else {
+
 					wSelf.monitoredHosts = [[NSArray arrayWithObject:wSelf.engine.context.baseURL] arrayByAddingObjectsFromArray:[stationReps irMap: ^ (NSDictionary *aStationRep, NSUInteger index, BOOL *stop) {
         
 						NSString *stationURLString = [aStationRep valueForKeyPath:@"location"];
 						if (!stationURLString)
 							return (id)nil;
-					          
-						NSURL *baseURL = wSelf.engine.context.baseURL;
-				
-						NSURL *givenURL = [NSURL URLWithString:stationURLString];
-						if (!givenURL)
-							return (id)nil;
-						
-						if (![givenURL host])
-							return (id)nil;
-          
-						NSString *baseURLString = [[NSArray arrayWithObjects:
-		
-																				[givenURL scheme] ? [[givenURL scheme] stringByAppendingString:@"://"] :
-																				[baseURL scheme] ? [[baseURL scheme] stringByAppendingString:@"://"] : @"",
-																				[baseURL host] ? [givenURL host] : @"",
-																				[givenURL port] ? [@":" stringByAppendingString:[[givenURL port] stringValue]] :
-																				[baseURL port] ? [@":" stringByAppendingString:[[baseURL port] stringValue]] : @"",
-																				[baseURL path] ? [baseURL path] : @"",
-																				@"/", //  path needs trailing slash
-            
-																				//	[givenURL query] ? [@"?" stringByAppendingString:[givenURL query]] : @"",
-																				//	[givenURL fragment] ? [@"#" stringByAppendingString:[givenURL fragment]] : @"",
-          
-																				nil] componentsJoinedByString:@""];
-          
-						//  only take the location (host) + port, nothing else
-          
-						return (id)[NSURL URLWithString:baseURLString];
-          
+					          				
+						return (id)refiningStationLocation(stationURLString, wSelf.engine.context.baseURL);
 					}]];
+					
 				}
         
         [wSelf endPostponingDataRetrievalTimerFiring];

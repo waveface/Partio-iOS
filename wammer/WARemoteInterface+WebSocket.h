@@ -22,6 +22,13 @@ typedef enum WAWebSocketResponseCode : NSUInteger {
 	WAWebSocketUnexpectedServerError
 } WAWebSocketResponseCode;
 
+typedef enum WAWebSocketState : NSUInteger {
+	WAWebSocketConnecting = 0,
+	WAWebSocketOpen,
+	WAWebSocketClosing,
+	WAWebSocketClosed
+} WAWebSocketState;
+
 typedef void (^WAWebSocketCommandHandler) (id);
 typedef void (^WAWebSocketConnectCallback) (void);
 typedef void (^WAWebSocketConnectFailure) (NSError *);
@@ -29,7 +36,10 @@ typedef void (^WAWebSocketConnectFailure) (NSError *);
 @interface WARemoteInterface (WebSocket)
 @property (nonatomic, strong) SRWebSocket *connectionForWebSocket;
 @property (nonatomic, strong) NSMutableDictionary *commandHandlerMap;
+@property (nonatomic, readonly) NSUInteger webSocketState;
 
 - (void) openWebSocketConnectionForUrl:(NSURL *)anURL onSucces:(WAWebSocketConnectCallback)successBlock onFailure:(WAWebSocketConnectFailure)failureBlock;
+- (void) closeWebSocketConnectionWithCode:(NSInteger)code andReason:(NSString*)reason;
+- (NSString *) composeJSONStringForCommand:(NSString*)command withArguments:(NSDictionary *)arguments;
 
 @end

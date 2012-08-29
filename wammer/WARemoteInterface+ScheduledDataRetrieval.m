@@ -21,6 +21,7 @@
 @property (nonatomic, readwrite, retain) NSTimer *dataRetrievalTimer;
 @property (nonatomic, readwrite, assign) int dataRetrievalTimerPostponingCount;
 @property (nonatomic, readwrite, assign) int automaticRemoteUpdatesPerformingCount;
+@property (nonatomic, readwrite, assign) BOOL dataRetrievalTimerEnabled;
 
 @end
 
@@ -30,31 +31,33 @@
 
 - (void) rescheduleAutomaticRemoteUpdates {
 
-	if (self.dataRetrievalTimer != nil) {
-		[self.dataRetrievalTimer invalidate];
-		self.dataRetrievalTimer = nil;
-	}
+	[self.dataRetrievalTimer invalidate];
+	self.dataRetrievalTimer = nil;
 
 	self.dataRetrievalTimer = [NSTimer scheduledTimerWithTimeInterval:self.dataRetrievalInterval target:self selector:@selector(handleDataRetrievalTimerDidFire:) userInfo:nil repeats:NO];
 
 }
 
 - (void) stopAutomaticRemoteUpdates {
-	if (self.dataRetrievalTimer != nil) {
-		[self willChangeValueForKey:@"isPerformingAutomaticRemoteUpdates"];
+	if (self.dataRetrievalTimerEnabled) {
+		self.dataRetrievalTimerEnabled = NO;
+		
 		[self.dataRetrievalTimer invalidate];
 		self.dataRetrievalTimer = nil;
-		[self didChangeValueForKey:@"isPerformingAutomaticRemoteUpdates"];
 	}
 }
 
 - (void) performAutomaticRemoteUpdatesNow {
 
 	[self willChangeValueForKey:@"isPerformingAutomaticRemoteUpdates"];
+
+	self.dataRetrievalTimerEnabled = YES;
 	
 	[self.dataRetrievalTimer fire];
 	[self.dataRetrievalTimer invalidate];
-	[self rescheduleAutomaticRemoteUpdates];
+
+	if (self.dataRetrievalTimerEnabled)
+		[self rescheduleAutomaticRemoteUpdates];
 	
 	[self didChangeValueForKey:@"isPerformingAutomaticRemoteUpdates"];
 
@@ -104,7 +107,7 @@
 	self.dataRetrievalTimerPostponingCount = self.dataRetrievalTimerPostponingCount - 1;
 	[self didChangeValueForKey:@"isPostponingDataRetrievalTimerFiring"];
 	
-	if (!self.dataRetrievalTimerPostponingCount) {
+	if (!self.dataRetrievalTimerPostponingCount && self.dataRetrievalTimerEnabled) {
 		[self rescheduleAutomaticRemoteUpdates];
 	}
 
@@ -256,6 +259,7 @@ static NSString * const kDataRetrievalBlocks = @"dataRetrievalBlocks";
 static NSString * const kDataRetrievalTimer = @"dataRetrievalTimer";
 static NSString * const kDataRetrievalTimerPostponingCount = @"dataRetrievalTimerPostponingCount";
 static NSString * const kDataRetrievalTimerPerformingCount = @"dataRetrievalTimerPerformingCount";
+static NSString * const kDataRetrievalTimerEnabled = @"dataRetrievalTimerEnabled";
 
 - (void) setDataRetrievalInterval:(NSTimeInterval)newDataRetrievalInterval {
 
@@ -268,6 +272,17 @@ static NSString * const kDataRetrievalTimerPerformingCount = @"dataRetrievalTime
 	NSNumber *value = objc_getAssociatedObject(self, &kDataRetrievalInterval);
 	return value ? [value doubleValue] : 30;
 	
+}
+
+- (void) setDataRetrievalTimerEnabled:(BOOL)dataRetrievalTimerEnabled
+{
+	objc_setAssociatedObject(self, &kDataRetrievalTimerEnabled, [NSNumber numberWithBool:dataRetrievalTimerEnabled], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+- (BOOL) dataRetrievalTimerEnabled
+{
+	NSNumber *ret = objc_getAssociatedObject(self, &kDataRetrievalTimerEnabled);
+	return ret ? [ret boolValue] : NO;
 }
 
 - (void) setDataRetrievalBlocks:(NSArray *)newDataRetrievalBlocks {
