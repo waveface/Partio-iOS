@@ -24,4 +24,6 @@
 - (void) disableMemoryWarningObserverCreation;
 - (BOOL) isMemoryWarningObserverCreationDisabled;
 
+- (void) cleanImageCache;
+
 @end
