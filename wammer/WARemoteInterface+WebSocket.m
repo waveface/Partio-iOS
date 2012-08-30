@@ -56,7 +56,7 @@ NSError * WARemoteInterfaceWebSocketError (NSUInteger code, NSString *message) {
 	NSLog(@"Websocket connection failure with code: %d and reason: %@", code, message);
 	
 	switch (code) {
-		case WAWebSocketStationGoingAway:
+		case WAWebSocketGoingAwayError:
 		case WAWebSocketHandshakeError:
 			if (self.failureHandler) {
 				NSError *error = WARemoteInterfaceWebSocketError(code, message);

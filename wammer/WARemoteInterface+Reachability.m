@@ -273,6 +273,8 @@ NSURL *refiningStationLocation(NSString *stationUrlString, NSURL *baseUrl) {
 					NSString *wsStationURLString = [aStationRep valueForKey:@"ws_location"];
 					if (!wsStationURLString)
 						return (id)nil;
+					if ([wsStationURLString isEqualToString:@""])
+						return (id)nil;
 
 					NSURL *wsURL = [NSURL URLWithString:wsStationURLString];
 					
@@ -297,7 +299,7 @@ NSURL *refiningStationLocation(NSString *stationUrlString, NSURL *baseUrl) {
 					} onFailure:^(NSError *error) {
 						
 						wSelf.monitoredHosts = [NSArray arrayWithObject:wSelf.engine.context.baseURL];
-						[[WARemoteInterface sharedInterface] performAutomaticRemoteUpdatesNow];
+						[[WARemoteInterface sharedInterface] enableAutomaticRemoteUpdatesTimerNow];
 
 					}];
 					

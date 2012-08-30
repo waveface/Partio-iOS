@@ -31,33 +31,41 @@
 
 - (void) rescheduleAutomaticRemoteUpdates {
 
-	[self.dataRetrievalTimer invalidate];
-	self.dataRetrievalTimer = nil;
+	if (self.dataRetrievalTimerEnabled) {
+		[self.dataRetrievalTimer invalidate];
+		self.dataRetrievalTimer = nil;
 
-	self.dataRetrievalTimer = [NSTimer scheduledTimerWithTimeInterval:self.dataRetrievalInterval target:self selector:@selector(handleDataRetrievalTimerDidFire:) userInfo:nil repeats:NO];
+		self.dataRetrievalTimer = [NSTimer scheduledTimerWithTimeInterval:self.dataRetrievalInterval target:self selector:@selector(handleDataRetrievalTimerDidFire:) userInfo:nil repeats:NO];
+	}
 
 }
 
 - (void) stopAutomaticRemoteUpdates {
 	if (self.dataRetrievalTimerEnabled) {
 		self.dataRetrievalTimerEnabled = NO;
-		
 		[self.dataRetrievalTimer invalidate];
-		self.dataRetrievalTimer = nil;
 	}
+}
+
+- (void) enableAutomaticRemoteUpdatesTimerNow {
+	self.dataRetrievalTimerEnabled = YES;
+	[self rescheduleAutomaticRemoteUpdates];
 }
 
 - (void) performAutomaticRemoteUpdatesNow {
 
 	[self willChangeValueForKey:@"isPerformingAutomaticRemoteUpdates"];
 
-	self.dataRetrievalTimerEnabled = YES;
+	if (!self.dataRetrievalTimer.isValid) {
+		// Timer has already been stopped, reschedule it and fire again
+		self.dataRetrievalTimer = nil;
+		self.dataRetrievalTimer = [NSTimer scheduledTimerWithTimeInterval:self.dataRetrievalInterval target:self selector:@selector(handleDataRetrievalTimerDidFire:) userInfo:nil repeats:NO];
+	}
 	
 	[self.dataRetrievalTimer fire];
 	[self.dataRetrievalTimer invalidate];
 
-	if (self.dataRetrievalTimerEnabled)
-		[self rescheduleAutomaticRemoteUpdates];
+	[self rescheduleAutomaticRemoteUpdates];
 	
 	[self didChangeValueForKey:@"isPerformingAutomaticRemoteUpdates"];
 
@@ -107,7 +115,7 @@
 	self.dataRetrievalTimerPostponingCount = self.dataRetrievalTimerPostponingCount - 1;
 	[self didChangeValueForKey:@"isPostponingDataRetrievalTimerFiring"];
 	
-	if (!self.dataRetrievalTimerPostponingCount && self.dataRetrievalTimerEnabled) {
+	if (!self.dataRetrievalTimerPostponingCount) {
 		[self rescheduleAutomaticRemoteUpdates];
 	}
 

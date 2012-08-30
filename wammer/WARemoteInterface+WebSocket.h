@@ -11,16 +11,17 @@
 
 typedef enum WAWebSocketResponseCode : NSUInteger {
 	WAWebSocketNormal = 1000,
-	WAWebSocketStationGoingAway = 1001,
-	WAWebSocketProtocolError = 1002,
-	WAWebSocketFormationError = 1003,
-	WAWebSocketNoStatus = 1005,
-	WAWebSocketAbnormalError = 1006,
-  WAWebSocketInconsistentData = 1007,
-	WAWebSocketPolicyViolationError = 1008,
-	WAWebSocketMessageTooLargeError = 1009,
-	WAWebSocketHandshakeError = 1010,
-	WAWebSocketUnexpectedServerError = 1011
+	WAWebSocketGoingAwayError,
+	WAWebSocketProtocolError,
+	WAWebSocketFormationError,
+	WAWevSocketReserved,
+	WAWebSocketNoStatusError,
+	WAWebSocketAbnormalError,
+  WAWebSocketInconsistentDataError,
+	WAWebSocketPolicyViolationError,
+	WAWebSocketMessageTooLargeError,
+	WAWebSocketHandshakeError,
+	WAWebSocketUnexpectedServerError
 } WAWebSocketResponseCode;
 
 typedef enum WAWebSocketState : NSUInteger {

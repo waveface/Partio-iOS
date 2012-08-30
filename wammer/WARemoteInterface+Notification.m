@@ -19,14 +19,17 @@
 	WAWebSocketCommandHandler notifyHandler = ^ (id resp) {
 		
 		NSDictionary *result = (NSDictionary *) resp;
-		
+
+		/*
 		NSNumber *connected = [result objectForKey:@"connected"];
 		if (connected) {
 			if (![connected isEqualToNumber:[NSNumber numberWithBool:YES]]) {
 				NSLog(@"Websocket server responses with connection failure.");
+				
 				// FIXME: handle failure?
 			}
 		}
+		 */
 		
 		NSString *message = [result objectForKey:@"message"];
 		if (message) {
@@ -36,11 +39,11 @@
 		NSNumber *updated = [result objectForKey:@"updated"];
 		if (updated) {
 			if ([updated isEqualToNumber:[NSNumber numberWithBool:YES]]) {
-				// TODO: handle update
 				
 				[[WADataStore defaultStore] updateArticlesOnSuccess:nil onFailure:nil];
 				
 				[[WADataStore defaultStore] updateCurrentUserOnSuccess:nil onFailure:nil];
+				
 			}
 		}
 	};
