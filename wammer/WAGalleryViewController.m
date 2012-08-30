@@ -20,14 +20,12 @@
 NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGalleryViewControllerContextPreferredFileObjectURI";
 
 
-@interface WAGalleryViewController () <IRPaginatedViewDelegate, UIGestureRecognizerDelegate, UINavigationBarDelegate, WAImageStreamPickerViewDelegate, NSFetchedResultsControllerDelegate, WAGalleryImageViewDelegate>
+@interface WAGalleryViewController () <IRPaginatedViewDelegate, UIGestureRecognizerDelegate, UINavigationBarDelegate, WAImageStreamPickerViewDelegate, NSFetchedResultsControllerDelegate, WAGalleryImageViewDelegate, NSCacheDelegate>
 
 @property (nonatomic, readwrite, retain) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, readwrite, retain) NSFetchedResultsController *fetchedResultsController;
 @property (nonatomic, readwrite, retain) WAArticle *article;
 @property (nonatomic, readwrite, retain) IRPaginatedView *paginatedView;
-
-@property (nonatomic, readwrite, retain) NSCache *galleryViewCache;
 
 @property (nonatomic, readwrite, retain) UINavigationBar *navigationBar;
 @property (nonatomic, readwrite, retain) UIToolbar *toolbar;
@@ -65,7 +63,6 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 @synthesize managedObjectContext, fetchedResultsController, article;
 @synthesize navigationBar, toolbar, previousNavigationItem;
 @synthesize paginatedView;
-@synthesize galleryViewCache;
 @synthesize streamPickerView;
 @synthesize contextControlsShown;
 @synthesize onDismiss;
@@ -96,15 +93,15 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 	__weak WAGalleryViewController *wController = controller;
 	
 	controller.onViewDidLoad = ^ {
-	
-		if (preferredObjectURI) {
 		
+		if (preferredObjectURI) {
+
 			IRPaginatedView *pv = wController.paginatedView;
 			WAFile *preferredFile = (WAFile *)[wController.managedObjectContext irManagedObjectForURI:preferredObjectURI];
 			NSUInteger fileIndex = [wController.article.files indexOfObject:preferredFile];
 			
 			if (fileIndex != NSNotFound) {
-			
+
 				//		FIXME: Actually fix IRPaginatedView.  We have copied this hack.
 
 				[pv layoutSubviews];
@@ -113,9 +110,9 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 				[pv setNeedsLayout];
 
 			}
-		
+
 		}
-	
+
 	};
 	
 	if ([controller isViewLoaded])
@@ -155,9 +152,9 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 }
 
 - (void) controller:(NSFetchedResultsController *)controller didChangeObject:(id)anObject atIndexPath:(NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type newIndexPath:(NSIndexPath *)newIndexPath {
-
-	switch (type) {
 	
+	switch (type) {
+
 		case NSFetchedResultsChangeUpdate: {
 			
 			NSUInteger index = [self.article.files indexOfObject:[[anObject objectID] URIRepresentation]];
@@ -186,7 +183,7 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 			self.requiresReloadOnFetchedResultsChange = YES;
 			break;
 		}
-		
+
 	}
 
 }
@@ -201,7 +198,7 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 
 	if (!self.requiresReloadOnFetchedResultsChange)
 		return;
-		
+
 	//	Seriously
 	
 	NSUInteger oldCurrentPage = self.paginatedView.currentPage;
@@ -223,17 +220,17 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 
 	if (fetchedResultsController)
 		return fetchedResultsController;
-		
+
 	NSFetchRequest *fetchRequest = [self.managedObjectContext.persistentStoreCoordinator.managedObjectModel fetchRequestFromTemplateWithName:@"WAFRFilesForArticle" substitutionVariables:[NSDictionary dictionaryWithObjectsAndKeys:
-		self.article, @"Article",
-	nil]];
+														self.article, @"Article",
+														nil]];
 	
 	fetchRequest.returnsObjectsAsFaults = NO;
 	fetchRequest.fetchBatchSize = 20;
 	fetchRequest.sortDescriptors = [NSArray arrayWithObjects:
-		[NSSortDescriptor sortDescriptorWithKey:@"identifier" ascending:YES],
-	nil];
-		
+																	[NSSortDescriptor sortDescriptorWithKey:@"identifier" ascending:YES],
+																	nil];
+
 	self.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest managedObjectContext:self.managedObjectContext sectionNameKeyPath:nil cacheName:nil];
 	self.fetchedResultsController.delegate = self;
 	
@@ -288,10 +285,10 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 	self.toolbar.translucent = YES;
 	
 	self.toolbarItems = [NSArray arrayWithObjects:
-		[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil],
-		[[UIBarButtonItem alloc] initWithCustomView:self.streamPickerView],
-		[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil],
-	nil];
+											 [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil],
+											 [[UIBarButtonItem alloc] initWithCustomView:self.streamPickerView],
+											 [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil],
+											 nil];
 	
 	if (!self.navigationController)
 		self.toolbar.items = self.toolbarItems;
@@ -336,9 +333,9 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 }
 
 - (void) viewWillAppear:(BOOL)animated {
-
-	if (self.navigationController) {
 	
+	if (self.navigationController) {
+
 		UINavigationController *navC = self.navigationController;
 
 		UIBarStyle oldNavBarStyle = navC.navigationBar.barStyle;
@@ -367,21 +364,21 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 		[navC.toolbar setTintColor:nil];
 		[navC.toolbar setBackgroundImage:nil forToolbarPosition:UIToolbarPositionAny barMetrics:UIBarMetricsDefault];
 		[navC.toolbar setBackgroundImage:nil forToolbarPosition:UIToolbarPositionAny barMetrics:UIBarMetricsLandscapePhone];
-			
+
 		__weak WAGalleryViewController *wSelf = self;
 		
 		self.onViewDidAppear = ^ (BOOL animated) {
-		
+
 			wSelf.onViewDidAppear = nil;
-		
+
 		};
 		
 		self.onViewWillDisappear = ^ (BOOL animated) {
-		
+
 			UIApplication *app = [UIApplication sharedApplication];
 			[app setStatusBarStyle:UIStatusBarStyleDefault animated:animated];
 			[app setStatusBarHidden:NO withAnimation:(animated ? UIStatusBarAnimationFade : UIStatusBarAnimationNone)];
-		
+
 			navC.navigationBar.barStyle = oldNavBarStyle;
 			navC.navigationBar.translucent = oldNavBarWasTranslucent;
 			navC.navigationBar.tintColor = [UIColor blackColor];
@@ -391,7 +388,7 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 			wSelf.paginatedView.frame = [wSelf.paginatedView.superview convertRect:wSelf.view.window.bounds fromView:nil];
 			
 			wSelf.onViewDidDisappear = ^ (BOOL animated) {
-			
+
 				navC.toolbar.barStyle = oldToolBarStyle;
 				navC.toolbar.translucent = oldToolBarWasTranslucent;
 				navC.navigationBar.tintColor = oldNavBarTintColor;
@@ -400,15 +397,15 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 				
 				if (wSelf.onDismiss)
 					wSelf.onDismiss();
-			
+
 				wSelf.onViewDidDisappear = nil;
 				
 			};
 			
 			wSelf.onViewWillDisappear = nil;
-		
+
 		};
-	
+
 	}
 	
 	[self adjustStreamPickerView];
@@ -449,15 +446,15 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 }
 
 - (void) waSubviewWillLayout {
-
-	self.navigationBar.frame = (CGRect){
 	
+	self.navigationBar.frame = (CGRect){
+
 		(CGPoint){
 			self.navigationBar.frame.origin.x,
 			MAX(20, [self.view convertRect:[[UIApplication sharedApplication] statusBarFrame] fromView:nil].size.height)
 		},
 		self.navigationBar.frame.size
-	
+
 	};
 
 }
@@ -488,7 +485,10 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 
 #endif
 
-
+- (void)cache:(NSCache *)cache willEvictObject:(id)obj {
+	WAGalleryImageView *view = obj;
+	[view setImage:nil];
+}
 
 
 
@@ -505,11 +505,11 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 }
 
 - (void) handlePan:(UIPanGestureRecognizer *)panGR {
-
+	
 	if (panGR.state == UIGestureRecognizerStateChanged) {
-	
+
 		[self setContextControlsHidden:YES animated:YES barringInteraction:NO completion:nil];
-	
+
 	}
 
 }
@@ -541,20 +541,24 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 
 }
 
-- (void)paginatedView:(IRPaginatedView *)paginatedView didShowView:(UIView *)aView atIndex:(NSUInteger)index
-{
+- (void)willRemoveView:(UIView *)view atIndex:(NSUInteger)index {
+
+	WAGalleryImageView *imageView = (WAGalleryImageView *)view;
+	[imageView setImage:nil];
+	[[self representedFileAtIndex:index] cleanImageCache];
+
+}
+
+- (void)paginatedView:(IRPaginatedView *)paginatedView didShowView:(UIView *)aView atIndex:(NSUInteger)index {
+
 	self.streamPickerView.selectedItemIndex = index;
+
 }
 
 - (UIView *) viewForPaginatedView:(IRPaginatedView *)aPaginatedView atIndex:(NSUInteger)index {
-
-	WAFile *file = [self representedFileAtIndex:index];
-	WAGalleryImageView *view = [self.galleryViewCache objectForKey:file];
 	
-	if (!view) {
-		view = [WAGalleryImageView viewForImage:nil];
-		[self.galleryViewCache setObject:view forKey:file];
-	}
+	WAFile *file = [self representedFileAtIndex:index];
+	WAGalleryImageView *view = [WAGalleryImageView viewForImage:nil];
 	
 	view.frame = (CGRect){ CGPointZero, aPaginatedView.bounds.size };
 	
@@ -605,7 +609,7 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 		}];
 		
 	}
-		
+
 	aView.delegate = self;
 	
   [aView reset];
@@ -671,7 +675,7 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 
 	if (!self.contextControlsShown)
 		return YES;
-		
+
 	if (CGRectContainsPoint(UIEdgeInsetsInsetRect(self.navigationBar.bounds, (UIEdgeInsets){ -20, -20, -20, -20 }), [touch locationInView:self.navigationBar]))
 		return NO;
 	
@@ -716,12 +720,12 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 	NSTimeInterval animationDuration = animate ? 0.3f : 0.0f;
 	
 	if (barringInteraction && (animationDuration > 0)) {
-	
+
 		[[UIApplication sharedApplication] beginIgnoringInteractionEvents];
 		dispatch_after(dispatch_time(DISPATCH_TIME_NOW, animationDuration * NSEC_PER_SEC), dispatch_get_main_queue(), ^(void){
 			[[UIApplication sharedApplication] endIgnoringInteractionEvents];
-		});	
-	
+		});
+
 	}
 	
 	[[UIApplication sharedApplication] setStatusBarHidden:willHide withAnimation:(animate ? UIStatusBarAnimationFade : UIStatusBarAnimationNone)];
@@ -730,7 +734,7 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 	[self.view layoutSubviews];
 	
 	if (!willHide) {
-	
+
 		CGRect statusBarFrame = [UIApplication sharedApplication].statusBarFrame;
 		
 		CGRect newOwnNavBarFrame = self.navigationBar.frame;
@@ -743,7 +747,7 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 		CGRect newNavControllerNavBarFrame = self.navigationController.navigationBar.frame;
 		newNavControllerNavBarFrame.origin.y = CGRectGetMaxY([self.navigationController.view.window convertRect:statusBarFrame toView:self.navigationController.view]);
 		self.navigationController.navigationBar.frame = newNavControllerNavBarFrame;
-	
+
 	}
 	
 	UIViewAnimationOptions animationOptions = UIViewAnimationOptionBeginFromCurrentState|UIViewAnimationOptionOverrideInheritedCurve|UIViewAnimationOptionOverrideInheritedDuration;
@@ -752,7 +756,7 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 		animationOptions |= UIViewAnimationOptionAllowUserInteraction;
 	
 	[UIView animateWithDuration:animationDuration delay:0.0f options:animationOptions animations:^(void) {
-	
+
 		self.navigationBar.alpha = (willHide ? 0.0f : 1.0f);
 		self.toolbar.alpha = (willHide ? 0.0f : 1.0f);
 		
@@ -764,10 +768,10 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 		self.navigationController.navigationBar.frame = oldNavControllerNavBarFrame;
 		
 	} completion: ^ (BOOL didFinish){
-	
+
 		if (callback)
 			callback();
-			
+
 	}];
 	
 	self.contextControlsShown = willHide ? NO : YES;
@@ -783,8 +787,6 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 - (void) didReceiveMemoryWarning {
 
 	[super didReceiveMemoryWarning];
-	
-	[self.galleryViewCache removeAllObjects];
 
 }
 
@@ -802,17 +804,15 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 	self.previousNavigationItem = nil;
 	self.streamPickerView = nil;
 	
-	[self.galleryViewCache removeAllObjects];
-	
-	#if WAGalleryViewController_UsesProxyOverlay
+#if WAGalleryViewController_UsesProxyOverlay
 	self.swipeOverlay = nil;
-	#endif
+#endif
 	
 	[operationQueue cancelAllOperations];
 	[operationQueue waitUntilAllOperationsAreFinished];
 	
 	self.operationQueue = nil;
-			
+
 	[super viewDidUnload];
 
 }
@@ -825,7 +825,7 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 		self.view.onLayoutSubviews = nil;
 
 	[paginatedView removeFromSuperview];	//	Also triggers page deallocation
-		
+
 	[operationQueue cancelAllOperations];
 	[operationQueue waitUntilAllOperationsAreFinished];
 
