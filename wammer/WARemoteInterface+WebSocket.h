@@ -11,15 +11,16 @@
 
 typedef enum WAWebSocketResponseCode : NSUInteger {
 	WAWebSocketNormal = 1000,
-	WAWebSocketStationGoingAway,
-	WAWebSocketProtocolError,
-	WAWebSocketFormationError,
-	WAWebSocketNoStatus,
-	WAWebSocketAbnormalError,
-	WAWebSocketPolicyViolationError,
-	WAWebSocketMessageTooLargeError,
-	WAWebSocketHandshakeError,
-	WAWebSocketUnexpectedServerError
+	WAWebSocketStationGoingAway = 1001,
+	WAWebSocketProtocolError = 1002,
+	WAWebSocketFormationError = 1003,
+	WAWebSocketNoStatus = 1005,
+	WAWebSocketAbnormalError = 1006,
+  WAWebSocketInconsistentData = 1007,
+	WAWebSocketPolicyViolationError = 1008,
+	WAWebSocketMessageTooLargeError = 1009,
+	WAWebSocketHandshakeError = 1010,
+	WAWebSocketUnexpectedServerError = 1011
 } WAWebSocketResponseCode;
 
 typedef enum WAWebSocketState : NSUInteger {
@@ -37,6 +38,7 @@ typedef void (^WAWebSocketConnectFailure) (NSError *);
 @property (nonatomic, strong) SRWebSocket *connectionForWebSocket;
 @property (nonatomic, strong) NSMutableDictionary *commandHandlerMap;
 @property (nonatomic, readonly) NSUInteger webSocketState;
+@property (nonatomic, readonly) BOOL webSocketConnected;
 
 - (void) openWebSocketConnectionForUrl:(NSURL *)anURL onSucces:(WAWebSocketConnectCallback)successBlock onFailure:(WAWebSocketConnectFailure)failureBlock;
 - (void) closeWebSocketConnectionWithCode:(NSInteger)code andReason:(NSString*)reason;

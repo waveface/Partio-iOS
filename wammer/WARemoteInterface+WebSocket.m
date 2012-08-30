@@ -96,8 +96,10 @@ NSError * WARemoteInterfaceWebSocketError (NSUInteger code, NSString *message) {
 
 - (void) closeWebSocketConnectionWithCode:(NSInteger)code andReason:(NSString*)reason
 {
-	if (self.connectionForWebSocket)
+	if (self.connectionForWebSocket) {
+		self.connectionForWebSocket.delegate = nil;
 		[self.connectionForWebSocket closeWithCode:code reason:reason];
+	}
 }
 
 - (void) reconnectWebSocket
@@ -130,7 +132,7 @@ NSError * WARemoteInterfaceWebSocketError (NSUInteger code, NSString *message) {
 	return objc_getAssociatedObject(self, &kHandlerMap);
 }
 
-- (BOOL) webSocketConnected
+- (NSUInteger) webSocketState
 {
 	if (!self.connectionForWebSocket)
 		return WAWebSocketClosed;
@@ -145,6 +147,11 @@ NSError * WARemoteInterfaceWebSocketError (NSUInteger code, NSString *message) {
 		return WAWebSocketClosing;
 		
 	return WAWebSocketClosed;
+}
+
+- (BOOL) webSocketConnected
+{
+	return ((self.connectionForWebSocket) && (self.connectionForWebSocket.readyState == SR_OPEN));
 }
 
 @end
@@ -168,7 +175,6 @@ NSError * WARemoteInterfaceWebSocketError (NSUInteger code, NSString *message) {
 
 - (void) webSocket:(SRWebSocket *)webSocket didReceiveMessage:(id)message {
 	NSError *error = nil;
-	NSLog(@"%@", message);
 	NSDictionary *result = [NSJSONSerialization JSONObjectWithData:[(NSString*)message dataUsingEncoding:NSUTF8StringEncoding] options:NSJSONReadingAllowFragments error:&error];
 
 	if (!result) {
