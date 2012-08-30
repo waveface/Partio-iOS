@@ -330,6 +330,12 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 	
 	[self.paginatedView.scrollView.panGestureRecognizer addTarget:self action:@selector(handlePan:)];
 
+	[self.streamPickerView irObserve:@"selectedItemIndex" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:nil withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
+		NSUInteger index = (NSUInteger)toValue;
+		if (index < [self.article.files count]) {
+			[[self.article.files objectAtIndex:index] cleanImageCache];
+		}
+	}];
 }
 
 - (void) viewWillAppear:(BOOL)animated {
@@ -585,7 +591,6 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 				[aView setImage:toValue animated:NO synchronized:forceSynchronousImageDecode];
 				[aView setNeedsLayout];
 				[wSelf.streamPickerView reloadData];
-				[wSelf.streamPickerView setNeedsLayout];
 
 			});
 
@@ -602,7 +607,6 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 				[aView setImage:toValue animated:NO synchronized:forceSynchronousImageDecode];
 				[aView setNeedsLayout];
 				[wSelf.streamPickerView reloadData];
-				[wSelf.streamPickerView setNeedsLayout];
 
 			});
 
@@ -797,6 +801,8 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
     [file irRemoveObserverBlocksForKeyPath:@"bestPresentableImage"];
 		[file irRemoveObserverBlocksForKeyPath:@"smallestPresentableImage"];
 	}
+
+	[self.streamPickerView irRemoveObserverBlocksForKeyPath:@"selectedItemIndex"];
 
 	self.paginatedView = nil;
 	self.navigationBar = nil;
