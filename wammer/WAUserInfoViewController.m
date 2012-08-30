@@ -529,8 +529,6 @@
 	WARemoteInterface * const ri = [WARemoteInterface sharedInterface];
 	WASyncManager * const sm = [WASyncManager sharedManager];
 	
-	NSLog(@"%s: %x, %x", __PRETTY_FUNCTION__, ri.performingAutomaticRemoteUpdates, sm.operationQueue.operationCount);
-	
 	return ri.performingAutomaticRemoteUpdates || sm.operationQueue.operationCount;
 
 }
