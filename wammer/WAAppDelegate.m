@@ -245,6 +245,21 @@
 
 }
 
+- (void) bootstrapDownloadAllThumbnails {
+
+	// start downloading thumbnails for files of updated articles,
+	// files in newer articles are downloaded first (download queue is LIFO).
+	NSAssert(![NSThread isMainThread], @"Download operations should not be triggered on main thread");
+	WADataStore * const ds = [WADataStore defaultStore];
+	NSManagedObjectContext *context = [ds disposableMOC];
+	NSArray *files = [ds fetchFilesNeedingDownloadUsingContext:context];
+	for (WAFile *file in files) {
+    [file smallThumbnailFilePath];
+		[file thumbnailFilePath];
+	}
+
+}
+
 - (void) bootstrapPersistentStoreWithUserIdentifier:(NSString *)identifier {
 
 	NSParameterAssert(identifier);

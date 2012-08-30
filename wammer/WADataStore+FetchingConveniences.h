@@ -31,4 +31,5 @@
 
 - (void) fetchArticleWithIdentifier:(NSString *)anArticleIdentifier usingContext:(NSManagedObjectContext *)aContext onSuccess:(void(^)(NSString *identifier, WAArticle *article))callback;
 
+- (NSArray *) fetchFilesNeedingDownloadUsingContext:(NSManagedObjectContext *)aContext;
 @end

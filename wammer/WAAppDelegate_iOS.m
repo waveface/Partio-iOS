@@ -195,6 +195,11 @@
 		if (lastAuthenticatedUserIdentifier)
 			[self bootstrapPersistentStoreWithUserIdentifier:lastAuthenticatedUserIdentifier];
 		
+		__weak WAAppDelegate *wSelf = self;
+		dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+			[wSelf bootstrapDownloadAllThumbnails];
+		});
+
 		[self recreateViewHierarchy];
 		
 	}
@@ -289,20 +294,28 @@
 			 // bind to user's persistent store
 			 [self bootstrapPersistentStoreWithUserIdentifier:userIdentifier];
 
-			 // reset monitored hosts
-			 WARemoteInterface *ri = [WARemoteInterface sharedInterface];
-			 
-			 // close websocket if needed
-			 if (ri.webSocketState == WAWebSocketConnecting || ri.webSocketState == WAWebSocketOpen) {
-				 [ri closeWebSocketConnectionWithCode:0 andReason:nil];
-			 }
-			 
-			 ri.monitoredHosts = nil;
-			 [ri performAutomaticRemoteUpdatesNow];
+			 __weak WAAppDelegate *wSelf = self;
+			 dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
 
-			 // reset pending original objects
-			 [[WASyncManager sharedManager] reload];
+				 // reset monitored hosts
+				 WARemoteInterface *ri = [WARemoteInterface sharedInterface];
 
+				 // close websocket if needed
+				 if (ri.webSocketState == WAWebSocketConnecting || ri.webSocketState == WAWebSocketOpen) {
+					 [ri closeWebSocketConnectionWithCode:0 andReason:nil];
+				 }
+			 
+
+				 ri.monitoredHosts = nil;
+				 [ri performAutomaticRemoteUpdatesNow];
+
+				 // reset pending original objects
+				 [[WASyncManager sharedManager] reload];
+
+				 // continue downloading all thumbnails
+				 [wSelf bootstrapDownloadAllThumbnails];
+
+			 });
 		 }
 												runningOnboardingProcess:YES];
 		
