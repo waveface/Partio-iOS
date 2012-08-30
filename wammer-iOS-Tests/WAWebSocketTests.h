@@ -7,8 +7,6 @@
 //
 
 #import <SenTestingKit/SenTestingKit.h>
-#import "WARemoteInterface.h"
-#import "WARemoteInterface+WebSocket.h"
 
 @interface WAWebSocketTests : SenTestCase
 

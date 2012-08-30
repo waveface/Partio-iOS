@@ -9,8 +9,30 @@
 #import "WAWebSocketTests.h"
 #import "OCMock/OCMock.h"
 #import "WARemoteInterface+WebSocket.h"
-#import "WARemoteInterface+WebSocket_Test.h"
 #import <objc/objc-class.h>
+
+@interface WARemoteInterface (ForWebSocketTest)
+
+- (void) replaceWebSocketConnection:(SRWebSocket *)newSocketConnection;
+
+@end
+
+@implementation WARemoteInterface (ForWebSocketTest)
+
+/* 
+ * This should be called before WARemoteInterface:openWebSocketWithURL
+ */
+- (void) replaceWebSocketConnection:(SRWebSocket *)newSocketConnection
+{
+	self.connectionForWebSocket = newSocketConnection;
+}
+
+- (void) reconnectWebSocket
+{
+	[self.connectionForWebSocket open];
+}
+
+@end
 
 @implementation WAWebSocketTests {
 	NSURL *mockWebSocketServer;
@@ -19,9 +41,8 @@
 	WARemoteInterface *remoteInterface;
 }
 
-
 -(void)setUp {
-	asyncWaitUntil = [NSDate dateWithTimeIntervalSinceNow:5];
+	asyncWaitUntil = [NSDate dateWithTimeIntervalSinceNow:0.1];
 	
 	// TODO: create a mock server to handle the requests
 	mockWebSocketServer = [NSURL URLWithString:@"ws://ws.waveface.com:8889"];
@@ -40,24 +61,15 @@
 	//	[[WARemoteInterface sharedInterface] closeWebSocketConnectionWithCode:0 andReason:nil];
 }
 
--(void)testOCMock {
-	
-	NSString *string = @"This is a real.";
-	id mockString = [OCMockObject partialMockForObject:string];
-	[[[mockString stub] andReturn:@"This is a mock."] lowercaseString];
-	STAssertEquals([mockString lowercaseString], @"This is a mock.", @"Mocked");
-	
-}
-
 -(void)testOpenConnectionSuccess {
 	__block BOOL complete = NO;
 	__weak WARemoteInterface *wRi = remoteInterface;
 	
-	[[[mockSocket stub] andDo:^(NSInvocation *invocation) {
+	[[[mockSocket expect] andDo:^(NSInvocation *invocation) {
 		[wRi performSelector:@selector(webSocketDidOpen:) withObject:nil];
 	}] open];
 
-	[[[mockSocket stub] andDo:^(NSInvocation *invocation) {
+	[[[mockSocket expect] andDo:^(NSInvocation *invocation) {
 		// Do nothing for now
 	}] send:[OCMArg any]];
 	
@@ -91,7 +103,7 @@
 	
 	__weak WARemoteInterface *wRi = remoteInterface;
 	
-	[[[mockSocket stub] andDo:^(NSInvocation *invocation) {
+	[[[mockSocket expect] andDo:^(NSInvocation *invocation) {
 		[wRi performSelector:@selector(webSocket:didFailWithError:) withObject:nil withObject:nil];
 	}] open];
 	
@@ -116,16 +128,16 @@
 	[mockSocket verify];
 }
 
-- (void) testConnectDueToHandShakeError {
+- (void)testConnectDueToHandShakeError {
 	__block BOOL complete = NO;
 	
 	__weak WARemoteInterface *wRi = remoteInterface;
 	
-	[[[mockSocket stub] andDo:^(NSInvocation *invocation) {
+	[[[mockSocket expect] andDo:^(NSInvocation *invocation) {
 		[wRi performSelector:@selector(webSocketDidOpen:) withObject:nil];
 	}] open];
 	
-	[[[mockSocket stub] andDo:^(NSInvocation *invocation) {
+	[[[mockSocket expect] andDo:^(NSInvocation *invocation) {
 		[wRi performSelector:@selector(webSocket:didReceiveMessage:) withObject:nil withObject:@"{\"result\":{\"api_ret_code\":1010,\"api_ret_message\":\"\"}}"];
 	}] send:[OCMArg any]];
 
