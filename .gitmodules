@@ -67,3 +67,9 @@
 [submodule "external/IRAQPhotoPicker"]
 	path = external/IRAQPhotoPicker
 	url = git@github.com:waveface/IRAQPhotoPickerController.git
+[submodule "external/SocketRocket"]
+	path = external/SocketRocket
+	url = git@github.com:waveface/SocketRocket.git
+[submodule "external/ocmock"]
+	path = external/ocmock
+	url = git://github.com/erikdoe/ocmock.git

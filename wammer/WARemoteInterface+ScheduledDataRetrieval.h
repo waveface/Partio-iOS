@@ -18,6 +18,8 @@
 
 - (void) rescheduleAutomaticRemoteUpdates;
 - (void) performAutomaticRemoteUpdatesNow;	// Also reschedules, great for manual refreshing
+- (void) stopAutomaticRemoteUpdates;
+- (void) enableAutomaticRemoteUpdatesTimerNow;
 
 - (void) beginPerformingAutomaticRemoteUpdates;
 - (void) endPerformingAutomaticRemoteUpdates;

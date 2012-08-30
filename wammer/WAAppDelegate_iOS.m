@@ -14,6 +14,7 @@
 #import "WAAppDelegate.h"
 
 #import "WARemoteInterface.h"
+#import "WARemoteInterface+WebSocket.h"
 #import "WASyncManager.h"
 
 #import "WADataStore.h"
@@ -205,7 +206,7 @@
 
 	WAPostAppEvent(@"AppVisit", [NSDictionary dictionaryWithObjectsAndKeys:@"app",@"category",@"visit", @"action", nil]);
 	
-	[[WARemoteInterface sharedInterface] performAutomaticRemoteUpdatesNow];
+	[[WARemoteInterface sharedInterface] enableAutomaticRemoteUpdatesTimerNow];
 	
 	return YES;
 	
@@ -298,6 +299,13 @@
 
 				 // reset monitored hosts
 				 WARemoteInterface *ri = [WARemoteInterface sharedInterface];
+
+				 // close websocket if needed
+				 if (ri.webSocketState == WAWebSocketConnecting || ri.webSocketState == WAWebSocketOpen) {
+					 [ri closeWebSocketConnectionWithCode:0 andReason:nil];
+				 }
+			 
+
 				 ri.monitoredHosts = nil;
 				 [ri performAutomaticRemoteUpdatesNow];
 
