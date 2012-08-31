@@ -210,8 +210,9 @@
 
 	WAPostAppEvent(@"AppVisit", [NSDictionary dictionaryWithObjectsAndKeys:@"app",@"category",@"visit", @"action", nil]);
 	
-#if DEBUG
 	[[WARemoteInterface sharedInterface] enableAutomaticRemoteUpdatesTimerNow];
+	
+#if DEBUG
 	PDDebugger *debugger = [PDDebugger defaultInstance];
 	[debugger connectToURL:[NSURL URLWithString:@"ws://localhost:9000/device"]];
 	[debugger enableNetworkTrafficDebugging];
