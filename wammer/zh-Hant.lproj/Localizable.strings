@@ -327,6 +327,9 @@
 /* Title for About Stream dialog */
 "STREAM_ABOUT_TITLE" = "詳細資訊";
 
+/* Caption to show a persistent connection to station is held. */
+"SYNC_BUTTON_CAPTION_WITH_PERSISTENT_CONNECTION" = "已連線";
+
 /* Caption to show in account info when station is connected */
 "SYNC_BUTTON_CAPTION_WITH_STATION_CONNECTED" = "正在同步到 Station";
 

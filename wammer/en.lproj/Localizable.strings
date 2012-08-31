@@ -327,6 +327,9 @@
 /* Title for About Stream dialog */
 "STREAM_ABOUT_TITLE" = "About Stream";
 
+/* Caption to show a persistent connection to station is held. */
+"SYNC_BUTTON_CAPTION_WITH_PERSISTENT_CONNECTION" = "Connected";
+
 /* Caption to show in account info when station is connected */
 "SYNC_BUTTON_CAPTION_WITH_STATION_CONNECTED" = "Syncing with Station";
 
