@@ -97,6 +97,7 @@
 		4BB1B6B315C14648002A4BE2 /* Unfav~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BB1B6AF15C14648002A4BE2 /* Unfav~iphone.png */; };
 		4BD77BB915A2C10500CA8486 /* WABackoffHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 130F09EF159C3C74001796D0 /* WABackoffHandler.m */; };
 		4BD77BBA15A2C8B300CA8486 /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = FF0CC558158A41150034BD1B /* libxml2.dylib */; };
+		4BDA152C15F04B4400DB61E5 /* libPonyDebugger.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4BDA152515F04B0100DB61E5 /* libPonyDebugger.a */; };
 		4BE6910D14EB8159002B9790 /* WAPreviewInspectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BE6910B14EB8159002B9790 /* WAPreviewInspectionViewController.m */; };
 		4BE6910E14EB8159002B9790 /* WAPreviewInspectionViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4BE6910C14EB8159002B9790 /* WAPreviewInspectionViewController.xib */; };
 		4BF243E014F23B7C00F4636C /* IRActionSheetController+WAAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BF243DF14F23B7C00F4636C /* IRActionSheetController+WAAdditions.m */; };
@@ -725,6 +726,20 @@
 			remoteGlobalIDString = FF3BE06715375564004C5244;
 			remoteInfo = IRFoundationsTouchTestHost;
 		};
+		4BDA152415F04B0100DB61E5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4BDA151815F04B0000DB61E5 /* PonyDebugger.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = F683ADAC14FC1B4C008EBBA7;
+			remoteInfo = PonyDebugger;
+		};
+		4BDA152A15F04B2F00DB61E5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4BDA151815F04B0000DB61E5 /* PonyDebugger.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = F683ADAB14FC1B4C008EBBA7;
+			remoteInfo = PonyDebugger;
+		};
 		8002CDDA15E5E73800D7BFF0 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 8002CDCF15E5E73800D7BFF0 /* SocketRocket.xcodeproj */;
@@ -1177,6 +1192,7 @@
 		4BCA9E9F13FCE9DC00978CE9 /* WAPostViewCellPhone-Default.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "WAPostViewCellPhone-Default.xib"; sourceTree = "<group>"; };
 		4BCA9EA013FCE9DC00978CE9 /* WAPostViewCellPhone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAPostViewCellPhone.h; sourceTree = "<group>"; };
 		4BCA9EA113FCE9DC00978CE9 /* WAPostViewCellPhone.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAPostViewCellPhone.m; sourceTree = "<group>"; };
+		4BDA151815F04B0000DB61E5 /* PonyDebugger.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = PonyDebugger.xcodeproj; path = external/PonyDebugger/ObjC/PonyDebugger.xcodeproj; sourceTree = "<group>"; };
 		4BE6910A14EB8159002B9790 /* WAPreviewInspectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAPreviewInspectionViewController.h; sourceTree = "<group>"; };
 		4BE6910B14EB8159002B9790 /* WAPreviewInspectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAPreviewInspectionViewController.m; sourceTree = "<group>"; };
 		4BE6910C14EB8159002B9790 /* WAPreviewInspectionViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WAPreviewInspectionViewController.xib; sourceTree = "<group>"; };
@@ -1900,6 +1916,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4BDA152C15F04B4400DB61E5 /* libPonyDebugger.a in Frameworks */,
 				8002CDE615E5E85600D7BFF0 /* libicucore.dylib in Frameworks */,
 				8002CDE415E5E83500D7BFF0 /* libSocketRocket.a in Frameworks */,
 				4B8DFB7414FDFC3D000B41C5 /* CFNetwork.framework in Frameworks */,
@@ -2123,6 +2140,14 @@
 				4B8CA97814BBE7BA006E06BB /* wammer-iOS-Tests-Prefix.pch */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		4BDA151915F04B0000DB61E5 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				4BDA152515F04B0100DB61E5 /* libPonyDebugger.a */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 		8002CDD015E5E73800D7BFF0 /* Products */ = {
@@ -2548,6 +2573,7 @@
 				4B43E32D15EDEB3500F64F40 /* libOCMock.a */,
 				4B0FE08E15EDCD5500D90707 /* OCMock.xcodeproj */,
 				FF59F87914419581005508FC /* OSX */,
+				4BDA151815F04B0000DB61E5 /* PonyDebugger.xcodeproj */,
 				8002CDCF15E5E73800D7BFF0 /* SocketRocket.xcodeproj */,
 				FFA774CB14ADBE6F0044674B /* Testflight SDK */,
 				FFED705215497D6B00E01FFB /* WFPresentation.xcodeproj */,
@@ -3312,6 +3338,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				4BDA152B15F04B2F00DB61E5 /* PBXTargetDependency */,
 				8002CDE315E5E7EB00D7BFF0 /* PBXTargetDependency */,
 				FF6B02A815AC0A3E009D8BDB /* PBXTargetDependency */,
 				FFD4F93B157E08460027BF3F /* PBXTargetDependency */,
@@ -3404,6 +3431,10 @@
 					ProjectRef = 4B0FE08E15EDCD5500D90707 /* OCMock.xcodeproj */;
 				},
 				{
+					ProductGroup = 4BDA151915F04B0000DB61E5 /* Products */;
+					ProjectRef = 4BDA151815F04B0000DB61E5 /* PonyDebugger.xcodeproj */;
+				},
+				{
 					ProductGroup = 8002CDD015E5E73800D7BFF0 /* Products */;
 					ProjectRef = 8002CDCF15E5E73800D7BFF0 /* SocketRocket.xcodeproj */;
 				},
@@ -3456,6 +3487,13 @@
 			fileType = wrapper.application;
 			path = IRFoundationsTouchTestHost.app;
 			remoteRef = 4B36253B15662DCA00F07032 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		4BDA152515F04B0100DB61E5 /* libPonyDebugger.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libPonyDebugger.a;
+			remoteRef = 4BDA152415F04B0100DB61E5 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		8002CDDB15E5E73800D7BFF0 /* libSocketRocket.a */ = {
@@ -4388,6 +4426,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		4BDA152B15F04B2F00DB61E5 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = PonyDebugger;
+			targetProxy = 4BDA152A15F04B2F00DB61E5 /* PBXContainerItemProxy */;
+		};
 		8002CDE315E5E7EB00D7BFF0 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = SocketRocket;
@@ -5012,6 +5055,7 @@
 					"\"$(PROJECT_DIR)/external/WFPresentation/Bindings/Objective-C\"/**",
 					"\"$(PROJECT_DIR)/external/Facebook\"/**",
 					"\"$(PROJECT_DIR)/external/SocketRocket\"/**",
+					"$(CONFIGURATION_BUILD_DIR)/usr/local/include/**",
 				);
 				INFOPLIST_FILE = "wammer/wammer-iOS-Info.plist";
 				LIBRARY_SEARCH_PATHS = (
@@ -5056,6 +5100,7 @@
 					"\"$(PROJECT_DIR)/external/WFPresentation/Bindings/Objective-C\"/**",
 					"\"$(PROJECT_DIR)/external/Facebook\"/**",
 					"\"$(PROJECT_DIR)/external/SocketRocket\"/**",
+					"$(CONFIGURATION_BUILD_DIR)/usr/local/include/**",
 				);
 				INFOPLIST_FILE = "wammer/wammer-iOS-Info.plist";
 				LIBRARY_SEARCH_PATHS = (
