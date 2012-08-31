@@ -43,6 +43,10 @@
 #import "WAWelcomeViewController.h"
 #import "WATutorialViewController.h"
 
+#if DEBUG
+	#import "PonyDebugger/PDDebugger.h"
+#endif
+
 @interface WALoginBackgroundViewController : UIViewController
 @end
 
@@ -206,7 +210,18 @@
 
 	WAPostAppEvent(@"AppVisit", [NSDictionary dictionaryWithObjectsAndKeys:@"app",@"category",@"visit", @"action", nil]);
 	
+#if DEBUG
 	[[WARemoteInterface sharedInterface] enableAutomaticRemoteUpdatesTimerNow];
+	PDDebugger *debugger = [PDDebugger defaultInstance];
+	[debugger connectToURL:[NSURL URLWithString:@"ws://localhost:9000/device"]];
+	[debugger enableNetworkTrafficDebugging];
+	[debugger forwardAllNetworkTraffic];
+	
+	WADataStore * const ds = [WADataStore defaultStore];
+	NSManagedObjectContext *context = [ds disposableMOC];
+	[debugger enableCoreDataDebugging];
+	[debugger addManagedObjectContext:context withName:@"My MOC"];
+#endif
 	
 	return YES;
 	
