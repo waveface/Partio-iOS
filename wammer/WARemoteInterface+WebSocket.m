@@ -8,6 +8,7 @@
 
 #import "WARemoteInterface+WebSocket.h"
 #import "WARemoteInterfaceDefines.h"
+#import "WABackoffHandler.h"
 
 @interface WARemoteInterface (WebSocket_Private) <SRWebSocketDelegate>
 
@@ -15,6 +16,7 @@
 
 @property (nonatomic, strong) WAWebSocketConnectCallback successHandler;
 @property (nonatomic, strong) WAWebSocketConnectFailure failureHandler;
+@property (nonatomic, strong) WABackoffHandler *backoffHandler;
 
 NSError * WARemoteInterfaceWebSocketError (NSUInteger code, NSString *message);
 
@@ -25,8 +27,8 @@ static NSString * const kUrlForWebSocket = @"-[WARemoteInterface(WebSocket) urlF
 static NSString * const kSuccessHandler = @"-[WARemoteInterface(WebSocket) successHandler]";
 static NSString * const kFailureHandler = @"-[WARemoteInterface(WebSocket) failureHandler]";
 static NSString * const kHandlerMap = @"-[WARemoteInterface(WebSocket) handlerMap]";
-
-
+static NSString * const kBackOffHandler = @"-[WARemoteInterface(WebSocket) backOffHandler]";
+static const NSUInteger kWebSocketReconnectInitInterval = 2;
 
 @implementation WARemoteInterface (WebSocket)
 @dynamic connectionForWebSocket, webSocketState;
@@ -66,9 +68,24 @@ NSError * WARemoteInterfaceWebSocketError (NSUInteger code, NSString *message) {
 			
 		case WAWebSocketAbnormalError:
 		case 0: // normally closed
-		default:
-			[self reconnectWebSocket];
+		default: {
+			__weak WARemoteInterface *wSelf = self;
+			double delayInSeconds = [self.backoffHandler nextInterval];
+			
+			if (delayInSeconds > 30) {
+				if (self.failureHandler) {
+					NSError *error = WARemoteInterfaceWebSocketError(WAWebSocketGoingAwayError, @"Unable to connect to websocket server.");
+					self.failureHandler(error);
+				}
+				break;
+			}
+			
+			dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+			dispatch_after(popTime, dispatch_get_current_queue(), ^(void){
+				[wSelf reconnectWebSocket];
+			});
 			break;
+		}
 	}
 }
 
@@ -107,9 +124,10 @@ NSError * WARemoteInterfaceWebSocketError (NSUInteger code, NSString *message) {
 	if (self.connectionForWebSocket) {
 		// We need to zero out the delegate to prevent an infinite looping hell
 		self.connectionForWebSocket.delegate = nil;
-		[self.connectionForWebSocket close];
+		[self.connectionForWebSocket closeWithCode:WAWebSocketNormal reason:@"Normally closed from refresh button"];
 		self.connectionForWebSocket = nil;
 	}
+	self.backoffHandler = [[WABackoffHandler alloc] initWithInitialBackoffInterval:kWebSocketReconnectInitInterval valueFixed:NO];
 	self.connectionForWebSocket = [[SRWebSocket alloc] initWithURL:self.urlForWebSocket];
 	self.connectionForWebSocket.delegate = self;
 	[self.connectionForWebSocket open];	// re-connect
@@ -231,6 +249,16 @@ NSError * WARemoteInterfaceWebSocketError (NSUInteger code, NSString *message) {
 
 - (WAWebSocketConnectFailure) failureHandler {
 	return objc_getAssociatedObject(self, &kFailureHandler);
+}
+
+- (void) setBackoffHandler:(WABackoffHandler *)backoffHandler
+{
+	objc_setAssociatedObject(self, &kBackOffHandler, backoffHandler, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+- (WABackoffHandler*) backoffHandler
+{
+	return objc_getAssociatedObject(self, &kBackOffHandler);
 }
 
 @end
