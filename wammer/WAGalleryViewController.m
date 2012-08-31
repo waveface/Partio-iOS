@@ -491,13 +491,6 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 
 #endif
 
-- (void)cache:(NSCache *)cache willEvictObject:(id)obj {
-	WAGalleryImageView *view = obj;
-	[view setImage:nil];
-}
-
-
-
 - (NSOperationQueue *) operationQueue {
 
 	if (operationQueue)
@@ -549,8 +542,8 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 
 - (void)willRemoveView:(UIView *)view atIndex:(NSUInteger)index {
 
-	WAGalleryImageView *imageView = (WAGalleryImageView *)view;
-	[imageView setImage:nil];
+	[[self.article.files objectAtIndex:index] irRemoveObserverBlocksForKeyPath:@"smallestPresentableImage"];
+	[[self.article.files objectAtIndex:index] irRemoveObserverBlocksForKeyPath:@"bestPresentableImage"];
 	[[self representedFileAtIndex:index] cleanImageCache];
 
 }
@@ -582,15 +575,12 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 
 	if (exclusivelyUsesThumbnail) {
 		
-		__weak WAGalleryViewController *wSelf = self;
-		[aFile irRemoveObserverBlocksForKeyPath:@"smallestPresentableImage"];
 		[aFile irObserve:@"smallestPresentableImage" options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:nil withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
 
 			dispatch_async(dispatch_get_main_queue(), ^{
 
 				[aView setImage:toValue animated:NO synchronized:forceSynchronousImageDecode];
 				[aView setNeedsLayout];
-				[wSelf.streamPickerView reloadData];
 
 			});
 
@@ -598,15 +588,12 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 		
 	} else {
 		
-		__weak WAGalleryViewController *wSelf = self;
-		[aFile irRemoveObserverBlocksForKeyPath:@"bestPresentableImage"];
 		[aFile irObserve:@"bestPresentableImage" options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:nil withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
 
 			dispatch_async(dispatch_get_main_queue(), ^{
 
 				[aView setImage:toValue animated:NO synchronized:forceSynchronousImageDecode];
 				[aView setNeedsLayout];
-				[wSelf.streamPickerView reloadData];
 
 			});
 
