@@ -9,6 +9,8 @@
 #import "WAUserInfoViewController.h"
 
 #import "WARemoteInterface.h"
+#import "WARemoteInterface+WebSocket.h"
+#import "WARemoteInterface+ScheduledDataRetrieval.h"
 #import "WADefines.h"
 
 #import "WAReachabilityDetector.h"
@@ -23,12 +25,19 @@
 
 #import "WASyncManager.h"
 
+typedef enum WASyncStatus: NSUInteger {
+	WASyncStatusNone = 0,
+	WASyncStatusSyncing,
+	WASyncStatusConnected
+} WASyncStatus;
+
+
 @interface WAUserInfoViewController ()
 
 @property (nonatomic, readwrite, retain) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, retain) WAUser *user;
 
-- (void) handleRemoteInterfaceUpdateStatusChanged:(BOOL)syncing;
+- (void) handleRemoteInterfaceUpdateStatusChanged:(WASyncStatus)syncing;
 
 @property (nonatomic, readonly, assign) BOOL syncing;
 
@@ -325,7 +334,7 @@
 	
 }
 
-- (void) handleRemoteInterfaceUpdateStatusChanged:(BOOL)syncing {
+- (void) handleRemoteInterfaceUpdateStatusChanged:(WASyncStatus)syncing {
 
 	if (![NSThread isMainThread]) {
 	
@@ -343,18 +352,26 @@
 	if (syncing) {
 		
 		WARemoteInterface *ri = [WARemoteInterface sharedInterface];
-		if ([ri hasReachableStation]) {
+		if (syncing == WASyncStatusConnected) {
 			
-			cell.textLabel.text = NSLocalizedString(@"SYNC_BUTTON_CAPTION_WITH_STATION_CONNECTED", @"Caption to show in account info when station is connected");
-		
+			cell.textLabel.text = NSLocalizedString(@"SYNC_BUTTON_CAPTION_WITH_PERSISTENT_CONNECTION", @"Caption to show a persistent connection to station is held.");
+			cell.selectionStyle = UITableViewCellSelectionStyleBlue;
+			[self.activity stopAnimating];
+			
 		} else {
-
-			cell.textLabel.text = NSLocalizedString(@"SYNC_BUTTON_NORMAL_TITLE", @"Caption to show when app is syncing data without station");
+			if ([ri hasReachableStation]) {
+			
+				cell.textLabel.text = NSLocalizedString(@"SYNC_BUTTON_CAPTION_WITH_STATION_CONNECTED", @"Caption to show in account info when station is connected");
 		
-		}
+			} else {
 
-		cell.selectionStyle = UITableViewCellSelectionStyleNone;
-		[self.activity startAnimating];
+				cell.textLabel.text = NSLocalizedString(@"SYNC_BUTTON_NORMAL_TITLE", @"Caption to show when app is syncing data without station");
+		
+			}
+
+			cell.selectionStyle = UITableViewCellSelectionStyleNone;
+			[self.activity startAnimating];
+		}
 		
 	} else {
 	
@@ -524,13 +541,18 @@
 
 }
 
-- (BOOL) isSyncing {
+- (WASyncStatus) isSyncing {
 
 	WARemoteInterface * const ri = [WARemoteInterface sharedInterface];
 	WASyncManager * const sm = [WASyncManager sharedManager];
-	
-	return ri.performingAutomaticRemoteUpdates || sm.operationQueue.operationCount;
 
+	if (ri.performingAutomaticRemoteUpdates || sm.operationQueue.operationCount)
+		return WASyncStatusSyncing;
+
+	if (ri.webSocketConnected)
+		return WASyncStatusConnected;
+
+	return WASyncStatusNone;
 }
 
 @end
