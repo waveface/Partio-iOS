@@ -350,27 +350,46 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 				/* Steven: we examin each touched article is really touched by checking its modifiedDate.
 				 * If the modifiedDate is later then current lastNewPostsUpdateDate, then we update these articles.
 				 * If not, don't change them. It won't cause a data store change, and won't cause the timeline refresh */
-				BOOL changed = NO;
-				for (WAArticle *article in touchedArticles) {
+				__block BOOL changed = NO;
+				__block NSMutableIndexSet *removedIndexSet = [[NSMutableIndexSet alloc] init];
+				[touchedArticles enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+
+					WAArticle *article = obj;
 					NSComparisonResult dateComparison = [article.modificationDate compare:usedDate];
-					if (usedDate && (dateComparison == NSOrderedSame || dateComparison == NSOrderedAscending))
-						continue;
-					changed = YES;
-					if ([ds isUpdatingArticle:[[article objectID] URIRepresentation]]) {
-						[context refreshObject:article mergeChanges:NO];
+					if (usedDate && (dateComparison == NSOrderedSame || dateComparison == NSOrderedAscending)) {
+
+						[removedIndexSet addIndex:idx];
+
+					} else {
+
+						changed = YES;
+
+						if ([ds isUpdatingArticle:[[article objectID] URIRepresentation]]) {
+							[context refreshObject:article mergeChanges:NO];
+							[removedIndexSet addIndex:idx];
+						}
+
+						if ([article.hidden isEqualToNumber:(id)kCFBooleanTrue]) {
+							[removedIndexSet addIndex:idx];
+						}
+
 					}
-				}
+
+				}];
 				
 				if (changed) {
 					[context save:nil];
 
 					// start downloading thumbnails for files of updated articles,
 					// files in newer articles are downloaded first (download queue is LIFO).
-					NSArray *sortedArticles = [touchedArticles sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
+					NSMutableArray *mutableTouchedArticles = [touchedArticles mutableCopy];
+					[mutableTouchedArticles removeObjectsAtIndexes:removedIndexSet];
+					NSArray *sortedArticles = [mutableTouchedArticles sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
 						WAArticle *article1 = obj1;
 						WAArticle *article2 = obj2;
 						return [article1.creationDate compare:article2.creationDate];
 					}];
+
 					for (WAArticle *article in sortedArticles) {
 						for (WAFile *file in article.files) {
 							[file smallThumbnailFilePath];
@@ -416,17 +435,37 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 				 
 				 NSArray *touchedArticles = [WAArticle insertOrUpdateObjectsUsingContext:context withRemoteResponse:changedArticleReps usingMapping:nil options:IRManagedObjectOptionIndividualOperations];
 				 
-				 for (WAArticle *article in touchedArticles) {
-					 if ([ds isUpdatingArticle:[[article objectID] URIRepresentation]]) {
-						 [context refreshObject:article mergeChanges:NO];
+				 __block NSMutableIndexSet *removedIndexSet = [[NSMutableIndexSet alloc] init];
+				 [touchedArticles enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+
+					 WAArticle *article = obj;
+					 NSComparisonResult dateComparison = [article.modificationDate compare:usedDate];
+					 if (usedDate && (dateComparison == NSOrderedSame || dateComparison == NSOrderedAscending)) {
+
+						 [removedIndexSet addIndex:idx];
+
+					 } else {
+						 
+						 if ([ds isUpdatingArticle:[[article objectID] URIRepresentation]]) {
+							 [context refreshObject:article mergeChanges:NO];
+							 [removedIndexSet addIndex:idx];
+						 }
+						 
+						 if ([article.hidden isEqualToNumber:(id)kCFBooleanTrue]) {
+							 [removedIndexSet addIndex:idx];
+						 }
+
 					 }
-				 }
+
+				 }];
 				 
 				 [context save:nil];
 				 
 				 // start downloading thumbnails for files of updated articles,
 				 // files in newer articles are downloaded first (download queue is LIFO).
-				 NSArray *sortedArticles = [touchedArticles sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
+				 NSMutableArray *mutableTouchedArticles = [touchedArticles mutableCopy];
+				 [mutableTouchedArticles removeObjectsAtIndexes:removedIndexSet];
+				 NSArray *sortedArticles = [mutableTouchedArticles sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
 					 WAArticle *article1 = obj1;
 					 WAArticle *article2 = obj2;
 					 return [article1.creationDate compare:article2.creationDate];
@@ -437,6 +476,7 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 						 [file thumbnailFilePath];
 					 }
 				 }
+
 			 }
 					waitUntilDone:YES];
 			 

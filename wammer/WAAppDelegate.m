@@ -254,7 +254,7 @@
 	NSManagedObjectContext *context = [ds disposableMOC];
 	NSArray *files = [ds fetchFilesNeedingDownloadUsingContext:context];
 	for (WAFile *file in files) {
-    [file smallThumbnailFilePath];
+		[file smallThumbnailFilePath];
 		[file thumbnailFilePath];
 	}
 
