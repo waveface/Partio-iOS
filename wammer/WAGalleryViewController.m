@@ -330,10 +330,11 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 	
 	[self.paginatedView.scrollView.panGestureRecognizer addTarget:self action:@selector(handlePan:)];
 
+	__weak WAGalleryViewController *wSelf = self;
 	[self.streamPickerView irObserve:@"selectedItemIndex" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:nil withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
-		NSUInteger index = (NSUInteger)toValue;
-		if (index < [self.article.files count]) {
-			[[self.article.files objectAtIndex:index] cleanImageCache];
+		NSUInteger index = [fromValue unsignedIntegerValue];
+		if (index < [wSelf.article.files count]) {
+			[[wSelf.article.files objectAtIndex:index] cleanImageCache];
 		}
 	}];
 }
@@ -550,7 +551,12 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 
 - (void)paginatedView:(IRPaginatedView *)paginatedView didShowView:(UIView *)aView atIndex:(NSUInteger)index {
 
-	self.streamPickerView.selectedItemIndex = index;
+	if (self.streamPickerView.selectedItemIndex != index) {
+
+		[self.streamPickerView setSelectedItemIndex:index];
+		[self.streamPickerView setNeedsLayout];
+
+	}
 
 }
 
