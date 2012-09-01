@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model name="" userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="1487" systemVersion="12A269" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
+<model name="" userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="1487" systemVersion="12B19" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="WAArticle" representedClassName="WAArticle">
         <attribute name="creationDate" optional="YES" attributeType="Date" indexed="YES" elementID="timestamp">
             <userInfo/>
@@ -226,7 +226,7 @@
     <fetchRequest name="WAFRArticlesNeedingSync" entity="WAArticle" predicateString="dirty == 1 AND draft == 0"/>
     <fetchRequest name="WAFRCommentsForArticle" entity="WAComment" predicateString="article == $Article"/>
     <fetchRequest name="WAFRFilesForArticle" entity="WAFile" predicateString="article == $Article"/>
-    <fetchRequest name="WAFRFilesNeedingDownload" entity="WAFile" predicateString="(smallThumbnailURL != nil AND smallThumbnailFilePath == nil) OR (thumbnailURL != nil AND thumbnailFilePath == nil)"/>
+    <fetchRequest name="WAFRFilesNeedingDownload" entity="WAFile" predicateString="(article.hidden == 0) AND ((smallThumbnailURL != nil AND smallThumbnailFilePath == nil) OR (thumbnailURL != nil AND thumbnailFilePath == nil))"/>
     <fetchRequest name="WAFRFilesWithSyncableBlobs" entity="WAFile" predicateString="resourceFilePath != nil AND resourceURL == nil AND article.draft == 0"/>
     <fetchRequest name="WAFRImagesForArticle" entity="WAFile" predicateString="article == $Article AND remoteResourceType == &quot;image&quot;"/>
     <fetchRequest name="WAFRUser" entity="WAUser" predicateString="identifier == $Identifier"/>
