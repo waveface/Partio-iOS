@@ -5170,8 +5170,8 @@
 		FFCD324114B997B70035C4F5 /* WAModel.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
-				FF9808C81592E27000462FCD /* WAModel 32.xcdatamodel */,
 				13A1BFB115A5728500526F39 /* WAModel 33.xcdatamodel */,
+				FF9808C81592E27000462FCD /* WAModel 32.xcdatamodel */,
 				FFD06A41156E206800021C55 /* WAModel 31.xcdatamodel */,
 				FF50D683156B73B50021011D /* WAModel 30.xcdatamodel */,
 				FF485CC0156A364C00A6175E /* WAModel 29.xcdatamodel */,
