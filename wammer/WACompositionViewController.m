@@ -24,6 +24,7 @@
 #import "WAPreviewBadge.h"
 #import "WAOverlayBezel.h"
 #import "WACompositionViewController+ImageHandling.h"
+#import "WAAssetLibraryManager.h"
 
 @interface WACompositionViewController () <UITextViewDelegate, IRTextAttributorDelegate>
 
@@ -153,8 +154,7 @@
 
     if (!file.resourceFilePath) {
 
-			ALAssetsLibrary * const library = [[self class] assetsLibrary];
-			[library assetForURL:[NSURL URLWithString:file.assetURL] resultBlock:^(ALAsset *asset) {
+			[[WAAssetLibraryManager defaultManager] assetForURL:[NSURL URLWithString:file.assetURL] resultBlock:^(ALAsset *asset) {
 				
 				[self.managedObjectContext performBlock:^{
 					
@@ -609,20 +609,6 @@ static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandl
 	
 	[self adjustContainerViewWithInterfaceBounds:((UIWindow *)[[UIApplication sharedApplication].windows objectAtIndex:0]).irInterfaceBounds];
 
-}
-
-+ (ALAssetsLibrary *) assetsLibrary {
-	
-	static ALAssetsLibrary *library = nil;
-	static dispatch_once_t onceToken = 0;
-	dispatch_once(&onceToken, ^{
-		
-    library = [ALAssetsLibrary new];
-		
-	});
-	
-	return library;
-	
 }
 
 @end

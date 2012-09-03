@@ -9,6 +9,7 @@
 #import "WAFile+LazyImages.h"
 #import "WAFile+WAConstants.h"
 #import "WAFile+ImplicitBlobFulfillment.h"
+#import "WAAssetLibraryManager.h"
 
 #import "UIKit+IRAdditions.h"
 
@@ -106,6 +107,7 @@ static NSString * const kMemoryWarningObserverCreationDisabled = @"-[WAFile(Lazy
 + (NSSet *) keyPathsForValuesAffectingSmallestPresentableImage {
 
 	return [NSSet setWithObjects:
+		kWAFileExtraSmallThumbnailImage,
 		kWAFileSmallThumbnailImage,
 		kWAFileThumbnailImage,
 		kWAFileLargeThumbnailImage,
@@ -115,6 +117,9 @@ static NSString * const kMemoryWarningObserverCreationDisabled = @"-[WAFile(Lazy
 }
 
 - (UIImage *) smallestPresentableImage {
+
+	if (self.extraSmallThumbnailImage)
+		return self.extraSmallThumbnailImage;
 
 	if (self.smallThumbnailImage)
 		return self.smallThumbnailImage;
@@ -130,6 +135,42 @@ static NSString * const kMemoryWarningObserverCreationDisabled = @"-[WAFile(Lazy
 	
 	return nil;
 	
+}
+
++ (NSSet *) keyPathsForValuesAffectingExtraSmallThumbnailImage {
+
+	return [NSSet setWithObject:kWAFileAssetURL];
+
+}
+
+- (UIImage *) extraSmallThumbnailImage {
+
+	[self createMemoryWarningObserverIfAppropriate];
+
+	UIImage *returnImage = objc_getAssociatedObject(self, &kWAFileExtraSmallThumbnailImage);
+
+	if (!returnImage) {
+
+		if (self.assetURL) {
+			
+			__weak WAFile *wSelf = self;
+			NSURL *url = [NSURL URLWithString:self.assetURL];
+			[[WAAssetLibraryManager defaultManager] assetForURL:url resultBlock:^(ALAsset *asset) {
+				
+				UIImage *image = [UIImage imageWithCGImage:[asset aspectRatioThumbnail]];
+				[wSelf irAssociateObject:image usingKey:&kWAFileExtraSmallThumbnailImage policy:OBJC_ASSOCIATION_RETAIN_NONATOMIC changingObservedKey:kWAFileExtraSmallThumbnailImage];
+				
+			} failureBlock:^(NSError *error) {
+				
+				NSLog(@"Unable to retrive asset in URL:%@, Error:%@", url, error);
+				
+			}];
+			
+		}
+		
+	}
+
+	return returnImage;
 }
 
 + (NSSet *) keyPathsForValuesAffectingResourceImage {
@@ -206,8 +247,13 @@ static NSString * const kMemoryWarningObserverCreationDisabled = @"-[WAFile(Lazy
 	
 	[self setDisplaying:YES];
 
-	return [self imageAssociatedWithKey:&kWAFileSmallThumbnailImage filePath:self.smallThumbnailFilePath];
-		
+	UIImage *image = [self imageAssociatedWithKey:&kWAFileSmallThumbnailImage filePath:self.smallThumbnailFilePath];
+	if (!image) {
+		// if no small thumbnail, load asset thumbnail first for UI responsiveness
+		image = self.extraSmallThumbnailImage;
+	}
+
+	return image;
 }
 
 - (void) setSmallThumbnailImage:(UIImage *)smallThumbnailImage {
@@ -258,6 +304,7 @@ static NSString * const kMemoryWarningObserverCreationDisabled = @"-[WAFile(Lazy
 
 - (void) cleanImageCache {
 
+	[self irAssociateObject:nil usingKey:&kWAFileExtraSmallThumbnailImage policy:OBJC_ASSOCIATION_ASSIGN changingObservedKey:nil];
 	[self irAssociateObject:nil usingKey:&kWAFileSmallThumbnailImage policy:OBJC_ASSOCIATION_ASSIGN changingObservedKey:nil];
 	[self irAssociateObject:nil usingKey:&kWAFileThumbnailImage policy:OBJC_ASSOCIATION_ASSIGN changingObservedKey:nil];
 	[self irAssociateObject:nil usingKey:&kWAFileLargeThumbnailImage policy:OBJC_ASSOCIATION_ASSIGN changingObservedKey:nil];

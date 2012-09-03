@@ -443,34 +443,49 @@
 				
 			}
 				
+			[iv irUnbind:@"image"];
 			WAFile *file = (WAFile *)[displayedFiles objectAtIndex:idx];
 			
-			[iv irUnbind:@"image"];
+			switch (idx) {
+				case 0:
+					[iv irBind:@"image"
+						toObject:file
+						 keyPath:@"smallThumbnailImage"
+						 options:[NSDictionary dictionaryWithObjectsAndKeys:
+											(id)kCFBooleanTrue, kIRBindingsAssignOnMainThreadOption,
+											nil]];
+					break;
 
-			if (!file.smallestPresentableImage && file.assetURL) {
+				case 1:
+					if ([displayedFiles count] == 2) {
+						[iv irBind:@"image"
+							toObject:file
+							 keyPath:@"smallThumbnailImage"
+							 options:[NSDictionary dictionaryWithObjectsAndKeys:
+												(id)kCFBooleanTrue, kIRBindingsAssignOnMainThreadOption,
+												nil]];
+					} else {
+						[iv irBind:@"image"
+							toObject:file
+							 keyPath:@"smallestPresentableImage"
+							 options:[NSDictionary dictionaryWithObjectsAndKeys:
+												(id)kCFBooleanTrue, kIRBindingsAssignOnMainThreadOption,
+												nil]];
+					}
+					break;
 
-				ALAssetsLibrary * const library = [[self class] assetsLibrary];
-				[library assetForURL:[NSURL URLWithString:file.assetURL] resultBlock:^(ALAsset *asset) {
+				case 2:
+					[iv irBind:@"image"
+						toObject:file
+						 keyPath:@"smallestPresentableImage"
+						 options:[NSDictionary dictionaryWithObjectsAndKeys:
+											(id)kCFBooleanTrue, kIRBindingsAssignOnMainThreadOption,
+											nil]];
+					break;
 
-					dispatch_async(dispatch_get_main_queue(), ^{
-						
-						iv.image = [UIImage imageWithCGImage:[asset aspectRatioThumbnail]];
-						
-					});
-
-				} failureBlock:^(NSError *error) {
-
-					NSLog(@"Unable to retrieve assets for URL %@", file.assetURL);
-
-				}];
-
-			} else {
-
-				[iv irBind:@"image" toObject:file keyPath:@"smallestPresentableImage" options:[NSDictionary dictionaryWithObjectsAndKeys:
-																																											 
-					(id)kCFBooleanTrue, kIRBindingsAssignOnMainThreadOption,
-																																											 
-				nil]];
+				default:
+					NSLog(@"Unsupported index");
+					break;
 			}
 			
 		}];
@@ -594,17 +609,4 @@
 
 }
 
-+ (ALAssetsLibrary *) assetsLibrary {
-
-	static ALAssetsLibrary *library = nil;
-	static dispatch_once_t onceToken = 0;
-	dispatch_once(&onceToken, ^{
-
-    library = [ALAssetsLibrary new];
-
-	});
-
-	return library;
-
-}
 @end
