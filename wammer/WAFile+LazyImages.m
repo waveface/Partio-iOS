@@ -9,7 +9,7 @@
 #import "WAFile+LazyImages.h"
 #import "WAFile+WAConstants.h"
 #import "WAFile+ImplicitBlobFulfillment.h"
-#import "WAAssetLibraryManager.h"
+#import "WAAssetsLibraryManager.h"
 
 #import "UIKit+IRAdditions.h"
 
@@ -139,7 +139,7 @@ static NSString * const kMemoryWarningObserverCreationDisabled = @"-[WAFile(Lazy
 
 + (NSSet *) keyPathsForValuesAffectingExtraSmallThumbnailImage {
 
-	return [NSSet setWithObject:kWAFileAssetURL];
+	return [NSSet setWithObject:kWAFileExtraSmallThumbnailFilePath];
 
 }
 
@@ -147,30 +147,13 @@ static NSString * const kMemoryWarningObserverCreationDisabled = @"-[WAFile(Lazy
 
 	[self createMemoryWarningObserverIfAppropriate];
 
-	UIImage *returnImage = objc_getAssociatedObject(self, &kWAFileExtraSmallThumbnailImage);
+	return [self imageAssociatedWithKey:&kWAFileExtraSmallThumbnailImage filePath:self.extraSmallThumbnailFilePath];
+}
 
-	if (!returnImage) {
+- (void)setExtraSmallThumbnailImage:(UIImage *)extraSmallThumbnailImage {
 
-		if (self.assetURL) {
-			
-			__weak WAFile *wSelf = self;
-			NSURL *url = [NSURL URLWithString:self.assetURL];
-			[[WAAssetLibraryManager defaultManager] assetForURL:url resultBlock:^(ALAsset *asset) {
-				
-				UIImage *image = [UIImage imageWithCGImage:[asset aspectRatioThumbnail]];
-				[wSelf irAssociateObject:image usingKey:&kWAFileExtraSmallThumbnailImage policy:OBJC_ASSOCIATION_RETAIN_NONATOMIC changingObservedKey:kWAFileExtraSmallThumbnailImage];
-				
-			} failureBlock:^(NSError *error) {
-				
-				NSLog(@"Unable to retrive asset in URL:%@, Error:%@", url, error);
-				
-			}];
-			
-		}
-		
-	}
+	[self irAssociateObject:extraSmallThumbnailImage usingKey:&kWAFileExtraSmallThumbnailImage policy:OBJC_ASSOCIATION_RETAIN_NONATOMIC changingObservedKey:kWAFileExtraSmallThumbnailImage];
 
-	return returnImage;
 }
 
 + (NSSet *) keyPathsForValuesAffectingResourceImage {

@@ -443,50 +443,14 @@
 				
 			}
 				
-			[iv irUnbind:@"image"];
 			WAFile *file = (WAFile *)[displayedFiles objectAtIndex:idx];
-			
-			switch (idx) {
-				case 0:
-					[iv irBind:@"image"
-						toObject:file
-						 keyPath:@"smallThumbnailImage"
-						 options:[NSDictionary dictionaryWithObjectsAndKeys:
-											(id)kCFBooleanTrue, kIRBindingsAssignOnMainThreadOption,
-											nil]];
-					break;
-
-				case 1:
-					if ([displayedFiles count] == 2) {
-						[iv irBind:@"image"
-							toObject:file
-							 keyPath:@"smallThumbnailImage"
-							 options:[NSDictionary dictionaryWithObjectsAndKeys:
-												(id)kCFBooleanTrue, kIRBindingsAssignOnMainThreadOption,
-												nil]];
-					} else {
-						[iv irBind:@"image"
-							toObject:file
-							 keyPath:@"smallestPresentableImage"
-							 options:[NSDictionary dictionaryWithObjectsAndKeys:
-												(id)kCFBooleanTrue, kIRBindingsAssignOnMainThreadOption,
-												nil]];
-					}
-					break;
-
-				case 2:
-					[iv irBind:@"image"
-						toObject:file
-						 keyPath:@"smallestPresentableImage"
-						 options:[NSDictionary dictionaryWithObjectsAndKeys:
-											(id)kCFBooleanTrue, kIRBindingsAssignOnMainThreadOption,
-											nil]];
-					break;
-
-				default:
-					NSLog(@"Unsupported index");
-					break;
-			}
+			[iv irUnbind:@"image"];
+			[iv irBind:@"image"
+				toObject:file
+				 keyPath:@"smallThumbnailImage"
+				 options:[NSDictionary dictionaryWithObjectsAndKeys:
+									(id)kCFBooleanTrue, kIRBindingsAssignOnMainThreadOption,
+									nil]];
 			
 		}];
 		

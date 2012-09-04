@@ -24,7 +24,7 @@
 #import "WAPreviewBadge.h"
 #import "WAOverlayBezel.h"
 #import "WACompositionViewController+ImageHandling.h"
-#import "WAAssetLibraryManager.h"
+#import "WAAssetsLibraryManager.h"
 
 @interface WACompositionViewController () <UITextViewDelegate, IRTextAttributorDelegate>
 
@@ -34,6 +34,8 @@
 
 @property (nonatomic, readwrite, retain) IRTextAttributor *textAttributor;
 @property (nonatomic, readwrite, retain) IRActionSheetController *cancellationActionSheetController;
+
+- (BOOL)associatedImagesMadeForFile:(WAFile *)file;
 
 @end
 
@@ -150,27 +152,45 @@
 	// for crash recovery
 	// however, if user tap done button before all blocks pushed into managedObjectContext,
 	// the application will crash again.
-	for (WAFile *file in self.article.files) {
+	[self.article.files enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
 
-    if (!file.resourceFilePath) {
+		WAFile *file = obj;
+    if (![self associatedImagesMadeForFile:file]) {
 
-			[[WAAssetLibraryManager defaultManager] assetForURL:[NSURL URLWithString:file.assetURL] resultBlock:^(ALAsset *asset) {
-				
-				[self.managedObjectContext performBlock:^{
+			if (file.assetURL) {
+
+				[[WAAssetsLibraryManager defaultManager] assetForURL:[NSURL URLWithString:file.assetURL] resultBlock:^(ALAsset *asset) {
 					
-					[self makeAssociatedImagesOfFile:file withResourceImage:nil representedAsset:asset];
+					[wSelf.managedObjectContext performBlock:^{
+						
+						WAThumbnailMakeOptions options = WAThumbnailMakeOptionExtraSmall;
+						if (idx == 0) {
+							options |= WAThumbnailMakeOptionMedium;
+						}
+						if (idx < 3) {
+							options |= WAThumbnailMakeOptionSmall;
+						}
+						[wSelf makeAssociatedImagesOfFile:file withRepresentedAsset:asset options:options];
+						
+					}];
+					
+				} failureBlock:^(NSError *error) {
+					
+					NSLog(@"Unable to retrieve assets for URL %@", file.assetURL);
+					NSAssert(NO, @"Unable to recover thumbnail making process for file:%@", file);
 					
 				}];
-				
-			} failureBlock:^(NSError *error) {
-				
-				NSLog(@"Unable to retrieve assets for URL %@", file.assetURL);
-				
-			}];
 
+			} else {
+				
+				NSLog(@"File asset URL is empty");
+				NSAssert(NO, @"Unable to recover thumbnail making process for file:%@", file);
+
+			}
+			
 		}
 
-	}
+	}];
 	
 }
 
@@ -326,7 +346,11 @@ static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandl
 
 }
 
+- (BOOL) associatedImagesMadeForFile:(WAFile *)file {
 
+	return !!file.extraSmallThumbnailFilePath;
+
+}
 
 
 
@@ -497,7 +521,7 @@ static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandl
 	[self.managedObjectContext performBlock:^{
 
 		for (WAFile *file in wSelf.article.files) {
-			NSParameterAssert(file.resourceFilePath);
+			NSParameterAssert([self associatedImagesMadeForFile:file]);
 		}
 
 		dispatch_async(dispatch_get_main_queue(), ^ {
