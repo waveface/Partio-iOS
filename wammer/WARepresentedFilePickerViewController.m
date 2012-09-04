@@ -139,43 +139,12 @@
 }
 
 - (void) setPresentableImageWithFile:(WAFile *)file forCell:(WACompositionViewPhotoCell *) cell{
-	NSString *assetURLString = file.assetURL;
 	
-	if (!file.smallestPresentableImage && assetURLString) {
-		
-		[cell irUnbind:@"image"];
-		
-		BOOL (^cellImageSet)(void) = ^ {
-			return (BOOL)!!(cell.image);
-		};
-		
-		ALAssetsLibrary * const library = [[self class] assetsLibrary];
-		NSURL *assetURL = [NSURL URLWithString:assetURLString];
-		
-		[library assetForURL:assetURL resultBlock:^(ALAsset *asset) {
-			
-			if (cellImageSet())
-				return;
-			
-			dispatch_async(dispatch_get_main_queue(), ^{
-				
-				if (cellImageSet())
-					return;
-				
-				cell.image = [UIImage imageWithCGImage:[asset aspectRatioThumbnail]];
-				
-			});
-			
-		} failureBlock:^(NSError *error) {
-			
-		}];
-	} else {
-		[cell irBind:@"image" toObject:file keyPath:@"smallestPresentableImage"
+	[cell irUnbind:@"image"];
+	[cell irBind:@"image" toObject:file keyPath:@"smallestPresentableImage"
 			 options:[NSDictionary dictionaryWithObjectsAndKeys: (id)kCFBooleanTrue, kIRBindingsAssignOnMainThreadOption, nil]];
 		
-		cell.image = [file smallestPresentableImage];
-		
-	}
+	cell.image = [file smallestPresentableImage];
 	
 	return;
 }
@@ -275,23 +244,6 @@
 
 	return self.view.contentSize;
 
-}
-
-+ (ALAssetsLibrary *) assetsLibrary {
-	
-	static ALAssetsLibrary *library = nil;
-	if (library != nil)
-		return library;
-	
-	static dispatch_once_t onceToken = 0;
-	dispatch_once(&onceToken, ^{
-		
-		library = [ALAssetsLibrary new];
-		
-	});
-	
-	return library;
-	
 }
 
 @end

@@ -26,3 +26,5 @@ NSString * const kWAFileValidatesLargeThumbnailImage = @"validatesLargeThumbnail
 NSString * const kWAFilePresentableImage = @"presentableImage";
 NSString * const kWAFileAttemptsBlobRetrieval = @"attemptsBlobRetrieval";
 NSString * const kWAFileDisplaying = @"displaying";
+NSString * const kWAFileExtraSmallThumbnailImage = @"extraSmallThumbnailImage";
+NSString * const kWAFileExtraSmallThumbnailFilePath = @"extraSmallThumbnailFilePath";

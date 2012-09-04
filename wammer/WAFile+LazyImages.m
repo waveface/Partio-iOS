@@ -9,6 +9,7 @@
 #import "WAFile+LazyImages.h"
 #import "WAFile+WAConstants.h"
 #import "WAFile+ImplicitBlobFulfillment.h"
+#import "WAAssetsLibraryManager.h"
 
 #import "UIKit+IRAdditions.h"
 
@@ -106,6 +107,7 @@ static NSString * const kMemoryWarningObserverCreationDisabled = @"-[WAFile(Lazy
 + (NSSet *) keyPathsForValuesAffectingSmallestPresentableImage {
 
 	return [NSSet setWithObjects:
+		kWAFileExtraSmallThumbnailImage,
 		kWAFileSmallThumbnailImage,
 		kWAFileThumbnailImage,
 		kWAFileLargeThumbnailImage,
@@ -115,6 +117,9 @@ static NSString * const kMemoryWarningObserverCreationDisabled = @"-[WAFile(Lazy
 }
 
 - (UIImage *) smallestPresentableImage {
+
+	if (self.extraSmallThumbnailImage)
+		return self.extraSmallThumbnailImage;
 
 	if (self.smallThumbnailImage)
 		return self.smallThumbnailImage;
@@ -130,6 +135,25 @@ static NSString * const kMemoryWarningObserverCreationDisabled = @"-[WAFile(Lazy
 	
 	return nil;
 	
+}
+
++ (NSSet *) keyPathsForValuesAffectingExtraSmallThumbnailImage {
+
+	return [NSSet setWithObject:kWAFileExtraSmallThumbnailFilePath];
+
+}
+
+- (UIImage *) extraSmallThumbnailImage {
+
+	[self createMemoryWarningObserverIfAppropriate];
+
+	return [self imageAssociatedWithKey:&kWAFileExtraSmallThumbnailImage filePath:self.extraSmallThumbnailFilePath];
+}
+
+- (void)setExtraSmallThumbnailImage:(UIImage *)extraSmallThumbnailImage {
+
+	[self irAssociateObject:extraSmallThumbnailImage usingKey:&kWAFileExtraSmallThumbnailImage policy:OBJC_ASSOCIATION_RETAIN_NONATOMIC changingObservedKey:kWAFileExtraSmallThumbnailImage];
+
 }
 
 + (NSSet *) keyPathsForValuesAffectingResourceImage {
@@ -206,8 +230,13 @@ static NSString * const kMemoryWarningObserverCreationDisabled = @"-[WAFile(Lazy
 	
 	[self setDisplaying:YES];
 
-	return [self imageAssociatedWithKey:&kWAFileSmallThumbnailImage filePath:self.smallThumbnailFilePath];
-		
+	UIImage *image = [self imageAssociatedWithKey:&kWAFileSmallThumbnailImage filePath:self.smallThumbnailFilePath];
+	if (!image) {
+		// if no small thumbnail, load asset thumbnail first for UI responsiveness
+		image = self.extraSmallThumbnailImage;
+	}
+
+	return image;
 }
 
 - (void) setSmallThumbnailImage:(UIImage *)smallThumbnailImage {
@@ -258,6 +287,7 @@ static NSString * const kMemoryWarningObserverCreationDisabled = @"-[WAFile(Lazy
 
 - (void) cleanImageCache {
 
+	[self irAssociateObject:nil usingKey:&kWAFileExtraSmallThumbnailImage policy:OBJC_ASSOCIATION_ASSIGN changingObservedKey:nil];
 	[self irAssociateObject:nil usingKey:&kWAFileSmallThumbnailImage policy:OBJC_ASSOCIATION_ASSIGN changingObservedKey:nil];
 	[self irAssociateObject:nil usingKey:&kWAFileThumbnailImage policy:OBJC_ASSOCIATION_ASSIGN changingObservedKey:nil];
 	[self irAssociateObject:nil usingKey:&kWAFileLargeThumbnailImage policy:OBJC_ASSOCIATION_ASSIGN changingObservedKey:nil];

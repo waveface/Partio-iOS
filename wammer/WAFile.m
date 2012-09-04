@@ -2,7 +2,7 @@
 //  WAFile.m
 //  wammer
 //
-//  Created by 冠凱 邱 on 12/7/5.
+//  Created by kchiu on 12/9/4.
 //  Copyright (c) 2012年 Waveface. All rights reserved.
 //
 
@@ -14,6 +14,7 @@
 
 @implementation WAFile
 
+@dynamic assetURL;
 @dynamic codeName;
 @dynamic creationDeviceIdentifier;
 @dynamic identifier;
@@ -35,7 +36,7 @@
 @dynamic thumbnailURL;
 @dynamic timestamp;
 @dynamic title;
-@dynamic assetURL;
+@dynamic extraSmallThumbnailFilePath;
 @dynamic article;
 @dynamic owner;
 @dynamic pageElements;
