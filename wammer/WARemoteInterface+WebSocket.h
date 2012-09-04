@@ -7,42 +7,32 @@
 //
 
 #import "WARemoteInterface.h"
-#import "SocketRocket/SRWebSocket.h"
+#import "WAWebSocket.h"
 
-typedef enum WAWebSocketResponseCode : NSUInteger {
-	WAWebSocketNormal = 1000,
-	WAWebSocketGoingAwayError,
-	WAWebSocketProtocolError,
-	WAWebSocketFormationError,
-	WAWevSocketReserved,
-	WAWebSocketNoStatusError,
-	WAWebSocketAbnormalError,
-  WAWebSocketInconsistentDataError,
-	WAWebSocketPolicyViolationError,
-	WAWebSocketMessageTooLargeError,
-	WAWebSocketHandshakeError,
-	WAWebSocketUnexpectedServerError
-} WAWebSocketResponseCode;
-
-typedef enum WAWebSocketState : NSUInteger {
-	WAWebSocketConnecting = 0,
-	WAWebSocketOpen,
-	WAWebSocketClosing,
-	WAWebSocketClosed
-} WAWebSocketState;
-
-typedef void (^WAWebSocketCommandHandler) (id);
-typedef void (^WAWebSocketConnectCallback) (void);
-typedef void (^WAWebSocketConnectFailure) (NSError *);
+/* This category is reserved to handle multiple websocket connections in the future
+ */
 
 @interface WARemoteInterface (WebSocket)
-@property (nonatomic, strong) SRWebSocket *connectionForWebSocket;
-@property (nonatomic, strong) NSMutableDictionary *commandHandlerMap;
-@property (nonatomic, readonly) NSUInteger webSocketState;
+
+/// A websocket instance
+@property (nonatomic, strong) WAWebSocket *connectionForWebSocket;
+
+/// @return YES if websocket is connected, NO if not.
 @property (nonatomic, readonly) BOOL webSocketConnected;
 
+/**
+ * Open a new websocket connection to a specified URL.
+ 
+ * @param anURL the url you would like to connect to.
+ * @param onSuccess the completion block when websocket successfully connected
+ * @param onFailure the failure block when websocket failed to connect with
+ */
 - (void) openWebSocketConnectionForUrl:(NSURL *)anURL onSucces:(WAWebSocketConnectCallback)successBlock onFailure:(WAWebSocketConnectFailure)failureBlock;
-- (void) closeWebSocketConnectionWithCode:(NSInteger)code andReason:(NSString*)reason;
-- (NSString *) composeJSONStringForCommand:(NSString*)command withArguments:(NSDictionary *)arguments;
+
+/**
+ * Close the connected websocket connection.
+ */
+- (void) closeWebSocketConnection;
+
 
 @end

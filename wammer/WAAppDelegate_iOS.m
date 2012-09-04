@@ -317,10 +317,7 @@
 				 WARemoteInterface *ri = [WARemoteInterface sharedInterface];
 
 				 // close websocket if needed
-				 if (ri.webSocketState == WAWebSocketConnecting || ri.webSocketState == WAWebSocketOpen) {
-					 [ri closeWebSocketConnectionWithCode:0 andReason:nil];
-				 }
-			 
+				 [ri closeWebSocketConnection];
 
 				 ri.monitoredHosts = nil;
 				 [ri performAutomaticRemoteUpdatesNow];
