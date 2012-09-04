@@ -14,7 +14,13 @@
 @property (nonatomic, readwrite, strong) ALAssetsLibrary *assetsLibrary;
 
 + (WAAssetsLibraryManager *) defaultManager;
+
+/** A wrapper for [ALAssetsLibrary assetForURL:resultBlock:failureBlock:] for hook.
+ */
 - (void)assetForURL:(NSURL *)assetURL resultBlock:(ALAssetsLibraryAssetForURLResultBlock)resultBlock failureBlock:(ALAssetsLibraryAccessFailureBlock)failureBlock;
+
+/** A wrapper for [ALAssetsLibrary writeImageToSavedPhotosAlbum:orientation:completionBlock:] for hook.
+ */
 - (void)writeImageToSavedPhotosAlbum:(CGImageRef)imageRef orientation:(ALAssetOrientation)orientation completionBlock:(ALAssetsLibraryWriteImageCompletionBlock)completionBlock;
 
 @end
