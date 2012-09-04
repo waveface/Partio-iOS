@@ -83,18 +83,6 @@ static NSString * kWAImageStreamPickerComponentThumbnail = @"WAImageStreamPicker
 
 }
 
-- (void) setSelectedItemIndex:(NSUInteger)newSelectedItemIndex {
-
-	if (selectedItemIndex == newSelectedItemIndex)
-		return;
-	
-	[self willChangeValueForKey:@"selectedItemIndex"];
-	selectedItemIndex = newSelectedItemIndex;
-	[self didChangeValueForKey:@"selectedItemIndex"];
-	[self setNeedsLayout];
-
-}
-
 - (void) reloadData {
 
 	NSUInteger numberOfItems = [self.delegate numberOfItemsInImageStreamPickerView:self];
