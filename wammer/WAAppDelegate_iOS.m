@@ -753,8 +753,10 @@ static NSInteger networkActivityStackingCount = 0;
 
 	networkActivityStackingCount--;
 	
-	if (networkActivityStackingCount <= 0)
+	if (networkActivityStackingCount <= 0) {
 		[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+		networkActivityStackingCount = 0;
+	}
 
 }
 
