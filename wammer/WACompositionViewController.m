@@ -155,7 +155,7 @@
 	[self.article.files enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
 
 		WAFile *file = obj;
-    if (![self associatedImagesMadeForFile:file]) {
+    if (![wSelf associatedImagesMadeForFile:file]) {
 
 			if (file.assetURL) {
 
@@ -164,7 +164,7 @@
 					[wSelf.managedObjectContext performBlock:^{
 						
 						WAThumbnailMakeOptions options = WAThumbnailMakeOptionExtraSmall;
-						if (idx == 0) {
+						if (idx < 4) {
 							options |= WAThumbnailMakeOptionMedium;
 						}
 						if (idx < 3) {

@@ -139,10 +139,10 @@ NSString * const kDismissesSelfIfCameraCancelled = @"-[WACompositionViewControll
 		[wSelf.managedObjectContext save:nil];
 
 		WAThumbnailMakeOptions options = WAThumbnailMakeOptionExtraSmall;
-		if ([self.article.files count] == 0) {
+		if ([wSelf.article.files count] < 4) {
 			options |= WAThumbnailMakeOptionMedium;
 		}
-		if ([self.article.files count] < 3) {
+		if ([wSelf.article.files count] < 3) {
 			options |= WAThumbnailMakeOptionSmall;
 		}
 		[wSelf handleIncomingSelectedAsset:representedAsset options:options];
@@ -185,7 +185,7 @@ NSString * const kDismissesSelfIfCameraCancelled = @"-[WACompositionViewControll
 	[selectedAssets enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
 		ALAsset *asset = obj;
 		WAThumbnailMakeOptions options = WAThumbnailMakeOptionExtraSmall;
-		if (idx == 0) {
+		if (idx < 4) {
 			options |= WAThumbnailMakeOptionMedium;
 		}
 		if (idx < 3) {
