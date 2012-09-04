@@ -15,6 +15,7 @@
 #import <objc/runtime.h>
 #import "WACompositionViewController+SubclassEyesOnly.h"
 #import "IRAQPhotoPickerController.h"
+#import "WAAssetsLibraryManager.h"
 
 NSString * const WACompositionImageInsertionUsesCamera = @"WACompositionImageInsertionUsesCamera";
 NSString * const WACompositionImageInsertionAnimatePresentation = @"WACompositionImageInsertionAnimatePresentation";
@@ -88,27 +89,9 @@ NSString * const kDismissesSelfIfCameraCancelled = @"-[WACompositionViewControll
 
 }
 
-- (IRImagePickerController *) newImagePickerController {
-
-	__weak WACompositionViewController *wSelf = self;
-	
-	__block IRImagePickerController *nrImagePickerController = [IRImagePickerController photoLibraryPickerWithCompletionBlock:^(UIImage *image, NSURL *selectedAssetURI, ALAsset *representedAsset) {
-		
-		[wSelf.managedObjectContext save:nil];
-		[wSelf handleIncomingSelectedAssetImage:image representedAsset:representedAsset];
-		[wSelf dismissImagePickerController:nrImagePickerController animated:YES];
-		
-		nrImagePickerController = nil;
-		
-	}];
-	
-	nrImagePickerController.usesAssetsLibrary = NO;
-	
-	return nrImagePickerController;
-
-}
-
 - (void) presentImagePickerController:(UIViewController *)controller sender:(id)sender animated:(BOOL)animated {
+
+	NSParameterAssert(controller);
 
 	__block UIViewController * (^topNonModalVC)(UIViewController *) = [^ (UIViewController *aVC) {
 		
@@ -119,7 +102,7 @@ NSString * const kDismissesSelfIfCameraCancelled = @"-[WACompositionViewControll
 		
 	} copy];
 	
-	[topNonModalVC(self) presentModalViewController:(controller ? controller : [self newImagePickerController]) animated:animated];
+	[topNonModalVC(self) presentModalViewController:controller animated:animated];
 	
 	topNonModalVC = nil;
 
@@ -151,18 +134,24 @@ NSString * const kDismissesSelfIfCameraCancelled = @"-[WACompositionViewControll
 
 	__weak WACompositionViewController *wSelf = self;
 	
-	__block IRImagePickerController *nrPickerController = [IRImagePickerController cameraImageCapturePickerWithCompletionBlock:^(UIImage *image, NSURL *selectedAssetURI, ALAsset *representedAsset) {
+	__block IRImagePickerController *nrPickerController = [IRImagePickerController cameraImageCapturePickerWithAssetsLibrary:[[WAAssetsLibraryManager defaultManager] assetsLibrary] completionBlock:^(ALAsset *representedAsset) {
 		
 		[wSelf.managedObjectContext save:nil];
-		[wSelf handleIncomingSelectedAssetImage:image representedAsset:representedAsset];
+
+		WAThumbnailMakeOptions options = WAThumbnailMakeOptionExtraSmall;
+		if ([wSelf.article.files count] < 4) {
+			options |= WAThumbnailMakeOptionMedium;
+		}
+		if ([wSelf.article.files count] < 3) {
+			options |= WAThumbnailMakeOptionSmall;
+		}
+		[wSelf handleIncomingSelectedAsset:representedAsset options:options];
+
 		[wSelf dismissCameraCapturePickerController:nrPickerController animated:YES];
 		
 		nrPickerController = nil;
 		
 	}];
-	
-	nrPickerController.usesAssetsLibrary = NO;
-	nrPickerController.savesCameraImageCapturesToSavedPhotos = YES;
 	
 	return nrPickerController;
 
@@ -193,63 +182,75 @@ NSString * const kDismissesSelfIfCameraCancelled = @"-[WACompositionViewControll
 
 - (void) handleSelectionWithArray: (NSArray *)selectedAssets {
 	
-	for (ALAsset *asset in selectedAssets) 
-		[self handleIncomingSelectedAssetImage:nil representedAsset:asset];
+	[selectedAssets enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+		ALAsset *asset = obj;
+		WAThumbnailMakeOptions options = WAThumbnailMakeOptionExtraSmall;
+		if (idx < 4) {
+			options |= WAThumbnailMakeOptionMedium;
+		}
+		if (idx < 3) {
+			options |= WAThumbnailMakeOptionSmall;
+		}
+		[self handleIncomingSelectedAsset:asset options:options];
+	}];
 		
 }
 
-- (void) makeAssociatedImagesOfFile:(WAFile *)file withResourceImage:(UIImage *)resourceImage representedAsset:(ALAsset *)representedAsset {
+- (void) makeAssociatedImagesOfFile:(WAFile *)file withRepresentedAsset:(ALAsset *)representedAsset options:(WAThumbnailMakeOptions)options {
 
-	NSParameterAssert(resourceImage||representedAsset);
-
-	if (file.resourceFilePath) {
-		return;
-	}
+	NSParameterAssert(representedAsset);
 
 	__weak WACompositionViewController *wSelf = self;
 	
 	[self.managedObjectContext performBlock:^{
 		
 		WADataStore *ds = [WADataStore defaultStore];
-		UIImage *image = nil;
-		if (resourceImage) {
-			image = resourceImage;
-		} else if (representedAsset) {
-			image = [[representedAsset defaultRepresentation] irImage];
-		}
 
-		CGSize imageSize = image.size;
-		UIImage *standardImage = [image irStandardImage];
-		
-		CGFloat const smallSideLength = kWAFileSmallImageSideLength;
-		
-		if ((imageSize.width > smallSideLength) || (imageSize.height > smallSideLength)) {
+		if (options & WAThumbnailMakeOptionSmall || options & WAThumbnailMakeOptionMedium) {
+
+			UIImage *image = [[representedAsset defaultRepresentation] irImage];
+			CGSize imageSize = image.size;
+			UIImage *standardImage = [image irStandardImage];
 			
-			UIImage *smallThumbnailImage = [standardImage irScaledImageWithSize:IRGravitize((CGRect){ CGPointZero, (CGSize){ smallSideLength, smallSideLength } }, image.size, kCAGravityResizeAspect).size];
+			if (options & WAThumbnailMakeOptionSmall) {
+				CGFloat const smallSideLength = kWAFileSmallImageSideLength;
+				
+				if ((imageSize.width > smallSideLength) || (imageSize.height > smallSideLength)) {
+					
+					UIImage *smallThumbnailImage = [standardImage irScaledImageWithSize:IRGravitize((CGRect){ CGPointZero, (CGSize){ smallSideLength, smallSideLength } }, image.size, kCAGravityResizeAspect).size];
+					
+					file.smallThumbnailFilePath = [[ds persistentFileURLForData:UIImageJPEGRepresentation(smallThumbnailImage, 0.85f) extension:@"jpeg"] path];
+					
+				} else {
+					
+					file.smallThumbnailFilePath = [[ds persistentFileURLForData:UIImageJPEGRepresentation(standardImage, 0.85f) extension:@"jpeg"] path];
+					
+				}
+			}
 			
-			file.smallThumbnailFilePath = [[ds persistentFileURLForData:UIImageJPEGRepresentation(smallThumbnailImage, 0.85f) extension:@"jpeg"] path];
-			
-		} else {
-			
-			file.smallThumbnailFilePath = [[ds persistentFileURLForData:UIImageJPEGRepresentation(standardImage, 0.85f) extension:@"jpeg"] path];
-			
+			if (options & WAThumbnailMakeOptionMedium) {
+				CGFloat const mediumSideLength = kWAFileMediumImageSideLength;
+				
+				if ((imageSize.width > mediumSideLength) || (imageSize.height > mediumSideLength)) {
+					
+					UIImage *thumbnailImage = [standardImage irScaledImageWithSize:IRGravitize((CGRect){ CGPointZero, (CGSize){ mediumSideLength, mediumSideLength } }, image.size, kCAGravityResizeAspect).size];
+					
+					file.thumbnailFilePath = [[ds persistentFileURLForData:UIImageJPEGRepresentation(thumbnailImage, 0.85f) extension:@"jpeg"] path];
+					
+				} else {
+					
+					file.thumbnailFilePath = [[ds persistentFileURLForData:UIImageJPEGRepresentation(standardImage, 0.85f) extension:@"jpeg"] path];
+					
+				}
+			}
 		}
 		
-		CGFloat const mediumSideLength = kWAFileMediumImageSideLength;
-		
-		if ((imageSize.width > mediumSideLength) || (imageSize.height > mediumSideLength)) {
+		if (options & WAThumbnailMakeOptionExtraSmall) {
 			
-			UIImage *thumbnailImage = [standardImage irScaledImageWithSize:IRGravitize((CGRect){ CGPointZero, (CGSize){ mediumSideLength, mediumSideLength } }, image.size, kCAGravityResizeAspect).size];
-			
-			file.thumbnailFilePath = [[ds persistentFileURLForData:UIImageJPEGRepresentation(thumbnailImage, 0.85f) extension:@"jpeg"] path];
-			
-		} else {
-			
-			file.thumbnailFilePath = [[ds persistentFileURLForData:UIImageJPEGRepresentation(standardImage, 0.85f) extension:@"jpeg"] path];
+			UIImage *extraSmallThumbnailImage = [UIImage imageWithCGImage:[representedAsset aspectRatioThumbnail]];
+			file.extraSmallThumbnailFilePath = [[ds persistentFileURLForData:UIImageJPEGRepresentation(extraSmallThumbnailImage, 1.0f) extension:@"jpeg"] path];
 			
 		}
-		
-		file.resourceFilePath = [[ds persistentFileURLForData:UIImageJPEGRepresentation(image, 1.0f) extension:@"jpeg"] path];
 		
 		NSError *savingError = nil;
 		if (![wSelf.managedObjectContext save:&savingError])
@@ -259,9 +260,9 @@ NSString * const kDismissesSelfIfCameraCancelled = @"-[WACompositionViewControll
 
 }
 
-- (void) handleIncomingSelectedAssetImage:(UIImage *)image representedAsset:(ALAsset *)representedAsset {
+- (void) handleIncomingSelectedAsset:(ALAsset *)representedAsset options:(WAThumbnailMakeOptions)options {
 
-	if (image || representedAsset) {
+	if (representedAsset) {
 		
 		NSManagedObjectContext *context = self.managedObjectContext;
 		NSManagedObjectID *articleID = [self.article objectID];
@@ -284,16 +285,10 @@ NSString * const kDismissesSelfIfCameraCancelled = @"-[WACompositionViewControll
 			[article willChangeValueForKey:@"files"];
 			[[article mutableOrderedSetValueForKey:@"files"] addObject:file];
 			[article didChangeValueForKey:@"files"];
-			
-			if (image) {
-				[wSelf makeAssociatedImagesOfFile:file withResourceImage:image representedAsset:nil];
-			}
-			
-			if (representedAsset) {
-				[wSelf makeAssociatedImagesOfFile:file withResourceImage:nil representedAsset:representedAsset];
-				file.assetURL = [[[representedAsset defaultRepresentation] url] absoluteString];
-			}
-				
+						
+			[wSelf makeAssociatedImagesOfFile:file withRepresentedAsset:representedAsset options:options];
+
+			file.assetURL = [[[representedAsset defaultRepresentation] url] absoluteString];
 			file.resourceType = (NSString *)kUTTypeImage;
 
 			NSError *savingError = nil;

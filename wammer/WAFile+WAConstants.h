@@ -24,3 +24,5 @@ extern NSString * const kWAFileValidatesLargeThumbnailImage;
 extern NSString * const kWAFilePresentableImage;
 extern NSString * const kWAFileAttemptsBlobRetrieval;
 extern NSString * const kWAFileDisplaying;
+extern NSString * const kWAFileExtraSmallThumbnailImage;
+extern NSString * const kWAFileExtraSmallThumbnailFilePath;

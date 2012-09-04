@@ -179,37 +179,6 @@
 
 	}
 	
-	NSString *assetURLString = file.assetURL;
-	if (!cell.image && assetURLString) {
-
-		[cell irUnbind:@"image"];
-		
-		BOOL (^cellImageSet)(void) = ^ {
-			return (BOOL)!!(cell.image);
-		};
-
-		ALAssetsLibrary * const library = [[self class] assetsLibrary];
-		NSURL *assetURL = [NSURL URLWithString:assetURLString];
-	
-		[library assetForURL:assetURL resultBlock:^(ALAsset *asset) {
-		
-			if (cellImageSet())
-				return;
-		
-			dispatch_async(dispatch_get_main_queue(), ^{
-			
-				if (cellImageSet())
-					return;
-			
-				cell.image = [UIImage imageWithCGImage:[asset aspectRatioThumbnail]];
-			
-			});
-		
-		} failureBlock:^(NSError *error) {
-		
-		}];
-	}
-
 	return;
 }
 
@@ -519,23 +488,6 @@
 
 	return YES;
 
-}
-
-+ (ALAssetsLibrary *) assetsLibrary {
-	
-	static ALAssetsLibrary *library = nil;
-	if (library != nil)
-		return library;
-	
-	static dispatch_once_t onceToken = 0;
-	dispatch_once(&onceToken, ^{
-		
-		library = [ALAssetsLibrary new];
-		
-	});
-	
-	return library;
-	
 }
 
 @end

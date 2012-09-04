@@ -58,13 +58,6 @@
 	
 	BOOL isFavorite = [inArticle.favorite isEqualToNumber:(NSNumber *)kCFBooleanTrue];
 
-	UIImage *representingImage;
-	
-	if (isFavorite)
-		representingImage = [article.representingFile bestPresentableImage];
-	else
-		representingImage = [article.representingFile smallestPresentableImage];
-	
 	NSString *dateString = nil;
 	if ([article.creationDate compare:[NSDate dateWithTimeIntervalSinceNow:-24*60*60]] == NSOrderedDescending) {
 		
@@ -96,28 +89,6 @@
 	previewBadge.preview = shownPreview;
 
 	[mainImageView irUnbind:@"image"];
-	if (![article.representingFile smallestPresentableImage] && [article.representingFile assetURL]) {
-		
-		ALAssetsLibrary * const library = [[self class] assetsLibrary];
-		[library assetForURL:[NSURL URLWithString:article.representingFile.assetURL] resultBlock:^(ALAsset *asset) {
-			
-			dispatch_async(dispatch_get_main_queue(), ^{
-				
-				mainImageView.image = [UIImage imageWithCGImage:[asset aspectRatioThumbnail]];
-				
-			});
-			
-		} failureBlock:^(NSError *error) {
-			
-			NSLog(@"Unable to retrieve assets for URL %@", article.representingFile.assetURL);
-			
-		}];
-		
-	} else {
-	 
-		mainImageView.image = representingImage;
-	}
-	
 	if (isFavorite)
 		[mainImageView irBind:@"image"
 					 toObject:inArticle
@@ -127,7 +98,7 @@
 	else
 		[mainImageView irBind:@"image"
 					 toObject:inArticle
-					  keyPath:@"representingFile.smallestPresentableImage"
+					  keyPath:@"representingFile.smallThumbnailImage"
 					  options:[NSDictionary dictionaryWithObjectsAndKeys: (id)kCFBooleanTrue,
 							   kIRBindingsAssignOnMainThreadOption, nil]];
 	
@@ -264,20 +235,6 @@
 
 	return formatter;
 
-}
-
-+ (ALAssetsLibrary *) assetsLibrary {
-	
-	static ALAssetsLibrary *library = nil;
-	static dispatch_once_t onceToken = 0;
-	dispatch_once(&onceToken, ^{
-		
-		library = [ALAssetsLibrary new];
-		
-	});
-	
-	return library;
-	
 }
 
 @end
