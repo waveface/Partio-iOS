@@ -62,6 +62,8 @@
 		4B52734415625B3500C6F55D /* ProviderIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 4B52734315625B3500C6F55D /* ProviderIcon.png */; };
 		4B57F2F9157F5D4300467AD4 /* WFPreviewTemplate-Discrete_Web_Image_Vertical.html in Resources */ = {isa = PBXBuildFile; fileRef = 4B57F2F8157F5D4300467AD4 /* WFPreviewTemplate-Discrete_Web_Image_Vertical.html */; };
 		4B6220DE15BE839000893766 /* PostWithIncompleteAttachmentInformation.txt in Resources */ = {isa = PBXBuildFile; fileRef = 4B6220DD15BE839000893766 /* PostWithIncompleteAttachmentInformation.txt */; };
+		4B6C222115F5FEF100C19A7B /* WAAssetLibraryManagerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B6C222015F5FEF100C19A7B /* WAAssetLibraryManagerTests.m */; };
+		4B6C222215F6020C00C19A7B /* WAAssetsLibraryManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 136C170215F48E8E0066B289 /* WAAssetsLibraryManager.m */; };
 		4B733BA314987A81005CAE8D /* IASKAppSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B733B7D14987A81005CAE8D /* IASKAppSettingsViewController.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		4B733BA414987A81005CAE8D /* IASKAppSettingsWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B733B7F14987A81005CAE8D /* IASKAppSettingsWebViewController.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		4B733BA514987A81005CAE8D /* IASKSpecifierValuesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B733B8114987A81005CAE8D /* IASKSpecifierValuesViewController.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -1138,6 +1140,8 @@
 		4B52734315625B3500C6F55D /* ProviderIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ProviderIcon.png; path = external/WFPresentation/Source/ProviderIcon.png; sourceTree = "<group>"; };
 		4B57F2F8157F5D4300467AD4 /* WFPreviewTemplate-Discrete_Web_Image_Vertical.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = "WFPreviewTemplate-Discrete_Web_Image_Vertical.html"; path = "external/WFPresentation/Source/WFPreviewTemplate-Discrete_Web_Image_Vertical.html"; sourceTree = "<group>"; };
 		4B6220DD15BE839000893766 /* PostWithIncompleteAttachmentInformation.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = PostWithIncompleteAttachmentInformation.txt; sourceTree = "<group>"; };
+		4B6C221F15F5FEF100C19A7B /* WAAssetLibraryManagerTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAAssetLibraryManagerTests.h; sourceTree = "<group>"; };
+		4B6C222015F5FEF100C19A7B /* WAAssetLibraryManagerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAAssetLibraryManagerTests.m; sourceTree = "<group>"; };
 		4B733B7C14987A81005CAE8D /* IASKAppSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IASKAppSettingsViewController.h; sourceTree = "<group>"; };
 		4B733B7D14987A81005CAE8D /* IASKAppSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IASKAppSettingsViewController.m; sourceTree = "<group>"; };
 		4B733B7E14987A81005CAE8D /* IASKAppSettingsWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IASKAppSettingsWebViewController.h; sourceTree = "<group>"; };
@@ -2130,6 +2134,8 @@
 				4B8CA97614BBE7BA006E06BB /* WATests_iOS.m */,
 				4B26970415E76362007E1054 /* WAWebSocketTests.h */,
 				4B26970515E76362007E1054 /* WAWebSocketTests.m */,
+				4B6C221F15F5FEF100C19A7B /* WAAssetLibraryManagerTests.h */,
+				4B6C222015F5FEF100C19A7B /* WAAssetLibraryManagerTests.m */,
 			);
 			name = "iOS Tests";
 			path = "wammer-iOS-Tests";
@@ -4170,6 +4176,8 @@
 				4B3225E915BE4CE400934DA4 /* WAArticleTests.m in Sources */,
 				4B7420FC15D8B59900586559 /* fopenfix.c in Sources */,
 				4B26970615E76362007E1054 /* WAWebSocketTests.m in Sources */,
+				4B6C222115F5FEF100C19A7B /* WAAssetLibraryManagerTests.m in Sources */,
+				4B6C222215F6020C00C19A7B /* WAAssetsLibraryManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
