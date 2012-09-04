@@ -6,6 +6,7 @@
 //  Copyright (c) 2011 Waveface. All rights reserved.
 //
 
+#import "WADefines.h"
 #import "WAReachabilityDetector.h"
 #import "IRRecurrenceMachine.h"
 #import "WARemoteInterface.h"
@@ -66,7 +67,7 @@ static void WASCReachabilityCallback (SCNetworkReachabilityRef target, SCNetwork
 
 + (void) load {
 
-	__block id applicationDidFinishLaunchingListener = [[NSNotificationCenter defaultCenter] addObserverForName:UIApplicationDidFinishLaunchingNotification object:nil queue:nil usingBlock:^(NSNotification *note) {
+	__block id applicationDidFinishLaunchingListener = [[NSNotificationCenter defaultCenter] addObserverForName:WAApplicationDidFinishLaunchingNotification object:nil queue:nil usingBlock:^(NSNotification *note) {
 	
 		[WAReachabilityDetector sharedDetectorForInternet];
 		[WAReachabilityDetector sharedDetectorForLocalWiFi];
