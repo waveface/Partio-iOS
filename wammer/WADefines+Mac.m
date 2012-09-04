@@ -17,3 +17,9 @@ WAAppDelegate * AppDelegate (void) {
 	return (WAAppDelegate_Mac *)[UIApplication sharedApplication].delegate;
 
 }
+
+NSString * WADeviceName (void) {
+	
+	return @"FIXME";
+	
+}

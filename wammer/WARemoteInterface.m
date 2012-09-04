@@ -97,7 +97,7 @@
 + (IRWebAPIRequestContextTransformer) defaultBeginNetworkActivityTransformer {
 
 	return ^ (IRWebAPIRequestContext *inOriginalContext) {
-		dispatch_async(dispatch_get_main_queue(), ^ { [((WAAppDelegate *)[UIApplication sharedApplication].delegate) beginNetworkActivity]; });
+		dispatch_async(dispatch_get_main_queue(), ^ { [((WAAppDelegate *)AppDelegate()) beginNetworkActivity]; });
 		return inOriginalContext;
 	};
 
@@ -106,7 +106,7 @@
 + (IRWebAPIResponseContextTransformer) defaultEndNetworkActivityTransformer {
 
 	return ^ (NSDictionary *inParsedResponse, IRWebAPIRequestContext *inResponseContext) {
-		dispatch_async(dispatch_get_main_queue(), ^ { [((WAAppDelegate *)[UIApplication sharedApplication].delegate) endNetworkActivity]; });
+		dispatch_async(dispatch_get_main_queue(), ^ { [((WAAppDelegate *)AppDelegate()) endNetworkActivity]; });
 		return inParsedResponse;
 	};
 

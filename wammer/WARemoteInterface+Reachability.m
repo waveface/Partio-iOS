@@ -39,10 +39,10 @@ static NSString * const kNetworkState = @"-[WARemoteInterface(Reachability) netw
 
 	__weak NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
 	
-	__block id appLoaded = [center addObserverForName:UIApplicationDidFinishLaunchingNotification object:nil queue:nil usingBlock:^(NSNotification *note) {
+	__block id appLoaded = [center addObserverForName:WAApplicationDidFinishLaunchingNotification object:nil queue:nil usingBlock:^(NSNotification *note) {
 		
 		[center removeObserver:appLoaded];
-		objc_setAssociatedObject([WARemoteInterface class], &UIApplicationDidFinishLaunchingNotification, nil, OBJC_ASSOCIATION_ASSIGN);
+		objc_setAssociatedObject([WARemoteInterface class], &WAApplicationDidFinishLaunchingNotification, nil, OBJC_ASSOCIATION_ASSIGN);
 		
 		__block id baseURLChanged = [center addObserverForName:kWARemoteInterfaceContextDidChangeBaseURLNotification object:nil queue:nil usingBlock:^(NSNotification *note) {
 			
@@ -68,7 +68,7 @@ static NSString * const kNetworkState = @"-[WARemoteInterface(Reachability) netw
 				
 	}];
 
-	objc_setAssociatedObject([WARemoteInterface class], &UIApplicationDidFinishLaunchingNotification, appLoaded, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+	objc_setAssociatedObject([WARemoteInterface class], &WAApplicationDidFinishLaunchingNotification, appLoaded, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 
 }
 

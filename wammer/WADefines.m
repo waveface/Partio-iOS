@@ -137,11 +137,6 @@ BOOL WADeviceIdentifierReset (void) {
 
 }
 
-NSString * WADeviceName (void) {
-
-	return [[UIDevice currentDevice] name];
-
-}
 
 NSString * WADeviceIdentifier (void) {
 

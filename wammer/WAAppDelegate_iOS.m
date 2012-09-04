@@ -724,7 +724,7 @@
 
 }
 
-static unsigned int networkActivityStackingCount = 0;
+static NSInteger networkActivityStackingCount = 0;
 
 - (void) beginNetworkActivity {
 
@@ -751,11 +751,12 @@ static unsigned int networkActivityStackingCount = 0;
 		return;
 	}
 
-	NSParameterAssert(networkActivityStackingCount > 0);
 	networkActivityStackingCount--;
 	
-	if (networkActivityStackingCount == 0)
+	if (networkActivityStackingCount <= 0) {
 		[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+		networkActivityStackingCount = 0;
+	}
 
 }
 

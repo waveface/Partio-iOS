@@ -67,3 +67,8 @@ BOOL WAIsXCallbackURL (NSURL *anURL, NSString **outCommand, NSDictionary **outPa
 }
 
 
+NSString * WADeviceName (void) {
+	
+	return [[UIDevice currentDevice] name];
+	
+}
