@@ -8,7 +8,6 @@
 
 #import <Foundation/Foundation.h>
 #import "SocketRocket/SRWebSocket.h"
-#import "WAWebSocketHelpers.h"
 
 typedef enum WAWebSocketResponseCode : NSUInteger {
 	WAWebSocketNormal = 1000,
@@ -36,6 +35,9 @@ typedef enum WAWebSocketState : NSUInteger {
 typedef void (^WAWebSocketCommandHandler) (id);
 typedef void (^WAWebSocketConnectCallback) (void);
 typedef void (^WAWebSocketConnectFailure) (NSError *);
+
+extern NSString * composeWSJSONCommand (NSString* command, NSDictionary* arguments);
+
 
 @interface WAWebSocket : NSObject <SRWebSocketDelegate>
 
