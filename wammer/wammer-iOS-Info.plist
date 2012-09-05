@@ -6,36 +6,27 @@
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
 	<string>Stream</string>
-	<key>CFBundleDocumentTypes</key>
-	<array/>
 	<key>CFBundleExecutable</key>
 	<string>${EXECUTABLE_NAME}</string>
 	<key>CFBundleGetInfoString</key>
 	<string></string>
-	<key>CFBundleIconFiles</key>
-	<array>
-		<string>Icon-72.png</string>
-		<string>Icon@2x.png</string>
-		<string>Icon.png</string>
-		<string>Icon-72@2x.png</string>
-	</array>
 	<key>CFBundleIcons</key>
 	<dict>
 		<key>CFBundlePrimaryIcon</key>
 		<dict>
 			<key>CFBundleIconFiles</key>
 			<array>
-				<string>Icon-72.png</string>
-				<string>Icon@2x.png</string>
-				<string>Icon.png</string>
-				<string>Icon-72@2x.png</string>
+				<string>Icon${STREAM_ICON_NAME_SUFFIX}.png</string>
+				<string>Icon-72${STREAM_ICON_NAME_SUFFIX}.png</string>
+				<string>Icon${STREAM_ICON_NAME_SUFFIX}@2x.png</string>
+				<string>Icon-72${STREAM_ICON_NAME_SUFFIX}@2x.png</string>
 			</array>
 			<key>UIPrerenderedIcon</key>
 			<true/>
 		</dict>
 	</dict>
 	<key>CFBundleIdentifier</key>
-	<string>com.waveface.waveface</string>
+	<string>com.waveface.waveface${STREAM_BUNDLE_ID_SUFFIX}</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
@@ -100,10 +91,6 @@
 	</array>
 	<key>UIViewEdgeAntialiasing</key>
 	<true/>
-	<key>UTExportedTypeDeclarations</key>
-	<array/>
-	<key>UTImportedTypeDeclarations</key>
-	<array/>
 	<key>WAFeedbackRecipient</key>
 	<string>support@waveface.com</string>
 </dict>
