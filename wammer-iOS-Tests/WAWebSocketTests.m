@@ -39,7 +39,7 @@
 	NSURL *mockWebSocketServer;
 	NSDate *asyncWaitUntil;
 	__block id mockSocket;
-	WARemoteInterface *remoteInterface;
+	WAWebSocket *webSocket;
 }
 
 -(void)setUp {
@@ -48,14 +48,10 @@
 	// TODO: create a mock server to handle the requests
 	mockWebSocketServer = [NSURL URLWithString:@"ws://ws.waveface.com:8889"];
 	
-	
-	remoteInterface = [WARemoteInterface sharedInterface];
-	remoteInterface.apiKey = @"";
-	remoteInterface.userIdentifier = @"";
-	remoteInterface.userToken = @"";
-	
-	SRWebSocket *webSocket = [[SRWebSocket alloc] initWithURL:[NSURL URLWithString:@"ws://localhost"]];
-	mockSocket = [OCMockObject partialMockForObject:webSocket];
+	webSocket = [[WAWebSocket alloc] initWithUrl:mockWebSocketServer apikey:@"" usertoken:@"" userIdentifier:@""];
+		
+	SRWebSocket *mock = [[SRWebSocket alloc] initWithURL:[NSURL URLWithString:@"ws://localhost"]];
+	mockSocket = [OCMockObject partialMockForObject:mock];
 }
 
 -(void)tearDown {
@@ -64,21 +60,20 @@
 
 -(void)testOpenConnectionSuccess {
 	__block BOOL complete = NO;
-	__weak WARemoteInterface *wRi = remoteInterface;
+	
+	__weak WAWebSocket *wSocket = webSocket;
 	
 	[[[mockSocket expect] andDo:^(NSInvocation *invocation) {
-		[wRi performSelector:@selector(webSocketDidOpen:) withObject:nil];
+		[wSocket performSelector:@selector(webSocketDidOpen:) withObject:nil];
 	}] open];
 
 	[[[mockSocket expect] andDo:^(NSInvocation *invocation) {
 		// Do nothing for now
 	}] send:[OCMArg any]];
 	
-	[remoteInterface.connectionForWebSocket replaceWebSocketConnection:(SRWebSocket*)mockSocket];
+	[webSocket replaceWebSocketConnection:(SRWebSocket*)mockSocket];
 
-	[[WARemoteInterface sharedInterface]
-	 openWebSocketConnectionForUrl:mockWebSocketServer
-	 onSucces:^{
+	[webSocket openConnectionOnSucces:^{
 		 // success
 		 complete = YES;
 	 }
@@ -101,17 +96,17 @@
 
 - (void)testOpenConnectionFail {
 	__block BOOL complete = NO;
-	
-	__weak WARemoteInterface *wRi = remoteInterface;
+
+	__weak WAWebSocket *wSocket = webSocket;
 	
 	[[[mockSocket expect] andDo:^(NSInvocation *invocation) {
-		[wRi performSelector:@selector(webSocket:didFailWithError:) withObject:nil withObject:nil];
+		[wSocket performSelector:@selector(webSocket:didFailWithError:) withObject:nil withObject:nil];
 	}] open];
 
 	
-	[remoteInterface.connectionForWebSocket replaceWebSocketConnection:(SRWebSocket*)mockSocket];
+	[webSocket replaceWebSocketConnection:(SRWebSocket*)mockSocket];
 
-	[[WARemoteInterface sharedInterface] openWebSocketConnectionForUrl:mockWebSocketServer onSucces:^{
+	[webSocket openConnectionOnSucces:^{
 		complete = YES;
 		STFail(@"Websocket connection should fail to be opened.");
 	} onFailure:^(NSError *error) {
@@ -133,19 +128,20 @@
 - (void)testConnectDueToHandShakeError {
 	__block BOOL complete = NO;
 	
-	__weak WARemoteInterface *wRi = remoteInterface;
-	
+	__weak WAWebSocket *wSocket = webSocket;
+
 	[[[mockSocket expect] andDo:^(NSInvocation *invocation) {
-		[wRi performSelector:@selector(webSocketDidOpen:) withObject:nil];
+		[wSocket performSelector:@selector(webSocketDidOpen:) withObject:nil];
 	}] open];
 	
 	[[[mockSocket expect] andDo:^(NSInvocation *invocation) {
-		[wRi performSelector:@selector(webSocket:didReceiveMessage:) withObject:nil withObject:@"{\"result\":{\"api_ret_code\":1010,\"api_ret_message\":\"\"}}"];
+		[wSocket performSelector:@selector(webSocket:didReceiveMessage:) withObject:nil withObject:@"{\"result\":{\"api_ret_code\":1010,\"api_ret_message\":\"\"}}"];
 	}] send:[OCMArg any]];
 
-	[remoteInterface.connectionForWebSocket replaceWebSocketConnection:(SRWebSocket*)mockSocket];
+	[webSocket replaceWebSocketConnection:(SRWebSocket*)mockSocket];
 	
-	[[WARemoteInterface sharedInterface] openWebSocketConnectionForUrl:mockWebSocketServer onSucces:^{
+	[webSocket openConnectionOnSucces:^{
+		complete = YES;
 		// do nothing, socket will be opened successfully but fail with server's response
 	} onFailure:^(NSError *error) {
 		STAssertNotNil(error, @"Error should be responsed, should not be nil");
@@ -169,19 +165,20 @@
 - (void)testConnectPermissionDeniedError {
 	__block BOOL complete = NO;
 	
-	__weak WARemoteInterface *wRi = remoteInterface;
+	__weak WAWebSocket *wSocket = webSocket;
 	
 	[[[mockSocket expect] andDo:^(NSInvocation *invocation) {
-		[wRi performSelector:@selector(webSocketDidOpen:) withObject:nil];
+		[wSocket performSelector:@selector(webSocketDidOpen:) withObject:nil];
 	}] open];
 	
 	[[[mockSocket expect] andDo:^(NSInvocation *invocation) {
-		[wRi performSelector:@selector(webSocket:didReceiveMessage:) withObject:nil withObject:@"{\"result\":{\"api_ret_code\":1010,\"api_ret_message\":\"\"}}"];
+		[wSocket performSelector:@selector(webSocket:didReceiveMessage:) withObject:nil withObject:@"{\"result\":{\"api_ret_code\":1010,\"api_ret_message\":\"\"}}"];
 	}] send:[OCMArg any]];
 	
-	[remoteInterface.connectionForWebSocket replaceWebSocketConnection:(SRWebSocket*)mockSocket];
+	[webSocket replaceWebSocketConnection:(SRWebSocket*)mockSocket];
 	
-	[[WARemoteInterface sharedInterface] openWebSocketConnectionForUrl:mockWebSocketServer onSucces:^{
+	[webSocket openConnectionOnSucces:^{
+		complete = YES;
 		// do nothing, socket will be opened successfully but fail with server's response
 	} onFailure:^(NSError *error) {
 		STAssertNotNil(error, @"Error should be responsed, should not be nil");
