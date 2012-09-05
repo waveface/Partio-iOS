@@ -22,6 +22,8 @@ NSString * composeWSJSONCommand (NSString *command, NSDictionary *arguments) {
 	
 }
 
+static NSUInteger kReconnectRetryMaxCounting = 5;
+
 @interface WAWebSocket ()
 
 @property (nonatomic, strong) WAWebSocketConnectCallback successHandler;
@@ -34,7 +36,7 @@ NSError * WARemoteInterfaceWebSocketError (NSUInteger code, NSString *message);
 @end
 
 @implementation WAWebSocket {
-	NSUInteger connectRetryCounting;
+	NSInteger connectRetryCounting;
 	BOOL stopped;
 }
 
@@ -45,7 +47,7 @@ NSError * WARemoteInterfaceWebSocketError (NSUInteger code, NSString *message);
 	self.userToken = theUserToken;
 	self.apiKey = theApiKey;
 	
-	connectRetryCounting = 5;
+	connectRetryCounting = kReconnectRetryMaxCounting;
 	stopped = NO;
 	
 	return self;
@@ -56,16 +58,17 @@ NSError * WARemoteInterfaceWebSocketError (NSUInteger code, NSString *message);
 	self.successHandler = successBlock;
 	self.failureHandler = failureBlock;
 
-	connectRetryCounting = 5;
+	connectRetryCounting = kReconnectRetryMaxCounting;
 	stopped = NO;
 	
+	__weak id wSelf = self;
 	WAWebSocketCommandHandler errorHandler = ^(id resp) {
 		NSLog(@"Get an error response from we connection: %@", (NSString *) resp);
 		NSNumber *retCode = [(NSDictionary*)resp objectForKey:@"code"];
 		NSString *message = [(NSDictionary*)resp objectForKey:@"reason"];
 		
 		if (retCode && ![retCode isEqualToNumber:[NSNumber numberWithInteger:WAWebSocketNormal]])
-			[self connectionResponseWithCode:[retCode integerValue] andReason:message];
+			[wSelf connectionResponseWithCode:[retCode integerValue] andReason:message];
 	};
 	
 	self.commandHandlerMap = [[NSMutableDictionary alloc] initWithObjectsAndKeys:errorHandler, @"error", nil];
@@ -120,7 +123,7 @@ NSError * WARemoteInterfaceWebSocketError (NSUInteger code, NSString *message);
 			double delayInSeconds = 2;
 
 			if (connectRetryCounting <= 0) {
-				connectRetryCounting = 5;
+				connectRetryCounting = kReconnectRetryMaxCounting;
 				
 				if (self.failureHandler) {
 					NSError *error = WARemoteInterfaceWebSocketError(WAWebSocketGoingAwayError, @"Unable to connect to websocket server.");
@@ -202,12 +205,18 @@ NSError * WARemoteInterfaceWebSocketError (NSUInteger code, NSString *message) {
 		}
 	} else {
 		[result enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
-			WAWebSocketCommandHandler handler = [self.commandHandlerMap objectForKey:key];
-			if (handler != nil) {
-				handler(obj);
-			} else {
-				NSLog(@"Not supported command: %@", (NSString*)key);
-			}
+
+			dispatch_async(dispatch_get_main_queue(), ^{
+				
+				WAWebSocketCommandHandler handler = [self.commandHandlerMap objectForKey:key];
+				if (handler != nil) {
+					handler(obj);
+				} else {
+					NSLog(@"Not supported command: %@", (NSString*)key);
+				}
+				
+			});
+			
 		}];
 	}
 }
@@ -218,6 +227,8 @@ NSError * WARemoteInterfaceWebSocketError (NSUInteger code, NSString *message) {
 														 self.userIdentifier, @"user_id", nil ];
 	NSString *cmdString = composeWSJSONCommand(@"connect", arguments);
 	[self.connectionForWebSocket send:cmdString];
+	
+	connectRetryCounting = kReconnectRetryMaxCounting;
 	
 	if (self.successHandler) {
 		self.successHandler();
