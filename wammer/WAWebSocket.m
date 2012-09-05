@@ -78,18 +78,15 @@ NSError * WARemoteInterfaceWebSocketError (NSUInteger code, NSString *message);
 
 - (void) closeConnectionWithCode:(NSInteger)code andReason:(NSString*)reason
 {
+	stopped = YES;
 	if ([self webSocketConnected]) {
-		self.connectionForWebSocket.delegate = nil;
 		[self.connectionForWebSocket closeWithCode:code reason:reason];
 	}
-	stopped = YES;
 }
 
 - (void) reconnectWebSocket
 {
 	if (self.connectionForWebSocket) {
-		// We need to zero out the delegate to prevent an infinite looping hell
-		self.connectionForWebSocket.delegate = nil;
 		[self.connectionForWebSocket closeWithCode:WAWebSocketNormal reason:@"Normally closed from refresh button"];
 		self.connectionForWebSocket = nil;
 	}
