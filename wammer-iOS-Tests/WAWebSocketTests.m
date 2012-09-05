@@ -8,16 +8,17 @@
 
 #import "WAWebSocketTests.h"
 #import "OCMock/OCMock.h"
+#import "WAWebSocket.h"
 #import "WARemoteInterface+WebSocket.h"
 #import <objc/objc-class.h>
 
-@interface WARemoteInterface (ForWebSocketTest)
+@interface WAWebSocket (ForWebSocketTest)
 
 - (void) replaceWebSocketConnection:(SRWebSocket *)newSocketConnection;
 
 @end
 
-@implementation WARemoteInterface (ForWebSocketTest)
+@implementation WAWebSocket (ForWebSocketTest)
 
 /* 
  * This should be called before WARemoteInterface:openWebSocketWithURL
@@ -73,7 +74,7 @@
 		// Do nothing for now
 	}] send:[OCMArg any]];
 	
-	[remoteInterface replaceWebSocketConnection:(SRWebSocket*)mockSocket];
+	[remoteInterface.connectionForWebSocket replaceWebSocketConnection:(SRWebSocket*)mockSocket];
 
 	[[WARemoteInterface sharedInterface]
 	 openWebSocketConnectionForUrl:mockWebSocketServer
@@ -106,8 +107,9 @@
 	[[[mockSocket expect] andDo:^(NSInvocation *invocation) {
 		[wRi performSelector:@selector(webSocket:didFailWithError:) withObject:nil withObject:nil];
 	}] open];
+
 	
-	[remoteInterface replaceWebSocketConnection:(SRWebSocket*)mockSocket];
+	[remoteInterface.connectionForWebSocket replaceWebSocketConnection:(SRWebSocket*)mockSocket];
 
 	[[WARemoteInterface sharedInterface] openWebSocketConnectionForUrl:mockWebSocketServer onSucces:^{
 		complete = YES;
@@ -141,8 +143,7 @@
 		[wRi performSelector:@selector(webSocket:didReceiveMessage:) withObject:nil withObject:@"{\"result\":{\"api_ret_code\":1010,\"api_ret_message\":\"\"}}"];
 	}] send:[OCMArg any]];
 
-	
-	[remoteInterface replaceWebSocketConnection:(SRWebSocket*)mockSocket];
+	[remoteInterface.connectionForWebSocket replaceWebSocketConnection:(SRWebSocket*)mockSocket];
 	
 	[[WARemoteInterface sharedInterface] openWebSocketConnectionForUrl:mockWebSocketServer onSucces:^{
 		// do nothing, socket will be opened successfully but fail with server's response
@@ -165,5 +166,40 @@
 	
 }
  
+- (void)testConnectPermissionDeniedError {
+	__block BOOL complete = NO;
+	
+	__weak WARemoteInterface *wRi = remoteInterface;
+	
+	[[[mockSocket expect] andDo:^(NSInvocation *invocation) {
+		[wRi performSelector:@selector(webSocketDidOpen:) withObject:nil];
+	}] open];
+	
+	[[[mockSocket expect] andDo:^(NSInvocation *invocation) {
+		[wRi performSelector:@selector(webSocket:didReceiveMessage:) withObject:nil withObject:@"{\"result\":{\"api_ret_code\":1010,\"api_ret_message\":\"\"}}"];
+	}] send:[OCMArg any]];
+	
+	[remoteInterface.connectionForWebSocket replaceWebSocketConnection:(SRWebSocket*)mockSocket];
+	
+	[[WARemoteInterface sharedInterface] openWebSocketConnectionForUrl:mockWebSocketServer onSucces:^{
+		// do nothing, socket will be opened successfully but fail with server's response
+	} onFailure:^(NSError *error) {
+		STAssertNotNil(error, @"Error should be responsed, should not be nil");
+		STAssertEquals(error.code, WAWebSocketPermissionDeniedError, @"Permission denied error should be included in the error response.");
+		complete = YES;
+		// else success
+	}];
+	
+	while (complete == NO && [asyncWaitUntil timeIntervalSinceNow] > 0) {
+		[[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:asyncWaitUntil];
+	}
+	
+	if (complete == NO) {
+		STFail(@"Websocket connection should be opened on time.");
+	}
+	
+	[mockSocket verify];
+	
+}
 
 @end

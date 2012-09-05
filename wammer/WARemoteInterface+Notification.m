@@ -19,17 +19,6 @@
 	WAWebSocketCommandHandler notifyHandler = ^ (id resp) {
 		
 		NSDictionary *result = (NSDictionary *) resp;
-
-		/*
-		NSNumber *connected = [result objectForKey:@"connected"];
-		if (connected) {
-			if (![connected isEqualToNumber:[NSNumber numberWithBool:YES]]) {
-				NSLog(@"Websocket server responses with connection failure.");
-				
-				// FIXME: handle failure?
-			}
-		}
-		 */
 		
 		NSString *message = [result objectForKey:@"message"];
 		if (message) {
@@ -48,12 +37,12 @@
 		}
 	};
 	
-	[self.commandHandlerMap setObject:notifyHandler forKey:@"notify"];
+	[self.connectionForWebSocket.commandHandlerMap setObject:notifyHandler forKey:@"notify"];
 	
 	NSDictionary *arguments = [[NSDictionary alloc]
 														 initWithObjectsAndKeys: @"value", @"key", nil];
 	
-	NSString *rawData = [self composeJSONStringForCommand:@"subscribe" withArguments:arguments];
+	NSString *rawData = composeWSJSONCommand(@"subscribe", arguments);
 	if (rawData) {
 		[self.connectionForWebSocket send:rawData];
 	}

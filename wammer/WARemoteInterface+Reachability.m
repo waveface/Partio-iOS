@@ -288,9 +288,10 @@ NSURL *refiningStationLocation(NSString *stationUrlString, NSURL *baseUrl) {
 					NSURL *wsURL = [(NSDictionary*)[wsStations objectAtIndex:0] objectForKey:@"ws_location"];
 					NSURL *stURL = [(NSDictionary*)[wsStations objectAtIndex:0] objectForKey:@"location"];
 					
-					[[WARemoteInterface sharedInterface] stopAutomaticRemoteUpdates];
 
 					[[WARemoteInterface sharedInterface] openWebSocketConnectionForUrl: wsURL onSucces:^{
+
+						[[WARemoteInterface sharedInterface] stopAutomaticRemoteUpdates];
 
 						[[WARemoteInterface sharedInterface] subscribeNotification];
 						// We only scan the reachability detector for cloud and the first station that supports websocket
