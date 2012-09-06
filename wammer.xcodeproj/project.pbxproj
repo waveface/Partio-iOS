@@ -4806,7 +4806,7 @@
 				ALWAYS_SEARCH_USER_PATHS = YES;
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				CLANG_ENABLE_OBJC_ARC = YES;
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 504;
 				GCC_C_LANGUAGE_STANDARD = c99;
@@ -4859,7 +4859,7 @@
 		4B8581A315F78A6B00EE11AC /* Beta */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Waveface Inc.";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COMPRESS_PNG_FILES = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -4877,8 +4877,9 @@
 					"\"$(SRCROOT)/external/GoogleAnalyticsSDK\"",
 				);
 				PRODUCT_NAME = "wammer-iOS";
-				PROVISIONING_PROFILE = "2D8B7DDD-11BC-4F85-A183-2FB3EE816063";
+				PROVISIONING_PROFILE = "";
 				STREAM_BUNDLE_ID_SUFFIX = .beta;
+				STREAM_FACEBOOK_ID = 356863037711668;
 				STREAM_ICON_NAME_SUFFIX = _beta;
 				VALID_ARCHS = "i386 armv7";
 				WRAPPER_EXTENSION = app;
@@ -5091,7 +5092,7 @@
 				ALWAYS_SEARCH_USER_PATHS = YES;
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				CLANG_ENABLE_OBJC_ARC = YES;
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 507;
 				GCC_C_LANGUAGE_STANDARD = c99;
@@ -5149,7 +5150,7 @@
 				ALWAYS_SEARCH_USER_PATHS = YES;
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				CLANG_ENABLE_OBJC_ARC = YES;
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 507;
 				GCC_C_LANGUAGE_STANDARD = c99;
@@ -5264,7 +5265,7 @@
 		FFCFE0F9142111E100B9E6AF /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Waveface Inc.";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COMPRESS_PNG_FILES = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -5300,8 +5301,9 @@
 					"\"$(SRCROOT)/external/GoogleAnalyticsSDK\"",
 				);
 				PRODUCT_NAME = "wammer-iOS";
-				PROVISIONING_PROFILE = "2D8B7DDD-11BC-4F85-A183-2FB3EE816063";
+				PROVISIONING_PROFILE = "";
 				STREAM_BUNDLE_ID_SUFFIX = .develop;
+				STREAM_FACEBOOK_ID = 357087874306060;
 				STREAM_ICON_NAME_SUFFIX = _develop;
 				VALID_ARCHS = "i386 armv7";
 				WRAPPER_EXTENSION = app;
@@ -5311,7 +5313,7 @@
 		FFCFE0FA142111E100B9E6AF /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Waveface Inc.";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COMPRESS_PNG_FILES = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -5347,8 +5349,9 @@
 					"\"$(SRCROOT)/external/GoogleAnalyticsSDK\"",
 				);
 				PRODUCT_NAME = "wammer-iOS";
-				PROVISIONING_PROFILE = "2D8B7DDD-11BC-4F85-A183-2FB3EE816063";
+				PROVISIONING_PROFILE = "";
 				STREAM_BUNDLE_ID_SUFFIX = "";
+				STREAM_FACEBOOK_ID = 234823683291756;
 				STREAM_ICON_NAME_SUFFIX = "";
 				VALID_ARCHS = "i386 armv7";
 				WRAPPER_EXTENSION = app;
