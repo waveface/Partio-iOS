@@ -165,7 +165,7 @@
 "DELETE_POST_CONFIRMATION_TITLE" = "是否要刪除貼文？";
 
 /* Downloading Status on iPhone Timeline */
-"DOWNLOADING_PHOTOS" = "內容下載中...";
+"DOWNLOADING_PHOTOS" = "內容同步中...";
 
 /* State for drafts without content text */
 "DRAFT_STATE_NO_CONTENT" = "（沒有內容）";
@@ -352,7 +352,7 @@
 "TURN_ON_LOCATION_SERVICE" = "Stream 須開啟定位服務才能存取相簿的內容";
 
 /* Downloading Status on iPhone Timeline */
-"UNABLE_TO_DOWNLOADING_PHOTOS" = "網路斷線，內容尚未下載完成...";
+"UNABLE_TO_DOWNLOADING_PHOTOS" = "網路斷線，內容尚未同步完成...";
 
 /* Settings for User popover */
 "USER_INFO_CONTROLLER_TITLE" = "帳戶資訊";
