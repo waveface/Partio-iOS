@@ -86,6 +86,19 @@
 		4B733BB614987A81005CAE8D /* IASKPSToggleSwitchSpecifierViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4B733BA114987A81005CAE8D /* IASKPSToggleSwitchSpecifierViewCell.xib */; };
 		4B733BB714987A81005CAE8D /* IASKSpecifierValuesView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4B733BA214987A81005CAE8D /* IASKSpecifierValuesView.xib */; };
 		4B7420FC15D8B59900586559 /* fopenfix.c in Sources */ = {isa = PBXBuildFile; fileRef = 4B7420FA15D8B59000586559 /* fopenfix.c */; };
+		4B8581A815F78E0900EE11AC /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 4B8581A715F78E0900EE11AC /* Icon.png */; };
+		4B8581AA15F78E3800EE11AC /* Icon-72.png in Resources */ = {isa = PBXBuildFile; fileRef = 4B8581A915F78E3800EE11AC /* Icon-72.png */; };
+		4B8581AF15F798F900EE11AC /* Icon_beta.png in Resources */ = {isa = PBXBuildFile; fileRef = 4B8581AB15F798F900EE11AC /* Icon_beta.png */; };
+		4B8581B015F798F900EE11AC /* Icon_beta@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4B8581AC15F798F900EE11AC /* Icon_beta@2x.png */; };
+		4B8581B515F7993100EE11AC /* Icon-72_beta.png in Resources */ = {isa = PBXBuildFile; fileRef = 4B8581B315F7993100EE11AC /* Icon-72_beta.png */; };
+		4B8581B615F7993100EE11AC /* Icon-72_beta@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4B8581B415F7993100EE11AC /* Icon-72_beta@2x.png */; };
+		4B8581BC15F79EEF00EE11AC /* Icon_develop.png in Resources */ = {isa = PBXBuildFile; fileRef = 4B8581B815F79EEF00EE11AC /* Icon_develop.png */; };
+		4B8581BD15F79EEF00EE11AC /* Icon_develop@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4B8581B915F79EEF00EE11AC /* Icon_develop@2x.png */; };
+		4B8581BE15F79EEF00EE11AC /* Icon-72_develop.png in Resources */ = {isa = PBXBuildFile; fileRef = 4B8581BA15F79EEF00EE11AC /* Icon-72_develop.png */; };
+		4B8581BF15F79EEF00EE11AC /* Icon-72_develop@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4B8581BB15F79EEF00EE11AC /* Icon-72_develop@2x.png */; };
+		4B8581C115F7A2CD00EE11AC /* Icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4B8581C015F7A2CD00EE11AC /* Icon@2x.png */; };
+		4B8581C315F7A2D400EE11AC /* Icon-72@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4B8581C215F7A2D400EE11AC /* Icon-72@2x.png */; };
+		4B85823B15F7ABCF00EE11AC /* WADefaults.develop.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4B85823A15F7ABCF00EE11AC /* WADefaults.develop.plist */; };
 		4B87177815C7D4A200C9612D /* Unfav@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 4B87177715C7D4A200C9612D /* Unfav@2x~iphone.png */; };
 		4B87177A15C7D4AF00C9612D /* Fav@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 4B87177915C7D4AF00C9612D /* Fav@2x~iphone.png */; };
 		4B8CA96A14BBE7BA006E06BB /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B8CA96914BBE7BA006E06BB /* SenTestingKit.framework */; };
@@ -530,7 +543,6 @@
 		FFCCDFEE15B41B0000AEBB85 /* WACompositionTextWellBackground@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FFCCDEE115B41B0000AEBB85 /* WACompositionTextWellBackground@2x.png */; };
 		FFCCDFEF15B41B0000AEBB85 /* WACornerCloseButton.png in Resources */ = {isa = PBXBuildFile; fileRef = FFCCDEE215B41B0000AEBB85 /* WACornerCloseButton.png */; };
 		FFCCDFF015B41B0000AEBB85 /* WACornerCloseButtonActive.png in Resources */ = {isa = PBXBuildFile; fileRef = FFCCDEE315B41B0000AEBB85 /* WACornerCloseButtonActive.png */; };
-		FFCCDFF415B41B0000AEBB85 /* WADefaults.production.plist in Resources */ = {isa = PBXBuildFile; fileRef = FFCCDEE715B41B0000AEBB85 /* WADefaults.production.plist */; };
 		FFCCDFF615B41B0000AEBB85 /* WADownDoubleArrowGlyph.png in Resources */ = {isa = PBXBuildFile; fileRef = FFCCDEE915B41B0000AEBB85 /* WADownDoubleArrowGlyph.png */; };
 		FFCCDFF715B41B0000AEBB85 /* WADownDoubleArrowGlyph@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FFCCDEEA15B41B0000AEBB85 /* WADownDoubleArrowGlyph@2x.png */; };
 		FFCCDFF815B41B0000AEBB85 /* WAFilter.png in Resources */ = {isa = PBXBuildFile; fileRef = FFCCDEEB15B41B0000AEBB85 /* WAFilter.png */; };
@@ -1181,6 +1193,19 @@
 		4B733BA114987A81005CAE8D /* IASKPSToggleSwitchSpecifierViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = IASKPSToggleSwitchSpecifierViewCell.xib; sourceTree = "<group>"; };
 		4B733BA214987A81005CAE8D /* IASKSpecifierValuesView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = IASKSpecifierValuesView.xib; sourceTree = "<group>"; };
 		4B7420FA15D8B59000586559 /* fopenfix.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = fopenfix.c; sourceTree = "<group>"; };
+		4B8581A715F78E0900EE11AC /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Icon.png; path = ../Icon.png; sourceTree = "<group>"; };
+		4B8581A915F78E3800EE11AC /* Icon-72.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon-72.png"; path = "../Icon-72.png"; sourceTree = "<group>"; };
+		4B8581AB15F798F900EE11AC /* Icon_beta.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Icon_beta.png; path = resources/Icon_beta.png; sourceTree = "<group>"; };
+		4B8581AC15F798F900EE11AC /* Icon_beta@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon_beta@2x.png"; path = "resources/Icon_beta@2x.png"; sourceTree = "<group>"; };
+		4B8581B315F7993100EE11AC /* Icon-72_beta.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon-72_beta.png"; path = "resources/Icon-72_beta.png"; sourceTree = "<group>"; };
+		4B8581B415F7993100EE11AC /* Icon-72_beta@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon-72_beta@2x.png"; path = "resources/Icon-72_beta@2x.png"; sourceTree = "<group>"; };
+		4B8581B815F79EEF00EE11AC /* Icon_develop.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Icon_develop.png; path = resources/Icon_develop.png; sourceTree = "<group>"; };
+		4B8581B915F79EEF00EE11AC /* Icon_develop@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon_develop@2x.png"; path = "resources/Icon_develop@2x.png"; sourceTree = "<group>"; };
+		4B8581BA15F79EEF00EE11AC /* Icon-72_develop.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon-72_develop.png"; path = "resources/Icon-72_develop.png"; sourceTree = "<group>"; };
+		4B8581BB15F79EEF00EE11AC /* Icon-72_develop@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon-72_develop@2x.png"; path = "resources/Icon-72_develop@2x.png"; sourceTree = "<group>"; };
+		4B8581C015F7A2CD00EE11AC /* Icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon@2x.png"; path = "../Icon@2x.png"; sourceTree = "<group>"; };
+		4B8581C215F7A2D400EE11AC /* Icon-72@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon-72@2x.png"; path = "../Icon-72@2x.png"; sourceTree = "<group>"; };
+		4B85823A15F7ABCF00EE11AC /* WADefaults.develop.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = WADefaults.develop.plist; path = resources/WADefaults.develop.plist; sourceTree = "<group>"; };
 		4B87177715C7D4A200C9612D /* Unfav@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Unfav@2x~iphone.png"; path = "resources/Unfav@2x~iphone.png"; sourceTree = "<group>"; };
 		4B87177915C7D4AF00C9612D /* Fav@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Fav@2x~iphone.png"; path = "resources/Fav@2x~iphone.png"; sourceTree = "<group>"; };
 		4B8CA96814BBE7BA006E06BB /* wammer-iOS-Test.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "wammer-iOS-Test.octest"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1745,7 +1770,6 @@
 		FFCCDEE215B41B0000AEBB85 /* WACornerCloseButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WACornerCloseButton.png; path = Resources/WACornerCloseButton.png; sourceTree = "<group>"; };
 		FFCCDEE315B41B0000AEBB85 /* WACornerCloseButtonActive.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WACornerCloseButtonActive.png; path = Resources/WACornerCloseButtonActive.png; sourceTree = "<group>"; };
 		FFCCDEE615B41B0000AEBB85 /* WADefaults.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = WADefaults.plist; path = Resources/WADefaults.plist; sourceTree = "<group>"; };
-		FFCCDEE715B41B0000AEBB85 /* WADefaults.production.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = WADefaults.production.plist; path = Resources/WADefaults.production.plist; sourceTree = "<group>"; };
 		FFCCDEE915B41B0000AEBB85 /* WADownDoubleArrowGlyph.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WADownDoubleArrowGlyph.png; path = Resources/WADownDoubleArrowGlyph.png; sourceTree = "<group>"; };
 		FFCCDEEA15B41B0000AEBB85 /* WADownDoubleArrowGlyph@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "WADownDoubleArrowGlyph@2x.png"; path = "Resources/WADownDoubleArrowGlyph@2x.png"; sourceTree = "<group>"; };
 		FFCCDEEB15B41B0000AEBB85 /* WAFilter.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WAFilter.png; path = Resources/WAFilter.png; sourceTree = "<group>"; };
@@ -2124,6 +2148,29 @@
 				4B733BA214987A81005CAE8D /* IASKSpecifierValuesView.xib */,
 			);
 			path = Xibs;
+			sourceTree = "<group>";
+		};
+		4B8581B715F7994A00EE11AC /* Icons */ = {
+			isa = PBXGroup;
+			children = (
+				4B8581A915F78E3800EE11AC /* Icon-72.png */,
+				FFCCDE6115B41B0000AEBB85 /* Icon-72.png */,
+				4B8581C215F7A2D400EE11AC /* Icon-72@2x.png */,
+				FFCCDE6215B41B0000AEBB85 /* Icon-72@2x.png */,
+				4B8581B315F7993100EE11AC /* Icon-72_beta.png */,
+				4B8581B415F7993100EE11AC /* Icon-72_beta@2x.png */,
+				4B8581BA15F79EEF00EE11AC /* Icon-72_develop.png */,
+				4B8581BB15F79EEF00EE11AC /* Icon-72_develop@2x.png */,
+				4B8581A715F78E0900EE11AC /* Icon.png */,
+				FFCCDE6315B41B0000AEBB85 /* Icon.png */,
+				4B8581C015F7A2CD00EE11AC /* Icon@2x.png */,
+				FFCCDE6415B41B0000AEBB85 /* Icon@2x.png */,
+				4B8581AB15F798F900EE11AC /* Icon_beta.png */,
+				4B8581AC15F798F900EE11AC /* Icon_beta@2x.png */,
+				4B8581B815F79EEF00EE11AC /* Icon_develop.png */,
+				4B8581B915F79EEF00EE11AC /* Icon_develop@2x.png */,
+			);
+			name = Icons;
 			sourceTree = "<group>";
 		};
 		4B8CA96F14BBE7BA006E06BB /* iOS Tests */ = {
@@ -2884,10 +2931,7 @@
 				FFCCDE5115B41B0000AEBB85 /* Fontin_Sans_SC_45b.otf */,
 				FFCCDE5915B41B0000AEBB85 /* GreenPattern.png */,
 				FFCCDE5A15B41B0000AEBB85 /* GreenPattern@2x.png */,
-				FFCCDE6115B41B0000AEBB85 /* Icon-72.png */,
-				FFCCDE6215B41B0000AEBB85 /* Icon-72@2x.png */,
-				FFCCDE6315B41B0000AEBB85 /* Icon.png */,
-				FFCCDE6415B41B0000AEBB85 /* Icon@2x.png */,
+				4B8581B715F7994A00EE11AC /* Icons */,
 				4BAE344E15DCA30200A9109D /* LoginBackground-Landscape.png */,
 				4BAE344F15DCA30200A9109D /* LoginBackground-Landscape@2x.png */,
 				4BAE345015DCA30200A9109D /* LoginBackground-Portrait.png */,
@@ -2984,8 +3028,8 @@
 				FFCCDEE115B41B0000AEBB85 /* WACompositionTextWellBackground@2x.png */,
 				FFCCDEE215B41B0000AEBB85 /* WACornerCloseButton.png */,
 				FFCCDEE315B41B0000AEBB85 /* WACornerCloseButtonActive.png */,
+				4B85823A15F7ABCF00EE11AC /* WADefaults.develop.plist */,
 				FFCCDEE615B41B0000AEBB85 /* WADefaults.plist */,
-				FFCCDEE715B41B0000AEBB85 /* WADefaults.production.plist */,
 				FFCCDEE915B41B0000AEBB85 /* WADownDoubleArrowGlyph.png */,
 				FFCCDEEA15B41B0000AEBB85 /* WADownDoubleArrowGlyph@2x.png */,
 				FFCCDEEB15B41B0000AEBB85 /* WAFilter.png */,
@@ -3916,7 +3960,6 @@
 				FFCCDFEE15B41B0000AEBB85 /* WACompositionTextWellBackground@2x.png in Resources */,
 				FFCCDFEF15B41B0000AEBB85 /* WACornerCloseButton.png in Resources */,
 				FFCCDFF015B41B0000AEBB85 /* WACornerCloseButtonActive.png in Resources */,
-				FFCCDFF415B41B0000AEBB85 /* WADefaults.production.plist in Resources */,
 				FFCCDFF615B41B0000AEBB85 /* WADownDoubleArrowGlyph.png in Resources */,
 				FFCCDFF715B41B0000AEBB85 /* WADownDoubleArrowGlyph@2x.png in Resources */,
 				FFCCDFF815B41B0000AEBB85 /* WAFilter.png in Resources */,
@@ -3995,6 +4038,19 @@
 				4BAE345315DCA30200A9109D /* LoginBackground-Landscape@2x.png in Resources */,
 				4BAE345415DCA30200A9109D /* LoginBackground-Portrait.png in Resources */,
 				4BAE345515DCA30200A9109D /* LoginBackground-Portrait@2x.png in Resources */,
+				4B8581A815F78E0900EE11AC /* Icon.png in Resources */,
+				4B8581AA15F78E3800EE11AC /* Icon-72.png in Resources */,
+				4B8581AF15F798F900EE11AC /* Icon_beta.png in Resources */,
+				4B8581B015F798F900EE11AC /* Icon_beta@2x.png in Resources */,
+				4B8581B515F7993100EE11AC /* Icon-72_beta.png in Resources */,
+				4B8581B615F7993100EE11AC /* Icon-72_beta@2x.png in Resources */,
+				4B8581BC15F79EEF00EE11AC /* Icon_develop.png in Resources */,
+				4B8581BD15F79EEF00EE11AC /* Icon_develop@2x.png in Resources */,
+				4B8581BE15F79EEF00EE11AC /* Icon-72_develop.png in Resources */,
+				4B8581BF15F79EEF00EE11AC /* Icon-72_develop@2x.png in Resources */,
+				4B8581C115F7A2CD00EE11AC /* Icon@2x.png in Resources */,
+				4B8581C315F7A2D400EE11AC /* Icon-72@2x.png in Resources */,
+				4B85823B15F7ABCF00EE11AC /* WADefaults.develop.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4744,6 +4800,164 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		4B8581A215F78A6B00EE11AC /* Beta */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = YES;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 504;
+				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"WF_USES_TESTFLIGHT=$(WF_USES_TESTFLIGHT)",
+					"WF_USES_CRASHLYTICS=$(WF_USES_CRASHLYTICS)",
+					"WF_USES_GOOGLEANALYTICS=$(WF_USES_GOOGLEANALYTICS)",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"\"$(PROJECT_DIR)/external/IRFoundations\"/**",
+					"\"$(SDKROOT)/usr/include/libxml2\"/**",
+					"\"$(PROJECT_DIR)/external/IRWebAPIKit\"/**",
+					"\"$(PROJECT_DIR)/external/AQGridView/Classes\"",
+					"\"$(PROJECT_DIR)/external/IRKeychain\"/**",
+					"\"$(PROJECT_DIR)/external/IRDiscreteLayoutManager\"/**",
+					"\"$(PROJECT_DIR)/external/IRTextAttributor\"/**",
+					"\"$(PROJECT_DIR)/external/IRSlidingSplitViewController\"/**",
+					"\"$(PROJECT_DIR)/external/IRRecurrenceMachine\"/**",
+					"\"$(PROJECT_DIR)/external/IRObjectQueue\"/**",
+					"\"$(PROJECT_DIR)/external/TestflightSDK\"/**",
+					"\"$(PROJECT_DIR)/external/JSONKit\"/**",
+					"\"$(PROJECT_DIR)/external/WFPresentation/Bindings/Objective-C\"/**",
+					"\"$(PROJECT_DIR)/external/Facebook\"/**",
+					"\"$(PROJECT_DIR)/external/SocketRocket\"/**",
+				);
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				OTHER_CFLAGS = "-fno-objc-default-synthesize-properties";
+				OTHER_LDFLAGS = (
+					"-ObjC",
+					"-all_load",
+				);
+				PROVISIONING_PROFILE = "";
+				SDKROOT = iphoneos;
+				STRIP_INSTALLED_PRODUCT = NO;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+				VALID_ARCHS = "i386 armv7";
+				VERSIONING_SYSTEM = "apple-generic";
+				WF_USES_CRASHLYTICS = 1;
+				WF_USES_GOOGLEANALYTICS = 0;
+				WF_USES_TESTFLIGHT = 1;
+			};
+			name = Beta;
+		};
+		4B8581A315F78A6B00EE11AC /* Beta */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COMPRESS_PNG_FILES = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)\"",
+					"\"$(SRCROOT)/external/CrashlyticsSDK\"",
+					"\"$(SYSTEM_APPS_DIR)/Xcode.app/Contents/Developer/Library/Frameworks\"",
+				);
+				GCC_OPTIMIZATION_LEVEL = s;
+				GCC_PREFIX_HEADER = "wammer/wammer-iOS-Prefix.pch";
+				INFOPLIST_FILE = "wammer/wammer-iOS-Info.plist";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/wammer\"",
+					"\"$(SRCROOT)/external/TestflightSDK\"",
+					"\"$(SRCROOT)/external/GoogleAnalyticsSDK\"",
+				);
+				PRODUCT_NAME = "wammer-iOS";
+				PROVISIONING_PROFILE = "";
+				STREAM_BUNDLE_ID_SUFFIX = .beta;
+				STREAM_FACEBOOK_ID = 356863037711668;
+				STREAM_ICON_NAME_SUFFIX = _beta;
+				VALID_ARCHS = "i386 armv7";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Beta;
+		};
+		4B8581A415F78A6B00EE11AC /* Beta */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				COPY_PHASE_STRIP = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(DEVELOPER_LIBRARY_DIR)/Frameworks",
+					"\"$(SRCROOT)/external/CrashlyticsSDK\"",
+				);
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_GENERATE_TEST_COVERAGE_FILES = YES;
+				GCC_INSTRUMENT_PROGRAM_FLOW_ARCS = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "wammer-iOS-Tests/wammer-iOS-Tests-Prefix.pch";
+				INFOPLIST_FILE = "wammer-iOS-Tests/wammer-iOS-Tests-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/external/Facebook/lib/facebook-ios-sdk\"",
+					"\"$(SRCROOT)/wammer/facebook-ios-sdk\"",
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_AFTER_BUILD = YES;
+				WRAPPER_EXTENSION = octest;
+			};
+			name = Beta;
+		};
+		4B8581A515F78A6B00EE11AC /* Beta */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = "";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+			};
+			name = Beta;
+		};
+		4B8581A615F78A6B00EE11AC /* Beta */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				CODE_SIGN_IDENTITY = "";
+				COMBINE_HIDPI_IMAGES = YES;
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(DEVELOPER_FRAMEWORKS_DIR)\"",
+					"\"$(SRCROOT)\"",
+				);
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "wammer-OSX/wammer-OSX-Prefix.pch";
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				INFOPLIST_FILE = "wammer-OSX/wammer-OSX-Info.plist";
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-framework",
+					UIKit,
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				WRAPPER_EXTENSION = app;
+			};
+			name = Beta;
+		};
 		4B8CA97A14BBE7BA006E06BB /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -4879,7 +5093,7 @@
 				ALWAYS_SEARCH_USER_PATHS = YES;
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				CLANG_ENABLE_OBJC_ARC = YES;
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 507;
 				GCC_C_LANGUAGE_STANDARD = c99;
@@ -4912,6 +5126,7 @@
 					"\"$(PROJECT_DIR)/external/JSONKit\"/**",
 					"\"$(PROJECT_DIR)/external/WFPresentation/Bindings/Objective-C\"/**",
 					"\"$(PROJECT_DIR)/external/Facebook\"/**",
+					"\"$(PROJECT_DIR)/external/SocketRocket\"/**",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				OTHER_CFLAGS = "-fno-objc-default-synthesize-properties";
@@ -4937,7 +5152,7 @@
 				ALWAYS_SEARCH_USER_PATHS = YES;
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				CLANG_ENABLE_OBJC_ARC = YES;
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 507;
 				GCC_C_LANGUAGE_STANDARD = c99;
@@ -4967,6 +5182,7 @@
 					"\"$(PROJECT_DIR)/external/JSONKit\"/**",
 					"\"$(PROJECT_DIR)/external/WFPresentation/Bindings/Objective-C\"/**",
 					"\"$(PROJECT_DIR)/external/Facebook\"/**",
+					"\"$(PROJECT_DIR)/external/SocketRocket\"/**",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				OTHER_CFLAGS = "-fno-objc-default-synthesize-properties";
@@ -5089,6 +5305,9 @@
 				);
 				PRODUCT_NAME = "wammer-iOS";
 				PROVISIONING_PROFILE = "";
+				STREAM_BUNDLE_ID_SUFFIX = .develop;
+				STREAM_FACEBOOK_ID = 357087874306060;
+				STREAM_ICON_NAME_SUFFIX = _develop;
 				VALID_ARCHS = "i386 armv7";
 				WRAPPER_EXTENSION = app;
 			};
@@ -5134,6 +5353,9 @@
 				);
 				PRODUCT_NAME = "wammer-iOS";
 				PROVISIONING_PROFILE = "";
+				STREAM_BUNDLE_ID_SUFFIX = "";
+				STREAM_FACEBOOK_ID = 234823683291756;
+				STREAM_ICON_NAME_SUFFIX = "";
 				VALID_ARCHS = "i386 armv7";
 				WRAPPER_EXTENSION = app;
 			};
@@ -5147,6 +5369,7 @@
 			buildConfigurations = (
 				4B8CA97A14BBE7BA006E06BB /* Debug */,
 				4B8CA97B14BBE7BA006E06BB /* Release */,
+				4B8581A415F78A6B00EE11AC /* Beta */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -5156,6 +5379,7 @@
 			buildConfigurations = (
 				FF335A3C1445F12200E60C14 /* Debug */,
 				FF335A3D1445F12200E60C14 /* Release */,
+				4B8581A515F78A6B00EE11AC /* Beta */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -5165,6 +5389,7 @@
 			buildConfigurations = (
 				FF73A55413D6C2CD00D54EC6 /* Debug */,
 				FF73A55513D6C2CD00D54EC6 /* Release */,
+				4B8581A215F78A6B00EE11AC /* Beta */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -5174,6 +5399,7 @@
 			buildConfigurations = (
 				FFC6484E1445E8D800593E5E /* Debug */,
 				FFC6484F1445E8D800593E5E /* Release */,
+				4B8581A615F78A6B00EE11AC /* Beta */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -5183,6 +5409,7 @@
 			buildConfigurations = (
 				FFCFE0F9142111E100B9E6AF /* Debug */,
 				FFCFE0FA142111E100B9E6AF /* Release */,
+				4B8581A315F78A6B00EE11AC /* Beta */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
