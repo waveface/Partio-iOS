@@ -16,6 +16,7 @@
 #import "WACompositionViewController+SubclassEyesOnly.h"
 #import "IRAQPhotoPickerController.h"
 #import "WAAssetsLibraryManager.h"
+#import "WAFile+ThumbnailMaker.h"
 
 NSString * const WACompositionImageInsertionUsesCamera = @"WACompositionImageInsertionUsesCamera";
 NSString * const WACompositionImageInsertionAnimatePresentation = @"WACompositionImageInsertionAnimatePresentation";
@@ -206,43 +207,11 @@ NSString * const kDismissesSelfIfCameraCancelled = @"-[WACompositionViewControll
 		
 		WADataStore *ds = [WADataStore defaultStore];
 
-		if (options & WAThumbnailMakeOptionSmall || options & WAThumbnailMakeOptionMedium) {
+		if (options & (WAThumbnailMakeOptionSmall|WAThumbnailMakeOptionMedium)) {
 
 			UIImage *image = [[representedAsset defaultRepresentation] irImage];
-			CGSize imageSize = image.size;
-			UIImage *standardImage = [image irStandardImage];
+			[file makeThumbnailsWithImage:image options:(options & (WAThumbnailMakeOptionSmall|WAThumbnailMakeOptionMedium))];
 			
-			if (options & WAThumbnailMakeOptionSmall) {
-				CGFloat const smallSideLength = kWAFileSmallImageSideLength;
-				
-				if ((imageSize.width > smallSideLength) || (imageSize.height > smallSideLength)) {
-					
-					UIImage *smallThumbnailImage = [standardImage irScaledImageWithSize:IRGravitize((CGRect){ CGPointZero, (CGSize){ smallSideLength, smallSideLength } }, image.size, kCAGravityResizeAspect).size];
-					
-					file.smallThumbnailFilePath = [[ds persistentFileURLForData:UIImageJPEGRepresentation(smallThumbnailImage, 0.85f) extension:@"jpeg"] path];
-					
-				} else {
-					
-					file.smallThumbnailFilePath = [[ds persistentFileURLForData:UIImageJPEGRepresentation(standardImage, 0.85f) extension:@"jpeg"] path];
-					
-				}
-			}
-			
-			if (options & WAThumbnailMakeOptionMedium) {
-				CGFloat const mediumSideLength = kWAFileMediumImageSideLength;
-				
-				if ((imageSize.width > mediumSideLength) || (imageSize.height > mediumSideLength)) {
-					
-					UIImage *thumbnailImage = [standardImage irScaledImageWithSize:IRGravitize((CGRect){ CGPointZero, (CGSize){ mediumSideLength, mediumSideLength } }, image.size, kCAGravityResizeAspect).size];
-					
-					file.thumbnailFilePath = [[ds persistentFileURLForData:UIImageJPEGRepresentation(thumbnailImage, 0.85f) extension:@"jpeg"] path];
-					
-				} else {
-					
-					file.thumbnailFilePath = [[ds persistentFileURLForData:UIImageJPEGRepresentation(standardImage, 0.85f) extension:@"jpeg"] path];
-					
-				}
-			}
 		}
 		
 		if (options & WAThumbnailMakeOptionExtraSmall) {

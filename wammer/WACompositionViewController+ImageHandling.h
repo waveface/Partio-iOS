@@ -8,16 +8,10 @@
 
 #import "WACompositionViewController.h"
 #import "WAFile.h"
+#import "WAFile+ThumbnailMaker.h"
 
 
 @class ALAsset;
-
-enum {
-	WAThumbnailMakeOptionExtraSmall = 1,
-	WAThumbnailMakeOptionSmall = 1 << 1,
-	WAThumbnailMakeOptionMedium = 1 << 2,
-	WAThumbnailMakeOptionLarge = 1 << 3
-}; typedef NSInteger WAThumbnailMakeOptions;
 
 
 @interface WACompositionViewController (ImageHandling)

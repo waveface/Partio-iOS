@@ -12,6 +12,8 @@
 #import "WAAssetsLibraryManager.h"
 
 #import "UIKit+IRAdditions.h"
+#import "WAFile+ThumbnailMaker.h"
+#import "WADataStore.h"
 
 static NSString * const kMemoryWarningObserver = @"-[WAFile(LazyImages) handleDidReceiveMemoryWarning:]";
 static NSString * const kMemoryWarningObserverCreationDisabled = @"-[WAFile(LazyImages) isMemoryWarningObserverCreationDisabled]";
@@ -147,7 +149,35 @@ static NSString * const kMemoryWarningObserverCreationDisabled = @"-[WAFile(Lazy
 
 	[self createMemoryWarningObserverIfAppropriate];
 
-	return [self imageAssociatedWithKey:&kWAFileExtraSmallThumbnailImage filePath:self.extraSmallThumbnailFilePath];
+	if (self.extraSmallThumbnailFilePath) {
+
+		return [self imageAssociatedWithKey:&kWAFileExtraSmallThumbnailImage filePath:self.extraSmallThumbnailFilePath];
+
+	} else {
+
+		UIImage *image = [self imageAssociatedWithKey:&kWAFileSmallThumbnailImage filePath:self.smallThumbnailFilePath];
+
+		if (image) {
+			NSManagedObjectContext *context = [[WADataStore defaultStore] disposableMOC];
+			
+			[context performBlockAndWait:^{
+
+				[self makeThumbnailsWithImage:image options:WAThumbnailMakeOptionExtraSmall];
+
+				NSError *error = nil;
+				[context save:&error];
+				if (error) {
+					NSLog(@"Error saving: %s %@", __PRETTY_FUNCTION__, error);
+				}
+
+			}];
+
+			return [self imageAssociatedWithKey:&kWAFileExtraSmallThumbnailImage filePath:self.extraSmallThumbnailFilePath];
+		}
+
+		return nil;
+	}
+	
 }
 
 - (void)setExtraSmallThumbnailImage:(UIImage *)extraSmallThumbnailImage {

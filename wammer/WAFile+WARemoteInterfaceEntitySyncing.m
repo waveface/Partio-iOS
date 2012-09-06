@@ -15,10 +15,9 @@
 #import "WARemoteInterface.h"
 #import "WADefines.h"
 
-#import "UIImage+IRAdditions.h"
 #import "UIImage+WAAdditions.h"
-#import "QuartzCore+IRAdditions.h"
 #import "ALAssetRepresentation+IRAdditions.h"
+#import "WAFile+ThumbnailMaker.h"
 
 
 NSString * kWAFileEntitySyncingErrorDomain = @"com.waveface.wammer.file.entitySyncing";
@@ -430,23 +429,8 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
 					return;
 				}
 				NSCParameterAssert(bestImage);
-				
-				CGSize imageSize = bestImage.size;
-				CGFloat const sideLength = kWAFileMediumImageSideLength;
-				
-				if ((imageSize.width > sideLength) || (imageSize.height > sideLength)) {
-					
-					UIImage *thumbnailImage = [[bestImage irStandardImage] irScaledImageWithSize:IRGravitize((CGRect){ CGPointZero, (CGSize){ sideLength, sideLength } }, bestImage.size, kCAGravityResizeAspect).size];
-					
-					thumbnailFilePath = [[ds persistentFileURLForData:UIImageJPEGRepresentation(thumbnailImage, 0.85f) extension:@"jpeg"] path];
-					
-				} else {
-					
-					thumbnailFilePath = [[ds persistentFileURLForData:UIImageJPEGRepresentation([bestImage irStandardImage], 0.85f) extension:@"jpeg"] path];
-					
-				}
-				
-				file.thumbnailFilePath = thumbnailFilePath;
+
+				[file makeThumbnailsWithImage:bestImage options:WAThumbnailMakeOptionMedium];
 				
 				NSError *error = nil;
 				
