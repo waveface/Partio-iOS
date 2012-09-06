@@ -4836,6 +4836,7 @@
 					"\"$(PROJECT_DIR)/external/JSONKit\"/**",
 					"\"$(PROJECT_DIR)/external/WFPresentation/Bindings/Objective-C\"/**",
 					"\"$(PROJECT_DIR)/external/Facebook\"/**",
+					"\"$(PROJECT_DIR)/external/SocketRocket\"/**",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				OTHER_CFLAGS = "-fno-objc-default-synthesize-properties";
@@ -5125,6 +5126,7 @@
 					"\"$(PROJECT_DIR)/external/JSONKit\"/**",
 					"\"$(PROJECT_DIR)/external/WFPresentation/Bindings/Objective-C\"/**",
 					"\"$(PROJECT_DIR)/external/Facebook\"/**",
+					"\"$(PROJECT_DIR)/external/SocketRocket\"/**",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				OTHER_CFLAGS = "-fno-objc-default-synthesize-properties";
@@ -5180,6 +5182,7 @@
 					"\"$(PROJECT_DIR)/external/JSONKit\"/**",
 					"\"$(PROJECT_DIR)/external/WFPresentation/Bindings/Objective-C\"/**",
 					"\"$(PROJECT_DIR)/external/Facebook\"/**",
+					"\"$(PROJECT_DIR)/external/SocketRocket\"/**",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				OTHER_CFLAGS = "-fno-objc-default-synthesize-properties";
