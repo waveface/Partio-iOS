@@ -439,6 +439,7 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
 				
 			}
 
+			thumbnailFilePath = file.thumbnailFilePath;
 			NSParameterAssert(thumbnailFilePath);
 			NSParameterAssert([[NSFileManager defaultManager] fileExistsAtPath:thumbnailFilePath]);
 			

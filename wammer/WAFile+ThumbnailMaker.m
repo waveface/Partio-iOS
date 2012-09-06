@@ -11,7 +11,7 @@
 #import <UIImage+IRAdditions.h>
 #import <QuartzCore+IRAdditions.h>
 
-CGFloat const kWAFileExtraSmallImageSideLength = 160;
+CGFloat const kWAFileExtraSmallImageSideLength = 166;
 CGFloat const kWAFileSmallImageSideLength = 512;
 CGFloat const kWAFileMediumImageSideLength = 1024;
 CGFloat const kWAFileLargeImageSideLength = 2048;

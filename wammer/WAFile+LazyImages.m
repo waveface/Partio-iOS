@@ -155,14 +155,15 @@ static NSString * const kMemoryWarningObserverCreationDisabled = @"-[WAFile(Lazy
 
 	} else {
 
-		UIImage *image = [self imageAssociatedWithKey:&kWAFileSmallThumbnailImage filePath:self.smallThumbnailFilePath];
+		NSManagedObjectContext *context = [[WADataStore defaultStore] defaultAutoUpdatedMOC];
 
-		if (image) {
-			NSManagedObjectContext *context = [[WADataStore defaultStore] disposableMOC];
-			
-			[context performBlockAndWait:^{
+		if (self.smallThumbnailFilePath) {
 
-				[self makeThumbnailsWithImage:image options:WAThumbnailMakeOptionExtraSmall];
+			__weak WAFile *wSelf = self;
+			[context performBlock:^{
+
+				UIImage *image = [wSelf imageAssociatedWithKey:&kWAFileSmallThumbnailImage filePath:wSelf.smallThumbnailFilePath];
+				[wSelf makeThumbnailsWithImage:image options:WAThumbnailMakeOptionExtraSmall];
 
 				NSError *error = nil;
 				[context save:&error];
@@ -172,7 +173,6 @@ static NSString * const kMemoryWarningObserverCreationDisabled = @"-[WAFile(Lazy
 
 			}];
 
-			return [self imageAssociatedWithKey:&kWAFileExtraSmallThumbnailImage filePath:self.extraSmallThumbnailFilePath];
 		}
 
 		return nil;
