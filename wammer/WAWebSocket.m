@@ -49,7 +49,7 @@ NSError * WARemoteInterfaceWebSocketError (NSUInteger code, NSString *message);
 	
 	connectRetryCounting = kReconnectRetryMaxCounting;
 	stopped = NO;
-	
+		
 	return self;
 }
 
@@ -72,31 +72,39 @@ NSError * WARemoteInterfaceWebSocketError (NSUInteger code, NSString *message);
 	};
 	
 	self.commandHandlerMap = [[NSMutableDictionary alloc] initWithObjectsAndKeys:errorHandler, @"error", nil];
-	
-	[self reconnectWebSocket];
+	self.connectionForWebSocket = [[SRWebSocket alloc] initWithURL:self.urlForWebSocket];
+	self.connectionForWebSocket.delegate = self;
+	[self.connectionForWebSocket open];
 }
 
-- (void) closeConnectionWithCode:(NSInteger)code andReason:(NSString*)reason
-{
+- (void) dealloc {
+	
+	[self closeConnectionWithCode:WAWebSocketNormal andReason:@"Normally close websocket"];
+
+}
+
+- (void) closeConnectionWithCode:(NSInteger)code andReason:(NSString*)reason {
+	
 	stopped = YES;
 	if ([self webSocketConnected]) {
 		[self.connectionForWebSocket closeWithCode:code reason:reason];
 	}
+	
 }
 
 - (void) reconnectWebSocket
 {
+
+	static NSString *const aReason = @"a normal close";
+	
 	if (self.connectionForWebSocket) {
-		[self.connectionForWebSocket closeWithCode:WAWebSocketNormal reason:@"Normally closed from refresh button"];
-		self.connectionForWebSocket = nil;
+		if (stopped) {
+			[self.connectionForWebSocket closeWithCode:WAWebSocketNormal reason:aReason];
+			return;
+		}
+		[self.connectionForWebSocket reconnectWithCode:WAWebSocketNormal reason:aReason];
 	}
-
-	if (stopped)
-		return;
-
-	self.connectionForWebSocket = [[SRWebSocket alloc] initWithURL:self.urlForWebSocket];
-	self.connectionForWebSocket.delegate = self;
-	[self.connectionForWebSocket open];	// re-connect
+	
 }
 
 - (void) connectionResponseWithCode:(NSUInteger)code andReason:(NSString*)message

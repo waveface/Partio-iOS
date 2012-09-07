@@ -283,27 +283,38 @@ NSURL *refiningStationLocation(NSString *stationUrlString, NSURL *baseUrl) {
 					return (id)[[NSDictionary alloc] initWithObjectsAndKeys:stationURL, @"location", wsURL, @"ws_location", nil];
 
 				}]];
-					
+
 				if ([wsStations count] > 0) {
-					NSURL *wsURL = [(NSDictionary*)[wsStations objectAtIndex:0] objectForKey:@"ws_location"];
-					NSURL *stURL = [(NSDictionary*)[wsStations objectAtIndex:0] objectForKey:@"location"];
+					// cloud says we have at least one station supports websocket
 					
+					// then we try to connect to one of available
+					[[WARemoteInterface sharedInterface] connectAvaliableWSStation:wsStations
+						onSucces:^(NSURL *wsURL, NSURL *stURL){
+							
+							// any success connect to websocket goes to this block
 
-					[[WARemoteInterface sharedInterface] openWebSocketConnectionForUrl: wsURL onSucces:^{
+							[[WARemoteInterface sharedInterface] stopAutomaticRemoteUpdates];
 
-						[[WARemoteInterface sharedInterface] stopAutomaticRemoteUpdates];
+							[[WARemoteInterface sharedInterface] subscribeNotification];
+							// We only scan the reachability detector for cloud and the first available station that supports websocket
+							wSelf.monitoredHosts = [NSArray arrayWithObjects:wSelf.engine.context.baseURL, stURL, nil];
 
-						[[WARemoteInterface sharedInterface] subscribeNotification];
-						// We only scan the reachability detector for cloud and the first station that supports websocket
-						wSelf.monitoredHosts = [NSArray arrayWithObjects:wSelf.engine.context.baseURL, stURL, nil];
+						} onFailure:^(NSError *error) {
 						
-					} onFailure:^(NSError *error) {
-						
-						wSelf.monitoredHosts = [NSArray arrayWithObject:wSelf.engine.context.baseURL];
-						[[WARemoteInterface sharedInterface] enableAutomaticRemoteUpdatesTimerNow];
+							// no websocket station available or any failure during connection goes to this block
 
-					}];
-					
+							wSelf.monitoredHosts = [[NSArray arrayWithObject:wSelf.engine.context.baseURL] arrayByAddingObjectsFromArray:[stationReps irMap: ^ (NSDictionary *aStationRep, NSUInteger index, BOOL *stop) {
+								
+								NSString *stationURLString = [aStationRep valueForKeyPath:@"location"];
+								if (!stationURLString)
+									return (id)nil;
+								
+								return (id)refiningStationLocation(stationURLString, wSelf.engine.context.baseURL);
+							}]];
+							
+							[[WARemoteInterface sharedInterface] enableAutomaticRemoteUpdatesTimerNow];
+
+						}];
 
 				} else {
 

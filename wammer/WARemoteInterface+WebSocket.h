@@ -20,6 +20,8 @@
 /// @return YES if websocket is connected, NO if not.
 @property (nonatomic, readonly) BOOL webSocketConnected;
 
+- (void) connectAvaliableWSStation:(NSArray *)allStations onSucces:(void(^)(NSURL *wsURL, NSURL*stURL))successBlock onFailure:(WAWebSocketConnectFailure)failureBlock;
+
 /**
  * Open a new websocket connection to a specified URL.
  
