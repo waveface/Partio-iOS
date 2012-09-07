@@ -72,9 +72,17 @@ NSError * WARemoteInterfaceWebSocketError (NSUInteger code, NSString *message);
 	};
 	
 	self.commandHandlerMap = [[NSMutableDictionary alloc] initWithObjectsAndKeys:errorHandler, @"error", nil];
+
+	[self _doConnect];
+	
+}
+
+- (void) _doConnect {
+
 	self.connectionForWebSocket = [[SRWebSocket alloc] initWithURL:self.urlForWebSocket];
 	self.connectionForWebSocket.delegate = self;
 	[self.connectionForWebSocket open];
+	
 }
 
 - (void) dealloc {

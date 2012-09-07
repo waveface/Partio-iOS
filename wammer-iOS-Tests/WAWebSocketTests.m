@@ -28,7 +28,7 @@
 	self.connectionForWebSocket = newSocketConnection;
 }
 
-- (void) reconnectWebSocket
+- (void) _doConnect
 {
 	[self.connectionForWebSocket open];
 }
