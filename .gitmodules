@@ -73,6 +73,3 @@
 [submodule "external/ocmock"]
 	path = external/ocmock
 	url = git://github.com/erikdoe/ocmock.git
-[submodule "external/PonyDebugger"]
-	path = external/PonyDebugger
-	url = git://github.com/square/PonyDebugger.git
