@@ -86,7 +86,7 @@ NSError * WARemoteInterfaceWebSocketError (NSUInteger code, NSString *message);
 - (void) closeConnectionWithCode:(NSInteger)code andReason:(NSString*)reason {
 	
 	stopped = YES;
-	if ([self webSocketConnected] && [self webSocketConnected]) {
+	if ([self webSocketConnected]) {
 		[self.connectionForWebSocket closeWithCode:code reason:reason];
 	}
 	
