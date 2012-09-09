@@ -228,6 +228,30 @@
 	
 }
 
+- (void) application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
+
+	// Send API request to cloud
+	NSLog(@"device token : %@", deviceToken);
+
+}
+
+- (void) application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error {
+
+	NSLog(@"Fail to register for remote notification with error: %@", error);
+
+}
+
+- (void) application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
+	
+	
+}
+
+- (void) subscribeRemoteNotification {
+	
+	[[UIApplication sharedApplication] registerForRemoteNotificationTypes:UIRemoteNotificationTypeAlert];
+	
+}
+
 - (void) clearViewHierarchy {
 	
 	UIViewController *rootVC = self.window.rootViewController;
@@ -640,6 +664,7 @@
 					[wAppDelegate clearViewHierarchy];
 					[wAppDelegate recreateViewHierarchy];
 					
+					[wAppDelegate subscribeRemoteNotification];
 				}];
 				
 				switch ([UIDevice currentDevice].userInterfaceIdiom) {

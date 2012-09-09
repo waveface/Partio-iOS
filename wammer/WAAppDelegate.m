@@ -380,4 +380,10 @@
 
 }
 
+- (void) subscribeRemoteNotification {
+	
+	[NSException raise:NSInternalInconsistencyException format:@"Subclass shall implement %s", __PRETTY_FUNCTION__];
+
+}
+
 @end

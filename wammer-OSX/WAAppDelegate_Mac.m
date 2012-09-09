@@ -39,6 +39,12 @@
 
 }
 
+- (void) subscribeRemoteNotification {
+
+	// No op
+
+}
+
 - (void) bootstrap {
 
 	[super bootstrap];
