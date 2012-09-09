@@ -269,7 +269,6 @@
 	WAArticle *previousPost = self.representedObject;
 	if (previousPost) {
 		for (WAFile *file in previousPost.files) {
-			[file irRemoveObserverBlocksForKeyPath:@"smallThumbnailFilePath"];
 			[file irRemoveObserverBlocksForKeyPath:@"thumbnailFilePath"];
 		}
 	}
@@ -336,9 +335,6 @@
 
 		BOOL (^downloadCompleted)(void)	= ^ {
 			for (WAFile *file in wSelf.article.files) {
-				if (![file smallThumbnailFilePath]) {
-					return NO;
-				}
 				if (![file thumbnailFilePath]) {
 					return NO;
 				}
@@ -351,22 +347,6 @@
 			wSelf.originLabel.text = [NSString stringWithFormat:NSLocalizedString(@"NUMBER_OF_PHOTOS_CREATE_TIME_FROM_DEVICE", @"iPhone Timeline"), self.accessibilityHint, timeString, deviceName];
 		} else {
 			for (WAFile *file in allFiles) {
-				[file irObserve:@"smallThumbnailFilePath" options:NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew context:nil withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
-					if (!fromValue && toValue) {
-						if (downloadCompleted()) {
-							dispatch_async(dispatch_get_main_queue(), ^{
-								WAArticle *article = wSelf.representedObject;
-								wSelf.originLabel.textColor = [UIColor lightGrayColor];
-								wSelf.originLabel.text = [NSString stringWithFormat:NSLocalizedString(@"NUMBER_OF_PHOTOS_CREATE_TIME_FROM_DEVICE", @"iPhone Timeline"), wSelf.accessibilityHint, [[[wSelf class] timeFormatter] stringFromDate:article.presentationDate], article.creationDeviceName];
-							});
-						} else {
-							dispatch_async(dispatch_get_main_queue(), ^{
-								wSelf.originLabel.textColor = [UIColor colorWithRed:0x6c/255.0 green:0xbc/255.0 blue:0xd3/255.0 alpha:1.0];
-								wSelf.originLabel.text = NSLocalizedString(@"DOWNLOADING_PHOTOS", @"Downloading Status on iPhone Timeline");
-							});
-						}
-					}
-				}];
 				[file irObserve:@"thumbnailFilePath" options:NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew context:nil withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
 					if (!fromValue && toValue) {
 						if (downloadCompleted()) {

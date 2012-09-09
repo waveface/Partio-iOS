@@ -158,9 +158,11 @@
 	NSError *error = nil;
 	WADataStore *ds = [WADataStore defaultStore];
 
-	if ([fileKeyPath isEqualToString:kWAFileSmallThumbnailFilePath] && !self.extraSmallThumbnailFilePath) {
+	if (!self.extraSmallThumbnailFilePath) {
+
 		UIImage *image = [UIImage imageWithContentsOfFile:aPath];
 		[self makeThumbnailsWithImage:image options:WAThumbnailMakeOptionExtraSmall];
+
 	}
 
 	if (![ds updateObject:self inContext:self.managedObjectContext takingBlobFromTemporaryFile:aPath usingResourceType:self.resourceType forKeyPath:fileKeyPath matchingURL:anURL forKeyPath:urlKeyPath error:&error]) {

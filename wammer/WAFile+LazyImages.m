@@ -149,6 +149,8 @@ static NSString * const kMemoryWarningObserverCreationDisabled = @"-[WAFile(Lazy
 
 	[self createMemoryWarningObserverIfAppropriate];
 
+	[self setDisplaying:YES];
+
 	if (self.extraSmallThumbnailFilePath) {
 
 		return [self imageAssociatedWithKey:&kWAFileExtraSmallThumbnailImage filePath:self.extraSmallThumbnailFilePath];

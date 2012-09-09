@@ -65,11 +65,11 @@ CGFloat const kWAFileLargeImageSideLength = 2048;
 			
 			UIImage *extraSmallThumbnailImage = [standardImage irScaledImageWithSize:IRGravitize((CGRect){ CGPointZero, (CGSize){ extraSmallSideLength, extraSmallSideLength } }, image.size, kCAGravityResizeAspect).size];
 			
-			self.extraSmallThumbnailFilePath = [[[WADataStore defaultStore] persistentFileURLForData:UIImageJPEGRepresentation(extraSmallThumbnailImage, 1.0f) extension:@"jpeg"] path];
+			self.extraSmallThumbnailFilePath = [[[WADataStore defaultStore] persistentFileURLForData:UIImageJPEGRepresentation(extraSmallThumbnailImage, 0.85f) extension:@"jpeg"] path];
 			
 		} else {
 			
-			self.extraSmallThumbnailFilePath = [[[WADataStore defaultStore] persistentFileURLForData:UIImageJPEGRepresentation(standardImage, 1.0f) extension:@"jpeg"] path];
+			self.extraSmallThumbnailFilePath = [[[WADataStore defaultStore] persistentFileURLForData:UIImageJPEGRepresentation(standardImage, 0.85f) extension:@"jpeg"] path];
 			
 		}
 	}
