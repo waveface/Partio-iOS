@@ -8,11 +8,6 @@
 
 #import "WAFile.h"
 
-extern CGFloat const kWAFileExtraSmallImageSideLength;
-extern CGFloat const kWAFileSmallImageSideLength;
-extern CGFloat const kWAFileMediumImageSideLength;
-extern CGFloat const kWAFileLargeImageSideLength;
-
 enum {
 	WAThumbnailMakeOptionExtraSmall = 1,
 	WAThumbnailMakeOptionSmall = 1 << 1,
