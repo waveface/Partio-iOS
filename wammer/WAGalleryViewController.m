@@ -655,7 +655,7 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 
 - (UIImage *) thumbnailForItem:(WAFile *)aFile inImageStreamPickerView:(WAImageStreamPickerView *)picker {
 
-	return aFile.smallestPresentableImage;
+	return aFile.extraSmallThumbnailImage;
 
 }
 

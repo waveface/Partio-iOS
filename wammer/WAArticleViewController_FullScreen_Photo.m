@@ -171,7 +171,7 @@
 
 	if (isPad() && numberOfItems <= 4) {
 	
-		[cell irBind:@"image" toObject:file keyPath:@"bestPresentableImage"
+		[cell irBind:@"image" toObject:file keyPath:@"thumbnailImage"
 					options:[NSDictionary dictionaryWithObjectsAndKeys: (id)kCFBooleanTrue, kIRBindingsAssignOnMainThreadOption, nil]];
 
 	} else {
