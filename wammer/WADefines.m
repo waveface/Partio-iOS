@@ -82,6 +82,8 @@ NSDictionary * WAPresetDefaults () {
 
 #if DEBUG
 	NSURL *defaultsURL = [[NSBundle mainBundle] URLForResource:@"WADefaults.develop" withExtension:@"plist"];
+#elif STREAM_BETA
+	NSURL *defaultsURL = [[NSBundle mainBundle] URLForResource:@"WADefaults.staging" withExtension:@"plist"]; // Production and Beta
 #else
 	NSURL *defaultsURL = [[NSBundle mainBundle] URLForResource:@"WADefaults" withExtension:@"plist"]; // Production and Beta
 #endif
