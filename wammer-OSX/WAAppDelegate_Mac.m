@@ -45,6 +45,12 @@
 
 }
 
+- (void) unscribeRemoteNotification {
+	
+	// No op
+	
+}
+
 - (void) bootstrap {
 
 	[super bootstrap];

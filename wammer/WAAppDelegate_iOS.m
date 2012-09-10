@@ -252,6 +252,11 @@
 	
 }
 
+- (void) unsubscribeRemoteNotification {
+	
+	[[UIApplication sharedApplication] unregisterForRemoteNotifications];
+}
+
 - (void) clearViewHierarchy {
 	
 	UIViewController *rootVC = self.window.rootViewController;
@@ -351,6 +356,8 @@
 
 				 // continue downloading all thumbnails
 				 [wSelf bootstrapDownloadAllThumbnails];
+				 
+				 [wSelf unsubscribeRemoteNotification];
 
 			 });
 		 }
@@ -605,6 +612,7 @@
 			block(YES, nil);
 			
 		wAppDelegate.alreadyRequestingAuthentication = NO;
+		[wAppDelegate subscribeRemoteNotification];
 		
 	};
 	
@@ -664,7 +672,6 @@
 					[wAppDelegate clearViewHierarchy];
 					[wAppDelegate recreateViewHierarchy];
 					
-					[wAppDelegate subscribeRemoteNotification];
 				}];
 				
 				switch ([UIDevice currentDevice].userInterfaceIdiom) {

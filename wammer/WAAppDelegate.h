@@ -38,5 +38,6 @@
 - (void) beginNetworkActivity;
 - (void) endNetworkActivity;
 - (void) subscribeRemoteNotification;
+- (void) unsubscribeRemoteNotification;
 
 @end
