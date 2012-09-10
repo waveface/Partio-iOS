@@ -176,8 +176,17 @@
 
 	} else {
 
-		[cell irBind:@"image" toObject:file keyPath:@"extraSmallThumbnailImage"
-					options:[NSDictionary dictionaryWithObjectsAndKeys: (id)kCFBooleanTrue, kIRBindingsAssignOnMainThreadOption, nil]];
+		if (isPad()) {
+
+			[cell irBind:@"image" toObject:file keyPath:@"smallThumbnailImage"
+					 options:[NSDictionary dictionaryWithObjectsAndKeys: (id)kCFBooleanTrue, kIRBindingsAssignOnMainThreadOption, nil]];
+
+		} else {
+
+			[cell irBind:@"image" toObject:file keyPath:@"extraSmallThumbnailImage"
+					 options:[NSDictionary dictionaryWithObjectsAndKeys: (id)kCFBooleanTrue, kIRBindingsAssignOnMainThreadOption, nil]];
+
+		}
 
 	}
 	
@@ -255,12 +264,13 @@
 	} else {
 	
 		dequeuedCell = [WACompositionViewPhotoCell cellWithReusingIdentifier:identifier];
-		
-		dequeuedCell.style = isPad() ? WACompositionViewPhotoCellShadowedStyle : WACompositionViewPhotoCellBorderedPlainStyle;
-		if ([self.article.files count] > 4) {
-			// xs thumbnails is smaller than the dequeued cell, put them on center.
-			dequeuedCell.imageContainer.layer.contentsGravity = kCAGravityCenter;
-		}
+
+		dequeuedCell.style = WACompositionViewPhotoCellBorderedPlainStyle;
+//		dequeuedCell.style = isPad() ? WACompositionViewPhotoCellShadowedStyle : WACompositionViewPhotoCellBorderedPlainStyle;
+//		if ([self.article.files count] > 4) {
+//			// xs thumbnails is smaller than the dequeued cell, put them on center.
+//			dequeuedCell.imageContainer.layer.contentsGravity = kCAGravityCenter;
+//		}
 		dequeuedCell.canRemove = NO;
 
 		[self setPresentableImageWithFile:representedFile forCell:dequeuedCell];
