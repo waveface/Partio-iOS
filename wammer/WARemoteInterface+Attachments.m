@@ -10,6 +10,8 @@
 #import "WADataStore.h"
 
 #import "IRWebAPIEngine+FormMultipart.h"
+#import "WAAssetsLibraryManager.h"
+#import <AssetsLibrary+IRAdditions.h>
 
 NSString * const kWARemoteAttachmentType = @"WARemoteAttachmentType";
 NSString * const kWARemoteAttachmentTitle = @"WARemoteAttachmentTitle";
@@ -25,10 +27,34 @@ NSString * const WARemoteAttachmentSmallSubtype = @"small";
 
 @implementation WARemoteInterface (Attachments)
 
-- (void) createAttachmentWithFile:(NSURL *)aFileURL group:(NSString *)aGroupIdentifier options:(NSDictionary *)options onSuccess:(void(^)(NSString *attachmentIdentifier))successBlock onFailure:(void(^)(NSError *error))failureBlock {
+- (void)createAttachmentWithFile:(NSURL *)aFileURL group:(NSString *)aGroupIdentifier options:(NSDictionary *)options onSuccess:(void (^)(NSString *))successBlock onFailure:(void (^)(NSError *))failureBlock {
 
-	NSParameterAssert([aFileURL isFileURL] && [[NSFileManager defaultManager] fileExistsAtPath:[aFileURL path]]);
-	NSParameterAssert([[aFileURL pathExtension] length]);
+	if ([aFileURL isFileURL]) {
+
+		NSURL *copiedFileURL = [[WADataStore defaultStore] persistentFileURLForFileAtURL:aFileURL];
+		[self createAttachmentWithCopiedFile:copiedFileURL group:aGroupIdentifier options:options onSuccess:successBlock onFailure:failureBlock];
+
+	} else {
+
+		[[WAAssetsLibraryManager defaultManager] assetForURL:aFileURL resultBlock:^(ALAsset *asset) {
+
+			NSURL *copiedFileURL = [[WADataStore defaultStore] persistentFileURLForData:UIImageJPEGRepresentation([[asset defaultRepresentation] irImage], 0.85f) extension:@"jpeg"];
+			[self createAttachmentWithCopiedFile:copiedFileURL group:aGroupIdentifier options:options onSuccess:successBlock onFailure:failureBlock];
+
+		} failureBlock:^(NSError *error) {
+
+			failureBlock(error);
+
+		}];
+
+	}
+
+}
+
+- (void) createAttachmentWithCopiedFile:(NSURL *)aCopiedFileURL group:(NSString *)aGroupIdentifier options:(NSDictionary *)options onSuccess:(void(^)(NSString *attachmentIdentifier))successBlock onFailure:(void(^)(NSError *error))failureBlock {
+
+	NSParameterAssert([aCopiedFileURL isFileURL] && [[NSFileManager defaultManager] fileExistsAtPath:[aCopiedFileURL path]]);
+	NSParameterAssert([[aCopiedFileURL pathExtension] length]);
 	NSParameterAssert(aGroupIdentifier);
 		
 	NSMutableDictionary *mergedOptions = [NSMutableDictionary dictionaryWithObjectsAndKeys:
@@ -50,7 +76,7 @@ NSString * const WARemoteAttachmentSmallSubtype = @"small";
 	
 		//	Time for some inference
 		
-		NSString *pathExtension = [aFileURL pathExtension];
+		NSString *pathExtension = [aCopiedFileURL pathExtension];
 		BOOL fileIsImage = NO;
 		if (pathExtension) {
 			CFStringRef fileUTI = UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, (__bridge CFStringRef)pathExtension, kUTTypeItem);
@@ -69,9 +95,8 @@ NSString * const WARemoteAttachmentSmallSubtype = @"small";
 	}
 	
 	
-	NSURL *copiedFileURL = [[WADataStore defaultStore] persistentFileURLForFileAtURL:aFileURL];
 	NSMutableDictionary *sentRemoteOptions = [NSMutableDictionary dictionaryWithObjectsAndKeys:
-		copiedFileURL, @"file",
+		aCopiedFileURL, @"file",
 		aGroupIdentifier, @"group_id",
 	nil];
 	
@@ -87,7 +112,7 @@ NSString * const WARemoteAttachmentSmallSubtype = @"small";
 		}
 		case WARemoteAttachmentUnknownType:
 		default: {
-			[NSException raise:NSInternalInconsistencyException format:@"Could not send a file %@ with unknown remote type", aFileURL];
+			[NSException raise:NSInternalInconsistencyException format:@"Could not send a file %@ with unknown remote type", aCopiedFileURL];
 			break;
 		}
 	}
@@ -112,14 +137,14 @@ NSString * const WARemoteAttachmentSmallSubtype = @"small";
 		if (successBlock)
 			successBlock([inResponseOrNil objectForKey:@"object_id"]);
 		
-		[[NSFileManager defaultManager] removeItemAtURL:copiedFileURL error:nil];
+		[[NSFileManager defaultManager] removeItemAtURL:aCopiedFileURL error:nil];
 		
 	} failureHandler:WARemoteInterfaceGenericFailureHandler(^ (NSError *anError){
 	
 		if (failureBlock)
 			failureBlock(anError);
 			
-		[[NSFileManager defaultManager] removeItemAtURL:copiedFileURL error:nil];
+		[[NSFileManager defaultManager] removeItemAtURL:aCopiedFileURL error:nil];
 	
 	})];
 

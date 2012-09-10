@@ -392,7 +392,6 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 
 					for (WAArticle *article in sortedArticles) {
 						for (WAFile *file in article.files) {
-							[file smallThumbnailFilePath];
 							[file thumbnailFilePath];
 						}
 					}
@@ -472,7 +471,6 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 				 }];
 				 for (WAArticle *article in sortedArticles) {
 					 for (WAFile *file in article.files) {
-						 [file smallThumbnailFilePath];
 						 [file thumbnailFilePath];
 					 }
 				 }
@@ -693,10 +691,11 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 			}
 			
 			NSURL *fileURI = [[representedFile objectID] URIRepresentation];
+			NSString *fileSyncStrategy = [ri hasReachableStation] ? kWAFileSyncFullQualityStrategy : kWAFileSyncReducedQualityStrategy;
 			
 			[representedFile synchronizeWithOptions:[NSDictionary dictionaryWithObjectsAndKeys:
 			
-				kWAFileSyncReducedQualityStrategy, kWAFileSyncStrategy,
+				fileSyncStrategy, kWAFileSyncStrategy,
 			
 			nil] completion:^(BOOL didFinish, NSError *error) {
 			
