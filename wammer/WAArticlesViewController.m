@@ -33,6 +33,8 @@
 
 #import <AssetsLibrary/AssetsLibrary.h>
 
+#import "WAFilterPickerViewController.h"
+
 @interface WAArticlesViewController () <NSFetchedResultsControllerDelegate, WAArticleDraftsViewControllerDelegate>
 
 @property (nonatomic, readwrite, retain) NSFetchedResultsController *fetchedResultsController;
@@ -40,6 +42,7 @@
 @property (nonatomic, readwrite, retain) IRActionSheetController *debugActionSheetController;
 @property (nonatomic, readwrite, retain) UIPopoverController *draftsPopoverController;
 @property (nonatomic, readwrite, retain) UIPopoverController *userInfoPopoverController;
+@property (nonatomic, readonly) UIPopoverController *filterPopoverController;
 
 @property (nonatomic, readwrite, assign) BOOL updatesViewOnControllerChangeFinish;
 
@@ -84,46 +87,33 @@
 	
 	self.navigationItem.titleView = WAStandardTitleView();
 		
-	self.navigationItem.leftBarButtonItem = [IRBarButtonItem itemWithCustomView:((^ {
-	
-		UIView *wrapperView = [[UIView alloc] initWithFrame:(CGRect){ 0, 0, 32, 24 }];
-		WARefreshActionView *actionView = [[WARefreshActionView alloc] initWithRemoteInterface:[WARemoteInterface sharedInterface]];
-		
-		[wrapperView addSubview:actionView];
-		actionView.frame = IRCGRectAlignToRect(actionView.frame, wrapperView.bounds, irRight, YES);
-		
-		return wrapperView;
-	
-	})())];
-	
 	__weak WAArticlesViewController *nrSelf = self;
 	
-	self.navigationItem.rightBarButtonItems = [NSArray arrayWithObjects:
+	__block IRBarButtonItem *accountButton = WABarButtonItem(WABarButtonImageFromImageNamed(@"WAUserGlyph"),
+																													 nil,
+																													 ^{[nrSelf handleUserInfoItemTap:accountButton];});
 	
-		((^ {
-		
-			__block IRBarButtonItem *senderItem = WABarButtonItem(WABarButtonImageFromImageNamed(@"WACompose"), nil, ^{
-
-				[nrSelf handleComposeItemTap:senderItem];
-			
-			});
-			
-			return senderItem;
-		
-		})()),
+	self.navigationItem.leftBarButtonItem = accountButton;
 	
-		((^ {
-			
-			__block IRBarButtonItem *senderItem = WABarButtonItem(WABarButtonImageFromImageNamed(@"WAUserGlyph"), nil, ^{
-
-				[nrSelf handleUserInfoItemTap:senderItem];
-			
-			});
-			
-			return senderItem;
+	self.navigationItem.rightBarButtonItems =
+	[NSArray arrayWithObjects:
+	 [[UIBarButtonItem alloc] initWithTitle:@"View"
+																		style:UIBarButtonItemStylePlain
+																	 target:self
+																	 action:@selector(handleFilter:)],
+	 
+	 ((^ {
 		
-		})()),
+		__block IRBarButtonItem *senderItem = WABarButtonItem(WABarButtonImageFromImageNamed(@"WACompose"), nil, ^{
+			
+			[nrSelf handleComposeItemTap:senderItem];
+			
+		});
 		
+		return senderItem;
+		
+	})()),
+	 
 	nil];
 	
 	self.title = @"Articles";
@@ -244,6 +234,9 @@
   if ([debugActionSheetController.managedActionSheet isVisible])
     [debugActionSheetController.managedActionSheet dismissWithClickedButtonIndex:[debugActionSheetController.managedActionSheet cancelButtonIndex] animated:animate];
 
+	if ([_filterPopoverController isPopoverVisible]) {
+		[_filterPopoverController dismissPopoverAnimated:animate];
+	}
 }
 
 - (UIPopoverController *) userInfoPopoverController {
@@ -281,7 +274,43 @@
 
 }
 
-
+- (void) handleFilter:(UIBarButtonItem *)sender {
+	
+	if (!_filterPopoverController) {
+		
+		__block WAFilterPickerViewController *filterPicker = [WAFilterPickerViewController controllerWithCompletion:^(NSFetchRequest *fetchRequest) {
+			
+			if (fetchRequest) {
+				self.fetchedResultsController = [[NSFetchedResultsController alloc]
+																				 initWithFetchRequest:fetchRequest
+																				 managedObjectContext:self.managedObjectContext
+																				 sectionNameKeyPath:nil
+																				 cacheName:nil];
+				self.fetchedResultsController.delegate = self;
+				[self.fetchedResultsController performFetch:nil];
+			}
+			
+			[filterPicker willMoveToParentViewController:nil];
+			[filterPicker removeFromParentViewController];
+			[filterPicker.view removeFromSuperview];
+			[filterPicker didMoveToParentViewController:nil];
+			
+			filterPicker = nil;
+			
+			[_filterPopoverController dismissPopoverAnimated:NO];
+			
+			[self reloadViewContents];
+			[self refreshData];
+		}];
+		
+		_filterPopoverController = [[UIPopoverController alloc] initWithContentViewController:filterPicker];
+		_filterPopoverController.popoverContentSize = (CGSize) {320,216};
+	}
+	
+	[self dismissAuxiliaryControlsAnimated:NO];
+	
+	[_filterPopoverController presentPopoverFromBarButtonItem:sender permittedArrowDirections:UIPopoverArrowDirectionUp animated:NO];
+}
 
 
 

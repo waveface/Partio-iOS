@@ -10,7 +10,7 @@
 #import "WADataStore.h"
 #import "CoreData+IRAdditions.h"
 
-#define kWAFilterPickerViewSelectedRowIndex @"kWAFilterPickerViewSelectedRowIndex"
+static NSString * const kWAFilterPickerViewSelectedRowIndex = @"kWAFilterPickerViewSelectedRowIndex";
 
 @interface WAFilterPickerViewController ()
 
@@ -102,26 +102,23 @@
 }
 
 - (IBAction) handleDone:(UIBarButtonItem *)sender {
-
-	[self runDismissingAnimationWithCompletion:^{
 	
-		NSInteger rowIndex = [self.pickerView selectedRowInComponent:0];
+	NSInteger rowIndex = [self.pickerView selectedRowInComponent:0];
+	
+	if (rowIndex != -1) {
 		
-		if (rowIndex != -1) {
+		if (self.callback)
+			self.callback([self.fetchRequests objectAtIndex:rowIndex]);
 		
-			if (self.callback)
-				self.callback([self.fetchRequests objectAtIndex:rowIndex]);
+	} else {
 		
-		} else {
+		if (self.callback)
+			self.callback(nil);
 		
-			if (self.callback)
-				self.callback(nil);
-			
-		}
-		
-		[[NSUserDefaults standardUserDefaults] setInteger:rowIndex forKey:kWAFilterPickerViewSelectedRowIndex];
-	}];
-
+	}
+	
+	[[NSUserDefaults standardUserDefaults] setInteger:rowIndex forKey:kWAFilterPickerViewSelectedRowIndex];
+	
 }
 
 #pragma UIPickerViewDelegate
