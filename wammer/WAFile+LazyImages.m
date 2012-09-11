@@ -208,7 +208,7 @@ static NSString * const kMemoryWarningObserverCreationDisabled = @"-[WAFile(Lazy
 					});
 				}
 			} failureBlock:^(NSError *error) {
-				NSLog(@"Unable to read asset from %@", wSelf.assetURL);
+				NSLog(@"Error saving: %s %@", __PRETTY_FUNCTION__, error);
 			}];
 		}
 	}
