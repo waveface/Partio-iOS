@@ -92,7 +92,7 @@
 	if (isFavorite)
 		[mainImageView irBind:@"image"
 					 toObject:inArticle
-					  keyPath:@"representingFile.bestPresentableImage"
+					  keyPath:@"representingFile.thumbnailImage"
 					  options:[NSDictionary dictionaryWithObjectsAndKeys: (id)kCFBooleanTrue,
 							   kIRBindingsAssignOnMainThreadOption, nil]];
 	else

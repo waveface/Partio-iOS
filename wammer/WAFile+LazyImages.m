@@ -88,10 +88,8 @@ static NSString * const kMemoryWarningObserverCreationDisabled = @"-[WAFile(Lazy
 
 - (UIImage *) bestPresentableImage {
 
-	/* We don't need to show resource image in anywhere, since it is too waste memory
 	if (self.resourceImage)
 		return self.resourceImage;
-	*/
 	 
 	if (self.largeThumbnailImage)
 		return self.largeThumbnailImage;
@@ -113,7 +111,6 @@ static NSString * const kMemoryWarningObserverCreationDisabled = @"-[WAFile(Lazy
 		kWAFileSmallThumbnailImage,
 		kWAFileThumbnailImage,
 		kWAFileLargeThumbnailImage,
-		kWAFileResourceImage,
 	nil];
 
 }
@@ -131,9 +128,6 @@ static NSString * const kMemoryWarningObserverCreationDisabled = @"-[WAFile(Lazy
 	
 	if (self.largeThumbnailImage)
 		return self.largeThumbnailImage;
-	
-	if (self.resourceImage)
-		return self.resourceImage;
 	
 	return nil;
 	
@@ -157,22 +151,25 @@ static NSString * const kMemoryWarningObserverCreationDisabled = @"-[WAFile(Lazy
 
 	} else {
 
-		NSManagedObjectContext *context = [[WADataStore defaultStore] defaultAutoUpdatedMOC];
-
 		if (self.smallThumbnailFilePath) {
 
 			__weak WAFile *wSelf = self;
+			NSManagedObjectContext *context = [[self class] sharedExtraSmallImageManagedObjectContext];
 			[context performBlock:^{
 
-				UIImage *image = [wSelf imageAssociatedWithKey:&kWAFileSmallThumbnailImage filePath:wSelf.smallThumbnailFilePath];
-				[wSelf makeThumbnailsWithImage:image options:WAThumbnailMakeOptionExtraSmall];
+				if (!wSelf.extraSmallThumbnailFilePath) {
 
-				NSError *error = nil;
-				[context save:&error];
-				if (error) {
-					NSLog(@"Error saving: %s %@", __PRETTY_FUNCTION__, error);
+					UIImage *image = [wSelf imageAssociatedWithKey:&kWAFileSmallThumbnailImage filePath:wSelf.smallThumbnailFilePath];
+					[wSelf makeThumbnailsWithImage:image options:WAThumbnailMakeOptionExtraSmall];
+
+					NSError *error = nil;
+					[context save:&error];
+					if (error) {
+						NSLog(@"Error saving: %s %@", __PRETTY_FUNCTION__, error);
+					}
+
 				}
-
+				
 			}];
 
 		}
@@ -198,8 +195,25 @@ static NSString * const kMemoryWarningObserverCreationDisabled = @"-[WAFile(Lazy
 
 	[self createMemoryWarningObserverIfAppropriate];
 
-	return [self imageAssociatedWithKey:&kWAFileResourceImage filePath:self.resourceFilePath];
-	
+	UIImage *image = [self imageAssociatedWithKey:&kWAFileResourceImage filePath:self.resourceFilePath];
+
+	if (!image) {
+		if (self.assetURL) {
+			__weak WAFile *wSelf = self;
+			[[WAAssetsLibraryManager defaultManager] assetForURL:[NSURL URLWithString:self.assetURL] resultBlock:^(ALAsset *asset) {
+				if (asset && ![wSelf imageAssociatedWithKey:&kWAFileResourceImage filePath:nil]) {
+					dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+						UIImage *assetImage = [UIImage imageWithCGImage:[[asset defaultRepresentation] fullScreenImage]];
+						[wSelf setResourceImage:assetImage];
+					});
+				}
+			} failureBlock:^(NSError *error) {
+				NSLog(@"Error saving: %s %@", __PRETTY_FUNCTION__, error);
+			}];
+		}
+	}
+
+	return image;
 }
 
 - (void) setResourceImage:(UIImage *)resourceImage {
@@ -279,17 +293,12 @@ static NSString * const kMemoryWarningObserverCreationDisabled = @"-[WAFile(Lazy
 
 - (UIImage *) imageAssociatedWithKey:(const void *)key filePath:(NSString *)filePath {
 
-	if (!filePath)
-		return nil;
-	
 	UIImage *image = objc_getAssociatedObject(self, key);
 	if (image)
 		return image;
 	
-	// resource image is no longer needed if thumbnail has been created
-	if (key != &kWAFileResourceImage) {
-		[self irAssociateObject:nil usingKey:&kWAFileResourceImage policy:OBJC_ASSOCIATION_ASSIGN changingObservedKey:nil];
-	}
+	if (!filePath)
+		return nil;
 
 	image = [UIImage imageWithData:[NSData dataWithContentsOfFile:filePath options:NSDataReadingMappedIfSafe error:nil]];
 	image.irRepresentedObject = [NSValue valueWithNonretainedObject:self];
@@ -325,6 +334,17 @@ static NSString * const kMemoryWarningObserverCreationDisabled = @"-[WAFile(Lazy
 	[self irAssociateObject:nil usingKey:&kWAFileLargeThumbnailImage policy:OBJC_ASSOCIATION_ASSIGN changingObservedKey:nil];
 	[self irAssociateObject:nil usingKey:&kWAFileResourceImage policy:OBJC_ASSOCIATION_ASSIGN changingObservedKey:nil];
 
+}
+
++ (NSManagedObjectContext *) sharedExtraSmallImageManagedObjectContext {
+	static NSManagedObjectContext *context = nil;
+	static dispatch_once_t onceToken = 0;
+
+	dispatch_once(&onceToken, ^{
+    context = [[WADataStore defaultStore] disposableMOC];
+	});
+
+	return context;
 }
 
 @end
