@@ -10,6 +10,8 @@
 #import "WADataStore.h"
 #import "CoreData+IRAdditions.h"
 
+#define kWAFilterPickerViewSelectedRowIndex @"kWAFilterPickerViewSelectedRowIndex"
+
 @interface WAFilterPickerViewController ()
 
 @property (nonatomic, readwrite, copy) void(^callback)(NSFetchRequest *);
@@ -44,15 +46,21 @@
 	fetchRequests = [NSArray arrayWithObjects:
 	
 		[ds newFetchRequestForAllArticles],
-		[ds newFetchRequestForArticlesWithPreviews],
 		[ds newFetchRequestForArticlesWithPhotos],
-		[ds newFetchRequestForArticlesWithoutPreviewsOrPhotos],
+									 [ds newFetchRequestForArticlesWithPreviews],
 		
 	nil];
 	
 	return self;
 
 }
+
+- (void)viewDidLoad {
+	[super viewDidLoad];
+	NSInteger lastRowIndex = [[NSUserDefaults standardUserDefaults] integerForKey:kWAFilterPickerViewSelectedRowIndex];
+	[self.pickerView selectRow:lastRowIndex inComponent:0 animated:YES];	
+}
+
 
 - (void) viewDidUnload {
 
@@ -111,8 +119,16 @@
 			
 		}
 		
+		[[NSUserDefaults standardUserDefaults] setInteger:rowIndex forKey:kWAFilterPickerViewSelectedRowIndex];
 	}];
 
+}
+
+#pragma UIPickerViewDelegate
+
+- (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component {
+	
+	[self performSelector:@selector(handleDone:) withObject:nil afterDelay:(NSTimeInterval)0.5];
 }
 
 @end
