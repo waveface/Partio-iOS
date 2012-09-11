@@ -50,7 +50,6 @@
 	[self addTarget:self action:@selector(handleValueChanged:) forControlEvents:UIControlEventValueChanged];
 	
 	self.enabled = NO;
-	self.on = NO;
 	
 	[self reloadStatus];
 	
@@ -59,8 +58,8 @@
 - (void) reloadStatus {
 
 	self.enabled = NO;
-	self.on = NO;
-	
+	self.on = [[WAFacebookInterface sharedInterface] userDataImporting];
+
 	__weak WAFacebookConnectionSwitch *wSelf = self;
 	
 	WARemoteInterface * const ri = [WARemoteInterface sharedInterface];
@@ -88,7 +87,8 @@
 				
 				wSelf.enabled = YES;
 				wSelf.on = importing;
-				
+				[[WAFacebookInterface sharedInterface] setUserDataImporting:importing];
+
 			}
 			
 		});
@@ -98,7 +98,6 @@
 		NSLog(@"error %@", error);
 		
 	}];
-	
 }
 
 - (void) handleValueChanged:(id)sender {
@@ -135,6 +134,7 @@
 	IRAction *cancelAction = [IRAction actionWithTitle:cancelTitle block:^{
 		
 		[wSelf setOn:NO animated:YES];
+		[[WAFacebookInterface sharedInterface] setUserDataImporting:YES];
 		
 	}];
 	
@@ -178,6 +178,7 @@
 			
 			[wSelf setOn:YES animated:YES];
 			[wSelf setEnabled:YES];
+			[[WAFacebookInterface sharedInterface] setUserDataImporting:YES];
 
 		} onFailure:^(NSError *error) {
 		
@@ -199,6 +200,7 @@
 
 						[wSelf setEnabled:YES];
 						[wSelf setOn:YES animated:YES];
+						[[WAFacebookInterface sharedInterface] setUserDataImporting:YES];
 
 					} onFailure:^(NSError *error) {
 						
@@ -208,6 +210,7 @@
 						
 						[wSelf setEnabled:YES];
 						[wSelf setOn:NO animated:YES];
+						[[WAFacebookInterface sharedInterface] setUserDataImporting:NO];
 
 					}];
 
@@ -216,6 +219,7 @@
 					[[[IRAlertView alloc] initWithTitle:NSLocalizedString(@"FACEBOOK_CONNECT_FAIL_TITLE", @"Title for an alert view to show facebook connection failure") message:[wSelf errorString:[error code]] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
 					[wSelf setEnabled:YES];
 					[wSelf setOn:NO animated:YES];
+					[[WAFacebookInterface sharedInterface] setUserDataImporting:NO];
 					
 					return;
 				
@@ -233,6 +237,7 @@
 			
 				[wSelf setEnabled:NO];
 				[wSelf setOn:YES animated:YES];
+				[[WAFacebookInterface sharedInterface] setUserDataImporting:YES];
 				
 				WAOverlayBezel *busyBezel = [WAOverlayBezel bezelWithStyle:WAActivityIndicatorBezelStyle];
 				[busyBezel showWithAnimation:WAOverlayBezelAnimationFade];
@@ -243,6 +248,7 @@
 
 					[wSelf setEnabled:YES];
 					[wSelf setOn:YES animated:YES];
+					[[WAFacebookInterface sharedInterface] setUserDataImporting:YES];
 
 				} onFailure:^(NSError *error) {
 					
@@ -251,6 +257,7 @@
 					
 					[wSelf setEnabled:YES];
 					[wSelf setOn:NO animated:YES];
+					[[WAFacebookInterface sharedInterface] setUserDataImporting:NO];
 
 				}];
 
@@ -260,6 +267,7 @@
 				
 				[wSelf setEnabled:YES];
 				[wSelf setOn:NO animated:YES];
+				[[WAFacebookInterface sharedInterface] setUserDataImporting:NO];
 				
 				return;
 			
@@ -268,6 +276,7 @@
 		}];
 		
 		wSelf.on = NO;
+		[[WAFacebookInterface sharedInterface] setUserDataImporting:NO];
 	
 	}
 
@@ -281,6 +290,8 @@
 	IRAction *cancelAction = [IRAction actionWithTitle:cancelTitle block:^{
 		
 		[wSelf setOn:YES animated:YES];
+		[[WAFacebookInterface sharedInterface] setUserDataImporting:NO];
+
 		
 	}];
 	
@@ -321,6 +332,7 @@
 
 			wSelf.enabled = YES;
 			wSelf.on = NO;
+			[[WAFacebookInterface sharedInterface] setUserDataImporting:NO];
 			
 		});
 		
@@ -338,6 +350,7 @@
 			
 			[wSelf setOn:YES animated:YES];
 			wSelf.enabled = YES;
+			[[WAFacebookInterface sharedInterface] setUserDataImporting:YES];
 			
 			dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 2.0 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
 			

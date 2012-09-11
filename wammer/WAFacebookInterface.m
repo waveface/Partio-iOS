@@ -38,6 +38,8 @@ static NSString * const WAFacebookCallbackDidNotLoginMethodName = @"WAFacebookCa
 	dispatch_once(&onceToken, ^{
 	
 		interface = [self new];
+		
+		interface.userDataImporting = NO;
 	
 	});
 	
