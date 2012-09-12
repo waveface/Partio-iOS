@@ -267,6 +267,7 @@ typedef enum WASyncStatus: NSUInteger {
 		} else {
 			wSelf.importSavedPhotosTableViewCell.textLabel.text = NSLocalizedString(@"NOT_IMPORTING_PHOTOS", @"Photo importing status");
 		}
+		[wSelf.importSavedPhotosTableViewCell setNeedsDisplay];
 	}];
 
 	self.deviceNameLabel.text = WADeviceName();
