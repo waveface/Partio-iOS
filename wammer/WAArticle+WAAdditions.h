@@ -8,6 +8,15 @@
 
 #import "WAArticle.h"
 
+typedef enum {
+
+	WAImportTypeNone = 0,
+	WAImportTypeFromLocal,
+	WAImportTypeFromOthers
+
+} WAImportType;
+
+
 @interface WAArticle (WAAdditions)
 
 - (BOOL) hasMeaningfulContent;

@@ -233,6 +233,9 @@
 /* No comment provided by engineer. */
 "HOUR_SINGULAR" = "%d小時";
 
+/* Photo importing status */
+"IMPORTING_PHOTOS" = "匯入照片中...";
+
 /* No comment provided by engineer. */
 "MINUTE_PLURAL" = "%d分鐘";
 
@@ -244,6 +247,9 @@
 
 /* No comment provided by engineer. */
 "MONTH_SINGULAR" = "%d月";
+
+/* Photo importing status */
+"NOT_IMPORTING_PHOTOS" = "匯入 Camera Roll 的照片";
 
 /* Singluar noun for action objects */
 "NOUN_ACTIONS_OBJECT" = "動作";
@@ -513,9 +519,6 @@
 /* Class = "IBUITableViewSection"; headerTitle = "ACCOUNT_INFO_HEADER"; ObjectID = "Gw1-xy-FWK"; */
 "ACCOUNT_INFO_HEADER" = "帳戶資訊";
 
-/* Class = "IBUITableViewSection"; footerTitle = "VERSION"; ObjectID = "IP4-fz-MdU"; */
-"VERSION" = "版本";
-
 /* Class = "IBUILabel"; text = "LOCAL_PENDING_OBJECTS_TITLE"; ObjectID = "Uku-UE-EAs"; */
 "LOCAL_PENDING_OBJECTS_TITLE" = "本裝置尚未上傳原檔數量";
 
@@ -534,7 +537,13 @@
 /* Class = "IBUITableViewSection"; headerTitle = "SOCIAL_NETWORK_HEADER"; ObjectID = "qoR-fT-NMh"; */
 "SOCIAL_NETWORK_HEADER" = "Facebook 設定";
 
-/* Class = "IBUILabel"; text = "ACTION_CONTACT_DEVELOPER"; ObjectID = "vuN-4r-WXb"; */
+/* Class = "IBUITableViewSection"; footerTitle = "VERSION"; ObjectID = "rMk-eV-Pjl"; */
+"VERSION" = "版本";
+
+/* Class = "IBUILabel"; text = "ACTION_IMPORT_SAVED_PHOTOS"; ObjectID = "vuN-4r-WXb"; */
+"ACTION_IMPORT_SAVED_PHOTOS" = "匯入所有 Camera Roll 的照片";
+
+/* Class = "IBUILabel"; text = "ACTION_CONTACT_DEVELOPER"; ObjectID = "yLg-eE-ehZ"; */
 "ACTION_CONTACT_DEVELOPER" = "聯絡我們";
 
 /* Class = "IBUIButton"; normalTitle = "ACTION_CONNECT_FACEBOOK"; ObjectID = "4"; */
