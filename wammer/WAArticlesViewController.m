@@ -42,7 +42,7 @@
 @property (nonatomic, readwrite, retain) IRActionSheetController *debugActionSheetController;
 @property (nonatomic, readwrite, retain) UIPopoverController *draftsPopoverController;
 @property (nonatomic, readwrite, retain) UIPopoverController *userInfoPopoverController;
-@property (nonatomic, readonly) UIPopoverController *filterPopoverController;
+@property (nonatomic,	readwrite, retain) UIPopoverController *filterPopoverController;
 
 @property (nonatomic, readwrite, assign) BOOL updatesViewOnControllerChangeFinish;
 
@@ -87,34 +87,27 @@
 	
 	self.navigationItem.titleView = WAStandardTitleView();
 		
-	__weak WAArticlesViewController *nrSelf = self;
-	
-	__block IRBarButtonItem *accountButton = WABarButtonItem(WABarButtonImageFromImageNamed(@"WAUserGlyph"),
-																													 nil,
-																													 ^{[nrSelf handleUserInfoItemTap:accountButton];});
-	
-	self.navigationItem.leftBarButtonItem = accountButton;
-	
-	self.navigationItem.rightBarButtonItems =
-	[NSArray arrayWithObjects:
-	 [[UIBarButtonItem alloc] initWithTitle:@"View"
+	UIBarButtonItem *accountButton = [[UIBarButtonItem alloc]
+																		initWithImage:[UIImage imageNamed:@"WAUserGlyph"]
 																		style:UIBarButtonItemStylePlain
+																		target:self
+																		action:@selector(handleUserInfoItemTap:)];
+	
+	UIBarButtonItem *composeButton = [[UIBarButtonItem alloc]
+																		initWithImage:[UIImage imageNamed:@"WACompose"]
+																		style:UIBarButtonItemStylePlain
+																		target:self
+																		action:@selector(handleComposeItemTap:)];
+	
+	UIBarButtonItem *filterButton = [[UIBarButtonItem alloc]
+																	 initWithTitle:NSLocalizedString(@"VIEW_BUTTON", @"In iPad overview")
+																	 style:UIBarButtonItemStylePlain
 																	 target:self
-																	 action:@selector(handleFilter:)],
-	 
-	 ((^ {
-		
-		__block IRBarButtonItem *senderItem = WABarButtonItem(WABarButtonImageFromImageNamed(@"WACompose"), nil, ^{
-			
-			[nrSelf handleComposeItemTap:senderItem];
-			
-		});
-		
-		return senderItem;
-		
-	})()),
-	 
-	nil];
+																	 action:@selector(handleFilter:)];
+	
+	self.navigationItem.rightBarButtonItems = @[filterButton, composeButton];
+	
+	self.navigationItem.leftBarButtonItems = @[accountButton];
 	
 	self.title = @"Articles";
 	
@@ -280,14 +273,15 @@
 		
 		__block WAFilterPickerViewController *filterPicker = [WAFilterPickerViewController controllerWithCompletion:^(NSFetchRequest *fetchRequest) {
 			
+			__weak WAArticlesViewController *weakSelf = self;
 			if (fetchRequest) {
-				self.fetchedResultsController = [[NSFetchedResultsController alloc]
+				weakSelf.fetchedResultsController = [[NSFetchedResultsController alloc]
 																				 initWithFetchRequest:fetchRequest
-																				 managedObjectContext:self.managedObjectContext
+																				 managedObjectContext:weakSelf.managedObjectContext
 																				 sectionNameKeyPath:nil
 																				 cacheName:nil];
-				self.fetchedResultsController.delegate = self;
-				[self.fetchedResultsController performFetch:nil];
+				weakSelf.fetchedResultsController.delegate = weakSelf;
+				[weakSelf.fetchedResultsController performFetch:nil];
 			}
 			
 			[filterPicker willMoveToParentViewController:nil];
@@ -297,10 +291,10 @@
 			
 			filterPicker = nil;
 			
-			[_filterPopoverController dismissPopoverAnimated:NO];
+			[weakSelf.filterPopoverController dismissPopoverAnimated:NO];
 			
-			[self reloadViewContents];
-			[self refreshData];
+			[weakSelf reloadViewContents];
+			[weakSelf refreshData];
 		}];
 		
 		_filterPopoverController = [[UIPopoverController alloc] initWithContentViewController:filterPicker];

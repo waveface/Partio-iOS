@@ -420,11 +420,12 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 	UILongPressGestureRecognizer *longPressGR = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleMenu:)];
 	[self.tableView addGestureRecognizer:longPressGR];
 	
-	UIBarButtonItem *filterButton = [[UIBarButtonItem alloc] initWithTitle:@"View"
-																	 style:UIBarButtonItemStylePlain
-																	target:self
-																	action:@selector(handleFilter:)];
-	[self.navigationItem setRightBarButtonItem: filterButton];
+	UIBarButtonItem *filterButton = [[UIBarButtonItem alloc]
+																	 initWithTitle:NSLocalizedString(@"VIEW_BUTTON", @"In Phone timeline")																	 style:UIBarButtonItemStylePlain
+																	 target:self
+																	 action:@selector(handleFilter:)];
+	
+	self.navigationItem.rightBarButtonItem = filterButton;
 }
 
 - (void) viewWillAppear:(BOOL)animated {

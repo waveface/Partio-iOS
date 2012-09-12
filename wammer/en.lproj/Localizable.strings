@@ -381,6 +381,10 @@
 /* Title to show when user has no station, and have exhausted storage on the Cloud */
 "USER_INFO_NAG_LEVEL_3_WITHOUT_STATION" = "Your cloud storage is full.  To sync, install and run Stream for Windows on your PC.";
 
+/* In iPad overview
+   In Phone timeline */
+"VIEW_BUTTON" = "View";
+
 /* preview button in composition view */
 "WEB_PREVIEW" = "Web Preview";
 
