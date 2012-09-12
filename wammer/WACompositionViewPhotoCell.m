@@ -145,7 +145,9 @@
 			self.imageContainer.layer.shadowOffset = (CGSize){ 0, 1 };
 			self.imageContainer.layer.shadowOpacity = 0.5f;
 			self.imageContainer.layer.shadowRadius = 2.0f;
-			self.imageContainer.layer.contentsGravity = kCAGravityResizeAspect;
+			if (![self.imageContainer.layer.contentsGravity isEqualToString:kCAGravityCenter]) {
+				self.imageContainer.layer.contentsGravity = kCAGravityResizeAspect;
+			}
 			self.imageContainer.layer.borderColor = nil;
 			self.imageContainer.layer.borderWidth = 0;
 			self.imageContainer.clipsToBounds = NO;

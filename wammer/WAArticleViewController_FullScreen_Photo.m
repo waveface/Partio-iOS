@@ -81,15 +81,15 @@
 
 	[allStackElements addObject:gridViewWrapper];
 
-	self.maxColumnOfPhotosOnScreen = 3;
+	self.maxColumnOfPhotosOnScreen = 4;
 
 	// Although the number of rows changes when iPad changes orientation,
 	// we still keep this value because there's no good way to detect orientation in this view controller.
-	self.maxRowOfPhotosOnScreen = 5;
+	self.maxRowOfPhotosOnScreen = 6;
 
 	if (self.article.text) {
 		if (isPhone()) {
-			self.maxRowOfPhotosOnScreen = 4;
+			self.maxRowOfPhotosOnScreen = 5;
 		}
 	}
 
@@ -149,6 +149,8 @@
 		_gridView.alwaysBounceHorizontal = NO;
 		
 		_gridView.contentInset = (UIEdgeInsets){ 4.0f, 0.0f, 0.0f, 0.0f };
+		_gridView.leftContentInset = 2.0f;
+		_gridView.rightContentInset = 2.0f;
 	
 	}
 	
@@ -169,13 +171,22 @@
 
 	if (isPad() && numberOfItems <= 4) {
 	
-		[cell irBind:@"image" toObject:file keyPath:@"bestPresentableImage"
+		[cell irBind:@"image" toObject:file keyPath:@"thumbnailImage"
 					options:[NSDictionary dictionaryWithObjectsAndKeys: (id)kCFBooleanTrue, kIRBindingsAssignOnMainThreadOption, nil]];
 
 	} else {
 
-		[cell irBind:@"image" toObject:file keyPath:@"smallestPresentableImage"
-					options:[NSDictionary dictionaryWithObjectsAndKeys: (id)kCFBooleanTrue, kIRBindingsAssignOnMainThreadOption, nil]];
+		if (isPad()) {
+
+			[cell irBind:@"image" toObject:file keyPath:@"smallThumbnailImage"
+					 options:[NSDictionary dictionaryWithObjectsAndKeys: (id)kCFBooleanTrue, kIRBindingsAssignOnMainThreadOption, nil]];
+
+		} else {
+
+			[cell irBind:@"image" toObject:file keyPath:@"extraSmallThumbnailImage"
+					 options:[NSDictionary dictionaryWithObjectsAndKeys: (id)kCFBooleanTrue, kIRBindingsAssignOnMainThreadOption, nil]];
+
+		}
 
 	}
 	
@@ -198,7 +209,7 @@
 
 	NSString * const identifier = @"Cell";
 	WACompositionViewPhotoCell *dequeuedCell = (WACompositionViewPhotoCell *)[aGV dequeueReusableCellWithIdentifier:identifier];
-	
+
 	NSUInteger const numOfBufferedPages = 3;
 	if (self.scrollVelocity.y > 0) {
 		if (index >= self.maxRowOfPhotosOnScreen * self.maxColumnOfPhotosOnScreen * numOfBufferedPages) {
@@ -223,9 +234,9 @@
 		// magic formula of photo displaying tempo
 		double delayInSeconds = 0.18f;
 		if (fabs(self.scrollVelocity.y) > 0.8f) {
-			delayInSeconds *= ((index % 3) / 4.0f + 1);
+			delayInSeconds *= ((index % self.maxColumnOfPhotosOnScreen) / 4.0f + 1);
 		} else {
-			delayInSeconds *= ((index % 3) / 8.0f);
+			delayInSeconds *= ((index % self.maxColumnOfPhotosOnScreen) / 8.0f);
 		}
 
 		dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
@@ -253,17 +264,27 @@
 	} else {
 	
 		dequeuedCell = [WACompositionViewPhotoCell cellWithReusingIdentifier:identifier];
-		
+
 		dequeuedCell.style = WACompositionViewPhotoCellBorderedPlainStyle;
+//		dequeuedCell.style = isPad() ? WACompositionViewPhotoCellShadowedStyle : WACompositionViewPhotoCellBorderedPlainStyle;
+//		if ([self.article.files count] > 4) {
+//			// xs thumbnails is smaller than the dequeued cell, put them on center.
+//			dequeuedCell.imageContainer.layer.contentsGravity = kCAGravityCenter;
+//		}
 		dequeuedCell.canRemove = NO;
 
 		[self setPresentableImageWithFile:representedFile forCell:dequeuedCell];
 		
 	}
-	
+
 	CGSize cellSize = [self portraitGridCellSizeForGridView:_gridView];
-	cellSize.width -= 8;
-	cellSize.height -= 8;
+	// padding of each cell in grid view.
+	if (isPad()) {
+		cellSize.width -= 8;
+		cellSize.height -= 8;
+	} else {
+		cellSize.height -= 2;
+	}
 	
 	dequeuedCell.frame = (CGRect){ CGPointZero, cellSize };
 
@@ -278,7 +299,8 @@
 		case UIUserInterfaceIdiomPad: {
 
 			CGRect gvBounds = aGV.bounds;
-			CGFloat gvWidth = CGRectGetWidth(gvBounds), gvHeight = CGRectGetHeight(gvBounds);
+			CGFloat gvWidth = CGRectGetWidth(gvBounds) - aGV.leftContentInset - aGV.rightContentInset;
+			CGFloat gvHeight = CGRectGetHeight(gvBounds);
 			
 			NSUInteger numberOfItems = [self.article.files count];
 			if (numberOfItems > 4) {
@@ -304,7 +326,7 @@
 		
 		case UIUserInterfaceIdiomPhone: {
 		
-			return (CGSize){ 106, 106 };
+			return (CGSize){ 77, 75 };
 		
 			break;
 		

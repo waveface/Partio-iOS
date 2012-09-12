@@ -72,10 +72,6 @@ NSString * const kWACallbackActionSetRemoteEndpointURL = @"setRemoteEndpointURL"
 NSString * const kWACallbackActionSetUserRegistrationEndpointURL = @"setUserRegistrationEndpointURL";
 NSString * const kWACallbackActionSetUserPasswordResetEndpointURL = @"setUserPasswordResetEndpointURL";
 
-CGFloat const kWAFileSmallImageSideLength = 512;
-CGFloat const kWAFileMediumImageSideLength = 1024;
-CGFloat const kWAFileLargeImageSideLength = 2048;
-
 void WARegisterUserDefaults () {
 
 	[[NSUserDefaults standardUserDefaults] registerDefaults:WAPresetDefaults()];
@@ -86,6 +82,8 @@ NSDictionary * WAPresetDefaults () {
 
 #if DEBUG
 	NSURL *defaultsURL = [[NSBundle mainBundle] URLForResource:@"WADefaults.develop" withExtension:@"plist"];
+#elif STREAM_BETA
+	NSURL *defaultsURL = [[NSBundle mainBundle] URLForResource:@"WADefaults.staging" withExtension:@"plist"]; // Production and Beta
 #else
 	NSURL *defaultsURL = [[NSBundle mainBundle] URLForResource:@"WADefaults" withExtension:@"plist"]; // Production and Beta
 #endif

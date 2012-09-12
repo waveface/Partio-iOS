@@ -43,7 +43,7 @@
 #import "WAWelcomeViewController.h"
 #import "WATutorialViewController.h"
 
-#if DEBUG
+#if ENABLE_PONYDEBUG
 	#import "PonyDebugger/PDDebugger.h"
 #endif
 
@@ -212,7 +212,7 @@
 	
 	[[WARemoteInterface sharedInterface] enableAutomaticRemoteUpdatesTimerNow];
 	
-#if DEBUG
+#if ENABLE_PONYDEBUG
 	PDDebugger *debugger = [PDDebugger defaultInstance];
 	[debugger connectToURL:[NSURL URLWithString:@"ws://localhost:9000/device"]];
 	[debugger enableNetworkTrafficDebugging];

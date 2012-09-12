@@ -12,6 +12,7 @@
 
 #import "WARemoteInterface.h"
 #import "WADataStore.h"
+#import "WAFile+ThumbnailMaker.h"
 
 @implementation WAFile (ImplicitBlobFulfillment)
 
@@ -155,8 +156,16 @@
 - (BOOL) takeBlobFromTemporaryFile:(NSString *)aPath forKeyPath:(NSString *)fileKeyPath matchingURL:(NSURL *)anURL forKeyPath:(NSString *)urlKeyPath {
 
 	NSError *error = nil;
+	WADataStore *ds = [WADataStore defaultStore];
 
-	if (![[WADataStore defaultStore] updateObject:self inContext:self.managedObjectContext takingBlobFromTemporaryFile:aPath usingResourceType:self.resourceType forKeyPath:fileKeyPath matchingURL:anURL forKeyPath:urlKeyPath error:&error]) {
+	if (!self.extraSmallThumbnailFilePath) {
+
+		UIImage *image = [UIImage imageWithContentsOfFile:aPath];
+		[self makeThumbnailsWithImage:image options:WAThumbnailMakeOptionExtraSmall];
+
+	}
+
+	if (![ds updateObject:self inContext:self.managedObjectContext takingBlobFromTemporaryFile:aPath usingResourceType:self.resourceType forKeyPath:fileKeyPath matchingURL:anURL forKeyPath:urlKeyPath error:&error]) {
 		
 		NSLog(@"%s: %@", __PRETTY_FUNCTION__, error);
 		return NO;
