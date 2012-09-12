@@ -217,7 +217,7 @@ NSString * const kDismissesSelfIfCameraCancelled = @"-[WACompositionViewControll
 		if (options & WAThumbnailMakeOptionExtraSmall) {
 			
 			UIImage *extraSmallThumbnailImage = [UIImage imageWithCGImage:[representedAsset aspectRatioThumbnail]];
-			file.extraSmallThumbnailFilePath = [[ds persistentFileURLForData:UIImageJPEGRepresentation(extraSmallThumbnailImage, 1.0f) extension:@"jpeg"] path];
+			file.extraSmallThumbnailFilePath = [[ds persistentFileURLForData:UIImageJPEGRepresentation(extraSmallThumbnailImage, 0.85f) extension:@"jpeg"] path];
 			
 		}
 		

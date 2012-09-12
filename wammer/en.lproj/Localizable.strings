@@ -233,6 +233,12 @@
 /* No comment provided by engineer. */
 "HOUR_SINGULAR" = "%d hour";
 
+/* Photo importing status */
+"IMPORTING_PHOTOS" = "Importing Photos...";
+
+/* In Account Info Photo Import Section */
+"LAST_IMPORT_TIME" = "Latest Imported Photo Time: %@";
+
 /* No comment provided by engineer. */
 "MINUTE_PLURAL" = "%d minutes";
 
@@ -244,6 +250,9 @@
 
 /* No comment provided by engineer. */
 "MONTH_SINGULAR" = "%d month";
+
+/* Photo importing status */
+"NOT_IMPORTING_PHOTOS" = "Import All Photos";
 
 /* Singluar noun for action objects */
 "NOUN_ACTIONS_OBJECT" = "Action";
@@ -317,6 +326,9 @@
 
 /* Title for view controller signing the user up */
 "SIGN_UP_CONTROLLER_TITLE" = "Sign Up";
+
+/* In Account Info Photo Import Section */
+"START_PHOTO_IMPORT_DESCRIPTION" = "Import all photos in Camera Roll";
 
 /* No comment provided by engineer. */
 "STATE_LOADING_SINGLE_DOCUMENT" = "Loading Document…";
@@ -517,8 +529,8 @@
 /* Class = "IBUITableViewSection"; headerTitle = "ACCOUNT_INFO_HEADER"; ObjectID = "Gw1-xy-FWK"; */
 "ACCOUNT_INFO_HEADER" = "Account Info";
 
-/* Class = "IBUITableViewSection"; footerTitle = "VERSION"; ObjectID = "IP4-fz-MdU"; */
-"VERSION" = "Version";
+/* Class = "IBUITableViewSection"; footerTitle = "PHOTO_IMPORT_FOOTER"; ObjectID = "IP4-fz-MdU"; */
+"PHOTO_IMPORT_FOOTER" = "PHOTO_IMPORT_FOOTER";
 
 /* Class = "IBUILabel"; text = "LOCAL_PENDING_OBJECTS_TITLE"; ObjectID = "Uku-UE-EAs"; */
 "LOCAL_PENDING_OBJECTS_TITLE" = "Objects Pending";
@@ -538,7 +550,13 @@
 /* Class = "IBUITableViewSection"; headerTitle = "SOCIAL_NETWORK_HEADER"; ObjectID = "qoR-fT-NMh"; */
 "SOCIAL_NETWORK_HEADER" = "Facebook Settings";
 
-/* Class = "IBUILabel"; text = "ACTION_CONTACT_DEVELOPER"; ObjectID = "vuN-4r-WXb"; */
+/* Class = "IBUITableViewSection"; footerTitle = "VERSION"; ObjectID = "rMk-eV-Pjl"; */
+"VERSION" = "Version";
+
+/* Class = "IBUILabel"; text = "ACTION_IMPORT_SAVED_PHOTOS"; ObjectID = "vuN-4r-WXb"; */
+"ACTION_IMPORT_SAVED_PHOTOS" = "Import all photos in Camera Roll";
+
+/* Class = "IBUILabel"; text = "ACTION_CONTACT_DEVELOPER"; ObjectID = "yLg-eE-ehZ"; */
 "ACTION_CONTACT_DEVELOPER" = "Contact";
 
 /* Class = "IBUIButton"; normalTitle = "ACTION_CONNECT_FACEBOOK"; ObjectID = "4"; */

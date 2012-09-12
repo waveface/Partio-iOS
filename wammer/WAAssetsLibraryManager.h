@@ -23,4 +23,12 @@
  */
 - (void)writeImageToSavedPhotosAlbum:(CGImageRef)imageRef orientation:(ALAssetOrientation)orientation completionBlock:(ALAssetsLibraryWriteImageCompletionBlock)completionBlock;
 
+/** Invokes a given block passing as a parameter for assets within each day.
+ *
+ *	@param sinceDate The date to begin enumeration.
+ *	@param onProgressBlock The block to invoke for assets within each day.
+ *	@param onCompleteBlock The block to invoke when enumeration finishes.
+ *	@param onFailureBlock The block to invoke when unable to enumerate assets.
+ */
+- (void)enumerateSavedPhotosSince:(NSDate *)sinceDate onProgess:(void(^)(NSArray *assets))onProgressBlock onComplete:(void(^)())onCompleteBlock onFailure:(void(^)(NSError *error))onFailureBlock;
 @end

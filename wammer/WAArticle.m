@@ -32,5 +32,6 @@
 @dynamic owner;
 @dynamic previews;
 @dynamic representingFile;
+@dynamic import;
 
 @end

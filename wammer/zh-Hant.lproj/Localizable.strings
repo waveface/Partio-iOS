@@ -233,6 +233,12 @@
 /* No comment provided by engineer. */
 "HOUR_SINGULAR" = "%d小時";
 
+/* Photo importing status */
+"IMPORTING_PHOTOS" = "匯入照片中...";
+
+/* In Account Info Photo Import Section */
+"LAST_IMPORT_TIME" = "最新匯入照片時間：%@";
+
 /* No comment provided by engineer. */
 "MINUTE_PLURAL" = "%d分鐘";
 
@@ -244,6 +250,9 @@
 
 /* No comment provided by engineer. */
 "MONTH_SINGULAR" = "%d月";
+
+/* Photo importing status */
+"NOT_IMPORTING_PHOTOS" = "匯入所有照片";
 
 /* Singluar noun for action objects */
 "NOUN_ACTIONS_OBJECT" = "動作";
@@ -317,6 +326,9 @@
 
 /* Title for view controller signing the user up */
 "SIGN_UP_CONTROLLER_TITLE" = "註冊";
+
+/* In Account Info Photo Import Section */
+"START_PHOTO_IMPORT_DESCRIPTION" = "匯入所有 Camera Roll 中的照片";
 
 /* No comment provided by engineer. */
 "STATE_LOADING_SINGLE_DOCUMENT" = "正在載入文件…";
@@ -517,8 +529,8 @@
 /* Class = "IBUITableViewSection"; headerTitle = "ACCOUNT_INFO_HEADER"; ObjectID = "Gw1-xy-FWK"; */
 "ACCOUNT_INFO_HEADER" = "帳戶資訊";
 
-/* Class = "IBUITableViewSection"; footerTitle = "VERSION"; ObjectID = "IP4-fz-MdU"; */
-"VERSION" = "版本";
+/* Class = "IBUITableViewSection"; footerTitle = "PHOTO_IMPORT_FOOTER"; ObjectID = "IP4-fz-MdU"; */
+"PHOTO_IMPORT_FOOTER" = "PHOTO_IMPORT_FOOTER";
 
 /* Class = "IBUILabel"; text = "LOCAL_PENDING_OBJECTS_TITLE"; ObjectID = "Uku-UE-EAs"; */
 "LOCAL_PENDING_OBJECTS_TITLE" = "本裝置尚未上傳原檔數量";
@@ -538,7 +550,13 @@
 /* Class = "IBUITableViewSection"; headerTitle = "SOCIAL_NETWORK_HEADER"; ObjectID = "qoR-fT-NMh"; */
 "SOCIAL_NETWORK_HEADER" = "Facebook 設定";
 
-/* Class = "IBUILabel"; text = "ACTION_CONTACT_DEVELOPER"; ObjectID = "vuN-4r-WXb"; */
+/* Class = "IBUITableViewSection"; footerTitle = "VERSION"; ObjectID = "rMk-eV-Pjl"; */
+"VERSION" = "版本";
+
+/* Class = "IBUILabel"; text = "ACTION_IMPORT_SAVED_PHOTOS"; ObjectID = "vuN-4r-WXb"; */
+"ACTION_IMPORT_SAVED_PHOTOS" = "匯入所有 Camera Roll 的照片";
+
+/* Class = "IBUILabel"; text = "ACTION_CONTACT_DEVELOPER"; ObjectID = "yLg-eE-ehZ"; */
 "ACTION_CONTACT_DEVELOPER" = "聯絡我們";
 
 /* Class = "IBUIButton"; normalTitle = "ACTION_CONNECT_FACEBOOK"; ObjectID = "4"; */

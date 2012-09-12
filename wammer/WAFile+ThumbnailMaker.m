@@ -20,8 +20,11 @@ static CGFloat const kWAFileLargeImageSideLength = 2048;
 
 - (void)makeThumbnailsWithImage:(UIImage *)image options:(WAThumbnailMakeOptions)options {
 
-	NSParameterAssert(image);
-
+	if (!image) {
+		NSLog(@"Unable to make thumbnails from an empty image");
+		return;
+	}
+	
 	WADataStore *ds = [WADataStore defaultStore];
 	CGSize imageSize = image.size;
 	UIImage *standardImage = [image irStandardImage];
