@@ -1091,23 +1091,14 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 		dpVC = nil;
 		
 	}];
-	
-		
-	NSFetchedResultsController *frc = self.fetchedResultsController;
-	NSFetchRequest *fr = frc.fetchRequest;
-	NSPredicate *currentPredicate = fr.predicate;
 
-	WADataStore *ds = [WADataStore defaultStore];
-	NSFetchRequest *oldestArticleFR = [ds newFetchRequestForOldestArticle];
-	oldestArticleFR.predicate = [NSCompoundPredicate andPredicateWithSubpredicates:[NSArray arrayWithObjects:oldestArticleFR.predicate, currentPredicate, nil]];
-	
-	NSFetchRequest *newestArticleFR = [ds newFetchRequestForNewestArticle];
-	newestArticleFR.predicate = [NSCompoundPredicate andPredicateWithSubpredicates:[NSArray arrayWithObjects:newestArticleFR.predicate, currentPredicate, nil]];
-	
-	WAArticle *oldestArticle = [[self.managedObjectContext executeFetchRequest:oldestArticleFR error:nil] lastObject];
-	
-	WAArticle *newestArticle = [[self.managedObjectContext executeFetchRequest:newestArticleFR error:nil] lastObject];
-	
+	NSFetchedResultsController *frc = self.fetchedResultsController;
+
+	NSIndexPath *oldestIndex = [NSIndexPath indexPathForRow:([frc.fetchedObjects count] - 1) inSection:0];
+	WAArticle *oldestArticle = [frc objectAtIndexPath:oldestIndex];
+	NSIndexPath *newestIndex = [NSIndexPath indexPathForRow:0 inSection:0];
+	WAArticle *newestArticle = [frc objectAtIndexPath:newestIndex];
+
 	if (oldestArticle == nil){ // empty timeline
 		return;
 	}

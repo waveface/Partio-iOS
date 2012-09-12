@@ -62,22 +62,54 @@
 
 }
 
-- (void) retrieveUser:(NSString *)anIdentifier onSuccess:(void (^)(NSDictionary *))successBlock onFailure:(void (^)(NSError *))failureBlock {
-
+- (void) retrieveUserWithoutFurtherParsing:(NSString *)anIdentifier onSuccess:(void (^)(NSDictionary *))successBlock onFailure:(void (^)(NSError *))failureBlock {
+	
 	NSParameterAssert(anIdentifier);
 	
 	[self.engine fireAPIRequestNamed:@"users/get" withArguments:[NSDictionary dictionaryWithObjectsAndKeys:
+																															 
+																															 anIdentifier, @"user_id",
+																															 
+																															 nil] options:nil validator:WARemoteInterfaceGenericNoErrorValidator() successHandler: ^ (NSDictionary *inResponseOrNil, IRWebAPIRequestContext *inResponseContext) {
 		
-		anIdentifier, @"user_id",
-				
-	nil] options:nil validator:WARemoteInterfaceGenericNoErrorValidator() successHandler: ^ (NSDictionary *inResponseOrNil, IRWebAPIRequestContext *inResponseContext) {
-	
 		if (successBlock)
-			successBlock([[self class] userEntityFromRepresentation:inResponseOrNil]);
+			successBlock(inResponseOrNil);
 		
 	} failureHandler:WARemoteInterfaceGenericFailureHandler(failureBlock)];
-
+	
 }
+
+
+- (void) retrieveUser:(NSString *)anIdentifier onSuccess:(void (^)(NSDictionary *))successBlock onFailure:(void (^)(NSError *))failureBlock {
+
+	[self retrieveUserWithoutFurtherParsing:anIdentifier onSuccess:^(NSDictionary *inResponseOrNil) {
+
+		if (successBlock)
+		successBlock([[self class] userEntityFromRepresentation:inResponseOrNil]);
+
+	} onFailure:failureBlock];
+	
+	
+}
+
+
+
+- (void) retrieveUserAndSNSInfo:(NSString *) anIdentifier onSuccess:(void (^)(NSDictionary *, NSArray*))successBlock onFailure:(void (^)(NSError *))failureBlock {
+
+	[self retrieveUserWithoutFurtherParsing:anIdentifier onSuccess:^(NSDictionary *inResponseOrNil) {
+
+		NSArray *snsEntitiesOrNil = nil;
+		if (inResponseOrNil)
+			snsEntitiesOrNil = [inResponseOrNil valueForKeyPath:@"sns"];
+		
+		if (successBlock)
+			successBlock([[self class] userEntityFromRepresentation:inResponseOrNil], snsEntitiesOrNil);
+		
+	} onFailure:failureBlock];
+
+	
+}
+
 
 - (void) updateUser:(NSString *)anIdentifier withNickname:(NSString *)aNewNickname onSuccess:(void (^)(NSDictionary *))successBlock onFailure:(void (^)(NSError *))failureBlock {
 
