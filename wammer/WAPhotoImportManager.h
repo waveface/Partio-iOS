@@ -13,6 +13,7 @@ typedef void (^WAPhotoImportCallback) ();
 @interface WAPhotoImportManager : NSObject
 
 @property (nonatomic, readwrite, assign) BOOL running;
+@property (nonatomic, readwrite, strong) NSDate *lastImportedArticleTime;
 
 + (WAPhotoImportManager *)defaultManager;
 

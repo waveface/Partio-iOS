@@ -530,6 +530,17 @@ typedef enum WASyncStatus: NSUInteger {
 		
 	}
 	
+	if ([superAnswer isEqualToString:@"PHOTO_IMPORT_FOOTER"]) {
+		NSDate *date = [[WAPhotoImportManager defaultManager] lastImportedArticleTime];
+		if (date) {
+			NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+			[dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
+			NSString *dateString = [dateFormatter stringFromDate:date];
+			return [NSString stringWithFormat:NSLocalizedString(@"LAST_IMPORT_TIME", @"In Account Info Photo Import Section"), dateString];
+		}
+		return NSLocalizedString(@"START_PHOTO_IMPORT_DESCRIPTION", @"In Account Info Photo Import Section");
+	}
+	
 	if ([superAnswer isEqualToString:@"VERSION"])
 		return [[NSBundle mainBundle] displayVersionString];
 	

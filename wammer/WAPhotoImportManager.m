@@ -44,6 +44,14 @@
 		self.managedObjectContext = [[WADataStore defaultStore] disposableMOC];
 		self.running = NO;
 
+		WAArticle *article = [[WADataStore defaultStore] fetchLatestLocalImportedArticleUsingContext:self.managedObjectContext];
+		
+		if (article) {
+			self.lastImportedArticleTime = article.creationDate;
+		} else {
+			self.lastImportedArticleTime = nil;
+		}
+
 	}
 
 	return self;
@@ -59,29 +67,11 @@
 	self.running = YES;
 
 	NSManagedObjectContext *context = self.managedObjectContext;
-
-	__block NSDate *sinceDate = nil;
-
-	[context performBlock:^{
-
-		WAArticle *article = [[WADataStore defaultStore] fetchLatestLocalImportedArticleUsingContext:context];
-		
-		for (WAFile *file in article.files) {
-			if (!sinceDate) {
-				sinceDate = file.timestamp;
-			} else {
-				if ([file.timestamp compare:sinceDate] == NSOrderedDescending) {
-					sinceDate = file.timestamp;
-				}
-			}
-		}
-
-	}];
-
 	__weak WAPhotoImportManager *wSelf = self;
+
 	[context performBlock:^{
 
-		[[WAAssetsLibraryManager defaultManager] enumerateSavedPhotosSince:sinceDate onProgess:^(NSArray *assets) {
+		[[WAAssetsLibraryManager defaultManager] enumerateSavedPhotosSince:wSelf.lastImportedArticleTime onProgess:^(NSArray *assets) {
 
 			if (![assets count]) {
 				return;
@@ -136,8 +126,11 @@
 			article.creationDeviceName = [UIDevice currentDevice].name;
 			
 			NSError *savingError = nil;
-			if (![context save:&savingError])
+			if ([context save:&savingError]) {
+				wSelf.lastImportedArticleTime = article.creationDate;
+			} else {
 				NSLog(@"Error saving: %s %@", __PRETTY_FUNCTION__, savingError);
+			}
 			
 		} onComplete:^{
 			

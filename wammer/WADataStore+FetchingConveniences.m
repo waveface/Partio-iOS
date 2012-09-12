@@ -297,6 +297,7 @@
 	NSArray *fetchedArticles = [aContext executeFetchRequest:fetchRequest error:&fetchingError];
 	if (fetchingError) {
 		NSLog(@"%@", fetchingError);
+		return nil;
 	}
 
 	return [fetchedArticles lastObject];
