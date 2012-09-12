@@ -213,16 +213,16 @@
 "FACEBOOK_DISCONNECT_REQUEST_TITLE" = "Confirm to stop importing";
 
 /* Display title for a fetch request working against all the articles */
-"FETCH_REQUEST_ALL_ARTICLES_DISPLAY_TITLE" = "All Posts";
+"FETCH_REQUEST_ALL_ARTICLES_DISPLAY_TITLE" = "All";
 
 /* Display title for a fetch request working against the articles with Photos */
-"FETCH_REQUEST_ARTICLES_WITH_PHOTOS_DISPLAY_TITLE" = "Photo Posts";
+"FETCH_REQUEST_ARTICLES_WITH_PHOTOS_DISPLAY_TITLE" = "Photo Only";
 
 /* Display title for a fetch request working against the articles with Plain Text */
-"FETCH_REQUEST_ARTICLES_WITH_PLAIN_TEXT_DISPLAY_TITLE" = "Text Posts";
+"FETCH_REQUEST_ARTICLES_WITH_PLAIN_TEXT_DISPLAY_TITLE" = "Text Only";
 
 /* Display title for a fetch request working against the articles with Web Previews */
-"FETCH_REQUEST_ARTICLES_WITH_PREVIEWS_DISPLAY_TITLE" = "Web Posts";
+"FETCH_REQUEST_ARTICLES_WITH_PREVIEWS_DISPLAY_TITLE" = "Link Only";
 
 /* Display title for a fetch request working against the latest article on a particular date */
 "FETCH_REQUEST_NEWEST_ARTICLE_OF_PARTICULAR_DATE_DISPLAY_TITLE" = "Post on a particular date";
@@ -380,6 +380,10 @@
 
 /* Title to show when user has no station, and have exhausted storage on the Cloud */
 "USER_INFO_NAG_LEVEL_3_WITHOUT_STATION" = "Your cloud storage is full.  To sync, install and run Stream for Windows on your PC.";
+
+/* In iPad overview
+   In Phone timeline */
+"VIEW_BUTTON" = "View";
 
 /* preview button in composition view */
 "WEB_PREVIEW" = "Web Preview";

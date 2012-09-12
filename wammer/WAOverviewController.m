@@ -56,6 +56,7 @@ static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePag
 @synthesize paginationSlider, discreteLayoutManager, discreteLayoutResult, layoutGrids, paginatedView;
 @synthesize actionedArticle;
 
+
 - (void) viewDidLayoutSubviews {
 
 	[super viewDidLayoutSubviews];
@@ -101,7 +102,7 @@ static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePag
 	self.paginationSlider.instantaneousCallbacks = YES;
 	self.paginationSlider.layoutStrategy = WAPaginationSliderLessDotsLayoutStrategy;
 	[self.paginationSlider irBind:@"currentPage" toObject:self.paginatedView keyPath:@"currentPage" options:nil];
-		
+	
 }
 
 - (void) setContextControlsVisible:(BOOL)contextControlsVisible animated:(BOOL)animated {
@@ -851,6 +852,12 @@ static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePag
 		
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 
+}
+
+#pragma Supress the warning
+
+- (void)willRemoveView:(UIView *)view atIndex:(NSUInteger)index {
+	
 }
 
 @end
