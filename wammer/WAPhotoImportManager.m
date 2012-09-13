@@ -101,7 +101,7 @@
 					ALAsset *asset = (ALAsset *)obj;
 					[file makeThumbnailsWithImage:[[asset defaultRepresentation] irImage] options:options];
 					
-					UIImage *extraSmallThumbnailImage = [UIImage imageWithCGImage:[asset aspectRatioThumbnail]];
+					UIImage *extraSmallThumbnailImage = [UIImage imageWithCGImage:[asset thumbnail]];
 					file.extraSmallThumbnailFilePath = [[[WADataStore defaultStore] persistentFileURLForData:UIImageJPEGRepresentation(extraSmallThumbnailImage, 0.85f) extension:@"jpeg"] path];
 					
 					file.assetURL = [[[asset defaultRepresentation] url] absoluteString];
