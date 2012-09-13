@@ -395,7 +395,7 @@
 
 /* In iPad overview
    In Phone timeline */
-"VIEW_BUTTON" = "看";
+"VIEW_BUTTON" = "顯示";
 
 /* preview button in composition view */
 "WEB_PREVIEW" = "預覽";
