@@ -506,7 +506,10 @@ static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandl
 	[[UIApplication sharedApplication] beginIgnoringInteractionEvents];
 	
 	self.article.text = self.contentTextView.text;
-	self.article.modificationDate = [NSDate date];
+	if (self.article.modificationDate) {
+		// set modification date only when updating articles
+		self.article.modificationDate = [NSDate date];
+	}
 	
 	NSError *savingError = nil;
 	if (![self.managedObjectContext save:&savingError])

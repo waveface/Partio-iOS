@@ -566,9 +566,10 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 	NSDate * const postCreationDate = self.creationDate;
 	NSDate * const postModificationDate = self.modificationDate;
 	
-	BOOL isDraft = ([self.draft isEqualToNumber:(id)kCFBooleanTrue] || !self.identifier);
+	BOOL isDraft = ([self.draft isEqualToNumber:(id)kCFBooleanTrue] || !self.identifier || !self.modificationDate);
 	BOOL isFavorite = [self.favorite isEqualToNumber:(id)kCFBooleanTrue];
 	BOOL isHidden = [self.hidden isEqualToNumber:(id)kCFBooleanTrue];
+	BOOL isImport = [self.import isEqualToNumber:[NSNumber numberWithInt:WAImportTypeFromLocal]];
 	
 	if (!isDraft) {
 	
@@ -794,7 +795,7 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 
 			if (!isHidden) {
 
-				[ri createPostInGroup:groupID withContentText:postText attachments:attachments preview:preview createTime:postCreationDate updateTime:postModificationDate favorite:isFavorite onSuccess:^(NSDictionary *postRep) {
+				[ri createPostInGroup:groupID withContentText:postText attachments:attachments preview:preview postId:postID createTime:postCreationDate updateTime:postModificationDate favorite:isFavorite import:isImport onSuccess:^(NSDictionary *postRep) {
 					
 					callback(postRep);
 

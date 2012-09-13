@@ -19,6 +19,7 @@ NSString * const kWARemoteAttachmentDescription = @"WARemoteAttachmentDescriptio
 NSString * const kWARemoteAttachmentRepresentingImageURL = @"WARemoteAttachmentRepresentingImageURL";
 NSString * const kWARemoteAttachmentUpdatedObjectIdentifier = @"WARemoteAttachmentUpdatedObjectIdentifier";
 NSString * const kWARemoteAttachmentSubtype = @"kWARemoteAttachmentDestinationImageType";
+NSString * const kWARemoteArticleIdentifier = @"kWARemoteArticleIdentifier";
 NSString * const WARemoteAttachmentOriginalSubtype = @"origin";
 NSString * const WARemoteAttachmentLargeSubtype = @"large";
 NSString * const WARemoteAttachmentMediumSubtype = @"medium";
@@ -71,6 +72,7 @@ NSString * const WARemoteAttachmentSmallSubtype = @"small";
 	NSString *description = [mergedOptions objectForKey:kWARemoteAttachmentDescription];
 	NSURL *proxyImage = [mergedOptions objectForKey:kWARemoteAttachmentRepresentingImageURL];
 	NSString *updatedObjectID = [mergedOptions objectForKey:kWARemoteAttachmentUpdatedObjectIdentifier];
+	NSString *articleIdentifier = [mergedOptions objectForKey:kWARemoteArticleIdentifier];
 	
 	if (type == WARemoteAttachmentUnknownType) {
 	
@@ -126,6 +128,7 @@ NSString * const WARemoteAttachmentSmallSubtype = @"small";
 	stitch(description, @"description");
 	stitch(proxyImage, @"image");
 	stitch(updatedObjectID, @"object_id");
+	stitch(articleIdentifier, @"post_id");
 	
 	[self.engine fireAPIRequestNamed:@"attachments/upload" withArguments:nil options:[NSDictionary dictionaryWithObjectsAndKeys:
 	
