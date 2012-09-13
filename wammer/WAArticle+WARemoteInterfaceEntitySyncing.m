@@ -566,7 +566,7 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 	NSDate * const postCreationDate = self.creationDate;
 	NSDate * const postModificationDate = self.modificationDate;
 	
-	BOOL isDraft = ([self.draft isEqualToNumber:(id)kCFBooleanTrue] || !self.modificationDate);
+	BOOL isDraft = ([self.draft isEqualToNumber:(id)kCFBooleanTrue] || !self.identifier || !self.modificationDate);
 	BOOL isFavorite = [self.favorite isEqualToNumber:(id)kCFBooleanTrue];
 	BOOL isHidden = [self.hidden isEqualToNumber:(id)kCFBooleanTrue];
 	BOOL isImport = [self.import isEqualToNumber:[NSNumber numberWithInt:WAImportTypeFromLocal]];
