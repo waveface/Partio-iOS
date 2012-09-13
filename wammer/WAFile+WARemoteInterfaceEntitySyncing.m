@@ -404,6 +404,7 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
 																			[NSNumber numberWithUnsignedInteger:WARemoteAttachmentImageType], kWARemoteAttachmentType,
 																			WARemoteAttachmentMediumSubtype, kWARemoteAttachmentSubtype,
 																			file.identifier, kWARemoteAttachmentUpdatedObjectIdentifier,
+																			file.article.identifier, kWARemoteArticleIdentifier,
 																			nil];
 
 			if (!isValidPath(thumbnailFilePath)) {
@@ -476,6 +477,7 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
 			NSMutableDictionary *options = [NSMutableDictionary dictionaryWithObjectsAndKeys:
 				[NSNumber numberWithUnsignedInteger:WARemoteAttachmentImageType], kWARemoteAttachmentType,
 				WARemoteAttachmentOriginalSubtype, kWARemoteAttachmentSubtype,
+				file.article.identifier, kWARemoteArticleIdentifier,
 			nil];
 			
 			if (file.identifier)
