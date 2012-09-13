@@ -15,6 +15,7 @@
 
 #import "WARemoteInterface.h"
 #import "WARemoteInterface+WebSocket.h"
+#import "WARemoteInterface+RemoteNotifications.h"
 #import "WASyncManager.h"
 
 #import "WADataStore.h"
@@ -230,8 +231,15 @@
 
 - (void) application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
 
-	// Send API request to cloud
-	NSLog(@"device token : %@", deviceToken);
+	NSString* deviceTokenString = [[[[deviceToken description]
+																	 stringByReplacingOccurrencesOfString: @"<" withString: @""]
+																	stringByReplacingOccurrencesOfString: @">" withString: @""]
+																 stringByReplacingOccurrencesOfString: @" " withString: @""];
+
+	NSLog(@"device token in data: %@", deviceToken);
+	NSLog(@"device token : %@", deviceTokenString);
+
+	[[WARemoteInterface sharedInterface] subscribeRemoteNotificationForDevtoken:deviceTokenString onSuccess:nil onFailure:nil];
 
 }
 
@@ -255,6 +263,7 @@
 - (void) unsubscribeRemoteNotification {
 	
 	[[UIApplication sharedApplication] unregisterForRemoteNotifications];
+
 }
 
 - (void) clearViewHierarchy {
