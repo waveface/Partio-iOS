@@ -7,13 +7,14 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "WAArticle.h"
 
 typedef void (^WAPhotoImportCallback) ();
 
 @interface WAPhotoImportManager : NSObject
 
 @property (nonatomic, readwrite, assign) BOOL running;
-@property (nonatomic, readwrite, strong) NSDate *lastImportedArticleTime;
+@property (nonatomic, readwrite, strong) WAArticle *lastImportedArticle;
 
 + (WAPhotoImportManager *)defaultManager;
 

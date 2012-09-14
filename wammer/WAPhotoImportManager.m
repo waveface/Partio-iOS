@@ -44,15 +44,8 @@
 
 		self.managedObjectContext = [[WADataStore defaultStore] disposableMOC];
 		self.running = NO;
-
-		WAArticle *article = [[WADataStore defaultStore] fetchLatestLocalImportedArticleUsingContext:self.managedObjectContext];
+		self.lastImportedArticle = [[WADataStore defaultStore] fetchLatestLocalImportedArticleUsingContext:self.managedObjectContext];
 		
-		if (article) {
-			self.lastImportedArticleTime = article.creationDate;
-		} else {
-			self.lastImportedArticleTime = nil;
-		}
-
 	}
 
 	return self;
@@ -72,7 +65,7 @@
 
 	[context performBlock:^{
 
-		[[WAAssetsLibraryManager defaultManager] enumerateSavedPhotosSince:wSelf.lastImportedArticleTime onProgess:^(NSArray *assets) {
+		[[WAAssetsLibraryManager defaultManager] enumerateSavedPhotosSince:wSelf.lastImportedArticle.creationDate onProgess:^(NSArray *assets) {
 
 			if (![assets count]) {
 				return;
@@ -132,12 +125,12 @@
 			
 			NSError *savingError = nil;
 			if ([context save:&savingError]) {
-				wSelf.lastImportedArticleTime = article.creationDate;
 				[[GANTracker sharedTracker] trackEvent:@"CreatePost"
 																				action:@"CameraRoll"
 																				 label:@"Photos"
 																				 value:[article.files count]
 																		 withError:NULL];
+				wSelf.lastImportedArticle = article;
 			} else {
 				NSLog(@"Error saving: %s %@", __PRETTY_FUNCTION__, savingError);
 			}
