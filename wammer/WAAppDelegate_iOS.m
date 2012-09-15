@@ -203,14 +203,15 @@
 		dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
 			[wSelf bootstrapDownloadAllThumbnails];
 		});
-
+		
 		[self recreateViewHierarchy];
 		
 	}
 
 	WAPostAppEvent(@"AppVisit", [NSDictionary dictionaryWithObjectsAndKeys:@"app",@"category",@"visit", @"action", nil]);
 	
-	[[WARemoteInterface sharedInterface] enableAutomaticRemoteUpdatesTimerNow];
+	[[WARemoteInterface sharedInterface] enableAutomaticRemoteUpdatesTimer];
+	[[WARemoteInterface sharedInterface] performAutomaticRemoteUpdatesNow];
 	
 #if ENABLE_PONYDEBUG
 	PDDebugger *debugger = [PDDebugger defaultInstance];

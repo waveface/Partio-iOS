@@ -49,12 +49,17 @@ static NSString * const kConnectionForWebSocket = @"kConnectionForWebSocket";
 	}
 	
 	if (stationAvailable) {
-		
+				
+		if (self.connectionForWebSocket == nil || self.connectionForWebSocket.webSocketState == WAWebSocketClosed) {
+			
 			[[WARemoteInterface sharedInterface] openWebSocketConnectionForUrl: wsURL
 																															onSucces:^{
 																																successBlock(wsURL, stURL);
 																															}
 																														 onFailure:failureBlock];
+			
+		}
+		
 	} else {
 		failureBlock(nil);
 	}
