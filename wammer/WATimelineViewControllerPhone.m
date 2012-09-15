@@ -1070,8 +1070,14 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 	__block WADatePickerViewController *dpVC = [WADatePickerViewController controllerWithCompletion:^(NSDate *date) {
 	
 		if (date) {
-
-			NSFetchRequest *fr = [[WADataStore defaultStore] newFetchRequestForNewestArticleOnDate:date];
+			
+			NSCalendar *cal = [NSCalendar currentCalendar];
+			
+			NSDateComponents *dcomponents = [cal components:(NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit) fromDate:date];
+			[dcomponents setDay:[dcomponents day] + 1];
+			NSDate *dayMidnight = [cal dateFromComponents:dcomponents];
+			
+			NSFetchRequest *fr = [[WADataStore defaultStore] newFetchRequestForNewestArticleOnDate:dayMidnight];
 			
 			WAArticle *article = (WAArticle *)[[self.managedObjectContext executeFetchRequest:fr error:nil] lastObject];
 			
