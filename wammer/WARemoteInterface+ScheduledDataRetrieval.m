@@ -47,7 +47,7 @@
 	}
 }
 
-- (void) enableAutomaticRemoteUpdatesTimerNow {
+- (void) enableAutomaticRemoteUpdatesTimer {
 	self.dataRetrievalTimerEnabled = YES;
 	[self rescheduleAutomaticRemoteUpdates];
 }
