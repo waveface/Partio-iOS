@@ -36,29 +36,32 @@
 	
 }
 
-- (id)init {
+- (NSManagedObjectContext *)managedObjectContext {
 
-	self = [super init];
-
-	if (self) {
-
-		self.managedObjectContext = [[WADataStore defaultStore] disposableMOC];
-		self.running = NO;
-		self.lastImportedArticle = [[WADataStore defaultStore] fetchLatestLocalImportedArticleUsingContext:self.managedObjectContext];
-		
+	if (_managedObjectContext) {
+		_managedObjectContext = [[WADataStore defaultStore] disposableMOC];
 	}
+	return _managedObjectContext;
 
-	return self;
+}
+
+- (WAArticle *)lastImportedArticle {
+
+	if (!_lastImportedArticle) {
+		_lastImportedArticle = [[WADataStore defaultStore] fetchLatestLocalImportedArticleUsingContext:self.managedObjectContext];
+	}
+	return _lastImportedArticle;
 
 }
 
 - (void)createPhotoImportArticlesWithCompletionBlock:(WAPhotoImportCallback)aCallbackBlock {
 
-	if (self.running) {
+	if (!self.finished) {
 		return;
 	}
 
-	self.running = YES;
+	self.finished = NO;
+	self.canceled = NO;
 
 	NSManagedObjectContext *context = self.managedObjectContext;
 	__weak WAPhotoImportManager *wSelf = self;
@@ -68,7 +71,7 @@
 		[[WAAssetsLibraryManager defaultManager] enumerateSavedPhotosSince:wSelf.lastImportedArticle.creationDate onProgess:^(NSArray *assets) {
 
 			if (![assets count]) {
-				return;
+				return wSelf.canceled;
 			}
 
 			WAArticle *article = [WAArticle objectInsertingIntoContext:context withRemoteDictionary:[NSDictionary dictionary]];
@@ -135,9 +138,15 @@
 				NSLog(@"Error saving: %s %@", __PRETTY_FUNCTION__, savingError);
 			}
 			
+			return wSelf.canceled;
+
 		} onComplete:^{
 			
-			wSelf.running = NO;
+			wSelf.finished = YES;
+			if (wSelf.canceled) {
+				wSelf.managedObjectContext = nil;
+				wSelf.lastImportedArticle = nil;
+			}
 			aCallbackBlock();
 			
 		} onFailure:^(NSError *error) {

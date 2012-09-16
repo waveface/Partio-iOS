@@ -261,11 +261,12 @@ typedef enum WASyncStatus: NSUInteger {
 
 	}];
 	
-	[self irObserveObject:[WAPhotoImportManager defaultManager] keyPath:@"running" options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:nil withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
-		if ([toValue boolValue]) {
-			wSelf.importSavedPhotosTableViewCell.textLabel.text = NSLocalizedString(@"IMPORTING_PHOTOS", @"Photo importing status");
-		} else {
+	[self irObserveObject:[WAPhotoImportManager defaultManager] keyPath:@"finished" options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:nil withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
+		BOOL isFinished = [toValue boolValue];
+		if (isFinished) {
 			wSelf.importSavedPhotosTableViewCell.textLabel.text = NSLocalizedString(@"NOT_IMPORTING_PHOTOS", @"Photo importing status");
+		} else {
+			wSelf.importSavedPhotosTableViewCell.textLabel.text = NSLocalizedString(@"IMPORTING_PHOTOS", @"Photo importing status");
 		}
 		[wSelf.importSavedPhotosTableViewCell setNeedsDisplay];
 	}];

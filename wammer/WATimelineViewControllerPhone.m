@@ -1222,7 +1222,7 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 		[[IRAlertView alertViewWithTitle:alertTitle message:alertText cancelAction:cancelAction otherActions:[NSArray arrayWithObjects:
 			
 			[IRAction actionWithTitle:NSLocalizedString(@"ACTION_SIGN_OUT", nil) block: ^ {
-				
+
 				[wSelf.delegate applicationRootViewControllerDidRequestReauthentication:nil];
 				
 			}],
