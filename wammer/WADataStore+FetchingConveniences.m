@@ -151,12 +151,11 @@
 
 	NSFetchRequest *fr = [self newFetchRequestForAllArticles];
 	
-	fr.predicate = [NSCompoundPredicate andPredicateWithSubpredicates:[NSArray arrayWithObjects:
-	
-		fr.predicate,
-		[NSPredicate predicateWithFormat:@"files.@count > 0"],
-	
-	nil]];
+	fr.predicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[
+									fr.predicate,
+									[NSPredicate predicateWithFormat:@"files.@count > 0"],
+									[NSPredicate predicateWithFormat:@"style == NULL"]
+									]];
 	
 	fr.displayTitle = NSLocalizedString(@"FETCH_REQUEST_ARTICLES_WITH_PHOTOS_DISPLAY_TITLE", @"Display title for a fetch request working against the articles with Photos");
 	
@@ -180,6 +179,20 @@
 	
 	return fr;
 
+}
+
+- (NSFetchRequest *)newFetchRequestForUrlHistories {
+	
+	NSFetchRequest *fetch = [self newFetchRequestForAllArticles];
+	fetch.predicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[
+										 fetch.predicate,
+										 [NSPredicate predicateWithFormat:@"style MATCHES 'UrlHistory'"],
+										 [NSPredicate predicateWithFormat:@"files.@count > 0"],
+										 ]];
+	fetch.displayTitle = NSLocalizedString(@"FETCH_REQUEST_URL_HISTORY",
+																				 @"Caption for URL History");
+										 
+	return fetch;
 }
 
 - (NSFetchRequest *) newFetchRequestForFilesInArticle:(WAArticle *)article {

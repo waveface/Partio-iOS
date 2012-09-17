@@ -18,6 +18,7 @@
         </attribute>
         <attribute name="import" optional="YES" attributeType="Integer 16" syncable="YES"/>
         <attribute name="modificationDate" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="style" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="summary" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="text" optional="YES" attributeType="String">
             <userInfo/>
@@ -234,7 +235,7 @@
     <fetchRequest name="WAFRLocalImportedArticles" entity="WAArticle" predicateString="import == 1"/>
     <fetchRequest name="WAFRUser" entity="WAUser" predicateString="identifier == $Identifier"/>
     <elements>
-        <element name="WAArticle" positionX="0" positionY="0" width="128" height="300"/>
+        <element name="WAArticle" positionX="0" positionY="0" width="128" height="313"/>
         <element name="WAComment" positionX="0" positionY="0" width="128" height="135"/>
         <element name="WAFile" positionX="0" positionY="0" width="128" height="450"/>
         <element name="WAFilePageElement" positionX="0" positionY="0" width="128" height="90"/>

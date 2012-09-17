@@ -24,6 +24,7 @@
 - (NSFetchRequest *) newFetchRequestForArticlesWithPreviews;
 - (NSFetchRequest *) newFetchRequestForArticlesWithPhotos;
 - (NSFetchRequest *) newFetchRequestForArticlesWithoutPreviewsOrPhotos;
+- (NSFetchRequest *) newFetchRequestForUrlHistories;
 
 - (void) fetchLatestCreatedArticleInGroup:(NSString *)aGroupIdentifier onSuccess:(void(^)(NSString *identifier, WAArticle *article))callback;
 

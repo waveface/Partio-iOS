@@ -41,15 +41,14 @@ static NSString * const kWAFilterPickerViewSelectedRowIndex = @"kWAFilterPickerV
 	if (!self)
 		return nil;
 	
-	WADataStore *ds = [WADataStore defaultStore];
+	WADataStore *dataStore = [WADataStore defaultStore];
 	
-	fetchRequests = [NSArray arrayWithObjects:
-	
-		[ds newFetchRequestForAllArticles],
-		[ds newFetchRequestForArticlesWithPhotos],
-									 [ds newFetchRequestForArticlesWithPreviews],
-		
-	nil];
+	fetchRequests = @[
+		[dataStore newFetchRequestForAllArticles],
+		[dataStore newFetchRequestForArticlesWithPhotos],
+		[dataStore newFetchRequestForArticlesWithPreviews],
+		[dataStore newFetchRequestForUrlHistories],
+	];
 	
 	return self;
 
