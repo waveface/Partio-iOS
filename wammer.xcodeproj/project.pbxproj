@@ -125,6 +125,7 @@
 		4BFC156915C7D9E800DB02F8 /* Unfav@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BFC156715C7D9E800DB02F8 /* Unfav@2x~ipad.png */; };
 		4BFC156A15C7D9E800DB02F8 /* Unfav~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BFC156815C7D9E800DB02F8 /* Unfav~ipad.png */; };
 		7D92E55D1606CC3E000C7B06 /* libGoogleAnalytics.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D92E55C1606CC3E000C7B06 /* libGoogleAnalytics.a */; };
+		7D92E5B216070705000C7B06 /* PhotoPostWithURLHistoryStyle.txt in Resources */ = {isa = PBXBuildFile; fileRef = 7D92E5B0160703F6000C7B06 /* PhotoPostWithURLHistoryStyle.txt */; };
 		8002CDE615E5E85600D7BFF0 /* libicucore.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 8002CDE515E5E85600D7BFF0 /* libicucore.dylib */; };
 		8002CDE915E5E92100D7BFF0 /* WARemoteInterface+Notification.m in Sources */ = {isa = PBXBuildFile; fileRef = 8002CDE815E5E92100D7BFF0 /* WARemoteInterface+Notification.m */; };
 		8002CDEC15E5F6F300D7BFF0 /* WARemoteInterface+WebSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 8002CDEB15E5F6F300D7BFF0 /* WARemoteInterface+WebSocket.m */; };
@@ -1236,6 +1237,7 @@
 		4BFC156815C7D9E800DB02F8 /* Unfav~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Unfav~ipad.png"; path = "resources/Unfav~ipad.png"; sourceTree = "<group>"; };
 		7D92E55B1606CC3E000C7B06 /* GANTracker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GANTracker.h; path = wammer/Libraries/GANTracker.h; sourceTree = SOURCE_ROOT; };
 		7D92E55C1606CC3E000C7B06 /* libGoogleAnalytics.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libGoogleAnalytics.a; path = wammer/Libraries/libGoogleAnalytics.a; sourceTree = SOURCE_ROOT; };
+		7D92E5B0160703F6000C7B06 /* PhotoPostWithURLHistoryStyle.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = PhotoPostWithURLHistoryStyle.txt; sourceTree = "<group>"; };
 		8002CDCF15E5E73800D7BFF0 /* SocketRocket.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SocketRocket.xcodeproj; path = external/SocketRocket/SocketRocket.xcodeproj; sourceTree = "<group>"; };
 		8002CDE515E5E85600D7BFF0 /* libicucore.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libicucore.dylib; path = usr/lib/libicucore.dylib; sourceTree = SDKROOT; };
 		8002CDE715E5E92100D7BFF0 /* WARemoteInterface+Notification.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WARemoteInterface+Notification.h"; sourceTree = "<group>"; };
@@ -2178,17 +2180,18 @@
 		4B8CA96F14BBE7BA006E06BB /* iOS Tests */ = {
 			isa = PBXGroup;
 			children = (
+				7D92E5B0160703F6000C7B06 /* PhotoPostWithURLHistoryStyle.txt */,
 				4B0C3EED15BF868400CAA346 /* PostWithCompleteAttachmentInformation.txt */,
 				4B6220DD15BE839000893766 /* PostWithIncompleteAttachmentInformation.txt */,
 				4B8CA97014BBE7BA006E06BB /* Supporting Files */,
 				4B3225E715BE4CE400934DA4 /* WAArticleTests.h */,
 				4B3225E815BE4CE400934DA4 /* WAArticleTests.m */,
+				4B6C221F15F5FEF100C19A7B /* WAAssetLibraryManagerTests.h */,
+				4B6C222015F5FEF100C19A7B /* WAAssetLibraryManagerTests.m */,
 				4B8CA97514BBE7BA006E06BB /* WATests_iOS.h */,
 				4B8CA97614BBE7BA006E06BB /* WATests_iOS.m */,
 				4B26970415E76362007E1054 /* WAWebSocketTests.h */,
 				4B26970515E76362007E1054 /* WAWebSocketTests.m */,
-				4B6C221F15F5FEF100C19A7B /* WAAssetLibraryManagerTests.h */,
-				4B6C222015F5FEF100C19A7B /* WAAssetLibraryManagerTests.m */,
 			);
 			name = "iOS Tests";
 			path = "wammer-iOS-Tests";
@@ -3751,6 +3754,7 @@
 				4B8CA97414BBE7BA006E06BB /* InfoPlist.strings in Resources */,
 				4B6220DE15BE839000893766 /* PostWithIncompleteAttachmentInformation.txt in Resources */,
 				4B0C3EEF15BF89A300CAA346 /* PostWithCompleteAttachmentInformation.txt in Resources */,
+				7D92E5B216070705000C7B06 /* PhotoPostWithURLHistoryStyle.txt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

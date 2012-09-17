@@ -227,6 +227,9 @@
 /* Display title for a fetch request working against the latest article on a particular date */
 "FETCH_REQUEST_NEWEST_ARTICLE_OF_PARTICULAR_DATE_DISPLAY_TITLE" = "Post on a particular date";
 
+/* Caption for URL History */
+"FETCH_REQUEST_URL_HISTORY" = "History";
+
 /* No comment provided by engineer. */
 "HOUR_PLURAL" = "%d hours";
 

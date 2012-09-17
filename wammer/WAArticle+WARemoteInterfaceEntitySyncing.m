@@ -53,25 +53,23 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 	static dispatch_once_t onceToken;
 	dispatch_once(&onceToken, ^{
     
-		mapping = [NSDictionary dictionaryWithObjectsAndKeys:
-		
-			@"identifier", @"post_id",
-			@"group", @"group",	//	wraps @"group_id"
-			@"owner", @"owner",	//	wraps @"creator_id"
-			@"files", @"attachments",
-			@"previews", @"previews",
-			@"representingFile", @"representingFile",	//	wraps @"cover_attach"
-			
-			@"creationDeviceName", @"code_name",
-			@"creationDate", @"timestamp",
-			@"modificationDate", @"update_time",
-			@"text", @"content",
-			@"comments", @"comments",
-			@"summary", @"soul",
-			@"favorite", @"favorite",
-			@"hidden", @"hidden",			
-			
-		nil];
+		mapping = @{
+		@"post_id": @"identifier",
+		@"group": @"group",	//	wraps @"group_id"
+		@"owner": @"owner",	//	wraps @"creator_id"
+		@"attachments": @"files",
+		@"previews": @"previews",
+		@"representingFile": @"representingFile",	//	wraps @"cover_attach"
+		@"code_name": @"creationDeviceName",
+		@"timestamp": @"creationDate",
+		@"update_time": @"modificationDate",
+		@"content": @"text",
+		@"comments": @"comments",
+		@"soul": @"summary",
+		@"favorite": @"favorite",
+		@"hidden": @"hidden",
+		@"style": @"style",
+		};
 		
 	});
 
@@ -220,6 +218,13 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 		
 		nil] forKey:@"previews"];
 	
+	}
+	
+	for (NSString *style in [incomingRepresentation objectForKey:@"style"]) {
+    if ([style isEqualToString:@"url_history"]) {
+			[returnedDictionary setValue:[NSNumber numberWithUnsignedInteger:WAPostStyleURLHistory]
+														forKey:@"style"];
+		}
 	}
 	
 	return returnedDictionary;
