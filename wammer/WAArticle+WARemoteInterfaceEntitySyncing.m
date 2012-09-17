@@ -64,7 +64,7 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 		@"timestamp": @"creationDate",
 		@"update_time": @"modificationDate",
 		@"content": @"text",
- 		@"comments": @"comments",
+		@"comments": @"comments",
 		@"soul": @"summary",
 		@"favorite": @"favorite",
 		@"hidden": @"hidden",

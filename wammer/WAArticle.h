@@ -31,7 +31,8 @@
 @property (nonatomic, retain) WAUser *owner;
 @property (nonatomic, retain) NSSet *previews;
 @property (nonatomic, retain) WAFile *representingFile;
-@property (nonatomic, retain) NSNumber * import;
+@property (nonatomic, retain) NSNumber *import;
+@property (nonatomic, retain) NSString *style;
 @end
 
 @interface WAArticle (CoreDataGeneratedAccessors)

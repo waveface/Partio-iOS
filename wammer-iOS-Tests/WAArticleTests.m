@@ -92,6 +92,6 @@
 																												 usingMapping:nil
 																															options:IRManagedObjectOptionIndividualOperations];
 	WAArticle *article = [transformed objectAtIndex:0];
-	NSLog(@"%@", article);
+	STAssertEquals(@"UrlHistory", article.style, @"Style should be URL History");
 }
 @end
