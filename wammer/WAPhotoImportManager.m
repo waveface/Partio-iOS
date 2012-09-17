@@ -12,6 +12,7 @@
 #import "WAAssetsLibraryManager.h"
 #import "WAFile+ThumbnailMaker.h"
 #import <AssetsLibrary+IRAdditions.h>
+#import "GANTracker.h"
 
 @interface WAPhotoImportManager ()
 
@@ -132,6 +133,11 @@
 			NSError *savingError = nil;
 			if ([context save:&savingError]) {
 				wSelf.lastImportedArticleTime = article.creationDate;
+				[[GANTracker sharedTracker] trackEvent:@"CreatePost"
+																				action:@"CameraRoll"
+																				 label:@"Photos"
+																				 value:[article.files count]
+																		 withError:NULL];
 			} else {
 				NSLog(@"Error saving: %s %@", __PRETTY_FUNCTION__, savingError);
 			}

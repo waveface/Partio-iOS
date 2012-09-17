@@ -47,6 +47,8 @@
 	#import "PonyDebugger/PDDebugger.h"
 #endif
 
+#import "GANTracker.h"
+
 @interface WALoginBackgroundViewController : UIViewController
 @end
 
@@ -140,27 +142,6 @@
 			[Crashlytics sharedInstance].debugMode = YES;
 			
 		});
-	
-		WF_GOOGLEANALYTICS(^ {
-		
-			[[GANTracker sharedTracker] startTrackerWithAccountID:kWAGoogleAnalyticsAccountID dispatchPeriod:kWAGoogleAnalyticsDispatchInterval delegate:nil];
-			[GANTracker sharedTracker].debug = YES;
-			
-			id observer = [[NSNotificationCenter defaultCenter] addObserverForName:kWAAppEventNotification object:nil queue:nil usingBlock:^(NSNotification *note) {
-			
-				NSDictionary *userInfo = [note userInfo];
-				id category = [userInfo objectForKey:@"category"];
-				id action = [userInfo objectForKey:@"action"];
-				id label = [userInfo objectForKey:@"label"];
-				id value = [userInfo objectForKey:@"value"];
-				
-				[[GANTracker sharedTracker] trackEvent:category action:action label:label value:value withError:nil];
-				
-			}];
-			
-			objc_setAssociatedObject([GANTracker class], &kWAAppEventNotification, observer, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-		
-		});
 		
 	}
 	
@@ -208,7 +189,21 @@
 		
 	}
 
-	WAPostAppEvent(@"AppVisit", [NSDictionary dictionaryWithObjectsAndKeys:@"app",@"category",@"visit", @"action", nil]);
+//	WAPostAppEvent(@"AppVisit", [NSDictionary dictionaryWithObjectsAndKeys:@"app",@"category",@"visit", @"action", nil]);
+	
+	GANTracker *tracker = [GANTracker sharedTracker];
+#if DEBUG
+	tracker.debug = YES;
+#endif
+	[tracker startTrackerWithAccountID:@"UA-27817516-7"
+											dispatchPeriod:10
+														delegate:nil];
+	
+	[tracker trackEvent:@"Application:didFinishLaunchingWithOptions:"
+							 action:@"Launch iOS"
+								label:nil
+								value:-1
+						withError:NULL];
 	
 	[[WARemoteInterface sharedInterface] enableAutomaticRemoteUpdatesTimer];
 	[[WARemoteInterface sharedInterface] performAutomaticRemoteUpdatesNow];
