@@ -407,6 +407,14 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
 																			file.article.identifier, kWARemoteArticleIdentifier,
 																			nil];
 
+			if (file.identifier) {
+				[options setObject:file.identifier forKey:kWARemoteAttachmentUpdatedObjectIdentifier];
+			}
+
+			if (file.article.identifier) {
+				[options setObject:file.article.identifier forKey:kWARemoteArticleIdentifier];
+			}
+
 			if (!isValidPath(thumbnailFilePath)) {
 				
 				if (file.assetURL) {
@@ -425,6 +433,7 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
 					} failureBlock:^(NSError *error) {
 
 						NSLog(@"Unable to read asset from url: %@", file.assetURL);
+						callback(error);
 
 					}];
 					
@@ -477,12 +486,15 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
 			NSMutableDictionary *options = [NSMutableDictionary dictionaryWithObjectsAndKeys:
 				[NSNumber numberWithUnsignedInteger:WARemoteAttachmentImageType], kWARemoteAttachmentType,
 				WARemoteAttachmentOriginalSubtype, kWARemoteAttachmentSubtype,
-				file.article.identifier, kWARemoteArticleIdentifier,
 			nil];
 			
 			if (file.identifier)
 				[options setObject:file.identifier forKey:kWARemoteAttachmentUpdatedObjectIdentifier];
-			
+
+			if (file.article.identifier) {
+				[options setObject:file.article.identifier forKey:kWARemoteArticleIdentifier];
+			}
+
 			NSString *sentResourcePath = file.resourceFilePath;
 			if (!isValidPath(sentResourcePath)) {
 				if (file.assetURL) {
