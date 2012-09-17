@@ -268,12 +268,12 @@
 }
 
 - (void) handleFilter:(UIBarButtonItem *)sender {
+	__weak WAArticlesViewController *weakSelf = self;
 	
 	if (!_filterPopoverController) {
 		
 		__block WAFilterPickerViewController *filterPicker = [WAFilterPickerViewController controllerWithCompletion:^(NSFetchRequest *fetchRequest) {
 			
-			__weak WAArticlesViewController *weakSelf = self;
 			if (fetchRequest) {
 				weakSelf.fetchedResultsController = [[NSFetchedResultsController alloc]
 																				 initWithFetchRequest:fetchRequest

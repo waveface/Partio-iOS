@@ -29,8 +29,10 @@
 
 	[self disableMemoryWarningObserverCreation];
 	[self removeMemoryWarningObserverIfAppropriate];
+	[self irRemoveAllObserves];
 
 }
+
 
 - (void) awakeFromFetch {
 
