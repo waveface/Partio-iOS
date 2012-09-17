@@ -34,6 +34,7 @@
 #import <AssetsLibrary/AssetsLibrary.h>
 
 #import "WAFilterPickerViewController.h"
+#import "WAPhotoImportManager.h"
 
 @interface WAArticlesViewController () <NSFetchedResultsControllerDelegate, WAArticleDraftsViewControllerDelegate>
 
@@ -319,12 +320,13 @@
 			[[IRAlertView alertViewWithTitle:NSLocalizedString(@"ACTION_SIGN_OUT", @"Action title for Signing Out") message:NSLocalizedString(@"SIGN_OUT_CONFIRMATION", @"Confirmation text for Signing Out") cancelAction:[IRAction actionWithTitle:NSLocalizedString(@"ACTION_CANCEL", @"Action title for Cancelling") block:nil] otherActions:[NSArray arrayWithObjects:
 			
 				[IRAction actionWithTitle:NSLocalizedString(@"ACTION_SIGN_OUT", @"Action title for Signing Out") block: ^ {
-				
-					dispatch_async(dispatch_get_main_queue(), ^ {
-					
+
+					WAOverlayBezel *bezel = [WAOverlayBezel bezelWithStyle:WADefaultBezelStyle];
+					[bezel show];
+					[[WAPhotoImportManager defaultManager] cancelPhotoImportWithCompletionBlock:^{
+						[bezel dismiss];
 						[nrSelf.delegate applicationRootViewControllerDidRequestReauthentication:nrSelf];
-							
-					});
+					}];
 
 				}],
 			

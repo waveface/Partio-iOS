@@ -20,5 +20,6 @@ typedef void (^WAPhotoImportCallback) ();
 + (WAPhotoImportManager *)defaultManager;
 
 - (void)createPhotoImportArticlesWithCompletionBlock:(WAPhotoImportCallback)aCallbackBlock;
+- (void)cancelPhotoImportWithCompletionBlock:(WAPhotoImportCallback)aCallbackBlock;
 
 @end

@@ -36,9 +36,20 @@
 	
 }
 
+- (id)init {
+
+	self = [super init];
+	if (self) {
+		self.finished = YES;
+		self.canceled = NO;
+	}
+	return self;
+
+}
+
 - (NSManagedObjectContext *)managedObjectContext {
 
-	if (_managedObjectContext) {
+	if (!_managedObjectContext) {
 		_managedObjectContext = [[WADataStore defaultStore] disposableMOC];
 	}
 	return _managedObjectContext;
@@ -51,6 +62,24 @@
 		_lastImportedArticle = [[WADataStore defaultStore] fetchLatestLocalImportedArticleUsingContext:self.managedObjectContext];
 	}
 	return _lastImportedArticle;
+
+}
+
+- (void)cancelPhotoImportWithCompletionBlock:(WAPhotoImportCallback)aCallbackBlock {
+
+	self.canceled = YES;
+
+	__weak WAPhotoImportManager *wSelf = self;
+	[self irObserve:@"finished" options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:nil withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
+
+		BOOL isFinished = [toValue boolValue];
+		if (isFinished) {
+			wSelf.managedObjectContext = nil;
+			wSelf.lastImportedArticle = nil;
+			aCallbackBlock();
+		}
+
+	}];
 
 }
 
@@ -143,10 +172,6 @@
 		} onComplete:^{
 			
 			wSelf.finished = YES;
-			if (wSelf.canceled) {
-				wSelf.managedObjectContext = nil;
-				wSelf.lastImportedArticle = nil;
-			}
 			aCallbackBlock();
 			
 		} onFailure:^(NSError *error) {
@@ -157,6 +182,12 @@
 
 	}];
 	
+}
+
+- (void)dealloc {
+
+	[self irRemoveObserverBlocksForKeyPath:@"finished"];
+
 }
 
 @end
