@@ -86,12 +86,11 @@
 
 - (void)testArticleWithURLHistoryStyle {
 	NSArray *articleReps = [self loadDataFile:@"PhotoPostWithURLHistoryStyle"];
-	STAssertNotNil(articleReps, @"should be valid");
 	NSArray *transformed = [WAArticle insertOrUpdateObjectsUsingContext:context
 																									 withRemoteResponse:articleReps
 																												 usingMapping:nil
 																															options:IRManagedObjectOptionIndividualOperations];
 	WAArticle *article = [transformed objectAtIndex:0];
-	STAssertEquals(@"UrlHistory", article.style, @"Style should be URL History");
+	STAssertTrue(WAPostStyleURLHistory == article.style.intValue , @"Style should be URL History");
 }
 @end

@@ -154,7 +154,7 @@
 	fr.predicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[
 									fr.predicate,
 									[NSPredicate predicateWithFormat:@"files.@count > 0"],
-									[NSPredicate predicateWithFormat:@"style == NULL"]
+									[NSPredicate predicateWithFormat:@"style == 0"]
 									]];
 	
 	fr.displayTitle = NSLocalizedString(@"FETCH_REQUEST_ARTICLES_WITH_PHOTOS_DISPLAY_TITLE", @"Display title for a fetch request working against the articles with Photos");
@@ -186,7 +186,7 @@
 	NSFetchRequest *fetch = [self newFetchRequestForAllArticles];
 	fetch.predicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[
 										 fetch.predicate,
-										 [NSPredicate predicateWithFormat:@"style MATCHES 'UrlHistory'"],
+										 [NSPredicate predicateWithFormat:@"style == %d", WAPostStyleURLHistory],
 										 [NSPredicate predicateWithFormat:@"files.@count > 0"],
 										 ]];
 	fetch.displayTitle = NSLocalizedString(@"FETCH_REQUEST_URL_HISTORY",

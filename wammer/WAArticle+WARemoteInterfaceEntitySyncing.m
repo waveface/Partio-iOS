@@ -220,9 +220,11 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 	
 	}
 	
-	NSArray *styles = [incomingRepresentation objectForKey:@"style"];
-	if (styles && [styles indexOfObject:@"url_history"] != NSNotFound) {
-		[returnedDictionary setObject:@"UrlHistory" forKey:@"style"];
+	for (NSString *style in [incomingRepresentation objectForKey:@"style"]) {
+    if ([style isEqualToString:@"url_history"]) {
+			[returnedDictionary setValue:[NSNumber numberWithUnsignedInteger:WAPostStyleURLHistory]
+														forKey:@"style"];
+		}
 	}
 	
 	return returnedDictionary;
