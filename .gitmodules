@@ -73,3 +73,6 @@
 [submodule "external/ocmock"]
 	path = external/ocmock
 	url = git://github.com/erikdoe/ocmock.git
+[submodule "external/ViewDeck"]
+	path = external/ViewDeck
+	url = git://github.com/Inferis/ViewDeck.git

@@ -49,6 +49,8 @@
 
 #import "UIViewController+IRDelayedUpdateAdditions.h"
 
+#import "IIViewDeckController.h"
+
 static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPostsViewControllerPhone_RepresentedObjectURI";
 
 @interface WATimelineViewControllerPhone () <NSFetchedResultsControllerDelegate, UIActionSheetDelegate, IASKSettingsDelegate, WAArticleDraftsViewControllerDelegate>
@@ -426,6 +428,12 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 																	 action:@selector(handleFilter:)];
 	
 	self.navigationItem.rightBarButtonItem = filterButton;
+	
+	UIBarButtonItem *slidingMenuButton = [[UIBarButtonItem alloc]
+																				initWithImage:[UIImage imageNamed:@"menu"]
+																				style:UIBarButtonItemStylePlain
+																				target:self.viewDeckController action:@selector(toggleLeftView)];
+	self.navigationItem.leftBarButtonItem = slidingMenuButton;
 }
 
 - (void) viewWillAppear:(BOOL)animated {
@@ -1132,6 +1140,25 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 	dpVC.view.frame = hostingVC.view.bounds;
 	[hostingVC.view addSubview:dpVC.view];
 	[dpVC didMoveToParentViewController:hostingVC];
+
+}
+
+- (void) slidingMenuItemDidSelected:(id)result {
+	
+	NSFetchRequest *fr = (NSFetchRequest*)result;
+	if (fr) {
+		
+		self.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fr managedObjectContext:self.managedObjectContext sectionNameKeyPath:nil cacheName:nil];
+		
+		self.fetchedResultsController.delegate = self;
+		[self.fetchedResultsController performFetch:nil];
+		
+		[self.tableView setContentOffset:CGPointZero animated:NO];
+		[self.tableView reloadData];
+		
+	}
+	
+	[self.viewDeckController closeLeftView];
 
 }
 

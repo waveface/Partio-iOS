@@ -43,6 +43,9 @@
 #import "WAWelcomeViewController.h"
 #import "WATutorialViewController.h"
 
+#import "IIViewDeckController.h"
+#import "WASlidingMenuViewController.h"
+
 #if ENABLE_PONYDEBUG
 	#import "PonyDebugger/PDDebugger.h"
 #endif
@@ -265,7 +268,15 @@
 			[presentedViewController setDelegate:self];
 			
 			ssVC.masterViewController = rootNavC;
-			self.window.rootViewController = ssVC;
+			
+			WASlidingMenuViewController *slidingMenu = [[WASlidingMenuViewController alloc] init];
+			slidingMenu.delegate = presentedViewController;
+
+			IIViewDeckController *viewDeckController = [[IIViewDeckController alloc] initWithCenterViewController:ssVC leftViewController:slidingMenu];
+			viewDeckController.leftLedge = self.window.frame.size.width - 150.0f;
+			viewDeckController.centerhiddenInteractivity = IIViewDeckCenterHiddenNotUserInteractiveWithTapToClose;
+
+			self.window.rootViewController = viewDeckController;
 		
 			break;
 		
@@ -277,8 +288,15 @@
 			WANavigationController *timelineNavC = [[WANavigationController alloc] initWithRootViewController:timelineVC];
 			
 			[timelineVC setDelegate:self];
+			
+			WASlidingMenuViewController *slidingMenu = [[WASlidingMenuViewController alloc] init];
+			slidingMenu.delegate = timelineVC;
+
+			IIViewDeckController *viewDeckController = [[IIViewDeckController alloc] initWithCenterViewController:timelineNavC leftViewController:slidingMenu];
+			viewDeckController.leftLedge = self.window.frame.size.width - 150.0f;
+			viewDeckController.centerhiddenInteractivity = IIViewDeckCenterHiddenNotUserInteractiveWithTapToClose;
 						
-			self.window.rootViewController = timelineNavC;
+			self.window.rootViewController = viewDeckController;
 		
 			break;
 		
