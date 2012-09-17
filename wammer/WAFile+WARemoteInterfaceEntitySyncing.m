@@ -398,6 +398,11 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
 			
 			WAFile *file = (WAFile *)[context irManagedObjectForURI:ownURL];
 			
+			if (file.thumbnailURL) {
+				callback(nil);
+				return;
+			}
+
 			NSString *thumbnailFilePath = file.thumbnailFilePath;
 
 			NSMutableDictionary *options = [NSMutableDictionary dictionaryWithObjectsAndKeys:
@@ -482,7 +487,12 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
 		[operations addObject:[IRAsyncBarrierOperation operationWithWorker:^(IRAsyncOperationCallback callback) {
 			
 			WAFile *file = (WAFile *)[context irManagedObjectForURI:ownURL];
-			
+
+			if (file.resourceURL || ![[WARemoteInterface sharedInterface] hasReachableStation]) {
+				callback(nil);
+				return;
+			}
+
 			NSMutableDictionary *options = [NSMutableDictionary dictionaryWithObjectsAndKeys:
 				[NSNumber numberWithUnsignedInteger:WARemoteAttachmentImageType], kWARemoteAttachmentType,
 				WARemoteAttachmentOriginalSubtype, kWARemoteAttachmentSubtype,
