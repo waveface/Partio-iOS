@@ -177,6 +177,8 @@
 		} onFailure:^(NSError *error) {
 			
 			NSLog(@"Unable to enumerate saved photos: %s %@", __PRETTY_FUNCTION__, error);
+			wSelf.finished = YES;
+			aCallbackBlock();
 
 		}];
 
