@@ -16,6 +16,14 @@ enum {
 };
 typedef NSUInteger WAPostStyle;
 
+typedef enum {
+
+	WAImportTypeNone = 0,
+	WAImportTypeFromLocal,
+	WAImportTypeFromOthers
+
+} WAImportType;
+
 
 @class WAComment, WAFile, WAGroup, WAPreview, WAUser;
 

@@ -13,6 +13,7 @@
 #import "WADataStore+WARemoteInterfaceAdditions.h"
 #import "Foundation+IRAdditions.h"
 #import "IRAsyncOperation.h"
+#import "WADefines.h"
 
 
 NSString * const kWAArticleEntitySyncingErrorDomain = @"com.waveface.wammer.WAArticle.entitySyncing.error";
@@ -69,6 +70,7 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 		@"favorite": @"favorite",
 		@"hidden": @"hidden",
 		@"style": @"style",
+		@"import": @"import",
 		};
 		
 	});
@@ -227,6 +229,15 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 		}
 	}
 	
+	if ([incomingRepresentation objectForKey:@"import"]) {
+		NSString *deviceID = [incomingRepresentation objectForKey:@"device_id"];
+		if ([deviceID isEqualToString:WADeviceIdentifier()]) {
+			[returnedDictionary setValue:[NSNumber numberWithInt:WAImportTypeFromLocal] forKey:@"import"];
+		} else {
+			[returnedDictionary setValue:[NSNumber numberWithInt:WAImportTypeFromOthers] forKey:@"import"];
+		}
+	}
+
 	return returnedDictionary;
 
 }
