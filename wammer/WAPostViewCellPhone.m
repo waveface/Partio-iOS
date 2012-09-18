@@ -270,6 +270,7 @@
 	if (previousPost) {
 		for (WAFile *file in previousPost.files) {
 			[file irRemoveObserverBlocksForKeyPath:@"thumbnailFilePath"];
+			[file irRemoveObserverBlocksForKeyPath:@"smallThumbnailImage"];
 		}
 		[previousPost irRemoveObserverBlocksForKeyPath:@"dirty"];
 	}
