@@ -229,13 +229,15 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 		}
 	}
 	
-	if ([incomingRepresentation objectForKey:@"import"]) {
+	if ([[incomingRepresentation objectForKey:@"import"] isEqualToString:@"true"]) {
 		NSString *deviceID = [incomingRepresentation objectForKey:@"device_id"];
 		if ([deviceID isEqualToString:WADeviceIdentifier()]) {
 			[returnedDictionary setValue:[NSNumber numberWithInt:WAImportTypeFromLocal] forKey:@"import"];
 		} else {
 			[returnedDictionary setValue:[NSNumber numberWithInt:WAImportTypeFromOthers] forKey:@"import"];
 		}
+	} else {
+		[returnedDictionary setValue:[NSNumber numberWithInt:WAImportTypeNone] forKey:@"import"];
 	}
 
 	return returnedDictionary;
