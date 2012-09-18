@@ -70,7 +70,7 @@
 
 }
 
-- (void)enumerateSavedPhotosSince:(NSDate *)sinceDate onProgess:(void (^)(NSArray *))onProgressBlock onComplete:(void (^)())onCompleteBlock onFailure:(void (^)(NSError *))onFailureBlock {
+- (void)enumerateSavedPhotosSince:(NSDate *)sinceDate onProgess:(BOOL (^)(NSArray *))onProgressBlock onComplete:(void (^)())onCompleteBlock onFailure:(void (^)(NSError *))onFailureBlock {
 
 	__block NSMutableArray *insertedAssets = [[NSMutableArray alloc] init];
 	__block NSDate *midnight = sinceDate ? [sinceDate laterMidnight] : nil;
@@ -81,6 +81,8 @@
 
 			[group setAssetsFilter:[ALAssetsFilter allPhotos]];
 			[group enumerateAssetsUsingBlock:^(ALAsset *result, NSUInteger index, BOOL *stop) {
+
+				BOOL isCanceled = NO;
 
 				if (result) {
 
@@ -94,7 +96,7 @@
 						
 						if ([assetDate compare:midnight] != NSOrderedAscending) {
 							
-							onProgressBlock(insertedAssets);
+							isCanceled = onProgressBlock(insertedAssets);
 							[insertedAssets removeAllObjects];
 							midnight = [assetDate laterMidnight];
 							
@@ -110,8 +112,12 @@
 
 				} else {
 
-					onProgressBlock(insertedAssets);
+					isCanceled = onProgressBlock(insertedAssets);
 					
+				}
+
+				if (isCanceled) {
+					*stop = YES;
 				}
 
 			}];

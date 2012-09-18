@@ -261,11 +261,12 @@ typedef enum WASyncStatus: NSUInteger {
 
 	}];
 	
-	[self irObserveObject:[WAPhotoImportManager defaultManager] keyPath:@"running" options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:nil withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
-		if ([toValue boolValue]) {
-			wSelf.importSavedPhotosTableViewCell.textLabel.text = NSLocalizedString(@"IMPORTING_PHOTOS", @"Photo importing status");
-		} else {
+	[self irObserveObject:[WAPhotoImportManager defaultManager] keyPath:@"finished" options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:nil withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
+		BOOL isFinished = [toValue boolValue];
+		if (isFinished) {
 			wSelf.importSavedPhotosTableViewCell.textLabel.text = NSLocalizedString(@"NOT_IMPORTING_PHOTOS", @"Photo importing status");
+		} else {
+			wSelf.importSavedPhotosTableViewCell.textLabel.text = NSLocalizedString(@"IMPORTING_PHOTOS", @"Photo importing status");
 		}
 		[wSelf.importSavedPhotosTableViewCell setNeedsDisplay];
 	}];
@@ -532,11 +533,11 @@ typedef enum WASyncStatus: NSUInteger {
 	}
 	
 	if ([superAnswer isEqualToString:@"PHOTO_IMPORT_FOOTER"]) {
-		NSDate *date = [[WAPhotoImportManager defaultManager] lastImportedArticleTime];
-		if (date) {
+		WAArticle *article = [[WAPhotoImportManager defaultManager] lastImportedArticle];
+		if (article) {
 			NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
 			[dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
-			NSString *dateString = [dateFormatter stringFromDate:date];
+			NSString *dateString = [dateFormatter stringFromDate:article.creationDate];
 			return [NSString stringWithFormat:NSLocalizedString(@"LAST_IMPORT_TIME", @"In Account Info Photo Import Section"), dateString];
 		}
 		return NSLocalizedString(@"START_PHOTO_IMPORT_DESCRIPTION", @"In Account Info Photo Import Section");
