@@ -270,6 +270,7 @@
 	if (previousPost) {
 		for (WAFile *file in previousPost.files) {
 			[file irRemoveObserverBlocksForKeyPath:@"thumbnailFilePath"];
+			[file irRemoveObserverBlocksForKeyPath:@"smallThumbnailImage"];
 		}
 		[previousPost irRemoveObserverBlocksForKeyPath:@"dirty"];
 	}
@@ -432,7 +433,7 @@
 		}
 		
 		[allPhotoImageViews enumerateObjectsUsingBlock:^(UIImageView *iv, NSUInteger idx, BOOL *stop) {
-		
+			
 			if ([displayedFiles count] < idx) {
 				
 				iv.image = nil;
@@ -442,14 +443,21 @@
 			}
 				
 			WAFile *file = (WAFile *)[displayedFiles objectAtIndex:idx];
-			[iv irUnbind:@"image"];
-			[iv irBind:@"image"
-				toObject:file
-				 keyPath:@"smallThumbnailImage"
-				 options:[NSDictionary dictionaryWithObjectsAndKeys:
-									(id)kCFBooleanTrue, kIRBindingsAssignOnMainThreadOption,
-									nil]];
 			
+
+			[file irObserve:@"smallThumbnailImage"
+							options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew
+							context:nil
+						withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
+
+							dispatch_async(dispatch_get_main_queue(), ^{
+						
+								iv.image = (UIImage*)toValue;
+
+							});
+				
+			}];
+			 
 		}];
 		
 		if ([post.files count] > 3) {
