@@ -264,7 +264,7 @@
 
 - (void) unsubscribeRemoteNotification {
 	
-	[[UIApplication sharedApplication] unregisterForRemoteNotifications];
+//	[[UIApplication sharedApplication] unregisterForRemoteNotifications];
 
 }
 
