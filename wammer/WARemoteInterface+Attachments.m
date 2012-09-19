@@ -39,7 +39,10 @@ NSString * const WARemoteAttachmentSmallSubtype = @"small";
 
 		[[WAAssetsLibraryManager defaultManager] assetForURL:aFileURL resultBlock:^(ALAsset *asset) {
 
-			NSURL *copiedFileURL = [[WADataStore defaultStore] persistentFileURLForData:UIImageJPEGRepresentation([[asset defaultRepresentation] irImage], 0.85f) extension:@"jpeg"];
+			long long fileSize = [[asset defaultRepresentation] size];
+			Byte *byteData = (Byte *)malloc(fileSize);
+			[[asset defaultRepresentation] getBytes:byteData fromOffset:0 length:fileSize error:nil];
+			NSURL *copiedFileURL = [[WADataStore defaultStore] persistentFileURLForData:[NSData dataWithBytesNoCopy:byteData length:fileSize freeWhenDone:YES] extension:@"jpeg"];
 			[self createAttachmentWithCopiedFile:copiedFileURL group:aGroupIdentifier options:options onSuccess:successBlock onFailure:failureBlock];
 
 		} failureBlock:^(NSError *error) {
