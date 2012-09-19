@@ -245,6 +245,12 @@
 /* No comment provided by engineer. */
 "MONTH_SINGULAR" = "%d month";
 
+/* Notification messages for photos auto-imported */
+"NOTIFY_PHOTOS_IMPORTED" = "%d photo(s) have been imported into your Stream account.";
+
+/* For remote notification testing */
+"NOTIFY_TESTING" = "Hello, Stream!";
+
 /* Singluar noun for action objects */
 "NOUN_ACTIONS_OBJECT" = "Action";
 

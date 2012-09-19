@@ -230,7 +230,9 @@
 }
 
 - (void) application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
-
+	NSString * kMSG_NOTIFICATION_PHOTOS_IMPORTED = NSLocalizedString(@"NOTIFY_PHOTOS_IMPORTED", @"Notification messages for photos auto-imported");
+	NSString * kMSG_NOTIFICATION_TESTING = NSLocalizedString(@"NOTIFY_TESTING", @"For remote notification testing");
+	
 	NSString* deviceTokenString = [[[[deviceToken description]
 																	 stringByReplacingOccurrencesOfString: @"<" withString: @""]
 																	stringByReplacingOccurrencesOfString: @">" withString: @""]
