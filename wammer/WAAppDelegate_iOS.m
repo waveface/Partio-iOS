@@ -580,6 +580,17 @@
 		
 	};
 	
+	if (reason) {
+		
+		WAOverlayBezel *errorBezel = [[WAOverlayBezel alloc] initWithStyle:WAErrorBezelStyle];
+		[errorBezel setCaption:reason];
+		[errorBezel show];
+		dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 2.0 * NSEC_PER_SEC), dispatch_get_main_queue(), ^ {
+								[errorBezel dismiss];
+							});
+	
+	}
+	
 	__block WAWelcomeViewController *welcomeVC = [WAWelcomeViewController controllerWithCompletion:^(NSString *token, NSDictionary *userRep, NSArray *groupReps, NSError *error) {
 	
 		if (error) {
@@ -667,6 +678,9 @@
 		} else {
 			
 			handleAuthSuccess();
+			[wAppDelegate clearViewHierarchy];
+			[wAppDelegate recreateViewHierarchy];
+
 			
 		}
 		
