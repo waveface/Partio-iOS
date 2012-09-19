@@ -581,6 +581,7 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 
 	if (exclusivelyUsesThumbnail) {
 		
+		__weak WAGalleryViewController *wSelf = self;
 		[aFile irObserve:@"smallestPresentableImage" options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:nil withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
 
 			dispatch_async(dispatch_get_main_queue(), ^{
@@ -588,18 +589,29 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 				[aView setImage:toValue animated:NO synchronized:forceSynchronousImageDecode];
 				[aView setNeedsLayout];
 
+				// Show image in streamPickerView when download completed
+				if (!fromValue && toValue) {
+					[[wSelf streamPickerView] reloadData];
+				}
+
 			});
 
 		}];
 		
 	} else {
 		
+		__weak WAGalleryViewController *wSelf = self;
 		[aFile irObserve:@"bestPresentableImage" options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:nil withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
 
 			dispatch_async(dispatch_get_main_queue(), ^{
 
 				[aView setImage:toValue animated:NO synchronized:forceSynchronousImageDecode];
 				[aView setNeedsLayout];
+
+				// Show image in streamPickerView when download completed
+				if (!fromValue && toValue) {
+					[[wSelf streamPickerView] reloadData];
+				}
 
 			});
 
