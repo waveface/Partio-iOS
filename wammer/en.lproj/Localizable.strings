@@ -213,22 +213,22 @@
 "FACEBOOK_DISCONNECT_REQUEST_TITLE" = "Confirm to stop importing";
 
 /* Display title for a fetch request working against all the articles */
-"FETCH_REQUEST_ALL_ARTICLES_DISPLAY_TITLE" = "All";
+"FETCH_REQUEST_ALL_ARTICLES_DISPLAY_TITLE" = "All (My Days)";
 
 /* Display title for a fetch request working against the articles with Photos */
-"FETCH_REQUEST_ARTICLES_WITH_PHOTOS_DISPLAY_TITLE" = "Photo Only";
+"FETCH_REQUEST_ARTICLES_WITH_PHOTOS_DISPLAY_TITLE" = "Photos";
 
 /* Display title for a fetch request working against the articles with Plain Text */
 "FETCH_REQUEST_ARTICLES_WITH_PLAIN_TEXT_DISPLAY_TITLE" = "Text Only";
 
 /* Display title for a fetch request working against the articles with Web Previews */
-"FETCH_REQUEST_ARTICLES_WITH_PREVIEWS_DISPLAY_TITLE" = "Link Only";
+"FETCH_REQUEST_ARTICLES_WITH_PREVIEWS_DISPLAY_TITLE" = "Web Clippings";
 
 /* Display title for a fetch request working against the latest article on a particular date */
 "FETCH_REQUEST_NEWEST_ARTICLE_OF_PARTICULAR_DATE_DISPLAY_TITLE" = "Post on a particular date";
 
 /* Caption for URL History */
-"FETCH_REQUEST_URL_HISTORY" = "History";
+"FETCH_REQUEST_URL_HISTORY" = "Visited Links";
 
 /* No comment provided by engineer. */
 "HOUR_PLURAL" = "%d hours";
