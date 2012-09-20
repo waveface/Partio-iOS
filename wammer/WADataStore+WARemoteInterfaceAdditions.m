@@ -227,7 +227,9 @@ NSString * const kWADataStoreArticleUpdateShowsBezels = @"WADataStoreArticleUpda
 
 	WARemoteInterface *ri = [WARemoteInterface sharedInterface];
 	NSString *userIdentifier = ri.userIdentifier;
-	NSParameterAssert(userIdentifier);
+	if (!userIdentifier) {
+		return;
+	}
 	
 	__weak WADataStore *wSelf = self;
 	

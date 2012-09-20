@@ -31,7 +31,9 @@ typedef void (^WATutorialViewControllerCallback)(BOOL didFinish, NSError *error)
 @property (weak, nonatomic) IBOutlet UIView *pageToggleFacebook;
 @property (weak, nonatomic) IBOutlet UIView *pageStartStream;
 @property (weak, nonatomic) IBOutlet UIButton *goButton;
+@property (weak, nonatomic) IBOutlet UIButton *importAndGoButton;
 
 - (IBAction) handleGo:(id)sender;
+- (IBAction) handleImportAndGo:(id)sender;
 
 @end
