@@ -4834,7 +4834,7 @@
 		4B8581A315F78A6B00EE11AC /* Beta */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer: Shih-Yun Shen (ZBB2QV4YJ7)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COMPRESS_PNG_FILES = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -4851,8 +4851,9 @@
 					"\"$(SRCROOT)/external/TestflightSDK\"",
 					"\"$(SRCROOT)/external/GoogleAnalyticsSDK\"",
 				);
+				OTHER_CFLAGS = "";
 				PRODUCT_NAME = "wammer-iOS";
-				PROVISIONING_PROFILE = "54B9D02C-F208-41F4-9046-D3BC3B214E1B";
+				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos;
 				STREAM_BUNDLE_ID_SUFFIX = .beta;
 				STREAM_FACEBOOK_ID = 356863037711668;
@@ -5243,7 +5244,7 @@
 		FFCFE0F9142111E100B9E6AF /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer: Shih-Yun Shen (ZBB2QV4YJ7)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COMPRESS_PNG_FILES = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -5278,8 +5279,9 @@
 					"\"$(SRCROOT)/external/TestflightSDK\"",
 					"\"$(SRCROOT)/external/GoogleAnalyticsSDK\"",
 				);
+				OTHER_CFLAGS = "";
 				PRODUCT_NAME = "wammer-iOS";
-				PROVISIONING_PROFILE = "54B9D02C-F208-41F4-9046-D3BC3B214E1B";
+				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos;
 				STREAM_BUNDLE_ID_SUFFIX = .develop;
 				STREAM_FACEBOOK_ID = 357087874306060;
@@ -5292,7 +5294,7 @@
 		FFCFE0FA142111E100B9E6AF /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer: Shih-Yun Shen (ZBB2QV4YJ7)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COMPRESS_PNG_FILES = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -5327,8 +5329,9 @@
 					"\"$(SRCROOT)/external/TestflightSDK\"",
 					"\"$(SRCROOT)/external/GoogleAnalyticsSDK\"",
 				);
+				OTHER_CFLAGS = "";
 				PRODUCT_NAME = "wammer-iOS";
-				PROVISIONING_PROFILE = "54B9D02C-F208-41F4-9046-D3BC3B214E1B";
+				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos;
 				STREAM_BUNDLE_ID_SUFFIX = "";
 				STREAM_FACEBOOK_ID = 234823683291756;
