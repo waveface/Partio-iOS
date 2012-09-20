@@ -15,6 +15,7 @@
 #import "UIKit+IRAdditions.h"
 
 #import "WADefines.h"
+#import "WAAppDelegate.h"
 #import "WARemoteInterface.h"
 #import "WADataStore.h"
 #import "WADataStore+WARemoteInterfaceAdditions.h"
@@ -1227,6 +1228,9 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 				WAOverlayBezel *bezel = [WAOverlayBezel bezelWithStyle:WADefaultBezelStyle];
 				[bezel show];
 				[[WAPhotoImportManager defaultManager] cancelPhotoImportWithCompletionBlock:^{
+					
+					[((WAAppDelegate*)AppDelegate()) unsubscribeRemoteNotification];
+					
 					[bezel dismiss];
 					[wSelf.delegate applicationRootViewControllerDidRequestReauthentication:nil];
 				}];

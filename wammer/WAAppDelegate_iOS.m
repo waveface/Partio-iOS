@@ -260,7 +260,7 @@
 
 - (void) unsubscribeRemoteNotification {
 	
-//	[[UIApplication sharedApplication] unregisterForRemoteNotifications];
+	[[UIApplication sharedApplication] unregisterForRemoteNotifications];
 
 }
 
@@ -363,8 +363,6 @@
 
 				 // continue downloading all thumbnails
 				 [wSelf bootstrapDownloadAllThumbnails];
-				 
-				 [wSelf unsubscribeRemoteNotification];
 
 			 });
 		 }
@@ -377,6 +375,8 @@
 - (void) handleObservedAuthenticationFailure:(NSNotification *)aNotification {
 
 	NSError *error = [[aNotification userInfo] objectForKey:@"error"];
+	
+	[self unsubscribeRemoteNotification];
 
   dispatch_async(dispatch_get_main_queue(), ^{
 
