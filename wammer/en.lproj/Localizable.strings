@@ -254,14 +254,14 @@
 /* No comment provided by engineer. */
 "MONTH_SINGULAR" = "%d month";
 
+/* Photo importing status */
+"NOT_IMPORTING_PHOTOS" = "Import All Photos";
+
 /* Notification messages for photos auto-imported */
 "NOTIFY_PHOTOS_IMPORTED" = "%@ photo(s) have been imported into your Stream account.";
 
 /* For remote notification testing */
 "NOTIFY_TESTING" = "Hello, Stream!";
-
-/* Photo importing status */
-"NOT_IMPORTING_PHOTOS" = "Import All Photos";
 
 /* Singluar noun for action objects */
 "NOUN_ACTIONS_OBJECT" = "Action";

@@ -254,14 +254,14 @@
 /* No comment provided by engineer. */
 "MONTH_SINGULAR" = "%d月";
 
+/* Photo importing status */
+"NOT_IMPORTING_PHOTOS" = "匯入所有照片";
+
 /* Notification messages for photos auto-imported */
 "NOTIFY_PHOTOS_IMPORTED" = "%@ 張照片已經匯入到你的 Stream 帳號中。";
 
 /* For remote notification testing */
 "NOTIFY_TESTING" = "Stream，你好！";
-
-/* Photo importing status */
-"NOT_IMPORTING_PHOTOS" = "匯入所有照片";
 
 /* Singluar noun for action objects */
 "NOUN_ACTIONS_OBJECT" = "動作";
