@@ -24,7 +24,6 @@
 
 /**
  * Open a new websocket connection to a specified URL.
- 
  * @param anURL the url you would like to connect to.
  * @param onSuccess the completion block when websocket successfully connected
  * @param onFailure the failure block when websocket failed to connect with

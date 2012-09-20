@@ -312,7 +312,7 @@ NSURL *refiningStationLocation(NSString *stationUrlString, NSURL *baseUrl) {
 								return (id)refiningStationLocation(stationURLString, wSelf.engine.context.baseURL);
 							}]];
 							
-							[[WARemoteInterface sharedInterface] enableAutomaticRemoteUpdatesTimerNow];
+							[[WARemoteInterface sharedInterface] enableAutomaticRemoteUpdatesTimer];
 
 						}];
 

@@ -19,6 +19,7 @@ NSString * const kWARemoteAttachmentDescription = @"WARemoteAttachmentDescriptio
 NSString * const kWARemoteAttachmentRepresentingImageURL = @"WARemoteAttachmentRepresentingImageURL";
 NSString * const kWARemoteAttachmentUpdatedObjectIdentifier = @"WARemoteAttachmentUpdatedObjectIdentifier";
 NSString * const kWARemoteAttachmentSubtype = @"kWARemoteAttachmentDestinationImageType";
+NSString * const kWARemoteArticleIdentifier = @"kWARemoteArticleIdentifier";
 NSString * const WARemoteAttachmentOriginalSubtype = @"origin";
 NSString * const WARemoteAttachmentLargeSubtype = @"large";
 NSString * const WARemoteAttachmentMediumSubtype = @"medium";
@@ -38,7 +39,10 @@ NSString * const WARemoteAttachmentSmallSubtype = @"small";
 
 		[[WAAssetsLibraryManager defaultManager] assetForURL:aFileURL resultBlock:^(ALAsset *asset) {
 
-			NSURL *copiedFileURL = [[WADataStore defaultStore] persistentFileURLForData:UIImageJPEGRepresentation([[asset defaultRepresentation] irImage], 0.85f) extension:@"jpeg"];
+			long long fileSize = [[asset defaultRepresentation] size];
+			Byte *byteData = (Byte *)malloc(fileSize);
+			[[asset defaultRepresentation] getBytes:byteData fromOffset:0 length:fileSize error:nil];
+			NSURL *copiedFileURL = [[WADataStore defaultStore] persistentFileURLForData:[NSData dataWithBytesNoCopy:byteData length:fileSize freeWhenDone:YES] extension:@"jpeg"];
 			[self createAttachmentWithCopiedFile:copiedFileURL group:aGroupIdentifier options:options onSuccess:successBlock onFailure:failureBlock];
 
 		} failureBlock:^(NSError *error) {
@@ -71,6 +75,7 @@ NSString * const WARemoteAttachmentSmallSubtype = @"small";
 	NSString *description = [mergedOptions objectForKey:kWARemoteAttachmentDescription];
 	NSURL *proxyImage = [mergedOptions objectForKey:kWARemoteAttachmentRepresentingImageURL];
 	NSString *updatedObjectID = [mergedOptions objectForKey:kWARemoteAttachmentUpdatedObjectIdentifier];
+	NSString *articleIdentifier = [mergedOptions objectForKey:kWARemoteArticleIdentifier];
 	
 	if (type == WARemoteAttachmentUnknownType) {
 	
@@ -126,6 +131,7 @@ NSString * const WARemoteAttachmentSmallSubtype = @"small";
 	stitch(description, @"description");
 	stitch(proxyImage, @"image");
 	stitch(updatedObjectID, @"object_id");
+	stitch(articleIdentifier, @"post_id");
 	
 	[self.engine fireAPIRequestNamed:@"attachments/upload" withArguments:nil options:[NSDictionary dictionaryWithObjectsAndKeys:
 	

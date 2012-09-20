@@ -213,25 +213,34 @@
 "FACEBOOK_DISCONNECT_REQUEST_TITLE" = "確認取消Facebook同步";
 
 /* Display title for a fetch request working against all the articles */
-"FETCH_REQUEST_ALL_ARTICLES_DISPLAY_TITLE" = "所有貼文";
+"FETCH_REQUEST_ALL_ARTICLES_DISPLAY_TITLE" = "全部";
 
 /* Display title for a fetch request working against the articles with Photos */
-"FETCH_REQUEST_ARTICLES_WITH_PHOTOS_DISPLAY_TITLE" = "相片貼文";
+"FETCH_REQUEST_ARTICLES_WITH_PHOTOS_DISPLAY_TITLE" = "照片";
 
 /* Display title for a fetch request working against the articles with Plain Text */
 "FETCH_REQUEST_ARTICLES_WITH_PLAIN_TEXT_DISPLAY_TITLE" = "純文字貼文";
 
 /* Display title for a fetch request working against the articles with Web Previews */
-"FETCH_REQUEST_ARTICLES_WITH_PREVIEWS_DISPLAY_TITLE" = "網頁鏈接貼文";
+"FETCH_REQUEST_ARTICLES_WITH_PREVIEWS_DISPLAY_TITLE" = "網頁收藏";
 
 /* Display title for a fetch request working against the latest article on a particular date */
 "FETCH_REQUEST_NEWEST_ARTICLE_OF_PARTICULAR_DATE_DISPLAY_TITLE" = "某日貼文";
+
+/* Caption for URL History */
+"FETCH_REQUEST_URL_HISTORY" = "瀏覽記錄";
 
 /* No comment provided by engineer. */
 "HOUR_PLURAL" = "%d小時";
 
 /* No comment provided by engineer. */
 "HOUR_SINGULAR" = "%d小時";
+
+/* Photo importing status */
+"IMPORTING_PHOTOS" = "匯入照片中...";
+
+/* In Account Info Photo Import Section */
+"LAST_IMPORT_TIME" = "最新匯入照片時間：%@";
 
 /* No comment provided by engineer. */
 "MINUTE_PLURAL" = "%d分鐘";
@@ -250,6 +259,9 @@
 
 /* For remote notification testing */
 "NOTIFY_TESTING" = "Stream，你好！";
+
+/* Photo importing status */
+"NOT_IMPORTING_PHOTOS" = "匯入所有照片";
 
 /* Singluar noun for action objects */
 "NOUN_ACTIONS_OBJECT" = "動作";
@@ -324,6 +336,9 @@
 /* Title for view controller signing the user up */
 "SIGN_UP_CONTROLLER_TITLE" = "註冊";
 
+/* In Account Info Photo Import Section */
+"START_PHOTO_IMPORT_DESCRIPTION" = "匯入所有 Camera Roll 中的照片";
+
 /* No comment provided by engineer. */
 "STATE_LOADING_SINGLE_DOCUMENT" = "正在載入文件…";
 
@@ -386,6 +401,10 @@
 
 /* Title to show when user has no station, and have exhausted storage on the Cloud */
 "USER_INFO_NAG_LEVEL_3_WITHOUT_STATION" = "您已有原始檔暫存在雲端上，請儘快下載與安裝Station，讓我們將檔案送回您的PC中";
+
+/* In iPad overview
+   In Phone timeline */
+"VIEW_BUTTON" = "顯示";
 
 /* preview button in composition view */
 "WEB_PREVIEW" = "預覽";
@@ -490,7 +509,7 @@
 "STATE_LOADING_SINGLE_DOCUMENT_PROGRESS" = "%1 / %2";
 
 /* Class = "IBUIButton"; normalTitle = "ACTION_DISMISS_TUTORIAL"; ObjectID = "43"; */
-"ACTION_DISMISS_TUTORIAL" = "完成";
+"ACTION_DISMISS_TUTORIAL" = "暫時不要";
 
 /* Class = "IBUILabel"; text = "FACEBOOK_IMPORT_TUTORIAL_SWITCH"; ObjectID = "55"; */
 "FACEBOOK_IMPORT_TUTORIAL_SWITCH" = "Facebook同步";
@@ -498,14 +517,26 @@
 /* Class = "IBUITextView"; text = "FACEBOOK_IMPORT_TUTORIAL"; ObjectID = "56"; */
 "FACEBOOK_IMPORT_TUTORIAL" = "Stream可以將您過去張貼在Facebook上面的資料下載並且存放到您個人的時間軸上。未來您在Facebook上面的新貼文，都會同步備份到您的Stream。\n\n您可以在主畫面中的帳戶資訊，啓動或者停止這項同步功能。";
 
+/* Class = "IBUITextView"; text = "PHOTO_IMPORT_TUTORIAL"; ObjectID = "62"; */
+"PHOTO_IMPORT_TUTORIAL" = "立即啟用自動匯入功能，往後您相機膠卷中的所有照片，將自動同步至您的PC及其他裝置中，隨時欣賞跟分享。";
+
+/* Class = "IBUIButton"; normalTitle = "ACTION_IMPORT_PHOTO"; ObjectID = "63"; */
+"ACTION_IMPORT_PHOTO" = "確定匯入";
+
 /* Class = "IBUIButton"; normalTitle = "ACTION_DISMISS_TUTORIAL"; ObjectID = "43"; */
-"ACTION_DISMISS_TUTORIAL" = "完成";
+"ACTION_DISMISS_TUTORIAL" = "暫時不要";
 
 /* Class = "IBUITextView"; text = "FACEBOOK_IMPORT_TUTORIAL_IPAD"; ObjectID = "46"; */
 "FACEBOOK_IMPORT_TUTORIAL_IPAD" = "Stream可以將您過去張貼在Facebook上面的資料下載並且存放到您個人的時間軸上。未來您在Facebook上面的新貼文，都會同步備份到您的Stream。\n\n您可以在主畫面中的帳戶資訊，啓動或者停止這項同步功能。";
 
 /* Class = "IBUILabel"; text = "FACEBOOK_IMPORT_TUTORIAL_SWITCH_IPAD"; ObjectID = "49"; */
 "FACEBOOK_IMPORT_TUTORIAL_SWITCH_IPAD" = "Facebook同步";
+
+/* Class = "IBUITextView"; text = "PHOTO_IMPORT_TUTORIAL_IPAD"; ObjectID = "55"; */
+"PHOTO_IMPORT_TUTORIAL_IPAD" = "立即啟用自動匯入功能，往後您相機膠卷中的所有照片，將自動同步至您的PC及其他裝置中，隨時欣賞跟分享。";
+
+/* Class = "IBUIButton"; normalTitle = "ACTION_IMPORT_PHOTO"; ObjectID = "58"; */
+"ACTION_IMPORT_PHOTO" = "確定匯入";
 
 /* Class = "IBUITableViewSection"; footerTitle = "SERVICE_INFO_FOOTER"; ObjectID = "9vM-w4-lTb"; */
 "SERVICE_INFO_FOOTER" = "⚠ 僅會在Wi-Fi連線時上傳原檔\n\n在 Wi-Fi 環境中，Stream 會幫您將原始檔案妥善保存。只要下載並且開啓 PC 上的 Stream，您有30天的時間將檔案從雲端送回PC保存";
@@ -519,8 +550,8 @@
 /* Class = "IBUITableViewSection"; headerTitle = "ACCOUNT_INFO_HEADER"; ObjectID = "Gw1-xy-FWK"; */
 "ACCOUNT_INFO_HEADER" = "帳戶資訊";
 
-/* Class = "IBUITableViewSection"; footerTitle = "VERSION"; ObjectID = "IP4-fz-MdU"; */
-"VERSION" = "版本";
+/* Class = "IBUITableViewSection"; footerTitle = "PHOTO_IMPORT_FOOTER"; ObjectID = "IP4-fz-MdU"; */
+"PHOTO_IMPORT_FOOTER" = "PHOTO_IMPORT_FOOTER";
 
 /* Class = "IBUILabel"; text = "LOCAL_PENDING_OBJECTS_TITLE"; ObjectID = "Uku-UE-EAs"; */
 "LOCAL_PENDING_OBJECTS_TITLE" = "本裝置尚未上傳原檔數量";
@@ -540,7 +571,13 @@
 /* Class = "IBUITableViewSection"; headerTitle = "SOCIAL_NETWORK_HEADER"; ObjectID = "qoR-fT-NMh"; */
 "SOCIAL_NETWORK_HEADER" = "Facebook 設定";
 
-/* Class = "IBUILabel"; text = "ACTION_CONTACT_DEVELOPER"; ObjectID = "vuN-4r-WXb"; */
+/* Class = "IBUITableViewSection"; footerTitle = "VERSION"; ObjectID = "rMk-eV-Pjl"; */
+"VERSION" = "版本";
+
+/* Class = "IBUILabel"; text = "ACTION_IMPORT_SAVED_PHOTOS"; ObjectID = "vuN-4r-WXb"; */
+"ACTION_IMPORT_SAVED_PHOTOS" = "匯入所有 Camera Roll 的照片";
+
+/* Class = "IBUILabel"; text = "ACTION_CONTACT_DEVELOPER"; ObjectID = "yLg-eE-ehZ"; */
 "ACTION_CONTACT_DEVELOPER" = "聯絡我們";
 
 /* Class = "IBUIButton"; normalTitle = "ACTION_CONNECT_FACEBOOK"; ObjectID = "4"; */

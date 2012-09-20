@@ -24,6 +24,7 @@
 - (NSFetchRequest *) newFetchRequestForArticlesWithPreviews;
 - (NSFetchRequest *) newFetchRequestForArticlesWithPhotos;
 - (NSFetchRequest *) newFetchRequestForArticlesWithoutPreviewsOrPhotos;
+- (NSFetchRequest *) newFetchRequestForUrlHistories;
 
 - (void) fetchLatestCreatedArticleInGroup:(NSString *)aGroupIdentifier onSuccess:(void(^)(NSString *identifier, WAArticle *article))callback;
 
@@ -32,4 +33,6 @@
 - (void) fetchArticleWithIdentifier:(NSString *)anArticleIdentifier usingContext:(NSManagedObjectContext *)aContext onSuccess:(void(^)(NSString *identifier, WAArticle *article))callback;
 
 - (NSArray *) fetchFilesNeedingDownloadUsingContext:(NSManagedObjectContext *)aContext;
+
+- (WAArticle *) fetchLatestLocalImportedArticleUsingContext:(NSManagedObjectContext *)aContext;
 @end

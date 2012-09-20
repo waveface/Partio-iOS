@@ -47,7 +47,10 @@
 		
 		article.representingFile = pickedFile;
 		article.dirty = (id)kCFBooleanTrue;
-		article.modificationDate = [NSDate date];
+		if (article.modificationDate) {
+			// set modification only when updating articles
+			article.modificationDate = [NSDate date];
+		}
 		
 		NSCParameterAssert(article.representingFile == pickedFile);
 		

@@ -398,13 +398,27 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
 			
 			WAFile *file = (WAFile *)[context irManagedObjectForURI:ownURL];
 			
+			if (file.thumbnailURL) {
+				callback(nil);
+				return;
+			}
+
 			NSString *thumbnailFilePath = file.thumbnailFilePath;
 
 			NSMutableDictionary *options = [NSMutableDictionary dictionaryWithObjectsAndKeys:
 																			[NSNumber numberWithUnsignedInteger:WARemoteAttachmentImageType], kWARemoteAttachmentType,
 																			WARemoteAttachmentMediumSubtype, kWARemoteAttachmentSubtype,
 																			file.identifier, kWARemoteAttachmentUpdatedObjectIdentifier,
+																			file.article.identifier, kWARemoteArticleIdentifier,
 																			nil];
+
+			if (file.identifier) {
+				[options setObject:file.identifier forKey:kWARemoteAttachmentUpdatedObjectIdentifier];
+			}
+
+			if (file.article.identifier) {
+				[options setObject:file.article.identifier forKey:kWARemoteArticleIdentifier];
+			}
 
 			if (!isValidPath(thumbnailFilePath)) {
 				
@@ -424,6 +438,7 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
 					} failureBlock:^(NSError *error) {
 
 						NSLog(@"Unable to read asset from url: %@", file.assetURL);
+						callback(error);
 
 					}];
 					
@@ -472,7 +487,12 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
 		[operations addObject:[IRAsyncBarrierOperation operationWithWorker:^(IRAsyncOperationCallback callback) {
 			
 			WAFile *file = (WAFile *)[context irManagedObjectForURI:ownURL];
-			
+
+			if (file.resourceURL || ![[WARemoteInterface sharedInterface] hasReachableStation]) {
+				callback(nil);
+				return;
+			}
+
 			NSMutableDictionary *options = [NSMutableDictionary dictionaryWithObjectsAndKeys:
 				[NSNumber numberWithUnsignedInteger:WARemoteAttachmentImageType], kWARemoteAttachmentType,
 				WARemoteAttachmentOriginalSubtype, kWARemoteAttachmentSubtype,
@@ -480,7 +500,11 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
 			
 			if (file.identifier)
 				[options setObject:file.identifier forKey:kWARemoteAttachmentUpdatedObjectIdentifier];
-			
+
+			if (file.article.identifier) {
+				[options setObject:file.article.identifier forKey:kWARemoteArticleIdentifier];
+			}
+
 			NSString *sentResourcePath = file.resourceFilePath;
 			if (!isValidPath(sentResourcePath)) {
 				if (file.assetURL) {

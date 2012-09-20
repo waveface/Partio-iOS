@@ -213,25 +213,34 @@
 "FACEBOOK_DISCONNECT_REQUEST_TITLE" = "Confirm to stop importing";
 
 /* Display title for a fetch request working against all the articles */
-"FETCH_REQUEST_ALL_ARTICLES_DISPLAY_TITLE" = "All Posts";
+"FETCH_REQUEST_ALL_ARTICLES_DISPLAY_TITLE" = "All (My Days)";
 
 /* Display title for a fetch request working against the articles with Photos */
-"FETCH_REQUEST_ARTICLES_WITH_PHOTOS_DISPLAY_TITLE" = "Photo Posts";
+"FETCH_REQUEST_ARTICLES_WITH_PHOTOS_DISPLAY_TITLE" = "Photos";
 
 /* Display title for a fetch request working against the articles with Plain Text */
-"FETCH_REQUEST_ARTICLES_WITH_PLAIN_TEXT_DISPLAY_TITLE" = "Text Posts";
+"FETCH_REQUEST_ARTICLES_WITH_PLAIN_TEXT_DISPLAY_TITLE" = "Text Only";
 
 /* Display title for a fetch request working against the articles with Web Previews */
-"FETCH_REQUEST_ARTICLES_WITH_PREVIEWS_DISPLAY_TITLE" = "Web Posts";
+"FETCH_REQUEST_ARTICLES_WITH_PREVIEWS_DISPLAY_TITLE" = "Web Clippings";
 
 /* Display title for a fetch request working against the latest article on a particular date */
 "FETCH_REQUEST_NEWEST_ARTICLE_OF_PARTICULAR_DATE_DISPLAY_TITLE" = "Post on a particular date";
+
+/* Caption for URL History */
+"FETCH_REQUEST_URL_HISTORY" = "Visited Links";
 
 /* No comment provided by engineer. */
 "HOUR_PLURAL" = "%d hours";
 
 /* No comment provided by engineer. */
 "HOUR_SINGULAR" = "%d hour";
+
+/* Photo importing status */
+"IMPORTING_PHOTOS" = "Importing Photos...";
+
+/* In Account Info Photo Import Section */
+"LAST_IMPORT_TIME" = "Latest Imported Photo Time: %@";
 
 /* No comment provided by engineer. */
 "MINUTE_PLURAL" = "%d minutes";
@@ -250,6 +259,9 @@
 
 /* For remote notification testing */
 "NOTIFY_TESTING" = "Hello, Stream!";
+
+/* Photo importing status */
+"NOT_IMPORTING_PHOTOS" = "Import All Photos";
 
 /* Singluar noun for action objects */
 "NOUN_ACTIONS_OBJECT" = "Action";
@@ -324,6 +336,9 @@
 /* Title for view controller signing the user up */
 "SIGN_UP_CONTROLLER_TITLE" = "Sign Up";
 
+/* In Account Info Photo Import Section */
+"START_PHOTO_IMPORT_DESCRIPTION" = "Import all photos in Camera Roll";
+
 /* No comment provided by engineer. */
 "STATE_LOADING_SINGLE_DOCUMENT" = "Loading Document…";
 
@@ -386,6 +401,10 @@
 
 /* Title to show when user has no station, and have exhausted storage on the Cloud */
 "USER_INFO_NAG_LEVEL_3_WITHOUT_STATION" = "Your cloud storage is full.  To sync, install and run Stream for Windows on your PC.";
+
+/* In iPad overview
+   In Phone timeline */
+"VIEW_BUTTON" = "View";
 
 /* preview button in composition view */
 "WEB_PREVIEW" = "Web Preview";
@@ -490,7 +509,7 @@
 "STATE_LOADING_SINGLE_DOCUMENT_PROGRESS" = "%1 of %2";
 
 /* Class = "IBUIButton"; normalTitle = "ACTION_DISMISS_TUTORIAL"; ObjectID = "43"; */
-"ACTION_DISMISS_TUTORIAL" = "Finish";
+"ACTION_DISMISS_TUTORIAL" = "Maybe later";
 
 /* Class = "IBUILabel"; text = "FACEBOOK_IMPORT_TUTORIAL_SWITCH"; ObjectID = "55"; */
 "FACEBOOK_IMPORT_TUTORIAL_SWITCH" = "Facebook Import";
@@ -498,14 +517,26 @@
 /* Class = "IBUITextView"; text = "FACEBOOK_IMPORT_TUTORIAL"; ObjectID = "56"; */
 "FACEBOOK_IMPORT_TUTORIAL" = "Start importing your Facebook posts into Stream! Future Facebook posts will then be imported automatically.\n\nTo turn this feature on or off, just go to the Account Info page of your Stream account.";
 
+/* Class = "IBUITextView"; text = "PHOTO_IMPORT_TUTORIAL"; ObjectID = "62"; */
+"PHOTO_IMPORT_TUTORIAL" = "Use the auto import function to send all your Camera Roll photos into Stream, and access them on all your devices and PC computers anytime, anywhere.";
+
+/* Class = "IBUIButton"; normalTitle = "ACTION_IMPORT_PHOTO"; ObjectID = "63"; */
+"ACTION_IMPORT_PHOTO" = "Yes!";
+
 /* Class = "IBUIButton"; normalTitle = "ACTION_DISMISS_TUTORIAL"; ObjectID = "43"; */
-"ACTION_DISMISS_TUTORIAL" = "Finish";
+"ACTION_DISMISS_TUTORIAL" = "Maybe later";
 
 /* Class = "IBUITextView"; text = "FACEBOOK_IMPORT_TUTORIAL_IPAD"; ObjectID = "46"; */
 "FACEBOOK_IMPORT_TUTORIAL_IPAD" = "Start importing your Facebook posts into Stream! Future Facebook posts will then be imported automatically.\n\nTo turn this feature on or off, just go to the Account Info page of your Stream account.";
 
 /* Class = "IBUILabel"; text = "FACEBOOK_IMPORT_TUTORIAL_SWITCH_IPAD"; ObjectID = "49"; */
 "FACEBOOK_IMPORT_TUTORIAL_SWITCH_IPAD" = "Facebook Import";
+
+/* Class = "IBUITextView"; text = "PHOTO_IMPORT_TUTORIAL_IPAD"; ObjectID = "55"; */
+"PHOTO_IMPORT_TUTORIAL_IPAD" = "Use the auto import function to send all your Camera Roll photos into Stream, and access them on all your devices and PC computers anytime, anywhere.";
+
+/* Class = "IBUIButton"; normalTitle = "ACTION_IMPORT_PHOTO"; ObjectID = "58"; */
+"ACTION_IMPORT_PHOTO" = "Yes!";
 
 /* Class = "IBUITableViewSection"; footerTitle = "SERVICE_INFO_FOOTER"; ObjectID = "9vM-w4-lTb"; */
 "SERVICE_INFO_FOOTER" = "Stream uses Wi-Fi to send original size photos back to your PC. If you don't have Stream installed on your PC, or it's not up and running, we keep the photos in a temporary cloud space for up to 30 days.";
@@ -519,8 +550,8 @@
 /* Class = "IBUITableViewSection"; headerTitle = "ACCOUNT_INFO_HEADER"; ObjectID = "Gw1-xy-FWK"; */
 "ACCOUNT_INFO_HEADER" = "Account Info";
 
-/* Class = "IBUITableViewSection"; footerTitle = "VERSION"; ObjectID = "IP4-fz-MdU"; */
-"VERSION" = "Version";
+/* Class = "IBUITableViewSection"; footerTitle = "PHOTO_IMPORT_FOOTER"; ObjectID = "IP4-fz-MdU"; */
+"PHOTO_IMPORT_FOOTER" = "PHOTO_IMPORT_FOOTER";
 
 /* Class = "IBUILabel"; text = "LOCAL_PENDING_OBJECTS_TITLE"; ObjectID = "Uku-UE-EAs"; */
 "LOCAL_PENDING_OBJECTS_TITLE" = "Objects Pending";
@@ -540,7 +571,13 @@
 /* Class = "IBUITableViewSection"; headerTitle = "SOCIAL_NETWORK_HEADER"; ObjectID = "qoR-fT-NMh"; */
 "SOCIAL_NETWORK_HEADER" = "Facebook Settings";
 
-/* Class = "IBUILabel"; text = "ACTION_CONTACT_DEVELOPER"; ObjectID = "vuN-4r-WXb"; */
+/* Class = "IBUITableViewSection"; footerTitle = "VERSION"; ObjectID = "rMk-eV-Pjl"; */
+"VERSION" = "Version";
+
+/* Class = "IBUILabel"; text = "ACTION_IMPORT_SAVED_PHOTOS"; ObjectID = "vuN-4r-WXb"; */
+"ACTION_IMPORT_SAVED_PHOTOS" = "Import all photos in Camera Roll";
+
+/* Class = "IBUILabel"; text = "ACTION_CONTACT_DEVELOPER"; ObjectID = "yLg-eE-ehZ"; */
 "ACTION_CONTACT_DEVELOPER" = "Contact";
 
 /* Class = "IBUIButton"; normalTitle = "ACTION_CONNECT_FACEBOOK"; ObjectID = "4"; */

@@ -21,8 +21,10 @@
 	return [IRAsyncOperation operationWithWorker:^(IRAsyncOperationCallback callback) {
 		
 		WARemoteInterface * const ri = [WARemoteInterface sharedInterface];
-		if (!ri.userToken)
+		if (!ri.userToken) {
+			callback(nil);
 			return;
+		}
 		
 		WADataStore * const ds = [WADataStore defaultStore];
 		context = [ds disposableMOC];

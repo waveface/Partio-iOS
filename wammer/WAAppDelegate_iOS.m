@@ -48,6 +48,8 @@
 	#import "PonyDebugger/PDDebugger.h"
 #endif
 
+#import "GANTracker.h"
+
 @interface WALoginBackgroundViewController : UIViewController
 @end
 
@@ -141,27 +143,6 @@
 			[Crashlytics sharedInstance].debugMode = YES;
 			
 		});
-	
-		WF_GOOGLEANALYTICS(^ {
-		
-			[[GANTracker sharedTracker] startTrackerWithAccountID:kWAGoogleAnalyticsAccountID dispatchPeriod:kWAGoogleAnalyticsDispatchInterval delegate:nil];
-			[GANTracker sharedTracker].debug = YES;
-			
-			id observer = [[NSNotificationCenter defaultCenter] addObserverForName:kWAAppEventNotification object:nil queue:nil usingBlock:^(NSNotification *note) {
-			
-				NSDictionary *userInfo = [note userInfo];
-				id category = [userInfo objectForKey:@"category"];
-				id action = [userInfo objectForKey:@"action"];
-				id label = [userInfo objectForKey:@"label"];
-				id value = [userInfo objectForKey:@"value"];
-				
-				[[GANTracker sharedTracker] trackEvent:category action:action label:label value:value withError:nil];
-				
-			}];
-			
-			objc_setAssociatedObject([GANTracker class], &kWAAppEventNotification, observer, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-		
-		});
 		
 	}
 	
@@ -204,14 +185,29 @@
 		dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
 			[wSelf bootstrapDownloadAllThumbnails];
 		});
-
+		
 		[self recreateViewHierarchy];
 		
 	}
 
-	WAPostAppEvent(@"AppVisit", [NSDictionary dictionaryWithObjectsAndKeys:@"app",@"category",@"visit", @"action", nil]);
+//	WAPostAppEvent(@"AppVisit", [NSDictionary dictionaryWithObjectsAndKeys:@"app",@"category",@"visit", @"action", nil]);
 	
-	[[WARemoteInterface sharedInterface] enableAutomaticRemoteUpdatesTimerNow];
+	GANTracker *tracker = [GANTracker sharedTracker];
+#if DEBUG
+	tracker.debug = YES;
+#endif
+	[tracker startTrackerWithAccountID:@"UA-27817516-7"
+											dispatchPeriod:10
+														delegate:nil];
+	
+	[tracker trackEvent:@"Application:didFinishLaunchingWithOptions:"
+							 action:@"Launch iOS"
+								label:nil
+								value:-1
+						withError:NULL];
+	
+	[[WARemoteInterface sharedInterface] enableAutomaticRemoteUpdatesTimer];
+	[[WARemoteInterface sharedInterface] performAutomaticRemoteUpdatesNow];
 	
 #if ENABLE_PONYDEBUG
 	PDDebugger *debugger = [PDDebugger defaultInstance];
@@ -627,6 +623,17 @@
 		
 	};
 	
+	if (reason) {
+		
+		WAOverlayBezel *errorBezel = [[WAOverlayBezel alloc] initWithStyle:WAErrorBezelStyle];
+		[errorBezel setCaption:reason];
+		[errorBezel show];
+		dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 2.0 * NSEC_PER_SEC), dispatch_get_main_queue(), ^ {
+								[errorBezel dismiss];
+							});
+	
+	}
+	
 	__block WAWelcomeViewController *welcomeVC = [WAWelcomeViewController controllerWithCompletion:^(NSString *token, NSDictionary *userRep, NSArray *groupReps, NSError *error) {
 	
 		if (error) {
@@ -714,6 +721,9 @@
 		} else {
 			
 			handleAuthSuccess();
+			[wAppDelegate clearViewHierarchy];
+			[wAppDelegate recreateViewHierarchy];
+
 			
 		}
 		

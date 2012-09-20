@@ -10,6 +10,8 @@
 
 @interface WAFacebookInterface : NSObject
 
+@property (nonatomic) BOOL userDataImporting;
+
 + (WAFacebookInterface *) sharedInterface;
 
 - (void) authenticateWithCompletion:(void(^)(BOOL didFinish, NSError *error))block;

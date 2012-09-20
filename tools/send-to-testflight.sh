@@ -13,8 +13,8 @@ SYMROOT="Deploy"
 PRODUCT_NAME="$PROJECT_NAME.app"
 TARGET_NAME="wammer-iOS"
 
-IPA_NAME=build/$BUILD_CONFIGURATION-$BUILD_SDK/wammer-iOS-$BUILD_CONFIGURATION-$VERSION_MARKETING$'\n'$VERSION_BUILD.ipa
-DSYM_ZIP_NAME=build/$BUILD_CONFIGURATION-$BUILD_SDK/wammer-iOS-$BUILD_CONFIGURATION-$VERSION_MARKETING$'\n'$VERSION_BUILD-dSYM.zip
+IPA_NAME=`find . -name "*.ipa" -print0`
+DSYM_ZIP_NAME=`find . -name "*dSYM.zip" -print0`
 
 GIT_LATEST_TAG="`git describe --abbrev=0 --tags`"
 GIT_INFO="`git log --stat --summary HEAD...$GIT_LAST_TAG`"

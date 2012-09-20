@@ -95,7 +95,10 @@
 	WAArticle *article = self.article;
 	
 	article.favorite = (NSNumber *)([article.favorite isEqual:(id)kCFBooleanTrue] ? kCFBooleanFalse : kCFBooleanTrue);
-	article.modificationDate = [NSDate date];
+	if (article.modificationDate) {
+		// set modification only when updating articles
+		article.modificationDate = [NSDate date];
+	}
 	
 	NSError *savingError = nil;
 	if (![article.managedObjectContext save:&savingError])

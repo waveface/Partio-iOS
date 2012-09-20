@@ -24,6 +24,7 @@
 #import "IRRelativeDateFormatter+WAAdditions.h"
 
 #import "WASyncManager.h"
+#import "WAPhotoImportManager.h"
 
 typedef enum WASyncStatus: NSUInteger {
 	WASyncStatusNone = 0,
@@ -48,6 +49,7 @@ typedef enum WASyncStatus: NSUInteger {
 @synthesize syncTableViewCell;
 @synthesize contactTableViewCell;
 @synthesize stationNagCell;
+@synthesize importSavedPhotosTableViewCell;
 @synthesize serviceTableViewCell;
 @synthesize lastSyncDateLabel;
 @synthesize numberOfPendingFilesLabel;
@@ -259,6 +261,17 @@ typedef enum WASyncStatus: NSUInteger {
 
 	}];
 	
+	[self irObserveObject:[WAPhotoImportManager defaultManager] keyPath:@"finished" options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:nil withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
+		BOOL isFinished = [toValue boolValue];
+		dispatch_async(dispatch_get_main_queue(), ^{
+			if (isFinished) {
+				wSelf.importSavedPhotosTableViewCell.textLabel.text = NSLocalizedString(@"NOT_IMPORTING_PHOTOS", @"Photo importing status");
+			} else {
+				wSelf.importSavedPhotosTableViewCell.textLabel.text = NSLocalizedString(@"IMPORTING_PHOTOS", @"Photo importing status");
+			}
+		});
+	}];
+
 	self.deviceNameLabel.text = WADeviceName();
   
 }
@@ -330,6 +343,7 @@ typedef enum WASyncStatus: NSUInteger {
 	
 	[self setStationNagCell:nil];
 	[self setServiceTableViewCell:nil];
+  [self setImportSavedPhotosTableViewCell:nil];
   [super viewDidUnload];	
 	
 }
@@ -454,6 +468,14 @@ typedef enum WASyncStatus: NSUInteger {
 		
 		[wSelf presentViewController:mcVC animated:YES completion:nil];
 	
+	} else if (hitCell == importSavedPhotosTableViewCell) {
+		
+		[[WAPhotoImportManager defaultManager] createPhotoImportArticlesWithCompletionBlock:^{
+			
+			NSLog(@"Photo import completed");
+
+		}];
+
 	}
 
 	[aTV deselectRowAtIndexPath:indexPath animated:YES];
@@ -509,6 +531,17 @@ typedef enum WASyncStatus: NSUInteger {
 		
 		return nil;
 		
+	}
+	
+	if ([superAnswer isEqualToString:@"PHOTO_IMPORT_FOOTER"]) {
+		WAArticle *article = [[WAPhotoImportManager defaultManager] lastImportedArticle];
+		if (article) {
+			NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+			[dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
+			NSString *dateString = [dateFormatter stringFromDate:article.creationDate];
+			return [NSString stringWithFormat:NSLocalizedString(@"LAST_IMPORT_TIME", @"In Account Info Photo Import Section"), dateString];
+		}
+		return NSLocalizedString(@"START_PHOTO_IMPORT_DESCRIPTION", @"In Account Info Photo Import Section");
 	}
 	
 	if ([superAnswer isEqualToString:@"VERSION"])

@@ -75,6 +75,14 @@
 
 - (void)reload {
 
+	if (![NSThread isMainThread]) {
+		__weak WASyncManager *wSelf = self;
+		dispatch_async(dispatch_get_main_queue(), ^{
+			[wSelf reload];
+		});
+		return;
+	}
+
 	[[self recurrenceMachine] scheduleOperationsNow];
 
 	__weak WASyncManager *wSelf = self;
@@ -112,8 +120,8 @@
 	_recurrenceMachine.queue.maxConcurrentOperationCount = 1;
 	_recurrenceMachine.recurrenceInterval = 5;
 	
-	[_recurrenceMachine addRecurringOperation:[self fullQualityFileSyncOperationPrototype]];
 	[_recurrenceMachine addRecurringOperation:[self dirtyArticleSyncOperationPrototype]];
+	[_recurrenceMachine addRecurringOperation:[self fullQualityFileSyncOperationPrototype]];
 	
 	return _recurrenceMachine;
 

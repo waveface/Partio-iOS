@@ -16,10 +16,25 @@
 - (void) endPostponingDataRetrievalTimerFiring;
 - (BOOL) isPostponingDataRetrievalTimerFiring;
 
-- (void) rescheduleAutomaticRemoteUpdates;
-- (void) performAutomaticRemoteUpdatesNow;	// Also reschedules, great for manual refreshing
+/**
+ * enable the dataRetrievalTimer, the defined operations will be scheduled at the next timer
+ */
+- (void) enableAutomaticRemoteUpdatesTimer;
+
+/**
+ * stop the dataRetrievalTimer immediately
+ */
 - (void) stopAutomaticRemoteUpdates;
-- (void) enableAutomaticRemoteUpdatesTimerNow;
+
+/**
+ * the defined operations be reschedule be rescheduled in the next timer
+ */
+- (void) rescheduleAutomaticRemoteUpdates;
+
+/**
+ * no matter when the next timer is, trigger the timer immediately.
+ */
+- (void) performAutomaticRemoteUpdatesNow;	// Also reschedules, great for manual refreshing
 
 - (void) beginPerformingAutomaticRemoteUpdates;
 - (void) endPerformingAutomaticRemoteUpdates;

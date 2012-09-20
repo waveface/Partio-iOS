@@ -11,6 +11,20 @@
 
 #import "CoreData+IRAdditions.h"
 
+enum {
+	WAPostStyleURLHistory = 1
+};
+typedef NSUInteger WAPostStyle;
+
+typedef enum {
+
+	WAImportTypeNone = 0,
+	WAImportTypeFromLocal,
+	WAImportTypeFromOthers
+
+} WAImportType;
+
+
 @class WAComment, WAFile, WAGroup, WAPreview, WAUser;
 
 @interface WAArticle : IRManagedObject
@@ -31,6 +45,8 @@
 @property (nonatomic, retain) WAUser *owner;
 @property (nonatomic, retain) NSSet *previews;
 @property (nonatomic, retain) WAFile *representingFile;
+@property (nonatomic, retain) NSNumber *import;
+@property (nonatomic, retain) NSNumber *style;
 @end
 
 @interface WAArticle (CoreDataGeneratedAccessors)

@@ -11,7 +11,7 @@
 #import <UIImage+IRAdditions.h>
 #import <QuartzCore+IRAdditions.h>
 
-static CGFloat const kWAFileExtraSmallImageSideLength = 166;
+static CGFloat const kWAFileExtraSmallImageSideLength = 150; // the side length of asset's square thumbnails in retina display
 static CGFloat const kWAFileSmallImageSideLength = 512;
 static CGFloat const kWAFileMediumImageSideLength = 1024;
 static CGFloat const kWAFileLargeImageSideLength = 2048;
@@ -20,8 +20,11 @@ static CGFloat const kWAFileLargeImageSideLength = 2048;
 
 - (void)makeThumbnailsWithImage:(UIImage *)image options:(WAThumbnailMakeOptions)options {
 
-	NSParameterAssert(image);
-
+	if (!image) {
+		NSLog(@"Unable to make thumbnails from an empty image");
+		return;
+	}
+	
 	WADataStore *ds = [WADataStore defaultStore];
 	CGSize imageSize = image.size;
 	UIImage *standardImage = [image irStandardImage];
@@ -63,7 +66,7 @@ static CGFloat const kWAFileLargeImageSideLength = 2048;
 		
 		if ((imageSize.width > extraSmallSideLength) || (imageSize.height > extraSmallSideLength)) {
 			
-			UIImage *extraSmallThumbnailImage = [standardImage irScaledImageWithSize:IRGravitize((CGRect){ CGPointZero, (CGSize){ extraSmallSideLength, extraSmallSideLength } }, image.size, kCAGravityResizeAspect).size];
+			UIImage *extraSmallThumbnailImage = [standardImage irScaledImageWithSize:IRGravitize((CGRect){ CGPointZero, (CGSize){ extraSmallSideLength, extraSmallSideLength } }, image.size, kCAGravityResizeAspectFill).size];
 			
 			self.extraSmallThumbnailFilePath = [[[WADataStore defaultStore] persistentFileURLForData:UIImageJPEGRepresentation(extraSmallThumbnailImage, 0.85f) extension:@"jpeg"] path];
 			

@@ -48,6 +48,7 @@
 #import "WATimelineViewControllerPhone+RowHeightCaching.h"
 
 #import "UIViewController+IRDelayedUpdateAdditions.h"
+#import "WAPhotoImportManager.h"
 
 static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPostsViewControllerPhone_RepresentedObjectURI";
 
@@ -420,6 +421,12 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 	UILongPressGestureRecognizer *longPressGR = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleMenu:)];
 	[self.tableView addGestureRecognizer:longPressGR];
 	
+	UIBarButtonItem *filterButton = [[UIBarButtonItem alloc]
+																	 initWithTitle:NSLocalizedString(@"VIEW_BUTTON", @"In Phone timeline")																	 style:UIBarButtonItemStylePlain
+																	 target:self
+																	 action:@selector(handleFilter:)];
+	
+	self.navigationItem.rightBarButtonItem = filterButton;
 }
 
 - (void) viewWillAppear:(BOOL)animated {
@@ -953,7 +960,10 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 	
 	article.favorite = (NSNumber *)([article.favorite isEqual:(id)kCFBooleanTrue] ? kCFBooleanFalse : kCFBooleanTrue);
 	article.dirty = (id)kCFBooleanTrue;
-	article.modificationDate = [NSDate date];
+	if (article.modificationDate) {
+		// set modification only when updating articles
+		article.modificationDate = [NSDate date];
+	}
 	
 	NSError *savingError = nil;
 	if (![article.managedObjectContext save:&savingError])
@@ -1013,7 +1023,10 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 	
 		article.hidden = (id)kCFBooleanTrue;
 		article.dirty = (id)kCFBooleanTrue;
-		article.modificationDate = [NSDate date];
+		if (article.modificationDate) {
+			// set modification only when updating articles
+			article.modificationDate = [NSDate date];
+		}
 		
 		NSError *savingError = nil;
 		if (![article.managedObjectContext save:&savingError])
@@ -1058,8 +1071,14 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 	__block WADatePickerViewController *dpVC = [WADatePickerViewController controllerWithCompletion:^(NSDate *date) {
 	
 		if (date) {
-
-			NSFetchRequest *fr = [[WADataStore defaultStore] newFetchRequestForNewestArticleOnDate:date];
+			
+			NSCalendar *cal = [NSCalendar currentCalendar];
+			
+			NSDateComponents *dcomponents = [cal components:(NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit) fromDate:date];
+			[dcomponents setDay:[dcomponents day] + 1];
+			NSDate *dayMidnight = [cal dateFromComponents:dcomponents];
+			
+			NSFetchRequest *fr = [[WADataStore defaultStore] newFetchRequestForNewestArticleOnDate:dayMidnight];
 			
 			WAArticle *article = (WAArticle *)[[self.managedObjectContext executeFetchRequest:fr error:nil] lastObject];
 			
@@ -1085,23 +1104,14 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 		dpVC = nil;
 		
 	}];
-	
-		
-	NSFetchedResultsController *frc = self.fetchedResultsController;
-	NSFetchRequest *fr = frc.fetchRequest;
-	NSPredicate *currentPredicate = fr.predicate;
 
-	WADataStore *ds = [WADataStore defaultStore];
-	NSFetchRequest *oldestArticleFR = [ds newFetchRequestForOldestArticle];
-	oldestArticleFR.predicate = [NSCompoundPredicate andPredicateWithSubpredicates:[NSArray arrayWithObjects:oldestArticleFR.predicate, currentPredicate, nil]];
-	
-	NSFetchRequest *newestArticleFR = [ds newFetchRequestForNewestArticle];
-	newestArticleFR.predicate = [NSCompoundPredicate andPredicateWithSubpredicates:[NSArray arrayWithObjects:newestArticleFR.predicate, currentPredicate, nil]];
-	
-	WAArticle *oldestArticle = [[self.managedObjectContext executeFetchRequest:oldestArticleFR error:nil] lastObject];
-	
-	WAArticle *newestArticle = [[self.managedObjectContext executeFetchRequest:newestArticleFR error:nil] lastObject];
-	
+	NSFetchedResultsController *frc = self.fetchedResultsController;
+
+	NSIndexPath *oldestIndex = [NSIndexPath indexPathForRow:([frc.fetchedObjects count] - 1) inSection:0];
+	WAArticle *oldestArticle = [frc objectAtIndexPath:oldestIndex];
+	NSIndexPath *newestIndex = [NSIndexPath indexPathForRow:0 inSection:0];
+	WAArticle *newestArticle = [frc objectAtIndexPath:newestIndex];
+
 	if (oldestArticle == nil){ // empty timeline
 		return;
 	}
@@ -1213,8 +1223,13 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 		[[IRAlertView alertViewWithTitle:alertTitle message:alertText cancelAction:cancelAction otherActions:[NSArray arrayWithObjects:
 			
 			[IRAction actionWithTitle:NSLocalizedString(@"ACTION_SIGN_OUT", nil) block: ^ {
-				
-				[wSelf.delegate applicationRootViewControllerDidRequestReauthentication:nil];
+
+				WAOverlayBezel *bezel = [WAOverlayBezel bezelWithStyle:WADefaultBezelStyle];
+				[bezel show];
+				[[WAPhotoImportManager defaultManager] cancelPhotoImportWithCompletionBlock:^{
+					[bezel dismiss];
+					[wSelf.delegate applicationRootViewControllerDidRequestReauthentication:nil];
+				}];
 				
 			}],
 			

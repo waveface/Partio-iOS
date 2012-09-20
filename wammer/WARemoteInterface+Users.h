@@ -19,6 +19,9 @@
 //	GET users/get
 - (void) retrieveUser:(NSString *)anIdentifier onSuccess:(void(^)(NSDictionary *userRep))successBlock onFailure:(void(^)(NSError *error))failureBlock;
 
+//  GET users/get (with SNS status info return)
+- (void) retrieveUserAndSNSInfo:(NSString *) anIdentifier onSuccess:(void (^)(NSDictionary *, NSArray*))successBlock onFailure:(void (^)(NSError *))failureBlock;
+
 //	POST users/update
 - (void) updateUser:(NSString *)anIdentifier withNickname:(NSString *)aNewNickname onSuccess:(void(^)(NSDictionary *userRep))successBlock onFailure:(void(^)(NSError *error))failureBlock;
 
