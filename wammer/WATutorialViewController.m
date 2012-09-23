@@ -7,6 +7,7 @@
 //
 
 #import "WATutorialViewController.h"
+#import "WAPhotoImportManager.h"
 
 @interface WATutorialViewController () <IRPaginatedViewDelegate>
 
@@ -79,6 +80,7 @@
 	};
 	
 	heckleAll(self.goButton);
+	heckleAll(self.importAndGoButton);
 	
 	[self.view bringSubviewToFront:self.pageControl];
 
@@ -139,6 +141,22 @@
 	if (self.callback)
 		self.callback(YES, nil);
 		
+}
+
+- (IBAction) handleImportAndGo:(id)sender {
+
+	if (self.callback)
+		self.callback(YES, nil);
+
+	NSLog(@"Start photo import in tutorial");
+	[[WAPhotoImportManager defaultManager] createPhotoImportArticlesWithCompletionBlock:^{
+		NSLog(@"Photo import completed");
+	}];
+
+}
+
+- (void)viewDidUnload {
+	[super viewDidUnload];
 }
 
 @end

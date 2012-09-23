@@ -33,5 +33,6 @@
 @dynamic previews;
 @dynamic representingFile;
 @dynamic import;
+@dynamic style;
 
 @end

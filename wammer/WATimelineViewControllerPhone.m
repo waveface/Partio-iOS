@@ -48,6 +48,7 @@
 #import "WATimelineViewControllerPhone+RowHeightCaching.h"
 
 #import "UIViewController+IRDelayedUpdateAdditions.h"
+#import "WAPhotoImportManager.h"
 
 #import "IIViewDeckController.h"
 
@@ -1249,8 +1250,13 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 		[[IRAlertView alertViewWithTitle:alertTitle message:alertText cancelAction:cancelAction otherActions:[NSArray arrayWithObjects:
 			
 			[IRAction actionWithTitle:NSLocalizedString(@"ACTION_SIGN_OUT", nil) block: ^ {
-				
-				[wSelf.delegate applicationRootViewControllerDidRequestReauthentication:nil];
+
+				WAOverlayBezel *bezel = [WAOverlayBezel bezelWithStyle:WADefaultBezelStyle];
+				[bezel show];
+				[[WAPhotoImportManager defaultManager] cancelPhotoImportWithCompletionBlock:^{
+					[bezel dismiss];
+					[wSelf.delegate applicationRootViewControllerDidRequestReauthentication:nil];
+				}];
 				
 			}],
 			

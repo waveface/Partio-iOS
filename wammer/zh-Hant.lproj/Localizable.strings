@@ -213,19 +213,22 @@
 "FACEBOOK_DISCONNECT_REQUEST_TITLE" = "確認取消Facebook同步";
 
 /* Display title for a fetch request working against all the articles */
-"FETCH_REQUEST_ALL_ARTICLES_DISPLAY_TITLE" = "所有貼文";
+"FETCH_REQUEST_ALL_ARTICLES_DISPLAY_TITLE" = "全部";
 
 /* Display title for a fetch request working against the articles with Photos */
-"FETCH_REQUEST_ARTICLES_WITH_PHOTOS_DISPLAY_TITLE" = "相片貼文";
+"FETCH_REQUEST_ARTICLES_WITH_PHOTOS_DISPLAY_TITLE" = "照片";
 
 /* Display title for a fetch request working against the articles with Plain Text */
 "FETCH_REQUEST_ARTICLES_WITH_PLAIN_TEXT_DISPLAY_TITLE" = "純文字貼文";
 
 /* Display title for a fetch request working against the articles with Web Previews */
-"FETCH_REQUEST_ARTICLES_WITH_PREVIEWS_DISPLAY_TITLE" = "網頁鏈接貼文";
+"FETCH_REQUEST_ARTICLES_WITH_PREVIEWS_DISPLAY_TITLE" = "網頁收藏";
 
 /* Display title for a fetch request working against the latest article on a particular date */
 "FETCH_REQUEST_NEWEST_ARTICLE_OF_PARTICULAR_DATE_DISPLAY_TITLE" = "某日貼文";
+
+/* Caption for URL History */
+"FETCH_REQUEST_URL_HISTORY" = "瀏覽記錄";
 
 /* No comment provided by engineer. */
 "HOUR_PLURAL" = "%d小時";
@@ -500,7 +503,7 @@
 "STATE_LOADING_SINGLE_DOCUMENT_PROGRESS" = "%1 / %2";
 
 /* Class = "IBUIButton"; normalTitle = "ACTION_DISMISS_TUTORIAL"; ObjectID = "43"; */
-"ACTION_DISMISS_TUTORIAL" = "完成";
+"ACTION_DISMISS_TUTORIAL" = "暫時不要";
 
 /* Class = "IBUILabel"; text = "FACEBOOK_IMPORT_TUTORIAL_SWITCH"; ObjectID = "55"; */
 "FACEBOOK_IMPORT_TUTORIAL_SWITCH" = "Facebook同步";
@@ -508,14 +511,26 @@
 /* Class = "IBUITextView"; text = "FACEBOOK_IMPORT_TUTORIAL"; ObjectID = "56"; */
 "FACEBOOK_IMPORT_TUTORIAL" = "Stream可以將您過去張貼在Facebook上面的資料下載並且存放到您個人的時間軸上。未來您在Facebook上面的新貼文，都會同步備份到您的Stream。\n\n您可以在主畫面中的帳戶資訊，啓動或者停止這項同步功能。";
 
+/* Class = "IBUITextView"; text = "PHOTO_IMPORT_TUTORIAL"; ObjectID = "62"; */
+"PHOTO_IMPORT_TUTORIAL" = "立即啟用自動匯入功能，往後您相機膠卷中的所有照片，將自動同步至您的PC及其他裝置中，隨時欣賞跟分享。";
+
+/* Class = "IBUIButton"; normalTitle = "ACTION_IMPORT_PHOTO"; ObjectID = "63"; */
+"ACTION_IMPORT_PHOTO" = "確定匯入";
+
 /* Class = "IBUIButton"; normalTitle = "ACTION_DISMISS_TUTORIAL"; ObjectID = "43"; */
-"ACTION_DISMISS_TUTORIAL" = "完成";
+"ACTION_DISMISS_TUTORIAL" = "暫時不要";
 
 /* Class = "IBUITextView"; text = "FACEBOOK_IMPORT_TUTORIAL_IPAD"; ObjectID = "46"; */
 "FACEBOOK_IMPORT_TUTORIAL_IPAD" = "Stream可以將您過去張貼在Facebook上面的資料下載並且存放到您個人的時間軸上。未來您在Facebook上面的新貼文，都會同步備份到您的Stream。\n\n您可以在主畫面中的帳戶資訊，啓動或者停止這項同步功能。";
 
 /* Class = "IBUILabel"; text = "FACEBOOK_IMPORT_TUTORIAL_SWITCH_IPAD"; ObjectID = "49"; */
 "FACEBOOK_IMPORT_TUTORIAL_SWITCH_IPAD" = "Facebook同步";
+
+/* Class = "IBUITextView"; text = "PHOTO_IMPORT_TUTORIAL_IPAD"; ObjectID = "55"; */
+"PHOTO_IMPORT_TUTORIAL_IPAD" = "立即啟用自動匯入功能，往後您相機膠卷中的所有照片，將自動同步至您的PC及其他裝置中，隨時欣賞跟分享。";
+
+/* Class = "IBUIButton"; normalTitle = "ACTION_IMPORT_PHOTO"; ObjectID = "58"; */
+"ACTION_IMPORT_PHOTO" = "確定匯入";
 
 /* Class = "IBUITableViewSection"; footerTitle = "SERVICE_INFO_FOOTER"; ObjectID = "9vM-w4-lTb"; */
 "SERVICE_INFO_FOOTER" = "⚠ 僅會在Wi-Fi連線時上傳原檔\n\n在 Wi-Fi 環境中，Stream 會幫您將原始檔案妥善保存。只要下載並且開啓 PC 上的 Stream，您有30天的時間將檔案從雲端送回PC保存";

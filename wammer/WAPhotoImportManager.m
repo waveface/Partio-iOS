@@ -12,6 +12,7 @@
 #import "WAAssetsLibraryManager.h"
 #import "WAFile+ThumbnailMaker.h"
 #import <AssetsLibrary+IRAdditions.h>
+#import "GANTracker.h"
 
 @interface WAPhotoImportManager ()
 
@@ -38,43 +39,68 @@
 - (id)init {
 
 	self = [super init];
-
 	if (self) {
+		self.finished = YES;
+		self.canceled = NO;
+	}
+	return self;
 
-		self.managedObjectContext = [[WADataStore defaultStore] disposableMOC];
-		self.running = NO;
+}
 
-		WAArticle *article = [[WADataStore defaultStore] fetchLatestLocalImportedArticleUsingContext:self.managedObjectContext];
-		
-		if (article) {
-			self.lastImportedArticleTime = article.creationDate;
-		} else {
-			self.lastImportedArticleTime = nil;
+- (NSManagedObjectContext *)managedObjectContext {
+
+	if (!_managedObjectContext) {
+		_managedObjectContext = [[WADataStore defaultStore] disposableMOC];
+	}
+	return _managedObjectContext;
+
+}
+
+- (WAArticle *)lastImportedArticle {
+
+	if (!_lastImportedArticle) {
+		_lastImportedArticle = [[WADataStore defaultStore] fetchLatestLocalImportedArticleUsingContext:self.managedObjectContext];
+	}
+	return _lastImportedArticle;
+
+}
+
+- (void)cancelPhotoImportWithCompletionBlock:(WAPhotoImportCallback)aCallbackBlock {
+
+	self.canceled = YES;
+
+	__weak WAPhotoImportManager *wSelf = self;
+	[self irObserve:@"finished" options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:nil withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
+
+		BOOL isFinished = [toValue boolValue];
+		if (isFinished) {
+			wSelf.managedObjectContext = nil;
+			wSelf.lastImportedArticle = nil;
+			aCallbackBlock();
 		}
 
-	}
-
-	return self;
+	}];
 
 }
 
 - (void)createPhotoImportArticlesWithCompletionBlock:(WAPhotoImportCallback)aCallbackBlock {
 
-	if (self.running) {
+	if (!self.finished) {
 		return;
 	}
 
-	self.running = YES;
+	self.finished = NO;
+	self.canceled = NO;
 
 	NSManagedObjectContext *context = self.managedObjectContext;
 	__weak WAPhotoImportManager *wSelf = self;
 
 	[context performBlock:^{
 
-		[[WAAssetsLibraryManager defaultManager] enumerateSavedPhotosSince:wSelf.lastImportedArticleTime onProgess:^(NSArray *assets) {
+		[[WAAssetsLibraryManager defaultManager] enumerateSavedPhotosSince:wSelf.lastImportedArticle.creationDate onProgess:^(NSArray *assets) {
 
 			if (![assets count]) {
-				return;
+				return wSelf.canceled;
 			}
 
 			WAArticle *article = [WAArticle objectInsertingIntoContext:context withRemoteDictionary:[NSDictionary dictionary]];
@@ -131,24 +157,39 @@
 			
 			NSError *savingError = nil;
 			if ([context save:&savingError]) {
-				wSelf.lastImportedArticleTime = article.creationDate;
+				[[GANTracker sharedTracker] trackEvent:@"CreatePost"
+																				action:@"CameraRoll"
+																				 label:@"Photos"
+																				 value:[article.files count]
+																		 withError:NULL];
+				wSelf.lastImportedArticle = article;
 			} else {
 				NSLog(@"Error saving: %s %@", __PRETTY_FUNCTION__, savingError);
 			}
 			
+			return wSelf.canceled;
+
 		} onComplete:^{
 			
-			wSelf.running = NO;
+			wSelf.finished = YES;
 			aCallbackBlock();
 			
 		} onFailure:^(NSError *error) {
 			
 			NSLog(@"Unable to enumerate saved photos: %s %@", __PRETTY_FUNCTION__, error);
+			wSelf.finished = YES;
+			aCallbackBlock();
 
 		}];
 
 	}];
 	
+}
+
+- (void)dealloc {
+
+	[self irRemoveObserverBlocksForKeyPath:@"finished"];
+
 }
 
 @end
