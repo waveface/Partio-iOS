@@ -75,4 +75,4 @@
 	url = git://github.com/erikdoe/ocmock.git
 [submodule "external/ViewDeck"]
 	path = external/ViewDeck
-	url = git://github.com/Inferis/ViewDeck.git
+	url = git://github.com/syshen/ViewDeck.git
