@@ -134,6 +134,8 @@
 		4BFC156A15C7D9E800DB02F8 /* Unfav~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BFC156815C7D9E800DB02F8 /* Unfav~ipad.png */; };
 		7D92E55D1606CC3E000C7B06 /* libGoogleAnalytics.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D92E55C1606CC3E000C7B06 /* libGoogleAnalytics.a */; };
 		7D92E5B216070705000C7B06 /* PhotoPostWithURLHistoryStyle.txt in Resources */ = {isa = PBXBuildFile; fileRef = 7D92E5B0160703F6000C7B06 /* PhotoPostWithURLHistoryStyle.txt */; };
+		7DC9240416104CA300E70542 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7DC9240316104CA300E70542 /* Default-568h@2x.png */; };
+		7DC9240616104CB400E70542 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7DC9240516104CB400E70542 /* Default-568h@2x.png */; };
 		8002CDE615E5E85600D7BFF0 /* libicucore.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 8002CDE515E5E85600D7BFF0 /* libicucore.dylib */; };
 		8002CDE915E5E92100D7BFF0 /* WARemoteInterface+Notification.m in Sources */ = {isa = PBXBuildFile; fileRef = 8002CDE815E5E92100D7BFF0 /* WARemoteInterface+Notification.m */; };
 		8002CDEC15E5F6F300D7BFF0 /* WARemoteInterface+WebSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 8002CDEB15E5F6F300D7BFF0 /* WARemoteInterface+WebSocket.m */; };
@@ -1254,6 +1256,8 @@
 		7D92E55B1606CC3E000C7B06 /* GANTracker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GANTracker.h; path = wammer/Libraries/GANTracker.h; sourceTree = SOURCE_ROOT; };
 		7D92E55C1606CC3E000C7B06 /* libGoogleAnalytics.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libGoogleAnalytics.a; path = wammer/Libraries/libGoogleAnalytics.a; sourceTree = SOURCE_ROOT; };
 		7D92E5B0160703F6000C7B06 /* PhotoPostWithURLHistoryStyle.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = PhotoPostWithURLHistoryStyle.txt; sourceTree = "<group>"; };
+		7DC9240316104CA300E70542 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default-568h@2x.png"; path = "Resources/Default-568h@2x.png"; sourceTree = "<group>"; };
+		7DC9240516104CB400E70542 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		8002CDCF15E5E73800D7BFF0 /* SocketRocket.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SocketRocket.xcodeproj; path = external/SocketRocket/SocketRocket.xcodeproj; sourceTree = "<group>"; };
 		8002CDE515E5E85600D7BFF0 /* libicucore.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libicucore.dylib; path = usr/lib/libicucore.dylib; sourceTree = SDKROOT; };
 		8002CDE715E5E92100D7BFF0 /* WARemoteInterface+Notification.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WARemoteInterface+Notification.h"; sourceTree = "<group>"; };
@@ -2601,6 +2605,7 @@
 		FF73A53313D6C2CC00D54EC6 = {
 			isa = PBXGroup;
 			children = (
+				7DC9240516104CB400E70542 /* Default-568h@2x.png */,
 				FFC62019149CF1930097C377 /* Environment */,
 				FF946020152D7EDD0034D540 /* Appearance */,
 				FFBBA42615AD5D4900E95C66 /* Facebook */,
@@ -2935,6 +2940,7 @@
 			children = (
 				FFCCDE3C15B41B0000AEBB85 /* CameraPressed.png */,
 				FFCCDE3D15B41B0000AEBB85 /* CameraPressed@2x.png */,
+				7DC9240316104CA300E70542 /* Default-568h@2x.png */,
 				FFCCDE3F15B41B0000AEBB85 /* Default-Landscape.png */,
 				FFCCDE4015B41B0000AEBB85 /* Default-Landscape@2x.png */,
 				FFCCDE4115B41B0000AEBB85 /* Default-Portrait.png */,
@@ -3002,14 +3008,14 @@
 				FFCCDDAA15B4190200AEBB85 /* TutorialImport@2x~iphone.png */,
 				FFCCDDA415B4190200AEBB85 /* TutorialImport~ipad.png */,
 				FFCCDDA815B4190200AEBB85 /* TutorialImport~iphone.png */,
-				138CCA331609D22700B477CE /* TutorialPhotoImport~iphone.png */,
-				138CCA361609D23C00B477CE /* TutorialPhotoImport~iphone@2x.png */,
-				138D31B61609D92400ECA892 /* TutorialPhotoImport~ipad.png */,
-				138D31B11609D8F800ECA892 /* TutorialPhotoImport~ipad@2x.png */,
 				FFCCDDAE15B4190200AEBB85 /* TutorialMoment@2x~ipad.png */,
 				FFCCDDB215B4190200AEBB85 /* TutorialMoment@2x~iphone.png */,
 				FFCCDDAC15B4190200AEBB85 /* TutorialMoment~ipad.png */,
 				FFCCDDB015B4190200AEBB85 /* TutorialMoment~iphone.png */,
+				138D31B61609D92400ECA892 /* TutorialPhotoImport~ipad.png */,
+				138D31B11609D8F800ECA892 /* TutorialPhotoImport~ipad@2x.png */,
+				138CCA331609D22700B477CE /* TutorialPhotoImport~iphone.png */,
+				138CCA361609D23C00B477CE /* TutorialPhotoImport~iphone@2x.png */,
 				FFCCDDB615B4190200AEBB85 /* TutorialWelcome@2x~ipad.png */,
 				FFCCDDBA15B4190200AEBB85 /* TutorialWelcome@2x~iphone.png */,
 				FFCCDDB415B4190200AEBB85 /* TutorialWelcome~ipad.png */,
@@ -3056,8 +3062,8 @@
 				FFCCDEE215B41B0000AEBB85 /* WACornerCloseButton.png */,
 				FFCCDEE315B41B0000AEBB85 /* WACornerCloseButtonActive.png */,
 				4B85823A15F7ABCF00EE11AC /* WADefaults.develop.plist */,
-				4B16701115FDCE9900990F4B /* WADefaults.staging.plist */,
 				FFCCDEE615B41B0000AEBB85 /* WADefaults.plist */,
+				4B16701115FDCE9900990F4B /* WADefaults.staging.plist */,
 				FFCCDEE915B41B0000AEBB85 /* WADownDoubleArrowGlyph.png */,
 				FFCCDEEA15B41B0000AEBB85 /* WADownDoubleArrowGlyph@2x.png */,
 				FFCCDEEB15B41B0000AEBB85 /* WAFilter.png */,
@@ -4076,6 +4082,8 @@
 				138D31B51609D91200ECA892 /* TutorialMoment@2x~ipad.png in Resources */,
 				138D31B81609D92400ECA892 /* TutorialPhotoImport~ipad.png in Resources */,
 				138D31BA1609DADB00ECA892 /* TutorialPhotoImport~ipad@2x.png in Resources */,
+				7DC9240416104CA300E70542 /* Default-568h@2x.png in Resources */,
+				7DC9240616104CB400E70542 /* Default-568h@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
