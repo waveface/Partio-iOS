@@ -348,3 +348,18 @@ UIView * WAStandardArticleStackCellBottomBackgroundView (void) {
 	return backgroundView;
 
 }
+
+CATransition* WADefaultImageTransition (void) {
+	static CATransition *transition;
+	static dispatch_once_t onceToken;
+	dispatch_once(&onceToken, ^{
+		transition = [CATransition animation];
+		transition.type = kCATransitionFade;
+		transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseIn];
+		transition.duration = 0.3;
+		transition.removedOnCompletion = YES;
+		transition.endProgress = 0.3;
+	});
+	
+	return transition;
+}

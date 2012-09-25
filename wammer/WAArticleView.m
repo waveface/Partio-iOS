@@ -11,6 +11,7 @@
 #import "WAPreviewBadge.h"
 #import "WAArticleTextEmphasisLabel.h"
 #import "WADataStore.h"
+#import "WAAppearance.h"
 
 #import "Foundation+IRAdditions.h"
 #import "QuartzCore+IRAdditions.h"
@@ -54,6 +55,11 @@
 
 - (void) configureWithArticle:(WAArticle *)inArticle {
 
+	if (self.article) {
+		[self.article irRemoveObserverBlocksForKeyPath:@"representingFile.thumbnailImage"];
+		[self.article irRemoveObserverBlocksForKeyPath:@"representingFile.smallThumbnailImage"];
+	}
+
 	self.article = inArticle;
 	
 	BOOL isFavorite = [inArticle.favorite isEqualToNumber:(NSNumber *)kCFBooleanTrue];
@@ -88,19 +94,39 @@
 	articleDescriptionLabel.text = inArticle.text;
 	previewBadge.preview = shownPreview;
 
-	[mainImageView irUnbind:@"image"];
-	if (isFavorite)
-		[mainImageView irBind:@"image"
-					 toObject:inArticle
-					  keyPath:@"representingFile.thumbnailImage"
-					  options:[NSDictionary dictionaryWithObjectsAndKeys: (id)kCFBooleanTrue,
-							   kIRBindingsAssignOnMainThreadOption, nil]];
-	else
-		[mainImageView irBind:@"image"
-					 toObject:inArticle
-					  keyPath:@"representingFile.smallThumbnailImage"
-					  options:[NSDictionary dictionaryWithObjectsAndKeys: (id)kCFBooleanTrue,
-							   kIRBindingsAssignOnMainThreadOption, nil]];
+	self.mainImageView.image = nil;
+
+	__weak WAArticleView *wSelf = self;
+	if (isFavorite) {
+		[inArticle irObserve:@"representingFile.thumbnailImage" options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:nil withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
+			UIImage *image = (UIImage *)toValue;
+			dispatch_async(dispatch_get_main_queue(), ^{
+				[CATransaction begin];
+				if (wSelf.mainImageView.image) {
+					[wSelf.mainImageView.layer addAnimation:WADefaultImageTransition() forKey:kCATransition];
+					wSelf.mainImageView.image = image;
+				} else {
+					wSelf.mainImageView.image = image;
+				}
+				[CATransaction commit];
+			});
+		}];
+	}
+	else {
+		[inArticle irObserve:@"representingFile.smallThumbnailImage" options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:nil withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
+			UIImage *image = (UIImage *)toValue;
+			dispatch_async(dispatch_get_main_queue(), ^{
+				[CATransaction begin];
+				if (wSelf.mainImageView.image) {
+					[wSelf.mainImageView.layer addAnimation:WADefaultImageTransition() forKey:kCATransition];
+					wSelf.mainImageView.image = image;
+				} else {
+					wSelf.mainImageView.image = image;
+				}
+				[CATransaction commit];
+			});
+		}];
+	}
 	
 	avatarView.image = inArticle.owner.avatar;
 	deviceDescriptionLabel.text = inArticle.creationDeviceName;
