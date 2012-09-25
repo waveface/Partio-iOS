@@ -936,23 +936,44 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 		
 	}];
 	
-	__block NSOperationQueue *operationQueue = [[NSOperationQueue alloc] init];
-	[operationQueue setSuspended:YES];
-	[operationQueue setMaxConcurrentOperationCount:1];
+	IRAsyncOperation *lastOperation = [[[[self class] sharedSyncQueue] operations] lastObject];
+	if (lastOperation) {
+		[[operations objectAtIndex:0] addDependency:lastOperation];
+	}
 	
-	NSOperation *cleanupOp = [NSBlockOperation blockOperationWithBlock:^{
+	[[[self class] sharedSyncQueue] addOperations:operations waitUntilFinished:NO];
+//	__block NSOperationQueue *operationQueue = [[NSOperationQueue alloc] init];
+//	[operationQueue setSuspended:YES];
+//	[operationQueue setMaxConcurrentOperationCount:1];
+//	
+//	NSOperation *cleanupOp = [NSBlockOperation blockOperationWithBlock:^{
+//	
+//		operationQueue = nil;
+//		
+//	}];
+//	
+//	for (NSOperation *op in operations)
+//		[cleanupOp addDependency:op];
+//
+//	[operationQueue addOperations:operations waitUntilFinished:NO];
+//	[operationQueue addOperation:cleanupOp];
+//	[operationQueue setSuspended:NO];
+
+}
+
++ (NSOperationQueue *) sharedSyncQueue {
 	
-		operationQueue = nil;
+	static NSOperationQueue *queue = nil;
+	static dispatch_once_t onceToken;
+	dispatch_once(&onceToken, ^{
+    
+		queue = [NSOperationQueue new];
+		queue.maxConcurrentOperationCount = 1;
 		
-	}];
+	});
 	
-	for (NSOperation *op in operations)
-		[cleanupOp addDependency:op];
-
-	[operationQueue addOperations:operations waitUntilFinished:NO];
-	[operationQueue addOperation:cleanupOp];
-	[operationQueue setSuspended:NO];
-
+	return queue;
+	
 }
 
 @end
