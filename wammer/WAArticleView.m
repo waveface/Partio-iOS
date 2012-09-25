@@ -101,14 +101,14 @@
 		[inArticle irObserve:@"representingFile.thumbnailImage" options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:nil withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
 			UIImage *image = (UIImage *)toValue;
 			dispatch_async(dispatch_get_main_queue(), ^{
-				[CATransaction begin];
 				if (wSelf.mainImageView.image) {
+					[CATransaction begin];
 					[wSelf.mainImageView.layer addAnimation:WADefaultImageTransition() forKey:kCATransition];
 					wSelf.mainImageView.image = image;
+					[CATransaction commit];
 				} else {
 					wSelf.mainImageView.image = image;
 				}
-				[CATransaction commit];
 			});
 		}];
 	}
@@ -116,14 +116,14 @@
 		[inArticle irObserve:@"representingFile.smallThumbnailImage" options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:nil withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
 			UIImage *image = (UIImage *)toValue;
 			dispatch_async(dispatch_get_main_queue(), ^{
-				[CATransaction begin];
 				if (wSelf.mainImageView.image) {
+					[CATransaction begin];
 					[wSelf.mainImageView.layer addAnimation:WADefaultImageTransition() forKey:kCATransition];
 					wSelf.mainImageView.image = image;
+					[CATransaction commit];
 				} else {
 					wSelf.mainImageView.image = image;
 				}
-				[CATransaction commit];
 			});
 		}];
 	}
