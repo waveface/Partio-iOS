@@ -151,7 +151,36 @@ static NSString * const kMemoryWarningObserverCreationDisabled = @"-[WAFile(Lazy
 
 	} else {
 
-		if (self.smallThumbnailFilePath) {
+		if (self.assetURL) {
+
+			__weak WAFile *wSelf = self;
+			[[WAAssetsLibraryManager defaultManager] assetForURL:[NSURL URLWithString:self.assetURL] resultBlock:^(ALAsset *asset) {
+
+				NSManagedObjectContext *context = [[WADataStore defaultStore] disposableMOC];
+				[context performBlock:^{
+
+					if (!wSelf.extraSmallThumbnailFilePath) {
+
+						UIImage *extraSmallThumbnailImage = [UIImage imageWithCGImage:[asset thumbnail]];
+						wSelf.extraSmallThumbnailFilePath = [[[WADataStore defaultStore] persistentFileURLForData:UIImageJPEGRepresentation(extraSmallThumbnailImage, 0.85f) extension:@"jpeg"] path];
+
+						NSError *error = nil;
+						[context save:&error];
+						if (error) {
+							NSLog(@"Error saving: %s %@", __PRETTY_FUNCTION__, error);
+						}
+
+					}
+
+				}];
+
+			} failureBlock:^(NSError *error) {
+
+				NSLog(@"Unable to read asset: %s %@", __PRETTY_FUNCTION__, error);
+
+			}];
+
+		} else if (self.smallThumbnailFilePath) {
 
 			__weak WAFile *wSelf = self;
 			NSManagedObjectContext *context = [[self class] sharedExtraSmallImageManagedObjectContext];
@@ -201,14 +230,18 @@ static NSString * const kMemoryWarningObserverCreationDisabled = @"-[WAFile(Lazy
 		if (self.assetURL) {
 			__weak WAFile *wSelf = self;
 			[[WAAssetsLibraryManager defaultManager] assetForURL:[NSURL URLWithString:self.assetURL] resultBlock:^(ALAsset *asset) {
+
 				if (asset && ![wSelf imageAssociatedWithKey:&kWAFileResourceImage filePath:nil]) {
 					dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
 						UIImage *assetImage = [UIImage imageWithCGImage:[[asset defaultRepresentation] fullScreenImage]];
 						[wSelf setResourceImage:assetImage];
 					});
 				}
+
 			} failureBlock:^(NSError *error) {
-				NSLog(@"Error saving: %s %@", __PRETTY_FUNCTION__, error);
+
+				NSLog(@"Unable to read asset: %s %@", __PRETTY_FUNCTION__, error);
+
 			}];
 		}
 	}
