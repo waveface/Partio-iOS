@@ -268,8 +268,11 @@
 			slidingMenu.delegate = presentedViewController;
 
 			IIViewDeckController *viewDeckController = [[IIViewDeckController alloc] initWithCenterViewController:ssVC leftViewController:slidingMenu];
-			viewDeckController.leftLedge = self.window.frame.size.width - 150.0f;
+			viewDeckController.leftLedge = self.window.frame.size.width - 200.0f;
 			viewDeckController.centerhiddenInteractivity = IIViewDeckCenterHiddenNotUserInteractiveWithTapToClose;
+			viewDeckController.rotationBehavior = IIViewDeckRotationKeepsLedgeSizes;
+			viewDeckController.panningMode = IIViewDeckNoPanning;
+			viewDeckController.animationBehavior = IIViewDeckAnimationPullIn;
 
 			self.window.rootViewController = viewDeckController;
 		
@@ -288,7 +291,11 @@
 			slidingMenu.delegate = timelineVC;
 
 			IIViewDeckController *viewDeckController = [[IIViewDeckController alloc] initWithCenterViewController:timelineNavC leftViewController:slidingMenu];
-			viewDeckController.leftLedge = self.window.frame.size.width - 150.0f;
+			viewDeckController.view.backgroundColor = [UIColor blackColor];
+			viewDeckController.leftLedge = self.window.frame.size.width - 200.0f;
+			viewDeckController.rotationBehavior = IIViewDeckRotationKeepsLedgeSizes;
+			viewDeckController.animationBehavior = IIViewDeckAnimationPullIn;
+			viewDeckController.panningMode = IIViewDeckNoPanning;
 			viewDeckController.centerhiddenInteractivity = IIViewDeckCenterHiddenNotUserInteractiveWithTapToClose;
 						
 			self.window.rootViewController = viewDeckController;
