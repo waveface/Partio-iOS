@@ -16,12 +16,20 @@
 
 @implementation WAFile (ImplicitBlobFulfillment)
 
-- (void) setDisplaying:(BOOL)displaying {
-	[self irAssociateObject:(id)(displaying ? kCFBooleanTrue : kCFBooleanFalse) usingKey:&kWAFileDisplaying policy:OBJC_ASSOCIATION_ASSIGN changingObservedKey:nil];
+- (void) setDisplayingSmallThumbnail:(BOOL)displayingSmallThumbnail {
+	[self irAssociateObject:(id)(displayingSmallThumbnail ? kCFBooleanTrue : kCFBooleanFalse) usingKey:&kWAFileDisplayingSmallThumbnail policy:OBJC_ASSOCIATION_ASSIGN changingObservedKey:nil];
 }
 
-- (BOOL) displaying {
-	return [objc_getAssociatedObject(self, &kWAFileDisplaying) boolValue];
+- (BOOL) displayingSmallThumbnail {
+	return [objc_getAssociatedObject(self, &kWAFileDisplayingSmallThumbnail) boolValue];
+}
+
+- (void)setDisplayingThumbnail:(BOOL)displayingThumbnail {
+	[self irAssociateObject:(id)(displayingThumbnail ? kCFBooleanTrue : kCFBooleanFalse) usingKey:&kWAFileDisplayingThumbnail policy:OBJC_ASSOCIATION_ASSIGN changingObservedKey:nil];
+}
+
+- (BOOL)displayingThumbnail {
+	return [objc_getAssociatedObject(self, &kWAFileDisplayingThumbnail) boolValue];
 }
 
 - (BOOL) attemptsBlobRetrieval {
@@ -60,14 +68,14 @@
 		return NSOperationQueuePriorityLow;
 	
 	if ([key isEqualToString:kWAFileThumbnailFilePath]) {
-		if ([self displaying]) {
+		if ([self displayingThumbnail]) {
 			return NSOperationQueuePriorityHigh;
 		}
 		return NSOperationQueuePriorityNormal;
 	}
 	
 	if ([key isEqualToString:kWAFileSmallThumbnailFilePath]) {
-		if ([self displaying]) {
+		if ([self displayingSmallThumbnail]) {
 			return NSOperationQueuePriorityHigh;
 		}
 		return NSOperationQueuePriorityNormal;
@@ -132,6 +140,29 @@
 		if (!class)
 			return;
 		
+		dispatch_async([class sharedExtraSmallThumbnailMakingQueue], ^{
+			
+			NSManagedObjectContext *context = [[WADataStore defaultStore] disposableMOC];
+			context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
+
+			[context performBlockAndWait:^{
+				
+				WAFile *file = (WAFile *)[context irManagedObjectForURI:ownURL];
+				if (!file.extraSmallThumbnailFilePath) {
+					
+					UIImage *image = [UIImage imageWithContentsOfFile:[tempFileURLOrNil path]];
+					[file makeThumbnailsWithImage:image options:WAThumbnailMakeOptionExtraSmall];
+					
+					NSError *savingError = nil;
+					if (![context save:&savingError])
+						NSLog(@"Error saving: %@", savingError);
+					
+				}
+				
+			}];
+			
+		});
+		
 		dispatch_async([class sharedResourceHandlingQueue], ^ {
 
 			NSManagedObjectContext *context = [[WADataStore defaultStore] disposableMOC];
@@ -146,7 +177,7 @@
 					NSLog(@"Error saving: %@", savingError);
 
 			}
-			
+
 		});
 		
 	}];
@@ -157,13 +188,6 @@
 
 	NSError *error = nil;
 	WADataStore *ds = [WADataStore defaultStore];
-
-	if (!self.extraSmallThumbnailFilePath) {
-
-		UIImage *image = [UIImage imageWithContentsOfFile:aPath];
-		[self makeThumbnailsWithImage:image options:WAThumbnailMakeOptionExtraSmall];
-
-	}
 
 	if (![ds updateObject:self inContext:self.managedObjectContext takingBlobFromTemporaryFile:aPath usingResourceType:self.resourceType forKeyPath:fileKeyPath matchingURL:anURL forKeyPath:urlKeyPath error:&error]) {
 		

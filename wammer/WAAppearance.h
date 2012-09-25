@@ -54,3 +54,5 @@ extern UIView * WAStandardArticleStackCellBackgroundView (void);
 extern UIView * WAStandardArticleStackCellTopBackgroundView (void);
 extern UIView * WAStandardArticleStackCellCenterBackgroundView (void);
 extern UIView * WAStandardArticleStackCellBottomBackgroundView (void);
+
+extern CATransition * WADefaultImageTransition (void);
