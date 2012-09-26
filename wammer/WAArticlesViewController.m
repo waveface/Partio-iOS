@@ -8,6 +8,7 @@
 
 #import "WAArticlesViewController.h"
 #import "WADataStore.h"
+#import "WAAppDelegate.h"
 #import "WARemoteInterface.h"
 #import "WARemoteInterface+ScheduledDataRetrieval.h"
 #import "WADataStore+WARemoteInterfaceAdditions.h"
@@ -324,6 +325,9 @@
 					WAOverlayBezel *bezel = [WAOverlayBezel bezelWithStyle:WADefaultBezelStyle];
 					[bezel show];
 					[[WAPhotoImportManager defaultManager] cancelPhotoImportWithCompletionBlock:^{
+
+						[((WAAppDelegate*)AppDelegate()) unsubscribeRemoteNotification];
+
 						[bezel dismiss];
 						[nrSelf.delegate applicationRootViewControllerDidRequestReauthentication:nrSelf];
 					}];

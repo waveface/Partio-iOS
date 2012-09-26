@@ -257,6 +257,12 @@
 /* Photo importing status */
 "NOT_IMPORTING_PHOTOS" = "Import All Photos";
 
+/* Notification messages for photos auto-imported */
+"NOTIFY_PHOTOS_IMPORTED" = "%@ photo(s) have been imported into your Stream account.";
+
+/* For remote notification testing */
+"NOTIFY_TESTING" = "Hello, Stream!";
+
 /* Singluar noun for action objects */
 "NOUN_ACTIONS_OBJECT" = "Action";
 

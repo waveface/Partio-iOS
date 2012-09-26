@@ -145,6 +145,7 @@
 		80316A0F15C0EC20009D43F0 /* IRAQPhotoPickerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 80316A0515C0EC20009D43F0 /* IRAQPhotoPickerController.m */; };
 		80316A1015C0EC20009D43F0 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 80316A0715C0EC20009D43F0 /* README.md */; };
 		80316A1115C0EC20009D43F0 /* UIViewController+IRAQAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 80316A0915C0EC20009D43F0 /* UIViewController+IRAQAdditions.m */; };
+		80557BA915FDE38000336F3C /* WARemoteInterface+RemoteNotifications.m in Sources */ = {isa = PBXBuildFile; fileRef = 80557BA815FDE38000336F3C /* WARemoteInterface+RemoteNotifications.m */; };
 		805E9DB515F8A49A00970C80 /* libSocketRocket.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8002CDDB15E5E73800D7BFF0 /* libSocketRocket.a */; };
 		809D429015F5CE4300CB4F89 /* WAWebSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 809D428F15F5CE4300CB4F89 /* WAWebSocket.m */; };
 		80A2217215ED1AFD006236AC /* WARemoteInterface+Notification.h in Sources */ = {isa = PBXBuildFile; fileRef = 8002CDE715E5E92100D7BFF0 /* WARemoteInterface+Notification.h */; };
@@ -1278,6 +1279,8 @@
 		80316A0715C0EC20009D43F0 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
 		80316A0815C0EC20009D43F0 /* UIViewController+IRAQAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+IRAQAdditions.h"; sourceTree = "<group>"; };
 		80316A0915C0EC20009D43F0 /* UIViewController+IRAQAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+IRAQAdditions.m"; sourceTree = "<group>"; };
+		80557BA715FDE38000336F3C /* WARemoteInterface+RemoteNotifications.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WARemoteInterface+RemoteNotifications.h"; sourceTree = "<group>"; };
+		80557BA815FDE38000336F3C /* WARemoteInterface+RemoteNotifications.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WARemoteInterface+RemoteNotifications.m"; sourceTree = "<group>"; };
 		809D428E15F5CE4300CB4F89 /* WAWebSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAWebSocket.h; sourceTree = "<group>"; };
 		809D428F15F5CE4300CB4F89 /* WAWebSocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAWebSocket.m; sourceTree = "<group>"; };
 		80F800F415C2624C00132A96 /* IRAQ-Checkmark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "IRAQ-Checkmark.png"; sourceTree = "<group>"; };
@@ -2876,6 +2879,8 @@
 				FF22283D1463D2BE00541E31 /* WARemoteInterfaceContext.m */,
 				8002CDE715E5E92100D7BFF0 /* WARemoteInterface+Notification.h */,
 				8002CDE815E5E92100D7BFF0 /* WARemoteInterface+Notification.m */,
+				80557BA715FDE38000336F3C /* WARemoteInterface+RemoteNotifications.h */,
+				80557BA815FDE38000336F3C /* WARemoteInterface+RemoteNotifications.m */,
 			);
 			name = "Base API Endpoint Interfacing";
 			sourceTree = "<group>";
@@ -4526,6 +4531,7 @@
 				8002CDEC15E5F6F300D7BFF0 /* WARemoteInterface+WebSocket.m in Sources */,
 				809D429015F5CE4300CB4F89 /* WAWebSocket.m in Sources */,
 				136C170315F48E8E0066B289 /* WAAssetsLibraryManager.m in Sources */,
+				80557BA915FDE38000336F3C /* WARemoteInterface+RemoteNotifications.m in Sources */,
 				1327A87E15F87A1700AC7852 /* WAFile+ThumbnailMaker.m in Sources */,
 				13EFF4BF15FEC1B3007430EC /* WAPhotoImportManager.m in Sources */,
 			);
@@ -4938,8 +4944,10 @@
 					"\"$(SRCROOT)/external/TestflightSDK\"",
 					"\"$(SRCROOT)/wammer/Libraries\"/**",
 				);
+				OTHER_CFLAGS = "";
 				PRODUCT_NAME = "wammer-iOS";
 				PROVISIONING_PROFILE = "";
+				SDKROOT = iphoneos;
 				STREAM_BUNDLE_ID_SUFFIX = .beta;
 				STREAM_FACEBOOK_ID = 356863037711668;
 				STREAM_ICON_NAME_SUFFIX = _beta;
@@ -5364,8 +5372,10 @@
 					"\"$(SRCROOT)/external/TestflightSDK\"",
 					"\"$(SRCROOT)/wammer/Libraries\"/**",
 				);
+				OTHER_CFLAGS = "";
 				PRODUCT_NAME = "wammer-iOS";
 				PROVISIONING_PROFILE = "";
+				SDKROOT = iphoneos;
 				STREAM_BUNDLE_ID_SUFFIX = .develop;
 				STREAM_FACEBOOK_ID = 357087874306060;
 				STREAM_ICON_NAME_SUFFIX = _develop;
@@ -5412,8 +5422,10 @@
 					"\"$(SRCROOT)/external/TestflightSDK\"",
 					"\"$(SRCROOT)/wammer/Libraries\"/**",
 				);
+				OTHER_CFLAGS = "";
 				PRODUCT_NAME = "wammer-iOS";
 				PROVISIONING_PROFILE = "";
+				SDKROOT = iphoneos;
 				STREAM_BUNDLE_ID_SUFFIX = "";
 				STREAM_FACEBOOK_ID = 234823683291756;
 				STREAM_ICON_NAME_SUFFIX = "";

@@ -15,6 +15,7 @@
 
 #import "WARemoteInterface.h"
 #import "WARemoteInterface+WebSocket.h"
+#import "WARemoteInterface+RemoteNotifications.h"
 #import "WASyncManager.h"
 
 #import "WADataStore.h"
@@ -224,6 +225,47 @@
 	
 }
 
+- (void) application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
+	NSString * kMSG_NOTIFICATION_PHOTOS_IMPORTED = NSLocalizedString(@"NOTIFY_PHOTOS_IMPORTED", @"Notification messages for photos auto-imported");
+	NSString * kMSG_NOTIFICATION_TESTING = NSLocalizedString(@"NOTIFY_TESTING", @"For remote notification testing");
+#pragma unused(kMSG_NOTIFICATION_PHOTOS_IMPORTED)
+#pragma unused(kMSG_NOTIFICATION_TESTING)
+	
+	NSString* deviceTokenString = [[[[deviceToken description]
+																	 stringByReplacingOccurrencesOfString: @"<" withString: @""]
+																	stringByReplacingOccurrencesOfString: @">" withString: @""]
+																 stringByReplacingOccurrencesOfString: @" " withString: @""];
+
+	NSLog(@"device token in data: %@", deviceToken);
+	NSLog(@"device token : %@", deviceTokenString);
+
+	[[WARemoteInterface sharedInterface] subscribeRemoteNotificationForDevtoken:deviceTokenString onSuccess:nil onFailure:nil];
+
+}
+
+- (void) application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error {
+
+	NSLog(@"Fail to register for remote notification with error: %@", error);
+
+}
+
+- (void) application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
+	
+	
+}
+
+- (void) subscribeRemoteNotification {
+	
+	[[UIApplication sharedApplication] registerForRemoteNotificationTypes:UIRemoteNotificationTypeAlert];
+	
+}
+
+- (void) unsubscribeRemoteNotification {
+	
+	[[UIApplication sharedApplication] unregisterForRemoteNotifications];
+
+}
+
 - (void) clearViewHierarchy {
 	
 	UIViewController *rootVC = self.window.rootViewController;
@@ -335,6 +377,8 @@
 - (void) handleObservedAuthenticationFailure:(NSNotification *)aNotification {
 
 	NSError *error = [[aNotification userInfo] objectForKey:@"error"];
+	
+	[self unsubscribeRemoteNotification];
 
   dispatch_async(dispatch_get_main_queue(), ^{
 
@@ -577,6 +621,7 @@
 			block(YES, nil);
 			
 		wAppDelegate.alreadyRequestingAuthentication = NO;
+		[wAppDelegate subscribeRemoteNotification];
 		
 	};
 	
