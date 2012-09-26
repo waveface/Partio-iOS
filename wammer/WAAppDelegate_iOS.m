@@ -48,6 +48,7 @@
 #endif
 
 #import "GANTracker.h"
+#import "WAFilterPickerViewController.h"
 
 @interface WALoginBackgroundViewController : UIViewController
 @end
@@ -207,6 +208,7 @@
 	
 	[[WARemoteInterface sharedInterface] enableAutomaticRemoteUpdatesTimer];
 	[[WARemoteInterface sharedInterface] performAutomaticRemoteUpdatesNow];
+	[[NSUserDefaults standardUserDefaults] removeObjectForKey:kWAFilterPickerViewSelectedRowIndex];
 	
 #if ENABLE_PONYDEBUG
 	PDDebugger *debugger = [PDDebugger defaultInstance];
