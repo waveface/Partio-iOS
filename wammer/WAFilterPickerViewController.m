@@ -10,7 +10,7 @@
 #import "WADataStore.h"
 #import "CoreData+IRAdditions.h"
 
-static NSString * const kWAFilterPickerViewSelectedRowIndex = @"kWAFilterPickerViewSelectedRowIndex";
+NSString * const kWAFilterPickerViewSelectedRowIndex = @"kWAFilterPickerViewSelectedRowIndex";
 
 @interface WAFilterPickerViewController ()
 

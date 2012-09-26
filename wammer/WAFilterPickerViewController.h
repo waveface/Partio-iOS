@@ -8,6 +8,8 @@
 
 #import "WAPickerPaneViewController.h"
 
+extern NSString * const kWAFilterPickerViewSelectedRowIndex;
+
 @class NSFetchRequest;
 
 @interface WAFilterPickerViewController : WAPickerPaneViewController <UIPickerViewDataSource, UIPickerViewDelegate>
