@@ -518,7 +518,7 @@
 "FACEBOOK_IMPORT_TUTORIAL" = "Start importing your Facebook posts into Stream! Future Facebook posts will then be imported automatically.\n\nTo turn this feature on or off, just go to the Account Info page of your Stream account.";
 
 /* Class = "IBUITextView"; text = "PHOTO_IMPORT_TUTORIAL"; ObjectID = "62"; */
-"PHOTO_IMPORT_TUTORIAL" = "Use the auto import function to send all your Camera Roll photos into Stream, and access them on all your devices and PC computers anytime, anywhere.";
+"PHOTO_IMPORT_TUTORIAL" = "Use the auto-import function to import all your Camera Roll photos into Stream to access them on all your devices and PCs anytime, anywhere.";
 
 /* Class = "IBUIButton"; normalTitle = "ACTION_IMPORT_PHOTO"; ObjectID = "63"; */
 "ACTION_IMPORT_PHOTO" = "Yes!";
