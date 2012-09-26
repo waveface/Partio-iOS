@@ -533,7 +533,7 @@
 "FACEBOOK_IMPORT_TUTORIAL_SWITCH_IPAD" = "Facebook Import";
 
 /* Class = "IBUITextView"; text = "PHOTO_IMPORT_TUTORIAL_IPAD"; ObjectID = "55"; */
-"PHOTO_IMPORT_TUTORIAL_IPAD" = "Use the auto import function to send all your Camera Roll photos into Stream, and access them on all your devices and PC computers anytime, anywhere.";
+"PHOTO_IMPORT_TUTORIAL_IPAD" = "Use the auto-import function to import all your Camera Roll photos into Stream to access them on all your devices and PCs anytime, anywhere.";
 
 /* Class = "IBUIButton"; normalTitle = "ACTION_IMPORT_PHOTO"; ObjectID = "58"; */
 "ACTION_IMPORT_PHOTO" = "Yes!";
