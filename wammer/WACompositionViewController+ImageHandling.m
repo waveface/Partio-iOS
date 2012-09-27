@@ -209,7 +209,7 @@ NSString * const kDismissesSelfIfCameraCancelled = @"-[WACompositionViewControll
 
 		if (options & (WAThumbnailMakeOptionSmall|WAThumbnailMakeOptionMedium)) {
 
-			UIImage *image = [[representedAsset defaultRepresentation] irImage];
+			UIImage *image = [UIImage imageWithCGImage:[[representedAsset defaultRepresentation] fullResolutionImage]];
 			[file makeThumbnailsWithImage:image options:(options & (WAThumbnailMakeOptionSmall|WAThumbnailMakeOptionMedium))];
 			
 		}

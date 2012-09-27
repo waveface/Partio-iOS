@@ -12,6 +12,7 @@
 #import "IRWebAPIEngine+FormMultipart.h"
 #import "WAAssetsLibraryManager.h"
 #import <AssetsLibrary+IRAdditions.h>
+#import <Foundation/Foundation.h>
 
 NSString * const kWARemoteAttachmentType = @"WARemoteAttachmentType";
 NSString * const kWARemoteAttachmentTitle = @"WARemoteAttachmentTitle";
@@ -20,6 +21,7 @@ NSString * const kWARemoteAttachmentRepresentingImageURL = @"WARemoteAttachmentR
 NSString * const kWARemoteAttachmentUpdatedObjectIdentifier = @"WARemoteAttachmentUpdatedObjectIdentifier";
 NSString * const kWARemoteAttachmentSubtype = @"kWARemoteAttachmentDestinationImageType";
 NSString * const kWARemoteArticleIdentifier = @"kWARemoteArticleIdentifier";
+NSString * const kWARemoteAttachmentExif = @"kWARemoteAttachmentExif";
 NSString * const WARemoteAttachmentOriginalSubtype = @"origin";
 NSString * const WARemoteAttachmentLargeSubtype = @"large";
 NSString * const WARemoteAttachmentMediumSubtype = @"medium";
@@ -76,6 +78,16 @@ NSString * const WARemoteAttachmentSmallSubtype = @"small";
 	NSURL *proxyImage = [mergedOptions objectForKey:kWARemoteAttachmentRepresentingImageURL];
 	NSString *updatedObjectID = [mergedOptions objectForKey:kWARemoteAttachmentUpdatedObjectIdentifier];
 	NSString *articleIdentifier = [mergedOptions objectForKey:kWARemoteArticleIdentifier];
+	NSDictionary *exifData = [mergedOptions objectForKey:kWARemoteAttachmentExif];
+	NSString *exifJsonString = nil;
+	if ([NSJSONSerialization isValidJSONObject:exifData]) {
+		NSError *error = nil;
+		NSData *exifJsonData = [NSJSONSerialization dataWithJSONObject:exifData options:0 error:&error];
+		if (error) {
+			NSLog(@"Unable to create EXIF JSON data from %@", exifData);
+		}
+		exifJsonString = [[NSString alloc] initWithData:exifJsonData encoding:NSUTF8StringEncoding];
+	}
 	
 	if (type == WARemoteAttachmentUnknownType) {
 	
@@ -132,6 +144,7 @@ NSString * const WARemoteAttachmentSmallSubtype = @"small";
 	stitch(proxyImage, @"image");
 	stitch(updatedObjectID, @"object_id");
 	stitch(articleIdentifier, @"post_id");
+	stitch(exifJsonString, @"exif");
 	
 	[self.engine fireAPIRequestNamed:@"attachments/upload" withArguments:nil options:[NSDictionary dictionaryWithObjectsAndKeys:
 	
