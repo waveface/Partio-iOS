@@ -541,11 +541,8 @@
 /* Class = "IBUITableViewSection"; footerTitle = "SERVICE_INFO_FOOTER"; ObjectID = "9vM-w4-lTb"; */
 "SERVICE_INFO_FOOTER" = "⚠ 僅會在Wi-Fi連線時上傳原檔\n\n在 Wi-Fi 環境中，Stream 會幫您將原始檔案妥善保存。只要下載並且開啓 PC 上的 Stream，您有30天的時間將檔案從雲端送回PC保存";
 
-/* Class = "IBUITableViewSection"; headerTitle = "SERVICE_INFO_HEADER"; ObjectID = "9vM-w4-lTb"; */
-"SERVICE_INFO_HEADER" = "服務資訊";
-
 /* Class = "IBUILabel"; text = "FACEBOOK_CONNECT_TITLE"; ObjectID = "Fh9-Wq-UDR"; */
-"FACEBOOK_CONNECT_TITLE" = "Facebook同步";
+"FACEBOOK_CONNECT_TITLE" = "Facebook 同步";
 
 /* Class = "IBUITableViewSection"; headerTitle = "ACCOUNT_INFO_HEADER"; ObjectID = "Gw1-xy-FWK"; */
 "ACCOUNT_INFO_HEADER" = "帳戶資訊";
@@ -567,9 +564,6 @@
 
 /* Class = "IBUILabel"; text = "NOUN_CURRENT_DEVICE"; ObjectID = "fZ9-vs-r6f"; */
 "NOUN_CURRENT_DEVICE" = "裝置名稱";
-
-/* Class = "IBUITableViewSection"; headerTitle = "SOCIAL_NETWORK_HEADER"; ObjectID = "qoR-fT-NMh"; */
-"SOCIAL_NETWORK_HEADER" = "Facebook 設定";
 
 /* Class = "IBUITableViewSection"; footerTitle = "VERSION"; ObjectID = "rMk-eV-Pjl"; */
 "VERSION" = "版本";

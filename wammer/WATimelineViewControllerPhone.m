@@ -1208,13 +1208,13 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 	__weak WATimelineViewControllerPhone *wSelf = self;
 	__weak WAUserInfoViewController *wUserInfoVC = userInfoVC;
 	
-	userInfoVC.navigationItem.leftBarButtonItem = [IRBarButtonItem itemWithSystemItem:UIBarButtonSystemItemDone wiredAction:^(IRBarButtonItem *senderItem) {
+	userInfoVC.navigationItem.rightBarButtonItem = [IRBarButtonItem itemWithSystemItem:UIBarButtonSystemItemDone wiredAction:^(IRBarButtonItem *senderItem) {
 		
 		[wUserInfoVC.navigationController dismissViewControllerAnimated:YES completion:nil];
 		
 	}];
 	
-	userInfoVC.navigationItem.rightBarButtonItem = [IRBarButtonItem itemWithTitle:NSLocalizedString(@"ACTION_SIGN_OUT", nil) action:^{
+	userInfoVC.navigationItem.leftBarButtonItem = [IRBarButtonItem itemWithTitle:NSLocalizedString(@"ACTION_SIGN_OUT", nil) action:^{
 
 		IRAction *cancelAction = [IRAction actionWithTitle:NSLocalizedString(@"ACTION_CANCEL", nil) block:nil];
 		

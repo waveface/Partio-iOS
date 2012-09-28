@@ -255,7 +255,7 @@
 "MONTH_SINGULAR" = "%d month";
 
 /* Photo importing status */
-"NOT_IMPORTING_PHOTOS" = "Import All Photos";
+"NOT_IMPORTING_PHOTOS" = "Camera Roll Upload";
 
 /* Notification messages for photos auto-imported */
 "NOTIFY_PHOTOS_IMPORTED" = "%@ photo(s) have been imported into your Stream account.";
@@ -541,9 +541,6 @@
 /* Class = "IBUITableViewSection"; footerTitle = "SERVICE_INFO_FOOTER"; ObjectID = "9vM-w4-lTb"; */
 "SERVICE_INFO_FOOTER" = "Stream uses Wi-Fi to send original size photos back to your PC. If you don't have Stream installed on your PC, or it's not up and running, we keep the photos in a temporary cloud space for up to 30 days.";
 
-/* Class = "IBUITableViewSection"; headerTitle = "SERVICE_INFO_HEADER"; ObjectID = "9vM-w4-lTb"; */
-"SERVICE_INFO_HEADER" = "Service Info";
-
 /* Class = "IBUILabel"; text = "FACEBOOK_CONNECT_TITLE"; ObjectID = "Fh9-Wq-UDR"; */
 "FACEBOOK_CONNECT_TITLE" = "Facebook Import";
 
@@ -554,7 +551,7 @@
 "PHOTO_IMPORT_FOOTER" = "PHOTO_IMPORT_FOOTER";
 
 /* Class = "IBUILabel"; text = "LOCAL_PENDING_OBJECTS_TITLE"; ObjectID = "Uku-UE-EAs"; */
-"LOCAL_PENDING_OBJECTS_TITLE" = "Objects Pending";
+"LOCAL_PENDING_OBJECTS_TITLE" = "Photos Pending";
 
 /* Class = "IBUITableViewSection"; footerTitle = "SYNC_INFO_FOOTER"; ObjectID = "aHi-Wv-Eu2"; */
 "SYNC_INFO_FOOTER" = "Last Sync: %@";
@@ -568,14 +565,11 @@
 /* Class = "IBUILabel"; text = "NOUN_CURRENT_DEVICE"; ObjectID = "fZ9-vs-r6f"; */
 "NOUN_CURRENT_DEVICE" = "Device";
 
-/* Class = "IBUITableViewSection"; headerTitle = "SOCIAL_NETWORK_HEADER"; ObjectID = "qoR-fT-NMh"; */
-"SOCIAL_NETWORK_HEADER" = "Facebook Settings";
-
 /* Class = "IBUITableViewSection"; footerTitle = "VERSION"; ObjectID = "rMk-eV-Pjl"; */
 "VERSION" = "Version";
 
 /* Class = "IBUILabel"; text = "ACTION_IMPORT_SAVED_PHOTOS"; ObjectID = "vuN-4r-WXb"; */
-"ACTION_IMPORT_SAVED_PHOTOS" = "Import all photos in Camera Roll";
+"ACTION_IMPORT_SAVED_PHOTOS" = "Camera Upload";
 
 /* Class = "IBUILabel"; text = "ACTION_CONTACT_DEVELOPER"; ObjectID = "yLg-eE-ehZ"; */
 "ACTION_CONTACT_DEVELOPER" = "Contact";
