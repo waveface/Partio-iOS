@@ -19,18 +19,17 @@
 #import "WARemoteInterface.h"
 #import "WADataStore.h"
 
-#import "IRKeychainManager.h"
 #import "IRRelativeDateFormatter+WAAdditions.h"
 
 #import "IRRemoteResourcesManager.h"
 #import "IRRemoteResourceDownloadOperation.h"
 #import "IRWebAPIEngine+ExternalTransforms.h"
+#import "SSKeychain.h"
 
 
 @interface WAAppDelegate () <IRRemoteResourcesManagerDelegate>
 
 + (Class) preferredClusterClass;
-- (IRKeychainInternetPasswordItem *) currentKeychainItem;
 
 @end
 
@@ -104,25 +103,28 @@
 - (BOOL) hasAuthenticationData {
 
 	NSString *lastAuthenticatedUserIdentifier = [[NSUserDefaults standardUserDefaults] stringForKey:kWALastAuthenticatedUserIdentifier];
-	NSData *lastAuthenticatedUserTokenKeychainItemData = [[NSUserDefaults standardUserDefaults] dataForKey:kWALastAuthenticatedUserTokenKeychainItem];
 	NSString *lastAuthenticatedUserPrimaryGroupIdentifier = [[NSUserDefaults standardUserDefaults] stringForKey:kWALastAuthenticatedUserPrimaryGroupIdentifier];
-	IRKeychainAbstractItem *lastAuthenticatedUserTokenKeychainItem = nil;
+
+	if (!lastAuthenticatedUserIdentifier)
+		return NO;
 	
-	if (!lastAuthenticatedUserTokenKeychainItem) {
-		if (lastAuthenticatedUserTokenKeychainItemData) {
-			lastAuthenticatedUserTokenKeychainItem = [NSKeyedUnarchiver unarchiveObjectWithData:lastAuthenticatedUserTokenKeychainItemData];
-		}
+	NSError *error = nil;
+	NSString *serviceIdentifier = [[NSBundle mainBundle] bundleIdentifier];
+	NSString *lastAuthenticatedUserSecret = [SSKeychain passwordForService:serviceIdentifier account:lastAuthenticatedUserIdentifier error:&error];
+	if (error) {
+		NSLog(@"Unable to fetch secret from keychain for identifier: %@", lastAuthenticatedUserIdentifier);
+		return NO;
 	}
 	
-	BOOL authenticationInformationSufficient = ([lastAuthenticatedUserTokenKeychainItem.secret length]) && lastAuthenticatedUserIdentifier;
+	BOOL authenticationInformationSufficient = (lastAuthenticatedUserSecret && lastAuthenticatedUserIdentifier);
 	
 	if (authenticationInformationSufficient) {
 	
 		if (![lastAuthenticatedUserIdentifier isEqualToString:@""])
 			[WARemoteInterface sharedInterface].userIdentifier = lastAuthenticatedUserIdentifier;
 		
-		if (lastAuthenticatedUserTokenKeychainItem.secretString)
-			[WARemoteInterface sharedInterface].userToken = lastAuthenticatedUserTokenKeychainItem.secretString;
+		if (lastAuthenticatedUserSecret)
+			[WARemoteInterface sharedInterface].userToken = lastAuthenticatedUserSecret;
 		
 		if (lastAuthenticatedUserPrimaryGroupIdentifier)
 			[WARemoteInterface sharedInterface].primaryGroupIdentifier = lastAuthenticatedUserPrimaryGroupIdentifier;
@@ -147,6 +149,9 @@
 	for (NSHTTPCookie *cookie in [[cs cookies] copy])
 		[cs deleteCookie:cookie];
 
+	NSString *serviceIdentifier = [[NSBundle mainBundle] bundleIdentifier];
+	[SSKeychain deletePasswordForService:serviceIdentifier account:[sud stringForKey:kWALastAuthenticatedUserIdentifier]];
+
 	[sud removeObjectForKey:kWALastAuthenticatedUserTokenKeychainItem];
 	[sud removeObjectForKey:kWALastAuthenticatedUserIdentifier];
 	[sud removeObjectForKey:kWALastAuthenticatedUserPrimaryGroupIdentifier];
@@ -159,42 +164,13 @@
 
 }
 
-- (IRKeychainInternetPasswordItem *) currentKeychainItem {
-
-  IRKeychainInternetPasswordItem *lastAuthenticatedUserTokenKeychainItem = nil;
-
-  if (!lastAuthenticatedUserTokenKeychainItem) {
-    NSData *lastAuthenticatedUserTokenKeychainItemData = [[NSUserDefaults standardUserDefaults] dataForKey:kWALastAuthenticatedUserTokenKeychainItem];
-    if (lastAuthenticatedUserTokenKeychainItemData)
-      lastAuthenticatedUserTokenKeychainItem = [NSKeyedUnarchiver unarchiveObjectWithData:lastAuthenticatedUserTokenKeychainItemData];
-  }
-  
-  if (!lastAuthenticatedUserTokenKeychainItem)
-    lastAuthenticatedUserTokenKeychainItem = [[IRKeychainInternetPasswordItem alloc] initWithIdentifier:@"com.waveface.wammer"];
-	
-	if (!lastAuthenticatedUserTokenKeychainItem.serverAddress)
-		lastAuthenticatedUserTokenKeychainItem.serverAddress = [[NSURL URLWithString:[[NSUserDefaults standardUserDefaults] stringForKey:kWARemoteEndpointURL]] host];
-  
-  return lastAuthenticatedUserTokenKeychainItem;
-  
-}
 
 - (void) updateCurrentCredentialsWithUserIdentifier:(NSString *)userIdentifier token:(NSString *)userToken primaryGroup:(NSString *)primaryGroupIdentifier {
-
-	IRKeychainInternetPasswordItem *keychainItem = [self currentKeychainItem];
-	keychainItem.associatedAccountName = userIdentifier;
-	keychainItem.secretString = userToken;
 	
-	if (![keychainItem synchronize])
-		NSLog(@"Did not sync!");
-	
-	NSParameterAssert(keychainItem.persistentReference);
-	
-	NSData *archivedItemData = [NSKeyedArchiver archivedDataWithRootObject:keychainItem];
-	
-	[[NSUserDefaults standardUserDefaults] setObject:archivedItemData forKey:kWALastAuthenticatedUserTokenKeychainItem];
+	NSString *serviceIdentifier = [[NSBundle mainBundle] bundleIdentifier];
 	[[NSUserDefaults standardUserDefaults] setObject:userIdentifier forKey:kWALastAuthenticatedUserIdentifier];
 	[[NSUserDefaults standardUserDefaults] setObject:primaryGroupIdentifier forKey:kWALastAuthenticatedUserPrimaryGroupIdentifier];
+	[SSKeychain setPassword:userToken forService:serviceIdentifier account:userIdentifier];
 	[[NSUserDefaults standardUserDefaults] setBool:NO forKey:kWAUserRequiresReauthentication];
 	[[NSUserDefaults standardUserDefaults] synchronize];
 
