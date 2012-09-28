@@ -152,6 +152,7 @@
 		80A2217215ED1AFD006236AC /* WARemoteInterface+Notification.h in Sources */ = {isa = PBXBuildFile; fileRef = 8002CDE715E5E92100D7BFF0 /* WARemoteInterface+Notification.h */; };
 		80A2217415ED1AFD006236AC /* WARemoteInterface+WebSocket.h in Sources */ = {isa = PBXBuildFile; fileRef = 8002CDEA15E5F6F300D7BFF0 /* WARemoteInterface+WebSocket.h */; };
 		80A2217515ED1AFD006236AC /* WARemoteInterface+WebSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 8002CDEB15E5F6F300D7BFF0 /* WARemoteInterface+WebSocket.m */; };
+		80EB9A661615A436003B282B /* SSKeychain.m in Sources */ = {isa = PBXBuildFile; fileRef = 80EB9A651615A436003B282B /* SSKeychain.m */; };
 		80EE282316004112000ED674 /* WAFacebookInterface.m in Sources */ = {isa = PBXBuildFile; fileRef = FFBBA42415AD5D4400E95C66 /* WAFacebookInterface.m */; };
 		80EE282416004200000ED674 /* WAFacebook.m in Sources */ = {isa = PBXBuildFile; fileRef = FF3FF83115AEA670003CF6CC /* WAFacebook.m */; };
 		80EE282516004241000ED674 /* libfacebook_ios_sdk.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FF6B02A615AC0A2A009D8BDB /* libfacebook_ios_sdk.a */; };
@@ -273,7 +274,6 @@
 		FF460D3E149CFA8800DB7F0B /* WAFilePageElement.m in Sources */ = {isa = PBXBuildFile; fileRef = FF7997A81490A23C000CE08D /* WAFilePageElement.m */; };
 		FF460D3F149CFA8800DB7F0B /* WAGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = FF8F463E14691A7D00D65864 /* WAGroup.m */; };
 		FF460D41149CFA8F00DB7F0B /* WADataStore+FetchingConveniences.m in Sources */ = {isa = PBXBuildFile; fileRef = FF0C7AB914987FCA00632EF3 /* WADataStore+FetchingConveniences.m */; };
-		FF460DB1149CFC3F00DB7F0B /* IRKeychainX.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF460D7F149CFC0600DB7F0B /* IRKeychainX.framework */; };
 		FF460DB6149D001200DB7F0B /* NSBlockOperation+NSCopying.m in Sources */ = {isa = PBXBuildFile; fileRef = FFB117C8147F9051002094E5 /* NSBlockOperation+NSCopying.m */; };
 		FF460DB8149D15F100DB7F0B /* wammer-OSX-Entitlements.plist in Resources */ = {isa = PBXBuildFile; fileRef = FF460DB7149D15F100DB7F0B /* wammer-OSX-Entitlements.plist */; };
 		FF485CCC156A4F4300A6175E /* WAFile+ImplicitBlobFulfillment.m in Sources */ = {isa = PBXBuildFile; fileRef = FF485CCB156A4F4300A6175E /* WAFile+ImplicitBlobFulfillment.m */; };
@@ -672,7 +672,6 @@
 		FFCFE0BC142111E100B9E6AF /* libAQGridView.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FF73A5DE13D6DD5000D54EC6 /* libAQGridView.a */; };
 		FFCFE0BD142111E100B9E6AF /* libIRFoundationsTouch.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FF73A59D13D6DC6500D54EC6 /* libIRFoundationsTouch.a */; };
 		FFCFE0BE142111E100B9E6AF /* libIRWebAPIKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FF73A5A713D6DC6A00D54EC6 /* libIRWebAPIKit.a */; };
-		FFCFE0BF142111E100B9E6AF /* libIRKeychain.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FF666C2B140CD2B200C35CED /* libIRKeychain.a */; };
 		FFCFE0C0142111E100B9E6AF /* libIRDiscreteLayoutManager.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FFBA66EB140E12AD00BE5A1D /* libIRDiscreteLayoutManager.a */; };
 		FFCFE0C4142111E100B9E6AF /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = FF73A54B13D6C2CD00D54EC6 /* InfoPlist.strings */; };
 		FFCFE0D3142111E100B9E6AF /* WAArticleCommentsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FFF9B7AD13E7DFFE002A9D7F /* WAArticleCommentsViewController.xib */; };
@@ -714,7 +713,6 @@
 		FFF361C01563CA10004A4D57 /* WAStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = FFF361BF1563CA10004A4D57 /* WAStorage.m */; };
 		FFF556B81456A64A0077DFFB /* WARefreshActionView.m in Sources */ = {isa = PBXBuildFile; fileRef = FFF556B71456A64A0077DFFB /* WARefreshActionView.m */; };
 		FFF7F506149E55C6004EFB1B /* IRFoundationsX.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = FF72C188142789FA00B5D838 /* IRFoundationsX.framework */; };
-		FFF7F507149E55C6004EFB1B /* IRKeychainX.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = FF460D7F149CFC0600DB7F0B /* IRKeychainX.framework */; };
 		FFF7F508149E55C6004EFB1B /* IRWebAPIKitX.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = FF59A3AD1441C97000BB1FDC /* IRWebAPIKitX.framework */; };
 		FFF7F509149E55C6004EFB1B /* IRRecurrenceMachineX.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = FF460D2E149CF8DA00DB7F0B /* IRRecurrenceMachineX.framework */; };
 		FFF7F510149E678A004EFB1B /* WAUserInfoView.xib in Resources */ = {isa = PBXBuildFile; fileRef = FFF7F50F149E678A004EFB1B /* WAUserInfoView.xib */; };
@@ -835,20 +833,6 @@
 			remoteGlobalIDString = FF59A3991441C94500BB1FDC;
 			remoteInfo = IRWebAPIKitX;
 		};
-		FF460D7E149CFC0600DB7F0B /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = FF666C23140CD2B200C35CED /* IRKeychain.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = FF460D48149CFBFD00DB7F0B;
-			remoteInfo = IRKeychainX;
-		};
-		FF460DAF149CFC3B00DB7F0B /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = FF666C23140CD2B200C35CED /* IRKeychain.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = FF460D47149CFBFD00DB7F0B;
-			remoteInfo = IRKeychainX;
-		};
 		FF543F3C14C30A15005D3F7D /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = FF73A59513D6DC6500D54EC6 /* IRFoundations.xcodeproj */;
@@ -883,13 +867,6 @@
 			proxyType = 2;
 			remoteGlobalIDString = FF59A39A1441C94500BB1FDC;
 			remoteInfo = IRWebAPIKitX;
-		};
-		FF666C2A140CD2B200C35CED /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = FF666C23140CD2B200C35CED /* IRKeychain.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = D2AAC07E0554694100DB518D;
-			remoteInfo = IRKeychain;
 		};
 		FF6B02A515AC0A2A009D8BDB /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -1010,13 +987,6 @@
 			remoteGlobalIDString = FF55E1951407CE8400D8F3C7;
 			remoteInfo = IRDiscreteLayoutManager;
 		};
-		FFCFE07C142111E100B9E6AF /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = FF666C23140CD2B200C35CED /* IRKeychain.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = D2AAC07D0554694100DB518D;
-			remoteInfo = IRKeychain;
-		};
 		FFCFE07E142111E100B9E6AF /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = FF73A59513D6DC6500D54EC6 /* IRFoundations.xcodeproj */;
@@ -1083,7 +1053,6 @@
 			dstSubfolderSpec = 10;
 			files = (
 				FFF7F506149E55C6004EFB1B /* IRFoundationsX.framework in Copy Frameworks */,
-				FFF7F507149E55C6004EFB1B /* IRKeychainX.framework in Copy Frameworks */,
 				FFF7F508149E55C6004EFB1B /* IRWebAPIKitX.framework in Copy Frameworks */,
 				FFF7F509149E55C6004EFB1B /* IRRecurrenceMachineX.framework in Copy Frameworks */,
 			);
@@ -1286,6 +1255,8 @@
 		80557BA815FDE38000336F3C /* WARemoteInterface+RemoteNotifications.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WARemoteInterface+RemoteNotifications.m"; sourceTree = "<group>"; };
 		809D428E15F5CE4300CB4F89 /* WAWebSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAWebSocket.h; sourceTree = "<group>"; };
 		809D428F15F5CE4300CB4F89 /* WAWebSocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAWebSocket.m; sourceTree = "<group>"; };
+		80EB9A641615A436003B282B /* SSKeychain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SSKeychain.h; path = external/sskeychain/SSKeychain.h; sourceTree = "<group>"; };
+		80EB9A651615A436003B282B /* SSKeychain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SSKeychain.m; path = external/sskeychain/SSKeychain.m; sourceTree = "<group>"; };
 		80F800F415C2624C00132A96 /* IRAQ-Checkmark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "IRAQ-Checkmark.png"; sourceTree = "<group>"; };
 		80F800F515C2624C00132A96 /* IRAQ-Checkmark@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "IRAQ-Checkmark@2x.png"; sourceTree = "<group>"; };
 		FF0024FD14B44D5400F54AAF /* WASyncManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WASyncManager.h; sourceTree = "<group>"; };
@@ -1448,7 +1419,6 @@
 		FF61CCAE149D40E000A6EB0B /* WAComposition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAComposition.h; sourceTree = "<group>"; };
 		FF61CCAF149D40E000A6EB0B /* WAComposition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAComposition.m; sourceTree = "<group>"; };
 		FF61CCB0149D40E000A6EB0B /* WAComposition.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WAComposition.xib; sourceTree = "<group>"; };
-		FF666C23140CD2B200C35CED /* IRKeychain.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = IRKeychain.xcodeproj; path = external/IRKeychain/IRKeychain.xcodeproj; sourceTree = "<group>"; };
 		FF666C2F140CD31C00C35CED /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		FF66D58B15A577AC00851F1B /* WATextFoldingToggleItem.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WATextFoldingToggleItem.xib; sourceTree = "<group>"; };
 		FF67F05214724F5F006715D5 /* WAComment+WARemoteInterfaceEntitySyncing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WAComment+WARemoteInterfaceEntitySyncing.h"; sourceTree = "<group>"; };
@@ -1960,7 +1930,6 @@
 				FF87FA52149CF46D00B8207A /* Foundation.framework in Frameworks */,
 				FF460D0E149CF86400DB7F0B /* SystemConfiguration.framework in Frameworks */,
 				FFC648911445EC4500593E5E /* IRFoundationsX.framework in Frameworks */,
-				FF460DB1149CFC3F00DB7F0B /* IRKeychainX.framework in Frameworks */,
 				FFC648921445EC4500593E5E /* IRWebAPIKitX.framework in Frameworks */,
 				FF460D33149CF8E400DB7F0B /* IRRecurrenceMachineX.framework in Frameworks */,
 				FFDE51F3159AF8240086F9B0 /* JSONKitX.framework in Frameworks */,
@@ -2000,7 +1969,6 @@
 				FFCFE0BC142111E100B9E6AF /* libAQGridView.a in Frameworks */,
 				FFCFE0BD142111E100B9E6AF /* libIRFoundationsTouch.a in Frameworks */,
 				FFCFE0BE142111E100B9E6AF /* libIRWebAPIKit.a in Frameworks */,
-				FFCFE0BF142111E100B9E6AF /* libIRKeychain.a in Frameworks */,
 				FFCFE0C0142111E100B9E6AF /* libIRDiscreteLayoutManager.a in Frameworks */,
 				FFB3C17A145E9A7900ED7A56 /* libIRTextAttributor.a in Frameworks */,
 				FFD4F93C157E084E0027BF3F /* libIRObjectQueue.a in Frameworks */,
@@ -2277,6 +2245,15 @@
 			path = external/IRAQPhotoPicker;
 			sourceTree = "<group>";
 		};
+		80EB9A631615A423003B282B /* SSKeychain */ = {
+			isa = PBXGroup;
+			children = (
+				80EB9A641615A436003B282B /* SSKeychain.h */,
+				80EB9A651615A436003B282B /* SSKeychain.m */,
+			);
+			name = SSKeychain;
+			sourceTree = "<group>";
+		};
 		FF0024F914B44CC500F54AAF /* Blob Syncing */ = {
 			isa = PBXGroup;
 			children = (
@@ -2536,15 +2513,6 @@
 			name = OSX;
 			sourceTree = "<group>";
 		};
-		FF666C24140CD2B200C35CED /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				FF666C2B140CD2B200C35CED /* libIRKeychain.a */,
-				FF460D7F149CFC0600DB7F0B /* IRKeychainX.framework */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 		FF6B029F15AC0A2A009D8BDB /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -2658,7 +2626,6 @@
 				FFFDEFB414211D5C0083BEFB /* iOS */,
 				FFBA66E2140E12AD00BE5A1D /* IRDiscreteLayoutManager.xcodeproj */,
 				FF73A59513D6DC6500D54EC6 /* IRFoundations.xcodeproj */,
-				FF666C23140CD2B200C35CED /* IRKeychain.xcodeproj */,
 				FFD4F92E157E07F90027BF3F /* IRObjectQueue.xcodeproj */,
 				FFA69459147F800300F46347 /* IRRecurrenceMachine.xcodeproj */,
 				FF09C0D715A2DD6F00AEDDAE /* IRSlidingSplitViewController.xcodeproj */,
@@ -3337,6 +3304,7 @@
 		FFFDEFB414211D5C0083BEFB /* iOS */ = {
 			isa = PBXGroup;
 			children = (
+				80EB9A631615A423003B282B /* SSKeychain */,
 				803169F715C0EC20009D43F0 /* IRAQPhotoPicker */,
 				4B31BA861591A74C00DC1A70 /* AGImagePickerController */,
 				FF24B3B61552AC7100DD9379 /* libstdc++.dylib */,
@@ -3412,7 +3380,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				FF460DB0149CFC3B00DB7F0B /* PBXTargetDependency */,
 				FF460D30149CF8DF00DB7F0B /* PBXTargetDependency */,
 				FF460D32149CF8DF00DB7F0B /* PBXTargetDependency */,
 				FF460D2B149CF8DA00DB7F0B /* PBXTargetDependency */,
@@ -3444,7 +3411,6 @@
 				FFB117C5147F8B34002094E5 /* PBXTargetDependency */,
 				FFB3C179145E9A6F00ED7A56 /* PBXTargetDependency */,
 				FFCFE079142111E100B9E6AF /* PBXTargetDependency */,
-				FFCFE07B142111E100B9E6AF /* PBXTargetDependency */,
 				FFCFE07D142111E100B9E6AF /* PBXTargetDependency */,
 				FFCFE07F142111E100B9E6AF /* PBXTargetDependency */,
 				FF09C0E215A2DD8700AEDDAE /* PBXTargetDependency */,
@@ -3495,10 +3461,6 @@
 				{
 					ProductGroup = FF73A59613D6DC6500D54EC6 /* Products */;
 					ProjectRef = FF73A59513D6DC6500D54EC6 /* IRFoundations.xcodeproj */;
-				},
-				{
-					ProductGroup = FF666C24140CD2B200C35CED /* Products */;
-					ProjectRef = FF666C23140CD2B200C35CED /* IRKeychain.xcodeproj */;
 				},
 				{
 					ProductGroup = FFD4F92F157E07F90027BF3F /* Products */;
@@ -3625,13 +3587,6 @@
 			remoteRef = FF460D2D149CF8DA00DB7F0B /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		FF460D7F149CFC0600DB7F0B /* IRKeychainX.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = IRKeychainX.framework;
-			remoteRef = FF460D7E149CFC0600DB7F0B /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
 		FF543F3D14C30A15005D3F7D /* IRFoundationsTest.octest */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.cfbundle;
@@ -3658,13 +3613,6 @@
 			fileType = wrapper.framework;
 			path = IRWebAPIKitX.framework;
 			remoteRef = FF59A3AC1441C97000BB1FDC /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		FF666C2B140CD2B200C35CED /* libIRKeychain.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libIRKeychain.a;
-			remoteRef = FF666C2A140CD2B200C35CED /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		FF6B02A615AC0A2A009D8BDB /* libfacebook_ios_sdk.a */ = {
@@ -4539,6 +4487,7 @@
 				80557BA915FDE38000336F3C /* WARemoteInterface+RemoteNotifications.m in Sources */,
 				1327A87E15F87A1700AC7852 /* WAFile+ThumbnailMaker.m in Sources */,
 				13EFF4BF15FEC1B3007430EC /* WAPhotoImportManager.m in Sources */,
+				80EB9A661615A436003B282B /* SSKeychain.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4569,11 +4518,6 @@
 			isa = PBXTargetDependency;
 			name = IRWebAPIKitX;
 			targetProxy = FF460D31149CF8DF00DB7F0B /* PBXContainerItemProxy */;
-		};
-		FF460DB0149CFC3B00DB7F0B /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = IRKeychainX;
-			targetProxy = FF460DAF149CFC3B00DB7F0B /* PBXContainerItemProxy */;
 		};
 		FF586C6F1519B94E00F308E2 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -4609,11 +4553,6 @@
 			isa = PBXTargetDependency;
 			name = IRDiscreteLayoutManager;
 			targetProxy = FFCFE07A142111E100B9E6AF /* PBXContainerItemProxy */;
-		};
-		FFCFE07B142111E100B9E6AF /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = IRKeychain;
-			targetProxy = FFCFE07C142111E100B9E6AF /* PBXContainerItemProxy */;
 		};
 		FFCFE07D142111E100B9E6AF /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
