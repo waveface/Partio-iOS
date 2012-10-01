@@ -408,8 +408,6 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
 			NSMutableDictionary *options = [NSMutableDictionary dictionaryWithObjectsAndKeys:
 																			[NSNumber numberWithUnsignedInteger:WARemoteAttachmentImageType], kWARemoteAttachmentType,
 																			WARemoteAttachmentMediumSubtype, kWARemoteAttachmentSubtype,
-																			file.identifier, kWARemoteAttachmentUpdatedObjectIdentifier,
-																			file.article.identifier, kWARemoteArticleIdentifier,
 																			nil];
 
 			if (file.identifier) {
@@ -418,6 +416,10 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
 
 			if (file.article.identifier) {
 				[options setObject:file.article.identifier forKey:kWARemoteArticleIdentifier];
+			}
+
+			if (file.exif) {
+				[options setObject:file.exif forKey:kWARemoteAttachmentExif];
 			}
 
 			if (!isValidPath(thumbnailFilePath)) {
@@ -503,6 +505,10 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
 
 			if (file.article.identifier) {
 				[options setObject:file.article.identifier forKey:kWARemoteArticleIdentifier];
+			}
+
+			if (file.exif) {
+				[options setObject:file.exif forKey:kWARemoteAttachmentExif];
 			}
 
 			NSString *sentResourcePath = file.resourceFilePath;

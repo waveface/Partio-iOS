@@ -11,7 +11,7 @@
 
 #import "CoreData+IRAdditions.h"
 
-@class WAArticle, WAFilePageElement, WAUser;
+@class WAArticle, WAFilePageElement, WAUser, WAFileExif;
 
 @interface WAFile : IRManagedObject
 
@@ -42,6 +42,7 @@
 @property (nonatomic, retain) WAUser *owner;
 @property (nonatomic, retain) NSOrderedSet *pageElements;
 @property (nonatomic, retain) WAArticle *representedArticle;
+@property (nonatomic, retain) WAFileExif *exif;
 @end
 
 @interface WAFile (CoreDataGeneratedAccessors)

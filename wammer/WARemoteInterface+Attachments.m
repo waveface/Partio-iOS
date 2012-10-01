@@ -14,6 +14,8 @@
 #import <AssetsLibrary+IRAdditions.h>
 #import <Foundation/Foundation.h>
 
+#import "WAFileExif.h"
+
 NSString * const kWARemoteAttachmentType = @"WARemoteAttachmentType";
 NSString * const kWARemoteAttachmentTitle = @"WARemoteAttachmentTitle";
 NSString * const kWARemoteAttachmentDescription = @"WARemoteAttachmentDescription";
@@ -26,6 +28,45 @@ NSString * const WARemoteAttachmentOriginalSubtype = @"origin";
 NSString * const WARemoteAttachmentLargeSubtype = @"large";
 NSString * const WARemoteAttachmentMediumSubtype = @"medium";
 NSString * const WARemoteAttachmentSmallSubtype = @"small";
+
+
+@implementation NSNumber (WAAdditions)
+
+/* Convert NSNumber to rational value
+ * ref: http://www.ics.uci.edu/~eppstein/numth/frap.c
+ */
+- (NSArray *) rationalValue {
+
+	long m[2][2];
+	double x, startx;
+	const long MAXDENOM = 10000;
+	long ai;
+
+	startx = x = [self doubleValue];
+
+	/* initialize matrix */
+	m[0][0] = m[1][1] = 1;
+	m[0][1] = m[1][0] = 0;
+
+	/* loop finding terms until denom gets too big */
+	while (m[1][0] *  ( ai = (long)x ) + m[1][1] <= MAXDENOM) {
+		long t;
+		t = m[0][0] * ai + m[0][1];
+		m[0][1] = m[0][0];
+		m[0][0] = t;
+		t = m[1][0] * ai + m[1][1];
+		m[1][1] = m[1][0];
+		m[1][0] = t;
+		if(x==(double)ai) break;     // AF: division by zero
+		x = 1/(x - (double) ai);
+		if(x>(double)0x7FFFFFFF) break;  // AF: representation failure
+	}
+
+	return @[[NSNumber numberWithLong:m[0][0]], [NSNumber numberWithLong:m[1][0]]];
+
+}
+
+@end
 
 
 @implementation WARemoteInterface (Attachments)
@@ -78,15 +119,61 @@ NSString * const WARemoteAttachmentSmallSubtype = @"small";
 	NSURL *proxyImage = [mergedOptions objectForKey:kWARemoteAttachmentRepresentingImageURL];
 	NSString *updatedObjectID = [mergedOptions objectForKey:kWARemoteAttachmentUpdatedObjectIdentifier];
 	NSString *articleIdentifier = [mergedOptions objectForKey:kWARemoteArticleIdentifier];
-	NSDictionary *exifData = [mergedOptions objectForKey:kWARemoteAttachmentExif];
+	WAFileExif *exif = [mergedOptions objectForKey:kWARemoteAttachmentExif];
 	NSString *exifJsonString = nil;
-	if ([NSJSONSerialization isValidJSONObject:exifData]) {
-		NSError *error = nil;
-		NSData *exifJsonData = [NSJSONSerialization dataWithJSONObject:exifData options:0 error:&error];
-		if (error) {
-			NSLog(@"Unable to create EXIF JSON data from %@", exifData);
+	if (exif) {
+		NSMutableDictionary *exifData = [[NSMutableDictionary alloc] init];
+		if (exif.dateTimeOriginal) {
+			[exifData setObject:exif.dateTimeOriginal forKey:@"DateTimeOriginal"];
 		}
-		exifJsonString = [[NSString alloc] initWithData:exifJsonData encoding:NSUTF8StringEncoding];
+		if (exif.dateTimeDigitized) {
+			[exifData setObject:exif.dateTimeDigitized forKey:@"DateTimeDigitized"];
+		}
+		if (exif.dateTime) {
+			[exifData setObject:exif.dateTime forKey:@"DateTime"];
+		}
+		if (exif.model) {
+			[exifData setObject:exif.model forKey:@"Model"];
+		}
+		if (exif.make) {
+			[exifData setObject:exif.make forKey:@"Make"];
+		}
+		if (exif.exposureTime) {
+			[exifData setObject:[exif.exposureTime rationalValue] forKey:@"ExposureTime"];
+		}
+		if (exif.fNumber) {
+			[exifData setObject:[exif.fNumber rationalValue] forKey:@"FNumber"];
+		}
+		if (exif.apertureValue) {
+			[exifData setObject:[exif.apertureValue rationalValue] forKey:@"ApertureValue"];
+		}
+		if (exif.focalLength) {
+			[exifData setObject:[exif.focalLength rationalValue] forKey:@"FocalLength"];
+		}
+		if (exif.flash) {
+			[exifData setObject:exif.flash forKey:@"Flash"];
+		}
+		if (exif.isoSpeedRatings) {
+			[exifData setObject:exif.isoSpeedRatings forKey:@"ISOSpeedRatings"];
+		}
+		if (exif.colorSpace) {
+			[exifData setObject:exif.colorSpace forKey:@"ColorSpace"];
+		}
+		if (exif.whiteBalance) {
+			[exifData setObject:exif.whiteBalance forKey:@"WhiteBalance"];
+		}
+		if (exif.gpsLongitude && exif.gpsLatitude) {
+			[exifData setObject:@{@"longitude":exif.gpsLongitude, @"latitude":exif.gpsLatitude} forKey:@"gps"];
+		}
+
+		if ([NSJSONSerialization isValidJSONObject:exifData]) {
+			NSError *error = nil;
+			NSData *exifJsonData = [NSJSONSerialization dataWithJSONObject:exifData options:0 error:&error];
+			if (error) {
+				NSLog(@"Unable to create EXIF JSON data from %@", exifData);
+			}
+			exifJsonString = [[NSString alloc] initWithData:exifJsonData encoding:NSUTF8StringEncoding];
+		}
 	}
 	
 	if (type == WARemoteAttachmentUnknownType) {

@@ -14,9 +14,9 @@
 
 @interface WAFileExif : IRManagedObject
 
-@property (nonatomic, retain) NSDate * dateTimeOriginal;
-@property (nonatomic, retain) NSDate * dateTimeDigitized;
-@property (nonatomic, retain) NSDate * dateTime;
+@property (nonatomic, retain) NSString * dateTimeOriginal;
+@property (nonatomic, retain) NSString * dateTimeDigitized;
+@property (nonatomic, retain) NSString * dateTime;
 @property (nonatomic, retain) NSString * model;
 @property (nonatomic, retain) NSString * make;
 @property (nonatomic, retain) NSNumber * exposureTime;

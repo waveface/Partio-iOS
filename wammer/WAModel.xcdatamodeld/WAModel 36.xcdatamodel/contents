@@ -131,21 +131,21 @@
         <userInfo/>
     </entity>
     <entity name="WAFileExif" representedClassName="WAFileExif" syncable="YES">
-        <attribute name="apertureValue" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
-        <attribute name="colorSpace" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
-        <attribute name="dateTime" optional="YES" attributeType="Date" syncable="YES"/>
-        <attribute name="dateTimeDigitized" optional="YES" attributeType="Date" syncable="YES"/>
-        <attribute name="dateTimeOriginal" optional="YES" attributeType="Date" syncable="YES"/>
-        <attribute name="exposureTime" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
-        <attribute name="flash" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
-        <attribute name="fNumber" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
-        <attribute name="focalLength" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
-        <attribute name="gpsLatitude" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
-        <attribute name="gpsLongitude" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
-        <attribute name="isoSpeedRatings" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="apertureValue" optional="YES" attributeType="Double" syncable="YES"/>
+        <attribute name="colorSpace" optional="YES" attributeType="Integer 16" syncable="YES"/>
+        <attribute name="dateTime" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="dateTimeDigitized" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="dateTimeOriginal" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="exposureTime" optional="YES" attributeType="Double" syncable="YES"/>
+        <attribute name="flash" optional="YES" attributeType="Integer 16" syncable="YES"/>
+        <attribute name="fNumber" optional="YES" attributeType="Double" syncable="YES"/>
+        <attribute name="focalLength" optional="YES" attributeType="Double" syncable="YES"/>
+        <attribute name="gpsLatitude" optional="YES" attributeType="Double" syncable="YES"/>
+        <attribute name="gpsLongitude" optional="YES" attributeType="Double" syncable="YES"/>
+        <attribute name="isoSpeedRatings" optional="YES" attributeType="Integer 16" syncable="YES"/>
         <attribute name="make" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="model" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="whiteBalance" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="whiteBalance" optional="YES" attributeType="Integer 16" syncable="YES"/>
         <relationship name="file" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="WAFile" inverseName="exif" inverseEntity="WAFile" syncable="YES"/>
     </entity>
     <entity name="WAFilePageElement" representedClassName="WAFilePageElement" syncable="YES">
@@ -257,6 +257,7 @@
         <element name="WAArticle" positionX="0" positionY="0" width="128" height="315"/>
         <element name="WAComment" positionX="0" positionY="0" width="128" height="135"/>
         <element name="WAFile" positionX="0" positionY="0" width="128" height="465"/>
+        <element name="WAFileExif" positionX="160" positionY="192" width="128" height="285"/>
         <element name="WAFilePageElement" positionX="0" positionY="0" width="128" height="90"/>
         <element name="WAGroup" positionX="0" positionY="0" width="128" height="120"/>
         <element name="WAOpenGraphElement" positionX="0" positionY="0" width="128" height="195"/>
@@ -264,6 +265,5 @@
         <element name="WAPreview" positionX="0" positionY="0" width="128" height="150"/>
         <element name="WAStorage" positionX="0" positionY="0" width="128" height="240"/>
         <element name="WAUser" positionX="0" positionY="0" width="128" height="210"/>
-        <element name="WAFileExif" positionX="160" positionY="192" width="128" height="285"/>
     </elements>
 </model>
