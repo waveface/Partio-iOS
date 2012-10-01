@@ -260,6 +260,7 @@ NSString * const kDismissesSelfIfCameraCancelled = @"-[WACompositionViewControll
 
 			file.assetURL = [[[representedAsset defaultRepresentation] url] absoluteString];
 			file.resourceType = (NSString *)kUTTypeImage;
+			file.timestamp = [representedAsset valueForProperty:ALAssetPropertyDate];
 
 			NSDictionary *exifData = [[[representedAsset defaultRepresentation] metadata] objectForKey:@"{Exif}"];
 			NSDictionary *tiffData =	[[[representedAsset defaultRepresentation] metadata] objectForKey:@"{TIFF}"];

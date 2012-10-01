@@ -107,7 +107,7 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
 			@"largeThumbnailURL", @"large_thumbnail_url",
 			
 			@"resourceURL", @"url",
-			@"timestamp", @"timestamp",
+			@"timestamp", @"file_create_time",
       
 			@"pageElements", @"pageElements",
 			
@@ -509,6 +509,10 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
 
 			if (file.exif) {
 				[options setObject:file.exif forKey:kWARemoteAttachmentExif];
+			}
+
+			if (file.timestamp) {
+				[options setObject:file.timestamp forKey:kWARemoteAttachmentCreateTime];
 			}
 
 			NSString *sentResourcePath = file.resourceFilePath;

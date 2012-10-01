@@ -24,6 +24,7 @@ NSString * const kWARemoteAttachmentUpdatedObjectIdentifier = @"WARemoteAttachme
 NSString * const kWARemoteAttachmentSubtype = @"kWARemoteAttachmentDestinationImageType";
 NSString * const kWARemoteArticleIdentifier = @"kWARemoteArticleIdentifier";
 NSString * const kWARemoteAttachmentExif = @"kWARemoteAttachmentExif";
+NSString * const kWARemoteAttachmentCreateTime = @"kWARemoteAttachmentCreateTime";
 NSString * const WARemoteAttachmentOriginalSubtype = @"origin";
 NSString * const WARemoteAttachmentLargeSubtype = @"large";
 NSString * const WARemoteAttachmentMediumSubtype = @"medium";
@@ -75,8 +76,8 @@ NSString * const WARemoteAttachmentSmallSubtype = @"small";
 
 	if ([aFileURL isFileURL]) {
 
-		NSURL *copiedFileURL = [[WADataStore defaultStore] persistentFileURLForFileAtURL:aFileURL];
-		[self createAttachmentWithCopiedFile:copiedFileURL group:aGroupIdentifier options:options onSuccess:successBlock onFailure:failureBlock];
+		NSData *fileData = [NSData dataWithContentsOfFile:[aFileURL path] options:NSDataReadingMappedIfSafe error:nil];		
+		[self createAttachmentWithFileData:fileData name:[[aFileURL path] lastPathComponent] group:aGroupIdentifier options:options onSuccess:successBlock onFailure:failureBlock];
 
 	} else {
 
@@ -85,8 +86,8 @@ NSString * const WARemoteAttachmentSmallSubtype = @"small";
 			long long fileSize = [[asset defaultRepresentation] size];
 			Byte *byteData = (Byte *)malloc(fileSize);
 			[[asset defaultRepresentation] getBytes:byteData fromOffset:0 length:fileSize error:nil];
-			NSURL *copiedFileURL = [[WADataStore defaultStore] persistentFileURLForData:[NSData dataWithBytesNoCopy:byteData length:fileSize freeWhenDone:YES] extension:@"jpeg"];
-			[self createAttachmentWithCopiedFile:copiedFileURL group:aGroupIdentifier options:options onSuccess:successBlock onFailure:failureBlock];
+			NSData *fileData = [NSData dataWithBytesNoCopy:byteData length:fileSize freeWhenDone:YES];
+			[self createAttachmentWithFileData:fileData name:[[asset defaultRepresentation] filename] group:aGroupIdentifier options:options onSuccess:successBlock onFailure:failureBlock];
 
 		} failureBlock:^(NSError *error) {
 
@@ -98,10 +99,8 @@ NSString * const WARemoteAttachmentSmallSubtype = @"small";
 
 }
 
-- (void) createAttachmentWithCopiedFile:(NSURL *)aCopiedFileURL group:(NSString *)aGroupIdentifier options:(NSDictionary *)options onSuccess:(void(^)(NSString *attachmentIdentifier))successBlock onFailure:(void(^)(NSError *error))failureBlock {
+- (void) createAttachmentWithFileData:(NSData *)fileData name:(NSString *)aFileName group:(NSString *)aGroupIdentifier options:(NSDictionary *)options onSuccess:(void(^)(NSString *attachmentIdentifier))successBlock onFailure:(void(^)(NSError *error))failureBlock {
 
-	NSParameterAssert([aCopiedFileURL isFileURL] && [[NSFileManager defaultManager] fileExistsAtPath:[aCopiedFileURL path]]);
-	NSParameterAssert([[aCopiedFileURL pathExtension] length]);
 	NSParameterAssert(aGroupIdentifier);
 		
 	NSMutableDictionary *mergedOptions = [NSMutableDictionary dictionaryWithObjectsAndKeys:
@@ -119,6 +118,7 @@ NSString * const WARemoteAttachmentSmallSubtype = @"small";
 	NSURL *proxyImage = [mergedOptions objectForKey:kWARemoteAttachmentRepresentingImageURL];
 	NSString *updatedObjectID = [mergedOptions objectForKey:kWARemoteAttachmentUpdatedObjectIdentifier];
 	NSString *articleIdentifier = [mergedOptions objectForKey:kWARemoteArticleIdentifier];
+	NSString *fileCreateTime = [[WADataStore defaultStore] ISO8601StringFromDate:[mergedOptions objectForKey:kWARemoteAttachmentCreateTime]];
 	WAFileExif *exif = [mergedOptions objectForKey:kWARemoteAttachmentExif];
 	NSString *exifJsonString = nil;
 	if (exif) {
@@ -176,31 +176,9 @@ NSString * const WARemoteAttachmentSmallSubtype = @"small";
 		}
 	}
 	
-	if (type == WARemoteAttachmentUnknownType) {
-	
-		//	Time for some inference
-		
-		NSString *pathExtension = [aCopiedFileURL pathExtension];
-		BOOL fileIsImage = NO;
-		if (pathExtension) {
-			CFStringRef fileUTI = UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, (__bridge CFStringRef)pathExtension, kUTTypeItem);
-			if (fileUTI) {
-				fileIsImage = UTTypeConformsTo(fileUTI, kUTTypeImage);
-				CFRelease(fileUTI);
-			}
-		}
-		
-		if (fileIsImage) {
-			type = WARemoteAttachmentImageType;
-		} else {
-			type = WARemoteAttachmentDocumentType;
-		}
-	
-	}
-	
-	
 	NSMutableDictionary *sentRemoteOptions = [NSMutableDictionary dictionaryWithObjectsAndKeys:
-		aCopiedFileURL, @"file",
+		aFileName, @"file",
+		fileData, @"file_data",
 		aGroupIdentifier, @"group_id",
 	nil];
 	
@@ -216,7 +194,7 @@ NSString * const WARemoteAttachmentSmallSubtype = @"small";
 		}
 		case WARemoteAttachmentUnknownType:
 		default: {
-			[NSException raise:NSInternalInconsistencyException format:@"Could not send a file %@ with unknown remote type", aCopiedFileURL];
+			[NSException raise:NSInternalInconsistencyException format:@"Could not send a file %@ with unknown remote type", aFileName];
 			break;
 		}
 	}
@@ -232,6 +210,7 @@ NSString * const WARemoteAttachmentSmallSubtype = @"small";
 	stitch(updatedObjectID, @"object_id");
 	stitch(articleIdentifier, @"post_id");
 	stitch(exifJsonString, @"exif");
+	stitch(fileCreateTime, @"file_create_time");
 	
 	[self.engine fireAPIRequestNamed:@"attachments/upload" withArguments:nil options:[NSDictionary dictionaryWithObjectsAndKeys:
 	
@@ -243,15 +222,11 @@ NSString * const WARemoteAttachmentSmallSubtype = @"small";
 		if (successBlock)
 			successBlock([inResponseOrNil objectForKey:@"object_id"]);
 		
-		[[NSFileManager defaultManager] removeItemAtURL:aCopiedFileURL error:nil];
-		
 	} failureHandler:WARemoteInterfaceGenericFailureHandler(^ (NSError *anError){
 	
 		if (failureBlock)
 			failureBlock(anError);
 			
-		[[NSFileManager defaultManager] removeItemAtURL:aCopiedFileURL error:nil];
-	
 	})];
 
 }
