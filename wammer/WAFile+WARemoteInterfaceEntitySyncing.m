@@ -428,7 +428,7 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
 
 					[[WAAssetsLibraryManager defaultManager] assetForURL:[NSURL URLWithString:file.assetURL] resultBlock:^(ALAsset *asset) {
 
-						UIImage *image = [UIImage imageWithCGImage:[[asset defaultRepresentation] fullResolutionImage]];
+						UIImage *image = [[asset defaultRepresentation] irImage];
 						[file makeThumbnailsWithImage:image  options:WAThumbnailMakeOptionMedium];
 
 						NSError *error = nil;
