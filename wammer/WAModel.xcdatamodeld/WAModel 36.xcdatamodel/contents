@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model name="" userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="1487" systemVersion="12B19" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
+<model name="" userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="1810" systemVersion="12C54" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="WAArticle" representedClassName="WAArticle">
         <attribute name="creationDate" optional="YES" attributeType="Date" indexed="YES" elementID="timestamp">
             <userInfo/>
@@ -117,6 +117,7 @@
         <relationship name="article" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="WAArticle" inverseName="files" inverseEntity="WAArticle">
             <userInfo/>
         </relationship>
+        <relationship name="exif" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="WAFileExif" inverseName="file" inverseEntity="WAFileExif" syncable="YES"/>
         <relationship name="owner" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="WAUser" inverseName="files" inverseEntity="WAUser">
             <userInfo/>
         </relationship>
@@ -128,6 +129,24 @@
             </compoundIndex>
         </compoundIndexes>
         <userInfo/>
+    </entity>
+    <entity name="WAFileExif" representedClassName="WAFileExif" syncable="YES">
+        <attribute name="apertureValue" optional="YES" attributeType="Double" syncable="YES"/>
+        <attribute name="colorSpace" optional="YES" attributeType="Integer 16" syncable="YES"/>
+        <attribute name="dateTime" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="dateTimeDigitized" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="dateTimeOriginal" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="exposureTime" optional="YES" attributeType="Double" syncable="YES"/>
+        <attribute name="flash" optional="YES" attributeType="Integer 16" syncable="YES"/>
+        <attribute name="fNumber" optional="YES" attributeType="Double" syncable="YES"/>
+        <attribute name="focalLength" optional="YES" attributeType="Double" syncable="YES"/>
+        <attribute name="gpsLatitude" optional="YES" attributeType="Double" syncable="YES"/>
+        <attribute name="gpsLongitude" optional="YES" attributeType="Double" syncable="YES"/>
+        <attribute name="isoSpeedRatings" optional="YES" attributeType="Integer 16" syncable="YES"/>
+        <attribute name="make" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="model" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="whiteBalance" optional="YES" attributeType="Integer 16" syncable="YES"/>
+        <relationship name="file" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="WAFile" inverseName="exif" inverseEntity="WAFile" syncable="YES"/>
     </entity>
     <entity name="WAFilePageElement" representedClassName="WAFilePageElement" syncable="YES">
         <attribute name="thumbnailFilePath" optional="YES" attributeType="String" syncable="YES"/>
@@ -237,7 +256,8 @@
     <elements>
         <element name="WAArticle" positionX="0" positionY="0" width="128" height="315"/>
         <element name="WAComment" positionX="0" positionY="0" width="128" height="135"/>
-        <element name="WAFile" positionX="0" positionY="0" width="128" height="450"/>
+        <element name="WAFile" positionX="0" positionY="0" width="128" height="465"/>
+        <element name="WAFileExif" positionX="160" positionY="192" width="128" height="285"/>
         <element name="WAFilePageElement" positionX="0" positionY="0" width="128" height="90"/>
         <element name="WAGroup" positionX="0" positionY="0" width="128" height="120"/>
         <element name="WAOpenGraphElement" positionX="0" positionY="0" width="128" height="195"/>

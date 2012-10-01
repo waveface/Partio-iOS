@@ -39,6 +39,8 @@ extern NSString * const kWARemoteAttachmentUpdatedObjectIdentifier;
 extern NSString * const kWARemoteAttachmentSubtype;
 
 extern NSString * const kWARemoteArticleIdentifier;
+extern NSString * const kWARemoteAttachmentExif;
+extern NSString * const kWARemoteAttachmentCreateTime;
 
 //	Maps to remote values
 

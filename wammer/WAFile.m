@@ -41,5 +41,6 @@
 @dynamic owner;
 @dynamic pageElements;
 @dynamic representedArticle;
+@dynamic exif;
 
 @end

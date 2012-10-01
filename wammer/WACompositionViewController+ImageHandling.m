@@ -17,6 +17,7 @@
 #import "IRAQPhotoPickerController.h"
 #import "WAAssetsLibraryManager.h"
 #import "WAFile+ThumbnailMaker.h"
+#import "WAFileExif.h"
 
 NSString * const WACompositionImageInsertionUsesCamera = @"WACompositionImageInsertionUsesCamera";
 NSString * const WACompositionImageInsertionAnimatePresentation = @"WACompositionImageInsertionAnimatePresentation";
@@ -245,7 +246,7 @@ NSString * const kDismissesSelfIfCameraCancelled = @"-[WACompositionViewControll
 			WAArticle *article = (WAArticle *)[context irManagedObjectForURI:articleURI];
 			NSCParameterAssert(article);
 						
-			WAFile *file = (WAFile *)[WAFile objectInsertingIntoContext:article.managedObjectContext withRemoteDictionary:[NSDictionary dictionary]];
+			WAFile *file = (WAFile *)[WAFile objectInsertingIntoContext:article.managedObjectContext withRemoteDictionary:@{}];
 			
 			NSError *error = nil;
 			if (![file.managedObjectContext obtainPermanentIDsForObjects:[NSArray arrayWithObjects:file, article, nil] error:&error])
@@ -259,6 +260,36 @@ NSString * const kDismissesSelfIfCameraCancelled = @"-[WACompositionViewControll
 
 			file.assetURL = [[[representedAsset defaultRepresentation] url] absoluteString];
 			file.resourceType = (NSString *)kUTTypeImage;
+			file.timestamp = [representedAsset valueForProperty:ALAssetPropertyDate];
+
+			NSDictionary *exifData = [[[representedAsset defaultRepresentation] metadata] objectForKey:@"{Exif}"];
+			NSDictionary *tiffData =	[[[representedAsset defaultRepresentation] metadata] objectForKey:@"{TIFF}"];
+			NSDictionary *gpsData = [[[representedAsset defaultRepresentation] metadata] objectForKey:@"{GPS}"];
+			WAFileExif *exif = (WAFileExif *)[WAFileExif objectInsertingIntoContext:file.managedObjectContext withRemoteDictionary:@{}];
+			if (exifData) {
+				exif.dateTimeOriginal = [exifData objectForKey:@"DateTimeOriginal"];
+				exif.dateTimeDigitized = [exifData objectForKey:@"DateTimeDigitized"];
+				exif.exposureTime = [exifData	objectForKey:@"ExposureTime"];
+				exif.fNumber = [exifData objectForKey:@"FNumber"];
+				exif.apertureValue = [exifData objectForKey:@"ApertureValue"];
+				exif.focalLength = [exifData objectForKey:@"FocalLength"];
+				exif.flash = [exifData objectForKey:@"Flash"];
+				if ([exifData objectForKey:@"ISOSpeedRatings"] && [[exifData objectForKey:@"ISOSpeedRatings"] count] > 0) {
+					exif.isoSpeedRatings = [[exifData objectForKey:@"ISOSpeedRatings"] objectAtIndex:0];
+				}
+				exif.colorSpace = [exifData objectForKey:@"ColorSpace"];
+				exif.whiteBalance = [exifData objectForKey:@"WhiteBalance"];
+			}
+			if (tiffData) {
+				exif.dateTime = [tiffData objectForKey:@"DateTime"];
+				exif.model = [tiffData objectForKey:@"Model"];
+				exif.make = [tiffData objectForKey:@"Make"];
+			}
+			if (gpsData) {
+				exif.gpsLongitude = [gpsData objectForKey:@"Longitude"];
+				exif.gpsLatitude = [gpsData objectForKey:@"Latitude"];
+			}
+			file.exif = exif;
 
 			NSError *savingError = nil;
 			if (![context save:&savingError])
