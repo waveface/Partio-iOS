@@ -26,9 +26,11 @@ TF_NOTES="$PROJECT_NAME $VERSION_MARKETING ($VERSION_BUILD) # $COMMIT_SHA\n$GIT_
 TF_NOTIFY="True"
 TF_DIST_LISTS="Developer"
 
-if [[ `git tag -l $VERSION_BUILD` == "" ]]; then
-    `git tag $VERSION_BUILD`
-    `git push origin $VERSION_BUILD`
+if [ -z "$1" ]; then TAG_PREFIX="dev"; else TAG_PREFIX=$1; fi
+
+if [[ `git tag -l $TAG_PREFIX-$VERSION_BUILD` == "" ]]; then
+    `git tag $TAG_PREFIX-$VERSION_BUILD`
+    `git push origin $TAG_PREFIX-$VERSION_BUILD`
 
     curl  http://testflightapp.com/api/builds.json \
      -F file=@"$IPA_NAME" \
@@ -39,5 +41,5 @@ if [[ `git tag -l $VERSION_BUILD` == "" ]]; then
      -F notify="$TF_NOTIFY" \
      -F distribution_lists="$TF_DIST_LISTS"
 else
-    echo "tag '$VERSION_BUILD' already exists";
+    echo "tag '$TAG_PREFIX-$VERSION_BUILD' already exists";
 fi
