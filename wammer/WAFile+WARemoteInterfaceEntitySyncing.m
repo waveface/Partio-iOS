@@ -422,6 +422,10 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
 				[options setObject:file.exif forKey:kWARemoteAttachmentExif];
 			}
 
+			if (file.importTime) {
+				[options setObject:file.importTime forKey:kWARemoteAttachmentImportTime];
+			}
+
 			if (!isValidPath(thumbnailFilePath)) {
 				
 				if (file.assetURL) {
@@ -513,6 +517,10 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
 
 			if (file.timestamp) {
 				[options setObject:file.timestamp forKey:kWARemoteAttachmentCreateTime];
+			}
+
+			if (file.importTime) {
+				[options setObject:file.importTime forKey:kWARemoteAttachmentImportTime];
 			}
 
 			NSString *sentResourcePath = file.resourceFilePath;

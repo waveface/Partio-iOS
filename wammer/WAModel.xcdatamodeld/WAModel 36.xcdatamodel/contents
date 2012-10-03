@@ -76,6 +76,7 @@
         <attribute name="identifier" optional="YES" attributeType="String" indexed="YES">
             <userInfo/>
         </attribute>
+        <attribute name="importTime" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="largeThumbnailFilePath" optional="YES" attributeType="String">
             <userInfo/>
         </attribute>
@@ -256,7 +257,7 @@
     <elements>
         <element name="WAArticle" positionX="0" positionY="0" width="128" height="315"/>
         <element name="WAComment" positionX="0" positionY="0" width="128" height="135"/>
-        <element name="WAFile" positionX="0" positionY="0" width="128" height="465"/>
+        <element name="WAFile" positionX="0" positionY="0" width="128" height="480"/>
         <element name="WAFileExif" positionX="160" positionY="192" width="128" height="285"/>
         <element name="WAFilePageElement" positionX="0" positionY="0" width="128" height="90"/>
         <element name="WAGroup" positionX="0" positionY="0" width="128" height="120"/>

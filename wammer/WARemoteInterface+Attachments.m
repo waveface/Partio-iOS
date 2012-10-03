@@ -25,6 +25,7 @@ NSString * const kWARemoteAttachmentSubtype = @"kWARemoteAttachmentDestinationIm
 NSString * const kWARemoteArticleIdentifier = @"kWARemoteArticleIdentifier";
 NSString * const kWARemoteAttachmentExif = @"kWARemoteAttachmentExif";
 NSString * const kWARemoteAttachmentCreateTime = @"kWARemoteAttachmentCreateTime";
+NSString * const kWARemoteAttachmentImportTime = @"kWARemoteAttachmentImportTime";
 NSString * const WARemoteAttachmentOriginalSubtype = @"origin";
 NSString * const WARemoteAttachmentLargeSubtype = @"large";
 NSString * const WARemoteAttachmentMediumSubtype = @"medium";
@@ -119,6 +120,7 @@ NSString * const WARemoteAttachmentSmallSubtype = @"small";
 	NSString *updatedObjectID = [mergedOptions objectForKey:kWARemoteAttachmentUpdatedObjectIdentifier];
 	NSString *articleIdentifier = [mergedOptions objectForKey:kWARemoteArticleIdentifier];
 	NSString *fileCreateTime = [[WADataStore defaultStore] ISO8601StringFromDate:[mergedOptions objectForKey:kWARemoteAttachmentCreateTime]];
+	NSString *fileImportTime = [[WADataStore defaultStore] ISO8601StringFromDate:[mergedOptions objectForKey:kWARemoteAttachmentImportTime]];
 	WAFileExif *exif = [mergedOptions objectForKey:kWARemoteAttachmentExif];
 	NSString *exifJsonString = nil;
 	if (exif) {
@@ -211,6 +213,7 @@ NSString * const WARemoteAttachmentSmallSubtype = @"small";
 	stitch(articleIdentifier, @"post_id");
 	stitch(exifJsonString, @"exif");
 	stitch(fileCreateTime, @"file_create_time");
+	stitch(fileImportTime, @"import_time");
 	
 	[self.engine fireAPIRequestNamed:@"attachments/upload" withArguments:nil options:[NSDictionary dictionaryWithObjectsAndKeys:
 	

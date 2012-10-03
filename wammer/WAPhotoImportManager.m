@@ -92,6 +92,8 @@
 	self.finished = NO;
 	self.canceled = NO;
 
+	NSDate *importTime = [NSDate date];
+
 	NSManagedObjectContext *context = self.managedObjectContext;
 	__weak WAPhotoImportManager *wSelf = self;
 
@@ -133,6 +135,7 @@
 					file.assetURL = [[[asset defaultRepresentation] url] absoluteString];
 					file.resourceType = (NSString *)kUTTypeImage;
 					file.timestamp = [asset valueForProperty:ALAssetPropertyDate];
+					file.importTime = importTime;
 					
 					if (!article.creationDate) {
 						article.creationDate = file.timestamp;
