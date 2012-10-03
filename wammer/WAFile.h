@@ -38,6 +38,7 @@
 @property (nonatomic, retain) NSDate * timestamp;
 @property (nonatomic, retain) NSString * title;
 @property (nonatomic, retain) NSString * extraSmallThumbnailFilePath;
+@property (nonatomic, retain) NSDate * importTime;
 @property (nonatomic, retain) WAArticle *article;
 @property (nonatomic, retain) WAUser *owner;
 @property (nonatomic, retain) NSOrderedSet *pageElements;
