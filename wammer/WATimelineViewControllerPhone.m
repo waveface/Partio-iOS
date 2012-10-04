@@ -15,6 +15,7 @@
 #import "UIKit+IRAdditions.h"
 
 #import "WADefines.h"
+#import "WAAppDelegate.h"
 #import "WARemoteInterface.h"
 #import "WADataStore.h"
 #import "WADataStore+WARemoteInterfaceAdditions.h"
@@ -1234,13 +1235,13 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 	__weak WATimelineViewControllerPhone *wSelf = self;
 	__weak WAUserInfoViewController *wUserInfoVC = userInfoVC;
 	
-	userInfoVC.navigationItem.leftBarButtonItem = [IRBarButtonItem itemWithSystemItem:UIBarButtonSystemItemDone wiredAction:^(IRBarButtonItem *senderItem) {
+	userInfoVC.navigationItem.rightBarButtonItem = [IRBarButtonItem itemWithSystemItem:UIBarButtonSystemItemDone wiredAction:^(IRBarButtonItem *senderItem) {
 		
 		[wUserInfoVC.navigationController dismissViewControllerAnimated:YES completion:nil];
 		
 	}];
 	
-	userInfoVC.navigationItem.rightBarButtonItem = [IRBarButtonItem itemWithTitle:NSLocalizedString(@"ACTION_SIGN_OUT", nil) action:^{
+	userInfoVC.navigationItem.leftBarButtonItem = [IRBarButtonItem itemWithTitle:NSLocalizedString(@"ACTION_SIGN_OUT", nil) action:^{
 
 		IRAction *cancelAction = [IRAction actionWithTitle:NSLocalizedString(@"ACTION_CANCEL", nil) block:nil];
 		
@@ -1254,6 +1255,9 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 				WAOverlayBezel *bezel = [WAOverlayBezel bezelWithStyle:WADefaultBezelStyle];
 				[bezel show];
 				[[WAPhotoImportManager defaultManager] cancelPhotoImportWithCompletionBlock:^{
+					
+					[((WAAppDelegate*)AppDelegate()) unsubscribeRemoteNotification];
+					
 					[bezel dismiss];
 					[wSelf.delegate applicationRootViewControllerDidRequestReauthentication:nil];
 				}];

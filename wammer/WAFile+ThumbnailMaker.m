@@ -27,20 +27,19 @@ static CGFloat const kWAFileLargeImageSideLength = 2048;
 	
 	WADataStore *ds = [WADataStore defaultStore];
 	CGSize imageSize = image.size;
-	UIImage *standardImage = [image irStandardImage];
 
 	if (options & WAThumbnailMakeOptionSmall) {
 		CGFloat const smallSideLength = kWAFileSmallImageSideLength;
 		
 		if ((imageSize.width > smallSideLength) || (imageSize.height > smallSideLength)) {
 			
-			UIImage *smallThumbnailImage = [standardImage irScaledImageWithSize:IRGravitize((CGRect){ CGPointZero, (CGSize){ smallSideLength, smallSideLength } }, image.size, kCAGravityResizeAspect).size];
+			UIImage *smallThumbnailImage = [image irScaledImageWithSize:IRGravitize((CGRect){ CGPointZero, (CGSize){ smallSideLength, smallSideLength } }, image.size, kCAGravityResizeAspect).size];
 			
 			self.smallThumbnailFilePath = [[ds persistentFileURLForData:UIImageJPEGRepresentation(smallThumbnailImage, 0.85f) extension:@"jpeg"] path];
 			
 		} else {
 			
-			self.smallThumbnailFilePath = [[ds persistentFileURLForData:UIImageJPEGRepresentation(standardImage, 0.85f) extension:@"jpeg"] path];
+			self.smallThumbnailFilePath = [[ds persistentFileURLForData:UIImageJPEGRepresentation(image, 0.85f) extension:@"jpeg"] path];
 			
 		}
 	}
@@ -50,13 +49,13 @@ static CGFloat const kWAFileLargeImageSideLength = 2048;
 		
 		if ((imageSize.width > mediumSideLength) || (imageSize.height > mediumSideLength)) {
 			
-			UIImage *thumbnailImage = [standardImage irScaledImageWithSize:IRGravitize((CGRect){ CGPointZero, (CGSize){ mediumSideLength, mediumSideLength } }, image.size, kCAGravityResizeAspect).size];
+			UIImage *thumbnailImage = [image irScaledImageWithSize:IRGravitize((CGRect){ CGPointZero, (CGSize){ mediumSideLength, mediumSideLength } }, image.size, kCAGravityResizeAspect).size];
 			
 			self.thumbnailFilePath = [[ds persistentFileURLForData:UIImageJPEGRepresentation(thumbnailImage, 0.85f) extension:@"jpeg"] path];
 			
 		} else {
 			
-			self.thumbnailFilePath = [[ds persistentFileURLForData:UIImageJPEGRepresentation(standardImage, 0.85f) extension:@"jpeg"] path];
+			self.thumbnailFilePath = [[ds persistentFileURLForData:UIImageJPEGRepresentation(image, 0.85f) extension:@"jpeg"] path];
 			
 		}
 	}
@@ -66,13 +65,13 @@ static CGFloat const kWAFileLargeImageSideLength = 2048;
 		
 		if ((imageSize.width > extraSmallSideLength) || (imageSize.height > extraSmallSideLength)) {
 			
-			UIImage *extraSmallThumbnailImage = [standardImage irScaledImageWithSize:IRGravitize((CGRect){ CGPointZero, (CGSize){ extraSmallSideLength, extraSmallSideLength } }, image.size, kCAGravityResizeAspectFill).size];
+			UIImage *extraSmallThumbnailImage = [image irScaledImageWithSize:IRGravitize((CGRect){ CGPointZero, (CGSize){ extraSmallSideLength, extraSmallSideLength } }, image.size, kCAGravityResizeAspectFill).size];
 			
 			self.extraSmallThumbnailFilePath = [[[WADataStore defaultStore] persistentFileURLForData:UIImageJPEGRepresentation(extraSmallThumbnailImage, 0.85f) extension:@"jpeg"] path];
 			
 		} else {
 			
-			self.extraSmallThumbnailFilePath = [[[WADataStore defaultStore] persistentFileURLForData:UIImageJPEGRepresentation(standardImage, 0.85f) extension:@"jpeg"] path];
+			self.extraSmallThumbnailFilePath = [[[WADataStore defaultStore] persistentFileURLForData:UIImageJPEGRepresentation(image, 0.85f) extension:@"jpeg"] path];
 			
 		}
 	}

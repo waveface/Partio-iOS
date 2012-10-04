@@ -12,6 +12,9 @@
 #import "IRWebAPIEngine+FormMultipart.h"
 #import "WAAssetsLibraryManager.h"
 #import <AssetsLibrary+IRAdditions.h>
+#import <Foundation/Foundation.h>
+
+#import "WAFileExif.h"
 
 NSString * const kWARemoteAttachmentType = @"WARemoteAttachmentType";
 NSString * const kWARemoteAttachmentTitle = @"WARemoteAttachmentTitle";
@@ -20,10 +23,52 @@ NSString * const kWARemoteAttachmentRepresentingImageURL = @"WARemoteAttachmentR
 NSString * const kWARemoteAttachmentUpdatedObjectIdentifier = @"WARemoteAttachmentUpdatedObjectIdentifier";
 NSString * const kWARemoteAttachmentSubtype = @"kWARemoteAttachmentDestinationImageType";
 NSString * const kWARemoteArticleIdentifier = @"kWARemoteArticleIdentifier";
+NSString * const kWARemoteAttachmentExif = @"kWARemoteAttachmentExif";
+NSString * const kWARemoteAttachmentCreateTime = @"kWARemoteAttachmentCreateTime";
+NSString * const kWARemoteAttachmentImportTime = @"kWARemoteAttachmentImportTime";
 NSString * const WARemoteAttachmentOriginalSubtype = @"origin";
 NSString * const WARemoteAttachmentLargeSubtype = @"large";
 NSString * const WARemoteAttachmentMediumSubtype = @"medium";
 NSString * const WARemoteAttachmentSmallSubtype = @"small";
+
+
+@implementation NSNumber (WAAdditions)
+
+/* Convert NSNumber to rational value
+ * ref: http://www.ics.uci.edu/~eppstein/numth/frap.c
+ */
+- (NSArray *) rationalValue {
+
+	long m[2][2];
+	double x, startx;
+	const long MAXDENOM = 10000;
+	long ai;
+
+	startx = x = [self doubleValue];
+
+	/* initialize matrix */
+	m[0][0] = m[1][1] = 1;
+	m[0][1] = m[1][0] = 0;
+
+	/* loop finding terms until denom gets too big */
+	while (m[1][0] *  ( ai = (long)x ) + m[1][1] <= MAXDENOM) {
+		long t;
+		t = m[0][0] * ai + m[0][1];
+		m[0][1] = m[0][0];
+		m[0][0] = t;
+		t = m[1][0] * ai + m[1][1];
+		m[1][1] = m[1][0];
+		m[1][0] = t;
+		if(x==(double)ai) break;     // AF: division by zero
+		x = 1/(x - (double) ai);
+		if(x>(double)0x7FFFFFFF) break;  // AF: representation failure
+	}
+
+	return @[[NSNumber numberWithLong:m[0][0]], [NSNumber numberWithLong:m[1][0]]];
+
+}
+
+@end
 
 
 @implementation WARemoteInterface (Attachments)
@@ -32,8 +77,8 @@ NSString * const WARemoteAttachmentSmallSubtype = @"small";
 
 	if ([aFileURL isFileURL]) {
 
-		NSURL *copiedFileURL = [[WADataStore defaultStore] persistentFileURLForFileAtURL:aFileURL];
-		[self createAttachmentWithCopiedFile:copiedFileURL group:aGroupIdentifier options:options onSuccess:successBlock onFailure:failureBlock];
+		NSData *fileData = [NSData dataWithContentsOfFile:[aFileURL path] options:NSDataReadingMappedIfSafe error:nil];		
+		[self createAttachmentWithFileData:fileData name:[[aFileURL path] lastPathComponent] group:aGroupIdentifier options:options onSuccess:successBlock onFailure:failureBlock];
 
 	} else {
 
@@ -42,8 +87,8 @@ NSString * const WARemoteAttachmentSmallSubtype = @"small";
 			long long fileSize = [[asset defaultRepresentation] size];
 			Byte *byteData = (Byte *)malloc(fileSize);
 			[[asset defaultRepresentation] getBytes:byteData fromOffset:0 length:fileSize error:nil];
-			NSURL *copiedFileURL = [[WADataStore defaultStore] persistentFileURLForData:[NSData dataWithBytesNoCopy:byteData length:fileSize freeWhenDone:YES] extension:@"jpeg"];
-			[self createAttachmentWithCopiedFile:copiedFileURL group:aGroupIdentifier options:options onSuccess:successBlock onFailure:failureBlock];
+			NSData *fileData = [NSData dataWithBytesNoCopy:byteData length:fileSize freeWhenDone:YES];
+			[self createAttachmentWithFileData:fileData name:[[asset defaultRepresentation] filename] group:aGroupIdentifier options:options onSuccess:successBlock onFailure:failureBlock];
 
 		} failureBlock:^(NSError *error) {
 
@@ -55,10 +100,8 @@ NSString * const WARemoteAttachmentSmallSubtype = @"small";
 
 }
 
-- (void) createAttachmentWithCopiedFile:(NSURL *)aCopiedFileURL group:(NSString *)aGroupIdentifier options:(NSDictionary *)options onSuccess:(void(^)(NSString *attachmentIdentifier))successBlock onFailure:(void(^)(NSError *error))failureBlock {
+- (void) createAttachmentWithFileData:(NSData *)fileData name:(NSString *)aFileName group:(NSString *)aGroupIdentifier options:(NSDictionary *)options onSuccess:(void(^)(NSString *attachmentIdentifier))successBlock onFailure:(void(^)(NSError *error))failureBlock {
 
-	NSParameterAssert([aCopiedFileURL isFileURL] && [[NSFileManager defaultManager] fileExistsAtPath:[aCopiedFileURL path]]);
-	NSParameterAssert([[aCopiedFileURL pathExtension] length]);
 	NSParameterAssert(aGroupIdentifier);
 		
 	NSMutableDictionary *mergedOptions = [NSMutableDictionary dictionaryWithObjectsAndKeys:
@@ -76,32 +119,68 @@ NSString * const WARemoteAttachmentSmallSubtype = @"small";
 	NSURL *proxyImage = [mergedOptions objectForKey:kWARemoteAttachmentRepresentingImageURL];
 	NSString *updatedObjectID = [mergedOptions objectForKey:kWARemoteAttachmentUpdatedObjectIdentifier];
 	NSString *articleIdentifier = [mergedOptions objectForKey:kWARemoteArticleIdentifier];
-	
-	if (type == WARemoteAttachmentUnknownType) {
-	
-		//	Time for some inference
-		
-		NSString *pathExtension = [aCopiedFileURL pathExtension];
-		BOOL fileIsImage = NO;
-		if (pathExtension) {
-			CFStringRef fileUTI = UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, (__bridge CFStringRef)pathExtension, kUTTypeItem);
-			if (fileUTI) {
-				fileIsImage = UTTypeConformsTo(fileUTI, kUTTypeImage);
-				CFRelease(fileUTI);
+	NSString *fileCreateTime = [[WADataStore defaultStore] ISO8601StringFromDate:[mergedOptions objectForKey:kWARemoteAttachmentCreateTime]];
+	NSString *fileImportTime = [[WADataStore defaultStore] ISO8601StringFromDate:[mergedOptions objectForKey:kWARemoteAttachmentImportTime]];
+	WAFileExif *exif = [mergedOptions objectForKey:kWARemoteAttachmentExif];
+	NSString *exifJsonString = nil;
+	if (exif) {
+		NSMutableDictionary *exifData = [[NSMutableDictionary alloc] init];
+		if (exif.dateTimeOriginal) {
+			[exifData setObject:exif.dateTimeOriginal forKey:@"DateTimeOriginal"];
+		}
+		if (exif.dateTimeDigitized) {
+			[exifData setObject:exif.dateTimeDigitized forKey:@"DateTimeDigitized"];
+		}
+		if (exif.dateTime) {
+			[exifData setObject:exif.dateTime forKey:@"DateTime"];
+		}
+		if (exif.model) {
+			[exifData setObject:exif.model forKey:@"Model"];
+		}
+		if (exif.make) {
+			[exifData setObject:exif.make forKey:@"Make"];
+		}
+		if (exif.exposureTime) {
+			[exifData setObject:[exif.exposureTime rationalValue] forKey:@"ExposureTime"];
+		}
+		if (exif.fNumber) {
+			[exifData setObject:[exif.fNumber rationalValue] forKey:@"FNumber"];
+		}
+		if (exif.apertureValue) {
+			[exifData setObject:[exif.apertureValue rationalValue] forKey:@"ApertureValue"];
+		}
+		if (exif.focalLength) {
+			[exifData setObject:[exif.focalLength rationalValue] forKey:@"FocalLength"];
+		}
+		if (exif.flash) {
+			[exifData setObject:exif.flash forKey:@"Flash"];
+		}
+		if (exif.isoSpeedRatings) {
+			[exifData setObject:exif.isoSpeedRatings forKey:@"ISOSpeedRatings"];
+		}
+		if (exif.colorSpace) {
+			[exifData setObject:exif.colorSpace forKey:@"ColorSpace"];
+		}
+		if (exif.whiteBalance) {
+			[exifData setObject:exif.whiteBalance forKey:@"WhiteBalance"];
+		}
+		if (exif.gpsLongitude && exif.gpsLatitude) {
+			[exifData setObject:@{@"longitude":exif.gpsLongitude, @"latitude":exif.gpsLatitude} forKey:@"gps"];
+		}
+
+		if ([NSJSONSerialization isValidJSONObject:exifData]) {
+			NSError *error = nil;
+			NSData *exifJsonData = [NSJSONSerialization dataWithJSONObject:exifData options:0 error:&error];
+			if (error) {
+				NSLog(@"Unable to create EXIF JSON data from %@", exifData);
 			}
+			exifJsonString = [[NSString alloc] initWithData:exifJsonData encoding:NSUTF8StringEncoding];
 		}
-		
-		if (fileIsImage) {
-			type = WARemoteAttachmentImageType;
-		} else {
-			type = WARemoteAttachmentDocumentType;
-		}
-	
 	}
 	
-	
 	NSMutableDictionary *sentRemoteOptions = [NSMutableDictionary dictionaryWithObjectsAndKeys:
-		aCopiedFileURL, @"file",
+		aFileName, @"file",
+		fileData, @"file_data",
 		aGroupIdentifier, @"group_id",
 	nil];
 	
@@ -117,7 +196,7 @@ NSString * const WARemoteAttachmentSmallSubtype = @"small";
 		}
 		case WARemoteAttachmentUnknownType:
 		default: {
-			[NSException raise:NSInternalInconsistencyException format:@"Could not send a file %@ with unknown remote type", aCopiedFileURL];
+			[NSException raise:NSInternalInconsistencyException format:@"Could not send a file %@ with unknown remote type", aFileName];
 			break;
 		}
 	}
@@ -132,6 +211,9 @@ NSString * const WARemoteAttachmentSmallSubtype = @"small";
 	stitch(proxyImage, @"image");
 	stitch(updatedObjectID, @"object_id");
 	stitch(articleIdentifier, @"post_id");
+	stitch(exifJsonString, @"exif");
+	stitch(fileCreateTime, @"file_create_time");
+	stitch(fileImportTime, @"import_time");
 	
 	[self.engine fireAPIRequestNamed:@"attachments/upload" withArguments:nil options:[NSDictionary dictionaryWithObjectsAndKeys:
 	
@@ -143,15 +225,11 @@ NSString * const WARemoteAttachmentSmallSubtype = @"small";
 		if (successBlock)
 			successBlock([inResponseOrNil objectForKey:@"object_id"]);
 		
-		[[NSFileManager defaultManager] removeItemAtURL:aCopiedFileURL error:nil];
-		
 	} failureHandler:WARemoteInterfaceGenericFailureHandler(^ (NSError *anError){
 	
 		if (failureBlock)
 			failureBlock(anError);
 			
-		[[NSFileManager defaultManager] removeItemAtURL:aCopiedFileURL error:nil];
-	
 	})];
 
 }

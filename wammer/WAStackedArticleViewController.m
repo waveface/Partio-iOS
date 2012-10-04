@@ -323,7 +323,7 @@
 			MAX(0, self.stackView.contentSize.height - oldContentHeightLeft)
 		} animated:NO];
 	
-	}
+	} 
 	
 	if (self.foldsTextStackCell)
 		[self.stackView setContentOffset:CGPointZero animated:YES];
@@ -422,10 +422,23 @@
 	if ((anElement == self.commentsVC.view) || [self.commentsVC.view isDescendantOfView:anElement])
 		preferredHeight = MAX(144, preferredHeight);
 	
-	if (_foldsTextStackCell)
-	if ((anElement == self.textStackCell) || [self.textStackCell isDescendantOfView:anElement])
-		preferredHeight = MIN(144, preferredHeight);
+	if (_foldsTextStackCell) {
+		if ((anElement == self.textStackCell) || [self.textStackCell isDescendantOfView:anElement])
+			preferredHeight = MIN(144, preferredHeight);
+	}
 	
+	if ((anElement == self.textStackCellFoldingToggleWrapperView) || [self.textStackCellFoldingToggleWrapperView isDescendantOfView:anElement]) {
+		
+		if (_foldsTextStackCell)
+			preferredHeight = 0;  // let photo grid view could be aligned with textStackCellFoldingToggleWrapperView when folding
+		else
+			preferredHeight = MAX(44, self.textStackCellFoldingToggle.bounds.size.height);
+		// make more space for less button, this will push the underlining photo grid view out of screen
+		// when unfolding, but it is fine, since user focus on watching text instead of browsing photos
+		
+	}
+
+		
 	CGSize answer = (CGSize){
 		CGRectGetWidth(aStackView.bounds),
 		preferredHeight

@@ -104,7 +104,7 @@ NSString * const kWADataStoreArticleUpdateShowsBezels = @"WADataStoreArticleUpda
 	
 	__weak WADataStore *wSelf = self;
 	
-	NSManagedObjectContext *context = [self disposableMOC];	//	Sigh
+	NSManagedObjectContext *context = [self defaultAutoUpdatedMOC];
 	WAArticle *article = (WAArticle *)[context irManagedObjectForURI:anArticleURI];
 	
 	[[wSelf articlesCurrentlyBeingUpdated] addObject:anArticleURI];

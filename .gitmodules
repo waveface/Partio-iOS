@@ -16,9 +16,6 @@
 [submodule "external/JSONKit"]
 	path = external/JSONKit
 	url = git://github.com/iridia/JSONKit.git
-[submodule "external/IRKeychain"]
-	path = external/IRKeychain
-	url = git://github.com/iridia/IRKeychain.git
 [submodule "external/IRDiscreteLayoutManager"]
 	path = external/IRDiscreteLayoutManager
 	url = git://github.com/waveface/IRDiscreteLayoutManager.git
@@ -76,3 +73,6 @@
 [submodule "external/ViewDeck"]
 	path = external/ViewDeck
 	url = git://github.com/syshen/ViewDeck.git
+[submodule "external/sskeychain"]
+	path = external/sskeychain
+	url = git://github.com/samsoffes/sskeychain.git

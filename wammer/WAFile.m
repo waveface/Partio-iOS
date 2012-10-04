@@ -37,9 +37,11 @@
 @dynamic timestamp;
 @dynamic title;
 @dynamic extraSmallThumbnailFilePath;
+@dynamic importTime;
 @dynamic article;
 @dynamic owner;
 @dynamic pageElements;
 @dynamic representedArticle;
+@dynamic exif;
 
 @end
