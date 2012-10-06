@@ -53,6 +53,7 @@
 
 #import "IIViewDeckController.h"
 
+static float kWATimelinePageSwitchDuration = 0.4f;
 static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPostsViewControllerPhone_RepresentedObjectURI";
 
 @interface WATimelineViewControllerPhone () <NSFetchedResultsControllerDelegate, UIActionSheetDelegate, IASKSettingsDelegate, WAArticleDraftsViewControllerDelegate>
@@ -60,9 +61,12 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 - (WAPulldownRefreshView *) defaultPulldownRefreshView;
 
 @property (nonatomic, readwrite, retain) NSFetchedResultsController *fetchedResultsController;
+@property (nonatomic, readwrite, retain) NSFetchedResultsController *fetchedResultsControllerForIncomingUpdates;
+@property (nonatomic, readwrite, retain) NSFetchedResultsController *fetchedResultsControllerForPreloaded;
 @property (nonatomic, readwrite, retain) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, readwrite, retain) IRActionSheetController *settingsActionSheetController;
 @property (nonatomic, readwrite) BOOL scrollToTopmostPost;
+@property (nonatomic, readwrite, retain) NSDate *currentDisplayedDate;
 
 - (void) refreshData;
 
@@ -81,6 +85,8 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 @implementation WATimelineViewControllerPhone
 @synthesize delegate;
 @synthesize fetchedResultsController;
+@synthesize fetchedResultsControllerForIncomingUpdates;
+@synthesize fetchedResultsControllerForPreloaded;
 @synthesize managedObjectContext;
 @synthesize settingsActionSheetController;
 @synthesize scrollToTopmostPost;
@@ -88,7 +94,7 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 - (void) dealloc {
 	
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:kWACompositionSessionRequestedNotification object:nil];
-	[[WARemoteInterface sharedInterface] removeObserver:self forKeyPath:@"isPostponingDataRetrievalTimerFiring"];
+  [[WARemoteInterface sharedInterface] removeObserver:self forKeyPath:@"isPostponingDataRetrievalTimerFiring"];
   
 }
 
@@ -169,6 +175,21 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 		alphaSpacer,
 	
 	nil];
+		
+	UIBarButtonItem *filterButton = [[UIBarButtonItem alloc]
+																	 initWithTitle:NSLocalizedString(@"VIEW_BUTTON", @"In Phone timeline")
+																	 style:UIBarButtonItemStylePlain
+																	 target:self
+																	 action:@selector(handleFilter:)];
+	
+	self.navigationItem.rightBarButtonItem = filterButton;
+	
+	UIBarButtonItem *slidingMenuButton = [[UIBarButtonItem alloc]
+																				initWithImage:[UIImage imageNamed:@"menu"]
+																				style:UIBarButtonItemStylePlain
+																				target:self.viewDeckController action:@selector(toggleLeftView)];
+	
+	self.navigationItem.leftBarButtonItem = slidingMenuButton;
 	
 	[self setScrollToTopmostPost:NO];
 
@@ -284,8 +305,6 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 
 
 
-
-
 - (void) settingsViewControllerDidEnd:(IASKAppSettingsViewController *)sender {
 
 	//	Do nothing
@@ -333,6 +352,7 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 
 }
 
+#pragma mark - MOC and NSFetchResultsController
 - (NSManagedObjectContext *) managedObjectContext {
 
 	if (managedObjectContext)
@@ -349,7 +369,19 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 	if (fetchedResultsController)
 		return fetchedResultsController;
 
-	NSFetchRequest *fr = [[WADataStore defaultStore] newFetchRequestForAllArticles];
+	NSDate *latestDateWithArticles = [NSDate date];
+	NSFetchRequest *reqForFirst = [[WADataStore defaultStore] newFetchRequestForNewestArticle];
+	WAArticle *article = (WAArticle *)[[self.managedObjectContext executeFetchRequest:reqForFirst error:nil] lastObject];
+	
+	if (article) {
+		
+		latestDateWithArticles = article.creationDate;
+		
+	}
+	
+	self.currentDisplayedDate = latestDateWithArticles;
+
+	NSFetchRequest *fr = [[WADataStore defaultStore] newFetchRequestForArticlesOnDate:self.currentDisplayedDate];
 
 	fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fr managedObjectContext:self.managedObjectContext sectionNameKeyPath:nil cacheName:nil];
 	
@@ -365,6 +397,57 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 	return fetchedResultsController;
 	
 }
+
+- (NSFetchedResultsController *) fetchedResultsControllerForIncomingUpdates {
+
+	if (fetchedResultsControllerForIncomingUpdates)
+		return fetchedResultsControllerForIncomingUpdates;
+		
+	NSFetchRequest *fr = [[WADataStore defaultStore] newFetchRequestForNewestArticle];
+	
+	fetchedResultsControllerForIncomingUpdates = [[NSFetchedResultsController alloc] initWithFetchRequest:fr managedObjectContext:self.managedObjectContext sectionNameKeyPath:nil cacheName:nil];
+	
+	fetchedResultsControllerForIncomingUpdates.delegate = self;
+  
+#if 0
+  NSError *fetchingError;
+	if (![fetchedResultsControllerForIncomingUpdates performFetch:&fetchingError])
+		NSLog(@"error fetching: %@", fetchingError);
+#endif
+	
+	return fetchedResultsControllerForIncomingUpdates;
+
+}
+
+- (NSFetchedResultsController *) fetchedResultsControllerForPreloaded {
+	
+	if (fetchedResultsControllerForPreloaded)
+		return fetchedResultsControllerForPreloaded;
+	
+	NSDate *preDay = [self previousDateWithArticle];
+	if (!preDay)
+		return nil;
+	
+	NSFetchRequest *fr = [[WADataStore defaultStore] newFetchRequestForArticlesOnDate:preDay];
+	
+	fetchedResultsControllerForPreloaded = [[NSFetchedResultsController alloc] initWithFetchRequest:fr managedObjectContext:self.managedObjectContext sectionNameKeyPath:nil cacheName:nil];
+	
+	//fetchedResultsControllerForPreloaded.delegate = self;
+  
+  NSError *fetchingError;
+	if (![fetchedResultsControllerForPreloaded performFetch:&fetchingError])
+		NSLog(@"error fetching: %@", fetchingError);
+	
+	IRTableView *preTbView = [self tableViewRight];
+	if (preTbView)
+		[preTbView reloadData];
+	
+	return fetchedResultsControllerForPreloaded;
+	
+}
+
+#pragma mark -
+
 
 - (WAPulldownRefreshView *) defaultPulldownRefreshView {
 
@@ -392,56 +475,24 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 
 }
 
+#pragma mark - UIViewController lifecycle
 - (void) viewDidLoad {
 
 	[super viewDidLoad];
 	
-	//	NSTimer *timer = [NSTimer scheduledTimerWithTimeInterval:5 target:self selector:@selector(debugCreateArticle:) userInfo:nil repeats:YES];
-	//	[timer fire];
-	
-	self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-		
-	WAPulldownRefreshView *pulldownHeader = [self defaultPulldownRefreshView];
-	
-	self.tableView.pullDownHeaderView = pulldownHeader;
-	self.tableView.onPullDownMove = ^ (CGFloat progress) {
-		[pulldownHeader setProgress:progress animated:YES];
-	};
-	self.tableView.onPullDownEnd = ^ (BOOL didFinish) {
-		if (didFinish) {
-			pulldownHeader.progress = 0;
-			[pulldownHeader setBusy:YES animated:YES];
-			[[WARemoteInterface sharedInterface] performAutomaticRemoteUpdatesNow];
-		}
-	};
-	self.tableView.onPullDownReset = ^ {
-		[pulldownHeader setBusy:NO animated:YES];
-	};
-	
-	self.tableView.separatorColor = [UIColor colorWithRed:232.0/255.0 green:232/255.0 blue:226/255.0 alpha:1.0];
-	self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
-	
 	UILongPressGestureRecognizer *longPressGR = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleMenu:)];
-	[self.tableView addGestureRecognizer:longPressGR];
+	[self.view addGestureRecognizer:longPressGR];
 	
-	UIBarButtonItem *filterButton = [[UIBarButtonItem alloc]
-																	 initWithTitle:NSLocalizedString(@"VIEW_BUTTON", @"In Phone timeline")																	 style:UIBarButtonItemStylePlain
-																	 target:self
-																	 action:@selector(handleFilter:)];
-	
-	self.navigationItem.rightBarButtonItem = filterButton;
-	
-	UIBarButtonItem *slidingMenuButton = [[UIBarButtonItem alloc]
-																				initWithImage:[UIImage imageNamed:@"menu"]
-																				style:UIBarButtonItemStylePlain
-																				target:self.viewDeckController action:@selector(toggleLeftView)];
-	self.navigationItem.leftBarButtonItem = slidingMenuButton;
 }
 
 - (void) viewWillAppear:(BOOL)animated {
 
+	[self fetchedResultsControllerForIncomingUpdates];
 	[self fetchedResultsController];
-  
+	[self fetchedResultsControllerForPreloaded];
+	
+	NSLog(@"loaded at current date: %@", self.currentDisplayedDate);
+
 	[super viewWillAppear:animated];
 	
 	self.navigationItem.titleView.alpha = 1;
@@ -541,6 +592,8 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 
 }
 
+#pragma mark - 
+
 - (void) didReceiveMemoryWarning {
 
 	[super didReceiveMemoryWarning];
@@ -568,21 +621,36 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 	
 }
 
+#pragma mark - UITableView delegate/datasource protocol
 - (NSInteger) numberOfSectionsInTableView:(UITableView *)tableView {
 
-	return [[self.fetchedResultsController sections] count];
+	if (tableView == self.tableView)
+		return [[self.fetchedResultsController sections] count];
+	else
+		return [[self.fetchedResultsControllerForPreloaded sections] count];
 	
 }
 
 - (NSInteger) tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
 	
-	return [(id<NSFetchedResultsSectionInfo>)[[self.fetchedResultsController sections] objectAtIndex:section] numberOfObjects];
+	if (tableView == self.tableView)
+		return [(id<NSFetchedResultsSectionInfo>)[[self.fetchedResultsController sections] objectAtIndex:section] numberOfObjects];
+	else
+		return [(id<NSFetchedResultsSectionInfo>)[[self.fetchedResultsControllerForPreloaded sections] objectAtIndex:section] numberOfObjects];
+
 	
 }
 
 - (UITableViewCell *) tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+
+	NSFetchedResultsController *frc = nil;
 	
-  WAArticle *post = [self.fetchedResultsController objectAtIndexPath:indexPath];
+	if (tableView == self.tableView)
+		frc = self.fetchedResultsController;
+	else
+		frc = self.fetchedResultsControllerForPreloaded;
+		
+  WAArticle *post = [frc objectAtIndexPath:indexPath];
 	
 	WAPostViewCellPhone *cell = [WAPostViewCellPhone cellRepresentingObject:post inTableView:tableView];
 	NSParameterAssert(cell.article == post);
@@ -595,9 +663,16 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 
 	NSParameterAssert([NSThread isMainThread]);
 	
+	NSFetchedResultsController *frc = nil;
+	if (tableView == self.tableView)
+		frc = self.fetchedResultsController;
+	else
+		frc = self.fetchedResultsControllerForPreloaded;
+
+	
 	@autoreleasepool {
     
-		WAArticle *post = [self.fetchedResultsController objectAtIndexPath:indexPath];
+		WAArticle *post = [frc objectAtIndexPath:indexPath];
 		NSCParameterAssert([post isKindOfClass:[WAArticle class]]);
 		
 		NSString *identifier = [WAPostViewCellPhone identifierRepresentingObject:post];
@@ -617,6 +692,36 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 
 }
 
+- (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+	
+	NSCParameterAssert([NSThread isMainThread]);
+	NSCParameterAssert([self isViewLoaded]);
+	NSCParameterAssert(self.view.window);
+	
+	UIMenuController *mc = [UIMenuController sharedMenuController];
+	if ([mc isMenuVisible]) {
+		
+		[mc setMenuVisible:NO animated:YES];
+		
+		NSIndexPath *selectedRowIP = [tableView indexPathForSelectedRow];
+		if (selectedRowIP)
+			[tableView deselectRowAtIndexPath:selectedRowIP animated:YES];
+		
+		return;
+		
+	}
+	
+	WAArticle *post = [self.fetchedResultsController objectAtIndexPath:indexPath];
+	NSCParameterAssert([post isKindOfClass:[WAArticle class]]);
+	
+	UIViewController *pushedVC = [WAArticleViewController controllerForArticle:post style:(WAFullScreenArticleStyle|WASuggestedStyleForArticle(post))];
+	
+	[self.navigationController pushViewController:pushedVC animated:YES];
+	
+}
+
+#pragma mark -
+
 - (IBAction) actionSettings:(id)sender {
 
   [self.settingsActionSheetController.managedActionSheet showFromBarButtonItem:sender animated:YES];
@@ -629,25 +734,38 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 	
 }
 
+- (NSUInteger) supportedInterfaceOrientations {
+	
+	return UIInterfaceOrientationMaskPortrait;
+	
+}
+
 - (void) refreshData {
 
 	[[WARemoteInterface sharedInterface] rescheduleAutomaticRemoteUpdates];
 
 }
 
+#pragma mark - NSFetchedResultsController delegate protocol
 - (void) controllerWillChangeContent:(NSFetchedResultsController *)controller {
 
 	if (![self isViewLoaded])
 		return;
 	
-	[self persistState];
-	[self.tableView beginUpdates];
+	if (controller == self.fetchedResultsController) {
+		[self persistState];
+		[self.tableView beginUpdates];
+	}
 
 }
 
 - (void) controller:(NSFetchedResultsController *)controller didChangeSection:(id<NSFetchedResultsSectionInfo>)sectionInfo atIndex:(NSUInteger)sectionIndex forChangeType:(NSFetchedResultsChangeType)type {
 
 	if (![self isViewLoaded])
+		return;
+	
+	// only update rows for the tableView, which is currently shown on screen
+	if (controller != self.fetchedResultsController)
 		return;
 	
 	switch (type) {
@@ -671,6 +789,22 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 	[self removeCachedRowHeightForObject:anObject];
 
 	if (![self isViewLoaded])
+		return;
+	
+	if (controller == self.fetchedResultsControllerForIncomingUpdates) {
+		// jump to the date
+		NSDate *date = nil;
+		WAArticle *article = anObject;
+		if (article) {
+			if (![self.currentDisplayedDate isEqualToDate:article.creationDate]) {
+				[self jumpToTimelineOnDate:date];
+			}
+		}
+		return;
+	}
+	
+	// only update for the tableView, which is currently shown on the screen
+	if (controller != self.fetchedResultsController)
 		return;
 	
 	switch (type) {
@@ -740,33 +874,7 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 	
 }
 
-- (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-
-	NSCParameterAssert([NSThread isMainThread]);
-	NSCParameterAssert([self isViewLoaded]);
-	NSCParameterAssert(self.view.window);
-	
-	UIMenuController *mc = [UIMenuController sharedMenuController];
-	if ([mc isMenuVisible]) {
-	
-		[mc setMenuVisible:NO animated:YES];
-		
-		NSIndexPath *selectedRowIP = [tableView indexPathForSelectedRow];
-		if (selectedRowIP)
-			[tableView deselectRowAtIndexPath:selectedRowIP animated:YES];
-		
-		return;
-		
-	}
-	
-	WAArticle *post = [self.fetchedResultsController objectAtIndexPath:indexPath];
-	NSCParameterAssert([post isKindOfClass:[WAArticle class]]);
-	
-	UIViewController *pushedVC = [WAArticleViewController controllerForArticle:post style:(WAFullScreenArticleStyle|WASuggestedStyleForArticle(post))];
-
-	[self.navigationController pushViewController:pushedVC animated:YES];
-
-}
+#pragma mark - 
 
 - (void) beginCompositionSessionWithURL:(NSURL *)anURL animated:(BOOL)animate onCompositionViewDidAppear:(void (^)(WACompositionViewController *))callback {
 
@@ -904,6 +1012,164 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 
 }
 
+#pragma mark - handle the left/right swiping gesture 
+- (void) loadDataForDate:(NSDate *)date {
+
+	NSFetchRequest *fr = [[WADataStore defaultStore] newFetchRequestForArticlesOnDate:date];
+	if (fr) {
+		
+		self.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fr managedObjectContext:self.managedObjectContext sectionNameKeyPath:nil cacheName:nil];
+		
+		self.fetchedResultsController.delegate = self;
+		[self.fetchedResultsController performFetch:nil];
+		
+		[self.tableView setContentOffset:CGPointZero animated:NO];
+		[self.tableView reloadData];
+		
+	}
+	
+}
+
+- (void) preloadDataForDateOnRight:(NSDate*)date {
+	
+//	NSDate *preDate = [self previousDateWithArticle];
+	NSFetchRequest *fr = [[WADataStore defaultStore] newFetchRequestForArticlesOnDate:date];
+	if (fr) {
+		
+		self.fetchedResultsControllerForPreloaded = [[NSFetchedResultsController alloc] initWithFetchRequest:fr managedObjectContext:self.managedObjectContext sectionNameKeyPath:nil cacheName:nil];
+		
+		self.fetchedResultsControllerForPreloaded.delegate = self;
+		[self.fetchedResultsControllerForPreloaded performFetch:nil];
+		
+		IRTableView *preTableView = [self tableViewRight];
+		[preTableView setContentOffset:CGPointZero animated:NO];
+		[preTableView reloadData];
+		
+	}
+	
+}
+
+- (void) preloadDataForDateOnLeft:(NSDate*)date {
+	
+	//	NSDate *preDate = [self previousDateWithArticle];
+	NSFetchRequest *fr = [[WADataStore defaultStore] newFetchRequestForArticlesOnDate:date];
+	if (fr) {
+		
+		self.fetchedResultsControllerForPreloaded = [[NSFetchedResultsController alloc] initWithFetchRequest:fr managedObjectContext:self.managedObjectContext sectionNameKeyPath:nil cacheName:nil];
+		
+		self.fetchedResultsControllerForPreloaded.delegate = self;
+		[self.fetchedResultsControllerForPreloaded performFetch:nil];
+		
+		IRTableView *preTableView = [self tableViewLeft];
+		[preTableView setContentOffset:CGPointZero animated:NO];
+		[preTableView reloadData];
+		
+	}
+	
+}
+
+- (NSDate *)nextDateWithArticle {
+	
+	NSCalendar *cal = [NSCalendar currentCalendar];
+	
+	NSAssert(self.currentDisplayedDate, @"current date should be determined first");
+	NSDateComponents *dcomponents = [cal components:(NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit) fromDate:self.currentDisplayedDate];
+	[dcomponents setDay:[dcomponents day] + 1];
+	NSDate *midnight = [cal dateFromComponents:dcomponents];
+	
+	NSDate *nextDay = nil;
+	NSFetchRequest *reqForFirst = [[WADataStore defaultStore] newFetchRequestForOldestArticleAfterDate:midnight];
+	if (reqForFirst) {
+		
+		WAArticle *article = (WAArticle *)[[self.managedObjectContext executeFetchRequest:reqForFirst error:nil] lastObject];
+		
+		if (article) {
+			
+			nextDay = article.creationDate;
+			
+		}
+		
+	}
+	
+	return nextDay;
+}
+
+- (NSDate *)previousDateWithArticle {
+	
+	NSCalendar *cal = [NSCalendar currentCalendar];
+	
+	NSAssert(self.currentDisplayedDate, @"current date should be determined first");
+	NSDateComponents *dcomponents = [cal components:(NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit) fromDate:self.currentDisplayedDate];
+	NSDate *earlyMorning = [cal dateFromComponents:dcomponents];
+	
+	NSDate *nextDay = nil;
+	NSFetchRequest *reqForFirst = [[WADataStore defaultStore] newFetchRequestForNewestArticleOnDate:earlyMorning];
+	if (reqForFirst) {
+		
+		WAArticle *article = (WAArticle *)[[self.managedObjectContext executeFetchRequest:reqForFirst error:nil] lastObject];
+		
+		if (article) {
+			
+			nextDay = article.creationDate;
+			
+		}
+		
+	}
+	
+	return nextDay;
+}
+
+- (void) handleSwipeRight:(UISwipeGestureRecognizer *)swipe {
+	
+	NSLog(@"swipe right");
+	
+	__block NSDate *nextDay = [self nextDateWithArticle];
+	
+	if (!nextDay) {
+		NSLog(@"There is no articles in the next day");
+		return;
+	}
+	
+	__weak WATimelineViewControllerPhone *wSelf = self;
+	
+	[self pullTableViewFromRightWithDuration:kWATimelinePageSwitchDuration completion:^{
+		
+		[wSelf loadDataForDate:nextDay];
+		wSelf.currentDisplayedDate = nextDay;
+		nextDay = [wSelf nextDateWithArticle];
+		if (nextDay)
+			[wSelf preloadDataForDateOnLeft:nextDay];
+		
+	}];
+	
+}
+
+- (void) handleSwipeLeft:(UISwipeGestureRecognizer *)swipe {
+	
+	NSLog(@"swipe left");
+	
+	__block NSDate *preDay = [self previousDateWithArticle];
+	
+	if (!preDay) {
+		NSLog(@"There is no articles in the next day");
+		return;
+	}
+		
+	__weak WATimelineViewControllerPhone *wSelf = self;
+	
+	[self pushTableViewToLeftWithDuration:kWATimelinePageSwitchDuration completion:^{
+		
+		[wSelf loadDataForDate:preDay];
+		wSelf.currentDisplayedDate = preDay;
+		preDay = [wSelf previousDateWithArticle];
+		if (preDay)
+			[wSelf preloadDataForDateOnRight:preDay];
+		
+	}];
+
+}
+
+#pragma mark - handle long pressed gesture
 - (void) handleMenu:(UILongPressGestureRecognizer *)longPress {
 
 	UIMenuController * const menuController = [UIMenuController sharedMenuController];
@@ -916,7 +1182,8 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 	NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:[longPress locationInView:self.tableView]];
 	WAArticle *article = [self.fetchedResultsController objectAtIndexPath:indexPath];
 	
-	WAPostViewCellPhone *cell = (WAPostViewCellPhone *)[self.tableView cellForRowAtIndexPath:indexPath];
+	WAPostViewCellPhone *cell = (WAPostViewCellPhone *
+															 )[self.tableView cellForRowAtIndexPath:indexPath];
 	NSParameterAssert(cell.article == article);	//	Bleh
 	
 	if (![cell isSelected])
@@ -1075,36 +1342,46 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 
 }
 
-- (void) handleDateSelect:(UIBarButtonItem *)sender {
+#pragma mark - date picker to switch timeline
+- (void) jumpToTimelineOnDate:(NSDate*)date{
 
-	__block WADatePickerViewController *dpVC = [WADatePickerViewController controllerWithCompletion:^(NSDate *date) {
+	NSCalendar *cal = [NSCalendar currentCalendar];
+
+	NSDateComponents *dcomponents = [cal components:(NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit) fromDate:date];
+	[dcomponents setDay:[dcomponents day] + 1];
+	NSDate *midnight = [cal dateFromComponents:dcomponents];
+
+	self.currentDisplayedDate = midnight;
 	
+	NSDate *toDate = [self previousDateWithArticle];
+	
+	if (!toDate)
+		toDate = [self nextDateWithArticle];
+	
+	NSAssert1(toDate != nil, @"No article around date: %@ ?", date);
+	
+	[self loadDataForDate:toDate];
+	self.currentDisplayedDate = toDate;
+	
+	NSDate *preDate = [self previousDateWithArticle];
+	if (preDate)
+		[self preloadDataForDateOnRight:preDate];
+	
+	NSDate *nextDate = [self nextDateWithArticle];
+	if (nextDate)
+		[self preloadDataForDateOnLeft:nextDate];
+}
+
+- (void) handleDateSelect:(UIBarButtonItem *)sender {
+	
+	__block WADatePickerViewController *dpVC = [WADatePickerViewController controllerWithCompletion:^(NSDate *date) {
+		
 		if (date) {
 			
-			NSCalendar *cal = [NSCalendar currentCalendar];
+			[self jumpToTimelineOnDate:date];
 			
-			NSDateComponents *dcomponents = [cal components:(NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit) fromDate:date];
-			[dcomponents setDay:[dcomponents day] + 1];
-			NSDate *dayMidnight = [cal dateFromComponents:dcomponents];
-			
-			NSFetchRequest *fr = [[WADataStore defaultStore] newFetchRequestForNewestArticleOnDate:dayMidnight];
-			
-			WAArticle *article = (WAArticle *)[[self.managedObjectContext executeFetchRequest:fr error:nil] lastObject];
-			
-			if (article) {
-				
-				NSIndexPath *indexPath = [self.fetchedResultsController indexPathForObject:article];
-				
-				if (indexPath) {
-				
-					[self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
-				
-				}
-				
-			}
-		
 		}
-	
+		
 		[dpVC willMoveToParentViewController:nil];
 		[dpVC removeFromParentViewController];
 		[dpVC.view removeFromSuperview];
@@ -1113,14 +1390,13 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 		dpVC = nil;
 		
 	}];
-
-	NSFetchedResultsController *frc = self.fetchedResultsController;
-
-	NSIndexPath *oldestIndex = [NSIndexPath indexPathForRow:([frc.fetchedObjects count] - 1) inSection:0];
-	WAArticle *oldestArticle = [frc objectAtIndexPath:oldestIndex];
-	NSIndexPath *newestIndex = [NSIndexPath indexPathForRow:0 inSection:0];
-	WAArticle *newestArticle = [frc objectAtIndexPath:newestIndex];
-
+	
+	NSFetchRequest *newestFr = [[WADataStore defaultStore] newFetchRequestForNewestArticle];
+	NSFetchRequest *oldestFr = [[WADataStore defaultStore] newFetchRequestForOldestArticle];
+	
+	WAArticle *newestArticle = (WAArticle*)[[managedObjectContext executeFetchRequest:newestFr error:nil] lastObject];
+	WAArticle *oldestArticle = (WAArticle*)[[managedObjectContext executeFetchRequest:oldestFr error:nil] lastObject];
+	
 	if (oldestArticle == nil){ // empty timeline
 		return;
 	}
@@ -1145,6 +1421,7 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 
 }
 
+#pragma mark - slinding menu
 - (void) slidingMenuItemDidSelected:(id)result {
 	
 	NSFetchRequest *fr = (NSFetchRequest*)result;
@@ -1201,6 +1478,7 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 
 }
 
+#pragma mark - buttons (camera/compose/userinfo) in toolbar
 - (void) handleCameraCapture:(UIBarButtonItem *)sender  {
 
 	[self beginCompositionSessionWithURL:nil animated:NO onCompositionViewDidAppear:^(WACompositionViewController *compositionVC) {

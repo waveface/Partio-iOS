@@ -18,8 +18,10 @@
 - (NSFetchRequest *) newFetchRequestForFilesInArticle:(WAArticle *)article;
 
 - (NSFetchRequest *) newFetchRequestForOldestArticle;
+- (NSFetchRequest *) newFetchRequestForOldestArticleAfterDate:(NSDate*)date;
 - (NSFetchRequest *) newFetchRequestForNewestArticle;
 - (NSFetchRequest *) newFetchRequestForNewestArticleOnDate:(NSDate *)date;
+- (NSFetchRequest *) newFetchRequestForArticlesOnDate:(NSDate*)date;
 
 - (NSFetchRequest *) newFetchRequestForArticlesWithPreviews;
 - (NSFetchRequest *) newFetchRequestForArticlesWithPhotos;

@@ -128,6 +128,9 @@
 /* Title for Cover Image picker */
 "CHANGE_REPRESENTING_FILE_TITLE" = "Pick Photo";
 
+/* Title for Collection in the sliding menu */
+"Collection" = "Collection";
+
 /* add photo button in composition view */
 "COMPOSITION_MANY_PHOTOS_BUTTON_CAPTION_FORMAT" = "%i Photos";
 
@@ -214,6 +217,9 @@
 
 /* Display title for a fetch request working against all the articles */
 "FETCH_REQUEST_ALL_ARTICLES_DISPLAY_TITLE" = "All (My Days)";
+
+/* Display title for a fetch request working against articles on a particular day */
+"FETCH_REQUEST_ARTICLES_ON_PARTICULAR_DAY_DISPLAY_TITLE" = "FETCH_REQUEST_ARTICLES_ON_PARTICULAR_DAY_DISPLAY_TITLE";
 
 /* Display title for a fetch request working against the articles with Photos */
 "FETCH_REQUEST_ARTICLES_WITH_PHOTOS_DISPLAY_TITLE" = "Photos";
@@ -327,6 +333,9 @@
 /* Title to show explaining WiFi Sync */
 "SERVICE_INFO_WITHOUT_WIFI" = "Stream only sends your original photos via Wi-Fi connection. \n\nIf you don't have Stream installed on your PC, or it's not up and running, we keep the photos in a temporary cloud space for up to 30 days.";
 
+/* Title for Settings in the sliding menu */
+"Settings" = "Settings";
+
 /* Title for view controller signing the user in */
 "SIGN_IN_CONTROLLER_TITLE" = "Log In";
 
@@ -369,6 +378,9 @@
 /* Title on the text stack more / less toggle button for “More” */
 "TEXT_ELEMENT_TOGGLE_MORE_TITLE" = "More";
 
+/* Title for Timeline in the sliding menu */
+"Timeline" = "Timeline";
+
 /* Alert on no location service enabled when open photo library */
 "TURN_ON_LOCATION_SERVICE" = "Turn on Location Services to allow Stream to access your Photo Library";
 
@@ -402,8 +414,7 @@
 /* Title to show when user has no station, and have exhausted storage on the Cloud */
 "USER_INFO_NAG_LEVEL_3_WITHOUT_STATION" = "Your cloud storage is full.  To sync, install and run Stream for Windows on your PC.";
 
-/* In iPad overview
-   In Phone timeline */
+/* In Phone timeline */
 "VIEW_BUTTON" = "View";
 
 /* preview button in composition view */

@@ -11,8 +11,6 @@
 
 @interface WASlidingMenuViewController ()
 
-@property (nonatomic, readwrite, strong) NSArray *fetchRequests;
-
 @end
 
 @implementation WASlidingMenuViewController
@@ -29,16 +27,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
-	WADataStore *ds = [WADataStore defaultStore];
 	
-	_fetchRequests = [NSArray arrayWithObjects:
-									 
-									 [ds newFetchRequestForAllArticles],
-									 [ds newFetchRequestForArticlesWithPhotos],
-									 [ds newFetchRequestForArticlesWithPreviews],
-									 
-									 nil];
 }
 
 - (void)didReceiveMemoryWarning
@@ -57,8 +46,9 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    // Return the number of rows in the section.
-    return [self.fetchRequests count];
+	
+	return 3;
+	
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -69,11 +59,21 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     }
   
-		NSFetchRequest *fr = [self.fetchRequests objectAtIndex:indexPath.row];
-		NSString *displayTitle = fr.displayTitle;
+		switch(indexPath.row) {
+			
+			case 0:
+				cell.textLabel.text = NSLocalizedString(@"Timeline", @"Title for Timeline in the sliding menu");
+				break;
+				
+			case 1:
+				cell.textLabel.text = NSLocalizedString(@"Collection", @"Title for Collection in the sliding menu");
+				break;
+				
+			case 2:
+				cell.textLabel.text = NSLocalizedString(@"Settings", @"Title for Settings in the sliding menu");
+				break;
+		}
 	
-		cell.textLabel.text = displayTitle ? displayTitle : [fr.predicate predicateFormat];
-  
     return cell;
 }
 
@@ -120,9 +120,18 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	if ([self.delegate respondsToSelector:@selector(slidingMenuItemDidSelected:)]) {
-		NSFetchRequest * fr = [self.fetchRequests objectAtIndex:indexPath.row];
-		[self.delegate performSelector:@selector(slidingMenuItemDidSelected:) withObject:fr];
+	NSInteger row = indexPath.row;
+	
+	switch (row) {
+			
+		case 0:
+			break;
+			
+		case 1:
+			break;
+			
+		case 2:
+			break;
 	}
 }
 

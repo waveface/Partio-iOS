@@ -73,6 +73,39 @@
 
 }
 
+- (NSFetchRequest *) newFetchRequestForOldestArticleAfterDate:(NSDate*)date {
+	
+	NSFetchRequest *fetchRequest = [self.persistentStoreCoordinator.managedObjectModel fetchRequestFromTemplateWithName:@"WAFRArticles" substitutionVariables:[NSDictionary dictionary]];
+	
+	fetchRequest.predicate = [NSCompoundPredicate andPredicateWithSubpredicates:[NSArray arrayWithObjects:
+																																							 
+																																							 fetchRequest.predicate,
+																																							 
+																																							 [NSPredicate predicateWithFormat:@"(creationDate >= %@)", date],
+																																							 
+																																							 nil]];
+
+	fetchRequest.sortDescriptors = [NSArray arrayWithObjects:
+																	[NSSortDescriptor sortDescriptorWithKey:@"modificationDate" ascending:YES],
+																	[NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:YES],
+																	nil];
+	
+	fetchRequest.relationshipKeyPathsForPrefetching = [NSArray arrayWithObjects:
+																										 @"files",
+																										 @"files.pageElements",
+																										 @"previews",
+																										 @"previews.graphElement",
+																										 @"previews.graphElement.images",
+																										 nil];
+	
+	fetchRequest.fetchBatchSize = 1;
+	fetchRequest.fetchLimit = 1;
+	
+	return fetchRequest;
+	
+}
+
+
 - (NSFetchRequest *) newFetchRequestForNewestArticle {
 
 	NSFetchRequest *fetchRequest = [self.persistentStoreCoordinator.managedObjectModel fetchRequestFromTemplateWithName:@"WAFRArticles" substitutionVariables:[NSDictionary dictionary]];
@@ -125,6 +158,44 @@
 	fetchRequest.fetchLimit = 1;
 	
 	fetchRequest.displayTitle = NSLocalizedString(@"FETCH_REQUEST_NEWEST_ARTICLE_OF_PARTICULAR_DATE_DISPLAY_TITLE", @"Display title for a fetch request working against the latest article on a particular date");
+	
+	return fetchRequest;
+
+}
+
+- (NSFetchRequest *) newFetchRequestForArticlesOnDate:(NSDate*)date {
+	NSCalendar *cal = [NSCalendar currentCalendar];
+	
+	NSDateComponents *dcomponents = [cal components:(NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit) fromDate:date];
+	[dcomponents setDay:[dcomponents day] + 1];
+	NSDate *midnight = [cal dateFromComponents:dcomponents];
+	
+	dcomponents = [cal components:(NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit) fromDate:date];
+	NSDate *earlymorning = [cal dateFromComponents:dcomponents];
+	
+	NSFetchRequest *fetchRequest = [self.persistentStoreCoordinator.managedObjectModel fetchRequestFromTemplateWithName:@"WAFRArticles" substitutionVariables:[NSDictionary dictionary]];
+	
+	fetchRequest.predicate = [NSCompoundPredicate andPredicateWithSubpredicates:[NSArray arrayWithObjects:
+																																							 
+																																							 fetchRequest.predicate,
+																																							 
+																																							 [NSPredicate predicateWithFormat:@"creationDate >= %@ && creationDate <= %@", earlymorning, midnight],
+																																							 
+																																							 nil]];
+	
+	fetchRequest.sortDescriptors = [NSArray arrayWithObjects:[NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:NO], nil];
+
+	fetchRequest.relationshipKeyPathsForPrefetching = [NSArray arrayWithObjects:
+																										 @"files",
+																										 @"files.pageElements",
+																										 @"previews",
+																										 @"previews.graphElement",
+																										 @"previews.graphElement.images",
+																										 nil];
+	
+	fetchRequest.fetchBatchSize = 100;
+
+	fetchRequest.displayTitle = NSLocalizedString(@"FETCH_REQUEST_ARTICLES_ON_PARTICULAR_DAY_DISPLAY_TITLE", @"Display title for a fetch request working against articles on a particular day");
 	
 	return fetchRequest;
 

@@ -159,6 +159,7 @@
 		80A2217215ED1AFD006236AC /* WARemoteInterface+Notification.h in Sources */ = {isa = PBXBuildFile; fileRef = 8002CDE715E5E92100D7BFF0 /* WARemoteInterface+Notification.h */; };
 		80A2217415ED1AFD006236AC /* WARemoteInterface+WebSocket.h in Sources */ = {isa = PBXBuildFile; fileRef = 8002CDEA15E5F6F300D7BFF0 /* WARemoteInterface+WebSocket.h */; };
 		80A2217515ED1AFD006236AC /* WARemoteInterface+WebSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 8002CDEB15E5F6F300D7BFF0 /* WARemoteInterface+WebSocket.m */; };
+		80BE685B161DC13800A37CEB /* WASwipeableTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 80BE685A161DC13800A37CEB /* WASwipeableTableViewController.m */; };
 		80EB9A661615A436003B282B /* SSKeychain.m in Sources */ = {isa = PBXBuildFile; fileRef = 80EB9A651615A436003B282B /* SSKeychain.m */; };
 		80EE282316004112000ED674 /* WAFacebookInterface.m in Sources */ = {isa = PBXBuildFile; fileRef = FFBBA42415AD5D4400E95C66 /* WAFacebookInterface.m */; };
 		80EE282416004200000ED674 /* WAFacebook.m in Sources */ = {isa = PBXBuildFile; fileRef = FF3FF83115AEA670003CF6CC /* WAFacebook.m */; };
@@ -1260,6 +1261,8 @@
 		80316A0715C0EC20009D43F0 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
 		80316A0815C0EC20009D43F0 /* UIViewController+IRAQAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+IRAQAdditions.h"; sourceTree = "<group>"; };
 		80316A0915C0EC20009D43F0 /* UIViewController+IRAQAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+IRAQAdditions.m"; sourceTree = "<group>"; };
+		80557BA715FDE38000336F3C /* WARemoteInterface+RemoteNotifications.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WARemoteInterface+RemoteNotifications.h"; sourceTree = "<group>"; };
+		80557BA815FDE38000336F3C /* WARemoteInterface+RemoteNotifications.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WARemoteInterface+RemoteNotifications.m"; sourceTree = "<group>"; };
 		809C6D22160583A00016E196 /* IIViewDeckController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IIViewDeckController.h; path = external/ViewDeck/ViewDeck/IIViewDeckController.h; sourceTree = "<group>"; };
 		809C6D23160583A00016E196 /* IIViewDeckController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = IIViewDeckController.m; path = external/ViewDeck/ViewDeck/IIViewDeckController.m; sourceTree = "<group>"; };
 		809C6D24160583A00016E196 /* WrapController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WrapController.h; path = external/ViewDeck/ViewDeck/WrapController.h; sourceTree = "<group>"; };
@@ -1269,10 +1272,10 @@
 		809C6D2A1605845A0016E196 /* WASlidingMenuViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WASlidingMenuViewController.xib; sourceTree = "<group>"; };
 		809C6D35160616F90016E196 /* menu.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = menu.png; sourceTree = "<group>"; };
 		809C6D36160616F90016E196 /* menu@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "menu@2x.png"; sourceTree = "<group>"; };
-		80557BA715FDE38000336F3C /* WARemoteInterface+RemoteNotifications.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WARemoteInterface+RemoteNotifications.h"; sourceTree = "<group>"; };
-		80557BA815FDE38000336F3C /* WARemoteInterface+RemoteNotifications.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WARemoteInterface+RemoteNotifications.m"; sourceTree = "<group>"; };
 		809D428E15F5CE4300CB4F89 /* WAWebSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAWebSocket.h; sourceTree = "<group>"; };
 		809D428F15F5CE4300CB4F89 /* WAWebSocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAWebSocket.m; sourceTree = "<group>"; };
+		80BE6859161DC13800A37CEB /* WASwipeableTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WASwipeableTableViewController.h; sourceTree = "<group>"; };
+		80BE685A161DC13800A37CEB /* WASwipeableTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WASwipeableTableViewController.m; sourceTree = "<group>"; };
 		80EB9A641615A436003B282B /* SSKeychain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SSKeychain.h; path = external/sskeychain/SSKeychain.h; sourceTree = "<group>"; };
 		80EB9A651615A436003B282B /* SSKeychain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SSKeychain.m; path = external/sskeychain/SSKeychain.m; sourceTree = "<group>"; };
 		80F800F415C2624C00132A96 /* IRAQ-Checkmark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "IRAQ-Checkmark.png"; sourceTree = "<group>"; };
@@ -2281,6 +2284,8 @@
 				809C6D25160583A00016E196 /* WrapController.m */,
 			);
 			name = ViewDeck;
+			sourceTree = "<group>";
+		};
 		80EB9A631615A423003B282B /* SSKeychain */ = {
 			isa = PBXGroup;
 			children = (
@@ -2588,6 +2593,8 @@
 				809C6D281605845A0016E196 /* WASlidingMenuViewController.h */,
 				809C6D291605845A0016E196 /* WASlidingMenuViewController.m */,
 				809C6D2A1605845A0016E196 /* WASlidingMenuViewController.xib */,
+				80BE6859161DC13800A37CEB /* WASwipeableTableViewController.h */,
+				80BE685A161DC13800A37CEB /* WASwipeableTableViewController.m */,
 			);
 			name = Timeline;
 			path = wammer;
@@ -2657,7 +2664,6 @@
 		FF73A54113D6C2CC00D54EC6 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				809C6D21160582F40016E196 /* ViewDeck */,
 				FF73A5B413D6DC8000D54EC6 /* AQGridView.xcodeproj */,
 				4B1C65F614EE2C0C003398AF /* DCIntrospect */,
 				FF6B029E15AC0A2A009D8BDB /* facebook-ios-sdk.xcodeproj */,
@@ -3347,6 +3353,7 @@
 		FFFDEFB414211D5C0083BEFB /* iOS */ = {
 			isa = PBXGroup;
 			children = (
+				809C6D21160582F40016E196 /* ViewDeck */,
 				80EB9A631615A423003B282B /* SSKeychain */,
 				803169F715C0EC20009D43F0 /* IRAQPhotoPicker */,
 				4B31BA861591A74C00DC1A70 /* AGImagePickerController */,
@@ -4538,6 +4545,7 @@
 				809C6D2B1605845A0016E196 /* WASlidingMenuViewController.m in Sources */,
 				80EB9A661615A436003B282B /* SSKeychain.m in Sources */,
 				13B6DB9D161573FF00B9CC35 /* WAFileExif.m in Sources */,
+				80BE685B161DC13800A37CEB /* WASwipeableTableViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
