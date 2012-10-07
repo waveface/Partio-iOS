@@ -13,6 +13,7 @@
 #import <TargetConditionals.h>
 
 #import "UIKit+IRAdditions.h"
+#import "NSDate+WAAdditions.h"
 
 #import "WADefines.h"
 #import "WAAppDelegate.h"
@@ -203,6 +204,9 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 	
 	self.persistsContentInset = NO;
 
+	self.persistsStateWhenViewWillDisappear = NO;
+	self.restoresStateWhenViewWillAppear = NO;
+	
 }
 
 
@@ -409,11 +413,9 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 	
 	fetchedResultsControllerForIncomingUpdates.delegate = self;
   
-#if 0
   NSError *fetchingError;
 	if (![fetchedResultsControllerForIncomingUpdates performFetch:&fetchingError])
 		NSLog(@"error fetching: %@", fetchingError);
-#endif
 	
 	return fetchedResultsControllerForIncomingUpdates;
 
@@ -501,7 +503,7 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 	[self.navigationController.toolbar setBackgroundImage:[UIImage imageNamed:@"ToolbarWithButtons"] forToolbarPosition:UIToolbarPositionAny barMetrics:UIBarMetricsDefault];
 	
 	[self refreshData];
-	[self restoreState];
+	//[self restoreState];
 	
 	self.tableView.contentInset = UIEdgeInsetsZero;
 	
@@ -606,8 +608,10 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 
 	if ([self isViewLoaded])
 	if (object == [WARemoteInterface sharedInterface])
-	if ([[change objectForKey:NSKeyValueChangeNewKey] isEqual:(id)kCFBooleanFalse])
-		[self.tableView performSelector:@selector(resetPullDown) withObject:nil afterDelay:2];
+		if ([[change objectForKey:NSKeyValueChangeNewKey] isEqual:(id)kCFBooleanFalse]) {
+			[self.tableView performSelector:@selector(resetPullDown) withObject:nil afterDelay:2];
+			
+		}
 
 }
 
@@ -753,7 +757,7 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 		return;
 	
 	if (controller == self.fetchedResultsController) {
-		[self persistState];
+//		[self persistState];
 		[self.tableView beginUpdates];
 	}
 
@@ -792,14 +796,9 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 		return;
 	
 	if (controller == self.fetchedResultsControllerForIncomingUpdates) {
-		// jump to the date
-		NSDate *date = nil;
-		WAArticle *article = anObject;
-		if (article) {
-			if (![self.currentDisplayedDate isEqualToDate:article.creationDate]) {
-				[self jumpToTimelineOnDate:date];
-			}
-		}
+
+		// TODO: jump to date?
+		
 		return;
 	}
 	
@@ -854,7 +853,7 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 	
 	UITableView *tv = self.tableView;
 	[tv endUpdates];
-	[self restoreState];
+//	[self restoreState];
 	
 	NSArray *allVisibleIndexPaths = [tv indexPathsForVisibleRows];
 	
@@ -1070,15 +1069,11 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 
 - (NSDate *)nextDateWithArticle {
 	
-	NSCalendar *cal = [NSCalendar currentCalendar];
-	
 	NSAssert(self.currentDisplayedDate, @"current date should be determined first");
-	NSDateComponents *dcomponents = [cal components:(NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit) fromDate:self.currentDisplayedDate];
-	[dcomponents setDay:[dcomponents day] + 1];
-	NSDate *midnight = [cal dateFromComponents:dcomponents];
-	
+
 	NSDate *nextDay = nil;
-	NSFetchRequest *reqForFirst = [[WADataStore defaultStore] newFetchRequestForOldestArticleAfterDate:midnight];
+	NSFetchRequest *reqForFirst = [[WADataStore defaultStore] newFetchRequestForOldestArticleAfterDate:
+																 [self.currentDisplayedDate dayEnd]];
 	if (reqForFirst) {
 		
 		WAArticle *article = (WAArticle *)[[self.managedObjectContext executeFetchRequest:reqForFirst error:nil] lastObject];
@@ -1086,7 +1081,7 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 		if (article) {
 			
 			nextDay = article.creationDate;
-			
+
 		}
 		
 	}
@@ -1095,15 +1090,12 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 }
 
 - (NSDate *)previousDateWithArticle {
-	
-	NSCalendar *cal = [NSCalendar currentCalendar];
-	
+		
 	NSAssert(self.currentDisplayedDate, @"current date should be determined first");
-	NSDateComponents *dcomponents = [cal components:(NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit) fromDate:self.currentDisplayedDate];
-	NSDate *earlyMorning = [cal dateFromComponents:dcomponents];
 	
 	NSDate *nextDay = nil;
-	NSFetchRequest *reqForFirst = [[WADataStore defaultStore] newFetchRequestForNewestArticleOnDate:earlyMorning];
+	NSFetchRequest *reqForFirst = [[WADataStore defaultStore] newFetchRequestForNewestArticleOnDate:
+																 [self.currentDisplayedDate dayBegin]];
 	if (reqForFirst) {
 		
 		WAArticle *article = (WAArticle *)[[self.managedObjectContext executeFetchRequest:reqForFirst error:nil] lastObject];
@@ -1343,15 +1335,15 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 }
 
 #pragma mark - date picker to switch timeline
+- (void) jumpToToday {
+
+	[self jumpToTimelineOnDate:[NSDate date]];
+	
+}
+
 - (void) jumpToTimelineOnDate:(NSDate*)date{
 
-	NSCalendar *cal = [NSCalendar currentCalendar];
-
-	NSDateComponents *dcomponents = [cal components:(NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit) fromDate:date];
-	[dcomponents setDay:[dcomponents day] + 1];
-	NSDate *midnight = [cal dateFromComponents:dcomponents];
-
-	self.currentDisplayedDate = midnight;
+	self.currentDisplayedDate = [date dayEnd];
 	
 	NSDate *toDate = [self previousDateWithArticle];
 	

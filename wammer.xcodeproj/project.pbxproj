@@ -156,6 +156,7 @@
 		809C6D37160616FA0016E196 /* menu.png in Resources */ = {isa = PBXBuildFile; fileRef = 809C6D35160616F90016E196 /* menu.png */; };
 		809C6D38160616FA0016E196 /* menu@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 809C6D36160616F90016E196 /* menu@2x.png */; };
 		809D429015F5CE4300CB4F89 /* WAWebSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 809D428F15F5CE4300CB4F89 /* WAWebSocket.m */; };
+		80A13C74162071C4002880A9 /* NSDate+WAAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 80A13C73162071C4002880A9 /* NSDate+WAAdditions.m */; };
 		80A2217215ED1AFD006236AC /* WARemoteInterface+Notification.h in Sources */ = {isa = PBXBuildFile; fileRef = 8002CDE715E5E92100D7BFF0 /* WARemoteInterface+Notification.h */; };
 		80A2217415ED1AFD006236AC /* WARemoteInterface+WebSocket.h in Sources */ = {isa = PBXBuildFile; fileRef = 8002CDEA15E5F6F300D7BFF0 /* WARemoteInterface+WebSocket.h */; };
 		80A2217515ED1AFD006236AC /* WARemoteInterface+WebSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 8002CDEB15E5F6F300D7BFF0 /* WARemoteInterface+WebSocket.m */; };
@@ -1274,6 +1275,8 @@
 		809C6D36160616F90016E196 /* menu@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "menu@2x.png"; sourceTree = "<group>"; };
 		809D428E15F5CE4300CB4F89 /* WAWebSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAWebSocket.h; sourceTree = "<group>"; };
 		809D428F15F5CE4300CB4F89 /* WAWebSocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAWebSocket.m; sourceTree = "<group>"; };
+		80A13C72162071C4002880A9 /* NSDate+WAAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDate+WAAdditions.h"; sourceTree = "<group>"; };
+		80A13C73162071C4002880A9 /* NSDate+WAAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+WAAdditions.m"; sourceTree = "<group>"; };
 		80BE6859161DC13800A37CEB /* WASwipeableTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WASwipeableTableViewController.h; sourceTree = "<group>"; };
 		80BE685A161DC13800A37CEB /* WASwipeableTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WASwipeableTableViewController.m; sourceTree = "<group>"; };
 		80EB9A641615A436003B282B /* SSKeychain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SSKeychain.h; path = external/sskeychain/SSKeychain.h; sourceTree = "<group>"; };
@@ -2595,6 +2598,8 @@
 				809C6D2A1605845A0016E196 /* WASlidingMenuViewController.xib */,
 				80BE6859161DC13800A37CEB /* WASwipeableTableViewController.h */,
 				80BE685A161DC13800A37CEB /* WASwipeableTableViewController.m */,
+				80A13C72162071C4002880A9 /* NSDate+WAAdditions.h */,
+				80A13C73162071C4002880A9 /* NSDate+WAAdditions.m */,
 			);
 			name = Timeline;
 			path = wammer;
@@ -4546,6 +4551,7 @@
 				80EB9A661615A436003B282B /* SSKeychain.m in Sources */,
 				13B6DB9D161573FF00B9CC35 /* WAFileExif.m in Sources */,
 				80BE685B161DC13800A37CEB /* WASwipeableTableViewController.m in Sources */,
+				80A13C74162071C4002880A9 /* NSDate+WAAdditions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

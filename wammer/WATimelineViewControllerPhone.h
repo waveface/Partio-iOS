@@ -19,4 +19,6 @@
 //@interface WATimelineViewControllerPhone : IRTableViewController <WAApplicationRootViewController, IIViewDeckControllerDelegate, WASlidingMenuDelegate>
 @interface WATimelineViewControllerPhone : WASwipeableTableViewController <WAApplicationRootViewController, IIViewDeckControllerDelegate, WASlidingMenuDelegate>
 
+- (void) jumpToToday;
+
 @end

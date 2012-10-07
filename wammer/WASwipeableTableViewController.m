@@ -50,7 +50,7 @@
 
 	CGRect origFrame = self.view.frame;
 	CGRect tbFrame = {CGPointZero, origFrame.size};
-	UIView *newView = [[UIView alloc] initWithFrame:origFrame];
+	UIView *newView = [[UIView alloc] initWithFrame:tbFrame];
 
 	self.tableViews = [[NSMutableArray alloc] initWithCapacity:3];
 	__weak id wSelf = self;
@@ -145,6 +145,8 @@
 	__weak WASwipeableTableViewController *wSelf = self;
 
   [UIView animateWithDuration:duration
+												delay:0
+											options: UIViewAnimationOptionCurveEaseInOut | UIViewAnimationOptionBeginFromCurrentState
                    animations:^{
                      
 										 currentView.frame = offScreenFrame;
@@ -187,6 +189,8 @@
 	__weak WASwipeableTableViewController *wSelf = self;
 	
   [UIView animateWithDuration:duration
+												delay:0
+											options: UIViewAnimationOptionCurveEaseInOut 
                    animations:^{
                      
 										 preView.frame = origFrame;

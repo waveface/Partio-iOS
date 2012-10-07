@@ -7,6 +7,8 @@
 //
 
 #import "WASlidingMenuViewController.h"
+#import "WANavigationController.h"
+#import "WATimelineViewControllerPhone.h"
 #import "WADataStore.h"
 
 @interface WASlidingMenuViewController ()
@@ -121,11 +123,15 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
 	NSInteger row = indexPath.row;
-	
+
 	switch (row) {
 			
-		case 0:
+		case 0: {
+			WANavigationController *nav = (WANavigationController*)self.viewDeckController.centerController;
+			[(WATimelineViewControllerPhone*)(nav.topViewController) jumpToToday];
+			[self.viewDeckController closeLeftView];
 			break;
+		}
 			
 		case 1:
 			break;
