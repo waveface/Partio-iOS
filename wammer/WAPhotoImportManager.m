@@ -13,6 +13,7 @@
 #import "WAFile+ThumbnailMaker.h"
 #import <AssetsLibrary+IRAdditions.h>
 #import "GANTracker.h"
+#import "WAFileExif.h"
 
 @interface WAPhotoImportManager ()
 
@@ -136,6 +137,35 @@
 					file.resourceType = (NSString *)kUTTypeImage;
 					file.timestamp = [asset valueForProperty:ALAssetPropertyDate];
 					file.importTime = importTime;
+
+					NSDictionary *exifData = [[[asset defaultRepresentation] metadata] objectForKey:@"{Exif}"];
+					NSDictionary *tiffData =	[[[asset defaultRepresentation] metadata] objectForKey:@"{TIFF}"];
+					NSDictionary *gpsData = [[[asset defaultRepresentation] metadata] objectForKey:@"{GPS}"];
+					WAFileExif *exif = (WAFileExif *)[WAFileExif objectInsertingIntoContext:file.managedObjectContext withRemoteDictionary:@{}];
+					if (exifData) {
+						exif.dateTimeOriginal = [exifData objectForKey:@"DateTimeOriginal"];
+						exif.dateTimeDigitized = [exifData objectForKey:@"DateTimeDigitized"];
+						exif.exposureTime = [exifData	objectForKey:@"ExposureTime"];
+						exif.fNumber = [exifData objectForKey:@"FNumber"];
+						exif.apertureValue = [exifData objectForKey:@"ApertureValue"];
+						exif.focalLength = [exifData objectForKey:@"FocalLength"];
+						exif.flash = [exifData objectForKey:@"Flash"];
+						if ([exifData objectForKey:@"ISOSpeedRatings"] && [[exifData objectForKey:@"ISOSpeedRatings"] count] > 0) {
+							exif.isoSpeedRatings = [[exifData objectForKey:@"ISOSpeedRatings"] objectAtIndex:0];
+						}
+						exif.colorSpace = [exifData objectForKey:@"ColorSpace"];
+						exif.whiteBalance = [exifData objectForKey:@"WhiteBalance"];
+					}
+					if (tiffData) {
+						exif.dateTime = [tiffData objectForKey:@"DateTime"];
+						exif.model = [tiffData objectForKey:@"Model"];
+						exif.make = [tiffData objectForKey:@"Make"];
+					}
+					if (gpsData) {
+						exif.gpsLongitude = [gpsData objectForKey:@"Longitude"];
+						exif.gpsLatitude = [gpsData objectForKey:@"Latitude"];
+					}
+					file.exif = exif;
 					
 					if (!article.creationDate) {
 						article.creationDate = file.timestamp;
