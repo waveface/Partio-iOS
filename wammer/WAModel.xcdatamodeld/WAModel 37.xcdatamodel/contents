@@ -252,6 +252,7 @@
         </compoundIndexes>
         <userInfo/>
     </entity>
+    <fetchRequest name="WAFRAllCaches" entity="WACache"/>
     <fetchRequest name="WAFRAllFiles" entity="WAFile"/>
     <fetchRequest name="WAFRAllOGImages" entity="WAOpenGraphElementImage"/>
     <fetchRequest name="WAFRArticle" entity="WAArticle" predicateString="identifier == $Identifier"/>

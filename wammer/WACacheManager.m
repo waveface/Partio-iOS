@@ -7,7 +7,6 @@
 //
 
 #import "WACacheManager.h"
-#import "WACache.h"
 #import "WADataStore.h"
 
 NSString * const kWACacheConstructionFinished = @"WACacheConstructionFinished";
@@ -140,6 +139,52 @@ NSString * const kWACacheConstructionFinished = @"WACacheConstructionFinished";
 		[wSelf setConstructionFinished:YES];
 	}];
 
+}
+
+- (void)clearPurgeableFilesIfNeeded {
+
+	WADataStore *ds = [WADataStore defaultStore];
+	NSManagedObjectContext *context = [ds disposableMOC];
+	[context performBlock:^{
+
+		NSUInteger const limitSize = 600*1024*1024;	//600MB
+		NSUInteger totalSize = [[ds fetchTotalCacheSizeUsingContext:context] unsignedIntegerValue];
+		if (totalSize > limitSize) {
+
+			NSLog(@"Total cache size is over %d, clear purgeable files now...", limitSize);
+			NSArray *caches = [ds fetchAllCachesUsingContext:context];
+			for (WACache *cache in caches) {
+				if ([[self delegate] shouldPurgeCachedFile:cache]) {
+					NSString *filePath = [cache valueForKeyPath:[cache keyPath]];
+					NSError *error = nil;
+					[[NSFileManager defaultManager] removeItemAtPath:filePath error:&error];
+					if (error) {
+						NSLog(@"Unable to remove cached file: %s %@", __PRETTY_FUNCTION__, error);
+					} else {
+						[cache setValue:nil forKeyPath:[cache keyPath]];
+						[context deleteObject:cache];
+						error = nil;
+						[context save:&error];
+						if (error) {
+							NSLog(@"Error saving: %s %@", __PRETTY_FUNCTION__, error);
+						}
+						totalSize -= [[cache fileSize] unsignedIntegerValue];
+					}
+				}
+				if (totalSize <= limitSize) {
+					break;
+				}
+			}
+			NSLog(@"Purging finished, current total size is %d", totalSize);
+
+		} else {
+
+			NSLog(@"Total cache size is under 600 MB, no need purging");
+
+		}
+
+	}];
+	
 }
 
 + (NSString *)archivePath {

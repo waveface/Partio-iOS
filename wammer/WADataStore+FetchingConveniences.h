@@ -40,5 +40,7 @@
 
 - (NSArray *) fetchAllFilesUsingContext:(NSManagedObjectContext *)aContext;
 - (NSArray *) fetchAllOGImagesUsingContext:(NSManagedObjectContext *)aContext;
+- (NSArray *) fetchAllCachesUsingContext:(NSManagedObjectContext *)aContext;
+- (NSNumber *) fetchTotalCacheSizeUsingContext:(NSManagedObjectContext *)aContext;
 
 @end

@@ -416,4 +416,51 @@
 
 }
 
+- (NSArray *)fetchAllCachesUsingContext:(NSManagedObjectContext *)aContext {
+
+	NSFetchRequest *fetchRequest = [self.persistentStoreCoordinator.managedObjectModel fetchRequestFromTemplateWithName:@"WAFRAllCaches" substitutionVariables:@{}];
+	fetchRequest.sortDescriptors = [NSArray arrayWithObjects:
+																	[NSSortDescriptor sortDescriptorWithKey:@"lastAccessTime" ascending:YES],
+																	nil];
+	
+	NSError *fetchingError = nil;
+	NSArray *fetchedCaches = [aContext executeFetchRequest:fetchRequest error:&fetchingError];
+	if (fetchingError) {
+		NSLog(@"%@", fetchingError);
+		return nil;
+	}
+	
+	return fetchedCaches;
+
+}
+
+- (NSNumber *)fetchTotalCacheSizeUsingContext:(NSManagedObjectContext *)aContext {
+
+	NSFetchRequest *request = [[NSFetchRequest alloc] init];
+	NSEntityDescription *entity = [NSEntityDescription entityForName:@"WACache" inManagedObjectContext:aContext];
+	[request setEntity:entity];
+	[request setResultType:NSDictionaryResultType];
+	NSExpression *keyPathExpression = [NSExpression expressionForKeyPath:@"fileSize"];
+	NSExpression *sumExpression = [NSExpression expressionForFunction:@"sum:" arguments:[NSArray arrayWithObject:keyPathExpression]];
+	NSExpressionDescription *expresionDescription = [[NSExpressionDescription alloc] init];
+	[expresionDescription setName:@"totalSize"];
+	[expresionDescription setExpression:sumExpression];
+	[expresionDescription setExpressionResultType:NSInteger64AttributeType];
+	
+	[request setPropertiesToFetch:[NSArray arrayWithObject:expresionDescription]];
+	
+	NSError *fetchingError = nil;
+	NSArray *objects = [aContext executeFetchRequest:request error:&fetchingError];
+	if (fetchingError) {
+		NSLog(@"%@", fetchingError);
+		return nil;
+	} else if (objects == nil || [objects count] == 0) {
+		NSLog(@"Unable to fetch any fetchTotalCacheSizeUsingContext result");
+		return nil;
+	} else {
+		return [[objects objectAtIndex:0] valueForKey:@"totalSize"];
+	}
+
+}
+
 @end

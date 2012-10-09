@@ -7,9 +7,19 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "WACache.h"
+
+@protocol WACacheManagerDelegate
+
+- (BOOL)shouldPurgeCachedFile:(WACache *)cache;
+
+@end
 
 @interface WACacheManager : NSObject <NSCoding>
 
 + (WACacheManager *)sharedManager;
+- (void)clearPurgeableFilesIfNeeded;
+
+@property (nonatomic, readwrite, weak) id<WACacheManagerDelegate> delegate;
 
 @end

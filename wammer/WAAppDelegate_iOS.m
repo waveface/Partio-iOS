@@ -54,6 +54,7 @@
 #import "WAPhotoImportManager.h"
 
 static NSString *const kTrackingId = @"UA-27817516-7";
+#import "WACacheManager.h"
 
 @interface WALoginBackgroundViewController : UIViewController
 @end
@@ -195,6 +196,8 @@ static NSString *const kTrackingId = @"UA-27817516-7";
 			[wSelf bootstrapDownloadAllThumbnails];
 		});
 		
+		[[WACacheManager sharedManager] clearPurgeableFilesIfNeeded];
+
 		[self recreateViewHierarchy];
 		
 	}
@@ -420,6 +423,7 @@ static NSString *const kTrackingId = @"UA-27817516-7";
 				 // continue downloading all thumbnails
 				 [wSelf bootstrapDownloadAllThumbnails];
 
+				 [[WACacheManager sharedManager] clearPurgeableFilesIfNeeded];
 			 });
 		 }
 												runningOnboardingProcess:YES];
