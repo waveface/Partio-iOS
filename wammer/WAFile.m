@@ -43,5 +43,6 @@
 @dynamic pageElements;
 @dynamic representedArticle;
 @dynamic exif;
+@dynamic caches;
 
 @end

@@ -42,7 +42,7 @@
         </compoundIndexes>
         <userInfo/>
     </entity>
-    <entity name="WACache" syncable="YES">
+    <entity name="WACache" representedClassName="WACache" syncable="YES">
         <attribute name="fileSize" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="keyPath" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="lastAccessTime" optional="YES" attributeType="Date" syncable="YES"/>
@@ -252,6 +252,8 @@
         </compoundIndexes>
         <userInfo/>
     </entity>
+    <fetchRequest name="WAFRAllFiles" entity="WAFile"/>
+    <fetchRequest name="WAFRAllOGImages" entity="WAOpenGraphElementImage"/>
     <fetchRequest name="WAFRArticle" entity="WAArticle" predicateString="identifier == $Identifier"/>
     <fetchRequest name="WAFRArticleDrafts" entity="WAArticle" predicateString="draft == 1"/>
     <fetchRequest name="WAFRArticles" entity="WAArticle" predicateString="((draft == nil) OR (draft != 1)) AND ((hidden == nil) OR (hidden == 0))"/>
@@ -265,6 +267,7 @@
     <fetchRequest name="WAFRUser" entity="WAUser" predicateString="identifier == $Identifier"/>
     <elements>
         <element name="WAArticle" positionX="0" positionY="0" width="128" height="315"/>
+        <element name="WACache" positionX="160" positionY="192" width="128" height="120"/>
         <element name="WAComment" positionX="0" positionY="0" width="128" height="135"/>
         <element name="WAFile" positionX="0" positionY="0" width="128" height="495"/>
         <element name="WAFileExif" positionX="160" positionY="192" width="128" height="285"/>
@@ -275,6 +278,5 @@
         <element name="WAPreview" positionX="0" positionY="0" width="128" height="150"/>
         <element name="WAStorage" positionX="0" positionY="0" width="128" height="240"/>
         <element name="WAUser" positionX="0" positionY="0" width="128" height="210"/>
-        <element name="WACache" positionX="160" positionY="192" width="128" height="120"/>
     </elements>
 </model>

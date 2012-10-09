@@ -386,4 +386,34 @@
 
 }
 
+- (NSArray *)fetchAllFilesUsingContext:(NSManagedObjectContext *)aContext {
+
+	NSFetchRequest *fetchRequest = [self.persistentStoreCoordinator.managedObjectModel fetchRequestFromTemplateWithName:@"WAFRAllFiles" substitutionVariables:@{}];
+	
+	NSError *fetchingError = nil;
+	NSArray *fetchedFiles = [aContext executeFetchRequest:fetchRequest error:&fetchingError];
+	if (fetchingError) {
+		NSLog(@"%@", fetchingError);
+		return nil;
+	}
+	
+	return fetchedFiles;
+
+}
+
+- (NSArray *)fetchAllOGImagesUsingContext:(NSManagedObjectContext *)aContext {
+
+	NSFetchRequest *fetchRequest = [self.persistentStoreCoordinator.managedObjectModel fetchRequestFromTemplateWithName:@"WAFRAllOGImages" substitutionVariables:@{}];
+	
+	NSError *fetchingError = nil;
+	NSArray *fetchedOGImages = [aContext executeFetchRequest:fetchRequest error:&fetchingError];
+	if (fetchingError) {
+		NSLog(@"%@", fetchingError);
+		return nil;
+	}
+	
+	return fetchedOGImages;
+
+}
+
 @end

@@ -37,4 +37,8 @@
 - (NSArray *) fetchFilesNeedingDownloadUsingContext:(NSManagedObjectContext *)aContext;
 
 - (WAArticle *) fetchLatestLocalImportedArticleUsingContext:(NSManagedObjectContext *)aContext;
+
+- (NSArray *) fetchAllFilesUsingContext:(NSManagedObjectContext *)aContext;
+- (NSArray *) fetchAllOGImagesUsingContext:(NSManagedObjectContext *)aContext;
+
 @end
