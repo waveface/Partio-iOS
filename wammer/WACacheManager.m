@@ -179,7 +179,7 @@ NSString * const kWACacheConstructionFinished = @"WACacheConstructionFinished";
 
 		} else {
 
-			NSLog(@"Total cache size is under 600 MB, no need purging");
+			NSLog(@"Total cache size is under %d, no need purging", limitSize);
 
 		}
 
