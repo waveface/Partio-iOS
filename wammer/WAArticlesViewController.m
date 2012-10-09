@@ -15,6 +15,7 @@
 #import "WACompositionViewController.h"
 #import "WACompositionViewController+CustomUI.h"
 
+#import "IRSlidingSplitViewController.h"
 #import "IRBarButtonItem.h"
 #import "IRTransparentToolbar.h"
 #import "IRActionSheetController.h"
@@ -31,6 +32,8 @@
 #import "WANavigationController.h"
 #import "IASKAppSettingsViewController.h"
 #import "WADiscreteLayoutHelpers.h"
+
+#import "IIViewDeckController.h"
 
 #import <AssetsLibrary/AssetsLibrary.h>
 
@@ -102,14 +105,14 @@
 																		action:@selector(handleComposeItemTap:)];
 	
 	UIBarButtonItem *filterButton = [[UIBarButtonItem alloc]
-																	 initWithTitle:NSLocalizedString(@"VIEW_BUTTON", @"In iPad overview")
+																	 initWithImage:[UIImage imageNamed:@"menu"]
 																	 style:UIBarButtonItemStylePlain
-																	 target:self
-																	 action:@selector(handleFilter:)];
+																	 target:self.viewDeckController
+																	 action:@selector(toggleLeftView)];
 	
-	self.navigationItem.rightBarButtonItems = @[filterButton, composeButton];
+	self.navigationItem.rightBarButtonItems = @[accountButton, composeButton];
 	
-	self.navigationItem.leftBarButtonItems = @[accountButton];
+	self.navigationItem.leftBarButtonItems = @[filterButton];
 	
 	self.title = @"Articles";
 	
@@ -269,6 +272,27 @@
 
 }
 
+- (void) slidingMenuItemDidSelected:(id)result {
+
+	 NSFetchRequest *fr = (NSFetchRequest*)result;
+	 if (fr) {
+	 
+		 self.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fr managedObjectContext:self.managedObjectContext sectionNameKeyPath:nil cacheName:nil];
+	 
+		 self.fetchedResultsController.delegate = self;
+		 [self.fetchedResultsController performFetch:nil];
+	 
+		 [self reloadViewContents];
+		 [self refreshData];
+	 
+	 }
+	
+	WANavigationController *navC = (WANavigationController*)self.parentViewController;
+	[navC.parentViewController.viewDeckController closeLeftView];
+	
+}
+
+
 - (void) handleFilter:(UIBarButtonItem *)sender {
 	__weak WAArticlesViewController *weakSelf = self;
 	
@@ -307,6 +331,7 @@
 	
 	[_filterPopoverController presentPopoverFromBarButtonItem:sender permittedArrowDirections:UIPopoverArrowDirectionUp animated:NO];
 }
+
 
 
 

@@ -70,6 +70,9 @@
 [submodule "external/ocmock"]
 	path = external/ocmock
 	url = git://github.com/erikdoe/ocmock.git
+[submodule "external/ViewDeck"]
+	path = external/ViewDeck
+	url = git://github.com/syshen/ViewDeck.git
 [submodule "external/sskeychain"]
 	path = external/sskeychain
 	url = git://github.com/samsoffes/sskeychain.git

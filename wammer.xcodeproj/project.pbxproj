@@ -149,10 +149,18 @@
 		80316A1115C0EC20009D43F0 /* UIViewController+IRAQAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 80316A0915C0EC20009D43F0 /* UIViewController+IRAQAdditions.m */; };
 		80557BA915FDE38000336F3C /* WARemoteInterface+RemoteNotifications.m in Sources */ = {isa = PBXBuildFile; fileRef = 80557BA815FDE38000336F3C /* WARemoteInterface+RemoteNotifications.m */; };
 		805E9DB515F8A49A00970C80 /* libSocketRocket.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8002CDDB15E5E73800D7BFF0 /* libSocketRocket.a */; };
+		809C6D26160583A00016E196 /* IIViewDeckController.m in Sources */ = {isa = PBXBuildFile; fileRef = 809C6D23160583A00016E196 /* IIViewDeckController.m */; };
+		809C6D27160583A00016E196 /* WrapController.m in Sources */ = {isa = PBXBuildFile; fileRef = 809C6D25160583A00016E196 /* WrapController.m */; };
+		809C6D2B1605845A0016E196 /* WASlidingMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 809C6D291605845A0016E196 /* WASlidingMenuViewController.m */; };
+		809C6D2C1605845A0016E196 /* WASlidingMenuViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 809C6D2A1605845A0016E196 /* WASlidingMenuViewController.xib */; };
+		809C6D37160616FA0016E196 /* menu.png in Resources */ = {isa = PBXBuildFile; fileRef = 809C6D35160616F90016E196 /* menu.png */; };
+		809C6D38160616FA0016E196 /* menu@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 809C6D36160616F90016E196 /* menu@2x.png */; };
 		809D429015F5CE4300CB4F89 /* WAWebSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 809D428F15F5CE4300CB4F89 /* WAWebSocket.m */; };
+		80A13C74162071C4002880A9 /* NSDate+WAAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 80A13C73162071C4002880A9 /* NSDate+WAAdditions.m */; };
 		80A2217215ED1AFD006236AC /* WARemoteInterface+Notification.h in Sources */ = {isa = PBXBuildFile; fileRef = 8002CDE715E5E92100D7BFF0 /* WARemoteInterface+Notification.h */; };
 		80A2217415ED1AFD006236AC /* WARemoteInterface+WebSocket.h in Sources */ = {isa = PBXBuildFile; fileRef = 8002CDEA15E5F6F300D7BFF0 /* WARemoteInterface+WebSocket.h */; };
 		80A2217515ED1AFD006236AC /* WARemoteInterface+WebSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 8002CDEB15E5F6F300D7BFF0 /* WARemoteInterface+WebSocket.m */; };
+		80BE685B161DC13800A37CEB /* WASwipeableTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 80BE685A161DC13800A37CEB /* WASwipeableTableViewController.m */; };
 		80EB9A661615A436003B282B /* SSKeychain.m in Sources */ = {isa = PBXBuildFile; fileRef = 80EB9A651615A436003B282B /* SSKeychain.m */; };
 		80EE282316004112000ED674 /* WAFacebookInterface.m in Sources */ = {isa = PBXBuildFile; fileRef = FFBBA42415AD5D4400E95C66 /* WAFacebookInterface.m */; };
 		80EE282416004200000ED674 /* WAFacebook.m in Sources */ = {isa = PBXBuildFile; fileRef = FF3FF83115AEA670003CF6CC /* WAFacebook.m */; };
@@ -1256,8 +1264,21 @@
 		80316A0915C0EC20009D43F0 /* UIViewController+IRAQAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+IRAQAdditions.m"; sourceTree = "<group>"; };
 		80557BA715FDE38000336F3C /* WARemoteInterface+RemoteNotifications.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WARemoteInterface+RemoteNotifications.h"; sourceTree = "<group>"; };
 		80557BA815FDE38000336F3C /* WARemoteInterface+RemoteNotifications.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WARemoteInterface+RemoteNotifications.m"; sourceTree = "<group>"; };
+		809C6D22160583A00016E196 /* IIViewDeckController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IIViewDeckController.h; path = external/ViewDeck/ViewDeck/IIViewDeckController.h; sourceTree = "<group>"; };
+		809C6D23160583A00016E196 /* IIViewDeckController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = IIViewDeckController.m; path = external/ViewDeck/ViewDeck/IIViewDeckController.m; sourceTree = "<group>"; };
+		809C6D24160583A00016E196 /* WrapController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WrapController.h; path = external/ViewDeck/ViewDeck/WrapController.h; sourceTree = "<group>"; };
+		809C6D25160583A00016E196 /* WrapController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WrapController.m; path = external/ViewDeck/ViewDeck/WrapController.m; sourceTree = "<group>"; };
+		809C6D281605845A0016E196 /* WASlidingMenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WASlidingMenuViewController.h; sourceTree = "<group>"; };
+		809C6D291605845A0016E196 /* WASlidingMenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WASlidingMenuViewController.m; sourceTree = "<group>"; };
+		809C6D2A1605845A0016E196 /* WASlidingMenuViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WASlidingMenuViewController.xib; sourceTree = "<group>"; };
+		809C6D35160616F90016E196 /* menu.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = menu.png; sourceTree = "<group>"; };
+		809C6D36160616F90016E196 /* menu@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "menu@2x.png"; sourceTree = "<group>"; };
 		809D428E15F5CE4300CB4F89 /* WAWebSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAWebSocket.h; sourceTree = "<group>"; };
 		809D428F15F5CE4300CB4F89 /* WAWebSocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAWebSocket.m; sourceTree = "<group>"; };
+		80A13C72162071C4002880A9 /* NSDate+WAAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDate+WAAdditions.h"; sourceTree = "<group>"; };
+		80A13C73162071C4002880A9 /* NSDate+WAAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+WAAdditions.m"; sourceTree = "<group>"; };
+		80BE6859161DC13800A37CEB /* WASwipeableTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WASwipeableTableViewController.h; sourceTree = "<group>"; };
+		80BE685A161DC13800A37CEB /* WASwipeableTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WASwipeableTableViewController.m; sourceTree = "<group>"; };
 		80EB9A641615A436003B282B /* SSKeychain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SSKeychain.h; path = external/sskeychain/SSKeychain.h; sourceTree = "<group>"; };
 		80EB9A651615A436003B282B /* SSKeychain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SSKeychain.m; path = external/sskeychain/SSKeychain.m; sourceTree = "<group>"; };
 		80F800F415C2624C00132A96 /* IRAQ-Checkmark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "IRAQ-Checkmark.png"; sourceTree = "<group>"; };
@@ -2257,6 +2278,17 @@
 			path = external/IRAQPhotoPicker;
 			sourceTree = "<group>";
 		};
+		809C6D21160582F40016E196 /* ViewDeck */ = {
+			isa = PBXGroup;
+			children = (
+				809C6D22160583A00016E196 /* IIViewDeckController.h */,
+				809C6D23160583A00016E196 /* IIViewDeckController.m */,
+				809C6D24160583A00016E196 /* WrapController.h */,
+				809C6D25160583A00016E196 /* WrapController.m */,
+			);
+			name = ViewDeck;
+			sourceTree = "<group>";
+		};
 		80EB9A631615A423003B282B /* SSKeychain */ = {
 			isa = PBXGroup;
 			children = (
@@ -2561,6 +2593,13 @@
 				4B989DC1141F395D00DD13C9 /* WAPostViewCellPhone-WebLink.xib */,
 				1324577D15983CB600A97139 /* WAPostViewCellPhone-WebLinkOnly.xib */,
 				13BD4D9815930A480062EA3A /* WAPostViewCellPhone-ImageOnlyStack.xib */,
+				809C6D281605845A0016E196 /* WASlidingMenuViewController.h */,
+				809C6D291605845A0016E196 /* WASlidingMenuViewController.m */,
+				809C6D2A1605845A0016E196 /* WASlidingMenuViewController.xib */,
+				80BE6859161DC13800A37CEB /* WASwipeableTableViewController.h */,
+				80BE685A161DC13800A37CEB /* WASwipeableTableViewController.m */,
+				80A13C72162071C4002880A9 /* NSDate+WAAdditions.h */,
+				80A13C73162071C4002880A9 /* NSDate+WAAdditions.m */,
 			);
 			name = Timeline;
 			path = wammer;
@@ -3007,6 +3046,8 @@
 				4B87177715C7D4A200C9612D /* Unfav@2x~iphone.png */,
 				4BFC156815C7D9E800DB02F8 /* Unfav~ipad.png */,
 				4BB1B6AF15C14648002A4BE2 /* Unfav~iphone.png */,
+				809C6D35160616F90016E196 /* menu.png */,
+				809C6D36160616F90016E196 /* menu@2x.png */,
 				FFCCDEAB15B41B0000AEBB85 /* WAArticleStackElementDropdownTag.png */,
 				FFCCDEAC15B41B0000AEBB85 /* WAArticleStackElementDropdownTag@2x.png */,
 				FFCCDEAD15B41B0000AEBB85 /* WAArticleStackElementDropdownTagDisabled.png */,
@@ -3317,6 +3358,7 @@
 		FFFDEFB414211D5C0083BEFB /* iOS */ = {
 			isa = PBXGroup;
 			children = (
+				809C6D21160582F40016E196 /* ViewDeck */,
 				80EB9A631615A423003B282B /* SSKeychain */,
 				803169F715C0EC20009D43F0 /* IRAQPhotoPicker */,
 				4B31BA861591A74C00DC1A70 /* AGImagePickerController */,
@@ -4038,6 +4080,9 @@
 				4B8581C315F7A2D400EE11AC /* Icon-72@2x.png in Resources */,
 				4B85823B15F7ABCF00EE11AC /* WADefaults.develop.plist in Resources */,
 				4B16701215FDCE9900990F4B /* WADefaults.staging.plist in Resources */,
+				809C6D2C1605845A0016E196 /* WASlidingMenuViewController.xib in Resources */,
+				809C6D37160616FA0016E196 /* menu.png in Resources */,
+				809C6D38160616FA0016E196 /* menu@2x.png in Resources */,
 				138CCA351609D22700B477CE /* TutorialPhotoImport~iphone.png in Resources */,
 				138CCA381609D23C00B477CE /* TutorialPhotoImport@2x~iphone.png in Resources */,
 				138D31AE1609D29700ECA892 /* TutorialPhotoImport@2x~iphone.png in Resources */,
@@ -4500,8 +4545,13 @@
 				80557BA915FDE38000336F3C /* WARemoteInterface+RemoteNotifications.m in Sources */,
 				1327A87E15F87A1700AC7852 /* WAFile+ThumbnailMaker.m in Sources */,
 				13EFF4BF15FEC1B3007430EC /* WAPhotoImportManager.m in Sources */,
+				809C6D26160583A00016E196 /* IIViewDeckController.m in Sources */,
+				809C6D27160583A00016E196 /* WrapController.m in Sources */,
+				809C6D2B1605845A0016E196 /* WASlidingMenuViewController.m in Sources */,
 				80EB9A661615A436003B282B /* SSKeychain.m in Sources */,
 				13B6DB9D161573FF00B9CC35 /* WAFileExif.m in Sources */,
+				80BE685B161DC13800A37CEB /* WASwipeableTableViewController.m in Sources */,
+				80A13C74162071C4002880A9 /* NSDate+WAAdditions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

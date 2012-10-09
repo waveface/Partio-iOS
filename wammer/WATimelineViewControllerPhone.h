@@ -12,7 +12,13 @@
 
 #import "WAApplicationRootViewControllerDelegate.h"
 #import "UIKit+IRAdditions.h"
+#import "WASlidingMenuViewController.h"
+#import "IIViewDeckController.h"
+#import "WASwipeableTableViewController.h"
 
-@interface WATimelineViewControllerPhone : IRTableViewController <WAApplicationRootViewController>
+//@interface WATimelineViewControllerPhone : IRTableViewController <WAApplicationRootViewController, IIViewDeckControllerDelegate, WASlidingMenuDelegate>
+@interface WATimelineViewControllerPhone : WASwipeableTableViewController <WAApplicationRootViewController, IIViewDeckControllerDelegate, WASlidingMenuDelegate>
+
+- (void) jumpToToday;
 
 @end
