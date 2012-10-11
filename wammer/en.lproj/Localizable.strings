@@ -10,11 +10,17 @@
 /* Accessibility label for composer in iPhone timeline */
 "ACCESS_COMPOSE" = "Stream";
 
+/* Accessibility label for next day timeline */
+"ACCESS_NEXT_DAY" = "ACCESS_NEXT_DAY";
+
 /* Accessibility label for date picker in iPhone timeline */
 "ACCESS_PICK_DATE" = "Pick Date";
 
 /* accessibility label for webpage preview in composition view */
 "ACCESS_PREVIEW" = "Preview";
+
+/* Accessibility label for previous day timeline */
+"ACCESS_PREVIOUS_DAY" = "ACCESS_PREVIOUS_DAY";
 
 /* add photo button in composition view */
 "ACTION_ADD" = "add photo";
@@ -127,9 +133,6 @@
 
 /* Title for Cover Image picker */
 "CHANGE_REPRESENTING_FILE_TITLE" = "Pick Photo";
-
-/* Title for Collection in the sliding menu */
-"Collection" = "Collection";
 
 /* add photo button in composition view */
 "COMPOSITION_MANY_PHOTOS_BUTTON_CAPTION_FORMAT" = "%i Photos";
@@ -333,9 +336,6 @@
 /* Title to show explaining WiFi Sync */
 "SERVICE_INFO_WITHOUT_WIFI" = "Stream only sends your original photos via Wi-Fi connection. \n\nIf you don't have Stream installed on your PC, or it's not up and running, we keep the photos in a temporary cloud space for up to 30 days.";
 
-/* Title for Settings in the sliding menu */
-"Settings" = "Settings";
-
 /* Title for view controller signing the user in */
 "SIGN_IN_CONTROLLER_TITLE" = "Log In";
 
@@ -344,6 +344,15 @@
 
 /* Title for view controller signing the user up */
 "SIGN_UP_CONTROLLER_TITLE" = "Sign Up";
+
+/* Title for Collection in the sliding menu */
+"SLIDING_MENU_TITLE_COLLECTION" = "Collection";
+
+/* Title for Settings in the sliding menu */
+"SLIDING_MENU_TITLE_SETTINGS" = "Settings";
+
+/* Title for Timeline in the sliding menu */
+"SLIDING_MENU_TITLE_TIMELINE" = "Timeline";
 
 /* In Account Info Photo Import Section */
 "START_PHOTO_IMPORT_DESCRIPTION" = "Import all photos in Camera Roll";
@@ -378,8 +387,14 @@
 /* Title on the text stack more / less toggle button for “More” */
 "TEXT_ELEMENT_TOGGLE_MORE_TITLE" = "More";
 
-/* Title for Timeline in the sliding menu */
-"Timeline" = "Timeline";
+/* Title for menu item Document Stream */
+"TITLE_DOCUMENT_STREAM" = "Document Stream";
+
+/* Title for menu item Photo Stream */
+"TITLE_PHOTO_STREAM" = "Photo Stream";
+
+/* Title for menu item Reading Stream */
+"TITLE_READING_STREAM" = "Reading Stream";
 
 /* Alert on no location service enabled when open photo library */
 "TURN_ON_LOCATION_SERVICE" = "Turn on Location Services to allow Stream to access your Photo Library";
@@ -413,9 +428,6 @@
 
 /* Title to show when user has no station, and have exhausted storage on the Cloud */
 "USER_INFO_NAG_LEVEL_3_WITHOUT_STATION" = "Your cloud storage is full.  To sync, install and run Stream for Windows on your PC.";
-
-/* In Phone timeline */
-"VIEW_BUTTON" = "View";
 
 /* preview button in composition view */
 "WEB_PREVIEW" = "Web Preview";

@@ -17,7 +17,7 @@
 #import "WASwipeableTableViewController.h"
 
 //@interface WATimelineViewControllerPhone : IRTableViewController <WAApplicationRootViewController, IIViewDeckControllerDelegate, WASlidingMenuDelegate>
-@interface WATimelineViewControllerPhone : WASwipeableTableViewController <WAApplicationRootViewController, IIViewDeckControllerDelegate, WASlidingMenuDelegate>
+@interface WATimelineViewControllerPhone : WASwipeableTableViewController <WAApplicationRootViewController, IIViewDeckControllerDelegate, WASlidingMenuDelegate, UITableViewDelegate>
 
 - (void) jumpToToday;
 

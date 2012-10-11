@@ -225,7 +225,11 @@
 	[debugger enableCoreDataDebugging];
 	[debugger addManagedObjectContext:context withName:@"My MOC"];
 #endif
-	
+
+#if ENABLE_DCINTROSPECT
+	[[DCIntrospect sharedIntrospector] start];
+#endif
+
 	return YES;
 	
 }
@@ -341,7 +345,7 @@
 			viewDeckController.animationBehavior = IIViewDeckAnimationPullIn;
 			viewDeckController.panningMode = IIViewDeckNoPanning;
 			viewDeckController.centerhiddenInteractivity = IIViewDeckCenterHiddenNotUserInteractiveWithTapToClose;
-						
+	
 			self.window.rootViewController = viewDeckController;
 		
 			break;

@@ -90,7 +90,6 @@
 
 		tbView.delegate = wSelf;
 		tbView.dataSource = wSelf;
-//		[newView addSubview:tbView];
 		return tbView;
 		
 	};
@@ -137,7 +136,7 @@
 	
 	CGRect origFrame = currentView.frame;
   CGRect offScreenFrame = origFrame;
-  offScreenFrame.origin.x = -(origFrame.size.width);
+  offScreenFrame.origin.x = -(origFrame.size.width) - self.tableView.layer.shadowRadius;
 	
 	[self.view addSubview:nextTbView];
 	[self.view sendSubviewToBack:nextTbView];
@@ -154,8 +153,7 @@
                    } completion:^(BOOL finished) {
 
 										 [currentView removeFromSuperview];
-//										 [wSelf.view bringSubviewToFront:[wSelf.tableViews objectAtIndex:nextIndex]];
-//										 [wSelf.view sendSubviewToBack:currentView];
+										 [wSelf.view bringSubviewToFront:[wSelf.tableViews objectAtIndex:nextIndex]];
 										 currentView.frame = origFrame;
 										 wSelf.indexOfCurrentTableView = nextIndex;
 										 wSelf.tableView = [wSelf.tableViews objectAtIndex:wSelf.indexOfCurrentTableView];
@@ -180,7 +178,7 @@
 	
 	CGRect origFrame = currentView.frame;
   CGRect offScreenFrame = origFrame;
-  offScreenFrame.origin.x = -(origFrame.size.width);
+  offScreenFrame.origin.x = -(origFrame.size.width) - self.tableView.layer.shadowRadius;
  
 	preView.frame = offScreenFrame;
 	[self.view addSubview:preView];

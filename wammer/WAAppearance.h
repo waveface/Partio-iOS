@@ -46,6 +46,7 @@ extern UIImage * WABarButtonImageFromImageNamed (NSString *anImageName);
 extern UIImage * WABarButtonImageWithOptions (NSString *anImageName, UIColor *aColor, IRShadow *aShadow);
 
 extern UIView * WAStandardTitleView (void);
+extern UIView * WATitleViewForDripdownMenu(id target, SEL action);
 extern UILabel * WAStandardTitleLabel (void);
 
 extern UIView * WAStandardPostCellBackgroundView (void);

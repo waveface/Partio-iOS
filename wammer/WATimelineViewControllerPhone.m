@@ -53,6 +53,7 @@
 #import "WAPhotoImportManager.h"
 
 #import "IIViewDeckController.h"
+#import "WADripdownMenuViewController.h"
 
 static float kWATimelinePageSwitchDuration = 0.4f;
 static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPostsViewControllerPhone_RepresentedObjectURI";
@@ -111,7 +112,7 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 	[[WARemoteInterface sharedInterface] addObserver:self forKeyPath:@"isPostponingDataRetrievalTimerFiring" options:NSKeyValueObservingOptionPrior|NSKeyValueObservingOptionNew context:nil];
   
 	self.title = NSLocalizedString(@"APP_TITLE", @"Title for application");
-	self.navigationItem.titleView = WAStandardTitleView();
+	self.navigationItem.titleView = WATitleViewForDripdownMenu(self, @selector(dripdownMenuTapped));
 	
 	CGRect rect = (CGRect){ CGPointZero, (CGSize){ 1, 1 } };
 	UIGraphicsBeginImageContext(rect.size);
@@ -142,24 +143,31 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 	UIBarButtonItem *zeroSpacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
 	zeroSpacer.width = -10;
 	
+	UIBarButtonItem *leftUIButton = [[UIBarButtonItem alloc] initWithImage:transparentImage style:UIBarButtonItemStylePlain target:self action:@selector(handleSwipeRight:)];
+	[leftUIButton setAccessibilityLabel:NSLocalizedString(@"ACCESS_NEXT_DAY", @"Accessibility label for next day timeline")];
+	/*
 	UIBarButtonItem *datePickUIButton = [[UIBarButtonItem alloc] initWithImage:transparentImage style:UIBarButtonItemStylePlain target:self action:@selector(handleDateSelect:)];
 	[datePickUIButton setAccessibilityLabel:NSLocalizedString(@"ACCESS_PICK_DATE", @"Accessibility label for date picker in iPhone timeline")];
-
+*/
 	UIBarButtonItem *composeUIButton = [[UIBarButtonItem alloc] initWithCustomView:noteButton];
 	[composeUIButton setAccessibilityLabel:NSLocalizedString(@"ACCESS_COMPOSE", @"Accessibility label for composer in iPhone timeline")];
 
 	UIBarButtonItem *cameraUIButton = [[UIBarButtonItem alloc] initWithCustomView:cameraButton];
 	[cameraButton setAccessibilityLabel:NSLocalizedString(@"ACCESS_CAMERA", @"Accessibility label for camera in iPhone timeline")];
-
+/*
 	UIBarButtonItem *userInfoUIButton = [[UIBarButtonItem alloc] initWithImage:transparentImage style:UIBarButtonItemStylePlain target:self action:@selector(handleUserInfo:)];
 	[userInfoUIButton setAccessibilityLabel:NSLocalizedString(@"ACCESS_ACCOUNT_INFO", @"Accessibility label for account info in iPhone timeline")];
-
+*/
+	UIBarButtonItem *rightUIButton = [[UIBarButtonItem alloc] initWithImage:transparentImage style:UIBarButtonItemStylePlain target:self action:@selector(handleSwipeLeft:)];
+	[leftUIButton setAccessibilityLabel:NSLocalizedString(@"ACCESS_PREVIOUS_DAY", @"Accessibility label for previous day timeline")];
+	
 	
 	self.toolbarItems = [NSArray arrayWithObjects:
 	
 		alphaSpacer,
 		
-		datePickUIButton,
+//		datePickUIButton,
+		leftUIButton,
 		
 		omegaSpacer,
 		
@@ -171,27 +179,33 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 
 		omegaSpacer,
 		
-		userInfoUIButton,
+		//userInfoUIButton,
+		rightUIButton,
 		
 		alphaSpacer,
 	
 	nil];
 		
-	UIBarButtonItem *filterButton = [[UIBarButtonItem alloc]
-																	 initWithTitle:NSLocalizedString(@"VIEW_BUTTON", @"In Phone timeline")
-																	 style:UIBarButtonItemStylePlain
-																	 target:self
-																	 action:@selector(handleFilter:)];
+	UIImage *calImage = [UIImage imageNamed:@"Cal"];
+	UIButton *calButton = [UIButton buttonWithType:UIButtonTypeCustom];
+	calButton.frame = (CGRect) {CGPointZero, calImage.size};
+	[calButton setBackgroundImage:calImage forState:UIControlStateNormal];
+	[calButton setBackgroundImage:[UIImage imageNamed:@"CalHL"] forState:UIControlStateHighlighted];
+	[calButton setShowsTouchWhenHighlighted:YES];
+	[calButton addTarget:self action:@selector(handleDateSelect:) forControlEvents:UIControlEventTouchUpInside];
 	
-	self.navigationItem.rightBarButtonItem = filterButton;
+	self.navigationItem.rightBarButtonItem  = [[UIBarButtonItem alloc] initWithCustomView:calButton];
 	
-	UIBarButtonItem *slidingMenuButton = [[UIBarButtonItem alloc]
-																				initWithImage:[UIImage imageNamed:@"menu"]
-																				style:UIBarButtonItemStylePlain
-																				target:self.viewDeckController action:@selector(toggleLeftView)];
+	UIImage *menuImage = [UIImage imageNamed:@"menu"];
+	UIButton *slidingMenuButton = [UIButton buttonWithType:UIButtonTypeCustom];
+	slidingMenuButton.frame = (CGRect) {CGPointZero, menuImage.size};
+	[slidingMenuButton setBackgroundImage:menuImage forState:UIControlStateNormal];
+	[slidingMenuButton setBackgroundImage:[UIImage imageNamed:@"menuHL"] forState:UIControlStateHighlighted];
+	[slidingMenuButton setShowsTouchWhenHighlighted:YES];
+	[slidingMenuButton addTarget:self.viewDeckController action:@selector(toggleLeftView) forControlEvents:UIControlEventTouchUpInside];
 	
-	self.navigationItem.leftBarButtonItem = slidingMenuButton;
-	
+	self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:slidingMenuButton];
+		
 	[self setScrollToTopmostPost:NO];
 
 	return self;
@@ -714,7 +728,7 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 		return;
 		
 	}
-	
+
 	WAArticle *post = [self.fetchedResultsController objectAtIndexPath:indexPath];
 	NSCParameterAssert([post isKindOfClass:[WAArticle class]]);
 	
@@ -722,6 +736,42 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 	
 	[self.navigationController pushViewController:pushedVC animated:YES];
 	
+}
+
+CGFloat startTableViewOffset;
+CGFloat lastTableViewOffset;
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
+
+	startTableViewOffset = lastTableViewOffset = scrollView.contentOffset.y;
+	
+}
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+	CGFloat currentOffset = scrollView.contentOffset.y;
+	CGFloat diff = lastTableViewOffset - currentOffset;
+	
+	if (currentOffset - startTableViewOffset > 0) {
+
+		if (scrollView.isTracking && abs(diff) > 1)
+			[self.navigationController setToolbarHidden:YES animated:YES];
+
+	} else {
+
+		if (scrollView.isTracking && abs(diff) > 1)
+			[self.navigationController setToolbarHidden:NO animated:YES];
+
+	}
+	
+	lastTableViewOffset = currentOffset;
+}
+
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
+}
+
+- (void)scrollViewDidScrollToTop:(UIScrollView *)scrollView {
+
+	[self.navigationController setToolbarHidden:NO animated:YES];
+
 }
 
 #pragma mark -
@@ -1023,7 +1073,7 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 		[self.fetchedResultsController performFetch:nil];
 		
 		[self.tableView setContentOffset:CGPointZero animated:NO];
-		[self.tableView reloadData];
+//		[self.tableView reloadData];
 		
 	}
 	
@@ -1353,6 +1403,7 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 	NSAssert1(toDate != nil, @"No article around date: %@ ?", date);
 	
 	[self loadDataForDate:toDate];
+	[self.tableView reloadData];
 	self.currentDisplayedDate = toDate;
 	
 	NSDate *preDate = [self previousDateWithArticle];
@@ -1468,6 +1519,34 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 	[hostingVC.view addSubview:fpVC.view];
 	[fpVC didMoveToParentViewController:hostingVC];
 
+}
+
+#pragma mark - Dripdown menu
+BOOL dripdownMenuOpened = NO;
+- (void) dripdownMenuTapped {
+	
+	if (dripdownMenuOpened)
+		return;
+	
+	[self.navigationController setToolbarHidden:YES animated:YES];
+	__block WADripdownMenuViewController *ddMenu = [[WADripdownMenuViewController alloc] initWithCompletion:^{
+		
+		[ddMenu willMoveToParentViewController:nil];
+		[ddMenu removeFromParentViewController];
+		[ddMenu.view removeFromSuperview];
+		[ddMenu didMoveToParentViewController:nil];
+		
+		ddMenu = nil;
+		[self.navigationController setToolbarHidden:NO animated:YES];
+
+		dripdownMenuOpened = NO;
+		
+	}];
+		
+	[self addChildViewController:ddMenu];
+	[self.view addSubview:ddMenu.view];
+	[ddMenu didMoveToParentViewController:self];
+	dripdownMenuOpened = YES;
 }
 
 #pragma mark - buttons (camera/compose/userinfo) in toolbar
