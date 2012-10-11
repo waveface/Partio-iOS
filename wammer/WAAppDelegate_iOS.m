@@ -51,8 +51,9 @@
 	#import "PonyDebugger/PDDebugger.h"
 #endif
 
-#import "GANTracker.h"
 #import "WAFilterPickerViewController.h"
+
+static NSString *const kTrackingId = @"UA-27817516-7";
 
 @interface WALoginBackgroundViewController : UIViewController
 @end
@@ -194,21 +195,15 @@
 		
 	}
 
-//	WAPostAppEvent(@"AppVisit", [NSDictionary dictionaryWithObjectsAndKeys:@"app",@"category",@"visit", @"action", nil]);
+//	[GAI sharedInstance].debug = YES;
+	[GAI sharedInstance].dispatchInterval = 120;
+	[GAI sharedInstance].trackUncaughtExceptions = YES;
+	self.tracker = [[GAI sharedInstance] trackerWithTrackingId:kTrackingId];
 	
-	GANTracker *tracker = [GANTracker sharedTracker];
-#if DEBUG
-	tracker.debug = YES;
-#endif
-	[tracker startTrackerWithAccountID:@"UA-27817516-7"
-											dispatchPeriod:10
-														delegate:nil];
-	
-	[tracker trackEvent:@"Application:didFinishLaunchingWithOptions:"
-							 action:@"Launch iOS"
-								label:nil
-								value:-1
-						withError:NULL];
+	[self.tracker trackEventWithCategory:@"Application:didFinishLaunchingWithOptions:"
+														withAction:@"App Launched"
+														 withLabel:nil
+														 withValue:@-1];
 	
 	[[WARemoteInterface sharedInterface] enableAutomaticRemoteUpdatesTimer];
 	[[WARemoteInterface sharedInterface] performAutomaticRemoteUpdatesNow];
