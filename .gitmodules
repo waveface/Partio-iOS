@@ -73,3 +73,6 @@
 [submodule "external/sskeychain"]
 	path = external/sskeychain
 	url = git://github.com/samsoffes/sskeychain.git
+[submodule "external/FacebookSDK"]
+	path = external/FacebookSDK
+	url = git@github.com:facebook/facebook-ios-sdk.git
