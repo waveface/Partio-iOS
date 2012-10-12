@@ -85,7 +85,7 @@ static NSString *const kTrackingId = @"UA-27817516-7";
 
 @end
 
-@interface WAAppDelegate_iOS () <WAApplicationRootViewControllerDelegate>
+@interface WAAppDelegate_iOS () <WAApplicationRootViewControllerDelegate, WACacheManagerDelegate>
 
 - (void) handleObservedAuthenticationFailure:(NSNotification *)aNotification;
 - (void) handleObservedRemoteURLNotification:(NSNotification *)aNotification;
@@ -171,6 +171,8 @@ static NSString *const kTrackingId = @"UA-27817516-7";
 	
 	[self.window makeKeyAndVisible];
 	
+	[[WACacheManager sharedManager] setDelegate:self];
+
 	if ([[NSUserDefaults standardUserDefaults] stringForKey:kWADebugPersistentStoreName]) {
 	
 		NSString *identifier = [[NSUserDefaults standardUserDefaults] stringForKey:kWADebugPersistentStoreName];
@@ -905,6 +907,12 @@ static NSInteger networkActivityStackingCount = 0;
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
 	[FBSession.activeSession handleDidBecomeActive];
+}
+
+- (BOOL)shouldPurgeCachedFile:(WACache *)cache {
+
+	return YES;
+
 }
 
 @end

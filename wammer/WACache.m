@@ -14,7 +14,8 @@
 @implementation WACache
 
 @dynamic fileSize;
-@dynamic keyPath;
+@dynamic filePath;
+@dynamic filePathKey;
 @dynamic lastAccessTime;
 @dynamic file;
 @dynamic ogimage;

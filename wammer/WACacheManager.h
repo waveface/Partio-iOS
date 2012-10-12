@@ -18,6 +18,7 @@
 @interface WACacheManager : NSObject <NSCoding>
 
 + (WACacheManager *)sharedManager;
+- (void)insertOrUpdateCacheWithRelationship:(NSURL *)relationshipURL filePath:(NSString *)filePath filePathKey:(NSString *)filePathKey;
 - (void)clearPurgeableFilesIfNeeded;
 
 @property (nonatomic, readwrite, weak) id<WACacheManagerDelegate> delegate;

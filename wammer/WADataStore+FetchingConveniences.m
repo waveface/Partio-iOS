@@ -7,6 +7,7 @@
 //
 
 #import "WADataStore+FetchingConveniences.h"
+#import "WACache.h"
 
 @implementation WADataStore (FetchingConveniences)
 
@@ -460,6 +461,28 @@
 	} else {
 		return [[objects objectAtIndex:0] valueForKey:@"totalSize"];
 	}
+
+}
+
+- (WACache *)fetchCacheWithPredicate:(NSPredicate *)aPredicate usingContext:(NSManagedObjectContext *)aContext {
+
+	NSFetchRequest *request = [[NSFetchRequest alloc] init];
+	NSEntityDescription *entity = [NSEntityDescription entityForName:@"WACache" inManagedObjectContext:aContext];
+	[request setEntity:entity];
+	[request setPredicate:aPredicate];
+	
+	NSError *fetchingError = nil;
+	NSArray *fetchedCaches = [aContext executeFetchRequest:request error:&fetchingError];
+	if (fetchingError) {
+		NSLog(@"%@", fetchingError);
+		return nil;
+	}
+	
+	if ([fetchedCaches count] > 1) {
+		NSLog(@"Duplicated cache entities for the same file: %@", fetchedCaches);
+	}
+	
+	return [fetchedCaches count] > 0 ? [fetchedCaches objectAtIndex:0] : nil;
 
 }
 

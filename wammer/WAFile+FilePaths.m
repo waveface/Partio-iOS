@@ -14,6 +14,7 @@
 #import "WADataStore.h"
 
 #import "IRManagedObject+WAFileHandling.h"
+#import "WACacheManager.h"
 
 
 @implementation WAFile (FilePaths)
@@ -24,8 +25,11 @@
 	NSString *primitivePath = [self primitiveValueForKey:filePathKey];
 	[self didAccessValueForKey:filePathKey];
 	
-	if (primitivePath)
-		return [self absolutePathFromPath:primitivePath];
+	NSString *filePath = [self absolutePathFromPath:primitivePath];
+	if (primitivePath && [[NSFileManager defaultManager] fileExistsAtPath:filePath]) {
+		[[WACacheManager sharedManager] insertOrUpdateCacheWithRelationship:[[self objectID] URIRepresentation] filePath:filePath filePathKey:filePathKey];
+		return filePath;
+	}
 	
 	[self willAccessValueForKey:urlStringKey];
 	NSString *urlString = [self primitiveValueForKey:urlStringKey];
@@ -51,8 +55,10 @@
 	
 	[self willChangeValueForKey:filePathKey];
 	
-	[self setPrimitiveValue:[self relativePathFromPath:newAbsoluteFilePath] forKey:filePathKey];
+	NSString *filePath = [self relativePathFromPath:newAbsoluteFilePath];
+	[self setPrimitiveValue:filePath forKey:filePathKey];
 	[self irAssociateObject:nil usingKey:&imageKey policy:OBJC_ASSOCIATION_ASSIGN changingObservedKey:imageKey];
+	[[WACacheManager sharedManager] insertOrUpdateCacheWithRelationship:[[self objectID] URIRepresentation] filePath:[self absolutePathFromPath:filePath] filePathKey:filePathKey];
 	
 	[self didChangeValueForKey:filePathKey];
 

@@ -16,9 +16,10 @@
 @interface WACache : IRManagedObject
 
 @property (nonatomic, retain) NSNumber * fileSize;
-@property (nonatomic, retain) NSString * keyPath;
+@property (nonatomic, retain) NSString * filePath;
+@property (nonatomic, retain) NSString * filePathKey;
 @property (nonatomic, retain) NSDate * lastAccessTime;
-@property (nonatomic, retain) WAFile *file;
-@property (nonatomic, retain) WAOpenGraphElementImage *ogimage;
+@property (nonatomic, retain) WAFile * file;
+@property (nonatomic, retain) WAOpenGraphElementImage * ogimage;
 
 @end

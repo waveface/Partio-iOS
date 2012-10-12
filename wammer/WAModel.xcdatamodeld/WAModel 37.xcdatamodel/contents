@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model name="" userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="1811" systemVersion="12C54" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
+<model name="" userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="1811" systemVersion="12C60" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="WAArticle" representedClassName="WAArticle">
         <attribute name="creationDate" optional="YES" attributeType="Date" indexed="YES" elementID="timestamp">
             <userInfo/>
@@ -43,8 +43,9 @@
         <userInfo/>
     </entity>
     <entity name="WACache" representedClassName="WACache" syncable="YES">
+        <attribute name="filePath" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="filePathKey" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="fileSize" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
-        <attribute name="keyPath" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="lastAccessTime" optional="YES" attributeType="Date" syncable="YES"/>
         <relationship name="file" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="WAFile" inverseName="caches" inverseEntity="WAFile" syncable="YES"/>
         <relationship name="ogimage" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="WAOpenGraphElementImage" inverseName="cache" inverseEntity="WAOpenGraphElementImage" syncable="YES"/>
@@ -268,7 +269,7 @@
     <fetchRequest name="WAFRUser" entity="WAUser" predicateString="identifier == $Identifier"/>
     <elements>
         <element name="WAArticle" positionX="0" positionY="0" width="128" height="315"/>
-        <element name="WACache" positionX="160" positionY="192" width="128" height="120"/>
+        <element name="WACache" positionX="160" positionY="192" width="128" height="135"/>
         <element name="WAComment" positionX="0" positionY="0" width="128" height="135"/>
         <element name="WAFile" positionX="0" positionY="0" width="128" height="495"/>
         <element name="WAFileExif" positionX="160" positionY="192" width="128" height="285"/>

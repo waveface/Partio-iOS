@@ -15,6 +15,7 @@
 #import "Foundation+IRAdditions.h"
 #import "UIKit+IRAdditions.h"
 #import "IRManagedObject+WAFileHandling.h"
+#import "WACacheManager.h"
 
 NSString * kWAOpenGraphElementImageFilePath = @"imageFilePath";
 NSString * kWAOpenGraphElementImageRemoteURL = @"imageRemoteURL";
@@ -33,10 +34,12 @@ NSString * kWAOpenGraphElementImageImage = @"image";
 
 - (void) setImageFilePath:(NSString *)newImageFilePath {
 
-	[self willChangeValueForKey:@"imageFilePath"];
-	[self setPrimitiveImageFilePath:[self relativePathFromPath:newImageFilePath]];
-	[self didChangeValueForKey:@"imageFilePath"];
-		
+	[self willChangeValueForKey:kWAOpenGraphElementImageFilePath];
+	NSString *filePath = [self relativePathFromPath:newImageFilePath];
+	[self setPrimitiveImageFilePath:filePath];
+	[[WACacheManager sharedManager] insertOrUpdateCacheWithRelationship:[[self objectID] URIRepresentation] filePath:[self absolutePathFromPath:filePath] filePathKey:kWAOpenGraphElementImageFilePath];
+	[self didChangeValueForKey:kWAOpenGraphElementImageFilePath];
+
 	[self setImage:nil];
 
 }
@@ -45,8 +48,11 @@ NSString * kWAOpenGraphElementImageImage = @"image";
 
 	NSString *primitivePath = [self primitiveValueForKey:kWAOpenGraphElementImageFilePath];
 	
-	if (primitivePath)
-		return [self absolutePathFromPath:primitivePath];
+	NSString *filePath = [self absolutePathFromPath:primitivePath];
+	if (primitivePath && [[NSFileManager defaultManager] fileExistsAtPath:filePath]) {
+		[[WACacheManager sharedManager] insertOrUpdateCacheWithRelationship:[[self objectID] URIRepresentation] filePath:filePath filePathKey:kWAOpenGraphElementImageFilePath];
+		return filePath;
+	}
 		
 	if (!self.imageRemoteURL)
 		return nil;
@@ -112,7 +118,7 @@ NSString * kWAOpenGraphElementImageImage = @"image";
 	NSString *imageFilePath = self.imageFilePath;
 	if (!imageFilePath)
 		return nil;
-	
+		
 	image = [UIImage imageWithData:[NSData dataWithContentsOfFile:imageFilePath options:NSDataReadingMappedIfSafe error:nil]];
 	image.irRepresentedObject = [NSValue valueWithNonretainedObject:self];
 
