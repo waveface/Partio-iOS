@@ -7,8 +7,6 @@
 //
 
 #import "WAFacebookInterface.h"
-#import "Facebook.h"
-#import "WAFacebook.h"
 #import "WADefines.h"
 #import "WAFacebookInterfaceSubclass.h"
 

@@ -38,8 +38,7 @@
 #import "IASKSettingsReader.h"
 #import	"DCIntrospect.h"
 
-#import "WAFacebookInterface.h"
-#import "WAFacebookInterfaceSubclass.h"
+#import <FacebookSDK/FacebookSDK.h>
 
 #import "WAWelcomeViewController.h"
 #import "WATutorialViewController.h"
@@ -837,13 +836,8 @@ static NSInteger networkActivityStackingCount = 0;
 - (BOOL) application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
 
 	if ([[url scheme] hasPrefix:@"fb"]) {
-	
-		//	fb357087874306060://authorize/#access_token=BAAFExPZCm0AwBAE0Rrkx45WrF9P9rSjttvmKqWCHFXCiflQCCaaA57AxiD4SUxjESg0VdMilsRcynBzIaxljzcmenZAXephyorGP7h3Eg7o6lahje3ox5f8bRJf99FPkmUKaTVWQZDZD&expires_in=5105534&code=AQDk-SBy1kclksewM5uX1W0GlTd0_Jc8VQT6gXb0grblRTPBSN8YPgdTVqYmi1Vuv0hnmskQpIxkjTOKBxRt__VQ4IdiJdThklKvzcZprTjD5Lhgid2U-O9lZ6JFclAyNQGbpy1cdsMWEkHoW0vDLNTiJqyAk2qZ5qbi0atfKNdxHFDtK9ee7338KoDR_8nOaxMeymONNrceZfzrRj48EYYy
-
-		[[WAFacebookInterface sharedInterface].facebook handleOpenURL:url];
-		
+		[FBSession.activeSession handleOpenURL:url];
 	} else {
-	
 		NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:
 			url, @"url",
 			sourceApplication, @"sourceApplication",
@@ -851,13 +845,13 @@ static NSInteger networkActivityStackingCount = 0;
 		nil];
 
 		[[NSNotificationCenter defaultCenter] postNotificationName:kWAApplicationDidReceiveRemoteURLNotification object:url userInfo:userInfo];
-		
 	}
 	
   return YES;
 
 }
 
+#pragma mark @protocol UIApplicationDelegate
 - (void) applicationDidReceiveMemoryWarning:(UIApplication *)application {
 
 	WAPostAppEvent(@"did-receive-memory-warning", [NSDictionary dictionaryWithObjectsAndKeys:
@@ -866,6 +860,14 @@ static NSInteger networkActivityStackingCount = 0;
 	
 	nil]);
 
+}
+
+- (void)applicationWillTerminate:(UIApplication *)application {
+	[FBSession.activeSession close];
+}
+
+- (void)applicationDidBecomeActive:(UIApplication *)application {
+	[FBSession.activeSession handleDidBecomeActive];
 }
 
 @end

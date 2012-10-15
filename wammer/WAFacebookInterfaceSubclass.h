@@ -7,11 +7,11 @@
 //
 
 #import "WAFacebookInterface.h"
-#import "Facebook.h"
+#import <FacebookSDK/FacebookSDK.h>
 
-@interface WAFacebookInterface () <FBSessionDelegate>
+@interface WAFacebookInterface () //<FBSessionDelegate>
 
-@property (nonatomic, readonly, strong) Facebook *facebook;
+//@property (nonatomic, readonly, strong) Facebook *facebook;
 
 - (NSArray *) copyRequestedPermissions;
 

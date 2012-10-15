@@ -135,6 +135,19 @@
 		4BFC156A15C7D9E800DB02F8 /* Unfav~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BFC156815C7D9E800DB02F8 /* Unfav~ipad.png */; };
 		7D92E5B216070705000C7B06 /* PhotoPostWithURLHistoryStyle.txt in Resources */ = {isa = PBXBuildFile; fileRef = 7D92E5B0160703F6000C7B06 /* PhotoPostWithURLHistoryStyle.txt */; };
 		7DAD18A21626A73B00F87495 /* libGoogleAnalytics.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7DAD18A11626A73B00F87495 /* libGoogleAnalytics.a */; };
+		7D9B1D8D162BB1DE000E5350 /* Accounts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D9B1D8C162BB1DE000E5350 /* Accounts.framework */; };
+		7D9B1D8F162BB1E8000E5350 /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D9B1D8E162BB1E8000E5350 /* AdSupport.framework */; };
+		7D9B1D91162BB1F6000E5350 /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D9B1D90162BB1F6000E5350 /* Social.framework */; };
+		7D9B1D94162BBF75000E5350 /* WAFacebookTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D9B1D93162BBF75000E5350 /* WAFacebookTest.m */; };
+		7D9B1D95162BBF97000E5350 /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D9F2B0C162808DB00BFE34A /* FacebookSDK.framework */; };
+		7D9B1D96162BC0AD000E5350 /* Accounts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D9B1D8C162BB1DE000E5350 /* Accounts.framework */; };
+		7D9B1D97162BC0AD000E5350 /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D9B1D8E162BB1E8000E5350 /* AdSupport.framework */; };
+		7D9B1D98162BC0AD000E5350 /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D9B1D90162BB1F6000E5350 /* Social.framework */; };
+		7D9B1D99162BE0D2000E5350 /* WAFacebookConnectionSwitch.m in Sources */ = {isa = PBXBuildFile; fileRef = FF3B37B015B690FF00AE357A /* WAFacebookConnectionSwitch.m */; };
+		7D9B1D9A162BE1B1000E5350 /* WARemoteInterface+SocialNetworks.m in Sources */ = {isa = PBXBuildFile; fileRef = FF88370515B7E90800E6CD92 /* WARemoteInterface+SocialNetworks.m */; };
+		7D9F2B0D162808DB00BFE34A /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D9F2B0C162808DB00BFE34A /* FacebookSDK.framework */; };
+		7D9F2B0F162808F000BFE34A /* FacebookSDKResources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 7D9F2B0E162808F000BFE34A /* FacebookSDKResources.bundle */; };
+		7DC9240616104CB400E70542 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7DC9240516104CB400E70542 /* Default-568h@2x.png */; };
 		8002CDE615E5E85600D7BFF0 /* libicucore.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 8002CDE515E5E85600D7BFF0 /* libicucore.dylib */; };
 		8002CDE915E5E92100D7BFF0 /* WARemoteInterface+Notification.m in Sources */ = {isa = PBXBuildFile; fileRef = 8002CDE815E5E92100D7BFF0 /* WARemoteInterface+Notification.m */; };
 		8002CDEC15E5F6F300D7BFF0 /* WARemoteInterface+WebSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 8002CDEB15E5F6F300D7BFF0 /* WARemoteInterface+WebSocket.m */; };
@@ -161,9 +174,6 @@
 		80A2217515ED1AFD006236AC /* WARemoteInterface+WebSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 8002CDEB15E5F6F300D7BFF0 /* WARemoteInterface+WebSocket.m */; };
 		80BE685B161DC13800A37CEB /* WASwipeableTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 80BE685A161DC13800A37CEB /* WASwipeableTableViewController.m */; };
 		80EB9A661615A436003B282B /* SSKeychain.m in Sources */ = {isa = PBXBuildFile; fileRef = 80EB9A651615A436003B282B /* SSKeychain.m */; };
-		80EE282316004112000ED674 /* WAFacebookInterface.m in Sources */ = {isa = PBXBuildFile; fileRef = FFBBA42415AD5D4400E95C66 /* WAFacebookInterface.m */; };
-		80EE282416004200000ED674 /* WAFacebook.m in Sources */ = {isa = PBXBuildFile; fileRef = FF3FF83115AEA670003CF6CC /* WAFacebook.m */; };
-		80EE282516004241000ED674 /* libfacebook_ios_sdk.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FF6B02A615AC0A2A009D8BDB /* libfacebook_ios_sdk.a */; };
 		80F42C0215F70EDF00C8A72B /* WAWebSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 809D428F15F5CE4300CB4F89 /* WAWebSocket.m */; };
 		80F800F615C2624C00132A96 /* IRAQ-Checkmark.png in Resources */ = {isa = PBXBuildFile; fileRef = 80F800F415C2624C00132A96 /* IRAQ-Checkmark.png */; };
 		80F800F715C2624C00132A96 /* IRAQ-Checkmark@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 80F800F515C2624C00132A96 /* IRAQ-Checkmark@2x.png */; };
@@ -250,7 +260,6 @@
 		FF3B1B2A14EBA3C7009CFFD1 /* WFPreviewScreen.css in Resources */ = {isa = PBXBuildFile; fileRef = FF3B1B2614EBA3C7009CFFD1 /* WFPreviewScreen.css */; };
 		FF3B1B2B14EBA3C7009CFFD1 /* WFPreviewTemplate.html in Resources */ = {isa = PBXBuildFile; fileRef = FF3B1B2714EBA3C7009CFFD1 /* WFPreviewTemplate.html */; };
 		FF3B37B115B690FF00AE357A /* WAFacebookConnectionSwitch.m in Sources */ = {isa = PBXBuildFile; fileRef = FF3B37B015B690FF00AE357A /* WAFacebookConnectionSwitch.m */; };
-		FF3FF83215AEA670003CF6CC /* WAFacebook.m in Sources */ = {isa = PBXBuildFile; fileRef = FF3FF83115AEA670003CF6CC /* WAFacebook.m */; };
 		FF4050751573817A001A14DA /* WAGalleryImageScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = FF4050741573817A001A14DA /* WAGalleryImageScrollView.m */; };
 		FF426FC5155102AF0053D1CA /* WFPreviewTemplate_Discrete_Plaintext.html in Resources */ = {isa = PBXBuildFile; fileRef = FF426FC0155102AF0053D1CA /* WFPreviewTemplate_Discrete_Plaintext.html */; };
 		FF426FC6155102AF0053D1CA /* WFPreviewTemplate_Discrete_Web_Image.html in Resources */ = {isa = PBXBuildFile; fileRef = FF426FC1155102AF0053D1CA /* WFPreviewTemplate_Discrete_Web_Image.html */; };
@@ -346,8 +355,6 @@
 		FF66D58C15A577AC00851F1B /* WATextFoldingToggleItem.xib in Resources */ = {isa = PBXBuildFile; fileRef = FF66D58B15A577AC00851F1B /* WATextFoldingToggleItem.xib */; };
 		FF67F05414724F60006715D5 /* WAComment+WARemoteInterfaceEntitySyncing.m in Sources */ = {isa = PBXBuildFile; fileRef = FF67F05314724F5F006715D5 /* WAComment+WARemoteInterfaceEntitySyncing.m */; };
 		FF680463159AFF0F00EBF63B /* WAFile+LazyImages.m in Sources */ = {isa = PBXBuildFile; fileRef = FF4BDEA5156A518100C105D5 /* WAFile+LazyImages.m */; };
-		FF6B02A915AC0A49009D8BDB /* libfacebook_ios_sdk.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FF6B02A615AC0A2A009D8BDB /* libfacebook_ios_sdk.a */; };
-		FF6B02B015AC0B57009D8BDB /* FBDialog.bundle in Resources */ = {isa = PBXBuildFile; fileRef = FF6B02AF15AC0B57009D8BDB /* FBDialog.bundle */; };
 		FF6BCFA115AF78C60046AAC8 /* WALogInViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FF6BCFA015AF78C60046AAC8 /* WALogInViewController.storyboard */; };
 		FF6BCFA415AF78D00046AAC8 /* WALogInViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FF6BCFA315AF78D00046AAC8 /* WALogInViewController.m */; };
 		FF6BD00815AFBD9D0046AAC8 /* WATutorialViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FF6BD00615AFBD9D0046AAC8 /* WATutorialViewController.m */; };
@@ -412,7 +419,6 @@
 		FFB81F42148C8AA000FB11B1 /* WASingleFileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FFB81F40148C8AA000FB11B1 /* WASingleFileViewController.m */; };
 		FFB81F43148C8AA000FB11B1 /* WASingleFileViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FFB81F41148C8AA000FB11B1 /* WASingleFileViewController.xib */; };
 		FFB81F47148C8B0700FB11B1 /* WASingleFileViewController~iphone.xib in Resources */ = {isa = PBXBuildFile; fileRef = FFB81F46148C8B0700FB11B1 /* WASingleFileViewController~iphone.xib */; };
-		FFBBA42515AD5D4400E95C66 /* WAFacebookInterface.m in Sources */ = {isa = PBXBuildFile; fileRef = FFBBA42415AD5D4400E95C66 /* WAFacebookInterface.m */; };
 		FFBDD8A515499F62006E2666 /* WAPreviewStripePattern.png in Resources */ = {isa = PBXBuildFile; fileRef = FFBDD8A415499F62006E2666 /* WAPreviewStripePattern.png */; };
 		FFBEF151153F622E00CF2203 /* WAUser+WARemoteEntitySyncing.m in Sources */ = {isa = PBXBuildFile; fileRef = FFBEF150153F622E00CF2203 /* WAUser+WARemoteEntitySyncing.m */; };
 		FFBEF154153F624500CF2203 /* WAUser+WAAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = FFBEF153153F624500CF2203 /* WAUser+WAAdditions.m */; };
@@ -876,20 +882,6 @@
 			remoteGlobalIDString = FF59A39A1441C94500BB1FDC;
 			remoteInfo = IRWebAPIKitX;
 		};
-		FF6B02A515AC0A2A009D8BDB /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = FF6B029E15AC0A2A009D8BDB /* facebook-ios-sdk.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = D2AAC07E0554694100DB518D;
-			remoteInfo = "facebook-ios-sdk";
-		};
-		FF6B02A715AC0A3E009D8BDB /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = FF6B029E15AC0A2A009D8BDB /* facebook-ios-sdk.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = D2AAC07D0554694100DB518D;
-			remoteInfo = "facebook-ios-sdk";
-		};
 		FF72C187142789FA00B5D838 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = FF73A59513D6DC6500D54EC6 /* IRFoundations.xcodeproj */;
@@ -1240,6 +1232,14 @@
 		7DAD189F1626A73B00F87495 /* GAITransaction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GAITransaction.h; path = wammer/Libraries/GAITransaction.h; sourceTree = SOURCE_ROOT; };
 		7DAD18A01626A73B00F87495 /* GAITransactionItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GAITransactionItem.h; path = wammer/Libraries/GAITransactionItem.h; sourceTree = SOURCE_ROOT; };
 		7DAD18A11626A73B00F87495 /* libGoogleAnalytics.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libGoogleAnalytics.a; path = wammer/Libraries/libGoogleAnalytics.a; sourceTree = SOURCE_ROOT; };
+		7D9B1D8C162BB1DE000E5350 /* Accounts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accounts.framework; path = System/Library/Frameworks/Accounts.framework; sourceTree = SDKROOT; };
+		7D9B1D8E162BB1E8000E5350 /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
+		7D9B1D90162BB1F6000E5350 /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
+		7D9B1D92162BBF75000E5350 /* WAFacebookTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAFacebookTest.h; sourceTree = "<group>"; };
+		7D9B1D93162BBF75000E5350 /* WAFacebookTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAFacebookTest.m; sourceTree = "<group>"; };
+		7D9F2B0C162808DB00BFE34A /* FacebookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FacebookSDK.framework; path = external/FacebookSDK/build/FacebookSDK.framework; sourceTree = "<group>"; };
+		7D9F2B0E162808F000BFE34A /* FacebookSDKResources.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = FacebookSDKResources.bundle; path = external/FacebookSDK/build/FacebookSDK.framework/Versions/A/Resources/FacebookSDKResources.bundle; sourceTree = "<group>"; };
+		7DC9240516104CB400E70542 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default-568h@2x.png"; path = "../Default-568h@2x.png"; sourceTree = "<group>"; };
 		8002CDCF15E5E73800D7BFF0 /* SocketRocket.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SocketRocket.xcodeproj; path = external/SocketRocket/SocketRocket.xcodeproj; sourceTree = "<group>"; };
 		8002CDE515E5E85600D7BFF0 /* libicucore.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libicucore.dylib; path = usr/lib/libicucore.dylib; sourceTree = SDKROOT; };
 		8002CDE715E5E92100D7BFF0 /* WARemoteInterface+Notification.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WARemoteInterface+Notification.h"; sourceTree = "<group>"; };
@@ -1380,8 +1380,6 @@
 		FF3B1B2714EBA3C7009CFFD1 /* WFPreviewTemplate.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = WFPreviewTemplate.html; path = external/WFPresentation/Source/WFPreviewTemplate.html; sourceTree = SOURCE_ROOT; };
 		FF3B37AF15B690FF00AE357A /* WAFacebookConnectionSwitch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAFacebookConnectionSwitch.h; sourceTree = "<group>"; };
 		FF3B37B015B690FF00AE357A /* WAFacebookConnectionSwitch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAFacebookConnectionSwitch.m; sourceTree = "<group>"; };
-		FF3FF83015AEA670003CF6CC /* WAFacebook.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAFacebook.h; sourceTree = "<group>"; };
-		FF3FF83115AEA670003CF6CC /* WAFacebook.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAFacebook.m; sourceTree = "<group>"; };
 		FF4050731573817A001A14DA /* WAGalleryImageScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAGalleryImageScrollView.h; sourceTree = "<group>"; };
 		FF4050741573817A001A14DA /* WAGalleryImageScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAGalleryImageScrollView.m; sourceTree = "<group>"; };
 		FF426FC0155102AF0053D1CA /* WFPreviewTemplate_Discrete_Plaintext.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = WFPreviewTemplate_Discrete_Plaintext.html; path = external/WFPresentation/Source/WFPreviewTemplate_Discrete_Plaintext.html; sourceTree = SOURCE_ROOT; };
@@ -1449,7 +1447,6 @@
 		FF66D58B15A577AC00851F1B /* WATextFoldingToggleItem.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WATextFoldingToggleItem.xib; sourceTree = "<group>"; };
 		FF67F05214724F5F006715D5 /* WAComment+WARemoteInterfaceEntitySyncing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WAComment+WARemoteInterfaceEntitySyncing.h"; sourceTree = "<group>"; };
 		FF67F05314724F5F006715D5 /* WAComment+WARemoteInterfaceEntitySyncing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WAComment+WARemoteInterfaceEntitySyncing.m"; sourceTree = "<group>"; };
-		FF6B029E15AC0A2A009D8BDB /* facebook-ios-sdk.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = "facebook-ios-sdk.xcodeproj"; path = "external/Facebook/src/facebook-ios-sdk.xcodeproj"; sourceTree = "<group>"; };
 		FF6B02AF15AC0B57009D8BDB /* FBDialog.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = FBDialog.bundle; path = external/Facebook/src/FBDialog.bundle; sourceTree = "<group>"; };
 		FF6BCFA015AF78C60046AAC8 /* WALogInViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = WALogInViewController.storyboard; sourceTree = "<group>"; };
 		FF6BCFA215AF78D00046AAC8 /* WALogInViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WALogInViewController.h; sourceTree = "<group>"; };
@@ -1605,8 +1602,6 @@
 		FFBA66DF140E0E4300BE5A1D /* WAOverviewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAOverviewController.h; sourceTree = "<group>"; };
 		FFBA66E0140E0E4300BE5A1D /* WAOverviewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAOverviewController.m; sourceTree = "<group>"; };
 		FFBA66E2140E12AD00BE5A1D /* IRDiscreteLayoutManager.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = IRDiscreteLayoutManager.xcodeproj; path = external/IRDiscreteLayoutManager/IRDiscreteLayoutManager.xcodeproj; sourceTree = "<group>"; };
-		FFBBA42315AD5D4400E95C66 /* WAFacebookInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAFacebookInterface.h; sourceTree = "<group>"; };
-		FFBBA42415AD5D4400E95C66 /* WAFacebookInterface.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAFacebookInterface.m; sourceTree = "<group>"; };
 		FFBD444713FDA6E000F535D2 /* WAArticleViewController_FullScreen_Plaintext.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WAArticleViewController_FullScreen_Plaintext.xib; sourceTree = "<group>"; };
 		FFBDD8A415499F62006E2666 /* WAPreviewStripePattern.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WAPreviewStripePattern.png; path = external/WFPresentation/Source/WAPreviewStripePattern.png; sourceTree = SOURCE_ROOT; };
 		FFBEF14E153F551A00CF2203 /* WAModel 24.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WAModel 24.xcdatamodel"; sourceTree = "<group>"; };
@@ -1621,7 +1616,6 @@
 		FFC08608153D661A00A42C3B /* WAModel 23.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WAModel 23.xcdatamodel"; sourceTree = "<group>"; };
 		FFC097F1152F0F3500228E20 /* WAModel 20.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WAModel 20.xcdatamodel"; sourceTree = "<group>"; };
 		FFC0FCE8153C4A240058DC5C /* WAModel 22.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WAModel 22.xcdatamodel"; sourceTree = "<group>"; };
-		FFC1E6B515AD6494009C4A17 /* WAFacebookInterfaceSubclass.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WAFacebookInterfaceSubclass.h; sourceTree = "<group>"; };
 		FFC350FB144434D80085BE78 /* WAArticleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAArticleView.h; sourceTree = "<group>"; };
 		FFC350FC144434D80085BE78 /* WAArticleView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAArticleView.m; sourceTree = "<group>"; };
 		FFC59BA1142B2B2200E44F1B /* WAEightPartLayoutGrid.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WAEightPartLayoutGrid.h; path = wammer/WAEightPartLayoutGrid.h; sourceTree = "<group>"; };
@@ -1907,7 +1901,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				80EE282516004241000ED674 /* libfacebook_ios_sdk.a in Frameworks */,
+				7D9B1D96162BC0AD000E5350 /* Accounts.framework in Frameworks */,
+				7D9B1D97162BC0AD000E5350 /* AdSupport.framework in Frameworks */,
+				7D9B1D98162BC0AD000E5350 /* Social.framework in Frameworks */,
 				4B43E32E15EDEB3500F64F40 /* libOCMock.a in Frameworks */,
 				4B26970C15E76A99007E1054 /* libicucore.dylib in Frameworks */,
 				4B26970B15E76A5F007E1054 /* CFNetwork.framework in Frameworks */,
@@ -1941,6 +1937,7 @@
 				FF24B4FC1552B31E00DD9379 /* libsqlite3.0.dylib in Frameworks */,
 				4BD77BBA15A2C8B300CA8486 /* libxml2.dylib in Frameworks */,
 				FF24B4FD1552B31E00DD9379 /* libz.dylib in Frameworks */,
+				7D9B1D95162BBF97000E5350 /* FacebookSDK.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1966,6 +1963,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7D9B1D91162BB1F6000E5350 /* Social.framework in Frameworks */,
+				7D9B1D8F162BB1E8000E5350 /* AdSupport.framework in Frameworks */,
+				7D9B1D8D162BB1DE000E5350 /* Accounts.framework in Frameworks */,
 				805E9DB515F8A49A00970C80 /* libSocketRocket.a in Frameworks */,
 				8002CDE615E5E85600D7BFF0 /* libicucore.dylib in Frameworks */,
 				4B8DFB7414FDFC3D000B41C5 /* CFNetwork.framework in Frameworks */,
@@ -2002,9 +2002,9 @@
 				FF09C0E015A2DD7D00AEDDAE /* libIRSlidingSplitViewController.a in Frameworks */,
 				FFED705E15497D7800E01FFB /* libWFPresentation.a in Frameworks */,
 				FF586C6D1519B94300F308E2 /* libJSONKitTouch.a in Frameworks */,
-				FF6B02A915AC0A49009D8BDB /* libfacebook_ios_sdk.a in Frameworks */,
 				FF42755A14F4E8AE00824505 /* libTestFlight.a in Frameworks */,
 				7DAD18A21626A73B00F87495 /* libGoogleAnalytics.a in Frameworks */,
+				7D9F2B0D162808DB00BFE34A /* FacebookSDK.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2217,6 +2217,8 @@
 				4B8CA97614BBE7BA006E06BB /* WATests_iOS.m */,
 				4B26970415E76362007E1054 /* WAWebSocketTests.h */,
 				4B26970515E76362007E1054 /* WAWebSocketTests.m */,
+				7D9B1D92162BBF75000E5350 /* WAFacebookTest.h */,
+				7D9B1D93162BBF75000E5350 /* WAFacebookTest.m */,
 			);
 			name = "iOS Tests";
 			path = "wammer-iOS-Tests";
@@ -2559,14 +2561,6 @@
 			name = OSX;
 			sourceTree = "<group>";
 		};
-		FF6B029F15AC0A2A009D8BDB /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				FF6B02A615AC0A2A009D8BDB /* libfacebook_ios_sdk.a */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 		FF6BD00A15AFBE640046AAC8 /* Tutorial */ = {
 			isa = PBXGroup;
 			children = (
@@ -2628,6 +2622,9 @@
 		FF73A53313D6C2CC00D54EC6 = {
 			isa = PBXGroup;
 			children = (
+				7D9B1D90162BB1F6000E5350 /* Social.framework */,
+				7D9B1D8E162BB1E8000E5350 /* AdSupport.framework */,
+				7D9B1D8C162BB1DE000E5350 /* Accounts.framework */,
 				FFC62019149CF1930097C377 /* Environment */,
 				FF946020152D7EDD0034D540 /* Appearance */,
 				FFBBA42615AD5D4900E95C66 /* Facebook */,
@@ -2673,7 +2670,8 @@
 			children = (
 				FF73A5B413D6DC8000D54EC6 /* AQGridView.xcodeproj */,
 				4B1C65F614EE2C0C003398AF /* DCIntrospect */,
-				FF6B029E15AC0A2A009D8BDB /* facebook-ios-sdk.xcodeproj */,
+				7D9F2B0C162808DB00BFE34A /* FacebookSDK.framework */,
+				7D9F2B0E162808F000BFE34A /* FacebookSDKResources.bundle */,
 				FFC9D96614FF28B2004197EC /* Google Analytics SDK */,
 				4B733B7A14987A81005CAE8D /* InAppSettingsKit */,
 				FFFDEFB414211D5C0083BEFB /* iOS */,
@@ -2947,11 +2945,6 @@
 		FFBBA42615AD5D4900E95C66 /* Facebook */ = {
 			isa = PBXGroup;
 			children = (
-				FF3FF83015AEA670003CF6CC /* WAFacebook.h */,
-				FF3FF83115AEA670003CF6CC /* WAFacebook.m */,
-				FFBBA42315AD5D4400E95C66 /* WAFacebookInterface.h */,
-				FFBBA42415AD5D4400E95C66 /* WAFacebookInterface.m */,
-				FFC1E6B515AD6494009C4A17 /* WAFacebookInterfaceSubclass.h */,
 				FF3B37AF15B690FF00AE357A /* WAFacebookConnectionSwitch.h */,
 				FF3B37B015B690FF00AE357A /* WAFacebookConnectionSwitch.m */,
 			);
@@ -3465,7 +3458,6 @@
 			);
 			dependencies = (
 				805E9DB415F8A47900970C80 /* PBXTargetDependency */,
-				FF6B02A815AC0A3E009D8BDB /* PBXTargetDependency */,
 				FFD4F93B157E08460027BF3F /* PBXTargetDependency */,
 				FF586C6F1519B94E00F308E2 /* PBXTargetDependency */,
 				FFB117C5147F8B34002094E5 /* PBXTargetDependency */,
@@ -3509,10 +3501,6 @@
 				{
 					ProductGroup = FF73A5DA13D6DD5000D54EC6 /* Products */;
 					ProjectRef = FF73A5B413D6DC8000D54EC6 /* AQGridView.xcodeproj */;
-				},
-				{
-					ProductGroup = FF6B029F15AC0A2A009D8BDB /* Products */;
-					ProjectRef = FF6B029E15AC0A2A009D8BDB /* facebook-ios-sdk.xcodeproj */;
 				},
 				{
 					ProductGroup = FFBA66E3140E12AD00BE5A1D /* Products */;
@@ -3673,13 +3661,6 @@
 			fileType = wrapper.framework;
 			path = IRWebAPIKitX.framework;
 			remoteRef = FF59A3AC1441C97000BB1FDC /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		FF6B02A615AC0A2A009D8BDB /* libfacebook_ios_sdk.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libfacebook_ios_sdk.a;
-			remoteRef = FF6B02A515AC0A2A009D8BDB /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		FF72C188142789FA00B5D838 /* IRFoundationsX.framework */ = {
@@ -3879,7 +3860,6 @@
 				1324577E15983CB600A97139 /* WAPostViewCellPhone-WebLinkOnly.xib in Resources */,
 				FFA1F494159C54D7003000AD /* WAArticleDateItem.xib in Resources */,
 				FF66D58C15A577AC00851F1B /* WATextFoldingToggleItem.xib in Resources */,
-				FF6B02B015AC0B57009D8BDB /* FBDialog.bundle in Resources */,
 				FF56850815AF72FA00706CC2 /* WAWelcomeViewController.xib in Resources */,
 				FF56850A15AF74A700706CC2 /* WASignUpViewController.storyboard in Resources */,
 				FF6BCFA115AF78C60046AAC8 /* WALogInViewController.storyboard in Resources */,
@@ -4096,6 +4076,8 @@
 				138D31B51609D91200ECA892 /* TutorialMoment@2x~ipad.png in Resources */,
 				138D31B81609D92400ECA892 /* TutorialPhotoImport~ipad.png in Resources */,
 				138D31BA1609DADB00ECA892 /* TutorialPhotoImport@2x~ipad.png in Resources */,
+				7DC9240616104CB400E70542 /* Default-568h@2x.png in Resources */,
+				7D9F2B0F162808F000BFE34A /* FacebookSDKResources.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4218,8 +4200,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				80EE282416004200000ED674 /* WAFacebook.m in Sources */,
-				80EE282316004112000ED674 /* WAFacebookInterface.m in Sources */,
 				80F42C0215F70EDF00C8A72B /* WAWebSocket.m in Sources */,
 				80A2217215ED1AFD006236AC /* WARemoteInterface+Notification.h in Sources */,
 				80A2217415ED1AFD006236AC /* WARemoteInterface+WebSocket.h in Sources */,
@@ -4288,6 +4268,9 @@
 				4B26970615E76362007E1054 /* WAWebSocketTests.m in Sources */,
 				4B6C222115F5FEF100C19A7B /* WAAssetLibraryManagerTests.m in Sources */,
 				4B6C222215F6020C00C19A7B /* WAAssetsLibraryManager.m in Sources */,
+				7D9B1D94162BBF75000E5350 /* WAFacebookTest.m in Sources */,
+				7D9B1D99162BE0D2000E5350 /* WAFacebookConnectionSwitch.m in Sources */,
+				7D9B1D9A162BE1B1000E5350 /* WARemoteInterface+SocialNetworks.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4526,8 +4509,6 @@
 				4BF3656615A5914000E40E42 /* WARemoteInterface+Facebook.m in Sources */,
 				FF09C0EE15A2E83800AEDDAE /* WASlidingSplitViewController.m in Sources */,
 				13A1BFB415A572CE00526F39 /* WAFile.m in Sources */,
-				FFBBA42515AD5D4400E95C66 /* WAFacebookInterface.m in Sources */,
-				FF3FF83215AEA670003CF6CC /* WAFacebook.m in Sources */,
 				FF56850715AF72FA00706CC2 /* WAWelcomeViewController.m in Sources */,
 				FF56850D15AF75CF00706CC2 /* WASignUpViewController.m in Sources */,
 				FF6BCFA415AF78D00046AAC8 /* WALogInViewController.m in Sources */,
@@ -4591,11 +4572,6 @@
 			isa = PBXTargetDependency;
 			name = JSONKitTouch;
 			targetProxy = FF586C6E1519B94E00F308E2 /* PBXContainerItemProxy */;
-		};
-		FF6B02A815AC0A3E009D8BDB /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = "facebook-ios-sdk";
-			targetProxy = FF6B02A715AC0A3E009D8BDB /* PBXContainerItemProxy */;
 		};
 		FFA53E3514D934C7001E7B6B /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -4946,10 +4922,12 @@
 					"\"$(SRCROOT)\"",
 					"\"$(SRCROOT)/external/CrashlyticsSDK\"",
 					"\"$(SYSTEM_APPS_DIR)/Xcode.app/Contents/Developer/Library/Frameworks\"",
+					"\"$(SRCROOT)/external/FacebookSDK/build\"",
 				);
 				GCC_OPTIMIZATION_LEVEL = s;
 				GCC_PREFIX_HEADER = "wammer/wammer-iOS-Prefix.pch";
 				INFOPLIST_FILE = "wammer/wammer-iOS-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/wammer\"",
@@ -4979,6 +4957,7 @@
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(DEVELOPER_LIBRARY_DIR)/Frameworks",
 					"\"$(SRCROOT)/external/CrashlyticsSDK\"",
+					"\"$(SRCROOT)/external/FacebookSDK/build\"",
 				);
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_GENERATE_TEST_COVERAGE_FILES = YES;
@@ -5050,6 +5029,7 @@
 					"$(DEVELOPER_LIBRARY_DIR)/Frameworks",
 					"\"$(SRCROOT)/external/CrashlyticsSDK\"",
 					"\"$(SYSTEM_APPS_DIR)/Xcode.app/Contents/Developer/Library/Frameworks\"",
+					"\"$(SRCROOT)/external/FacebookSDK/build\"",
 				);
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_GENERATE_TEST_COVERAGE_FILES = YES;
@@ -5105,6 +5085,7 @@
 					"$(DEVELOPER_LIBRARY_DIR)/Frameworks",
 					"\"$(SRCROOT)/external/CrashlyticsSDK\"",
 					"\"$(SYSTEM_APPS_DIR)/Xcode.app/Contents/Developer/Library/Frameworks\"",
+					"\"$(SRCROOT)/external/FacebookSDK/build\"",
 				);
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_GENERATE_TEST_COVERAGE_FILES = YES;
@@ -5133,8 +5114,6 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/external/Facebook/lib/facebook-ios-sdk\"",
-					"\"$(SRCROOT)/wammer/facebook-ios-sdk\"",
 					"\"$(SRCROOT)/external/ocmock/Examples/iOS5Example/usr/lib\"",
 					"\"$(SRCROOT)/external/ocmock/Examples/iPhoneExample/Libraries\"",
 					"\"$(SRCROOT)/wammer/Libraries\"",
@@ -5357,6 +5336,7 @@
 					"\"$(SRCROOT)\"",
 					"\"$(SRCROOT)/external/CrashlyticsSDK\"",
 					"\"$(SYSTEM_APPS_DIR)/Xcode.app/Contents/Developer/Library/Frameworks\"",
+					"\"$(SRCROOT)/external/FacebookSDK/build\"",
 				);
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREFIX_HEADER = "wammer/wammer-iOS-Prefix.pch";
@@ -5379,6 +5359,7 @@
 					"$(CONFIGURATION_BUILD_DIR)/usr/local/include/**",
 				);
 				INFOPLIST_FILE = "wammer/wammer-iOS-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/wammer\"",
@@ -5408,6 +5389,7 @@
 					"\"$(SRCROOT)\"",
 					"\"$(SRCROOT)/external/CrashlyticsSDK\"",
 					"\"$(SYSTEM_APPS_DIR)/Xcode.app/Contents/Developer/Library/Frameworks\"",
+					"\"$(SRCROOT)/external/FacebookSDK/build\"",
 				);
 				GCC_OPTIMIZATION_LEVEL = s;
 				GCC_PREFIX_HEADER = "wammer/wammer-iOS-Prefix.pch";
@@ -5430,6 +5412,7 @@
 					"$(CONFIGURATION_BUILD_DIR)/usr/local/include/**",
 				);
 				INFOPLIST_FILE = "wammer/wammer-iOS-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/wammer\"",

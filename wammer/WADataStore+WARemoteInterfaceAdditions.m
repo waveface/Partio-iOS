@@ -12,8 +12,7 @@
 #import "WADataStore+WARemoteInterfaceAdditions.h"
 #import "WAOverlayBezel.h"
 
-#import "WAFacebookInterface.h"
-
+#import "WAFacebookConnectionSwitch.h"
 
 NSString * const kWADataStoreArticleUpdateShowsBezels = @"WADataStoreArticleUpdateShowsBezels";
 
@@ -280,7 +279,7 @@ NSString * const kWADataStoreArticleUpdateShowsBezels = @"WADataStoreArticleUpda
 				}
 				
 				dispatch_async(dispatch_get_main_queue(), ^{
-					[[WAFacebookInterface sharedInterface] setUserDataImporting:importing];
+					[[NSUserDefaults standardUserDefaults] setBool:importing forKey:kWAFacebookUserDataImport];
 				});
 				
 			}
