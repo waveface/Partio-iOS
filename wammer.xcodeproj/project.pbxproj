@@ -2213,12 +2213,12 @@
 				4B3225E815BE4CE400934DA4 /* WAArticleTests.m */,
 				4B6C221F15F5FEF100C19A7B /* WAAssetLibraryManagerTests.h */,
 				4B6C222015F5FEF100C19A7B /* WAAssetLibraryManagerTests.m */,
+				7D9B1D92162BBF75000E5350 /* WAFacebookTest.h */,
+				7D9B1D93162BBF75000E5350 /* WAFacebookTest.m */,
 				4B8CA97514BBE7BA006E06BB /* WATests_iOS.h */,
 				4B8CA97614BBE7BA006E06BB /* WATests_iOS.m */,
 				4B26970415E76362007E1054 /* WAWebSocketTests.h */,
 				4B26970515E76362007E1054 /* WAWebSocketTests.m */,
-				7D9B1D92162BBF75000E5350 /* WAFacebookTest.h */,
-				7D9B1D93162BBF75000E5350 /* WAFacebookTest.m */,
 			);
 			name = "iOS Tests";
 			path = "wammer-iOS-Tests";

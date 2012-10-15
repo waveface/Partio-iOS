@@ -24,4 +24,8 @@
 							 @"This should be true");
 }
 
+- (void)testToggle {
+	// TDB.
+}
+
 @end
