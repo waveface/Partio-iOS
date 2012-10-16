@@ -46,6 +46,7 @@
 
 #import "IIViewDeckController.h"
 #import "WASlidingMenuViewController.h"
+#import "WASwipeableTableViewController.h"
 
 #if ENABLE_PONYDEBUG
 	#import "PonyDebugger/PDDebugger.h"
@@ -330,13 +331,15 @@
 		
 		case UIUserInterfaceIdiomPhone: {
 			
-			WATimelineViewControllerPhone *timelineVC = [[WATimelineViewControllerPhone alloc] init];
-			WANavigationController *timelineNavC = [[WANavigationController alloc] initWithRootViewController:timelineVC];
+//			WATimelineViewControllerPhone *timelineVC = [[WATimelineViewControllerPhone alloc] init];
+			WASwipeableTableViewController *swVC = [[WASwipeableTableViewController alloc] init];
+
+			WANavigationController *timelineNavC = [[WANavigationController alloc] initWithRootViewController:swVC];
 			
-			[timelineVC setDelegate:self];
+		//	[timelineVC setDelegate:self];
 			
 			WASlidingMenuViewController *slidingMenu = [[WASlidingMenuViewController alloc] init];
-			slidingMenu.delegate = timelineVC;
+			slidingMenu.delegate = swVC;
 
 			IIViewDeckController *viewDeckController = [[IIViewDeckController alloc] initWithCenterViewController:timelineNavC leftViewController:slidingMenu];
 			viewDeckController.view.backgroundColor = [UIColor blackColor];

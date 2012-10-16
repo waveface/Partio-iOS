@@ -7,19 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "IRTableViewController.h"
+#import "IRPaginatedView.h"
+#import "IIViewDeckController.h"
 
-@interface WASwipeableTableViewController : IRTableViewController
+@interface WASwipeableTableViewController : UIViewController <IRPaginatedViewDelegate, IIViewDeckControllerDelegate>
 
-@property (nonatomic, readwrite, strong) IRTableView *tableView;
 
-- (void) pushTableViewToLeftWithDuration:(float)duration completion:(void(^)(void))completionBlock;
-- (void) pullTableViewFromRightWithDuration:(float)duration completion:(void(^)(void))completionBlock;
-
-- (void) handleSwipeRight:(UISwipeGestureRecognizer*)swipe;
-- (void) handleSwipeLeft:(UISwipeGestureRecognizer*)swipe;
-
-- (IRTableView *) tableViewLeft;
-- (IRTableView *) tableViewRight;
+- (void)jumpToToday;
 
 @end

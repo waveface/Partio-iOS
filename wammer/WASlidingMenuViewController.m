@@ -181,9 +181,12 @@
 	switch (row) {
 			
 		case 0: {
-			WANavigationController *nav = (WANavigationController*)self.viewDeckController.centerController;
-			[(WATimelineViewControllerPhone*)(nav.topViewController) jumpToToday];
+
 			[self.viewDeckController closeLeftView];
+
+			WANavigationController *nav = (WANavigationController*)self.viewDeckController.centerController;
+			[(WASwipeableTableViewController*)(nav.topViewController) jumpToToday];
+			
 			break;
 		}
 			

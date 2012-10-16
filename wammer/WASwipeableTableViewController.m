@@ -10,227 +10,607 @@
 #import "WADefines.h"
 #import "WATimelineViewControllerPhone.h"
 #import "WADataStore.h"
+#import "WADataStore+WARemoteInterfaceAdditions.h"
+
 #import "WADataStore+FetchingConveniences.h"
 #import "IRTableView.h"
-#import "WAPulldownRefreshView.h"
+#import "WADatePickerViewController.h"
+#import "WADripdownMenuViewController.h"
+#import "WAArticleDraftsViewController.h"
+#import "WANavigationController.h"
+#import "WACompositionViewController.h"
+#import "WASlidingMenuViewController.h"
 
 #import "WARemoteInterface.h"
 
-@interface WASwipeableTableViewController ()
+static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPostsViewControllerPhone_RepresentedObjectURI";
 
-@property (nonatomic, readwrite, strong) NSMutableArray *tableViews;
-@property (nonatomic, readwrite, assign) NSUInteger indexOfCurrentTableView;
+@interface WASwipeableTableViewController () <WAArticleDraftsViewControllerDelegate>
+
+@property (nonatomic, readwrite, strong) IRPaginatedView *paginatedView;
+@property (nonatomic, readwrite, strong) NSMutableDictionary *daysControllers;
+@property (nonatomic, readwrite, strong) NSMutableArray *days;
 
 @end
 
 @implementation WASwipeableTableViewController
-@synthesize tableView, tableViews, indexOfCurrentTableView;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (!self)
 			return nil;
+		
+	self.days = [NSMutableArray array];
+	self.daysControllers = [[NSMutableDictionary alloc] init];
 	
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleCompositionSessionRequest:) name:kWACompositionSessionRequestedNotification object:nil];
+	
+	self.title = NSLocalizedString(@"APP_TITLE", @"Title for application");
+	self.navigationItem.titleView = WATitleViewForDripdownMenu(self, @selector(dripdownMenuTapped));
+	
+	CGRect rect = (CGRect){ CGPointZero, (CGSize){ 1, 1 } };
+	UIGraphicsBeginImageContext(rect.size);
+	CGContextRef context = UIGraphicsGetCurrentContext();
+	CGContextSetFillColorWithColor(context, [UIColor clearColor].CGColor);
+	CGContextFillRect(context, rect);
+	UIImage *transparentImage = UIGraphicsGetImageFromCurrentImageContext();
+	UIGraphicsEndImageContext();
+	
+	UIImage *cameraPressed = [UIImage imageNamed:@"CameraPressed"];
+	UIButton *cameraButton = [[UIButton alloc] initWithFrame:(CGRect){ CGPointZero, cameraPressed.size }];
+	[cameraButton setBackgroundImage:cameraPressed forState:UIControlStateHighlighted];
+	[cameraButton addTarget:self action:@selector(handleCameraCapture:) forControlEvents:UIControlEventTouchUpInside];
+	[cameraButton setShowsTouchWhenHighlighted:YES];
+	
+	UIImage *notePressed = [UIImage imageNamed:@"NotePressed"];
+	UIButton *noteButton = [[UIButton alloc] initWithFrame:(CGRect){ CGPointZero, notePressed.size }];
+	[noteButton setBackgroundImage:notePressed forState:UIControlStateHighlighted];
+	[noteButton addTarget:self action:@selector(handleCompose:) forControlEvents:UIControlEventTouchUpInside];
+	[noteButton setShowsTouchWhenHighlighted:YES];
+	
+	UIBarButtonItem *alphaSpacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
+	alphaSpacer.width = 14.0;
+	
+	UIBarButtonItem *omegaSpacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
+	omegaSpacer.width = 34.0;
+	
+	UIBarButtonItem *zeroSpacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
+	zeroSpacer.width = -10;
+	
+	UIBarButtonItem *leftUIButton = [[UIBarButtonItem alloc] initWithImage:transparentImage style:UIBarButtonItemStylePlain target:self action:@selector(handleSwipeRight:)];
+	[leftUIButton setAccessibilityLabel:NSLocalizedString(@"ACCESS_NEXT_DAY", @"Accessibility label for next day timeline")];
+	/*
+	 UIBarButtonItem *datePickUIButton = [[UIBarButtonItem alloc] initWithImage:transparentImage style:UIBarButtonItemStylePlain target:self action:@selector(handleDateSelect:)];
+	 [datePickUIButton setAccessibilityLabel:NSLocalizedString(@"ACCESS_PICK_DATE", @"Accessibility label for date picker in iPhone timeline")];
+	 */
+	UIBarButtonItem *composeUIButton = [[UIBarButtonItem alloc] initWithCustomView:noteButton];
+	[composeUIButton setAccessibilityLabel:NSLocalizedString(@"ACCESS_COMPOSE", @"Accessibility label for composer in iPhone timeline")];
+	
+	UIBarButtonItem *cameraUIButton = [[UIBarButtonItem alloc] initWithCustomView:cameraButton];
+	[cameraButton setAccessibilityLabel:NSLocalizedString(@"ACCESS_CAMERA", @"Accessibility label for camera in iPhone timeline")];
+	/*
+	 UIBarButtonItem *userInfoUIButton = [[UIBarButtonItem alloc] initWithImage:transparentImage style:UIBarButtonItemStylePlain target:self action:@selector(handleUserInfo:)];
+	 [userInfoUIButton setAccessibilityLabel:NSLocalizedString(@"ACCESS_ACCOUNT_INFO", @"Accessibility label for account info in iPhone timeline")];
+	 */
+	UIBarButtonItem *rightUIButton = [[UIBarButtonItem alloc] initWithImage:transparentImage style:UIBarButtonItemStylePlain target:self action:@selector(handleSwipeLeft:)];
+	[leftUIButton setAccessibilityLabel:NSLocalizedString(@"ACCESS_PREVIOUS_DAY", @"Accessibility label for previous day timeline")];
+	
+	
+	self.toolbarItems = [NSArray arrayWithObjects:
+											 
+											 alphaSpacer,
+											 
+											 //		datePickUIButton,
+											 leftUIButton,
+											 
+											 omegaSpacer,
+											 
+											 composeUIButton,
+											 
+											 zeroSpacer,
+											 
+											 cameraUIButton,
+											 
+											 omegaSpacer,
+											 
+											 //userInfoUIButton,
+											 rightUIButton,
+											 
+											 alphaSpacer,
+											 
+											 nil];
+	
+	UIImage *calImage = [UIImage imageNamed:@"Cal"];
+	UIButton *calButton = [UIButton buttonWithType:UIButtonTypeCustom];
+	calButton.frame = (CGRect) {CGPointZero, calImage.size};
+	[calButton setBackgroundImage:calImage forState:UIControlStateNormal];
+	[calButton setBackgroundImage:[UIImage imageNamed:@"CalHL"] forState:UIControlStateHighlighted];
+	[calButton setShowsTouchWhenHighlighted:YES];
+	[calButton addTarget:self action:@selector(handleDateSelect:) forControlEvents:UIControlEventTouchUpInside];
+	
+	self.navigationItem.rightBarButtonItem  = [[UIBarButtonItem alloc] initWithCustomView:calButton];
+	
+	UIImage *menuImage = [UIImage imageNamed:@"menu"];
+	UIButton *slidingMenuButton = [UIButton buttonWithType:UIButtonTypeCustom];
+	slidingMenuButton.frame = (CGRect) {CGPointZero, menuImage.size};
+	[slidingMenuButton setBackgroundImage:menuImage forState:UIControlStateNormal];
+	[slidingMenuButton setBackgroundImage:[UIImage imageNamed:@"menuHL"] forState:UIControlStateHighlighted];
+	[slidingMenuButton setShowsTouchWhenHighlighted:YES];
+	[slidingMenuButton addTarget:self.viewDeckController action:@selector(toggleLeftView) forControlEvents:UIControlEventTouchUpInside];
+	
+	self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:slidingMenuButton];
 
-	
 	return self;
 }
 
-- (WAPulldownRefreshView *) defaultPulldownRefreshView {
-	
-	return [WAPulldownRefreshView viewFromNib];
-	
+- (void) dealloc {
+
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:kWACompositionSessionRequestedNotification object:nil];
+
 }
 
 
-- (void)viewDidLoad
+- (void)loadView
 {
-	[super viewDidLoad];
+	
+	[super loadView];
 
 	CGRect origFrame = self.view.frame;
-	CGRect tbFrame = {CGPointZero, origFrame.size};
-	UIView *newView = [[UIView alloc] initWithFrame:tbFrame];
-
-	self.tableViews = [[NSMutableArray alloc] initWithCapacity:3];
-	__weak id wSelf = self;
+	origFrame.origin = CGPointZero;
 	
-	IRTableView* (^setupTableView)(void) = ^(void) {
+	self.paginatedView = [[IRPaginatedView alloc] initWithFrame:origFrame];
+	self.paginatedView.delegate = self;
+	
+	[self.view addSubview: self.paginatedView];
+
+	[self.paginatedView reloadViews];
+	
+}
+
+- (void) viewWillAppear:(BOOL)animated {
+
+	self.navigationItem.titleView.alpha = 1;
+	
+	[self.navigationController.toolbar setTintColor:[UIColor colorWithWhite:128.0/255.0 alpha:1]];
+	[self.navigationController.toolbar setBackgroundImage:[UIImage imageNamed:@"ToolbarWithButtons"] forToolbarPosition:UIToolbarPositionAny barMetrics:UIBarMetricsDefault];
+
+}
+
+- (void) viewDidAppear:(BOOL)animated {
+
+	[self.navigationController setToolbarHidden:NO animated:animated];
+
+}
+
+- (void) viewWillDisappear:(BOOL)animated {
+
+	UIToolbar *toolbar = self.navigationController.toolbar;
+	
+	[toolbar setBackgroundImage:[UIImage imageNamed:@"Toolbar"] forToolbarPosition:UIToolbarPositionAny barMetrics:UIBarMetricsDefault];
+	
+	[toolbar setNeedsLayout];
+	
+	[toolbar.layer addAnimation:((^ {
 		
-		IRTableView *tbView = [[IRTableView alloc] initWithFrame:tbFrame];
-
-		tbView.separatorStyle = UITableViewCellSeparatorStyleNone;
-
-		WAPulldownRefreshView *pulldownHeader = [self defaultPulldownRefreshView];
+		CATransition *transition = [CATransition animation];
+		transition.duration = animated ? 0.5 : 0;
+		transition.type = kCATransitionFade;
 		
-		tbView.pullDownHeaderView = pulldownHeader;
-		tbView.onPullDownMove = ^ (CGFloat progress) {
-			[pulldownHeader setProgress:progress animated:YES];
-		};
-		tbView.onPullDownEnd = ^ (BOOL didFinish) {
-			if (didFinish) {
-				pulldownHeader.progress = 0;
-				[pulldownHeader setBusy:YES animated:YES];
-				[[WARemoteInterface sharedInterface] performAutomaticRemoteUpdatesNow];
-			}
-		};
-		tbView.onPullDownReset = ^ {
-			[pulldownHeader setBusy:NO animated:YES];
-		};
+		return transition;
 		
-		tbView.separatorColor = [UIColor colorWithRed:232.0/255.0 green:232/255.0 blue:226/255.0 alpha:1.0];
-		tbView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
-
-		tbView.layer.masksToBounds = NO;
-		tbView.layer.shadowRadius = 10;
-		tbView.layer.shadowOpacity = 0.5;
-		tbView.layer.shadowColor = [[UIColor blackColor] CGColor];
-		tbView.layer.shadowOffset = CGSizeZero;
-		tbView.layer.shadowPath = [[UIBezierPath bezierPathWithRect:tbView.bounds] CGPath];
-
-		tbView.delegate = wSelf;
-		tbView.dataSource = wSelf;
-		return tbView;
-		
-	};
-	
-	for (int i = 0; i < 3; i ++) {
-		[self.tableViews addObject:setupTableView()];
-	}
-
-	UISwipeGestureRecognizer *leftSwipeGR = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleSwipeLeft:)];
-	leftSwipeGR.direction = UISwipeGestureRecognizerDirectionLeft;
-	[newView addGestureRecognizer:leftSwipeGR];
-	
-	UISwipeGestureRecognizer *rightSwipeGR = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleSwipeRight:)];
-	rightSwipeGR.direction = UISwipeGestureRecognizerDirectionRight;
-	[newView addGestureRecognizer:rightSwipeGR];
-	
-	self.indexOfCurrentTableView = 0;
-	self.tableView = [self.tableViews objectAtIndex:0];
-	[newView addSubview:self.tableView];
-	self.view = newView;
-	
-}
-
-
-- (void) handleSwipeRight:(UISwipeGestureRecognizer*)swipe {
-
-	[NSException raise:NSInternalInconsistencyException format:@"Subclass shall implement %s", __PRETTY_FUNCTION__];
+	})()) forKey:kCATransition];
 
 }
-
-- (void) handleSwipeLeft:(UISwipeGestureRecognizer*)swipe {
-
-	[NSException raise:NSInternalInconsistencyException format:@"Subclass shall implement %s", __PRETTY_FUNCTION__];
-
-}
-
-- (void) pushTableViewToLeftWithDuration:(float)duration completion:(void(^)(void))completionBlock {
-  
-	IRTableView *currentView = [self.tableViews objectAtIndex:self.indexOfCurrentTableView];
-	[currentView resetPullDown];
-	
-	NSUInteger nextIndex = (self.indexOfCurrentTableView + 1) % 3;
-	IRTableView *nextTbView = [self.tableViews objectAtIndex:nextIndex];
-	
-	CGRect origFrame = currentView.frame;
-  CGRect offScreenFrame = origFrame;
-  offScreenFrame.origin.x = -(origFrame.size.width) - self.tableView.layer.shadowRadius;
-	
-	[self.view addSubview:nextTbView];
-	[self.view sendSubviewToBack:nextTbView];
-
-	__weak WASwipeableTableViewController *wSelf = self;
-
-  [UIView animateWithDuration:duration
-												delay:0
-											options: UIViewAnimationOptionCurveEaseInOut | UIViewAnimationOptionBeginFromCurrentState
-                   animations:^{
-                     
-										 currentView.frame = offScreenFrame;
-                     
-                   } completion:^(BOOL finished) {
-
-										 [currentView removeFromSuperview];
-										 [wSelf.view bringSubviewToFront:[wSelf.tableViews objectAtIndex:nextIndex]];
-										 currentView.frame = origFrame;
-										 wSelf.indexOfCurrentTableView = nextIndex;
-										 wSelf.tableView = [wSelf.tableViews objectAtIndex:wSelf.indexOfCurrentTableView];
-                     
-                     if (completionBlock)
-                       completionBlock();
-                     
-                   }];
-  
-}
-
-- (void) pullTableViewFromRightWithDuration:(float)duration completion:(void(^)(void))completionBlock {
-  
-	IRTableView *currentView = [self.tableViews objectAtIndex:self.indexOfCurrentTableView];
-	[currentView resetPullDown];
-	
-	NSUInteger preIndex = 2;
-	if (self.indexOfCurrentTableView > 0)
-		preIndex = self.indexOfCurrentTableView - 1;
-	
-	IRTableView *preView = [self.tableViews objectAtIndex:preIndex];
-	
-	CGRect origFrame = currentView.frame;
-  CGRect offScreenFrame = origFrame;
-  offScreenFrame.origin.x = -(origFrame.size.width) - self.tableView.layer.shadowRadius;
- 
-	preView.frame = offScreenFrame;
-	[self.view addSubview:preView];
-	[self.view bringSubviewToFront:preView];
-	
-	__weak WASwipeableTableViewController *wSelf = self;
-	
-  [UIView animateWithDuration:duration
-												delay:0
-											options: UIViewAnimationOptionCurveEaseInOut 
-                   animations:^{
-                     
-										 preView.frame = origFrame;
-                     
-                   } completion:^(BOOL finished) {
-										 
-										 [currentView removeFromSuperview];
-//										 [wSelf.view sendSubviewToBack:currentView];
-										 wSelf.indexOfCurrentTableView = preIndex;
-										 wSelf.tableView = [wSelf.tableViews objectAtIndex:wSelf.indexOfCurrentTableView];
-                     
-                     if (completionBlock)
-                       completionBlock();
-                     
-                   }];
-  
-}
-
-- (IRTableView *) tableViewRight {
-	
-	NSUInteger preIndex = (self.indexOfCurrentTableView + 1) % 3;
-	
-	return [self.tableViews objectAtIndex:preIndex];
-	
-}
-
-- (IRTableView *) tableViewLeft {
-	
-	NSUInteger nextIndex = 2;
-	if (self.indexOfCurrentTableView > 0)
-		nextIndex = self.indexOfCurrentTableView - 1;
-	
-	return [self.tableViews objectAtIndex:nextIndex];
-	
-}
-
 
 - (void)didReceiveMemoryWarning
 {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+	[super didReceiveMemoryWarning];
+	// Dispose of any resources that can be recreated.
 }
+
+
+#pragma mark - delegate methods for IRPaginatedView
+- (NSUInteger)numberOfViewsInPaginatedView:(IRPaginatedView *)paginatedView {
+		
+	NSManagedObjectContext *moc = [[WADataStore defaultStore] defaultAutoUpdatedMOC];
+	
+	NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+	NSEntityDescription *entity = [NSEntityDescription entityForName:@"WAArticle" inManagedObjectContext:moc];
+	[fetchRequest setEntity:entity];
+	[fetchRequest setResultType:NSDictionaryResultType];
+ 	
+	NSExpression *keyToFetch = [NSExpression expressionForKeyPath:@"creationDate"];
+	NSExpressionDescription *description = [[NSExpressionDescription alloc] init];
+	[description setName:@"fetchedCreationDate"];
+	[description setExpression:keyToFetch];
+	[description setExpressionResultType:NSDateAttributeType];
+	[fetchRequest setPropertiesToFetch:[NSArray arrayWithObject:description]];
+
+	fetchRequest.sortDescriptors = [NSArray arrayWithObjects:
+																	[NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:NO],
+																	nil];
+	
+	BOOL (^theSameDay) (NSDate *, NSDate *) = ^ (NSDate *d1, NSDate *d2) {
+		
+    NSCalendar* calendar = [NSCalendar currentCalendar];
+    unsigned unitFlags = NSYearCalendarUnit | NSMonthCalendarUnit |  NSDayCalendarUnit;
+    NSDateComponents* comp1 = [calendar components:unitFlags fromDate:d1];
+    NSDateComponents* comp2 = [calendar components:unitFlags fromDate:d2];
+    if ( [comp1 day] == [comp2 day] &&
+				[comp1 month] == [comp2 month] &&
+				[comp1 year]  == [comp2 year])
+      return YES;
+    return NO;
+		
+  };
+	
+	__block NSDate *currentDate = nil;
+
+	NSError *error = nil;
+	NSArray *objects = [moc executeFetchRequest:fetchRequest error:&error];
+	
+	if (objects == nil) {
+		
+		return 0;
+		
+	} else {
+		
+		[objects enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+			
+			NSDate *theDate = (NSDate*)[(NSDictionary*)obj objectForKey:@"fetchedCreationDate"];
+			
+			if (!currentDate || !theSameDay(currentDate, theDate)) {
+				[self.days addObject:theDate];
+				currentDate = theDate;
+			}
+			
+		}];
+		
+		return [self.days count];
+	}
+}
+
+- (WATimelineViewControllerPhone *) timelineControllerAtPageIndex:(NSUInteger)index {
+	
+	NSDate *dateForPage = [self.days objectAtIndex:index];
+	
+	if (dateForPage) {
+		
+		WATimelineViewControllerPhone *vc = [self.daysControllers objectForKey:dateForPage];
+
+		if (vc) {
+			
+			return vc;
+			
+		} else {
+
+			WATimelineViewControllerPhone *newVC = [[WATimelineViewControllerPhone alloc] initWithDate:dateForPage];
+			[self addChildViewController:newVC];
+			[self.daysControllers setObject:newVC forKey:dateForPage];
+			return newVC;
+			
+		}
+		
+	}
+	
+	return nil;
+	
+}
+
+- (UIView *) viewForPaginatedView:(IRPaginatedView *)paginatedView atIndex:(NSUInteger)index {
+
+	WATimelineViewControllerPhone *vc = [self timelineControllerAtPageIndex:index];
+	
+	if (vc)
+		return vc.view;
+	
+	return nil;
+	
+}
+
+- (void) willRemoveView:(UIView *)view atIndex:(NSUInteger)index {
+	
+}
+
+- (void)paginatedView:(IRPaginatedView *)paginatedView didShowView:(UIView *)aView atIndex:(NSUInteger)index {
+	
+}
+
+- (UIViewController *) viewControllerForSubviewAtIndex:(NSUInteger)index inPaginatedView:(IRPaginatedView *)paginatedView {
+
+	return [self timelineControllerAtPageIndex:index];
+	
+}
+
+
+#pragma mark - delegate methods for WAArticleDraftsViewControllerDelegate
+- (BOOL) articleDraftsViewController:(WAArticleDraftsViewController *)aController shouldEnableArticle:(NSURL *)anObjectURIOrNil {
+	
+	return ![[WADataStore defaultStore] isUpdatingArticle:anObjectURIOrNil];
+	
+}
+
+- (void) articleDraftsViewController:(WAArticleDraftsViewController *)aController didSelectArticle:(NSURL *)anObjectURIOrNil {
+	
+  [aController dismissViewControllerAnimated:YES completion:^{
+		
+		[self beginCompositionSessionWithURL:anObjectURIOrNil animated:YES onCompositionViewDidAppear:nil];
+		
+	}];
+	
+}
+
+- (void) beginCompositionSessionWithURL:(NSURL *)anURL animated:(BOOL)animate onCompositionViewDidAppear:(void (^)(WACompositionViewController *))callback {
+	
+	__block WACompositionViewController *compositionVC = [WACompositionViewController defaultAutoSubmittingCompositionViewControllerForArticle:anURL completion:^(NSURL *anURI) {
+		
+		if (![compositionVC.article hasMeaningfulContent] && [compositionVC shouldDismissSelfOnCameraCancellation]) {
+			
+			__block void (^dismissModal)(UIViewController *) = [^ (UIViewController *aVC) {
+				
+				if (aVC.modalViewController) {
+					dismissModal(aVC.modalViewController);
+					return;
+				}
+				
+				[aVC dismissModalViewControllerAnimated:NO];
+				
+			} copy];
+			
+			UIWindow *usedWindow = [[UIApplication sharedApplication] keyWindow];
+			
+			if ([compositionVC isViewLoaded] && compositionVC.view.window)
+				usedWindow = compositionVC.view.window;
+			
+			NSCParameterAssert(usedWindow);
+			
+			[CATransaction begin];
+			
+			dismissModal(compositionVC);
+			dismissModal = nil;
+			
+			[compositionVC dismissModalViewControllerAnimated:NO];
+			
+			CATransition *fadeTransition = [CATransition animation];
+			fadeTransition.duration = 0.3f;
+			fadeTransition.type = kCATransitionFade;
+			fadeTransition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+			fadeTransition.removedOnCompletion = YES;
+			fadeTransition.fillMode = kCAFillModeForwards;
+			
+			[usedWindow.layer addAnimation:fadeTransition forKey:kCATransition];
+			
+			[CATransaction commit];
+			
+		} else {
+			
+			[compositionVC dismissModalViewControllerAnimated:YES];
+			
+			if (!anURL && [compositionVC.article hasMeaningfulContent]) {
+//				[self setScrollToTopmostPost:YES];
+			}
+			
+		}
+		
+		compositionVC = nil;
+		
+	}];
+	
+	[self presentViewController:[compositionVC wrappingNavigationController] animated:animate completion:^{
+		
+		if (callback)
+			callback(compositionVC);
+		
+	}];
+	
+}
+
+- (void) handleCompositionSessionRequest:(NSNotification *)incomingNotification {
+	
+	if (![self isViewLoaded])
+		return;
+	
+	NSURL *contentURL = [[incomingNotification userInfo] objectForKey:@"foundURL"];
+	[self beginCompositionSessionWithURL:contentURL animated:YES onCompositionViewDidAppear:nil];
+	
+}
+
+
+- (void) handleCompose:(UIBarButtonItem *)sender {
+	
+	if ([[WADataStore defaultStore] hasDraftArticles]) {
+		
+		WAArticleDraftsViewController *draftsVC = [[WAArticleDraftsViewController alloc] init];
+		draftsVC.delegate = self;
+		
+		WANavigationController *navC = [[WANavigationController alloc] initWithRootViewController:draftsVC];
+		
+		__weak WASwipeableTableViewController *wSelf = self;
+		
+		draftsVC.navigationItem.leftBarButtonItem = [IRBarButtonItem itemWithSystemItem:UIBarButtonSystemItemCancel wiredAction:^(IRBarButtonItem *senderItem) {
+			
+			[wSelf dismissViewControllerAnimated:YES completion:nil];
+			
+		}];
+		
+		[self presentViewController:navC animated:YES completion:nil];
+		
+	} else {
+		
+		[self beginCompositionSessionWithURL:nil animated:YES onCompositionViewDidAppear:nil];
+		
+	}
+  
+}
+
+- (void) handleCameraCapture:(UIBarButtonItem *)sender  {
+	
+	[self beginCompositionSessionWithURL:nil animated:NO onCompositionViewDidAppear:^(WACompositionViewController *compositionVC) {
+		
+		[compositionVC handleImageAttachmentInsertionRequestWithOptions:[NSDictionary dictionaryWithObjectsAndKeys:
+																																		 
+																																		 (id)kCFBooleanTrue, WACompositionImageInsertionUsesCamera,
+																																		 (id)kCFBooleanFalse, WACompositionImageInsertionAnimatePresentation,
+																																		 (id)kCFBooleanTrue, WACompositionImageInsertionCancellationTriggersSessionTermination,
+																																		 
+																																		 nil] sender:compositionVC.view];
+		
+		[[UIApplication sharedApplication].keyWindow.layer addAnimation:((^ {
+			
+			CATransition *transition = [CATransition animation];
+			transition.duration = 0.3f;
+			transition.type = kCATransitionFade;
+			
+			return transition;
+			
+		})()) forKey:kCATransition];
+		
+	}];
+	
+}
+
+
+#pragma mark -Date picker
+
+- (void) jumpToTimelineOnDate:(NSDate*)date {
+	
+	__block BOOL found = NO;
+	__block NSUInteger foundIdx = 0;
+	
+	[self.days enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+		
+		NSDate *articleDate = (NSDate*)obj;
+		NSComparisonResult result = [date compare:articleDate];
+		if (result == NSOrderedSame || result == NSOrderedDescending) {
+			foundIdx = idx;
+			found = YES;
+			*stop = YES;
+		}
+		
+	}];
+	
+	if (found) {
+		
+		[self.paginatedView scrollToPageAtIndex:foundIdx animated:YES];
+		
+	}
+	
+}
+
+- (void) handleDateSelect:(UIBarButtonItem *)sender {
+	
+	NSManagedObjectContext *moc = [[WADataStore defaultStore] defaultAutoUpdatedMOC];
+	__weak WASwipeableTableViewController *wSelf = self;
+	
+	__block WADatePickerViewController *dpVC = [WADatePickerViewController controllerWithCompletion:^(NSDate *date) {
+		
+		if (date) {
+			
+			[wSelf jumpToTimelineOnDate:date];
+			
+		}
+		
+		[dpVC willMoveToParentViewController:nil];
+		[dpVC removeFromParentViewController];
+		[dpVC.view removeFromSuperview];
+		[dpVC didMoveToParentViewController:nil];
+		
+		dpVC = nil;
+		
+	}];
+	
+	NSFetchRequest *newestFr = [[WADataStore defaultStore] newFetchRequestForNewestArticle];
+	NSFetchRequest *oldestFr = [[WADataStore defaultStore] newFetchRequestForOldestArticle];
+	
+	WAArticle *newestArticle = (WAArticle*)[[moc executeFetchRequest:newestFr error:nil] lastObject];
+	WAArticle *oldestArticle = (WAArticle*)[[moc executeFetchRequest:oldestFr error:nil] lastObject];
+	
+	if (oldestArticle == nil){ // empty timeline
+		return;
+	}
+	
+	NSDate *minDate = oldestArticle.modificationDate ? oldestArticle.modificationDate : oldestArticle.creationDate;
+	
+	NSDate *maxDate = newestArticle.modificationDate ? newestArticle.modificationDate : newestArticle.creationDate;
+	
+	NSCParameterAssert(minDate && maxDate);
+	dpVC.minDate = minDate;
+	dpVC.maxDate = maxDate;
+	
+	UIViewController *hostingVC = self.navigationController;
+	if (!hostingVC)
+		hostingVC = self;
+	
+	[hostingVC addChildViewController:dpVC];
+	
+	dpVC.view.frame = hostingVC.view.bounds;
+	[hostingVC.view addSubview:dpVC.view];
+	[dpVC didMoveToParentViewController:hostingVC];
+	
+}
+
+
+
+#pragma mark - Dripdown menu
+BOOL dripdownMenuOpened = NO;
+- (void) dripdownMenuTapped {
+	
+	__weak WASwipeableTableViewController *wSelf = self;
+	
+	void (^dismissDDMenu)(WADripdownMenuViewController *menu) = ^(WADripdownMenuViewController *menu) {
+		
+		[menu willMoveToParentViewController:nil];
+		[menu removeFromParentViewController];
+		[menu.view removeFromSuperview];
+		[menu didMoveToParentViewController:nil];
+		
+		[wSelf.navigationController setToolbarHidden:NO animated:NO];
+		[wSelf.navigationItem.leftBarButtonItem setEnabled:YES];
+		[wSelf.navigationItem.rightBarButtonItem setEnabled:YES];
+		
+		dripdownMenuOpened = NO;
+		
+	};
+	
+	if (dripdownMenuOpened) {
+		[self.childViewControllers enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+			if ([obj isKindOfClass:[WADripdownMenuViewController class]]) {
+				
+				*stop = YES;
+				WADripdownMenuViewController *ddMenu = (WADripdownMenuViewController*)obj;
+				dismissDDMenu(ddMenu);
+				
+			}
+		}];
+		return;
+	}
+	
+	[self.navigationController setToolbarHidden:YES animated:YES];
+	__block WADripdownMenuViewController *ddMenu = [[WADripdownMenuViewController alloc] initWithCompletion:^{
+		
+		dismissDDMenu(ddMenu);
+		ddMenu = nil;
+		
+	}];
+	
+	[self addChildViewController:ddMenu];
+	[self.view addSubview:ddMenu.view];
+	[ddMenu didMoveToParentViewController:self];
+	[self.navigationItem.leftBarButtonItem setEnabled:NO];
+	[self.navigationItem.rightBarButtonItem setEnabled:NO];
+	dripdownMenuOpened = YES;
+	
+}
+
+#pragma mark - slinding menu
+- (void)jumpToToday {
+	
+	[self.paginatedView scrollToPageAtIndex:0 animated:YES];
+		
+}
+
+
 
 
 @end
