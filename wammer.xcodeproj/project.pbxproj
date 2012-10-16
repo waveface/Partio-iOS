@@ -133,19 +133,20 @@
 		4BFC156615C7D9DC00DB02F8 /* Fav~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BFC156415C7D9DC00DB02F8 /* Fav~ipad.png */; };
 		4BFC156915C7D9E800DB02F8 /* Unfav@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BFC156715C7D9E800DB02F8 /* Unfav@2x~ipad.png */; };
 		4BFC156A15C7D9E800DB02F8 /* Unfav~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BFC156815C7D9E800DB02F8 /* Unfav~ipad.png */; };
+		7D0CDC14162D6B0B0027D35F /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D0CDC12162D6B0B0027D35F /* FacebookSDK.framework */; };
+		7D0CDC16162D6B180027D35F /* FacebookSDKResources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 7D0CDC15162D6B180027D35F /* FacebookSDKResources.bundle */; };
+		7D0CDC17162D6B180027D35F /* FacebookSDKResources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 7D0CDC15162D6B180027D35F /* FacebookSDKResources.bundle */; };
+		7D0CDC18162D6B570027D35F /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D0CDC12162D6B0B0027D35F /* FacebookSDK.framework */; };
 		7D92E5B216070705000C7B06 /* PhotoPostWithURLHistoryStyle.txt in Resources */ = {isa = PBXBuildFile; fileRef = 7D92E5B0160703F6000C7B06 /* PhotoPostWithURLHistoryStyle.txt */; };
 		7D9B1D8D162BB1DE000E5350 /* Accounts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D9B1D8C162BB1DE000E5350 /* Accounts.framework */; };
 		7D9B1D8F162BB1E8000E5350 /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D9B1D8E162BB1E8000E5350 /* AdSupport.framework */; };
 		7D9B1D91162BB1F6000E5350 /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D9B1D90162BB1F6000E5350 /* Social.framework */; };
 		7D9B1D94162BBF75000E5350 /* WAFacebookTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D9B1D93162BBF75000E5350 /* WAFacebookTest.m */; };
-		7D9B1D95162BBF97000E5350 /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D9F2B0C162808DB00BFE34A /* FacebookSDK.framework */; };
 		7D9B1D96162BC0AD000E5350 /* Accounts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D9B1D8C162BB1DE000E5350 /* Accounts.framework */; };
 		7D9B1D97162BC0AD000E5350 /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D9B1D8E162BB1E8000E5350 /* AdSupport.framework */; };
 		7D9B1D98162BC0AD000E5350 /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D9B1D90162BB1F6000E5350 /* Social.framework */; };
 		7D9B1D99162BE0D2000E5350 /* WAFacebookConnectionSwitch.m in Sources */ = {isa = PBXBuildFile; fileRef = FF3B37B015B690FF00AE357A /* WAFacebookConnectionSwitch.m */; };
 		7D9B1D9A162BE1B1000E5350 /* WARemoteInterface+SocialNetworks.m in Sources */ = {isa = PBXBuildFile; fileRef = FF88370515B7E90800E6CD92 /* WARemoteInterface+SocialNetworks.m */; };
-		7D9F2B0D162808DB00BFE34A /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D9F2B0C162808DB00BFE34A /* FacebookSDK.framework */; };
-		7D9F2B0F162808F000BFE34A /* FacebookSDKResources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 7D9F2B0E162808F000BFE34A /* FacebookSDKResources.bundle */; };
 		7DAD18A21626A73B00F87495 /* libGoogleAnalytics.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7DAD18A11626A73B00F87495 /* libGoogleAnalytics.a */; };
 		7DCEDEAF162D5AA3004F9090 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7DCEDEAE162D5AA3004F9090 /* Default-568h@2x.png */; };
 		8002CDE615E5E85600D7BFF0 /* libicucore.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 8002CDE515E5E85600D7BFF0 /* libicucore.dylib */; };
@@ -1225,21 +1226,21 @@
 		4BFC156415C7D9DC00DB02F8 /* Fav~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Fav~ipad.png"; path = "resources/Fav~ipad.png"; sourceTree = "<group>"; };
 		4BFC156715C7D9E800DB02F8 /* Unfav@2x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Unfav@2x~ipad.png"; path = "resources/Unfav@2x~ipad.png"; sourceTree = "<group>"; };
 		4BFC156815C7D9E800DB02F8 /* Unfav~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Unfav~ipad.png"; path = "resources/Unfav~ipad.png"; sourceTree = "<group>"; };
+		7D0CDC12162D6B0B0027D35F /* FacebookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FacebookSDK.framework; path = wammer/Libraries/FacebookSDK.framework; sourceTree = "<group>"; };
+		7D0CDC15162D6B180027D35F /* FacebookSDKResources.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = FacebookSDKResources.bundle; path = wammer/Libraries/FacebookSDK.framework/Versions/A/Resources/FacebookSDKResources.bundle; sourceTree = "<group>"; };
 		7D92E5B0160703F6000C7B06 /* PhotoPostWithURLHistoryStyle.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = PhotoPostWithURLHistoryStyle.txt; sourceTree = "<group>"; };
 		7D9B1D8C162BB1DE000E5350 /* Accounts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accounts.framework; path = System/Library/Frameworks/Accounts.framework; sourceTree = SDKROOT; };
 		7D9B1D8E162BB1E8000E5350 /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
 		7D9B1D90162BB1F6000E5350 /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
 		7D9B1D92162BBF75000E5350 /* WAFacebookTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAFacebookTest.h; sourceTree = "<group>"; };
 		7D9B1D93162BBF75000E5350 /* WAFacebookTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAFacebookTest.m; sourceTree = "<group>"; };
-		7D9F2B0C162808DB00BFE34A /* FacebookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FacebookSDK.framework; path = external/FacebookSDK/build/FacebookSDK.framework; sourceTree = "<group>"; };
-		7D9F2B0E162808F000BFE34A /* FacebookSDKResources.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = FacebookSDKResources.bundle; path = external/FacebookSDK/build/FacebookSDK.framework/Versions/A/Resources/FacebookSDKResources.bundle; sourceTree = "<group>"; };
 		7DAD189C1626A73B00F87495 /* GAI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GAI.h; path = wammer/Libraries/GAI.h; sourceTree = SOURCE_ROOT; };
 		7DAD189D1626A73B00F87495 /* GAITrackedViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GAITrackedViewController.h; path = wammer/Libraries/GAITrackedViewController.h; sourceTree = SOURCE_ROOT; };
 		7DAD189E1626A73B00F87495 /* GAITracker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GAITracker.h; path = wammer/Libraries/GAITracker.h; sourceTree = SOURCE_ROOT; };
 		7DAD189F1626A73B00F87495 /* GAITransaction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GAITransaction.h; path = wammer/Libraries/GAITransaction.h; sourceTree = SOURCE_ROOT; };
 		7DAD18A01626A73B00F87495 /* GAITransactionItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GAITransactionItem.h; path = wammer/Libraries/GAITransactionItem.h; sourceTree = SOURCE_ROOT; };
 		7DAD18A11626A73B00F87495 /* libGoogleAnalytics.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libGoogleAnalytics.a; path = wammer/Libraries/libGoogleAnalytics.a; sourceTree = SOURCE_ROOT; };
-		7DCEDEAE162D5AA3004F9090 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
+		7DCEDEAE162D5AA3004F9090 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default-568h@2x.png"; path = "../Default-568h@2x.png"; sourceTree = "<group>"; };
 		8002CDCF15E5E73800D7BFF0 /* SocketRocket.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SocketRocket.xcodeproj; path = external/SocketRocket/SocketRocket.xcodeproj; sourceTree = "<group>"; };
 		8002CDE515E5E85600D7BFF0 /* libicucore.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libicucore.dylib; path = usr/lib/libicucore.dylib; sourceTree = SDKROOT; };
 		8002CDE715E5E92100D7BFF0 /* WARemoteInterface+Notification.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WARemoteInterface+Notification.h"; sourceTree = "<group>"; };
@@ -1447,7 +1448,6 @@
 		FF66D58B15A577AC00851F1B /* WATextFoldingToggleItem.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WATextFoldingToggleItem.xib; sourceTree = "<group>"; };
 		FF67F05214724F5F006715D5 /* WAComment+WARemoteInterfaceEntitySyncing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WAComment+WARemoteInterfaceEntitySyncing.h"; sourceTree = "<group>"; };
 		FF67F05314724F5F006715D5 /* WAComment+WARemoteInterfaceEntitySyncing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WAComment+WARemoteInterfaceEntitySyncing.m"; sourceTree = "<group>"; };
-		FF6B02AF15AC0B57009D8BDB /* FBDialog.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = FBDialog.bundle; path = external/Facebook/src/FBDialog.bundle; sourceTree = "<group>"; };
 		FF6BCFA015AF78C60046AAC8 /* WALogInViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = WALogInViewController.storyboard; sourceTree = "<group>"; };
 		FF6BCFA215AF78D00046AAC8 /* WALogInViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WALogInViewController.h; sourceTree = "<group>"; };
 		FF6BCFA315AF78D00046AAC8 /* WALogInViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WALogInViewController.m; sourceTree = "<group>"; };
@@ -1937,7 +1937,7 @@
 				FF24B4FC1552B31E00DD9379 /* libsqlite3.0.dylib in Frameworks */,
 				4BD77BBA15A2C8B300CA8486 /* libxml2.dylib in Frameworks */,
 				FF24B4FD1552B31E00DD9379 /* libz.dylib in Frameworks */,
-				7D9B1D95162BBF97000E5350 /* FacebookSDK.framework in Frameworks */,
+				7D0CDC14162D6B0B0027D35F /* FacebookSDK.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2004,7 +2004,7 @@
 				FF586C6D1519B94300F308E2 /* libJSONKitTouch.a in Frameworks */,
 				FF42755A14F4E8AE00824505 /* libTestFlight.a in Frameworks */,
 				7DAD18A21626A73B00F87495 /* libGoogleAnalytics.a in Frameworks */,
-				7D9F2B0D162808DB00BFE34A /* FacebookSDK.framework in Frameworks */,
+				7D0CDC18162D6B570027D35F /* FacebookSDK.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2622,7 +2622,6 @@
 		FF73A53313D6C2CC00D54EC6 = {
 			isa = PBXGroup;
 			children = (
-				7DCEDEAE162D5AA3004F9090 /* Default-568h@2x.png */,
 				FFC62019149CF1930097C377 /* Environment */,
 				FF946020152D7EDD0034D540 /* Appearance */,
 				FFBBA42615AD5D4900E95C66 /* Facebook */,
@@ -2670,8 +2669,8 @@
 				7D9B1D8E162BB1E8000E5350 /* AdSupport.framework */,
 				FF73A5B413D6DC8000D54EC6 /* AQGridView.xcodeproj */,
 				4B1C65F614EE2C0C003398AF /* DCIntrospect */,
-				7D9F2B0C162808DB00BFE34A /* FacebookSDK.framework */,
-				7D9F2B0E162808F000BFE34A /* FacebookSDKResources.bundle */,
+				7D0CDC12162D6B0B0027D35F /* FacebookSDK.framework */,
+				7D0CDC15162D6B180027D35F /* FacebookSDKResources.bundle */,
 				FFC9D96614FF28B2004197EC /* Google Analytics SDK */,
 				4B733B7A14987A81005CAE8D /* InAppSettingsKit */,
 				FFFDEFB414211D5C0083BEFB /* iOS */,
@@ -2800,7 +2799,6 @@
 		FFA59491152DC947003A9689 /* iOS External Resources */ = {
 			isa = PBXGroup;
 			children = (
-				FF6B02AF15AC0B57009D8BDB /* FBDialog.bundle */,
 				FF51509C14835A030073386D /* Localizable.strings */,
 				4B52734315625B3500C6F55D /* ProviderIcon.png */,
 				FF945EE8152D72510034D540 /* UIKit+IRAdditions.bundle */,
@@ -2958,6 +2956,7 @@
 			children = (
 				FFCCDE3C15B41B0000AEBB85 /* CameraPressed.png */,
 				FFCCDE3D15B41B0000AEBB85 /* CameraPressed@2x.png */,
+				7DCEDEAE162D5AA3004F9090 /* Default-568h@2x.png */,
 				FFCCDE3F15B41B0000AEBB85 /* Default-Landscape.png */,
 				FFCCDE4015B41B0000AEBB85 /* Default-Landscape@2x.png */,
 				FFCCDE4115B41B0000AEBB85 /* Default-Portrait.png */,
@@ -2984,6 +2983,8 @@
 				4BAE345115DCA30200A9109D /* LoginBackground-Portrait@2x.png */,
 				FFCCDE7C15B41B0000AEBB85 /* Logotype.png */,
 				FFCCDE7D15B41B0000AEBB85 /* Logotype@2x.png */,
+				809C6D35160616F90016E196 /* menu.png */,
+				809C6D36160616F90016E196 /* menu@2x.png */,
 				FFCCDE7E15B41B0000AEBB85 /* NotePressed.png */,
 				FFCCDE7F15B41B0000AEBB85 /* NotePressed@2x.png */,
 				FFCCDE8215B41B0000AEBB85 /* Or.png */,
@@ -3029,10 +3030,10 @@
 				FFCCDDB215B4190200AEBB85 /* TutorialMoment@2x~iphone.png */,
 				FFCCDDAC15B4190200AEBB85 /* TutorialMoment~ipad.png */,
 				FFCCDDB015B4190200AEBB85 /* TutorialMoment~iphone.png */,
-				138D31B61609D92400ECA892 /* TutorialPhotoImport~ipad.png */,
 				138D31B11609D8F800ECA892 /* TutorialPhotoImport@2x~ipad.png */,
-				138CCA331609D22700B477CE /* TutorialPhotoImport~iphone.png */,
 				138CCA361609D23C00B477CE /* TutorialPhotoImport@2x~iphone.png */,
+				138D31B61609D92400ECA892 /* TutorialPhotoImport~ipad.png */,
+				138CCA331609D22700B477CE /* TutorialPhotoImport~iphone.png */,
 				FFCCDDB615B4190200AEBB85 /* TutorialWelcome@2x~ipad.png */,
 				FFCCDDBA15B4190200AEBB85 /* TutorialWelcome@2x~iphone.png */,
 				FFCCDDB415B4190200AEBB85 /* TutorialWelcome~ipad.png */,
@@ -3041,8 +3042,6 @@
 				4B87177715C7D4A200C9612D /* Unfav@2x~iphone.png */,
 				4BFC156815C7D9E800DB02F8 /* Unfav~ipad.png */,
 				4BB1B6AF15C14648002A4BE2 /* Unfav~iphone.png */,
-				809C6D35160616F90016E196 /* menu.png */,
-				809C6D36160616F90016E196 /* menu@2x.png */,
 				FFCCDEAB15B41B0000AEBB85 /* WAArticleStackElementDropdownTag.png */,
 				FFCCDEAC15B41B0000AEBB85 /* WAArticleStackElementDropdownTag@2x.png */,
 				FFCCDEAD15B41B0000AEBB85 /* WAArticleStackElementDropdownTagDisabled.png */,
@@ -3774,6 +3773,7 @@
 				4B6220DE15BE839000893766 /* PostWithIncompleteAttachmentInformation.txt in Resources */,
 				4B0C3EEF15BF89A300CAA346 /* PostWithCompleteAttachmentInformation.txt in Resources */,
 				7D92E5B216070705000C7B06 /* PhotoPostWithURLHistoryStyle.txt in Resources */,
+				7D0CDC17162D6B180027D35F /* FacebookSDKResources.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4077,8 +4077,8 @@
 				138D31B51609D91200ECA892 /* TutorialMoment@2x~ipad.png in Resources */,
 				138D31B81609D92400ECA892 /* TutorialPhotoImport~ipad.png in Resources */,
 				138D31BA1609DADB00ECA892 /* TutorialPhotoImport@2x~ipad.png in Resources */,
-				7D9F2B0F162808F000BFE34A /* FacebookSDKResources.bundle in Resources */,
 				7DCEDEAF162D5AA3004F9090 /* Default-568h@2x.png in Resources */,
+				7D0CDC16162D6B180027D35F /* FacebookSDKResources.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4097,7 +4097,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/zsh;
-			shellScript = "cd ${SRCROOT}/wammer\n\nfind . -name \"Localizable.strings\" -print | xargs -I {} echo \"iconv -f UTF-8 -t UTF-16 =(cat {})> {}\"  | zsh\n\npython ${SRCROOT}/external/C3PO/localize.py\n\nfind . -name \"Localizable.strings\" -print | xargs -I {} echo \"iconv -f UTF-16 -t UTF-8 =(cat {})> {}\"  | zsh";
+			shellScript = "cd ${SRCROOT}/wammer\n\nfind . -name \"Localizable.strings\" -print  -o -type d -iname \"Libraries\" -prune | xargs -I {} echo \"iconv -f UTF-8 -t UTF-16 =(cat {})> {}\"  | zsh\n\npython ${SRCROOT}/external/C3PO/localize.py\n\nfind . -name \"Localizable.strings\" -print  -o -type d -iname \"Libraries\" -prune | xargs -I {} echo \"iconv -f UTF-16 -t UTF-8 =(cat {})> {}\"  | zsh";
 		};
 		4B8CA96614BBE7BA006E06BB /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -4924,6 +4924,7 @@
 					"\"$(SRCROOT)/external/CrashlyticsSDK\"",
 					"\"$(SYSTEM_APPS_DIR)/Xcode.app/Contents/Developer/Library/Frameworks\"",
 					"\"$(SRCROOT)/external/FacebookSDK/build\"",
+					"\"$(SRCROOT)/wammer/Libraries\"",
 				);
 				GCC_OPTIMIZATION_LEVEL = s;
 				GCC_PREFIX_HEADER = "wammer/wammer-iOS-Prefix.pch";
@@ -4959,6 +4960,7 @@
 					"$(DEVELOPER_LIBRARY_DIR)/Frameworks",
 					"\"$(SRCROOT)/external/CrashlyticsSDK\"",
 					"\"$(SRCROOT)/external/FacebookSDK/build\"",
+					"\"$(SRCROOT)/wammer/Libraries\"",
 				);
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_GENERATE_TEST_COVERAGE_FILES = YES;
@@ -5031,6 +5033,7 @@
 					"\"$(SRCROOT)/external/CrashlyticsSDK\"",
 					"\"$(SYSTEM_APPS_DIR)/Xcode.app/Contents/Developer/Library/Frameworks\"",
 					"\"$(SRCROOT)/external/FacebookSDK/build\"",
+					"\"$(SRCROOT)/wammer/Libraries\"",
 				);
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_GENERATE_TEST_COVERAGE_FILES = YES;
@@ -5087,6 +5090,7 @@
 					"\"$(SRCROOT)/external/CrashlyticsSDK\"",
 					"\"$(SYSTEM_APPS_DIR)/Xcode.app/Contents/Developer/Library/Frameworks\"",
 					"\"$(SRCROOT)/external/FacebookSDK/build\"",
+					"\"$(SRCROOT)/wammer/Libraries\"",
 				);
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_GENERATE_TEST_COVERAGE_FILES = YES;
@@ -5338,6 +5342,7 @@
 					"\"$(SRCROOT)/external/CrashlyticsSDK\"",
 					"\"$(SYSTEM_APPS_DIR)/Xcode.app/Contents/Developer/Library/Frameworks\"",
 					"\"$(SRCROOT)/external/FacebookSDK/build\"",
+					"\"$(SRCROOT)/wammer/Libraries\"",
 				);
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREFIX_HEADER = "wammer/wammer-iOS-Prefix.pch";
@@ -5391,6 +5396,7 @@
 					"\"$(SRCROOT)/external/CrashlyticsSDK\"",
 					"\"$(SYSTEM_APPS_DIR)/Xcode.app/Contents/Developer/Library/Frameworks\"",
 					"\"$(SRCROOT)/external/FacebookSDK/build\"",
+					"\"$(SRCROOT)/wammer/Libraries\"",
 				);
 				GCC_OPTIMIZATION_LEVEL = s;
 				GCC_PREFIX_HEADER = "wammer/wammer-iOS-Prefix.pch";
