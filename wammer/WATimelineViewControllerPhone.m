@@ -1522,15 +1522,7 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 			
 			[IRAction actionWithTitle:NSLocalizedString(@"ACTION_SIGN_OUT", nil) block: ^ {
 
-				WAOverlayBezel *bezel = [WAOverlayBezel bezelWithStyle:WADefaultBezelStyle];
-				[bezel show];
-				[[WAPhotoImportManager defaultManager] cancelPhotoImportWithCompletionBlock:^{
-					
-					[((WAAppDelegate*)AppDelegate()) unsubscribeRemoteNotification];
-					
-					[bezel dismiss];
-					[wSelf.delegate applicationRootViewControllerDidRequestReauthentication:nil];
-				}];
+				[wSelf.delegate applicationRootViewControllerDidRequestReauthentication:nil];
 				
 			}],
 			

@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="2.0" toolsVersion="2840" systemVersion="12C54" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="4Pj-CA-NQ2">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="2.0" toolsVersion="2843" systemVersion="12C60" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="4Pj-CA-NQ2">
     <dependencies>
-        <deployment defaultVersion="1536" identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="1926"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="1929"/>
     </dependencies>
     <scenes>
         <!--User Info View Controller-->
@@ -16,19 +15,26 @@
                         <sections>
                             <tableViewSection footerTitle="PHOTO_IMPORT_FOOTER" id="IP4-fz-MdU">
                                 <cells>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" textLabel="vuN-4r-WXb" style="IBUITableViewCellStyleDefault" id="936-yE-M3N">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" id="zAM-PM-e47">
                                         <rect key="frame" x="0.0" y="10" width="320" height="46"/>
-                                        <autoresizingMask key="autoresizingMask"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                                             <rect key="frame" x="10" y="1" width="300" height="43"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="ACTION_IMPORT_SAVED_PHOTOS" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="vuN-4r-WXb">
-                                                    <rect key="frame" x="10" y="0.0" width="280" height="43"/>
-                                                    <autoresizingMask key="autoresizingMask"/>
+                                                <switch opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" id="yGS-QG-CC7">
+                                                    <rect key="frame" x="211" y="8" width="79" height="27"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <connections>
+                                                        <action selector="handlePhotoImportSwitchChanged:" destination="VLR-73-EnO" eventType="valueChanged" id="oy6-Gb-7dY"/>
+                                                    </connections>
+                                                </switch>
+                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="PHOTO_IMPORT_TITLE" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="obe-LE-yqs" customClass="WALocalizedLabel">
+                                                    <rect key="frame" x="9" y="11" width="192" height="21"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
                                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                                    <color key="highlightedColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <color key="highlightedColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 </label>
                                             </subviews>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -226,8 +232,8 @@
                     <connections>
                         <outlet property="contactTableViewCell" destination="3s0-3c-xph" id="iaH-xj-cpe"/>
                         <outlet property="deviceNameLabel" destination="kXb-YD-Szk" id="z56-WB-rsi"/>
-                        <outlet property="importSavedPhotosTableViewCell" destination="936-yE-M3N" id="Q2L-Uz-Kxy"/>
                         <outlet property="numberOfPendingFilesLabel" destination="F3C-kz-PAs" id="lWl-4M-o9g"/>
+                        <outlet property="photoImportSwitch" destination="yGS-QG-CC7" id="f4m-hY-CdE"/>
                         <outlet property="serviceTableViewCell" destination="Xum-bx-3wm" id="LEB-wR-2cC"/>
                         <outlet property="syncTableViewCell" destination="PaF-7h-vme" id="hk8-Gf-NKw"/>
                         <outlet property="userEmailLabel" destination="GO0-S9-Ov0" id="P8S-0e-QfO"/>
@@ -267,12 +273,13 @@
         <class className="WAUserInfoViewController" superclassName="IRTableViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/WAUserInfoViewController.h"/>
             <relationships>
+                <relationship kind="action" name="handlePhotoImportSwitchChanged:"/>
                 <relationship kind="outlet" name="contactTableViewCell" candidateClass="UITableViewCell"/>
                 <relationship kind="outlet" name="deviceNameLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="importSavedPhotosTableViewCell" candidateClass="UITableViewCell"/>
                 <relationship kind="outlet" name="lastSyncDateLabel" candidateClass="UILabel"/>
                 <relationship kind="outlet" name="numberOfFilesNotOnStationLabel" candidateClass="UILabel"/>
                 <relationship kind="outlet" name="numberOfPendingFilesLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="photoImportSwitch" candidateClass="UISwitch"/>
                 <relationship kind="outlet" name="serviceTableViewCell" candidateClass="UITableViewCell"/>
                 <relationship kind="outlet" name="stationNagCell" candidateClass="UITableViewCell"/>
                 <relationship kind="outlet" name="stationNagLabel" candidateClass="UILabel"/>
