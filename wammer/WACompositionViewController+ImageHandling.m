@@ -10,10 +10,13 @@
 #import "UIKit+IRAdditions.h"
 #import "AssetsLibrary+IRAdditions.h"
 #import "WADataStore.h"
+#import "WADefines.h"
 
 #import <objc/runtime.h>
 #import "WACompositionViewController+SubclassEyesOnly.h"
 #import "IRAQPhotoPickerController.h"
+#import "WAAssetsLibraryManager.h"
+#import "WAFile+ThumbnailMaker.h"
 
 NSString * const WACompositionImageInsertionUsesCamera = @"WACompositionImageInsertionUsesCamera";
 NSString * const WACompositionImageInsertionAnimatePresentation = @"WACompositionImageInsertionAnimatePresentation";
@@ -87,27 +90,9 @@ NSString * const kDismissesSelfIfCameraCancelled = @"-[WACompositionViewControll
 
 }
 
-- (IRImagePickerController *) newImagePickerController {
-
-	__weak WACompositionViewController *wSelf = self;
-	
-	__block IRImagePickerController *nrImagePickerController = [IRImagePickerController photoLibraryPickerWithCompletionBlock:^(UIImage *image, NSURL *selectedAssetURI, ALAsset *representedAsset) {
-		
-		[wSelf.managedObjectContext save:nil];
-		[wSelf handleIncomingSelectedAssetImage:image representedAsset:representedAsset];
-		[wSelf dismissImagePickerController:nrImagePickerController animated:YES];
-		
-		nrImagePickerController = nil;
-		
-	}];
-	
-	nrImagePickerController.usesAssetsLibrary = NO;
-	
-	return nrImagePickerController;
-
-}
-
 - (void) presentImagePickerController:(UIViewController *)controller sender:(id)sender animated:(BOOL)animated {
+
+	NSParameterAssert(controller);
 
 	__block UIViewController * (^topNonModalVC)(UIViewController *) = [^ (UIViewController *aVC) {
 		
@@ -118,7 +103,7 @@ NSString * const kDismissesSelfIfCameraCancelled = @"-[WACompositionViewControll
 		
 	} copy];
 	
-	[topNonModalVC(self) presentModalViewController:(controller ? controller : [self newImagePickerController]) animated:animated];
+	[topNonModalVC(self) presentModalViewController:controller animated:animated];
 	
 	topNonModalVC = nil;
 
@@ -150,18 +135,24 @@ NSString * const kDismissesSelfIfCameraCancelled = @"-[WACompositionViewControll
 
 	__weak WACompositionViewController *wSelf = self;
 	
-	__block IRImagePickerController *nrPickerController = [IRImagePickerController cameraImageCapturePickerWithCompletionBlock:^(UIImage *image, NSURL *selectedAssetURI, ALAsset *representedAsset) {
+	__block IRImagePickerController *nrPickerController = [IRImagePickerController cameraImageCapturePickerWithAssetsLibrary:[[WAAssetsLibraryManager defaultManager] assetsLibrary] completionBlock:^(ALAsset *representedAsset) {
 		
 		[wSelf.managedObjectContext save:nil];
-		[wSelf handleIncomingSelectedAssetImage:image representedAsset:representedAsset];
+
+		WAThumbnailMakeOptions options = WAThumbnailMakeOptionExtraSmall;
+		if ([wSelf.article.files count] < 4) {
+			options |= WAThumbnailMakeOptionMedium;
+		}
+		if ([wSelf.article.files count] < 3) {
+			options |= WAThumbnailMakeOptionSmall;
+		}
+		[wSelf handleIncomingSelectedAsset:representedAsset options:options];
+
 		[wSelf dismissCameraCapturePickerController:nrPickerController animated:YES];
 		
 		nrPickerController = nil;
 		
 	}];
-	
-	nrPickerController.usesAssetsLibrary = NO;
-	nrPickerController.savesCameraImageCapturesToSavedPhotos = YES;
 	
 	return nrPickerController;
 
@@ -192,22 +183,64 @@ NSString * const kDismissesSelfIfCameraCancelled = @"-[WACompositionViewControll
 
 - (void) handleSelectionWithArray: (NSArray *)selectedAssets {
 	
-	for (ALAsset *asset in selectedAssets) 
-		[self handleIncomingSelectedAssetImage:nil representedAsset:asset];
+	[selectedAssets enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+		ALAsset *asset = obj;
+		WAThumbnailMakeOptions options = WAThumbnailMakeOptionExtraSmall;
+		if (idx < 4) {
+			options |= WAThumbnailMakeOptionMedium;
+		}
+		if (idx < 3) {
+			options |= WAThumbnailMakeOptionSmall;
+		}
+		[self handleIncomingSelectedAsset:asset options:options];
+	}];
 		
 }
 
-- (void) handleIncomingSelectedAssetImage:(UIImage *)image representedAsset:(ALAsset *)representedAsset {
+- (void) makeAssociatedImagesOfFile:(WAFile *)file withRepresentedAsset:(ALAsset *)representedAsset options:(WAThumbnailMakeOptions)options {
 
-	if (image || representedAsset) {
+	NSParameterAssert(representedAsset);
+
+	__weak WACompositionViewController *wSelf = self;
+	
+	[self.managedObjectContext performBlock:^{
+		
+		WADataStore *ds = [WADataStore defaultStore];
+
+		if (options & (WAThumbnailMakeOptionSmall|WAThumbnailMakeOptionMedium)) {
+
+			UIImage *image = [[representedAsset defaultRepresentation] irImage];
+			[file makeThumbnailsWithImage:image options:(options & (WAThumbnailMakeOptionSmall|WAThumbnailMakeOptionMedium))];
+			
+		}
+		
+		if (options & WAThumbnailMakeOptionExtraSmall) {
+			
+			UIImage *extraSmallThumbnailImage = [UIImage imageWithCGImage:[representedAsset thumbnail]];
+			file.extraSmallThumbnailFilePath = [[ds persistentFileURLForData:UIImageJPEGRepresentation(extraSmallThumbnailImage, 0.85f) extension:@"jpeg"] path];
+			
+		}
+		
+		NSError *savingError = nil;
+		if (![wSelf.managedObjectContext save:&savingError])
+			NSLog(@"Error saving: %s %@", __PRETTY_FUNCTION__, savingError);
+		
+	}];
+
+}
+
+- (void) handleIncomingSelectedAsset:(ALAsset *)representedAsset options:(WAThumbnailMakeOptions)options {
+
+	if (representedAsset) {
 		
 		NSManagedObjectContext *context = self.managedObjectContext;
 		NSManagedObjectID *articleID = [self.article objectID];
 		NSCParameterAssert(![articleID isTemporaryID]);
 		
 		NSURL *articleURI = [articleID URIRepresentation];
+		__weak WACompositionViewController* wSelf = self;
 		
-		[self.managedObjectContext performBlock:^{
+		[context performBlock:^{
 		
 			WAArticle *article = (WAArticle *)[context irManagedObjectForURI:articleURI];
 			NSCParameterAssert(article);
@@ -221,18 +254,12 @@ NSString * const kDismissesSelfIfCameraCancelled = @"-[WACompositionViewControll
 			[article willChangeValueForKey:@"files"];
 			[[article mutableOrderedSetValueForKey:@"files"] addObject:file];
 			[article didChangeValueForKey:@"files"];
-			
-			if (image) {
-				NSData *imageData = UIImageJPEGRepresentation(image, 1.0f);
-				file.resourceFilePath = [[[WADataStore defaultStore] persistentFileURLForData:imageData extension:@"jpeg"] path];
-			}
-			
-			if (representedAsset) {
-				file.assetURL = [[[representedAsset defaultRepresentation] url] absoluteString];
-			}
-				
+						
+			[wSelf makeAssociatedImagesOfFile:file withRepresentedAsset:representedAsset options:options];
+
+			file.assetURL = [[[representedAsset defaultRepresentation] url] absoluteString];
 			file.resourceType = (NSString *)kUTTypeImage;
-			
+
 			NSError *savingError = nil;
 			if (![context save:&savingError])
 				NSLog(@"Error saving: %s %@", __PRETTY_FUNCTION__, savingError);

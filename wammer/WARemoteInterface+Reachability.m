@@ -18,9 +18,12 @@
 
 #import "WARemoteInterfaceContext.h"
 
+#import "WARemoteInterface+WebSocket.h"
+#import "WARemoteInterface+Notification.h"
+
 
 @interface WARemoteInterface (Reachability_Private) <WAReachabilityDetectorDelegate>
-
+NSURL *refiningStationLocation(NSString *stationUrlString, NSURL *baseUrl) ;
 @property (nonatomic, readonly, retain) NSMutableDictionary *monitoredHostsToReachabilityDetectors;
 
 @end
@@ -36,10 +39,10 @@ static NSString * const kNetworkState = @"-[WARemoteInterface(Reachability) netw
 
 	__weak NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
 	
-	__block id appLoaded = [center addObserverForName:UIApplicationDidFinishLaunchingNotification object:nil queue:nil usingBlock:^(NSNotification *note) {
+	__block id appLoaded = [center addObserverForName:WAApplicationDidFinishLaunchingNotification object:nil queue:nil usingBlock:^(NSNotification *note) {
 		
 		[center removeObserver:appLoaded];
-		objc_setAssociatedObject([WARemoteInterface class], &UIApplicationDidFinishLaunchingNotification, nil, OBJC_ASSOCIATION_ASSIGN);
+		objc_setAssociatedObject([WARemoteInterface class], &WAApplicationDidFinishLaunchingNotification, nil, OBJC_ASSOCIATION_ASSIGN);
 		
 		__block id baseURLChanged = [center addObserverForName:kWARemoteInterfaceContextDidChangeBaseURLNotification object:nil queue:nil usingBlock:^(NSNotification *note) {
 			
@@ -65,7 +68,7 @@ static NSString * const kNetworkState = @"-[WARemoteInterface(Reachability) netw
 				
 	}];
 
-	objc_setAssociatedObject([WARemoteInterface class], &UIApplicationDidFinishLaunchingNotification, appLoaded, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+	objc_setAssociatedObject([WARemoteInterface class], &WAApplicationDidFinishLaunchingNotification, appLoaded, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 
 }
 
@@ -220,6 +223,36 @@ static NSString * const kNetworkState = @"-[WARemoteInterface(Reachability) netw
 
 }
 
+NSURL *refiningStationLocation(NSString *stationUrlString, NSURL *baseUrl) {
+	NSURL *givenURL = [NSURL URLWithString:stationUrlString];
+	if (!givenURL)
+		return (id)nil;
+	
+	if (![givenURL host])
+		return (id)nil;
+	
+	NSString *baseURLString = [[NSArray arrayWithObjects:
+															
+															[givenURL scheme] ? [[givenURL scheme] stringByAppendingString:@"://"] :
+															[baseUrl scheme] ? [[baseUrl scheme] stringByAppendingString:@"://"] : @"",
+															[baseUrl host] ? [givenURL host] : @"",
+															[givenURL port] ? [@":" stringByAppendingString:[[givenURL port] stringValue]] :
+															[baseUrl port] ? [@":" stringByAppendingString:[[baseUrl port] stringValue]] : @"",
+															[baseUrl path] ? [baseUrl path] : @"",
+															@"/", //  path needs trailing slash
+															
+															//	[givenURL query] ? [@"?" stringByAppendingString:[givenURL query]] : @"",
+															//	[givenURL fragment] ? [@"#" stringByAppendingString:[givenURL fragment]] : @"",
+															
+															nil] componentsJoinedByString:@""];
+	
+	//  only take the location (host) + port, nothing else
+	
+	return (id)[NSURL URLWithString:baseURLString];
+
+	
+}
+
 - (void(^)(void)) defaultScheduledMonitoredHostsUpdatingBlock {
 
   __weak WARemoteInterface *wSelf = self;
@@ -233,44 +266,68 @@ static NSString * const kNetworkState = @"-[WARemoteInterface(Reachability) netw
     //[((WAAppDelegate *)[UIApplication sharedApplication].delegate) beginNetworkActivity];
   
     [wSelf retrieveAssociatedStationsOfCurrentUserOnSuccess:^(NSArray *stationReps) {
-		
+
       dispatch_async(dispatch_get_main_queue(), ^ {
-		
-        wSelf.monitoredHosts = [[NSArray arrayWithObject:wSelf.engine.context.baseURL] arrayByAddingObjectsFromArray:[stationReps irMap: ^ (NSDictionary *aStationRep, NSUInteger index, BOOL *stop) {
-        
-          NSString *stationURLString = [aStationRep valueForKeyPath:@"location"];
-          if (!stationURLString)
-            return (id)nil;
-          
-          NSURL *baseURL = wSelf.engine.context.baseURL;
-				
-          NSURL *givenURL = [NSURL URLWithString:stationURLString];
-          if (!givenURL)
-            return (id)nil;
-						
-					if (![givenURL host])
+
+				NSArray *wsStations = [NSArray arrayWithArray:[stationReps irMap: ^(NSDictionary *aStationRep, NSUInteger index, BOOL *stop) {
+					NSString *wsStationURLString = [aStationRep valueForKey:@"ws_location"];
+					if (!wsStationURLString)
 						return (id)nil;
-          
-          NSString *baseURLString = [[NSArray arrayWithObjects:
-		
-						[givenURL scheme] ? [[givenURL scheme] stringByAppendingString:@"://"] :
-						[baseURL scheme] ? [[baseURL scheme] stringByAppendingString:@"://"] : @"",
-						[baseURL host] ? [givenURL host] : @"",
-						[givenURL port] ? [@":" stringByAppendingString:[[givenURL port] stringValue]] : 
-						[baseURL port] ? [@":" stringByAppendingString:[[baseURL port] stringValue]] : @"",
-						[baseURL path] ? [baseURL path] : @"",
-						@"/", //  path needs trailing slash
-            
-            //	[givenURL query] ? [@"?" stringByAppendingString:[givenURL query]] : @"",
-            //	[givenURL fragment] ? [@"#" stringByAppendingString:[givenURL fragment]] : @"",
-          
-          nil] componentsJoinedByString:@""];
-          
-          //  only take the location (host) + port, nothing else
-          
-          return (id)[NSURL URLWithString:baseURLString];
-          
-        }]];
+					if ([wsStationURLString isEqualToString:@""])
+						return (id)nil;
+
+					NSURL *wsURL = [NSURL URLWithString:wsStationURLString];
+					
+					NSURL *stationURL = refiningStationLocation([aStationRep valueForKey:@"location"], wSelf.engine.context.baseURL);
+					
+					return (id)[[NSDictionary alloc] initWithObjectsAndKeys:stationURL, @"location", wsURL, @"ws_location", nil];
+
+				}]];
+
+				if ([wsStations count] > 0) {
+					// cloud says we have at least one station supports websocket
+					
+					// then we try to connect to one of available
+					[[WARemoteInterface sharedInterface] connectAvaliableWSStation:wsStations
+						onSucces:^(NSURL *wsURL, NSURL *stURL){
+							
+							// any success connect to websocket goes to this block
+
+							[[WARemoteInterface sharedInterface] stopAutomaticRemoteUpdates];
+
+							[[WARemoteInterface sharedInterface] subscribeNotification];
+							// We only scan the reachability detector for cloud and the first available station that supports websocket
+							wSelf.monitoredHosts = [NSArray arrayWithObjects:wSelf.engine.context.baseURL, stURL, nil];
+
+						} onFailure:^(NSError *error) {
+						
+							// no websocket station available or any failure during connection goes to this block
+
+							wSelf.monitoredHosts = [[NSArray arrayWithObject:wSelf.engine.context.baseURL] arrayByAddingObjectsFromArray:[stationReps irMap: ^ (NSDictionary *aStationRep, NSUInteger index, BOOL *stop) {
+								
+								NSString *stationURLString = [aStationRep valueForKeyPath:@"location"];
+								if (!stationURLString)
+									return (id)nil;
+								
+								return (id)refiningStationLocation(stationURLString, wSelf.engine.context.baseURL);
+							}]];
+							
+							[[WARemoteInterface sharedInterface] enableAutomaticRemoteUpdatesTimer];
+
+						}];
+
+				} else {
+
+					wSelf.monitoredHosts = [[NSArray arrayWithObject:wSelf.engine.context.baseURL] arrayByAddingObjectsFromArray:[stationReps irMap: ^ (NSDictionary *aStationRep, NSUInteger index, BOOL *stop) {
+        
+						NSString *stationURLString = [aStationRep valueForKeyPath:@"location"];
+						if (!stationURLString)
+							return (id)nil;
+					          				
+						return (id)refiningStationLocation(stationURLString, wSelf.engine.context.baseURL);
+					}]];
+					
+				}
         
         [wSelf endPostponingDataRetrievalTimerFiring];
 				
@@ -282,6 +339,11 @@ static NSString * const kNetworkState = @"-[WARemoteInterface(Reachability) netw
     
       dispatch_async(dispatch_get_main_queue(), ^ {
       
+				// for network unavailable case while entering app
+				if (!wSelf.monitoredHosts) {
+					wSelf.monitoredHosts = [NSArray arrayWithObject:wSelf.engine.context.baseURL];
+				}
+
         [wSelf endPostponingDataRetrievalTimerFiring];
 
         //[AppDelegate() endNetworkActivity];
@@ -363,15 +425,32 @@ static NSString * const kNetworkState = @"-[WARemoteInterface(Reachability) netw
 	BOOL hasStationAvailable = NO, hasCloudAvailable = NO;
 	
 	for (NSURL *hostURL in self.monitoredHosts) {
-		if (WAReachabilityStateAvailable == [self reachabilityStateForHost:hostURL]) {
-			if ([hostURL isEqual:cloudHost]) {
-				hasCloudAvailable = YES;
-			} else {
-				hasStationAvailable = YES;
-			}
+		switch ([self reachabilityStateForHost:hostURL]) {
+			case WAReachabilityStateAvailable:
+				if ([hostURL isEqual:cloudHost]) {
+					hasCloudAvailable = YES;
+				} else {
+					hasStationAvailable = YES;
+				}
+				break;
+
+			case WAReachabilityStateUnknown:
+				// assume cloud is reachable by default
+				if ([hostURL isEqual:cloudHost]) {
+					hasCloudAvailable = YES;
+				}
+				break;
+				
+			default:
+				break;
 		}
 	}
 	
+	// assume cloud is reachable before calling findMyStation
+	if (!self.monitoredHosts) {
+		hasCloudAvailable = YES;
+	}
+
 	BOOL answer = (hasCloudAvailable ? WACloudReachable : 0) | (hasStationAvailable ? WAStationReachable : 0);
 	
 	return answer;

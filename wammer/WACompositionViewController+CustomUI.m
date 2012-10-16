@@ -47,10 +47,14 @@
 		//	POINT OF NO RETURN
 		
 		WADataStore *ds = [WADataStore defaultStore];
-		NSManagedObjectContext *moc = [ds disposableMOC];
+		NSManagedObjectContext *moc = [ds defaultAutoUpdatedMOC];
 		WAArticle *article = (WAArticle *)[moc irManagedObjectForURI:anArticleURLOrNil];
 		if (article) {
 			article.draft = (id)kCFBooleanFalse;
+			CFUUIDRef theUUID = CFUUIDCreate(kCFAllocatorDefault);
+			if (theUUID)
+				article.identifier = [((__bridge_transfer NSString *)CFUUIDCreateString(kCFAllocatorDefault, theUUID)) lowercaseString];
+			CFRelease(theUUID);
 			article.dirty = (id)kCFBooleanTrue;
 			article.creationDeviceName = [UIDevice currentDevice].name;
 			[moc save:nil];

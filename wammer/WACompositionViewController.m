@@ -22,7 +22,9 @@
 #import "WANavigationBar.h"
 #import "WANavigationController.h"
 #import "WAPreviewBadge.h"
-
+#import "WAOverlayBezel.h"
+#import "WACompositionViewController+ImageHandling.h"
+#import "WAAssetsLibraryManager.h"
 
 @interface WACompositionViewController () <UITextViewDelegate, IRTextAttributorDelegate>
 
@@ -32,6 +34,8 @@
 
 @property (nonatomic, readwrite, retain) IRTextAttributor *textAttributor;
 @property (nonatomic, readwrite, retain) IRActionSheetController *cancellationActionSheetController;
+
+- (BOOL)associatedImagesMadeForFile:(WAFile *)file;
 
 @end
 
@@ -145,6 +149,49 @@
 		
 	}];
 
+	// for crash recovery
+	// however, if user tap done button before all blocks pushed into managedObjectContext,
+	// the application will crash again.
+	[self.article.files enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+
+		WAFile *file = obj;
+    if (![wSelf associatedImagesMadeForFile:file]) {
+
+			if (file.assetURL) {
+
+				[[WAAssetsLibraryManager defaultManager] assetForURL:[NSURL URLWithString:file.assetURL] resultBlock:^(ALAsset *asset) {
+					
+					[wSelf.managedObjectContext performBlock:^{
+						
+						WAThumbnailMakeOptions options = WAThumbnailMakeOptionExtraSmall;
+						if (idx < 4) {
+							options |= WAThumbnailMakeOptionMedium;
+						}
+						if (idx < 3) {
+							options |= WAThumbnailMakeOptionSmall;
+						}
+						[wSelf makeAssociatedImagesOfFile:file withRepresentedAsset:asset options:options];
+						
+					}];
+					
+				} failureBlock:^(NSError *error) {
+					
+					NSLog(@"Unable to retrieve assets for URL %@", file.assetURL);
+					NSAssert(NO, @"Unable to recover thumbnail making process for file:%@", file);
+					
+				}];
+
+			} else {
+				
+				NSLog(@"File asset URL is empty");
+				NSAssert(NO, @"Unable to recover thumbnail making process for file:%@", file);
+
+			}
+			
+		}
+
+	}];
+	
 }
 
 - (void) dealloc {
@@ -299,7 +346,11 @@ static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandl
 
 }
 
+- (BOOL) associatedImagesMadeForFile:(WAFile *)file {
 
+	return !!file.extraSmallThumbnailFilePath;
+
+}
 
 
 
@@ -451,16 +502,43 @@ static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandl
 
 - (void) handleDone:(UIBarButtonItem *)sender {
 
+	// disable user interactions
+	[[UIApplication sharedApplication] beginIgnoringInteractionEvents];
+	
 	self.article.text = self.contentTextView.text;
-	self.article.modificationDate = [NSDate date];
+	if (self.article.modificationDate) {
+		// set modification date only when updating articles
+		self.article.modificationDate = [NSDate date];
+	}
 	
 	NSError *savingError = nil;
 	if (![self.managedObjectContext save:&savingError])
 		NSLog(@"Error saving: %@", savingError);
 	
-	if (self.completionBlock)
-		self.completionBlock([[self.article objectID] URIRepresentation]);
+	[self.contentTextView resignFirstResponder];
+	
+	WAOverlayBezel *busyBezel = [WAOverlayBezel bezelWithStyle:WAActivityIndicatorBezelStyle];
+	[busyBezel show];
+
+	__weak WACompositionViewController *wSelf = self;
+	[self.managedObjectContext performBlock:^{
+
+		for (WAFile *file in wSelf.article.files) {
+			NSParameterAssert([self associatedImagesMadeForFile:file]);
+		}
+
+		dispatch_async(dispatch_get_main_queue(), ^ {
+
+			if (self.completionBlock)
+				self.completionBlock([[self.article objectID] URIRepresentation]);
+
+			[busyBezel dismiss];
+
+			[[UIApplication sharedApplication] endIgnoringInteractionEvents];
+		});
 		
+	}];
+	
 	if ([self.article.previews count])
 		WAPostAppEvent(@"Create Preview", [NSDictionary dictionaryWithObjectsAndKeys:@"link",@"category",@"create", @"action", nil]);
 	else if ([self.article.files count])

@@ -12,6 +12,8 @@
 #import "WADataStore+WARemoteInterfaceAdditions.h"
 #import "WAOverlayBezel.h"
 
+#import "WAFacebookInterface.h"
+
 
 NSString * const kWADataStoreArticleUpdateShowsBezels = @"WADataStoreArticleUpdateShowsBezels";
 
@@ -102,7 +104,7 @@ NSString * const kWADataStoreArticleUpdateShowsBezels = @"WADataStoreArticleUpda
 	
 	__weak WADataStore *wSelf = self;
 	
-	NSManagedObjectContext *context = [self disposableMOC];	//	Sigh
+	NSManagedObjectContext *context = [self defaultAutoUpdatedMOC];
 	WAArticle *article = (WAArticle *)[context irManagedObjectForURI:anArticleURI];
 	
 	[[wSelf articlesCurrentlyBeingUpdated] addObject:anArticleURI];
@@ -225,11 +227,13 @@ NSString * const kWADataStoreArticleUpdateShowsBezels = @"WADataStoreArticleUpda
 
 	WARemoteInterface *ri = [WARemoteInterface sharedInterface];
 	NSString *userIdentifier = ri.userIdentifier;
-	NSParameterAssert(userIdentifier);
+	if (!userIdentifier) {
+		return;
+	}
 	
 	__weak WADataStore *wSelf = self;
 	
-	[ri retrieveUser:userIdentifier onSuccess: ^ (NSDictionary *userRep) {
+	[ri retrieveUserAndSNSInfo:userIdentifier onSuccess:^(NSDictionary *userRep, NSArray *snsReps) {
 	
 		[wSelf performBlock:^{
 			
@@ -256,6 +260,30 @@ NSString * const kWADataStoreArticleUpdateShowsBezels = @"WADataStoreArticleUpda
 			NSError *savingError = nil;
 			if (![context save:&savingError])
 				NSLog(@"%@: %@", NSStringFromSelector(_cmd), savingError);
+			
+			
+			if (snsReps) {
+				NSArray *facebookReps = [snsReps filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^ (id evaluatedObject, NSDictionary *bindings) {
+					
+					return [[evaluatedObject valueForKeyPath:@"type"] isEqual:@"facebook"];
+					
+				}]];
+				
+				BOOL importing = NO;
+				
+				if ([facebookReps count] >= 1) {
+					NSDictionary *fbRep = [facebookReps lastObject];
+					//	NSString *fbStatus = [fbRep valueForKeyPath:@"status"];
+					NSNumber *fbImportingEnabled = [fbRep valueForKeyPath:@"enabled"];
+				
+					importing = [fbImportingEnabled isEqual:(id)kCFBooleanTrue];
+				}
+				
+				dispatch_async(dispatch_get_main_queue(), ^{
+					[[WAFacebookInterface sharedInterface] setUserDataImporting:importing];
+				});
+				
+			}
 			
 			if (successBlock)
 				successBlock();

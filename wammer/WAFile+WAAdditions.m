@@ -29,14 +29,16 @@
 
 	[self disableMemoryWarningObserverCreation];
 	[self removeMemoryWarningObserverIfAppropriate];
+	[self irRemoveAllObserves];
 
 }
+
 
 - (void) awakeFromFetch {
 
   [super awakeFromFetch];
 	
-	if ([NSThread isMainThread] && ![self.objectID isTemporaryID])
+	if (![self.objectID isTemporaryID])
 		[self setAttemptsBlobRetrieval:YES notify:NO];
 	
 }

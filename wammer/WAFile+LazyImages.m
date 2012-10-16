@@ -8,8 +8,12 @@
 
 #import "WAFile+LazyImages.h"
 #import "WAFile+WAConstants.h"
+#import "WAFile+ImplicitBlobFulfillment.h"
+#import "WAAssetsLibraryManager.h"
 
 #import "UIKit+IRAdditions.h"
+#import "WAFile+ThumbnailMaker.h"
+#import "WADataStore.h"
 
 static NSString * const kMemoryWarningObserver = @"-[WAFile(LazyImages) handleDidReceiveMemoryWarning:]";
 static NSString * const kMemoryWarningObserverCreationDisabled = @"-[WAFile(LazyImages) isMemoryWarningObserverCreationDisabled]";
@@ -67,9 +71,7 @@ static NSString * const kMemoryWarningObserverCreationDisabled = @"-[WAFile(Lazy
 
 - (void) handleDidReceiveMemoryWarning:(NSNotification *)aNotification {
 
-	[self irAssociateObject:nil usingKey:&kWAFileThumbnailImage policy:OBJC_ASSOCIATION_ASSIGN changingObservedKey:nil];
-	[self irAssociateObject:nil usingKey:&kWAFileLargeThumbnailImage policy:OBJC_ASSOCIATION_ASSIGN changingObservedKey:nil];
-	[self irAssociateObject:nil usingKey:&kWAFileResourceImage policy:OBJC_ASSOCIATION_ASSIGN changingObservedKey:nil];
+	[self cleanImageCache];
 
 }
 
@@ -88,7 +90,7 @@ static NSString * const kMemoryWarningObserverCreationDisabled = @"-[WAFile(Lazy
 
 	if (self.resourceImage)
 		return self.resourceImage;
-	
+	 
 	if (self.largeThumbnailImage)
 		return self.largeThumbnailImage;
 	
@@ -105,15 +107,18 @@ static NSString * const kMemoryWarningObserverCreationDisabled = @"-[WAFile(Lazy
 + (NSSet *) keyPathsForValuesAffectingSmallestPresentableImage {
 
 	return [NSSet setWithObjects:
+		kWAFileExtraSmallThumbnailImage,
 		kWAFileSmallThumbnailImage,
 		kWAFileThumbnailImage,
 		kWAFileLargeThumbnailImage,
-		kWAFileResourceImage,
 	nil];
 
 }
 
 - (UIImage *) smallestPresentableImage {
+
+	if (self.extraSmallThumbnailImage)
+		return self.extraSmallThumbnailImage;
 
 	if (self.smallThumbnailImage)
 		return self.smallThumbnailImage;
@@ -124,11 +129,89 @@ static NSString * const kMemoryWarningObserverCreationDisabled = @"-[WAFile(Lazy
 	if (self.largeThumbnailImage)
 		return self.largeThumbnailImage;
 	
-	if (self.resourceImage)
-		return self.resourceImage;
-	
 	return nil;
 	
+}
+
++ (NSSet *) keyPathsForValuesAffectingExtraSmallThumbnailImage {
+
+	return [NSSet setWithObject:kWAFileExtraSmallThumbnailFilePath];
+
+}
+
+- (UIImage *) extraSmallThumbnailImage {
+
+	[self createMemoryWarningObserverIfAppropriate];
+
+	[self setDisplaying:YES];
+
+	if (self.extraSmallThumbnailFilePath) {
+
+		return [self imageAssociatedWithKey:&kWAFileExtraSmallThumbnailImage filePath:self.extraSmallThumbnailFilePath];
+
+	} else {
+
+		if (self.assetURL) {
+
+			__weak WAFile *wSelf = self;
+			[[WAAssetsLibraryManager defaultManager] assetForURL:[NSURL URLWithString:self.assetURL] resultBlock:^(ALAsset *asset) {
+
+				NSManagedObjectContext *context = [[WADataStore defaultStore] disposableMOC];
+				[context performBlock:^{
+
+					if (!wSelf.extraSmallThumbnailFilePath) {
+
+						UIImage *extraSmallThumbnailImage = [UIImage imageWithCGImage:[asset thumbnail]];
+						wSelf.extraSmallThumbnailFilePath = [[[WADataStore defaultStore] persistentFileURLForData:UIImageJPEGRepresentation(extraSmallThumbnailImage, 0.85f) extension:@"jpeg"] path];
+
+						NSError *error = nil;
+						[context save:&error];
+						if (error) {
+							NSLog(@"Error saving: %s %@", __PRETTY_FUNCTION__, error);
+						}
+
+					}
+
+				}];
+
+			} failureBlock:^(NSError *error) {
+
+				NSLog(@"Unable to read asset: %s %@", __PRETTY_FUNCTION__, error);
+
+			}];
+
+		} else if (self.smallThumbnailFilePath) {
+
+			__weak WAFile *wSelf = self;
+			NSManagedObjectContext *context = [[self class] sharedExtraSmallImageManagedObjectContext];
+			[context performBlock:^{
+
+				if (!wSelf.extraSmallThumbnailFilePath) {
+
+					UIImage *image = [wSelf imageAssociatedWithKey:&kWAFileSmallThumbnailImage filePath:wSelf.smallThumbnailFilePath];
+					[wSelf makeThumbnailsWithImage:image options:WAThumbnailMakeOptionExtraSmall];
+
+					NSError *error = nil;
+					[context save:&error];
+					if (error) {
+						NSLog(@"Error saving: %s %@", __PRETTY_FUNCTION__, error);
+					}
+
+				}
+				
+			}];
+
+		}
+
+		return nil;
+	}
+	
+}
+
+- (void)setExtraSmallThumbnailImage:(UIImage *)extraSmallThumbnailImage {
+
+	[self irAssociateObject:extraSmallThumbnailImage usingKey:&kWAFileExtraSmallThumbnailImage policy:OBJC_ASSOCIATION_RETAIN_NONATOMIC changingObservedKey:kWAFileExtraSmallThumbnailImage];
+
 }
 
 + (NSSet *) keyPathsForValuesAffectingResourceImage {
@@ -141,8 +224,29 @@ static NSString * const kMemoryWarningObserverCreationDisabled = @"-[WAFile(Lazy
 
 	[self createMemoryWarningObserverIfAppropriate];
 
-	return [self imageAssociatedWithKey:&kWAFileResourceImage filePath:self.resourceFilePath];
-	
+	UIImage *image = [self imageAssociatedWithKey:&kWAFileResourceImage filePath:self.resourceFilePath];
+
+	if (!image) {
+		if (self.assetURL) {
+			__weak WAFile *wSelf = self;
+			[[WAAssetsLibraryManager defaultManager] assetForURL:[NSURL URLWithString:self.assetURL] resultBlock:^(ALAsset *asset) {
+
+				if (asset && ![wSelf imageAssociatedWithKey:&kWAFileResourceImage filePath:nil]) {
+					dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+						UIImage *assetImage = [UIImage imageWithCGImage:[[asset defaultRepresentation] fullScreenImage]];
+						[wSelf setResourceImage:assetImage];
+					});
+				}
+
+			} failureBlock:^(NSError *error) {
+
+				NSLog(@"Unable to read asset: %s %@", __PRETTY_FUNCTION__, error);
+
+			}];
+		}
+	}
+
+	return image;
 }
 
 - (void) setResourceImage:(UIImage *)resourceImage {
@@ -181,6 +285,8 @@ static NSString * const kMemoryWarningObserverCreationDisabled = @"-[WAFile(Lazy
 
 	[self createMemoryWarningObserverIfAppropriate];
 	
+	[self setDisplaying:YES];
+
 	return [self imageAssociatedWithKey:&kWAFileThumbnailImage filePath:self.thumbnailFilePath];
 		
 }
@@ -201,8 +307,15 @@ static NSString * const kMemoryWarningObserverCreationDisabled = @"-[WAFile(Lazy
 
 	[self createMemoryWarningObserverIfAppropriate];
 	
-	return [self imageAssociatedWithKey:&kWAFileSmallThumbnailImage filePath:self.smallThumbnailFilePath];
-		
+	[self setDisplaying:YES];
+
+	UIImage *image = [self imageAssociatedWithKey:&kWAFileSmallThumbnailImage filePath:self.smallThumbnailFilePath];
+	if (!image) {
+		// if no small thumbnail, load asset thumbnail first for UI responsiveness
+		image = self.extraSmallThumbnailImage;
+	}
+
+	return image;
 }
 
 - (void) setSmallThumbnailImage:(UIImage *)smallThumbnailImage {
@@ -213,9 +326,6 @@ static NSString * const kMemoryWarningObserverCreationDisabled = @"-[WAFile(Lazy
 
 - (UIImage *) imageAssociatedWithKey:(const void *)key filePath:(NSString *)filePath {
 
-	if (!filePath)
-		return nil;
-	
 	UIImage *image = objc_getAssociatedObject(self, key);
 	if (image)
 		return image;
@@ -224,6 +334,9 @@ static NSString * const kMemoryWarningObserverCreationDisabled = @"-[WAFile(Lazy
 	if (key != &kWAFileResourceImage) {
 		[self irAssociateObject:nil usingKey:&kWAFileResourceImage policy:OBJC_ASSOCIATION_ASSIGN changingObservedKey:nil];
 	}
+
+	if (!filePath)
+		return nil;
 
 	image = [UIImage imageWithData:[NSData dataWithContentsOfFile:filePath options:NSDataReadingMappedIfSafe error:nil]];
 	image.irRepresentedObject = [NSValue valueWithNonretainedObject:self];
@@ -249,6 +362,27 @@ static NSString * const kMemoryWarningObserverCreationDisabled = @"-[WAFile(Lazy
 	
 	return self.thumbnail;
 
+}
+
+- (void) cleanImageCache {
+
+	[self irAssociateObject:nil usingKey:&kWAFileExtraSmallThumbnailImage policy:OBJC_ASSOCIATION_ASSIGN changingObservedKey:nil];
+	[self irAssociateObject:nil usingKey:&kWAFileSmallThumbnailImage policy:OBJC_ASSOCIATION_ASSIGN changingObservedKey:nil];
+	[self irAssociateObject:nil usingKey:&kWAFileThumbnailImage policy:OBJC_ASSOCIATION_ASSIGN changingObservedKey:nil];
+	[self irAssociateObject:nil usingKey:&kWAFileLargeThumbnailImage policy:OBJC_ASSOCIATION_ASSIGN changingObservedKey:nil];
+	[self irAssociateObject:nil usingKey:&kWAFileResourceImage policy:OBJC_ASSOCIATION_ASSIGN changingObservedKey:nil];
+
+}
+
++ (NSManagedObjectContext *) sharedExtraSmallImageManagedObjectContext {
+	static NSManagedObjectContext *context = nil;
+	static dispatch_once_t onceToken = 0;
+
+	dispatch_once(&onceToken, ^{
+    context = [[WADataStore defaultStore] disposableMOC];
+	});
+
+	return context;
 }
 
 @end

@@ -8,3 +8,5 @@
 
 @class WAAppDelegate;
 extern WAAppDelegate * AppDelegate (void);
+
+#define WAApplicationDidFinishLaunchingNotification NSApplicationDidFinishLaunchingNotification

@@ -15,3 +15,5 @@ extern BOOL WAIsXCallbackURL (NSURL *anURL, NSString **outCommand, NSDictionary 
 
 #define kFBAccessToken @"kFBAccessToken"
 #define kFBExpirationDate @"kFBExpirationDate"
+
+#define WAApplicationDidFinishLaunchingNotification UIApplicationDidFinishLaunchingNotification

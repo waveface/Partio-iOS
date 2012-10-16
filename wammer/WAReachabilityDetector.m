@@ -6,6 +6,7 @@
 //  Copyright (c) 2011 Waveface. All rights reserved.
 //
 
+#import "WADefines.h"
 #import "WAReachabilityDetector.h"
 #import "IRRecurrenceMachine.h"
 #import "WARemoteInterface.h"
@@ -15,6 +16,7 @@
 
 
 NSString * const kWAReachabilityDetectorDidUpdateStatusNotification = @"WAReachabilityDetectorDidUpdateStatusNotification";
+NSUInteger const kWAReachabliityDetectorDefaultLiveness = 3;
 
 
 @interface WAReachabilityDetector ()
@@ -26,8 +28,9 @@ NSString * const kWAReachabilityDetectorDidUpdateStatusNotification = @"WAReacha
 @property (nonatomic, readwrite, assign) SCNetworkReachabilityRef reachability;
 @property (nonatomic, readwrite, assign) WAReachabilityState state;
 @property (nonatomic, readwrite, strong) WABackoffHandler *backOffHandler;
+@property (nonatomic, readwrite, assign) NSUInteger liveness;
 
-- (void) handleApplicationDidEnterBackground:(NSNotification *)note;
+- (void) handleApplicationWillEnterForeground:(NSNotification *)note;
 - (void) noteReachabilityFlagsChanged:(SCNetworkReachabilityFlags)flags;
 
 - (void) sendUpdateNotification;
@@ -60,10 +63,11 @@ static void WASCReachabilityCallback (SCNetworkReachabilityRef target, SCNetwork
 @synthesize reachability;
 @synthesize state;
 @synthesize backOffHandler;
+@synthesize liveness;
 
 + (void) load {
 
-	__block id applicationDidFinishLaunchingListener = [[NSNotificationCenter defaultCenter] addObserverForName:UIApplicationDidFinishLaunchingNotification object:nil queue:nil usingBlock:^(NSNotification *note) {
+	__block id applicationDidFinishLaunchingListener = [[NSNotificationCenter defaultCenter] addObserverForName:WAApplicationDidFinishLaunchingNotification object:nil queue:nil usingBlock:^(NSNotification *note) {
 	
 		[WAReachabilityDetector sharedDetectorForInternet];
 		[WAReachabilityDetector sharedDetectorForLocalWiFi];
@@ -128,6 +132,7 @@ static void WASCReachabilityCallback (SCNetworkReachabilityRef target, SCNetwork
 		return nil;
 	
 	state = WAReachabilityStateUnknown;
+	liveness = kWAReachabliityDetectorDefaultLiveness;
 	return self;
 
 }
@@ -141,7 +146,7 @@ static void WASCReachabilityCallback (SCNetworkReachabilityRef target, SCNetwork
 	self.hostAddress = hostAddressRef;
 	[self recreateReachabilityRef];
 	
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleApplicationDidEnterBackground:) name:UIApplicationDidEnterBackgroundNotification object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleApplicationWillEnterForeground:) name:UIApplicationWillEnterForegroundNotification object:nil];
 	
 	return self;
 
@@ -162,18 +167,21 @@ static void WASCReachabilityCallback (SCNetworkReachabilityRef target, SCNetwork
 	[self.recurrenceMachine addRecurringOperation:[self newPulseCheckerPrototype]];
 	[self.recurrenceMachine scheduleOperationsNow];
 	
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleApplicationDidEnterBackground:) name:UIApplicationDidEnterBackgroundNotification object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleApplicationWillEnterForeground:) name:UIApplicationWillEnterForegroundNotification object:nil];
 	
 	return self;
 	
 }
 
-- (void) handleApplicationDidEnterBackground:(NSNotification *)note {
+- (void) handleApplicationWillEnterForeground:(NSNotification*)note {
+
+	self.liveness = kWAReachabliityDetectorDefaultLiveness;
 
 	if (self.backOffHandler) {
-		
+
 		[self.recurrenceMachine setRecurrenceInterval:[self.backOffHandler firstInterval]];
-		
+		[self.recurrenceMachine scheduleOperationsNow];
+
 	}
 
 }
@@ -224,7 +232,6 @@ static void WASCReachabilityCallback (SCNetworkReachabilityRef target, SCNetwork
       NSNumber *httpStatusCode = [inResponseOrNil objectForKey:@"status"];
       if (httpStatusCode) {
           if ([httpStatusCode integerValue] == 200) {
-							[self.recurrenceMachine setRecurrenceInterval:[self.backOffHandler firstInterval]];
               return YES;
           }
       }
@@ -236,7 +243,6 @@ static void WASCReachabilityCallback (SCNetworkReachabilityRef target, SCNetwork
 			
     } failureHandler:^(NSDictionary *inResponseOrNil, IRWebAPIRequestContext *inResponseContext) {
     
-	  [self.recurrenceMachine setRecurrenceInterval:[self.backOffHandler nextInterval]];
       aCallback((id)kCFBooleanFalse);
       
     }];
@@ -249,11 +255,21 @@ static void WASCReachabilityCallback (SCNetworkReachabilityRef target, SCNetwork
 			
 			if ([results isEqual:(id)kCFBooleanTrue]) {
 			
+				wSelf.liveness = kWAReachabliityDetectorDefaultLiveness;
 				wSelf.state = WAReachabilityStateAvailable;
+				[wSelf.recurrenceMachine setRecurrenceInterval:[wSelf.backOffHandler firstInterval]];
 			
 			} else {
 			
-				wSelf.state = WAReachabilityStateNotAvailable;
+				if (wSelf.liveness > 0) {
+					wSelf.liveness -= 1;
+					// -[IRRecurrenceMachine scheduleOperationsNow] does not work as expected,
+					// so we set the timer interval to 0 here
+					[wSelf.recurrenceMachine setRecurrenceInterval:0];
+				} else {
+					wSelf.state = WAReachabilityStateNotAvailable;
+					[wSelf.recurrenceMachine setRecurrenceInterval:[wSelf.backOffHandler nextInterval]];
+				}
 			
 			}
 		

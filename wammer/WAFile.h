@@ -2,7 +2,7 @@
 //  WAFile.h
 //  wammer
 //
-//  Created by 冠凱 邱 on 12/7/5.
+//  Created by kchiu on 12/9/4.
 //  Copyright (c) 2012年 Waveface. All rights reserved.
 //
 
@@ -15,6 +15,7 @@
 
 @interface WAFile : IRManagedObject
 
+@property (nonatomic, retain) NSString * assetURL;
 @property (nonatomic, retain) NSString * codeName;
 @property (nonatomic, retain) NSString * creationDeviceIdentifier;
 @property (nonatomic, retain) NSString * identifier;
@@ -36,7 +37,7 @@
 @property (nonatomic, retain) NSString * thumbnailURL;
 @property (nonatomic, retain) NSDate * timestamp;
 @property (nonatomic, retain) NSString * title;
-@property (nonatomic, retain) NSString * assetURL;
+@property (nonatomic, retain) NSString * extraSmallThumbnailFilePath;
 @property (nonatomic, retain) WAArticle *article;
 @property (nonatomic, retain) WAUser *owner;
 @property (nonatomic, retain) NSOrderedSet *pageElements;

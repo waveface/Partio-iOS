@@ -32,74 +32,14 @@
 @synthesize highlightOverlay = _highlightOverlay;
 @synthesize activityIndicator = _activityIndicator;
 @synthesize canRemove = _canRemove;
-@synthesize representedFile = _representedFile;
 
-+ (WACompositionViewPhotoCell *) cellRepresentingFile:(WAFile *)aFile reuseIdentifier:(NSString *)identifier {
 
++ (WACompositionViewPhotoCell *) cellWithReusingIdentifier:(NSString *)identifier {
 	WACompositionViewPhotoCell *returnedCell = [[self alloc] initWithFrame:(CGRect){ 0, 0, 128, 128 } reuseIdentifier:identifier];
-	returnedCell.representedFile = aFile;
 	
 	return returnedCell;
-
 }
 
-- (void) setRepresentedFile:(WAFile *)file {
-
-	//	Either use the asset, or use the smallest presentable image!
-
-//	if (_representedFile == file) {
-//		self.image = file.smallestPresentableImage;
-//		return;
-//	}
-	
-	self.image = nil;
-	
-	_representedFile = file;
-	
-	__weak WACompositionViewPhotoCell *wSelf = self;
-	NSString *assetURLString = _representedFile.assetURL;
-	BOOL (^representedFileAssetChanged)(void) = ^ {
-		return (BOOL)![wSelf.representedFile.assetURL isEqual:assetURLString];
-	};
-	
-	if (!file.smallestPresentableImage && assetURLString) {
-	
-		[self irUnbind:@"image"];
-		
-		ALAssetsLibrary * const library = [[self class] assetsLibrary];
-		NSURL *assetURL = [NSURL URLWithString:assetURLString];
-		
-		[library assetForURL:assetURL resultBlock:^(ALAsset *asset) {
-		
-			if (representedFileAssetChanged())
-				return;
-		
-			dispatch_async(dispatch_get_main_queue(), ^{
-			
-				if (representedFileAssetChanged())
-					return;
-			
-				self.image = [UIImage imageWithCGImage:[asset aspectRatioThumbnail]];
-				
-			});
-			
-		} failureBlock:^(NSError *error) {
-			
-		}];
-	
-	} else {
-	
-		[self irBind:@"image" toObject:file keyPath:@"smallestPresentableImage" options:[NSDictionary dictionaryWithObjectsAndKeys:
-		
-			(id)kCFBooleanTrue, kIRBindingsAssignOnMainThreadOption,
-		
-		nil]];
-		
-		self.image = file.smallestPresentableImage;
-	
-	}
-
-}
 
 - (UIView *) hitTest:(CGPoint)point withEvent:(UIEvent *)event {
 
@@ -205,7 +145,9 @@
 			self.imageContainer.layer.shadowOffset = (CGSize){ 0, 1 };
 			self.imageContainer.layer.shadowOpacity = 0.5f;
 			self.imageContainer.layer.shadowRadius = 2.0f;
-			self.imageContainer.layer.contentsGravity = kCAGravityResizeAspect;
+			if (![self.imageContainer.layer.contentsGravity isEqualToString:kCAGravityCenter]) {
+				self.imageContainer.layer.contentsGravity = kCAGravityResizeAspect;
+			}
 			self.imageContainer.layer.borderColor = nil;
 			self.imageContainer.layer.borderWidth = 0;
 			self.imageContainer.clipsToBounds = NO;
@@ -283,18 +225,5 @@
 
 }
 
-+ (ALAssetsLibrary *) assetsLibrary {
-
-	static ALAssetsLibrary *library = nil;
-	static dispatch_once_t onceToken = 0;
-	dispatch_once(&onceToken, ^{
-	
-		library = [ALAssetsLibrary new];
-			
-	});
-	
-	return library;
-
-}
 
 @end

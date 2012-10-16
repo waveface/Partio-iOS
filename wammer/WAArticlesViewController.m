@@ -33,6 +33,9 @@
 
 #import <AssetsLibrary/AssetsLibrary.h>
 
+#import "WAFilterPickerViewController.h"
+#import "WAPhotoImportManager.h"
+
 @interface WAArticlesViewController () <NSFetchedResultsControllerDelegate, WAArticleDraftsViewControllerDelegate>
 
 @property (nonatomic, readwrite, retain) NSFetchedResultsController *fetchedResultsController;
@@ -40,6 +43,7 @@
 @property (nonatomic, readwrite, retain) IRActionSheetController *debugActionSheetController;
 @property (nonatomic, readwrite, retain) UIPopoverController *draftsPopoverController;
 @property (nonatomic, readwrite, retain) UIPopoverController *userInfoPopoverController;
+@property (nonatomic,	readwrite, retain) UIPopoverController *filterPopoverController;
 
 @property (nonatomic, readwrite, assign) BOOL updatesViewOnControllerChangeFinish;
 
@@ -72,7 +76,7 @@
 		
 	NSFetchRequest *fr = [[WADataStore defaultStore] newFetchRequestForAllArticles];
 	fr.sortDescriptors = [NSArray arrayWithObjects:
-		[NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:YES],
+		[NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:NO],
 	nil];
 	
 	self.managedObjectContext = [[WADataStore defaultStore] defaultAutoUpdatedMOC];
@@ -84,47 +88,27 @@
 	
 	self.navigationItem.titleView = WAStandardTitleView();
 		
-	self.navigationItem.leftBarButtonItem = [IRBarButtonItem itemWithCustomView:((^ {
+	UIBarButtonItem *accountButton = [[UIBarButtonItem alloc]
+																		initWithImage:[UIImage imageNamed:@"WAUserGlyph"]
+																		style:UIBarButtonItemStylePlain
+																		target:self
+																		action:@selector(handleUserInfoItemTap:)];
 	
-		UIView *wrapperView = [[UIView alloc] initWithFrame:(CGRect){ 0, 0, 32, 24 }];
-		WARefreshActionView *actionView = [[WARefreshActionView alloc] initWithRemoteInterface:[WARemoteInterface sharedInterface]];
-		
-		[wrapperView addSubview:actionView];
-		actionView.frame = IRCGRectAlignToRect(actionView.frame, wrapperView.bounds, irRight, YES);
-		
-		return wrapperView;
+	UIBarButtonItem *composeButton = [[UIBarButtonItem alloc]
+																		initWithImage:[UIImage imageNamed:@"WACompose"]
+																		style:UIBarButtonItemStylePlain
+																		target:self
+																		action:@selector(handleComposeItemTap:)];
 	
-	})())];
+	UIBarButtonItem *filterButton = [[UIBarButtonItem alloc]
+																	 initWithTitle:NSLocalizedString(@"VIEW_BUTTON", @"In iPad overview")
+																	 style:UIBarButtonItemStylePlain
+																	 target:self
+																	 action:@selector(handleFilter:)];
 	
-	__weak WAArticlesViewController *nrSelf = self;
+	self.navigationItem.rightBarButtonItems = @[filterButton, composeButton];
 	
-	self.navigationItem.rightBarButtonItems = [NSArray arrayWithObjects:
-	
-		((^ {
-		
-			__block IRBarButtonItem *senderItem = WABarButtonItem(WABarButtonImageFromImageNamed(@"WACompose"), nil, ^{
-
-				[nrSelf handleComposeItemTap:senderItem];
-			
-			});
-			
-			return senderItem;
-		
-		})()),
-	
-		((^ {
-			
-			__block IRBarButtonItem *senderItem = WABarButtonItem(WABarButtonImageFromImageNamed(@"WAUserGlyph"), nil, ^{
-
-				[nrSelf handleUserInfoItemTap:senderItem];
-			
-			});
-			
-			return senderItem;
-		
-		})()),
-		
-	nil];
+	self.navigationItem.leftBarButtonItems = @[accountButton];
 	
 	self.title = @"Articles";
 	
@@ -244,6 +228,9 @@
   if ([debugActionSheetController.managedActionSheet isVisible])
     [debugActionSheetController.managedActionSheet dismissWithClickedButtonIndex:[debugActionSheetController.managedActionSheet cancelButtonIndex] animated:animate];
 
+	if ([_filterPopoverController isPopoverVisible]) {
+		[_filterPopoverController dismissPopoverAnimated:animate];
+	}
 }
 
 - (UIPopoverController *) userInfoPopoverController {
@@ -281,7 +268,44 @@
 
 }
 
-
+- (void) handleFilter:(UIBarButtonItem *)sender {
+	__weak WAArticlesViewController *weakSelf = self;
+	
+	if (!_filterPopoverController) {
+		
+		__block WAFilterPickerViewController *filterPicker = [WAFilterPickerViewController controllerWithCompletion:^(NSFetchRequest *fetchRequest) {
+			
+			if (fetchRequest) {
+				weakSelf.fetchedResultsController = [[NSFetchedResultsController alloc]
+																				 initWithFetchRequest:fetchRequest
+																				 managedObjectContext:weakSelf.managedObjectContext
+																				 sectionNameKeyPath:nil
+																				 cacheName:nil];
+				weakSelf.fetchedResultsController.delegate = weakSelf;
+				[weakSelf.fetchedResultsController performFetch:nil];
+			}
+			
+			[filterPicker willMoveToParentViewController:nil];
+			[filterPicker removeFromParentViewController];
+			[filterPicker.view removeFromSuperview];
+			[filterPicker didMoveToParentViewController:nil];
+			
+			filterPicker = nil;
+			
+			[weakSelf.filterPopoverController dismissPopoverAnimated:NO];
+			
+			[weakSelf reloadViewContents];
+			[weakSelf refreshData];
+		}];
+		
+		_filterPopoverController = [[UIPopoverController alloc] initWithContentViewController:filterPicker];
+		_filterPopoverController.popoverContentSize = (CGSize) {320,216};
+	}
+	
+	[self dismissAuxiliaryControlsAnimated:NO];
+	
+	[_filterPopoverController presentPopoverFromBarButtonItem:sender permittedArrowDirections:UIPopoverArrowDirectionUp animated:NO];
+}
 
 
 
@@ -296,12 +320,13 @@
 			[[IRAlertView alertViewWithTitle:NSLocalizedString(@"ACTION_SIGN_OUT", @"Action title for Signing Out") message:NSLocalizedString(@"SIGN_OUT_CONFIRMATION", @"Confirmation text for Signing Out") cancelAction:[IRAction actionWithTitle:NSLocalizedString(@"ACTION_CANCEL", @"Action title for Cancelling") block:nil] otherActions:[NSArray arrayWithObjects:
 			
 				[IRAction actionWithTitle:NSLocalizedString(@"ACTION_SIGN_OUT", @"Action title for Signing Out") block: ^ {
-				
-					dispatch_async(dispatch_get_main_queue(), ^ {
-					
+
+					WAOverlayBezel *bezel = [WAOverlayBezel bezelWithStyle:WADefaultBezelStyle];
+					[bezel show];
+					[[WAPhotoImportManager defaultManager] cancelPhotoImportWithCompletionBlock:^{
+						[bezel dismiss];
 						[nrSelf.delegate applicationRootViewControllerDidRequestReauthentication:nrSelf];
-							
-					});
+					}];
 
 				}],
 			

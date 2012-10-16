@@ -41,7 +41,7 @@
 		@"previews.graphElement.images",
 	nil];
 	
-	fetchRequest.fetchBatchSize = 500;
+	fetchRequest.fetchBatchSize = 100;
 	
 	fetchRequest.displayTitle = NSLocalizedString(@"FETCH_REQUEST_ALL_ARTICLES_DISPLAY_TITLE", @"Display title for a fetch request working against all the articles");
 	
@@ -151,12 +151,11 @@
 
 	NSFetchRequest *fr = [self newFetchRequestForAllArticles];
 	
-	fr.predicate = [NSCompoundPredicate andPredicateWithSubpredicates:[NSArray arrayWithObjects:
-	
-		fr.predicate,
-		[NSPredicate predicateWithFormat:@"files.@count > 0"],
-	
-	nil]];
+	fr.predicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[
+									fr.predicate,
+									[NSPredicate predicateWithFormat:@"files.@count > 0"],
+									[NSPredicate predicateWithFormat:@"style == 0"]
+									]];
 	
 	fr.displayTitle = NSLocalizedString(@"FETCH_REQUEST_ARTICLES_WITH_PHOTOS_DISPLAY_TITLE", @"Display title for a fetch request working against the articles with Photos");
 	
@@ -180,6 +179,20 @@
 	
 	return fr;
 
+}
+
+- (NSFetchRequest *)newFetchRequestForUrlHistories {
+	
+	NSFetchRequest *fetch = [self newFetchRequestForAllArticles];
+	fetch.predicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[
+										 fetch.predicate,
+										 [NSPredicate predicateWithFormat:@"style == %d", WAPostStyleURLHistory],
+										 [NSPredicate predicateWithFormat:@"files.@count > 0"],
+										 ]];
+	fetch.displayTitle = NSLocalizedString(@"FETCH_REQUEST_URL_HISTORY",
+																				 @"Caption for URL History");
+										 
+	return fetch;
 }
 
 - (NSFetchRequest *) newFetchRequestForFilesInArticle:(WAArticle *)article {
@@ -265,6 +278,42 @@
   
   WAArticle *fetchedArticle = [fetchedArticles objectAtIndex:0];
   callback(fetchedArticle.identifier, fetchedArticle);  
+
+}
+
+- (NSArray *) fetchFilesNeedingDownloadUsingContext:(NSManagedObjectContext *)aContext {
+
+	NSFetchRequest *fetchRequest = [self.persistentStoreCoordinator.managedObjectModel fetchRequestFromTemplateWithName:@"WAFRFilesNeedingDownload" substitutionVariables:[NSDictionary dictionary]];
+
+	fetchRequest.sortDescriptors = [NSArray arrayWithObjects:
+		[NSSortDescriptor sortDescriptorWithKey:@"article.creationDate" ascending:YES],
+	nil];
+
+	NSError *fetchingError = nil;
+	NSArray *fetchedFiles = [aContext executeFetchRequest:fetchRequest error:&fetchingError];
+	if (fetchingError) {
+		NSLog(@"%@", fetchingError);
+	}
+	return fetchedFiles;
+
+}
+
+- (WAArticle *)fetchLatestLocalImportedArticleUsingContext:(NSManagedObjectContext *)aContext {
+
+	NSFetchRequest *fetchRequest = [self.persistentStoreCoordinator.managedObjectModel fetchRequestFromTemplateWithName:@"WAFRLocalImportedArticles" substitutionVariables:[NSDictionary dictionary]];
+	fetchRequest.sortDescriptors = [NSArray arrayWithObjects:
+																	[NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:NO],
+																	nil];
+	fetchRequest.fetchLimit = 1;
+
+	NSError *fetchingError = nil;
+	NSArray *fetchedArticles = [aContext executeFetchRequest:fetchRequest error:&fetchingError];
+	if (fetchingError) {
+		NSLog(@"%@", fetchingError);
+		return nil;
+	}
+
+	return [fetchedArticles lastObject];
 
 }
 

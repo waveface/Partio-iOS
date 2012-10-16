@@ -18,13 +18,7 @@
 @property (nonatomic, readwrite, copy) WAWelcomeViewControllerCallback callback;
 @end
 
-
 @implementation WAWelcomeViewController
-@synthesize greenTextureView = _greenTextureView;
-@synthesize facebookButton = _facebookButton;
-@synthesize loginButton = _loginButton;
-@synthesize signUpButton = _signUpButton;
-@synthesize callback = _callback;
 
 + (WAWelcomeViewController *) controllerWithCompletion:(WAWelcomeViewControllerCallback)block {
 
@@ -37,7 +31,7 @@
 
 - (BOOL) shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
 	
-	return (interfaceOrientation == UIInterfaceOrientationPortrait);
+	return isPad();
 	
 }
 

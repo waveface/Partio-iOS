@@ -14,6 +14,8 @@
 #import "WAAppDelegate.h"
 
 #import "WARemoteInterface.h"
+#import "WARemoteInterface+WebSocket.h"
+#import "WASyncManager.h"
 
 #import "WADataStore.h"
 #import "WADataStore+WARemoteInterfaceAdditions.h"
@@ -41,6 +43,41 @@
 #import "WAWelcomeViewController.h"
 #import "WATutorialViewController.h"
 
+#if ENABLE_PONYDEBUG
+	#import "PonyDebugger/PDDebugger.h"
+#endif
+
+#import "GANTracker.h"
+#import "WAFilterPickerViewController.h"
+
+@interface WALoginBackgroundViewController : UIViewController
+@end
+
+@implementation WALoginBackgroundViewController
+
+- (UIColor *)decoratedBackgroundColor: (UIInterfaceOrientation) currentInterfaceOrientation {
+	if (UIInterfaceOrientationIsPortrait(currentInterfaceOrientation) ||
+			currentInterfaceOrientation == 0)
+		return [UIColor colorWithPatternImage:[UIImage imageNamed:@"LoginBackground-Portrait"]];
+	else
+		return [UIColor colorWithPatternImage:[UIImage imageNamed:@"LoginBackground-Landscape"]];
+
+}
+
+- (void)viewDidLoad {
+	self.view.backgroundColor = [self decoratedBackgroundColor:[[UIDevice currentDevice] orientation]];
+}
+
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
+	return YES;
+}
+
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
+	
+	self.view.backgroundColor = [self decoratedBackgroundColor:toInterfaceOrientation];
+}
+
+@end
 
 @interface WAAppDelegate_iOS () <WAApplicationRootViewControllerDelegate>
 
@@ -106,27 +143,6 @@
 			[Crashlytics sharedInstance].debugMode = YES;
 			
 		});
-	
-		WF_GOOGLEANALYTICS(^ {
-		
-			[[GANTracker sharedTracker] startTrackerWithAccountID:kWAGoogleAnalyticsAccountID dispatchPeriod:kWAGoogleAnalyticsDispatchInterval delegate:nil];
-			[GANTracker sharedTracker].debug = YES;
-			
-			id observer = [[NSNotificationCenter defaultCenter] addObserverForName:kWAAppEventNotification object:nil queue:nil usingBlock:^(NSNotification *note) {
-			
-				NSDictionary *userInfo = [note userInfo];
-				id category = [userInfo objectForKey:@"category"];
-				id action = [userInfo objectForKey:@"action"];
-				id label = [userInfo objectForKey:@"label"];
-				id value = [userInfo objectForKey:@"value"];
-				
-				[[GANTracker sharedTracker] trackEvent:category action:action label:label value:value withError:nil];
-				
-			}];
-			
-			objc_setAssociatedObject([GANTracker class], &kWAAppEventNotification, observer, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-		
-		});
 		
 	}
 	
@@ -165,53 +181,68 @@
 		if (lastAuthenticatedUserIdentifier)
 			[self bootstrapPersistentStoreWithUserIdentifier:lastAuthenticatedUserIdentifier];
 		
+		__weak WAAppDelegate *wSelf = self;
+		dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+			[wSelf bootstrapDownloadAllThumbnails];
+		});
+		
 		[self recreateViewHierarchy];
 		
 	}
 
-	WAPostAppEvent(@"AppVisit", [NSDictionary dictionaryWithObjectsAndKeys:@"app",@"category",@"visit", @"action", nil]);
+//	WAPostAppEvent(@"AppVisit", [NSDictionary dictionaryWithObjectsAndKeys:@"app",@"category",@"visit", @"action", nil]);
 	
+	GANTracker *tracker = [GANTracker sharedTracker];
+#if DEBUG
+	tracker.debug = YES;
+#endif
+	[tracker startTrackerWithAccountID:@"UA-27817516-7"
+											dispatchPeriod:10
+														delegate:nil];
+	
+	[tracker trackEvent:@"Application:didFinishLaunchingWithOptions:"
+							 action:@"Launch iOS"
+								label:nil
+								value:-1
+						withError:NULL];
+	
+	[[WARemoteInterface sharedInterface] enableAutomaticRemoteUpdatesTimer];
 	[[WARemoteInterface sharedInterface] performAutomaticRemoteUpdatesNow];
+	[[NSUserDefaults standardUserDefaults] removeObjectForKey:kWAFilterPickerViewSelectedRowIndex];
+	
+#if ENABLE_PONYDEBUG
+	PDDebugger *debugger = [PDDebugger defaultInstance];
+	[debugger connectToURL:[NSURL URLWithString:@"ws://localhost:9000/device"]];
+	[debugger enableNetworkTrafficDebugging];
+	[debugger forwardAllNetworkTraffic];
+	
+	WADataStore * const ds = [WADataStore defaultStore];
+	NSManagedObjectContext *context = [ds disposableMOC];
+	[debugger enableCoreDataDebugging];
+	[debugger addManagedObjectContext:context withName:@"My MOC"];
+#endif
 	
 	return YES;
 	
 }
 
 - (void) clearViewHierarchy {
-
+	
 	UIViewController *rootVC = self.window.rootViewController;
 	
 	__block void (^zapModal)(UIViewController *) = [^ (UIViewController *aVC) {
-	
+		
 		if (aVC.presentedViewController)
 			zapModal(aVC.presentedViewController);
 		
 		[aVC dismissViewControllerAnimated:NO completion:nil];
-	
+		// WASlidingSplitViewController
+		
 	} copy];
 	
 	zapModal(rootVC);
-	
-	
-	IRViewController *emptyVC = [[IRViewController alloc] init];
-	__weak IRViewController *wEmptyVC = emptyVC;
-	
-	emptyVC.onShouldAutorotateToInterfaceOrientation = ^ (UIInterfaceOrientation toOrientation) {
-		
-		return YES;
-		
-	};
-	
-	emptyVC.onLoadView = ^ {
-	
-		wEmptyVC.view = [[UIView alloc] initWithFrame:(CGRect){ 0, 0, 1024, 1024 }];
-		wEmptyVC.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"WAPatternBlackPaper"]];
-		
-	};
-	
-	self.window.rootViewController = emptyVC;
-	
-	[rootVC didReceiveMemoryWarning];
+
+	self.window.rootViewController = [[WALoginBackgroundViewController alloc] init];
 	
 }
 
@@ -265,12 +296,39 @@
 
 	dispatch_async(dispatch_get_main_queue(), ^ {
 
-		[self presentAuthenticationRequestWithReason:nil allowingCancellation:NO removingPriorData:YES clearingNavigationHierarchy:YES onAuthSuccess:^(NSString *userIdentifier, NSString *userToken, NSString *primaryGroupIdentifier) {
-		
-			[self updateCurrentCredentialsWithUserIdentifier:userIdentifier token:userToken primaryGroup:primaryGroupIdentifier];
-			[self bootstrapPersistentStoreWithUserIdentifier:userIdentifier];
-			
-		} runningOnboardingProcess:YES];
+		[self presentAuthenticationRequestWithReason:nil
+														allowingCancellation:NO
+															 removingPriorData:YES
+										 clearingNavigationHierarchy:YES
+																	 onAuthSuccess:
+		 ^(NSString *userIdentifier, NSString *userToken, NSString *primaryGroupIdentifier) {
+			 [self updateCurrentCredentialsWithUserIdentifier:userIdentifier
+																								 token:userToken
+																					primaryGroup:primaryGroupIdentifier];
+			 // bind to user's persistent store
+			 [self bootstrapPersistentStoreWithUserIdentifier:userIdentifier];
+
+			 __weak WAAppDelegate *wSelf = self;
+			 dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+
+				 // reset monitored hosts
+				 WARemoteInterface *ri = [WARemoteInterface sharedInterface];
+
+				 // close websocket if needed
+				 [ri closeWebSocketConnection];
+
+				 ri.monitoredHosts = nil;
+				 [ri performAutomaticRemoteUpdatesNow];
+
+				 // reset pending original objects
+				 [[WASyncManager sharedManager] reload];
+
+				 // continue downloading all thumbnails
+				 [wSelf bootstrapDownloadAllThumbnails];
+
+			 });
+		 }
+												runningOnboardingProcess:YES];
 		
 	});
 
@@ -460,7 +518,14 @@
 
 }
 
-- (BOOL) presentAuthenticationRequestWithReason:(NSString *)aReason allowingCancellation:(BOOL)allowsCancellation removingPriorData:(BOOL)eraseAuthInfo clearingNavigationHierarchy:(BOOL)zapEverything onAuthSuccess:(void (^)(NSString *userIdentifier, NSString *userToken, NSString *primaryGroupIdentifier))successBlock runningOnboardingProcess:(BOOL)shouldRunOnboardingChecksIfUserUnchanged {
+- (BOOL) presentAuthenticationRequestWithReason:(NSString *)aReason
+													 allowingCancellation:(BOOL)allowsCancellation
+															removingPriorData:(BOOL)eraseAuthInfo
+										clearingNavigationHierarchy:(BOOL)zapEverything
+																	onAuthSuccess:(void (^)(NSString *userIdentifier,
+																													NSString *userToken,
+																													NSString *primaryGroupIdentifier))successBlock
+											 runningOnboardingProcess:(BOOL)shouldRunOnboardingChecksIfUserUnchanged {
 
 	if ([self isRunningAuthRequest])
 		return NO;
@@ -474,15 +539,17 @@
 	if (zapEverything)
 		[self clearViewHierarchy];
 	
-	[self handleAuthRequest:aReason withOptions:nil completion:^(BOOL didFinish, NSError *error) {
-	
-		WARemoteInterface * const ri = [WARemoteInterface sharedInterface];
-	
-		if (didFinish)
-			if (successBlock)
-				successBlock(ri.userIdentifier, ri.userToken, ri.primaryGroupIdentifier);
-		
-	}];
+	[self handleAuthRequest:aReason
+							withOptions:nil
+							 completion:^(BOOL didFinish, NSError *error)
+	 {
+	 WARemoteInterface * const ri = [WARemoteInterface sharedInterface];
+	 
+	 if (didFinish)
+		 if (successBlock)
+			 successBlock(ri.userIdentifier, ri.userToken, ri.primaryGroupIdentifier);
+	 
+	 }];
 	
 	return YES;
 
@@ -515,6 +582,17 @@
 		
 	};
 	
+	if (reason) {
+		
+		WAOverlayBezel *errorBezel = [[WAOverlayBezel alloc] initWithStyle:WAErrorBezelStyle];
+		[errorBezel setCaption:reason];
+		[errorBezel show];
+		dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 2.0 * NSEC_PER_SEC), dispatch_get_main_queue(), ^ {
+								[errorBezel dismiss];
+							});
+	
+	}
+	
 	__block WAWelcomeViewController *welcomeVC = [WAWelcomeViewController controllerWithCompletion:^(NSString *token, NSDictionary *userRep, NSArray *groupReps, NSError *error) {
 	
 		if (error) {
@@ -528,6 +606,8 @@
 				message = NSLocalizedString(@"AUTH_ERROR_INVALID_EMAIL_PWD", @"Authentication Error Description");
 			} else if ([error code] == 0x1002) {
 				message = NSLocalizedString(@"AUTH_ERROR_ALREADY_REGISTERED", @"Authentication Error Description");
+			} else {
+				message = NSLocalizedString(@"AUTH_UNKNOWN_ERROR", @"Unknown Error");
 			}
 			IRAction *okAction = [IRAction actionWithTitle:NSLocalizedString(@"ACTION_OKAY", @"Alert Dismissal Action") block:nil];
 		
@@ -558,7 +638,7 @@
 		ri.primaryGroupIdentifier = primaryGroupID;
 		
 		if (userIDChanged()) {
-		
+
 			if (userNewlyCreated) {
 			
 				WATutorialInstantiationOption options = userIsFromFacebook ? WATutorialInstantiationOptionShowFacebookIntegrationToggle : WATutorialInstantiationOptionDefault;
@@ -600,24 +680,24 @@
 		} else {
 			
 			handleAuthSuccess();
+			[wAppDelegate clearViewHierarchy];
+			[wAppDelegate recreateViewHierarchy];
+
 			
 		}
 		
-		return;
+		return; // WAT
 		
-		[welcomeVC dismissViewControllerAnimated:NO completion:^{
-			
+		[welcomeVC dismissViewControllerAnimated:NO
+																	completion:
+		 ^{
 			UIViewController *rootVC = wAppDelegate.window.rootViewController;
-			
-			[rootVC presentViewController:welcomeVC.navigationController animated:NO completion:^{
-				
-				[welcomeVC dismissViewControllerAnimated:YES completion:^{
-					
-					//	?
-					
-					welcomeVC = nil;
-					
-				}];
+			[rootVC presentViewController:welcomeVC.navigationController
+													 animated:NO
+												 completion:
+			 ^{
+				 [welcomeVC dismissViewControllerAnimated:YES
+																			completion:^{ welcomeVC = nil;}];  // WAT?
 				
 			}];
 			
@@ -653,7 +733,7 @@
 
 }
 
-static unsigned int networkActivityStackingCount = 0;
+static NSInteger networkActivityStackingCount = 0;
 
 - (void) beginNetworkActivity {
 
@@ -680,11 +760,12 @@ static unsigned int networkActivityStackingCount = 0;
 		return;
 	}
 
-	NSParameterAssert(networkActivityStackingCount > 0);
 	networkActivityStackingCount--;
 	
-	if (networkActivityStackingCount == 0)
+	if (networkActivityStackingCount <= 0) {
 		[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+		networkActivityStackingCount = 0;
+	}
 
 }
 

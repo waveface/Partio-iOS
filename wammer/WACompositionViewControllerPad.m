@@ -357,19 +357,28 @@
 
 }
 
+- (void) setPresentableImageWithFile:(WAFile *)file forCell:(WACompositionViewPhotoCell *) cell{
+	
+	[cell irUnbind:@"image"];
+	[cell irBind:@"image" toObject:file keyPath:@"smallestPresentableImage"
+			 options:[NSDictionary dictionaryWithObjectsAndKeys: (id)kCFBooleanTrue, kIRBindingsAssignOnMainThreadOption, nil]];
+	
+	return;
+}
+
 - (AQGridViewCell *) gridView:(AQGridView *)gridView cellForItemAtIndex:(NSUInteger)index {
 
 	static NSString * const identifier = @"photoCell";
 	
 	WACompositionViewPhotoCell *cell = (WACompositionViewPhotoCell *)[gridView dequeueReusableCellWithIdentifier:identifier];
-	WAFile *representedFile = [self.article.files objectAtIndex:index];
+	__block WAFile *representedFile = [self.article.files objectAtIndex:index];
 	
 	NSParameterAssert(representedFile);
 	NSParameterAssert(representedFile.article);
 	
 	if (!cell) {
 	
-		cell = [WACompositionViewPhotoCell cellRepresentingFile:representedFile reuseIdentifier:identifier];
+		cell = [WACompositionViewPhotoCell cellWithReusingIdentifier:identifier];
 		cell.frame = (CGRect){
 			CGPointZero,
 			[self portraitGridCellSizeForGridView:gridView]
@@ -377,13 +386,10 @@
 				
 	}
 	
-	cell.representedFile = representedFile;
+	[self setPresentableImageWithFile:representedFile forCell:cell];
 	cell.clipsToBounds = NO;
 	cell.selectionStyle = AQGridViewCellSelectionStyleNone;
-	
-	NSParameterAssert(cell.representedFile);
-	NSParameterAssert(cell.representedFile.article);
-	
+		
 	__weak WACompositionViewPhotoCell *wCell = cell;
 	
 	cell.onRemove = ^ {
@@ -391,14 +397,13 @@
 		if (!wCell)
 			return;
 	
-		WAFile *file = wCell.representedFile;
-		WAArticle *article = file.article;
+		WAArticle *article = representedFile.article;
 		
 		[[UIApplication sharedApplication] beginIgnoringInteractionEvents];
 		[[UIApplication sharedApplication] performSelector:@selector(endIgnoringInteractionEvents) withObject:nil afterDelay:0.5f];
 		
 		[article willChangeValueForKey:@"files"];
-		[[article mutableOrderedSetValueForKey:@"files"] removeObject:file];
+		[[article mutableOrderedSetValueForKey:@"files"] removeObject:representedFile];
 		[article didChangeValueForKey:@"files"];
 			
 	};

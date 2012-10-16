@@ -9,6 +9,8 @@
 #import "WAUserInfoViewController.h"
 
 #import "WARemoteInterface.h"
+#import "WARemoteInterface+WebSocket.h"
+#import "WARemoteInterface+ScheduledDataRetrieval.h"
 #import "WADefines.h"
 
 #import "WAReachabilityDetector.h"
@@ -22,13 +24,21 @@
 #import "IRRelativeDateFormatter+WAAdditions.h"
 
 #import "WASyncManager.h"
+#import "WAPhotoImportManager.h"
+
+typedef enum WASyncStatus: NSUInteger {
+	WASyncStatusNone = 0,
+	WASyncStatusSyncing,
+	WASyncStatusConnected
+} WASyncStatus;
+
 
 @interface WAUserInfoViewController ()
 
 @property (nonatomic, readwrite, retain) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, retain) WAUser *user;
 
-- (void) handleRemoteInterfaceUpdateStatusChanged:(BOOL)syncing;
+- (void) handleRemoteInterfaceUpdateStatusChanged:(WASyncStatus)syncing;
 
 @property (nonatomic, readonly, assign) BOOL syncing;
 
@@ -39,6 +49,7 @@
 @synthesize syncTableViewCell;
 @synthesize contactTableViewCell;
 @synthesize stationNagCell;
+@synthesize importSavedPhotosTableViewCell;
 @synthesize serviceTableViewCell;
 @synthesize lastSyncDateLabel;
 @synthesize numberOfPendingFilesLabel;
@@ -250,6 +261,17 @@
 
 	}];
 	
+	[self irObserveObject:[WAPhotoImportManager defaultManager] keyPath:@"finished" options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:nil withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
+		BOOL isFinished = [toValue boolValue];
+		dispatch_async(dispatch_get_main_queue(), ^{
+			if (isFinished) {
+				wSelf.importSavedPhotosTableViewCell.textLabel.text = NSLocalizedString(@"NOT_IMPORTING_PHOTOS", @"Photo importing status");
+			} else {
+				wSelf.importSavedPhotosTableViewCell.textLabel.text = NSLocalizedString(@"IMPORTING_PHOTOS", @"Photo importing status");
+			}
+		});
+	}];
+
 	self.deviceNameLabel.text = WADeviceName();
   
 }
@@ -321,11 +343,12 @@
 	
 	[self setStationNagCell:nil];
 	[self setServiceTableViewCell:nil];
+  [self setImportSavedPhotosTableViewCell:nil];
   [super viewDidUnload];	
 	
 }
 
-- (void) handleRemoteInterfaceUpdateStatusChanged:(BOOL)syncing {
+- (void) handleRemoteInterfaceUpdateStatusChanged:(WASyncStatus)syncing {
 
 	if (![NSThread isMainThread]) {
 	
@@ -343,18 +366,26 @@
 	if (syncing) {
 		
 		WARemoteInterface *ri = [WARemoteInterface sharedInterface];
-		if ([ri hasReachableStation]) {
+		if (syncing == WASyncStatusConnected) {
 			
-			cell.textLabel.text = NSLocalizedString(@"SYNC_BUTTON_CAPTION_WITH_STATION_CONNECTED", @"Caption to show in account info when station is connected");
-		
+			cell.textLabel.text = NSLocalizedString(@"SYNC_BUTTON_CAPTION_WITH_PERSISTENT_CONNECTION", @"Caption to show a persistent connection to station is held.");
+			cell.selectionStyle = UITableViewCellSelectionStyleBlue;
+			[self.activity stopAnimating];
+			
 		} else {
-
-			cell.textLabel.text = NSLocalizedString(@"SYNC_BUTTON_NORMAL_TITLE", @"Caption to show when app is syncing data without station");
+			if ([ri hasReachableStation]) {
+			
+				cell.textLabel.text = NSLocalizedString(@"SYNC_BUTTON_CAPTION_WITH_STATION_CONNECTED", @"Caption to show in account info when station is connected");
 		
-		}
+			} else {
 
-		cell.selectionStyle = UITableViewCellSelectionStyleNone;
-		[self.activity startAnimating];
+				cell.textLabel.text = NSLocalizedString(@"SYNC_BUTTON_NORMAL_TITLE", @"Caption to show when app is syncing data without station");
+		
+			}
+
+			cell.selectionStyle = UITableViewCellSelectionStyleNone;
+			[self.activity startAnimating];
+		}
 		
 	} else {
 	
@@ -437,6 +468,14 @@
 		
 		[wSelf presentViewController:mcVC animated:YES completion:nil];
 	
+	} else if (hitCell == importSavedPhotosTableViewCell) {
+		
+		[[WAPhotoImportManager defaultManager] createPhotoImportArticlesWithCompletionBlock:^{
+			
+			NSLog(@"Photo import completed");
+
+		}];
+
 	}
 
 	[aTV deselectRowAtIndexPath:indexPath animated:YES];
@@ -494,6 +533,17 @@
 		
 	}
 	
+	if ([superAnswer isEqualToString:@"PHOTO_IMPORT_FOOTER"]) {
+		WAArticle *article = [[WAPhotoImportManager defaultManager] lastImportedArticle];
+		if (article) {
+			NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+			[dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
+			NSString *dateString = [dateFormatter stringFromDate:article.creationDate];
+			return [NSString stringWithFormat:NSLocalizedString(@"LAST_IMPORT_TIME", @"In Account Info Photo Import Section"), dateString];
+		}
+		return NSLocalizedString(@"START_PHOTO_IMPORT_DESCRIPTION", @"In Account Info Photo Import Section");
+	}
+	
 	if ([superAnswer isEqualToString:@"VERSION"])
 		return [[NSBundle mainBundle] displayVersionString];
 	
@@ -524,15 +574,18 @@
 
 }
 
-- (BOOL) isSyncing {
+- (WASyncStatus) isSyncing {
 
 	WARemoteInterface * const ri = [WARemoteInterface sharedInterface];
 	WASyncManager * const sm = [WASyncManager sharedManager];
-	
-	NSLog(@"%s: %x, %x", __PRETTY_FUNCTION__, ri.performingAutomaticRemoteUpdates, sm.operationQueue.operationCount);
-	
-	return ri.performingAutomaticRemoteUpdates || sm.operationQueue.operationCount;
 
+	if (ri.performingAutomaticRemoteUpdates || sm.operationQueue.operationCount)
+		return WASyncStatusSyncing;
+
+	if (ri.webSocketConnected)
+		return WASyncStatusConnected;
+
+	return WASyncStatusNone;
 }
 
 @end

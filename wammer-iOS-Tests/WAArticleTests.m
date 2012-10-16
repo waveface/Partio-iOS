@@ -14,7 +14,7 @@
 	NSManagedObjectContext *context;
 }
 
-- (NSArray *)loadDataFile: (NSString *)fileString {
+- (id)loadDataFile: (NSString *)fileString {
 	NSString *filePath = [[NSBundle bundleForClass:[self class]]
 												pathForResource:fileString
 												ofType:@"txt"];
@@ -75,13 +75,22 @@
 - (void)testArticleWithFullInformation {
 	NSArray *articleReps = [self loadDataFile:@"PostWithCompleteAttachmentInformation"];
 	STAssertNotNil(articleReps, @"need to be a vaild JSON");
-	NSArray *trasnformedArticle = [WAArticle
-																 insertOrUpdateObjectsUsingContext:context
-																 withRemoteResponse:articleReps
-																 usingMapping:nil
-																 options:IRManagedObjectOptionIndividualOperations];
-	WAArticle *article = [trasnformedArticle objectAtIndex:0];
+	NSArray *transformed = [WAArticle insertOrUpdateObjectsUsingContext:context
+																									 withRemoteResponse:articleReps
+																												 usingMapping:nil
+																															options:IRManagedObjectOptionIndividualOperations];
+	WAArticle *article = [transformed objectAtIndex:0];
 	STAssertEquals((NSUInteger)4, [article.files count],
 								 @"This post should have 4 attachments");
+}
+
+- (void)testArticleWithURLHistoryStyle {
+	NSArray *articleReps = [self loadDataFile:@"PhotoPostWithURLHistoryStyle"];
+	NSArray *transformed = [WAArticle insertOrUpdateObjectsUsingContext:context
+																									 withRemoteResponse:articleReps
+																												 usingMapping:nil
+																															options:IRManagedObjectOptionIndividualOperations];
+	WAArticle *article = [transformed objectAtIndex:0];
+	STAssertTrue(WAPostStyleURLHistory == article.style.intValue , @"Style should be URL History");
 }
 @end

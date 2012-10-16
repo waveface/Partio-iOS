@@ -80,7 +80,13 @@ void WARegisterUserDefaults () {
 
 NSDictionary * WAPresetDefaults () {
 
-	NSURL *defaultsURL = [[NSBundle mainBundle] URLForResource:@"WADefaults" withExtension:@"plist"];
+#if DEBUG
+	NSURL *defaultsURL = [[NSBundle mainBundle] URLForResource:@"WADefaults.develop" withExtension:@"plist"];
+#elif STREAM_BETA
+	NSURL *defaultsURL = [[NSBundle mainBundle] URLForResource:@"WADefaults.staging" withExtension:@"plist"]; // Production and Beta
+#else
+	NSURL *defaultsURL = [[NSBundle mainBundle] URLForResource:@"WADefaults" withExtension:@"plist"]; // Production and Beta
+#endif
 	NSData *defaultsData = [NSData dataWithContentsOfFile:[defaultsURL path] options:NSDataReadingMappedIfSafe error:nil];
 	NSDictionary *defaultsObject = [NSPropertyListSerialization propertyListFromData:defaultsData mutabilityOption:NSPropertyListImmutable format:nil errorDescription:nil];
 	
@@ -133,11 +139,6 @@ BOOL WADeviceIdentifierReset (void) {
 
 }
 
-NSString * WADeviceName (void) {
-
-	return [[UIDevice currentDevice] name];
-
-}
 
 NSString * WADeviceIdentifier (void) {
 

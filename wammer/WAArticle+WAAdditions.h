@@ -8,6 +8,7 @@
 
 #import "WAArticle.h"
 
+
 @interface WAArticle (WAAdditions)
 
 - (BOOL) hasMeaningfulContent;

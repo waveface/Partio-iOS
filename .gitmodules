@@ -6,7 +6,7 @@
 	url = git://github.com/iridia/MGSplitViewController.git
 [submodule "external/AQGridView"]
 	path = external/AQGridView
-	url = git://github.com/iridia/AQGridView.git
+	url = git://github.com/waveface/AQGridView.git
 [submodule "external/IRWebAPIKit"]
 	path = external/IRWebAPIKit
 	url = git://github.com/waveface/IRWebAPIKit.git
@@ -21,22 +21,19 @@
 	url = git://github.com/iridia/IRKeychain.git
 [submodule "external/IRDiscreteLayoutManager"]
 	path = external/IRDiscreteLayoutManager
-	url = git://github.com/iridia/IRDiscreteLayoutManager.git
+	url = git://github.com/waveface/IRDiscreteLayoutManager.git
 [submodule "external/Chameleon"]
 	path = external/Chameleon
 	url = git://github.com/iridia/Chameleon.git
 [submodule "external/NSLogger"]
 	path = external/NSLogger
-	url = git://github.com/iridia/NSLogger.git
-[submodule "external/SSToolkit"]
-	path = external/SSToolkit
-	url = git://github.com/iridia/sstoolkit.git
+	url = git://github.com/waveface/NSLogger.git
 [submodule "external/IRTextAttributor"]
 	path = external/IRTextAttributor
-	url = git://github.com/iridia/IRTextAttributor.git
+	url = git://github.com/waveface/IRTextAttributor.git
 [submodule "external/IRRecurrenceMachine"]
 	path = external/IRRecurrenceMachine
-	url = git://github.com/iridia/IRRecurrenceMachine.git
+	url = git://github.com/waveface/IRRecurrenceMachine.git
 [submodule "external/InAppSettingsKit"]
 	path = external/InAppSettingsKit
 	url = git://github.com/futuretap/InAppSettingsKit
@@ -55,21 +52,24 @@
 [submodule "external/WFPresentation"]
 	path = external/WFPresentation
 	url = git://github.com/waveface/WFPresentation.git
-[submodule "external/MagicKit"]
-	path = external/MagicKit
-	url = git://github.com/iridia/MagicKit.git
 [submodule "external/IRObjectQueue"]
 	path = external/IRObjectQueue
-	url = git://github.com/iridia/IRObjectQueue.git
+	url = git://github.com/waveface/IRObjectQueue.git
 [submodule "external/AGImagePickerController"]
 	path = external/AGImagePickerController
 	url = git@github.com:waveface/AGImagePickerController.git
 [submodule "external/IRSlidingSplitViewController"]
 	path = external/IRSlidingSplitViewController
-	url = git://github.com/iridia/IRSlidingSplitViewController.git
+	url = git://github.com/waveface/IRSlidingSplitViewController.git
 [submodule "external/Facebook"]
 	path = external/Facebook
 	url = git@github.com:waveface/facebook-ios-sdk.git
 [submodule "external/IRAQPhotoPicker"]
 	path = external/IRAQPhotoPicker
 	url = git@github.com:waveface/IRAQPhotoPickerController.git
+[submodule "external/SocketRocket"]
+	path = external/SocketRocket
+	url = git@github.com:waveface/SocketRocket.git
+[submodule "external/ocmock"]
+	path = external/ocmock
+	url = git://github.com/erikdoe/ocmock.git

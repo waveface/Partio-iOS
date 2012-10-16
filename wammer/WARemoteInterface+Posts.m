@@ -11,7 +11,7 @@
 
 @implementation WARemoteInterface (Posts)
 
-+ (NSDictionary *) postEntityWithGroupID:(NSString *)groupID postID:(NSString *)postID text:(NSString *)text attachments:(NSArray *)attachmentIDs mainAttachment:(NSString *)mainAttachmentID preview:(NSDictionary *)previewRep isFavorite:(BOOL)isFavorite isHidden:(BOOL)isHidden createTime:(NSDate *)createTime updateTime:(NSDate *)updateTime {
++ (NSDictionary *) postEntityWithGroupID:(NSString *)groupID postID:(NSString *)postID text:(NSString *)text attachments:(NSArray *)attachmentIDs mainAttachment:(NSString *)mainAttachmentID preview:(NSDictionary *)previewRep isFavorite:(BOOL)isFavorite isHidden:(BOOL)isHidden isImport:(BOOL)isImport createTime:(NSDate *)createTime updateTime:(NSDate *)updateTime {
 
 	NSMutableDictionary *sentData = [NSMutableDictionary dictionary];
 
@@ -43,6 +43,9 @@
 	
 	[sentData setObject:(isHidden ? @"true" : @"false") forKey:@"hidden"];
 	[sentData setObject:(isFavorite ? @"1" : @"0") forKey:@"favorite"];
+	if (isImport) {
+		[sentData setObject:@"true" forKey:@"import"];
+	}
 	
 	NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
 	formatter.dateFormat = @"yyyy-MM-dd'T'HH:mm:ss'Z'";
@@ -130,67 +133,6 @@
 
 }
 
-- (void) retrievePostsCreatedSince:(NSDate *)date inGroup:(NSString *)groupID onProgress:(void(^)(NSArray *postReps, NSDate *continuation))progressBlock onSuccess:(void(^)(NSDate *continuation))successBlock onFailure:(void(^)(NSError *error))failureBlock {
-
-	if (!date)
-		date = [NSDate dateWithTimeIntervalSince1970:0];
-
-	NSParameterAssert(groupID);
-	
-	__block void (^getSince)(NSDate *) = [^ (NSDate *continuation) {
-	
-		[self retrievePostsInGroup:groupID relativeToPost:nil date:continuation withSearchLimits:self.defaultBatchSize filter:nil onSuccess:^ (NSArray *postReps) {
-		
-			if (![postReps count]) {
-				
-				if (successBlock)
-					successBlock(continuation);
-				
-				getSince = nil;
-				
-				return;
-			
-			}
-			
-			NSDate *latestTimestamp = continuation;
-			
-			for (NSDictionary *postRep in postReps) {
-				NSDate *timestamp = [[WADataStore defaultStore] dateFromISO8601String:[postRep objectForKey:@"timestamp"]];
-				latestTimestamp = [latestTimestamp laterDate:timestamp];
-				NSCParameterAssert(latestTimestamp);
-			}
-			
-			if (progressBlock)
-				progressBlock(postReps, latestTimestamp);
-			
-			if ([latestTimestamp isEqualToDate:continuation]) {
-			
-				if (successBlock)
-					successBlock(continuation);
-					
-				getSince = nil;
-				
-				return;
-			
-			}
-			
-			getSince(latestTimestamp);
-		
-		} onFailure:^ (NSError *error) {
-		
-			if (failureBlock)
-				failureBlock(error);
-			
-			getSince = nil;
-		
-		}];
-		
-	} copy];
-	
-	getSince(date);
-
-}
-
 - (void) retrieveLatestPostsInGroup:(NSString *)aGroupIdentifier withBatchLimit:(NSUInteger)maxNumberOfReturnedPosts onSuccess:(void (^)(NSArray *))successBlock onFailure:(void (^)(NSError *))failureBlock {
 
 	NSParameterAssert(aGroupIdentifier);
@@ -213,11 +155,11 @@
 
 }
 
-- (void) createPostInGroup:(NSString *)aGroupIdentifier withContentText:(NSString *)contentTextOrNil attachments:(NSArray *)attachmentIdentifiersOrNil preview:(NSDictionary *)aPreviewRep createTime:(NSDate *)createTime updateTime:(NSDate *)updateTime favorite:(BOOL)isFavorite onSuccess:(void (^)(NSDictionary *))successBlock onFailure:(void (^)(NSError *))failureBlock {
+- (void) createPostInGroup:(NSString *)aGroupIdentifier withContentText:(NSString *)contentTextOrNil attachments:(NSArray *)attachmentIdentifiersOrNil preview:(NSDictionary *)aPreviewRep postId:(NSString *)postID createTime:(NSDate *)createTime updateTime:(NSDate *)updateTime favorite:(BOOL)isFavorite import:(BOOL)isImport onSuccess:(void (^)(NSDictionary *))successBlock onFailure:(void (^)(NSError *))failureBlock {
 
 	NSParameterAssert(aGroupIdentifier);
 	
-	NSDictionary *postEntity = [[self class] postEntityWithGroupID:aGroupIdentifier postID:nil text:contentTextOrNil attachments:attachmentIdentifiersOrNil mainAttachment:nil preview:aPreviewRep isFavorite:isFavorite isHidden:NO createTime:createTime updateTime:updateTime];
+	NSDictionary *postEntity = [[self class] postEntityWithGroupID:aGroupIdentifier postID:postID text:contentTextOrNil attachments:attachmentIdentifiersOrNil mainAttachment:nil preview:aPreviewRep isFavorite:isFavorite isHidden:NO isImport:isImport createTime:createTime updateTime:updateTime];
 
 	[self.engine fireAPIRequestNamed:@"posts/new" withArguments:nil options:WARemoteInterfaceEnginePostFormEncodedOptionsDictionary(postEntity, nil) validator:WARemoteInterfaceGenericNoErrorValidator() successHandler:^(NSDictionary *inResponseOrNil, IRWebAPIRequestContext *inResponseContext) {
 		
@@ -234,7 +176,7 @@
 
 - (void) updatePost:(NSString *)postID inGroup:(NSString *)groupID withText:(NSString *)text attachments:(NSArray *)attachmentIDs mainAttachment:(NSString *)mainAttachmentID preview:(NSDictionary *)preview favorite:(BOOL)isFavorite hidden:(BOOL)isHidden replacingDataWithDate:(NSDate *)lastKnownModificationDate updateTime:(NSDate *)updateTime onSuccess:(void(^)(NSDictionary *postRep))successBlock onFailure:(void(^)(NSError *error))failureBlock {
 
-	NSMutableDictionary *postEntity = [[[self class] postEntityWithGroupID:groupID postID:postID text:text attachments:attachmentIDs mainAttachment:mainAttachmentID preview:preview isFavorite:isFavorite isHidden:isHidden createTime:nil updateTime:updateTime] mutableCopy];
+	NSMutableDictionary *postEntity = [[[self class] postEntityWithGroupID:groupID postID:postID text:text attachments:attachmentIDs mainAttachment:mainAttachmentID preview:preview isFavorite:isFavorite isHidden:isHidden isImport:NO createTime:nil updateTime:updateTime] mutableCopy];
 	
 	if (lastKnownModificationDate) {
 	
@@ -294,7 +236,9 @@
   } else if ([aFilter isKindOfClass:[NSDictionary class]]) {
     [arguments setObject:[(NSDictionary *)aFilter JSONString] forKey:@"filter_entity"];
   }
-  
+
+  [arguments setObject:[[NSArray arrayWithObjects:@"comment", @"preview", @"soul", @"content", nil] JSONString] forKey:@"component_options"];
+
   [self.engine fireAPIRequestNamed:@"posts/fetchByFilter" withArguments:arguments options:nil validator:WARemoteInterfaceGenericNoErrorValidator() successHandler:^(NSDictionary *inResponseOrNil, IRWebAPIRequestContext *inResponseContext) {
   
     if (!successBlock)
@@ -314,6 +258,7 @@
 	NSMutableDictionary *postListEntity = [NSMutableDictionary dictionaryWithObjectsAndKeys:
 																				 groupID, @"group_id",
 																				 [postIDs JSONString], @"post_id_list",
+																				 [[NSArray arrayWithObjects:@"comment", @"preview", @"soul", @"content", nil] JSONString], @"component_options",
 																				 nil];
 	
 	[self.engine fireAPIRequestNamed:@"posts/fetchByFilter" withArguments:nil options:WARemoteInterfaceEnginePostFormEncodedOptionsDictionary(postListEntity, nil) validator:WARemoteInterfaceGenericNoErrorValidator() successHandler:^(NSDictionary *inResponseOrNil, IRWebAPIRequestContext *inResponseContext) {

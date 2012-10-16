@@ -7,12 +7,15 @@
 //
 
 #import "WACompositionViewController.h"
+#import "WAFile.h"
+#import "WAFile+ThumbnailMaker.h"
 
 
 @class ALAsset;
+
+
 @interface WACompositionViewController (ImageHandling)
 
-- (IRImagePickerController *) newImagePickerController;
 - (IRImagePickerController *) newCameraCapturePickerController;
 
 - (void) handleImageAttachmentInsertionRequestWithSender:(id)sender;
@@ -24,7 +27,20 @@
 - (void) presentCameraCapturePickerController:(UIViewController *)controller sender:(id)sender animated:(BOOL)animated;
 - (void) dismissCameraCapturePickerController:(UIViewController *)controller animated:(BOOL)animated;
 
-- (void) handleIncomingSelectedAssetImage:(UIImage *)image representedAsset:(ALAsset *)photoLibraryAsset;
+/** Generate thumbnails of a WAFile entity with the given asset and options.
+ *
+ *	@param file The WAFile entity to be associated with generated thumbnails.
+ *	@param representedAsset The asset of file from camera roll.
+ *	@param options The options specify what kind of thumbnails to be generated.
+ */
+- (void) makeAssociatedImagesOfFile:(WAFile *)file withRepresentedAsset:(ALAsset *)representedAsset options:(WAThumbnailMakeOptions)options;
+
+/** Handle incoming assets from camera roll.
+ *
+ *	@param representedAsset The asset of file from camera roll.
+ *	@param options The options specify what kind of thumbnails to be generated, will be passed to makeAssociatedImagesOfFile:withRepresentedAsset:options:.
+ */
+- (void) handleIncomingSelectedAsset:(ALAsset *)representedAsset options:(WAThumbnailMakeOptions)options;
 
 - (BOOL) shouldDismissSelfOnCameraCancellation;
 

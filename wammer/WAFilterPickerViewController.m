@@ -10,6 +10,8 @@
 #import "WADataStore.h"
 #import "CoreData+IRAdditions.h"
 
+NSString * const kWAFilterPickerViewSelectedRowIndex = @"kWAFilterPickerViewSelectedRowIndex";
+
 @interface WAFilterPickerViewController ()
 
 @property (nonatomic, readwrite, copy) void(^callback)(NSFetchRequest *);
@@ -39,20 +41,25 @@
 	if (!self)
 		return nil;
 	
-	WADataStore *ds = [WADataStore defaultStore];
+	WADataStore *dataStore = [WADataStore defaultStore];
 	
-	fetchRequests = [NSArray arrayWithObjects:
-	
-		[ds newFetchRequestForAllArticles],
-		[ds newFetchRequestForArticlesWithPreviews],
-		[ds newFetchRequestForArticlesWithPhotos],
-		[ds newFetchRequestForArticlesWithoutPreviewsOrPhotos],
-		
-	nil];
+	fetchRequests = @[
+		[dataStore newFetchRequestForAllArticles],
+		[dataStore newFetchRequestForArticlesWithPhotos],
+		[dataStore newFetchRequestForArticlesWithPreviews],
+		[dataStore newFetchRequestForUrlHistories],
+	];
 	
 	return self;
 
 }
+
+- (void)viewDidLoad {
+	[super viewDidLoad];
+	NSInteger lastRowIndex = [[NSUserDefaults standardUserDefaults] integerForKey:kWAFilterPickerViewSelectedRowIndex];
+	[self.pickerView selectRow:lastRowIndex inComponent:0 animated:YES];	
+}
+
 
 - (void) viewDidUnload {
 
@@ -94,25 +101,30 @@
 }
 
 - (IBAction) handleDone:(UIBarButtonItem *)sender {
-
-	[self runDismissingAnimationWithCompletion:^{
 	
-		NSInteger rowIndex = [self.pickerView selectedRowInComponent:0];
+	NSInteger rowIndex = [self.pickerView selectedRowInComponent:0];
+	
+	if (rowIndex != -1) {
 		
-		if (rowIndex != -1) {
+		if (self.callback)
+			self.callback([self.fetchRequests objectAtIndex:rowIndex]);
 		
-			if (self.callback)
-				self.callback([self.fetchRequests objectAtIndex:rowIndex]);
+	} else {
 		
-		} else {
+		if (self.callback)
+			self.callback(nil);
 		
-			if (self.callback)
-				self.callback(nil);
-			
-		}
-		
-	}];
+	}
+	
+	[[NSUserDefaults standardUserDefaults] setInteger:rowIndex forKey:kWAFilterPickerViewSelectedRowIndex];
+	
+}
 
+#pragma UIPickerViewDelegate
+
+- (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component {
+	
+	[self performSelector:@selector(handleDone:) withObject:nil afterDelay:(NSTimeInterval)0.5];
 }
 
 @end

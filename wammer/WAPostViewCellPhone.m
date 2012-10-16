@@ -13,6 +13,7 @@
 
 #import "WADefines.h"
 #import "WAPreviewBadge.h"
+#import "WARemoteInterface.h"
 
 
 @interface WAPostViewCellPhone () <IRTableViewCellPrototype>
@@ -265,6 +266,15 @@
 
 - (void) setRepresentedObject:(id)representedObject {
 
+	WAArticle *previousPost = self.representedObject;
+	if (previousPost) {
+		for (WAFile *file in previousPost.files) {
+			[file irRemoveObserverBlocksForKeyPath:@"thumbnailFilePath"];
+			[file irRemoveObserverBlocksForKeyPath:@"smallThumbnailImage"];
+		}
+		[previousPost irRemoveObserverBlocksForKeyPath:@"dirty"];
+	}
+
 	[super setRepresentedObject:representedObject];
 	
 	WAArticle *post = representedObject;
@@ -314,7 +324,97 @@
 		NSArray *allPhotoImageViews = self.photoImageViews;
 		NSUInteger numberOfFiles = [allFiles count];
 		NSUInteger numberOfPhotoImageViews = [allPhotoImageViews count];
-		
+
+		self.accessibilityLabel = @"Photo";
+
+		NSString *photoInfo = NSLocalizedString(@"PHOTO_PLURAL", @"in iPhone timeline");
+		if ([post.files count] == 1)
+			photoInfo = NSLocalizedString(@"PHOTO_SINGULAR", @"in iPhone timeline");
+
+		self.accessibilityHint = [NSString stringWithFormat:photoInfo, [post.files count]];
+
+		__weak WAPostViewCellPhone *wSelf = self;
+
+		BOOL (^syncCompleted)(void)	= ^ {
+			for (WAFile *file in wSelf.article.files) {
+				if (![file thumbnailFilePath]) {
+					return NO;
+				}
+			}
+			if ([wSelf.article.dirty isEqualToNumber:(id)kCFBooleanTrue]) {
+				return NO;
+			}
+			return YES;
+		};
+
+		void (^showSyncCompletedInCell)(void) = ^ {
+			WAArticle *article = wSelf.representedObject;
+			wSelf.originLabel.textColor = [UIColor lightGrayColor];
+			wSelf.originLabel.text = [NSString stringWithFormat:NSLocalizedString(@"NUMBER_OF_PHOTOS_CREATE_TIME_FROM_DEVICE", @"iPhone Timeline"), wSelf.accessibilityHint, [[[wSelf class] timeFormatter] stringFromDate:article.presentationDate], article.creationDeviceName];
+		};
+
+		void (^showSyncingStatusInCell)(void) = ^ {
+			wSelf.originLabel.textColor = [UIColor colorWithRed:0x6c/255.0 green:0xbc/255.0 blue:0xd3/255.0 alpha:1.0];
+			wSelf.originLabel.text = [NSString stringWithFormat:NSLocalizedString(@"DOWNLOADING_PHOTOS", @"Downloading Status on iPhone Timeline")];
+		};
+
+		void (^showSyncingInterruptedInCell)(void) = ^ {
+			wSelf.originLabel.textColor = [UIColor colorWithRed:0x6c/255.0 green:0xbc/255.0 blue:0xd3/255.0 alpha:1.0];
+			wSelf.originLabel.text = [NSString stringWithFormat:NSLocalizedString(@"UNABLE_TO_DOWNLOADING_PHOTOS", @"Downloading Status on iPhone Timeline")];
+		};
+
+		if (syncCompleted()) {
+
+			showSyncCompletedInCell();
+
+		} else {
+
+			for (WAFile *file in allFiles) {
+				[file irObserve:@"thumbnailFilePath" options:NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew context:nil withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
+					if (!fromValue && toValue) {
+						if (syncCompleted()) {
+							dispatch_async(dispatch_get_main_queue(), ^{
+								showSyncCompletedInCell();
+							});
+						}
+					}
+				}];
+			}
+
+			[self.representedObject irObserve:@"dirty" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:nil withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
+				if (syncCompleted()) {
+					dispatch_async(dispatch_get_main_queue(), ^{
+						showSyncCompletedInCell();
+					});
+				}
+			}];
+
+			if ([[WARemoteInterface sharedInterface] hasReachableCloud]) {
+				showSyncingStatusInCell();
+			} else {
+				showSyncingInterruptedInCell();
+			}
+		}
+
+		[[WARemoteInterface sharedInterface] irObserve:@"networkState" options:NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew context:nil withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
+			if (syncCompleted()) {
+				dispatch_async(dispatch_get_main_queue(), ^{
+					showSyncCompletedInCell();
+				});
+			} else {
+				if ([[WARemoteInterface sharedInterface] hasReachableCloud]) {
+					dispatch_async(dispatch_get_main_queue(), ^{
+						showSyncingStatusInCell();
+					});
+				}
+				else {
+					dispatch_async(dispatch_get_main_queue(), ^{
+						showSyncingInterruptedInCell();
+					});
+				}
+			}
+		}];
+
 		NSMutableArray *displayedFiles = [[allFiles subarrayWithRange:(NSRange){ 0, MIN(numberOfPhotoImageViews, numberOfFiles)}] mutableCopy];
 		
 		WAFile *coverFile = post.representingFile;
@@ -333,7 +433,7 @@
 		}
 		
 		[allPhotoImageViews enumerateObjectsUsingBlock:^(UIImageView *iv, NSUInteger idx, BOOL *stop) {
-		
+			
 			if ([displayedFiles count] < idx) {
 				
 				iv.image = nil;
@@ -344,34 +444,20 @@
 				
 			WAFile *file = (WAFile *)[displayedFiles objectAtIndex:idx];
 			
-			[iv irUnbind:@"image"];
 
-			if (!file.smallestPresentableImage && file.assetURL) {
+			[file irObserve:@"smallThumbnailImage"
+							options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew
+							context:nil
+						withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
 
-				ALAssetsLibrary * const library = [[self class] assetsLibrary];
-				[library assetForURL:[NSURL URLWithString:file.assetURL] resultBlock:^(ALAsset *asset) {
-
-					dispatch_async(dispatch_get_main_queue(), ^{
+							dispatch_async(dispatch_get_main_queue(), ^{
 						
-						iv.image = [UIImage imageWithCGImage:[asset aspectRatioThumbnail]];
-						
-					});
+								iv.image = (UIImage*)toValue;
 
-				} failureBlock:^(NSError *error) {
-
-					NSLog(@"Unable to retrieve assets for URL %@", file.assetURL);
-
-				}];
-
-			} else {
-
-				[iv irBind:@"image" toObject:file keyPath:@"smallestPresentableImage" options:[NSDictionary dictionaryWithObjectsAndKeys:
-																																											 
-					(id)kCFBooleanTrue, kIRBindingsAssignOnMainThreadOption,
-																																											 
-				nil]];
-			}
-			
+							});
+				
+			}];
+			 
 		}];
 		
 		if ([post.files count] > 3) {
@@ -379,15 +465,6 @@
 			self.extraInfoLabel.text = [NSString stringWithFormat:NSLocalizedString(@"NUMBER_OF_PHOTOS", @"Photo information in cell"), [post.files count]];
 			
 		}
-	
-		self.accessibilityLabel = @"Photo";
-		
-		NSString *photoInfo = NSLocalizedString(@"PHOTO_PLURAL", @"in iPhone timeline");
-		if ([post.files count] == 1)
-			photoInfo = NSLocalizedString(@"PHOTO_SINGULAR", @"in iPhone timeline");
-		
-		self.accessibilityHint = [NSString stringWithFormat:photoInfo, [post.files count]];
-		self.originLabel.text = [NSString stringWithFormat:NSLocalizedString(@"NUMBER_OF_PHOTOS_CREATE_TIME_FROM_DEVICE", @"iPhone Timeline"), self.accessibilityHint, timeString, deviceName];
 		
   } else {
 		
@@ -502,17 +579,4 @@
 
 }
 
-+ (ALAssetsLibrary *) assetsLibrary {
-
-	static ALAssetsLibrary *library = nil;
-	static dispatch_once_t onceToken = 0;
-	dispatch_once(&onceToken, ^{
-
-    library = [ALAssetsLibrary new];
-
-	});
-
-	return library;
-
-}
 @end

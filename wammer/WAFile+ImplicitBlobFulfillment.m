@@ -12,8 +12,17 @@
 
 #import "WARemoteInterface.h"
 #import "WADataStore.h"
+#import "WAFile+ThumbnailMaker.h"
 
 @implementation WAFile (ImplicitBlobFulfillment)
+
+- (void) setDisplaying:(BOOL)displaying {
+	[self irAssociateObject:(id)(displaying ? kCFBooleanTrue : kCFBooleanFalse) usingKey:&kWAFileDisplaying policy:OBJC_ASSOCIATION_ASSIGN changingObservedKey:nil];
+}
+
+- (BOOL) displaying {
+	return [objc_getAssociatedObject(self, &kWAFileDisplaying) boolValue];
+}
 
 - (BOOL) attemptsBlobRetrieval {
 
@@ -50,11 +59,19 @@
 	if ([key isEqualToString:kWAFileLargeThumbnailFilePath])
 		return NSOperationQueuePriorityLow;
 	
-	if ([key isEqualToString:kWAFileThumbnailFilePath])
+	if ([key isEqualToString:kWAFileThumbnailFilePath]) {
+		if ([self displaying]) {
+			return NSOperationQueuePriorityHigh;
+		}
 		return NSOperationQueuePriorityNormal;
+	}
 	
-	if ([key isEqualToString:kWAFileSmallThumbnailFilePath])
-		return NSOperationQueuePriorityHigh;
+	if ([key isEqualToString:kWAFileSmallThumbnailFilePath]) {
+		if ([self displaying]) {
+			return NSOperationQueuePriorityHigh;
+		}
+		return NSOperationQueuePriorityNormal;
+	}
 	
 	return NSOperationQueuePriorityNormal;
 
@@ -97,11 +114,21 @@
 	NSURL *ownURL = [[self objectID] URIRepresentation];
 	Class class = [self class];
 	
+	__weak WAFile *wSelf = self;
 	[[IRRemoteResourcesManager sharedManager] retrieveResourceAtURL:blobURL usingPriority:priority forced:NO withCompletionBlock:^(NSURL *tempFileURLOrNil) {
 	
-		if (!tempFileURLOrNil)
+		if (!tempFileURLOrNil) {
+			double delayInSeconds = 5.0;
+			if ([[WARemoteInterface sharedInterface] hasReachableStation]) {
+				delayInSeconds = 1.0;
+			}
+			dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+			dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+				[wSelf scheduleRetrievalForBlobURL:blobURL blobKeyPath:blobURLKeyPath filePathKeyPath:filePathKeyPath usingPriority:priority];
+			});
 			return;
-		
+		}
+
 		if (!class)
 			return;
 		
@@ -129,8 +156,16 @@
 - (BOOL) takeBlobFromTemporaryFile:(NSString *)aPath forKeyPath:(NSString *)fileKeyPath matchingURL:(NSURL *)anURL forKeyPath:(NSString *)urlKeyPath {
 
 	NSError *error = nil;
+	WADataStore *ds = [WADataStore defaultStore];
 
-	if (![[WADataStore defaultStore] updateObject:self inContext:self.managedObjectContext takingBlobFromTemporaryFile:aPath usingResourceType:self.resourceType forKeyPath:fileKeyPath matchingURL:anURL forKeyPath:urlKeyPath error:&error]) {
+	if (!self.extraSmallThumbnailFilePath) {
+
+		UIImage *image = [UIImage imageWithContentsOfFile:aPath];
+		[self makeThumbnailsWithImage:image options:WAThumbnailMakeOptionExtraSmall];
+
+	}
+
+	if (![ds updateObject:self inContext:self.managedObjectContext takingBlobFromTemporaryFile:aPath usingResourceType:self.resourceType forKeyPath:fileKeyPath matchingURL:anURL forKeyPath:urlKeyPath error:&error]) {
 		
 		NSLog(@"%s: %@", __PRETTY_FUNCTION__, error);
 		return NO;

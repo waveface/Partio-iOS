@@ -108,7 +108,7 @@
 "ATTACHMENTS_VIEW_TITLE" = "Attachments";
 
 /* Authentication Error Description */
-"AUTH_ERROR_ALREADY_REGISTERED" = "This Email has already been registered. Please enter a new Email.";
+"AUTH_ERROR_ALREADY_REGISTERED" = "This email has already been registered. Please enter a new email.";
 
 /* Authentication Error Description */
 "AUTH_ERROR_INVALID_EMAIL_FORMAT" = "Email format is invalid.";
@@ -118,6 +118,9 @@
 
 /* Authentication Error Description */
 "AUTH_ERROR_INVALID_PWD_FORMAT" = "Password format is invalid.";
+
+/* Unknown Error */
+"AUTH_UNKNOWN_ERROR" = "Unknown error";
 
 /* Prompt for Cover Image picker */
 "CHANGE_REPRESENTING_FILE_PROMPT" = "Select a new Cover Photo for this post.";
@@ -160,6 +163,9 @@
 
 /* Title for confirming a post deletion */
 "DELETE_POST_CONFIRMATION_TITLE" = "Delete Now?";
+
+/* Downloading Status on iPhone Timeline */
+"DOWNLOADING_PHOTOS" = "Syncing...";
 
 /* State for drafts without content text */
 "DRAFT_STATE_NO_CONTENT" = "(No Content)";
@@ -207,25 +213,34 @@
 "FACEBOOK_DISCONNECT_REQUEST_TITLE" = "Confirm to stop importing";
 
 /* Display title for a fetch request working against all the articles */
-"FETCH_REQUEST_ALL_ARTICLES_DISPLAY_TITLE" = "All Posts";
+"FETCH_REQUEST_ALL_ARTICLES_DISPLAY_TITLE" = "All (My Days)";
 
 /* Display title for a fetch request working against the articles with Photos */
-"FETCH_REQUEST_ARTICLES_WITH_PHOTOS_DISPLAY_TITLE" = "Photo Posts";
+"FETCH_REQUEST_ARTICLES_WITH_PHOTOS_DISPLAY_TITLE" = "Photos";
 
 /* Display title for a fetch request working against the articles with Plain Text */
-"FETCH_REQUEST_ARTICLES_WITH_PLAIN_TEXT_DISPLAY_TITLE" = "Text Posts";
+"FETCH_REQUEST_ARTICLES_WITH_PLAIN_TEXT_DISPLAY_TITLE" = "Text Only";
 
 /* Display title for a fetch request working against the articles with Web Previews */
-"FETCH_REQUEST_ARTICLES_WITH_PREVIEWS_DISPLAY_TITLE" = "Web Posts";
+"FETCH_REQUEST_ARTICLES_WITH_PREVIEWS_DISPLAY_TITLE" = "Web Clippings";
 
 /* Display title for a fetch request working against the latest article on a particular date */
 "FETCH_REQUEST_NEWEST_ARTICLE_OF_PARTICULAR_DATE_DISPLAY_TITLE" = "Post on a particular date";
+
+/* Caption for URL History */
+"FETCH_REQUEST_URL_HISTORY" = "Visited Links";
 
 /* No comment provided by engineer. */
 "HOUR_PLURAL" = "%d hours";
 
 /* No comment provided by engineer. */
 "HOUR_SINGULAR" = "%d hour";
+
+/* Photo importing status */
+"IMPORTING_PHOTOS" = "Importing Photos...";
+
+/* In Account Info Photo Import Section */
+"LAST_IMPORT_TIME" = "Latest Imported Photo Time: %@";
 
 /* No comment provided by engineer. */
 "MINUTE_PLURAL" = "%d minutes";
@@ -238,6 +253,9 @@
 
 /* No comment provided by engineer. */
 "MONTH_SINGULAR" = "%d month";
+
+/* Photo importing status */
+"NOT_IMPORTING_PHOTOS" = "Camera Roll Upload";
 
 /* Singluar noun for action objects */
 "NOUN_ACTIONS_OBJECT" = "Action";
@@ -298,10 +316,10 @@
 "SECOND_SINGULAR" = "%d second";
 
 /* Title to show explaining WiFi Sync */
-"SERVICE_INFO_WITH_WIFI" = "Stream uses Wi-Fi to send original size photos back to your PC. \n\nIf you don't have Stream installed on your PC, or it's not up and running, we keep the photos in a temporary cloud space for up to 30 days.";
+"SERVICE_INFO_WITH_WIFI" = "Stream transfers original-sized photos back to your PC using Wi-Fi. These photos are available to you in the cloud for up to 30 days. To bring these photos home, install Stream for Windows on your PC. Visit waveface.com to find out more.";
 
 /* Title to show explaining WiFi Sync */
-"SERVICE_INFO_WITHOUT_WIFI" = "⚠ Stream only sends your original photos via Wi-Fi connection. \n\nIf you don't have Stream installed on your PC, or it's not up and running, we keep the photos in a temporary cloud space for up to 30 days.";
+"SERVICE_INFO_WITHOUT_WIFI" = "Stream only sends your original photos via Wi-Fi connection. \n\nIf you don't have Stream installed on your PC, or it's not up and running, we keep the photos in a temporary cloud space for up to 30 days.";
 
 /* Title for view controller signing the user in */
 "SIGN_IN_CONTROLLER_TITLE" = "Log In";
@@ -312,6 +330,9 @@
 /* Title for view controller signing the user up */
 "SIGN_UP_CONTROLLER_TITLE" = "Sign Up";
 
+/* In Account Info Photo Import Section */
+"START_PHOTO_IMPORT_DESCRIPTION" = "Import all photos in Camera Roll";
+
 /* No comment provided by engineer. */
 "STATE_LOADING_SINGLE_DOCUMENT" = "Loading Document…";
 
@@ -320,6 +341,9 @@
 
 /* Title for About Stream dialog */
 "STREAM_ABOUT_TITLE" = "About Stream";
+
+/* Caption to show a persistent connection to station is held. */
+"SYNC_BUTTON_CAPTION_WITH_PERSISTENT_CONNECTION" = "Connected";
 
 /* Caption to show in account info when station is connected */
 "SYNC_BUTTON_CAPTION_WITH_STATION_CONNECTED" = "Syncing with Station";
@@ -331,7 +355,7 @@
 "SYNC_BUTTON_USABLE_TITLE" = "Sync";
 
 /* In Account Info Sync Section */
-"SYNC_INFO_FOOTER" = "Last Sync %@";
+"SYNC_INFO_FOOTER" = "Last Sync: %@";
 
 /* Title on the text stack more / less toggle button for “Less” */
 "TEXT_ELEMENT_TOGGLE_LESS_TITLE" = "Less";
@@ -340,7 +364,10 @@
 "TEXT_ELEMENT_TOGGLE_MORE_TITLE" = "More";
 
 /* Alert on no location service enabled when open photo library */
-"TURN_ON_LOCATION_SERVICE" = "Turn On Location Services to Allow Stream to Access Your Photo Library";
+"TURN_ON_LOCATION_SERVICE" = "Turn on Location Services to allow Stream to access your Photo Library";
+
+/* Downloading Status on iPhone Timeline */
+"UNABLE_TO_DOWNLOADING_PHOTOS" = "No Internet connection. Syncing incomplete...";
 
 /* Settings for User popover */
 "USER_INFO_CONTROLLER_TITLE" = "User";
@@ -368,6 +395,10 @@
 
 /* Title to show when user has no station, and have exhausted storage on the Cloud */
 "USER_INFO_NAG_LEVEL_3_WITHOUT_STATION" = "Your cloud storage is full.  To sync, install and run Stream for Windows on your PC.";
+
+/* In iPad overview
+   In Phone timeline */
+"VIEW_BUTTON" = "View";
 
 /* preview button in composition view */
 "WEB_PREVIEW" = "Web Preview";
@@ -472,28 +503,37 @@
 "STATE_LOADING_SINGLE_DOCUMENT_PROGRESS" = "%1 of %2";
 
 /* Class = "IBUIButton"; normalTitle = "ACTION_DISMISS_TUTORIAL"; ObjectID = "43"; */
-"ACTION_DISMISS_TUTORIAL" = "Finish";
+"ACTION_DISMISS_TUTORIAL" = "Maybe later";
 
 /* Class = "IBUILabel"; text = "FACEBOOK_IMPORT_TUTORIAL_SWITCH"; ObjectID = "55"; */
 "FACEBOOK_IMPORT_TUTORIAL_SWITCH" = "Facebook Import";
 
 /* Class = "IBUITextView"; text = "FACEBOOK_IMPORT_TUTORIAL"; ObjectID = "56"; */
-"FACEBOOK_IMPORT_TUTORIAL" = "Start importing your Facebook posts into Stream and safely backing them up on your PC. Future Facebook posts will then be imported automatically.\n\nTo turn this feature on or off, just go to the Account Info page of your Stream account.";
+"FACEBOOK_IMPORT_TUTORIAL" = "Start importing your Facebook posts into Stream! Future Facebook posts will then be imported automatically.\n\nTo turn this feature on or off, just go to the Account Info page of your Stream account.";
+
+/* Class = "IBUITextView"; text = "PHOTO_IMPORT_TUTORIAL"; ObjectID = "62"; */
+"PHOTO_IMPORT_TUTORIAL" = "Use the auto import function to send all your Camera Roll photos into Stream, and access them on all your devices and PC computers anytime, anywhere.";
+
+/* Class = "IBUIButton"; normalTitle = "ACTION_IMPORT_PHOTO"; ObjectID = "63"; */
+"ACTION_IMPORT_PHOTO" = "Yes!";
 
 /* Class = "IBUIButton"; normalTitle = "ACTION_DISMISS_TUTORIAL"; ObjectID = "43"; */
-"ACTION_DISMISS_TUTORIAL" = "Finish";
+"ACTION_DISMISS_TUTORIAL" = "Maybe later";
 
 /* Class = "IBUITextView"; text = "FACEBOOK_IMPORT_TUTORIAL_IPAD"; ObjectID = "46"; */
-"FACEBOOK_IMPORT_TUTORIAL_IPAD" = "Start importing your Facebook posts into Stream and safely backing them up on your PC. Future Facebook posts will then be imported automatically.\n\nTo turn this feature on or off, just go to the Account Info page of your Stream account.";
+"FACEBOOK_IMPORT_TUTORIAL_IPAD" = "Start importing your Facebook posts into Stream! Future Facebook posts will then be imported automatically.\n\nTo turn this feature on or off, just go to the Account Info page of your Stream account.";
 
 /* Class = "IBUILabel"; text = "FACEBOOK_IMPORT_TUTORIAL_SWITCH_IPAD"; ObjectID = "49"; */
 "FACEBOOK_IMPORT_TUTORIAL_SWITCH_IPAD" = "Facebook Import";
 
-/* Class = "IBUITableViewSection"; footerTitle = "SERVICE_INFO_FOOTER"; ObjectID = "9vM-w4-lTb"; */
-"SERVICE_INFO_FOOTER" = "⚠ Stream uses Wi-Fi to send original size photos back to your PC. If you don't have Stream installed on your PC, or it's not up and running, we keep the photos in a temporary cloud space for up to 30 days.";
+/* Class = "IBUITextView"; text = "PHOTO_IMPORT_TUTORIAL_IPAD"; ObjectID = "55"; */
+"PHOTO_IMPORT_TUTORIAL_IPAD" = "Use the auto import function to send all your Camera Roll photos into Stream, and access them on all your devices and PC computers anytime, anywhere.";
 
-/* Class = "IBUITableViewSection"; headerTitle = "SERVICE_INFO_HEADER"; ObjectID = "9vM-w4-lTb"; */
-"SERVICE_INFO_HEADER" = "Service Info";
+/* Class = "IBUIButton"; normalTitle = "ACTION_IMPORT_PHOTO"; ObjectID = "58"; */
+"ACTION_IMPORT_PHOTO" = "Yes!";
+
+/* Class = "IBUITableViewSection"; footerTitle = "SERVICE_INFO_FOOTER"; ObjectID = "9vM-w4-lTb"; */
+"SERVICE_INFO_FOOTER" = "Stream uses Wi-Fi to send original size photos back to your PC. If you don't have Stream installed on your PC, or it's not up and running, we keep the photos in a temporary cloud space for up to 30 days.";
 
 /* Class = "IBUILabel"; text = "FACEBOOK_CONNECT_TITLE"; ObjectID = "Fh9-Wq-UDR"; */
 "FACEBOOK_CONNECT_TITLE" = "Facebook Import";
@@ -501,14 +541,14 @@
 /* Class = "IBUITableViewSection"; headerTitle = "ACCOUNT_INFO_HEADER"; ObjectID = "Gw1-xy-FWK"; */
 "ACCOUNT_INFO_HEADER" = "Account Info";
 
-/* Class = "IBUITableViewSection"; footerTitle = "VERSION"; ObjectID = "IP4-fz-MdU"; */
-"VERSION" = "Version";
+/* Class = "IBUITableViewSection"; footerTitle = "PHOTO_IMPORT_FOOTER"; ObjectID = "IP4-fz-MdU"; */
+"PHOTO_IMPORT_FOOTER" = "PHOTO_IMPORT_FOOTER";
 
 /* Class = "IBUILabel"; text = "LOCAL_PENDING_OBJECTS_TITLE"; ObjectID = "Uku-UE-EAs"; */
-"LOCAL_PENDING_OBJECTS_TITLE" = "Objects Pending";
+"LOCAL_PENDING_OBJECTS_TITLE" = "Photos Pending";
 
 /* Class = "IBUITableViewSection"; footerTitle = "SYNC_INFO_FOOTER"; ObjectID = "aHi-Wv-Eu2"; */
-"SYNC_INFO_FOOTER" = "Last Sync %@";
+"SYNC_INFO_FOOTER" = "Last Sync: %@";
 
 /* Class = "IBUILabel"; text = "NOUN_NICKNAME"; ObjectID = "btU-SG-jyB"; */
 "NOUN_NICKNAME" = "Name";
@@ -519,10 +559,13 @@
 /* Class = "IBUILabel"; text = "NOUN_CURRENT_DEVICE"; ObjectID = "fZ9-vs-r6f"; */
 "NOUN_CURRENT_DEVICE" = "Device";
 
-/* Class = "IBUITableViewSection"; headerTitle = "SOCIAL_NETWORK_HEADER"; ObjectID = "qoR-fT-NMh"; */
-"SOCIAL_NETWORK_HEADER" = "Facebook Settings";
+/* Class = "IBUITableViewSection"; footerTitle = "VERSION"; ObjectID = "rMk-eV-Pjl"; */
+"VERSION" = "Version";
 
-/* Class = "IBUILabel"; text = "ACTION_CONTACT_DEVELOPER"; ObjectID = "vuN-4r-WXb"; */
+/* Class = "IBUILabel"; text = "ACTION_IMPORT_SAVED_PHOTOS"; ObjectID = "vuN-4r-WXb"; */
+"ACTION_IMPORT_SAVED_PHOTOS" = "Camera Upload";
+
+/* Class = "IBUILabel"; text = "ACTION_CONTACT_DEVELOPER"; ObjectID = "yLg-eE-ehZ"; */
 "ACTION_CONTACT_DEVELOPER" = "Contact";
 
 /* Class = "IBUIButton"; normalTitle = "ACTION_CONNECT_FACEBOOK"; ObjectID = "4"; */

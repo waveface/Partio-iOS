@@ -38,7 +38,7 @@ VersionX-revision.h
 
 build/
 Build/
-*.[oa]
+*.[o]
 
 
 # Other SCMs

@@ -18,6 +18,7 @@
 @property (strong, nonatomic) IBOutlet UITableViewCell *serviceTableViewCell;
 @property (weak, nonatomic) IBOutlet UITableViewCell *contactTableViewCell;
 @property (weak, nonatomic) IBOutlet UITableViewCell *stationNagCell;
+@property (weak, nonatomic) IBOutlet UITableViewCell *importSavedPhotosTableViewCell;
 
 @property (weak, nonatomic) IBOutlet UILabel *lastSyncDateLabel;
 @property (weak, nonatomic) IBOutlet UILabel *numberOfPendingFilesLabel;

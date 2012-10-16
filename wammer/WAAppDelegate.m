@@ -6,6 +6,7 @@
 //  Copyright 2011 Waveface. All rights reserved.
 //
 
+#import "WAAppDelegate.h"
 #if TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR
 #import "WAAppDelegate_iOS.h"
 #else
@@ -84,10 +85,16 @@
 		originalRequest.HTTPBodyStream = transformedRequest.HTTPBodyStream;
 		originalRequest.HTTPBody = transformedRequest.HTTPBody;
 		
-//		dispatch_async( dispatch_get_main_queue(), ^ {
-//			[((WAAppDelegate *)[UIApplication sharedApplication].delegate) endNetworkActivity];
-//		});
 		
+	};
+	
+	[IRRemoteResourcesManager sharedManager].onRemoteResourceDownloadOperationDidEnd = ^ (IRRemoteResourceDownloadOperation *anOperation) {
+				dispatch_async( dispatch_get_main_queue(), ^ {
+					/* Decrese networkActivityStackingCount by one, which is increased while onRemoteResourceDownloadOperationWillBegin
+					 */
+					[((WAAppDelegate *)[UIApplication sharedApplication].delegate) endNetworkActivity];
+				});
+
 	};
 	
 	[[NSHTTPCookieStorage sharedHTTPCookieStorage] setCookieAcceptPolicy:NSHTTPCookieAcceptPolicyOnlyFromMainDocumentDomain];
@@ -242,6 +249,20 @@
 	}
 	
 	return givenURL;
+
+}
+
+- (void) bootstrapDownloadAllThumbnails {
+
+	// start downloading thumbnails for files of updated articles,
+	// files in newer articles are downloaded first (download queue is LIFO).
+	NSAssert(![NSThread isMainThread], @"Download operations should not be triggered on main thread");
+	WADataStore * const ds = [WADataStore defaultStore];
+	NSManagedObjectContext *context = [ds disposableMOC];
+	NSArray *files = [ds fetchFilesNeedingDownloadUsingContext:context];
+	for (WAFile *file in files) {
+		[file thumbnailFilePath];
+	}
 
 }
 

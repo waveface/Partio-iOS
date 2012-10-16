@@ -56,6 +56,7 @@ static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePag
 @synthesize paginationSlider, discreteLayoutManager, discreteLayoutResult, layoutGrids, paginatedView;
 @synthesize actionedArticle;
 
+
 - (void) viewDidLayoutSubviews {
 
 	[super viewDidLayoutSubviews];
@@ -101,7 +102,7 @@ static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePag
 	self.paginationSlider.instantaneousCallbacks = YES;
 	self.paginationSlider.layoutStrategy = WAPaginationSliderLessDotsLayoutStrategy;
 	[self.paginationSlider irBind:@"currentPage" toObject:self.paginatedView keyPath:@"currentPage" options:nil];
-		
+	
 }
 
 - (void) setContextControlsVisible:(BOOL)contextControlsVisible animated:(BOOL)animated {
@@ -197,28 +198,17 @@ static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePag
 	[self.paginatedView reloadViews];
 	self.paginationSlider.numberOfPages = self.paginatedView.numberOfPages;
 	
-	//	TBD: Cache contents of the previous screen, and then do some page index matching
-	//	Instead of going back to the last current page, since we might have nothing left on the current page
-	//	And things can get garbled very quickly
 	
-	if (self.presentedArticle) {
-	
-		[self.paginatedView scrollToPageAtIndex:[self gridIndexOfArticle:self.presentedArticle] animated:NO];
-	
+	if (lastPageGrid) {
+			
+		IRDiscreteLayoutGrid *bestGrid = [result bestGridMatchingItemsInInstance:lastPageGrid];
+		if (bestGrid)
+			[self.paginatedView scrollToPageAtIndex:[result.grids indexOfObject:bestGrid] animated:NO];
+		
 	} else {
 	
-		if (lastPageGrid) {
-			
-			IRDiscreteLayoutGrid *bestGrid = [result bestGridMatchingItemsInInstance:lastPageGrid];
-			if (bestGrid)
-				[self.paginatedView scrollToPageAtIndex:[result.grids indexOfObject:bestGrid] animated:NO];
-		
-		} else {
-	
-			if ((self.paginatedView.numberOfPages - 1) >= lastCurrentPage)
-				[self.paginatedView scrollToPageAtIndex:lastCurrentPage animated:NO];
-		
-		}
+		if ((self.paginatedView.numberOfPages - 1) >= lastCurrentPage)
+			[self.paginatedView scrollToPageAtIndex:lastCurrentPage animated:NO];
 		
 	}
 
@@ -862,6 +852,12 @@ static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePag
 		
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 
+}
+
+#pragma Supress the warning
+
+- (void)willRemoveView:(UIView *)view atIndex:(NSUInteger)index {
+	
 }
 
 @end

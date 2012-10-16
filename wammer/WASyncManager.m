@@ -59,24 +59,8 @@
 	if (!self)
 		return nil;
 	
-	[[self recurrenceMachine] scheduleOperationsNow];
-	
-	__weak WASyncManager *wSelf = self;
-	
-	[self.operationQueue addOperations:[NSArray arrayWithObject:[NSBlockOperation blockOperationWithBlock:^{
-		
-		[wSelf countFilesWithCompletion:^(NSUInteger count) {
-		
-			dispatch_async(dispatch_get_main_queue(), ^{
+	[self reload];
 
-				wSelf.numberOfFiles = count;
-				
-			});
-			
-		}];
-		
-	}]] waitUntilFinished:YES];
-	
 	return self;
 
 }
@@ -86,6 +70,32 @@
 	[_operationQueue cancelAllOperations];
 
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
+
+}
+
+- (void)reload {
+
+	if (![NSThread isMainThread]) {
+		__weak WASyncManager *wSelf = self;
+		dispatch_async(dispatch_get_main_queue(), ^{
+			[wSelf reload];
+		});
+		return;
+	}
+
+	[[self recurrenceMachine] scheduleOperationsNow];
+
+	__weak WASyncManager *wSelf = self;
+
+	[self countFilesWithCompletion:^(NSUInteger count) {
+
+		dispatch_async(dispatch_get_main_queue(), ^{
+
+			wSelf.numberOfFiles = count;
+
+		});
+
+	}];
 
 }
 
@@ -110,8 +120,8 @@
 	_recurrenceMachine.queue.maxConcurrentOperationCount = 1;
 	_recurrenceMachine.recurrenceInterval = 5;
 	
-	[_recurrenceMachine addRecurringOperation:[self fullQualityFileSyncOperationPrototype]];
 	[_recurrenceMachine addRecurringOperation:[self dirtyArticleSyncOperationPrototype]];
+	[_recurrenceMachine addRecurringOperation:[self fullQualityFileSyncOperationPrototype]];
 	
 	return _recurrenceMachine;
 

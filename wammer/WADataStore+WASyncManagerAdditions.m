@@ -70,7 +70,7 @@
 	NSFetchRequest *fr = [self fetchRequestForDirtyArticlesInContext:context];
 	
 	fr.sortDescriptors = [NSArray arrayWithObjects:
-		[NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:NO],
+		[NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:YES],
 	nil];
 	
 	NSArray *articles = [context executeFetchRequest:fr error:nil];

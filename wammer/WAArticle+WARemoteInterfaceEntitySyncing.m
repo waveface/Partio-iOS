@@ -13,6 +13,7 @@
 #import "WADataStore+WARemoteInterfaceAdditions.h"
 #import "Foundation+IRAdditions.h"
 #import "IRAsyncOperation.h"
+#import "WADefines.h"
 
 
 NSString * const kWAArticleEntitySyncingErrorDomain = @"com.waveface.wammer.WAArticle.entitySyncing.error";
@@ -53,25 +54,24 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 	static dispatch_once_t onceToken;
 	dispatch_once(&onceToken, ^{
     
-		mapping = [NSDictionary dictionaryWithObjectsAndKeys:
-		
-			@"identifier", @"post_id",
-			@"group", @"group",	//	wraps @"group_id"
-			@"owner", @"owner",	//	wraps @"creator_id"
-			@"files", @"attachments",
-			@"previews", @"previews",
-			@"representingFile", @"representingFile",	//	wraps @"cover_attach"
-			
-			@"creationDeviceName", @"code_name",
-			@"creationDate", @"timestamp",
-			@"modificationDate", @"update_time",
-			@"text", @"content",
-			@"comments", @"comments",
-			@"summary", @"soul",
-			@"favorite", @"favorite",
-			@"hidden", @"hidden",			
-			
-		nil];
+		mapping = @{
+		@"post_id": @"identifier",
+		@"group": @"group",	//	wraps @"group_id"
+		@"owner": @"owner",	//	wraps @"creator_id"
+		@"attachments": @"files",
+		@"previews": @"previews",
+		@"representingFile": @"representingFile",	//	wraps @"cover_attach"
+		@"code_name": @"creationDeviceName",
+		@"timestamp": @"creationDate",
+		@"update_time": @"modificationDate",
+		@"content": @"text",
+		@"comments": @"comments",
+		@"soul": @"summary",
+		@"favorite": @"favorite",
+		@"hidden": @"hidden",
+		@"style": @"style",
+		@"import": @"import",
+		};
 		
 	});
 
@@ -127,6 +127,9 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 	NSMutableArray *fullAttachmentList = [[incomingRepresentation objectForKey:@"attachment_id_array"] mutableCopy];
 	NSArray *incomingAttachmentList = [[incomingRepresentation objectForKey:@"attachments"] copy];
 	NSMutableArray *returnedAttachmentList = [incomingAttachmentList mutableCopy];
+	if (!returnedAttachmentList) {
+		returnedAttachmentList = [[NSMutableArray alloc] init];
+	}
 	
 	if ([fullAttachmentList count] > [incomingAttachmentList count]) {
 
@@ -219,6 +222,24 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 	
 	}
 	
+	for (NSString *style in [incomingRepresentation objectForKey:@"style"]) {
+    if ([style isEqualToString:@"url_history"]) {
+			[returnedDictionary setValue:[NSNumber numberWithUnsignedInteger:WAPostStyleURLHistory]
+														forKey:@"style"];
+		}
+	}
+	
+	if ([[incomingRepresentation objectForKey:@"import"] isEqualToString:@"true"]) {
+		NSString *deviceID = [incomingRepresentation objectForKey:@"device_id"];
+		if ([deviceID isEqualToString:WADeviceIdentifier()]) {
+			[returnedDictionary setValue:[NSNumber numberWithInt:WAImportTypeFromLocal] forKey:@"import"];
+		} else {
+			[returnedDictionary setValue:[NSNumber numberWithInt:WAImportTypeFromOthers] forKey:@"import"];
+		}
+	} else {
+		[returnedDictionary setValue:[NSNumber numberWithInt:WAImportTypeNone] forKey:@"import"];
+	}
+
 	return returnedDictionary;
 
 }
@@ -323,58 +344,101 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 	} else if ([syncStrategy isEqual:kWAArticleSyncFullyFetchStrategy]) {
 		
 		NSDate *usedDate = [ds lastNewPostsUpdateDate];
-		[ri retrievePostsCreatedSince:usedDate
-													inGroup:usedGroupIdentifier
-											 onProgress:^(NSArray *changedArticleReps, NSDate *continuation)
-		 {
-		 
-			 [ds performBlock:^{
-				 
-				 NSManagedObjectContext *context = [ds disposableMOC];
-				 
-				 NSArray *touchedArticles = [WAArticle insertOrUpdateObjectsUsingContext:context withRemoteResponse:changedArticleReps usingMapping:nil options:IRManagedObjectOptionIndividualOperations];
-				 
-				 /* Steven: we examin each touched article is really touched by checking its modifiedDate.
-				  * If the modifiedDate is later then current lastNewPostsUpdateDate, then we update these articles.
-				  * If not, don't change them. It won't cause a data store change, and won't cause the timeline refresh */
-				 BOOL changed = NO;
-				 for (WAArticle *article in touchedArticles) {
-					 NSComparisonResult dateComparison = [article.modificationDate compare:usedDate];
-					 if (dateComparison == NSOrderedSame || dateComparison == NSOrderedAscending)
-						 continue;
-					 if ([ds isUpdatingArticle:[[article objectID] URIRepresentation]]) {
-						 changed = YES;
-						 [context refreshObject:article mergeChanges:NO];
-					 }
-				 }
-				 
-				 if (changed)
-					 [context save:nil];
-				 
-			 } waitUntilDone:YES];
-			 
-			 if (continuation) {
-				 [ds setLastNewPostsUpdateDate:continuation];
-			 }
-		 
-		 }
-												onSuccess:^(NSDate *continuation) {
-													
-													if (continuation) {
-														[ds setLastNewPostsUpdateDate:continuation];
-													}
-													
-													if (completionBlock)
-														completionBlock(YES, nil);
-													
-												}
-												onFailure:^(NSError *error) {
-													
-													if (completionBlock)
-														completionBlock(NO, error);
-													
-												}];
-      
+		if (!usedDate) {
+			usedDate = [NSDate dateWithTimeIntervalSince1970:0];
+		}
+		NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+		formatter.dateFormat = @"yyyy-MM-dd'T'HH:mm:ss'Z'";
+		formatter.locale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"];
+		formatter.timeZone = [NSTimeZone timeZoneForSecondsFromGMT:0];
+		NSString *datum = [formatter stringFromDate:usedDate];
+		NSDictionary *filterEntity = [NSDictionary dictionaryWithObjectsAndKeys:
+																	@"100", @"limit",
+																	datum, @"timestamp",
+																	nil];
+
+		[ri retrievePostsInGroup:usedGroupIdentifier usingFilter:filterEntity onSuccess:^(NSArray *postReps) {
+
+			[ds performBlock:^{
+				
+				NSManagedObjectContext *context = [ds disposableMOC];
+				
+				NSArray *touchedArticles = [WAArticle insertOrUpdateObjectsUsingContext:context withRemoteResponse:postReps usingMapping:nil options:IRManagedObjectOptionIndividualOperations];
+				
+				/* Steven: we examin each touched article is really touched by checking its modifiedDate.
+				 * If the modifiedDate is later then current lastNewPostsUpdateDate, then we update these articles.
+				 * If not, don't change them. It won't cause a data store change, and won't cause the timeline refresh */
+				__block BOOL changed = NO;
+				__block NSMutableIndexSet *removedIndexSet = [[NSMutableIndexSet alloc] init];
+				[touchedArticles enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+
+					WAArticle *article = obj;
+					NSComparisonResult dateComparison = [article.modificationDate compare:usedDate];
+					if (usedDate && (dateComparison == NSOrderedSame || dateComparison == NSOrderedAscending)) {
+
+						[removedIndexSet addIndex:idx];
+
+					} else {
+
+						changed = YES;
+
+						if ([ds isUpdatingArticle:[[article objectID] URIRepresentation]]) {
+							[context refreshObject:article mergeChanges:NO];
+							[removedIndexSet addIndex:idx];
+						}
+
+						if ([article.hidden isEqualToNumber:(id)kCFBooleanTrue]) {
+							[removedIndexSet addIndex:idx];
+						}
+
+					}
+
+				}];
+				
+				if (changed) {
+					[context save:nil];
+
+					// start downloading thumbnails for files of updated articles,
+					// files in newer articles are downloaded first (download queue is LIFO).
+					NSMutableArray *mutableTouchedArticles = [touchedArticles mutableCopy];
+					[mutableTouchedArticles removeObjectsAtIndexes:removedIndexSet];
+					NSArray *sortedArticles = [mutableTouchedArticles sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
+						WAArticle *article1 = obj1;
+						WAArticle *article2 = obj2;
+						return [article1.creationDate compare:article2.creationDate];
+					}];
+
+					for (WAArticle *article in sortedArticles) {
+						for (WAFile *file in article.files) {
+							[file thumbnailFilePath];
+						}
+					}
+				}
+				
+			} waitUntilDone:YES];
+			
+			NSDate *latestTimestamp = usedDate;
+			
+			for (NSDictionary *postRep in postReps) {
+				NSDate *timestamp = [[WADataStore defaultStore] dateFromISO8601String:[postRep objectForKey:@"timestamp"]];
+				latestTimestamp = [latestTimestamp laterDate:timestamp];
+				NSCParameterAssert(latestTimestamp);
+			}
+
+			if (latestTimestamp) {
+				[ds setLastNewPostsUpdateDate:latestTimestamp];
+			}
+
+			if (completionBlock)
+				completionBlock(YES, nil);
+
+		} onFailure:^(NSError *error) {
+
+			if (completionBlock)
+				completionBlock(NO, error);
+
+		}];
+
   } else if ([syncStrategy isEqual:kWAArticleSyncDeltaFetchStrategy]) {
 		
 		NSDate *usedDate = [ds lastChangedPostsUpdateDate];
@@ -388,11 +452,47 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 				 
 				 NSArray *touchedArticles = [WAArticle insertOrUpdateObjectsUsingContext:context withRemoteResponse:changedArticleReps usingMapping:nil options:IRManagedObjectOptionIndividualOperations];
 				 
-				 for (WAArticle *article in touchedArticles)
-					 if ([ds isUpdatingArticle:[[article objectID] URIRepresentation]])
-						 [context refreshObject:article mergeChanges:NO];
+				 __block NSMutableIndexSet *removedIndexSet = [[NSMutableIndexSet alloc] init];
+				 [touchedArticles enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+
+					 WAArticle *article = obj;
+					 NSComparisonResult dateComparison = [article.modificationDate compare:usedDate];
+					 if (usedDate && (dateComparison == NSOrderedSame || dateComparison == NSOrderedAscending)) {
+
+						 [removedIndexSet addIndex:idx];
+
+					 } else {
+						 
+						 if ([ds isUpdatingArticle:[[article objectID] URIRepresentation]]) {
+							 [context refreshObject:article mergeChanges:NO];
+							 [removedIndexSet addIndex:idx];
+						 }
+						 
+						 if ([article.hidden isEqualToNumber:(id)kCFBooleanTrue]) {
+							 [removedIndexSet addIndex:idx];
+						 }
+
+					 }
+
+				 }];
 				 
 				 [context save:nil];
+				 
+				 // start downloading thumbnails for files of updated articles,
+				 // files in newer articles are downloaded first (download queue is LIFO).
+				 NSMutableArray *mutableTouchedArticles = [touchedArticles mutableCopy];
+				 [mutableTouchedArticles removeObjectsAtIndexes:removedIndexSet];
+				 NSArray *sortedArticles = [mutableTouchedArticles sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
+					 WAArticle *article1 = obj1;
+					 WAArticle *article2 = obj2;
+					 return [article1.creationDate compare:article2.creationDate];
+				 }];
+				 for (WAArticle *article in sortedArticles) {
+					 for (WAFile *file in article.files) {
+						 [file thumbnailFilePath];
+					 }
+				 }
+
 			 }
 					waitUntilDone:YES];
 			 
@@ -484,9 +584,10 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 	NSDate * const postCreationDate = self.creationDate;
 	NSDate * const postModificationDate = self.modificationDate;
 	
-	BOOL isDraft = ([self.draft isEqualToNumber:(id)kCFBooleanTrue] || !self.identifier);
+	BOOL isDraft = ([self.draft isEqualToNumber:(id)kCFBooleanTrue] || !self.identifier || !self.modificationDate);
 	BOOL isFavorite = [self.favorite isEqualToNumber:(id)kCFBooleanTrue];
 	BOOL isHidden = [self.hidden isEqualToNumber:(id)kCFBooleanTrue];
+	BOOL isImport = [self.import isEqualToNumber:[NSNumber numberWithInt:WAImportTypeFromLocal]];
 	
 	if (!isDraft) {
 	
@@ -609,10 +710,11 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 			}
 			
 			NSURL *fileURI = [[representedFile objectID] URIRepresentation];
+			NSString *fileSyncStrategy = [ri hasReachableStation] ? kWAFileSyncFullQualityStrategy : kWAFileSyncReducedQualityStrategy;
 			
 			[representedFile synchronizeWithOptions:[NSDictionary dictionaryWithObjectsAndKeys:
 			
-				kWAFileSyncReducedQualityStrategy, kWAFileSyncStrategy,
+				fileSyncStrategy, kWAFileSyncStrategy,
 			
 			nil] completion:^(BOOL didFinish, NSError *error) {
 			
@@ -711,7 +813,7 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 
 			if (!isHidden) {
 
-				[ri createPostInGroup:groupID withContentText:postText attachments:attachments preview:preview createTime:postCreationDate updateTime:postModificationDate favorite:isFavorite onSuccess:^(NSDictionary *postRep) {
+				[ri createPostInGroup:groupID withContentText:postText attachments:attachments preview:preview postId:postID createTime:postCreationDate updateTime:postModificationDate favorite:isFavorite import:isImport onSuccess:^(NSDictionary *postRep) {
 					
 					callback(postRep);
 
@@ -834,23 +936,44 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 		
 	}];
 	
-	__block NSOperationQueue *operationQueue = [[NSOperationQueue alloc] init];
-	[operationQueue setSuspended:YES];
-	[operationQueue setMaxConcurrentOperationCount:1];
+	IRAsyncOperation *lastOperation = [[[[self class] sharedSyncQueue] operations] lastObject];
+	if (lastOperation) {
+		[[operations objectAtIndex:0] addDependency:lastOperation];
+	}
 	
-	NSOperation *cleanupOp = [NSBlockOperation blockOperationWithBlock:^{
+	[[[self class] sharedSyncQueue] addOperations:operations waitUntilFinished:NO];
+//	__block NSOperationQueue *operationQueue = [[NSOperationQueue alloc] init];
+//	[operationQueue setSuspended:YES];
+//	[operationQueue setMaxConcurrentOperationCount:1];
+//	
+//	NSOperation *cleanupOp = [NSBlockOperation blockOperationWithBlock:^{
+//	
+//		operationQueue = nil;
+//		
+//	}];
+//	
+//	for (NSOperation *op in operations)
+//		[cleanupOp addDependency:op];
+//
+//	[operationQueue addOperations:operations waitUntilFinished:NO];
+//	[operationQueue addOperation:cleanupOp];
+//	[operationQueue setSuspended:NO];
+
+}
+
++ (NSOperationQueue *) sharedSyncQueue {
 	
-		operationQueue = nil;
+	static NSOperationQueue *queue = nil;
+	static dispatch_once_t onceToken;
+	dispatch_once(&onceToken, ^{
+    
+		queue = [NSOperationQueue new];
+		queue.maxConcurrentOperationCount = 1;
 		
-	}];
+	});
 	
-	for (NSOperation *op in operations)
-		[cleanupOp addDependency:op];
-
-	[operationQueue addOperations:operations waitUntilFinished:NO];
-	[operationQueue addOperation:cleanupOp];
-	[operationQueue setSuspended:NO];
-
+	return queue;
+	
 }
 
 @end

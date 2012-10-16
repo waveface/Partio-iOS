@@ -7,11 +7,13 @@
 //
 
 #import "WATutorialViewController.h"
+#import "WAPhotoImportManager.h"
 
 @interface WATutorialViewController () <IRPaginatedViewDelegate>
 
 @property (nonatomic, readwrite, assign) WATutorialInstantiationOption option;
 @property (nonatomic, readwrite, copy) WATutorialViewControllerCallback callback;
+@property (nonatomic, weak) IBOutlet UIPageControl *pageControl;
 
 @property (nonatomic, readonly, strong) NSArray *pages;
 - (NSArray *) copyPages;
@@ -20,16 +22,6 @@
 
 
 @implementation WATutorialViewController
-@synthesize paginatedView = _paginatedView;
-@synthesize pageWelcomeToStream = _pageWelcomeToStream;
-@synthesize pageReliveYourMoments = _pageReliveYourMoments;
-@synthesize pageInstallStation = _pageInstallStation;
-@synthesize pageToggleFacebook = _pageToggleFacebook;
-@synthesize pageStartStream = _pageStartStream;
-@synthesize goButton = _goButton;
-@synthesize option = _option;
-@synthesize callback = _callback;
-@synthesize pages = _pages;
 
 + (WATutorialViewController *) controllerWithOption:(WATutorialInstantiationOption)option completion:(WATutorialViewControllerCallback)block {
 
@@ -39,6 +31,12 @@
 	
 	return tutorialVC;
 
+}
+
+- (BOOL) shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
+	
+	return isPad();
+	
 }
 
 - (void) viewDidLoad {
@@ -54,6 +52,9 @@
 	
 	_pages = [self copyPages];
 	[self.paginatedView reloadViews];
+	
+	[_pageControl setNumberOfPages:[_pages count]];
+	[_pageControl setCurrentPage:0];
 	
 	UIImage * (^stretch)(UIImage *) = ^ (UIImage *image) {
 	
@@ -79,6 +80,9 @@
 	};
 	
 	heckleAll(self.goButton);
+	heckleAll(self.importAndGoButton);
+	
+	[self.view bringSubviewToFront:self.pageControl];
 
 }
 
@@ -108,8 +112,11 @@
 
 - (void) paginatedView:(IRPaginatedView *)paginatedView didShowView:(UIView *)aView atIndex:(NSUInteger)index {
 
-	//	?
+	[self.pageControl setCurrentPage:index];
+}
 
+- (IBAction) currentPageChanged:(id)sender {
+	[self.paginatedView scrollToPageAtIndex:self.pageControl.currentPage animated:YES];
 }
 
 - (NSArray *) copyPages {
@@ -134,6 +141,22 @@
 	if (self.callback)
 		self.callback(YES, nil);
 		
+}
+
+- (IBAction) handleImportAndGo:(id)sender {
+
+	if (self.callback)
+		self.callback(YES, nil);
+
+	NSLog(@"Start photo import in tutorial");
+	[[WAPhotoImportManager defaultManager] createPhotoImportArticlesWithCompletionBlock:^{
+		NSLog(@"Photo import completed");
+	}];
+
+}
+
+- (void)viewDidUnload {
+	[super viewDidUnload];
 }
 
 @end
