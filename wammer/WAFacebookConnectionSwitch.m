@@ -46,7 +46,6 @@ NSString * const kWAFacebookUserDataImport = @"WAFacebookImportTimeLine";
 
 - (void)setOn:(BOOL)on animated:(BOOL)animated{
 	[[NSUserDefaults standardUserDefaults] setBool:on forKey:kWAFacebookUserDataImport];
-	[[NSUserDefaults standardUserDefaults] synchronize];
 	[super setOn:on animated:animated];
 }
 
