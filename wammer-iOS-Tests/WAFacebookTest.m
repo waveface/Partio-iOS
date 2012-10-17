@@ -7,8 +7,28 @@
 //
 
 #import "WAFacebookTest.h"
+#import "OCMock/OCMock.h"
+#import <FacebookSDK/FacebookSDK.h>
 
-@implementation WAFacebookTest
+static id mockSession = nil;
+
+@implementation FBSession (UnitTestForSingleton)
+
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wobjc-protocol-method-implementation"
++ (FBSession *)activeSession {		
+	return mockSession;
+}
+#pragma clang diagnostic pop
+
+@end
+
+@interface WAFacebookConnectionSwitch (UnitTest)
+- (void) handleFacebookConnect:(id)sender;
+@end
+
+@implementation WAFacebookTest {
+}
 
 - (void)setUp {
 	_theSwitch = [[WAFacebookConnectionSwitch alloc] init];
@@ -24,8 +44,15 @@
 							 @"This should be true");
 }
 
-- (void)testToggle {
-	// TDB.
+- (void)testFacebookTokenValid {
+	mockSession = [OCMockObject mockForClass:[FBSession class]];
+	[[[mockSession expect] andReturnValue:OCMOCK_VALUE((BOOL){YES})] isOpen];
+	[[[mockSession expect] andReturn:@"SomeToken"] accessToken];
+	
+	[_theSwitch handleFacebookConnect:nil];
+	
+	STAssertTrue(_theSwitch.on, @"Session Should be on.");
+	[mockSession verify];
 }
 
 @end
