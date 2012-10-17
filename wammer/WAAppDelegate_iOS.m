@@ -54,7 +54,6 @@
 #import "WAPhotoImportManager.h"
 
 static NSString *const kTrackingId = @"UA-27817516-7";
-#import "WACacheManager.h"
 
 @interface WALoginBackgroundViewController : UIViewController
 @end
@@ -171,8 +170,6 @@ static NSString *const kTrackingId = @"UA-27817516-7";
 	
 	[self.window makeKeyAndVisible];
 	
-	[[WACacheManager sharedManager] setDelegate:self];
-
 	if ([[NSUserDefaults standardUserDefaults] stringForKey:kWADebugPersistentStoreName]) {
 	
 		NSString *identifier = [[NSUserDefaults standardUserDefaults] stringForKey:kWADebugPersistentStoreName];
@@ -193,12 +190,14 @@ static NSString *const kTrackingId = @"UA-27817516-7";
 		
 		[self setPhotoImportManager:[[WAPhotoImportManager alloc] init]];
 
+		[self setCacheManager:[[WACacheManager alloc] init]];
+		[[self cacheManager] setDelegate:self];
+		[[self cacheManager] clearPurgeableFilesIfNeeded];
+
 		__weak WAAppDelegate *wSelf = self;
 		dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
 			[wSelf bootstrapDownloadAllThumbnails];
 		});
-		
-		[[WACacheManager sharedManager] clearPurgeableFilesIfNeeded];
 
 		[self recreateViewHierarchy];
 		
@@ -389,6 +388,7 @@ static NSString *const kTrackingId = @"UA-27817516-7";
 - (void) applicationRootViewControllerDidRequestReauthentication:(id<WAApplicationRootViewController>)controller {
 
 	[self setPhotoImportManager:nil];
+	[self setCacheManager:nil];
 	[self unsubscribeRemoteNotification];
 
 	__weak WAAppDelegate_iOS *wSelf = self;
@@ -409,7 +409,11 @@ static NSString *const kTrackingId = @"UA-27817516-7";
 			 dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
 
 				 [wSelf setPhotoImportManager:[[WAPhotoImportManager alloc] init]];
-				 
+
+				 [wSelf setCacheManager:[[WACacheManager alloc] init]];
+				 [[wSelf cacheManager] setDelegate:wSelf];
+				 [[wSelf cacheManager] clearPurgeableFilesIfNeeded];
+
 				 // reset monitored hosts
 				 WARemoteInterface *ri = [WARemoteInterface sharedInterface];
 
@@ -425,7 +429,6 @@ static NSString *const kTrackingId = @"UA-27817516-7";
 				 // continue downloading all thumbnails
 				 [wSelf bootstrapDownloadAllThumbnails];
 
-				 [[WACacheManager sharedManager] clearPurgeableFilesIfNeeded];
 			 });
 		 }
 												runningOnboardingProcess:YES];

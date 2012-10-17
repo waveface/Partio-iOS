@@ -10,127 +10,92 @@
 #import "WADataStore.h"
 #import "WAFile+WAConstants.h"
 
-NSString * const kWACacheConstructionFinished = @"WACacheConstructionFinished";
+NSString * const kWACacheSize = @"WACacheSize";
 NSString * const kWACacheFilePathKey = @"filePathKey";
 NSString * const kWACacheFilePath = @"filePath";
-NSUInteger const kLimitSize = 10*1024*1024; //10MB
+NSUInteger const DEFAULT_CACHE_SIZE = 10*1024*1024; //10MB
 
 @interface WACacheManager ()
 
-@property (nonatomic, readwrite, assign) BOOL constructionFinished;
-@property (nonatomic, readwrite, strong) NSManagedObjectContext *context;
+@property (nonatomic, readwrite) NSUInteger size;
 @property (nonatomic, readwrite, strong) NSOperationQueue *queue;
 
-+ (NSString *)archivePath;
-
-- (void)handleApplicationDidEnterBackground:(NSNotification *)note;
 - (void)initCacheEntities;
 
 @end
 
+
 @implementation WACacheManager
-
-+ (WACacheManager *)sharedManager {
-
-	static WACacheManager *returnedManager = nil;
-	static dispatch_once_t onceToken = 0;
-	dispatch_once(&onceToken, ^{
-		
-		returnedManager = [NSKeyedUnarchiver unarchiveObjectWithFile:[[self class] archivePath]];
-		if (!returnedManager) {
-			returnedManager = [[self alloc] init];
-		}
-    
-	});
-	
-	return returnedManager;
-
-}
 
 - (id)init {
 
 	self = [super init];
 	if (self) {
-		[self setConstructionFinished:NO];
-		[self setContext:[[WADataStore defaultStore] disposableMOC]];
-		[[self context] setMergePolicy:NSMergeByPropertyObjectTrumpMergePolicy];
 		[self setQueue:[[NSOperationQueue alloc] init]];
 		[[self queue] setMaxConcurrentOperationCount:1];
-		[self initCacheEntities];
-		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleApplicationDidEnterBackground:) name:UIApplicationDidEnterBackgroundNotification object:nil];
-	}
-	return self;
-
-}
-
-- (id)initWithCoder:(NSCoder *)aDecoder {
-
-	self = [super init];
-	if (self) {
-		[self setConstructionFinished:[aDecoder decodeBoolForKey:kWACacheConstructionFinished]];
-		[self setContext:[[WADataStore defaultStore] disposableMOC]];
-		[[self context] setMergePolicy:NSMergeByPropertyObjectTrumpMergePolicy];
-		[self setQueue:[[NSOperationQueue alloc] init]];
-		[[self queue] setMaxConcurrentOperationCount:1];
-		if (![self constructionFinished]) {
+		[self setSize:[[NSUserDefaults standardUserDefaults] integerForKey:kWACacheSize]];
+		if ([self size] == 0) {
 			[self initCacheEntities];
 		}
-		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleApplicationDidEnterBackground:) name:UIApplicationDidEnterBackgroundNotification object:nil];
 	}
 	return self;
-
-}
-
-- (void)encodeWithCoder:(NSCoder *)aCoder {
-
-	[aCoder encodeBool:[self constructionFinished] forKey:kWACacheConstructionFinished];
 
 }
 
 - (void)dealloc {
 
-	[[NSNotificationCenter defaultCenter] removeObserver:self];
-
-}
-
-- (void)handleApplicationDidEnterBackground:(NSNotification *)note {
-
-	BOOL saved = [NSKeyedArchiver archiveRootObject:self toFile:[[self class] archivePath]];
-	if (!saved) {
-		NSLog(@"Unable to save WACacheManager");
-	}
+	// try to flush all cache updates to Core Data
+	[[self queue] waitUntilAllOperationsAreFinished];
 
 }
 
 - (void)initCacheEntities {
 
-	NSArray *files = [[WADataStore defaultStore] fetchAllFilesUsingContext:[self context]];
+	NSManagedObjectContext *context = [[WADataStore defaultStore] disposableMOC];
+
+	NSArray *files = [[WADataStore defaultStore] fetchAllFilesUsingContext:context];
 	for (WAFile *file in files) {
 		if (![file caches]) {
-			NSArray *pathKeys = @[kWAFileExtraSmallThumbnailFilePath, kWAFileSmallThumbnailFilePath, kWAFileThumbnailFilePath, kWAFileLargeThumbnailFilePath, kWAFileResourceFilePath];
+			NSArray *pathKeys = @[kWAFileExtraSmallThumbnailFilePath,
+														kWAFileSmallThumbnailFilePath,
+														kWAFileThumbnailFilePath,
+														kWAFileLargeThumbnailFilePath,
+														kWAFileResourceFilePath];
 			for (NSString *pathKey in pathKeys) {
+				// create cache entity by touching file path
 				NSString *filePath = [file valueForKey:pathKey];
 				if (filePath) {
-					NSLog(@"touch attachment file at: %@", filePath);
+					NSLog(@"Init cache entity for attachment file at: %@", filePath);
 				}
 			}
 		}
 	}
 	
-	NSArray *ogImages = [[WADataStore defaultStore] fetchAllOGImagesUsingContext:[self context]];
+	NSArray *ogImages = [[WADataStore defaultStore] fetchAllOGImagesUsingContext:context];
 	for (WAOpenGraphElementImage *ogImage in ogImages) {
 		if (![ogImage cache]) {
+			// create cache entity by touching file path
 			NSString *filePath = [ogImage imageFilePath];
 			if (filePath) {
-				NSLog(@"touch ogimage file at: %@", filePath);
+				NSLog(@"Init cache entity for ogimage file at: %@", filePath);
 			}
 		}
 	}
 
 	__weak WACacheManager *wSelf = self;
 	[[self queue] addOperationWithBlock:^{
-		[wSelf setConstructionFinished:YES];
-		NSLog(@"Cache entries initialized");
+
+		// set cache size in the last step of initialization
+		[wSelf setSize:DEFAULT_CACHE_SIZE];
+
+		// save cache size to disk so that we don't need to initialize cache entities next time.
+		[[NSUserDefaults standardUserDefaults] setInteger:DEFAULT_CACHE_SIZE forKey:kWACacheSize];
+		[[NSUserDefaults standardUserDefaults] synchronize];
+
+		WADataStore *ds = [WADataStore defaultStore];
+		NSUInteger totalSize = [[ds fetchTotalCacheSizeUsingContext:[ds disposableMOC]] unsignedIntegerValue];
+		NSLog(@"Cache entries are successfully initialized, total size is %d", totalSize);
+
 	}];
 
 }
@@ -138,24 +103,34 @@ NSUInteger const kLimitSize = 10*1024*1024; //10MB
 - (void)insertOrUpdateCacheWithRelationship:(NSURL *)relationshipURL filePath:(NSString *)filePath filePathKey:(NSString *)filePathKey {
 
 	if (![[NSFileManager defaultManager] fileExistsAtPath:filePath]) {
-		NSLog(@"Non existing file at: %@", filePath);
+		NSLog(@"File does not exist: %@", filePath);
 	}
-	__weak WACacheManager *wSelf = self;
-	[[wSelf queue] addOperationWithBlock:^{
 
-		id relatedObject = [[wSelf context] irManagedObjectForURI:relationshipURL];
+	__weak WACacheManager *wSelf = self;
+	[[self queue] addOperationWithBlock:^{
+
+		NSAssert([wSelf size] != 0, @"Cache entities should be initialized");
+
+		NSManagedObjectContext *context = [[WADataStore defaultStore] disposableMOC];
+
+		// Sometimes the related WAFile entity's extraSmallThumbanilFilePath is simultaneously
+		// updated in another context, so we specify merge policy here to ignore conflicts.
+		[context setMergePolicy:NSMergeByPropertyObjectTrumpMergePolicy];
+
+		id relatedObject = [context irManagedObjectForURI:relationshipURL];
 		BOOL isWAFile = [relatedObject isKindOfClass:[WAFile class]];
 		BOOL isWAOpenGraphElementImage = [relatedObject isKindOfClass:[WAOpenGraphElementImage class]];
 		NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K == %@ && %K == %@", kWACacheFilePathKey, filePathKey, kWACacheFilePath, filePath];
-		WACache *currentCache = [[WADataStore defaultStore] fetchCacheWithPredicate:predicate usingContext:[wSelf context]];
+		WACache *currentCache = [[WADataStore defaultStore] fetchCacheWithPredicate:predicate usingContext:context];
 		WACache *savedCache = nil;
+
 		if (currentCache) {
 			
 			[currentCache setLastAccessTime:[NSDate date]];
 			
 		} else {
 			
-			savedCache = [WACache objectInsertingIntoContext:[wSelf context] withRemoteDictionary:@{}];
+			savedCache = [WACache objectInsertingIntoContext:context withRemoteDictionary:@{}];
 			[savedCache setLastAccessTime:[NSDate date]];
 			[savedCache setFilePath:filePath];
 			[savedCache setFilePathKey:filePathKey];
@@ -171,7 +146,7 @@ NSUInteger const kLimitSize = 10*1024*1024; //10MB
 		}
 		
 		NSError *error = nil;
-		[[wSelf context] save:&error];
+		[context save:&error];
 		if (error) {
 			NSLog(@"Error saving: %s %@", __PRETTY_FUNCTION__, error);
 		}
@@ -182,55 +157,71 @@ NSUInteger const kLimitSize = 10*1024*1024; //10MB
 
 - (void)clearPurgeableFilesIfNeeded {
 
-	__block NSUInteger totalSize = [[[WADataStore defaultStore] fetchTotalCacheSizeUsingContext:[self context]] unsignedIntegerValue];
-	if (totalSize > kLimitSize) {
+	if ([self size] == 0) {
+		NSLog(@"Cache entities has not been initialized yet, skip it");
+		return;
+	}
 
-		NSLog(@"Total cache size is over %d, clear purgeable files now...", kLimitSize);
+	WADataStore *ds = [WADataStore defaultStore];
+	__block NSUInteger totalSize = [[ds fetchTotalCacheSizeUsingContext:[ds disposableMOC]] unsignedIntegerValue];
+
+	if (totalSize > [self size]) {
+
+		NSLog(@"Total cache size is over %d, clear purgeable files now...", [self size]);
+
 		__weak WACacheManager *wSelf = self;
-		NSArray *caches = [[WADataStore defaultStore] fetchAllCachesUsingContext:[self context]];
+		NSArray *caches = [ds fetchAllCachesUsingContext:[ds disposableMOC]];
+
 		for (WACache *cache in caches) {
+
 			[[self queue] addOperationWithBlock:^{
-				if (totalSize <= kLimitSize) {
+
+				if (totalSize <= [wSelf size]) {
 					return;
 				}
-				if ([[wSelf delegate] shouldPurgeCachedFile:cache]) {
-					NSError *error = nil;
-					if ([[NSFileManager defaultManager] fileExistsAtPath:[cache filePath]]) {
-						[[NSFileManager defaultManager] removeItemAtPath:[cache filePath] error:&error];
+
+				NSManagedObjectContext *context = [[WADataStore defaultStore] disposableMOC];
+
+				// deleting a WACache object from different context is forbidden, so we do select again
+				WACache *targetCache = (WACache *)[context irManagedObjectForURI:[[cache objectID] URIRepresentation]];
+
+				if ([[wSelf delegate] shouldPurgeCachedFile:targetCache]) {
+
+					if ([[NSFileManager defaultManager] fileExistsAtPath:[targetCache filePath]]) {
+						NSError *error = nil;
+						[[NSFileManager defaultManager] removeItemAtPath:[targetCache filePath] error:&error];
 						if (error) {
 							NSLog(@"Unable to remove cached file: %s %@", __PRETTY_FUNCTION__, error);
 							return;
 						}
 					}
-					totalSize -= [[cache fileSize] unsignedIntegerValue];
-					[[wSelf context] deleteObject:cache];
-					error = nil;
-					[[wSelf context] save:&error];
+
+					totalSize -= [[targetCache fileSize] unsignedIntegerValue];
+					[context deleteObject:targetCache];
+
+					NSError *error = nil;
+					[context save:&error];
 					if (error) {
 						NSLog(@"Error saving: %s %@", __PRETTY_FUNCTION__, error);
 					}
 				}
+
 			}];
+
 		}
 
 		[[self queue] addOperationWithBlock:^{
+
 			NSLog(@"Purging finished, current total size is %d", totalSize);
+
 		}];
 
 	} else {
 
-		NSLog(@"Total cache size is under %d, no need purging", kLimitSize);
+		NSLog(@"Total cache size is under %d, no need purging", [self size]);
 
 	}
 	
 }
 
-+ (NSString *)archivePath {
-
-	NSArray *cacheDirectories = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
-	NSString *cacheDirectory = [cacheDirectories objectAtIndex:0];
-	return [cacheDirectory stringByAppendingPathComponent:@"cachemanager.archive"];
-
-}
-	
 @end

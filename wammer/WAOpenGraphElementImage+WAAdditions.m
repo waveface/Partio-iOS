@@ -15,6 +15,8 @@
 #import "Foundation+IRAdditions.h"
 #import "UIKit+IRAdditions.h"
 #import "IRManagedObject+WAFileHandling.h"
+#import "WADefines.h"
+#import "WAAppDelegate_iOS.h"
 #import "WACacheManager.h"
 
 NSString * kWAOpenGraphElementImageFilePath = @"imageFilePath";
@@ -37,7 +39,8 @@ NSString * kWAOpenGraphElementImageImage = @"image";
 	[self willChangeValueForKey:kWAOpenGraphElementImageFilePath];
 	NSString *filePath = [self relativePathFromPath:newImageFilePath];
 	[self setPrimitiveImageFilePath:filePath];
-	[[WACacheManager sharedManager] insertOrUpdateCacheWithRelationship:[[self objectID] URIRepresentation] filePath:[self absolutePathFromPath:filePath] filePathKey:kWAOpenGraphElementImageFilePath];
+	WACacheManager *cacheManager = [(WAAppDelegate_iOS *)AppDelegate() cacheManager];
+	[cacheManager insertOrUpdateCacheWithRelationship:[[self objectID] URIRepresentation] filePath:[self absolutePathFromPath:filePath] filePathKey:kWAOpenGraphElementImageFilePath];
 	[self didChangeValueForKey:kWAOpenGraphElementImageFilePath];
 
 	[self setImage:nil];
@@ -50,7 +53,8 @@ NSString * kWAOpenGraphElementImageImage = @"image";
 	
 	NSString *filePath = [self absolutePathFromPath:primitivePath];
 	if (primitivePath && [[NSFileManager defaultManager] fileExistsAtPath:filePath]) {
-		[[WACacheManager sharedManager] insertOrUpdateCacheWithRelationship:[[self objectID] URIRepresentation] filePath:filePath filePathKey:kWAOpenGraphElementImageFilePath];
+		WACacheManager *cacheManager = [(WAAppDelegate_iOS *)AppDelegate() cacheManager];
+		[cacheManager insertOrUpdateCacheWithRelationship:[[self objectID] URIRepresentation] filePath:filePath filePathKey:kWAOpenGraphElementImageFilePath];
 		return filePath;
 	}
 		
