@@ -379,7 +379,6 @@ NSURL *refiningStationLocation(NSString *stationUrlString, NSURL *baseUrl) {
     }
     
     NSURL *bestHostURL = [wSelf bestHostForRequestNamed:originalMethodName];
-    NSParameterAssert(bestHostURL);
     
     NSURL *swizzledURL = [NSURL URLWithString:[[NSArray arrayWithObjects:
 

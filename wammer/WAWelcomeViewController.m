@@ -9,10 +9,8 @@
 #import "WAWelcomeViewController.h"
 #import "WASignUpViewController.h"
 #import "WALogInViewController.h"
-#import "WAFacebookInterface.h"
-#import "WAFacebookInterfaceSubclass.h"
-#import "WAFacebook.h"
 #import "WARemoteInterface.h"
+#import <FacebookSDK/FacebookSDK.h>
 
 @interface WAWelcomeViewController ()
 @property (nonatomic, readwrite, copy) WAWelcomeViewControllerCallback callback;
@@ -80,50 +78,33 @@
 }
 
 - (IBAction) handleFacebookConnect:(id)sender {
-
-	//	?
 	
 	__weak WAWelcomeViewController *wSelf = self;
-	__weak WAFacebookInterface *wFBInterface = [WAFacebookInterface sharedInterface];
 	
-	[wFBInterface authenticateWithCompletion:^(BOOL didFinish, NSError *error) {
-		
-		if (!didFinish) {
-				
-			/*
-			 
-				The Did Not Login notification will be fired if the user gets back into the application by tapping the Cancel button in the third party application or on the web auth form
+	[FBSession
+	 openActiveSessionWithReadPermissions:nil
+	 allowLoginUI:YES
+	 completionHandler:^(FBSession *session, FBSessionState status, NSError *error) {
+		 if (error) {
+			 NSLog(@"Facebook auth error: %@", error);
+			 return;
+		 }
 		 
-			*/
-			
-			return;
-		}
-		
-		WARemoteInterface * ri = [WARemoteInterface sharedInterface];
-		
-		[ri signupUserWithFacebookToken:wFBInterface.facebook.accessToken withOptions:nil onSuccess:^(NSString *token, NSDictionary *userRep, NSArray *groupReps) {
-		
-			dispatch_async(dispatch_get_main_queue(), ^{
-				
-				if (wSelf.callback)
-					wSelf.callback(token, userRep, groupReps, error);
-
-			});
-			
-		} onFailure:^(NSError *error) {
-		
-			dispatch_async(dispatch_get_main_queue(), ^{
-
-				if (wSelf.callback)
-					wSelf.callback(nil, nil, nil, error);
-			
-			});
-			
-		}];
-		
-	}];
-	
-
+		 [[WARemoteInterface sharedInterface]
+			signupUserWithFacebookToken:session.accessToken
+			withOptions:nil
+			onSuccess:^(NSString *token, NSDictionary *userRep, NSArray *groupReps) {
+				dispatch_async(dispatch_get_main_queue(), ^{
+					if (wSelf.callback)
+						wSelf.callback(token, userRep, groupReps, error);
+				});
+			} onFailure:^(NSError *error) {
+				dispatch_async(dispatch_get_main_queue(), ^{
+					if (wSelf.callback)
+						wSelf.callback(nil, nil, nil, error);
+				});
+			}];
+	 }];
 }
 
 - (IBAction) handleLogin:(id)sender {
