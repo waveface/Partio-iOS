@@ -347,15 +347,7 @@
 			
 				[IRAction actionWithTitle:NSLocalizedString(@"ACTION_SIGN_OUT", @"Action title for Signing Out") block: ^ {
 
-					WAOverlayBezel *bezel = [WAOverlayBezel bezelWithStyle:WADefaultBezelStyle];
-					[bezel show];
-					[[WAPhotoImportManager defaultManager] cancelPhotoImportWithCompletionBlock:^{
-
-						[((WAAppDelegate*)AppDelegate()) unsubscribeRemoteNotification];
-
-						[bezel dismiss];
-						[nrSelf.delegate applicationRootViewControllerDidRequestReauthentication:nrSelf];
-					}];
+					[nrSelf.delegate applicationRootViewControllerDidRequestReauthentication:nrSelf];
 
 				}],
 			

@@ -9,17 +9,8 @@
 #import <Foundation/Foundation.h>
 #import "WAArticle.h"
 
-typedef void (^WAPhotoImportCallback) ();
-
 @interface WAPhotoImportManager : NSObject
 
-@property (nonatomic, readwrite, assign) BOOL finished;
-@property (nonatomic, readwrite, assign) BOOL canceled;
-@property (nonatomic, readwrite, strong) WAArticle *lastImportedArticle;
-
-+ (WAPhotoImportManager *)defaultManager;
-
-- (void)createPhotoImportArticlesWithCompletionBlock:(WAPhotoImportCallback)aCallbackBlock;
-- (void)cancelPhotoImportWithCompletionBlock:(WAPhotoImportCallback)aCallbackBlock;
+- (void)waitUntilFinished;
 
 @end

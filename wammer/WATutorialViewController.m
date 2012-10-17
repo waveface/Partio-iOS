@@ -7,7 +7,7 @@
 //
 
 #import "WATutorialViewController.h"
-#import "WAPhotoImportManager.h"
+#import "WADefines.h"
 
 @interface WATutorialViewController () <IRPaginatedViewDelegate>
 
@@ -138,20 +138,21 @@
 
 - (IBAction) handleGo:(id)sender {
 
+	[[NSUserDefaults standardUserDefaults] setBool:NO forKey:kWAPhotoImportEnabled];
+	[[NSUserDefaults standardUserDefaults] synchronize];
+	
 	if (self.callback)
 		self.callback(YES, nil);
-		
+
 }
 
 - (IBAction) handleImportAndGo:(id)sender {
 
+	[[NSUserDefaults standardUserDefaults] setBool:YES forKey:kWAPhotoImportEnabled];
+	[[NSUserDefaults standardUserDefaults] synchronize];
+	
 	if (self.callback)
 		self.callback(YES, nil);
-
-	NSLog(@"Start photo import in tutorial");
-	[[WAPhotoImportManager defaultManager] createPhotoImportArticlesWithCompletionBlock:^{
-		NSLog(@"Photo import completed");
-	}];
 
 }
 
