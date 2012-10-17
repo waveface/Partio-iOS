@@ -912,6 +912,8 @@ static NSInteger networkActivityStackingCount = 0;
 	[FBSession.activeSession handleDidBecomeActive];
 }
 
+#pragma mark @protocol WACacheManagerDelegate
+
 - (BOOL)shouldPurgeCachedFile:(WACache *)cache {
 
 	return YES;
