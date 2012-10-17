@@ -269,7 +269,6 @@
 	WAArticle *previousPost = self.representedObject;
 	if (previousPost) {
 		for (WAFile *file in previousPost.files) {
-			[file irRemoveObserverBlocksForKeyPath:@"thumbnailFilePath"];
 			[file irRemoveObserverBlocksForKeyPath:@"smallThumbnailImage"];
 		}
 		[previousPost irRemoveObserverBlocksForKeyPath:@"dirty"];
@@ -335,18 +334,6 @@
 
 		__weak WAPostViewCellPhone *wSelf = self;
 
-		BOOL (^syncCompleted)(void)	= ^ {
-			for (WAFile *file in wSelf.article.files) {
-				if (![file thumbnailFilePath]) {
-					return NO;
-				}
-			}
-			if ([wSelf.article.dirty isEqualToNumber:(id)kCFBooleanTrue]) {
-				return NO;
-			}
-			return YES;
-		};
-
 		void (^showSyncCompletedInCell)(void) = ^ {
 			WAArticle *article = wSelf.representedObject;
 			wSelf.originLabel.textColor = [UIColor lightGrayColor];
@@ -363,26 +350,14 @@
 			wSelf.originLabel.text = [NSString stringWithFormat:NSLocalizedString(@"UNABLE_TO_DOWNLOADING_PHOTOS", @"Downloading Status on iPhone Timeline")];
 		};
 
-		if (syncCompleted()) {
+		if ([self.article.dirty isEqualToNumber:(id)kCFBooleanFalse]) {
 
 			showSyncCompletedInCell();
 
 		} else {
 
-			for (WAFile *file in allFiles) {
-				[file irObserve:@"thumbnailFilePath" options:NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew context:nil withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
-					if (!fromValue && toValue) {
-						if (syncCompleted()) {
-							dispatch_async(dispatch_get_main_queue(), ^{
-								showSyncCompletedInCell();
-							});
-						}
-					}
-				}];
-			}
-
 			[self.representedObject irObserve:@"dirty" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:nil withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
-				if (syncCompleted()) {
+				if ([self.article.dirty isEqualToNumber:(id)kCFBooleanFalse]) {
 					dispatch_async(dispatch_get_main_queue(), ^{
 						showSyncCompletedInCell();
 					});
@@ -397,7 +372,7 @@
 		}
 
 		[[WARemoteInterface sharedInterface] irObserve:@"networkState" options:NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew context:nil withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
-			if (syncCompleted()) {
+			if ([self.article.dirty isEqualToNumber:(id)kCFBooleanFalse]) {
 				dispatch_async(dispatch_get_main_queue(), ^{
 					showSyncCompletedInCell();
 				});

@@ -189,11 +189,6 @@ static NSString *const kTrackingId = @"UA-27817516-7";
 			[self bootstrapPersistentStoreWithUserIdentifier:lastAuthenticatedUserIdentifier];
 		
 		[self setPhotoImportManager:[[WAPhotoImportManager alloc] init]];
-
-		__weak WAAppDelegate *wSelf = self;
-		dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-			[wSelf bootstrapDownloadAllThumbnails];
-		});
 		
 		[self recreateViewHierarchy];
 		
@@ -416,9 +411,6 @@ static NSString *const kTrackingId = @"UA-27817516-7";
 
 				 // reset pending original objects
 				 [[WASyncManager sharedManager] reload];
-
-				 // continue downloading all thumbnails
-				 [wSelf bootstrapDownloadAllThumbnails];
 
 			 });
 		 }

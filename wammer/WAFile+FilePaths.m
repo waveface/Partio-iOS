@@ -41,7 +41,9 @@
 	if ([fileURL isFileURL])
 		return [fileURL path];
 	
-	[self retrieveBlobWithURLStringKey:urlStringKey filePathKey:filePathKey];
+	if ([self displayingSmallThumbnail] || [self displayingThumbnail]) {
+		[self retrieveBlobWithURLStringKey:urlStringKey filePathKey:filePathKey];
+	}
 	
 	return nil;	
 
