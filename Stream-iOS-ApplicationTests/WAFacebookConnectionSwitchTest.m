@@ -6,7 +6,7 @@
 //  Copyright (c) 2012年 Waveface. All rights reserved.
 //
 
-#import "WAFacebookTest.h"
+#import "WAFacebookConnectionSwitchTest.h"
 #import "OCMock/OCMock.h"
 #import <FacebookSDK/FacebookSDK.h>
 #import "WARemoteInterface.h"
@@ -37,7 +37,7 @@ static id mockRemoteInterface = nil;
 @end
 #pragma clang diagnostic pop
 
-@implementation WAFacebookTest
+@implementation WAFacebookConnectionSwitchTest
 
 - (void)setUp {
 	_theSwitch = [[WAFacebookConnectionSwitch alloc] init];

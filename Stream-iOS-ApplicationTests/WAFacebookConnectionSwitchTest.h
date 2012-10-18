@@ -9,7 +9,7 @@
 #import <SenTestingKit/SenTestingKit.h>
 #import "WAFacebookConnectionSwitch.h"
 
-@interface WAFacebookTest : SenTestCase
+@interface WAFacebookConnectionSwitchTest : SenTestCase
 
 @property (nonatomic, strong) WAFacebookConnectionSwitch *theSwitch;
 

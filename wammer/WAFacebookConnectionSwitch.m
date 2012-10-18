@@ -162,107 +162,116 @@ NSString * const kWAFacebookUserDataImport = @"WAFacebookImportTimeLine";
 	__weak WAFacebookConnectionSwitch * const wSelf = self;
 	
 	if (FBSession.activeSession.isOpen) {
-	
+		
 		WAOverlayBezel *busyBezel = [WAOverlayBezel bezelWithStyle:WAActivityIndicatorBezelStyle];
 		[busyBezel showWithAnimation:WAOverlayBezelAnimationFade];
 		
-		[wSelf connectFacebookWithToken:FBSession.activeSession.accessToken onSuccess:^{
-			
-			[busyBezel dismissWithAnimation:WAOverlayBezelAnimationNone];
-			
-			WAOverlayBezel *doneBezel = [WAOverlayBezel bezelWithStyle:WACheckmarkBezelStyle];
-			[doneBezel showWithAnimation:WAOverlayBezelAnimationNone];
-			dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 2.0 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
-				[doneBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
-			});
-			
-			[wSelf setOn:YES animated:YES];
-			[wSelf setEnabled:YES];
-
-		} onFailure:^(NSError *error) {
-		
-			[busyBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
-			
-			[wSelf requestFacebookTokenWithCompletion:^(NSString *token, NSError *error) {
-			
-				if (token) {
-				
-					[wSelf setEnabled:NO];
-					[wSelf setOn:YES animated:YES];
-					
-					WAOverlayBezel *busyBezel = [WAOverlayBezel bezelWithStyle:WAActivityIndicatorBezelStyle];
-					[busyBezel showWithAnimation:WAOverlayBezelAnimationFade];
-					
-					[wSelf connectFacebookWithToken:token onSuccess:^{
-						
-						[busyBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
-
-						[wSelf setEnabled:YES];
-						[wSelf setOn:YES animated:YES];
-
-					} onFailure:^(NSError *error) {
-						
-						[busyBezel dismissWithAnimation:WAOverlayBezelAnimationNone];
-						
-						[[[IRAlertView alloc] initWithTitle:NSLocalizedString(@"FACEBOOK_CONNECT_FAIL_TITLE", @"Title for an alert view to show facebook connection failure") message:[wSelf errorString:[error code]] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
-						
-						[wSelf setEnabled:YES];
-						[wSelf setOn:NO animated:YES];
-
-					}];
-
-				} else {
-				
-					[[[IRAlertView alloc] initWithTitle:NSLocalizedString(@"FACEBOOK_CONNECT_FAIL_TITLE", @"Title for an alert view to show facebook connection failure") message:[wSelf errorString:[error code]] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
-					[wSelf setEnabled:YES];
-					[wSelf setOn:NO animated:YES];
-					
-					return;
-				
-				}
-				
-			}];
-			
-		}];
+		[wSelf
+		 connectFacebookWithToken:FBSession.activeSession.accessToken
+		 onSuccess:^{
+			 
+			 [busyBezel dismissWithAnimation:WAOverlayBezelAnimationNone];
+			 
+			 WAOverlayBezel *doneBezel = [WAOverlayBezel bezelWithStyle:WACheckmarkBezelStyle];
+			 [doneBezel showWithAnimation:WAOverlayBezelAnimationNone];
+			 dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 2.0 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+				 [doneBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
+			 });
+			 
+			 [wSelf setOn:YES animated:YES];
+			 [wSelf setEnabled:YES];
+			 
+		 }
+		 onFailure:^(NSError *error) {
+			 
+			 [busyBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
+			 
+			 [wSelf requestFacebookTokenWithCompletion:^(NSString *token, NSError *error) {
+				 
+				 if (token) {
+					 
+					 [wSelf setEnabled:NO];
+					 [wSelf setOn:YES animated:YES];
+					 
+					 WAOverlayBezel *busyBezel = [WAOverlayBezel bezelWithStyle:WAActivityIndicatorBezelStyle];
+					 [busyBezel showWithAnimation:WAOverlayBezelAnimationFade];
+					 
+					 [wSelf
+						connectFacebookWithToken:token
+						onSuccess:^{
+							
+							[busyBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
+							
+							[wSelf setEnabled:YES];
+							[wSelf setOn:YES animated:YES];
+							
+						}
+						onFailure:^(NSError *error) {
+							
+							[busyBezel dismissWithAnimation:WAOverlayBezelAnimationNone];
+							
+							[[[IRAlertView alloc] initWithTitle:NSLocalizedString(@"FACEBOOK_CONNECT_FAIL_TITLE", @"Title for an alert view to show facebook connection failure") message:[wSelf errorString:[error code]] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
+							
+							[wSelf setEnabled:YES];
+							[wSelf setOn:NO animated:YES];
+							
+						}];
+					 
+				 } else {
+					 
+					 [[[IRAlertView alloc] initWithTitle:NSLocalizedString(@"FACEBOOK_CONNECT_FAIL_TITLE", @"Title for an alert view to show facebook connection failure") message:[wSelf errorString:[error code]] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
+					 [wSelf setEnabled:YES];
+					 [wSelf setOn:NO animated:YES];
+					 
+					 return;
+					 
+				 }
+				 
+			 }];
+			 
+		 }];
 		
 	} else {
 
 		[wSelf requestFacebookTokenWithCompletion:^(NSString *token, NSError *error) {
-		
-			if (token) {
 			
+			if (token) {
+				
 				[wSelf setEnabled:NO];
 				[wSelf setOn:YES animated:YES];
 				
 				WAOverlayBezel *busyBezel = [WAOverlayBezel bezelWithStyle:WAActivityIndicatorBezelStyle];
 				[busyBezel showWithAnimation:WAOverlayBezelAnimationFade];
 				
-				[wSelf connectFacebookWithToken:token onSuccess:^{
-					
-					[busyBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
-
-					[wSelf setEnabled:YES];
-					[wSelf setOn:YES animated:YES];
-
-				} onFailure:^(NSError *error) {
-					
-					[busyBezel dismissWithAnimation:WAOverlayBezelAnimationNone];
-					[[[IRAlertView alloc] initWithTitle:NSLocalizedString(@"FACEBOOK_CONNECT_FAIL_TITLE", @"Title for an alert view to show facebook connection failure") message:[wSelf errorString:[error code]] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
-					
-					[wSelf setEnabled:YES];
-					[wSelf setOn:NO animated:YES];
-
-				}];
+				[wSelf
+				 connectFacebookWithToken:token
+				 onSuccess:^{
+					 
+					 [busyBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
+					 
+					 [wSelf setEnabled:YES];
+					 [wSelf setOn:YES animated:YES];
+					 
+				 }
+				 onFailure:^(NSError *error) {
+					 
+					 [busyBezel dismissWithAnimation:WAOverlayBezelAnimationNone];
+					 [[[IRAlertView alloc] initWithTitle:NSLocalizedString(@"FACEBOOK_CONNECT_FAIL_TITLE", @"Title for an alert view to show facebook connection failure") message:[wSelf errorString:[error code]] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
+					 
+					 [wSelf setEnabled:YES];
+					 [wSelf setOn:NO animated:YES];
+					 
+				 }];
 
 			} else {
-			
+				
 				[[[IRAlertView alloc] initWithTitle:NSLocalizedString(@"FACEBOOK_CONNECT_FAIL_TITLE", @"Title for an alert view to show facebook connection failure") message:[wSelf errorString:[error code]] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
 				
 				[wSelf setEnabled:YES];
 				[wSelf setOn:NO animated:YES];
 				
 				return;
-			
+				
 			}
 			
 		}];

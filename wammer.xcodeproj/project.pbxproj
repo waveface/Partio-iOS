@@ -144,7 +144,7 @@
 		7D0CDD09162E5A080027D35F /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 7D0CDD07162E5A080027D35F /* InfoPlist.strings */; };
 		7D0CDD0C162E5A080027D35F /* Stream_iOS_ApplicationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D0CDD0B162E5A080027D35F /* Stream_iOS_ApplicationTests.m */; };
 		7D0CDD13162E5CEE0027D35F /* libOCMock.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B43E32D15EDEB3500F64F40 /* libOCMock.a */; };
-		7D0CDD18162E5FC90027D35F /* WAFacebookTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D0CDD15162E5F9E0027D35F /* WAFacebookTest.m */; };
+		7D0CDD18162E5FC90027D35F /* WAFacebookConnectionSwitchTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D0CDD15162E5F9E0027D35F /* WAFacebookConnectionSwitchTest.m */; };
 		7D92E5B216070705000C7B06 /* PhotoPostWithURLHistoryStyle.txt in Resources */ = {isa = PBXBuildFile; fileRef = 7D92E5B0160703F6000C7B06 /* PhotoPostWithURLHistoryStyle.txt */; };
 		7D9B1D8D162BB1DE000E5350 /* Accounts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D9B1D8C162BB1DE000E5350 /* Accounts.framework */; };
 		7D9B1D8F162BB1E8000E5350 /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D9B1D8E162BB1E8000E5350 /* AdSupport.framework */; };
@@ -1246,8 +1246,8 @@
 		7D0CDD0A162E5A080027D35F /* Stream_iOS_ApplicationTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Stream_iOS_ApplicationTests.h; sourceTree = "<group>"; };
 		7D0CDD0B162E5A080027D35F /* Stream_iOS_ApplicationTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Stream_iOS_ApplicationTests.m; sourceTree = "<group>"; };
 		7D0CDD0D162E5A080027D35F /* Stream-iOS-ApplicationTests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Stream-iOS-ApplicationTests-Prefix.pch"; sourceTree = "<group>"; };
-		7D0CDD14162E5F9E0027D35F /* WAFacebookTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAFacebookTest.h; sourceTree = "<group>"; };
-		7D0CDD15162E5F9E0027D35F /* WAFacebookTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAFacebookTest.m; sourceTree = "<group>"; };
+		7D0CDD14162E5F9E0027D35F /* WAFacebookConnectionSwitchTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAFacebookConnectionSwitchTest.h; sourceTree = "<group>"; };
+		7D0CDD15162E5F9E0027D35F /* WAFacebookConnectionSwitchTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAFacebookConnectionSwitchTest.m; sourceTree = "<group>"; };
 		7D92E5B0160703F6000C7B06 /* PhotoPostWithURLHistoryStyle.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = PhotoPostWithURLHistoryStyle.txt; sourceTree = "<group>"; };
 		7D9B1D8C162BB1DE000E5350 /* Accounts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accounts.framework; path = System/Library/Frameworks/Accounts.framework; sourceTree = SDKROOT; };
 		7D9B1D8E162BB1E8000E5350 /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
@@ -2269,8 +2269,8 @@
 			children = (
 				7D0CDD0A162E5A080027D35F /* Stream_iOS_ApplicationTests.h */,
 				7D0CDD0B162E5A080027D35F /* Stream_iOS_ApplicationTests.m */,
-				7D0CDD14162E5F9E0027D35F /* WAFacebookTest.h */,
-				7D0CDD15162E5F9E0027D35F /* WAFacebookTest.m */,
+				7D0CDD14162E5F9E0027D35F /* WAFacebookConnectionSwitchTest.h */,
+				7D0CDD15162E5F9E0027D35F /* WAFacebookConnectionSwitchTest.m */,
 				7D0CDD05162E5A080027D35F /* Supporting Files */,
 			);
 			name = "Application Tests";
@@ -4376,7 +4376,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				7D0CDD0C162E5A080027D35F /* Stream_iOS_ApplicationTests.m in Sources */,
-				7D0CDD18162E5FC90027D35F /* WAFacebookTest.m in Sources */,
+				7D0CDD18162E5FC90027D35F /* WAFacebookConnectionSwitchTest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
