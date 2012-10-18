@@ -20,6 +20,7 @@ static id mockRemoteInterface = nil;
 
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wobjc-protocol-method-implementation"
+#pragma clang diagnostic ignored "-Wincomplete-implementation"
 @implementation WAFacebookConnectionSwitch (UnitTest)
 - (void) reloadStatus {}
 @end
@@ -68,8 +69,11 @@ static id mockRemoteInterface = nil;
 		_theSwitch.on = YES;
 	};
 	
-	[[[mockRemoteInterface expect] andDo:nil] retrieveConnectedSocialNetworksOnSuccess:[OCMArg any] onFailure:[OCMArg any]];
-	[[[mockRemoteInterface expect] andDo:theBlock] connectSocialNetwork:@"facebook" withToken:[OCMArg any] onSuccess:[OCMArg any] onFailure:[OCMArg any]];
+	[[[mockRemoteInterface expect] andDo:nil]
+	 retrieveConnectedSocialNetworksOnSuccess:[OCMArg any]
+	 onFailure:[OCMArg any]];
+	[[[mockRemoteInterface expect] andDo:theBlock]
+	 connectSocialNetwork:@"facebook" withToken:[OCMArg any] onSuccess:[OCMArg any] onFailure:[OCMArg any]];
 	
 	@autoreleasepool {
 		[_theSwitch handleFacebookConnect:nil];
