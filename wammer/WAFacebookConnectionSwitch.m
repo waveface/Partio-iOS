@@ -163,25 +163,25 @@ NSString * const kWAFacebookUserDataImport = @"WAFacebookImportTimeLine";
 	
 	if (FBSession.activeSession.isOpen) {
 	
-//		WAOverlayBezel *busyBezel = [WAOverlayBezel bezelWithStyle:WAActivityIndicatorBezelStyle];
-//		[busyBezel showWithAnimation:WAOverlayBezelAnimationFade];
+		WAOverlayBezel *busyBezel = [WAOverlayBezel bezelWithStyle:WAActivityIndicatorBezelStyle];
+		[busyBezel showWithAnimation:WAOverlayBezelAnimationFade];
 		
 		[wSelf connectFacebookWithToken:FBSession.activeSession.accessToken onSuccess:^{
 			
-//			[busyBezel dismissWithAnimation:WAOverlayBezelAnimationNone];
+			[busyBezel dismissWithAnimation:WAOverlayBezelAnimationNone];
 			
-//			WAOverlayBezel *doneBezel = [WAOverlayBezel bezelWithStyle:WACheckmarkBezelStyle];
-//			[doneBezel showWithAnimation:WAOverlayBezelAnimationNone];
-//			dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 2.0 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
-//				[doneBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
-//			});
+			WAOverlayBezel *doneBezel = [WAOverlayBezel bezelWithStyle:WACheckmarkBezelStyle];
+			[doneBezel showWithAnimation:WAOverlayBezelAnimationNone];
+			dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 2.0 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+				[doneBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
+			});
 			
 			[wSelf setOn:YES animated:YES];
 			[wSelf setEnabled:YES];
 
 		} onFailure:^(NSError *error) {
 		
-//			[busyBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
+			[busyBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
 			
 			[wSelf requestFacebookTokenWithCompletion:^(NSString *token, NSError *error) {
 			
@@ -190,21 +190,21 @@ NSString * const kWAFacebookUserDataImport = @"WAFacebookImportTimeLine";
 					[wSelf setEnabled:NO];
 					[wSelf setOn:YES animated:YES];
 					
-//					WAOverlayBezel *busyBezel = [WAOverlayBezel bezelWithStyle:WAActivityIndicatorBezelStyle];
-//					[busyBezel showWithAnimation:WAOverlayBezelAnimationFade];
+					WAOverlayBezel *busyBezel = [WAOverlayBezel bezelWithStyle:WAActivityIndicatorBezelStyle];
+					[busyBezel showWithAnimation:WAOverlayBezelAnimationFade];
 					
 					[wSelf connectFacebookWithToken:token onSuccess:^{
 						
-//						[busyBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
+						[busyBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
 
 						[wSelf setEnabled:YES];
 						[wSelf setOn:YES animated:YES];
 
 					} onFailure:^(NSError *error) {
 						
-//						[busyBezel dismissWithAnimation:WAOverlayBezelAnimationNone];
-//						
-//						[[[IRAlertView alloc] initWithTitle:NSLocalizedString(@"FACEBOOK_CONNECT_FAIL_TITLE", @"Title for an alert view to show facebook connection failure") message:[wSelf errorString:[error code]] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
+						[busyBezel dismissWithAnimation:WAOverlayBezelAnimationNone];
+						
+						[[[IRAlertView alloc] initWithTitle:NSLocalizedString(@"FACEBOOK_CONNECT_FAIL_TITLE", @"Title for an alert view to show facebook connection failure") message:[wSelf errorString:[error code]] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
 						
 						[wSelf setEnabled:YES];
 						[wSelf setOn:NO animated:YES];
@@ -213,7 +213,7 @@ NSString * const kWAFacebookUserDataImport = @"WAFacebookImportTimeLine";
 
 				} else {
 				
-//					[[[IRAlertView alloc] initWithTitle:NSLocalizedString(@"FACEBOOK_CONNECT_FAIL_TITLE", @"Title for an alert view to show facebook connection failure") message:[wSelf errorString:[error code]] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
+					[[[IRAlertView alloc] initWithTitle:NSLocalizedString(@"FACEBOOK_CONNECT_FAIL_TITLE", @"Title for an alert view to show facebook connection failure") message:[wSelf errorString:[error code]] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
 					[wSelf setEnabled:YES];
 					[wSelf setOn:NO animated:YES];
 					
@@ -234,20 +234,20 @@ NSString * const kWAFacebookUserDataImport = @"WAFacebookImportTimeLine";
 				[wSelf setEnabled:NO];
 				[wSelf setOn:YES animated:YES];
 				
-//				WAOverlayBezel *busyBezel = [WAOverlayBezel bezelWithStyle:WAActivityIndicatorBezelStyle];
-//				[busyBezel showWithAnimation:WAOverlayBezelAnimationFade];
+				WAOverlayBezel *busyBezel = [WAOverlayBezel bezelWithStyle:WAActivityIndicatorBezelStyle];
+				[busyBezel showWithAnimation:WAOverlayBezelAnimationFade];
 				
 				[wSelf connectFacebookWithToken:token onSuccess:^{
 					
-//					[busyBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
+					[busyBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
 
 					[wSelf setEnabled:YES];
 					[wSelf setOn:YES animated:YES];
 
 				} onFailure:^(NSError *error) {
 					
-//					[busyBezel dismissWithAnimation:WAOverlayBezelAnimationNone];
-//					[[[IRAlertView alloc] initWithTitle:NSLocalizedString(@"FACEBOOK_CONNECT_FAIL_TITLE", @"Title for an alert view to show facebook connection failure") message:[wSelf errorString:[error code]] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
+					[busyBezel dismissWithAnimation:WAOverlayBezelAnimationNone];
+					[[[IRAlertView alloc] initWithTitle:NSLocalizedString(@"FACEBOOK_CONNECT_FAIL_TITLE", @"Title for an alert view to show facebook connection failure") message:[wSelf errorString:[error code]] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
 					
 					[wSelf setEnabled:YES];
 					[wSelf setOn:NO animated:YES];
@@ -256,7 +256,7 @@ NSString * const kWAFacebookUserDataImport = @"WAFacebookImportTimeLine";
 
 			} else {
 			
-//				[[[IRAlertView alloc] initWithTitle:NSLocalizedString(@"FACEBOOK_CONNECT_FAIL_TITLE", @"Title for an alert view to show facebook connection failure") message:[wSelf errorString:[error code]] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
+				[[[IRAlertView alloc] initWithTitle:NSLocalizedString(@"FACEBOOK_CONNECT_FAIL_TITLE", @"Title for an alert view to show facebook connection failure") message:[wSelf errorString:[error code]] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
 				
 				[wSelf setEnabled:YES];
 				[wSelf setOn:NO animated:YES];
@@ -351,36 +351,25 @@ NSString * const kWAFacebookUserDataImport = @"WAFacebookImportTimeLine";
 
 }
 
-- (void) connectFacebookWithToken:(NSString *)token onSuccess:(void(^)(void))successBlock onFailure:(void(^)(NSError *error))failureBlock {
+- (void) connectFacebookWithToken:(NSString *)token
+												onSuccess:(void(^)(void))successBlock
+												onFailure:(void(^)(NSError *error))failureBlock {
 
 	__weak WARemoteInterface * const ri = [WARemoteInterface sharedInterface];
 	
-	[ri connectSocialNetwork:@"facebook" withToken:token onSuccess:^{
-	
-		if (successBlock) {
-		
-			dispatch_async(dispatch_get_main_queue(), ^{
-			
-				successBlock();
-				
-			});
-		
-		}
-		
-	} onFailure:^(NSError *error) {
-	
-		if (failureBlock) {
-			
-			dispatch_async(dispatch_get_main_queue(), ^{
-			
-				failureBlock(error);
-				
-			});
-			
-		}
-		
-	}];
-
+	[ri
+	 connectSocialNetwork:@"facebook"
+	 withToken:token
+	 onSuccess:^{
+		 if (successBlock) {
+			 dispatch_async(dispatch_get_main_queue(), ^{successBlock();} );
+		 }
+	 }
+	 onFailure:^(NSError *error) {
+		 if (failureBlock) {
+			 dispatch_async(dispatch_get_main_queue(), ^{	failureBlock(error);	} );
+		 }
+	 }];	
 }
 
 - (void) requestFacebookTokenWithCompletion:(void(^)(NSString *token, NSError *error))block {
