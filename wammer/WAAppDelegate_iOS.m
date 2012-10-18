@@ -51,6 +51,7 @@
 #endif
 
 #import "WAFilterPickerViewController.h"
+#import "WAPhotoImportManager.h"
 
 static NSString *const kTrackingId = @"UA-27817516-7";
 
@@ -91,6 +92,8 @@ static NSString *const kTrackingId = @"UA-27817516-7";
 - (void) handleIASKSettingsDidRequestAction:(NSNotification *)aNotification;
 
 @property (nonatomic, readwrite, assign) BOOL alreadyRequestingAuthentication;
+@property (nonatomic, readwrite) UIBackgroundTaskIdentifier bgTask;
+@property (nonatomic, readwrite, strong) WAPhotoImportManager *photoImportManager;
 
 - (void) clearViewHierarchy;
 - (void) recreateViewHierarchy;
@@ -185,6 +188,8 @@ static NSString *const kTrackingId = @"UA-27817516-7";
 		if (lastAuthenticatedUserIdentifier)
 			[self bootstrapPersistentStoreWithUserIdentifier:lastAuthenticatedUserIdentifier];
 		
+		[self setPhotoImportManager:[[WAPhotoImportManager alloc] init]];
+
 		__weak WAAppDelegate *wSelf = self;
 		dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
 			[wSelf bootstrapDownloadAllThumbnails];
@@ -251,6 +256,29 @@ static NSString *const kTrackingId = @"UA-27817516-7";
 - (void) application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
 	
 	
+}
+
+- (void)applicationDidEnterBackground:(UIApplication *)application {
+
+	__weak WAAppDelegate_iOS *wSelf = self;
+	[self setBgTask:[application beginBackgroundTaskWithExpirationHandler:^{
+
+		NSLog(@"Background photo import expired");
+		[application endBackgroundTask:[wSelf bgTask]];
+		[wSelf setBgTask:UIBackgroundTaskInvalid];
+
+	}]];
+
+	dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+
+		NSLog(@"Enter background, wait until photo import operations finished");
+		[[wSelf photoImportManager] waitUntilFinished];
+		NSLog(@"All photo import operations are finished");
+		[application endBackgroundTask:[wSelf bgTask]];
+		[wSelf setBgTask:UIBackgroundTaskInvalid];
+
+	});
+
 }
 
 - (void) subscribeRemoteNotification {
@@ -355,23 +383,28 @@ static NSString *const kTrackingId = @"UA-27817516-7";
 
 - (void) applicationRootViewControllerDidRequestReauthentication:(id<WAApplicationRootViewController>)controller {
 
+	[self setPhotoImportManager:nil];
+	[self unsubscribeRemoteNotification];
+
+	__weak WAAppDelegate_iOS *wSelf = self;
 	dispatch_async(dispatch_get_main_queue(), ^ {
 
-		[self presentAuthenticationRequestWithReason:nil
+		[wSelf presentAuthenticationRequestWithReason:nil
 														allowingCancellation:NO
 															 removingPriorData:YES
 										 clearingNavigationHierarchy:YES
 																	 onAuthSuccess:
 		 ^(NSString *userIdentifier, NSString *userToken, NSString *primaryGroupIdentifier) {
-			 [self updateCurrentCredentialsWithUserIdentifier:userIdentifier
+			 [wSelf updateCurrentCredentialsWithUserIdentifier:userIdentifier
 																								 token:userToken
 																					primaryGroup:primaryGroupIdentifier];
 			 // bind to user's persistent store
-			 [self bootstrapPersistentStoreWithUserIdentifier:userIdentifier];
+			 [wSelf bootstrapPersistentStoreWithUserIdentifier:userIdentifier];
 
-			 __weak WAAppDelegate *wSelf = self;
 			 dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
 
+				 [wSelf setPhotoImportManager:[[WAPhotoImportManager alloc] init]];
+				 
 				 // reset monitored hosts
 				 WARemoteInterface *ri = [WARemoteInterface sharedInterface];
 

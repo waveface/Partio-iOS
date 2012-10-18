@@ -72,6 +72,8 @@ NSString * const kWACallbackActionSetRemoteEndpointURL = @"setRemoteEndpointURL"
 NSString * const kWACallbackActionSetUserRegistrationEndpointURL = @"setUserRegistrationEndpointURL";
 NSString * const kWACallbackActionSetUserPasswordResetEndpointURL = @"setUserPasswordResetEndpointURL";
 
+NSString * const kWAPhotoImportEnabled = @"WAPhotoImportEnabled";
+
 void WARegisterUserDefaults () {
 
 	[[NSUserDefaults standardUserDefaults] registerDefaults:WAPresetDefaults()];
