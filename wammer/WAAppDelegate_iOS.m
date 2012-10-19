@@ -188,10 +188,6 @@ static NSString *const kTrackingId = @"UA-27817516-7";
 		if (lastAuthenticatedUserIdentifier)
 			[self bootstrapPersistentStoreWithUserIdentifier:lastAuthenticatedUserIdentifier];
 		
-		[self setCacheManager:[[WACacheManager alloc] init]];
-		[[self cacheManager] setDelegate:self];
-		[[self cacheManager] clearPurgeableFilesIfNeeded];
-
 		[self recreateViewHierarchy];
 		
 	}
@@ -380,8 +376,9 @@ static NSString *const kTrackingId = @"UA-27817516-7";
 
 - (void) applicationRootViewControllerDidRequestReauthentication:(id<WAApplicationRootViewController>)controller {
 
-	[self setPhotoImportManager:nil];
-	[self setCacheManager:nil];
+	self.photoImportManager = nil;
+	self.cacheManager = nil;
+
 	[self unsubscribeRemoteNotification];
 
 	__weak WAAppDelegate_iOS *wSelf = self;
@@ -410,9 +407,11 @@ static NSString *const kTrackingId = @"UA-27817516-7";
 					 }];
 				 }
 
-				 [wSelf setCacheManager:[[WACacheManager alloc] init]];
-				 [[wSelf cacheManager] setDelegate:wSelf];
-				 [[wSelf cacheManager] clearPurgeableFilesIfNeeded];
+				 if (!wSelf.cacheManager) {
+					 wSelf.cacheManager = [[WACacheManager alloc] init];
+					 wSelf.cacheManager.delegate = self;
+				 }
+				 [wSelf.cacheManager clearPurgeableFilesIfNeeded];
 
 				 // reset monitored hosts
 				 WARemoteInterface *ri = [WARemoteInterface sharedInterface];
@@ -890,7 +889,8 @@ static NSInteger networkActivityStackingCount = 0;
 
 }
 
-#pragma mark @protocol UIApplicationDelegate
+#pragma mark UIApplication delegates
+
 - (void) applicationDidReceiveMemoryWarning:(UIApplication *)application {
 
 	WAPostAppEvent(@"did-receive-memory-warning", [NSDictionary dictionaryWithObjectsAndKeys:
@@ -909,6 +909,7 @@ static NSInteger networkActivityStackingCount = 0;
 	[FBSession.activeSession handleDidBecomeActive];
 
 	if ([self hasAuthenticationData]) {
+
 		if (!self.photoImportManager) {
 			self.photoImportManager = [[WAPhotoImportManager alloc] init];
 		}
@@ -917,11 +918,18 @@ static NSInteger networkActivityStackingCount = 0;
 				NSLog(@"All photo import operations are enqueued");
 			}];
 		}
+
+		if (!self.cacheManager) {
+			self.cacheManager = [[WACacheManager alloc] init];
+			self.cacheManager.delegate = self;
+		}
+		[self.cacheManager clearPurgeableFilesIfNeeded];
+
 	}
 
 }
 
-#pragma mark @protocol WACacheManagerDelegate
+#pragma mark WACacheManager delegates
 
 - (BOOL)shouldPurgeCachedFile:(WACache *)cache {
 

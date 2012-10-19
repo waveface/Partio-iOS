@@ -420,9 +420,7 @@
 - (NSArray *)fetchAllCachesUsingContext:(NSManagedObjectContext *)aContext {
 
 	NSFetchRequest *fetchRequest = [self.persistentStoreCoordinator.managedObjectModel fetchRequestFromTemplateWithName:@"WAFRAllCaches" substitutionVariables:@{}];
-	fetchRequest.sortDescriptors = [NSArray arrayWithObjects:
-																	[NSSortDescriptor sortDescriptorWithKey:@"lastAccessTime" ascending:YES],
-																	nil];
+	fetchRequest.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"lastAccessTime" ascending:YES]];
 	
 	NSError *fetchingError = nil;
 	NSArray *fetchedCaches = [aContext executeFetchRequest:fetchRequest error:&fetchingError];
