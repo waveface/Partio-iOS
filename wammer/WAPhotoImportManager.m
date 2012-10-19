@@ -20,7 +20,7 @@
 @interface WAPhotoImportManager ()
 
 @property (nonatomic, readwrite, strong) NSOperationQueue *operationQueue;
-@property (nonatomic, readwrite) BOOL enabled;
+@property (nonatomic, readwrite, strong) NSDate *lastOperationTimestamp;
 
 @end
 
@@ -35,11 +35,6 @@
 
 		NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 		[self setEnabled:[defaults boolForKey:kWAPhotoImportEnabled]];
-		if ([self enabled]) {
-			[self createPhotoImportArticlesWithCompletionBlock:^{
-				NSLog(@"All photo import operations are enqueued");
-			}];
-		}
 
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleUserDefaultsChanged:) name:NSUserDefaultsDidChangeNotification object:nil];
 	}
@@ -66,15 +61,20 @@
 - (void)createPhotoImportArticlesWithCompletionBlock:(void(^)(void))aCallbackBlock {
 
 	NSDate *importTime = [NSDate date];
-	WADataStore *ds = [WADataStore defaultStore];
-	WAArticle *lastImportedArticle = [ds fetchLatestLocalImportedArticleUsingContext:[ds disposableMOC]];
-	__weak WAPhotoImportManager *wSelf = self;
+	NSDate *sinceDate = [self lastOperationTimestamp];
+	if (!sinceDate) {
+		WADataStore *ds = [WADataStore defaultStore];
+		sinceDate = [[ds fetchLatestLocalImportedArticleUsingContext:[ds disposableMOC]] creationDate];
+	}
 
-	[[WAAssetsLibraryManager defaultManager] enumerateSavedPhotosSince:[lastImportedArticle creationDate] onProgess:^(NSArray *assets) {
+	__weak WAPhotoImportManager *wSelf = self;
+	[[WAAssetsLibraryManager defaultManager] enumerateSavedPhotosSince:sinceDate onProgess:^(NSArray *assets) {
 
 		if (![assets count]) {
 			return;
 		}
+
+		[wSelf setLastOperationTimestamp:[[assets lastObject] valueForProperty:ALAssetPropertyDate]];
 
 		__block NSBlockOperation *operation = [NSBlockOperation blockOperationWithBlock:^{
 
