@@ -189,6 +189,10 @@ static NSString *const kTrackingId = @"UA-27817516-7";
 			[self bootstrapPersistentStoreWithUserIdentifier:lastAuthenticatedUserIdentifier];
 		
 		[self setPhotoImportManager:[[WAPhotoImportManager alloc] init]];
+		__weak WAAppDelegate *wSelf = self;
+		dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+			[wSelf bootstrapDownloadAllThumbnails];
+		});
 		
 		[self recreateViewHierarchy];
 		
@@ -893,6 +897,18 @@ static NSInteger networkActivityStackingCount = 0;
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
 	[FBSession.activeSession handleDidBecomeActive];
+
+	if ([self hasAuthenticationData]) {
+		if (!self.photoImportManager) {
+			self.photoImportManager = [[WAPhotoImportManager alloc] init];
+		}
+		if (self.photoImportManager.enabled) {
+			[self.photoImportManager createPhotoImportArticlesWithCompletionBlock:^{
+				NSLog(@"All photo import operations are enqueued");
+			}];
+		}
+	}
+
 }
 
 @end

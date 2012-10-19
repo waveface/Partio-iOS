@@ -113,6 +113,7 @@
 
 					NSArray *assets = [insertedAssets copy];
 					onProgressBlock(assets);
+					[insertedAssets removeAllObjects];
 					
 				}
 
