@@ -33,8 +33,18 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "4B8CA96714BBE7BA006E06BB"
-               BuildableName = "wammer-iOS-Test.octest"
-               BlueprintName = "wammer-iOS-Test"
+               BuildableName = "wammer-iOS-LogicTests.octest"
+               BlueprintName = "wammer-iOS-LogicTests"
+               ReferencedContainer = "container:wammer.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "7D0CDCFF162E5A080027D35F"
+               BuildableName = "Stream-iOS-ApplicationTests.octest"
+               BlueprintName = "Stream-iOS-ApplicationTests"
                ReferencedContainer = "container:wammer.xcodeproj">
             </BuildableReference>
          </TestableReference>
@@ -57,7 +67,6 @@
       buildConfiguration = "Debug"
       ignoresPersistentStateOnLaunch = "NO"
       debugDocumentVersioning = "YES"
-      enableOpenGLFrameCaptureMode = "0"
       allowLocationSimulation = "YES">
       <BuildableProductRunnable>
          <BuildableReference
