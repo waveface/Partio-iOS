@@ -901,11 +901,11 @@ static NSInteger networkActivityStackingCount = 0;
 	[FBSession.activeSession handleDidBecomeActive];
 
 	if ([self hasAuthenticationData]) {
-		if (![self photoImportManager]) {
-			[self setPhotoImportManager:[[WAPhotoImportManager alloc] init]];
+		if (!self.photoImportManager) {
+			self.photoImportManager = [[WAPhotoImportManager alloc] init];
 		}
-		if ([[self photoImportManager] enabled]) {
-			[[self photoImportManager] createPhotoImportArticlesWithCompletionBlock:^{
+		if (self.photoImportManager.enabled) {
+			[self.photoImportManager createPhotoImportArticlesWithCompletionBlock:^{
 				NSLog(@"All photo import operations are enqueued");
 			}];
 		}
