@@ -44,6 +44,7 @@
 @property (nonatomic, retain) NSOrderedSet *pageElements;
 @property (nonatomic, retain) WAArticle *representedArticle;
 @property (nonatomic, retain) WAFileExif *exif;
+@property (nonatomic, retain) NSSet *caches;
 @end
 
 @interface WAFile (CoreDataGeneratedAccessors)
