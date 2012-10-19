@@ -188,12 +188,6 @@ static NSString *const kTrackingId = @"UA-27817516-7";
 		if (lastAuthenticatedUserIdentifier)
 			[self bootstrapPersistentStoreWithUserIdentifier:lastAuthenticatedUserIdentifier];
 		
-		[self setPhotoImportManager:[[WAPhotoImportManager alloc] init]];
-		__weak WAAppDelegate *wSelf = self;
-		dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-			[wSelf bootstrapDownloadAllThumbnails];
-		});
-		
 		[self recreateViewHierarchy];
 		
 	}
@@ -260,21 +254,21 @@ static NSString *const kTrackingId = @"UA-27817516-7";
 - (void)applicationDidEnterBackground:(UIApplication *)application {
 
 	__weak WAAppDelegate_iOS *wSelf = self;
-	[self setBgTask:[application beginBackgroundTaskWithExpirationHandler:^{
+	self.bgTask = [application beginBackgroundTaskWithExpirationHandler:^{
 
 		NSLog(@"Background photo import expired");
-		[application endBackgroundTask:[wSelf bgTask]];
-		[wSelf setBgTask:UIBackgroundTaskInvalid];
+		[application endBackgroundTask:wSelf.bgTask];
+		wSelf.bgTask = UIBackgroundTaskInvalid;
 
-	}]];
+	}];
 
 	dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
 
 		NSLog(@"Enter background, wait until photo import operations finished");
-		[[wSelf photoImportManager] waitUntilFinished];
+		[wSelf.photoImportManager waitUntilFinished];
 		NSLog(@"All photo import operations are finished");
-		[application endBackgroundTask:[wSelf bgTask]];
-		[wSelf setBgTask:UIBackgroundTaskInvalid];
+		[application endBackgroundTask:wSelf.bgTask];
+		wSelf.bgTask = UIBackgroundTaskInvalid;
 
 	});
 
@@ -402,7 +396,14 @@ static NSString *const kTrackingId = @"UA-27817516-7";
 
 			 dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
 
-				 [wSelf setPhotoImportManager:[[WAPhotoImportManager alloc] init]];
+				 if (!wSelf.photoImportManager) {
+					 wSelf.photoImportManager = [[WAPhotoImportManager alloc] init];
+				 }
+				 if (wSelf.photoImportManager.enabled) {
+					 [wSelf.photoImportManager createPhotoImportArticlesWithCompletionBlock:^{
+						 NSLog(@"All photo import operations are enqueued");
+					 }];
+				 }
 				 
 				 // reset monitored hosts
 				 WARemoteInterface *ri = [WARemoteInterface sharedInterface];
