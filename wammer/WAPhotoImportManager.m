@@ -20,7 +20,7 @@
 @interface WAPhotoImportManager ()
 
 @property (nonatomic, readwrite, strong) NSOperationQueue *operationQueue;
-@property (nonatomic, readwrite) BOOL enabled;
+@property (nonatomic, readwrite, strong) NSDate *lastOperationTimestamp;
 
 @end
 
@@ -30,16 +30,11 @@
 
 	self = [super init];
 	if (self) {
-		[self setOperationQueue:[[NSOperationQueue alloc] init]];
-		[[self operationQueue] setMaxConcurrentOperationCount:1];
+		self.operationQueue = [[NSOperationQueue alloc] init];
+		self.operationQueue.maxConcurrentOperationCount = 1;
 
 		NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-		[self setEnabled:[defaults boolForKey:kWAPhotoImportEnabled]];
-		if ([self enabled]) {
-			[self createPhotoImportArticlesWithCompletionBlock:^{
-				NSLog(@"All photo import operations are enqueued");
-			}];
-		}
+		self.enabled = [defaults boolForKey:kWAPhotoImportEnabled];
 
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleUserDefaultsChanged:) name:NSUserDefaultsDidChangeNotification object:nil];
 	}
@@ -50,14 +45,14 @@
 - (void)handleUserDefaultsChanged:(NSNotification *)notification {
 
 	NSUserDefaults *defaults = [notification object];
-	if ([self enabled] != [defaults boolForKey:kWAPhotoImportEnabled]) {
-		[self setEnabled:[defaults boolForKey:kWAPhotoImportEnabled]];
-		if ([self enabled]) {
+	if (self.enabled != [defaults boolForKey:kWAPhotoImportEnabled]) {
+		self.enabled = [defaults boolForKey:kWAPhotoImportEnabled];
+		if (self.enabled) {
 			[self createPhotoImportArticlesWithCompletionBlock:^{
 				NSLog(@"All photo import operations are enqueued");
 			}];
 		} else {
-			[[self operationQueue] cancelAllOperations];
+			[self.operationQueue cancelAllOperations];
 		}
 	}
 
@@ -66,15 +61,20 @@
 - (void)createPhotoImportArticlesWithCompletionBlock:(void(^)(void))aCallbackBlock {
 
 	NSDate *importTime = [NSDate date];
-	WADataStore *ds = [WADataStore defaultStore];
-	WAArticle *lastImportedArticle = [ds fetchLatestLocalImportedArticleUsingContext:[ds disposableMOC]];
-	__weak WAPhotoImportManager *wSelf = self;
+	NSDate *sinceDate = self.lastOperationTimestamp;
+	if (!sinceDate) {
+		WADataStore *ds = [WADataStore defaultStore];
+		sinceDate = [[ds fetchLatestLocalImportedArticleUsingContext:[ds disposableMOC]] creationDate];
+	}
 
-	[[WAAssetsLibraryManager defaultManager] enumerateSavedPhotosSince:[lastImportedArticle creationDate] onProgess:^(NSArray *assets) {
+	__weak WAPhotoImportManager *wSelf = self;
+	[[WAAssetsLibraryManager defaultManager] enumerateSavedPhotosSince:sinceDate onProgess:^(NSArray *assets) {
 
 		if (![assets count]) {
 			return;
 		}
+
+		wSelf.lastOperationTimestamp = [[assets lastObject] valueForProperty:ALAssetPropertyDate];
 
 		__block NSBlockOperation *operation = [NSBlockOperation blockOperationWithBlock:^{
 
@@ -153,7 +153,7 @@
 
 		}];
 		
-		[[wSelf operationQueue] addOperation:operation];
+		[wSelf.operationQueue addOperation:operation];
 
 	} onComplete:^{
 		
@@ -170,14 +170,14 @@
 
 - (void)dealloc {
 
-	[[self operationQueue] cancelAllOperations];
+	[self.operationQueue cancelAllOperations];
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 
 }
 
 - (void)waitUntilFinished {
 
-	[[self operationQueue] waitUntilAllOperationsAreFinished];
+	[self.operationQueue waitUntilAllOperationsAreFinished];
 
 }
 

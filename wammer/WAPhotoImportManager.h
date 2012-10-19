@@ -11,6 +11,9 @@
 
 @interface WAPhotoImportManager : NSObject
 
+@property (nonatomic, readwrite) BOOL enabled;
+
+- (void)createPhotoImportArticlesWithCompletionBlock:(void(^)(void))aCallbackBlock;
 - (void)waitUntilFinished;
 
 @end
