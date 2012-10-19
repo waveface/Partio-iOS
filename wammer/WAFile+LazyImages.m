@@ -178,14 +178,17 @@ static NSString * const kMemoryWarningObserverCreationDisabled = @"-[WAFile(Lazy
 
 			}];
 
-		} else if (self.smallThumbnailFilePath) {
+		} else {
 
-			__weak WAFile *wSelf = self;
-			dispatch_async([[self class] sharedExtraSmallThumbnailMakingQueue], ^{
+			// trigger downloading if small thumbnail does not exist
+			[self setDisplayingSmallThumbnail:YES];
 
-				NSManagedObjectContext *context = [[WADataStore defaultStore] disposableMOC];
-				[context performBlockAndWait:^{
+			if (self.smallThumbnailFilePath) {
 
+				__weak WAFile *wSelf = self;
+				dispatch_async([[self class] sharedExtraSmallThumbnailMakingQueue], ^{
+
+					NSManagedObjectContext *context = [[WADataStore defaultStore] disposableMOC];
 					if (!wSelf.extraSmallThumbnailFilePath) {
 						
 						UIImage *image = [wSelf imageAssociatedWithKey:&kWAFileSmallThumbnailImage filePath:wSelf.smallThumbnailFilePath];
@@ -199,9 +202,9 @@ static NSString * const kMemoryWarningObserverCreationDisabled = @"-[WAFile(Lazy
 						
 					}
 
-				}];
+				});
 
-			});
+			}
 
 		}
 
