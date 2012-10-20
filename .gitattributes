@@ -1,1 +1,2 @@
 *.strings text diff
+*.pbxproj binary merge=union
