@@ -12,109 +12,84 @@
 #import "WAAssetsLibraryManager.h"
 #import "WAFile+ThumbnailMaker.h"
 #import <AssetsLibrary+IRAdditions.h>
-#import "GANTracker.h"
+#import "WAFileExif.h"
+#import "GAI.h"
+#import "WADefines.h"
+#import "WAFileExif+WAAdditions.h"
 
 @interface WAPhotoImportManager ()
 
-@property (nonatomic, readwrite, strong) NSManagedObjectContext *managedObjectContext;
+@property (nonatomic, readwrite, strong) NSOperationQueue *operationQueue;
+@property (nonatomic, readwrite, strong) NSDate *lastOperationTimestamp;
 
 @end
 
 @implementation WAPhotoImportManager
 
-+ (WAPhotoImportManager *) defaultManager {
-	
-	static WAPhotoImportManager *returnedManager = nil;
-	static dispatch_once_t onceToken = 0;
-	dispatch_once(&onceToken, ^{
-		
-		returnedManager = [[self alloc] init];
-    
-	});
-	
-	return returnedManager;
-	
-}
-
 - (id)init {
 
 	self = [super init];
 	if (self) {
-		self.finished = YES;
-		self.canceled = NO;
+		self.operationQueue = [[NSOperationQueue alloc] init];
+		self.operationQueue.maxConcurrentOperationCount = 1;
+
+		NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+		self.enabled = [defaults boolForKey:kWAPhotoImportEnabled];
+
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleUserDefaultsChanged:) name:NSUserDefaultsDidChangeNotification object:nil];
 	}
 	return self;
 
 }
 
-- (NSManagedObjectContext *)managedObjectContext {
+- (void)handleUserDefaultsChanged:(NSNotification *)notification {
 
-	if (!_managedObjectContext) {
-		_managedObjectContext = [[WADataStore defaultStore] disposableMOC];
-	}
-	return _managedObjectContext;
-
-}
-
-- (WAArticle *)lastImportedArticle {
-
-	if (!_lastImportedArticle) {
-		_lastImportedArticle = [[WADataStore defaultStore] fetchLatestLocalImportedArticleUsingContext:self.managedObjectContext];
-	}
-	return _lastImportedArticle;
-
-}
-
-- (void)cancelPhotoImportWithCompletionBlock:(WAPhotoImportCallback)aCallbackBlock {
-
-	self.canceled = YES;
-
-	__weak WAPhotoImportManager *wSelf = self;
-	[self irObserve:@"finished" options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:nil withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
-
-		BOOL isFinished = [toValue boolValue];
-		if (isFinished) {
-			wSelf.managedObjectContext = nil;
-			wSelf.lastImportedArticle = nil;
-			aCallbackBlock();
+	NSUserDefaults *defaults = [notification object];
+	if (self.enabled != [defaults boolForKey:kWAPhotoImportEnabled]) {
+		self.enabled = [defaults boolForKey:kWAPhotoImportEnabled];
+		if (self.enabled) {
+			[self createPhotoImportArticlesWithCompletionBlock:^{
+				NSLog(@"All photo import operations are enqueued");
+			}];
+		} else {
+			[self.operationQueue cancelAllOperations];
 		}
-
-	}];
+	}
 
 }
 
-- (void)createPhotoImportArticlesWithCompletionBlock:(WAPhotoImportCallback)aCallbackBlock {
-
-	if (!self.finished) {
-		return;
-	}
-
-	self.finished = NO;
-	self.canceled = NO;
+- (void)createPhotoImportArticlesWithCompletionBlock:(void(^)(void))aCallbackBlock {
 
 	NSDate *importTime = [NSDate date];
+	NSDate *sinceDate = self.lastOperationTimestamp;
+	if (!sinceDate) {
+		WADataStore *ds = [WADataStore defaultStore];
+		sinceDate = [[ds fetchLatestLocalImportedArticleUsingContext:[ds disposableMOC]] creationDate];
+	}
 
-	NSManagedObjectContext *context = self.managedObjectContext;
 	__weak WAPhotoImportManager *wSelf = self;
+	[[WAAssetsLibraryManager defaultManager] enumerateSavedPhotosSince:sinceDate onProgess:^(NSArray *assets) {
 
-	[context performBlock:^{
+		if (![assets count]) {
+			return;
+		}
 
-		[[WAAssetsLibraryManager defaultManager] enumerateSavedPhotosSince:wSelf.lastImportedArticle.creationDate onProgess:^(NSArray *assets) {
+		wSelf.lastOperationTimestamp = [[assets lastObject] valueForProperty:ALAssetPropertyDate];
 
-			if (![assets count]) {
-				return wSelf.canceled;
+		__block NSBlockOperation *operation = [NSBlockOperation blockOperationWithBlock:^{
+
+			if ([operation isCancelled]) {
+				NSLog(@"A photo import operation was canceled");
+				return;
 			}
 
-			WAArticle *article = [WAArticle objectInsertingIntoContext:context withRemoteDictionary:[NSDictionary dictionary]];
+			NSManagedObjectContext *context = [[WADataStore defaultStore] disposableMOC];
+			WAArticle *article = [WAArticle objectInsertingIntoContext:context withRemoteDictionary:@{}];
 			[assets enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-
+				
 				@autoreleasepool {
-
-					WAFile *file = (WAFile *)[WAFile objectInsertingIntoContext:article.managedObjectContext withRemoteDictionary:[NSDictionary dictionary]];
 					
-					NSError *error = nil;
-					if (![file.managedObjectContext obtainPermanentIDsForObjects:[NSArray arrayWithObjects:file, article, nil] error:&error])
-						NSLog(@"Error obtaining permanent object ID: %@", error);
+					WAFile *file = (WAFile *)[WAFile objectInsertingIntoContext:context withRemoteDictionary:@{}];
 					
 					[[article mutableOrderedSetValueForKey:@"files"] addObject:file];
 					
@@ -137,6 +112,12 @@
 					file.timestamp = [asset valueForProperty:ALAssetPropertyDate];
 					file.importTime = importTime;
 					
+					WAFileExif *exif = (WAFileExif *)[WAFileExif objectInsertingIntoContext:context withRemoteDictionary:@{}];
+					NSDictionary *metadata = [[asset defaultRepresentation] metadata];
+					[exif initWithExif:metadata[@"{Exif}"] tiff:metadata[@"{TIFF}"] gps:metadata[@"{GPS}"]];
+
+					file.exif = exif;
+					
 					if (!article.creationDate) {
 						article.creationDate = file.timestamp;
 					} else {
@@ -144,11 +125,11 @@
 							article.creationDate = file.timestamp;
 						}
 					}
-
+					
 				}
-
+				
 			}];
-
+			
 			article.import = [NSNumber numberWithInt:WAImportTypeFromLocal];
 			article.draft = (id)kCFBooleanFalse;
 			CFUUIDRef theUUID = CFUUIDCreate(kCFAllocatorDefault);
@@ -160,30 +141,28 @@
 			
 			NSError *savingError = nil;
 			if ([context save:&savingError]) {
-				[[GANTracker sharedTracker] trackEvent:@"CreatePost"
-																				action:@"CameraRoll"
-																				 label:@"Photos"
-																				 value:[article.files count]
-																		 withError:NULL];
-				wSelf.lastImportedArticle = article;
+				[[GAI sharedInstance].defaultTracker trackEventWithCategory:@"CreatePost"
+																												 withAction:@"CameraRoll"
+																													withLabel:@"Photos"
+																													withValue:@([article.files count])];
 			} else {
 				NSLog(@"Error saving: %s %@", __PRETTY_FUNCTION__, savingError);
 			}
 			
-			return wSelf.canceled;
-
-		} onComplete:^{
-			
-			wSelf.finished = YES;
-			aCallbackBlock();
-			
-		} onFailure:^(NSError *error) {
-			
-			NSLog(@"Unable to enumerate saved photos: %s %@", __PRETTY_FUNCTION__, error);
-			wSelf.finished = YES;
-			aCallbackBlock();
+			return;
 
 		}];
+		
+		[wSelf.operationQueue addOperation:operation];
+
+	} onComplete:^{
+		
+		aCallbackBlock();
+		
+	} onFailure:^(NSError *error) {
+		
+		NSLog(@"Unable to enumerate saved photos: %s %@", __PRETTY_FUNCTION__, error);
+		aCallbackBlock();
 
 	}];
 	
@@ -191,7 +170,14 @@
 
 - (void)dealloc {
 
-	[self irRemoveObserverBlocksForKeyPath:@"finished"];
+	[self.operationQueue cancelAllOperations];
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
+
+}
+
+- (void)waitUntilFinished {
+
+	[self.operationQueue waitUntilAllOperationsAreFinished];
 
 }
 

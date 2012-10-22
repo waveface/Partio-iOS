@@ -38,8 +38,7 @@
 #import "IASKSettingsReader.h"
 #import	"DCIntrospect.h"
 
-#import "WAFacebookInterface.h"
-#import "WAFacebookInterfaceSubclass.h"
+#import <FacebookSDK/FacebookSDK.h>
 
 #import "WAWelcomeViewController.h"
 #import "WATutorialViewController.h"
@@ -52,8 +51,10 @@
 	#import "PonyDebugger/PDDebugger.h"
 #endif
 
-#import "GANTracker.h"
 #import "WAFilterPickerViewController.h"
+#import "WAPhotoImportManager.h"
+
+static NSString *const kTrackingId = @"UA-27817516-7";
 
 @interface WALoginBackgroundViewController : UIViewController
 @end
@@ -84,7 +85,7 @@
 
 @end
 
-@interface WAAppDelegate_iOS () <WAApplicationRootViewControllerDelegate>
+@interface WAAppDelegate_iOS () <WAApplicationRootViewControllerDelegate, WACacheManagerDelegate>
 
 - (void) handleObservedAuthenticationFailure:(NSNotification *)aNotification;
 - (void) handleObservedRemoteURLNotification:(NSNotification *)aNotification;
@@ -92,6 +93,8 @@
 - (void) handleIASKSettingsDidRequestAction:(NSNotification *)aNotification;
 
 @property (nonatomic, readwrite, assign) BOOL alreadyRequestingAuthentication;
+@property (nonatomic, readwrite) UIBackgroundTaskIdentifier bgTask;
+@property (nonatomic, readwrite, strong) WAPhotoImportManager *photoImportManager;
 
 - (void) clearViewHierarchy;
 - (void) recreateViewHierarchy;
@@ -186,30 +189,19 @@
 		if (lastAuthenticatedUserIdentifier)
 			[self bootstrapPersistentStoreWithUserIdentifier:lastAuthenticatedUserIdentifier];
 		
-		__weak WAAppDelegate *wSelf = self;
-		dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-			[wSelf bootstrapDownloadAllThumbnails];
-		});
-		
 		[self recreateViewHierarchy];
 		
 	}
 
-//	WAPostAppEvent(@"AppVisit", [NSDictionary dictionaryWithObjectsAndKeys:@"app",@"category",@"visit", @"action", nil]);
+//	[GAI sharedInstance].debug = YES;
+	[GAI sharedInstance].dispatchInterval = 120;
+	[GAI sharedInstance].trackUncaughtExceptions = YES;
+	self.tracker = [[GAI sharedInstance] trackerWithTrackingId:kTrackingId];
 	
-	GANTracker *tracker = [GANTracker sharedTracker];
-#if DEBUG
-	tracker.debug = YES;
-#endif
-	[tracker startTrackerWithAccountID:@"UA-27817516-7"
-											dispatchPeriod:10
-														delegate:nil];
-	
-	[tracker trackEvent:@"Application:didFinishLaunchingWithOptions:"
-							 action:@"Launch iOS"
-								label:nil
-								value:-1
-						withError:NULL];
+	[self.tracker trackEventWithCategory:@"Application:didFinishLaunchingWithOptions:"
+														withAction:@"App Launched"
+														 withLabel:nil
+														 withValue:@-1];
 	
 	[[WARemoteInterface sharedInterface] enableAutomaticRemoteUpdatesTimer];
 	[[WARemoteInterface sharedInterface] performAutomaticRemoteUpdatesNow];
@@ -262,6 +254,29 @@
 - (void) application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
 	
 	
+}
+
+- (void)applicationDidEnterBackground:(UIApplication *)application {
+
+	__weak WAAppDelegate_iOS *wSelf = self;
+	self.bgTask = [application beginBackgroundTaskWithExpirationHandler:^{
+
+		NSLog(@"Background photo import expired");
+		[application endBackgroundTask:wSelf.bgTask];
+		wSelf.bgTask = UIBackgroundTaskInvalid;
+
+	}];
+
+	dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+
+		NSLog(@"Enter background, wait until photo import operations finished");
+		[wSelf.photoImportManager waitUntilFinished];
+		NSLog(@"All photo import operations are finished");
+		[application endBackgroundTask:wSelf.bgTask];
+		wSelf.bgTask = UIBackgroundTaskInvalid;
+
+	});
+
 }
 
 - (void) subscribeRemoteNotification {
@@ -368,22 +383,42 @@
 
 - (void) applicationRootViewControllerDidRequestReauthentication:(id<WAApplicationRootViewController>)controller {
 
+	self.photoImportManager = nil;
+	self.cacheManager = nil;
+
+	[self unsubscribeRemoteNotification];
+
+	__weak WAAppDelegate_iOS *wSelf = self;
 	dispatch_async(dispatch_get_main_queue(), ^ {
 
-		[self presentAuthenticationRequestWithReason:nil
+		[wSelf presentAuthenticationRequestWithReason:nil
 														allowingCancellation:NO
 															 removingPriorData:YES
 										 clearingNavigationHierarchy:YES
 																	 onAuthSuccess:
 		 ^(NSString *userIdentifier, NSString *userToken, NSString *primaryGroupIdentifier) {
-			 [self updateCurrentCredentialsWithUserIdentifier:userIdentifier
+			 [wSelf updateCurrentCredentialsWithUserIdentifier:userIdentifier
 																								 token:userToken
 																					primaryGroup:primaryGroupIdentifier];
 			 // bind to user's persistent store
-			 [self bootstrapPersistentStoreWithUserIdentifier:userIdentifier];
+			 [wSelf bootstrapPersistentStoreWithUserIdentifier:userIdentifier];
 
-			 __weak WAAppDelegate *wSelf = self;
 			 dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+
+				 if (!wSelf.photoImportManager) {
+					 wSelf.photoImportManager = [[WAPhotoImportManager alloc] init];
+				 }
+				 if (wSelf.photoImportManager.enabled) {
+					 [wSelf.photoImportManager createPhotoImportArticlesWithCompletionBlock:^{
+						 NSLog(@"All photo import operations are enqueued");
+					 }];
+				 }
+
+				 if (!wSelf.cacheManager) {
+					 wSelf.cacheManager = [[WACacheManager alloc] init];
+					 wSelf.cacheManager.delegate = self;
+				 }
+				 [wSelf.cacheManager clearPurgeableFilesIfNeeded];
 
 				 // reset monitored hosts
 				 WARemoteInterface *ri = [WARemoteInterface sharedInterface];
@@ -396,9 +431,6 @@
 
 				 // reset pending original objects
 				 [[WASyncManager sharedManager] reload];
-
-				 // continue downloading all thumbnails
-				 [wSelf bootstrapDownloadAllThumbnails];
 
 			 });
 		 }
@@ -849,13 +881,8 @@ static NSInteger networkActivityStackingCount = 0;
 - (BOOL) application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
 
 	if ([[url scheme] hasPrefix:@"fb"]) {
-	
-		//	fb357087874306060://authorize/#access_token=BAAFExPZCm0AwBAE0Rrkx45WrF9P9rSjttvmKqWCHFXCiflQCCaaA57AxiD4SUxjESg0VdMilsRcynBzIaxljzcmenZAXephyorGP7h3Eg7o6lahje3ox5f8bRJf99FPkmUKaTVWQZDZD&expires_in=5105534&code=AQDk-SBy1kclksewM5uX1W0GlTd0_Jc8VQT6gXb0grblRTPBSN8YPgdTVqYmi1Vuv0hnmskQpIxkjTOKBxRt__VQ4IdiJdThklKvzcZprTjD5Lhgid2U-O9lZ6JFclAyNQGbpy1cdsMWEkHoW0vDLNTiJqyAk2qZ5qbi0atfKNdxHFDtK9ee7338KoDR_8nOaxMeymONNrceZfzrRj48EYYy
-
-		[[WAFacebookInterface sharedInterface].facebook handleOpenURL:url];
-		
+		[FBSession.activeSession handleOpenURL:url];
 	} else {
-	
 		NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:
 			url, @"url",
 			sourceApplication, @"sourceApplication",
@@ -863,12 +890,13 @@ static NSInteger networkActivityStackingCount = 0;
 		nil];
 
 		[[NSNotificationCenter defaultCenter] postNotificationName:kWAApplicationDidReceiveRemoteURLNotification object:url userInfo:userInfo];
-		
 	}
 	
   return YES;
 
 }
+
+#pragma mark UIApplication delegates
 
 - (void) applicationDidReceiveMemoryWarning:(UIApplication *)application {
 
@@ -877,6 +905,42 @@ static NSInteger networkActivityStackingCount = 0;
 		//	TBD
 	
 	nil]);
+
+}
+
+- (void)applicationWillTerminate:(UIApplication *)application {
+	[FBSession.activeSession close];
+}
+
+- (void)applicationDidBecomeActive:(UIApplication *)application {
+	[FBSession.activeSession handleDidBecomeActive];
+
+	if ([self hasAuthenticationData]) {
+
+		if (!self.photoImportManager) {
+			self.photoImportManager = [[WAPhotoImportManager alloc] init];
+		}
+		if (self.photoImportManager.enabled) {
+			[self.photoImportManager createPhotoImportArticlesWithCompletionBlock:^{
+				NSLog(@"All photo import operations are enqueued");
+			}];
+		}
+
+		if (!self.cacheManager) {
+			self.cacheManager = [[WACacheManager alloc] init];
+			self.cacheManager.delegate = self;
+		}
+		[self.cacheManager clearPurgeableFilesIfNeeded];
+
+	}
+
+}
+
+#pragma mark WACacheManager delegates
+
+- (BOOL)shouldPurgeCachedFile:(WACache *)cache {
+
+	return YES;
 
 }
 

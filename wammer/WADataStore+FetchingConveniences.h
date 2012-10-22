@@ -7,6 +7,7 @@
 //
 
 #import "WADataStore.h"
+#import "WACache.h"
 
 @class WAArticle;
 
@@ -37,4 +38,11 @@
 - (NSArray *) fetchFilesNeedingDownloadUsingContext:(NSManagedObjectContext *)aContext;
 
 - (WAArticle *) fetchLatestLocalImportedArticleUsingContext:(NSManagedObjectContext *)aContext;
+
+- (NSArray *) fetchAllFilesUsingContext:(NSManagedObjectContext *)aContext;
+- (NSArray *) fetchAllOGImagesUsingContext:(NSManagedObjectContext *)aContext;
+- (NSArray *) fetchAllCachesUsingContext:(NSManagedObjectContext *)aContext;
+- (NSNumber *) fetchTotalCacheSizeUsingContext:(NSManagedObjectContext *)aContext;
+- (WACache *) fetchCacheWithPredicate:(NSPredicate *)aPredicate usingContext:(NSManagedObjectContext *)aContext;
+
 @end

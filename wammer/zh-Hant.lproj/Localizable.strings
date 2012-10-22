@@ -239,9 +239,6 @@
 /* No comment provided by engineer. */
 "HOUR_SINGULAR" = "%d小時";
 
-/* Photo importing status */
-"IMPORTING_PHOTOS" = "匯入照片中...";
-
 /* In Account Info Photo Import Section */
 "LAST_IMPORT_TIME" = "最新匯入照片時間：%@";
 
@@ -256,9 +253,6 @@
 
 /* No comment provided by engineer. */
 "MONTH_SINGULAR" = "%d月";
-
-/* Photo importing status */
-"NOT_IMPORTING_PHOTOS" = "匯入所有照片";
 
 /* Notification messages for photos auto-imported */
 "NOTIFY_PHOTOS_IMPORTED" = "%@ 張照片已經匯入到你的 Stream 帳號中。";
@@ -582,11 +576,11 @@
 /* Class = "IBUILabel"; text = "NOUN_CURRENT_DEVICE"; ObjectID = "fZ9-vs-r6f"; */
 "NOUN_CURRENT_DEVICE" = "裝置名稱";
 
+/* Class = "IBUILabel"; text = "PHOTO_IMPORT_TITLE"; ObjectID = "obe-LE-yqs"; */
+"PHOTO_IMPORT_TITLE" = "自動匯入照片";
+
 /* Class = "IBUITableViewSection"; footerTitle = "VERSION"; ObjectID = "rMk-eV-Pjl"; */
 "VERSION" = "版本";
-
-/* Class = "IBUILabel"; text = "ACTION_IMPORT_SAVED_PHOTOS"; ObjectID = "vuN-4r-WXb"; */
-"ACTION_IMPORT_SAVED_PHOTOS" = "匯入所有 Camera Roll 的照片";
 
 /* Class = "IBUILabel"; text = "ACTION_CONTACT_DEVELOPER"; ObjectID = "yLg-eE-ehZ"; */
 "ACTION_CONTACT_DEVELOPER" = "聯絡我們";

@@ -58,9 +58,6 @@
 [submodule "external/IRSlidingSplitViewController"]
 	path = external/IRSlidingSplitViewController
 	url = git://github.com/waveface/IRSlidingSplitViewController.git
-[submodule "external/Facebook"]
-	path = external/Facebook
-	url = git@github.com:waveface/facebook-ios-sdk.git
 [submodule "external/IRAQPhotoPicker"]
 	path = external/IRAQPhotoPicker
 	url = git@github.com:waveface/IRAQPhotoPickerController.git
@@ -76,3 +73,6 @@
 [submodule "external/sskeychain"]
 	path = external/sskeychain
 	url = git://github.com/samsoffes/sskeychain.git
+[submodule "external/FacebookSDK"]
+	path = external/FacebookSDK
+	url = git@github.com:facebook/facebook-ios-sdk.git

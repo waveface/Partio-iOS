@@ -16,5 +16,6 @@
 @dynamic imageRemoteURL;
 @dynamic owner;
 @dynamic representedElement;
+@dynamic cache;
 
 @end

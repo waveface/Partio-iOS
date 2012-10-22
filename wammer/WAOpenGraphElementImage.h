@@ -10,7 +10,7 @@
 #import <CoreData/CoreData.h>
 #import "CoreData+IRAdditions.h"
 
-@class WAOpenGraphElement;
+@class WAOpenGraphElement, WACache;
 
 @interface WAOpenGraphElementImage : IRManagedObject
 
@@ -18,5 +18,6 @@
 @property (nonatomic, retain) NSString * imageRemoteURL;
 @property (nonatomic, retain) WAOpenGraphElement *owner;
 @property (nonatomic, retain) WAOpenGraphElement *representedElement;
+@property (nonatomic, retain) WACache *cache;
 
 @end

@@ -14,6 +14,9 @@
 #import "WADataStore.h"
 
 #import "IRManagedObject+WAFileHandling.h"
+#import "WADefines.h"
+#import "WAAppDelegate_iOS.h"
+#import "WACacheManager.h"
 
 
 @implementation WAFile (FilePaths)
@@ -24,8 +27,12 @@
 	NSString *primitivePath = [self primitiveValueForKey:filePathKey];
 	[self didAccessValueForKey:filePathKey];
 	
-	if (primitivePath)
-		return [self absolutePathFromPath:primitivePath];
+	NSString *filePath = [self absolutePathFromPath:primitivePath];
+	if (primitivePath && [[NSFileManager defaultManager] fileExistsAtPath:filePath]) {
+		WACacheManager *cacheManager = [(WAAppDelegate_iOS *)AppDelegate() cacheManager];
+		[cacheManager insertOrUpdateCacheWithRelationship:[[self objectID] URIRepresentation] filePath:filePath filePathKey:filePathKey];
+		return filePath;
+	}
 	
 	[self willAccessValueForKey:urlStringKey];
 	NSString *urlString = [self primitiveValueForKey:urlStringKey];
@@ -41,7 +48,9 @@
 	if ([fileURL isFileURL])
 		return [fileURL path];
 	
-	[self retrieveBlobWithURLStringKey:urlStringKey filePathKey:filePathKey];
+	if ([self displayingSmallThumbnail] || [self displayingThumbnail]) {
+		[self retrieveBlobWithURLStringKey:urlStringKey filePathKey:filePathKey];
+	}
 	
 	return nil;	
 
@@ -51,8 +60,11 @@
 	
 	[self willChangeValueForKey:filePathKey];
 	
-	[self setPrimitiveValue:[self relativePathFromPath:newAbsoluteFilePath] forKey:filePathKey];
+	NSString *filePath = [self relativePathFromPath:newAbsoluteFilePath];
+	[self setPrimitiveValue:filePath forKey:filePathKey];
 	[self irAssociateObject:nil usingKey:&imageKey policy:OBJC_ASSOCIATION_ASSIGN changingObservedKey:imageKey];
+	WACacheManager *cacheManager = [(WAAppDelegate_iOS *)AppDelegate() cacheManager];
+	[cacheManager insertOrUpdateCacheWithRelationship:[[self objectID] URIRepresentation] filePath:[self absolutePathFromPath:filePath] filePathKey:filePathKey];
 	
 	[self didChangeValueForKey:filePathKey];
 

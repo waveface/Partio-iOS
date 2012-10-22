@@ -49,7 +49,6 @@ typedef enum WASyncStatus: NSUInteger {
 @synthesize syncTableViewCell;
 @synthesize contactTableViewCell;
 @synthesize stationNagCell;
-@synthesize importSavedPhotosTableViewCell;
 @synthesize serviceTableViewCell;
 @synthesize lastSyncDateLabel;
 @synthesize numberOfPendingFilesLabel;
@@ -261,19 +260,10 @@ typedef enum WASyncStatus: NSUInteger {
 
 	}];
 	
-	[self irObserveObject:[WAPhotoImportManager defaultManager] keyPath:@"finished" options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:nil withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
-		BOOL isFinished = [toValue boolValue];
-		dispatch_async(dispatch_get_main_queue(), ^{
-			if (isFinished) {
-				wSelf.importSavedPhotosTableViewCell.textLabel.text = NSLocalizedString(@"NOT_IMPORTING_PHOTOS", @"Photo importing status");
-			} else {
-				wSelf.importSavedPhotosTableViewCell.textLabel.text = NSLocalizedString(@"IMPORTING_PHOTOS", @"Photo importing status");
-			}
-		});
-	}];
-
 	self.deviceNameLabel.text = WADeviceName();
   
+	[self.photoImportSwitch setOn:[[NSUserDefaults standardUserDefaults] boolForKey:kWAPhotoImportEnabled]];
+	
 }
 
 - (void) irObserveObject:(id)target keyPath:(NSString *)keyPath options:(NSKeyValueObservingOptions)options context:(void *)context withBlock:(IRObservingsCallbackBlock)block {
@@ -343,8 +333,8 @@ typedef enum WASyncStatus: NSUInteger {
 	
 	[self setStationNagCell:nil];
 	[self setServiceTableViewCell:nil];
-  [self setImportSavedPhotosTableViewCell:nil];
-  [super viewDidUnload];	
+  [self setPhotoImportSwitch:nil];
+  [super viewDidUnload];
 	
 }
 
@@ -468,14 +458,6 @@ typedef enum WASyncStatus: NSUInteger {
 		
 		[wSelf presentViewController:mcVC animated:YES completion:nil];
 	
-	} else if (hitCell == importSavedPhotosTableViewCell) {
-		
-		[[WAPhotoImportManager defaultManager] createPhotoImportArticlesWithCompletionBlock:^{
-			
-			NSLog(@"Photo import completed");
-
-		}];
-
 	}
 
 	[aTV deselectRowAtIndexPath:indexPath animated:YES];
@@ -534,7 +516,8 @@ typedef enum WASyncStatus: NSUInteger {
 	}
 	
 	if ([superAnswer isEqualToString:@"PHOTO_IMPORT_FOOTER"]) {
-		WAArticle *article = [[WAPhotoImportManager defaultManager] lastImportedArticle];
+		WADataStore *dataStore = [WADataStore defaultStore];
+		WAArticle *article = [dataStore fetchLatestLocalImportedArticleUsingContext:[dataStore disposableMOC]];
 		if (article) {
 			NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
 			[dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
@@ -586,6 +569,18 @@ typedef enum WASyncStatus: NSUInteger {
 		return WASyncStatusConnected;
 
 	return WASyncStatusNone;
+}
+
+- (IBAction)handlePhotoImportSwitchChanged:(id)sender {
+
+	UISwitch *photoImportSwitch = sender;
+	if ([photoImportSwitch isOn]) {
+		[[NSUserDefaults standardUserDefaults] setBool:YES forKey:kWAPhotoImportEnabled];
+	} else {
+		[[NSUserDefaults standardUserDefaults] setBool:NO forKey:kWAPhotoImportEnabled];
+	}
+	[[NSUserDefaults standardUserDefaults] synchronize];
+
 }
 
 @end

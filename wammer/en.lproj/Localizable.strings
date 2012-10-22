@@ -239,9 +239,6 @@
 /* No comment provided by engineer. */
 "HOUR_SINGULAR" = "%d hour";
 
-/* Photo importing status */
-"IMPORTING_PHOTOS" = "Importing Photos...";
-
 /* In Account Info Photo Import Section */
 "LAST_IMPORT_TIME" = "Latest Imported Photo Time: %@";
 
@@ -256,9 +253,6 @@
 
 /* No comment provided by engineer. */
 "MONTH_SINGULAR" = "%d month";
-
-/* Photo importing status */
-"NOT_IMPORTING_PHOTOS" = "Camera Roll Upload";
 
 /* Notification messages for photos auto-imported */
 "NOTIFY_PHOTOS_IMPORTED" = "%@ photo(s) have been imported into your Stream account.";
@@ -582,11 +576,11 @@
 /* Class = "IBUILabel"; text = "NOUN_CURRENT_DEVICE"; ObjectID = "fZ9-vs-r6f"; */
 "NOUN_CURRENT_DEVICE" = "Device";
 
+/* Class = "IBUILabel"; text = "PHOTO_IMPORT_TITLE"; ObjectID = "obe-LE-yqs"; */
+"PHOTO_IMPORT_TITLE" = "Auto-import photos";
+
 /* Class = "IBUITableViewSection"; footerTitle = "VERSION"; ObjectID = "rMk-eV-Pjl"; */
 "VERSION" = "Version";
-
-/* Class = "IBUILabel"; text = "ACTION_IMPORT_SAVED_PHOTOS"; ObjectID = "vuN-4r-WXb"; */
-"ACTION_IMPORT_SAVED_PHOTOS" = "Camera Upload";
 
 /* Class = "IBUILabel"; text = "ACTION_CONTACT_DEVELOPER"; ObjectID = "yLg-eE-ehZ"; */
 "ACTION_CONTACT_DEVELOPER" = "Contact";

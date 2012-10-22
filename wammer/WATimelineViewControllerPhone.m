@@ -984,5 +984,4 @@ CGFloat lastTableViewOffset;
 
 }
 
-
 @end

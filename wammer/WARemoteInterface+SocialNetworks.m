@@ -10,7 +10,10 @@
 
 @implementation WARemoteInterface (SocialNetworks)
 
-- (void) connectSocialNetwork:(NSString *)network withToken:(NSString *)token onSuccess:(void(^)(void))successBlock onFailure:(void(^)(NSError *))failureBlock {
+- (void) connectSocialNetwork:(NSString *)network
+										withToken:(NSString *)token
+										onSuccess:(void(^)(void))successBlock
+										onFailure:(void(^)(NSError *))failureBlock {
 
 	NSDictionary *payload = [NSDictionary dictionaryWithObjectsAndKeys:
 		network, @"sns",
@@ -21,13 +24,17 @@
 	
 	IRWebAPIResponseValidator validator = WARemoteInterfaceGenericNoErrorValidator();
 
-	[self.engine fireAPIRequestNamed:@"users/SNSConnect" withArguments:nil options:options validator:validator successHandler: ^ (NSDictionary *inResponseOrNil, IRWebAPIRequestContext *inResponseContext) {
-											
-		if (successBlock) {
-			successBlock();
-		}
-
-	} failureHandler:WARemoteInterfaceGenericFailureHandler(failureBlock)];
+	[self.engine
+	 fireAPIRequestNamed:@"users/SNSConnect"
+	 withArguments:nil
+	 options:options
+	 validator:validator
+	 successHandler: ^(NSDictionary *inResponseOrNil, IRWebAPIRequestContext *inResponseContext) {
+		 if (successBlock) {
+			 successBlock();
+		 }
+	 }
+	 failureHandler: WARemoteInterfaceGenericFailureHandler(failureBlock)];
 
 }
 

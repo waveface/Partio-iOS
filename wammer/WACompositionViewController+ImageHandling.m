@@ -18,6 +18,7 @@
 #import "WAAssetsLibraryManager.h"
 #import "WAFile+ThumbnailMaker.h"
 #import "WAFileExif.h"
+#import "WAFileExif+WAAdditions.h"
 
 NSString * const WACompositionImageInsertionUsesCamera = @"WACompositionImageInsertionUsesCamera";
 NSString * const WACompositionImageInsertionAnimatePresentation = @"WACompositionImageInsertionAnimatePresentation";
@@ -262,33 +263,9 @@ NSString * const kDismissesSelfIfCameraCancelled = @"-[WACompositionViewControll
 			file.resourceType = (NSString *)kUTTypeImage;
 			file.timestamp = [representedAsset valueForProperty:ALAssetPropertyDate];
 
-			NSDictionary *exifData = [[[representedAsset defaultRepresentation] metadata] objectForKey:@"{Exif}"];
-			NSDictionary *tiffData =	[[[representedAsset defaultRepresentation] metadata] objectForKey:@"{TIFF}"];
-			NSDictionary *gpsData = [[[representedAsset defaultRepresentation] metadata] objectForKey:@"{GPS}"];
 			WAFileExif *exif = (WAFileExif *)[WAFileExif objectInsertingIntoContext:file.managedObjectContext withRemoteDictionary:@{}];
-			if (exifData) {
-				exif.dateTimeOriginal = [exifData objectForKey:@"DateTimeOriginal"];
-				exif.dateTimeDigitized = [exifData objectForKey:@"DateTimeDigitized"];
-				exif.exposureTime = [exifData	objectForKey:@"ExposureTime"];
-				exif.fNumber = [exifData objectForKey:@"FNumber"];
-				exif.apertureValue = [exifData objectForKey:@"ApertureValue"];
-				exif.focalLength = [exifData objectForKey:@"FocalLength"];
-				exif.flash = [exifData objectForKey:@"Flash"];
-				if ([exifData objectForKey:@"ISOSpeedRatings"] && [[exifData objectForKey:@"ISOSpeedRatings"] count] > 0) {
-					exif.isoSpeedRatings = [[exifData objectForKey:@"ISOSpeedRatings"] objectAtIndex:0];
-				}
-				exif.colorSpace = [exifData objectForKey:@"ColorSpace"];
-				exif.whiteBalance = [exifData objectForKey:@"WhiteBalance"];
-			}
-			if (tiffData) {
-				exif.dateTime = [tiffData objectForKey:@"DateTime"];
-				exif.model = [tiffData objectForKey:@"Model"];
-				exif.make = [tiffData objectForKey:@"Make"];
-			}
-			if (gpsData) {
-				exif.gpsLongitude = [gpsData objectForKey:@"Longitude"];
-				exif.gpsLatitude = [gpsData objectForKey:@"Latitude"];
-			}
+			NSDictionary *metadata = [[representedAsset defaultRepresentation] metadata];
+			[exif initWithExif:metadata[@"{Exif}"] tiff:metadata[@"{TIFF}"] gps:metadata[@"{GPS}"]];
 			file.exif = exif;
 
 			NSError *savingError = nil;
