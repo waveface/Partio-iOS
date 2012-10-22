@@ -354,7 +354,7 @@ static NSString *const kTrackingId = @"UA-27817516-7";
 		//	[timelineVC setDelegate:self];
 			
 			WASlidingMenuViewController *slidingMenu = [[WASlidingMenuViewController alloc] init];
-			slidingMenu.delegate = swVC;
+			slidingMenu.delegate = self;
 
 			IIViewDeckController *viewDeckController = [[IIViewDeckController alloc] initWithCenterViewController:timelineNavC leftViewController:slidingMenu];
 			viewDeckController.view.backgroundColor = [UIColor blackColor];
