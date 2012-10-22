@@ -165,7 +165,20 @@ NSString * const WARemoteAttachmentSmallSubtype = @"small";
 			[exifData setObject:exif.whiteBalance forKey:@"WhiteBalance"];
 		}
 		if (exif.gpsLongitude && exif.gpsLatitude) {
-			[exifData setObject:@{@"longitude":exif.gpsLongitude, @"latitude":exif.gpsLatitude} forKey:@"gps"];
+			if (exif.gpsDateStamp && exif.gpsTimeStamp) {
+				NSArray *timeFileds = [exif.gpsTimeStamp componentsSeparatedByCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@":."]];
+				[exifData setObject:@{
+				 @"longitude":exif.gpsLongitude,
+				 @"latitude":exif.gpsLatitude,
+				 @"GPSDateStamp": exif.gpsDateStamp,
+				 @"GPSTimeStamp": @[[@([timeFileds[0] integerValue]) rationalValue],
+														[@([timeFileds[1] integerValue]) rationalValue],
+														[@([timeFileds[2] integerValue]) rationalValue]]
+				} forKey:@"gps"];
+			}
+			else {
+				[exifData setObject:@{@"longitude":exif.gpsLongitude, @"latitude":exif.gpsLatitude} forKey:@"gps"];
+			}
 		}
 
 		if ([NSJSONSerialization isValidJSONObject:exifData]) {
