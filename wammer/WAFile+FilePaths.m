@@ -24,8 +24,12 @@
 	NSString *primitivePath = [self primitiveValueForKey:filePathKey];
 	[self didAccessValueForKey:filePathKey];
 	
-	if (primitivePath)
-		return [self absolutePathFromPath:primitivePath];
+	if (primitivePath) {
+		NSString *filePath = [self absolutePathFromPath:primitivePath];
+		if ([[NSFileManager defaultManager] fileExistsAtPath:filePath]) {
+			return filePath;
+		}
+	}
 	
 	[self willAccessValueForKey:urlStringKey];
 	NSString *urlString = [self primitiveValueForKey:urlStringKey];
