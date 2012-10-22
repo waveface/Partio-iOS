@@ -150,8 +150,10 @@
         <attribute name="flash" optional="YES" attributeType="Integer 16" syncable="YES"/>
         <attribute name="fNumber" optional="YES" attributeType="Double" syncable="YES"/>
         <attribute name="focalLength" optional="YES" attributeType="Double" syncable="YES"/>
+        <attribute name="gpsDateStamp" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="gpsLatitude" optional="YES" attributeType="Double" syncable="YES"/>
         <attribute name="gpsLongitude" optional="YES" attributeType="Double" syncable="YES"/>
+        <attribute name="gpsTimeStamp" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="isoSpeedRatings" optional="YES" attributeType="Integer 16" syncable="YES"/>
         <attribute name="make" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="model" optional="YES" attributeType="String" syncable="YES"/>
@@ -272,7 +274,7 @@
         <element name="WACache" positionX="160" positionY="192" width="128" height="135"/>
         <element name="WAComment" positionX="0" positionY="0" width="128" height="135"/>
         <element name="WAFile" positionX="0" positionY="0" width="128" height="495"/>
-        <element name="WAFileExif" positionX="160" positionY="192" width="128" height="285"/>
+        <element name="WAFileExif" positionX="160" positionY="192" width="128" height="315"/>
         <element name="WAFilePageElement" positionX="0" positionY="0" width="128" height="90"/>
         <element name="WAGroup" positionX="0" positionY="0" width="128" height="120"/>
         <element name="WAOpenGraphElement" positionX="0" positionY="0" width="128" height="195"/>
