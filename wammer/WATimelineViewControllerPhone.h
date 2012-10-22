@@ -14,12 +14,10 @@
 #import "UIKit+IRAdditions.h"
 #import "WASlidingMenuViewController.h"
 #import "IIViewDeckController.h"
-#import "WASwipeableTableViewController.h"
+#import "WADayViewController.h"
 
 @interface WATimelineViewControllerPhone : IRTableViewController <WAApplicationRootViewController>
 
 - (id) initWithDate:(NSDate*)date;
-
-- (void) jumpToToday;
 
 @end

@@ -1,6 +1,3 @@
-/* Accessibility label for account info in iPhone timeline */
-"ACCESS_ACCOUNT_INFO" = "Account Info";
-
 /* accessibility label for adding photos in composition view */
 "ACCESS_ADD_PHOTO" = "Add Photo";
 
@@ -12,9 +9,6 @@
 
 /* Accessibility label for next day timeline */
 "ACCESS_NEXT_DAY" = "ACCESS_NEXT_DAY";
-
-/* Accessibility label for date picker in iPhone timeline */
-"ACCESS_PICK_DATE" = "Pick Date";
 
 /* accessibility label for webpage preview in composition view */
 "ACCESS_PREVIEW" = "Preview";

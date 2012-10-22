@@ -6,7 +6,7 @@
 //  Copyright (c) 2012 Waveface. All rights reserved.
 //
 
-#import "WASwipeableTableViewController.h"
+#import "WADayViewController.h"
 #import "WADefines.h"
 #import "WATimelineViewControllerPhone.h"
 #import "WADataStore.h"
@@ -25,7 +25,7 @@
 
 static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPostsViewControllerPhone_RepresentedObjectURI";
 
-@interface WASwipeableTableViewController () <WAArticleDraftsViewControllerDelegate>
+@interface WADayViewController () <WAArticleDraftsViewControllerDelegate>
 
 @property (nonatomic, readwrite, strong) IRPaginatedView *paginatedView;
 @property (nonatomic, readwrite, strong) NSMutableDictionary *daysControllers;
@@ -33,7 +33,7 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 
 @end
 
-@implementation WASwipeableTableViewController
+@implementation WADayViewController
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -46,8 +46,11 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleCompositionSessionRequest:) name:kWACompositionSessionRequestedNotification object:nil];
 	
+	[[WARemoteInterface sharedInterface] addObserver:self forKeyPath:@"isPostponingDataRetrievalTimerFiring" options:NSKeyValueObservingOptionPrior|NSKeyValueObservingOptionNew context:nil];
+	
 	self.title = NSLocalizedString(@"APP_TITLE", @"Title for application");
-	self.navigationItem.titleView = WATitleViewForDripdownMenu(self, @selector(dripdownMenuTapped));
+//	self.navigationItem.titleView = WATitleViewForDripdownMenu(self, @selector(dripdownMenuTapped));
+	self.navigationItem.titleView = WAStandardTitleView();
 	
 	CGRect rect = (CGRect){ CGPointZero, (CGSize){ 1, 1 } };
 	UIGraphicsBeginImageContext(rect.size);
@@ -80,19 +83,13 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 	
 	UIBarButtonItem *leftUIButton = [[UIBarButtonItem alloc] initWithImage:transparentImage style:UIBarButtonItemStylePlain target:self action:@selector(handleSwipeRight:)];
 	[leftUIButton setAccessibilityLabel:NSLocalizedString(@"ACCESS_NEXT_DAY", @"Accessibility label for next day timeline")];
-	/*
-	 UIBarButtonItem *datePickUIButton = [[UIBarButtonItem alloc] initWithImage:transparentImage style:UIBarButtonItemStylePlain target:self action:@selector(handleDateSelect:)];
-	 [datePickUIButton setAccessibilityLabel:NSLocalizedString(@"ACCESS_PICK_DATE", @"Accessibility label for date picker in iPhone timeline")];
-	 */
+
 	UIBarButtonItem *composeUIButton = [[UIBarButtonItem alloc] initWithCustomView:noteButton];
 	[composeUIButton setAccessibilityLabel:NSLocalizedString(@"ACCESS_COMPOSE", @"Accessibility label for composer in iPhone timeline")];
 	
 	UIBarButtonItem *cameraUIButton = [[UIBarButtonItem alloc] initWithCustomView:cameraButton];
 	[cameraButton setAccessibilityLabel:NSLocalizedString(@"ACCESS_CAMERA", @"Accessibility label for camera in iPhone timeline")];
-	/*
-	 UIBarButtonItem *userInfoUIButton = [[UIBarButtonItem alloc] initWithImage:transparentImage style:UIBarButtonItemStylePlain target:self action:@selector(handleUserInfo:)];
-	 [userInfoUIButton setAccessibilityLabel:NSLocalizedString(@"ACCESS_ACCOUNT_INFO", @"Accessibility label for account info in iPhone timeline")];
-	 */
+	
 	UIBarButtonItem *rightUIButton = [[UIBarButtonItem alloc] initWithImage:transparentImage style:UIBarButtonItemStylePlain target:self action:@selector(handleSwipeLeft:)];
 	[leftUIButton setAccessibilityLabel:NSLocalizedString(@"ACCESS_PREVIOUS_DAY", @"Accessibility label for previous day timeline")];
 	
@@ -147,7 +144,8 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 - (void) dealloc {
 
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:kWACompositionSessionRequestedNotification object:nil];
-
+  [[WARemoteInterface sharedInterface] removeObserver:self forKeyPath:@"isPostponingDataRetrievalTimerFiring"];
+	
 }
 
 
@@ -159,6 +157,7 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 	CGRect origFrame = self.view.frame;
 	origFrame.origin = CGPointZero;
 	
+	self.view.backgroundColor = [UIColor whiteColor];
 	self.paginatedView = [[IRPaginatedView alloc] initWithFrame:origFrame];
 	self.paginatedView.delegate = self;
 	
@@ -323,6 +322,17 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 	
 }
 
+- (void) observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+	
+	if ([self isViewLoaded])
+		if (object == [WARemoteInterface sharedInterface])
+			if ([[change objectForKey:NSKeyValueChangeNewKey] isEqual:(id)kCFBooleanFalse]) {
+				
+				[self.paginatedView reloadViews];
+				
+			}
+	
+}
 
 #pragma mark - delegate methods for WAArticleDraftsViewControllerDelegate
 - (BOOL) articleDraftsViewController:(WAArticleDraftsViewController *)aController shouldEnableArticle:(NSURL *)anObjectURIOrNil {
@@ -426,7 +436,7 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 		
 		WANavigationController *navC = [[WANavigationController alloc] initWithRootViewController:draftsVC];
 		
-		__weak WASwipeableTableViewController *wSelf = self;
+		__weak WADayViewController *wSelf = self;
 		
 		draftsVC.navigationItem.leftBarButtonItem = [IRBarButtonItem itemWithSystemItem:UIBarButtonSystemItemCancel wiredAction:^(IRBarButtonItem *senderItem) {
 			
@@ -501,7 +511,7 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 - (void) handleDateSelect:(UIBarButtonItem *)sender {
 	
 	NSManagedObjectContext *moc = [[WADataStore defaultStore] defaultAutoUpdatedMOC];
-	__weak WASwipeableTableViewController *wSelf = self;
+	__weak WADayViewController *wSelf = self;
 	
 	__block WADatePickerViewController *dpVC = [WADatePickerViewController controllerWithCompletion:^(NSDate *date) {
 		
@@ -556,7 +566,7 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 BOOL dripdownMenuOpened = NO;
 - (void) dripdownMenuTapped {
 	
-	__weak WASwipeableTableViewController *wSelf = self;
+	__weak WADayViewController *wSelf = self;
 	
 	void (^dismissDDMenu)(WADripdownMenuViewController *menu) = ^(WADripdownMenuViewController *menu) {
 		
@@ -611,6 +621,13 @@ BOOL dripdownMenuOpened = NO;
 }
 
 
+- (void) handleSwipeRight:(id) sender {
+	// FIXME: switch to the next day
+}
+
+- (void) handleSwipeLeft:(id) sender {
+	// FIXME: switch to the previous day
+}
 
 
 @end

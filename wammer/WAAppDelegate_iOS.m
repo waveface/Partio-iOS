@@ -46,7 +46,7 @@
 
 #import "IIViewDeckController.h"
 #import "WASlidingMenuViewController.h"
-#import "WASwipeableTableViewController.h"
+#import "WADayViewController.h"
 
 #if ENABLE_PONYDEBUG
 	#import "PonyDebugger/PDDebugger.h"
@@ -332,7 +332,7 @@
 		case UIUserInterfaceIdiomPhone: {
 			
 //			WATimelineViewControllerPhone *timelineVC = [[WATimelineViewControllerPhone alloc] init];
-			WASwipeableTableViewController *swVC = [[WASwipeableTableViewController alloc] init];
+			WADayViewController *swVC = [[WADayViewController alloc] init];
 
 			WANavigationController *timelineNavC = [[WANavigationController alloc] initWithRootViewController:swVC];
 			

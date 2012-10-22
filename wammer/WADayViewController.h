@@ -10,7 +10,7 @@
 #import "IRPaginatedView.h"
 #import "IIViewDeckController.h"
 
-@interface WASwipeableTableViewController : UIViewController <IRPaginatedViewDelegate, IIViewDeckControllerDelegate>
+@interface WADayViewController : UIViewController <IRPaginatedViewDelegate, IIViewDeckControllerDelegate>
 
 
 - (void)jumpToToday;

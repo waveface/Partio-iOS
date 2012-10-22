@@ -185,7 +185,7 @@
 			[self.viewDeckController closeLeftView];
 
 			WANavigationController *nav = (WANavigationController*)self.viewDeckController.centerController;
-			[(WASwipeableTableViewController*)(nav.topViewController) jumpToToday];
+			[(WADayViewController*)(nav.topViewController) jumpToToday];
 			
 			break;
 		}

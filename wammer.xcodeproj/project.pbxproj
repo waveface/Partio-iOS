@@ -178,7 +178,7 @@
 		80A2217215ED1AFD006236AC /* WARemoteInterface+Notification.h in Sources */ = {isa = PBXBuildFile; fileRef = 8002CDE715E5E92100D7BFF0 /* WARemoteInterface+Notification.h */; };
 		80A2217415ED1AFD006236AC /* WARemoteInterface+WebSocket.h in Sources */ = {isa = PBXBuildFile; fileRef = 8002CDEA15E5F6F300D7BFF0 /* WARemoteInterface+WebSocket.h */; };
 		80A2217515ED1AFD006236AC /* WARemoteInterface+WebSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 8002CDEB15E5F6F300D7BFF0 /* WARemoteInterface+WebSocket.m */; };
-		80BE685B161DC13800A37CEB /* WASwipeableTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 80BE685A161DC13800A37CEB /* WASwipeableTableViewController.m */; };
+		80BE685B161DC13800A37CEB /* WADayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 80BE685A161DC13800A37CEB /* WADayViewController.m */; };
 		80EB9A661615A436003B282B /* SSKeychain.m in Sources */ = {isa = PBXBuildFile; fileRef = 80EB9A651615A436003B282B /* SSKeychain.m */; };
 		80EE282316004112000ED674 /* WAFacebookInterface.m in Sources */ = {isa = PBXBuildFile; fileRef = FFBBA42415AD5D4400E95C66 /* WAFacebookInterface.m */; };
 		80EE282416004200000ED674 /* WAFacebook.m in Sources */ = {isa = PBXBuildFile; fileRef = FF3FF83115AEA670003CF6CC /* WAFacebook.m */; };
@@ -1314,8 +1314,8 @@
 		809D428F15F5CE4300CB4F89 /* WAWebSocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAWebSocket.m; sourceTree = "<group>"; };
 		80A13C72162071C4002880A9 /* NSDate+WAAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDate+WAAdditions.h"; sourceTree = "<group>"; };
 		80A13C73162071C4002880A9 /* NSDate+WAAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+WAAdditions.m"; sourceTree = "<group>"; };
-		80BE6859161DC13800A37CEB /* WASwipeableTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WASwipeableTableViewController.h; sourceTree = "<group>"; };
-		80BE685A161DC13800A37CEB /* WASwipeableTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WASwipeableTableViewController.m; sourceTree = "<group>"; };
+		80BE6859161DC13800A37CEB /* WADayViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WADayViewController.h; sourceTree = "<group>"; };
+		80BE685A161DC13800A37CEB /* WADayViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WADayViewController.m; sourceTree = "<group>"; };
 		80EB9A641615A436003B282B /* SSKeychain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SSKeychain.h; path = external/sskeychain/SSKeychain.h; sourceTree = "<group>"; };
 		80EB9A651615A436003B282B /* SSKeychain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SSKeychain.m; path = external/sskeychain/SSKeychain.m; sourceTree = "<group>"; };
 		80F800F415C2624C00132A96 /* IRAQ-Checkmark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "IRAQ-Checkmark.png"; sourceTree = "<group>"; };
@@ -2633,8 +2633,8 @@
 				809C6D281605845A0016E196 /* WASlidingMenuViewController.h */,
 				809C6D291605845A0016E196 /* WASlidingMenuViewController.m */,
 				809C6D2A1605845A0016E196 /* WASlidingMenuViewController.xib */,
-				80BE6859161DC13800A37CEB /* WASwipeableTableViewController.h */,
-				80BE685A161DC13800A37CEB /* WASwipeableTableViewController.m */,
+				80BE6859161DC13800A37CEB /* WADayViewController.h */,
+				80BE685A161DC13800A37CEB /* WADayViewController.m */,
 				80A13C72162071C4002880A9 /* NSDate+WAAdditions.h */,
 				80A13C73162071C4002880A9 /* NSDate+WAAdditions.m */,
 				806A5C831623C6C500867E56 /* WADripdownMenuViewController.h */,
@@ -4623,7 +4623,7 @@
 				809C6D2B1605845A0016E196 /* WASlidingMenuViewController.m in Sources */,
 				80EB9A661615A436003B282B /* SSKeychain.m in Sources */,
 				13B6DB9D161573FF00B9CC35 /* WAFileExif.m in Sources */,
-				80BE685B161DC13800A37CEB /* WASwipeableTableViewController.m in Sources */,
+				80BE685B161DC13800A37CEB /* WADayViewController.m in Sources */,
 				80A13C74162071C4002880A9 /* NSDate+WAAdditions.m in Sources */,
 				806A5C851623C6C500867E56 /* WADripdownMenuViewController.m in Sources */,
 			);
