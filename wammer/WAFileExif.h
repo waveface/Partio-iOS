@@ -29,6 +29,8 @@
 @property (nonatomic, retain) NSNumber * whiteBalance;
 @property (nonatomic, retain) NSNumber * gpsLongitude;
 @property (nonatomic, retain) NSNumber * gpsLatitude;
+@property (nonatomic, retain) NSString * gpsDateStamp;
+@property (nonatomic, retain) NSString * gpsTimeStamp;
 @property (nonatomic, retain) WAFile *file;
 
 @end

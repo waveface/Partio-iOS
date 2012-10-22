@@ -13,27 +13,29 @@
 - (void)initWithExif:(NSDictionary *)exifData tiff:(NSDictionary *)tiffData gps:(NSDictionary *)gpsData {
 
 	if (exifData) {
-		[self setDateTimeOriginal:exifData[@"DateTimeOriginal"]];
-		[self setDateTimeDigitized:exifData[@"DateTimeDigitized"]];
-		[self setExposureTime:exifData[@"ExposureTime"]];
-		[self setFNumber:exifData[@"FNumber"]];
-		[self setApertureValue:exifData[@"ApertureValue"]];
-		[self setFocalLength:exifData[@"FocalLength"]];
-		[self setFlash:exifData[@"Flash"]];
+		self.dateTimeOriginal = exifData[@"DateTimeOriginal"];
+		self.dateTimeDigitized = exifData[@"DateTimeDigitized"];
+		self.exposureTime = exifData[@"ExposureTime"];
+		self.fNumber = exifData[@"FNumber"];
+		self.apertureValue = exifData[@"ApertureValue"];
+		self.focalLength = exifData[@"FocalLength"];
+		self.flash = exifData[@"Flash"];
 		if (exifData[@"ISOSpeedRatings"] && [exifData[@"ISOSpeedRatings"] count] > 0) {
-			[self setIsoSpeedRatings:exifData[@"ISOSpeedRatings"][0]];
+			self.isoSpeedRatings = exifData[@"ISOSpeedRatings"][0];
 		}
-		[self setColorSpace:exifData[@"ColorSpace"]];
-		[self setWhiteBalance:exifData[@"WhiteBalance"]];
+		self.colorSpace = exifData[@"ColorSpace"];
+		self.whiteBalance = exifData[@"WhiteBalance"];
 	}
 	if (tiffData) {
-		[self setDateTime:tiffData[@"DateTime"] ];
-		[self setModel:tiffData[@"Model"]];
-		[self setMake:tiffData[@"Make"]];
+		self.dateTime = tiffData[@"DateTime"];
+		self.model = tiffData[@"Model"];
+		self.make = tiffData[@"Make"];
 	}
 	if (gpsData) {
-		[self setGpsLongitude:gpsData[@"Longitude"]];
-		[self setGpsLatitude:gpsData[@"Latitude"]];
+		self.gpsLongitude = gpsData[@"Longitude"];
+		self.gpsLatitude = gpsData[@"Latitude"];
+		self.gpsDateStamp = gpsData[@"DateStamp"];
+		self.gpsTimeStamp = gpsData[@"TimeStamp"];
 	}
 
 }

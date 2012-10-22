@@ -27,6 +27,8 @@
 @dynamic whiteBalance;
 @dynamic gpsLongitude;
 @dynamic gpsLatitude;
+@dynamic gpsDateStamp;
+@dynamic gpsTimeStamp;
 @dynamic file;
 
 @end
