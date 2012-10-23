@@ -75,13 +75,14 @@
 	CGRect tableViewFromRect = self.tableView.frame;
 	CGRect tableViewToRect = CGRectOffset(tableViewFromRect, 0, -1 * CGRectGetHeight(tableViewFromRect));
 	
+	__weak WADripdownMenuViewController *wSelf = self;
 	self.translucentOverlay.alpha = 1;
 	self.tableView.frame = tableViewFromRect;
 	
 	[UIView animateWithDuration:0.3 animations:^{
 		
-		self.translucentOverlay.alpha = 0;
-		self.tableView.frame = tableViewToRect;
+		wSelf.translucentOverlay.alpha = 0;
+		wSelf.tableView.frame = tableViewToRect;
 		
 	} completion:^(BOOL finished) {
 		
