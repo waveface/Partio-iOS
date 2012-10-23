@@ -48,6 +48,7 @@
 	CGRect menuToRect = self.tableView.frame;
 	CGRect menuFromRect = CGRectOffset(menuToRect, 0, -1 * CGRectGetHeight(menuToRect));
 
+	__weak WADripdownMenuViewController *wSelf = self;
 	self.tableView.frame = menuFromRect;
 	self.translucentOverlay.alpha = 0;
 	
@@ -56,8 +57,8 @@
 											options:UIViewAnimationOptionCurveEaseInOut
 									 animations:^{
 										 
-										 self.tableView.frame = menuToRect;
-										 self.translucentOverlay.alpha = 1;
+										 wSelf.tableView.frame = menuToRect;
+										 wSelf.translucentOverlay.alpha = 1;
 									 
 									 }
 									 completion:^(BOOL finished) {
@@ -93,9 +94,10 @@
 
 - (IBAction) tapperTapped:(id)sender {
 	
+	__weak WADripdownMenuViewController *wSelf = self;
 	[self runDismissingAnimationWithCompletion:^ {
-		if (self.completionBlock)
-			self.completionBlock();
+		if (wSelf.completionBlock)
+			wSelf.completionBlock();
 	}];
 	
 }
@@ -145,9 +147,10 @@
 
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 
+	__weak WADripdownMenuViewController *wSelf = self;
 	[self runDismissingAnimationWithCompletion:^{
-		if (self.completionBlock)
-			self.completionBlock();
+		if (wSelf.completionBlock)
+			wSelf.completionBlock();
 	}];
 	
 }

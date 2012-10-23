@@ -439,7 +439,7 @@ typedef enum WASyncStatus: NSUInteger {
 		
 		IRMailComposeViewController *mcVC = [IRMailComposeViewController controllerWithMessageToRecipients:recipients withSubject:subject messageBody:body inHTML:NO completion:^(MFMailComposeViewController *controller, MFMailComposeResult result, NSError *error) {
 		
-			[controller dismissModalViewControllerAnimated:YES];
+			[controller dismissViewControllerAnimated:YES completion:nil];
 		
 		}];
 		

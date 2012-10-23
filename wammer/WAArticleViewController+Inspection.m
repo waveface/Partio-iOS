@@ -161,7 +161,7 @@ static NSString * const kCoverPhotoSwitchPopoverController = @"-[WAArticleViewCo
 				
 				shownViewController.navigationItem.leftBarButtonItem = [IRBarButtonItem itemWithSystemItem:UIBarButtonSystemItemDone wiredAction:^(IRBarButtonItem *senderItem) {
 				
-					[shownNavController dismissModalViewControllerAnimated:YES];
+					[shownNavController dismissViewControllerAnimated:YES completion:nil];
 					
 				}];
 				
@@ -193,7 +193,7 @@ static NSString * const kCoverPhotoSwitchPopoverController = @"-[WAArticleViewCo
 						transition.fillMode = kCAFillModeForwards;
 						transition.removedOnCompletion = YES;
 						
-						[shownViewController.navigationController presentModalViewController:mailComposeController animated:NO];
+						[shownNavController.navigationController presentViewController:mailComposeController animated:NO completion:nil];
 						[shownViewController.navigationController.view.window.layer addAnimation:transition forKey:kCATransition];
 						
 						[CATransaction commit];
@@ -218,7 +218,7 @@ static NSString * const kCoverPhotoSwitchPopoverController = @"-[WAArticleViewCo
 					
 				}];
 				
-				[wSelf.hostingViewController presentModalViewController:shownNavController animated:YES];
+				[wSelf.hostingViewController presentViewController:shownNavController animated:YES completion:nil];
 			
 			} else {
 		

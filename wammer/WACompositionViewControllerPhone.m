@@ -399,14 +399,14 @@
 
 	WANavigationController *navC = [[WANavigationController alloc] initWithRootViewController:[self newMediaListViewController]];
 	
-	[self presentModalViewController:navC animated:animated];
+	[self presentViewController:navC animated:animated completion:nil];
 
 }
 
 - (void) dismissMediaListViewController:(WAAttachedMediaListViewController *)controller animated:(BOOL)animated {
 
-	[controller dismissModalViewControllerAnimated:animated];
-
+	[controller dismissViewControllerAnimated:animated completion:nil];
+	
 }
 
 - (void) dismissImagePickerController:(IRImagePickerController *)controller animated:(BOOL)animated {
@@ -443,13 +443,13 @@
 	previewVC.delegate = self;
 	
 	UINavigationController *navC = [previewVC wrappingNavController];
-	[self presentModalViewController:navC animated:YES];
+	[self presentViewController:navC animated:YES completion:nil];
 
 }
 
 - (void) previewInspectionViewControllerDidFinish:(WAPreviewInspectionViewController *)inspector {
 
-	[inspector dismissModalViewControllerAnimated:YES];
+	[inspector dismissViewControllerAnimated:YES completion:nil];
 
 }
 
@@ -472,7 +472,7 @@
 			IRAction *discardAction = [IRAction actionWithTitle:NSLocalizedString(@"ACTION_DISCARD", nil) block:^{
 			
 				[removedPreview.article removePreviewsObject:removedPreview];
-				[inspector dismissModalViewControllerAnimated:YES];
+				[inspector dismissViewControllerAnimated:YES completion:nil];
 
 				wSelf.actionSheetController = nil;
 				
@@ -490,7 +490,7 @@
 		NSParameterAssert([[inspector.preview objectID] isEqual:[removedPreview objectID]]);
 		
 		[removedPreview.article removePreviewsObject:removedPreview];
-		[inspector dismissModalViewControllerAnimated:YES];
+		[inspector dismissViewControllerAnimated:YES completion:nil];
 	
 	}
 	

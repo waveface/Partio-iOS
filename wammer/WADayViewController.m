@@ -257,7 +257,7 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 		
 		[objects enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
 			
-			NSDate *theDate = (NSDate*)[(NSDictionary*)obj objectForKey:@"fetchedCreationDate"];
+			NSDate *theDate = (NSDate*)obj[@"fetchedCreationDate"];
 			
 			if (!currentDate || !theSameDay(currentDate, theDate)) {
 				[self.days addObject:theDate];
@@ -276,7 +276,7 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 	
 	if (dateForPage) {
 		
-		WATimelineViewControllerPhone *vc = [self.daysControllers objectForKey:dateForPage];
+		WATimelineViewControllerPhone *vc = self.daysControllers[dateForPage]; 
 
 		if (vc) {
 			
@@ -359,12 +359,12 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 			
 			__block void (^dismissModal)(UIViewController *) = [^ (UIViewController *aVC) {
 				
-				if (aVC.modalViewController) {
-					dismissModal(aVC.modalViewController);
+				if (aVC.presentedViewController) {
+					dismissModal(aVC.presentedViewController);
 					return;
 				}
 				
-				[aVC dismissModalViewControllerAnimated:NO];
+				[aVC dismissViewControllerAnimated:NO completion:nil];
 				
 			} copy];
 			
@@ -380,7 +380,7 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 			dismissModal(compositionVC);
 			dismissModal = nil;
 			
-			[compositionVC dismissModalViewControllerAnimated:NO];
+			[compositionVC dismissViewControllerAnimated:NO completion:nil];
 			
 			CATransition *fadeTransition = [CATransition animation];
 			fadeTransition.duration = 0.3f;
@@ -395,7 +395,7 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 			
 		} else {
 			
-			[compositionVC dismissModalViewControllerAnimated:YES];
+			[compositionVC dismissViewControllerAnimated:YES completion:nil];
 			
 			if (!anURL && [compositionVC.article hasMeaningfulContent]) {
 //				[self setScrollToTopmostPost:YES];
