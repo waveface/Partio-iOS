@@ -134,4 +134,18 @@
 	
 }
 
+- (NSString *)extraSmallThumbnailFilePath {
+
+	[self willAccessValueForKey:kWAFileExtraSmallThumbnailFilePath];
+	NSString *filePath = [self primitiveValueForKey:kWAFileExtraSmallThumbnailFilePath];
+	[self didAccessValueForKey:kWAFileExtraSmallThumbnailFilePath];
+
+	if (filePath && [[NSFileManager defaultManager] fileExistsAtPath:filePath]) {
+		return filePath;
+	}
+
+	return nil;
+
+}
+
 @end
