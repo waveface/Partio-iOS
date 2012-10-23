@@ -8,12 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@protocol WASlidingMenuDelegate <NSObject>
-
-@required
-- (void) slidingMenuItemDidSelected:(id)result;
-
-@end
 
 @interface WASlidingMenuViewController : UITableViewController
 

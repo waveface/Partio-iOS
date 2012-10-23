@@ -12,7 +12,7 @@
 #import "WAApplicationRootViewControllerDelegate.h"
 #import "WASlidingMenuViewController.h"
 
-@interface WAArticlesViewController : UIViewController <WAApplicationRootViewController, NSFetchedResultsControllerDelegate, WASlidingMenuDelegate>
+@interface WAArticlesViewController : UIViewController <WAApplicationRootViewController, NSFetchedResultsControllerDelegate>
 
 @property (nonatomic, readonly, retain) NSFetchedResultsController *fetchedResultsController;
 @property (nonatomic, readonly, retain) NSManagedObjectContext *managedObjectContext;

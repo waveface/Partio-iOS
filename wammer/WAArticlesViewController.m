@@ -370,13 +370,13 @@
         
         __block IRMailComposeViewController *composeViewController;
         composeViewController = [IRMailComposeViewController controllerWithMessageToRecipients:[NSArray arrayWithObjects:@"ev@waveface.com",	nil] withSubject:NSLocalizedString(@"NOUN_CURRENT_DEVICE", @"Title for Waveface Feedback") messageBody:nil inHTML:NO completion:^(MFMailComposeViewController *controller, MFMailComposeResult result, NSError *error) {
-          [composeViewController dismissModalViewControllerAnimated:YES];
+					[composeViewController dismissViewControllerAnimated:YES completion:nil];
         }];
         
         if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
           composeViewController.modalPresentationStyle = UIModalPresentationFormSheet;
         
-        [nrSelf presentModalViewController:composeViewController animated:YES];
+			  [nrSelf presentViewController:composeViewController animated:YES completion:nil];
       
       }],
       
@@ -544,14 +544,14 @@
 
 	__block WACompositionViewController *compositionVC = [WACompositionViewController defaultAutoSubmittingCompositionViewControllerForArticle:anURI completion:^(NSURL *anURI) {
 		
-		[compositionVC dismissModalViewControllerAnimated:YES];
+		[compositionVC dismissViewControllerAnimated:YES completion:nil];
 		
 	}];
 	
 	UINavigationController *wrapperNC = [compositionVC wrappingNavigationController];
 	wrapperNC.modalPresentationStyle = UIModalPresentationFormSheet;
 	
-	[(self.navigationController ? self.navigationController : self) presentModalViewController:wrapperNC animated:YES];
+	[(self.navigationController ? self.navigationController : self) presentViewController:wrapperNC animated:YES completion:nil];
 
 }
 

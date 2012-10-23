@@ -7,8 +7,13 @@
 //
 
 #import "WASlidingMenuViewController.h"
+#import "WAAppDelegate.h"
+#import "WADefines.h"
 #import "WANavigationController.h"
 #import "WATimelineViewControllerPhone.h"
+#import "WAUserInfoViewController.h"
+#import "WAOverlayBezel.h"
+#import "WAPhotoImportManager.h"
 #import "WADataStore.h"
 
 @interface WASlidingMenuViewController ()
@@ -38,6 +43,45 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (void) handleUserInfo {
+	
+	UINavigationController *navC = nil;
+	WAUserInfoViewController *userInfoVC = [WAUserInfoViewController controllerWithWrappingNavController:&navC];
+
+	__weak WASlidingMenuViewController *wSelf = self;
+	__weak WAUserInfoViewController *wUserInfoVC = userInfoVC;
+
+	userInfoVC.navigationItem.rightBarButtonItem = [IRBarButtonItem itemWithSystemItem:UIBarButtonSystemItemDone wiredAction:^(IRBarButtonItem *senderItem) {
+	
+		[wUserInfoVC.navigationController dismissViewControllerAnimated:YES completion:nil];
+	
+	}];
+
+	userInfoVC.navigationItem.leftBarButtonItem = [IRBarButtonItem itemWithTitle:NSLocalizedString(@"ACTION_SIGN_OUT", nil) action:^{
+	
+		IRAction *cancelAction = [IRAction actionWithTitle:NSLocalizedString(@"ACTION_CANCEL", nil) block:nil];
+	
+		NSString *alertTitle = NSLocalizedString(@"ACTION_SIGN_OUT", nil);
+		NSString *alertText = NSLocalizedString(@"SIGN_OUT_CONFIRMATION", nil);
+	
+		[[IRAlertView alertViewWithTitle:alertTitle
+														 message:alertText
+												cancelAction:cancelAction
+												otherActions:[NSArray arrayWithObjects:
+																			[IRAction actionWithTitle:NSLocalizedString(@"ACTION_SIGN_OUT", nil) block: ^ {
+		
+				
+				if ([wSelf.delegate respondsToSelector:@selector(applicationRootViewControllerDidRequestReauthentication:)])
+					[wSelf.delegate applicationRootViewControllerDidRequestReauthentication:nil];
+				
+		
+		}], nil]] show];
+	
+	}];
+
+	[self presentViewController:navC animated:YES completion:nil];
+}
+
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -64,15 +108,15 @@
 		switch(indexPath.row) {
 			
 			case 0:
-				cell.textLabel.text = NSLocalizedString(@"Timeline", @"Title for Timeline in the sliding menu");
+				cell.textLabel.text = NSLocalizedString(@"SLIDING_MENU_TITLE_TIMELINE", @"Title for Timeline in the sliding menu");
 				break;
 				
 			case 1:
-				cell.textLabel.text = NSLocalizedString(@"Collection", @"Title for Collection in the sliding menu");
+				cell.textLabel.text = NSLocalizedString(@"SLIDING_MENU_TITLE_COLLECTION", @"Title for Collection in the sliding menu");
 				break;
 				
 			case 2:
-				cell.textLabel.text = NSLocalizedString(@"Settings", @"Title for Settings in the sliding menu");
+				cell.textLabel.text = NSLocalizedString(@"SLIDING_MENU_TITLE_SETTINGS", @"Title for Settings in the sliding menu");
 				break;
 		}
 	
@@ -127,16 +171,20 @@
 	switch (row) {
 			
 		case 0: {
-			WANavigationController *nav = (WANavigationController*)self.viewDeckController.centerController;
-			[(WATimelineViewControllerPhone*)(nav.topViewController) jumpToToday];
+
 			[self.viewDeckController closeLeftView];
+
+			WANavigationController *nav = (WANavigationController*)self.viewDeckController.centerController;
+			[(WADayViewController*)(nav.topViewController) jumpToToday];
+			
 			break;
 		}
 			
 		case 1:
 			break;
 			
-		case 2:
+		case 2: // Settings
+			[self handleUserInfo];
 			break;
 	}
 }

@@ -1,6 +1,3 @@
-/* Accessibility label for account info in iPhone timeline */
-"ACCESS_ACCOUNT_INFO" = "帳戶資訊";
-
 /* accessibility label for adding photos in composition view */
 "ACCESS_ADD_PHOTO" = "加照片";
 
@@ -10,11 +7,14 @@
 /* Accessibility label for composer in iPhone timeline */
 "ACCESS_COMPOSE" = "貼文";
 
-/* Accessibility label for date picker in iPhone timeline */
-"ACCESS_PICK_DATE" = "選日期";
+/* Accessibility label for next day timeline */
+"ACCESS_NEXT_DAY" = "ACCESS_NEXT_DAY";
 
 /* accessibility label for webpage preview in composition view */
 "ACCESS_PREVIEW" = "預覽";
+
+/* Accessibility label for previous day timeline */
+"ACCESS_PREVIOUS_DAY" = "ACCESS_PREVIOUS_DAY";
 
 /* add photo button in composition view */
 "ACTION_ADD" = "加照片";
@@ -127,9 +127,6 @@
 
 /* Title for Cover Image picker */
 "CHANGE_REPRESENTING_FILE_TITLE" = "更換封面相片";
-
-/* Title for Collection in the sliding menu */
-"Collection" = "Collection";
 
 /* add photo button in composition view */
 "COMPOSITION_MANY_PHOTOS_BUTTON_CAPTION_FORMAT" = "%i 張照片";
@@ -327,9 +324,6 @@
 /* Title to show explaining WiFi Sync */
 "SERVICE_INFO_WITHOUT_WIFI" = "⚠ 僅會在 Wi-Fi 連線時上傳原檔\n\n在 Wi-Fi 環境中，Stream 會幫您將原始檔案妥善保存。只要下載並且開啓 PC 上的 Stream，您有 30 天的時間將檔案從雲端送回 PC 保存。";
 
-/* Title for Settings in the sliding menu */
-"Settings" = "Settings";
-
 /* Title for view controller signing the user in */
 "SIGN_IN_CONTROLLER_TITLE" = "登入";
 
@@ -338,6 +332,15 @@
 
 /* Title for view controller signing the user up */
 "SIGN_UP_CONTROLLER_TITLE" = "註冊";
+
+/* Title for Collection in the sliding menu */
+"SLIDING_MENU_TITLE_COLLECTION" = "SLIDING_MENU_TITLE_COLLECTION";
+
+/* Title for Settings in the sliding menu */
+"SLIDING_MENU_TITLE_SETTINGS" = "SLIDING_MENU_TITLE_SETTINGS";
+
+/* Title for Timeline in the sliding menu */
+"SLIDING_MENU_TITLE_TIMELINE" = "SLIDING_MENU_TITLE_TIMELINE";
 
 /* In Account Info Photo Import Section */
 "START_PHOTO_IMPORT_DESCRIPTION" = "匯入所有 Camera Roll 中的照片";
@@ -372,8 +375,14 @@
 /* Title on the text stack more / less toggle button for “More” */
 "TEXT_ELEMENT_TOGGLE_MORE_TITLE" = "更多";
 
-/* Title for Timeline in the sliding menu */
-"Timeline" = "Timeline";
+/* Title for menu item Document Stream */
+"TITLE_DOCUMENT_STREAM" = "TITLE_DOCUMENT_STREAM";
+
+/* Title for menu item Photo Stream */
+"TITLE_PHOTO_STREAM" = "TITLE_PHOTO_STREAM";
+
+/* Title for menu item Reading Stream */
+"TITLE_READING_STREAM" = "TITLE_READING_STREAM";
 
 /* Alert on no location service enabled when open photo library */
 "TURN_ON_LOCATION_SERVICE" = "Stream 須開啟定位服務才能存取相簿的內容";
@@ -407,9 +416,6 @@
 
 /* Title to show when user has no station, and have exhausted storage on the Cloud */
 "USER_INFO_NAG_LEVEL_3_WITHOUT_STATION" = "您已有原始檔暫存在雲端上，請儘快下載與安裝Station，讓我們將檔案送回您的PC中";
-
-/* In Phone timeline */
-"VIEW_BUTTON" = "顯示";
 
 /* preview button in composition view */
 "WEB_PREVIEW" = "預覽";

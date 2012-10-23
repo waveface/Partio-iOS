@@ -141,11 +141,27 @@ UIImage * WABarButtonImageWithOptions (NSString *aName, UIColor *fillColor, IRSh
 
 };
 
+UIView * WATitleViewForDripdownMenu (id target, SEL action) {
+
+	UIImage *logo = [UIImage imageNamed:@"LogoDD"];
+	UIButton *logoButton = [UIButton buttonWithType:UIButtonTypeCustom];
+	logoButton.frame = (CGRect) {CGPointZero, logo.size};
+	[logoButton setBackgroundImage:logo forState:UIControlStateNormal];
+	[logoButton setShowsTouchWhenHighlighted:YES];
+	[logoButton addTarget:target action:action forControlEvents:UIControlEventTouchUpInside];
+	logoButton.contentMode = UIViewContentModeScaleAspectFit;
+	logoButton.autoresizingMask = UIViewAutoresizingNone;
+	[logoButton sizeToFit];
+	return logoButton;
+
+}
+
 UIView * WAStandardTitleView (void) {
 
 	UIImageView *logotype = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"WALogotype"]];
 	logotype.contentMode = UIViewContentModeScaleAspectFit;
 	logotype.autoresizingMask = UIViewAutoresizingNone;
+ 
 	[logotype sizeToFit];
 	
 	return logotype;

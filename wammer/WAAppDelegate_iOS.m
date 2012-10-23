@@ -45,6 +45,7 @@
 
 #import "IIViewDeckController.h"
 #import "WASlidingMenuViewController.h"
+#import "WADayViewController.h"
 
 #if ENABLE_PONYDEBUG
 	#import "PonyDebugger/PDDebugger.h"
@@ -217,7 +218,11 @@ static NSString *const kTrackingId = @"UA-27817516-7";
 	[debugger enableCoreDataDebugging];
 	[debugger addManagedObjectContext:context withName:@"My MOC"];
 #endif
-	
+
+#if ENABLE_DCINTROSPECT
+	[[DCIntrospect sharedIntrospector] start];
+#endif
+
 	return YES;
 	
 }
@@ -341,13 +346,15 @@ static NSString *const kTrackingId = @"UA-27817516-7";
 		
 		case UIUserInterfaceIdiomPhone: {
 			
-			WATimelineViewControllerPhone *timelineVC = [[WATimelineViewControllerPhone alloc] init];
-			WANavigationController *timelineNavC = [[WANavigationController alloc] initWithRootViewController:timelineVC];
+//			WATimelineViewControllerPhone *timelineVC = [[WATimelineViewControllerPhone alloc] init];
+			WADayViewController *swVC = [[WADayViewController alloc] init];
+
+			WANavigationController *timelineNavC = [[WANavigationController alloc] initWithRootViewController:swVC];
 			
-			[timelineVC setDelegate:self];
+		//	[timelineVC setDelegate:self];
 			
 			WASlidingMenuViewController *slidingMenu = [[WASlidingMenuViewController alloc] init];
-			slidingMenu.delegate = timelineVC;
+			slidingMenu.delegate = self;
 
 			IIViewDeckController *viewDeckController = [[IIViewDeckController alloc] initWithCenterViewController:timelineNavC leftViewController:slidingMenu];
 			viewDeckController.view.backgroundColor = [UIColor blackColor];
@@ -356,7 +363,7 @@ static NSString *const kTrackingId = @"UA-27817516-7";
 			viewDeckController.animationBehavior = IIViewDeckAnimationPullIn;
 			viewDeckController.panningMode = IIViewDeckNoPanning;
 			viewDeckController.centerhiddenInteractivity = IIViewDeckCenterHiddenNotUserInteractiveWithTapToClose;
-						
+	
 			self.window.rootViewController = viewDeckController;
 		
 			break;

@@ -428,11 +428,11 @@
 		
 			galleryVC.onDismiss = ^ {
 				
-				[galleryVC dismissModalViewControllerAnimated:NO];
+				[galleryVC dismissViewControllerAnimated:NO completion:nil];
 				
 			};
 			
-			[self presentModalViewController:galleryVC animated:NO];
+			[self presentViewController:galleryVC animated:NO completion:nil];
 
 			break;
 		
