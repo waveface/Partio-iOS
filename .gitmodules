@@ -18,7 +18,7 @@
 	url = git://github.com/iridia/JSONKit.git
 [submodule "external/IRKeychain"]
 	path = external/IRKeychain
-	url = git://github.com/iridia/IRKeychain.git
+	url = git://github.com/waveface/IRKeychain.git
 [submodule "external/IRDiscreteLayoutManager"]
 	path = external/IRDiscreteLayoutManager
 	url = git://github.com/waveface/IRDiscreteLayoutManager.git
