@@ -3528,9 +3528,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		4B8CA96714BBE7BA006E06BB /* wammer-iOS-LogicTests */ = {
+		4B8CA96714BBE7BA006E06BB /* LogicTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 4B8CA97914BBE7BA006E06BB /* Build configuration list for PBXNativeTarget "wammer-iOS-LogicTests" */;
+			buildConfigurationList = 4B8CA97914BBE7BA006E06BB /* Build configuration list for PBXNativeTarget "LogicTests" */;
 			buildPhases = (
 				4B8CA96314BBE7BA006E06BB /* Sources */,
 				4B8CA96414BBE7BA006E06BB /* Frameworks */,
@@ -3542,14 +3542,14 @@
 			dependencies = (
 				FFA53E3514D934C7001E7B6B /* PBXTargetDependency */,
 			);
-			name = "wammer-iOS-LogicTests";
+			name = LogicTests;
 			productName = "waveface-tests";
 			productReference = 4B8CA96814BBE7BA006E06BB /* wammer-iOS-Test.octest */;
 			productType = "com.apple.product-type.bundle";
 		};
-		7D0CDCFF162E5A080027D35F /* Stream-iOS-ApplicationTests */ = {
+		7D0CDCFF162E5A080027D35F /* ApplicationTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 7D0CDD0E162E5A080027D35F /* Build configuration list for PBXNativeTarget "Stream-iOS-ApplicationTests" */;
+			buildConfigurationList = 7D0CDD0E162E5A080027D35F /* Build configuration list for PBXNativeTarget "ApplicationTests" */;
 			buildPhases = (
 				7D0CDCFB162E5A080027D35F /* Sources */,
 				7D0CDCFC162E5A080027D35F /* Frameworks */,
@@ -3560,7 +3560,7 @@
 			);
 			dependencies = (
 			);
-			name = "Stream-iOS-ApplicationTests";
+			name = ApplicationTests;
 			productName = "Stream-iOS-ApplicationTests";
 			productReference = 7D0CDD00162E5A080027D35F /* Stream-iOS-ApplicationTests.octest */;
 			productType = "com.apple.product-type.bundle";
@@ -3698,8 +3698,8 @@
 				FFCFE078142111E100B9E6AF /* wammer-iOS */,
 				FF335A3A1445F12100E60C14 /* wammer-OSX-Chameleon */,
 				FFC648321445E8D700593E5E /* wammer-OSX */,
-				4B8CA96714BBE7BA006E06BB /* wammer-iOS-LogicTests */,
-				7D0CDCFF162E5A080027D35F /* Stream-iOS-ApplicationTests */,
+				4B8CA96714BBE7BA006E06BB /* LogicTests */,
+				7D0CDCFF162E5A080027D35F /* ApplicationTests */,
 			);
 		};
 /* End PBXProject section */
@@ -5798,7 +5798,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		4B8CA97914BBE7BA006E06BB /* Build configuration list for PBXNativeTarget "wammer-iOS-LogicTests" */ = {
+		4B8CA97914BBE7BA006E06BB /* Build configuration list for PBXNativeTarget "LogicTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				4B8CA97A14BBE7BA006E06BB /* Debug */,
@@ -5808,7 +5808,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		7D0CDD0E162E5A080027D35F /* Build configuration list for PBXNativeTarget "Stream-iOS-ApplicationTests" */ = {
+		7D0CDD0E162E5A080027D35F /* Build configuration list for PBXNativeTarget "ApplicationTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				7D0CDD0F162E5A080027D35F /* Debug */,
