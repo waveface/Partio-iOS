@@ -512,4 +512,15 @@
 
 }
 
+- (void) handleAction {
+	// show up storyboard here.
+	UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"CollectionStoryboardPhone" bundle:nil];
+	[self
+	 presentViewController:[storyboard instantiateInitialViewController]
+	 animated:YES
+	 completion:^{
+		 NSLog(@"storyboad loaded");
+	 }];
+}
+
 @end

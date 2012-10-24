@@ -160,6 +160,7 @@
 		7D9B1D99162BE0D2000E5350 /* WAFacebookConnectionSwitch.m in Sources */ = {isa = PBXBuildFile; fileRef = FF3B37B015B690FF00AE357A /* WAFacebookConnectionSwitch.m */; };
 		7D9B1D9A162BE1B1000E5350 /* WARemoteInterface+SocialNetworks.m in Sources */ = {isa = PBXBuildFile; fileRef = FF88370515B7E90800E6CD92 /* WARemoteInterface+SocialNetworks.m */; };
 		7DAD18A21626A73B00F87495 /* libGoogleAnalytics.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7DAD18A11626A73B00F87495 /* libGoogleAnalytics.a */; };
+		7DB81F1A1637E94C009A3645 /* CollectionStoryboardPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7DB81F191637E94C009A3645 /* CollectionStoryboardPhone.storyboard */; };
 		8002CDE615E5E85600D7BFF0 /* libicucore.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 8002CDE515E5E85600D7BFF0 /* libicucore.dylib */; };
 		8002CDE915E5E92100D7BFF0 /* WARemoteInterface+Notification.m in Sources */ = {isa = PBXBuildFile; fileRef = 8002CDE815E5E92100D7BFF0 /* WARemoteInterface+Notification.m */; };
 		8002CDEC15E5F6F300D7BFF0 /* WARemoteInterface+WebSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 8002CDEB15E5F6F300D7BFF0 /* WARemoteInterface+WebSocket.m */; };
@@ -1301,6 +1302,7 @@
 		7DAD189F1626A73B00F87495 /* GAITransaction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GAITransaction.h; path = wammer/Libraries/GAITransaction.h; sourceTree = SOURCE_ROOT; };
 		7DAD18A01626A73B00F87495 /* GAITransactionItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GAITransactionItem.h; path = wammer/Libraries/GAITransactionItem.h; sourceTree = SOURCE_ROOT; };
 		7DAD18A11626A73B00F87495 /* libGoogleAnalytics.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libGoogleAnalytics.a; path = wammer/Libraries/libGoogleAnalytics.a; sourceTree = SOURCE_ROOT; };
+		7DB81F191637E94C009A3645 /* CollectionStoryboardPhone.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = CollectionStoryboardPhone.storyboard; sourceTree = "<group>"; };
 		8002CDCF15E5E73800D7BFF0 /* SocketRocket.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SocketRocket.xcodeproj; path = external/SocketRocket/SocketRocket.xcodeproj; sourceTree = "<group>"; };
 		8002CDE515E5E85600D7BFF0 /* libicucore.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libicucore.dylib; path = usr/lib/libicucore.dylib; sourceTree = SDKROOT; };
 		8002CDE715E5E92100D7BFF0 /* WARemoteInterface+Notification.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WARemoteInterface+Notification.h"; sourceTree = "<group>"; };
@@ -2397,6 +2399,14 @@
 			name = OCMock;
 			sourceTree = "<group>";
 		};
+		7DB81F181637E91B009A3645 /* Collection */ = {
+			isa = PBXGroup;
+			children = (
+				7DB81F191637E94C009A3645 /* CollectionStoryboardPhone.storyboard */,
+			);
+			name = Collection;
+			sourceTree = "<group>";
+		};
 		8002CDD015E5E73800D7BFF0 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -2782,6 +2792,7 @@
 		FF73A53313D6C2CC00D54EC6 = {
 			isa = PBXGroup;
 			children = (
+				7DB81F181637E91B009A3645 /* Collection */,
 				7D0CDD04162E5A080027D35F /* Application Tests */,
 				4B8CA96F14BBE7BA006E06BB /* Logic Tests */,
 				FFC62019149CF1930097C377 /* Environment */,
@@ -4331,6 +4342,7 @@
 				80C129C2163989C6001DDFE2 /* cloudy@2x.png in Resources */,
 				80C129C516398A0D001DDFE2 /* Create.png in Resources */,
 				80C129C616398A0D001DDFE2 /* Create@2x.png in Resources */,
+				7DB81F1A1637E94C009A3645 /* CollectionStoryboardPhone.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5185,7 +5197,7 @@
 					"\"$(PROJECT_DIR)/external/Facebook\"/**",
 					"\"$(PROJECT_DIR)/external/SocketRocket\"/**",
 				);
-				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				OTHER_CFLAGS = "-fno-objc-default-synthesize-properties";
 				OTHER_LDFLAGS = (
 					"-ObjC",
@@ -5638,7 +5650,7 @@
 					"\"$(PROJECT_DIR)/external/Facebook\"/**",
 					"\"$(PROJECT_DIR)/external/SocketRocket\"/**",
 				);
-				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				OTHER_CFLAGS = "-fno-objc-default-synthesize-properties";
 				OTHER_LDFLAGS = (
 					"-ObjC",
@@ -5694,7 +5706,7 @@
 					"\"$(PROJECT_DIR)/external/Facebook\"/**",
 					"\"$(PROJECT_DIR)/external/SocketRocket\"/**",
 				);
-				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				OTHER_CFLAGS = "-fno-objc-default-synthesize-properties";
 				OTHER_LDFLAGS = (
 					"-ObjC",

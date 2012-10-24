@@ -389,6 +389,17 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 	UILongPressGestureRecognizer *longPressGR = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleMenu:)];
 	[self.view addGestureRecognizer:longPressGR];
 	
+	//Speed run mode
+#warning RemoveBeforeFlight
+	[[WADataStore defaultStore]
+	 fetchArticleWithIdentifier:@"4067d097-7f0a-48af-a08a-acf2880def60"
+	 usingContext:self.managedObjectContext
+	 onSuccess:^(NSString *identifier, WAArticle *post) {
+		 NSCParameterAssert([post isKindOfClass:[WAArticle class]]);
+		 UIViewController *pushedVC = [WAArticleViewController controllerForArticle:post style:(WAFullScreenArticleStyle|WASuggestedStyleForArticle(post))];
+		 [self.navigationController pushViewController:pushedVC animated:YES];
+	 }];
+	
 }
 
 - (void) viewWillAppear:(BOOL)animated {
