@@ -101,8 +101,6 @@
 		4B733BB614987A81005CAE8D /* IASKPSToggleSwitchSpecifierViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4B733BA114987A81005CAE8D /* IASKPSToggleSwitchSpecifierViewCell.xib */; };
 		4B733BB714987A81005CAE8D /* IASKSpecifierValuesView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4B733BA214987A81005CAE8D /* IASKSpecifierValuesView.xib */; };
 		4B7420FC15D8B59900586559 /* fopenfix.c in Sources */ = {isa = PBXBuildFile; fileRef = 4B7420FA15D8B59000586559 /* fopenfix.c */; };
-		4B8581A815F78E0900EE11AC /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 4B8581A715F78E0900EE11AC /* Icon.png */; };
-		4B8581AA15F78E3800EE11AC /* Icon-72.png in Resources */ = {isa = PBXBuildFile; fileRef = 4B8581A915F78E3800EE11AC /* Icon-72.png */; };
 		4B8581AF15F798F900EE11AC /* Icon_beta.png in Resources */ = {isa = PBXBuildFile; fileRef = 4B8581AB15F798F900EE11AC /* Icon_beta.png */; };
 		4B8581B015F798F900EE11AC /* Icon_beta@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4B8581AC15F798F900EE11AC /* Icon_beta@2x.png */; };
 		4B8581B515F7993100EE11AC /* Icon-72_beta.png in Resources */ = {isa = PBXBuildFile; fileRef = 4B8581B315F7993100EE11AC /* Icon-72_beta.png */; };
@@ -111,8 +109,6 @@
 		4B8581BD15F79EEF00EE11AC /* Icon_develop@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4B8581B915F79EEF00EE11AC /* Icon_develop@2x.png */; };
 		4B8581BE15F79EEF00EE11AC /* Icon-72_develop.png in Resources */ = {isa = PBXBuildFile; fileRef = 4B8581BA15F79EEF00EE11AC /* Icon-72_develop.png */; };
 		4B8581BF15F79EEF00EE11AC /* Icon-72_develop@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4B8581BB15F79EEF00EE11AC /* Icon-72_develop@2x.png */; };
-		4B8581C115F7A2CD00EE11AC /* Icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4B8581C015F7A2CD00EE11AC /* Icon@2x.png */; };
-		4B8581C315F7A2D400EE11AC /* Icon-72@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4B8581C215F7A2D400EE11AC /* Icon-72@2x.png */; };
 		4B85823B15F7ABCF00EE11AC /* WADefaults.develop.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4B85823A15F7ABCF00EE11AC /* WADefaults.develop.plist */; };
 		4B87177815C7D4A200C9612D /* Unfav@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 4B87177715C7D4A200C9612D /* Unfav@2x~iphone.png */; };
 		4B87177A15C7D4AF00C9612D /* Fav@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 4B87177915C7D4AF00C9612D /* Fav@2x~iphone.png */; };
@@ -1215,8 +1211,6 @@
 		4B733BA114987A81005CAE8D /* IASKPSToggleSwitchSpecifierViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = IASKPSToggleSwitchSpecifierViewCell.xib; sourceTree = "<group>"; };
 		4B733BA214987A81005CAE8D /* IASKSpecifierValuesView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = IASKSpecifierValuesView.xib; sourceTree = "<group>"; };
 		4B7420FA15D8B59000586559 /* fopenfix.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = fopenfix.c; sourceTree = "<group>"; };
-		4B8581A715F78E0900EE11AC /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Icon.png; path = ../Icon.png; sourceTree = "<group>"; };
-		4B8581A915F78E3800EE11AC /* Icon-72.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon-72.png"; path = "../Icon-72.png"; sourceTree = "<group>"; };
 		4B8581AB15F798F900EE11AC /* Icon_beta.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Icon_beta.png; path = resources/Icon_beta.png; sourceTree = "<group>"; };
 		4B8581AC15F798F900EE11AC /* Icon_beta@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon_beta@2x.png"; path = "resources/Icon_beta@2x.png"; sourceTree = "<group>"; };
 		4B8581B315F7993100EE11AC /* Icon-72_beta.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon-72_beta.png"; path = "resources/Icon-72_beta.png"; sourceTree = "<group>"; };
@@ -1225,8 +1219,6 @@
 		4B8581B915F79EEF00EE11AC /* Icon_develop@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon_develop@2x.png"; path = "resources/Icon_develop@2x.png"; sourceTree = "<group>"; };
 		4B8581BA15F79EEF00EE11AC /* Icon-72_develop.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon-72_develop.png"; path = "resources/Icon-72_develop.png"; sourceTree = "<group>"; };
 		4B8581BB15F79EEF00EE11AC /* Icon-72_develop@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon-72_develop@2x.png"; path = "resources/Icon-72_develop@2x.png"; sourceTree = "<group>"; };
-		4B8581C015F7A2CD00EE11AC /* Icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon@2x.png"; path = "../Icon@2x.png"; sourceTree = "<group>"; };
-		4B8581C215F7A2D400EE11AC /* Icon-72@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon-72@2x.png"; path = "../Icon-72@2x.png"; sourceTree = "<group>"; };
 		4B85823A15F7ABCF00EE11AC /* WADefaults.develop.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = WADefaults.develop.plist; path = resources/WADefaults.develop.plist; sourceTree = "<group>"; };
 		4B87177715C7D4A200C9612D /* Unfav@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Unfav@2x~iphone.png"; path = "resources/Unfav@2x~iphone.png"; sourceTree = "<group>"; };
 		4B87177915C7D4AF00C9612D /* Fav@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Fav@2x~iphone.png"; path = "resources/Fav@2x~iphone.png"; sourceTree = "<group>"; };
@@ -2275,17 +2267,13 @@
 		4B8581B715F7994A00EE11AC /* Icons */ = {
 			isa = PBXGroup;
 			children = (
-				4B8581A915F78E3800EE11AC /* Icon-72.png */,
 				FFCCDE6115B41B0000AEBB85 /* Icon-72.png */,
-				4B8581C215F7A2D400EE11AC /* Icon-72@2x.png */,
 				FFCCDE6215B41B0000AEBB85 /* Icon-72@2x.png */,
 				4B8581B315F7993100EE11AC /* Icon-72_beta.png */,
 				4B8581B415F7993100EE11AC /* Icon-72_beta@2x.png */,
 				4B8581BA15F79EEF00EE11AC /* Icon-72_develop.png */,
 				4B8581BB15F79EEF00EE11AC /* Icon-72_develop@2x.png */,
-				4B8581A715F78E0900EE11AC /* Icon.png */,
 				FFCCDE6315B41B0000AEBB85 /* Icon.png */,
-				4B8581C015F7A2CD00EE11AC /* Icon@2x.png */,
 				FFCCDE6415B41B0000AEBB85 /* Icon@2x.png */,
 				4B8581AB15F798F900EE11AC /* Icon_beta.png */,
 				4B8581AC15F798F900EE11AC /* Icon_beta@2x.png */,
@@ -4219,8 +4207,6 @@
 				4BAE345315DCA30200A9109D /* LoginBackground-Landscape@2x.png in Resources */,
 				4BAE345415DCA30200A9109D /* LoginBackground-Portrait.png in Resources */,
 				4BAE345515DCA30200A9109D /* LoginBackground-Portrait@2x.png in Resources */,
-				4B8581A815F78E0900EE11AC /* Icon.png in Resources */,
-				4B8581AA15F78E3800EE11AC /* Icon-72.png in Resources */,
 				4B8581AF15F798F900EE11AC /* Icon_beta.png in Resources */,
 				4B8581B015F798F900EE11AC /* Icon_beta@2x.png in Resources */,
 				4B8581B515F7993100EE11AC /* Icon-72_beta.png in Resources */,
@@ -4229,8 +4215,6 @@
 				4B8581BD15F79EEF00EE11AC /* Icon_develop@2x.png in Resources */,
 				4B8581BE15F79EEF00EE11AC /* Icon-72_develop.png in Resources */,
 				4B8581BF15F79EEF00EE11AC /* Icon-72_develop@2x.png in Resources */,
-				4B8581C115F7A2CD00EE11AC /* Icon@2x.png in Resources */,
-				4B8581C315F7A2D400EE11AC /* Icon-72@2x.png in Resources */,
 				4B85823B15F7ABCF00EE11AC /* WADefaults.develop.plist in Resources */,
 				4B16701215FDCE9900990F4B /* WADefaults.staging.plist in Resources */,
 				809C6D2C1605845A0016E196 /* WASlidingMenuViewController.xib in Resources */,
