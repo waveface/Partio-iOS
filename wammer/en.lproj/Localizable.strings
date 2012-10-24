@@ -17,7 +17,7 @@
 "ACCESS_PREVIOUS_DAY" = "ACCESS_PREVIOUS_DAY";
 
 /* add photo button in composition view */
-"ACTION_ADD" = "add photo";
+"ACTION_ADD" = "Add Photo";
 
 /* Action title for Cancelling
    Action title for cancelling stuff
@@ -30,7 +30,7 @@
 "ACTION_CHANGE_REPRESENTING_FILE" = "Change Cover";
 
 /* Short action title for connecting Facebook creds */
-"ACTION_CONNECT_FACEBOOK_SHORT" = "Start importing";
+"ACTION_CONNECT_FACEBOOK_SHORT" = "Start Importing";
 
 /* Action deleting an article
    Title for deleting an article from the Overview
@@ -41,7 +41,7 @@
 "ACTION_DISCARD" = "Discard";
 
 /* Short action title for disconnecting Facebook creds */
-"ACTION_DISCONNECT_FACEBOOK" = "Stop importing";
+"ACTION_DISCONNECT_FACEBOOK" = "Stop Importing";
 
 /* In iPad composition view */
 "ACTION_DONE" = "Stream!";
@@ -80,7 +80,7 @@
 "ACTION_SAVE_DRAFT" = "Save Draft";
 
 /* Action title for Signing Out */
-"ACTION_SIGN_OUT" = "Logout";
+"ACTION_SIGN_OUT" = "Log Out";
 
 /* Button title for showing a camera capture controller */
 "ACTION_TAKE_PHOTO_WITH_CAMERA" = "Camera";
@@ -89,13 +89,13 @@
 "ACTION_UNMARK_FAVORITE" = "Unfavorite";
 
 /* No comment provided by engineer. */
-"ADVANCED_FEATURES_DISABLED_DESCRIPTION" = "Advanced features are now disabled.  Login again to populate changes.";
+"ADVANCED_FEATURES_DISABLED_DESCRIPTION" = "Advanced features are now disabled.  Log in again to populate changes.";
 
 /* No comment provided by engineer. */
 "ADVANCED_FEATURES_DISABLED_TITLE" = "Advanced Features Disabled";
 
 /* No comment provided by engineer. */
-"ADVANCED_FEATURES_ENABLED_DESCRIPTION" = "Advanced features are now enabled.  Login again to populate changes.";
+"ADVANCED_FEATURES_ENABLED_DESCRIPTION" = "Advanced features are now enabled.  Log in again to populate changes.";
 
 /* No comment provided by engineer. */
 "ADVANCED_FEATURES_ENABLED_TITLE" = "Advanced Features Enabled";
@@ -159,7 +159,7 @@
 
 /* Description for confirming a post deletion
    Title for confirming a post deletion */
-"DELETE_POST_CONFIRMATION_DESCRIPTION" = "Note: deleted posts can always be recovered from our Web version.";
+"DELETE_POST_CONFIRMATION_DESCRIPTION" = "Note: Deleted posts can always be recovered from our web version.";
 
 /* Title for confirming a post deletion */
 "DELETE_POST_CONFIRMATION_TITLE" = "Delete Now?";
@@ -183,7 +183,7 @@
 "ERROR_ARTICLE_ENTITY_SYNC_FAILURE_DESCRIPTION" = "A necessary task failed unexpectedly. Your post has been saved as a draft.";
 
 /* Article entity sync failure alert title */
-"ERROR_ARTICLE_ENTITY_SYNC_FAILURE_TITLE" = "Unable to Upload";
+"ERROR_ARTICLE_ENTITY_SYNC_FAILURE_TITLE" = "Unable to upload";
 
 /* Failed, underlying error %@ with reason %@ */
 "ERROR_ARTICLE_ENTITY_SYNC_FAILURE_WITH_UNDERLYING_ERROR_DESCRIPTION_AND_REASON_FORMAT" = "A necessary task failed: %@ (%@) — Your post has been saved as a draft.";
@@ -192,13 +192,13 @@
 "ERROR_ARTICLE_ENTITY_SYNC_FAILURE_WITH_UNDERLYING_ERROR_DESCRIPTION_FORMAT" = "A necessary task failed: %@ — Your post has been saved as a draft.";
 
 /* Message for an alert view to show user his FB account has been connected to another Stream user */
-"FACEBOOK_CONNECT_ACCOUNT_OCCUPIED_MESSAGE" = "The Facebook account you’re using has already been registered, please use another Facebook account.";
+"FACEBOOK_CONNECT_ACCOUNT_OCCUPIED_MESSAGE" = "The Facebook account you’re using has already been registered. Please use another Facebook account.";
 
 /* Message for an alert view to show user he already connects to another FB account. */
-"FACEBOOK_CONNECT_FAIL_MESSAGE" = "Your Stream account has already been connected to one Facebook account.";
+"FACEBOOK_CONNECT_FAIL_MESSAGE" = "Your Stream account is already connected to one Facebook account.";
 
 /* Title for an alert view to show facebook connection failure */
-"FACEBOOK_CONNECT_FAIL_TITLE" = "Cann't import from Facebook";
+"FACEBOOK_CONNECT_FAIL_TITLE" = "Can't import from Facebook";
 
 /* Message for alert view asking if user wants to connect her Facebook account */
 "FACEBOOK_CONNECT_REQUEST_MESSAGE" = "Stream will start importing ports from your Facebook account";
@@ -240,7 +240,7 @@
 "HOUR_SINGULAR" = "%d hour";
 
 /* In Account Info Photo Import Section */
-"LAST_IMPORT_TIME" = "Latest Imported Photo Time: %@";
+"LAST_IMPORT_TIME" = "Photos last imported: "%@";
 
 /* No comment provided by engineer. */
 "MINUTE_PLURAL" = "%d minutes";
@@ -343,7 +343,7 @@
 "SLIDING_MENU_TITLE_TIMELINE" = "Timeline";
 
 /* In Account Info Photo Import Section */
-"START_PHOTO_IMPORT_DESCRIPTION" = "Import all photos in Camera Roll";
+"START_PHOTO_IMPORT_DESCRIPTION" = "Import all your Camera Roll photos";
 
 /* No comment provided by engineer. */
 "STATE_LOADING_SINGLE_DOCUMENT" = "Loading Document…";
