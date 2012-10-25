@@ -53,6 +53,7 @@
 
 #import "WAFilterPickerViewController.h"
 #import "WAPhotoImportManager.h"
+#import "WAFirstUseViewController.h"
 
 static NSString *const kTrackingId = @"UA-27817516-7";
 
@@ -673,14 +674,6 @@ static NSString *const kTrackingId = @"UA-27817516-7";
 	NSParameterAssert(!self.alreadyRequestingAuthentication);
 	self.alreadyRequestingAuthentication = YES;
 
-	NSString *lastUserID = [WARemoteInterface sharedInterface].userIdentifier;
-	BOOL (^userIDChanged)() = ^ {
-		
-		NSString *currentID = [WARemoteInterface sharedInterface].userIdentifier;
-		return (BOOL)![currentID isEqualToString:lastUserID];
-		
-	};
-	
 	void (^handleAuthSuccess)(void) = ^ {
 	
 		if (block)
@@ -728,11 +721,7 @@ static NSString *const kTrackingId = @"UA-27817516-7";
 			
 		}
 		
-		NSString *userStatus = [userRep valueForKeyPath:@"state"];
 		NSString *userID = [userRep valueForKeyPath:@"user_id"];
-		
-		BOOL userNewlyCreated = [userStatus isEqual:@"created"];
-		BOOL userIsFromFacebook = ![[userRep valueForKeyPath:@"sns.@count"] isEqual:[NSNumber numberWithUnsignedInteger:0]];
 		
 		NSString *primaryGroupID = [[[groupReps filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary *bindings) {
 		
@@ -746,71 +735,41 @@ static NSString *const kTrackingId = @"UA-27817516-7";
 		ri.userToken = token;
 		ri.primaryGroupIdentifier = primaryGroupID;
 		
-		if (userIDChanged()) {
+		handleAuthSuccess();
 
-			if (userNewlyCreated) {
-			
-				WATutorialInstantiationOption options = userIsFromFacebook ? WATutorialInstantiationOptionShowFacebookIntegrationToggle : WATutorialInstantiationOptionDefault;
-				
-				WATutorialViewController *tutorialVC = [WATutorialViewController controllerWithOption:options completion:^(BOOL didFinish, NSError *error) {
+		if ([[NSUserDefaults standardUserDefaults] boolForKey:kWAFirstUseFinished]) {
 
-					handleAuthSuccess();
-					[wAppDelegate clearViewHierarchy];
-					[wAppDelegate recreateViewHierarchy];
-					
-				}];
-				
-				switch ([UIDevice currentDevice].userInterfaceIdiom) {
-				
-					case UIUserInterfaceIdiomPad: {
-						tutorialVC.modalPresentationStyle = UIModalPresentationFormSheet;
-						break;
-					}
-					
-					case UIUserInterfaceIdiomPhone:
-					default: {
-						tutorialVC.modalPresentationStyle = UIModalPresentationCurrentContext;
-					}
-
-				}
-
-			
-				[wAppDelegate clearViewHierarchy];
-				[wAppDelegate.window.rootViewController presentViewController:tutorialVC animated:NO completion:nil];
-
-			} else {
-			
-				handleAuthSuccess();
-				[wAppDelegate clearViewHierarchy];
-				[wAppDelegate recreateViewHierarchy];
-			
-			}
-			
-		} else {
-			
-			handleAuthSuccess();
 			[wAppDelegate clearViewHierarchy];
 			[wAppDelegate recreateViewHierarchy];
 
+		} else {
 			
-		}
-		
-		return; // WAT
-		
-		[welcomeVC dismissViewControllerAnimated:NO
-																	completion:
-		 ^{
-			UIViewController *rootVC = wAppDelegate.window.rootViewController;
-			[rootVC presentViewController:welcomeVC.navigationController
-													 animated:NO
-												 completion:
-			 ^{
-				 [welcomeVC dismissViewControllerAnimated:YES
-																			completion:^{ welcomeVC = nil;}];  // WAT?
+			WAFirstUseViewController *firstUseVC = [WAFirstUseViewController initWithCompleteBlock:^{
+				
+				[[NSUserDefaults standardUserDefaults] setBool:YES forKey:kWAFirstUseFinished];
+				[[NSUserDefaults standardUserDefaults] synchronize];
+				[wAppDelegate clearViewHierarchy];
+				[wAppDelegate recreateViewHierarchy];
 				
 			}];
+
+			switch ([UIDevice currentDevice].userInterfaceIdiom) {
+					
+				case UIUserInterfaceIdiomPad:
+					firstUseVC.modalPresentationStyle = UIModalPresentationFormSheet;
+					break;
+					
+				case UIUserInterfaceIdiomPhone:
+					firstUseVC.modalPresentationStyle = UIModalPresentationCurrentContext;
+					
+			}
 			
-		}];
+			[wAppDelegate clearViewHierarchy];
+			[wAppDelegate.window.rootViewController presentViewController:firstUseVC animated:NO completion:nil];
+
+		}
+		
+		return;
 				
 	}];
 	

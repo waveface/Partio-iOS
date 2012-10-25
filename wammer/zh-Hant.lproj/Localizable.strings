@@ -348,6 +348,9 @@
 /* No comment provided by engineer. */
 "STATE_LOADING_SINGLE_DOCUMENT" = "正在載入文件…";
 
+/* Cloud Name */
+"Stream Cloud" = "Stream Cloud";
+
 /* Text for About Stream dialog */
 "STREAM_ABOUT_TEXT" = "Stream 的雲端服務，能在 Wi-Fi 環境下，自動幫您將所有的原始照片檔案送回您的 PC 中，只要從我們官網上安裝免費的 Station 至 PC 上，即可享受全自動的無線傳輸服務。";
 

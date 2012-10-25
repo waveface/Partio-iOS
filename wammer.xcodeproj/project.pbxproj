@@ -41,6 +41,12 @@
 		13A1BFB515A572CE00526F39 /* WAFile.m in Sources */ = {isa = PBXBuildFile; fileRef = 13A1BFB315A572CE00526F39 /* WAFile.m */; };
 		13B6DB9D161573FF00B9CC35 /* WAFileExif.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B6DB9C161573FF00B9CC35 /* WAFileExif.m */; };
 		13BD4D9915930A480062EA3A /* WAPostViewCellPhone-ImageOnlyStack.xib in Resources */ = {isa = PBXBuildFile; fileRef = 13BD4D9815930A480062EA3A /* WAPostViewCellPhone-ImageOnlyStack.xib */; };
+		13DE12EB1637F30A00757F7C /* WAFirstUseDoneViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 13DE12E71637F30A00757F7C /* WAFirstUseDoneViewController.m */; };
+		13DE12EC1637F30A00757F7C /* WAFirstUseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 13DE12E91637F30A00757F7C /* WAFirstUseViewController.m */; };
+		13DE12EE1637F37C00757F7C /* WAFirstUse.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 13DE12ED1637F37C00757F7C /* WAFirstUse.storyboard */; };
+		13DE12FA1638140A00757F7C /* WAFirstUseBuildCloudViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 13DE12F91638140A00757F7C /* WAFirstUseBuildCloudViewController.m */; };
+		13DE12FD1638142300757F7C /* WAFirstUsePhotoImportViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 13DE12FC1638142300757F7C /* WAFirstUsePhotoImportViewController.m */; };
+		13DE13001638143A00757F7C /* WAFirstUseConnectServicesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 13DE12FF1638143A00757F7C /* WAFirstUseConnectServicesViewController.m */; };
 		13EFF4BF15FEC1B3007430EC /* WAPhotoImportManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 13EFF4BE15FEC1B3007430EC /* WAPhotoImportManager.m */; };
 		4B0C3EEF15BF89A300CAA346 /* PostWithCompleteAttachmentInformation.txt in Resources */ = {isa = PBXBuildFile; fileRef = 4B0C3EED15BF868400CAA346 /* PostWithCompleteAttachmentInformation.txt */; };
 		4B16701215FDCE9900990F4B /* WADefaults.staging.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4B16701115FDCE9900990F4B /* WADefaults.staging.plist */; };
@@ -1119,6 +1125,17 @@
 		13B6DB9B161573FF00B9CC35 /* WAFileExif.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAFileExif.h; sourceTree = "<group>"; };
 		13B6DB9C161573FF00B9CC35 /* WAFileExif.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAFileExif.m; sourceTree = "<group>"; };
 		13BD4D9815930A480062EA3A /* WAPostViewCellPhone-ImageOnlyStack.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "WAPostViewCellPhone-ImageOnlyStack.xib"; sourceTree = "<group>"; };
+		13DE12E61637F30A00757F7C /* WAFirstUseDoneViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WAFirstUseDoneViewController.h; path = wammer/WAFirstUseDoneViewController.h; sourceTree = "<group>"; };
+		13DE12E71637F30A00757F7C /* WAFirstUseDoneViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WAFirstUseDoneViewController.m; path = wammer/WAFirstUseDoneViewController.m; sourceTree = "<group>"; };
+		13DE12E81637F30A00757F7C /* WAFirstUseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WAFirstUseViewController.h; path = wammer/WAFirstUseViewController.h; sourceTree = "<group>"; };
+		13DE12E91637F30A00757F7C /* WAFirstUseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WAFirstUseViewController.m; path = wammer/WAFirstUseViewController.m; sourceTree = "<group>"; };
+		13DE12ED1637F37C00757F7C /* WAFirstUse.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = WAFirstUse.storyboard; path = wammer/WAFirstUse.storyboard; sourceTree = "<group>"; };
+		13DE12F81638140A00757F7C /* WAFirstUseBuildCloudViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WAFirstUseBuildCloudViewController.h; path = wammer/WAFirstUseBuildCloudViewController.h; sourceTree = "<group>"; };
+		13DE12F91638140A00757F7C /* WAFirstUseBuildCloudViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WAFirstUseBuildCloudViewController.m; path = wammer/WAFirstUseBuildCloudViewController.m; sourceTree = "<group>"; };
+		13DE12FB1638142300757F7C /* WAFirstUsePhotoImportViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WAFirstUsePhotoImportViewController.h; path = wammer/WAFirstUsePhotoImportViewController.h; sourceTree = "<group>"; };
+		13DE12FC1638142300757F7C /* WAFirstUsePhotoImportViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WAFirstUsePhotoImportViewController.m; path = wammer/WAFirstUsePhotoImportViewController.m; sourceTree = "<group>"; };
+		13DE12FE1638143A00757F7C /* WAFirstUseConnectServicesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WAFirstUseConnectServicesViewController.h; path = wammer/WAFirstUseConnectServicesViewController.h; sourceTree = "<group>"; };
+		13DE12FF1638143A00757F7C /* WAFirstUseConnectServicesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WAFirstUseConnectServicesViewController.m; path = wammer/WAFirstUseConnectServicesViewController.m; sourceTree = "<group>"; };
 		13EFF4BD15FEC1B3007430EC /* WAPhotoImportManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WAPhotoImportManager.h; path = wammer/WAPhotoImportManager.h; sourceTree = "<group>"; };
 		13EFF4BE15FEC1B3007430EC /* WAPhotoImportManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WAPhotoImportManager.m; path = wammer/WAPhotoImportManager.m; sourceTree = "<group>"; };
 		13EFF4C015FEC2E7007430EC /* WAModel 35.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WAModel 35.xcdatamodel"; sourceTree = "<group>"; };
@@ -2105,6 +2122,24 @@
 			name = FileExif;
 			sourceTree = "<group>";
 		};
+		13DE12E41637F2D100757F7C /* First Use */ = {
+			isa = PBXGroup;
+			children = (
+				13DE12E61637F30A00757F7C /* WAFirstUseDoneViewController.h */,
+				13DE12E71637F30A00757F7C /* WAFirstUseDoneViewController.m */,
+				13DE12E81637F30A00757F7C /* WAFirstUseViewController.h */,
+				13DE12E91637F30A00757F7C /* WAFirstUseViewController.m */,
+				13DE12ED1637F37C00757F7C /* WAFirstUse.storyboard */,
+				13DE12F81638140A00757F7C /* WAFirstUseBuildCloudViewController.h */,
+				13DE12F91638140A00757F7C /* WAFirstUseBuildCloudViewController.m */,
+				13DE12FB1638142300757F7C /* WAFirstUsePhotoImportViewController.h */,
+				13DE12FC1638142300757F7C /* WAFirstUsePhotoImportViewController.m */,
+				13DE12FE1638143A00757F7C /* WAFirstUseConnectServicesViewController.h */,
+				13DE12FF1638143A00757F7C /* WAFirstUseConnectServicesViewController.m */,
+			);
+			name = "First Use";
+			sourceTree = "<group>";
+		};
 		13EFF4B915FEBFF1007430EC /* Photo Import */ = {
 			isa = PBXGroup;
 			children = (
@@ -2734,6 +2769,7 @@
 				FFBBA42615AD5D4900E95C66 /* Facebook */,
 				FF890CAB1416297C00CD7D1F /* Authentication */,
 				FF6BD00A15AFBE640046AAC8 /* Tutorial */,
+				13DE12E41637F2D100757F7C /* First Use */,
 				FF71D3F3140E09EF0069B161 /* Overview */,
 				FF6E168314F2EB6500AE1C05 /* Timeline */,
 				FFFC76391487761700247099 /* User Info */,
@@ -3070,6 +3106,20 @@
 				806A5C8B16241E2800867E56 /* Cal@2x.png */,
 				806A5C8C16241E2800867E56 /* CalHL.png */,
 				806A5C8D16241E2800867E56 /* CalHL@2x.png */,
+				806A5C8E16241E2800867E56 /* Left.png */,
+				806A5C8F16241E2800867E56 /* Left@2x.png */,
+				806A5C9016241E2800867E56 /* LeftHL.png */,
+				806A5C9116241E2800867E56 /* LeftHL@2x.png */,
+				806A5C9216241E2800867E56 /* LogoDD.png */,
+				806A5C9316241E2800867E56 /* LogoDD@2x.png */,
+				806A5C9416241E2800867E56 /* menu.png */,
+				806A5C9516241E2800867E56 /* menu@2x.png */,
+				806A5C9616241E2800867E56 /* menuHL.png */,
+				806A5C9716241E2800867E56 /* menuHL@2x.png */,
+				806A5C9816241E2800867E56 /* right.png */,
+				806A5C9916241E2800867E56 /* Right@2x.png */,
+				806A5C9A16241E2800867E56 /* rightHL.png */,
+				806A5C9B16241E2800867E56 /* rightHL@2x.png */,
 				FFCCDE3C15B41B0000AEBB85 /* CameraPressed.png */,
 				FFCCDE3D15B41B0000AEBB85 /* CameraPressed@2x.png */,
 				7D85EE6D1637936A00D5630A /* Default-568h@2x.png */,
@@ -4246,6 +4296,7 @@
 				806A5CAC16241E2800867E56 /* rightHL.png in Resources */,
 				806A5CAD16241E2800867E56 /* rightHL@2x.png in Resources */,
 				7D0CDC16162D6B180027D35F /* FacebookSDKResources.bundle in Resources */,
+				13DE12EE1637F37C00757F7C /* WAFirstUse.storyboard in Resources */,
 				7D85EE6E1637936A00D5630A /* Default-568h@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -4731,6 +4782,11 @@
 				13793344162C0EA000FA9E8F /* WAFileExif+WAAdditions.m in Sources */,
 				132D60331622B66500148829 /* WACache.m in Sources */,
 				1360BC0F1623FA3200AF4EAA /* WACacheManager.m in Sources */,
+				13DE12EB1637F30A00757F7C /* WAFirstUseDoneViewController.m in Sources */,
+				13DE12EC1637F30A00757F7C /* WAFirstUseViewController.m in Sources */,
+				13DE12FA1638140A00757F7C /* WAFirstUseBuildCloudViewController.m in Sources */,
+				13DE12FD1638142300757F7C /* WAFirstUsePhotoImportViewController.m in Sources */,
+				13DE13001638143A00757F7C /* WAFirstUseConnectServicesViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

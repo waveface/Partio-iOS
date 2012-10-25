@@ -28,7 +28,8 @@ enum {
 @class WAReachabilityDetector;
 @interface WARemoteInterface (Reachability)
 
-@property (nonatomic, readwrite, retain) NSArray *monitoredHosts;
+@property (nonatomic, readwrite, strong) NSArray *monitoredHostNames;
+@property (nonatomic, readwrite, strong) NSArray *monitoredHosts;
 @property (nonatomic, readonly, assign) WANetworkState networkState;
 
 - (BOOL) canHost:(NSURL *)aHost handleRequestNamed:(NSString *)aRequestName;
