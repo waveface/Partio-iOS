@@ -126,59 +126,56 @@ NSString * const WARemoteAttachmentSmallSubtype = @"small";
 	if (exif) {
 		NSMutableDictionary *exifData = [[NSMutableDictionary alloc] init];
 		if (exif.dateTimeOriginal) {
-			[exifData setObject:exif.dateTimeOriginal forKey:@"DateTimeOriginal"];
+			exifData[@"DateTimeOriginal"] = exif.dateTimeOriginal;
 		}
 		if (exif.dateTimeDigitized) {
-			[exifData setObject:exif.dateTimeDigitized forKey:@"DateTimeDigitized"];
+			exifData[@"DateTimeDigitized"] = exif.dateTimeDigitized;
 		}
 		if (exif.dateTime) {
-			[exifData setObject:exif.dateTime forKey:@"DateTime"];
+			exifData[@"DateTime"] = exif.dateTime;
 		}
 		if (exif.model) {
-			[exifData setObject:exif.model forKey:@"Model"];
+			exifData[@"Model"] = exif.model;
 		}
 		if (exif.make) {
-			[exifData setObject:exif.make forKey:@"Make"];
+			exifData[@"Make"] = exif.make;
 		}
 		if (exif.exposureTime) {
-			[exifData setObject:[exif.exposureTime rationalValue] forKey:@"ExposureTime"];
+			exifData[@"ExposureTime"] = [exif.exposureTime rationalValue];
 		}
 		if (exif.fNumber) {
-			[exifData setObject:[exif.fNumber rationalValue] forKey:@"FNumber"];
+			exifData[@"FNumber"] = [exif.fNumber rationalValue];
 		}
 		if (exif.apertureValue) {
-			[exifData setObject:[exif.apertureValue rationalValue] forKey:@"ApertureValue"];
+			exifData[@"ApertureValue"] = [exif.apertureValue rationalValue];
 		}
 		if (exif.focalLength) {
-			[exifData setObject:[exif.focalLength rationalValue] forKey:@"FocalLength"];
+			exifData[@"FocalLength"] = [exif.focalLength rationalValue];
 		}
 		if (exif.flash) {
-			[exifData setObject:exif.flash forKey:@"Flash"];
+			exifData[@"Flash"] = exif.flash;
 		}
 		if (exif.isoSpeedRatings) {
-			[exifData setObject:exif.isoSpeedRatings forKey:@"ISOSpeedRatings"];
+			exifData[@"ISOSpeedRatings"] = exif.isoSpeedRatings;
 		}
 		if (exif.colorSpace) {
-			[exifData setObject:exif.colorSpace forKey:@"ColorSpace"];
+			exifData[@"ColorSpace"] = exif.colorSpace;
 		}
 		if (exif.whiteBalance) {
-			[exifData setObject:exif.whiteBalance forKey:@"WhiteBalance"];
+			exifData[@"WhiteBalance"] = exif.whiteBalance;
 		}
 		if (exif.gpsLongitude && exif.gpsLatitude) {
-			if (exif.gpsDateStamp && exif.gpsTimeStamp) {
+			NSMutableDictionary *gpsDic = [@{@"longitude":exif.gpsLongitude, @"latitude":exif.gpsLatitude} mutableCopy];
+			if (exif.gpsDateStamp) {
+				gpsDic[@"GPSDateStamp"] = exif.gpsDateStamp;
+			}
+			if (exif.gpsTimeStamp) {
 				NSArray *timeFileds = [exif.gpsTimeStamp componentsSeparatedByCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@":."]];
-				[exifData setObject:@{
-				 @"longitude":exif.gpsLongitude,
-				 @"latitude":exif.gpsLatitude,
-				 @"GPSDateStamp": exif.gpsDateStamp,
-				 @"GPSTimeStamp": @[[@([timeFileds[0] integerValue]) rationalValue],
-														[@([timeFileds[1] integerValue]) rationalValue],
-														[@([timeFileds[2] integerValue]) rationalValue]]
-				} forKey:@"gps"];
+				gpsDic[@"GPSTimeStamp"] = @[[@([timeFileds[0] integerValue]) rationalValue],
+																		[@([timeFileds[1] integerValue]) rationalValue],
+																		[@([timeFileds[2] integerValue]) rationalValue]];
 			}
-			else {
-				[exifData setObject:@{@"longitude":exif.gpsLongitude, @"latitude":exif.gpsLatitude} forKey:@"gps"];
-			}
+			exifData[@"gps"] = gpsDic;
 		}
 
 		if ([NSJSONSerialization isValidJSONObject:exifData]) {
