@@ -20,7 +20,6 @@
 	[super viewDidLoad];
 	self.navigationItem.hidesBackButton = YES;
 	self.connectedHost.hidden = YES;
-	self.view.backgroundColor = [UIColor colorWithRed:203.0f/255.0f green:227.0f/255.0f blue:234.0f/255.0f alpha:1.0f];
 	[[WARemoteInterface sharedInterface] addObserver:self forKeyPath:@"networkState" options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionNew context:nil];
 
 }

@@ -3120,7 +3120,6 @@
 				806A5C9916241E2800867E56 /* Right@2x.png */,
 				806A5C9A16241E2800867E56 /* rightHL.png */,
 				806A5C9B16241E2800867E56 /* rightHL@2x.png */,
-				7DCEDEAE162D5AA3004F9090 /* Default-568h@2x.png */,
 				FFCCDE3C15B41B0000AEBB85 /* CameraPressed.png */,
 				FFCCDE3D15B41B0000AEBB85 /* CameraPressed@2x.png */,
 				7D85EE6D1637936A00D5630A /* Default-568h@2x.png */,
