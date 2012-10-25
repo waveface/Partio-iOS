@@ -53,6 +53,7 @@
 
 #import "WAFilterPickerViewController.h"
 #import "WAPhotoImportManager.h"
+#import "WAFirstUseViewController.h"
 
 static NSString *const kTrackingId = @"UA-27817516-7";
 
@@ -780,9 +781,16 @@ static NSString *const kTrackingId = @"UA-27817516-7";
 
 			} else {
 			
-				handleAuthSuccess();
 				[wAppDelegate clearViewHierarchy];
-				[wAppDelegate recreateViewHierarchy];
+				WAFirstUseViewController *firstUseVC = [WAFirstUseViewController initWithCompleteBlock:^{
+
+					handleAuthSuccess();
+					[wAppDelegate clearViewHierarchy];
+					[wAppDelegate recreateViewHierarchy];
+
+				}];
+				
+				[wAppDelegate.window.rootViewController presentViewController:firstUseVC animated:NO completion:nil];
 			
 			}
 			
@@ -791,7 +799,6 @@ static NSString *const kTrackingId = @"UA-27817516-7";
 			handleAuthSuccess();
 			[wAppDelegate clearViewHierarchy];
 			[wAppDelegate recreateViewHierarchy];
-
 			
 		}
 		
