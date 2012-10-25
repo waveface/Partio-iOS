@@ -348,6 +348,9 @@
 /* No comment provided by engineer. */
 "STATE_LOADING_SINGLE_DOCUMENT" = "Loading Document…";
 
+/* Cloud Name */
+"Stream Cloud" = "Stream Cloud";
+
 /* Text for About Stream dialog */
 "STREAM_ABOUT_TEXT" = "Stream saves all your photos on all your devices to your PC.";
 
