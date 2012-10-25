@@ -240,7 +240,7 @@
 "HOUR_SINGULAR" = "%d hour";
 
 /* In Account Info Photo Import Section */
-"LAST_IMPORT_TIME" = "Photos last imported: "%@";
+"LAST_IMPORT_TIME" = "Photos last imported: %@";
 
 /* No comment provided by engineer. */
 "MINUTE_PLURAL" = "%d minutes";
