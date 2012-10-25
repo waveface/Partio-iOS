@@ -7,6 +7,7 @@
 //
 
 #import "WAFirstUseBuildCloudViewController.h"
+#import "WARemoteInterface.h"
 
 @interface WAFirstUseBuildCloudViewController ()
 
@@ -14,54 +15,40 @@
 
 @implementation WAFirstUseBuildCloudViewController
 
-- (id)initWithStyle:(UITableViewStyle)style
-{
-    self = [super initWithStyle:style];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
-
 - (void)viewDidLoad
 {
 	[super viewDidLoad];
 	self.navigationItem.hidesBackButton = YES;
 	self.connectedHost.hidden = YES;
 	self.view.backgroundColor = [UIColor colorWithRed:203.0f/255.0f green:227.0f/255.0f blue:234.0f/255.0f alpha:1.0f];
-	__weak WAFirstUseBuildCloudViewController *wSelf = self;
-	int64_t delayInSeconds = 1.0;
-	dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
-	dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-		[wSelf.connectActivity stopAnimating];
+	[[WARemoteInterface sharedInterface] addObserver:self forKeyPath:@"networkState" options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionNew context:nil];
+
+}
+
+- (void)dealloc {
+
+	[[WARemoteInterface sharedInterface] removeObserver:self forKeyPath:@"networkState"];
+
+}
+
+#pragma mark NSKeyValueObserving delegates
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+
+	NSParameterAssert([keyPath isEqualToString:@"networkState"]);
+
+	WARemoteInterface *ri = [WARemoteInterface sharedInterface];
+	if ([ri hasReachableStation]) {
+		[self.connectActivity stopAnimating];
+		self.connectedHost.text = ri.monitoredHostNames[1];
 		self.connectedHost.hidden = NO;
-	});
-}
-
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
-#pragma mark UITableView delegates
-
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-
-	UITableViewCell *hitCell = [tableView cellForRowAtIndexPath:indexPath];
-	if (hitCell == self.connectionCell) {
-		[self.connectActivity startAnimating];
-		self.connectedHost.hidden = YES;
-		__weak WAFirstUseBuildCloudViewController *wSelf = self;
-		int64_t delayInSeconds = 1.0;
-		dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
-		dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-			[wSelf.connectActivity stopAnimating];
+	} else {
+		if (ri.monitoredHosts && [ri hasReachableCloud]) {
+			[self.connectActivity stopAnimating];
+			self.connectedHost.text = ri.monitoredHostNames[0];
 			self.connectedHost.hidden = NO;
-		});
+		}
 	}
-
-	[tableView deselectRowAtIndexPath:indexPath animated:YES];
 
 }
 

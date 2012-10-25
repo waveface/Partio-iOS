@@ -7,6 +7,7 @@
 //
 
 #import "WAFirstUsePhotoImportViewController.h"
+#import "WADefines.h"
 
 @interface WAFirstUsePhotoImportViewController ()
 
@@ -14,17 +15,8 @@
 
 @implementation WAFirstUsePhotoImportViewController
 
-- (id)initWithStyle:(UITableViewStyle)style
-{
-    self = [super initWithStyle:style];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
+- (void)viewDidLoad {
 
-- (void)viewDidLoad
-{
 	[super viewDidLoad];
 	self.navigationItem.hidesBackButton = YES;
 	self.navigationItem.rightBarButtonItem.enabled = NO;
@@ -32,23 +24,30 @@
 
 }
 
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
+#pragma mark UITableView delegates
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 
 	UITableViewCell *hitCell = [tableView cellForRowAtIndexPath:indexPath];
+
 	if (hitCell == self.enablePhotoImportCell) {
+
 		self.enablePhotoImportCell.accessoryType = UITableViewCellAccessoryCheckmark;
 		self.disablePhotoImportCell.accessoryType = UITableViewCellAccessoryNone;
+		[[NSUserDefaults standardUserDefaults] setBool:YES forKey:kWAPhotoImportEnabled];
+		[[NSUserDefaults standardUserDefaults] synchronize];
+
 		self.navigationItem.rightBarButtonItem.enabled = YES;
+
 	} else if (hitCell == self.disablePhotoImportCell) {
+
 		self.disablePhotoImportCell.accessoryType = UITableViewCellAccessoryCheckmark;
 		self.enablePhotoImportCell.accessoryType = UITableViewCellAccessoryNone;
+		[[NSUserDefaults standardUserDefaults] setBool:NO forKey:kWAPhotoImportEnabled];
+		[[NSUserDefaults standardUserDefaults] synchronize];
+
 		self.navigationItem.rightBarButtonItem.enabled = YES;
+
 	}
 
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];

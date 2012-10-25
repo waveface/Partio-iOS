@@ -24,15 +24,17 @@ static NSString * const kConnectionForWebSocket = @"kConnectionForWebSocket";
 	
 }
 
-- (void) connectAvaliableWSStation:(NSArray *)allStations onSucces:(void(^)(NSURL *wsURL, NSURL*stURL))successBlock onFailure:(WAWebSocketConnectFailure)failureBlock {
+- (void) connectAvaliableWSStation:(NSArray *)allStations onSucces:(void(^)(NSURL *wsURL, NSURL*stURL, NSString *computerName))successBlock onFailure:(WAWebSocketConnectFailure)failureBlock {
 	
 	BOOL stationAvailable = NO;
 	NSURL *wsURL = nil;
 	NSURL *stURL = nil;
+	NSString *computerName = nil;
 	
 	for (NSDictionary *entry in allStations) {
-		wsURL = [(NSDictionary*)entry objectForKey:@"ws_location"];
-		stURL = [(NSDictionary*)entry objectForKey:@"location"];
+		wsURL = entry[@"ws_location"];
+		stURL = entry[@"location"];
+		computerName = entry[@"computer_name"];
 		
 		WAReachabilityDetector *detector = [self reachabilityDetectorForHost:stURL];
 		// no detector for this station exists, might be a new entry from findMyStation
@@ -54,7 +56,7 @@ static NSString * const kConnectionForWebSocket = @"kConnectionForWebSocket";
 			
 			[[WARemoteInterface sharedInterface] openWebSocketConnectionForUrl: wsURL
 																															onSucces:^{
-																																successBlock(wsURL, stURL);
+																																successBlock(wsURL, stURL, computerName);
 																															}
 																														 onFailure:failureBlock];
 			

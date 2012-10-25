@@ -31,9 +31,11 @@ NSURL *refiningStationLocation(NSString *stationUrlString, NSURL *baseUrl) ;
 
 static NSString * const kAvailableHosts = @"-[WARemoteInterface(Reachability) availableHosts]";
 static NSString * const kNetworkState = @"-[WARemoteInterface(Reachability) networkState]";
+static NSString * const kMonitoredHostNames = @"-[WARemoteInterface(Reachability) monitoredHostNames]";
 
 
 @implementation WARemoteInterface (Reachability)
+@dynamic monitoredHostNames;
 
 + (void) load {
 
@@ -69,6 +71,18 @@ static NSString * const kNetworkState = @"-[WARemoteInterface(Reachability) netw
 	}];
 
 	objc_setAssociatedObject([WARemoteInterface class], &WAApplicationDidFinishLaunchingNotification, appLoaded, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+
+}
+
+- (NSArray *)monitoredHostNames {
+
+	return objc_getAssociatedObject(self, &kMonitoredHostNames);
+
+}
+
+- (void)setMonitoredHostNames:(NSArray *)monitoredHostNames {
+
+	objc_setAssociatedObject(self, &kMonitoredHostNames, monitoredHostNames, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 
 }
 
@@ -270,7 +284,8 @@ NSURL *refiningStationLocation(NSString *stationUrlString, NSURL *baseUrl) {
       dispatch_async(dispatch_get_main_queue(), ^ {
 
 				NSArray *wsStations = [NSArray arrayWithArray:[stationReps irMap: ^(NSDictionary *aStationRep, NSUInteger index, BOOL *stop) {
-					NSString *wsStationURLString = [aStationRep valueForKey:@"ws_location"];
+					NSString *wsStationURLString = aStationRep[@"ws_location"];
+					
 					if (!wsStationURLString)
 						return (id)nil;
 					if ([wsStationURLString isEqualToString:@""])
@@ -278,9 +293,11 @@ NSURL *refiningStationLocation(NSString *stationUrlString, NSURL *baseUrl) {
 
 					NSURL *wsURL = [NSURL URLWithString:wsStationURLString];
 					
-					NSURL *stationURL = refiningStationLocation([aStationRep valueForKey:@"location"], wSelf.engine.context.baseURL);
+					NSURL *stationURL = refiningStationLocation(aStationRep[@"location"], wSelf.engine.context.baseURL);
 					
-					return (id)[[NSDictionary alloc] initWithObjectsAndKeys:stationURL, @"location", wsURL, @"ws_location", nil];
+					NSString *computerName = aStationRep[@"computer_name"];
+					
+					return (id)@{@"location":stationURL, @"ws_location":wsURL, @"computer_name":computerName};
 
 				}]];
 
@@ -289,28 +306,33 @@ NSURL *refiningStationLocation(NSString *stationUrlString, NSURL *baseUrl) {
 					
 					// then we try to connect to one of available
 					[[WARemoteInterface sharedInterface] connectAvaliableWSStation:wsStations
-						onSucces:^(NSURL *wsURL, NSURL *stURL){
+						onSucces:^(NSURL *wsURL, NSURL *stURL, NSString *computerName){
 							
 							// any success connect to websocket goes to this block
 
 							[[WARemoteInterface sharedInterface] stopAutomaticRemoteUpdates];
 
 							[[WARemoteInterface sharedInterface] subscribeNotification];
+
 							// We only scan the reachability detector for cloud and the first available station that supports websocket
-							wSelf.monitoredHosts = [NSArray arrayWithObjects:wSelf.engine.context.baseURL, stURL, nil];
+							wSelf.monitoredHostNames = @[@"Stream Cloud", computerName];
+							wSelf.monitoredHosts = @[wSelf.engine.context.baseURL, stURL];
 
 						} onFailure:^(NSError *error) {
 						
 							// no websocket station available or any failure during connection goes to this block
 
-							wSelf.monitoredHosts = [[NSArray arrayWithObject:wSelf.engine.context.baseURL] arrayByAddingObjectsFromArray:[stationReps irMap: ^ (NSDictionary *aStationRep, NSUInteger index, BOOL *stop) {
-								
-								NSString *stationURLString = [aStationRep valueForKeyPath:@"location"];
-								if (!stationURLString)
-									return (id)nil;
-								
-								return (id)refiningStationLocation(stationURLString, wSelf.engine.context.baseURL);
-							}]];
+//							wSelf.monitoredHosts = [[NSArray arrayWithObject:wSelf.engine.context.baseURL] arrayByAddingObjectsFromArray:[stationReps irMap: ^ (NSDictionary *aStationRep, NSUInteger index, BOOL *stop) {
+//								
+//								NSString *stationURLString = [aStationRep valueForKeyPath:@"location"];
+//								if (!stationURLString)
+//									return (id)nil;
+//								
+//								return (id)refiningStationLocation(stationURLString, wSelf.engine.context.baseURL);
+//							}]];
+
+							wSelf.monitoredHostNames = @[@"Stream Cloud"];
+							wSelf.monitoredHosts = @[wSelf.engine.context.baseURL];
 							
 							[[WARemoteInterface sharedInterface] enableAutomaticRemoteUpdatesTimer];
 
@@ -318,14 +340,16 @@ NSURL *refiningStationLocation(NSString *stationUrlString, NSURL *baseUrl) {
 
 				} else {
 
-					wSelf.monitoredHosts = [[NSArray arrayWithObject:wSelf.engine.context.baseURL] arrayByAddingObjectsFromArray:[stationReps irMap: ^ (NSDictionary *aStationRep, NSUInteger index, BOOL *stop) {
-        
-						NSString *stationURLString = [aStationRep valueForKeyPath:@"location"];
-						if (!stationURLString)
-							return (id)nil;
-					          				
-						return (id)refiningStationLocation(stationURLString, wSelf.engine.context.baseURL);
-					}]];
+//					wSelf.monitoredHosts = [[NSArray arrayWithObject:wSelf.engine.context.baseURL] arrayByAddingObjectsFromArray:[stationReps irMap: ^ (NSDictionary *aStationRep, NSUInteger index, BOOL *stop) {
+//        
+//						NSString *stationURLString = [aStationRep valueForKeyPath:@"location"];
+//						if (!stationURLString)
+//							return (id)nil;
+//					          				
+//						return (id)refiningStationLocation(stationURLString, wSelf.engine.context.baseURL);
+//					}]];
+					wSelf.monitoredHostNames = @[@"Stream Cloud"];
+					wSelf.monitoredHosts = @[wSelf.engine.context.baseURL];
 					
 				}
         
@@ -341,7 +365,8 @@ NSURL *refiningStationLocation(NSString *stationUrlString, NSURL *baseUrl) {
       
 				// for network unavailable case while entering app
 				if (!wSelf.monitoredHosts) {
-					wSelf.monitoredHosts = [NSArray arrayWithObject:wSelf.engine.context.baseURL];
+					wSelf.monitoredHostNames = @[@"Stream Cloud"];
+					wSelf.monitoredHosts = @[wSelf.engine.context.baseURL];
 				}
 
         [wSelf endPostponingDataRetrievalTimerFiring];
