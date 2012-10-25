@@ -26,47 +26,31 @@ static NSString * const kConnectionForWebSocket = @"kConnectionForWebSocket";
 
 - (void) connectAvaliableWSStation:(NSArray *)allStations onSucces:(void(^)(NSURL *wsURL, NSURL*stURL, NSString *computerName))successBlock onFailure:(WAWebSocketConnectFailure)failureBlock {
 	
-	BOOL stationAvailable = NO;
-	NSURL *wsURL = nil;
-	NSURL *stURL = nil;
-	NSString *computerName = nil;
-	
-	for (NSDictionary *entry in allStations) {
-		wsURL = entry[@"ws_location"];
-		stURL = entry[@"location"];
-		computerName = entry[@"computer_name"];
-		
-		WAReachabilityDetector *detector = [self reachabilityDetectorForHost:stURL];
-		// no detector for this station exists, might be a new entry from findMyStation
-		if (!detector) {
-			stationAvailable = YES;
-			break;
-		}
-		
-		// a station is alive and supports ws
-		if (detector && detector.state == WAReachabilityStateAvailable) {
-			stationAvailable = YES;
-			break;
-		}
-	}
-	
-	if (stationAvailable) {
-				
-		if (self.connectionForWebSocket == nil || self.connectionForWebSocket.webSocketState == WAWebSocketClosed) {
-			
-			[[WARemoteInterface sharedInterface] openWebSocketConnectionForUrl: wsURL
-																															onSucces:^{
-																																successBlock(wsURL, stURL, computerName);
-																															}
-																														 onFailure:failureBlock];
-			
-		}
-		
-	} else {
+	if ([allStations count] == 0) {
 		failureBlock(nil);
+		return;
 	}
-
 	
+	NSURL *wsURL = allStations[0][@"ws_location"];
+	NSURL *stURL = allStations[0][@"location"];
+	NSString *computerName = allStations[0][@"computer_name"];
+
+	if (self.connectionForWebSocket == nil || self.connectionForWebSocket.webSocketState == WAWebSocketClosed) {
+		
+		__weak WARemoteInterface *wSelf = self;
+		[[WARemoteInterface sharedInterface]
+		 openWebSocketConnectionForUrl: wsURL
+		 onSucces:^{
+			 successBlock(wsURL, stURL, computerName);
+		 }
+		 onFailure:^(NSError *error) {
+			 [wSelf connectAvaliableWSStation:[allStations subarrayWithRange:NSMakeRange(1, [allStations count]-1)]
+															 onSucces:successBlock
+															onFailure:failureBlock];
+		 }];
+		
+	}
+		
 }
 
 - (void) closeWebSocketConnection {
