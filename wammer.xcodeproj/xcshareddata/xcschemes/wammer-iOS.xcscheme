@@ -34,7 +34,7 @@
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "4B8CA96714BBE7BA006E06BB"
                BuildableName = "wammer-iOS-LogicTests.octest"
-               BlueprintName = "wammer-iOS-LogicTests"
+               BlueprintName = "LogicTests"
                ReferencedContainer = "container:wammer.xcodeproj">
             </BuildableReference>
          </TestableReference>
@@ -44,7 +44,7 @@
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "7D0CDCFF162E5A080027D35F"
                BuildableName = "Stream-iOS-ApplicationTests.octest"
-               BlueprintName = "Stream-iOS-ApplicationTests"
+               BlueprintName = "ApplicationTests"
                ReferencedContainer = "container:wammer.xcodeproj">
             </BuildableReference>
          </TestableReference>
