@@ -384,7 +384,7 @@ NSString * const kWAFacebookUserDataImport = @"WAFacebookImportTimeLine";
 - (void) requestFacebookTokenWithCompletion:(void(^)(NSString *token, NSError *error))block {
 	[FBSession
 	 openActiveSessionWithReadPermissions:nil
-	 allowLoginUI:NO
+	 allowLoginUI:YES
 	 completionHandler:^(FBSession *session, FBSessionState status, NSError *error) {
 		 
 		 NSString *token = error ? nil : session.accessToken;
