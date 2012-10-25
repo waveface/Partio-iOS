@@ -29,17 +29,15 @@
 
 #import "WAArticleViewController.h"
 
-#import "WAUserInfoViewController.h"
 #import "IASKAppSettingsViewController.h"
 
 #import "WANavigationController.h"
 #import "WANavigationBar.h"
 
-#import "WAPaginationSlider.h"
 #import "WAArticleCommentsViewCell.h"
 #import "WAPostViewCellPhone.h"
 #import "WAPulldownRefreshView.h"
-#import "WAOverlayBezel.h"
+#import "WADayHeaderView.h"
 
 #import "WARepresentedFilePickerViewController.h"
 #import "WARepresentedFilePickerViewController+CustomUI.h"
@@ -49,7 +47,6 @@
 #import "WATimelineViewControllerPhone+RowHeightCaching.h"
 
 #import "UIViewController+IRDelayedUpdateAdditions.h"
-#import "WAPhotoImportManager.h"
 
 
 @interface WATimelineViewControllerPhone () <NSFetchedResultsControllerDelegate, UIActionSheetDelegate, IASKSettingsDelegate>
@@ -373,6 +370,14 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 		tbView.layer.shadowOffset = CGSizeZero;
 		tbView.layer.shadowPath = [[UIBezierPath bezierPathWithRect:tbView.bounds] CGPath];
 		*/
+		WADayHeaderView *headerView = [WADayHeaderView viewFromNib];
+		headerView.dayLabel.text = [self.currentDisplayedDate dayString];
+		headerView.monthLabel.text = [self.currentDisplayedDate localizedMonthShortString];
+		headerView.wdayLabel.text = [self.currentDisplayedDate localizedWeekDayFullString];
+		[headerView.leftButton addTarget:self.parentViewController action:@selector(handleSwipeRight:) forControlEvents:UIControlEventTouchUpInside];
+		[headerView.rightButton addTarget:self.parentViewController action:@selector(handleSwipeLeft:) forControlEvents:UIControlEventTouchUpInside];
+		
+		tbView.tableHeaderView = headerView;
 		tbView.delegate = wSelf;
 		tbView.dataSource = wSelf;
 		return tbView;
@@ -565,49 +570,6 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 	[self.navigationController pushViewController:pushedVC animated:YES];
 	
 }
-
-CGFloat startTableViewOffset;
-CGFloat lastTableViewOffset;
-- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
-
-	startTableViewOffset = lastTableViewOffset = scrollView.contentOffset.y;
-	
-}
-
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-	CGFloat currentOffset = scrollView.contentOffset.y;
-	CGFloat diff = lastTableViewOffset - currentOffset;
-	
-	if (currentOffset - startTableViewOffset > 0) {
-
-		if (scrollView.isTracking && abs(diff) > 1) {
-			[self.navigationController setToolbarHidden:YES animated:YES];
-//			[self.navigationController setNavigationBarHidden:YES animated:YES];
-		}
-
-	} else {
-
-		if (scrollView.isTracking && abs(diff) > 1) {
-			[self.navigationController setToolbarHidden:NO animated:YES];
-//			[self.navigationController setNavigationBarHidden:NO animated:YES];
-		}
-
-	}
-	
-	lastTableViewOffset = currentOffset;
-}
-
-- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
-}
-
-- (void)scrollViewDidScrollToTop:(UIScrollView *)scrollView {
-
-	[self.navigationController setToolbarHidden:NO animated:YES];
-	[self.navigationController setNavigationBarHidden:NO animated:YES];
-
-}
-
-#pragma mark -
 
 - (IBAction) actionSettings:(id)sender {
 

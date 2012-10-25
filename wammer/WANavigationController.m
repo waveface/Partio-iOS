@@ -59,8 +59,9 @@
 	[super viewDidLoad];
 	
 	WANavigationBar *navigationBar = (WANavigationBar *)self.navigationBar;
-	[navigationBar setBackgroundImage:[UIImage imageNamed:@"WANavigationBar"] forBarMetrics:UIBarMetricsDefault];
-	[navigationBar setBackgroundImage:[UIImage imageNamed:@"WANavigationBarLandscapePhone"] forBarMetrics:UIBarMetricsLandscapePhone];
+//	[navigationBar setBackgroundImage:[UIImage imageNamed:@"WANavigationBar"] forBarMetrics:UIBarMetricsDefault];
+//	[navigationBar setBackgroundImage:[UIImage imageNamed:@"WANavigationBarLandscapePhone"] forBarMetrics:UIBarMetricsLandscapePhone];
+//	navigationBar.layer.masksToBounds = NO;
 				
 	if ([navigationBar isKindOfClass:[WANavigationBar class]]) {
 		
@@ -70,20 +71,21 @@
 		
 			if (wNavigationBar.barStyle == UIBarStyleDefault) {
 			
-				[wNavigationBar setTintColor:[UIColor colorWithRed:98.0/255.0 green:176.0/255.0 blue:195.0/255.0 alpha:0.0]];
-				[wNavigationBar setBackgroundImage:[UIImage imageNamed:@"WANavigationBar"] forBarMetrics:UIBarMetricsDefault];
-				[wNavigationBar setBackgroundImage:[UIImage imageNamed:@"WANavigationBarLandscapePhone"] forBarMetrics:UIBarMetricsLandscapePhone];
+//				[wNavigationBar setTintColor:[UIColor whiteColor]];
+		//		[wNavigationBar setTintColor:[UIColor colorWithRed:98.0/255.0 green:176.0/255.0 blue:195.0/255.0 alpha:0.0]];
+//				[wNavigationBar setBackgroundImage:[UIImage imageNamed:@"WANavigationBar"] forBarMetrics:UIBarMetricsDefault];
+//				[wNavigationBar setBackgroundImage:[UIImage imageNamed:@"WANavigationBarLandscapePhone"] forBarMetrics:UIBarMetricsLandscapePhone];
 				
 				[wNavigationBar setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:
-					[UIColor colorWithWhite:1 alpha:1], UITextAttributeTextColor,
-					[UIColor colorWithWhite:0 alpha:0.5], UITextAttributeTextShadowColor,
+					[UIColor colorWithWhite:0.8 alpha:1], UITextAttributeTextColor,
+					[UIColor colorWithWhite:0.8 alpha:1], UITextAttributeTextShadowColor,
 					[NSValue valueWithUIOffset:(UIOffset){ 0, -1 }], UITextAttributeTextShadowOffset,
 				nil]];
 			
 			} else {
 			
 				[wNavigationBar setTintColor:[UIColor blackColor]];
-				
+#if 0
 				if (wNavigationBar.translucent) {
 				
 					[wNavigationBar setBackgroundImage:IRUIKitImage(@"UIButtonBarBlackOpaqueBackground") forBarMetrics:UIBarMetricsDefault];
@@ -95,7 +97,7 @@
 					[wNavigationBar setBackgroundImage:nil forBarMetrics:UIBarMetricsLandscapePhone];
 				
 				}
-			
+#endif
 			}
 			
 			[wNavigationBar layoutSubviews];

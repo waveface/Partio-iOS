@@ -13,4 +13,10 @@
 - (NSDate *)dayEnd;
 - (NSDate *)dayBegin;
 
+- (NSString *) dayString;
+- (NSString *) localizedMonthShortString;
+- (NSString *) localizedMonthFullString;
+- (NSString *) localizedWeekDayShortString;
+- (NSString *) localizedWeekDayFullString;
+
 @end

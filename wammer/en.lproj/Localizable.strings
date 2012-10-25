@@ -447,6 +447,12 @@
 /* Class = "IBUILabel"; text = "COMPOSITION_NO_PHOTO_REMINDER_DESCRIPTION"; ObjectID = "26"; */
 "COMPOSITION_NO_PHOTO_REMINDER_DESCRIPTION" = " ";
 
+/* Class = "IBUILabel"; text = "AUG"; ObjectID = "15"; */
+"AUG" = "AUG";
+
+/* Class = "IBUILabel"; text = "MONDAY"; ObjectID = "39"; */
+"MONDAY" = "MONDAY";
+
 /* Class = "IBUITextField"; placeholder = "USERNAME_PLACEHOLDER"; ObjectID = "2Vk-4J-QH3"; */
 "USERNAME_PLACEHOLDER" = "me@example.com";
 

@@ -334,13 +334,13 @@
 "SIGN_UP_CONTROLLER_TITLE" = "註冊";
 
 /* Title for Collection in the sliding menu */
-"SLIDING_MENU_TITLE_COLLECTION" = "SLIDING_MENU_TITLE_COLLECTION";
+"SLIDING_MENU_TITLE_COLLECTION" = "Collection";
 
 /* Title for Settings in the sliding menu */
-"SLIDING_MENU_TITLE_SETTINGS" = "SLIDING_MENU_TITLE_SETTINGS";
+"SLIDING_MENU_TITLE_SETTINGS" = "設定";
 
 /* Title for Timeline in the sliding menu */
-"SLIDING_MENU_TITLE_TIMELINE" = "SLIDING_MENU_TITLE_TIMELINE";
+"SLIDING_MENU_TITLE_TIMELINE" = "Timeline";
 
 /* In Account Info Photo Import Section */
 "START_PHOTO_IMPORT_DESCRIPTION" = "匯入所有 Camera Roll 中的照片";
@@ -446,6 +446,12 @@
 
 /* Class = "IBUILabel"; text = "COMPOSITION_NO_PHOTO_REMINDER_DESCRIPTION"; ObjectID = "26"; */
 "COMPOSITION_NO_PHOTO_REMINDER_DESCRIPTION" = "您可以插入一些照片";
+
+/* Class = "IBUILabel"; text = "AUG"; ObjectID = "15"; */
+"AUG" = "AUG";
+
+/* Class = "IBUILabel"; text = "MONDAY"; ObjectID = "39"; */
+"MONDAY" = "MONDAY";
 
 /* Class = "IBUITextField"; placeholder = "USERNAME_PLACEHOLDER"; ObjectID = "2Vk-4J-QH3"; */
 "USERNAME_PLACEHOLDER" = "me@example.com";

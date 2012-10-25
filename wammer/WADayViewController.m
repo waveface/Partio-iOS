@@ -118,21 +118,21 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 											 
 											 nil];
 	
-	UIImage *calImage = [UIImage imageNamed:@"Cal"];
-	UIButton *calButton = [UIButton buttonWithType:UIButtonTypeCustom];
-	calButton.frame = (CGRect) {CGPointZero, calImage.size};
-	[calButton setBackgroundImage:calImage forState:UIControlStateNormal];
-	[calButton setBackgroundImage:[UIImage imageNamed:@"CalHL"] forState:UIControlStateHighlighted];
-	[calButton setShowsTouchWhenHighlighted:YES];
-	[calButton addTarget:self action:@selector(handleDateSelect:) forControlEvents:UIControlEventTouchUpInside];
+	UIImage *createImage = [UIImage imageNamed:@"Create"];
+	UIButton *createButton = [UIButton buttonWithType:UIButtonTypeCustom];
+	createButton.frame = (CGRect) {CGPointZero, createImage.size};
+	[createButton setBackgroundImage:createImage forState:UIControlStateNormal];
+//	[calButton setBackgroundImage:[UIImage imageNamed:@"CalHL"] forState:UIControlStateHighlighted];
+	[createButton setShowsTouchWhenHighlighted:YES];
+	[createButton addTarget:self action:@selector(handleCompose:) forControlEvents:UIControlEventTouchUpInside];
 	
-	self.navigationItem.rightBarButtonItem  = [[UIBarButtonItem alloc] initWithCustomView:calButton];
+	self.navigationItem.rightBarButtonItem  = [[UIBarButtonItem alloc] initWithCustomView:createButton];
 	
 	UIImage *menuImage = [UIImage imageNamed:@"menu"];
 	UIButton *slidingMenuButton = [UIButton buttonWithType:UIButtonTypeCustom];
 	slidingMenuButton.frame = (CGRect) {CGPointZero, menuImage.size};
 	[slidingMenuButton setBackgroundImage:menuImage forState:UIControlStateNormal];
-	[slidingMenuButton setBackgroundImage:[UIImage imageNamed:@"menuHL"] forState:UIControlStateHighlighted];
+//	[slidingMenuButton setBackgroundImage:[UIImage imageNamed:@"menuHL"] forState:UIControlStateHighlighted];
 	[slidingMenuButton setShowsTouchWhenHighlighted:YES];
 	[slidingMenuButton addTarget:self.viewDeckController action:@selector(toggleLeftView) forControlEvents:UIControlEventTouchUpInside];
 	
@@ -171,14 +171,15 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 
 	self.navigationItem.titleView.alpha = 1;
 	
-	[self.navigationController.toolbar setTintColor:[UIColor colorWithWhite:128.0/255.0 alpha:1]];
-	[self.navigationController.toolbar setBackgroundImage:[UIImage imageNamed:@"ToolbarWithButtons"] forToolbarPosition:UIToolbarPositionAny barMetrics:UIBarMetricsDefault];
+	[self.navigationController.toolbar setHidden:YES];
+//	[self.navigationController.toolbar setTintColor:[UIColor colorWithWhite:128.0/255.0 alpha:1]];
+//	[self.navigationController.toolbar setBackgroundImage:[UIImage imageNamed:@"ToolbarWithButtons"] forToolbarPosition:UIToolbarPositionAny barMetrics:UIBarMetricsDefault];
 
 }
 
 - (void) viewDidAppear:(BOOL)animated {
 
-	[self.navigationController setToolbarHidden:NO animated:animated];
+	[self.navigationController setToolbarHidden:YES animated:animated];
 
 }
 
@@ -613,7 +614,7 @@ BOOL dripdownMenuOpened = NO;
 	
 }
 
-#pragma mark - slinding menu
+#pragma mark - Jump to specific date
 - (void)jumpToToday {
 	
 	[self.paginatedView scrollToPageAtIndex:0 animated:YES];
@@ -622,11 +623,16 @@ BOOL dripdownMenuOpened = NO;
 
 
 - (void) handleSwipeRight:(id) sender {
-	// FIXME: switch to the next day
+	
+	if (self.paginatedView.currentPage > 0)
+		[self.paginatedView scrollToPageAtIndex:self.paginatedView.currentPage-1 animated:YES];
 }
 
 - (void) handleSwipeLeft:(id) sender {
-	// FIXME: switch to the previous day
+	
+	if (self.paginatedView.currentPage < [self.days count])
+		[self.paginatedView scrollToPageAtIndex:self.paginatedView.currentPage+1 animated:YES];
+	
 }
 
 

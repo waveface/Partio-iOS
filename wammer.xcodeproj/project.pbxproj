@@ -203,6 +203,14 @@
 		80A2217415ED1AFD006236AC /* WARemoteInterface+WebSocket.h in Sources */ = {isa = PBXBuildFile; fileRef = 8002CDEA15E5F6F300D7BFF0 /* WARemoteInterface+WebSocket.h */; };
 		80A2217515ED1AFD006236AC /* WARemoteInterface+WebSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 8002CDEB15E5F6F300D7BFF0 /* WARemoteInterface+WebSocket.m */; };
 		80BE685B161DC13800A37CEB /* WADayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 80BE685A161DC13800A37CEB /* WADayViewController.m */; };
+		80C129B916398933001DDFE2 /* WADayHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 80C129B716398933001DDFE2 /* WADayHeaderView.m */; };
+		80C129BA16398933001DDFE2 /* WADayHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 80C129B816398933001DDFE2 /* WADayHeaderView.xib */; };
+		80C129BD163989AF001DDFE2 /* dayViewHeaderBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = 80C129BB163989AE001DDFE2 /* dayViewHeaderBackground.png */; };
+		80C129BE163989AF001DDFE2 /* dayViewHeaderBackground@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 80C129BC163989AF001DDFE2 /* dayViewHeaderBackground@2x.png */; };
+		80C129C1163989C6001DDFE2 /* cloudy.png in Resources */ = {isa = PBXBuildFile; fileRef = 80C129BF163989C6001DDFE2 /* cloudy.png */; };
+		80C129C2163989C6001DDFE2 /* cloudy@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 80C129C0163989C6001DDFE2 /* cloudy@2x.png */; };
+		80C129C516398A0D001DDFE2 /* Create.png in Resources */ = {isa = PBXBuildFile; fileRef = 80C129C316398A0D001DDFE2 /* Create.png */; };
+		80C129C616398A0D001DDFE2 /* Create@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 80C129C416398A0D001DDFE2 /* Create@2x.png */; };
 		80EB9A661615A436003B282B /* SSKeychain.m in Sources */ = {isa = PBXBuildFile; fileRef = 80EB9A651615A436003B282B /* SSKeychain.m */; };
 		80F42C0215F70EDF00C8A72B /* WAWebSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 809D428F15F5CE4300CB4F89 /* WAWebSocket.m */; };
 		80F800F615C2624C00132A96 /* IRAQ-Checkmark.png in Resources */ = {isa = PBXBuildFile; fileRef = 80F800F415C2624C00132A96 /* IRAQ-Checkmark.png */; };
@@ -1353,6 +1361,15 @@
 		80A13C73162071C4002880A9 /* NSDate+WAAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+WAAdditions.m"; sourceTree = "<group>"; };
 		80BE6859161DC13800A37CEB /* WADayViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WADayViewController.h; sourceTree = "<group>"; };
 		80BE685A161DC13800A37CEB /* WADayViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WADayViewController.m; sourceTree = "<group>"; };
+		80C129B616398933001DDFE2 /* WADayHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WADayHeaderView.h; sourceTree = "<group>"; };
+		80C129B716398933001DDFE2 /* WADayHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WADayHeaderView.m; sourceTree = "<group>"; };
+		80C129B816398933001DDFE2 /* WADayHeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WADayHeaderView.xib; sourceTree = "<group>"; };
+		80C129BB163989AE001DDFE2 /* dayViewHeaderBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = dayViewHeaderBackground.png; path = Resources/dayViewHeaderBackground.png; sourceTree = "<group>"; };
+		80C129BC163989AF001DDFE2 /* dayViewHeaderBackground@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "dayViewHeaderBackground@2x.png"; path = "Resources/dayViewHeaderBackground@2x.png"; sourceTree = "<group>"; };
+		80C129BF163989C6001DDFE2 /* cloudy.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = cloudy.png; path = Resources/cloudy.png; sourceTree = "<group>"; };
+		80C129C0163989C6001DDFE2 /* cloudy@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "cloudy@2x.png"; path = "Resources/cloudy@2x.png"; sourceTree = "<group>"; };
+		80C129C316398A0D001DDFE2 /* Create.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Create.png; path = Resources/Create.png; sourceTree = "<group>"; };
+		80C129C416398A0D001DDFE2 /* Create@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Create@2x.png"; path = "Resources/Create@2x.png"; sourceTree = "<group>"; };
 		80EB9A641615A436003B282B /* SSKeychain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SSKeychain.h; path = external/sskeychain/SSKeychain.h; sourceTree = "<group>"; };
 		80EB9A651615A436003B282B /* SSKeychain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SSKeychain.m; path = external/sskeychain/SSKeychain.m; sourceTree = "<group>"; };
 		80F800F415C2624C00132A96 /* IRAQ-Checkmark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "IRAQ-Checkmark.png"; sourceTree = "<group>"; };
@@ -2736,6 +2753,9 @@
 				806A5C831623C6C500867E56 /* WADripdownMenuViewController.h */,
 				806A5C841623C6C500867E56 /* WADripdownMenuViewController.m */,
 				806A5C881623CDDE00867E56 /* WADripdownMenuViewController.xib */,
+				80C129B616398933001DDFE2 /* WADayHeaderView.h */,
+				80C129B716398933001DDFE2 /* WADayHeaderView.m */,
+				80C129B816398933001DDFE2 /* WADayHeaderView.xib */,
 			);
 			name = Timeline;
 			path = wammer;
@@ -3122,6 +3142,10 @@
 				806A5C9B16241E2800867E56 /* rightHL@2x.png */,
 				FFCCDE3C15B41B0000AEBB85 /* CameraPressed.png */,
 				FFCCDE3D15B41B0000AEBB85 /* CameraPressed@2x.png */,
+				80C129C316398A0D001DDFE2 /* Create.png */,
+				80C129C416398A0D001DDFE2 /* Create@2x.png */,
+				80C129BF163989C6001DDFE2 /* cloudy.png */,
+				80C129C0163989C6001DDFE2 /* cloudy@2x.png */,
 				7D85EE6D1637936A00D5630A /* Default-568h@2x.png */,
 				FFCCDE3F15B41B0000AEBB85 /* Default-Landscape.png */,
 				FFCCDE4015B41B0000AEBB85 /* Default-Landscape@2x.png */,
@@ -3129,6 +3153,8 @@
 				FFCCDE4215B41B0000AEBB85 /* Default-Portrait@2x.png */,
 				FFCCDE4315B41B0000AEBB85 /* Default.png */,
 				FFCCDE4415B41B0000AEBB85 /* Default@2x.png */,
+				80C129BB163989AE001DDFE2 /* dayViewHeaderBackground.png */,
+				80C129BC163989AF001DDFE2 /* dayViewHeaderBackground@2x.png */,
 				FFCCDE4B15B41B0000AEBB85 /* FacebookLogo.png */,
 				FFCCDE4C15B41B0000AEBB85 /* FacebookLogo@2x.png */,
 				4BFC156315C7D9DC00DB02F8 /* Fav@2x~ipad.png */,
@@ -4298,6 +4324,13 @@
 				7D0CDC16162D6B180027D35F /* FacebookSDKResources.bundle in Resources */,
 				13DE12EE1637F37C00757F7C /* WAFirstUse.storyboard in Resources */,
 				7D85EE6E1637936A00D5630A /* Default-568h@2x.png in Resources */,
+				80C129BA16398933001DDFE2 /* WADayHeaderView.xib in Resources */,
+				80C129BD163989AF001DDFE2 /* dayViewHeaderBackground.png in Resources */,
+				80C129BE163989AF001DDFE2 /* dayViewHeaderBackground@2x.png in Resources */,
+				80C129C1163989C6001DDFE2 /* cloudy.png in Resources */,
+				80C129C2163989C6001DDFE2 /* cloudy@2x.png in Resources */,
+				80C129C516398A0D001DDFE2 /* Create.png in Resources */,
+				80C129C616398A0D001DDFE2 /* Create@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4782,6 +4815,7 @@
 				13793344162C0EA000FA9E8F /* WAFileExif+WAAdditions.m in Sources */,
 				132D60331622B66500148829 /* WACache.m in Sources */,
 				1360BC0F1623FA3200AF4EAA /* WACacheManager.m in Sources */,
+				80C129B916398933001DDFE2 /* WADayHeaderView.m in Sources */,
 				13DE12EB1637F30A00757F7C /* WAFirstUseDoneViewController.m in Sources */,
 				13DE12EC1637F30A00757F7C /* WAFirstUseViewController.m in Sources */,
 				13DE12FA1638140A00757F7C /* WAFirstUseBuildCloudViewController.m in Sources */,
