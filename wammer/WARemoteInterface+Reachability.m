@@ -310,7 +310,7 @@ NSURL *refiningStationLocation(NSString *stationUrlString, NSURL *baseUrl) {
 							[[WARemoteInterface sharedInterface] subscribeNotification];
 
 							// We only scan the reachability detector for cloud and the first available station that supports websocket
-							wSelf.monitoredHostNames = @[@"Stream Cloud", computerName];
+							wSelf.monitoredHostNames = @[NSLocalizedString(@"Stream Cloud", @"Cloud Name"), computerName];
 							wSelf.monitoredHosts = @[wSelf.engine.context.baseURL, stURL];
 
 						} onFailure:^(NSError *error) {
@@ -326,7 +326,7 @@ NSURL *refiningStationLocation(NSString *stationUrlString, NSURL *baseUrl) {
 //								return (id)refiningStationLocation(stationURLString, wSelf.engine.context.baseURL);
 //							}]];
 
-							wSelf.monitoredHostNames = @[@"Stream Cloud"];
+							wSelf.monitoredHostNames = @[NSLocalizedString(@"Stream Cloud", @"Cloud Name")];
 							wSelf.monitoredHosts = @[wSelf.engine.context.baseURL];
 							
 							[[WARemoteInterface sharedInterface] enableAutomaticRemoteUpdatesTimer];
@@ -343,7 +343,7 @@ NSURL *refiningStationLocation(NSString *stationUrlString, NSURL *baseUrl) {
 //					          				
 //						return (id)refiningStationLocation(stationURLString, wSelf.engine.context.baseURL);
 //					}]];
-					wSelf.monitoredHostNames = @[@"Stream Cloud"];
+					wSelf.monitoredHostNames = @[NSLocalizedString(@"Stream Cloud", @"Cloud Name")];
 					wSelf.monitoredHosts = @[wSelf.engine.context.baseURL];
 					
 				}
@@ -360,7 +360,7 @@ NSURL *refiningStationLocation(NSString *stationUrlString, NSURL *baseUrl) {
       
 				// for network unavailable case while entering app
 				if (!wSelf.monitoredHosts) {
-					wSelf.monitoredHostNames = @[@"Stream Cloud"];
+					wSelf.monitoredHostNames = @[NSLocalizedString(@"Stream Cloud", @"Cloud Name")];
 					wSelf.monitoredHosts = @[wSelf.engine.context.baseURL];
 				}
 
