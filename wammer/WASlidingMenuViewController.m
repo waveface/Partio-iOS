@@ -45,19 +45,25 @@
 
 - (void) handleUserInfo {
 	
-	UINavigationController *navC = nil;
+	[self.viewDeckController closeLeftView];
+
+	WANavigationController *navC = nil;
 	WAUserInfoViewController *userInfoVC = [WAUserInfoViewController controllerWithWrappingNavController:&navC];
 
 	__weak WASlidingMenuViewController *wSelf = self;
-	__weak WAUserInfoViewController *wUserInfoVC = userInfoVC;
-
-	userInfoVC.navigationItem.rightBarButtonItem = [IRBarButtonItem itemWithSystemItem:UIBarButtonSystemItemDone wiredAction:^(IRBarButtonItem *senderItem) {
 	
-		[wUserInfoVC.navigationController dismissViewControllerAnimated:YES completion:nil];
+	UIImage *menuImage = [UIImage imageNamed:@"menu"];
+	UIButton *slidingMenuButton = [UIButton buttonWithType:UIButtonTypeCustom];
+	slidingMenuButton.frame = (CGRect) {CGPointZero, menuImage.size};
+	[slidingMenuButton setBackgroundImage:menuImage forState:UIControlStateNormal];
+	[slidingMenuButton setBackgroundImage:[UIImage imageNamed:@"menuHL"] forState:UIControlStateHighlighted];
+	[slidingMenuButton setShowsTouchWhenHighlighted:YES];
+	[slidingMenuButton addTarget:self.viewDeckController action:@selector(toggleLeftView) forControlEvents:UIControlEventTouchUpInside];
 	
-	}];
+	userInfoVC.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:slidingMenuButton];
 
-	userInfoVC.navigationItem.leftBarButtonItem = [IRBarButtonItem itemWithTitle:NSLocalizedString(@"ACTION_SIGN_OUT", nil) action:^{
+
+	userInfoVC.navigationItem.rightBarButtonItem = [IRBarButtonItem itemWithTitle:NSLocalizedString(@"ACTION_SIGN_OUT", nil) action:^{
 	
 		IRAction *cancelAction = [IRAction actionWithTitle:NSLocalizedString(@"ACTION_CANCEL", nil) block:nil];
 	
@@ -79,7 +85,9 @@
 	
 	}];
 
-	[self presentViewController:navC animated:YES completion:nil];
+//	[self presentViewController:navC animated:YES completion:nil];
+	[self.viewDeckController setCenterController:navC];
+	
 }
 
 #pragma mark - Table view data source
@@ -173,9 +181,10 @@
 		case 0: {
 
 			[self.viewDeckController closeLeftView];
+			WADayViewController *swVC = [[WADayViewController alloc] init];
 
-			WANavigationController *nav = (WANavigationController*)self.viewDeckController.centerController;
-			[(WADayViewController*)(nav.topViewController) jumpToToday];
+			WANavigationController *navVC = [[WANavigationController alloc] initWithRootViewController:swVC];
+			self.viewDeckController.centerController = navVC;
 			
 			break;
 		}
@@ -183,9 +192,12 @@
 		case 1:
 			break;
 			
-		case 2: // Settings
+		case 2: { // Settings
+			
 			[self handleUserInfo];
 			break;
+			
+		}
 	}
 }
 

@@ -242,7 +242,7 @@
   if (userInfoPopoverController)
     return userInfoPopoverController;
     
-  UINavigationController *wrappingNavC = nil;
+  WANavigationController *wrappingNavC = nil;
 	WAUserInfoViewController *userInfoVC = [WAUserInfoViewController controllerWithWrappingNavController:&wrappingNavC];
  
 	__weak WAArticlesViewController *wSelf = self;

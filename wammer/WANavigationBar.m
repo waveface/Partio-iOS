@@ -32,6 +32,15 @@
 
 }
 
+- (void) drawRect:(CGRect)rect {
+	
+	UIColor *color = [UIColor colorWithRed:0.95f green:0.95f blue:0.95f alpha:1];
+	CGContextRef ctx = UIGraphicsGetCurrentContext();
+	CGContextSetFillColorWithColor ( ctx, [color CGColor] );
+	CGContextFillRect(ctx, rect);
+	
+}
+
 - (void) layoutSubviews {
 
   [super layoutSubviews];

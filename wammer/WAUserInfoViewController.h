@@ -8,11 +8,12 @@
 
 #import <UIKit/UIKit.h>
 #import "IRTableViewController.h"
+#import "WANavigationController.h"
 
 @class UITableViewSection;
 @interface WAUserInfoViewController : IRTableViewController
 
-+ (id) controllerWithWrappingNavController:(UINavigationController **)navController;
++ (id) controllerWithWrappingNavController:(WANavigationController **)navController;
 
 @property (weak, nonatomic) IBOutlet UITableViewCell *syncTableViewCell;
 @property (strong, nonatomic) IBOutlet UITableViewCell *serviceTableViewCell;

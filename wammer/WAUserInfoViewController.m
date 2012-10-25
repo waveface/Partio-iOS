@@ -17,6 +17,9 @@
 #import "WADataStore.h"
 #import "WADataStore+WARemoteInterfaceAdditions.h"
 
+#import "WANavigationBar.h"
+#import "WANavigationController.h"
+
 #import "Foundation+IRAdditions.h"
 #import "UIKit+IRAdditions.h"
 #import "WASyncManager.h"
@@ -61,14 +64,14 @@ typedef enum WASyncStatus: NSUInteger {
 @synthesize user;
 @synthesize activity;
 
-+ (id) controllerWithWrappingNavController:(UINavigationController **)outNavController {
++ (id) controllerWithWrappingNavController:(WANavigationController **)outNavController {
 
 	NSString *name = NSStringFromClass([self class]);
 	NSBundle *bundle = [NSBundle bundleForClass:[self class]];
 	UIStoryboard *sb = [UIStoryboard storyboardWithName:name bundle:bundle];
 	
-	UINavigationController *navC = (UINavigationController *)[sb instantiateInitialViewController];
-	NSCParameterAssert([navC isKindOfClass:[UINavigationController class]]);
+	WANavigationController *navC = (WANavigationController *)[sb instantiateInitialViewController];
+	NSCParameterAssert([navC isKindOfClass:[WANavigationController class]]);
 	
 	WAUserInfoViewController *uiVC = (WAUserInfoViewController *)navC.topViewController;
 	NSCParameterAssert([uiVC isKindOfClass:[WAUserInfoViewController class]]);
