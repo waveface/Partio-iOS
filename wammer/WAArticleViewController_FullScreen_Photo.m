@@ -94,6 +94,8 @@
 	}
 
 	self.scrollVelocity = CGPointMake(0.0f, 0.0f);
+	
+	self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(handleAction)];
 
 }
 
@@ -514,7 +516,7 @@
 
 - (void) handleAction {
 	// show up storyboard here.
-	UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"CollectionStoryboardPhone" bundle:nil];
+	UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"LightTablePhone" bundle:nil];
 	[self
 	 presentViewController:[storyboard instantiateInitialViewController]
 	 animated:YES
