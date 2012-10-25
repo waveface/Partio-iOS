@@ -94,30 +94,25 @@ static NSString * const kMonitoredHostNames = @"-[WARemoteInterface(Reachability
 
 - (void) setMonitoredHosts:(NSArray *)newAvailableHosts {
 
-  if ([self.monitoredHosts isEqualToArray:newAvailableHosts])
-    return;
-
+	NSURL *cloudURL = self.engine.context.baseURL;
+  
 	objc_setAssociatedObject(self, &kAvailableHosts, newAvailableHosts, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-  
-  [(NSDictionary *)[self.monitoredHostsToReachabilityDetectors copy] enumerateKeysAndObjectsUsingBlock: ^ (NSURL *anURL, WAReachabilityDetector *reachabilityDetector, BOOL *stop) {
-  
-    if (![newAvailableHosts containsObject:anURL])
-      [self.monitoredHostsToReachabilityDetectors removeObjectForKey:anURL];
-    
-  }];
-  
-  [newAvailableHosts enumerateObjectsUsingBlock: ^ (NSURL *aHostURL, NSUInteger idx, BOOL *stop) {
-  
-    if (![[self.monitoredHostsToReachabilityDetectors allKeys] containsObject:aHostURL]) {
-      
-      WAReachabilityDetector *detector = [WAReachabilityDetector detectorForURL:aHostURL];
-      detector.delegate = self;
-      
-      [self.monitoredHostsToReachabilityDetectors setObject:detector forKey:aHostURL];
-      
-    }
-    
-  }];
+
+	if (!newAvailableHosts) {
+
+		[self.monitoredHostsToReachabilityDetectors removeObjectForKey:cloudURL];
+
+	} else {
+
+		NSParameterAssert([newAvailableHosts[0] isEqual:cloudURL]);
+
+		if (!self.monitoredHostsToReachabilityDetectors[cloudURL]) {
+			WAReachabilityDetector *detector = [WAReachabilityDetector detectorForURL:cloudURL];
+			detector.delegate = self;
+			self.monitoredHostsToReachabilityDetectors[cloudURL] = detector;
+		}
+
+	}
   
   [[NSNotificationCenter defaultCenter] postNotificationName:kWARemoteInterfaceReachableHostsDidChangeNotification object:self userInfo:nil];
   
@@ -438,7 +433,7 @@ NSURL *refiningStationLocation(NSString *stationUrlString, NSURL *baseUrl) {
 
 - (WAReachabilityDetector *) reachabilityDetectorForHost:(NSURL *)aBaseURL {
 
-  WAReachabilityDetector *detector = [self.monitoredHostsToReachabilityDetectors objectForKey:aBaseURL];
+  WAReachabilityDetector *detector = self.monitoredHostsToReachabilityDetectors[aBaseURL];
   return detector;
 
 }
@@ -446,32 +441,10 @@ NSURL *refiningStationLocation(NSString *stationUrlString, NSURL *baseUrl) {
 - (WANetworkState) networkState {
 
   NSURL *cloudHost = self.engine.context.baseURL;
-	BOOL hasStationAvailable = NO, hasCloudAvailable = NO;
+	BOOL hasStationAvailable = self.webSocketConnected, hasCloudAvailable = NO;
 	
-	for (NSURL *hostURL in self.monitoredHosts) {
-		switch ([self reachabilityStateForHost:hostURL]) {
-			case WAReachabilityStateAvailable:
-				if ([hostURL isEqual:cloudHost]) {
-					hasCloudAvailable = YES;
-				} else {
-					hasStationAvailable = YES;
-				}
-				break;
-
-			case WAReachabilityStateUnknown:
-				// assume cloud is reachable by default
-				if ([hostURL isEqual:cloudHost]) {
-					hasCloudAvailable = YES;
-				}
-				break;
-				
-			default:
-				break;
-		}
-	}
-	
-	// assume cloud is reachable before calling findMyStation
-	if (!self.monitoredHosts) {
+	WAReachabilityState state = [self reachabilityStateForHost:cloudHost];
+	if (state == WAReachabilityStateAvailable || state == WAReachabilityStateUnknown) {
 		hasCloudAvailable = YES;
 	}
 
