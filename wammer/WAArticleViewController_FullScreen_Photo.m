@@ -520,6 +520,7 @@
 	UINavigationController *navigationController = [storyboard instantiateInitialViewController];
 	WALightTableViewController *ltvc = (WALightTableViewController *)navigationController.topViewController;
 	ltvc.delegate = self;
+	ltvc.article = self.article;
 	
 	[self
 	 presentViewController:navigationController

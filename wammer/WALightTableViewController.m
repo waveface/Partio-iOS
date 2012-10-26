@@ -21,6 +21,7 @@
 {
 	[super viewDidLoad];
 	// Do any additional setup after loading the view.
+	self.navigationController.toolbarHidden = NO;
 }
 
 - (void)didReceiveMemoryWarning
@@ -67,18 +68,6 @@
 	if (_fetchedResultsController)
 		return _fetchedResultsController;
 	
-	_managedObjectContext = [[WADataStore defaultStore] defaultAutoUpdatedMOC];
-	
-	NSFetchRequest *fetchRequest = [[WADataStore defaultStore].persistentStoreCoordinator.managedObjectModel
-																	fetchRequestFromTemplateWithName:@"WAFRArticle"
-																	substitutionVariables:@{@"Identifier":@"39823466-41d8-4593-9205-e9f2b89ea475"}];
-	fetchRequest.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:NO]];
-	fetchRequest.fetchLimit = 1;
-
-	NSError *fetchError = nil;
-	NSArray *fetchedArticles = [_managedObjectContext executeFetchRequest:fetchRequest error:&fetchError];
-	self.article = [fetchedArticles objectAtIndex:0];
-	
 	NSFetchRequest *fetchForFiles = [[WADataStore defaultStore] newFetchRequestForFilesInArticle:self.article];
 	_fetchedResultsController = [[NSFetchedResultsController alloc]
 															 initWithFetchRequest:fetchForFiles
@@ -87,6 +76,7 @@
 															 cacheName:nil];
 	_fetchedResultsController.delegate = self;
 	
+	NSError *fetchError;
 	if (![_fetchedResultsController performFetch:&fetchError]){
 		NSLog(@"Fetch Error: %@", fetchError);
 	}
