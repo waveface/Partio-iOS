@@ -24,7 +24,12 @@
 @property (strong, nonatomic) WAArticle *article;
 @property	(strong, nonatomic) NSFetchedResultsController *fetchedResultsController;
 @property (strong, nonatomic) NSManagedObjectContext *managedObjectContext;
+@property (strong, nonatomic, readonly	) NSSet *selection;
 
-- (IBAction) handleCancel:(UIBarButtonItem*) barButtonItem	;
+@property (strong, nonatomic) IBOutlet UICollectionViewFlowLayout *flowLayout;
+
+- (IBAction) handleCancel:(UIBarButtonItem*) sender	;
+- (IBAction)handleAddToCollection:(UIBarButtonItem *)sender;
+- (IBAction)handleShareToAnything:(UIBarButtonItem *)sender;
 
 @end

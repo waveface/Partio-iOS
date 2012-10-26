@@ -37,7 +37,7 @@
                                     <constraint firstItem="T1H-7S-KQY" firstAttribute="top" secondItem="hgb-aE-2yM" secondAttribute="top" type="default" id="nzX-La-eUb"/>
                                 </constraints>
                                 <connections>
-                                    <outlet property="image" destination="T1H-7S-KQY" id="pgz-fF-3kF"/>
+                                    <outlet property="imageView" destination="T1H-7S-KQY" id="Ic0-lw-Uwc"/>
                                 </connections>
                             </collectionViewCell>
                         </cells>
@@ -47,17 +47,29 @@
                         </connections>
                     </collectionView>
                     <toolbarItems>
-                        <barButtonItem title="Share" id="902-A7-S6h"/>
-                        <barButtonItem title="Add To" id="8tY-bI-iNq"/>
+                        <barButtonItem title="Share" id="902-A7-S6h">
+                            <connections>
+                                <action selector="handleShareToAnything:" destination="j8A-ww-jiM" id="cOc-8b-rHB"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem title="Add To" id="8tY-bI-iNq">
+                            <connections>
+                                <action selector="handleAddToCollection:" destination="j8A-ww-jiM" id="GW7-qd-0iK"/>
+                            </connections>
+                        </barButtonItem>
                     </toolbarItems>
                     <navigationItem key="navigationItem" title="Light Table" id="5v1-fU-kb3">
                         <barButtonItem key="leftBarButtonItem" title="Cancel" id="V7s-2t-eQP">
+                            <color key="tintColor" red="0.0" green="0.25098040699958801" blue="0.50196081399917603" alpha="1" colorSpace="calibratedRGB"/>
                             <connections>
                                 <action selector="handleCancel:" destination="j8A-ww-jiM" id="yLl-et-kmw"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
+                    <connections>
+                        <outlet property="flowLayout" destination="CKg-jq-6pO" id="sB9-GH-Hhg"/>
+                    </connections>
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="f8h-TG-Sru" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

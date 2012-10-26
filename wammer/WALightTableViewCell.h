@@ -10,6 +10,6 @@
 
 @interface WALightTableViewCell : UICollectionViewCell
 
-@property (strong, nonatomic) IBOutlet UIImageView *image;
+@property (strong, nonatomic) IBOutlet UIImageView *imageView;
 
 @end

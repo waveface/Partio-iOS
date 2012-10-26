@@ -11,11 +11,14 @@
 #import "WAArticle.h"
 #import "WADataStore.h"
 
-@interface WALightTableViewController ()
+@interface WALightTableViewController (){
+	NSMutableSet *_selection;
+}
 
 @end
 
 @implementation WALightTableViewController
+@synthesize selection = _selection;
 
 - (void)viewDidLoad
 {
@@ -30,6 +33,16 @@
 	// Dispose of any resources that can be recreated.
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+	_selection = [[NSMutableSet alloc]initWithCapacity:10];
+	[super viewWillAppear:animated];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+	[super viewWillDisappear:animated];
+	_selection = nil;
+}
+
 #pragma mark - Collection view data source
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView
 									cellForItemAtIndexPath:(NSIndexPath *)indexPath {
@@ -40,8 +53,9 @@
 	
 	if(cell){
 		WAFile *file = (WAFile *)[self.fetchedResultsController objectAtIndexPath:indexPath];
-		cell.image.image = file.thumbnailImage;
+		cell.imageView.image = file.thumbnailImage;
 	}
+	
 	return cell;
 }
 
@@ -53,6 +67,13 @@
 #pragma mark - Collection view delegate
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
+	NSNumber *index = @(indexPath.row);
+	if ( [_selection containsObject:index] )
+		[_selection removeObject:index];
+	else
+		[_selection addObject:index];
+	
+	NSLog(@"%@", self.selection);
 	
 }
 
@@ -60,6 +81,12 @@
 
 - (void)handleCancel:(UIBarButtonItem *)barButtonItem{
 	[_delegate lightTableViewDidDismiss:self];
+}
+
+- (IBAction)handleAddToCollection:(UIBarButtonItem *)sender {
+}
+
+- (IBAction)handleShareToAnything:(UIBarButtonItem *)sender {
 }
 
 #pragma mark - Fetched results controller
