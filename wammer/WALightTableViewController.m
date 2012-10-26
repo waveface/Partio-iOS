@@ -58,6 +58,7 @@
 #pragma mark - IBActions
 
 - (void)handleCancel:(UIBarButtonItem *)barButtonItem{
+	[_delegate lightTableViewDidDismiss:self];
 }
 
 #pragma mark - Fetched results controller
@@ -79,13 +80,17 @@
 	self.article = [fetchedArticles objectAtIndex:0];
 	
 	NSFetchRequest *fetchForFiles = [[WADataStore defaultStore] newFetchRequestForFilesInArticle:self.article];
-	_fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchForFiles managedObjectContext:self.article.managedObjectContext sectionNameKeyPath:nil cacheName:nil];
+	_fetchedResultsController = [[NSFetchedResultsController alloc]
+															 initWithFetchRequest:fetchForFiles
+															 managedObjectContext:self.article.managedObjectContext
+															 sectionNameKeyPath:nil
+															 cacheName:nil];
 	_fetchedResultsController.delegate = self;
 	
 	if (![_fetchedResultsController performFetch:&fetchError]){
 		NSLog(@"Fetch Error: %@", fetchError);
 	}
-
+	
 	return _fetchedResultsController;
 }
 

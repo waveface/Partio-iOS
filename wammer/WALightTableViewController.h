@@ -10,9 +10,17 @@
 #import <CoreData/CoreData.h>
 
 @class WAArticle;
+@class WALightTableViewController;
+
+@protocol WALightTableViewDelegate <NSObject>
+
+- (void)lightTableViewDidDismiss: (WALightTableViewController *) lightTableView;
+
+@end
 
 @interface WALightTableViewController : UICollectionViewController <NSFetchedResultsControllerDelegate>
 
+@property (nonatomic, assign) id <WALightTableViewDelegate> delegate;
 @property (strong, nonatomic) WAArticle *article;
 @property	(strong, nonatomic) NSFetchedResultsController *fetchedResultsController;
 @property (strong, nonatomic) NSManagedObjectContext *managedObjectContext;

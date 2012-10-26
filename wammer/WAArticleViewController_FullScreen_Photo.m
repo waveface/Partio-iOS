@@ -517,12 +517,26 @@
 - (void) handleAction {
 	// show up storyboard here.
 	UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"LightTablePhone" bundle:nil];
+	UINavigationController *navigationController = [storyboard instantiateInitialViewController];
+	WALightTableViewController *ltvc = (WALightTableViewController *)navigationController.topViewController;
+	ltvc.delegate = self;
+	
 	[self
-	 presentViewController:[storyboard instantiateInitialViewController]
+	 presentViewController:navigationController
 	 animated:YES
 	 completion:^{
 		 NSLog(@"storyboad loaded");
 	 }];
+}
+
+#pragma mark Light Table View Delegate
+
+- (void)lightTableViewDidDismiss:(WALightTableViewController *)aLightTableViewController {
+	void (^completionBlock)(void) = ^(void){
+		NSLog("Dismissed");
+	};
+
+	[aLightTableViewController dismissViewControllerAnimated:YES completion:completionBlock];
 }
 
 @end
