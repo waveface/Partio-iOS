@@ -95,7 +95,7 @@ static NSString * const kMonitoredHostNames = @"-[WARemoteInterface(Reachability
 - (void) setMonitoredHosts:(NSArray *)newAvailableHosts {
 
 	NSURL *cloudURL = self.engine.context.baseURL;
-  
+
 	objc_setAssociatedObject(self, &kAvailableHosts, newAvailableHosts, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 
 	if (!newAvailableHosts) {
@@ -113,9 +113,7 @@ static NSString * const kMonitoredHostNames = @"-[WARemoteInterface(Reachability
 		}
 
 	}
-  
-  [[NSNotificationCenter defaultCenter] postNotificationName:kWARemoteInterfaceReachableHostsDidChangeNotification object:self userInfo:nil];
-  
+
 }
 
 - (BOOL) canHost:(NSURL *)aHost handleRequestNamed:(NSString *)aRequestName {
@@ -438,6 +436,12 @@ NSURL *refiningStationLocation(NSString *stationUrlString, NSURL *baseUrl) {
 
 }
 
++ (NSSet *)keyPathsForValuesAffectingNetworkState {
+
+	return [NSSet setWithObject:@"monitoredHosts"];
+
+}
+
 - (WANetworkState) networkState {
 
   NSURL *cloudHost = self.engine.context.baseURL;
@@ -448,7 +452,7 @@ NSURL *refiningStationLocation(NSString *stationUrlString, NSURL *baseUrl) {
 		hasCloudAvailable = YES;
 	}
 
-	BOOL answer = (hasCloudAvailable ? WACloudReachable : 0) | (hasStationAvailable ? WAStationReachable : 0);
+	WANetworkState answer = (hasCloudAvailable ? WACloudReachable : 0) | (hasStationAvailable ? WAStationReachable : 0);
 	
 	return answer;
   
