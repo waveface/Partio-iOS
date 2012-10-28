@@ -382,12 +382,23 @@ static NSString *const kTrackingId = @"UA-27817516-7";
 			
 }
 
-- (void) applicationRootViewControllerDidRequestReauthentication:(id<WAApplicationRootViewController>)controller {
+- (void) logout {
 
 	self.photoImportManager = nil;
 	self.cacheManager = nil;
 
+	BOOL const WAPhotoImportEnabledDefault = NO;
+
+	[[NSUserDefaults standardUserDefaults] setBool:WAPhotoImportEnabledDefault forKey:kWAPhotoImportEnabled];
+	[[NSUserDefaults standardUserDefaults] synchronize];
+
 	[self unsubscribeRemoteNotification];
+
+}
+
+- (void) applicationRootViewControllerDidRequestReauthentication:(id<WAApplicationRootViewController>)controller {
+
+	[self logout];
 
 	__weak WAAppDelegate_iOS *wSelf = self;
 	dispatch_async(dispatch_get_main_queue(), ^ {
@@ -737,40 +748,27 @@ static NSString *const kTrackingId = @"UA-27817516-7";
 		
 		handleAuthSuccess();
 
-		if ([[NSUserDefaults standardUserDefaults] boolForKey:kWAFirstUseFinished]) {
+		WAFirstUseViewController *firstUseVC = [WAFirstUseViewController initWithCompleteBlock:^{
 
 			[wAppDelegate clearViewHierarchy];
 			[wAppDelegate recreateViewHierarchy];
-
-		} else {
 			
-			WAFirstUseViewController *firstUseVC = [WAFirstUseViewController initWithCompleteBlock:^{
-				
-				[[NSUserDefaults standardUserDefaults] setBool:YES forKey:kWAFirstUseFinished];
-				[[NSUserDefaults standardUserDefaults] synchronize];
-				[wAppDelegate clearViewHierarchy];
-				[wAppDelegate recreateViewHierarchy];
-				
-			}];
+		}];
 
-			switch ([UIDevice currentDevice].userInterfaceIdiom) {
-					
-				case UIUserInterfaceIdiomPad:
-					firstUseVC.modalPresentationStyle = UIModalPresentationFormSheet;
-					break;
-					
-				case UIUserInterfaceIdiomPhone:
-					firstUseVC.modalPresentationStyle = UIModalPresentationCurrentContext;
-					
-			}
-			
-			[wAppDelegate clearViewHierarchy];
-			[wAppDelegate.window.rootViewController presentViewController:firstUseVC animated:NO completion:nil];
+		switch ([UIDevice currentDevice].userInterfaceIdiom) {
+
+			case UIUserInterfaceIdiomPad:
+				firstUseVC.modalPresentationStyle = UIModalPresentationFormSheet;
+				break;
+
+			case UIUserInterfaceIdiomPhone:
+				firstUseVC.modalPresentationStyle = UIModalPresentationCurrentContext;
 
 		}
 		
-		return;
-				
+		[wAppDelegate clearViewHierarchy];
+		[wAppDelegate.window.rootViewController presentViewController:firstUseVC animated:NO completion:nil];
+
 	}];
 	
 	UINavigationController *authRequestWrapperVC = [[UINavigationController alloc] initWithRootViewController:welcomeVC];
