@@ -11,6 +11,7 @@
 #import "WALogInViewController.h"
 #import "WARemoteInterface.h"
 #import <FacebookSDK/FacebookSDK.h>
+#import <Accounts/Accounts.h>
 
 @interface WAWelcomeViewController ()
 @property (nonatomic, readwrite, copy) WAWelcomeViewControllerCallback callback;
@@ -81,15 +82,40 @@
 	
 	__weak WAWelcomeViewController *wSelf = self;
 	
+	NSArray *permissions = [[NSArray alloc] initWithObjects:
+													@"email", @"user_photos", @"user_videos", @"user_notes", @"user_status", @"read_stream", nil];
+
+	// http://stackoverflow.com/questions/12601191/facebook-sdk-3-1-error-validating-access-token
+	// This should and will be fixed from FB SDK
+	
+	ACAccountStore *accountStore;
+	ACAccountType *accountTypeFB;
+	if ((accountStore = [[ACAccountStore alloc] init]) &&
+			(accountTypeFB = [accountStore accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierFacebook] ) ){
+		
+    NSArray *fbAccounts = [accountStore accountsWithAccountType:accountTypeFB];
+    id account;
+    if (fbAccounts && [fbAccounts count] > 0 &&
+        (account = [fbAccounts objectAtIndex:0])){
+			
+			[accountStore renewCredentialsForAccount:account completion:^(ACAccountCredentialRenewResult renewResult, NSError *error) {
+				//we don't actually need to inspect renewResult or error.
+				if (error){
+					
+				}
+			}];
+    }
+	}
+	
 	[FBSession
-	 openActiveSessionWithReadPermissions:nil
+	 openActiveSessionWithReadPermissions:permissions
 	 allowLoginUI:YES
 	 completionHandler:^(FBSession *session, FBSessionState status, NSError *error) {
 		 if (error) {
 			 NSLog(@"Facebook auth error: %@", error);
 			 return;
 		 }
-		 
+
 		 [[WARemoteInterface sharedInterface]
 			signupUserWithFacebookToken:session.accessToken
 			withOptions:nil
