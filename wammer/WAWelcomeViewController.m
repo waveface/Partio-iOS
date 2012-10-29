@@ -82,9 +82,6 @@
 	
 	__weak WAWelcomeViewController *wSelf = self;
 	
-	NSArray *permissions = [[NSArray alloc] initWithObjects:
-													@"email", @"user_photos", @"user_videos", @"user_notes", @"user_status", @"read_stream", nil];
-
 	// http://stackoverflow.com/questions/12601191/facebook-sdk-3-1-error-validating-access-token
 	// This should and will be fixed from FB SDK
 	
@@ -108,7 +105,7 @@
 	}
 	
 	[FBSession
-	 openActiveSessionWithReadPermissions:permissions
+	 openActiveSessionWithReadPermissions:@[@"email", @"user_photos", @"user_videos", @"user_notes", @"user_status", @"read_stream"]
 	 allowLoginUI:YES
 	 completionHandler:^(FBSession *session, FBSessionState status, NSError *error) {
 		 if (error) {
