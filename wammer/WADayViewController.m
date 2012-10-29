@@ -31,6 +31,9 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 @property (nonatomic, readwrite, strong) NSMutableDictionary *daysControllers;
 @property (nonatomic, readwrite, strong) NSMutableArray *days;
 
+@property (nonatomic, readwrite, strong) NSManagedObjectContext *managedObjectContext;
+@property (nonatomic, readwrite, strong) NSFetchedResultsController *fetchedResultsController;
+
 @end
 
 @implementation WADayViewController
@@ -45,8 +48,19 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 	self.daysControllers = [[NSMutableDictionary alloc] init];
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleCompositionSessionRequest:) name:kWACompositionSessionRequestedNotification object:nil];
+		
+	NSFetchRequest *fr = [[WADataStore defaultStore] newFetchRequestForAllArticles];
+	fr.sortDescriptors = [NSArray arrayWithObjects:
+												[NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:NO],
+												nil];
 	
-	[[WARemoteInterface sharedInterface] addObserver:self forKeyPath:@"isPostponingDataRetrievalTimerFiring" options:NSKeyValueObservingOptionPrior|NSKeyValueObservingOptionNew context:nil];
+	self.managedObjectContext = [[WADataStore defaultStore] defaultAutoUpdatedMOC];
+	self.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fr managedObjectContext:self.managedObjectContext sectionNameKeyPath:nil cacheName:nil];
+	
+	self.fetchedResultsController.delegate = self;
+	
+	[self.fetchedResultsController performFetch:nil];
+
 	
 	self.title = NSLocalizedString(@"APP_TITLE", @"Title for application");
 //	self.navigationItem.titleView = WATitleViewForDripdownMenu(self, @selector(dripdownMenuTapped));
@@ -144,7 +158,6 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 - (void) dealloc {
 
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:kWACompositionSessionRequestedNotification object:nil];
-  [[WARemoteInterface sharedInterface] removeObserver:self forKeyPath:@"isPostponingDataRetrievalTimerFiring"];
 	
 }
 
@@ -163,6 +176,7 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 	
 	[self.view addSubview: self.paginatedView];
 
+	[self reloadViewContents];
 	[self.paginatedView reloadViews];
 	
 }
@@ -205,14 +219,23 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 
 - (void)didReceiveMemoryWarning
 {
+	
 	[super didReceiveMemoryWarning];
+	
+	NSLog(@"Clean up day view memory cache");
+	__weak WADayViewController *wSelf = self;
+
+	[self.days enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+		if ((idx != self.paginatedView.currentPage) && ((idx + 1) != self.paginatedView.currentPage) && ((idx-1) != self.paginatedView.currentPage))
+			[wSelf.daysControllers removeObjectForKey:self.days[idx] ];
+	}];
 	// Dispose of any resources that can be recreated.
 }
 
 
 #pragma mark - delegate methods for IRPaginatedView
-- (NSUInteger)numberOfViewsInPaginatedView:(IRPaginatedView *)paginatedView {
-		
+- (void) reloadViewContents {
+	
 	NSManagedObjectContext *moc = [[WADataStore defaultStore] defaultAutoUpdatedMOC];
 	
 	NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
@@ -226,7 +249,7 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 	[description setExpression:keyToFetch];
 	[description setExpressionResultType:NSDateAttributeType];
 	[fetchRequest setPropertiesToFetch:[NSArray arrayWithObject:description]];
-
+	
 	fetchRequest.sortDescriptors = [NSArray arrayWithObjects:
 																	[NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:NO],
 																	nil];
@@ -246,14 +269,16 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
   };
 	
 	__block NSDate *currentDate = nil;
-
+	
 	NSError *error = nil;
 	NSArray *objects = [moc executeFetchRequest:fetchRequest error:&error];
 	
+	self.days = [NSMutableArray array];
+	self.daysControllers = [NSMutableDictionary dictionary];
+	
 	if (objects == nil) {
 		
-		return 0;
-		
+	
 	} else {
 		
 		[objects enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
@@ -267,8 +292,13 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 			
 		}];
 		
-		return [self.days count];
 	}
+
+}
+- (NSUInteger)numberOfViewsInPaginatedView:(IRPaginatedView *)paginatedView {
+		
+		return [self.days count];
+	
 }
 
 - (WATimelineViewControllerPhone *) timelineControllerAtPageIndex:(NSUInteger)index {
@@ -323,17 +353,19 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 	
 }
 
-- (void) observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+- (void) controllerDidChangeContent:(NSFetchedResultsController *)controller {
 	
-	if ([self isViewLoaded])
-		if (object == [WARemoteInterface sharedInterface])
-			if ([[change objectForKey:NSKeyValueChangeNewKey] isEqual:(id)kCFBooleanFalse]) {
-				
-				[self.paginatedView reloadViews];
-				
-			}
+	NSParameterAssert([NSThread isMainThread]);
+	
+	if ([self isViewLoaded]) {
+		
+		[self reloadViewContents];
+		[self.paginatedView reloadViews];
+		
+	}
 	
 }
+
 
 #pragma mark - delegate methods for WAArticleDraftsViewControllerDelegate
 - (BOOL) articleDraftsViewController:(WAArticleDraftsViewController *)aController shouldEnableArticle:(NSURL *)anObjectURIOrNil {

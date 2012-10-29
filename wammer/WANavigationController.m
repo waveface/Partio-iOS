@@ -76,9 +76,10 @@
 //				[wNavigationBar setBackgroundImage:[UIImage imageNamed:@"WANavigationBar"] forBarMetrics:UIBarMetricsDefault];
 //				[wNavigationBar setBackgroundImage:[UIImage imageNamed:@"WANavigationBarLandscapePhone"] forBarMetrics:UIBarMetricsLandscapePhone];
 				
+				UIColor *textColor = [UIColor colorWithRed:0.75f green:0.75f blue:0.75f alpha:1];
 				[wNavigationBar setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:
-					[UIColor colorWithWhite:0.8 alpha:1], UITextAttributeTextColor,
-					[UIColor colorWithWhite:0.8 alpha:1], UITextAttributeTextShadowColor,
+					textColor, UITextAttributeTextColor,
+					textColor, UITextAttributeTextShadowColor,
 					[NSValue valueWithUIOffset:(UIOffset){ 0, -1 }], UITextAttributeTextShadowOffset,
 				nil]];
 			
