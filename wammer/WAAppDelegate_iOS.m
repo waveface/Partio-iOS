@@ -363,6 +363,7 @@ static NSString *const kTrackingId = @"UA-27817516-7";
 			viewDeckController.rotationBehavior = IIViewDeckRotationKeepsLedgeSizes;
 			viewDeckController.animationBehavior = IIViewDeckAnimationPullIn;
 			viewDeckController.panningMode = IIViewDeckNoPanning;
+			[viewDeckController setWantsFullScreenLayout:YES];
 			viewDeckController.centerhiddenInteractivity = IIViewDeckCenterHiddenNotUserInteractiveWithTapToClose;
 	
 			self.window.rootViewController = viewDeckController;
