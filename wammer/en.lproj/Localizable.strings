@@ -453,6 +453,18 @@
 /* Class = "IBUILabel"; text = "MONDAY"; ObjectID = "39"; */
 "MONDAY" = "MONDAY";
 
+/* Class = "IBUILabel"; text = "NOUN_USERNAME"; ObjectID = "sQz-ih-VPp"; */
+"NOUN_USERNAME" = "Email";
+
+/* Class = "IBUITextField"; placeholder = "PASSWORD_PLACEHOLDER"; ObjectID = "sdv-QB-cok"; */
+"PASSWORD_PLACEHOLDER" = "••••••••";
+
+/* Class = "IBUILabel"; text = "NOUN_PASSWORD"; ObjectID = "w8O-3I-535"; */
+"NOUN_PASSWORD" = "Password";
+
+/* Class = "IBUITextField"; placeholder = "USERNAME_PLACEHOLDER"; ObjectID = "zun-hC-loE"; */
+"USERNAME_PLACEHOLDER" = "me@example.com";
+
 /* Class = "IBUITextField"; placeholder = "USERNAME_PLACEHOLDER"; ObjectID = "2Vk-4J-QH3"; */
 "USERNAME_PLACEHOLDER" = "me@example.com";
 

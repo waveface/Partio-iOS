@@ -20,6 +20,8 @@
 	WAFirstUseViewController *vc = [sb instantiateInitialViewController];
 	vc.completeBlock = completeBlock;
 	vc.navigationBar.tintColor = [UIColor colorWithRed:98.0/255.0 green:176.0/255.0 blue:195.0/255.0 alpha:0.0];
+	vc.navigationController.navigationBar.opaque = NO;
+	
 
 	return vc;
 
