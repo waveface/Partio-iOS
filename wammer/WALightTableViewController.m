@@ -25,6 +25,7 @@
 	[super viewDidLoad];
 	// Do any additional setup after loading the view.
 	self.navigationController.toolbarHidden = NO;
+	self.collectionView.allowsMultipleSelection = YES;
 }
 
 - (void)didReceiveMemoryWarning
@@ -51,11 +52,11 @@
 																dequeueReusableCellWithReuseIdentifier:CellIdentifier
 																forIndexPath:indexPath];
 	
-	if(cell){
+	if ( cell ) {
 		WAFile *file = (WAFile *)[self.fetchedResultsController objectAtIndexPath:indexPath];
 		cell.imageView.image = file.thumbnailImage;
 	}
-	
+
 	return cell;
 }
 
@@ -67,6 +68,8 @@
 #pragma mark - Collection view delegate
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
+	[self.collectionView cellForItemAtIndexPath:indexPath].selected = ![self.collectionView cellForItemAtIndexPath:indexPath].selected;
+	
 	NSNumber *index = @(indexPath.row);
 	if ( [_selection containsObject:index] )
 		[_selection removeObject:index];

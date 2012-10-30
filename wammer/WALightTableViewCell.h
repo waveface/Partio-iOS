@@ -11,5 +11,7 @@
 @interface WALightTableViewCell : UICollectionViewCell
 
 @property (strong, nonatomic) IBOutlet UIImageView *imageView;
+@property (strong, nonatomic) IBOutlet UIImageView *checkmarkView;
+
 
 @end
