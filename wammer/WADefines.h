@@ -35,7 +35,6 @@ extern NSString * const kWADebugPersistentStoreName;
 
 extern NSString * const kWACompositionSessionRequestedNotification;
 extern NSString * const kWAApplicationDidReceiveRemoteURLNotification;
-extern NSString * const kWARemoteInterfaceReachableHostsDidChangeNotification;
 extern NSString * const kWARemoteInterfaceDidObserveAuthenticationFailureNotification;
 extern NSString * const kWASettingsDidRequestActionNotification;
 
@@ -61,7 +60,6 @@ extern NSString * const kWACallbackActionSetUserRegistrationEndpointURL;
 extern NSString * const kWACallbackActionSetUserPasswordResetEndpointURL;
 
 extern NSString * const kWAPhotoImportEnabled;
-extern NSString * const kWAFirstUseFinished;
 
 extern NSString * const WAFeedbackRecipient;
 extern NSString * const WAStreamFeaturesURL;

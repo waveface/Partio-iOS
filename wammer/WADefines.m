@@ -45,7 +45,6 @@ NSString * const kWADebugPersistentStoreName = @"WADebugPersistentStoreName";
 
 NSString * const kWACompositionSessionRequestedNotification = @"WACompositionSessionRequestedNotification";
 NSString * const kWAApplicationDidReceiveRemoteURLNotification = @"WAApplicationDidReceiveRemoteURLNotification";
-NSString * const kWARemoteInterfaceReachableHostsDidChangeNotification = @"WARemoteInterfaceReachableHostsDidChangeNotification";
 NSString * const kWARemoteInterfaceDidObserveAuthenticationFailureNotification = @"WARemoteInterfaceDidObserveAuthenticationFailureNotification";
 NSString * const kWASettingsDidRequestActionNotification = @"kWASettingsDidRequestActionNotification";
 
@@ -73,7 +72,6 @@ NSString * const kWACallbackActionSetUserRegistrationEndpointURL = @"setUserRegi
 NSString * const kWACallbackActionSetUserPasswordResetEndpointURL = @"setUserPasswordResetEndpointURL";
 
 NSString * const kWAPhotoImportEnabled = @"WAPhotoImportEnabled";
-NSString * const kWAFirstUseFinished = @"WAFirstUseFinished";
 
 void WARegisterUserDefaults () {
 

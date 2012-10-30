@@ -15,18 +15,26 @@
 
 @implementation WAFirstUseBuildCloudViewController
 
-- (void)viewDidLoad
-{
+- (void)viewDidLoad {
+
 	[super viewDidLoad];
 	self.navigationItem.hidesBackButton = YES;
-	self.connectedHost.hidden = YES;
-	[[WARemoteInterface sharedInterface] addObserver:self forKeyPath:@"networkState" options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionNew context:nil];
+	[[WARemoteInterface sharedInterface] addObserver:self forKeyPath:@"networkState" options:NSKeyValueObservingOptionInitial context:nil];
 
 }
 
 - (void)dealloc {
 
 	[[WARemoteInterface sharedInterface] removeObserver:self forKeyPath:@"networkState"];
+
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+
+	[self.connectActivity startAnimating];
+	self.connectedHost.hidden = YES;
+	[[WARemoteInterface sharedInterface] performAutomaticRemoteUpdatesNow];
+	[tableView deselectRowAtIndexPath:indexPath animated:YES];
 
 }
 
@@ -41,12 +49,13 @@
 		[self.connectActivity stopAnimating];
 		self.connectedHost.text = ri.monitoredHostNames[1];
 		self.connectedHost.hidden = NO;
-	} else {
-		if (ri.monitoredHosts && [ri hasReachableCloud]) {
+	} else if (ri.monitoredHosts && [ri hasReachableCloud]) {
 			[self.connectActivity stopAnimating];
 			self.connectedHost.text = ri.monitoredHostNames[0];
 			self.connectedHost.hidden = NO;
-		}
+	} else {
+		[self.connectActivity startAnimating];
+		self.connectedHost.hidden = YES;
 	}
 
 }
