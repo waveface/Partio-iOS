@@ -67,6 +67,3 @@
 [submodule "external/ViewDeck"]
 	path = external/ViewDeck
 	url = git://github.com/syshen/ViewDeck.git
-[submodule "external/FacebookSDK"]
-	path = external/FacebookSDK
-	url = git@github.com:facebook/facebook-ios-sdk.git
