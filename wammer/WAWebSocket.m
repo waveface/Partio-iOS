@@ -110,7 +110,9 @@ NSError * WARemoteInterfaceWebSocketError (NSUInteger code, NSString *message);
 			[self.connectionForWebSocket closeWithCode:WAWebSocketNormal reason:aReason];
 			return;
 		}
-		[self.connectionForWebSocket reconnectWithCode:WAWebSocketNormal reason:aReason];
+		// Todo: Ask Steven for this ..
+//		[self.connectionForWebSocket reconnectWithCode:WAWebSocketNormal reason:aReason];
+	
 	}
 	
 }

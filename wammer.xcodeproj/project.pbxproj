@@ -4898,7 +4898,6 @@
 					"\"$(SRCROOT)\"",
 					"\"$(SRCROOT)/external/CrashlyticsSDK\"",
 					"\"$(SYSTEM_APPS_DIR)/Xcode.app/Contents/Developer/Library/Frameworks\"",
-					"\"$(SRCROOT)/external/FacebookSDK/build\"",
 					"\"$(SRCROOT)/wammer/Libraries\"",
 				);
 				GCC_OPTIMIZATION_LEVEL = s;
@@ -4919,7 +4918,7 @@
 				STREAM_BUNDLE_ID_SUFFIX = .beta;
 				STREAM_FACEBOOK_ID = 356863037711668;
 				STREAM_ICON_NAME_SUFFIX = _beta;
-				USER_HEADER_SEARCH_PATHS = "\"$(PROJECT_DIR)/external/IRFoundations\"/** \"$(SDKROOT)/usr/include/libxml2\"/** \"$(PROJECT_DIR)/external/IRWebAPIKit\"/** \"$(PROJECT_DIR)/external/AQGridView/Classes\" \"$(PROJECT_DIR)/external/IRKeychain\"/** \"$(PROJECT_DIR)/external/IRDiscreteLayoutManager\"/** \"$(PROJECT_DIR)/external/IRTextAttributor\"/** \"$(PROJECT_DIR)/external/IRSlidingSplitViewController\"/** \"$(PROJECT_DIR)/external/IRRecurrenceMachine\"/** \"$(PROJECT_DIR)/external/IRObjectQueue\"/** \"$(PROJECT_DIR)/external/JSONKit\"/** \"$(PROJECT_DIR)/external/WFPresentation/Bindings/Objective-C\"/** \"$(PROJECT_DIR)/external/Facebook\"/** \"$(PROJECT_DIR)/external/SocketRocket\"/** $(CONFIGURATION_BUILD_DIR)/usr/local/include/**";
+				USER_HEADER_SEARCH_PATHS = "\"$(PROJECT_DIR)/external/IRFoundations\"/** \"$(SDKROOT)/usr/include/libxml2\"/** \"$(PROJECT_DIR)/external/IRWebAPIKit\"/** \"$(PROJECT_DIR)/external/IRDiscreteLayoutManager\"/** \"$(PROJECT_DIR)/external/IRTextAttributor\"/** \"$(PROJECT_DIR)/external/IRSlidingSplitViewController\"/** \"$(PROJECT_DIR)/external/IRRecurrenceMachine\"/** \"$(PROJECT_DIR)/external/IRObjectQueue\"/** \"$(PROJECT_DIR)/external/WFPresentation/Bindings/Objective-C\"/** $(CONFIGURATION_BUILD_DIR)/usr/local/include/**";
 				VALID_ARCHS = "i386 armv7";
 				WRAPPER_EXTENSION = app;
 			};
@@ -5481,7 +5480,6 @@
 					"\"$(SRCROOT)\"",
 					"\"$(SRCROOT)/external/CrashlyticsSDK\"",
 					"\"$(SYSTEM_APPS_DIR)/Xcode.app/Contents/Developer/Library/Frameworks\"",
-					"\"$(SRCROOT)/external/FacebookSDK/build\"",
 					"\"$(SRCROOT)/wammer/Libraries\"",
 				);
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -5502,7 +5500,7 @@
 				STREAM_BUNDLE_ID_SUFFIX = .develop;
 				STREAM_FACEBOOK_ID = 357087874306060;
 				STREAM_ICON_NAME_SUFFIX = _develop;
-				USER_HEADER_SEARCH_PATHS = "\"$(PROJECT_DIR)/external/IRFoundations\"/** \"$(SDKROOT)/usr/include/libxml2\"/** \"$(PROJECT_DIR)/external/IRWebAPIKit\"/** \"$(PROJECT_DIR)/external/AQGridView/Classes\" \"$(PROJECT_DIR)/external/IRKeychain\"/** \"$(PROJECT_DIR)/external/IRDiscreteLayoutManager\"/** \"$(PROJECT_DIR)/external/IRTextAttributor\"/** \"$(PROJECT_DIR)/external/IRSlidingSplitViewController\"/** \"$(PROJECT_DIR)/external/IRRecurrenceMachine\"/** \"$(PROJECT_DIR)/external/IRObjectQueue\"/** \"$(PROJECT_DIR)/external/JSONKit\"/** \"$(PROJECT_DIR)/external/WFPresentation/Bindings/Objective-C\"/** \"$(PROJECT_DIR)/external/Facebook\"/** \"$(PROJECT_DIR)/external/SocketRocket\"/** $(CONFIGURATION_BUILD_DIR)/usr/local/include/**";
+				USER_HEADER_SEARCH_PATHS = "\"$(PROJECT_DIR)/external/IRFoundations\"/** \"$(SDKROOT)/usr/include/libxml2\"/** \"$(PROJECT_DIR)/external/IRWebAPIKit\"/** \"$(PROJECT_DIR)/external/IRDiscreteLayoutManager\"/** \"$(PROJECT_DIR)/external/IRTextAttributor\"/** \"$(PROJECT_DIR)/external/IRSlidingSplitViewController\"/** \"$(PROJECT_DIR)/external/IRRecurrenceMachine\"/** \"$(PROJECT_DIR)/external/IRObjectQueue\"/** \"$(PROJECT_DIR)/external/WFPresentation/Bindings/Objective-C\"/** $(CONFIGURATION_BUILD_DIR)/usr/local/include/**";
 				VALID_ARCHS = "i386 armv7";
 				WRAPPER_EXTENSION = app;
 			};
@@ -5519,7 +5517,6 @@
 					"\"$(SRCROOT)\"",
 					"\"$(SRCROOT)/external/CrashlyticsSDK\"",
 					"\"$(SYSTEM_APPS_DIR)/Xcode.app/Contents/Developer/Library/Frameworks\"",
-					"\"$(SRCROOT)/external/FacebookSDK/build\"",
 					"\"$(SRCROOT)/wammer/Libraries\"",
 				);
 				GCC_OPTIMIZATION_LEVEL = s;
@@ -5540,7 +5537,7 @@
 				STREAM_BUNDLE_ID_SUFFIX = "";
 				STREAM_FACEBOOK_ID = 234823683291756;
 				STREAM_ICON_NAME_SUFFIX = "";
-				USER_HEADER_SEARCH_PATHS = "\"$(PROJECT_DIR)/external/IRFoundations\"/** \"$(SDKROOT)/usr/include/libxml2\"/** \"$(PROJECT_DIR)/external/IRWebAPIKit\"/** \"$(PROJECT_DIR)/external/AQGridView/Classes\" \"$(PROJECT_DIR)/external/IRKeychain\"/** \"$(PROJECT_DIR)/external/IRDiscreteLayoutManager\"/** \"$(PROJECT_DIR)/external/IRTextAttributor\"/** \"$(PROJECT_DIR)/external/IRSlidingSplitViewController\"/** \"$(PROJECT_DIR)/external/IRRecurrenceMachine\"/** \"$(PROJECT_DIR)/external/IRObjectQueue\"/** \"$(PROJECT_DIR)/external/JSONKit\"/** \"$(PROJECT_DIR)/external/WFPresentation/Bindings/Objective-C\"/** \"$(PROJECT_DIR)/external/Facebook\"/** \"$(PROJECT_DIR)/external/SocketRocket\"/** $(CONFIGURATION_BUILD_DIR)/usr/local/include/**";
+				USER_HEADER_SEARCH_PATHS = "\"$(PROJECT_DIR)/external/IRFoundations\"/** \"$(SDKROOT)/usr/include/libxml2\"/** \"$(PROJECT_DIR)/external/IRWebAPIKit\"/** \"$(PROJECT_DIR)/external/IRDiscreteLayoutManager\"/** \"$(PROJECT_DIR)/external/IRTextAttributor\"/** \"$(PROJECT_DIR)/external/IRSlidingSplitViewController\"/** \"$(PROJECT_DIR)/external/IRRecurrenceMachine\"/** \"$(PROJECT_DIR)/external/IRObjectQueue\"/** \"$(PROJECT_DIR)/external/WFPresentation/Bindings/Objective-C\"/** $(CONFIGURATION_BUILD_DIR)/usr/local/include/**";
 				VALID_ARCHS = "i386 armv7";
 				WRAPPER_EXTENSION = app;
 			};
