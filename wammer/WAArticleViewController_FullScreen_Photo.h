@@ -7,7 +7,8 @@
 //
 
 #import "WAStackedArticleViewController.h"
+#import "WALightTableViewController.h"
 
-@interface WAArticleViewController_FullScreen_Photo : WAStackedArticleViewController
+@interface WAArticleViewController_FullScreen_Photo : WAStackedArticleViewController <WALightTableViewDelegate>
 
 @end

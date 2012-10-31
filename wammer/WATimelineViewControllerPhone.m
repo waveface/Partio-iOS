@@ -388,7 +388,6 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 	
 	UILongPressGestureRecognizer *longPressGR = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleMenu:)];
 	[self.view addGestureRecognizer:longPressGR];
-	
 }
 
 - (void) viewWillAppear:(BOOL)animated {

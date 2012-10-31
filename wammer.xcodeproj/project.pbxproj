@@ -159,6 +159,9 @@
 		7D9B1D98162BC0AD000E5350 /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D9B1D90162BB1F6000E5350 /* Social.framework */; };
 		7D9B1D99162BE0D2000E5350 /* WAFacebookConnectionSwitch.m in Sources */ = {isa = PBXBuildFile; fileRef = FF3B37B015B690FF00AE357A /* WAFacebookConnectionSwitch.m */; };
 		7D9B1D9A162BE1B1000E5350 /* WARemoteInterface+SocialNetworks.m in Sources */ = {isa = PBXBuildFile; fileRef = FF88370515B7E90800E6CD92 /* WARemoteInterface+SocialNetworks.m */; };
+		7DA78784163912C600BEFC6E /* LightTablePhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7DA78783163912C600BEFC6E /* LightTablePhone.storyboard */; };
+		7DA7879C1639245C00BEFC6E /* WALightTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DA7879B1639245C00BEFC6E /* WALightTableViewController.m */; };
+		7DA881011639449000DC20E4 /* WALightTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DA881001639449000DC20E4 /* WALightTableViewCell.m */; };
 		7DAD18A21626A73B00F87495 /* libGoogleAnalytics.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7DAD18A11626A73B00F87495 /* libGoogleAnalytics.a */; };
 		8002CDE615E5E85600D7BFF0 /* libicucore.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 8002CDE515E5E85600D7BFF0 /* libicucore.dylib */; };
 		8002CDE915E5E92100D7BFF0 /* WARemoteInterface+Notification.m in Sources */ = {isa = PBXBuildFile; fileRef = 8002CDE815E5E92100D7BFF0 /* WARemoteInterface+Notification.m */; };
@@ -1294,12 +1297,18 @@
 		7D9B1D8C162BB1DE000E5350 /* Accounts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accounts.framework; path = System/Library/Frameworks/Accounts.framework; sourceTree = SDKROOT; };
 		7D9B1D8E162BB1E8000E5350 /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
 		7D9B1D90162BB1F6000E5350 /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
+		7DA78783163912C600BEFC6E /* LightTablePhone.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LightTablePhone.storyboard; path = wammer/LightTablePhone.storyboard; sourceTree = "<group>"; };
+		7DA7879A1639245C00BEFC6E /* WALightTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WALightTableViewController.h; path = wammer/WALightTableViewController.h; sourceTree = "<group>"; };
+		7DA7879B1639245C00BEFC6E /* WALightTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WALightTableViewController.m; path = wammer/WALightTableViewController.m; sourceTree = "<group>"; };
+		7DA880FF1639449000DC20E4 /* WALightTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WALightTableViewCell.h; path = wammer/WALightTableViewCell.h; sourceTree = "<group>"; };
+		7DA881001639449000DC20E4 /* WALightTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WALightTableViewCell.m; path = wammer/WALightTableViewCell.m; sourceTree = "<group>"; };
 		7DAD189C1626A73B00F87495 /* GAI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GAI.h; path = wammer/Libraries/GAI.h; sourceTree = SOURCE_ROOT; };
 		7DAD189D1626A73B00F87495 /* GAITrackedViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GAITrackedViewController.h; path = wammer/Libraries/GAITrackedViewController.h; sourceTree = SOURCE_ROOT; };
 		7DAD189E1626A73B00F87495 /* GAITracker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GAITracker.h; path = wammer/Libraries/GAITracker.h; sourceTree = SOURCE_ROOT; };
 		7DAD189F1626A73B00F87495 /* GAITransaction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GAITransaction.h; path = wammer/Libraries/GAITransaction.h; sourceTree = SOURCE_ROOT; };
 		7DAD18A01626A73B00F87495 /* GAITransactionItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GAITransactionItem.h; path = wammer/Libraries/GAITransactionItem.h; sourceTree = SOURCE_ROOT; };
 		7DAD18A11626A73B00F87495 /* libGoogleAnalytics.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libGoogleAnalytics.a; path = wammer/Libraries/libGoogleAnalytics.a; sourceTree = SOURCE_ROOT; };
+		7DED9203164103BE00B9D778 /* WAModel 38.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WAModel 38.xcdatamodel"; sourceTree = "<group>"; };
 		8002CDCF15E5E73800D7BFF0 /* SocketRocket.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SocketRocket.xcodeproj; path = external/SocketRocket/SocketRocket.xcodeproj; sourceTree = "<group>"; };
 		8002CDE515E5E85600D7BFF0 /* libicucore.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libicucore.dylib; path = usr/lib/libicucore.dylib; sourceTree = SDKROOT; };
 		8002CDE715E5E92100D7BFF0 /* WARemoteInterface+Notification.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WARemoteInterface+Notification.h"; sourceTree = "<group>"; };
@@ -2394,6 +2403,18 @@
 			name = OCMock;
 			sourceTree = "<group>";
 		};
+		7DB81F181637E91B009A3645 /* Collection */ = {
+			isa = PBXGroup;
+			children = (
+				7DA78783163912C600BEFC6E /* LightTablePhone.storyboard */,
+				7DA880FF1639449000DC20E4 /* WALightTableViewCell.h */,
+				7DA881001639449000DC20E4 /* WALightTableViewCell.m */,
+				7DA7879A1639245C00BEFC6E /* WALightTableViewController.h */,
+				7DA7879B1639245C00BEFC6E /* WALightTableViewController.m */,
+			);
+			name = Collection;
+			sourceTree = "<group>";
+		};
 		8002CDD015E5E73800D7BFF0 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -2777,6 +2798,7 @@
 		FF73A53313D6C2CC00D54EC6 = {
 			isa = PBXGroup;
 			children = (
+				7DB81F181637E91B009A3645 /* Collection */,
 				7D0CDD04162E5A080027D35F /* Application Tests */,
 				4B8CA96F14BBE7BA006E06BB /* Logic Tests */,
 				FFC62019149CF1930097C377 /* Environment */,
@@ -4326,6 +4348,7 @@
 				80C129C2163989C6001DDFE2 /* cloudy@2x.png in Resources */,
 				80C129C516398A0D001DDFE2 /* Create.png in Resources */,
 				80C129C616398A0D001DDFE2 /* Create@2x.png in Resources */,
+				7DA78784163912C600BEFC6E /* LightTablePhone.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4815,6 +4838,8 @@
 				13DE12FA1638140A00757F7C /* WAFirstUseBuildCloudViewController.m in Sources */,
 				13DE12FD1638142300757F7C /* WAFirstUsePhotoImportViewController.m in Sources */,
 				13DE13001638143A00757F7C /* WAFirstUseConnectServicesViewController.m in Sources */,
+				7DA7879C1639245C00BEFC6E /* WALightTableViewController.m in Sources */,
+				7DA881011639449000DC20E4 /* WALightTableViewCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5148,7 +5173,7 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 521;
+				CURRENT_PROJECT_VERSION = 522;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"WF_USES_TESTFLIGHT=$(WF_USES_TESTFLIGHT)",
@@ -5179,7 +5204,7 @@
 					"\"$(PROJECT_DIR)/external/Facebook\"/**",
 					"\"$(PROJECT_DIR)/external/SocketRocket\"/**",
 				);
-				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				OTHER_CFLAGS = "-fno-objc-default-synthesize-properties";
 				OTHER_LDFLAGS = (
 					"-ObjC",
@@ -5599,7 +5624,7 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 521;
+				CURRENT_PROJECT_VERSION = 522;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -5632,7 +5657,7 @@
 					"\"$(PROJECT_DIR)/external/Facebook\"/**",
 					"\"$(PROJECT_DIR)/external/SocketRocket\"/**",
 				);
-				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				OTHER_CFLAGS = "-fno-objc-default-synthesize-properties";
 				OTHER_LDFLAGS = (
 					"-ObjC",
@@ -5658,7 +5683,7 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 521;
+				CURRENT_PROJECT_VERSION = 522;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"WF_USES_TESTFLIGHT=$(WF_USES_TESTFLIGHT)",
@@ -5688,7 +5713,7 @@
 					"\"$(PROJECT_DIR)/external/Facebook\"/**",
 					"\"$(PROJECT_DIR)/external/SocketRocket\"/**",
 				);
-				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				OTHER_CFLAGS = "-fno-objc-default-synthesize-properties";
 				OTHER_LDFLAGS = (
 					"-ObjC",
@@ -5948,6 +5973,7 @@
 		FFCD324114B997B70035C4F5 /* WAModel.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				7DED9203164103BE00B9D778 /* WAModel 38.xcdatamodel */,
 				1312968A161EC0B200540A86 /* WAModel 37.xcdatamodel */,
 				1332417716156AB0005E31EA /* WAModel 36.xcdatamodel */,
 				13EFF4C015FEC2E7007430EC /* WAModel 35.xcdatamodel */,
@@ -5986,7 +6012,7 @@
 				FFCD324614B997B70035C4F5 /* WAModel 2.xcdatamodel */,
 				FFCD324E14B997B70035C4F5 /* WAModel.xcdatamodel */,
 			);
-			currentVersion = 1312968A161EC0B200540A86 /* WAModel 37.xcdatamodel */;
+			currentVersion = 7DED9203164103BE00B9D778 /* WAModel 38.xcdatamodel */;
 			path = WAModel.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
