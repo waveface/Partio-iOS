@@ -214,7 +214,6 @@
 		80C129C2163989C6001DDFE2 /* cloudy@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 80C129C0163989C6001DDFE2 /* cloudy@2x.png */; };
 		80C129C516398A0D001DDFE2 /* Create.png in Resources */ = {isa = PBXBuildFile; fileRef = 80C129C316398A0D001DDFE2 /* Create.png */; };
 		80C129C616398A0D001DDFE2 /* Create@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 80C129C416398A0D001DDFE2 /* Create@2x.png */; };
-		80EB9A661615A436003B282B /* SSKeychain.m in Sources */ = {isa = PBXBuildFile; fileRef = 80EB9A651615A436003B282B /* SSKeychain.m */; };
 		80F42C0215F70EDF00C8A72B /* WAWebSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 809D428F15F5CE4300CB4F89 /* WAWebSocket.m */; };
 		80F800F615C2624C00132A96 /* IRAQ-Checkmark.png in Resources */ = {isa = PBXBuildFile; fileRef = 80F800F415C2624C00132A96 /* IRAQ-Checkmark.png */; };
 		80F800F715C2624C00132A96 /* IRAQ-Checkmark@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 80F800F515C2624C00132A96 /* IRAQ-Checkmark@2x.png */; };
@@ -1379,8 +1378,6 @@
 		80C129C0163989C6001DDFE2 /* cloudy@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "cloudy@2x.png"; path = "Resources/cloudy@2x.png"; sourceTree = "<group>"; };
 		80C129C316398A0D001DDFE2 /* Create.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Create.png; path = Resources/Create.png; sourceTree = "<group>"; };
 		80C129C416398A0D001DDFE2 /* Create@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Create@2x.png"; path = "Resources/Create@2x.png"; sourceTree = "<group>"; };
-		80EB9A641615A436003B282B /* SSKeychain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SSKeychain.h; path = external/sskeychain/SSKeychain.h; sourceTree = "<group>"; };
-		80EB9A651615A436003B282B /* SSKeychain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SSKeychain.m; path = external/sskeychain/SSKeychain.m; sourceTree = "<group>"; };
 		80F800F415C2624C00132A96 /* IRAQ-Checkmark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "IRAQ-Checkmark.png"; sourceTree = "<group>"; };
 		80F800F515C2624C00132A96 /* IRAQ-Checkmark@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "IRAQ-Checkmark@2x.png"; sourceTree = "<group>"; };
 		D215E734098A44479DEC4F88 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -2463,15 +2460,6 @@
 				809C6D25160583A00016E196 /* WrapController.m */,
 			);
 			name = ViewDeck;
-			sourceTree = "<group>";
-		};
-		80EB9A631615A423003B282B /* SSKeychain */ = {
-			isa = PBXGroup;
-			children = (
-				80EB9A641615A436003B282B /* SSKeychain.h */,
-				80EB9A651615A436003B282B /* SSKeychain.m */,
-			);
-			name = SSKeychain;
 			sourceTree = "<group>";
 		};
 		FF0024F914B44CC500F54AAF /* Blob Syncing */ = {
@@ -3570,7 +3558,6 @@
 			isa = PBXGroup;
 			children = (
 				809C6D21160582F40016E196 /* ViewDeck */,
-				80EB9A631615A423003B282B /* SSKeychain */,
 				803169F715C0EC20009D43F0 /* IRAQPhotoPicker */,
 				4B31BA861591A74C00DC1A70 /* AGImagePickerController */,
 				FF24B3B61552AC7100DD9379 /* libstdc++.dylib */,
@@ -4831,7 +4818,6 @@
 				809C6D26160583A00016E196 /* IIViewDeckController.m in Sources */,
 				809C6D27160583A00016E196 /* WrapController.m in Sources */,
 				809C6D2B1605845A0016E196 /* WASlidingMenuViewController.m in Sources */,
-				80EB9A661615A436003B282B /* SSKeychain.m in Sources */,
 				13B6DB9D161573FF00B9CC35 /* WAFileExif.m in Sources */,
 				80BE685B161DC13800A37CEB /* WADayViewController.m in Sources */,
 				80A13C74162071C4002880A9 /* NSDate+WAAdditions.m in Sources */,
