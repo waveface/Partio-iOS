@@ -16,24 +16,27 @@ void WADefaultAppearance(void) {
 	
 	if (isPad()) {
 
+		
 		[[UINavigationBar appearance] setTintColor:[UIColor colorWithRed:98.0/255.0 green:176.0/255.0 blue:195.0/255.0 alpha:0.0]];
 		[[UINavigationBar appearance] setBackgroundImage:[UIImage imageNamed:@"WANavigationBar"] forBarMetrics:UIBarMetricsDefault];
 
 		// iPad user info pop-over
 		[[UINavigationBar appearanceWhenContainedIn:[UIPopoverController class], nil] setBackgroundImage:nil forBarMetrics:UIBarMetricsDefault];
+		
 
 	} else {
 		
+		
 		[[UINavigationBar appearance] setTintColor:[UIColor colorWithRed:0.95f green:0.95f blue:0.95f alpha:1]];
 		
+		NSValue *shadowOffset = [NSValue valueWithUIOffset:(UIOffset){0,0}];
+														 
 		UIColor *textColor = [UIColor colorWithRed:0.75f green:0.75f blue:0.75f alpha:1];
-		[[UINavigationBar appearance] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:
-																													textColor, UITextAttributeTextColor,
-																													textColor, UITextAttributeTextShadowColor,
-																													[NSValue valueWithUIOffset:(UIOffset){ 0, -1 }], UITextAttributeTextShadowOffset,
-																													nil]];
+		[[UINavigationBar appearance] setTitleTextAttributes:@{UITextAttributeTextColor: textColor, UITextAttributeTextShadowOffset:shadowOffset}];
 
-
+		UIColor *btnTextColor = [UIColor colorWithRed:0.45f green:0.45f blue:0.45f alpha:1];
+		[[UIBarButtonItem appearance] setTitleTextAttributes:@{UITextAttributeTextColor: btnTextColor, UITextAttributeTextShadowOffset:shadowOffset} forState:UIControlStateNormal];
+		
 	}
 	
 	
@@ -196,19 +199,6 @@ UIView * WAStandardTitleView (void) {
 
 }
 
-UILabel * WAStandardTitleLabelWithString (NSString *title)  {
-
-	UILabel *label = [[UILabel alloc] initWithFrame:CGRectZero];
-	label.text = title;
-
-	label.textColor = [UIColor colorWithRed:0.75f green:0.75f blue:0.75f alpha:1];
-	label.font = [UIFont boldSystemFontOfSize:20.0f];
-	label.backgroundColor = nil;
-	label.opaque = NO;
-	[label sizeToFit];
-	return label;
-
-}
 
 UIView * WAStandardPostCellBackgroundView (void) {
 

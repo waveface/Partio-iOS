@@ -53,7 +53,8 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 	
 	self.title = NSLocalizedString(@"EVENTS_CONTROLLER_TITLE", @"Title for Events view");
 //	self.navigationItem.titleView = WATitleViewForDripdownMenu(self, @selector(dripdownMenuTapped));
-	self.navigationItem.titleView = WAStandardTitleLabelWithString(NSLocalizedString(@"EVENTS_CONTROLLER_TITLE", @"Title for Events view"));
+//	self.navigationItem.titleView = WAStandardTitleLabelWithString(NSLocalizedString(@"EVENTS_CONTROLLER_TITLE", @"Title for Events view"));
+	self.navigationController.title = NSLocalizedString(@"EVENTS_CONTROLLER_TITLE", @"Title for Events view");
 	
 	CGRect rect = (CGRect){ CGPointZero, (CGSize){ 1, 1 } };
 	UIGraphicsBeginImageContext(rect.size);
