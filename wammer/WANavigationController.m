@@ -7,7 +7,6 @@
 //
 
 #import "WANavigationController.h"
-#import "WANavigationBar.h"
 #import "UIKit+IRAdditions.h"
 #import "QuartzCore+IRAdditions.h"
 
@@ -33,7 +32,7 @@
 	
 	NSData *fauxNavCData = [NSKeyedArchiver archivedDataWithRootObject:fauxNavController];
 	NSKeyedUnarchiver *unarchiver = [[NSKeyedUnarchiver alloc] initForReadingWithData:fauxNavCData];
-	[unarchiver setClass:[WANavigationBar class] forClassName:@"UINavigationBar"];
+	[unarchiver setClass:[UINavigationBar class] forClassName:@"UINavigationBar"];
 
 	return [unarchiver decodeObjectForKey:@"root"];
 		
@@ -57,72 +56,9 @@
 - (void) viewDidLoad {
 
 	[super viewDidLoad];
-	
-	WANavigationBar *navigationBar = (WANavigationBar *)self.navigationBar;
-//	[navigationBar setBackgroundImage:[UIImage imageNamed:@"WANavigationBar"] forBarMetrics:UIBarMetricsDefault];
-//	[navigationBar setBackgroundImage:[UIImage imageNamed:@"WANavigationBarLandscapePhone"] forBarMetrics:UIBarMetricsLandscapePhone];
-//	navigationBar.layer.masksToBounds = NO;
-				
-	if ([navigationBar isKindOfClass:[WANavigationBar class]]) {
 		
-		__weak WANavigationBar *wNavigationBar = navigationBar;
-		
-		navigationBar.onBarStyleContextChanged = ^ {
-		
-			if (wNavigationBar.barStyle == UIBarStyleDefault) {
-			
-//				[wNavigationBar setTintColor:[UIColor whiteColor]];
-		//		[wNavigationBar setTintColor:[UIColor colorWithRed:98.0/255.0 green:176.0/255.0 blue:195.0/255.0 alpha:0.0]];
-//				[wNavigationBar setBackgroundImage:[UIImage imageNamed:@"WANavigationBar"] forBarMetrics:UIBarMetricsDefault];
-//				[wNavigationBar setBackgroundImage:[UIImage imageNamed:@"WANavigationBarLandscapePhone"] forBarMetrics:UIBarMetricsLandscapePhone];
-				
-				UIColor *textColor = [UIColor colorWithRed:0.75f green:0.75f blue:0.75f alpha:1];
-				[wNavigationBar setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:
-					textColor, UITextAttributeTextColor,
-					textColor, UITextAttributeTextShadowColor,
-					[NSValue valueWithUIOffset:(UIOffset){ 0, -1 }], UITextAttributeTextShadowOffset,
-				nil]];
-			
-			} else {
-			
-				[wNavigationBar setTintColor:[UIColor blackColor]];
-#if 0
-				if (wNavigationBar.translucent) {
-				
-					[wNavigationBar setBackgroundImage:IRUIKitImage(@"UIButtonBarBlackOpaqueBackground") forBarMetrics:UIBarMetricsDefault];
-					[wNavigationBar setBackgroundImage:nil forBarMetrics:UIBarMetricsLandscapePhone];
-				
-				} else {
-				
-					[wNavigationBar setBackgroundImage:IRUIKitImage(@"UIButtonBarBlackTranslucentBackground") forBarMetrics:UIBarMetricsDefault];
-					[wNavigationBar setBackgroundImage:nil forBarMetrics:UIBarMetricsLandscapePhone];
-				
-				}
-#endif
-			}
-			
-			[wNavigationBar layoutSubviews];
-			[wNavigationBar.layer addAnimation:((^ {
-			
-				//	This is here to compensate the lack of a smooth fade transition when we re-set the background images
-				//	Note: the duration needs to be longer than other implicit bar item transitions happening
-				//	otherwise, it’ll get cut off abruptly, which is no good.
-			
-				CATransition *transition = [CATransition animation];
-				transition.type = kCATransitionFade;
-				transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
-				transition.duration = 0.5;
-				
-				return transition;
-			
-			})()) forKey:kCATransition];
-			
-		};
-		
-		navigationBar.onBarStyleContextChanged();
-		
-	}
-	
+	UINavigationBar *navigationBar = (UINavigationBar *)self.navigationBar;
+	[navigationBar setClipsToBounds:YES];
 	if (self.onViewDidLoad)
 		self.onViewDidLoad(self);
 

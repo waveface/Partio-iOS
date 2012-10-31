@@ -49,22 +49,11 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleCompositionSessionRequest:) name:kWACompositionSessionRequestedNotification object:nil];
 		
-	NSFetchRequest *fr = [[WADataStore defaultStore] newFetchRequestForAllArticles];
-	fr.sortDescriptors = [NSArray arrayWithObjects:
-												[NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:NO],
-												nil];
+	[self performFetchRequestForIncomingData];
 	
-	self.managedObjectContext = [[WADataStore defaultStore] defaultAutoUpdatedMOC];
-	self.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fr managedObjectContext:self.managedObjectContext sectionNameKeyPath:nil cacheName:nil];
-	
-	self.fetchedResultsController.delegate = self;
-	
-	[self.fetchedResultsController performFetch:nil];
-
-	
-	self.title = NSLocalizedString(@"APP_TITLE", @"Title for application");
+	self.title = NSLocalizedString(@"EVENTS_CONTROLLER_TITLE", @"Title for Events view");
 //	self.navigationItem.titleView = WATitleViewForDripdownMenu(self, @selector(dripdownMenuTapped));
-	self.navigationItem.titleView = WAStandardTitleView();
+	self.navigationItem.titleView = WAStandardTitleLabelWithString(NSLocalizedString(@"EVENTS_CONTROLLER_TITLE", @"Title for Events view"));
 	
 	CGRect rect = (CGRect){ CGPointZero, (CGSize){ 1, 1 } };
 	UIGraphicsBeginImageContext(rect.size);
@@ -351,6 +340,22 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 
 	return [self timelineControllerAtPageIndex:index];
 	
+}
+
+- (void) performFetchRequestForIncomingData {
+	
+	NSFetchRequest *fr = [[WADataStore defaultStore] newFetchRequestForAllArticles];
+	fr.sortDescriptors = [NSArray arrayWithObjects:
+												[NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:NO],
+												nil];
+	
+	self.managedObjectContext = [[WADataStore defaultStore] defaultAutoUpdatedMOC];
+	self.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fr managedObjectContext:self.managedObjectContext sectionNameKeyPath:nil cacheName:nil];
+	
+	self.fetchedResultsController.delegate = self;
+	
+	[self.fetchedResultsController performFetch:nil];
+
 }
 
 - (void) controllerDidChangeContent:(NSFetchedResultsController *)controller {

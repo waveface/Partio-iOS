@@ -32,7 +32,6 @@
 #import "IASKAppSettingsViewController.h"
 
 #import "WANavigationController.h"
-#import "WANavigationBar.h"
 
 #import "WAArticleCommentsViewCell.h"
 #import "WAPostViewCellPhone.h"

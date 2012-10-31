@@ -100,10 +100,6 @@
 /* No comment provided by engineer. */
 "ADVANCED_FEATURES_ENABLED_TITLE" = "Advanced Features Enabled";
 
-/* Application Title
-   Title for application */
-"APP_TITLE" = "Stream";
-
 /* title in attachments view */
 "ATTACHMENTS_VIEW_TITLE" = "Attachments";
 
@@ -190,6 +186,9 @@
 
 /* Failed, underlying error description %@ */
 "ERROR_ARTICLE_ENTITY_SYNC_FAILURE_WITH_UNDERLYING_ERROR_DESCRIPTION_FORMAT" = "A necessary task failed: %@ — Your post has been saved as a draft.";
+
+/* Title for Events view */
+"EVENTS_CONTROLLER_TITLE" = "Events";
 
 /* Message for an alert view to show user his FB account has been connected to another Stream user */
 "FACEBOOK_CONNECT_ACCOUNT_OCCUPIED_MESSAGE" = "The Facebook account you’re using has already been registered. Please use another Facebook account.";

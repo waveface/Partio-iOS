@@ -13,7 +13,6 @@
 
 #import "WACompositionViewController+CustomUI.h"
 
-#import "WANavigationBar.h"
 #import "WANavigationController.h"
 
 #import "WAOverlayBezel.h"

@@ -248,7 +248,7 @@
         <scene sceneID="Y00-3q-5l7">
             <objects>
                 <navigationController definesPresentationContext="YES" id="4Pj-CA-NQ2" customClass="WANavigationController" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="cDo-g4-T9Z" customClass="WANavigationBar">
+                    <navigationBar key="navigationBar" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="cDo-g4-T9Z">
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
@@ -260,6 +260,38 @@
             <point key="canvasLocation" x="-248" y="222"/>
         </scene>
     </scenes>
+    <classes>
+        <class className="IRTableViewController" superclassName="UITableViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/IRTableViewController.h"/>
+        </class>
+        <class className="WAFacebookConnectionSwitch" superclassName="UISwitch">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/WAFacebookConnectionSwitch.h"/>
+        </class>
+        <class className="WALocalizedLabel" superclassName="UILabel">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/WALocalizedLabel.h"/>
+        </class>
+        <class className="WANavigationController" superclassName="UINavigationController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/WANavigationController.h"/>
+        </class>
+        <class className="WAUserInfoViewController" superclassName="IRTableViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/WAUserInfoViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="handlePhotoImportSwitchChanged:"/>
+                <relationship kind="outlet" name="contactTableViewCell" candidateClass="UITableViewCell"/>
+                <relationship kind="outlet" name="deviceNameLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="lastSyncDateLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="numberOfFilesNotOnStationLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="numberOfPendingFilesLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="photoImportSwitch" candidateClass="UISwitch"/>
+                <relationship kind="outlet" name="serviceTableViewCell" candidateClass="UITableViewCell"/>
+                <relationship kind="outlet" name="stationNagCell" candidateClass="UITableViewCell"/>
+                <relationship kind="outlet" name="stationNagLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="syncTableViewCell" candidateClass="UITableViewCell"/>
+                <relationship kind="outlet" name="userEmailLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="userNameLabel" candidateClass="UILabel"/>
+            </relationships>
+        </class>
+    </classes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>
