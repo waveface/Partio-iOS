@@ -103,16 +103,17 @@
 																		style:UIBarButtonItemStylePlain
 																		target:self
 																		action:@selector(handleComposeItemTap:)];
-	
+
+	/* For future sliding menu
 	UIBarButtonItem *filterButton = [[UIBarButtonItem alloc]
 																	 initWithImage:[UIImage imageNamed:@"menu"]
 																	 style:UIBarButtonItemStylePlain
 																	 target:self.viewDeckController
 																	 action:@selector(toggleLeftView)];
-	
+	*/
 	self.navigationItem.rightBarButtonItems = @[accountButton, composeButton];
 	
-	self.navigationItem.leftBarButtonItems = @[filterButton];
+//	self.navigationItem.leftBarButtonItems = @[filterButton];
 	
 	self.title = @"Articles";
 	

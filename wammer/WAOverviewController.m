@@ -21,7 +21,6 @@
 #import "CALayer+IRAdditions.h"
 
 #import "WAFauxRootNavigationController.h"
-#import "WANavigationBar.h"
 
 #import "WARemoteInterface.h"
 #import "WADataStore.h"

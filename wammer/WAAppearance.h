@@ -16,6 +16,8 @@
 
 @class IRBarButtonItem, IRBorder, IRShadow;
 
+extern void WADefaultAppearance(void);
+
 extern void WADefaultBarButtonInitialize (void);
 
 extern IRBorder *kWADefaultBarButtonBorder;
@@ -47,7 +49,7 @@ extern UIImage * WABarButtonImageWithOptions (NSString *anImageName, UIColor *aC
 
 extern UIView * WAStandardTitleView (void);
 extern UIView * WATitleViewForDripdownMenu(id target, SEL action);
-extern UILabel * WAStandardTitleLabel (void);
+extern UILabel * WAStandardTitleLabelWithString (NSString *title);
 
 extern UIView * WAStandardPostCellBackgroundView (void);
 extern UIView * WAStandardPostCellSelectedBackgroundView (void);

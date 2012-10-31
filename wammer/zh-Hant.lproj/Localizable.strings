@@ -100,10 +100,6 @@
 /* No comment provided by engineer. */
 "ADVANCED_FEATURES_ENABLED_TITLE" = "除錯功能已啟用";
 
-/* Application Title
-   Title for application */
-"APP_TITLE" = "Stream";
-
 /* title in attachments view */
 "ATTACHMENTS_VIEW_TITLE" = "附加檔案";
 
@@ -190,6 +186,9 @@
 
 /* Failed, underlying error description %@ */
 "ERROR_ARTICLE_ENTITY_SYNC_FAILURE_WITH_UNDERLYING_ERROR_DESCRIPTION_FORMAT" = "上傳時發生錯誤：%@。本文已存成草稿。";
+
+/* Title for Events view */
+"EVENTS_CONTROLLER_TITLE" = "事件";
 
 /* Message for an alert view to show user his FB account has been connected to another Stream user */
 "FACEBOOK_CONNECT_ACCOUNT_OCCUPIED_MESSAGE" = "這個 Facebook 帳號已經被使用，請您再試試看其他的Facebook帳號。";

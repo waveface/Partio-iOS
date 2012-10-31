@@ -19,7 +19,6 @@
 #import "WARemoteInterface.h"
 
 #import "WACompositionViewPhotoCell.h"
-#import "WANavigationBar.h"
 #import "WANavigationController.h"
 #import "WAPreviewBadge.h"
 #import "WAOverlayBezel.h"

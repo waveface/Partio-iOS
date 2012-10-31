@@ -98,14 +98,14 @@ NSString * const kDismissesSelfIfCameraCancelled = @"-[WACompositionViewControll
 
 	__block UIViewController * (^topNonModalVC)(UIViewController *) = [^ (UIViewController *aVC) {
 		
-		if (aVC.modalViewController)
-			return topNonModalVC(aVC.modalViewController);
+		if (aVC.presentedViewController)
+			return topNonModalVC(aVC.presentedViewController);
 		
 		return aVC;
 		
 	} copy];
 	
-	[topNonModalVC(self) presentModalViewController:controller animated:animated];
+	[topNonModalVC(self) presentViewController:controller animated:animated completion:nil];
 	
 	topNonModalVC = nil;
 
@@ -113,7 +113,7 @@ NSString * const kDismissesSelfIfCameraCancelled = @"-[WACompositionViewControll
 
 - (void) dismissImagePickerController:(UIViewController *)controller animated:(BOOL)animated {
 
-	[controller dismissModalViewControllerAnimated:animated];
+	[controller dismissViewControllerAnimated:animated completion:nil];
 
 }
 
@@ -164,14 +164,14 @@ NSString * const kDismissesSelfIfCameraCancelled = @"-[WACompositionViewControll
 
 	__block UIViewController * (^topNonModalVC)(UIViewController *) = [^ (UIViewController *aVC) {
 		
-		if (aVC.modalViewController)
-			return topNonModalVC(aVC.modalViewController);
+		if (aVC.presentedViewController)
+			return topNonModalVC(aVC.presentedViewController);
 		
 		return aVC;
 		
 	} copy];
-	
-	[topNonModalVC(self) presentModalViewController:controller animated:animated];
+
+	[topNonModalVC(self) presentViewController:controller animated:animated completion:nil];
 	
 	topNonModalVC = nil;
 
@@ -179,7 +179,7 @@ NSString * const kDismissesSelfIfCameraCancelled = @"-[WACompositionViewControll
 
 - (void) dismissCameraCapturePickerController:(UIViewController *)controller animated:(BOOL)animated {
 
-	[controller dismissModalViewControllerAnimated:animated];
+	[controller dismissViewControllerAnimated:animated completion:nil];
 
 }
 

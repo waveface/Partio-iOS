@@ -18,5 +18,6 @@
 @property (nonatomic, weak) IBOutlet UIImageView *weatherImageView;
 @property (nonatomic, weak) IBOutlet UIButton *leftButton;
 @property (nonatomic, weak) IBOutlet UIButton *rightButton;
+@property (nonatomic, weak) IBOutlet UIButton *centerButton;
 
 @end
