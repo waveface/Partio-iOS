@@ -310,7 +310,6 @@
 		FF426FC9155102AF0053D1CA /* WFPreviewTemplate-Discrete_Web_ImageWithDescription_Vertical.html in Resources */ = {isa = PBXBuildFile; fileRef = FF426FC4155102AF0053D1CA /* WFPreviewTemplate-Discrete_Web_ImageWithDescription_Vertical.html */; };
 		FF426FCE15510DF50053D1CA /* WFPreview.js in Resources */ = {isa = PBXBuildFile; fileRef = FF426FCA15510DCD0053D1CA /* WFPreview.js */; };
 		FF426FCF15510DFC0053D1CA /* WFPreviewDebug.js in Resources */ = {isa = PBXBuildFile; fileRef = FF426FCB15510DCD0053D1CA /* WFPreviewDebug.js */; };
-		FF42755A14F4E8AE00824505 /* libTestFlight.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FFA774C814ADBE6B0044674B /* libTestFlight.a */; };
 		FF42755C14F4E8D200824505 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = FF42755B14F4E8D200824505 /* libz.dylib */; };
 		FF4570E11488E7E3005B5905 /* WAArticleFilesListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FF4570E01488E7E3005B5905 /* WAArticleFilesListViewController.m */; };
 		FF4570E41488F362005B5905 /* QuickLook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF4570E31488F362005B5905 /* QuickLook.framework */; };
@@ -1250,7 +1249,7 @@
 		4B85823A15F7ABCF00EE11AC /* WADefaults.develop.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = WADefaults.develop.plist; path = resources/WADefaults.develop.plist; sourceTree = "<group>"; };
 		4B87177715C7D4A200C9612D /* Unfav@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Unfav@2x~iphone.png"; path = "resources/Unfav@2x~iphone.png"; sourceTree = "<group>"; };
 		4B87177915C7D4AF00C9612D /* Fav@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Fav@2x~iphone.png"; path = "resources/Fav@2x~iphone.png"; sourceTree = "<group>"; };
-		4B8CA96814BBE7BA006E06BB /* wammer-iOS-Test.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = "wammer-iOS-Test.octest"; path = LogicTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
+		4B8CA96814BBE7BA006E06BB /* LogicTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LogicTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
 		4B8CA96914BBE7BA006E06BB /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
 		4B8CA97114BBE7BA006E06BB /* wammer-iOS-Tests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "wammer-iOS-Tests-Info.plist"; sourceTree = "<group>"; };
 		4B8CA97314BBE7BA006E06BB /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -1286,7 +1285,7 @@
 		7D0CDCE7162E59DD0027D35F /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
 		7D0CDCE9162E59DD0027D35F /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
 		7D0CDCEB162E59DD0027D35F /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
-		7D0CDD00162E5A080027D35F /* Stream-iOS-ApplicationTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = "Stream-iOS-ApplicationTests.octest"; path = ApplicationTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
+		7D0CDD00162E5A080027D35F /* ApplicationTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ApplicationTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
 		7D0CDD06162E5A080027D35F /* Stream-iOS-ApplicationTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Stream-iOS-ApplicationTests-Info.plist"; sourceTree = "<group>"; };
 		7D0CDD08162E5A080027D35F /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		7D0CDD0A162E5A080027D35F /* Stream_iOS_ApplicationTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Stream_iOS_ApplicationTests.h; sourceTree = "<group>"; };
@@ -1678,8 +1677,6 @@
 		FFA69456147F6FC600F46347 /* WARemoteInterface+Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WARemoteInterface+Reachability.h"; sourceTree = "<group>"; };
 		FFA69457147F6FC600F46347 /* WARemoteInterface+Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WARemoteInterface+Reachability.m"; sourceTree = "<group>"; };
 		FFA69459147F800300F46347 /* IRRecurrenceMachine.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = IRRecurrenceMachine.xcodeproj; path = external/IRRecurrenceMachine/IRRecurrenceMachine.xcodeproj; sourceTree = "<group>"; };
-		FFA774C814ADBE6B0044674B /* libTestFlight.a */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = archive.ar; name = libTestFlight.a; path = external/TestflightSDK/libTestFlight.a; sourceTree = "<group>"; };
-		FFA774C914ADBE6B0044674B /* TestFlight.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TestFlight.h; path = external/TestflightSDK/TestFlight.h; sourceTree = "<group>"; };
 		FFA87D02143F01450074AAE4 /* WANavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WANavigationController.h; sourceTree = "<group>"; };
 		FFA87D03143F01450074AAE4 /* WANavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WANavigationController.m; sourceTree = "<group>"; };
 		FFAA7B72140773F9006F88DC /* WAAttachedMediaListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAAttachedMediaListViewController.h; sourceTree = "<group>"; };
@@ -2110,7 +2107,6 @@
 				FF09C0E015A2DD7D00AEDDAE /* libIRSlidingSplitViewController.a in Frameworks */,
 				FFED705E15497D7800E01FFB /* libWFPresentation.a in Frameworks */,
 				FF586C6D1519B94300F308E2 /* libJSONKitTouch.a in Frameworks */,
-				FF42755A14F4E8AE00824505 /* libTestFlight.a in Frameworks */,
 				7DAD18A21626A73B00F87495 /* libGoogleAnalytics.a in Frameworks */,
 				7D0CDC18162D6B570027D35F /* FacebookSDK.framework in Frameworks */,
 				94EB57761411451780C24560 /* libPods.a in Frameworks */,
@@ -2842,8 +2838,8 @@
 			children = (
 				FFCFE0FB142111E100B9E6AF /* wammer-iOS.app */,
 				FFC648331445E8D700593E5E /* wammer-OSX.app */,
-				4B8CA96814BBE7BA006E06BB /* wammer-iOS-Test.octest */,
-				7D0CDD00162E5A080027D35F /* Stream-iOS-ApplicationTests.octest */,
+				4B8CA96814BBE7BA006E06BB /* LogicTests.octest */,
+				7D0CDD00162E5A080027D35F /* ApplicationTests.octest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -2873,7 +2869,6 @@
 				FF59F87914419581005508FC /* OSX */,
 				7D9B1D90162BB1F6000E5350 /* Social.framework */,
 				8002CDCF15E5E73800D7BFF0 /* SocketRocket.xcodeproj */,
-				FFA774CB14ADBE6F0044674B /* Testflight SDK */,
 				FFED705215497D6B00E01FFB /* WFPresentation.xcodeproj */,
 				7D0CDCE7162E59DD0027D35F /* SenTestingKit.framework */,
 				7D0CDCE9162E59DD0027D35F /* UIKit.framework */,
@@ -3104,15 +3099,6 @@
 				FF460D2E149CF8DA00DB7F0B /* IRRecurrenceMachineX.framework */,
 			);
 			name = Products;
-			sourceTree = "<group>";
-		};
-		FFA774CB14ADBE6F0044674B /* Testflight SDK */ = {
-			isa = PBXGroup;
-			children = (
-				FFA774C814ADBE6B0044674B /* libTestFlight.a */,
-				FFA774C914ADBE6B0044674B /* TestFlight.h */,
-			);
-			name = "Testflight SDK";
 			sourceTree = "<group>";
 		};
 		FFB3C170145E9A6600ED7A56 /* Products */ = {
@@ -3643,7 +3629,7 @@
 			);
 			name = LogicTests;
 			productName = "waveface-tests";
-			productReference = 4B8CA96814BBE7BA006E06BB /* wammer-iOS-Test.octest */;
+			productReference = 4B8CA96814BBE7BA006E06BB /* LogicTests.octest */;
 			productType = "com.apple.product-type.bundle";
 		};
 		7D0CDCFF162E5A080027D35F /* ApplicationTests */ = {
@@ -3661,7 +3647,7 @@
 			);
 			name = ApplicationTests;
 			productName = "Stream-iOS-ApplicationTests";
-			productReference = 7D0CDD00162E5A080027D35F /* Stream-iOS-ApplicationTests.octest */;
+			productReference = 7D0CDD00162E5A080027D35F /* ApplicationTests.octest */;
 			productType = "com.apple.product-type.bundle";
 		};
 		FFC648321445E8D700593E5E /* wammer-OSX */ = {
@@ -5266,7 +5252,6 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/wammer\"",
-					"\"$(SRCROOT)/external/TestflightSDK\"",
 					"\"$(SRCROOT)/wammer/Libraries\"/**",
 					"\"$(SRCROOT)/wammer/Libraries\"",
 				);
@@ -5277,7 +5262,7 @@
 				STREAM_BUNDLE_ID_SUFFIX = .beta;
 				STREAM_FACEBOOK_ID = 356863037711668;
 				STREAM_ICON_NAME_SUFFIX = _beta;
-				USER_HEADER_SEARCH_PATHS = "\"$(PROJECT_DIR)/external/IRFoundations\"/** \"$(SDKROOT)/usr/include/libxml2\"/** \"$(PROJECT_DIR)/external/IRWebAPIKit\"/** \"$(PROJECT_DIR)/external/AQGridView/Classes\" \"$(PROJECT_DIR)/external/IRKeychain\"/** \"$(PROJECT_DIR)/external/IRDiscreteLayoutManager\"/** \"$(PROJECT_DIR)/external/IRTextAttributor\"/** \"$(PROJECT_DIR)/external/IRSlidingSplitViewController\"/** \"$(PROJECT_DIR)/external/IRRecurrenceMachine\"/** \"$(PROJECT_DIR)/external/IRObjectQueue\"/** \"$(PROJECT_DIR)/external/TestflightSDK\"/** \"$(PROJECT_DIR)/external/JSONKit\"/** \"$(PROJECT_DIR)/external/WFPresentation/Bindings/Objective-C\"/** \"$(PROJECT_DIR)/external/Facebook\"/** \"$(PROJECT_DIR)/external/SocketRocket\"/** $(CONFIGURATION_BUILD_DIR)/usr/local/include/**";
+				USER_HEADER_SEARCH_PATHS = "\"$(PROJECT_DIR)/external/IRFoundations\"/** \"$(SDKROOT)/usr/include/libxml2\"/** \"$(PROJECT_DIR)/external/IRWebAPIKit\"/** \"$(PROJECT_DIR)/external/AQGridView/Classes\" \"$(PROJECT_DIR)/external/IRKeychain\"/** \"$(PROJECT_DIR)/external/IRDiscreteLayoutManager\"/** \"$(PROJECT_DIR)/external/IRTextAttributor\"/** \"$(PROJECT_DIR)/external/IRSlidingSplitViewController\"/** \"$(PROJECT_DIR)/external/IRRecurrenceMachine\"/** \"$(PROJECT_DIR)/external/IRObjectQueue\"/** \"$(PROJECT_DIR)/external/JSONKit\"/** \"$(PROJECT_DIR)/external/WFPresentation/Bindings/Objective-C\"/** \"$(PROJECT_DIR)/external/Facebook\"/** \"$(PROJECT_DIR)/external/SocketRocket\"/** $(CONFIGURATION_BUILD_DIR)/usr/local/include/**";
 				VALID_ARCHS = "i386 armv7";
 				WRAPPER_EXTENSION = app;
 			};
@@ -5301,6 +5286,22 @@
 				GCC_INSTRUMENT_PROGRAM_FLOW_ARCS = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "wammer-iOS-Tests/wammer-iOS-Tests-Prefix.pch";
+				HEADER_SEARCH_PATHS = (
+					"\"$(PROJECT_DIR)/external/IRFoundations\"/**",
+					"\"$(SDKROOT)/usr/include/libxml2\"/**",
+					"\"$(PROJECT_DIR)/external/IRWebAPIKit\"/**",
+					"\"$(PROJECT_DIR)/external/AQGridView/Classes\"",
+					"\"$(PROJECT_DIR)/external/IRKeychain\"/**",
+					"\"$(PROJECT_DIR)/external/IRDiscreteLayoutManager\"/**",
+					"\"$(PROJECT_DIR)/external/IRTextAttributor\"/**",
+					"\"$(PROJECT_DIR)/external/IRSlidingSplitViewController\"/**",
+					"\"$(PROJECT_DIR)/external/IRRecurrenceMachine\"/**",
+					"\"$(PROJECT_DIR)/external/IRObjectQueue\"/**",
+					"\"$(PROJECT_DIR)/external/JSONKit\"/**",
+					"\"$(PROJECT_DIR)/external/WFPresentation/Bindings/Objective-C\"/**",
+					"\"$(PROJECT_DIR)/external/Facebook\"/**",
+					"\"$(PROJECT_DIR)/external/SocketRocket\"/**",
+				);
 				INFOPLIST_FILE = "wammer-iOS-Tests/wammer-iOS-Tests-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				LIBRARY_SEARCH_PATHS = (
@@ -5385,7 +5386,6 @@
 					"\"$(PROJECT_DIR)/external/IRSlidingSplitViewController\"/**",
 					"\"$(PROJECT_DIR)/external/IRRecurrenceMachine\"/**",
 					"\"$(PROJECT_DIR)/external/IRObjectQueue\"/**",
-					"\"$(PROJECT_DIR)/external/TestflightSDK\"/**",
 					"\"$(PROJECT_DIR)/external/JSONKit\"/**",
 					"\"$(PROJECT_DIR)/external/WFPresentation/Bindings/Objective-C\"/**",
 					"\"$(PROJECT_DIR)/external/Facebook\"/**",
@@ -5442,7 +5442,6 @@
 					"\"$(PROJECT_DIR)/external/IRSlidingSplitViewController\"/**",
 					"\"$(PROJECT_DIR)/external/IRRecurrenceMachine\"/**",
 					"\"$(PROJECT_DIR)/external/IRObjectQueue\"/**",
-					"\"$(PROJECT_DIR)/external/TestflightSDK\"/**",
 					"\"$(PROJECT_DIR)/external/JSONKit\"/**",
 					"\"$(PROJECT_DIR)/external/WFPresentation/Bindings/Objective-C\"/**",
 					"\"$(PROJECT_DIR)/external/Facebook\"/**",
@@ -5501,7 +5500,6 @@
 					"\"$(PROJECT_DIR)/external/IRSlidingSplitViewController\"/**",
 					"\"$(PROJECT_DIR)/external/IRRecurrenceMachine\"/**",
 					"\"$(PROJECT_DIR)/external/IRObjectQueue\"/**",
-					"\"$(PROJECT_DIR)/external/TestflightSDK\"/**",
 					"\"$(PROJECT_DIR)/external/JSONKit\"/**",
 					"\"$(PROJECT_DIR)/external/WFPresentation/Bindings/Objective-C\"/**",
 					"\"$(PROJECT_DIR)/external/Facebook\"/**",
@@ -5551,7 +5549,6 @@
 					"\"$(PROJECT_DIR)/external/IRSlidingSplitViewController\"/**",
 					"\"$(PROJECT_DIR)/external/IRRecurrenceMachine\"/**",
 					"\"$(PROJECT_DIR)/external/IRObjectQueue\"/**",
-					"\"$(PROJECT_DIR)/external/TestflightSDK\"/**",
 					"\"$(PROJECT_DIR)/external/JSONKit\"/**",
 					"\"$(PROJECT_DIR)/external/WFPresentation/Bindings/Objective-C\"/**",
 					"\"$(PROJECT_DIR)/external/Facebook\"/**",
@@ -5600,7 +5597,6 @@
 					"\"$(PROJECT_DIR)/external/IRSlidingSplitViewController\"/**",
 					"\"$(PROJECT_DIR)/external/IRRecurrenceMachine\"/**",
 					"\"$(PROJECT_DIR)/external/IRObjectQueue\"/**",
-					"\"$(PROJECT_DIR)/external/TestflightSDK\"/**",
 					"\"$(PROJECT_DIR)/external/JSONKit\"/**",
 					"\"$(PROJECT_DIR)/external/WFPresentation/Bindings/Objective-C\"/**",
 					"\"$(PROJECT_DIR)/external/Facebook\"/**",
@@ -5839,7 +5835,6 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/wammer\"",
-					"\"$(SRCROOT)/external/TestflightSDK\"",
 					"\"$(SRCROOT)/wammer/Libraries\"/**",
 					"\"$(SRCROOT)/wammer/Libraries\"",
 				);
@@ -5850,7 +5845,7 @@
 				STREAM_BUNDLE_ID_SUFFIX = .develop;
 				STREAM_FACEBOOK_ID = 357087874306060;
 				STREAM_ICON_NAME_SUFFIX = _develop;
-				USER_HEADER_SEARCH_PATHS = "\"$(PROJECT_DIR)/external/IRFoundations\"/** \"$(SDKROOT)/usr/include/libxml2\"/** \"$(PROJECT_DIR)/external/IRWebAPIKit\"/** \"$(PROJECT_DIR)/external/AQGridView/Classes\" \"$(PROJECT_DIR)/external/IRKeychain\"/** \"$(PROJECT_DIR)/external/IRDiscreteLayoutManager\"/** \"$(PROJECT_DIR)/external/IRTextAttributor\"/** \"$(PROJECT_DIR)/external/IRSlidingSplitViewController\"/** \"$(PROJECT_DIR)/external/IRRecurrenceMachine\"/** \"$(PROJECT_DIR)/external/IRObjectQueue\"/** \"$(PROJECT_DIR)/external/TestflightSDK\"/** \"$(PROJECT_DIR)/external/JSONKit\"/** \"$(PROJECT_DIR)/external/WFPresentation/Bindings/Objective-C\"/** \"$(PROJECT_DIR)/external/Facebook\"/** \"$(PROJECT_DIR)/external/SocketRocket\"/** $(CONFIGURATION_BUILD_DIR)/usr/local/include/**";
+				USER_HEADER_SEARCH_PATHS = "\"$(PROJECT_DIR)/external/IRFoundations\"/** \"$(SDKROOT)/usr/include/libxml2\"/** \"$(PROJECT_DIR)/external/IRWebAPIKit\"/** \"$(PROJECT_DIR)/external/AQGridView/Classes\" \"$(PROJECT_DIR)/external/IRKeychain\"/** \"$(PROJECT_DIR)/external/IRDiscreteLayoutManager\"/** \"$(PROJECT_DIR)/external/IRTextAttributor\"/** \"$(PROJECT_DIR)/external/IRSlidingSplitViewController\"/** \"$(PROJECT_DIR)/external/IRRecurrenceMachine\"/** \"$(PROJECT_DIR)/external/IRObjectQueue\"/** \"$(PROJECT_DIR)/external/JSONKit\"/** \"$(PROJECT_DIR)/external/WFPresentation/Bindings/Objective-C\"/** \"$(PROJECT_DIR)/external/Facebook\"/** \"$(PROJECT_DIR)/external/SocketRocket\"/** $(CONFIGURATION_BUILD_DIR)/usr/local/include/**";
 				VALID_ARCHS = "i386 armv7";
 				WRAPPER_EXTENSION = app;
 			};
@@ -5878,7 +5873,6 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/wammer\"",
-					"\"$(SRCROOT)/external/TestflightSDK\"",
 					"\"$(SRCROOT)/wammer/Libraries\"/**",
 					"\"$(SRCROOT)/wammer/Libraries\"",
 				);
@@ -5889,7 +5883,7 @@
 				STREAM_BUNDLE_ID_SUFFIX = "";
 				STREAM_FACEBOOK_ID = 234823683291756;
 				STREAM_ICON_NAME_SUFFIX = "";
-				USER_HEADER_SEARCH_PATHS = "\"$(PROJECT_DIR)/external/IRFoundations\"/** \"$(SDKROOT)/usr/include/libxml2\"/** \"$(PROJECT_DIR)/external/IRWebAPIKit\"/** \"$(PROJECT_DIR)/external/AQGridView/Classes\" \"$(PROJECT_DIR)/external/IRKeychain\"/** \"$(PROJECT_DIR)/external/IRDiscreteLayoutManager\"/** \"$(PROJECT_DIR)/external/IRTextAttributor\"/** \"$(PROJECT_DIR)/external/IRSlidingSplitViewController\"/** \"$(PROJECT_DIR)/external/IRRecurrenceMachine\"/** \"$(PROJECT_DIR)/external/IRObjectQueue\"/** \"$(PROJECT_DIR)/external/TestflightSDK\"/** \"$(PROJECT_DIR)/external/JSONKit\"/** \"$(PROJECT_DIR)/external/WFPresentation/Bindings/Objective-C\"/** \"$(PROJECT_DIR)/external/Facebook\"/** \"$(PROJECT_DIR)/external/SocketRocket\"/** $(CONFIGURATION_BUILD_DIR)/usr/local/include/**";
+				USER_HEADER_SEARCH_PATHS = "\"$(PROJECT_DIR)/external/IRFoundations\"/** \"$(SDKROOT)/usr/include/libxml2\"/** \"$(PROJECT_DIR)/external/IRWebAPIKit\"/** \"$(PROJECT_DIR)/external/AQGridView/Classes\" \"$(PROJECT_DIR)/external/IRKeychain\"/** \"$(PROJECT_DIR)/external/IRDiscreteLayoutManager\"/** \"$(PROJECT_DIR)/external/IRTextAttributor\"/** \"$(PROJECT_DIR)/external/IRSlidingSplitViewController\"/** \"$(PROJECT_DIR)/external/IRRecurrenceMachine\"/** \"$(PROJECT_DIR)/external/IRObjectQueue\"/** \"$(PROJECT_DIR)/external/JSONKit\"/** \"$(PROJECT_DIR)/external/WFPresentation/Bindings/Objective-C\"/** \"$(PROJECT_DIR)/external/Facebook\"/** \"$(PROJECT_DIR)/external/SocketRocket\"/** $(CONFIGURATION_BUILD_DIR)/usr/local/include/**";
 				VALID_ARCHS = "i386 armv7";
 				WRAPPER_EXTENSION = app;
 			};

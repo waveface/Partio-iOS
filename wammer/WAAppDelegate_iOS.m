@@ -56,6 +56,8 @@
 #import "WAPhotoImportManager.h"
 #import "WAFirstUseViewController.h"
 
+#import "TestFlight.h"
+
 static NSString *const kTrackingId = @"UA-27817516-7";
 
 @interface WALoginBackgroundViewController : UIViewController
@@ -226,7 +228,16 @@ static NSString *const kTrackingId = @"UA-27817516-7";
 #if ENABLE_DCINTROSPECT
 	[[DCIntrospect sharedIntrospector] start];
 #endif
+	
+	[TestFlight takeOff:kWATestflightTeamToken];
 
+#if DEBUG
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+	[TestFlight setDeviceIdentifier:[[UIDevice currentDevice] uniqueIdentifier]];
+#pragma clang pop
+#endif
+	
 	return YES;
 	
 }
