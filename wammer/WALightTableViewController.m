@@ -12,13 +12,15 @@
 #import "WADataStore.h"
 
 @interface WALightTableViewController (){
-	NSMutableSet *_selection;
+	NSMutableSet *selection;
 }
+
+@property	(strong, nonatomic) NSFetchedResultsController *fetchedResultsController;
+@property (strong, nonatomic) NSManagedObjectContext *managedObjectContext;
 
 @end
 
 @implementation WALightTableViewController
-@synthesize selection = _selection;
 
 - (void)viewDidLoad
 {
@@ -35,13 +37,13 @@
 }
 
 - (void)viewWillAppear:(BOOL)animated {
-	_selection = [[NSMutableSet alloc]initWithCapacity:10];
+	selection = [[NSMutableSet alloc]initWithCapacity:10];
 	[super viewWillAppear:animated];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
 	[super viewWillDisappear:animated];
-	_selection = nil;
+	selection = nil;
 }
 
 #pragma mark - Collection view data source
@@ -71,12 +73,12 @@
 	[self.collectionView cellForItemAtIndexPath:indexPath].selected = ![self.collectionView cellForItemAtIndexPath:indexPath].selected;
 	
 	NSNumber *index = @(indexPath.row);
-	if ( [_selection containsObject:index] )
-		[_selection removeObject:index];
+	if ( [selection containsObject:index] )
+		[selection removeObject:index];
 	else
-		[_selection addObject:index];
+		[selection addObject:index];
 	
-	NSLog(@"%@", self.selection);
+	NSLog(@"%@", selection);
 	
 }
 
