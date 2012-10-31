@@ -51,7 +51,6 @@
 		4B0C3EEF15BF89A300CAA346 /* PostWithCompleteAttachmentInformation.txt in Resources */ = {isa = PBXBuildFile; fileRef = 4B0C3EED15BF868400CAA346 /* PostWithCompleteAttachmentInformation.txt */; };
 		4B16701215FDCE9900990F4B /* WADefaults.staging.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4B16701115FDCE9900990F4B /* WADefaults.staging.plist */; };
 		4B26970615E76362007E1054 /* WAWebSocketTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B26970515E76362007E1054 /* WAWebSocketTests.m */; };
-		4B26970A15E7672D007E1054 /* libSocketRocket.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8002CDDB15E5E73800D7BFF0 /* libSocketRocket.a */; };
 		4B26970B15E76A5F007E1054 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B8DFB7314FDFC3D000B41C5 /* CFNetwork.framework */; };
 		4B26970C15E76A99007E1054 /* libicucore.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 8002CDE515E5E85600D7BFF0 /* libicucore.dylib */; };
 		4B284E5415AD244200D138C5 /* WAFile.m in Sources */ = {isa = PBXBuildFile; fileRef = 13A1BFB315A572CE00526F39 /* WAFile.m */; };
@@ -74,7 +73,6 @@
 		4B31BAAE1591A74C00DC1A70 /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = 4B31BA9E1591A74C00DC1A70 /* LICENSE */; };
 		4B3225E915BE4CE400934DA4 /* WAArticleTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B3225E815BE4CE400934DA4 /* WAArticleTests.m */; };
 		4B362548156630D400F07032 /* IRRelativeDateFormatter+WAAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B362547156630D400F07032 /* IRRelativeDateFormatter+WAAdditions.m */; };
-		4B43E32E15EDEB3500F64F40 /* libOCMock.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B43E32D15EDEB3500F64F40 /* libOCMock.a */; };
 		4B52734015624E1800C6F55D /* WFPreviewTemplate-Discrete_Web_ImageWithDescription_Horizontal_for_6.html in Resources */ = {isa = PBXBuildFile; fileRef = 4B52733F15624E1800C6F55D /* WFPreviewTemplate-Discrete_Web_ImageWithDescription_Horizontal_for_6.html */; };
 		4B52734415625B3500C6F55D /* ProviderIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 4B52734315625B3500C6F55D /* ProviderIcon.png */; };
 		4B57F2F9157F5D4300467AD4 /* WFPreviewTemplate-Discrete_Web_Image_Vertical.html in Resources */ = {isa = PBXBuildFile; fileRef = 4B57F2F8157F5D4300467AD4 /* WFPreviewTemplate-Discrete_Web_Image_Vertical.html */; };
@@ -139,7 +137,6 @@
 		7D0CDD03162E5A080027D35F /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D0CDCEB162E59DD0027D35F /* Foundation.framework */; };
 		7D0CDD09162E5A080027D35F /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 7D0CDD07162E5A080027D35F /* InfoPlist.strings */; };
 		7D0CDD0C162E5A080027D35F /* Stream_iOS_ApplicationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D0CDD0B162E5A080027D35F /* Stream_iOS_ApplicationTests.m */; };
-		7D0CDD13162E5CEE0027D35F /* libOCMock.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B43E32D15EDEB3500F64F40 /* libOCMock.a */; };
 		7D0CDD18162E5FC90027D35F /* WAFacebookConnectionSwitchTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D0CDD15162E5F9E0027D35F /* WAFacebookConnectionSwitchTest.m */; };
 		7D85EE6E1637936A00D5630A /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7D85EE6D1637936A00D5630A /* Default-568h@2x.png */; };
 		7D92E5B216070705000C7B06 /* PhotoPostWithURLHistoryStyle.txt in Resources */ = {isa = PBXBuildFile; fileRef = 7D92E5B0160703F6000C7B06 /* PhotoPostWithURLHistoryStyle.txt */; };
@@ -167,7 +164,6 @@
 		80316A1015C0EC20009D43F0 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 80316A0715C0EC20009D43F0 /* README.md */; };
 		80316A1115C0EC20009D43F0 /* UIViewController+IRAQAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 80316A0915C0EC20009D43F0 /* UIViewController+IRAQAdditions.m */; };
 		80557BA915FDE38000336F3C /* WARemoteInterface+RemoteNotifications.m in Sources */ = {isa = PBXBuildFile; fileRef = 80557BA815FDE38000336F3C /* WARemoteInterface+RemoteNotifications.m */; };
-		805E9DB515F8A49A00970C80 /* libSocketRocket.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8002CDDB15E5E73800D7BFF0 /* libSocketRocket.a */; };
 		806A5C851623C6C500867E56 /* WADripdownMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 806A5C841623C6C500867E56 /* WADripdownMenuViewController.m */; };
 		806A5C891623CDDE00867E56 /* WADripdownMenuViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 806A5C881623CDDE00867E56 /* WADripdownMenuViewController.xib */; };
 		806A5C9C16241E2800867E56 /* Cal.png in Resources */ = {isa = PBXBuildFile; fileRef = 806A5C8A16241E2800867E56 /* Cal.png */; };
@@ -377,8 +373,6 @@
 		FF586BB21519B52A00F308E2 /* WADefines.m in Sources */ = {isa = PBXBuildFile; fileRef = FF0B2A2C14388FF000309F0E /* WADefines.m */; };
 		FF586BB31519B52A00F308E2 /* WADefines+iOS.m in Sources */ = {isa = PBXBuildFile; fileRef = FFC6200D149CF03A0097C377 /* WADefines+iOS.m */; };
 		FF586BBA1519B59E00F308E2 /* libIRRecurrenceMachine.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FFA69461147F800400F46347 /* libIRRecurrenceMachine.a */; };
-		FF586C6D1519B94300F308E2 /* libJSONKitTouch.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FF586C6A1519B93400F308E2 /* libJSONKitTouch.a */; };
-		FF586C721519B95E00F308E2 /* libJSONKitTouch.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FF586C6A1519B93400F308E2 /* libJSONKitTouch.a */; };
 		FF586C731519B9F300F308E2 /* WADiscreteLayoutHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = FFE2E60B150F336D00555C16 /* WADiscreteLayoutHelpers.m */; };
 		FF586C741519BB2A00F308E2 /* WAModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = FFCD324114B997B70035C4F5 /* WAModel.xcdatamodeld */; };
 		FF5ACC22152D917E00F1DF3D /* WANavigationState.m in Sources */ = {isa = PBXBuildFile; fileRef = FF5ACC21152D917E00F1DF3D /* WANavigationState.m */; };
@@ -714,7 +708,6 @@
 		FFCFE0B9142111E100B9E6AF /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF73A69913D6E08800D54EC6 /* QuartzCore.framework */; };
 		FFCFE0BA142111E100B9E6AF /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF73A69713D6E08100D54EC6 /* CoreData.framework */; };
 		FFCFE0BB142111E100B9E6AF /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FFB67956141E345C006F84E3 /* CoreText.framework */; settings = {ATTRIBUTES = (Required, ); }; };
-		FFCFE0BC142111E100B9E6AF /* libAQGridView.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FF73A5DE13D6DD5000D54EC6 /* libAQGridView.a */; };
 		FFCFE0BD142111E100B9E6AF /* libIRFoundationsTouch.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FF73A59D13D6DC6500D54EC6 /* libIRFoundationsTouch.a */; };
 		FFCFE0BE142111E100B9E6AF /* libIRWebAPIKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FF73A5A713D6DC6A00D54EC6 /* libIRWebAPIKit.a */; };
 		FFCFE0C0142111E100B9E6AF /* libIRDiscreteLayoutManager.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FFBA66EB140E12AD00BE5A1D /* libIRDiscreteLayoutManager.a */; };
@@ -733,7 +726,6 @@
 		FFD4F93F157E0A080027BF3F /* WAArticleView+ReuseSupport.m in Sources */ = {isa = PBXBuildFile; fileRef = FFD4F93E157E0A080027BF3F /* WAArticleView+ReuseSupport.m */; };
 		FFD5295715B94DCA008DA71B /* WALocalizedTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = FFD5295615B94DCA008DA71B /* WALocalizedTextField.m */; };
 		FFDBBE3B150A091100E1E3DB /* IRManagedObject+WAFileHandling.m in Sources */ = {isa = PBXBuildFile; fileRef = FFDBBE3A150A091100E1E3DB /* IRManagedObject+WAFileHandling.m */; };
-		FFDE51F3159AF8240086F9B0 /* JSONKitX.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF586C6C1519B93400F308E2 /* JSONKitX.framework */; };
 		FFDE51F4159AF8390086F9B0 /* WAArticle.m in Sources */ = {isa = PBXBuildFile; fileRef = FF11362D15627DEC0014AB32 /* WAArticle.m */; };
 		FFDE51F5159AF83C0086F9B0 /* WAArticle+WAAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = FF88E14414E8D7DC00B347A8 /* WAArticle+WAAdditions.m */; };
 		FFDE51F7159AF8470086F9B0 /* WAFile+WAAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = FFCD325114B9EA4D0035C4F5 /* WAFile+WAAdditions.m */; };
@@ -766,27 +758,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		4B0FE09715EDCD5600D90707 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 4B0FE08E15EDCD5500D90707 /* OCMock.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 030EF0A814632FD000B04273;
-			remoteInfo = OCMock;
-		};
-		4B0FE09915EDCD5600D90707 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 4B0FE08E15EDCD5500D90707 /* OCMock.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 030EF0C014632FD000B04273;
-			remoteInfo = OCMockTests;
-		};
-		4B0FE09B15EDCD5600D90707 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 4B0FE08E15EDCD5500D90707 /* OCMock.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 030EF0DC14632FF700B04273;
-			remoteInfo = OCMockLib;
-		};
 		4B36253915662DCA00F07032 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = FF73A59513D6DC6500D54EC6 /* IRFoundations.xcodeproj */;
@@ -800,41 +771,6 @@
 			proxyType = 2;
 			remoteGlobalIDString = FF3BE06715375564004C5244;
 			remoteInfo = IRFoundationsTouchTestHost;
-		};
-		8002CDDA15E5E73800D7BFF0 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 8002CDCF15E5E73800D7BFF0 /* SocketRocket.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = F6B2082D1450F597009315AF;
-			remoteInfo = SocketRocket;
-		};
-		8002CDDC15E5E73800D7BFF0 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 8002CDCF15E5E73800D7BFF0 /* SocketRocket.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = F668C880153E91210044DBAC;
-			remoteInfo = SocketRocketOSX;
-		};
-		8002CDDE15E5E73800D7BFF0 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 8002CDCF15E5E73800D7BFF0 /* SocketRocket.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = F6BDA802145900D200FE3253;
-			remoteInfo = SRWebSocketTests;
-		};
-		8002CDE015E5E73800D7BFF0 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 8002CDCF15E5E73800D7BFF0 /* SocketRocket.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = F62417E314D52F3C003CE997;
-			remoteInfo = TestChat;
-		};
-		805E9DB315F8A47900970C80 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 8002CDCF15E5E73800D7BFF0 /* SocketRocket.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = F6B2082C1450F597009315AF;
-			remoteInfo = SocketRocket;
 		};
 		FF09C0DE15A2DD6F00AEDDAE /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -885,27 +821,6 @@
 			remoteGlobalIDString = FF0F650E14C2DDAA0037787A;
 			remoteInfo = IRFoundationsTest;
 		};
-		FF586C691519B93400F308E2 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = FF586C611519B93400F308E2 /* JSONKit.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = FF586BCB1519B72600F308E2;
-			remoteInfo = JSONKitTouch;
-		};
-		FF586C6B1519B93400F308E2 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = FF586C611519B93400F308E2 /* JSONKit.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = FF586BEA1519B7B700F308E2;
-			remoteInfo = JSONKitX;
-		};
-		FF586C6E1519B94E00F308E2 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = FF586C611519B93400F308E2 /* JSONKit.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = FF586BCA1519B72600F308E2;
-			remoteInfo = JSONKitTouch;
-		};
 		FF59A3AC1441C97000BB1FDC /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = FF73A59E13D6DC6A00D54EC6 /* IRWebAPIKit.xcodeproj */;
@@ -941,13 +856,6 @@
 			remoteGlobalIDString = FF45627812D05708000239DC;
 			remoteInfo = IRWebAPIKitTest;
 		};
-		FF73A5DD13D6DD5000D54EC6 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = FF73A5B413D6DC8000D54EC6 /* AQGridView.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = D2AAC07E0554694100DB518D;
-			remoteInfo = AQGridView;
-		};
 		FFA53E3414D934C7001E7B6B /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = FF73A53513D6C2CC00D54EC6 /* Project object */;
@@ -975,13 +883,6 @@
 			proxyType = 1;
 			remoteGlobalIDString = FF2228281463C77300541E31;
 			remoteInfo = IRRecurrenceMachine;
-		};
-		FFB2F74C151C27CA00FF2AA4 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = FF586C611519B93400F308E2 /* JSONKit.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = FFB2F6DD151BAACA00FF2AA4;
-			remoteInfo = JSONKitTest;
 		};
 		FFB3C176145E9A6600ED7A56 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -1031,13 +932,6 @@
 			proxyType = 1;
 			remoteGlobalIDString = FF7408231296A8D200571D46;
 			remoteInfo = IRWebAPIKit;
-		};
-		FFCFE082142111E100B9E6AF /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = FF73A5B413D6DC8000D54EC6 /* AQGridView.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = D2AAC07D0554694100DB518D;
-			remoteInfo = AQGridView;
 		};
 		FFD4F936157E07F90027BF3F /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -1141,7 +1035,6 @@
 		13EFF4BE15FEC1B3007430EC /* WAPhotoImportManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WAPhotoImportManager.m; path = wammer/WAPhotoImportManager.m; sourceTree = "<group>"; };
 		13EFF4C015FEC2E7007430EC /* WAModel 35.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WAModel 35.xcdatamodel"; sourceTree = "<group>"; };
 		4B0C3EED15BF868400CAA346 /* PostWithCompleteAttachmentInformation.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = PostWithCompleteAttachmentInformation.txt; sourceTree = "<group>"; };
-		4B0FE08E15EDCD5500D90707 /* OCMock.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = OCMock.xcodeproj; path = external/ocmock/Source/OCMock.xcodeproj; sourceTree = "<group>"; };
 		4B1527A013E29E72006E9737 /* WATimelineViewControllerPhone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WATimelineViewControllerPhone.h; sourceTree = "<group>"; };
 		4B1527A113E29E72006E9737 /* WATimelineViewControllerPhone.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WATimelineViewControllerPhone.m; sourceTree = "<group>"; usesTabs = 1; };
 		4B16701115FDCE9900990F4B /* WADefaults.staging.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = WADefaults.staging.plist; path = Resources/WADefaults.staging.plist; sourceTree = "<group>"; };
@@ -1176,7 +1069,6 @@
 		4B3225E815BE4CE400934DA4 /* WAArticleTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAArticleTests.m; sourceTree = "<group>"; };
 		4B362546156630D400F07032 /* IRRelativeDateFormatter+WAAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "IRRelativeDateFormatter+WAAdditions.h"; path = "wammer/IRRelativeDateFormatter+WAAdditions.h"; sourceTree = "<group>"; };
 		4B362547156630D400F07032 /* IRRelativeDateFormatter+WAAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "IRRelativeDateFormatter+WAAdditions.m"; path = "wammer/IRRelativeDateFormatter+WAAdditions.m"; sourceTree = "<group>"; };
-		4B43E32D15EDEB3500F64F40 /* libOCMock.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libOCMock.a; path = wammer/Libraries/libOCMock.a; sourceTree = "<group>"; };
 		4B52733F15624E1800C6F55D /* WFPreviewTemplate-Discrete_Web_ImageWithDescription_Horizontal_for_6.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = "WFPreviewTemplate-Discrete_Web_ImageWithDescription_Horizontal_for_6.html"; path = "external/WFPresentation/Source/WFPreviewTemplate-Discrete_Web_ImageWithDescription_Horizontal_for_6.html"; sourceTree = "<group>"; };
 		4B52734315625B3500C6F55D /* ProviderIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ProviderIcon.png; path = external/WFPresentation/Source/ProviderIcon.png; sourceTree = "<group>"; };
 		4B57F2F8157F5D4300467AD4 /* WFPreviewTemplate-Discrete_Web_Image_Vertical.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = "WFPreviewTemplate-Discrete_Web_Image_Vertical.html"; path = "external/WFPresentation/Source/WFPreviewTemplate-Discrete_Web_Image_Vertical.html"; sourceTree = "<group>"; };
@@ -1290,7 +1182,6 @@
 		7DAD18A01626A73B00F87495 /* GAITransactionItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GAITransactionItem.h; path = wammer/Libraries/GAITransactionItem.h; sourceTree = SOURCE_ROOT; };
 		7DAD18A11626A73B00F87495 /* libGoogleAnalytics.a */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = archive.ar; name = libGoogleAnalytics.a; path = wammer/Libraries/libGoogleAnalytics.a; sourceTree = SOURCE_ROOT; };
 		7DED9203164103BE00B9D778 /* WAModel 38.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WAModel 38.xcdatamodel"; sourceTree = "<group>"; };
-		8002CDCF15E5E73800D7BFF0 /* SocketRocket.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SocketRocket.xcodeproj; path = external/SocketRocket/SocketRocket.xcodeproj; sourceTree = "<group>"; };
 		8002CDE515E5E85600D7BFF0 /* libicucore.dylib */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "compiled.mach-o.dylib"; name = libicucore.dylib; path = usr/lib/libicucore.dylib; sourceTree = SDKROOT; };
 		8002CDE715E5E92100D7BFF0 /* WARemoteInterface+Notification.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WARemoteInterface+Notification.h"; sourceTree = "<group>"; };
 		8002CDE815E5E92100D7BFF0 /* WARemoteInterface+Notification.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WARemoteInterface+Notification.m"; sourceTree = "<group>"; };
@@ -1512,7 +1403,6 @@
 		FF577B8E14A3109100B25E74 /* WAArticleViewController+Subclasses.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WAArticleViewController+Subclasses.h"; sourceTree = "<group>"; };
 		FF584C4B1435CB320058E109 /* WAImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAImageView.h; sourceTree = "<group>"; };
 		FF584C4C1435CB320058E109 /* WAImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAImageView.m; sourceTree = "<group>"; };
-		FF586C611519B93400F308E2 /* JSONKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = JSONKit.xcodeproj; path = external/JSONKit/JSONKit.xcodeproj; sourceTree = "<group>"; };
 		FF5ACC20152D917E00F1DF3D /* WANavigationState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WANavigationState.h; sourceTree = "<group>"; };
 		FF5ACC21152D917E00F1DF3D /* WANavigationState.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WANavigationState.m; sourceTree = "<group>"; };
 		FF5B83B2140F935500A9D037 /* WAOverviewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WAOverviewController.xib; sourceTree = "<group>"; };
@@ -1553,7 +1443,6 @@
 		FF73A56E13D6CD4100D54EC6 /* WACompositionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WACompositionViewController.m; sourceTree = "<group>"; };
 		FF73A59513D6DC6500D54EC6 /* IRFoundations.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = IRFoundations.xcodeproj; path = external/IRFoundations/IRFoundations/IRFoundations.xcodeproj; sourceTree = "<group>"; };
 		FF73A59E13D6DC6A00D54EC6 /* IRWebAPIKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = IRWebAPIKit.xcodeproj; path = external/IRWebAPIKit/IRWebAPIKit.xcodeproj; sourceTree = "<group>"; };
-		FF73A5B413D6DC8000D54EC6 /* AQGridView.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = AQGridView.xcodeproj; path = external/AQGridView/AQGridView.xcodeproj; sourceTree = "<group>"; };
 		FF73A69513D6E07D00D54EC6 /* MobileCoreServices.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		FF73A69713D6E08100D54EC6 /* CoreData.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		FF73A69913D6E08800D54EC6 /* QuartzCore.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
@@ -1976,11 +1865,8 @@
 				7D9B1D96162BC0AD000E5350 /* Accounts.framework in Frameworks */,
 				7D9B1D97162BC0AD000E5350 /* AdSupport.framework in Frameworks */,
 				7D9B1D98162BC0AD000E5350 /* Social.framework in Frameworks */,
-				4B43E32E15EDEB3500F64F40 /* libOCMock.a in Frameworks */,
 				4B26970C15E76A99007E1054 /* libicucore.dylib in Frameworks */,
 				4B26970B15E76A5F007E1054 /* CFNetwork.framework in Frameworks */,
-				4B26970A15E7672D007E1054 /* libSocketRocket.a in Frameworks */,
-				FF586C721519B95E00F308E2 /* libJSONKitTouch.a in Frameworks */,
 				FF586BBA1519B59E00F308E2 /* libIRRecurrenceMachine.a in Frameworks */,
 				FF586BB11519B51700F308E2 /* libIRWebAPIKit.a in Frameworks */,
 				FFCEF43F15199F550021AECB /* libIRFoundationsTouch.a in Frameworks */,
@@ -2019,7 +1905,6 @@
 				7D0CDD01162E5A080027D35F /* SenTestingKit.framework in Frameworks */,
 				7D0CDD02162E5A080027D35F /* UIKit.framework in Frameworks */,
 				7D0CDD03162E5A080027D35F /* Foundation.framework in Frameworks */,
-				7D0CDD13162E5CEE0027D35F /* libOCMock.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2037,7 +1922,6 @@
 				FFC648911445EC4500593E5E /* IRFoundationsX.framework in Frameworks */,
 				FFC648921445EC4500593E5E /* IRWebAPIKitX.framework in Frameworks */,
 				FF460D33149CF8E400DB7F0B /* IRRecurrenceMachineX.framework in Frameworks */,
-				FFDE51F3159AF8240086F9B0 /* JSONKitX.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2048,7 +1932,6 @@
 				7D9B1D91162BB1F6000E5350 /* Social.framework in Frameworks */,
 				7D9B1D8F162BB1E8000E5350 /* AdSupport.framework in Frameworks */,
 				7D9B1D8D162BB1DE000E5350 /* Accounts.framework in Frameworks */,
-				805E9DB515F8A49A00970C80 /* libSocketRocket.a in Frameworks */,
 				8002CDE615E5E85600D7BFF0 /* libicucore.dylib in Frameworks */,
 				4B8DFB7414FDFC3D000B41C5 /* CFNetwork.framework in Frameworks */,
 				FF1A105E1462B10C004FD00D /* OpenAL.framework in Frameworks */,
@@ -2074,7 +1957,6 @@
 				4B8DFB7214FDFC34000B41C5 /* libsqlite3.0.dylib in Frameworks */,
 				FF42755C14F4E8D200824505 /* libz.dylib in Frameworks */,
 				FF0CC559158A41150034BD1B /* libxml2.dylib in Frameworks */,
-				FFCFE0BC142111E100B9E6AF /* libAQGridView.a in Frameworks */,
 				FFCFE0BD142111E100B9E6AF /* libIRFoundationsTouch.a in Frameworks */,
 				FFCFE0BE142111E100B9E6AF /* libIRWebAPIKit.a in Frameworks */,
 				FFCFE0C0142111E100B9E6AF /* libIRDiscreteLayoutManager.a in Frameworks */,
@@ -2083,7 +1965,6 @@
 				FFB117C6147F8B3D002094E5 /* libIRRecurrenceMachine.a in Frameworks */,
 				FF09C0E015A2DD7D00AEDDAE /* libIRSlidingSplitViewController.a in Frameworks */,
 				FFED705E15497D7800E01FFB /* libWFPresentation.a in Frameworks */,
-				FF586C6D1519B94300F308E2 /* libJSONKitTouch.a in Frameworks */,
 				7DAD18A21626A73B00F87495 /* libGoogleAnalytics.a in Frameworks */,
 				94EB57761411451780C24560 /* libPods.a in Frameworks */,
 			);
@@ -2146,16 +2027,6 @@
 				13EFF4BE15FEC1B3007430EC /* WAPhotoImportManager.m */,
 			);
 			name = "Photo Import";
-			sourceTree = "<group>";
-		};
-		4B0FE08F15EDCD5500D90707 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				4B0FE09815EDCD5600D90707 /* OCMock.framework */,
-				4B0FE09A15EDCD5600D90707 /* OCMockTests.octest */,
-				4B0FE09C15EDCD5600D90707 /* libOCMock.a */,
-			);
-			name = Products;
 			sourceTree = "<group>";
 		};
 		4B1527A313E29E8D006E9737 /* Picker Pane */ = {
@@ -2354,14 +2225,6 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		7D92E55E1606CC52000C7B06 /* OCMock */ = {
-			isa = PBXGroup;
-			children = (
-				4B43E32D15EDEB3500F64F40 /* libOCMock.a */,
-			);
-			name = OCMock;
-			sourceTree = "<group>";
-		};
 		7DB81F181637E91B009A3645 /* Collection */ = {
 			isa = PBXGroup;
 			children = (
@@ -2372,17 +2235,6 @@
 				7DA7879B1639245C00BEFC6E /* WALightTableViewController.m */,
 			);
 			name = Collection;
-			sourceTree = "<group>";
-		};
-		8002CDD015E5E73800D7BFF0 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				8002CDDB15E5E73800D7BFF0 /* libSocketRocket.a */,
-				8002CDDD15E5E73800D7BFF0 /* SocketRocket.framework */,
-				8002CDDF15E5E73800D7BFF0 /* SRWebSocketTests.octest */,
-				8002CDE115E5E73800D7BFF0 /* TestChat.app */,
-			);
-			name = Products;
 			sourceTree = "<group>";
 		};
 		803169F715C0EC20009D43F0 /* IRAQPhotoPicker */ = {
@@ -2657,16 +2509,6 @@
 			path = ..;
 			sourceTree = "<group>";
 		};
-		FF586C621519B93400F308E2 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				FF586C6A1519B93400F308E2 /* libJSONKitTouch.a */,
-				FF586C6C1519B93400F308E2 /* JSONKitX.framework */,
-				FFB2F74D151C27CA00FF2AA4 /* JSONKitTest.octest */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 		FF59F87914419581005508FC /* OSX */ = {
 			isa = PBXGroup;
 			children = (
@@ -2799,7 +2641,6 @@
 			children = (
 				7D9B1D8C162BB1DE000E5350 /* Accounts.framework */,
 				7D9B1D8E162BB1E8000E5350 /* AdSupport.framework */,
-				FF73A5B413D6DC8000D54EC6 /* AQGridView.xcodeproj */,
 				FFC9D96614FF28B2004197EC /* Google Analytics SDK */,
 				4B733B7A14987A81005CAE8D /* InAppSettingsKit */,
 				FFFDEFB414211D5C0083BEFB /* iOS */,
@@ -2810,12 +2651,8 @@
 				FF09C0D715A2DD6F00AEDDAE /* IRSlidingSplitViewController.xcodeproj */,
 				FFB3C16F145E9A6600ED7A56 /* IRTextAttributor.xcodeproj */,
 				FF73A59E13D6DC6A00D54EC6 /* IRWebAPIKit.xcodeproj */,
-				FF586C611519B93400F308E2 /* JSONKit.xcodeproj */,
-				7D92E55E1606CC52000C7B06 /* OCMock */,
-				4B0FE08E15EDCD5500D90707 /* OCMock.xcodeproj */,
 				FF59F87914419581005508FC /* OSX */,
 				7D9B1D90162BB1F6000E5350 /* Social.framework */,
-				8002CDCF15E5E73800D7BFF0 /* SocketRocket.xcodeproj */,
 				FFED705215497D6B00E01FFB /* WFPresentation.xcodeproj */,
 				7D0CDCE7162E59DD0027D35F /* SenTestingKit.framework */,
 				7D0CDCE9162E59DD0027D35F /* UIKit.framework */,
@@ -2854,14 +2691,6 @@
 				FF73A5A713D6DC6A00D54EC6 /* libIRWebAPIKit.a */,
 				FF73A5A913D6DC6A00D54EC6 /* IRWebAPIKitTest.octest */,
 				FF59A3AD1441C97000BB1FDC /* IRWebAPIKitX.framework */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
-		FF73A5DA13D6DD5000D54EC6 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				FF73A5DE13D6DD5000D54EC6 /* libAQGridView.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -3635,16 +3464,13 @@
 			buildRules = (
 			);
 			dependencies = (
-				805E9DB415F8A47900970C80 /* PBXTargetDependency */,
 				FFD4F93B157E08460027BF3F /* PBXTargetDependency */,
-				FF586C6F1519B94E00F308E2 /* PBXTargetDependency */,
 				FFB117C5147F8B34002094E5 /* PBXTargetDependency */,
 				FFB3C179145E9A6F00ED7A56 /* PBXTargetDependency */,
 				FFCFE079142111E100B9E6AF /* PBXTargetDependency */,
 				FFCFE07D142111E100B9E6AF /* PBXTargetDependency */,
 				FFCFE07F142111E100B9E6AF /* PBXTargetDependency */,
 				FF09C0E215A2DD8700AEDDAE /* PBXTargetDependency */,
-				FFCFE081142111E100B9E6AF /* PBXTargetDependency */,
 				FFA9990B1549A308004C9B52 /* PBXTargetDependency */,
 			);
 			name = "wammer-iOS";
@@ -3677,10 +3503,6 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
-					ProductGroup = FF73A5DA13D6DD5000D54EC6 /* Products */;
-					ProjectRef = FF73A5B413D6DC8000D54EC6 /* AQGridView.xcodeproj */;
-				},
-				{
 					ProductGroup = FFBA66E3140E12AD00BE5A1D /* Products */;
 					ProjectRef = FFBA66E2140E12AD00BE5A1D /* IRDiscreteLayoutManager.xcodeproj */;
 				},
@@ -3709,18 +3531,6 @@
 					ProjectRef = FF73A59E13D6DC6A00D54EC6 /* IRWebAPIKit.xcodeproj */;
 				},
 				{
-					ProductGroup = FF586C621519B93400F308E2 /* Products */;
-					ProjectRef = FF586C611519B93400F308E2 /* JSONKit.xcodeproj */;
-				},
-				{
-					ProductGroup = 4B0FE08F15EDCD5500D90707 /* Products */;
-					ProjectRef = 4B0FE08E15EDCD5500D90707 /* OCMock.xcodeproj */;
-				},
-				{
-					ProductGroup = 8002CDD015E5E73800D7BFF0 /* Products */;
-					ProjectRef = 8002CDCF15E5E73800D7BFF0 /* SocketRocket.xcodeproj */;
-				},
-				{
 					ProductGroup = FFED705315497D6B00E01FFB /* Products */;
 					ProjectRef = FFED705215497D6B00E01FFB /* WFPresentation.xcodeproj */;
 				},
@@ -3737,27 +3547,6 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
-		4B0FE09815EDCD5600D90707 /* OCMock.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = OCMock.framework;
-			remoteRef = 4B0FE09715EDCD5600D90707 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		4B0FE09A15EDCD5600D90707 /* OCMockTests.octest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = OCMockTests.octest;
-			remoteRef = 4B0FE09915EDCD5600D90707 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		4B0FE09C15EDCD5600D90707 /* libOCMock.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libOCMock.a;
-			remoteRef = 4B0FE09B15EDCD5600D90707 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
 		4B36253A15662DCA00F07032 /* IRFoundationsTouchTest.octest */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.cfbundle;
@@ -3770,34 +3559,6 @@
 			fileType = wrapper.application;
 			path = IRFoundationsTouchTestHost.app;
 			remoteRef = 4B36253B15662DCA00F07032 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		8002CDDB15E5E73800D7BFF0 /* libSocketRocket.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libSocketRocket.a;
-			remoteRef = 8002CDDA15E5E73800D7BFF0 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		8002CDDD15E5E73800D7BFF0 /* SocketRocket.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = SocketRocket.framework;
-			remoteRef = 8002CDDC15E5E73800D7BFF0 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		8002CDDF15E5E73800D7BFF0 /* SRWebSocketTests.octest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = SRWebSocketTests.octest;
-			remoteRef = 8002CDDE15E5E73800D7BFF0 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		8002CDE115E5E73800D7BFF0 /* TestChat.app */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.application;
-			path = TestChat.app;
-			remoteRef = 8002CDE015E5E73800D7BFF0 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		FF09C0DF15A2DD6F00AEDDAE /* libIRSlidingSplitViewController.a */ = {
@@ -3819,20 +3580,6 @@
 			fileType = wrapper.cfbundle;
 			path = IRFoundationsTest.octest;
 			remoteRef = FF543F3C14C30A15005D3F7D /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		FF586C6A1519B93400F308E2 /* libJSONKitTouch.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libJSONKitTouch.a;
-			remoteRef = FF586C691519B93400F308E2 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		FF586C6C1519B93400F308E2 /* JSONKitX.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = JSONKitX.framework;
-			remoteRef = FF586C6B1519B93400F308E2 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		FF59A3AD1441C97000BB1FDC /* IRWebAPIKitX.framework */ = {
@@ -3870,25 +3617,11 @@
 			remoteRef = FF73A5A813D6DC6A00D54EC6 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		FF73A5DE13D6DD5000D54EC6 /* libAQGridView.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libAQGridView.a;
-			remoteRef = FF73A5DD13D6DD5000D54EC6 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
 		FFA69461147F800400F46347 /* libIRRecurrenceMachine.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
 			path = libIRRecurrenceMachine.a;
 			remoteRef = FFA69460147F800400F46347 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		FFB2F74D151C27CA00FF2AA4 /* JSONKitTest.octest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = JSONKitTest.octest;
-			remoteRef = FFB2F74C151C27CA00FF2AA4 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		FFB3C177145E9A6600ED7A56 /* libIRTextAttributor.a */ = {
@@ -4792,11 +4525,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		805E9DB415F8A47900970C80 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = SocketRocket;
-			targetProxy = 805E9DB315F8A47900970C80 /* PBXContainerItemProxy */;
-		};
 		FF09C0E215A2DD8700AEDDAE /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = IRSlidingSplitViewController;
@@ -4816,11 +4544,6 @@
 			isa = PBXTargetDependency;
 			name = IRWebAPIKitX;
 			targetProxy = FF460D31149CF8DF00DB7F0B /* PBXContainerItemProxy */;
-		};
-		FF586C6F1519B94E00F308E2 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = JSONKitTouch;
-			targetProxy = FF586C6E1519B94E00F308E2 /* PBXContainerItemProxy */;
 		};
 		FFA53E3514D934C7001E7B6B /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -4856,11 +4579,6 @@
 			isa = PBXTargetDependency;
 			name = IRWebAPIKit;
 			targetProxy = FFCFE080142111E100B9E6AF /* PBXContainerItemProxy */;
-		};
-		FFCFE081142111E100B9E6AF /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = AQGridView;
-			targetProxy = FFCFE082142111E100B9E6AF /* PBXContainerItemProxy */;
 		};
 		FFD4F93B157E08460027BF3F /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
