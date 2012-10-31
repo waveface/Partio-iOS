@@ -29,26 +29,20 @@
 
 	UITableViewCell *hitCell = [tableView cellForRowAtIndexPath:indexPath];
 
+	self.enablePhotoImportCell.accessoryType = UITableViewCellAccessoryNone;
+	self.disablePhotoImportCell.accessoryType = UITableViewCellAccessoryNone;
+
+	hitCell.accessoryType = UITableViewCellAccessoryCheckmark;
+
 	if (hitCell == self.enablePhotoImportCell) {
-
-		self.enablePhotoImportCell.accessoryType = UITableViewCellAccessoryCheckmark;
-		self.disablePhotoImportCell.accessoryType = UITableViewCellAccessoryNone;
 		[[NSUserDefaults standardUserDefaults] setBool:YES forKey:kWAPhotoImportEnabled];
-		[[NSUserDefaults standardUserDefaults] synchronize];
-
-		self.navigationItem.rightBarButtonItem.enabled = YES;
-
 	} else if (hitCell == self.disablePhotoImportCell) {
-
-		self.disablePhotoImportCell.accessoryType = UITableViewCellAccessoryCheckmark;
-		self.enablePhotoImportCell.accessoryType = UITableViewCellAccessoryNone;
 		[[NSUserDefaults standardUserDefaults] setBool:NO forKey:kWAPhotoImportEnabled];
-		[[NSUserDefaults standardUserDefaults] synchronize];
-
-		self.navigationItem.rightBarButtonItem.enabled = YES;
-
 	}
+	[[NSUserDefaults standardUserDefaults] synchronize];
 
+	self.navigationItem.rightBarButtonItem.enabled = YES;
+	
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];
 
 }
