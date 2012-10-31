@@ -10,6 +10,8 @@
 #import <UIKit/UIKit.h>
 #import "UIKit+IRAdditions.h"
 
+
+#pragma mark - UIAppearance
 void WADefaultAppearance(void) {
 	
 	if (isPad()) {
@@ -37,6 +39,7 @@ void WADefaultAppearance(void) {
 	
 }
 
+#pragma mark - Origianl appearance settings
 void WADefaultBarButtonInitialize (void) {
 
 	static dispatch_once_t onceToken = 0;
