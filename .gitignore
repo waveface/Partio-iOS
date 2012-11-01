@@ -80,3 +80,7 @@ testFlightCredentials
 # localize.py
 *.strings.new
 *.strings.old
+
+# CocoaPods
+*.lock
+Pods/*

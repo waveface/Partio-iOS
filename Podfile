@@ -1,0 +1,10 @@
+platform:ios
+pod 'MagicalRecord', '~> 2.0.7'
+pod 'TestFlightSDK', '~> 1.1'
+pod 'SSKeychain', '~> 0.1.4'
+pod 'DCIntrospect', '~> 0.0.2'
+pod 'Facebook-iOS-SDK', '~> 3.1.1'
+pod 'JSONKit', '~> 1.5pre'
+pod 'OCMock', '~> 2.0.1'
+pod 'OCHamcrest', '~> 1.8'
+pod 'InAppSettingsKit', '~> 1.0'
