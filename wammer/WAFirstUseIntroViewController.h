@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import <CoreFoundation/CoreFoundation.h>
 
-@interface WAFirstUseIntroViewController : UIViewController <UIScrollViewDelegate>
+@interface WAFirstUseIntroViewController : UIViewController <UIScrollViewDelegate, UITextFieldDelegate>
 @property (strong, nonatomic) IBOutlet UIScrollView *scrollView;
 @property (strong, nonatomic) IBOutlet UIPageControl *pageControl;
 

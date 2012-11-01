@@ -25,8 +25,8 @@
 - (IBAction)handleDone:(id)sender {
 
 	WAFirstUseViewController *firstUseVC = (WAFirstUseViewController *)self.navigationController;
-	if (firstUseVC.completeBlock) {
-		firstUseVC.completeBlock();
+	if (firstUseVC.didFinishBlock) {
+		firstUseVC.didFinishBlock();
 	}
 
 }

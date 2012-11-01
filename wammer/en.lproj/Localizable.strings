@@ -324,6 +324,9 @@
 /* Title to show explaining WiFi Sync */
 "SERVICE_INFO_WITHOUT_WIFI" = "Stream only sends your original photos via Wi-Fi connection. \n\nIf you don't have Stream installed on your PC, or it's not up and running, we keep the photos in a temporary cloud space for up to 30 days.";
 
+/* Navigation title on sign up page */
+"Sign Up" = "Sign Up";
+
 /* Title for view controller signing the user in */
 "SIGN_IN_CONTROLLER_TITLE" = "Log In";
 
@@ -429,6 +432,9 @@
 /* No comment provided by engineer. */
 "WEEK_SINGULAR" = "%d week";
 
+/* Navigation title on introduction pages */
+"What is Stream?" = "What is Stream?";
+
 /* No comment provided by engineer. */
 "YEAR_PLURAL" = "%d years";
 
@@ -452,18 +458,6 @@
 
 /* Class = "IBUILabel"; text = "MONDAY"; ObjectID = "39"; */
 "MONDAY" = "MONDAY";
-
-/* Class = "IBUILabel"; text = "NOUN_USERNAME"; ObjectID = "sQz-ih-VPp"; */
-"NOUN_USERNAME" = "Email";
-
-/* Class = "IBUITextField"; placeholder = "PASSWORD_PLACEHOLDER"; ObjectID = "sdv-QB-cok"; */
-"PASSWORD_PLACEHOLDER" = "••••••••";
-
-/* Class = "IBUILabel"; text = "NOUN_PASSWORD"; ObjectID = "w8O-3I-535"; */
-"NOUN_PASSWORD" = "Password";
-
-/* Class = "IBUITextField"; placeholder = "USERNAME_PLACEHOLDER"; ObjectID = "zun-hC-loE"; */
-"USERNAME_PLACEHOLDER" = "me@example.com";
 
 /* Class = "IBUITextField"; placeholder = "USERNAME_PLACEHOLDER"; ObjectID = "2Vk-4J-QH3"; */
 "USERNAME_PLACEHOLDER" = "me@example.com";

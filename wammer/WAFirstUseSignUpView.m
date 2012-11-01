@@ -10,4 +10,10 @@
 
 @implementation WAFirstUseSignUpView
 
+- (BOOL) isPopulated {
+	
+	return [self.emailField.text length] && [self.passwordField.text length] && [self.nicknameField.text length];
+	
+}
+
 @end

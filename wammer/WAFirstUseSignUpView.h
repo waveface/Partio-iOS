@@ -16,4 +16,6 @@
 @property (weak, nonatomic) IBOutlet UITextField *nicknameField;
 @property (weak, nonatomic) IBOutlet UIButton *emailSignupButton;
 
+- (BOOL)isPopulated;
+
 @end

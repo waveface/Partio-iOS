@@ -324,6 +324,9 @@
 /* Title to show explaining WiFi Sync */
 "SERVICE_INFO_WITHOUT_WIFI" = "⚠ 僅會在 Wi-Fi 連線時上傳原檔\n\n在 Wi-Fi 環境中，Stream 會幫您將原始檔案妥善保存。只要下載並且開啓 PC 上的 Stream，您有 30 天的時間將檔案從雲端送回 PC 保存。";
 
+/* Navigation title on sign up page */
+"Sign Up" = "Sign Up";
+
 /* Title for view controller signing the user in */
 "SIGN_IN_CONTROLLER_TITLE" = "登入";
 
@@ -429,6 +432,9 @@
 /* No comment provided by engineer. */
 "WEEK_SINGULAR" = "%d週";
 
+/* Navigation title on introduction pages */
+"What is Stream?" = "What is Stream?";
+
 /* No comment provided by engineer. */
 "YEAR_PLURAL" = "%d年";
 
@@ -452,18 +458,6 @@
 
 /* Class = "IBUILabel"; text = "MONDAY"; ObjectID = "39"; */
 "MONDAY" = "MONDAY";
-
-/* Class = "IBUILabel"; text = "NOUN_USERNAME"; ObjectID = "sQz-ih-VPp"; */
-"NOUN_USERNAME" = "電子郵件";
-
-/* Class = "IBUITextField"; placeholder = "PASSWORD_PLACEHOLDER"; ObjectID = "sdv-QB-cok"; */
-"PASSWORD_PLACEHOLDER" = "••••••••";
-
-/* Class = "IBUILabel"; text = "NOUN_PASSWORD"; ObjectID = "w8O-3I-535"; */
-"NOUN_PASSWORD" = "密碼";
-
-/* Class = "IBUITextField"; placeholder = "USERNAME_PLACEHOLDER"; ObjectID = "zun-hC-loE"; */
-"USERNAME_PLACEHOLDER" = "me@example.com";
 
 /* Class = "IBUITextField"; placeholder = "USERNAME_PLACEHOLDER"; ObjectID = "2Vk-4J-QH3"; */
 "USERNAME_PLACEHOLDER" = "me@example.com";

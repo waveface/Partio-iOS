@@ -706,91 +706,149 @@ static NSString *const kTrackingId = @"UA-27817516-7";
 	
 	}
 	
-	__block WAWelcomeViewController *welcomeVC = [WAWelcomeViewController controllerWithCompletion:^(NSString *token, NSDictionary *userRep, NSArray *groupReps, NSError *error) {
+//	__block WAWelcomeViewController *welcomeVC = [WAWelcomeViewController controllerWithCompletion:^(NSString *token, NSDictionary *userRep, NSArray *groupReps, NSError *error) {
+//	
+//		if (error) {
+//		
+//			NSString *message = nil;
+//			if ([error code] == 0x9) {
+//				message = NSLocalizedString(@"AUTH_ERROR_INVALID_EMAIL_FORMAT", @"Authentication Error Description");
+//			} else if ([error code] == 0xb) {
+//				message = NSLocalizedString(@"AUTH_ERROR_INVALID_PWD_FORMAT", @"Authentication Error Description");
+//			} else if ([error code] == 0x1001) {
+//				message = NSLocalizedString(@"AUTH_ERROR_INVALID_EMAIL_PWD", @"Authentication Error Description");
+//			} else if ([error code] == 0x1002) {
+//				message = NSLocalizedString(@"AUTH_ERROR_ALREADY_REGISTERED", @"Authentication Error Description");
+//			} else {
+//				message = NSLocalizedString(@"AUTH_UNKNOWN_ERROR", @"Unknown Error");
+//			}
+//			IRAction *okAction = [IRAction actionWithTitle:NSLocalizedString(@"ACTION_OKAY", @"Alert Dismissal Action") block:nil];
+//		
+//			IRAlertView *alertView = [IRAlertView alertViewWithTitle:nil message:message cancelAction:okAction otherActions:nil];
+//			[alertView show];
+//		
+//			welcomeVC = nil;
+//			return;
+//			
+//		}
+//		
+//		NSString *userID = [userRep valueForKeyPath:@"user_id"];
+//		
+//		NSString *primaryGroupID = [[[groupReps filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary *bindings) {
+//		
+//			return [[evaluatedObject valueForKeyPath:@"creator_id"] isEqual:userID];
+//			
+//		}]] lastObject] valueForKeyPath:@"group_id"];
+//		
+//		WARemoteInterface * const ri = [WARemoteInterface sharedInterface];
+//		
+//		ri.userIdentifier = userID;
+//		ri.userToken = token;
+//		ri.primaryGroupIdentifier = primaryGroupID;
+//		
+//		handleAuthSuccess();
+//
+//		WAFirstUseViewController *firstUseVC = [WAFirstUseViewController initWithCompleteBlock:^{
+//
+//			[wAppDelegate clearViewHierarchy];
+//			[wAppDelegate recreateViewHierarchy];
+//			
+//		}];
+//
+//		switch ([UIDevice currentDevice].userInterfaceIdiom) {
+//
+//			case UIUserInterfaceIdiomPad:
+//				firstUseVC.modalPresentationStyle = UIModalPresentationFormSheet;
+//				break;
+//
+//			case UIUserInterfaceIdiomPhone:
+//				firstUseVC.modalPresentationStyle = UIModalPresentationCurrentContext;
+//
+//		}
+//		
+//		[wAppDelegate clearViewHierarchy];
+//		[wAppDelegate.window.rootViewController presentViewController:firstUseVC animated:NO completion:nil];
+//
+//	}];
 	
-		if (error) {
-		
-			NSString *message = nil;
-			if ([error code] == 0x9) {
-				message = NSLocalizedString(@"AUTH_ERROR_INVALID_EMAIL_FORMAT", @"Authentication Error Description");
-			} else if ([error code] == 0xb) {
-				message = NSLocalizedString(@"AUTH_ERROR_INVALID_PWD_FORMAT", @"Authentication Error Description");
-			} else if ([error code] == 0x1001) {
-				message = NSLocalizedString(@"AUTH_ERROR_INVALID_EMAIL_PWD", @"Authentication Error Description");
-			} else if ([error code] == 0x1002) {
-				message = NSLocalizedString(@"AUTH_ERROR_ALREADY_REGISTERED", @"Authentication Error Description");
-			} else {
-				message = NSLocalizedString(@"AUTH_UNKNOWN_ERROR", @"Unknown Error");
-			}
-			IRAction *okAction = [IRAction actionWithTitle:NSLocalizedString(@"ACTION_OKAY", @"Alert Dismissal Action") block:nil];
-		
-			IRAlertView *alertView = [IRAlertView alertViewWithTitle:nil message:message cancelAction:okAction otherActions:nil];
-			[alertView show];
-		
-			welcomeVC = nil;
-			return;
-			
-		}
-		
+//	UINavigationController *authRequestWrapperVC = [[UINavigationController alloc] initWithRootViewController:welcomeVC];
+//	
+//	switch ([UIDevice currentDevice].userInterfaceIdiom) {
+//	
+//		case UIUserInterfaceIdiomPad: {
+//			authRequestWrapperVC.modalPresentationStyle = UIModalPresentationFormSheet;
+//			break;
+//		}
+//		
+//		case UIUserInterfaceIdiomPhone:
+//		default: {
+//			authRequestWrapperVC.modalPresentationStyle = UIModalPresentationCurrentContext;
+//		}
+//
+//	}
+//	
+//	authRequestWrapperVC.navigationBar.tintColor =  [UIColor colorWithRed:98.0/255.0 green:176.0/255.0 blue:195.0/255.0 alpha:0.0];
+//	
+//	[self.window.rootViewController presentViewController:authRequestWrapperVC animated:NO completion:nil];
+
+	WAFirstUseViewController *firstUseVC = [WAFirstUseViewController initWithAuthSuccessBlock:^(NSString *token, NSDictionary *userRep, NSArray *groupReps){
+
 		NSString *userID = [userRep valueForKeyPath:@"user_id"];
-		
+
 		NSString *primaryGroupID = [[[groupReps filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary *bindings) {
-		
+
 			return [[evaluatedObject valueForKeyPath:@"creator_id"] isEqual:userID];
-			
+
 		}]] lastObject] valueForKeyPath:@"group_id"];
-		
+
 		WARemoteInterface * const ri = [WARemoteInterface sharedInterface];
-		
+
 		ri.userIdentifier = userID;
 		ri.userToken = token;
 		ri.primaryGroupIdentifier = primaryGroupID;
-		
+
 		handleAuthSuccess();
 
-		WAFirstUseViewController *firstUseVC = [WAFirstUseViewController initWithCompleteBlock:^{
+	} authFailBlock:^(NSError *error) {
 
-			[wAppDelegate clearViewHierarchy];
-			[wAppDelegate recreateViewHierarchy];
-			
-		}];
+		NSParameterAssert(error);
 
-		switch ([UIDevice currentDevice].userInterfaceIdiom) {
-
-			case UIUserInterfaceIdiomPad:
-				firstUseVC.modalPresentationStyle = UIModalPresentationFormSheet;
-				break;
-
-			case UIUserInterfaceIdiomPhone:
-				firstUseVC.modalPresentationStyle = UIModalPresentationCurrentContext;
-
+		NSString *message = nil;
+		if ([error code] == 0x9) {
+			message = NSLocalizedString(@"AUTH_ERROR_INVALID_EMAIL_FORMAT", @"Authentication Error Description");
+		} else if ([error code] == 0xb) {
+			message = NSLocalizedString(@"AUTH_ERROR_INVALID_PWD_FORMAT", @"Authentication Error Description");
+		} else if ([error code] == 0x1001) {
+			message = NSLocalizedString(@"AUTH_ERROR_INVALID_EMAIL_PWD", @"Authentication Error Description");
+		} else if ([error code] == 0x1002) {
+			message = NSLocalizedString(@"AUTH_ERROR_ALREADY_REGISTERED", @"Authentication Error Description");
+		} else {
+			message = NSLocalizedString(@"AUTH_UNKNOWN_ERROR", @"Unknown Error");
 		}
-		
+		IRAction *okAction = [IRAction actionWithTitle:NSLocalizedString(@"ACTION_OKAY", @"Alert Dismissal Action") block:nil];
+
+		IRAlertView *alertView = [IRAlertView alertViewWithTitle:nil message:message cancelAction:okAction otherActions:nil];
+		[alertView show];
+
+	} finishBlock:^{
+
 		[wAppDelegate clearViewHierarchy];
-		[wAppDelegate.window.rootViewController presentViewController:firstUseVC animated:NO completion:nil];
+		[wAppDelegate recreateViewHierarchy];
 
 	}];
-	
-	UINavigationController *authRequestWrapperVC = [[UINavigationController alloc] initWithRootViewController:welcomeVC];
-	
-	switch ([UIDevice currentDevice].userInterfaceIdiom) {
-	
-		case UIUserInterfaceIdiomPad: {
-			authRequestWrapperVC.modalPresentationStyle = UIModalPresentationFormSheet;
-			break;
-		}
-		
-		case UIUserInterfaceIdiomPhone:
-		default: {
-			authRequestWrapperVC.modalPresentationStyle = UIModalPresentationCurrentContext;
-		}
 
+	switch ([UIDevice currentDevice].userInterfaceIdiom) {
+			
+		case UIUserInterfaceIdiomPad:
+			firstUseVC.modalPresentationStyle = UIModalPresentationFormSheet;
+			break;
+			
+		case UIUserInterfaceIdiomPhone:
+			firstUseVC.modalPresentationStyle = UIModalPresentationCurrentContext;
+			
 	}
-	
-	authRequestWrapperVC.navigationBar.tintColor =  [UIColor colorWithRed:98.0/255.0 green:176.0/255.0 blue:195.0/255.0 alpha:0.0];
-	
-	[self.window.rootViewController presentViewController:authRequestWrapperVC animated:NO completion:nil];
-	
+
+	[self.window.rootViewController presentViewController:firstUseVC animated:NO completion:nil];
 }
 
 - (BOOL) isRunningAuthRequest {

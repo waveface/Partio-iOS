@@ -8,12 +8,13 @@
 
 #import <UIKit/UIKit.h>
 
-@interface WAFirstUseLogInViewController : UITableViewController
+@interface WAFirstUseLogInViewController : UIViewController <UITextFieldDelegate>
 
+@property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
 @property (weak, nonatomic) IBOutlet UIButton *facebookLoginButton;
 @property (weak, nonatomic) IBOutlet UITextField *emailField;
 @property (weak, nonatomic) IBOutlet UITextField *passwordField;
-@property (weak, nonatomic) IBOutlet UIBarButtonItem *doneButton;
+@property (weak, nonatomic) IBOutlet UIButton *emailLoginButton;
 
 - (IBAction)handleEmailLogin:(id)sender;
 - (IBAction)handleFacebookLogin:(id)sender;

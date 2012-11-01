@@ -19,7 +19,6 @@
 
 	[super viewDidLoad];
 	self.navigationItem.hidesBackButton = YES;
-	self.navigationItem.rightBarButtonItem.enabled = NO;
 
 }
 
@@ -44,8 +43,6 @@
 	}
 	[[NSUserDefaults standardUserDefaults] synchronize];
 	
-	self.navigationItem.rightBarButtonItem.enabled = YES;
-
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];
 
 }

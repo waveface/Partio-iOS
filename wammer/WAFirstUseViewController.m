@@ -14,17 +14,17 @@
 
 @implementation WAFirstUseViewController
 
-+ (WAFirstUseViewController *)initWithCompleteBlock:(void (^)(void))completeBlock {
++ (WAFirstUseViewController *)initWithAuthSuccessBlock:(WAFirstUseDidAuthSuccess)authSuccessBlock authFailBlock:(WAFirstUseDidAuthFail)authFailBlock  finishBlock:(WAFirstUseDidFinish)finishBlock {
 
 	UIStoryboard *sb = [UIStoryboard storyboardWithName:@"WAFirstUse" bundle:nil];
 	WAFirstUseViewController *vc = [sb instantiateInitialViewController];
-	vc.completeBlock = completeBlock;
-	vc.navigationBar.tintColor = [UIColor colorWithRed:98.0/255.0 green:176.0/255.0 blue:195.0/255.0 alpha:0.0];
-	vc.navigationController.navigationBar.opaque = NO;
-	
+	vc.didAuthSuccessBlock = authSuccessBlock;
+	vc.didAuthFailBlock = authFailBlock;
+	vc.didFinishBlock	= finishBlock;
+	vc.navigationBar.opaque = NO;
 
 	return vc;
-
+	
 }
 
 @end
