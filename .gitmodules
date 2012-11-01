@@ -1,21 +1,12 @@
 [submodule "external/IRFoundations"]
 	path = external/IRFoundations
 	url = git://github.com/waveface/IRFoundations.git
-[submodule "external/MGSplitViewController"]
-	path = external/MGSplitViewController
-	url = git://github.com/iridia/MGSplitViewController.git
-[submodule "external/AQGridView"]
-	path = external/AQGridView
-	url = git://github.com/waveface/AQGridView.git
 [submodule "external/IRWebAPIKit"]
 	path = external/IRWebAPIKit
 	url = git://github.com/waveface/IRWebAPIKit.git
 [submodule "external/mockingBird"]
 	path = external/mockingBird
 	url = git://github.com/waveface/mockingBird.git
-[submodule "external/JSONKit"]
-	path = external/JSONKit
-	url = git://github.com/iridia/JSONKit.git
 [submodule "external/IRDiscreteLayoutManager"]
 	path = external/IRDiscreteLayoutManager
 	url = git://github.com/waveface/IRDiscreteLayoutManager.git
@@ -31,9 +22,6 @@
 [submodule "external/IRRecurrenceMachine"]
 	path = external/IRRecurrenceMachine
 	url = git://github.com/waveface/IRRecurrenceMachine.git
-[submodule "external/InAppSettingsKit"]
-	path = external/InAppSettingsKit
-	url = git://github.com/futuretap/InAppSettingsKit
 [submodule "external/Sparkle"]
 	path = external/Sparkle
 	url = git://github.com/iridia/Sparkle.git
@@ -43,9 +31,6 @@
 [submodule "external/C3PO"]
 	path = external/C3PO
 	url = git://github.com/waveface/C3PO.git
-[submodule "external/DCIntrospect"]
-	path = external/DCIntrospect
-	url = https://github.com/domesticcatsoftware/DCIntrospect.git
 [submodule "external/WFPresentation"]
 	path = external/WFPresentation
 	url = git://github.com/waveface/WFPresentation.git
@@ -61,18 +46,12 @@
 [submodule "external/IRAQPhotoPicker"]
 	path = external/IRAQPhotoPicker
 	url = git@github.com:waveface/IRAQPhotoPickerController.git
-[submodule "external/SocketRocket"]
-	path = external/SocketRocket
-	url = git@github.com:waveface/SocketRocket.git
-[submodule "external/ocmock"]
-	path = external/ocmock
-	url = git://github.com/erikdoe/ocmock.git
 [submodule "external/ViewDeck"]
 	path = external/ViewDeck
 	url = git://github.com/syshen/ViewDeck.git
-[submodule "external/sskeychain"]
-	path = external/sskeychain
-	url = git://github.com/samsoffes/sskeychain.git
-[submodule "external/FacebookSDK"]
-	path = external/FacebookSDK
-	url = git@github.com:facebook/facebook-ios-sdk.git
+[submodule "external/SocketRocket"]
+	path = external/SocketRocket
+	url = https://github.com/waveface/SocketRocket
+[submodule "external/AQGridView"]
+	path = external/AQGridView
+	url = https://github.com/waveface/AQGridView
