@@ -52,3 +52,6 @@
 [submodule "external/SocketRocket"]
 	path = external/SocketRocket
 	url = https://github.com/waveface/SocketRocket
+[submodule "external/AQGridView"]
+	path = external/AQGridView
+	url = https://github.com/waveface/AQGridView

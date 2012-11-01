@@ -113,6 +113,7 @@
 		7D0CDD09162E5A080027D35F /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 7D0CDD07162E5A080027D35F /* InfoPlist.strings */; };
 		7D0CDD0C162E5A080027D35F /* Stream_iOS_ApplicationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D0CDD0B162E5A080027D35F /* Stream_iOS_ApplicationTests.m */; };
 		7D0CDD18162E5FC90027D35F /* WAFacebookConnectionSwitchTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D0CDD15162E5F9E0027D35F /* WAFacebookConnectionSwitchTest.m */; };
+		7D857D54164250B80092CF5F /* libAQGridView.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D857D53164249DA0092CF5F /* libAQGridView.a */; };
 		7D85EE6E1637936A00D5630A /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7D85EE6D1637936A00D5630A /* Default-568h@2x.png */; };
 		7D92E5B216070705000C7B06 /* PhotoPostWithURLHistoryStyle.txt in Resources */ = {isa = PBXBuildFile; fileRef = 7D92E5B0160703F6000C7B06 /* PhotoPostWithURLHistoryStyle.txt */; };
 		7D9B1D8D162BB1DE000E5350 /* Accounts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D9B1D8C162BB1DE000E5350 /* Accounts.framework */; };
@@ -779,6 +780,13 @@
 			remoteGlobalIDString = F62417E314D52F3C003CE997;
 			remoteInfo = TestChat;
 		};
+		7D857D52164249DA0092CF5F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 7D857D4B164249DA0092CF5F /* AQGridView.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D2AAC07E0554694100DB518D;
+			remoteInfo = AQGridView;
+		};
 		FF09C0DE15A2DD6F00AEDDAE /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = FF09C0D715A2DD6F00AEDDAE /* IRSlidingSplitViewController.xcodeproj */;
@@ -1136,6 +1144,7 @@
 		7D0CDD0D162E5A080027D35F /* Stream-iOS-ApplicationTests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Stream-iOS-ApplicationTests-Prefix.pch"; sourceTree = "<group>"; };
 		7D0CDD14162E5F9E0027D35F /* WAFacebookConnectionSwitchTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAFacebookConnectionSwitchTest.h; sourceTree = "<group>"; };
 		7D0CDD15162E5F9E0027D35F /* WAFacebookConnectionSwitchTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAFacebookConnectionSwitchTest.m; sourceTree = "<group>"; };
+		7D857D4B164249DA0092CF5F /* AQGridView.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = AQGridView.xcodeproj; path = external/AQGridView/AQGridView.xcodeproj; sourceTree = "<group>"; };
 		7D85EE6D1637936A00D5630A /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default-568h@2x.png"; path = "Resources/Default-568h@2x.png"; sourceTree = "<group>"; };
 		7D92E5B0160703F6000C7B06 /* PhotoPostWithURLHistoryStyle.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = PhotoPostWithURLHistoryStyle.txt; sourceTree = "<group>"; };
 		7D9B1D8C162BB1DE000E5350 /* Accounts.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = Accounts.framework; path = System/Library/Frameworks/Accounts.framework; sourceTree = SDKROOT; };
@@ -1902,6 +1911,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7D857D54164250B80092CF5F /* libAQGridView.a in Frameworks */,
 				7DC3AC1216422070009A8EA7 /* libSocketRocket.a in Frameworks */,
 				7D9B1D91162BB1F6000E5350 /* Social.framework in Frameworks */,
 				7D9B1D8F162BB1E8000E5350 /* AdSupport.framework in Frameworks */,
@@ -2130,6 +2140,14 @@
 				7D6470A91642218800DBDEA6 /* SocketRocket.framework */,
 				7D6470AB1642218800DBDEA6 /* SRWebSocketTests.octest */,
 				7D6470AD1642218800DBDEA6 /* TestChat.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		7D857D4C164249DA0092CF5F /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				7D857D53164249DA0092CF5F /* libAQGridView.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -2556,6 +2574,7 @@
 				7D0CDCE7162E59DD0027D35F /* SenTestingKit.framework */,
 				7D9B1D90162BB1F6000E5350 /* Social.framework */,
 				7D0CDCE9162E59DD0027D35F /* UIKit.framework */,
+				7D857D4B164249DA0092CF5F /* AQGridView.xcodeproj */,
 				FFBA66E2140E12AD00BE5A1D /* IRDiscreteLayoutManager.xcodeproj */,
 				FF73A59513D6DC6500D54EC6 /* IRFoundations.xcodeproj */,
 				FFD4F92E157E07F90027BF3F /* IRObjectQueue.xcodeproj */,
@@ -3413,6 +3432,10 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
+					ProductGroup = 7D857D4C164249DA0092CF5F /* Products */;
+					ProjectRef = 7D857D4B164249DA0092CF5F /* AQGridView.xcodeproj */;
+				},
+				{
 					ProductGroup = FFBA66E3140E12AD00BE5A1D /* Products */;
 					ProjectRef = FFBA66E2140E12AD00BE5A1D /* IRDiscreteLayoutManager.xcodeproj */;
 				},
@@ -3501,6 +3524,13 @@
 			fileType = wrapper.application;
 			path = TestChat.app;
 			remoteRef = 7D6470AC1642218800DBDEA6 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		7D857D53164249DA0092CF5F /* libAQGridView.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libAQGridView.a;
+			remoteRef = 7D857D52164249DA0092CF5F /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		FF09C0DF15A2DD6F00AEDDAE /* libIRSlidingSplitViewController.a */ = {
@@ -4839,7 +4869,7 @@
 				STREAM_BUNDLE_ID_SUFFIX = .beta;
 				STREAM_FACEBOOK_ID = 356863037711668;
 				STREAM_ICON_NAME_SUFFIX = _beta;
-				USER_HEADER_SEARCH_PATHS = "\"$(PROJECT_DIR)/external/IRFoundations\"/** \"$(SDKROOT)/usr/include/libxml2\"/** \"$(PROJECT_DIR)/external/IRWebAPIKit\"/** \"$(PROJECT_DIR)/external/IRDiscreteLayoutManager\"/** \"$(PROJECT_DIR)/external/IRTextAttributor\"/** \"$(PROJECT_DIR)/external/IRSlidingSplitViewController\"/** \"$(PROJECT_DIR)/external/IRRecurrenceMachine\"/** \"$(PROJECT_DIR)/external/IRObjectQueue\"/** \"$(PROJECT_DIR)/external/WFPresentation/Bindings/Objective-C\"/** $(CONFIGURATION_BUILD_DIR)/usr/local/include/** \"$(PROJECT_DIR)/external/SocketRocket\"/**";
+				USER_HEADER_SEARCH_PATHS = "\"$(PROJECT_DIR)/external/IRFoundations\"/** \"$(SDKROOT)/usr/include/libxml2\"/** \"$(PROJECT_DIR)/external/IRWebAPIKit\"/** \"$(PROJECT_DIR)/external/IRDiscreteLayoutManager\"/** \"$(PROJECT_DIR)/external/IRTextAttributor\"/** \"$(PROJECT_DIR)/external/IRSlidingSplitViewController\"/** \"$(PROJECT_DIR)/external/IRRecurrenceMachine\"/** \"$(PROJECT_DIR)/external/IRObjectQueue\"/** \"$(PROJECT_DIR)/external/WFPresentation/Bindings/Objective-C\"/** $(CONFIGURATION_BUILD_DIR)/usr/local/include/** \"$(PROJECT_DIR)/external/SocketRocket\"/** \"$(PROJECT_DIR)/external/AQGridView/Classes\"/**";
 				VALID_ARCHS = "i386 armv7";
 				WRAPPER_EXTENSION = app;
 			};
@@ -5422,7 +5452,7 @@
 				STREAM_BUNDLE_ID_SUFFIX = .develop;
 				STREAM_FACEBOOK_ID = 357087874306060;
 				STREAM_ICON_NAME_SUFFIX = _develop;
-				USER_HEADER_SEARCH_PATHS = "\"$(PROJECT_DIR)/external/IRFoundations\"/** \"$(SDKROOT)/usr/include/libxml2\"/** \"$(PROJECT_DIR)/external/IRWebAPIKit\"/** \"$(PROJECT_DIR)/external/IRDiscreteLayoutManager\"/** \"$(PROJECT_DIR)/external/IRTextAttributor\"/** \"$(PROJECT_DIR)/external/IRSlidingSplitViewController\"/** \"$(PROJECT_DIR)/external/IRRecurrenceMachine\"/** \"$(PROJECT_DIR)/external/IRObjectQueue\"/** \"$(PROJECT_DIR)/external/WFPresentation/Bindings/Objective-C\"/** $(CONFIGURATION_BUILD_DIR)/usr/local/include/** \"$(PROJECT_DIR)/external/SocketRocket\"/**";
+				USER_HEADER_SEARCH_PATHS = "\"$(PROJECT_DIR)/external/IRFoundations\"/** \"$(SDKROOT)/usr/include/libxml2\"/** \"$(PROJECT_DIR)/external/IRWebAPIKit\"/** \"$(PROJECT_DIR)/external/IRDiscreteLayoutManager\"/** \"$(PROJECT_DIR)/external/IRTextAttributor\"/** \"$(PROJECT_DIR)/external/IRSlidingSplitViewController\"/** \"$(PROJECT_DIR)/external/IRRecurrenceMachine\"/** \"$(PROJECT_DIR)/external/IRObjectQueue\"/** \"$(PROJECT_DIR)/external/WFPresentation/Bindings/Objective-C\"/** $(CONFIGURATION_BUILD_DIR)/usr/local/include/** \"$(PROJECT_DIR)/external/SocketRocket\"/** \"$(PROJECT_DIR)/external/AQGridView/Classes\"/**";
 				VALID_ARCHS = "i386 armv7";
 				WRAPPER_EXTENSION = app;
 			};
@@ -5460,7 +5490,7 @@
 				STREAM_BUNDLE_ID_SUFFIX = "";
 				STREAM_FACEBOOK_ID = 234823683291756;
 				STREAM_ICON_NAME_SUFFIX = "";
-				USER_HEADER_SEARCH_PATHS = "\"$(PROJECT_DIR)/external/IRFoundations\"/** \"$(SDKROOT)/usr/include/libxml2\"/** \"$(PROJECT_DIR)/external/IRWebAPIKit\"/** \"$(PROJECT_DIR)/external/IRDiscreteLayoutManager\"/** \"$(PROJECT_DIR)/external/IRTextAttributor\"/** \"$(PROJECT_DIR)/external/IRSlidingSplitViewController\"/** \"$(PROJECT_DIR)/external/IRRecurrenceMachine\"/** \"$(PROJECT_DIR)/external/IRObjectQueue\"/** \"$(PROJECT_DIR)/external/WFPresentation/Bindings/Objective-C\"/** $(CONFIGURATION_BUILD_DIR)/usr/local/include/** \"$(PROJECT_DIR)/external/SocketRocket\"/**";
+				USER_HEADER_SEARCH_PATHS = "\"$(PROJECT_DIR)/external/IRFoundations\"/** \"$(SDKROOT)/usr/include/libxml2\"/** \"$(PROJECT_DIR)/external/IRWebAPIKit\"/** \"$(PROJECT_DIR)/external/IRDiscreteLayoutManager\"/** \"$(PROJECT_DIR)/external/IRTextAttributor\"/** \"$(PROJECT_DIR)/external/IRSlidingSplitViewController\"/** \"$(PROJECT_DIR)/external/IRRecurrenceMachine\"/** \"$(PROJECT_DIR)/external/IRObjectQueue\"/** \"$(PROJECT_DIR)/external/WFPresentation/Bindings/Objective-C\"/** $(CONFIGURATION_BUILD_DIR)/usr/local/include/** \"$(PROJECT_DIR)/external/SocketRocket\"/** \"$(PROJECT_DIR)/external/AQGridView/Classes\"/**";
 				VALID_ARCHS = "i386 armv7";
 				WRAPPER_EXTENSION = app;
 			};
