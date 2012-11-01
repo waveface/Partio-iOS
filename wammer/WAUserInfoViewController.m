@@ -17,7 +17,6 @@
 #import "WADataStore.h"
 #import "WADataStore+WARemoteInterfaceAdditions.h"
 
-#import "WANavigationBar.h"
 #import "WANavigationController.h"
 
 #import "Foundation+IRAdditions.h"
@@ -73,6 +72,7 @@ typedef enum WASyncStatus: NSUInteger {
 	WANavigationController *navC = (WANavigationController *)[sb instantiateInitialViewController];
 	NSCParameterAssert([navC isKindOfClass:[WANavigationController class]]);
 	
+	navC.navigationItem.titleView = WAStandardTitleLabelWithString(NSLocalizedString(@"USER_INFO_CONTROLLER_TITLE", @"Settings for User popover"));
 	WAUserInfoViewController *uiVC = (WAUserInfoViewController *)navC.topViewController;
 	NSCParameterAssert([uiVC isKindOfClass:[WAUserInfoViewController class]]);
 	
@@ -136,7 +136,6 @@ typedef enum WASyncStatus: NSUInteger {
 	activity.frame = CGRectMake(300.0-10.0-18.0, 14.0, 20.0, 20.0);	
 
 	[self.syncTableViewCell insertSubview:activity atIndex:0];
-	self.navigationController.navigationBar.tintColor = [UIColor colorWithRed:98.0/255.0 green:176.0/255.0 blue:195.0/255.0 alpha:0.0];
   [self.tableView reloadData];
 	
 	__weak WAUserInfoViewController *wSelf = self;

@@ -13,6 +13,8 @@
 #import "WADefines.h"
 #import "WAAppDelegate.h"
 
+#import "WAAppearance.h"
+
 #import "WARemoteInterface.h"
 #import "WARemoteInterface+WebSocket.h"
 #import "WARemoteInterface+RemoteNotifications.h"
@@ -23,7 +25,6 @@
 
 #import "WANavigationController.h"
 #import "WAApplicationRootViewControllerDelegate.h"
-#import "WANavigationBar.h"
 #import "WAOverviewController.h"
 #import "WATimelineViewControllerPhone.h"
 #import "WAUserInfoViewController.h"
@@ -54,6 +55,8 @@
 #import "WAFilterPickerViewController.h"
 #import "WAPhotoImportManager.h"
 #import "WAFirstUseViewController.h"
+
+#import "TestFlight.h"
 
 static NSString *const kTrackingId = @"UA-27817516-7";
 
@@ -167,6 +170,8 @@ static NSString *const kTrackingId = @"UA-27817516-7";
 
 	[self bootstrap];
 	
+	WADefaultAppearance();
+	
 	self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
 	self.window.backgroundColor = [UIColor colorWithRed:0.87 green:0.87 blue:0.84 alpha:1.0];
 	
@@ -223,7 +228,16 @@ static NSString *const kTrackingId = @"UA-27817516-7";
 #if ENABLE_DCINTROSPECT
 	[[DCIntrospect sharedIntrospector] start];
 #endif
+	
+	[TestFlight takeOff:kWATestflightTeamToken];
 
+#if DEBUG
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+	[TestFlight setDeviceIdentifier:[[UIDevice currentDevice] uniqueIdentifier]];
+#pragma clang pop
+#endif
+	
 	return YES;
 	
 }
@@ -329,17 +343,7 @@ static NSString *const kTrackingId = @"UA-27817516-7";
 			
 			ssVC.masterViewController = rootNavC;
 			
-			WASlidingMenuViewController *slidingMenu = [[WASlidingMenuViewController alloc] init];
-			slidingMenu.delegate = presentedViewController;
-
-			IIViewDeckController *viewDeckController = [[IIViewDeckController alloc] initWithCenterViewController:ssVC leftViewController:slidingMenu];
-			viewDeckController.leftLedge = self.window.frame.size.width - 200.0f;
-			viewDeckController.centerhiddenInteractivity = IIViewDeckCenterHiddenNotUserInteractiveWithTapToClose;
-			viewDeckController.rotationBehavior = IIViewDeckRotationKeepsLedgeSizes;
-			viewDeckController.panningMode = IIViewDeckNoPanning;
-			viewDeckController.animationBehavior = IIViewDeckAnimationPullIn;
-
-			self.window.rootViewController = viewDeckController;
+			self.window.rootViewController = ssVC;
 		
 			break;
 		
@@ -363,6 +367,7 @@ static NSString *const kTrackingId = @"UA-27817516-7";
 			viewDeckController.rotationBehavior = IIViewDeckRotationKeepsLedgeSizes;
 			viewDeckController.animationBehavior = IIViewDeckAnimationPullIn;
 			viewDeckController.panningMode = IIViewDeckNoPanning;
+			[viewDeckController setWantsFullScreenLayout:YES];
 			viewDeckController.centerhiddenInteractivity = IIViewDeckCenterHiddenNotUserInteractiveWithTapToClose;
 	
 			self.window.rootViewController = viewDeckController;

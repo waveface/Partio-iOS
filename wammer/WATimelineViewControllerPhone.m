@@ -32,7 +32,6 @@
 #import "IASKAppSettingsViewController.h"
 
 #import "WANavigationController.h"
-#import "WANavigationBar.h"
 
 #import "WAArticleCommentsViewCell.h"
 #import "WAPostViewCellPhone.h"
@@ -376,6 +375,7 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 		headerView.wdayLabel.text = [self.currentDisplayedDate localizedWeekDayFullString];
 		[headerView.leftButton addTarget:self.parentViewController action:@selector(handleSwipeRight:) forControlEvents:UIControlEventTouchUpInside];
 		[headerView.rightButton addTarget:self.parentViewController action:@selector(handleSwipeLeft:) forControlEvents:UIControlEventTouchUpInside];
+		[headerView.centerButton addTarget:self.parentViewController action:@selector(handleDateSelect:) forControlEvents:UIControlEventTouchUpInside];
 		
 		tbView.tableHeaderView = headerView;
 		tbView.delegate = wSelf;
@@ -388,7 +388,6 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 	
 	UILongPressGestureRecognizer *longPressGR = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleMenu:)];
 	[self.view addGestureRecognizer:longPressGR];
-	
 }
 
 - (void) viewWillAppear:(BOOL)animated {

@@ -94,6 +94,8 @@
 	}
 
 	self.scrollVelocity = CGPointMake(0.0f, 0.0f);
+	
+	self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(handleAction)];
 
 }
 
@@ -510,6 +512,32 @@
 
 	return YES;
 
+}
+
+- (void) handleAction {
+	// show up storyboard here.
+	UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"LightTablePhone" bundle:nil];
+	UINavigationController *navigationController = [storyboard instantiateInitialViewController];
+	WALightTableViewController *ltvc = (WALightTableViewController *)navigationController.topViewController;
+	ltvc.delegate = self;
+	ltvc.article = self.article;
+	
+	[self
+	 presentViewController:navigationController
+	 animated:YES
+	 completion:^{
+		 NSLog(@"storyboad loaded");
+	 }];
+}
+
+#pragma mark Light Table View Delegate
+
+- (void)lightTableViewDidDismiss:(WALightTableViewController *)aLightTableViewController {
+	void (^completionBlock)(void) = ^(void){
+		NSLog("Dismissed");
+	};
+
+	[aLightTableViewController dismissViewControllerAnimated:YES completion:completionBlock];
 }
 
 @end

@@ -9,9 +9,37 @@
 #import "WAAppearance.h"
 #import <UIKit/UIKit.h>
 #import "UIKit+IRAdditions.h"
-#import "WANavigationBar.h"
 
 
+#pragma mark - UIAppearance
+void WADefaultAppearance(void) {
+	
+	if (isPad()) {
+
+		[[UINavigationBar appearance] setTintColor:[UIColor colorWithRed:98.0/255.0 green:176.0/255.0 blue:195.0/255.0 alpha:0.0]];
+		[[UINavigationBar appearance] setBackgroundImage:[UIImage imageNamed:@"WANavigationBar"] forBarMetrics:UIBarMetricsDefault];
+
+		// iPad user info pop-over
+		[[UINavigationBar appearanceWhenContainedIn:[UIPopoverController class], nil] setBackgroundImage:nil forBarMetrics:UIBarMetricsDefault];
+
+	} else {
+		
+		[[UINavigationBar appearance] setTintColor:[UIColor colorWithRed:0.95f green:0.95f blue:0.95f alpha:1]];
+		
+		UIColor *textColor = [UIColor colorWithRed:0.75f green:0.75f blue:0.75f alpha:1];
+		[[UINavigationBar appearance] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:
+																													textColor, UITextAttributeTextColor,
+																													textColor, UITextAttributeTextShadowColor,
+																													[NSValue valueWithUIOffset:(UIOffset){ 0, -1 }], UITextAttributeTextShadowOffset,
+																													nil]];
+
+
+	}
+	
+	
+}
+
+#pragma mark - Origianl appearance settings
 void WADefaultBarButtonInitialize (void) {
 
 	static dispatch_once_t onceToken = 0;
@@ -168,15 +196,13 @@ UIView * WAStandardTitleView (void) {
 
 }
 
-UILabel * WAStandardTitleLabel (void) {
+UILabel * WAStandardTitleLabelWithString (NSString *title)  {
 
 	UILabel *label = [[UILabel alloc] initWithFrame:CGRectZero];
-	label.text = NSLocalizedString(@"APP_TITLE", @"Application Title");
-	label.textColor = [UIColor colorWithWhite:1 alpha:1];
+	label.text = title;
+
+	label.textColor = [UIColor colorWithRed:0.75f green:0.75f blue:0.75f alpha:1];
 	label.font = [UIFont boldSystemFontOfSize:20.0f];
-	label.shadowColor = [UIColor blackColor];
-	label.shadowOffset = (CGSize){ 0, -1 };
-	
 	label.backgroundColor = nil;
 	label.opaque = NO;
 	[label sizeToFit];

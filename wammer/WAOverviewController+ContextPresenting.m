@@ -10,7 +10,6 @@
 #import "WAArticleViewController.h"
 #import "WADataStore.h"
 #import "WAFauxRootNavigationController.h"
-#import "WANavigationBar.h"
 #import "WAButton.h"
 #import "IRTransparentToolbar.h"
 #import "WAStackedArticleViewController.h"
@@ -234,10 +233,6 @@ NSString * const kPresentedArticle = @"WAOverviewController_presentedArticle";
 		returnedNavC = [[WAFauxRootNavigationController alloc] initWithRootViewController:controller];
 		
 	}
-	
-	returnedNavC.onViewDidLoad = ^ (WANavigationController *self) {
-		((WANavigationBar *)self.navigationBar).customBackgroundView = [WANavigationBar defaultPatternBackgroundView];
-	};
 	
 	if ([returnedNavC isViewLoaded])
 	if (returnedNavC.onViewDidLoad)
