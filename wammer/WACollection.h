@@ -18,6 +18,19 @@
 @property (nonatomic, retain) NSDate * modifyDate;
 @property (nonatomic, retain) NSString * title;
 @property (nonatomic, retain) WAUser *creator;
-@property (nonatomic, retain) WAFile *files;
+@property (nonatomic, retain) NSOrderedSet *files;
+@end
 
+@interface WACollection (CoreDataGeneratedAccessors)
+
+- (void)insertObject:(WAFile *)value inFilesAtIndex:(NSUInteger)idx;
+- (void)removeObjectFromFilesAtIndex:(NSUInteger)idx;
+- (void)insertFiles:(NSArray *)value atIndexes:(NSIndexSet *)indexes;
+- (void)removeFilesAtIndexes:(NSIndexSet *)indexes;
+- (void)replaceObjectInFilesAtIndex:(NSUInteger)idx withObject:(WAFile *)value;
+- (void)replaceFilesAtIndexes:(NSIndexSet *)indexes withFiles:(NSArray *)values;
+- (void)addFilesObject:(WAFile *)value;
+- (void)removeFilesObject:(WAFile *)value;
+- (void)addFiles:(NSOrderedSet *)values;
+- (void)removeFiles:(NSOrderedSet *)values;
 @end

@@ -56,7 +56,7 @@
         <attribute name="modifyDate" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="creator" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="WAUser" inverseName="collections" inverseEntity="WAUser" syncable="YES"/>
-        <relationship name="files" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="WAFile" inverseName="belongToCollection" inverseEntity="WAFile" syncable="YES"/>
+        <relationship name="files" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="WAFile" inverseName="belongToCollection" inverseEntity="WAFile" syncable="YES"/>
     </entity>
     <entity name="WAComment" representedClassName="WAComment">
         <attribute name="creationDeviceName" optional="YES" attributeType="String">
@@ -280,7 +280,7 @@
     <fetchRequest name="WAFRLocalImportedArticles" entity="WAArticle" predicateString="import == 1"/>
     <fetchRequest name="WAFRUser" entity="WAUser" predicateString="identifier == $Identifier"/>
     <elements>
-        <element name="WACollection" positionX="493" positionY="-153" width="128" height="135"/>
+        <element name="WACollection" positionX="493" positionY="-153" width="128" height="133"/>
         <element name="WAArticle" positionX="-36" positionY="-153" width="128" height="315"/>
         <element name="WACache" positionX="-261" positionY="72" width="128" height="135"/>
         <element name="WAComment" positionX="144" positionY="-450" width="128" height="135"/>
