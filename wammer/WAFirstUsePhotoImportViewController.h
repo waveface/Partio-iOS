@@ -12,5 +12,6 @@
 
 @property (weak, nonatomic) IBOutlet UITableViewCell *enablePhotoImportCell;
 @property (weak, nonatomic) IBOutlet UITableViewCell *disablePhotoImportCell;
+@property (nonatomic, readwrite) BOOL isFromConnectServicesPage;
 
 @end

@@ -18,7 +18,6 @@
 - (void)viewDidLoad {
 
 	[super viewDidLoad];
-	self.navigationItem.hidesBackButton = YES;
 	[[WARemoteInterface sharedInterface] addObserver:self forKeyPath:@"networkState" options:NSKeyValueObservingOptionInitial context:nil];
 
 }
@@ -26,15 +25,6 @@
 - (void)dealloc {
 
 	[[WARemoteInterface sharedInterface] removeObserver:self forKeyPath:@"networkState"];
-
-}
-
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-
-	[self.connectActivity startAnimating];
-	self.connectedHost.hidden = YES;
-	[[WARemoteInterface sharedInterface] performAutomaticRemoteUpdatesNow];
-	[tableView deselectRowAtIndexPath:indexPath animated:YES];
 
 }
 

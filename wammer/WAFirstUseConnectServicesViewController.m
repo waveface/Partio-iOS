@@ -7,6 +7,7 @@
 //
 
 #import "WAFirstUseConnectServicesViewController.h"
+#import "WAFirstUsePhotoImportViewController.h"
 
 @interface WAFirstUseConnectServicesViewController ()
 
@@ -18,6 +19,13 @@
 
 	[super viewDidLoad];
 	self.navigationItem.hidesBackButton = YES;
+
+}
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+
+	WAFirstUsePhotoImportViewController *vc = segue.destinationViewController;
+	vc.isFromConnectServicesPage = YES;
 
 }
 

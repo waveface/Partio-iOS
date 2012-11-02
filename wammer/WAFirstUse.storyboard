@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="2.0" toolsVersion="2843" systemVersion="12C60" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="Epw-dF-OjS">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="2.0" toolsVersion="2844" systemVersion="12C60" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="Epw-dF-OjS">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="1929"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="1930"/>
     </dependencies>
     <scenes>
         <!--First Use View Controller-->
@@ -257,6 +257,7 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Upgrade" id="rs3-Qj-SXO">
+                        <barButtonItem key="backBarButtonItem" title="Back" id="mw8-Hj-Mvz"/>
                         <barButtonItem key="rightBarButtonItem" title="Next" id="XL2-gJ-2m5">
                             <connections>
                                 <segue destination="b8o-U9-sOP" kind="push" id="hih-NY-g6h"/>
@@ -346,7 +347,7 @@
                         <sections>
                             <tableViewSection id="pgV-by-jxP">
                                 <cells>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="JvD-hy-eCH">
+                                    <tableViewCell userInteractionEnabled="NO" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="JvD-hy-eCH">
                                         <rect key="frame" x="0.0" y="185" width="320" height="46"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
@@ -393,6 +394,7 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Setup Your Storage" id="Jyh-eh-1Jo">
+                        <barButtonItem key="backBarButtonItem" title="Back" id="2J1-8e-o7G"/>
                         <barButtonItem key="rightBarButtonItem" title="Next" id="Teq-QS-1ft">
                             <connections>
                                 <segue destination="xfS-He-9uL" kind="push" id="ecN-Zm-Hfx"/>
@@ -484,6 +486,7 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Auto Photo Upload" id="A43-eI-pJf">
+                        <barButtonItem key="backBarButtonItem" title="Back" id="PZW-h5-Xo1"/>
                         <barButtonItem key="rightBarButtonItem" title="Next" id="5Af-eN-38U">
                             <connections>
                                 <segue destination="wcX-ZA-C0U" kind="push" id="BXD-go-j4W"/>
@@ -509,10 +512,10 @@
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cfX-q2-2Kb">
                                 <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jMM-iA-POk">
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jMM-iA-POk">
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="44" id="ISO-JI-4n4"/>
                                             <constraint firstAttribute="width" constant="219" id="JI5-VZ-zXQ"/>
+                                            <constraint firstAttribute="height" constant="44" id="MnC-0w-JIf"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                                         <state key="normal" title=" Log In with Facebook" image="FacebookLogo.png" backgroundImage="SignInWithFacebookButton.png">
@@ -557,13 +560,13 @@
                                     </button>
                                 </subviews>
                                 <constraints>
-                                    <constraint firstItem="7Yf-ZZ-Jp4" firstAttribute="centerX" secondItem="cfX-q2-2Kb" secondAttribute="centerX" type="default" id="1ux-Vw-9S5"/>
                                     <constraint firstItem="7Yf-ZZ-Jp4" firstAttribute="top" secondItem="cfX-q2-2Kb" secondAttribute="top" constant="170" id="KDu-6n-aND"/>
                                     <constraint firstItem="kdo-Rc-lqs" firstAttribute="trailing" secondItem="Q7F-HH-5Y0" secondAttribute="trailing" type="default" id="NGe-XL-uhk"/>
                                     <constraint firstItem="Xdb-Jf-A8s" firstAttribute="top" secondItem="cfX-q2-2Kb" secondAttribute="top" constant="324" id="UAw-Fp-qf9"/>
                                     <constraint firstItem="7Yf-ZZ-Jp4" firstAttribute="centerX" secondItem="jMM-iA-POk" secondAttribute="centerX" type="default" id="Upb-JR-Vc2"/>
                                     <constraint firstItem="jMM-iA-POk" firstAttribute="top" secondItem="cfX-q2-2Kb" secondAttribute="top" constant="84" id="hON-jI-ixn"/>
                                     <constraint firstItem="Q7F-HH-5Y0" firstAttribute="top" secondItem="kdo-Rc-lqs" secondAttribute="bottom" constant="8" symbolic="YES" type="default" id="i9e-2a-Kzx"/>
+                                    <constraint firstItem="jMM-iA-POk" firstAttribute="centerX" secondItem="cfX-q2-2Kb" secondAttribute="centerX" type="default" id="jwr-iw-pIh"/>
                                     <constraint firstItem="jMM-iA-POk" firstAttribute="trailing" secondItem="kdo-Rc-lqs" secondAttribute="trailing" type="default" id="kHU-Jr-FL4"/>
                                     <constraint firstItem="kdo-Rc-lqs" firstAttribute="top" secondItem="cfX-q2-2Kb" secondAttribute="top" constant="235" id="kz8-5T-lmg"/>
                                     <constraint firstAttribute="trailing" secondItem="jMM-iA-POk" secondAttribute="trailing" constant="50" id="mU6-Mv-4Qc"/>
@@ -683,6 +686,7 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Getting Started" id="87C-z3-ceQ">
+                        <barButtonItem key="backBarButtonItem" title="Back" id="uom-ls-VtV"/>
                         <barButtonItem key="rightBarButtonItem" title="Next" id="OsH-YD-ekd">
                             <connections>
                                 <segue destination="vd3-aZ-YWy" kind="push" id="vl7-D0-o14"/>
@@ -735,7 +739,9 @@
                             <constraint firstItem="aq5-qa-OWT" firstAttribute="top" secondItem="9WO-xg-eAo" secondAttribute="top" constant="20" symbolic="YES" type="default" id="bsV-bC-skA"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="Almost Done" id="eyV-pK-kpc"/>
+                    <navigationItem key="navigationItem" title="Almost Done" id="eyV-pK-kpc">
+                        <barButtonItem key="backBarButtonItem" title="Back" id="hb2-Cr-rJ1"/>
+                    </navigationItem>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="KTN-aD-GFe" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -819,6 +825,6 @@
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
         <segue reference="HMO-zp-KUz"/>
-        <segue reference="vl7-D0-o14"/>
+        <segue reference="m7v-Xw-Yc3"/>
     </inferredMetricsTieBreakers>
 </document>

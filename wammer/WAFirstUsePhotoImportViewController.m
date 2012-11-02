@@ -18,7 +18,10 @@
 - (void)viewDidLoad {
 
 	[super viewDidLoad];
-	self.navigationItem.hidesBackButton = YES;
+
+	if (!self.isFromConnectServicesPage) {
+		self.navigationItem.hidesBackButton = YES;
+	}
 	self.navigationItem.rightBarButtonItem.enabled = NO;
 
 }

@@ -32,8 +32,16 @@ void WADefaultAppearance(void) {
 																													textColor, UITextAttributeTextShadowColor,
 																													[NSValue valueWithUIOffset:(UIOffset){ 0, -1 }], UITextAttributeTextShadowOffset,
 																													nil]];
-
-
+		[[UIBarButtonItem appearance] setTitleTextAttributes:@{
+																UITextAttributeTextColor:textColor,
+													UITextAttributeTextShadowColor:textColor,
+												 UITextAttributeTextShadowOffset:[NSValue valueWithUIOffset:(UIOffset){ 0, -1 }]}
+																								forState:UIControlStateNormal];
+		[[UIBarButtonItem appearance] setTitleTextAttributes:@{
+																UITextAttributeTextColor:[UIColor colorWithRed:0.85f green:0.85f blue:0.85f alpha:1],
+													UITextAttributeTextShadowColor:[UIColor colorWithRed:0.85f green:0.85f blue:0.85f alpha:1],
+												 UITextAttributeTextShadowOffset:[NSValue valueWithUIOffset:(UIOffset){ 0, -1 }]}
+																								forState:UIControlStateDisabled];
 	}
 	
 	
