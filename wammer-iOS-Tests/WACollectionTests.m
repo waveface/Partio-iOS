@@ -26,9 +26,11 @@
 	WACollection *collection = [WACollection MR_createEntity];
 	STAssertNotNil(collection, @"Should not be nil");
 	
-	collection.creator = [WAUser MR_createEntity];
-	collection.createDate = [NSDate date];
+	collection.createDate = [NSDate distantPast];
+	collection.modifyDate = [NSDate date];
 	collection.title = @"This should be collection title";
+	collection.creator = [WAUser MR_createEntity];
+	
 	NSArray *collections = [WACollection MR_findAll];
 	STAssertEquals(collection.title, ((WACollection *) collections[0]).title,
 								 @"Should be the same.");
