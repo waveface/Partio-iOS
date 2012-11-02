@@ -83,3 +83,4 @@ testFlightCredentials
 
 # CocoaPods
 Pods/*
+Podfile.lock
