@@ -82,5 +82,4 @@ testFlightCredentials
 *.strings.old
 
 # CocoaPods
-*.lock
 Pods/*
