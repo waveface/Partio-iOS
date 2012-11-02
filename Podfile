@@ -1,4 +1,4 @@
-platform:ios, '6.0'
+platform:ios, '5.1'
 
 pod 'MagicalRecord', '~> 2.0.7'
 pod 'TestFlightSDK', '~> 1.1'

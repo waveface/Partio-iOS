@@ -1,15 +1,4 @@
 
-DEPENDENCIES: 
-- DCIntrospect (~> 0.0.2)
-- Facebook-iOS-SDK (~> 3.1.1)
-- InAppSettingsKit (~> 1.0)
-- JSONKit (~> 1.5pre)
-- MagicalRecord (~> 2.0.7)
-- OCHamcrest (~> 1.8)
-- OCMock (~> 2.0.1)
-- SSKeychain (~> 0.1.4)
-- TestFlightSDK (~> 1.1)
-
 PODS: 
 - DCIntrospect (0.0.2)
 - Facebook-iOS-SDK (3.1.1)
@@ -21,15 +10,26 @@ PODS:
 - SSKeychain (0.1.4)
 - TestFlightSDK (1.2.beta2)
 
-COCOAPODS: 0.15.2
-
 SPEC CHECKSUMS: 
-  SSKeychain: a81ff6b65eb5e8fc1fddecf11fe167dba81d4314
+  TestFlightSDK: 5e99e21c11d7f4447171bf787b256062d4405f23
+  OCHamcrest: 75258b3746b118ed9de96a6a8d985546f32e0f9b
   MagicalRecord: f392c9e288e50653b3e7fbb6e797e0eba07344e7
   Facebook-iOS-SDK: 5fc068ebfd8c8c9b0fad476bc36dbbf1fffeebc8
-  TestFlightSDK: 5e99e21c11d7f4447171bf787b256062d4405f23
-  OCMock: 77a9c4c57af6bf258a537d34cf09abf422affede
+  SSKeychain: a81ff6b65eb5e8fc1fddecf11fe167dba81d4314
   DCIntrospect: 2f5cab0b58b170459ebcb200f59042306fcb0c0d
-  OCHamcrest: 75258b3746b118ed9de96a6a8d985546f32e0f9b
-  InAppSettingsKit: 8d5ae557a5890ca48c6e2085d6301194e4e2b48a
+  OCMock: 77a9c4c57af6bf258a537d34cf09abf422affede
   JSONKit: a01a22c75f27eae76b4badd55a91c20fe6e86477
+  InAppSettingsKit: 8d5ae557a5890ca48c6e2085d6301194e4e2b48a
+
+COCOAPODS: 0.15.2
+
+DEPENDENCIES: 
+- DCIntrospect (~> 0.0.2)
+- Facebook-iOS-SDK (~> 3.1.1)
+- InAppSettingsKit (~> 1.0)
+- JSONKit (~> 1.5pre)
+- MagicalRecord (~> 2.0.7)
+- OCHamcrest (~> 1.8)
+- OCMock (~> 2.0.1)
+- SSKeychain (~> 0.1.4)
+- TestFlightSDK (~> 1.1)
