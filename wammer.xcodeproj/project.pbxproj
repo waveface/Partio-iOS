@@ -113,6 +113,8 @@
 		7D0CDD09162E5A080027D35F /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 7D0CDD07162E5A080027D35F /* InfoPlist.strings */; };
 		7D0CDD0C162E5A080027D35F /* Stream_iOS_ApplicationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D0CDD0B162E5A080027D35F /* Stream_iOS_ApplicationTests.m */; };
 		7D0CDD18162E5FC90027D35F /* WAFacebookConnectionSwitchTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D0CDD15162E5F9E0027D35F /* WAFacebookConnectionSwitchTest.m */; };
+		7D1BC2F216437C9F0060831E /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D1BC2F116437C9F0060831E /* libPods.a */; };
+		7D296DAA1643818000870747 /* libSocketRocket.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D6470A71642218800DBDEA6 /* libSocketRocket.a */; };
 		7D857D54164250B80092CF5F /* libAQGridView.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D857D53164249DA0092CF5F /* libAQGridView.a */; };
 		7D85EE6E1637936A00D5630A /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7D85EE6D1637936A00D5630A /* Default-568h@2x.png */; };
 		7D92E5B216070705000C7B06 /* PhotoPostWithURLHistoryStyle.txt in Resources */ = {isa = PBXBuildFile; fileRef = 7D92E5B0160703F6000C7B06 /* PhotoPostWithURLHistoryStyle.txt */; };
@@ -1144,6 +1146,7 @@
 		7D0CDD0D162E5A080027D35F /* Stream-iOS-ApplicationTests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Stream-iOS-ApplicationTests-Prefix.pch"; sourceTree = "<group>"; };
 		7D0CDD14162E5F9E0027D35F /* WAFacebookConnectionSwitchTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAFacebookConnectionSwitchTest.h; sourceTree = "<group>"; };
 		7D0CDD15162E5F9E0027D35F /* WAFacebookConnectionSwitchTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAFacebookConnectionSwitchTest.m; sourceTree = "<group>"; };
+		7D1BC2F116437C9F0060831E /* libPods.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPods.a; path = "Pods/build/Release-iphoneos/libPods.a"; sourceTree = "<group>"; };
 		7D857D4B164249DA0092CF5F /* AQGridView.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = AQGridView.xcodeproj; path = external/AQGridView/AQGridView.xcodeproj; sourceTree = "<group>"; };
 		7D85EE6D1637936A00D5630A /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default-568h@2x.png"; path = "Resources/Default-568h@2x.png"; sourceTree = "<group>"; };
 		7D92E5B0160703F6000C7B06 /* PhotoPostWithURLHistoryStyle.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = PhotoPostWithURLHistoryStyle.txt; sourceTree = "<group>"; };
@@ -1844,6 +1847,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7D296DAA1643818000870747 /* libSocketRocket.a in Frameworks */,
+				7D1BC2F216437C9F0060831E /* libPods.a in Frameworks */,
 				7D9B1D96162BC0AD000E5350 /* Accounts.framework in Frameworks */,
 				7D9B1D97162BC0AD000E5350 /* AdSupport.framework in Frameworks */,
 				7D9B1D98162BC0AD000E5350 /* Social.framework in Frameworks */,
@@ -2517,6 +2522,7 @@
 		FF73A53313D6C2CC00D54EC6 = {
 			isa = PBXGroup;
 			children = (
+				7D1BC2F116437C9F0060831E /* libPods.a */,
 				7DB81F181637E91B009A3645 /* Collection */,
 				7D0CDD04162E5A080027D35F /* Application Tests */,
 				4B8CA96F14BBE7BA006E06BB /* Logic Tests */,
@@ -4858,7 +4864,6 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/wammer\"",
-					"\"$(SRCROOT)/wammer/Libraries\"/**",
 					"\"$(SRCROOT)/wammer/Libraries\"",
 					"\"$(SRCROOT)/../../Library/Developer/Xcode/DerivedData/wammer-emtadpmnuosywwdpqrykcuhueoxl/Build/Products/Debug-iphoneos\"",
 				);
@@ -4878,7 +4883,7 @@
 		4B8581A415F78A6B00EE11AC /* Beta */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
+				ALWAYS_SEARCH_USER_PATHS = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				COPY_PHASE_STRIP = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -4910,12 +4915,16 @@
 					"\"$(PROJECT_DIR)/external/SocketRocket\"/**",
 				);
 				INFOPLIST_FILE = "wammer-iOS-Tests/wammer-iOS-Tests-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/external/Facebook/lib/facebook-ios-sdk\"",
 					"\"$(SRCROOT)/wammer/facebook-ios-sdk\"",
 				);
+				PODS_BUILD_HEADERS_SEARCH_PATHS = "\"${PODS_ROOT}/BuildHeaders\" \"${PODS_ROOT}/BuildHeaders/DCIntrospect\" \"${PODS_ROOT}/BuildHeaders/Facebook-iOS-SDK\" \"${PODS_ROOT}/BuildHeaders/Facebook-iOS-SDK/FacebookSDK\" \"${PODS_ROOT}/BuildHeaders/InAppSettingsKit\" \"${PODS_ROOT}/BuildHeaders/JSONKit\" \"${PODS_ROOT}/BuildHeaders/MagicalRecord\" \"${PODS_ROOT}/BuildHeaders/OCHamcrest\" \"${PODS_ROOT}/BuildHeaders/OCMock\" \"${PODS_ROOT}/BuildHeaders/SSKeychain\" \"${PODS_ROOT}/BuildHeaders/TestFlightSDK\"";
+				PODS_HEADERS_SEARCH_PATHS = "${PODS_PUBLIC_HEADERS_SEARCH_PATHS}";
+				PODS_PUBLIC_HEADERS_SEARCH_PATHS = "\"${PODS_ROOT}/Headers\" \"${PODS_ROOT}/Headers/DCIntrospect\" \"${PODS_ROOT}/Headers/Facebook-iOS-SDK\" \"${PODS_ROOT}/Headers/Facebook-iOS-SDK/FacebookSDK\" \"${PODS_ROOT}/Headers/InAppSettingsKit\" \"${PODS_ROOT}/Headers/JSONKit\" \"${PODS_ROOT}/Headers/MagicalRecord\" \"${PODS_ROOT}/Headers/OCHamcrest\" \"${PODS_ROOT}/Headers/OCMock\" \"${PODS_ROOT}/Headers/SSKeychain\" \"${PODS_ROOT}/Headers/TestFlightSDK\"";
+				PODS_ROOT = "${SRCROOT}/Pods";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_AFTER_BUILD = YES;
 				WRAPPER_EXTENSION = octest;
@@ -4970,11 +4979,12 @@
 				ALWAYS_SEARCH_USER_PATHS = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)\"",
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(DEVELOPER_LIBRARY_DIR)/Frameworks",
 					"\"$(SRCROOT)/external/CrashlyticsSDK\"",
 					"\"$(SYSTEM_APPS_DIR)/Xcode.app/Contents/Developer/Library/Frameworks\"",
-					"\"$(SRCROOT)/external/FacebookSDK/build\"",
 					"\"$(SRCROOT)/wammer/Libraries\"",
 				);
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -4983,6 +4993,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "wammer-iOS-Tests/wammer-iOS-Tests-Prefix.pch";
 				HEADER_SEARCH_PATHS = (
+					"${PODS_HEADERS_SEARCH_PATHS}",
 					"\"$(PROJECT_DIR)/external/IRFoundations\"/**",
 					"\"$(SDKROOT)/usr/include/libxml2\"/**",
 					"\"$(PROJECT_DIR)/external/IRWebAPIKit\"/**",
@@ -5000,19 +5011,21 @@
 					"\"$(PROJECT_DIR)/external/ocmock/Source/**",
 				);
 				INFOPLIST_FILE = "wammer-iOS-Tests/wammer-iOS-Tests-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/external/Facebook/lib/facebook-ios-sdk\"",
-					"\"$(SRCROOT)/wammer/facebook-ios-sdk\"",
-					"\"$(SRCROOT)/external/ocmock/Examples/iOS5Example/usr/lib\"",
-					"\"$(SRCROOT)/external/ocmock/Examples/iPhoneExample/Libraries\"",
+					"\"$(SRCROOT)/wammer\"",
 					"\"$(SRCROOT)/wammer/Libraries\"",
+					"\"$(SRCROOT)/../../Library/Developer/Xcode/DerivedData/wammer-emtadpmnuosywwdpqrykcuhueoxl/Build/Products/Debug-iphoneos\"",
 				);
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"-all_load",
 				);
+				PODS_BUILD_HEADERS_SEARCH_PATHS = "\"${PODS_ROOT}/BuildHeaders\" \"${PODS_ROOT}/BuildHeaders/DCIntrospect\" \"${PODS_ROOT}/BuildHeaders/Facebook-iOS-SDK\" \"${PODS_ROOT}/BuildHeaders/Facebook-iOS-SDK/FacebookSDK\" \"${PODS_ROOT}/BuildHeaders/InAppSettingsKit\" \"${PODS_ROOT}/BuildHeaders/JSONKit\" \"${PODS_ROOT}/BuildHeaders/MagicalRecord\" \"${PODS_ROOT}/BuildHeaders/OCHamcrest\" \"${PODS_ROOT}/BuildHeaders/OCMock\" \"${PODS_ROOT}/BuildHeaders/SSKeychain\" \"${PODS_ROOT}/BuildHeaders/TestFlightSDK\"";
+				PODS_HEADERS_SEARCH_PATHS = "${PODS_PUBLIC_HEADERS_SEARCH_PATHS}";
+				PODS_PUBLIC_HEADERS_SEARCH_PATHS = "\"${PODS_ROOT}/Headers\" \"${PODS_ROOT}/Headers/DCIntrospect\" \"${PODS_ROOT}/Headers/Facebook-iOS-SDK\" \"${PODS_ROOT}/Headers/Facebook-iOS-SDK/FacebookSDK\" \"${PODS_ROOT}/Headers/InAppSettingsKit\" \"${PODS_ROOT}/Headers/JSONKit\" \"${PODS_ROOT}/Headers/MagicalRecord\" \"${PODS_ROOT}/Headers/OCHamcrest\" \"${PODS_ROOT}/Headers/OCMock\" \"${PODS_ROOT}/Headers/SSKeychain\" \"${PODS_ROOT}/Headers/TestFlightSDK\"";
+				PODS_ROOT = "${SRCROOT}/Pods";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_AFTER_BUILD = YES;
 				WRAPPER_EXTENSION = octest;
@@ -5056,7 +5069,7 @@
 					"\"$(PROJECT_DIR)/external/ocmock/Source/**",
 				);
 				INFOPLIST_FILE = "wammer-iOS-Tests/wammer-iOS-Tests-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/external/ocmock/Examples/iOS5Example/usr/lib\"",
@@ -5067,6 +5080,10 @@
 					"-ObjC",
 					"-all_load",
 				);
+				PODS_BUILD_HEADERS_SEARCH_PATHS = "\"${PODS_ROOT}/BuildHeaders\" \"${PODS_ROOT}/BuildHeaders/DCIntrospect\" \"${PODS_ROOT}/BuildHeaders/Facebook-iOS-SDK\" \"${PODS_ROOT}/BuildHeaders/Facebook-iOS-SDK/FacebookSDK\" \"${PODS_ROOT}/BuildHeaders/InAppSettingsKit\" \"${PODS_ROOT}/BuildHeaders/JSONKit\" \"${PODS_ROOT}/BuildHeaders/MagicalRecord\" \"${PODS_ROOT}/BuildHeaders/OCHamcrest\" \"${PODS_ROOT}/BuildHeaders/OCMock\" \"${PODS_ROOT}/BuildHeaders/SSKeychain\" \"${PODS_ROOT}/BuildHeaders/TestFlightSDK\"";
+				PODS_HEADERS_SEARCH_PATHS = "${PODS_PUBLIC_HEADERS_SEARCH_PATHS}";
+				PODS_PUBLIC_HEADERS_SEARCH_PATHS = "\"${PODS_ROOT}/Headers\" \"${PODS_ROOT}/Headers/DCIntrospect\" \"${PODS_ROOT}/Headers/Facebook-iOS-SDK\" \"${PODS_ROOT}/Headers/Facebook-iOS-SDK/FacebookSDK\" \"${PODS_ROOT}/Headers/InAppSettingsKit\" \"${PODS_ROOT}/Headers/JSONKit\" \"${PODS_ROOT}/Headers/MagicalRecord\" \"${PODS_ROOT}/Headers/OCHamcrest\" \"${PODS_ROOT}/Headers/OCMock\" \"${PODS_ROOT}/Headers/SSKeychain\" \"${PODS_ROOT}/Headers/TestFlightSDK\"";
+				PODS_ROOT = "${SRCROOT}/Pods";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_AFTER_BUILD = YES;
 				WRAPPER_EXTENSION = octest;
@@ -5076,7 +5093,7 @@
 		7D0CDD0F162E5A080027D35F /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
+				ALWAYS_SEARCH_USER_PATHS = YES;
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/wammer-iOS.app/wammer-iOS";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
@@ -5097,6 +5114,7 @@
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				HEADER_SEARCH_PATHS = (
+					"${PODS_HEADERS_SEARCH_PATHS}",
 					"\"$(PROJECT_DIR)/external/IRFoundations\"/**",
 					"\"$(SDKROOT)/usr/include/libxml2\"/**",
 					"\"$(PROJECT_DIR)/external/IRWebAPIKit\"/**",
@@ -5120,6 +5138,10 @@
 					"\"$(SRCROOT)/wammer/Libraries\"",
 				);
 				ONLY_ACTIVE_ARCH = YES;
+				PODS_BUILD_HEADERS_SEARCH_PATHS = "\"${PODS_ROOT}/BuildHeaders\" \"${PODS_ROOT}/BuildHeaders/DCIntrospect\" \"${PODS_ROOT}/BuildHeaders/Facebook-iOS-SDK\" \"${PODS_ROOT}/BuildHeaders/Facebook-iOS-SDK/FacebookSDK\" \"${PODS_ROOT}/BuildHeaders/InAppSettingsKit\" \"${PODS_ROOT}/BuildHeaders/JSONKit\" \"${PODS_ROOT}/BuildHeaders/MagicalRecord\" \"${PODS_ROOT}/BuildHeaders/OCHamcrest\" \"${PODS_ROOT}/BuildHeaders/OCMock\" \"${PODS_ROOT}/BuildHeaders/SSKeychain\" \"${PODS_ROOT}/BuildHeaders/TestFlightSDK\"";
+				PODS_HEADERS_SEARCH_PATHS = "${PODS_PUBLIC_HEADERS_SEARCH_PATHS}";
+				PODS_PUBLIC_HEADERS_SEARCH_PATHS = "\"${PODS_ROOT}/Headers\" \"${PODS_ROOT}/Headers/DCIntrospect\" \"${PODS_ROOT}/Headers/Facebook-iOS-SDK\" \"${PODS_ROOT}/Headers/Facebook-iOS-SDK/FacebookSDK\" \"${PODS_ROOT}/Headers/InAppSettingsKit\" \"${PODS_ROOT}/Headers/JSONKit\" \"${PODS_ROOT}/Headers/MagicalRecord\" \"${PODS_ROOT}/Headers/OCHamcrest\" \"${PODS_ROOT}/Headers/OCMock\" \"${PODS_ROOT}/Headers/SSKeychain\" \"${PODS_ROOT}/Headers/TestFlightSDK\"";
+				PODS_ROOT = "${SRCROOT}/Pods";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = octest;
@@ -5129,7 +5151,7 @@
 		7D0CDD10162E5A080027D35F /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
+				ALWAYS_SEARCH_USER_PATHS = YES;
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/wammer-iOS.app/wammer-iOS";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
@@ -5146,6 +5168,7 @@
 				GCC_PREFIX_HEADER = "Stream-iOS-ApplicationTests/Stream-iOS-ApplicationTests-Prefix.pch";
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				HEADER_SEARCH_PATHS = (
+					"${PODS_HEADERS_SEARCH_PATHS}",
 					"\"$(PROJECT_DIR)/external/IRFoundations\"/**",
 					"\"$(SDKROOT)/usr/include/libxml2\"/**",
 					"\"$(PROJECT_DIR)/external/IRWebAPIKit\"/**",
@@ -5168,6 +5191,10 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/wammer/Libraries\"",
 				);
+				PODS_BUILD_HEADERS_SEARCH_PATHS = "\"${PODS_ROOT}/BuildHeaders\" \"${PODS_ROOT}/BuildHeaders/DCIntrospect\" \"${PODS_ROOT}/BuildHeaders/Facebook-iOS-SDK\" \"${PODS_ROOT}/BuildHeaders/Facebook-iOS-SDK/FacebookSDK\" \"${PODS_ROOT}/BuildHeaders/InAppSettingsKit\" \"${PODS_ROOT}/BuildHeaders/JSONKit\" \"${PODS_ROOT}/BuildHeaders/MagicalRecord\" \"${PODS_ROOT}/BuildHeaders/OCHamcrest\" \"${PODS_ROOT}/BuildHeaders/OCMock\" \"${PODS_ROOT}/BuildHeaders/SSKeychain\" \"${PODS_ROOT}/BuildHeaders/TestFlightSDK\"";
+				PODS_HEADERS_SEARCH_PATHS = "${PODS_PUBLIC_HEADERS_SEARCH_PATHS}";
+				PODS_PUBLIC_HEADERS_SEARCH_PATHS = "\"${PODS_ROOT}/Headers\" \"${PODS_ROOT}/Headers/DCIntrospect\" \"${PODS_ROOT}/Headers/Facebook-iOS-SDK\" \"${PODS_ROOT}/Headers/Facebook-iOS-SDK/FacebookSDK\" \"${PODS_ROOT}/Headers/InAppSettingsKit\" \"${PODS_ROOT}/Headers/JSONKit\" \"${PODS_ROOT}/Headers/MagicalRecord\" \"${PODS_ROOT}/Headers/OCHamcrest\" \"${PODS_ROOT}/Headers/OCMock\" \"${PODS_ROOT}/Headers/SSKeychain\" \"${PODS_ROOT}/Headers/TestFlightSDK\"";
+				PODS_ROOT = "${SRCROOT}/Pods";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = octest;
@@ -5177,7 +5204,7 @@
 		7D0CDD11162E5A080027D35F /* Beta */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
+				ALWAYS_SEARCH_USER_PATHS = YES;
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/wammer-iOS.app/wammer-iOS";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
@@ -5194,6 +5221,7 @@
 				GCC_PREFIX_HEADER = "Stream-iOS-ApplicationTests/Stream-iOS-ApplicationTests-Prefix.pch";
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				HEADER_SEARCH_PATHS = (
+					"${PODS_HEADERS_SEARCH_PATHS}",
 					"\"$(PROJECT_DIR)/external/IRFoundations\"/**",
 					"\"$(SDKROOT)/usr/include/libxml2\"/**",
 					"\"$(PROJECT_DIR)/external/IRWebAPIKit\"/**",
@@ -5216,6 +5244,10 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/wammer/Libraries\"",
 				);
+				PODS_BUILD_HEADERS_SEARCH_PATHS = "\"${PODS_ROOT}/BuildHeaders\" \"${PODS_ROOT}/BuildHeaders/DCIntrospect\" \"${PODS_ROOT}/BuildHeaders/Facebook-iOS-SDK\" \"${PODS_ROOT}/BuildHeaders/Facebook-iOS-SDK/FacebookSDK\" \"${PODS_ROOT}/BuildHeaders/InAppSettingsKit\" \"${PODS_ROOT}/BuildHeaders/JSONKit\" \"${PODS_ROOT}/BuildHeaders/MagicalRecord\" \"${PODS_ROOT}/BuildHeaders/OCHamcrest\" \"${PODS_ROOT}/BuildHeaders/OCMock\" \"${PODS_ROOT}/BuildHeaders/SSKeychain\" \"${PODS_ROOT}/BuildHeaders/TestFlightSDK\"";
+				PODS_HEADERS_SEARCH_PATHS = "${PODS_PUBLIC_HEADERS_SEARCH_PATHS}";
+				PODS_PUBLIC_HEADERS_SEARCH_PATHS = "\"${PODS_ROOT}/Headers\" \"${PODS_ROOT}/Headers/DCIntrospect\" \"${PODS_ROOT}/Headers/Facebook-iOS-SDK\" \"${PODS_ROOT}/Headers/Facebook-iOS-SDK/FacebookSDK\" \"${PODS_ROOT}/Headers/InAppSettingsKit\" \"${PODS_ROOT}/Headers/JSONKit\" \"${PODS_ROOT}/Headers/MagicalRecord\" \"${PODS_ROOT}/Headers/OCHamcrest\" \"${PODS_ROOT}/Headers/OCMock\" \"${PODS_ROOT}/Headers/SSKeychain\" \"${PODS_ROOT}/Headers/TestFlightSDK\"";
+				PODS_ROOT = "${SRCROOT}/Pods";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = octest;
@@ -5441,7 +5473,6 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/wammer\"",
-					"\"$(SRCROOT)/wammer/Libraries\"/**",
 					"\"$(SRCROOT)/wammer/Libraries\"",
 					"\"$(SRCROOT)/../../Library/Developer/Xcode/DerivedData/wammer-emtadpmnuosywwdpqrykcuhueoxl/Build/Products/Debug-iphoneos\"",
 				);
@@ -5479,7 +5510,6 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/wammer\"",
-					"\"$(SRCROOT)/wammer/Libraries\"/**",
 					"\"$(SRCROOT)/wammer/Libraries\"",
 					"\"$(SRCROOT)/../../Library/Developer/Xcode/DerivedData/wammer-emtadpmnuosywwdpqrykcuhueoxl/Build/Products/Debug-iphoneos\"",
 				);
