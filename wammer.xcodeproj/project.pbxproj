@@ -172,8 +172,6 @@
 		809C6D2C1605845A0016E196 /* WASlidingMenuViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 809C6D2A1605845A0016E196 /* WASlidingMenuViewController.xib */; };
 		809D429015F5CE4300CB4F89 /* WAWebSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 809D428F15F5CE4300CB4F89 /* WAWebSocket.m */; };
 		80A13C74162071C4002880A9 /* NSDate+WAAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 80A13C73162071C4002880A9 /* NSDate+WAAdditions.m */; };
-		80A2217215ED1AFD006236AC /* WARemoteInterface+Notification.h in Sources */ = {isa = PBXBuildFile; fileRef = 8002CDE715E5E92100D7BFF0 /* WARemoteInterface+Notification.h */; };
-		80A2217415ED1AFD006236AC /* WARemoteInterface+WebSocket.h in Sources */ = {isa = PBXBuildFile; fileRef = 8002CDEA15E5F6F300D7BFF0 /* WARemoteInterface+WebSocket.h */; };
 		80A2217515ED1AFD006236AC /* WARemoteInterface+WebSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 8002CDEB15E5F6F300D7BFF0 /* WARemoteInterface+WebSocket.m */; };
 		80BE685B161DC13800A37CEB /* WADayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 80BE685A161DC13800A37CEB /* WADayViewController.m */; };
 		80C129B916398933001DDFE2 /* WADayHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 80C129B716398933001DDFE2 /* WADayHeaderView.m */; };
@@ -2522,7 +2520,6 @@
 		FF73A53313D6C2CC00D54EC6 = {
 			isa = PBXGroup;
 			children = (
-				7D1BC2F116437C9F0060831E /* libPods.a */,
 				7DB81F181637E91B009A3645 /* Collection */,
 				7D0CDD04162E5A080027D35F /* Application Tests */,
 				4B8CA96F14BBE7BA006E06BB /* Logic Tests */,
@@ -2572,6 +2569,7 @@
 		FF73A54113D6C2CC00D54EC6 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				7D1BC2F116437C9F0060831E /* libPods.a */,
 				D215E734098A44479DEC4F88 /* libPods.a */,
 				7DC3AC1116422070009A8EA7 /* libSocketRocket.a */,
 				7D9B1D8C162BB1DE000E5350 /* Accounts.framework */,
@@ -4140,8 +4138,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				80F42C0215F70EDF00C8A72B /* WAWebSocket.m in Sources */,
-				80A2217215ED1AFD006236AC /* WARemoteInterface+Notification.h in Sources */,
-				80A2217415ED1AFD006236AC /* WARemoteInterface+WebSocket.h in Sources */,
 				80A2217515ED1AFD006236AC /* WARemoteInterface+WebSocket.m in Sources */,
 				FFCEF41315199F000021AECB /* WAArticle+DiscreteLayoutAdditions.m in Sources */,
 				FFCEF41415199F000021AECB /* WAArticle+WAAdditions.m in Sources */,
@@ -4887,10 +4883,12 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				COPY_PHASE_STRIP = YES;
 				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)\"",
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(DEVELOPER_LIBRARY_DIR)/Frameworks",
 					"\"$(SRCROOT)/external/CrashlyticsSDK\"",
-					"\"$(SRCROOT)/external/FacebookSDK/build\"",
+					"\"$(SYSTEM_APPS_DIR)/Xcode.app/Contents/Developer/Library/Frameworks\"",
 					"\"$(SRCROOT)/wammer/Libraries\"",
 				);
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -4899,6 +4897,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "wammer-iOS-Tests/wammer-iOS-Tests-Prefix.pch";
 				HEADER_SEARCH_PATHS = (
+					"${PODS_HEADERS_SEARCH_PATHS}",
 					"\"$(PROJECT_DIR)/external/IRFoundations\"/**",
 					"\"$(SDKROOT)/usr/include/libxml2\"/**",
 					"\"$(PROJECT_DIR)/external/IRWebAPIKit\"/**",
@@ -4913,6 +4912,7 @@
 					"\"$(PROJECT_DIR)/external/WFPresentation/Bindings/Objective-C\"/**",
 					"\"$(PROJECT_DIR)/external/Facebook\"/**",
 					"\"$(PROJECT_DIR)/external/SocketRocket\"/**",
+					"\"$(PROJECT_DIR)/external/ocmock/Source/**",
 				);
 				INFOPLIST_FILE = "wammer-iOS-Tests/wammer-iOS-Tests-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
@@ -5039,11 +5039,12 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				COPY_PHASE_STRIP = YES;
 				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)\"",
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(DEVELOPER_LIBRARY_DIR)/Frameworks",
 					"\"$(SRCROOT)/external/CrashlyticsSDK\"",
 					"\"$(SYSTEM_APPS_DIR)/Xcode.app/Contents/Developer/Library/Frameworks\"",
-					"\"$(SRCROOT)/external/FacebookSDK/build\"",
 					"\"$(SRCROOT)/wammer/Libraries\"",
 				);
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -5052,6 +5053,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "wammer-iOS-Tests/wammer-iOS-Tests-Prefix.pch";
 				HEADER_SEARCH_PATHS = (
+					"${PODS_HEADERS_SEARCH_PATHS}",
 					"\"$(PROJECT_DIR)/external/IRFoundations\"/**",
 					"\"$(SDKROOT)/usr/include/libxml2\"/**",
 					"\"$(PROJECT_DIR)/external/IRWebAPIKit\"/**",
