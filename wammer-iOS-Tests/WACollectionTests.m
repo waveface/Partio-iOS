@@ -8,7 +8,7 @@
 
 #import "WACollectionTests.h"
 #import "CoreData+MagicalRecord.h"
-#import "WAArticle.h"
+#import "WACollection.h"
 #import "WAUser.h"
 
 @implementation WACollectionTests
@@ -23,13 +23,14 @@
 }
 
 - (void)testSometingReallySimple {
-	WAArticle *testArticle = [WAArticle MR_createEntity];
-	STAssertNotNil(testArticle, @"Should not be nil");
+	WACollection *collection = [WACollection MR_createEntity];
+	STAssertNotNil(collection, @"Should not be nil");
 	
-	testArticle.text = @"Some text here";
-	testArticle.owner = [WAUser MR_createEntity];
-	NSArray *arrayOfArticles = [WAArticle MR_findAll];
-	STAssertEquals(@"Some text here", ((WAArticle *) arrayOfArticles[0]).text,
+	collection.creator = [WAUser MR_createEntity];
+	collection.createDate = [NSDate date];
+	collection.title = @"This should be collection title";
+	NSArray *collections = [WACollection MR_findAll];
+	STAssertEquals(collection.title, ((WACollection *) collections[0]).title,
 								 @"Should be the same.");
 }
 
