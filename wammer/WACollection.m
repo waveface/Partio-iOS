@@ -2,7 +2,7 @@
 //  WACollection.m
 //  wammer
 //
-//  Created by jamie on 12/11/2.
+//  Created by jamie on 12/11/5.
 //  Copyright (c) 2012年 Waveface. All rights reserved.
 //
 
@@ -16,7 +16,7 @@
 @dynamic createDate;
 @dynamic identifier;
 @dynamic modifyDate;
-@dynamic title;
+@dynamic name;
 @dynamic creator;
 @dynamic files;
 

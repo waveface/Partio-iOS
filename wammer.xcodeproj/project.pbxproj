@@ -117,6 +117,9 @@
 		7D296DAA1643818000870747 /* libSocketRocket.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D6470A71642218800DBDEA6 /* libSocketRocket.a */; };
 		7D29701B1643B5CE00870747 /* WACollectionTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D29701A1643B5CE00870747 /* WACollectionTests.m */; };
 		7D29702B1643BC2F00870747 /* WAModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = FFCD324114B997B70035C4F5 /* WAModel.xcdatamodeld */; };
+		7D4BCD42164760B70013143D /* WACollection.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D4BCD41164760B70013143D /* WACollection.m */; };
+		7D4BCD43164760B70013143D /* WACollection.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D4BCD41164760B70013143D /* WACollection.m */; };
+		7D4BCD44164760B70013143D /* WACollection.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D4BCD41164760B70013143D /* WACollection.m */; };
 		7D857D54164250B80092CF5F /* libAQGridView.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D857D53164249DA0092CF5F /* libAQGridView.a */; };
 		7D85EE6E1637936A00D5630A /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7D85EE6D1637936A00D5630A /* Default-568h@2x.png */; };
 		7D92E5B216070705000C7B06 /* PhotoPostWithURLHistoryStyle.txt in Resources */ = {isa = PBXBuildFile; fileRef = 7D92E5B0160703F6000C7B06 /* PhotoPostWithURLHistoryStyle.txt */; };
@@ -129,9 +132,6 @@
 		7D9B1D99162BE0D2000E5350 /* WAFacebookConnectionSwitch.m in Sources */ = {isa = PBXBuildFile; fileRef = FF3B37B015B690FF00AE357A /* WAFacebookConnectionSwitch.m */; };
 		7D9B1D9A162BE1B1000E5350 /* WARemoteInterface+SocialNetworks.m in Sources */ = {isa = PBXBuildFile; fileRef = FF88370515B7E90800E6CD92 /* WARemoteInterface+SocialNetworks.m */; };
 		7DA474461643C16900EC415C /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF73A69713D6E08100D54EC6 /* CoreData.framework */; };
-		7DA474491643C44B00EC415C /* WACollection.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DA474481643C44B00EC415C /* WACollection.m */; };
-		7DA4744A1643C44B00EC415C /* WACollection.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DA474481643C44B00EC415C /* WACollection.m */; };
-		7DA4744B1643C44B00EC415C /* WACollection.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DA474481643C44B00EC415C /* WACollection.m */; };
 		7DA78784163912C600BEFC6E /* LightTablePhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7DA78783163912C600BEFC6E /* LightTablePhone.storyboard */; };
 		7DA7879C1639245C00BEFC6E /* WALightTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DA7879B1639245C00BEFC6E /* WALightTableViewController.m */; };
 		7DA881011639449000DC20E4 /* WALightTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DA881001639449000DC20E4 /* WALightTableViewCell.m */; };
@@ -1152,14 +1152,14 @@
 		7D1BC2F116437C9F0060831E /* libPods.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPods.a; path = "Pods/build/Release-iphoneos/libPods.a"; sourceTree = "<group>"; };
 		7D2970191643B5CE00870747 /* WACollectionTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WACollectionTests.h; sourceTree = "<group>"; };
 		7D29701A1643B5CE00870747 /* WACollectionTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WACollectionTests.m; sourceTree = "<group>"; };
+		7D4BCD40164760B70013143D /* WACollection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WACollection.h; sourceTree = "<group>"; };
+		7D4BCD41164760B70013143D /* WACollection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WACollection.m; sourceTree = "<group>"; };
 		7D857D4B164249DA0092CF5F /* AQGridView.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = AQGridView.xcodeproj; path = external/AQGridView/AQGridView.xcodeproj; sourceTree = "<group>"; };
 		7D85EE6D1637936A00D5630A /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default-568h@2x.png"; path = "Resources/Default-568h@2x.png"; sourceTree = "<group>"; };
 		7D92E5B0160703F6000C7B06 /* PhotoPostWithURLHistoryStyle.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = PhotoPostWithURLHistoryStyle.txt; sourceTree = "<group>"; };
 		7D9B1D8C162BB1DE000E5350 /* Accounts.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = Accounts.framework; path = System/Library/Frameworks/Accounts.framework; sourceTree = SDKROOT; };
 		7D9B1D8E162BB1E8000E5350 /* AdSupport.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
 		7D9B1D90162BB1F6000E5350 /* Social.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
-		7DA474471643C44B00EC415C /* WACollection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WACollection.h; sourceTree = "<group>"; };
-		7DA474481643C44B00EC415C /* WACollection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WACollection.m; sourceTree = "<group>"; };
 		7DA78783163912C600BEFC6E /* LightTablePhone.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LightTablePhone.storyboard; path = wammer/LightTablePhone.storyboard; sourceTree = "<group>"; };
 		7DA7879A1639245C00BEFC6E /* WALightTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WALightTableViewController.h; path = wammer/WALightTableViewController.h; sourceTree = "<group>"; };
 		7DA7879B1639245C00BEFC6E /* WALightTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WALightTableViewController.m; path = wammer/WALightTableViewController.m; sourceTree = "<group>"; };
@@ -2671,9 +2671,9 @@
 		FF97382213D821C1003D1722 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				7D4BCD40164760B70013143D /* WACollection.h */,
+				7D4BCD41164760B70013143D /* WACollection.m */,
 				FFCD324114B997B70035C4F5 /* WAModel.xcdatamodeld */,
-				7DA474471643C44B00EC415C /* WACollection.h */,
-				7DA474481643C44B00EC415C /* WACollection.m */,
 				FF4BDEAC156A539100C105D5 /* Data Store */,
 				FF4BDEB1156A540D00C105D5 /* User */,
 				FF4BDEAB156A535300C105D5 /* Article */,
@@ -4220,7 +4220,7 @@
 				7D9B1D99162BE0D2000E5350 /* WAFacebookConnectionSwitch.m in Sources */,
 				7D9B1D9A162BE1B1000E5350 /* WARemoteInterface+SocialNetworks.m in Sources */,
 				7D29701B1643B5CE00870747 /* WACollectionTests.m in Sources */,
-				7DA4744A1643C44B00EC415C /* WACollection.m in Sources */,
+				7D4BCD43164760B70013143D /* WACollection.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4231,7 +4231,7 @@
 				7D0CDD0C162E5A080027D35F /* Stream_iOS_ApplicationTests.m in Sources */,
 				7D0CDD18162E5FC90027D35F /* WAFacebookConnectionSwitchTest.m in Sources */,
 				7D29702B1643BC2F00870747 /* WAModel.xcdatamodeld in Sources */,
-				7DA4744B1643C44B00EC415C /* WACollection.m in Sources */,
+				7D4BCD44164760B70013143D /* WACollection.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4488,7 +4488,7 @@
 				13DE13001638143A00757F7C /* WAFirstUseConnectServicesViewController.m in Sources */,
 				7DA7879C1639245C00BEFC6E /* WALightTableViewController.m in Sources */,
 				7DA881011639449000DC20E4 /* WALightTableViewCell.m in Sources */,
-				7DA474491643C44B00EC415C /* WACollection.m in Sources */,
+				7D4BCD42164760B70013143D /* WACollection.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
