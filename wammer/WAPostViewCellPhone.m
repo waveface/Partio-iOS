@@ -25,16 +25,17 @@
 
 @synthesize backgroundImageView;
 @synthesize photoImageViews;
-@synthesize monthLabel, dayLabel;
+@synthesize monthLabel, dayLabel, timeLabel;
 @synthesize extraInfoLabel;
 @synthesize contentTextView;
 @synthesize commentLabel;
+@synthesize bgImageView;
 @synthesize avatarView, userNicknameLabel, contentDescriptionLabel, dateOriginLabel, dateLabel, originLabel;
 @synthesize previewBadge, previewImageView, previewTitleLabel, previewProviderLabel, previewImageBackground;
 
 + (NSSet *) encodedObjectKeyPaths {
 
-	return [NSSet setWithObjects:@"backgroundImageView", @"monthLabel", @"dayLabel", @"extraInfoLabel", @"contentTextView", @"commentLabel", @"avatarView", @"userNicknameLabel", @"contentDescriptionLabel", @"dateOriginLabel", @"dateLabel", @"originLabel", @"previewBadge", @"previewImageView", @"previewTitleLabel", @"previewProviderLabel", @"previewImageBackground", @"photoImageViews", nil];
+	return [NSSet setWithObjects:@"backgroundImageView", @"monthLabel", @"dayLabel", @"extraInfoLabel", @"contentTextView", @"commentLabel", @"avatarView", @"userNicknameLabel", @"contentDescriptionLabel", @"dateOriginLabel", @"dateLabel", @"originLabel", @"previewBadge", @"previewImageView", @"previewTitleLabel", @"previewProviderLabel", @"previewImageBackground", @"photoImageViews", @"timeLabel", @"bgImageView", nil];
 
 }
 
@@ -288,6 +289,8 @@
 	
 	self.originLabel.text = [NSString stringWithFormat:NSLocalizedString(@"CREATE_TIME_FROM_DEVICE", @"iPhone Timeline"), timeString, deviceName];
 	self.dateLabel.text = [[[IRRelativeDateFormatter sharedFormatter] stringFromDate:postDate] lowercaseString];
+
+	CGFloat oldCommentHeight = CGRectGetHeight(self.commentLabel.frame);
 	self.commentLabel.text = post.text;
 	
 	if (postHasPreview) {
@@ -391,7 +394,7 @@
 		}];
 
 		NSMutableArray *displayedFiles = [[allFiles subarrayWithRange:(NSRange){ 0, MIN(numberOfPhotoImageViews, numberOfFiles)}] mutableCopy];
-		
+				
 		WAFile *coverFile = post.representingFile;
 		if ([displayedFiles containsObject:coverFile]) {
 			
@@ -453,6 +456,9 @@
 		
 	self.commentLabel.text = post.text;
 	
+	[self.commentLabel sizeToFit];
+	CGFloat newCommentHeight = CGRectGetHeight(self.commentLabel.frame);
+	
 	UIColor *textColor;
 	UIColor *shadowColor;
 
@@ -476,9 +482,26 @@
 	self.monthLabel.textColor = textColor;
 	self.monthLabel.shadowColor = shadowColor;
 	
+	self.timeLabel.textColor = textColor;
+	self.timeLabel.shadowColor = shadowColor;
+	
 	self.dayLabel.text = [[[self class] dayFormatter] stringFromDate:postDate];
 	self.monthLabel.text = [[[[self class] monthFormatter] stringFromDate:postDate] uppercaseString];
 	
+	self.timeLabel.text = [[[self class] timeFormatter] stringFromDate:postDate];
+
+	CGFloat delta = newCommentHeight - oldCommentHeight;
+	if (delta < 0) delta = 0;
+	self.bgImageView.frame = (CGRect){
+		self.bgImageView.frame.origin,
+		(CGSize) {
+			self.bgImageView.frame.size.width,
+			self.bgImageView.frame.size.height + delta
+		}
+	};
+	
+	self.bgImageView.image = [[UIImage imageNamed:@"whiteWithShadow"] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)];
+
 	[self setNeedsLayout];
 	
 }

@@ -359,8 +359,8 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 			[pulldownHeader setBusy:NO animated:YES];
 		};
 		
-		tbView.separatorColor = [UIColor colorWithRed:232.0/255.0 green:232/255.0 blue:226/255.0 alpha:1.0];
-		tbView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
+//		tbView.separatorColor = [UIColor colorWithRed:232.0/255.0 green:232/255.0 blue:226/255.0 alpha:1.0];
+//		tbView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
 		/*
 		tbView.layer.masksToBounds = NO;
 		tbView.layer.shadowRadius = 10;
@@ -385,6 +385,8 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 	};
 	
 	setupTableView(self.tableView);
+	
+	self.tableView.backgroundColor = [UIColor colorWithRed:0.95f green:0.95f blue:0.95f alpha:1];
 	
 	UILongPressGestureRecognizer *longPressGR = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleMenu:)];
 	[self.view addGestureRecognizer:longPressGR];
@@ -511,7 +513,7 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 	
 	WAPostViewCellPhone *cell = [WAPostViewCellPhone cellRepresentingObject:post inTableView:tableView];
 	NSParameterAssert(cell.article == post);
-	
+		
 	return cell;
 	
 }
@@ -565,7 +567,7 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 	NSCParameterAssert([post isKindOfClass:[WAArticle class]]);
 	
 	UIViewController *pushedVC = [WAArticleViewController controllerForArticle:post style:(WAFullScreenArticleStyle|WASuggestedStyleForArticle(post))];
-	
+
 	[self.navigationController pushViewController:pushedVC animated:YES];
 	
 }
