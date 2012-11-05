@@ -458,6 +458,9 @@
 /* Class = "IBUILabel"; text = "MONDAY"; ObjectID = "39"; */
 "MONDAY" = "MONDAY";
 
+/* Class = "IBUIButton"; normalTitle = "I_AM_NEW_HERE!"; ObjectID = "KXA-OG-bKa"; */
+"I_AM_NEW_HERE!" = "I am new here!";
+
 /* Class = "IBUITextField"; placeholder = "USERNAME_PLACEHOLDER"; ObjectID = "2Vk-4J-QH3"; */
 "USERNAME_PLACEHOLDER" = "me@example.com";
 
