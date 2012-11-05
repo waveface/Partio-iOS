@@ -147,7 +147,7 @@
                             <subviews>
                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="280" translatesAutoresizingMaskIntoConstraints="NO" id="ylt-bh-gIj">
                                     <constraints>
-                                        <constraint firstAttribute="height" constant="83" id="RBX-fd-qEX"/>
+                                        <constraint firstAttribute="height" priority="200" constant="83" type="user" id="RBX-fd-qEX"/>
                                     </constraints>
                                     <string key="text">Stream send all your pressure moment back to your PC. You can also upgrade to a cloud storage plan and enjoy the benefit of cloud computing.</string>
                                     <fontDescription key="fontDescription" type="system" pointSize="15"/>
@@ -158,7 +158,9 @@
                             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                             <constraints>
                                 <constraint firstItem="ylt-bh-gIj" firstAttribute="leading" secondItem="OjI-cG-NPW" secondAttribute="leading" constant="20" symbolic="YES" type="default" id="dO0-5q-VLf"/>
-                                <constraint firstItem="ylt-bh-gIj" firstAttribute="top" secondItem="OjI-cG-NPW" secondAttribute="top" constant="25" id="tlW-oc-yXj"/>
+                                <constraint firstItem="ylt-bh-gIj" firstAttribute="top" secondItem="OjI-cG-NPW" secondAttribute="top" constant="20" symbolic="YES" type="user" id="tlW-oc-yXj">
+                                    <string key="userLabel">Vertical Space (25) - Label - Stream send all your pressure moment back to your PC. You can also upgrade to a cloud storage plan and enjoy the benefit of cloud computing. - View</string>
+                                </constraint>
                                 <constraint firstAttribute="trailing" secondItem="ylt-bh-gIj" secondAttribute="trailing" constant="20" symbolic="YES" type="default" id="zf8-Ca-RPu"/>
                             </constraints>
                         </view>
@@ -289,7 +291,7 @@
                             <subviews>
                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Install Stream Windows and upgrades your PC to your Personal Cloud." lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="280" translatesAutoresizingMaskIntoConstraints="NO" id="7YP-nz-bf2">
                                     <constraints>
-                                        <constraint firstAttribute="height" constant="54" id="euF-RJ-zgL"/>
+                                        <constraint firstAttribute="height" priority="200" constant="54" type="user" id="euF-RJ-zgL"/>
                                     </constraints>
                                     <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -300,30 +302,13 @@
                             <constraints>
                                 <constraint firstItem="7YP-nz-bf2" firstAttribute="leading" secondItem="uIb-ec-1Pk" secondAttribute="leading" constant="20" symbolic="YES" type="default" id="OQb-g4-o30"/>
                                 <constraint firstAttribute="trailing" secondItem="7YP-nz-bf2" secondAttribute="trailing" constant="20" symbolic="YES" type="default" id="cIm-3l-xD7"/>
-                                <constraint firstItem="7YP-nz-bf2" firstAttribute="top" secondItem="uIb-ec-1Pk" secondAttribute="top" constant="19" id="tnD-Sh-bbA"/>
+                                <constraint firstItem="7YP-nz-bf2" firstAttribute="top" secondItem="uIb-ec-1Pk" secondAttribute="top" constant="20" symbolic="YES" type="user" id="tnD-Sh-bbA"/>
                             </constraints>
                         </view>
                         <view key="tableFooterView" contentMode="scaleToFill" id="auq-Qv-85F">
                             <rect key="frame" x="0.0" y="241" width="320" height="176"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
-                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" text="Install Stream Windows.  Turn on WiFi and connect to the same network with your PC." lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="260" translatesAutoresizingMaskIntoConstraints="NO" id="oeu-Dx-F5X">
-                                    <constraints>
-                                        <constraint firstAttribute="width" constant="260" id="3ks-PC-8e7"/>
-                                        <constraint firstAttribute="height" constant="53" id="Uo0-Dv-GnA"/>
-                                    </constraints>
-                                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                    <nil key="highlightedColor"/>
-                                </label>
-                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" text="1  2" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="13" translatesAutoresizingMaskIntoConstraints="NO" id="KdB-so-pGv">
-                                    <constraints>
-                                        <constraint firstAttribute="width" constant="13" id="Gtv-A2-t5L"/>
-                                    </constraints>
-                                    <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                    <nil key="highlightedColor"/>
-                                </label>
                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Tap here to send me the link" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cbv-qe-sH3">
                                     <constraints>
                                         <constraint firstAttribute="height" constant="21" id="OjS-Oj-Uqc"/>
@@ -333,57 +318,75 @@
                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                     <nil key="highlightedColor"/>
                                 </label>
+                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="280" translatesAutoresizingMaskIntoConstraints="NO" id="6Ib-wQ-B01">
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="61" id="pne-v6-w2L"/>
+                                    </constraints>
+                                    <attributedString key="attributedText">
+                                        <fragment content="1.">
+                                            <attributes>
+                                                <color key="NSColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                <font key="NSFont" size="15" name="Helvetica-Bold"/>
+                                                <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural"/>
+                                            </attributes>
+                                        </fragment>
+                                        <fragment content=" Install Stream Windows. ">
+                                            <attributes>
+                                                <color key="NSColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                <font key="NSFont" size="15" name="Helvetica"/>
+                                                <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural"/>
+                                            </attributes>
+                                        </fragment>
+                                        <fragment content="2.">
+                                            <attributes>
+                                                <color key="NSColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                <font key="NSFont" size="15" name="Helvetica-Bold"/>
+                                                <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural"/>
+                                            </attributes>
+                                        </fragment>
+                                        <fragment content=" Turn on WiFi and connect to the same network with your PC.">
+                                            <attributes>
+                                                <color key="NSColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                <font key="NSFont" size="15" name="Helvetica"/>
+                                                <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural"/>
+                                            </attributes>
+                                        </fragment>
+                                    </attributedString>
+                                    <nil key="highlightedColor"/>
+                                </label>
                             </subviews>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                             <constraints>
-                                <constraint firstItem="oeu-Dx-F5X" firstAttribute="leading" secondItem="auq-Qv-85F" secondAttribute="leading" constant="36" id="1YQ-9h-tyr"/>
-                                <constraint firstItem="KdB-so-pGv" firstAttribute="leading" secondItem="auq-Qv-85F" secondAttribute="leading" constant="20" symbolic="YES" type="default" id="BYg-yk-oZx"/>
-                                <constraint firstItem="KdB-so-pGv" firstAttribute="top" secondItem="auq-Qv-85F" secondAttribute="top" constant="18" id="lLA-lc-pVh"/>
+                                <constraint firstItem="6Ib-wQ-B01" firstAttribute="leading" secondItem="auq-Qv-85F" secondAttribute="leading" constant="20" symbolic="YES" type="default" id="4Tu-LB-hAv"/>
+                                <constraint firstItem="cbv-qe-sH3" firstAttribute="centerX" secondItem="6Ib-wQ-B01" secondAttribute="centerX" type="default" id="9pj-0W-XXX"/>
+                                <constraint firstItem="6Ib-wQ-B01" firstAttribute="top" secondItem="auq-Qv-85F" secondAttribute="top" constant="20" symbolic="YES" type="default" id="YDO-Dl-VfX"/>
+                                <constraint firstAttribute="trailing" secondItem="6Ib-wQ-B01" secondAttribute="trailing" constant="20" symbolic="YES" type="default" id="adE-1O-U5q"/>
                                 <constraint firstAttribute="bottom" secondItem="cbv-qe-sH3" secondAttribute="bottom" constant="33" id="obh-p8-chH"/>
-                                <constraint firstItem="cbv-qe-sH3" firstAttribute="centerX" secondItem="auq-Qv-85F" secondAttribute="centerX" type="default" id="qvf-cw-170"/>
-                                <constraint firstItem="oeu-Dx-F5X" firstAttribute="top" secondItem="auq-Qv-85F" secondAttribute="top" constant="20" symbolic="YES" type="default" id="sBq-Ux-kdf"/>
                             </constraints>
                         </view>
                         <sections>
                             <tableViewSection id="pgV-by-jxP">
                                 <cells>
-                                    <tableViewCell userInteractionEnabled="NO" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="JvD-hy-eCH">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" textLabel="cvb-qh-VGm" detailTextLabel="e78-f2-A71" style="IBUITableViewCellStyleValue1" id="T9X-px-pwj">
                                         <rect key="frame" x="0.0" y="185" width="320" height="46"/>
-                                        <autoresizingMask key="autoresizingMask"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                                             <rect key="frame" x="10" y="1" width="300" height="43"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Connection Status" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UIp-aK-2CV">
-                                                    <constraints>
-                                                        <constraint firstAttribute="width" constant="135" id="KyU-6J-PFZ"/>
-                                                    </constraints>
-                                                    <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                                                <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Connection Status" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cvb-qh-VGm">
+                                                    <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
                                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                                    <color key="highlightedColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <color key="highlightedColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                                 </label>
-                                                <activityIndicatorView opaque="NO" contentMode="scaleToFill" hidesWhenStopped="YES" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="22i-0L-flb"/>
-                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Stream Cloud" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yDM-I9-y11">
-                                                    <constraints>
-                                                        <constraint firstAttribute="height" constant="20" id="Mcj-IZ-wMB"/>
-                                                        <constraint firstAttribute="width" constant="121" id="uwg-0J-Q5u"/>
-                                                    </constraints>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                                                    <color key="textColor" red="0.0" green="0.25098040700000002" blue="0.50196081400000003" alpha="1" colorSpace="calibratedRGB"/>
-                                                    <color key="highlightedColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Stream" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="e78-f2-A71">
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" red="0.2196078431372549" green="0.32941176470588235" blue="0.52941176470588236" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <color key="highlightedColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                                 </label>
                                             </subviews>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         </view>
-                                        <constraints>
-                                            <constraint firstItem="22i-0L-flb" firstAttribute="centerY" secondItem="JvD-hy-eCH" secondAttribute="centerY" type="default" id="0BL-JO-6nL"/>
-                                            <constraint firstAttribute="trailing" secondItem="yDM-I9-y11" secondAttribute="trailing" constant="20" type="default" id="5Sl-F8-xMt"/>
-                                            <constraint firstItem="UIp-aK-2CV" firstAttribute="leading" secondItem="JvD-hy-eCH" secondAttribute="leading" constant="21" id="5WW-zf-EIO"/>
-                                            <constraint firstAttribute="trailing" secondItem="22i-0L-flb" secondAttribute="trailing" constant="20" type="default" id="Ixj-vX-Wyr"/>
-                                            <constraint firstItem="22i-0L-flb" firstAttribute="bottom" secondItem="UIp-aK-2CV" secondAttribute="bottom" type="default" id="KmH-Aw-dqV"/>
-                                            <constraint firstItem="yDM-I9-y11" firstAttribute="top" secondItem="UIp-aK-2CV" secondAttribute="top" type="default" id="woP-h1-Bl2"/>
-                                            <constraint firstItem="yDM-I9-y11" firstAttribute="centerY" secondItem="UIp-aK-2CV" secondAttribute="centerY" type="default" id="yFP-eH-b98"/>
-                                        </constraints>
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
@@ -403,9 +406,7 @@
                     </navigationItem>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
                     <connections>
-                        <outlet property="connectActivity" destination="22i-0L-flb" id="3bF-T3-qfj"/>
-                        <outlet property="connectedHost" destination="yDM-I9-y11" id="C3d-zg-gzk"/>
-                        <outlet property="connectionCell" destination="JvD-hy-eCH" id="gg6-Vj-BMP"/>
+                        <outlet property="connectionCell" destination="T9X-px-pwj" id="yNp-jh-4AK"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fNy-Ii-ntL" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -426,7 +427,7 @@
                             <subviews>
                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="280" translatesAutoresizingMaskIntoConstraints="NO" id="Phx-kE-dRu">
                                     <constraints>
-                                        <constraint firstAttribute="height" constant="81" id="6Si-Lh-gJT"/>
+                                        <constraint firstAttribute="height" priority="200" constant="81" type="user" id="6Si-Lh-gJT"/>
                                     </constraints>
                                     <string key="text">Stream automatically sync all your photos from your devices to your Personal Cloud. We create real life events for you and they are right there anytime, anywhere.</string>
                                     <fontDescription key="fontDescription" type="system" pointSize="15"/>
@@ -436,7 +437,8 @@
                             </subviews>
                             <color key="backgroundColor" white="1" alpha="0.0" colorSpace="custom" customColorSpace="calibratedWhite"/>
                             <constraints>
-                                <constraint firstItem="Phx-kE-dRu" firstAttribute="leading" secondItem="VhN-GG-xDm" secondAttribute="leading" constant="20" symbolic="YES" type="default" id="LRf-Cc-UBT"/>
+                                <constraint firstItem="Phx-kE-dRu" firstAttribute="leading" secondItem="VhN-GG-xDm" secondAttribute="leading" constant="20" symbolic="YES" type="user" id="LRf-Cc-UBT"/>
+                                <constraint firstAttribute="trailing" secondItem="Phx-kE-dRu" secondAttribute="trailing" constant="20" symbolic="YES" type="user" id="Ug5-CX-hAp"/>
                                 <constraint firstItem="Phx-kE-dRu" firstAttribute="top" secondItem="VhN-GG-xDm" secondAttribute="top" constant="20" symbolic="YES" type="default" id="j1W-rP-cub"/>
                             </constraints>
                         </view>
@@ -648,34 +650,25 @@
                         <sections>
                             <tableViewSection id="cfS-Kq-nyp">
                                 <cells>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="lmf-Tj-JS7">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" textLabel="hzE-fU-uMc" imageView="ajf-l2-bra" style="IBUITableViewCellStyleDefault" id="HN0-Dd-wTd">
                                         <rect key="frame" x="0.0" y="56" width="320" height="46"/>
-                                        <autoresizingMask key="autoresizingMask"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                                             <rect key="frame" x="10" y="1" width="300" height="43"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <switch opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="4rl-pm-Vcg" customClass="WAFacebookConnectionSwitch"/>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="FacebookLogo.png" translatesAutoresizingMaskIntoConstraints="NO" id="Iwk-l1-uTa"/>
-                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Facebook" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Rie-W7-F8Q">
-                                                    <constraints>
-                                                        <constraint firstAttribute="width" constant="94" id="ZBM-vf-spM"/>
-                                                    </constraints>
+                                                <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Facebook" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hzE-fU-uMc">
                                                     <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
                                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                                    <color key="highlightedColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <color key="highlightedColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                                 </label>
+                                                <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" image="FacebookLogo.png" id="ajf-l2-bra">
+                                                    <rect key="frame" x="5" y="5" width="33" height="33"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                </imageView>
                                             </subviews>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         </view>
-                                        <constraints>
-                                            <constraint firstItem="Rie-W7-F8Q" firstAttribute="leading" secondItem="Iwk-l1-uTa" secondAttribute="trailing" constant="8" symbolic="YES" type="default" id="Sex-Ke-Nlb"/>
-                                            <constraint firstItem="Iwk-l1-uTa" firstAttribute="leading" secondItem="lmf-Tj-JS7" secondAttribute="leading" constant="17" id="SgY-Ay-fkI"/>
-                                            <constraint firstItem="4rl-pm-Vcg" firstAttribute="centerY" secondItem="lmf-Tj-JS7" secondAttribute="centerY" type="default" id="d7I-KG-HGb"/>
-                                            <constraint firstAttribute="trailing" secondItem="4rl-pm-Vcg" secondAttribute="trailing" constant="18" id="eqJ-sL-vGg"/>
-                                            <constraint firstItem="Rie-W7-F8Q" firstAttribute="centerY" secondItem="Iwk-l1-uTa" secondAttribute="centerY" type="default" id="nZM-Gs-BLx"/>
-                                            <constraint firstItem="Rie-W7-F8Q" firstAttribute="centerY" secondItem="4rl-pm-Vcg" secondAttribute="centerY" type="default" id="pnJ-cP-2Ud"/>
-                                        </constraints>
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
@@ -694,6 +687,9 @@
                         </barButtonItem>
                     </navigationItem>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
+                    <connections>
+                        <outlet property="facebookConnectCell" destination="HN0-Dd-wTd" id="c9H-je-ln4"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SqC-Zh-e1G" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -708,6 +704,9 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6wx-cB-GP9">
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="280" type="user" id="gNS-Zt-fXM"/>
+                                </constraints>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                                 <state key="normal" title="Start Using Stream">
                                     <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
@@ -722,7 +721,7 @@
                             </button>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="You have built your Personal Cloud. It may take some time to collect and organize your medias." lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="280" translatesAutoresizingMaskIntoConstraints="NO" id="aq5-qa-OWT">
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="64" id="yWb-QO-2e8"/>
+                                    <constraint firstAttribute="height" priority="200" constant="64" type="user" id="yWb-QO-2e8"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -731,11 +730,10 @@
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
+                            <constraint firstAttribute="bottom" secondItem="6wx-cB-GP9" secondAttribute="bottom" constant="57" id="2jS-9N-oVf"/>
+                            <constraint firstAttribute="centerX" secondItem="6wx-cB-GP9" secondAttribute="centerX" type="user" id="Hhw-mK-f1X"/>
                             <constraint firstItem="aq5-qa-OWT" firstAttribute="leading" secondItem="9WO-xg-eAo" secondAttribute="leading" constant="20" symbolic="YES" type="default" id="I7s-xf-GmN"/>
-                            <constraint firstItem="6wx-cB-GP9" firstAttribute="leading" secondItem="9WO-xg-eAo" secondAttribute="leading" constant="20" symbolic="YES" type="default" id="IWI-JL-sBS"/>
                             <constraint firstAttribute="trailing" secondItem="aq5-qa-OWT" secondAttribute="trailing" constant="20" symbolic="YES" type="default" id="TW3-qa-RNp"/>
-                            <constraint firstAttribute="trailing" secondItem="6wx-cB-GP9" secondAttribute="trailing" constant="20" symbolic="YES" type="default" id="XyW-13-A6z"/>
-                            <constraint firstAttribute="bottom" secondItem="6wx-cB-GP9" secondAttribute="bottom" constant="84" id="ZLq-kA-Hej"/>
                             <constraint firstItem="aq5-qa-OWT" firstAttribute="top" secondItem="9WO-xg-eAo" secondAttribute="top" constant="20" symbolic="YES" type="default" id="bsV-bC-skA"/>
                         </constraints>
                     </view>
@@ -752,72 +750,6 @@
         <image name="FacebookLogo.png" width="33" height="33"/>
         <image name="SignInWithFacebookButton.png" width="11" height="45"/>
     </resources>
-    <classes>
-        <class className="NSLayoutConstraint" superclassName="NSObject">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/NSLayoutConstraint.h"/>
-        </class>
-        <class className="WAFacebookConnectionSwitch" superclassName="UISwitch">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/WAFacebookConnectionSwitch.h"/>
-        </class>
-        <class className="WAFirstUseBuildCloudViewController" superclassName="UITableViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/WAFirstUseBuildCloudViewController.h"/>
-            <relationships>
-                <relationship kind="outlet" name="connectActivity" candidateClass="UIActivityIndicatorView"/>
-                <relationship kind="outlet" name="connectedHost" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="connectionCell" candidateClass="UITableViewCell"/>
-            </relationships>
-        </class>
-        <class className="WAFirstUseChoosePlanViewController" superclassName="UITableViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/WAFirstUseChoosePlanViewController.h"/>
-            <relationships>
-                <relationship kind="outlet" name="freePlanCell" candidateClass="UITableViewCell"/>
-                <relationship kind="outlet" name="premiumPlanCell" candidateClass="UITableViewCell"/>
-                <relationship kind="outlet" name="ultimatePlanCell" candidateClass="UITableViewCell"/>
-            </relationships>
-        </class>
-        <class className="WAFirstUseConnectServicesViewController" superclassName="UITableViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/WAFirstUseConnectServicesViewController.h"/>
-        </class>
-        <class className="WAFirstUseDoneViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/WAFirstUseDoneViewController.h"/>
-            <relationships>
-                <relationship kind="action" name="handleDone:"/>
-            </relationships>
-        </class>
-        <class className="WAFirstUseIntroViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/WAFirstUseIntroViewController.h"/>
-            <relationships>
-                <relationship kind="action" name="handleChangePage:"/>
-                <relationship kind="outlet" name="pageControl" candidateClass="UIPageControl"/>
-                <relationship kind="outlet" name="scrollView" candidateClass="UIScrollView"/>
-            </relationships>
-        </class>
-        <class className="WAFirstUseLogInViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/WAFirstUseLogInViewController.h"/>
-            <relationships>
-                <relationship kind="action" name="handleEmailLogin:"/>
-                <relationship kind="action" name="handleFacebookLogin:"/>
-                <relationship kind="outlet" name="emailField" candidateClass="UITextField"/>
-                <relationship kind="outlet" name="emailLoginButton" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="facebookLoginButton" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="passwordField" candidateClass="UITextField"/>
-                <relationship kind="outlet" name="scrollView" candidateClass="UIScrollView"/>
-            </relationships>
-        </class>
-        <class className="WAFirstUsePhotoImportViewController" superclassName="UITableViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/WAFirstUsePhotoImportViewController.h"/>
-            <relationships>
-                <relationship kind="outlet" name="disablePhotoImportCell" candidateClass="UITableViewCell"/>
-                <relationship kind="outlet" name="enablePhotoImportCell" candidateClass="UITableViewCell"/>
-            </relationships>
-        </class>
-        <class className="WAFirstUseViewController" superclassName="UINavigationController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/WAFirstUseViewController.h"/>
-        </class>
-        <class className="WAFirstUseWelcomeViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/WAFirstUseWelcomeViewController.h"/>
-        </class>
-    </classes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>
@@ -825,6 +757,6 @@
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
         <segue reference="HMO-zp-KUz"/>
-        <segue reference="m7v-Xw-Yc3"/>
+        <segue reference="vl7-D0-o14"/>
     </inferredMetricsTieBreakers>
 </document>

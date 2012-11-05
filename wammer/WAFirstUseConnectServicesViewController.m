@@ -8,6 +8,7 @@
 
 #import "WAFirstUseConnectServicesViewController.h"
 #import "WAFirstUsePhotoImportViewController.h"
+#import "WAFacebookConnectionSwitch.h"
 
 @interface WAFirstUseConnectServicesViewController ()
 
@@ -19,6 +20,7 @@
 
 	[super viewDidLoad];
 	self.navigationItem.hidesBackButton = YES;
+	self.facebookConnectCell.accessoryView = [[WAFacebookConnectionSwitch alloc] init];
 
 }
 

@@ -32,11 +32,13 @@ static NSString * const kWASegueLogInToConnectServices = @"WASegueLogInToConnect
 	self.emailField.delegate = self;
 	self.passwordField.delegate = self;
 
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardWasShown:) name:UIKeyboardDidShowNotification object:nil];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardWillBeHidden:) name:UIKeyboardWillHideNotification object:nil];
-
 	UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleBackgroundWasTouched:)];
 	[self.scrollView addGestureRecognizer:tap];
+
+	if (isPhone()) {
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardWasShown:) name:UIKeyboardDidShowNotification object:nil];
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardWillBeHidden:) name:UIKeyboardWillHideNotification object:nil];
+	}
 
 }
 
@@ -53,6 +55,15 @@ static NSString * const kWASegueLogInToConnectServices = @"WASegueLogInToConnect
 	[super viewDidAppear:animated];
 
 	self.scrollView.contentSize = CGSizeMake(self.scrollView.frame.size.width, self.scrollView.frame.size.height);
+
+}
+
+- (void)dealloc {
+
+	if (isPhone()) {
+		[[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardDidShowNotification object:nil];
+		[[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
+	}
 
 }
 

@@ -10,4 +10,6 @@
 
 @interface WAFirstUseConnectServicesViewController : UITableViewController
 
+@property (weak, nonatomic) IBOutlet UITableViewCell *facebookConnectCell;
+
 @end

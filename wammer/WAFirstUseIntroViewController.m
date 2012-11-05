@@ -36,23 +36,15 @@ static NSString * const kWASegueIntroToPhotoImport = @"WASegueIntroToPhotoImport
 	[super viewDidLoad];
 
 	self.pages = [[UINib nibWithNibName:@"WAFirstUseIntroView" bundle:[NSBundle mainBundle]] instantiateWithOwner:nil options:nil];
-
-	__weak WAFirstUseIntroViewController *wSelf = self;
-	[self.pages enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-		CGRect frame = wSelf.view.frame;
-		frame.origin.x = frame.size.width * idx;
-		frame.origin.y = 0;
-		UIView *view = obj;
-		view.frame = frame;
-		[wSelf.scrollView addSubview:view];
-	}];
+	for (UIView *page in self.pages) {
+    [self.scrollView addSubview:page];
+	}
+	self.scrollView.delegate = self;
 
 	self.pageControl.numberOfPages = [self.pages count];
 	self.pageControl.currentPage = 0;
 
 	self.title = NSLocalizedString(@"What is Stream?", @"Navigation title on introduction pages");
-
-	self.scrollView.delegate = self;
 
 	self.signupView = [self.pages lastObject];
 	self.signupView.emailField.delegate = self;
@@ -61,8 +53,10 @@ static NSString * const kWASegueIntroToPhotoImport = @"WASegueIntroToPhotoImport
 	[self.signupView.facebookSignupButton addTarget:self action:@selector(handleFacebookSignup:) forControlEvents:UIControlEventTouchUpInside];
 	[self.signupView.emailSignupButton addTarget:self action:@selector(handleEmailSignup:) forControlEvents:UIControlEventTouchUpInside];
 
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardWasShown:) name:UIKeyboardDidShowNotification object:nil];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardWillBeHidden:) name:UIKeyboardWillHideNotification object:nil];
+	if (isPhone()) {
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardWasShown:) name:UIKeyboardDidShowNotification object:nil];
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardWillBeHidden:) name:UIKeyboardWillHideNotification object:nil];
+	}
 
 	UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleBackgroundWasTouched:)];
 	[self.scrollView addGestureRecognizer:tap];
@@ -75,6 +69,15 @@ static NSString * const kWASegueIntroToPhotoImport = @"WASegueIntroToPhotoImport
 
 	self.navigationController.navigationBar.alpha = 1.0f;
 
+	__weak WAFirstUseIntroViewController *wSelf = self;
+	[self.pages enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+		CGRect frame = wSelf.view.frame;
+		frame.origin.x = frame.size.width * idx;
+		frame.origin.y = 0;
+		UIView *view = obj;
+		view.frame = frame;
+	}];
+
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -84,6 +87,15 @@ static NSString * const kWASegueIntroToPhotoImport = @"WASegueIntroToPhotoImport
 	// Set scrollView's contentSize only works here if auto-layout is enabled
 	// Ref: http://stackoverflow.com/questions/12619786/embed-imageview-in-scrollview-with-auto-layout-on-ios-6
 	self.scrollView.contentSize = CGSizeMake(self.scrollView.frame.size.width * [self.pages count], self.scrollView.frame.size.height);
+
+}
+
+- (void)dealloc {
+
+	if (isPhone()) {
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardWasShown:) name:UIKeyboardDidShowNotification object:nil];
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardWillBeHidden:) name:UIKeyboardWillHideNotification object:nil];
+	}
 
 }
 
