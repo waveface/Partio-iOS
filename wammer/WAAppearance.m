@@ -31,7 +31,7 @@ void WADefaultAppearance(void) {
 		
 		NSValue *shadowOffset = [NSValue valueWithUIOffset:(UIOffset){0,0}];
 														 
-		UIColor *textColor = [UIColor colorWithRed:0.75f green:0.75f blue:0.75f alpha:1];
+		UIColor *textColor = [UIColor colorWithRed:0.30f green:0.30f blue:0.30f alpha:1];
 		[[UINavigationBar appearance] setTitleTextAttributes:@{UITextAttributeTextColor: textColor, UITextAttributeTextShadowOffset:shadowOffset}];
 
 		UIColor *btnTextColor = [UIColor colorWithRed:0.45f green:0.45f blue:0.45f alpha:1];

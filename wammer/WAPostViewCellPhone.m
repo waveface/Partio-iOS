@@ -500,7 +500,7 @@
 		}
 	};
 	
-	self.bgImageView.image = [[UIImage imageNamed:@"whiteWithShadow"] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)];
+	self.bgImageView.image = [[UIImage imageNamed:@"EventCardBG"] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)];
 
 	[self setNeedsLayout];
 	
