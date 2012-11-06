@@ -258,7 +258,7 @@
 	
 	[prototype.commentLabel sizeToFit];
 	
-	CGFloat answer = roundf(MIN(prototype.commentLabel.font.leading * 3, CGRectGetHeight(prototype.commentLabel.bounds)) + cellLabelHeightDelta);
+	CGFloat answer = roundf(MIN(prototype.commentLabel.font.lineHeight * 3, CGRectGetHeight(prototype.commentLabel.bounds)) + cellLabelHeightDelta);
 	prototype.commentLabel.frame = oldLabelFrame;
 	
 	return MAX(answer, CGRectGetHeight(prototype.bounds));

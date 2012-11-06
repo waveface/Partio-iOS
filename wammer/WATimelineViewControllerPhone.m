@@ -28,6 +28,7 @@
 #import "WACompositionViewController+CustomUI.h"
 
 #import "WAArticleViewController.h"
+#import "WAEventViewController.h"
 
 #import "IASKAppSettingsViewController.h"
 
@@ -566,7 +567,8 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 	WAArticle *post = [self.fetchedResultsController objectAtIndexPath:indexPath];
 	NSCParameterAssert([post isKindOfClass:[WAArticle class]]);
 	
-	UIViewController *pushedVC = [WAArticleViewController controllerForArticle:post style:(WAFullScreenArticleStyle|WASuggestedStyleForArticle(post))];
+	UIViewController *pushedVC = [WAEventViewController controllerForArticle:post];
+//	UIViewController *pushedVC = [WAArticleViewController controllerForArticle:post style:(WAFullScreenArticleStyle|WASuggestedStyleForArticle(post))];
 
 	[self.navigationController pushViewController:pushedVC animated:YES];
 	
