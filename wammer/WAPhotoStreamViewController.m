@@ -7,11 +7,14 @@
 //
 
 #import "WAPhotoStreamViewController.h"
-
-static NSString *kPhotoStreamCellID = @"PhotoStreamCell";
+#import "CoreData+MagicalRecord.h"
+#import "WAFile.h"
+#import "WADataStore.h"
+#import "WAPhotoStreamViewCell.h"
 
 @interface WAPhotoStreamViewController (){
 	NSArray *colorPalette;
+	NSArray *photos;
 }
 
 @property (strong, nonatomic) IBOutlet UICollectionView *collectionView;
@@ -34,7 +37,7 @@ static NSString *kPhotoStreamCellID = @"PhotoStreamCell";
 	[super viewDidLoad];
 	// Do any additional setup after loading the view from its nib.
 	
-	[self.collectionView registerClass:[UICollectionViewCell class]
+	[self.collectionView registerClass:[WAPhotoStreamViewCell class]
 					forCellWithReuseIdentifier:kPhotoStreamCellID];
 	
 	colorPalette = @[
@@ -45,18 +48,26 @@ static NSString *kPhotoStreamCellID = @"PhotoStreamCell";
 	[UIColor colorWithRed:126/255.0 green:16/255.0 blue:14/255.0 alpha:1.0]
 	];
 	
-	
-	
 	UIImage *menuImage = [UIImage imageNamed:@"menu"];
 	UIButton *slidingMenuButton = [UIButton buttonWithType:UIButtonTypeCustom];
 	slidingMenuButton.frame = (CGRect) {CGPointZero, menuImage.size};
 	[slidingMenuButton setBackgroundImage:menuImage forState:UIControlStateNormal];
-	//	[slidingMenuButton setBackgroundImage:[UIImage imageNamed:@"menuHL"] forState:UIControlStateHighlighted];
 	[slidingMenuButton setShowsTouchWhenHighlighted:YES];
 	[slidingMenuButton addTarget:self.delegate action:@selector(toggleLeftView) forControlEvents:UIControlEventTouchUpInside];
 	
 	self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:slidingMenuButton];
 	
+	[MagicalRecord setupCoreDataStackWithAutoMigratingSqliteStoreNamed:
+	 [[WADataStore defaultStore].persistentStoreName stringByAppendingString:@".sqlite"]];
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+	photos = [WAFile MR_findAllSortedBy:@"timestamp" ascending:YES];
+}
+
+
+- (void)viewWillDisappear:(BOOL)animated {
+	[MagicalRecord cleanUp];
 }
 
 - (void)didReceiveMemoryWarning
@@ -68,19 +79,26 @@ static NSString *kPhotoStreamCellID = @"PhotoStreamCell";
 #pragma mark Collection delegate
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-	return 300;
+	return [photos count];
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
 	
-	UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:kPhotoStreamCellID forIndexPath:indexPath];
+	WAPhotoStreamViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:kPhotoStreamCellID forIndexPath:indexPath];
 	
 	if (cell) {
 		cell.backgroundColor = colorPalette[rand()%[colorPalette count]];
+		WAFile *photo = (WAFile *)photos[indexPath.row];
+		cell.imageView.image = photo.thumbnailImage;
 	}
 	
 	return cell;
 }
 
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
+	int width_factor = rand()%2+1;
+	int height_factor = rand()%2+1;
+	return (CGSize){75*width_factor+8*(width_factor-1),75*height_factor+8*(height_factor-1)};
+}
 
 @end

@@ -11,6 +11,6 @@
 
 @interface WAPhotoStreamViewController : UIViewController <UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout>
 
-@property (nonatomic, strong) UIViewController <IIViewDeckControllerDelegate> *delegate;
+@property (nonatomic, assign) UIViewController *delegate;
 
 @end
