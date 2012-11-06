@@ -178,6 +178,7 @@
 			[self.viewDeckController closeLeftView];
 			WAPhotoStreamViewController *photoVC = [[WAPhotoStreamViewController alloc] init];
 			UINavigationController *navVC = [[UINavigationController alloc] initWithRootViewController:photoVC];
+			photoVC.delegate = self.viewDeckController;
 			self.viewDeckController.centerController = navVC;
 			break;
 		}

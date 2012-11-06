@@ -131,6 +131,12 @@
 		7D9B1D98162BC0AD000E5350 /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D9B1D90162BB1F6000E5350 /* Social.framework */; };
 		7D9B1D99162BE0D2000E5350 /* WAFacebookConnectionSwitch.m in Sources */ = {isa = PBXBuildFile; fileRef = FF3B37B015B690FF00AE357A /* WAFacebookConnectionSwitch.m */; };
 		7D9B1D9A162BE1B1000E5350 /* WARemoteInterface+SocialNetworks.m in Sources */ = {isa = PBXBuildFile; fileRef = FF88370515B7E90800E6CD92 /* WARemoteInterface+SocialNetworks.m */; };
+		7DA3092D1648BC6900B6FABD /* WAPhotoStreamViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DA3092B1648BC6900B6FABD /* WAPhotoStreamViewController.m */; };
+		7DA3092E1648BC6900B6FABD /* WAPhotoStreamViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DA3092B1648BC6900B6FABD /* WAPhotoStreamViewController.m */; };
+		7DA3092F1648BC6900B6FABD /* WAPhotoStreamViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DA3092B1648BC6900B6FABD /* WAPhotoStreamViewController.m */; };
+		7DA309301648BC6900B6FABD /* WAPhotoStreamViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7DA3092C1648BC6900B6FABD /* WAPhotoStreamViewController.xib */; };
+		7DA309311648BC6900B6FABD /* WAPhotoStreamViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7DA3092C1648BC6900B6FABD /* WAPhotoStreamViewController.xib */; };
+		7DA309321648BC6900B6FABD /* WAPhotoStreamViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7DA3092C1648BC6900B6FABD /* WAPhotoStreamViewController.xib */; };
 		7DA474461643C16900EC415C /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF73A69713D6E08100D54EC6 /* CoreData.framework */; };
 		7DA78784163912C600BEFC6E /* LightTablePhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7DA78783163912C600BEFC6E /* LightTablePhone.storyboard */; };
 		7DA7879C1639245C00BEFC6E /* WALightTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DA7879B1639245C00BEFC6E /* WALightTableViewController.m */; };
@@ -1160,6 +1166,9 @@
 		7D9B1D8C162BB1DE000E5350 /* Accounts.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = Accounts.framework; path = System/Library/Frameworks/Accounts.framework; sourceTree = SDKROOT; };
 		7D9B1D8E162BB1E8000E5350 /* AdSupport.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
 		7D9B1D90162BB1F6000E5350 /* Social.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
+		7DA3092A1648BC6900B6FABD /* WAPhotoStreamViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAPhotoStreamViewController.h; sourceTree = "<group>"; };
+		7DA3092B1648BC6900B6FABD /* WAPhotoStreamViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAPhotoStreamViewController.m; sourceTree = "<group>"; };
+		7DA3092C1648BC6900B6FABD /* WAPhotoStreamViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WAPhotoStreamViewController.xib; sourceTree = "<group>"; };
 		7DA78783163912C600BEFC6E /* LightTablePhone.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LightTablePhone.storyboard; path = wammer/LightTablePhone.storyboard; sourceTree = "<group>"; };
 		7DA7879A1639245C00BEFC6E /* WALightTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WALightTableViewController.h; path = wammer/WALightTableViewController.h; sourceTree = "<group>"; };
 		7DA7879B1639245C00BEFC6E /* WALightTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WALightTableViewController.m; path = wammer/WALightTableViewController.m; sourceTree = "<group>"; };
@@ -2479,33 +2488,36 @@
 		FF6E168314F2EB6500AE1C05 /* Timeline */ = {
 			isa = PBXGroup;
 			children = (
-				4B1527A013E29E72006E9737 /* WATimelineViewControllerPhone.h */,
-				4B1527A113E29E72006E9737 /* WATimelineViewControllerPhone.m */,
-				FFD09CE91564FB8D0052D555 /* WATimelineViewControllerPhone+RowHeightCaching.h */,
-				FFD09CEA1564FB8D0052D555 /* WATimelineViewControllerPhone+RowHeightCaching.m */,
-				FF0DD00A142A3FBE0037FC4A /* WAPulldownRefreshView.h */,
-				FF0DD00B142A3FBE0037FC4A /* WAPulldownRefreshView.m */,
-				FF0DD00D142A3FCB0037FC4A /* WAPulldownRefreshView.xib */,
-				4BCA9EA013FCE9DC00978CE9 /* WAPostViewCellPhone.h */,
-				4BCA9EA113FCE9DC00978CE9 /* WAPostViewCellPhone.m */,
-				4BCA9E9F13FCE9DC00978CE9 /* WAPostViewCellPhone-Default.xib */,
-				4B225D181404F63900F9A1CE /* WAPostViewCellPhone-ImageStack.xib */,
-				4B989DC1141F395D00DD13C9 /* WAPostViewCellPhone-WebLink.xib */,
-				1324577D15983CB600A97139 /* WAPostViewCellPhone-WebLinkOnly.xib */,
-				13BD4D9815930A480062EA3A /* WAPostViewCellPhone-ImageOnlyStack.xib */,
-				809C6D281605845A0016E196 /* WASlidingMenuViewController.h */,
-				809C6D291605845A0016E196 /* WASlidingMenuViewController.m */,
-				809C6D2A1605845A0016E196 /* WASlidingMenuViewController.xib */,
-				80BE6859161DC13800A37CEB /* WADayViewController.h */,
-				80BE685A161DC13800A37CEB /* WADayViewController.m */,
 				80A13C72162071C4002880A9 /* NSDate+WAAdditions.h */,
 				80A13C73162071C4002880A9 /* NSDate+WAAdditions.m */,
-				806A5C831623C6C500867E56 /* WADripdownMenuViewController.h */,
-				806A5C841623C6C500867E56 /* WADripdownMenuViewController.m */,
-				806A5C881623CDDE00867E56 /* WADripdownMenuViewController.xib */,
 				80C129B616398933001DDFE2 /* WADayHeaderView.h */,
 				80C129B716398933001DDFE2 /* WADayHeaderView.m */,
 				80C129B816398933001DDFE2 /* WADayHeaderView.xib */,
+				80BE6859161DC13800A37CEB /* WADayViewController.h */,
+				80BE685A161DC13800A37CEB /* WADayViewController.m */,
+				806A5C831623C6C500867E56 /* WADripdownMenuViewController.h */,
+				806A5C841623C6C500867E56 /* WADripdownMenuViewController.m */,
+				806A5C881623CDDE00867E56 /* WADripdownMenuViewController.xib */,
+				7DA3092A1648BC6900B6FABD /* WAPhotoStreamViewController.h */,
+				7DA3092B1648BC6900B6FABD /* WAPhotoStreamViewController.m */,
+				7DA3092C1648BC6900B6FABD /* WAPhotoStreamViewController.xib */,
+				4BCA9E9F13FCE9DC00978CE9 /* WAPostViewCellPhone-Default.xib */,
+				13BD4D9815930A480062EA3A /* WAPostViewCellPhone-ImageOnlyStack.xib */,
+				4B225D181404F63900F9A1CE /* WAPostViewCellPhone-ImageStack.xib */,
+				4B989DC1141F395D00DD13C9 /* WAPostViewCellPhone-WebLink.xib */,
+				1324577D15983CB600A97139 /* WAPostViewCellPhone-WebLinkOnly.xib */,
+				4BCA9EA013FCE9DC00978CE9 /* WAPostViewCellPhone.h */,
+				4BCA9EA113FCE9DC00978CE9 /* WAPostViewCellPhone.m */,
+				FF0DD00A142A3FBE0037FC4A /* WAPulldownRefreshView.h */,
+				FF0DD00B142A3FBE0037FC4A /* WAPulldownRefreshView.m */,
+				FF0DD00D142A3FCB0037FC4A /* WAPulldownRefreshView.xib */,
+				809C6D281605845A0016E196 /* WASlidingMenuViewController.h */,
+				809C6D291605845A0016E196 /* WASlidingMenuViewController.m */,
+				809C6D2A1605845A0016E196 /* WASlidingMenuViewController.xib */,
+				FFD09CE91564FB8D0052D555 /* WATimelineViewControllerPhone+RowHeightCaching.h */,
+				FFD09CEA1564FB8D0052D555 /* WATimelineViewControllerPhone+RowHeightCaching.m */,
+				4B1527A013E29E72006E9737 /* WATimelineViewControllerPhone.h */,
+				4B1527A113E29E72006E9737 /* WATimelineViewControllerPhone.m */,
 			);
 			name = Timeline;
 			path = wammer;
@@ -3676,6 +3688,7 @@
 				4B0C3EEF15BF89A300CAA346 /* PostWithCompleteAttachmentInformation.txt in Resources */,
 				7D92E5B216070705000C7B06 /* PhotoPostWithURLHistoryStyle.txt in Resources */,
 				7DC3AC0F1642203C009A8EA7 /* SocketRocket.xcodeproj in Resources */,
+				7DA309311648BC6900B6FABD /* WAPhotoStreamViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3685,6 +3698,7 @@
 			files = (
 				7D0CDD09162E5A080027D35F /* InfoPlist.strings in Resources */,
 				7DC3AC101642203C009A8EA7 /* SocketRocket.xcodeproj in Resources */,
+				7DA309321648BC6900B6FABD /* WAPhotoStreamViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4002,6 +4016,7 @@
 				80C129C616398A0D001DDFE2 /* Create@2x.png in Resources */,
 				7DA78784163912C600BEFC6E /* LightTablePhone.storyboard in Resources */,
 				7DC3AC0E1642203C009A8EA7 /* SocketRocket.xcodeproj in Resources */,
+				7DA309301648BC6900B6FABD /* WAPhotoStreamViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4221,6 +4236,7 @@
 				7D9B1D9A162BE1B1000E5350 /* WARemoteInterface+SocialNetworks.m in Sources */,
 				7D29701B1643B5CE00870747 /* WACollectionTests.m in Sources */,
 				7D4BCD43164760B70013143D /* WACollection.m in Sources */,
+				7DA3092E1648BC6900B6FABD /* WAPhotoStreamViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4232,6 +4248,7 @@
 				7D0CDD18162E5FC90027D35F /* WAFacebookConnectionSwitchTest.m in Sources */,
 				7D29702B1643BC2F00870747 /* WAModel.xcdatamodeld in Sources */,
 				7D4BCD44164760B70013143D /* WACollection.m in Sources */,
+				7DA3092F1648BC6900B6FABD /* WAPhotoStreamViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4489,6 +4506,7 @@
 				7DA7879C1639245C00BEFC6E /* WALightTableViewController.m in Sources */,
 				7DA881011639449000DC20E4 /* WALightTableViewCell.m in Sources */,
 				7D4BCD42164760B70013143D /* WACollection.m in Sources */,
+				7DA3092D1648BC6900B6FABD /* WAPhotoStreamViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
