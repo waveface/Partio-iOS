@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "IIViewDeckController.h"
 
-@interface WAPhotoStreamViewController : UIViewController <UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout>
+@interface WAPhotoStreamViewController : UIViewController <UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UIGestureRecognizerDelegate>
 
 @property (nonatomic, assign) UIViewController *delegate;
 

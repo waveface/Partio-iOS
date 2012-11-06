@@ -15,6 +15,7 @@
 @interface WAPhotoStreamViewController (){
 	NSArray *colorPalette;
 	NSArray *photos;
+	NSArray *daysOfPhotos;
 }
 
 @property (strong, nonatomic) IBOutlet UICollectionView *collectionView;
@@ -57,18 +58,18 @@
 	
 	self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:slidingMenuButton];
 
+	photos = [WAFile MR_findAllSortedBy:@"identifier" ascending:YES];
+	
 }
 
 - (void)viewWillAppear:(BOOL)animated {
-	photos = [WAFile MR_findAllSortedBy:@"timestamp" ascending:YES];
 }
 
 
 - (void)viewWillDisappear:(BOOL)animated {
 }
 
-- (void)didReceiveMemoryWarning
-{
+- (void)didReceiveMemoryWarning {
 	[super didReceiveMemoryWarning];
 	// Dispose of any resources that can be recreated.
 }
@@ -97,5 +98,7 @@
 	int height_factor = rand()%2+1;
 	return (CGSize){75*width_factor+8*(width_factor-1),75*height_factor+8*(height_factor-1)};
 }
+
+#pragma mark Swipe gesture
 
 @end
