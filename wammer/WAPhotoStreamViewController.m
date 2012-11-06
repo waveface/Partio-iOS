@@ -56,9 +56,7 @@
 	[slidingMenuButton addTarget:self.delegate action:@selector(toggleLeftView) forControlEvents:UIControlEventTouchUpInside];
 	
 	self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:slidingMenuButton];
-	
-	[MagicalRecord setupCoreDataStackWithAutoMigratingSqliteStoreNamed:
-	 [[WADataStore defaultStore].persistentStoreName stringByAppendingString:@".sqlite"]];
+
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -67,7 +65,6 @@
 
 
 - (void)viewWillDisappear:(BOOL)animated {
-	[MagicalRecord cleanUp];
 }
 
 - (void)didReceiveMemoryWarning
