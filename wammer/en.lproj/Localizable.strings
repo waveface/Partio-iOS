@@ -287,6 +287,9 @@
 /* In iPad overview */
 "PHOTOS_PLURAL" = "%d photos";
 
+/* In sliding menu */
+"PHOTOS_TITLE" = "Photos";
+
 /* Text to show for previews without a provider name */
 "PREVIEW_BADGE_PROVIDER_NAME_PLACEHOLDER" = "(No Provider)";
 
