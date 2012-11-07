@@ -43,6 +43,8 @@
 		13A9B111163F8A4D00537835 /* WAFirstUseWelcomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 13A9B110163F8A4D00537835 /* WAFirstUseWelcomeViewController.m */; };
 		13B6DB9D161573FF00B9CC35 /* WAFileExif.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B6DB9C161573FF00B9CC35 /* WAFileExif.m */; };
 		13BD4D9915930A480062EA3A /* WAPostViewCellPhone-ImageOnlyStack.xib in Resources */ = {isa = PBXBuildFile; fileRef = 13BD4D9815930A480062EA3A /* WAPostViewCellPhone-ImageOnlyStack.xib */; };
+		13BFC39B164A40DE00FC39A4 /* WAFirstUseEmailLoginFooterView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 13BFC39A164A40DE00FC39A4 /* WAFirstUseEmailLoginFooterView.xib */; };
+		13BFC39D164A40E600FC39A4 /* WAFirstUseFacebookLoginView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 13BFC39C164A40E600FC39A4 /* WAFirstUseFacebookLoginView.xib */; };
 		13C30CDD1640DCB0000A8414 /* WAFirstUseChoosePlanViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 13C30CDC1640DCB0000A8414 /* WAFirstUseChoosePlanViewController.m */; };
 		13DE12EB1637F30A00757F7C /* WAFirstUseDoneViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 13DE12E71637F30A00757F7C /* WAFirstUseDoneViewController.m */; };
 		13DE12EC1637F30A00757F7C /* WAFirstUseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 13DE12E91637F30A00757F7C /* WAFirstUseViewController.m */; };
@@ -51,8 +53,6 @@
 		13DE12FD1638142300757F7C /* WAFirstUsePhotoImportViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 13DE12FC1638142300757F7C /* WAFirstUsePhotoImportViewController.m */; };
 		13DE13001638143A00757F7C /* WAFirstUseConnectServicesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 13DE12FF1638143A00757F7C /* WAFirstUseConnectServicesViewController.m */; };
 		13EFF4BF15FEC1B3007430EC /* WAPhotoImportManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 13EFF4BE15FEC1B3007430EC /* WAPhotoImportManager.m */; };
-		13FDC98B1648C617005D4C56 /* WAFirstUseFacebookLoginView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 13FDC98A1648C617005D4C56 /* WAFirstUseFacebookLoginView.xib */; };
-		13FDC98D1648C678005D4C56 /* WAFirstUseEmailLoginFooterView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 13FDC98C1648C678005D4C56 /* WAFirstUseEmailLoginFooterView.xib */; };
 		13FDC9901648C6B8005D4C56 /* WAFirstUseFacebookLoginView.m in Sources */ = {isa = PBXBuildFile; fileRef = 13FDC98F1648C6B8005D4C56 /* WAFirstUseFacebookLoginView.m */; };
 		13FDC9931648C6D5005D4C56 /* WAFirstUseEmailLoginFooterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 13FDC9921648C6D5005D4C56 /* WAFirstUseEmailLoginFooterView.m */; };
 		4B0C3EEF15BF89A300CAA346 /* PostWithCompleteAttachmentInformation.txt in Resources */ = {isa = PBXBuildFile; fileRef = 4B0C3EED15BF868400CAA346 /* PostWithCompleteAttachmentInformation.txt */; };
@@ -1057,6 +1057,8 @@
 		13B6DB9B161573FF00B9CC35 /* WAFileExif.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAFileExif.h; sourceTree = "<group>"; };
 		13B6DB9C161573FF00B9CC35 /* WAFileExif.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAFileExif.m; sourceTree = "<group>"; };
 		13BD4D9815930A480062EA3A /* WAPostViewCellPhone-ImageOnlyStack.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "WAPostViewCellPhone-ImageOnlyStack.xib"; sourceTree = "<group>"; };
+		13BFC39A164A40DE00FC39A4 /* WAFirstUseEmailLoginFooterView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = WAFirstUseEmailLoginFooterView.xib; path = wammer/WAFirstUseEmailLoginFooterView.xib; sourceTree = "<group>"; };
+		13BFC39C164A40E600FC39A4 /* WAFirstUseFacebookLoginView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = WAFirstUseFacebookLoginView.xib; path = wammer/WAFirstUseFacebookLoginView.xib; sourceTree = "<group>"; };
 		13C30CDB1640DCB0000A8414 /* WAFirstUseChoosePlanViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WAFirstUseChoosePlanViewController.h; path = wammer/WAFirstUseChoosePlanViewController.h; sourceTree = "<group>"; };
 		13C30CDC1640DCB0000A8414 /* WAFirstUseChoosePlanViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WAFirstUseChoosePlanViewController.m; path = wammer/WAFirstUseChoosePlanViewController.m; sourceTree = "<group>"; };
 		13DE12E61637F30A00757F7C /* WAFirstUseDoneViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WAFirstUseDoneViewController.h; path = wammer/WAFirstUseDoneViewController.h; sourceTree = "<group>"; };
@@ -1073,8 +1075,6 @@
 		13EFF4BD15FEC1B3007430EC /* WAPhotoImportManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WAPhotoImportManager.h; path = wammer/WAPhotoImportManager.h; sourceTree = "<group>"; };
 		13EFF4BE15FEC1B3007430EC /* WAPhotoImportManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WAPhotoImportManager.m; path = wammer/WAPhotoImportManager.m; sourceTree = "<group>"; };
 		13EFF4C015FEC2E7007430EC /* WAModel 35.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WAModel 35.xcdatamodel"; sourceTree = "<group>"; };
-		13FDC98A1648C617005D4C56 /* WAFirstUseFacebookLoginView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WAFirstUseFacebookLoginView.xib; sourceTree = "<group>"; };
-		13FDC98C1648C678005D4C56 /* WAFirstUseEmailLoginFooterView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WAFirstUseEmailLoginFooterView.xib; sourceTree = "<group>"; };
 		13FDC98E1648C6B8005D4C56 /* WAFirstUseFacebookLoginView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WAFirstUseFacebookLoginView.h; path = wammer/WAFirstUseFacebookLoginView.h; sourceTree = "<group>"; };
 		13FDC98F1648C6B8005D4C56 /* WAFirstUseFacebookLoginView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WAFirstUseFacebookLoginView.m; path = wammer/WAFirstUseFacebookLoginView.m; sourceTree = "<group>"; };
 		13FDC9911648C6D5005D4C56 /* WAFirstUseEmailLoginFooterView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WAFirstUseEmailLoginFooterView.h; path = wammer/WAFirstUseEmailLoginFooterView.h; sourceTree = "<group>"; };
@@ -2019,6 +2019,8 @@
 		13DE12E41637F2D100757F7C /* First Use */ = {
 			isa = PBXGroup;
 			children = (
+				13BFC39C164A40E600FC39A4 /* WAFirstUseFacebookLoginView.xib */,
+				13BFC39A164A40DE00FC39A4 /* WAFirstUseEmailLoginFooterView.xib */,
 				13DE12E61637F30A00757F7C /* WAFirstUseDoneViewController.h */,
 				13DE12E71637F30A00757F7C /* WAFirstUseDoneViewController.m */,
 				13DE12E81637F30A00757F7C /* WAFirstUseViewController.h */,
@@ -2041,8 +2043,6 @@
 				13A15F40163FC13700F3FF30 /* WAFirstUseSignUpView.m */,
 				13C30CDB1640DCB0000A8414 /* WAFirstUseChoosePlanViewController.h */,
 				13C30CDC1640DCB0000A8414 /* WAFirstUseChoosePlanViewController.m */,
-				13FDC98A1648C617005D4C56 /* WAFirstUseFacebookLoginView.xib */,
-				13FDC98C1648C678005D4C56 /* WAFirstUseEmailLoginFooterView.xib */,
 				13FDC98E1648C6B8005D4C56 /* WAFirstUseFacebookLoginView.h */,
 				13FDC98F1648C6B8005D4C56 /* WAFirstUseFacebookLoginView.m */,
 				13FDC9911648C6D5005D4C56 /* WAFirstUseEmailLoginFooterView.h */,
@@ -4034,8 +4034,8 @@
 				13206265163F01D00064E770 /* WAFirstUseIntroView.xib in Resources */,
 				7DA78784163912C600BEFC6E /* LightTablePhone.storyboard in Resources */,
 				7DC3AC0E1642203C009A8EA7 /* SocketRocket.xcodeproj in Resources */,
-				13FDC98B1648C617005D4C56 /* WAFirstUseFacebookLoginView.xib in Resources */,
-				13FDC98D1648C678005D4C56 /* WAFirstUseEmailLoginFooterView.xib in Resources */,
+				13BFC39B164A40DE00FC39A4 /* WAFirstUseEmailLoginFooterView.xib in Resources */,
+				13BFC39D164A40E600FC39A4 /* WAFirstUseFacebookLoginView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

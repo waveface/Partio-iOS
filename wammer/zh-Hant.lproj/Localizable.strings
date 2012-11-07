@@ -722,7 +722,7 @@
 "ACTION_CONTACT_DEVELOPER" = "聯絡我們";
 
 /* Class = "IBUIButton"; normalTitle = "ACTION_CONNECT_FACEBOOK"; ObjectID = "4"; */
-"ACTION_CONNECT_FACEBOOK" = "  連結Facebook帳號";
+"ACTION_CONNECT_FACEBOOK" = "連結Facebook帳號";
 
 /* Class = "IBUIButton"; normalTitle = "ACTION_SIGN_IN"; ObjectID = "8"; */
 "ACTION_SIGN_IN" = "登入";
@@ -731,7 +731,7 @@
 "ACTION_SIGN_UP" = "註冊";
 
 /* Class = "IBUIButton"; normalTitle = "ACTION_CONNECT_FACEBOOK"; ObjectID = "8"; */
-"ACTION_CONNECT_FACEBOOK" = "  連結Facebook帳號";
+"ACTION_CONNECT_FACEBOOK" = "連結Facebook帳號";
 
 /* Class = "IBUIButton"; normalTitle = "ACTION_SIGN_UP"; ObjectID = "9"; */
 "ACTION_SIGN_UP" = "註冊";

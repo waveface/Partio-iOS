@@ -18,4 +18,15 @@
 
 }
 
+- (void)awakeFromNib {
+
+	[super awakeFromNib];
+
+	self.emailLoginButton.backgroundColor = [UIColor grayColor];
+	[self.emailLoginButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+	[self.emailLoginButton setTitleColor:[UIColor whiteColor] forState:UIControlStateDisabled];
+	self.emailLoginButton.layer.cornerRadius = 18.0;
+
+}
+
 @end

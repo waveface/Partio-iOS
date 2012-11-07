@@ -20,7 +20,7 @@
 	self.tableHeaderView = header;
 	self.facebookSignupButton = header.facebookLoginButton;
 	[self.facebookSignupButton setTitle:NSLocalizedString(@"ACTION_CONNECT_FACEBOOK", @"Facebook sign up button") forState:UIControlStateNormal];
-
+	
 	WAFirstUseEmailLoginFooterView *footer = [WAFirstUseEmailLoginFooterView viewFromNib];
 	self.tableFooterView = footer;
 	self.emailSignupButton = footer.emailLoginButton;
