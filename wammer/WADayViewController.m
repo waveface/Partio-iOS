@@ -47,8 +47,12 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 	self.days = [NSMutableArray array];
 	self.daysControllers = [[NSMutableDictionary alloc] init];
 	
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleCompositionSessionRequest:) name:kWACompositionSessionRequestedNotification object:nil];
-		
+	[[NSNotificationCenter defaultCenter]
+	 addObserver:self
+	 selector:@selector(handleCompositionSessionRequest:)
+	 name:kWACompositionSessionRequestedNotification
+	 object:nil];
+	
 	[self performFetchRequestForIncomingData];
 	
 	self.title = NSLocalizedString(@"EVENTS_CONTROLLER_TITLE", @"Title for Events view");
@@ -146,7 +150,10 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 
 - (void) dealloc {
 
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:kWACompositionSessionRequestedNotification object:nil];
+	[[NSNotificationCenter defaultCenter]
+	 removeObserver:self
+	 name:kWACompositionSessionRequestedNotification
+	 object:nil];
 	
 }
 
@@ -175,9 +182,6 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 	self.navigationItem.titleView.alpha = 1;
 	
 	[self.navigationController.toolbar setHidden:YES];
-//	[self.navigationController.toolbar setTintColor:[UIColor colorWithWhite:128.0/255.0 alpha:1]];
-//	[self.navigationController.toolbar setBackgroundImage:[UIImage imageNamed:@"ToolbarWithButtons"] forToolbarPosition:UIToolbarPositionAny barMetrics:UIBarMetricsDefault];
-
 }
 
 - (void) viewDidAppear:(BOOL)animated {
@@ -228,7 +232,8 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 	NSManagedObjectContext *moc = [[WADataStore defaultStore] defaultAutoUpdatedMOC];
 	
 	NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-	NSEntityDescription *entity = [NSEntityDescription entityForName:@"WAArticle" inManagedObjectContext:moc];
+	NSEntityDescription *entity = [NSEntityDescription entityForName:@"WAArticle"
+																						inManagedObjectContext:moc];
 	[fetchRequest setEntity:entity];
 	[fetchRequest setResultType:NSDictionaryResultType];
  	
@@ -239,9 +244,8 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 	[description setExpressionResultType:NSDateAttributeType];
 	[fetchRequest setPropertiesToFetch:[NSArray arrayWithObject:description]];
 	
-	fetchRequest.sortDescriptors = [NSArray arrayWithObjects:
-																	[NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:NO],
-																	nil];
+	fetchRequest.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"creationDate"
+																																 ascending:NO]];
 	
 	BOOL (^theSameDay) (NSDate *, NSDate *) = ^ (NSDate *d1, NSDate *d2) {
 		
@@ -265,10 +269,7 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 	self.days = [NSMutableArray array];
 	self.daysControllers = [NSMutableDictionary dictionary];
 	
-	if (objects == nil) {
-		
-	
-	} else {
+	if (objects) {
 		
 		[objects enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
 			
