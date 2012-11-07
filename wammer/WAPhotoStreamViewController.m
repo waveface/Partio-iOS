@@ -94,9 +94,13 @@
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
-	int width_factor = rand()%2+1;
-	int height_factor = rand()%2+1;
-	return (CGSize){75*width_factor+8*(width_factor-1),75*height_factor+8*(height_factor-1)};
+	static int remaining_width = 4;
+	int width = rand()%remaining_width+1;
+	remaining_width -= width;
+	if (remaining_width == 0)
+		remaining_width = 4;
+	int height_factor = 1;//rand()%2+1;
+	return (CGSize){75*width+6*(width-1),75*height_factor+8*(height_factor-1)};
 }
 
 #pragma mark Swipe gesture
