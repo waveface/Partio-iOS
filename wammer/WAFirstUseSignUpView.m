@@ -7,13 +7,26 @@
 //
 
 #import "WAFirstUseSignUpView.h"
+#import "WAFirstUseFacebookLoginView.h"
+#import "WAFirstUseEmailLoginFooterView.h"
 
 @implementation WAFirstUseSignUpView
 
-- (BOOL) isPopulated {
-	
-	return [self.emailField.text length] && [self.passwordField.text length] && [self.nicknameField.text length];
-	
+- (void)awakeFromNib {
+
+	[super awakeFromNib];
+
+	WAFirstUseFacebookLoginView *header = [WAFirstUseFacebookLoginView viewFromNib];
+	self.tableHeaderView = header;
+	self.facebookSignupButton = header.facebookLoginButton;
+	[self.facebookSignupButton setTitle:NSLocalizedString(@"ACTION_CONNECT_FACEBOOK", @"Facebook sign up button") forState:UIControlStateNormal];
+
+	WAFirstUseEmailLoginFooterView *footer = [WAFirstUseEmailLoginFooterView viewFromNib];
+	self.tableFooterView = footer;
+	self.emailSignupButton = footer.emailLoginButton;
+	[self.emailSignupButton setTitle:NSLocalizedString(@"ACTION_SIGN_UP", @"Email sign up button") forState:UIControlStateNormal];
+	[self.emailSignupButton setTitle:NSLocalizedString(@"ACTION_SIGN_UP", @"Email sign up button") forState:UIControlStateDisabled];
+
 }
 
 @end

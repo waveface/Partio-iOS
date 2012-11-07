@@ -18,6 +18,9 @@
 - (void)viewDidLoad {
 
 	[super viewDidLoad];
+
+	[self localize];
+
 	[[WARemoteInterface sharedInterface] addObserver:self forKeyPath:@"networkState" options:NSKeyValueObservingOptionInitial context:nil];
 
 }
@@ -25,6 +28,12 @@
 - (void)dealloc {
 
 	[[WARemoteInterface sharedInterface] removeObserver:self forKeyPath:@"networkState"];
+
+}
+
+- (void)localize {
+	
+	self.title = NSLocalizedString(@"STORAGE_SETUP_CONTROLLER_TITLE", @"Title of view controller setting personal cloud");
 
 }
 

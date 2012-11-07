@@ -19,7 +19,17 @@
 
 	[super viewDidLoad];
 
+	[self localize];
+
 }
+
+- (void)localize {
+
+	self.title = NSLocalizedString(@"SETUP_DONE_CONTROLLER_TITLE", @"Title of view controller finishing first setup");
+
+}
+
+#pragma mark Target actions
 
 - (IBAction)handleDone:(id)sender {
 

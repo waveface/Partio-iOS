@@ -21,6 +21,9 @@ static NSString * const kWASegueIntroToPhotoImport = @"WASegueIntroToPhotoImport
 @interface WAFirstUseIntroViewController ()
 
 @property (nonatomic, readwrite, strong) NSArray *pages;
+@property (nonatomic, strong) UITextField *emailField;
+@property (nonatomic, strong) UITextField *passwordField;
+@property (nonatomic, strong) UITextField *nicknameField;
 @property (nonatomic, readwrite) BOOL pageControlUsed;
 @property (nonatomic, readwrite, strong) WAFirstUseSignUpView *signupView;
 @property (nonatomic, readwrite) BOOL isKeyboardShown;
@@ -44,12 +47,11 @@ static NSString * const kWASegueIntroToPhotoImport = @"WASegueIntroToPhotoImport
 	self.pageControl.numberOfPages = [self.pages count];
 	self.pageControl.currentPage = 0;
 
-	self.title = NSLocalizedString(@"What is Stream?", @"Navigation title on introduction pages");
+	self.title = NSLocalizedString(@"INTRODUCTION_TITLE", @"Title on introduction pages");
 
 	self.signupView = [self.pages lastObject];
-	self.signupView.emailField.delegate = self;
-	self.signupView.passwordField.delegate = self;
-	self.signupView.nicknameField.delegate = self;
+	self.signupView.dataSource = self;
+	self.signupView.delegate = self;
 	[self.signupView.facebookSignupButton addTarget:self action:@selector(handleFacebookSignup:) forControlEvents:UIControlEventTouchUpInside];
 	[self.signupView.emailSignupButton addTarget:self action:@selector(handleEmailSignup:) forControlEvents:UIControlEventTouchUpInside];
 
@@ -110,9 +112,9 @@ static NSString * const kWASegueIntroToPhotoImport = @"WASegueIntroToPhotoImport
 	[self.scrollView scrollRectToVisible:frame animated:YES];
 
 	if (page == [self.pages count]-1) {
-		self.title = NSLocalizedString(@"Sign Up", @"Navigation title on sign up page");
+		self.title = NSLocalizedString(@"SIGN_UP_CONTROLLER_TITLE", @"Title for view controller signing the user up");
 	} else {
-		self.title = NSLocalizedString(@"What is Stream?", @"Navigation title on introduction pages");
+		self.title = NSLocalizedString(@"INTRODUCTION_TITLE", @"Title on introduction pages");
 	}
 
 	self.pageControlUsed = YES;
@@ -208,13 +210,13 @@ static NSString * const kWASegueIntroToPhotoImport = @"WASegueIntroToPhotoImport
 	WAOverlayBezel *busyBezel = [WAOverlayBezel bezelWithStyle:WAActivityIndicatorBezelStyle];
 	[busyBezel showWithAnimation:WAOverlayBezelAnimationFade];
 	
-	[self.signupView.emailField resignFirstResponder];
-	[self.signupView.passwordField resignFirstResponder];
-	[self.signupView.nicknameField resignFirstResponder];
+	[self.emailField resignFirstResponder];
+	[self.passwordField resignFirstResponder];
+	[self.nicknameField resignFirstResponder];
 	
-	NSString *userName = self.signupView.emailField.text;
-	NSString *password = self.signupView.passwordField.text;
-	NSString *nickname = self.signupView.nicknameField.text;
+	NSString *userName = self.emailField.text;
+	NSString *password = self.passwordField.text;
+	NSString *nickname = self.nicknameField.text;
 	
 	WAFirstUseViewController *firstUseVC = (WAFirstUseViewController *)self.navigationController;
 	__weak WAFirstUseIntroViewController *wSelf = self;
@@ -255,6 +257,10 @@ static NSString * const kWASegueIntroToPhotoImport = @"WASegueIntroToPhotoImport
 
 - (void)handleKeyboardWasShown:(NSNotification *)aNotification {
 
+	if (self.isKeyboardShown) {
+		return;
+	}
+
 	CGSize kbSize = [aNotification.userInfo[UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
 	UIEdgeInsets contentInsets = UIEdgeInsetsMake(0.0, 0.0, kbSize.height, 0.0);
 	self.scrollView.contentInset = contentInsets;
@@ -263,8 +269,9 @@ static NSString * const kWASegueIntroToPhotoImport = @"WASegueIntroToPhotoImport
 	CGRect viewRect = self.view.frame;
 	viewRect.size.height -= kbSize.height;
 	CGRect emailSignupButtonFrame = self.signupView.emailSignupButton.frame;
-	if (!CGRectContainsPoint(viewRect, emailSignupButtonFrame.origin)) {
-		CGPoint scrollPoint = CGPointMake(0.0, emailSignupButtonFrame.origin.y+emailSignupButtonFrame.size.height-viewRect.size.height);
+	CGPoint emailSignupButtonAbsoluteOrigin = [self.signupView.emailSignupButton convertPoint:emailSignupButtonFrame.origin toView:self.view];
+	if (!CGRectContainsPoint(viewRect, emailSignupButtonAbsoluteOrigin)) {
+		CGPoint scrollPoint = CGPointMake(0.0, emailSignupButtonAbsoluteOrigin.y+emailSignupButtonFrame.size.height-viewRect.size.height+6.0);
 		[self.scrollView setContentOffset:scrollPoint animated:YES];
 	}
 
@@ -285,9 +292,9 @@ static NSString * const kWASegueIntroToPhotoImport = @"WASegueIntroToPhotoImport
 
 - (void)handleBackgroundWasTouched:(NSNotification *)aNotification {
 	
-	[self.signupView.emailField resignFirstResponder];
-	[self.signupView.passwordField resignFirstResponder];
-	[self.signupView.nicknameField resignFirstResponder];
+	[self.emailField resignFirstResponder];
+	[self.passwordField resignFirstResponder];
+	[self.nicknameField resignFirstResponder];
 	
 }
 
@@ -310,9 +317,9 @@ static NSString * const kWASegueIntroToPhotoImport = @"WASegueIntroToPhotoImport
 	self.pageControl.currentPage = page;
 
 	if (page == [self.pages count]-1) {
-		self.title = NSLocalizedString(@"Sign Up", @"Navigation title on sign up page");
+		self.title = NSLocalizedString(@"SIGN_UP_CONTROLLER_TITLE", @"Title for view controller signing the user up");
 	} else {
-		self.title = NSLocalizedString(@"What is Stream?", @"Navigation title on introduction pages");
+		self.title = NSLocalizedString(@"INTRODUCTION_TITLE", @"Title on introduction pages");
 	}
 
 }
@@ -336,23 +343,82 @@ static NSString * const kWASegueIntroToPhotoImport = @"WASegueIntroToPhotoImport
 	if (!textField.text.length)
 		return NO;
 	
-	if (textField == self.signupView.emailField) {
+	if (textField == self.emailField) {
 		
-		[self.signupView.passwordField becomeFirstResponder];
+		[self.passwordField becomeFirstResponder];
 		
-	} else if (textField == self.signupView.passwordField) {
+	} else if (textField == self.passwordField) {
 		
-		[self.signupView.nicknameField becomeFirstResponder];
+		[self.nicknameField becomeFirstResponder];
+
+	} else if (textField == self.nicknameField) {
 		
-	} else if (textField == self.signupView.nicknameField) {
-		
-		if ([self.signupView isPopulated]) {
+		if ([self.emailField.text length] && [self.passwordField.text length] && [self.nicknameField.text length]) {
 			[self.signupView.emailSignupButton sendActionsForControlEvents:UIControlEventTouchUpInside];
 		}
 		
 	}
 	
 	return YES;
+
+}
+
+#pragma mark UITableView delegates
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+
+	return 3;
+
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+		
+	CGRect frame = CGRectMake(110.0, 12.0, 180.0, 40.0);
+	UIFont *font = [UIFont systemFontOfSize:15.0];
+
+	if ([indexPath row] == 0) {
+		UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"EmailCell"];
+		if (!cell) {
+			cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"EmailCell"];
+			cell.textLabel.text = NSLocalizedString(@"NOUN_USERNAME", @"Email title in signup page");
+			self.emailField = [[UITextField alloc] initWithFrame:frame];
+			self.emailField.font = font;
+			self.emailField.placeholder = NSLocalizedString(@"USERNAME_PLACEHOLDER", @"Email placeholder in signup page");
+			self.emailField.delegate = self;
+			self.emailField.returnKeyType = UIReturnKeyNext;
+			[cell.contentView addSubview:self.emailField];
+		}
+		return cell;
+	} else if ([indexPath row] == 1) {
+		UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"PasswordCell"];
+		if (!cell) {
+			cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"PasswordCell"];
+			cell.textLabel.text = NSLocalizedString(@"NOUN_PASSWORD", @"Password title in signup page");
+			self.passwordField = [[UITextField alloc] initWithFrame:frame];
+			self.passwordField.font = font;
+			self.passwordField.secureTextEntry = YES;
+			self.passwordField.placeholder = NSLocalizedString(@"PASSWORD_PLACEHOLDER", @"Password placeholder in signup page");
+			self.passwordField.delegate = self;
+			self.passwordField.returnKeyType = UIReturnKeyNext;
+			[cell.contentView addSubview:self.passwordField];
+		}
+		return cell;
+	} else if ([indexPath row] == 2) {
+		UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"NicknameCell"];
+		if (!cell) {
+			cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"NicknameCell"];
+			cell.textLabel.text = NSLocalizedString(@"NOUN_NICKNAME", @"Nickname title in signup page");
+			self.nicknameField = [[UITextField alloc] initWithFrame:frame];
+			self.nicknameField.font = font;
+			self.nicknameField.placeholder = NSLocalizedString(@"NICKNAME_PLACEHOLDER", @"Nickname placeholder in signup page");
+			self.nicknameField.delegate = self;
+			self.nicknameField.returnKeyType = UIReturnKeyDone;
+			[cell.contentView addSubview:self.nicknameField];
+		}
+		return cell;
+	}
+
+	return nil;
 
 }
 

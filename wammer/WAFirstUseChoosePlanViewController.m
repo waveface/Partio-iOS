@@ -19,6 +19,14 @@
 
 	[super viewDidLoad];
 
+	[self localize];
+
+}
+
+- (void)localize {
+
+	self.title = NSLocalizedString(@"PLANS_CONTROLLER_TITLE", @"Title of view controller choosing plans");
+
 }
 
 #pragma mark UITableView delegates

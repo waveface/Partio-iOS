@@ -8,14 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
-@interface WAFirstUseSignUpView : UIView
+@interface WAFirstUseSignUpView : UITableView
 
-@property (weak, nonatomic) IBOutlet UIButton *facebookSignupButton;
-@property (weak, nonatomic) IBOutlet UITextField *emailField;
-@property (weak, nonatomic) IBOutlet UITextField *passwordField;
-@property (weak, nonatomic) IBOutlet UITextField *nicknameField;
-@property (weak, nonatomic) IBOutlet UIButton *emailSignupButton;
-
-- (BOOL)isPopulated;
+@property (nonatomic, strong) UIButton *facebookSignupButton;
+@property (nonatomic, strong) UIButton *emailSignupButton;
 
 @end

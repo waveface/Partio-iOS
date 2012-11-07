@@ -28,9 +28,12 @@
                         <rect key="frame" x="0.0" y="64" width="320" height="416"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KXA-OG-bKa">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KXA-OG-bKa" customClass="WALocalizedButton">
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="159" id="9C8-vY-Xu5"/>
+                                </constraints>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                                <state key="normal" title="I_AM_NEW_HERE!">
+                                <state key="normal" title="I_AM_NEW_HERE">
                                     <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
@@ -41,9 +44,12 @@
                                     <segue destination="9NT-NF-Bve" kind="push" identifier="ShowIntroduction" id="Uq2-Ps-rr1"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Gch-g1-VSP">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Gch-g1-VSP" customClass="WALocalizedButton">
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="192" id="K86-9o-gAZ"/>
+                                </constraints>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                                <state key="normal" title="Login &amp; link this device">
+                                <state key="normal" title="LOGIN_LINK_DEVICE">
                                     <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
@@ -51,7 +57,7 @@
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <segue destination="uNz-NM-jw2" kind="push" id="0bf-9x-ZHQ"/>
+                                    <segue destination="hTG-tp-kgg" kind="push" id="UBD-NH-vyG"/>
                                 </connections>
                             </button>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="223" translatesAutoresizingMaskIntoConstraints="NO" id="kNE-7e-oIa">
@@ -81,11 +87,11 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="bottom" secondItem="KXA-OG-bKa" secondAttribute="bottom" constant="117" id="6NN-6h-at6"/>
-                            <constraint firstItem="KXA-OG-bKa" firstAttribute="centerX" secondItem="jrr-fJ-Pez" secondAttribute="centerX" type="default" id="Kkc-5E-c3D"/>
                             <constraint firstItem="kNE-7e-oIa" firstAttribute="top" secondItem="jrr-fJ-Pez" secondAttribute="top" constant="53" id="Wnt-rh-Z8c"/>
                             <constraint firstAttribute="bottom" secondItem="Gch-g1-VSP" secondAttribute="bottom" constant="60" id="bag-b5-81j"/>
                             <constraint firstItem="kNE-7e-oIa" firstAttribute="centerX" secondItem="KXA-OG-bKa" secondAttribute="centerX" type="default" id="di4-im-U5k"/>
                             <constraint firstItem="KXA-OG-bKa" firstAttribute="centerX" secondItem="Gch-g1-VSP" secondAttribute="centerX" type="default" id="jyx-DH-G0a"/>
+                            <constraint firstItem="Gch-g1-VSP" firstAttribute="centerX" secondItem="jrr-fJ-Pez" secondAttribute="centerX" type="default" id="oPE-31-JZn"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="lpk-bO-0gj"/>
@@ -133,7 +139,7 @@
             </objects>
             <point key="canvasLocation" x="774" y="-667"/>
         </scene>
-        <!--First Use Choose Plan View Controller - Upgrade-->
+        <!--First Use Choose Plan View Controller - PLANS_CONTROLLER_TITLE-->
         <scene sceneID="mlj-ei-f68">
             <objects>
                 <tableViewController id="wcX-ZA-C0U" customClass="WAFirstUseChoosePlanViewController" sceneMemberID="viewController">
@@ -145,11 +151,11 @@
                             <rect key="frame" x="0.0" y="0.0" width="320" height="175"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
-                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="280" translatesAutoresizingMaskIntoConstraints="NO" id="ylt-bh-gIj">
+                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="PLANS_DESCRIPTION" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="280" translatesAutoresizingMaskIntoConstraints="NO" id="ylt-bh-gIj" customClass="WALocalizedLabel">
                                     <constraints>
+                                        <constraint firstAttribute="height" constant="76" id="Q2i-wq-WqS"/>
                                         <constraint firstAttribute="height" priority="200" constant="83" type="user" id="RBX-fd-qEX"/>
                                     </constraints>
-                                    <string key="text">Stream send all your pressure moment back to your PC. You can also upgrade to a cloud storage plan and enjoy the benefit of cloud computing.</string>
                                     <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                     <nil key="highlightedColor"/>
@@ -168,7 +174,7 @@
                             <rect key="frame" x="0.0" y="329" width="320" height="87"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
-                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Learn more on our website" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="K5G-K7-r9Y">
+                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="ACTION_GOTO_WEBSITE" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="K5G-K7-r9Y" customClass="WALocalizedLabel">
                                     <constraints>
                                         <constraint firstAttribute="width" constant="203" id="KTk-mb-7mf"/>
                                         <constraint firstAttribute="height" constant="21" id="Ypu-E5-vFJ"/>
@@ -187,19 +193,19 @@
                         <sections>
                             <tableViewSection id="IOA-a2-LR1">
                                 <cells>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="checkmark" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" textLabel="j6E-j2-K86" detailTextLabel="ueV-1b-HNU" style="IBUITableViewCellStyleSubtitle" id="vfY-6J-gr2">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="checkmark" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" textLabel="j6E-j2-K86" detailTextLabel="ueV-1b-HNU" style="IBUITableViewCellStyleSubtitle" id="vfY-6J-gr2" customClass="WALocalizedCell">
                                         <rect key="frame" x="0.0" y="185" width="320" height="45"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                                             <rect key="frame" x="10" y="1" width="280" height="43"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Free" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="j6E-j2-K86">
+                                                <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="OPTION_FREE_PLAN" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="j6E-j2-K86">
                                                     <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
                                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                     <color key="highlightedColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                                 </label>
-                                                <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Save all original files to one PC." lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ueV-1b-HNU">
+                                                <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="FREE_PLAN_DESCRIPTION" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ueV-1b-HNU">
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <color key="textColor" red="0.50196078431372548" green="0.50196078431372548" blue="0.50196078431372548" alpha="1" colorSpace="calibratedRGB"/>
                                                     <color key="highlightedColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
@@ -208,19 +214,19 @@
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         </view>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" textLabel="BEk-Uz-d9I" detailTextLabel="dw4-3C-ZHv" style="IBUITableViewCellStyleSubtitle" id="8O9-JB-eZX">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" textLabel="BEk-Uz-d9I" detailTextLabel="dw4-3C-ZHv" style="IBUITableViewCellStyleSubtitle" id="8O9-JB-eZX" customClass="WALocalizedCell">
                                         <rect key="frame" x="0.0" y="230" width="320" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                                             <rect key="frame" x="10" y="0.0" width="300" height="43"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="$4.99/month" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BEk-Uz-d9I">
+                                                <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="OPTION_PREMIUM_PLAN" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BEk-Uz-d9I">
                                                     <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
                                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                     <color key="highlightedColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                                 </label>
-                                                <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="250GB cloud storage, unlimited PC storage." lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dw4-3C-ZHv">
+                                                <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="PREMIUM_PLAN_DESCRIPTION" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dw4-3C-ZHv">
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <color key="textColor" red="0.50196078431372548" green="0.50196078431372548" blue="0.50196078431372548" alpha="1" colorSpace="calibratedRGB"/>
                                                     <color key="highlightedColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
@@ -229,19 +235,19 @@
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         </view>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" textLabel="sfk-st-cdZ" detailTextLabel="Ml7-f2-TxV" style="IBUITableViewCellStyleSubtitle" id="gPl-Gg-HGq">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" textLabel="sfk-st-cdZ" detailTextLabel="Ml7-f2-TxV" style="IBUITableViewCellStyleSubtitle" id="gPl-Gg-HGq" customClass="WALocalizedCell">
                                         <rect key="frame" x="0.0" y="274" width="320" height="45"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                                             <rect key="frame" x="10" y="0.0" width="300" height="43"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="$7.99/month" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sfk-st-cdZ">
+                                                <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="OPTION_ULTIMATE_PLAN" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sfk-st-cdZ">
                                                     <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
                                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                     <color key="highlightedColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                                 </label>
-                                                <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="500GB cloud storage, unlimited PC storage." lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ml7-f2-TxV">
+                                                <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="ULTIMATE_PLAN_DESCRIPTION" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ml7-f2-TxV">
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <color key="textColor" red="0.50196078431372548" green="0.50196078431372548" blue="0.50196078431372548" alpha="1" colorSpace="calibratedRGB"/>
                                                     <color key="highlightedColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
@@ -258,7 +264,7 @@
                             <outlet property="delegate" destination="wcX-ZA-C0U" id="aZE-NB-7cI"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Upgrade" id="rs3-Qj-SXO">
+                    <navigationItem key="navigationItem" title="PLANS_CONTROLLER_TITLE" id="rs3-Qj-SXO">
                         <barButtonItem key="backBarButtonItem" title="Back" id="mw8-Hj-Mvz"/>
                         <barButtonItem key="rightBarButtonItem" title="Next" id="XL2-gJ-2m5">
                             <connections>
@@ -277,7 +283,7 @@
             </objects>
             <point key="canvasLocation" x="2032" y="99"/>
         </scene>
-        <!--First Use Build Cloud View Controller - Setup Your Storage-->
+        <!--First Use Build Cloud View Controller - STORAGE_SETUP_CONTROLLER_TITLE-->
         <scene sceneID="1jg-Ml-c4F">
             <objects>
                 <tableViewController id="b8o-U9-sOP" customClass="WAFirstUseBuildCloudViewController" sceneMemberID="viewController">
@@ -289,8 +295,9 @@
                             <rect key="frame" x="0.0" y="0.0" width="320" height="175"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
-                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Install Stream Windows and upgrades your PC to your Personal Cloud." lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="280" translatesAutoresizingMaskIntoConstraints="NO" id="7YP-nz-bf2">
+                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="STORAGE_SETUP_DESCRIPTION" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="280" translatesAutoresizingMaskIntoConstraints="NO" id="7YP-nz-bf2" customClass="WALocalizedLabel">
                                     <constraints>
+                                        <constraint firstAttribute="height" constant="38" id="LKg-bH-jLe"/>
                                         <constraint firstAttribute="height" priority="200" constant="54" type="user" id="euF-RJ-zgL"/>
                                     </constraints>
                                     <fontDescription key="fontDescription" type="system" pointSize="15"/>
@@ -309,72 +316,33 @@
                             <rect key="frame" x="0.0" y="241" width="320" height="176"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
-                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Tap here to send me the link" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cbv-qe-sH3">
-                                    <constraints>
-                                        <constraint firstAttribute="height" constant="21" id="OjS-Oj-Uqc"/>
-                                        <constraint firstAttribute="width" constant="195" id="ac5-zP-fKs"/>
-                                    </constraints>
-                                    <fontDescription key="fontDescription" type="boldSystem" pointSize="13"/>
-                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                    <nil key="highlightedColor"/>
-                                </label>
-                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="280" translatesAutoresizingMaskIntoConstraints="NO" id="6Ib-wQ-B01">
+                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="STORAGE_SETUP_INSTRUCTIONS" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="280" translatesAutoresizingMaskIntoConstraints="NO" id="6Ib-wQ-B01" customClass="WALocalizedLabel">
                                     <constraints>
                                         <constraint firstAttribute="height" constant="61" id="pne-v6-w2L"/>
                                     </constraints>
-                                    <attributedString key="attributedText">
-                                        <fragment content="1.">
-                                            <attributes>
-                                                <color key="NSColor" cocoaTouchSystemColor="darkTextColor"/>
-                                                <font key="NSFont" size="15" name="Helvetica-Bold"/>
-                                                <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural"/>
-                                            </attributes>
-                                        </fragment>
-                                        <fragment content=" Install Stream Windows. ">
-                                            <attributes>
-                                                <color key="NSColor" cocoaTouchSystemColor="darkTextColor"/>
-                                                <font key="NSFont" size="15" name="Helvetica"/>
-                                                <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural"/>
-                                            </attributes>
-                                        </fragment>
-                                        <fragment content="2.">
-                                            <attributes>
-                                                <color key="NSColor" cocoaTouchSystemColor="darkTextColor"/>
-                                                <font key="NSFont" size="15" name="Helvetica-Bold"/>
-                                                <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural"/>
-                                            </attributes>
-                                        </fragment>
-                                        <fragment content=" Turn on WiFi and connect to the same network with your PC.">
-                                            <attributes>
-                                                <color key="NSColor" cocoaTouchSystemColor="darkTextColor"/>
-                                                <font key="NSFont" size="15" name="Helvetica"/>
-                                                <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural"/>
-                                            </attributes>
-                                        </fragment>
-                                    </attributedString>
+                                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                             </subviews>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                             <constraints>
                                 <constraint firstItem="6Ib-wQ-B01" firstAttribute="leading" secondItem="auq-Qv-85F" secondAttribute="leading" constant="20" symbolic="YES" type="default" id="4Tu-LB-hAv"/>
-                                <constraint firstItem="cbv-qe-sH3" firstAttribute="centerX" secondItem="6Ib-wQ-B01" secondAttribute="centerX" type="default" id="9pj-0W-XXX"/>
                                 <constraint firstItem="6Ib-wQ-B01" firstAttribute="top" secondItem="auq-Qv-85F" secondAttribute="top" constant="20" symbolic="YES" type="default" id="YDO-Dl-VfX"/>
                                 <constraint firstAttribute="trailing" secondItem="6Ib-wQ-B01" secondAttribute="trailing" constant="20" symbolic="YES" type="default" id="adE-1O-U5q"/>
-                                <constraint firstAttribute="bottom" secondItem="cbv-qe-sH3" secondAttribute="bottom" constant="33" id="obh-p8-chH"/>
                             </constraints>
                         </view>
                         <sections>
                             <tableViewSection id="pgV-by-jxP">
                                 <cells>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" textLabel="cvb-qh-VGm" detailTextLabel="e78-f2-A71" style="IBUITableViewCellStyleValue1" id="T9X-px-pwj">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" textLabel="cvb-qh-VGm" detailTextLabel="e78-f2-A71" style="IBUITableViewCellStyleValue1" id="T9X-px-pwj" customClass="WALocalizedCell">
                                         <rect key="frame" x="0.0" y="185" width="320" height="46"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                                             <rect key="frame" x="10" y="1" width="300" height="43"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Connection Status" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cvb-qh-VGm">
+                                                <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="CONNECTION_STATUS" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cvb-qh-VGm">
                                                     <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
                                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                     <color key="highlightedColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
@@ -396,7 +364,7 @@
                             <outlet property="delegate" destination="b8o-U9-sOP" id="wKr-TH-70a"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Setup Your Storage" id="Jyh-eh-1Jo">
+                    <navigationItem key="navigationItem" title="STORAGE_SETUP_CONTROLLER_TITLE" id="Jyh-eh-1Jo">
                         <barButtonItem key="backBarButtonItem" title="Back" id="2J1-8e-o7G"/>
                         <barButtonItem key="rightBarButtonItem" title="Next" id="Teq-QS-1ft">
                             <connections>
@@ -413,7 +381,7 @@
             </objects>
             <point key="canvasLocation" x="2532" y="99"/>
         </scene>
-        <!--First Use Photo Import View Controller - Auto Photo Upload-->
+        <!--First Use Photo Import View Controller - PHOTO_UPLOAD_CONTROLLER_TITLE-->
         <scene sceneID="pQx-YQ-fPg">
             <objects>
                 <tableViewController id="vd3-aZ-YWy" customClass="WAFirstUsePhotoImportViewController" sceneMemberID="viewController">
@@ -425,11 +393,11 @@
                             <rect key="frame" x="0.0" y="0.0" width="320" height="211"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
-                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="280" translatesAutoresizingMaskIntoConstraints="NO" id="Phx-kE-dRu">
+                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="PHOTO_UPLOAD_DESCRIPTION" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="280" translatesAutoresizingMaskIntoConstraints="NO" id="Phx-kE-dRu" customClass="WALocalizedLabel">
                                     <constraints>
                                         <constraint firstAttribute="height" priority="200" constant="81" type="user" id="6Si-Lh-gJT"/>
+                                        <constraint firstAttribute="height" constant="76" id="pVb-KO-h8J"/>
                                     </constraints>
-                                    <string key="text">Stream automatically sync all your photos from your devices to your Personal Cloud. We create real life events for you and they are right there anytime, anywhere.</string>
                                     <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                     <nil key="highlightedColor"/>
@@ -445,14 +413,14 @@
                         <sections>
                             <tableViewSection id="r2E-qF-IGM">
                                 <cells>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" textLabel="749-zj-beb" style="IBUITableViewCellStyleDefault" id="aMQ-tZ-60h">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" textLabel="749-zj-beb" style="IBUITableViewCellStyleDefault" id="aMQ-tZ-60h" customClass="WALocalizedCell">
                                         <rect key="frame" x="0.0" y="221" width="320" height="45"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                                             <rect key="frame" x="10" y="1" width="300" height="43"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Upload Now" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="749-zj-beb">
+                                                <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="OPTION_ENABLE_UPLOAD" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="749-zj-beb">
                                                     <rect key="frame" x="10" y="0.0" width="280" height="43"/>
                                                     <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
                                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -462,14 +430,14 @@
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         </view>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" textLabel="4Ao-aY-RGo" style="IBUITableViewCellStyleDefault" id="9Da-20-mdx">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" textLabel="4Ao-aY-RGo" style="IBUITableViewCellStyleDefault" id="9Da-20-mdx" customClass="WALocalizedCell">
                                         <rect key="frame" x="0.0" y="266" width="320" height="45"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                                             <rect key="frame" x="10" y="0.0" width="300" height="43"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Don't Upload" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="4Ao-aY-RGo">
+                                                <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="OPTION_DISABLE_UPLOAD" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="4Ao-aY-RGo">
                                                     <rect key="frame" x="10" y="0.0" width="280" height="43"/>
                                                     <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
                                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -487,7 +455,7 @@
                             <outlet property="delegate" destination="vd3-aZ-YWy" id="kpU-lM-Ukh"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Auto Photo Upload" id="A43-eI-pJf">
+                    <navigationItem key="navigationItem" title="PHOTO_UPLOAD_CONTROLLER_TITLE" id="A43-eI-pJf">
                         <barButtonItem key="backBarButtonItem" title="Back" id="PZW-h5-Xo1"/>
                         <barButtonItem key="rightBarButtonItem" title="Next" id="5Af-eN-38U">
                             <connections>
@@ -504,104 +472,71 @@
             </objects>
             <point key="canvasLocation" x="1532" y="99"/>
         </scene>
-        <!--First Use Log In View Controller - Log In-->
-        <scene sceneID="uup-tO-l5E">
+        <!--First Use Log In View Controller - SIGN_IN_CONTROLLER_TITLE-->
+        <scene sceneID="hPv-I8-sSz">
             <objects>
-                <viewController id="uNz-NM-jw2" customClass="WAFirstUseLogInViewController" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="3G6-Ij-tPC">
+                <tableViewController id="hTG-tp-kgg" customClass="WAFirstUseLogInViewController" sceneMemberID="viewController">
+                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="grouped" separatorStyle="singleLineEtched" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="u5i-rp-fHF">
                         <rect key="frame" x="0.0" y="64" width="320" height="416"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <subviews>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cfX-q2-2Kb">
-                                <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jMM-iA-POk">
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="219" id="JI5-VZ-zXQ"/>
-                                            <constraint firstAttribute="height" constant="44" id="MnC-0w-JIf"/>
-                                        </constraints>
-                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                                        <state key="normal" title=" Log In with Facebook" image="FacebookLogo.png" backgroundImage="SignInWithFacebookButton.png">
-                                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                        </state>
-                                        <state key="highlighted">
-                                            <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                        </state>
-                                        <connections>
-                                            <action selector="handleFacebookLogin:" destination="uNz-NM-jw2" eventType="touchUpInside" id="QEs-xC-MDH"/>
-                                        </connections>
-                                    </button>
-                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Or" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7Yf-ZZ-Jp4">
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Email" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="kdo-Rc-lqs">
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="214" id="QCk-1d-ctS"/>
-                                        </constraints>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <textInputTraits key="textInputTraits" autocorrectionType="no" keyboardType="emailAddress" returnKeyType="next" enablesReturnKeyAutomatically="YES"/>
-                                    </textField>
-                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Pasword" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Q7F-HH-5Y0">
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <textInputTraits key="textInputTraits" autocorrectionType="no" keyboardType="alphabet" returnKeyType="done" enablesReturnKeyAutomatically="YES" secureTextEntry="YES"/>
-                                    </textField>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Xdb-Jf-A8s">
-                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                                        <state key="normal" title="Log In with Email">
-                                            <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
-                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                        </state>
-                                        <state key="highlighted">
-                                            <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                        </state>
-                                        <connections>
-                                            <action selector="handleEmailLogin:" destination="uNz-NM-jw2" eventType="touchUpInside" id="HDl-4D-25D"/>
-                                        </connections>
-                                    </button>
-                                </subviews>
-                                <constraints>
-                                    <constraint firstItem="7Yf-ZZ-Jp4" firstAttribute="top" secondItem="cfX-q2-2Kb" secondAttribute="top" constant="170" id="KDu-6n-aND"/>
-                                    <constraint firstItem="kdo-Rc-lqs" firstAttribute="trailing" secondItem="Q7F-HH-5Y0" secondAttribute="trailing" type="default" id="NGe-XL-uhk"/>
-                                    <constraint firstItem="Xdb-Jf-A8s" firstAttribute="top" secondItem="cfX-q2-2Kb" secondAttribute="top" constant="324" id="UAw-Fp-qf9"/>
-                                    <constraint firstItem="7Yf-ZZ-Jp4" firstAttribute="centerX" secondItem="jMM-iA-POk" secondAttribute="centerX" type="default" id="Upb-JR-Vc2"/>
-                                    <constraint firstItem="jMM-iA-POk" firstAttribute="top" secondItem="cfX-q2-2Kb" secondAttribute="top" constant="84" id="hON-jI-ixn"/>
-                                    <constraint firstItem="Q7F-HH-5Y0" firstAttribute="top" secondItem="kdo-Rc-lqs" secondAttribute="bottom" constant="8" symbolic="YES" type="default" id="i9e-2a-Kzx"/>
-                                    <constraint firstItem="jMM-iA-POk" firstAttribute="centerX" secondItem="cfX-q2-2Kb" secondAttribute="centerX" type="default" id="jwr-iw-pIh"/>
-                                    <constraint firstItem="jMM-iA-POk" firstAttribute="trailing" secondItem="kdo-Rc-lqs" secondAttribute="trailing" type="default" id="kHU-Jr-FL4"/>
-                                    <constraint firstItem="kdo-Rc-lqs" firstAttribute="top" secondItem="cfX-q2-2Kb" secondAttribute="top" constant="235" id="kz8-5T-lmg"/>
-                                    <constraint firstAttribute="trailing" secondItem="jMM-iA-POk" secondAttribute="trailing" constant="50" id="mU6-Mv-4Qc"/>
-                                    <constraint firstAttribute="bottom" secondItem="Xdb-Jf-A8s" secondAttribute="bottom" constant="49" id="ndT-aY-9N1"/>
-                                    <constraint firstItem="Q7F-HH-5Y0" firstAttribute="centerX" secondItem="Xdb-Jf-A8s" secondAttribute="centerX" type="default" id="oSh-BN-mus"/>
-                                    <constraint firstItem="Q7F-HH-5Y0" firstAttribute="leading" secondItem="kdo-Rc-lqs" secondAttribute="leading" type="default" id="vXV-o2-GjL"/>
-                                </constraints>
-                            </scrollView>
-                        </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstItem="cfX-q2-2Kb" firstAttribute="top" secondItem="3G6-Ij-tPC" secondAttribute="top" type="default" id="8Uj-g2-6lf"/>
-                            <constraint firstItem="cfX-q2-2Kb" firstAttribute="trailing" secondItem="3G6-Ij-tPC" secondAttribute="trailing" type="default" id="9KA-UZ-QzM"/>
-                            <constraint firstItem="cfX-q2-2Kb" firstAttribute="bottom" secondItem="3G6-Ij-tPC" secondAttribute="bottom" type="default" id="L7E-qu-feM"/>
-                            <constraint firstItem="cfX-q2-2Kb" firstAttribute="leading" secondItem="3G6-Ij-tPC" secondAttribute="leading" type="default" id="oZv-bf-xtb"/>
-                        </constraints>
-                    </view>
-                    <navigationItem key="navigationItem" title="Log In" id="kAj-eY-enW"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                        <sections>
+                            <tableViewSection id="U7W-66-bfe">
+                                <cells>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" textLabel="8Ts-v9-BV9" style="IBUITableViewCellStyleDefault" id="Z6K-2v-dnQ" customClass="WALocalizedCell">
+                                        <rect key="frame" x="0.0" y="10" width="320" height="45"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                                            <rect key="frame" x="10" y="1" width="300" height="43"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="NOUN_USERNAME" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8Ts-v9-BV9">
+                                                    <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <color key="highlightedColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                                </label>
+                                            </subviews>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        </view>
+                                    </tableViewCell>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" textLabel="qlc-Lu-gj2" style="IBUITableViewCellStyleDefault" id="kdf-g6-GmL" customClass="WALocalizedCell">
+                                        <rect key="frame" x="0.0" y="55" width="320" height="45"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                                            <rect key="frame" x="10" y="0.0" width="300" height="43"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="NOUN_PASSWORD" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qlc-Lu-gj2">
+                                                    <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <color key="highlightedColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                                </label>
+                                            </subviews>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        </view>
+                                    </tableViewCell>
+                                </cells>
+                            </tableViewSection>
+                        </sections>
+                        <connections>
+                            <outlet property="dataSource" destination="hTG-tp-kgg" id="3K7-QD-MUu"/>
+                            <outlet property="delegate" destination="hTG-tp-kgg" id="m66-sh-2wF"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="SIGN_IN_CONTROLLER_TITLE" id="iiy-yL-bUt"/>
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
                     <connections>
-                        <outlet property="emailField" destination="kdo-Rc-lqs" id="fDj-Bw-W2W"/>
-                        <outlet property="emailLoginButton" destination="Xdb-Jf-A8s" id="FVE-RQ-AHx"/>
-                        <outlet property="facebookLoginButton" destination="jMM-iA-POk" id="heC-qS-kNr"/>
-                        <outlet property="passwordField" destination="Q7F-HH-5Y0" id="R8T-7d-V3l"/>
-                        <outlet property="scrollView" destination="cfX-q2-2Kb" id="nbv-yd-JAH"/>
-                        <segue destination="vd3-aZ-YWy" kind="push" identifier="WASegueLogInToPhotoImport" id="m7v-Xw-Yc3"/>
-                        <segue destination="qOw-kL-dR9" kind="push" identifier="WASegueLogInToConnectServices" id="HMO-zp-KUz"/>
+                        <outlet property="emailCell" destination="Z6K-2v-dnQ" id="bDu-Qp-n5R"/>
+                        <outlet property="passwordCell" destination="kdf-g6-GmL" id="a21-JW-bqt"/>
+                        <segue destination="vd3-aZ-YWy" kind="push" identifier="WASegueLogInToPhotoImport" id="3Ad-Cy-rl6"/>
+                        <segue destination="qOw-kL-dR9" kind="push" identifier="WASegueLogInToConnectServices" id="N9p-mN-Fbh"/>
                     </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="xKQ-ad-5eU" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="GdJ-Hs-nMj" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="774" y="99"/>
+            <point key="canvasLocation" x="767" y="99"/>
         </scene>
-        <!--First Use Connect Services View Controller - Getting Started-->
+        <!--First Use Connect Services View Controller - CONNECT_SERVICES_CONTROLLER_TITLE-->
         <scene sceneID="1y8-1j-os6">
             <objects>
                 <tableViewController id="qOw-kL-dR9" customClass="WAFirstUseConnectServicesViewController" sceneMemberID="viewController">
@@ -613,9 +548,10 @@
                             <rect key="frame" x="0.0" y="0.0" width="320" height="46"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
-                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Connect to web services:" lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="212" translatesAutoresizingMaskIntoConstraints="NO" id="0P9-dO-3KX">
+                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="WEBSERVICE_LIST_TITLE" lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="223" translatesAutoresizingMaskIntoConstraints="NO" id="0P9-dO-3KX" customClass="WALocalizedLabel">
                                     <constraints>
-                                        <constraint firstAttribute="width" constant="212" id="6K6-Ku-Jgr"/>
+                                        <constraint firstAttribute="width" priority="500" constant="223" type="user" id="1P3-Zi-GiQ"/>
+                                        <constraint firstAttribute="height" constant="35" id="Ova-pO-4Qk"/>
                                     </constraints>
                                     <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -625,15 +561,14 @@
                             <color key="backgroundColor" white="1" alpha="0.0" colorSpace="custom" customColorSpace="calibratedWhite"/>
                             <constraints>
                                 <constraint firstItem="0P9-dO-3KX" firstAttribute="leading" secondItem="Zkg-Pr-0iz" secondAttribute="leading" constant="20" symbolic="YES" type="default" id="Utk-qH-EmK"/>
-                                <constraint firstItem="0P9-dO-3KX" firstAttribute="top" secondItem="Zkg-Pr-0iz" secondAttribute="top" constant="20" symbolic="YES" type="default" id="Xho-bA-AVd"/>
-                                <constraint firstItem="0P9-dO-3KX" firstAttribute="bottom" secondItem="Zkg-Pr-0iz" secondAttribute="bottom" type="default" id="kYQ-1i-aXX"/>
+                                <constraint firstItem="0P9-dO-3KX" firstAttribute="top" secondItem="Zkg-Pr-0iz" secondAttribute="top" constant="20" symbolic="YES" type="default" id="fVg-GQ-sge"/>
                             </constraints>
                         </view>
                         <view key="tableFooterView" contentMode="scaleToFill" id="bfb-P8-MBP">
                             <rect key="frame" x="0.0" y="112" width="320" height="90"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
-                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="You can also change these settings whatever you want." lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="280" translatesAutoresizingMaskIntoConstraints="NO" id="GEd-xe-bMT">
+                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="CONNECT_SERVICES_DESCRIPTION" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="280" translatesAutoresizingMaskIntoConstraints="NO" id="GEd-xe-bMT" customClass="WALocalizedLabel">
                                     <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                     <nil key="highlightedColor"/>
@@ -642,7 +577,7 @@
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                             <constraints>
                                 <constraint firstItem="GEd-xe-bMT" firstAttribute="leading" secondItem="bfb-P8-MBP" secondAttribute="leading" constant="20" symbolic="YES" type="default" id="1Aw-Dn-BMF"/>
-                                <constraint firstAttribute="bottom" secondItem="GEd-xe-bMT" secondAttribute="bottom" constant="20" symbolic="YES" type="default" id="O1e-7y-yAg"/>
+                                <constraint firstAttribute="bottom" secondItem="GEd-xe-bMT" secondAttribute="bottom" priority="500" constant="20" symbolic="YES" type="user" id="O1e-7y-yAg"/>
                                 <constraint firstItem="GEd-xe-bMT" firstAttribute="top" secondItem="bfb-P8-MBP" secondAttribute="top" constant="20" symbolic="YES" type="default" id="SwF-3M-qqE"/>
                                 <constraint firstAttribute="trailing" secondItem="GEd-xe-bMT" secondAttribute="trailing" constant="20" symbolic="YES" type="default" id="W9E-qL-BeZ"/>
                             </constraints>
@@ -678,7 +613,7 @@
                             <outlet property="delegate" destination="qOw-kL-dR9" id="C0k-N2-ZO8"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Getting Started" id="87C-z3-ceQ">
+                    <navigationItem key="navigationItem" title="CONNECT_SERVICES_CONTROLLER_TITLE" id="87C-z3-ceQ">
                         <barButtonItem key="backBarButtonItem" title="Back" id="uom-ls-VtV"/>
                         <barButtonItem key="rightBarButtonItem" title="Next" id="OsH-YD-ekd">
                             <connections>
@@ -695,7 +630,7 @@
             </objects>
             <point key="canvasLocation" x="1420" y="-667"/>
         </scene>
-        <!--First Use Done View Controller - Almost Done-->
+        <!--First Use Done View Controller - SETUP_DONE_CONTROLLER_TITLE-->
         <scene sceneID="rmu-vW-VP9">
             <objects>
                 <viewController id="xfS-He-9uL" customClass="WAFirstUseDoneViewController" sceneMemberID="viewController">
@@ -703,12 +638,12 @@
                         <rect key="frame" x="0.0" y="64" width="320" height="416"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6wx-cB-GP9">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6wx-cB-GP9" customClass="WALocalizedButton">
                                 <constraints>
                                     <constraint firstAttribute="width" constant="280" type="user" id="gNS-Zt-fXM"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                                <state key="normal" title="Start Using Stream">
+                                <state key="normal" title="ACTION_START_STREAM">
                                     <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
@@ -719,8 +654,9 @@
                                     <action selector="handleDone:" destination="xfS-He-9uL" eventType="touchUpInside" id="RDf-eQ-7I1"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="You have built your Personal Cloud. It may take some time to collect and organize your medias." lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="280" translatesAutoresizingMaskIntoConstraints="NO" id="aq5-qa-OWT">
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="SETUP_DONE_DESCRIPTION" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="280" translatesAutoresizingMaskIntoConstraints="NO" id="aq5-qa-OWT" customClass="WALocalizedLabel">
                                 <constraints>
+                                    <constraint firstAttribute="height" constant="57" id="oiN-hT-yRp"/>
                                     <constraint firstAttribute="height" priority="200" constant="64" type="user" id="yWb-QO-2e8"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
@@ -737,7 +673,7 @@
                             <constraint firstItem="aq5-qa-OWT" firstAttribute="top" secondItem="9WO-xg-eAo" secondAttribute="top" constant="20" symbolic="YES" type="default" id="bsV-bC-skA"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="Almost Done" id="eyV-pK-kpc">
+                    <navigationItem key="navigationItem" title="SETUP_DONE_CONTROLLER_TITLE" id="eyV-pK-kpc">
                         <barButtonItem key="backBarButtonItem" title="Back" id="hb2-Cr-rJ1"/>
                     </navigationItem>
                 </viewController>
@@ -748,7 +684,6 @@
     </scenes>
     <resources>
         <image name="FacebookLogo.png" width="33" height="33"/>
-        <image name="SignInWithFacebookButton.png" width="11" height="45"/>
     </resources>
     <classes>
         <class className="NSLayoutConstraint" superclassName="NSObject">
@@ -788,16 +723,13 @@
                 <relationship kind="outlet" name="scrollView" candidateClass="UIScrollView"/>
             </relationships>
         </class>
-        <class className="WAFirstUseLogInViewController" superclassName="UIViewController">
+        <class className="WAFirstUseLogInViewController" superclassName="UITableViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/WAFirstUseLogInViewController.h"/>
             <relationships>
-                <relationship kind="action" name="handleEmailLogin:"/>
-                <relationship kind="action" name="handleFacebookLogin:"/>
-                <relationship kind="outlet" name="emailField" candidateClass="UITextField"/>
-                <relationship kind="outlet" name="emailLoginButton" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="facebookLoginButton" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="passwordField" candidateClass="UITextField"/>
-                <relationship kind="outlet" name="scrollView" candidateClass="UIScrollView"/>
+                <relationship kind="action" name="handleEmailLogin:" candidateClass="UIButton"/>
+                <relationship kind="action" name="handleFacebookLogin:" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="emailCell" candidateClass="UITableViewCell"/>
+                <relationship kind="outlet" name="passwordCell" candidateClass="UITableViewCell"/>
             </relationships>
         </class>
         <class className="WAFirstUsePhotoImportViewController" superclassName="UITableViewController">
@@ -813,6 +745,15 @@
         <class className="WAFirstUseWelcomeViewController" superclassName="UIViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/WAFirstUseWelcomeViewController.h"/>
         </class>
+        <class className="WALocalizedButton" superclassName="UIButton">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/WALocalizedButton.h"/>
+        </class>
+        <class className="WALocalizedCell" superclassName="UITableViewCell">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/WALocalizedCell.h"/>
+        </class>
+        <class className="WALocalizedLabel" superclassName="UILabel">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/WALocalizedLabel.h"/>
+        </class>
     </classes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
@@ -820,7 +761,7 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="HMO-zp-KUz"/>
-        <segue reference="vl7-D0-o14"/>
+        <segue reference="3Ad-Cy-rl6"/>
+        <segue reference="N9p-mN-Fbh"/>
     </inferredMetricsTieBreakers>
 </document>

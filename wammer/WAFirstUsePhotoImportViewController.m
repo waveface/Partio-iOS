@@ -19,10 +19,18 @@
 
 	[super viewDidLoad];
 
+	[self localize];
+
 	if (!self.isFromConnectServicesPage) {
 		self.navigationItem.hidesBackButton = YES;
 	}
 	self.navigationItem.rightBarButtonItem.enabled = NO;
+
+}
+
+- (void)localize {
+
+	self.title = NSLocalizedString(@"PHOTO_UPLOAD_CONTROLLER_TITLE", @"Title of view controller setting photo upload");
 
 }
 

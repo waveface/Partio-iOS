@@ -10,6 +10,8 @@
 #import "WAFirstUseViewController.h"
 #import "WAOverlayBezel.h"
 #import "WARemoteInterface.h"
+#import "WAFirstUseFacebookLoginView.h"
+#import "WAFirstUseEmailLoginFooterView.h"
 #import <FacebookSDK/FacebookSDK.h>
 #import <Accounts/Accounts.h>
 
@@ -19,7 +21,12 @@ static NSString * const kWASegueLogInToConnectServices = @"WASegueLogInToConnect
 
 @interface WAFirstUseLogInViewController ()
 
-@property (nonatomic, readwrite) BOOL isKeyboardShown;
+@property (nonatomic, strong) UITextField *emailField;
+@property (nonatomic, strong) UITextField *passwordField;
+@property (nonatomic, strong) UIButton *facebookLoginButton;
+@property (nonatomic, strong) UIButton *emailLoginButton;
+@property (nonatomic, strong) UIScrollView *scrollView;
+@property (nonatomic) BOOL isKeyboardShown;
 
 @end
 
@@ -29,8 +36,36 @@ static NSString * const kWASegueLogInToConnectServices = @"WASegueLogInToConnect
 
 	[super viewDidLoad];
 
+	[self localize];
+
+	CGRect frame = CGRectMake(110.0, 12.0, 180.0, 40.0);
+
+	self.emailField = [[UITextField alloc] initWithFrame:frame];
+	self.emailField.font = [UIFont systemFontOfSize:15.0];
+	self.emailField.placeholder = NSLocalizedString(@"USERNAME_PLACEHOLDER", @"Email placeholder in login page");
 	self.emailField.delegate = self;
+	self.emailField.returnKeyType = UIReturnKeyNext;
+	[self.emailCell.contentView addSubview:self.emailField];
+
+	self.passwordField = [[UITextField alloc] initWithFrame:frame];
+	self.passwordField.font = [UIFont systemFontOfSize:15.0];
+	self.passwordField.secureTextEntry = YES;
+	self.passwordField.placeholder = NSLocalizedString(@"PASSWORD_PLACEHOLDER", @"Password placeholder in login page");
 	self.passwordField.delegate = self;
+	self.passwordField.returnKeyType = UIReturnKeyDone;
+	[self.passwordCell.contentView addSubview:self.passwordField];
+
+  WAFirstUseFacebookLoginView *header = [WAFirstUseFacebookLoginView viewFromNib];
+	self.tableView.tableHeaderView = header;
+	self.facebookLoginButton = header.facebookLoginButton;
+	[self.facebookLoginButton addTarget:self action:@selector(handleFacebookLogin:) forControlEvents:UIControlEventTouchUpInside];
+
+	WAFirstUseEmailLoginFooterView *footer = [WAFirstUseEmailLoginFooterView viewFromNib];
+	self.tableView.tableFooterView = footer;
+	self.emailLoginButton = footer.emailLoginButton;
+	[self.emailLoginButton addTarget:self action:@selector(handleEmailLogin:) forControlEvents:UIControlEventTouchUpInside];
+	
+	self.scrollView = self.tableView;
 
 	UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleBackgroundWasTouched:)];
 	[self.scrollView addGestureRecognizer:tap];
@@ -64,6 +99,12 @@ static NSString * const kWASegueLogInToConnectServices = @"WASegueLogInToConnect
 		[[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardDidShowNotification object:nil];
 		[[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
 	}
+
+}
+
+- (void)localize {
+
+	self.title = NSLocalizedString(@"SIGN_IN_CONTROLLER_TITLE", @"Title for view controller signing the user in");
 
 }
 
@@ -207,8 +248,9 @@ static NSString * const kWASegueLogInToConnectServices = @"WASegueLogInToConnect
 	CGRect viewRect = self.view.frame;
 	viewRect.size.height -= kbSize.height;
 	CGRect emailLoginButtonFrame = self.emailLoginButton.frame;
-	if (!CGRectContainsPoint(viewRect, emailLoginButtonFrame.origin)) {
-		CGPoint scrollPoint = CGPointMake(0.0, emailLoginButtonFrame.origin.y+emailLoginButtonFrame.size.height-viewRect.size.height);
+	CGPoint emailLoginButtonAbsoluteOrigin = [self.emailLoginButton convertPoint:emailLoginButtonFrame.origin toView:self.view];
+	if (!CGRectContainsPoint(viewRect, emailLoginButtonAbsoluteOrigin)) {
+		CGPoint scrollPoint = CGPointMake(0.0, emailLoginButtonAbsoluteOrigin.y+emailLoginButtonFrame.size.height-viewRect.size.height+15.0);
 		[self.scrollView setContentOffset:scrollPoint animated:YES];
 	}
 	

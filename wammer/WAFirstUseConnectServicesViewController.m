@@ -19,6 +19,9 @@
 - (void)viewDidLoad {
 
 	[super viewDidLoad];
+
+	[self localize];
+
 	self.navigationItem.hidesBackButton = YES;
 	self.facebookConnectCell.accessoryView = [[WAFacebookConnectionSwitch alloc] init];
 
@@ -28,6 +31,12 @@
 
 	WAFirstUsePhotoImportViewController *vc = segue.destinationViewController;
 	vc.isFromConnectServicesPage = YES;
+
+}
+
+- (void)localize {
+
+	self.title = NSLocalizedString(@"CONNECT_SERVICES_CONTROLLER_TITLE", @"Title of view controller connecting services");
 
 }
 
