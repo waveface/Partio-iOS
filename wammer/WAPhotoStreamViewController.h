@@ -11,6 +11,6 @@
 
 @interface WAPhotoStreamViewController : UIViewController <UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UIGestureRecognizerDelegate>
 
-@property (nonatomic, assign) UIViewController *delegate;
+@property (nonatomic, assign) id delegate;
 
 @end

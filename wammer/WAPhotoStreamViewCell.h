@@ -10,8 +10,8 @@
 
 @interface WAPhotoStreamViewCell : UICollectionViewCell
 
-@property (strong, nonatomic) IBOutlet UIImageView *imageView;
+@property (weak, nonatomic) IBOutlet UIImageView *imageView;
 
 @end
 
-extern NSString * kPhotoStreamCellID;
+extern NSString * const kPhotoStreamCellID;

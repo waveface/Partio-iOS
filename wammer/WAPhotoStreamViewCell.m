@@ -8,7 +8,7 @@
 
 #import "WAPhotoStreamViewCell.h"
 
-const NSString *kPhotoStreamCellID = @"PhotoStreamViewCell";
+NSString * const kPhotoStreamCellID = @"PhotoStreamViewCell";
 
 @implementation WAPhotoStreamViewCell
 
