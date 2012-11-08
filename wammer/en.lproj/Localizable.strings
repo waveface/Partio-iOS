@@ -144,7 +144,7 @@
 "COMPOSITION_TITLE" = "Compose";
 
 /* Title of view controller connecting services */
-"CONNECT_SERVICES_CONTROLLER_TITLE" = "Getting Started";
+"CONNECT_SERVICES_CONTROLLER_TITLE" = "GETTING STARTED";
 
 /* In iPad overview, (time, device)
    iPhone Timeline */
@@ -313,13 +313,13 @@
 "PHOTO_SINGULAR" = "%d photo";
 
 /* Title of view controller setting photo upload */
-"PHOTO_UPLOAD_CONTROLLER_TITLE" = "Auto Photo Upload";
+"PHOTO_UPLOAD_CONTROLLER_TITLE" = "AUTO PHOTO UPLOAD";
 
 /* In iPad overview */
 "PHOTOS_PLURAL" = "%d photos";
 
 /* Title of view controller choosing plans */
-"PLANS_CONTROLLER_TITLE" = "Plans";
+"PLANS_CONTROLLER_TITLE" = "PLANS";
 
 /* Text to show for previews without a provider name */
 "PREVIEW_BADGE_PROVIDER_NAME_PLACEHOLDER" = "(No Provider)";
@@ -358,16 +358,16 @@
 "SERVICE_INFO_WITHOUT_WIFI" = "Stream only sends your original photos via Wi-Fi connection. \n\nIf you don't have Stream installed on your PC, or it's not up and running, we keep the photos in a temporary cloud space for up to 30 days.";
 
 /* Title of view controller finishing first setup */
-"SETUP_DONE_CONTROLLER_TITLE" = "Almost Done";
+"SETUP_DONE_CONTROLLER_TITLE" = "ALMOST DONE";
 
 /* Title for view controller signing the user in */
-"SIGN_IN_CONTROLLER_TITLE" = "Log In";
+"SIGN_IN_CONTROLLER_TITLE" = "LOG IN";
 
 /* Confirmation text for Signing Out */
 "SIGN_OUT_CONFIRMATION" = "Are you sure?";
 
 /* Title for view controller signing the user up */
-"SIGN_UP_CONTROLLER_TITLE" = "Sign Up";
+"SIGN_UP_CONTROLLER_TITLE" = "SIGN UP";
 
 /* Title for Collection in the sliding menu */
 "SLIDING_MENU_TITLE_COLLECTION" = "Collection";
@@ -385,7 +385,7 @@
 "STATE_LOADING_SINGLE_DOCUMENT" = "Loading Document…";
 
 /* Title of view controller setting personal cloud */
-"STORAGE_SETUP_CONTROLLER_TITLE" = "Setup Your Storage";
+"STORAGE_SETUP_CONTROLLER_TITLE" = "SETUP YOUR STORAGE";
 
 /* Cloud Name */
 "Stream Cloud" = "Stream Cloud";
@@ -515,13 +515,13 @@
 "STORAGE_SETUP_DESCRIPTION" = "Install Stream Windows and upgrades your PC to your Personal Cloud.";
 
 /* Class = "IBUINavigationItem"; title = "CONNECT_SERVICES_CONTROLLER_TITLE"; ObjectID = "87C-z3-ceQ"; */
-"CONNECT_SERVICES_CONTROLLER_TITLE" = "Getting Started";
+"CONNECT_SERVICES_CONTROLLER_TITLE" = "GETTING STARTED";
 
 /* Class = "IBUILabel"; text = "NOUN_USERNAME"; ObjectID = "8Ts-v9-BV9"; */
 "NOUN_USERNAME" = "Email";
 
 /* Class = "IBUINavigationItem"; title = "PHOTO_UPLOAD_CONTROLLER_TITLE"; ObjectID = "A43-eI-pJf"; */
-"PHOTO_UPLOAD_CONTROLLER_TITLE" = "Auto Photo Upload";
+"PHOTO_UPLOAD_CONTROLLER_TITLE" = "AUTO PHOTO UPLOAD";
 
 /* Class = "IBUILabel"; text = "OPTION_PREMIUM_PLAN"; ObjectID = "BEk-Uz-d9I"; */
 "OPTION_PREMIUM_PLAN" = "$4.99/month";
@@ -533,7 +533,7 @@
 "LOGIN_LINK_DEVICE" = "Login & link this device";
 
 /* Class = "IBUINavigationItem"; title = "STORAGE_SETUP_CONTROLLER_TITLE"; ObjectID = "Jyh-eh-1Jo"; */
-"STORAGE_SETUP_CONTROLLER_TITLE" = "Setup Your Storage";
+"STORAGE_SETUP_CONTROLLER_TITLE" = "SETUP YOUR STORAGE";
 
 /* Class = "IBUILabel"; text = "ACTION_GOTO_WEBSITE"; ObjectID = "K5G-K7-r9Y"; */
 "ACTION_GOTO_WEBSITE" = "Learn more on our website";
@@ -557,10 +557,10 @@
 "PREMIUM_PLAN_DESCRIPTION" = "250GB cloud storage, unlimited PC storage";
 
 /* Class = "IBUINavigationItem"; title = "SETUP_DONE_CONTROLLER_TITLE"; ObjectID = "eyV-pK-kpc"; */
-"SETUP_DONE_CONTROLLER_TITLE" = "Almost Done";
+"SETUP_DONE_CONTROLLER_TITLE" = "ALMOST DONE";
 
 /* Class = "IBUINavigationItem"; title = "SIGN_IN_CONTROLLER_TITLE"; ObjectID = "iiy-yL-bUt"; */
-"SIGN_IN_CONTROLLER_TITLE" = "Log In";
+"SIGN_IN_CONTROLLER_TITLE" = "LOG IN";
 
 /* Class = "IBUILabel"; text = "OPTION_FREE_PLAN"; ObjectID = "j6E-j2-K86"; */
 "OPTION_FREE_PLAN" = "Free";
@@ -569,7 +569,7 @@
 "NOUN_PASSWORD" = "Password";
 
 /* Class = "IBUINavigationItem"; title = "PLANS_CONTROLLER_TITLE"; ObjectID = "rs3-Qj-SXO"; */
-"PLANS_CONTROLLER_TITLE" = "Plans";
+"PLANS_CONTROLLER_TITLE" = "PLANS";
 
 /* Class = "IBUILabel"; text = "OPTION_ULTIMATE_PLAN"; ObjectID = "sfk-st-cdZ"; */
 "OPTION_ULTIMATE_PLAN" = "$7.99/month";
@@ -578,7 +578,13 @@
 "FREE_PLAN_DESCRIPTION" = "Save all original files to one PC";
 
 /* Class = "IBUILabel"; text = "PLANS_DESCRIPTION"; ObjectID = "ylt-bh-gIj"; */
-"PLANS_DESCRIPTION" = "Stream send all your presuure moments back to your PC. You can also upgrade to a cloud storage plan and enjoy the benefit of cloud computing.";
+"PLANS_DESCRIPTION" = "Stream send all your presure moments back to your PC. You can also upgrade to a cloud storage plan and enjoy the benefit of cloud computing.";
+
+/* Class = "IBUIButton"; normalTitle = "ACTION_SIGN_IN"; ObjectID = "6"; */
+"ACTION_SIGN_IN" = "Log In";
+
+/* Class = "IBUIButton"; normalTitle = "ACTION_CONNECT_FACEBOOK"; ObjectID = "9"; */
+"ACTION_CONNECT_FACEBOOK" = "Connect with Facebook";
 
 /* Class = "IBUITextField"; placeholder = "USERNAME_PLACEHOLDER"; ObjectID = "2Vk-4J-QH3"; */
 "USERNAME_PLACEHOLDER" = "me@example.com";
@@ -725,7 +731,7 @@
 "ACTION_CONNECT_FACEBOOK" = "Connect with Facebook";
 
 /* Class = "IBUIButton"; normalTitle = "ACTION_SIGN_IN"; ObjectID = "8"; */
-"ACTION_SIGN_IN" = "Sign In";
+"ACTION_SIGN_IN" = "Log In";
 
 /* Class = "IBUIButton"; normalTitle = "ACTION_SIGN_UP"; ObjectID = "16"; */
 "ACTION_SIGN_UP" = "Sign Up";
@@ -737,5 +743,5 @@
 "ACTION_SIGN_UP" = "Sign Up";
 
 /* Class = "IBUIButton"; normalTitle = "ACTION_SIGN_IN"; ObjectID = "10"; */
-"ACTION_SIGN_IN" = "Sign In";
+"ACTION_SIGN_IN" = "Log In";
 

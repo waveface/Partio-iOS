@@ -24,8 +24,11 @@
 	WAFirstUseEmailLoginFooterView *footer = [WAFirstUseEmailLoginFooterView viewFromNib];
 	self.tableFooterView = footer;
 	self.emailSignupButton = footer.emailLoginButton;
-	[self.emailSignupButton setTitle:NSLocalizedString(@"ACTION_SIGN_UP", @"Email sign up button") forState:UIControlStateNormal];
-	[self.emailSignupButton setTitle:NSLocalizedString(@"ACTION_SIGN_UP", @"Email sign up button") forState:UIControlStateDisabled];
+	[self.emailSignupButton setTitle:NSLocalizedString(@"ACTION_SIGN_UP", @"Email sign up button") forState:UIControlStateNormal|UIControlStateDisabled];
+
+	UIButton *login = self.emailSignupButton;
+	UIButton *facebook = self.facebookSignupButton;
+	[self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[login(==facebook)]" options:NSLayoutFormatDirectionLeadingToTrailing metrics:nil views:NSDictionaryOfVariableBindings(login, facebook)]];
 
 }
 

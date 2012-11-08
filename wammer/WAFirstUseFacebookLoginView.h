@@ -11,6 +11,7 @@
 @interface WAFirstUseFacebookLoginView : UIView
 
 @property (weak, nonatomic) IBOutlet UIButton *facebookLoginButton;
+@property (weak, nonatomic) IBOutlet UILabel *orLabel;
 
 + (WAFirstUseFacebookLoginView *)viewFromNib;
 

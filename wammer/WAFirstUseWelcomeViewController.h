@@ -10,4 +10,7 @@
 
 @interface WAFirstUseWelcomeViewController : UIViewController
 
+@property (weak, nonatomic) IBOutlet UIButton *signupButton;
+@property (weak, nonatomic) IBOutlet UIButton *loginButton;
+
 @end

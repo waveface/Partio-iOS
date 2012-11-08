@@ -38,21 +38,27 @@ static NSString * const kWASegueLogInToConnectServices = @"WASegueLogInToConnect
 
 	[self localize];
 
-	CGRect frame = CGRectMake(110.0, 12.0, 180.0, 40.0);
+	CGRect frame = CGRectMake(110.0, 11.0, 180.0, 40.0);
 
 	self.emailField = [[UITextField alloc] initWithFrame:frame];
-	self.emailField.font = [UIFont systemFontOfSize:15.0];
+	self.emailField.font = [UIFont systemFontOfSize:17.0];
 	self.emailField.placeholder = NSLocalizedString(@"USERNAME_PLACEHOLDER", @"Email placeholder in login page");
 	self.emailField.delegate = self;
 	self.emailField.returnKeyType = UIReturnKeyNext;
+	self.emailField.autocorrectionType = UITextAutocorrectionTypeNo;
+	self.emailField.autocapitalizationType = UITextAutocapitalizationTypeNone;
+	self.emailField.keyboardType = UIKeyboardTypeEmailAddress;
 	[self.emailCell.contentView addSubview:self.emailField];
 
 	self.passwordField = [[UITextField alloc] initWithFrame:frame];
-	self.passwordField.font = [UIFont systemFontOfSize:15.0];
+	self.passwordField.font = [UIFont systemFontOfSize:17.0];
 	self.passwordField.secureTextEntry = YES;
 	self.passwordField.placeholder = NSLocalizedString(@"PASSWORD_PLACEHOLDER", @"Password placeholder in login page");
 	self.passwordField.delegate = self;
 	self.passwordField.returnKeyType = UIReturnKeyDone;
+	self.passwordField.autocorrectionType = UITextAutocorrectionTypeNo;
+	self.passwordField.autocapitalizationType = UITextAutocapitalizationTypeNone;
+	self.passwordField.keyboardType = UIKeyboardTypeASCIICapable;
 	[self.passwordCell.contentView addSubview:self.passwordField];
 
   WAFirstUseFacebookLoginView *header = [WAFirstUseFacebookLoginView viewFromNib];
@@ -64,7 +70,11 @@ static NSString * const kWASegueLogInToConnectServices = @"WASegueLogInToConnect
 	self.tableView.tableFooterView = footer;
 	self.emailLoginButton = footer.emailLoginButton;
 	[self.emailLoginButton addTarget:self action:@selector(handleEmailLogin:) forControlEvents:UIControlEventTouchUpInside];
-	
+
+	UIButton *login = self.emailLoginButton;
+	UIButton *facebook = self.facebookLoginButton;
+	[self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[login(==facebook)]" options:NSLayoutFormatDirectionLeadingToTrailing metrics:nil views:NSDictionaryOfVariableBindings(login, facebook)]];
+
 	self.scrollView = self.tableView;
 
 	UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleBackgroundWasTouched:)];

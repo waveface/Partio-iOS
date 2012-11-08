@@ -22,11 +22,25 @@
 	
 	[super awakeFromNib];
 
-	self.facebookLoginButton.backgroundColor = [UIColor blueColor];
-	self.facebookLoginButton.layer.cornerRadius = 17.0;
+	self.backgroundColor = [UIColor colorWithRed:0xf4/255.0 green:0xf4/255.0 blue:0xf4/255.0 alpha:1.0];
+
+	self.facebookLoginButton.backgroundColor = [UIColor colorWithRed:0x2d/255.0 green:0x47/255.0 blue:0x79/255.0 alpha:1.0];
+	self.facebookLoginButton.layer.cornerRadius = 20.0;
 	[self.facebookLoginButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
 	[self.facebookLoginButton setTitleColor:[UIColor whiteColor] forState:UIControlStateDisabled];
 	self.facebookLoginButton.imageView.layer.cornerRadius = 15.0;
+	UIImageView *image = self.facebookLoginButton.imageView;
+	self.facebookLoginButton.imageView.translatesAutoresizingMaskIntoConstraints = NO;
+	[self.facebookLoginButton addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-(5)-[image]" options:NSLayoutFormatDirectionLeadingToTrailing metrics:nil views:NSDictionaryOfVariableBindings(image)]];
+	self.facebookLoginButton.contentEdgeInsets = UIEdgeInsetsMake(5.0, 0.0, 5.0, 0.0);
+
+	self.orLabel.textColor = [UIColor whiteColor];
+	self.orLabel.backgroundColor = [UIColor colorWithRed:0.85 green:0.85 blue:0.85 alpha:1.0];
+	self.orLabel.layer.cornerRadius = 15.0;
+
+	UIView *line = [[UIView alloc] initWithFrame:CGRectMake(0.0, self.orLabel.center.y, self.bounds.size.width, 2.0)];
+	line.backgroundColor = [UIColor colorWithRed:0.85 green:0.85 blue:0.85 alpha:1.0];
+	[self insertSubview:line belowSubview:self.orLabel];
 
 }
 

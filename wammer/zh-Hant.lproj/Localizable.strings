@@ -30,7 +30,7 @@
 "ACTION_CHANGE_REPRESENTING_FILE" = "更換封面";
 
 /* Facebook sign up button */
-"ACTION_CONNECT_FACEBOOK" = "  連結Facebook帳號";
+"ACTION_CONNECT_FACEBOOK" = "連結Facebook帳號";
 
 /* Short action title for connecting Facebook creds */
 "ACTION_CONNECT_FACEBOOK_SHORT" = "同步";
@@ -497,7 +497,7 @@
 "MONDAY" = "MONDAY";
 
 /* Class = "IBUILabel"; text = "WEBSERVICE_LIST_TITLE"; ObjectID = "0P9-dO-3KX"; */
-"WEBSERVICE_LIST_TITLE" = "開啓下列開關以連接你的其他帳號";
+"WEBSERVICE_LIST_TITLE" = "可連接的服務";
 
 /* Class = "IBUILabel"; text = "OPTION_DISABLE_UPLOAD"; ObjectID = "4Ao-aY-RGo"; */
 "OPTION_DISABLE_UPLOAD" = "不要自動上傳";
@@ -579,6 +579,12 @@
 
 /* Class = "IBUILabel"; text = "PLANS_DESCRIPTION"; ObjectID = "ylt-bh-gIj"; */
 "PLANS_DESCRIPTION" = "Stream 會將你所有的寶貝檔案存放在指定的位置，你可以選擇存在家裡的 PC，或者付費獲得額外的雲端儲存空間，讓你可以隨時隨地取得原始檔案。";
+
+/* Class = "IBUIButton"; normalTitle = "ACTION_SIGN_IN"; ObjectID = "6"; */
+"ACTION_SIGN_IN" = "登入";
+
+/* Class = "IBUIButton"; normalTitle = "ACTION_CONNECT_FACEBOOK"; ObjectID = "9"; */
+"ACTION_CONNECT_FACEBOOK" = "連結Facebook帳號";
 
 /* Class = "IBUITextField"; placeholder = "USERNAME_PLACEHOLDER"; ObjectID = "2Vk-4J-QH3"; */
 "USERNAME_PLACEHOLDER" = "me@example.com";

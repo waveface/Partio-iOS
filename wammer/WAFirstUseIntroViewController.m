@@ -373,8 +373,8 @@ static NSString * const kWASegueIntroToPhotoImport = @"WASegueIntroToPhotoImport
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
 		
-	CGRect frame = CGRectMake(110.0, 12.0, 180.0, 40.0);
-	UIFont *font = [UIFont systemFontOfSize:15.0];
+	CGRect frame = CGRectMake(110.0, 11.0, 180.0, 40.0);
+	UIFont *font = [UIFont systemFontOfSize:17.0];
 
 	if ([indexPath row] == 0) {
 		UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"EmailCell"];
@@ -386,6 +386,9 @@ static NSString * const kWASegueIntroToPhotoImport = @"WASegueIntroToPhotoImport
 			self.emailField.placeholder = NSLocalizedString(@"USERNAME_PLACEHOLDER", @"Email placeholder in signup page");
 			self.emailField.delegate = self;
 			self.emailField.returnKeyType = UIReturnKeyNext;
+			self.emailField.autocorrectionType = UITextAutocorrectionTypeNo;
+			self.emailField.autocapitalizationType = UITextAutocapitalizationTypeNone;
+			self.emailField.keyboardType = UIKeyboardTypeEmailAddress;
 			[cell.contentView addSubview:self.emailField];
 		}
 		return cell;
@@ -400,6 +403,9 @@ static NSString * const kWASegueIntroToPhotoImport = @"WASegueIntroToPhotoImport
 			self.passwordField.placeholder = NSLocalizedString(@"PASSWORD_PLACEHOLDER", @"Password placeholder in signup page");
 			self.passwordField.delegate = self;
 			self.passwordField.returnKeyType = UIReturnKeyNext;
+			self.passwordField.autocorrectionType = UITextAutocorrectionTypeNo;
+			self.passwordField.autocapitalizationType = UITextAutocapitalizationTypeNone;
+			self.passwordField.keyboardType = UIKeyboardTypeASCIICapable;
 			[cell.contentView addSubview:self.passwordField];
 		}
 		return cell;
@@ -413,6 +419,8 @@ static NSString * const kWASegueIntroToPhotoImport = @"WASegueIntroToPhotoImport
 			self.nicknameField.placeholder = NSLocalizedString(@"NICKNAME_PLACEHOLDER", @"Nickname placeholder in signup page");
 			self.nicknameField.delegate = self;
 			self.nicknameField.returnKeyType = UIReturnKeyDone;
+			self.nicknameField.autocorrectionType = UITextAutocorrectionTypeYes;
+			self.nicknameField.autocapitalizationType = UITextAutocapitalizationTypeWords;
 			[cell.contentView addSubview:self.nicknameField];
 		}
 		return cell;

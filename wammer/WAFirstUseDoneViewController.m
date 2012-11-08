@@ -21,6 +21,12 @@
 
 	[self localize];
 
+	self.doneButton.backgroundColor = [UIColor colorWithRed:0x7c/255.0 green:0x9c/255.0 blue:0x35/255.0 alpha:1.0];
+	self.doneButton.contentEdgeInsets = UIEdgeInsetsMake(10.0, 10.0, 10.0, 10.0);
+	self.doneButton.layer.cornerRadius = 20.0;
+	[self.doneButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+	[self.doneButton setTitleColor:[UIColor whiteColor] forState:UIControlStateDisabled];
+
 }
 
 - (void)localize {
