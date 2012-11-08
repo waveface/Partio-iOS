@@ -121,6 +121,7 @@ NSString * const WARemoteAttachmentSmallSubtype = @"small";
 	NSString *articleIdentifier = [mergedOptions objectForKey:kWARemoteArticleIdentifier];
 	NSString *fileCreateTime = [[WADataStore defaultStore] ISO8601StringFromDate:[mergedOptions objectForKey:kWARemoteAttachmentCreateTime]];
 	NSString *fileImportTime = [[WADataStore defaultStore] ISO8601StringFromDate:[mergedOptions objectForKey:kWARemoteAttachmentImportTime]];
+	NSString *timezone = [NSString stringWithFormat:@"%d", [[NSTimeZone localTimeZone] secondsFromGMT]/60];
 	WAFileExif *exif = [mergedOptions objectForKey:kWARemoteAttachmentExif];
 	NSString *exifJsonString = nil;
 	if (exif) {
@@ -224,6 +225,7 @@ NSString * const WARemoteAttachmentSmallSubtype = @"small";
 	stitch(exifJsonString, @"exif");
 	stitch(fileCreateTime, @"file_create_time");
 	stitch(fileImportTime, @"import_time");
+	stitch(timezone, @"timezone");
 	
 	[self.engine fireAPIRequestNamed:@"attachments/upload" withArguments:nil options:[NSDictionary dictionaryWithObjectsAndKeys:
 	
