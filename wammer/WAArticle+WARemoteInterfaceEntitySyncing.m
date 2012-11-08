@@ -157,14 +157,17 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 																 smallDict,  @"small",
 																 mediumDict, @"medium",
 																 nil];
-			NSDictionary *attach = [NSDictionary dictionaryWithObjectsAndKeys:
-															objectID, @"object_id",
-															creatorID, @"creator_id",
-															articleID, @"post_id",
-															imageMeta, @"image_meta",
-															@"unknown.jpeg", @"file_name",
-															@"image", @"type",
-															nil];
+			
+			NSDictionary *attach = @{
+				@"object_id": objectID,
+				@"creator_id": creatorID,
+				@"post_id": articleID,
+				@"image_meta": imageMeta,
+				@"file_name": @"unknown.jpg",
+				@"type": @"image",
+				@"timestamp": [incomingRepresentation objectForKey:@"event_time"],
+				};
+			
 			[returnedAttachmentList addObject:attach];
 		}
 		[returnedDictionary setObject:returnedAttachmentList forKey:@"attachments"];
