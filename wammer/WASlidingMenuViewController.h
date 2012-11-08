@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface WASlidingMenuViewController : UITableViewController <NSFetchedResultsControllerDelegate>
+@interface WASlidingMenuViewController : UITableViewController
 
 @property (nonatomic, weak) id delegate;
 @property(nonatomic) UITableViewCellSelectionStyle selectionStyle;
