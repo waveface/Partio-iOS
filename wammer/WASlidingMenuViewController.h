@@ -8,7 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-
 @interface WASlidingMenuViewController : UITableViewController
 
 @property (nonatomic, weak) id delegate;
