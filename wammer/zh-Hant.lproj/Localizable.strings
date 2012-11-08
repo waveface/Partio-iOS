@@ -499,17 +499,14 @@
 /* Class = "IBUILabel"; text = "WEBSERVICE_LIST_TITLE"; ObjectID = "0P9-dO-3KX"; */
 "WEBSERVICE_LIST_TITLE" = "可連接的服務";
 
-/* Class = "IBUILabel"; text = "OPTION_DISABLE_UPLOAD"; ObjectID = "4Ao-aY-RGo"; */
-"OPTION_DISABLE_UPLOAD" = "不要自動上傳";
-
 /* Class = "IBUILabel"; text = "STORAGE_SETUP_INSTRUCTIONS"; ObjectID = "6Ib-wQ-B01"; */
 "STORAGE_SETUP_INSTRUCTIONS" = "1. 在 PC 上安裝 Windows 版 Stream\n2. 確認手機跟 PC 處於同一個 WiFi 底下";
 
 /* Class = "IBUIButton"; normalTitle = "ACTION_START_STREAM"; ObjectID = "6wx-cB-GP9"; */
 "ACTION_START_STREAM" = "開始使用 Stream";
 
-/* Class = "IBUILabel"; text = "OPTION_ENABLE_UPLOAD"; ObjectID = "749-zj-beb"; */
-"OPTION_ENABLE_UPLOAD" = "現在就自動上傳";
+/* Class = "IBUILabel"; text = "PHOTO_UPLOAD_SWITCH_TITLE"; ObjectID = "749-zj-beb"; */
+"PHOTO_UPLOAD_SWITCH_TITLE" = "上傳相機膠卷的照片";
 
 /* Class = "IBUILabel"; text = "STORAGE_SETUP_DESCRIPTION"; ObjectID = "7YP-nz-bf2"; */
 "STORAGE_SETUP_DESCRIPTION" = "Windows 版 Stream 可以將你的 PC 升級成個人雲。還在等什麼？現在就安裝吧！";

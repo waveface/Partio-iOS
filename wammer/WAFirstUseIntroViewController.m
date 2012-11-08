@@ -21,6 +21,9 @@ static NSString * const kWASegueIntroToPhotoImport = @"WASegueIntroToPhotoImport
 @interface WAFirstUseIntroViewController ()
 
 @property (nonatomic, readwrite, strong) NSArray *pages;
+@property (nonatomic, strong) UITableViewCell *emailCell;
+@property (nonatomic, strong) UITableViewCell *passwordCell;
+@property (nonatomic, strong) UITableViewCell *nicknameCell;
 @property (nonatomic, strong) UITextField *emailField;
 @property (nonatomic, strong) UITextField *passwordField;
 @property (nonatomic, strong) UITextField *nicknameField;
@@ -99,6 +102,36 @@ static NSString * const kWASegueIntroToPhotoImport = @"WASegueIntroToPhotoImport
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardWillBeHidden:) name:UIKeyboardWillHideNotification object:nil];
 	}
 
+}
+
+
+- (void)updateViewConstraints {
+	
+	[super updateViewConstraints];
+	
+	if (self.emailCell && self.emailField) {
+		self.emailField.translatesAutoresizingMaskIntoConstraints = NO;
+		UITextField *emailField = self.emailField;
+		[self.emailCell.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-110-[emailField]-20-|" options:NSLayoutFormatDirectionLeadingToTrailing metrics:nil views:NSDictionaryOfVariableBindings(emailField)]];
+		[self.emailCell.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-11-[emailField(==40)]" options:NSLayoutFormatDirectionLeadingToTrailing metrics:nil views:NSDictionaryOfVariableBindings(emailField)]];
+	}
+	
+	if (self.passwordCell && self.passwordField) {
+		self.passwordField.translatesAutoresizingMaskIntoConstraints = NO;
+		UITextField *passwordField	= self.passwordField;
+		[self.passwordCell.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-110-[passwordField]-20-|" options:NSLayoutFormatDirectionLeadingToTrailing metrics:nil views:NSDictionaryOfVariableBindings(passwordField)]];
+		[self.passwordCell.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-11-[passwordField(==40)]" options:NSLayoutFormatDirectionLeadingToTrailing metrics:nil views:NSDictionaryOfVariableBindings(passwordField)]];
+	}
+	
+	if (self.nicknameCell && self.nicknameField) {
+		
+		self.nicknameField.translatesAutoresizingMaskIntoConstraints = NO;
+		UITextField *nicknameField	= self.nicknameField;
+		[self.nicknameCell.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-110-[nicknameField]-20-|" options:NSLayoutFormatDirectionLeadingToTrailing metrics:nil views:NSDictionaryOfVariableBindings(nicknameField)]];
+		[self.nicknameCell.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-11-[nicknameField(==40)]" options:NSLayoutFormatDirectionLeadingToTrailing metrics:nil views:NSDictionaryOfVariableBindings(nicknameField)]];
+		
+	}
+	
 }
 
 #pragma mark Target actions
@@ -372,33 +405,29 @@ static NSString * const kWASegueIntroToPhotoImport = @"WASegueIntroToPhotoImport
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-		
-	CGRect frame = CGRectMake(110.0, 11.0, 180.0, 40.0);
-	UIFont *font = [UIFont systemFontOfSize:17.0];
 
 	if ([indexPath row] == 0) {
-		UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"EmailCell"];
-		if (!cell) {
-			cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"EmailCell"];
-			cell.textLabel.text = NSLocalizedString(@"NOUN_USERNAME", @"Email title in signup page");
-			self.emailField = [[UITextField alloc] initWithFrame:frame];
-			self.emailField.font = font;
+		if (!self.emailCell) {
+			self.emailCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"UITableViewCell"];
+			self.emailCell.textLabel.text = NSLocalizedString(@"NOUN_USERNAME", @"Email title in signup page");
+			self.emailField = [[UITextField alloc] init];
+			self.emailField.font = [UIFont systemFontOfSize:17.0];
 			self.emailField.placeholder = NSLocalizedString(@"USERNAME_PLACEHOLDER", @"Email placeholder in signup page");
 			self.emailField.delegate = self;
 			self.emailField.returnKeyType = UIReturnKeyNext;
 			self.emailField.autocorrectionType = UITextAutocorrectionTypeNo;
 			self.emailField.autocapitalizationType = UITextAutocapitalizationTypeNone;
 			self.emailField.keyboardType = UIKeyboardTypeEmailAddress;
-			[cell.contentView addSubview:self.emailField];
+			[self.emailCell.contentView addSubview:self.emailField];
+			[self.view setNeedsUpdateConstraints];
 		}
-		return cell;
+		return self.emailCell;
 	} else if ([indexPath row] == 1) {
-		UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"PasswordCell"];
-		if (!cell) {
-			cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"PasswordCell"];
-			cell.textLabel.text = NSLocalizedString(@"NOUN_PASSWORD", @"Password title in signup page");
-			self.passwordField = [[UITextField alloc] initWithFrame:frame];
-			self.passwordField.font = font;
+		if (!self.passwordCell) {
+			self.passwordCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"UITableViewCell"];
+			self.passwordCell.textLabel.text = NSLocalizedString(@"NOUN_PASSWORD", @"Password title in signup page");
+			self.passwordField = [[UITextField alloc] init];
+			self.passwordField.font = [UIFont systemFontOfSize:17.0];
 			self.passwordField.secureTextEntry = YES;
 			self.passwordField.placeholder = NSLocalizedString(@"PASSWORD_PLACEHOLDER", @"Password placeholder in signup page");
 			self.passwordField.delegate = self;
@@ -406,24 +435,25 @@ static NSString * const kWASegueIntroToPhotoImport = @"WASegueIntroToPhotoImport
 			self.passwordField.autocorrectionType = UITextAutocorrectionTypeNo;
 			self.passwordField.autocapitalizationType = UITextAutocapitalizationTypeNone;
 			self.passwordField.keyboardType = UIKeyboardTypeASCIICapable;
-			[cell.contentView addSubview:self.passwordField];
+			[self.passwordCell.contentView addSubview:self.passwordField];
+			[self.view setNeedsUpdateConstraints];
 		}
-		return cell;
+		return self.passwordCell;
 	} else if ([indexPath row] == 2) {
-		UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"NicknameCell"];
-		if (!cell) {
-			cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"NicknameCell"];
-			cell.textLabel.text = NSLocalizedString(@"NOUN_NICKNAME", @"Nickname title in signup page");
-			self.nicknameField = [[UITextField alloc] initWithFrame:frame];
-			self.nicknameField.font = font;
+		if (!self.nicknameCell) {
+			self.nicknameCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"UITableViewCell"];
+			self.nicknameCell.textLabel.text = NSLocalizedString(@"NOUN_NICKNAME", @"Nickname title in signup page");
+			self.nicknameField = [[UITextField alloc] init];
+			self.nicknameField.font = [UIFont systemFontOfSize:17.0];
 			self.nicknameField.placeholder = NSLocalizedString(@"NICKNAME_PLACEHOLDER", @"Nickname placeholder in signup page");
 			self.nicknameField.delegate = self;
-			self.nicknameField.returnKeyType = UIReturnKeyDone;
+			self.nicknameField.returnKeyType = UIReturnKeyGo;
 			self.nicknameField.autocorrectionType = UITextAutocorrectionTypeYes;
 			self.nicknameField.autocapitalizationType = UITextAutocapitalizationTypeWords;
-			[cell.contentView addSubview:self.nicknameField];
+			[self.nicknameCell.contentView addSubview:self.nicknameField];
+			[self.view setNeedsUpdateConstraints];
 		}
-		return cell;
+		return self.nicknameCell;
 	}
 
 	return nil;

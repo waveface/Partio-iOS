@@ -499,17 +499,14 @@
 /* Class = "IBUILabel"; text = "WEBSERVICE_LIST_TITLE"; ObjectID = "0P9-dO-3KX"; */
 "WEBSERVICE_LIST_TITLE" = "Connect to web services:";
 
-/* Class = "IBUILabel"; text = "OPTION_DISABLE_UPLOAD"; ObjectID = "4Ao-aY-RGo"; */
-"OPTION_DISABLE_UPLOAD" = "Don't upload";
-
 /* Class = "IBUILabel"; text = "STORAGE_SETUP_INSTRUCTIONS"; ObjectID = "6Ib-wQ-B01"; */
 "STORAGE_SETUP_INSTRUCTIONS" = "1. Install Stream Windows.\n2. Turn on WiFi and connect to the same network with your PC.";
 
 /* Class = "IBUIButton"; normalTitle = "ACTION_START_STREAM"; ObjectID = "6wx-cB-GP9"; */
 "ACTION_START_STREAM" = "Start Stream!";
 
-/* Class = "IBUILabel"; text = "OPTION_ENABLE_UPLOAD"; ObjectID = "749-zj-beb"; */
-"OPTION_ENABLE_UPLOAD" = "Upload now";
+/* Class = "IBUILabel"; text = "PHOTO_UPLOAD_SWITCH_TITLE"; ObjectID = "749-zj-beb"; */
+"PHOTO_UPLOAD_SWITCH_TITLE" = "Upload Camera Roll";
 
 /* Class = "IBUILabel"; text = "STORAGE_SETUP_DESCRIPTION"; ObjectID = "7YP-nz-bf2"; */
 "STORAGE_SETUP_DESCRIPTION" = "Install Stream Windows and upgrades your PC to your Personal Cloud.";

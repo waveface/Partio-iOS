@@ -11,11 +11,14 @@
 
 @interface WAFirstUsePhotoImportViewController ()
 
+@property (nonatomic, strong) UISwitch *photoImportSwitch;
+
 @end
 
 @implementation WAFirstUsePhotoImportViewController
 
-static BOOL selected = NO;
+// save switch value in global so that the switch status can be kept even the view controller is dismissed
+static BOOL enabled = YES;
 
 - (void)viewDidLoad {
 
@@ -26,16 +29,12 @@ static BOOL selected = NO;
 	if (!self.isFromConnectServicesPage) {
 		self.navigationItem.hidesBackButton = YES;
 	}
-	self.navigationItem.rightBarButtonItem.enabled = NO;
 
-	if (selected) {
-		if ([[NSUserDefaults standardUserDefaults] boolForKey:kWAPhotoImportEnabled]) {
-			self.enablePhotoImportCell.accessoryType = UITableViewCellAccessoryCheckmark;
-		} else {
-			self.disablePhotoImportCell.accessoryType = UITableViewCellAccessoryCheckmark;
-		}
-		self.navigationItem.rightBarButtonItem.enabled = YES;
-	}
+	self.photoImportSwitch = [[UISwitch alloc] init];
+	[self.photoImportSwitch addTarget:self action:@selector(handleSwitchValueChange:) forControlEvents:UIControlEventValueChanged];
+	self.photoImportSwitchCell.accessoryView = self.photoImportSwitch;
+
+	[self.photoImportSwitch setOn:enabled animated:NO];
 
 }
 
@@ -45,28 +44,22 @@ static BOOL selected = NO;
 
 }
 
-#pragma mark UITableView delegates
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-
-	UITableViewCell *hitCell = [tableView cellForRowAtIndexPath:indexPath];
-
-	self.enablePhotoImportCell.accessoryType = UITableViewCellAccessoryNone;
-	self.disablePhotoImportCell.accessoryType = UITableViewCellAccessoryNone;
-
-	hitCell.accessoryType = UITableViewCellAccessoryCheckmark;
-
-	if (hitCell == self.enablePhotoImportCell) {
+	if (self.photoImportSwitch.on) {
 		[[NSUserDefaults standardUserDefaults] setBool:YES forKey:kWAPhotoImportEnabled];
-	} else if (hitCell == self.disablePhotoImportCell) {
+	} else {
 		[[NSUserDefaults standardUserDefaults] setBool:NO forKey:kWAPhotoImportEnabled];
 	}
 	[[NSUserDefaults standardUserDefaults] synchronize];
 
-	self.navigationItem.rightBarButtonItem.enabled = YES;
-	selected = YES;
+}
 
-	[tableView deselectRowAtIndexPath:indexPath animated:YES];
+#pragma mark Target actions
+
+- (void)handleSwitchValueChange:(UISwitch *)sender {
+
+	enabled = sender.on;
 
 }
 

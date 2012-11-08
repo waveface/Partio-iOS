@@ -38,9 +38,13 @@
 	self.orLabel.backgroundColor = [UIColor colorWithRed:0.85 green:0.85 blue:0.85 alpha:1.0];
 	self.orLabel.layer.cornerRadius = 15.0;
 
-	UIView *line = [[UIView alloc] initWithFrame:CGRectMake(0.0, self.orLabel.center.y, self.bounds.size.width, 2.0)];
+	UIView *line = [[UIView alloc] init];
+	line.translatesAutoresizingMaskIntoConstraints = NO;
 	line.backgroundColor = [UIColor colorWithRed:0.85 green:0.85 blue:0.85 alpha:1.0];
 	[self insertSubview:line belowSubview:self.orLabel];
+	[self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[line]|" options:NSLayoutFormatDirectionLeadingToTrailing metrics:nil views:NSDictionaryOfVariableBindings(line)]];
+	[self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[line(==2)]" options:NSLayoutFormatDirectionLeadingToTrailing metrics:nil views:NSDictionaryOfVariableBindings(line)]];
+	[self addConstraint:[NSLayoutConstraint constraintWithItem:line attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:self.orLabel attribute:NSLayoutAttributeCenterY multiplier:1.0 constant:0.0]];
 
 }
 
