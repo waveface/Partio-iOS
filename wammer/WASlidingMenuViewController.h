@@ -11,6 +11,5 @@
 @interface WASlidingMenuViewController : UITableViewController
 
 @property (nonatomic, weak) id delegate;
-@property(nonatomic) UITableViewCellSelectionStyle selectionStyle;
 
 @end
