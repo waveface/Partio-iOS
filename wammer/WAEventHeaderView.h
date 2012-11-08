@@ -13,7 +13,8 @@
 
 + (id)viewFromNib;
 
-@property (nonatomic, weak) IBOutlet UILabel *topLabel;
+@property (nonatomic, weak) IBOutlet UILabel *dateLabel;
+@property (nonatomic, weak) IBOutlet UILabel *timeLabel;
 @property (nonatomic, weak) IBOutlet MKMapView *mapView;
 @property (nonatomic, weak) IBOutlet UILabel *descriptiveTagsLabel;
 @property (nonatomic, weak) IBOutlet UILabel *tagsLabel;

@@ -36,8 +36,9 @@
 @property (nonatomic, readwrite, strong) IBOutlet UILabel *dayLabel;
 @property (nonatomic, readwrite, strong) IBOutlet UILabel *monthLabel;
 @property (nonatomic, readwrite, strong) IBOutlet UIImageView *backgroundImageView;
+@property (nonatomic, readwrite, strong) IBOutlet UIView *containerView;
 
-@property (nonatomic, readwrite, strong) IBOutlet UIImageView *bgImageView;
+@property (nonatomic, readwrite, strong) IBOutlet UIImageView *eventCardBGImageView;
 
 @property (strong, nonatomic) IBOutletCollection(UIImageView) NSArray *photoImageViews;
 

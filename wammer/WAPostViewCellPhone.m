@@ -14,9 +14,13 @@
 #import "WADefines.h"
 #import "WAPreviewBadge.h"
 #import "WARemoteInterface.h"
+#import "WAArticle.h"
 
 
 @interface WAPostViewCellPhone () <IRTableViewCellPrototype>
+
+@property (nonatomic, strong) UILabel *fileNoLabel;
+@property (nonatomic, strong) UIImageView *typeImageView;
 
 @end
 
@@ -29,13 +33,15 @@
 @synthesize extraInfoLabel;
 @synthesize contentTextView;
 @synthesize commentLabel;
-@synthesize bgImageView;
+@synthesize eventCardBGImageView;
 @synthesize avatarView, userNicknameLabel, contentDescriptionLabel, dateOriginLabel, dateLabel, originLabel;
 @synthesize previewBadge, previewImageView, previewTitleLabel, previewProviderLabel, previewImageBackground;
+@synthesize containerView;
+@synthesize fileNoLabel, typeImageView;
 
 + (NSSet *) encodedObjectKeyPaths {
 
-	return [NSSet setWithObjects:@"backgroundImageView", @"monthLabel", @"dayLabel", @"extraInfoLabel", @"contentTextView", @"commentLabel", @"avatarView", @"userNicknameLabel", @"contentDescriptionLabel", @"dateOriginLabel", @"dateLabel", @"originLabel", @"previewBadge", @"previewImageView", @"previewTitleLabel", @"previewProviderLabel", @"previewImageBackground", @"photoImageViews", @"timeLabel", @"bgImageView", nil];
+	return [NSSet setWithObjects:@"backgroundImageView", @"monthLabel", @"dayLabel", @"extraInfoLabel", @"contentTextView", @"commentLabel", @"avatarView", @"userNicknameLabel", @"contentDescriptionLabel", @"dateOriginLabel", @"dateLabel", @"originLabel", @"previewBadge", @"previewImageView", @"previewTitleLabel", @"previewProviderLabel", @"previewImageBackground", @"photoImageViews", @"timeLabel", @"eventCardBGImageView", @"containerView", nil];
 
 }
 
@@ -490,21 +496,83 @@
 	
 	self.timeLabel.text = [[[self class] timeFormatter] stringFromDate:postDate];
 
+	self.fileNoLabel = [[UILabel alloc] initWithFrame:(CGRect){CGPointZero, CGSizeZero}];
+	self.fileNoLabel.text = [NSString stringWithFormat:@"%d", self.article.files.count];
+	self.fileNoLabel.font = [UIFont fontWithName:@"Helvetica-Regular" size:14.0f];
+	self.fileNoLabel.textColor = [UIColor lightGrayColor];
+	[self.fileNoLabel sizeToFit];
+
+	UIImage *icon = [[self class] photoEventImage];
+	CGFloat spacing = 2.0f;
+	CGFloat leftAlignX = CGRectGetWidth(self.containerView.frame) - CGRectGetWidth(self.fileNoLabel.frame) - spacing - icon.size.width;
+	
+	self.typeImageView = [[UIImageView alloc] initWithFrame:(CGRect){ (CGPoint){leftAlignX, 0},  icon.size }];
+
+	if ([self.article.style isEqualToNumber:[NSNumber numberWithUnsignedInt:WAPostStyleURLHistory]])
+		self.typeImageView.image = [[self class] linkEventImage];
+	else
+		self.typeImageView.image = [[self class] photoEventImage];
+	
+	self.fileNoLabel.frame = CGRectOffset(self.fileNoLabel.frame, leftAlignX + icon.size.width + spacing, 0);
+		
+	[self.containerView addSubview:self.typeImageView];
+	[self.containerView addSubview:self.fileNoLabel];
+	
+
 	CGFloat delta = newCommentHeight - oldCommentHeight;
 	if (delta < 0) delta = 0;
-	self.bgImageView.frame = (CGRect){
-		self.bgImageView.frame.origin,
+	self.eventCardBGImageView.frame = (CGRect){
+		self.eventCardBGImageView.frame.origin,
 		(CGSize) {
-			self.bgImageView.frame.size.width,
-			self.bgImageView.frame.size.height + delta
+			self.eventCardBGImageView.frame.size.width,
+			self.eventCardBGImageView.frame.size.height + delta
 		}
 	};
 	
-	self.bgImageView.image = [[UIImage imageNamed:@"EventCardBG"] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)];
+	self.eventCardBGImageView.image = [[UIImage imageNamed:@"EventCardBG"] resizableImageWithCapInsets:UIEdgeInsetsMake(15, 15, 15, 15)];
 
 	[self setNeedsLayout];
 	
 }
+
++ (UIImage *) photoEventImage {
+	static UIImage *image = nil;
+	
+	static dispatch_once_t onceToken;
+	dispatch_once(&onceToken, ^{
+    image = [UIImage imageNamed:@"EventCameraIcon"];
+	});
+	
+	return image;
+}
+
++ (UIImage *) linkEventImage {
+
+	static UIImage *image = nil;
+	
+	static dispatch_once_t onceToken;
+	dispatch_once(&onceToken, ^{
+    image = [UIImage imageNamed:@"EventLinkIcon"];
+	});
+	
+	return image;
+
+}
+
++ (UIImage *) docEventImage {
+	
+	static UIImage *image = nil;
+	
+	static dispatch_once_t onceToken;
+	dispatch_once(&onceToken, ^{
+    image = [UIImage imageNamed:@"EventDocIcon"];
+	});
+	
+	return image;
+
+}
+
+
 
 + (NSDateFormatter *) monthFormatter {
 

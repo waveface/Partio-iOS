@@ -224,21 +224,16 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 
 #pragma mark - delegate methods for IRPaginatedView
 - (void) reloadViewContents {
-	
-	NSManagedObjectContext *moc = [[WADataStore defaultStore] defaultAutoUpdatedMOC];
-	
-	NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-	NSEntityDescription *entity = [NSEntityDescription entityForName:@"WAArticle" inManagedObjectContext:moc];
-	[fetchRequest setEntity:entity];
-	[fetchRequest setResultType:NSDictionaryResultType];
- 	
-	NSExpression *keyToFetch = [NSExpression expressionForKeyPath:@"creationDate"];
-	NSExpressionDescription *description = [[NSExpressionDescription alloc] init];
-	[description setName:@"fetchedCreationDate"];
-	[description setExpression:keyToFetch];
-	[description setExpressionResultType:NSDateAttributeType];
-	[fetchRequest setPropertiesToFetch:[NSArray arrayWithObject:description]];
-	
+		
+	NSFetchRequest *fetchRequest = [[WADataStore defaultStore].persistentStoreCoordinator.managedObjectModel fetchRequestFromTemplateWithName:@"WAFRArticles" substitutionVariables:[NSDictionary dictionary]];
+
+	fetchRequest.relationshipKeyPathsForPrefetching = [NSArray arrayWithObjects:
+																										 @"files",@"files.pageElements",nil];
+	fetchRequest.predicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[
+														fetchRequest.predicate,
+														[NSPredicate predicateWithFormat:@"files.@count > 0"],
+														[NSPredicate predicateWithFormat:@"import != 2"]]];
+
 	fetchRequest.sortDescriptors = [NSArray arrayWithObjects:
 																	[NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:NO],
 																	nil];
@@ -258,9 +253,10 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
   };
 	
 	__block NSDate *currentDate = nil;
-	
+
 	NSError *error = nil;
-	NSArray *objects = [moc executeFetchRequest:fetchRequest error:&error];
+	
+	NSArray *objects = [[[WADataStore defaultStore] defaultAutoUpdatedMOC] executeFetchRequest:fetchRequest error:&error];
 	
 	self.days = [NSMutableArray array];
 	self.daysControllers = [NSMutableDictionary dictionary];
@@ -269,10 +265,10 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 		
 	
 	} else {
-		
+
 		[objects enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
 			
-			NSDate *theDate = (NSDate*)obj[@"fetchedCreationDate"];
+			NSDate *theDate = [((WAArticle*)obj) creationDate];
 			
 			if (!currentDate || !theSameDay(currentDate, theDate)) {
 				[self.days addObject:theDate];
