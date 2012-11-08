@@ -146,7 +146,7 @@
             </objects>
             <point key="canvasLocation" x="774" y="-667"/>
         </scene>
-        <!--First Use Choose Plan View Controller - PLANS_CONTROLLER_TITLE-->
+        <!--First Use Choose Plan View Controller - Plans-->
         <scene sceneID="mlj-ei-f68">
             <objects>
                 <tableViewController id="wcX-ZA-C0U" customClass="WAFirstUseChoosePlanViewController" sceneMemberID="viewController">
@@ -271,7 +271,7 @@
                             <outlet property="delegate" destination="wcX-ZA-C0U" id="aZE-NB-7cI"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="PLANS_CONTROLLER_TITLE" id="rs3-Qj-SXO">
+                    <navigationItem key="navigationItem" title="Plans" id="rs3-Qj-SXO">
                         <barButtonItem key="backBarButtonItem" title="Back" id="mw8-Hj-Mvz"/>
                         <barButtonItem key="rightBarButtonItem" title="Next" id="XL2-gJ-2m5">
                             <connections>
@@ -290,7 +290,7 @@
             </objects>
             <point key="canvasLocation" x="2032" y="99"/>
         </scene>
-        <!--First Use Build Cloud View Controller - STORAGE_SETUP_CONTROLLER_TITLE-->
+        <!--First Use Build Cloud View Controller - Setup Your Storage-->
         <scene sceneID="1jg-Ml-c4F">
             <objects>
                 <tableViewController id="b8o-U9-sOP" customClass="WAFirstUseBuildCloudViewController" sceneMemberID="viewController">
@@ -371,7 +371,7 @@
                             <outlet property="delegate" destination="b8o-U9-sOP" id="wKr-TH-70a"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="STORAGE_SETUP_CONTROLLER_TITLE" id="Jyh-eh-1Jo">
+                    <navigationItem key="navigationItem" title="Setup Your Storage" id="Jyh-eh-1Jo">
                         <barButtonItem key="backBarButtonItem" title="Back" id="2J1-8e-o7G"/>
                         <barButtonItem key="rightBarButtonItem" title="Next" id="Teq-QS-1ft">
                             <connections>
@@ -388,7 +388,7 @@
             </objects>
             <point key="canvasLocation" x="2532" y="99"/>
         </scene>
-        <!--First Use Photo Import View Controller - PHOTO_UPLOAD_CONTROLLER_TITLE-->
+        <!--First Use Photo Import View Controller - Auto Photo Upload-->
         <scene sceneID="pQx-YQ-fPg">
             <objects>
                 <tableViewController id="vd3-aZ-YWy" customClass="WAFirstUsePhotoImportViewController" sceneMemberID="viewController">
@@ -462,7 +462,7 @@
                             <outlet property="delegate" destination="vd3-aZ-YWy" id="kpU-lM-Ukh"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="PHOTO_UPLOAD_CONTROLLER_TITLE" id="A43-eI-pJf">
+                    <navigationItem key="navigationItem" title="Auto Photo Upload" id="A43-eI-pJf">
                         <barButtonItem key="backBarButtonItem" title="Back" id="PZW-h5-Xo1"/>
                         <barButtonItem key="rightBarButtonItem" title="Next" id="5Af-eN-38U">
                             <connections>
@@ -479,7 +479,7 @@
             </objects>
             <point key="canvasLocation" x="1532" y="99"/>
         </scene>
-        <!--First Use Log In View Controller - SIGN_IN_CONTROLLER_TITLE-->
+        <!--First Use Log In View Controller - Log In-->
         <scene sceneID="hPv-I8-sSz">
             <objects>
                 <tableViewController id="hTG-tp-kgg" customClass="WAFirstUseLogInViewController" sceneMemberID="viewController">
@@ -530,7 +530,7 @@
                             <outlet property="delegate" destination="hTG-tp-kgg" id="m66-sh-2wF"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="SIGN_IN_CONTROLLER_TITLE" id="iiy-yL-bUt"/>
+                    <navigationItem key="navigationItem" title="Log In" id="iiy-yL-bUt"/>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
                     <connections>
                         <outlet property="emailCell" destination="Z6K-2v-dnQ" id="bDu-Qp-n5R"/>
@@ -543,7 +543,7 @@
             </objects>
             <point key="canvasLocation" x="767" y="99"/>
         </scene>
-        <!--First Use Connect Services View Controller - CONNECT_SERVICES_CONTROLLER_TITLE-->
+        <!--First Use Connect Services View Controller - Getting Started-->
         <scene sceneID="1y8-1j-os6">
             <objects>
                 <tableViewController id="qOw-kL-dR9" customClass="WAFirstUseConnectServicesViewController" sceneMemberID="viewController">
@@ -620,7 +620,7 @@
                             <outlet property="delegate" destination="qOw-kL-dR9" id="C0k-N2-ZO8"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="CONNECT_SERVICES_CONTROLLER_TITLE" id="87C-z3-ceQ">
+                    <navigationItem key="navigationItem" title="Getting Started" id="87C-z3-ceQ">
                         <barButtonItem key="backBarButtonItem" title="Back" id="uom-ls-VtV"/>
                         <barButtonItem key="rightBarButtonItem" title="Next" id="OsH-YD-ekd">
                             <connections>
@@ -637,7 +637,7 @@
             </objects>
             <point key="canvasLocation" x="1420" y="-667"/>
         </scene>
-        <!--First Use Done View Controller - SETUP_DONE_CONTROLLER_TITLE-->
+        <!--First Use Done View Controller - Almost Done-->
         <scene sceneID="rmu-vW-VP9">
             <objects>
                 <viewController id="xfS-He-9uL" customClass="WAFirstUseDoneViewController" sceneMemberID="viewController">
@@ -680,7 +680,7 @@
                             <constraint firstItem="aq5-qa-OWT" firstAttribute="top" secondItem="9WO-xg-eAo" secondAttribute="top" constant="20" symbolic="YES" type="default" id="bsV-bC-skA"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="SETUP_DONE_CONTROLLER_TITLE" id="eyV-pK-kpc">
+                    <navigationItem key="navigationItem" title="Almost Done" id="eyV-pK-kpc">
                         <barButtonItem key="backBarButtonItem" title="Back" id="hb2-Cr-rJ1"/>
                     </navigationItem>
                     <connections>
@@ -774,7 +774,7 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="N9p-mN-Fbh"/>
         <segue reference="vl7-D0-o14"/>
+        <segue reference="N9p-mN-Fbh"/>
     </inferredMetricsTieBreakers>
 </document>

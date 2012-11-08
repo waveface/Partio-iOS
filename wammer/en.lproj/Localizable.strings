@@ -514,14 +514,8 @@
 /* Class = "IBUILabel"; text = "STORAGE_SETUP_DESCRIPTION"; ObjectID = "7YP-nz-bf2"; */
 "STORAGE_SETUP_DESCRIPTION" = "Install Stream Windows and upgrades your PC to your Personal Cloud.";
 
-/* Class = "IBUINavigationItem"; title = "CONNECT_SERVICES_CONTROLLER_TITLE"; ObjectID = "87C-z3-ceQ"; */
-"CONNECT_SERVICES_CONTROLLER_TITLE" = "GETTING STARTED";
-
 /* Class = "IBUILabel"; text = "NOUN_USERNAME"; ObjectID = "8Ts-v9-BV9"; */
 "NOUN_USERNAME" = "Email";
-
-/* Class = "IBUINavigationItem"; title = "PHOTO_UPLOAD_CONTROLLER_TITLE"; ObjectID = "A43-eI-pJf"; */
-"PHOTO_UPLOAD_CONTROLLER_TITLE" = "AUTO PHOTO UPLOAD";
 
 /* Class = "IBUILabel"; text = "OPTION_PREMIUM_PLAN"; ObjectID = "BEk-Uz-d9I"; */
 "OPTION_PREMIUM_PLAN" = "$4.99/month";
@@ -531,9 +525,6 @@
 
 /* Class = "IBUIButton"; normalTitle = "LOGIN_LINK_DEVICE"; ObjectID = "Gch-g1-VSP"; */
 "LOGIN_LINK_DEVICE" = "Login & link this device";
-
-/* Class = "IBUINavigationItem"; title = "STORAGE_SETUP_CONTROLLER_TITLE"; ObjectID = "Jyh-eh-1Jo"; */
-"STORAGE_SETUP_CONTROLLER_TITLE" = "SETUP YOUR STORAGE";
 
 /* Class = "IBUILabel"; text = "ACTION_GOTO_WEBSITE"; ObjectID = "K5G-K7-r9Y"; */
 "ACTION_GOTO_WEBSITE" = "Learn more on our website";
@@ -556,20 +547,11 @@
 /* Class = "IBUILabel"; text = "PREMIUM_PLAN_DESCRIPTION"; ObjectID = "dw4-3C-ZHv"; */
 "PREMIUM_PLAN_DESCRIPTION" = "250GB cloud storage, unlimited PC storage";
 
-/* Class = "IBUINavigationItem"; title = "SETUP_DONE_CONTROLLER_TITLE"; ObjectID = "eyV-pK-kpc"; */
-"SETUP_DONE_CONTROLLER_TITLE" = "ALMOST DONE";
-
-/* Class = "IBUINavigationItem"; title = "SIGN_IN_CONTROLLER_TITLE"; ObjectID = "iiy-yL-bUt"; */
-"SIGN_IN_CONTROLLER_TITLE" = "LOG IN";
-
 /* Class = "IBUILabel"; text = "OPTION_FREE_PLAN"; ObjectID = "j6E-j2-K86"; */
 "OPTION_FREE_PLAN" = "Free";
 
 /* Class = "IBUILabel"; text = "NOUN_PASSWORD"; ObjectID = "qlc-Lu-gj2"; */
 "NOUN_PASSWORD" = "Password";
-
-/* Class = "IBUINavigationItem"; title = "PLANS_CONTROLLER_TITLE"; ObjectID = "rs3-Qj-SXO"; */
-"PLANS_CONTROLLER_TITLE" = "PLANS";
 
 /* Class = "IBUILabel"; text = "OPTION_ULTIMATE_PLAN"; ObjectID = "sfk-st-cdZ"; */
 "OPTION_ULTIMATE_PLAN" = "$7.99/month";

@@ -514,14 +514,8 @@
 /* Class = "IBUILabel"; text = "STORAGE_SETUP_DESCRIPTION"; ObjectID = "7YP-nz-bf2"; */
 "STORAGE_SETUP_DESCRIPTION" = "Windows 版 Stream 可以將你的 PC 升級成個人雲。還在等什麼？現在就安裝吧！";
 
-/* Class = "IBUINavigationItem"; title = "CONNECT_SERVICES_CONTROLLER_TITLE"; ObjectID = "87C-z3-ceQ"; */
-"CONNECT_SERVICES_CONTROLLER_TITLE" = "連接其他帳號";
-
 /* Class = "IBUILabel"; text = "NOUN_USERNAME"; ObjectID = "8Ts-v9-BV9"; */
 "NOUN_USERNAME" = "電子郵件";
-
-/* Class = "IBUINavigationItem"; title = "PHOTO_UPLOAD_CONTROLLER_TITLE"; ObjectID = "A43-eI-pJf"; */
-"PHOTO_UPLOAD_CONTROLLER_TITLE" = "照片自動上傳";
 
 /* Class = "IBUILabel"; text = "OPTION_PREMIUM_PLAN"; ObjectID = "BEk-Uz-d9I"; */
 "OPTION_PREMIUM_PLAN" = "NT149/月";
@@ -531,9 +525,6 @@
 
 /* Class = "IBUIButton"; normalTitle = "LOGIN_LINK_DEVICE"; ObjectID = "Gch-g1-VSP"; */
 "LOGIN_LINK_DEVICE" = "登入並連結此裝置";
-
-/* Class = "IBUINavigationItem"; title = "STORAGE_SETUP_CONTROLLER_TITLE"; ObjectID = "Jyh-eh-1Jo"; */
-"STORAGE_SETUP_CONTROLLER_TITLE" = "設定個人雲";
 
 /* Class = "IBUILabel"; text = "ACTION_GOTO_WEBSITE"; ObjectID = "K5G-K7-r9Y"; */
 "ACTION_GOTO_WEBSITE" = "在網站上檢視詳細方案";
@@ -556,20 +547,11 @@
 /* Class = "IBUILabel"; text = "PREMIUM_PLAN_DESCRIPTION"; ObjectID = "dw4-3C-ZHv"; */
 "PREMIUM_PLAN_DESCRIPTION" = "250GB 雲端儲存空間，PC 數量無限制。";
 
-/* Class = "IBUINavigationItem"; title = "SETUP_DONE_CONTROLLER_TITLE"; ObjectID = "eyV-pK-kpc"; */
-"SETUP_DONE_CONTROLLER_TITLE" = "設定完成";
-
-/* Class = "IBUINavigationItem"; title = "SIGN_IN_CONTROLLER_TITLE"; ObjectID = "iiy-yL-bUt"; */
-"SIGN_IN_CONTROLLER_TITLE" = "登入";
-
 /* Class = "IBUILabel"; text = "OPTION_FREE_PLAN"; ObjectID = "j6E-j2-K86"; */
 "OPTION_FREE_PLAN" = "免費";
 
 /* Class = "IBUILabel"; text = "NOUN_PASSWORD"; ObjectID = "qlc-Lu-gj2"; */
 "NOUN_PASSWORD" = "密碼";
-
-/* Class = "IBUINavigationItem"; title = "PLANS_CONTROLLER_TITLE"; ObjectID = "rs3-Qj-SXO"; */
-"PLANS_CONTROLLER_TITLE" = "資費方案";
 
 /* Class = "IBUILabel"; text = "OPTION_ULTIMATE_PLAN"; ObjectID = "sfk-st-cdZ"; */
 "OPTION_ULTIMATE_PLAN" = "NT239/月";

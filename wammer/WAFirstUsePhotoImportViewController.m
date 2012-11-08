@@ -15,6 +15,8 @@
 
 @implementation WAFirstUsePhotoImportViewController
 
+static BOOL selected = NO;
+
 - (void)viewDidLoad {
 
 	[super viewDidLoad];
@@ -25,6 +27,15 @@
 		self.navigationItem.hidesBackButton = YES;
 	}
 	self.navigationItem.rightBarButtonItem.enabled = NO;
+
+	if (selected) {
+		if ([[NSUserDefaults standardUserDefaults] boolForKey:kWAPhotoImportEnabled]) {
+			self.enablePhotoImportCell.accessoryType = UITableViewCellAccessoryCheckmark;
+		} else {
+			self.disablePhotoImportCell.accessoryType = UITableViewCellAccessoryCheckmark;
+		}
+		self.navigationItem.rightBarButtonItem.enabled = YES;
+	}
 
 }
 
@@ -53,7 +64,8 @@
 	[[NSUserDefaults standardUserDefaults] synchronize];
 
 	self.navigationItem.rightBarButtonItem.enabled = YES;
-	
+	selected = YES;
+
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];
 
 }
