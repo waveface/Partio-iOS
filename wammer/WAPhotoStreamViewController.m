@@ -18,7 +18,7 @@
 	NSArray *daysOfPhotos;
 }
 
-@property (strong, nonatomic) IBOutlet UICollectionView *collectionView;
+@property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 
 @end
 
@@ -42,11 +42,11 @@
 					forCellWithReuseIdentifier:kPhotoStreamCellID];
 	
 	colorPalette = @[
-	[UIColor colorWithRed:5/255.0 green:242/255.0 blue:242/255.0 alpha:1.0],
-	[UIColor colorWithRed:4/255.0 green:191/255.0 blue:191/255.0 alpha:1.0],
-	[UIColor colorWithRed:238/255.0 green:241/255.0 blue:217/255.0 alpha:1.0],
-	[UIColor colorWithRed:166/255.0 green:2/255.0 blue:1/255.0 alpha:1.0],
-	[UIColor colorWithRed:126/255.0 green:16/255.0 blue:14/255.0 alpha:1.0]
+	[UIColor colorWithRed:224/255.0 green:96/255.0 blue:76/255.0 alpha:1.0],
+	[UIColor colorWithRed:118/255.0 green:170/255.0 blue:204/255.0 alpha:1.0],
+	[UIColor colorWithRed:1.000 green:0.651 blue:0.000 alpha:1.000],
+	[UIColor colorWithRed:0.486 green:0.612 blue:0.208 alpha:1.000],
+	[UIColor colorWithRed:0.176 green:0.278 blue:0.475 alpha:1.000]
 	];
 	
 	UIImage *menuImage = [UIImage imageNamed:@"menu"];
