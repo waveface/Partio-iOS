@@ -11,7 +11,5 @@
 @interface WAFirstUseBuildCloudViewController : UITableViewController
 
 @property (weak, nonatomic) IBOutlet UITableViewCell *connectionCell;
-@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *connectActivity;
-@property (weak, nonatomic) IBOutlet UILabel *connectedHost;
 
 @end

@@ -72,6 +72,7 @@ NSString * const kWACallbackActionSetUserRegistrationEndpointURL = @"setUserRegi
 NSString * const kWACallbackActionSetUserPasswordResetEndpointURL = @"setUserPasswordResetEndpointURL";
 
 NSString * const kWAPhotoImportEnabled = @"WAPhotoImportEnabled";
+NSString * const kWABusinessPlan = @"WABusinessPlan";
 
 void WARegisterUserDefaults () {
 
