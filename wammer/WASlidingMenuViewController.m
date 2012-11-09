@@ -258,15 +258,14 @@
 {
 	[tableView deselectRowAtIndexPath:indexPath animated:NO];
 	switch (indexPath.row) {
-			
-		case 0: {
+		case 1: {
 			[self.viewDeckController closeLeftView];
 			WADayViewController *swVC = [[WADayViewController alloc] init];
 			WANavigationController *navVC = [[WANavigationController alloc] initWithRootViewController:swVC];
 			self.viewDeckController.centerController = navVC;
 			break;
 		}
-		case 1: {
+		case 2: {
 			[self.viewDeckController closeLeftView];
 			WAPhotoStreamViewController *photoVC = [[WAPhotoStreamViewController alloc] init];
 			UINavigationController *navVC = [[UINavigationController alloc] initWithRootViewController:photoVC];
@@ -274,10 +273,6 @@
 			self.viewDeckController.centerController = navVC;
 			break;
 		}
-		case 3:
-			break;
-		case 4:
-			break;
 		case 5: { // Settings
 			[self handleUserInfo];
 		}
