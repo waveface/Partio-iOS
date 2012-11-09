@@ -287,9 +287,6 @@
 /* In iPad overview */
 "PHOTOS_PLURAL" = "%d photos";
 
-/* In sliding menu */
-"PHOTOS_TITLE" = "Photos";
-
 /* Text to show for previews without a provider name */
 "PREVIEW_BADGE_PROVIDER_NAME_PLACEHOLDER" = "(No Provider)";
 
@@ -335,14 +332,20 @@
 /* Title for view controller signing the user up */
 "SIGN_UP_CONTROLLER_TITLE" = "Sign Up";
 
-/* Title for Collection in the sliding menu */
-"SLIDING_MENU_TITLE_COLLECTION" = "Collection";
+/* Title for Calendar in the sliding menu */
+"SLIDING_MENU_TITLE_CALENDAR" = "CALENDAR";
+
+/* Title for Collections in the sliding menu */
+"SLIDING_MENU_TITLE_COLLECTIONS" = "COLLECTIONS";
+
+/* Title for Events in the sliding menu */
+"SLIDING_MENU_TITLE_EVENTS" = "EVENTS";
+
+/* Title for Photos in the sliding menu */
+"SLIDING_MENU_TITLE_PHOTOS" = "PHOTOS";
 
 /* Title for Settings in the sliding menu */
-"SLIDING_MENU_TITLE_SETTINGS" = "Settings";
-
-/* Title for Timeline in the sliding menu */
-"SLIDING_MENU_TITLE_TIMELINE" = "Timeline";
+"SLIDING_MENU_TITLE_SETTINGS" = "SETTINGS";
 
 /* In Account Info Photo Import Section */
 "START_PHOTO_IMPORT_DESCRIPTION" = "Import all your Camera Roll photos";
