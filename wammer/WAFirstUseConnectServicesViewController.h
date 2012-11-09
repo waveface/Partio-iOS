@@ -11,5 +11,8 @@
 @interface WAFirstUseConnectServicesViewController : UITableViewController
 
 @property (weak, nonatomic) IBOutlet UITableViewCell *facebookConnectCell;
+@property (weak, nonatomic) IBOutlet UITableViewCell *twitterConnectCell;
+@property (weak, nonatomic) IBOutlet UITableViewCell *flickrConnectCell;
+@property (weak, nonatomic) IBOutlet UITableViewCell *picasaConnectCell;
 
 @end

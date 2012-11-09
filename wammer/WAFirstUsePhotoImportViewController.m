@@ -9,6 +9,9 @@
 #import "WAFirstUsePhotoImportViewController.h"
 #import "WADefines.h"
 
+// save switch value in global so that the switch status can be kept even the view controller is dismissed
+static BOOL enabled = YES;
+
 @interface WAFirstUsePhotoImportViewController ()
 
 @property (nonatomic, strong) UISwitch *photoImportSwitch;
@@ -16,9 +19,6 @@
 @end
 
 @implementation WAFirstUsePhotoImportViewController
-
-// save switch value in global so that the switch status can be kept even the view controller is dismissed
-static BOOL enabled = YES;
 
 - (void)viewDidLoad {
 

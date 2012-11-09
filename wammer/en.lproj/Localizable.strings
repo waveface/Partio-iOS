@@ -29,9 +29,6 @@
    Title for the action responsible for presenting a controller changing the representing file of an article */
 "ACTION_CHANGE_REPRESENTING_FILE" = "Change Cover";
 
-/* Facebook sign up button */
-"ACTION_CONNECT_FACEBOOK" = "Connect with Facebook";
-
 /* Short action title for connecting Facebook creds */
 "ACTION_CONNECT_FACEBOOK_SHORT" = "Start Importing";
 
@@ -241,6 +238,9 @@
 /* Caption for URL History */
 "FETCH_REQUEST_URL_HISTORY" = "Visited Links";
 
+/* Free plan details in plans page */
+"FREE_PLAN_DESCRIPTION" = "Save all original files to one PC";
+
 /* No comment provided by engineer. */
 "HOUR_PLURAL" = "%d hours";
 
@@ -299,6 +299,15 @@
    iPhone Timeline */
 "NUMBER_OF_PHOTOS_CREATE_TIME_FROM_DEVICE" = "%1$@ posted %2$@ from %3$@";
 
+/* Free plan option in plans page */
+"OPTION_FREE_PLAN" = "Free";
+
+/* Premium plan option in plans page */
+"OPTION_PREMIUM_PLAN" = "$4.99/month";
+
+/* Ultimate plan option in plans page */
+"OPTION_ULTIMATE_PLAN" = "$7.99/month";
+
 /* Password placeholder in login page
    Password placeholder in signup page */
 "PASSWORD_PLACEHOLDER" = "••••••••";
@@ -315,11 +324,20 @@
 /* Title of view controller setting photo upload */
 "PHOTO_UPLOAD_CONTROLLER_TITLE" = "AUTO PHOTO UPLOAD";
 
+/* Subtitle of photo upload status */
+"PHOTO_UPLOAD_STATUS_NOT_UPLOADING" = "Not enabled";
+
+/* Subtitle of photo upload status */
+"PHOTO_UPLOAD_STATUS_UPLOADING" = "Uploading photos";
+
 /* In iPad overview */
 "PHOTOS_PLURAL" = "%d photos";
 
 /* Title of view controller choosing plans */
 "PLANS_CONTROLLER_TITLE" = "PLANS";
+
+/* Premium plan details in plans page */
+"PREMIUM_PLAN_DESCRIPTION" = "250GB cloud storage, unlimited PC storage";
 
 /* Text to show for previews without a provider name */
 "PREVIEW_BADGE_PROVIDER_NAME_PLACEHOLDER" = "(No Provider)";
@@ -345,6 +363,9 @@
 /* No comment provided by engineer. */
 "RESET_SETTINGS_CONFIRMATION_TITLE" = "Reset Settings?";
 
+/* Subtitle of searching network in setup done page. */
+"SEARCHING_NETWORK_SUBTITLE" = "Searching AOStream network...";
+
 /* No comment provided by engineer. */
 "SECOND_PLURAL" = "%d seconds";
 
@@ -366,7 +387,8 @@
 /* Confirmation text for Signing Out */
 "SIGN_OUT_CONFIRMATION" = "Are you sure?";
 
-/* Title for view controller signing the user up */
+/* Title for view controller signing the user up
+   Title of view controller signing the user up */
 "SIGN_UP_CONTROLLER_TITLE" = "SIGN UP";
 
 /* Title for Collection in the sliding menu */
@@ -428,6 +450,9 @@
 
 /* Alert on no location service enabled when open photo library */
 "TURN_ON_LOCATION_SERVICE" = "Turn on Location Services to allow Stream to access your Photo Library";
+
+/* Ultimate plan details in plans page */
+"ULTIMATE_PLAN_DESCRIPTION" = "500GB cloud storage, unlimited PC storage";
 
 /* Downloading Status on iPhone Timeline */
 "UNABLE_TO_DOWNLOADING_PHOTOS" = "No Internet connection. Syncing incomplete...";
@@ -499,23 +524,20 @@
 /* Class = "IBUILabel"; text = "WEBSERVICE_LIST_TITLE"; ObjectID = "0P9-dO-3KX"; */
 "WEBSERVICE_LIST_TITLE" = "Connect to web services:";
 
-/* Class = "IBUILabel"; text = "STORAGE_SETUP_INSTRUCTIONS"; ObjectID = "6Ib-wQ-B01"; */
-"STORAGE_SETUP_INSTRUCTIONS" = "1. Install Stream Windows.\n2. Turn on WiFi and connect to the same network with your PC.";
+/* Class = "IBUILabel"; text = "PHOTO_UPLOAD_STATUS_TITLE"; ObjectID = "2wg-Lw-z1H"; */
+"PHOTO_UPLOAD_STATUS_TITLE" = "Camera Roll Upload Status";
 
-/* Class = "IBUIButton"; normalTitle = "ACTION_START_STREAM"; ObjectID = "6wx-cB-GP9"; */
-"ACTION_START_STREAM" = "Start Stream!";
+/* Class = "IBUILabel"; text = "CONNECTION_STATUS_TITLE"; ObjectID = "51O-As-E34"; */
+"CONNECTION_STATUS_TITLE" = "Connection Status";
+
+/* Class = "IBUILabel"; text = "PC_SETUP_INSTRUCTIONS"; ObjectID = "6Ib-wQ-B01"; */
+"PC_SETUP_INSTRUCTIONS" = "1. Install AOStream Windows\n2. Turn on WiFi and connect to the same network with your PC.";
 
 /* Class = "IBUILabel"; text = "PHOTO_UPLOAD_SWITCH_TITLE"; ObjectID = "749-zj-beb"; */
 "PHOTO_UPLOAD_SWITCH_TITLE" = "Upload Camera Roll";
 
-/* Class = "IBUILabel"; text = "STORAGE_SETUP_DESCRIPTION"; ObjectID = "7YP-nz-bf2"; */
-"STORAGE_SETUP_DESCRIPTION" = "Install Stream Windows and upgrades your PC to your Personal Cloud.";
-
 /* Class = "IBUILabel"; text = "NOUN_USERNAME"; ObjectID = "8Ts-v9-BV9"; */
 "NOUN_USERNAME" = "Email";
-
-/* Class = "IBUILabel"; text = "OPTION_PREMIUM_PLAN"; ObjectID = "BEk-Uz-d9I"; */
-"OPTION_PREMIUM_PLAN" = "$4.99/month";
 
 /* Class = "IBUILabel"; text = "CONNECT_SERVICES_DESCRIPTION"; ObjectID = "GEd-xe-bMT"; */
 "CONNECT_SERVICES_DESCRIPTION" = "You can also change these settings whatever you want.";
@@ -523,47 +545,50 @@
 /* Class = "IBUIButton"; normalTitle = "LOGIN_LINK_DEVICE"; ObjectID = "Gch-g1-VSP"; */
 "LOGIN_LINK_DEVICE" = "Login & link this device";
 
-/* Class = "IBUILabel"; text = "ACTION_GOTO_WEBSITE"; ObjectID = "K5G-K7-r9Y"; */
-"ACTION_GOTO_WEBSITE" = "Learn more on our website";
+/* Class = "IBUILabel"; text = "PC_SETUP_DESCRIPTION"; ObjectID = "Jfg-PE-RoZ"; */
+"PC_SETUP_DESCRIPTION" = "Connect to your personal cloud station and enable lighting speed.";
 
 /* Class = "IBUIButton"; normalTitle = "I_AM_NEW_HERE"; ObjectID = "KXA-OG-bKa"; */
 "I_AM_NEW_HERE" = "I am new here!";
 
-/* Class = "IBUILabel"; text = "ULTIMATE_PLAN_DESCRIPTION"; ObjectID = "Ml7-f2-TxV"; */
-"ULTIMATE_PLAN_DESCRIPTION" = "500GB cloud storage, unlimited PC storage";
+/* Class = "IBUILabel"; text = "NOUN_PASSWORD"; ObjectID = "OIv-A5-N1k"; */
+"NOUN_PASSWORD" = "Password";
 
 /* Class = "IBUILabel"; text = "PHOTO_UPLOAD_DESCRIPTION"; ObjectID = "Phx-kE-dRu"; */
 "PHOTO_UPLOAD_DESCRIPTION" = "Stream automatically sync all your photos from your devices to your personal cloud. We create real life events for you, and they are right there anytime, anywhere.";
 
-/* Class = "IBUILabel"; text = "SETUP_DONE_DESCRIPTION"; ObjectID = "aq5-qa-OWT"; */
-"SETUP_DONE_DESCRIPTION" = "Congratulations! You have built your personal cloud. It may take some time to collect and organize your medias.";
+/* Class = "IBUILabel"; text = "NOUN_USERNAME"; ObjectID = "WAR-06-Bm8"; */
+"NOUN_USERNAME" = "Email";
 
-/* Class = "IBUILabel"; text = "CONNECTION_STATUS"; ObjectID = "cvb-qh-VGm"; */
-"CONNECTION_STATUS" = "Connection Status";
+/* Class = "IBUILabel"; text = "NOUN_NICKNAME"; ObjectID = "WOl-eU-Hik"; */
+"NOUN_NICKNAME" = "Name";
 
-/* Class = "IBUILabel"; text = "PREMIUM_PLAN_DESCRIPTION"; ObjectID = "dw4-3C-ZHv"; */
-"PREMIUM_PLAN_DESCRIPTION" = "250GB cloud storage, unlimited PC storage";
-
-/* Class = "IBUILabel"; text = "OPTION_FREE_PLAN"; ObjectID = "j6E-j2-K86"; */
-"OPTION_FREE_PLAN" = "Free";
+/* Class = "IBUILabel"; text = "PHOTO_UPLOAD_STATUS_SUBTITLE"; ObjectID = "chO-N2-cYE"; */
+"PHOTO_UPLOAD_STATUS_SUBTITLE" = "PHOTO_UPLOAD_STATUS_SUBTITLE";
 
 /* Class = "IBUILabel"; text = "NOUN_PASSWORD"; ObjectID = "qlc-Lu-gj2"; */
 "NOUN_PASSWORD" = "Password";
 
-/* Class = "IBUILabel"; text = "OPTION_ULTIMATE_PLAN"; ObjectID = "sfk-st-cdZ"; */
-"OPTION_ULTIMATE_PLAN" = "$7.99/month";
+/* Class = "IBUIButton"; normalTitle = "ACTION_START_STREAM"; ObjectID = "u89-AV-2W1"; */
+"ACTION_START_STREAM" = "Start Stream!";
 
-/* Class = "IBUILabel"; text = "FREE_PLAN_DESCRIPTION"; ObjectID = "ueV-1b-HNU"; */
-"FREE_PLAN_DESCRIPTION" = "Save all original files to one PC";
+/* Class = "IBUILabel"; text = "CONNECTION_STATUS_SUBTITLE"; ObjectID = "urH-gP-L4v"; */
+"CONNECTION_STATUS_SUBTITLE" = "CONNECTION_STATUS_SUBTITLE";
 
-/* Class = "IBUILabel"; text = "PLANS_DESCRIPTION"; ObjectID = "ylt-bh-gIj"; */
-"PLANS_DESCRIPTION" = "Stream send all your presure moments back to your PC. You can also upgrade to a cloud storage plan and enjoy the benefit of cloud computing.";
+/* Class = "IBUILabel"; text = "PC_SETUP_TITLE"; ObjectID = "w7L-CQ-FdG"; */
+"PC_SETUP_TITLE" = "Feel Slow?";
 
 /* Class = "IBUIButton"; normalTitle = "ACTION_SIGN_IN"; ObjectID = "6"; */
 "ACTION_SIGN_IN" = "Log In";
 
 /* Class = "IBUIButton"; normalTitle = "ACTION_CONNECT_FACEBOOK"; ObjectID = "9"; */
 "ACTION_CONNECT_FACEBOOK" = "Connect with Facebook";
+
+/* Class = "IBUILabel"; text = "ACTION_GOTO_WEBSITE"; ObjectID = "189"; */
+"ACTION_GOTO_WEBSITE" = "Learn more on our website";
+
+/* Class = "IBUILabel"; text = "PLANS_DESCRIPTION"; ObjectID = "202"; */
+"PLANS_DESCRIPTION" = "Stream send all your presure moments back to your PC. You can also upgrade to a cloud storage plan and enjoy the benefit of cloud computing.";
 
 /* Class = "IBUITextField"; placeholder = "USERNAME_PLACEHOLDER"; ObjectID = "2Vk-4J-QH3"; */
 "USERNAME_PLACEHOLDER" = "me@example.com";

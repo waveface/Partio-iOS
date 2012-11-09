@@ -29,9 +29,6 @@
    Title for the action responsible for presenting a controller changing the representing file of an article */
 "ACTION_CHANGE_REPRESENTING_FILE" = "更換封面";
 
-/* Facebook sign up button */
-"ACTION_CONNECT_FACEBOOK" = "連結Facebook帳號";
-
 /* Short action title for connecting Facebook creds */
 "ACTION_CONNECT_FACEBOOK_SHORT" = "同步";
 
@@ -241,6 +238,9 @@
 /* Caption for URL History */
 "FETCH_REQUEST_URL_HISTORY" = "瀏覽記錄";
 
+/* Free plan details in plans page */
+"FREE_PLAN_DESCRIPTION" = "將所有原始檔案存放在你的一台 PC 裡。";
+
 /* No comment provided by engineer. */
 "HOUR_PLURAL" = "%d小時";
 
@@ -299,6 +299,15 @@
    iPhone Timeline */
 "NUMBER_OF_PHOTOS_CREATE_TIME_FROM_DEVICE" = "%1$@於%2$@來自 %3$@";
 
+/* Free plan option in plans page */
+"OPTION_FREE_PLAN" = "免費";
+
+/* Premium plan option in plans page */
+"OPTION_PREMIUM_PLAN" = "NT149/月";
+
+/* Ultimate plan option in plans page */
+"OPTION_ULTIMATE_PLAN" = "NT239/月";
+
 /* Password placeholder in login page
    Password placeholder in signup page */
 "PASSWORD_PLACEHOLDER" = "••••••••";
@@ -315,11 +324,20 @@
 /* Title of view controller setting photo upload */
 "PHOTO_UPLOAD_CONTROLLER_TITLE" = "照片自動上傳";
 
+/* Subtitle of photo upload status */
+"PHOTO_UPLOAD_STATUS_NOT_UPLOADING" = "尚未開啓";
+
+/* Subtitle of photo upload status */
+"PHOTO_UPLOAD_STATUS_UPLOADING" = "照片上傳中";
+
 /* In iPad overview */
 "PHOTOS_PLURAL" = "%d 張照片";
 
 /* Title of view controller choosing plans */
 "PLANS_CONTROLLER_TITLE" = "資費方案";
+
+/* Premium plan details in plans page */
+"PREMIUM_PLAN_DESCRIPTION" = "250GB 雲端儲存空間，PC 數量無限制。";
 
 /* Text to show for previews without a provider name */
 "PREVIEW_BADGE_PROVIDER_NAME_PLACEHOLDER" = "（網址未知）";
@@ -345,6 +363,9 @@
 /* No comment provided by engineer. */
 "RESET_SETTINGS_CONFIRMATION_TITLE" = "清除設定";
 
+/* Subtitle of searching network in setup done page. */
+"SEARCHING_NETWORK_SUBTITLE" = "正在尋找 AOStream 網路...";
+
 /* No comment provided by engineer. */
 "SECOND_PLURAL" = "%d秒";
 
@@ -366,7 +387,8 @@
 /* Confirmation text for Signing Out */
 "SIGN_OUT_CONFIRMATION" = "確定登出？";
 
-/* Title for view controller signing the user up */
+/* Title for view controller signing the user up
+   Title of view controller signing the user up */
 "SIGN_UP_CONTROLLER_TITLE" = "註冊";
 
 /* Title for Collection in the sliding menu */
@@ -428,6 +450,9 @@
 
 /* Alert on no location service enabled when open photo library */
 "TURN_ON_LOCATION_SERVICE" = "Stream 須開啟定位服務才能存取相簿的內容";
+
+/* Ultimate plan details in plans page */
+"ULTIMATE_PLAN_DESCRIPTION" = "500GB 雲端儲存空間，PC 數量無限制。";
 
 /* Downloading Status on iPhone Timeline */
 "UNABLE_TO_DOWNLOADING_PHOTOS" = "網路斷線，內容尚未同步完成...";
@@ -499,23 +524,20 @@
 /* Class = "IBUILabel"; text = "WEBSERVICE_LIST_TITLE"; ObjectID = "0P9-dO-3KX"; */
 "WEBSERVICE_LIST_TITLE" = "可連接的服務";
 
-/* Class = "IBUILabel"; text = "STORAGE_SETUP_INSTRUCTIONS"; ObjectID = "6Ib-wQ-B01"; */
-"STORAGE_SETUP_INSTRUCTIONS" = "1. 在 PC 上安裝 Windows 版 Stream\n2. 確認手機跟 PC 處於同一個 WiFi 底下";
+/* Class = "IBUILabel"; text = "PHOTO_UPLOAD_STATUS_TITLE"; ObjectID = "2wg-Lw-z1H"; */
+"PHOTO_UPLOAD_STATUS_TITLE" = "照片上傳";
 
-/* Class = "IBUIButton"; normalTitle = "ACTION_START_STREAM"; ObjectID = "6wx-cB-GP9"; */
-"ACTION_START_STREAM" = "開始使用 Stream";
+/* Class = "IBUILabel"; text = "CONNECTION_STATUS_TITLE"; ObjectID = "51O-As-E34"; */
+"CONNECTION_STATUS_TITLE" = "連線狀態";
+
+/* Class = "IBUILabel"; text = "PC_SETUP_INSTRUCTIONS"; ObjectID = "6Ib-wQ-B01"; */
+"PC_SETUP_INSTRUCTIONS" = "1. 在 PC 上安裝 AOStream Windows\n2. 確認手機和 PC 位於同一個 WiFi";
 
 /* Class = "IBUILabel"; text = "PHOTO_UPLOAD_SWITCH_TITLE"; ObjectID = "749-zj-beb"; */
 "PHOTO_UPLOAD_SWITCH_TITLE" = "上傳相機膠卷的照片";
 
-/* Class = "IBUILabel"; text = "STORAGE_SETUP_DESCRIPTION"; ObjectID = "7YP-nz-bf2"; */
-"STORAGE_SETUP_DESCRIPTION" = "Windows 版 Stream 可以將你的 PC 升級成個人雲。還在等什麼？現在就安裝吧！";
-
 /* Class = "IBUILabel"; text = "NOUN_USERNAME"; ObjectID = "8Ts-v9-BV9"; */
 "NOUN_USERNAME" = "電子郵件";
-
-/* Class = "IBUILabel"; text = "OPTION_PREMIUM_PLAN"; ObjectID = "BEk-Uz-d9I"; */
-"OPTION_PREMIUM_PLAN" = "NT149/月";
 
 /* Class = "IBUILabel"; text = "CONNECT_SERVICES_DESCRIPTION"; ObjectID = "GEd-xe-bMT"; */
 "CONNECT_SERVICES_DESCRIPTION" = "Stream 會將你在其他服務上的內容自動匯進來並且整理好，你一定會訝異原來自己的人生這麼多彩多姿。";
@@ -523,47 +545,50 @@
 /* Class = "IBUIButton"; normalTitle = "LOGIN_LINK_DEVICE"; ObjectID = "Gch-g1-VSP"; */
 "LOGIN_LINK_DEVICE" = "登入並連結此裝置";
 
-/* Class = "IBUILabel"; text = "ACTION_GOTO_WEBSITE"; ObjectID = "K5G-K7-r9Y"; */
-"ACTION_GOTO_WEBSITE" = "在網站上檢視詳細方案";
+/* Class = "IBUILabel"; text = "PC_SETUP_DESCRIPTION"; ObjectID = "Jfg-PE-RoZ"; */
+"PC_SETUP_DESCRIPTION" = "AOStream Windows 可以將你的 PC 升級成個人雲，透過它傳輸速度將會加快一百倍！";
 
 /* Class = "IBUIButton"; normalTitle = "I_AM_NEW_HERE"; ObjectID = "KXA-OG-bKa"; */
 "I_AM_NEW_HERE" = "我想註冊！";
 
-/* Class = "IBUILabel"; text = "ULTIMATE_PLAN_DESCRIPTION"; ObjectID = "Ml7-f2-TxV"; */
-"ULTIMATE_PLAN_DESCRIPTION" = "500GB 雲端儲存空間，PC 數量無限制。";
+/* Class = "IBUILabel"; text = "NOUN_PASSWORD"; ObjectID = "OIv-A5-N1k"; */
+"NOUN_PASSWORD" = "密碼";
 
 /* Class = "IBUILabel"; text = "PHOTO_UPLOAD_DESCRIPTION"; ObjectID = "Phx-kE-dRu"; */
 "PHOTO_UPLOAD_DESCRIPTION" = "Stream 會自動匯入你手機中的照片到個人雲裡，並產生各式各樣的事件讓你可以隨時隨地瀏覽。";
 
-/* Class = "IBUILabel"; text = "SETUP_DONE_DESCRIPTION"; ObjectID = "aq5-qa-OWT"; */
-"SETUP_DONE_DESCRIPTION" = "恭喜！你已將個人雲設定完成，Stream 可能會需要一些時間將你的資料上傳整理好，請拭目以待吧！";
+/* Class = "IBUILabel"; text = "NOUN_USERNAME"; ObjectID = "WAR-06-Bm8"; */
+"NOUN_USERNAME" = "電子郵件";
 
-/* Class = "IBUILabel"; text = "CONNECTION_STATUS"; ObjectID = "cvb-qh-VGm"; */
-"CONNECTION_STATUS" = "連線狀態";
+/* Class = "IBUILabel"; text = "NOUN_NICKNAME"; ObjectID = "WOl-eU-Hik"; */
+"NOUN_NICKNAME" = "使用者名稱";
 
-/* Class = "IBUILabel"; text = "PREMIUM_PLAN_DESCRIPTION"; ObjectID = "dw4-3C-ZHv"; */
-"PREMIUM_PLAN_DESCRIPTION" = "250GB 雲端儲存空間，PC 數量無限制。";
-
-/* Class = "IBUILabel"; text = "OPTION_FREE_PLAN"; ObjectID = "j6E-j2-K86"; */
-"OPTION_FREE_PLAN" = "免費";
+/* Class = "IBUILabel"; text = "PHOTO_UPLOAD_STATUS_SUBTITLE"; ObjectID = "chO-N2-cYE"; */
+"PHOTO_UPLOAD_STATUS_SUBTITLE" = "PHOTO_UPLOAD_STATUS_SUBTITLE";
 
 /* Class = "IBUILabel"; text = "NOUN_PASSWORD"; ObjectID = "qlc-Lu-gj2"; */
 "NOUN_PASSWORD" = "密碼";
 
-/* Class = "IBUILabel"; text = "OPTION_ULTIMATE_PLAN"; ObjectID = "sfk-st-cdZ"; */
-"OPTION_ULTIMATE_PLAN" = "NT239/月";
+/* Class = "IBUIButton"; normalTitle = "ACTION_START_STREAM"; ObjectID = "u89-AV-2W1"; */
+"ACTION_START_STREAM" = "開始使用 Stream";
 
-/* Class = "IBUILabel"; text = "FREE_PLAN_DESCRIPTION"; ObjectID = "ueV-1b-HNU"; */
-"FREE_PLAN_DESCRIPTION" = "將所有原始檔案存放在你的一台 PC 裡。";
+/* Class = "IBUILabel"; text = "CONNECTION_STATUS_SUBTITLE"; ObjectID = "urH-gP-L4v"; */
+"CONNECTION_STATUS_SUBTITLE" = "CONNECTION_STATUS_SUBTITLE";
 
-/* Class = "IBUILabel"; text = "PLANS_DESCRIPTION"; ObjectID = "ylt-bh-gIj"; */
-"PLANS_DESCRIPTION" = "Stream 會將你所有的寶貝檔案存放在指定的位置，你可以選擇存在家裡的 PC，或者付費獲得額外的雲端儲存空間，讓你可以隨時隨地取得原始檔案。";
+/* Class = "IBUILabel"; text = "PC_SETUP_TITLE"; ObjectID = "w7L-CQ-FdG"; */
+"PC_SETUP_TITLE" = "覺得很慢？";
 
 /* Class = "IBUIButton"; normalTitle = "ACTION_SIGN_IN"; ObjectID = "6"; */
 "ACTION_SIGN_IN" = "登入";
 
 /* Class = "IBUIButton"; normalTitle = "ACTION_CONNECT_FACEBOOK"; ObjectID = "9"; */
 "ACTION_CONNECT_FACEBOOK" = "連結Facebook帳號";
+
+/* Class = "IBUILabel"; text = "ACTION_GOTO_WEBSITE"; ObjectID = "189"; */
+"ACTION_GOTO_WEBSITE" = "在網站上檢視詳細方案";
+
+/* Class = "IBUILabel"; text = "PLANS_DESCRIPTION"; ObjectID = "202"; */
+"PLANS_DESCRIPTION" = "Stream 會將你所有的寶貝檔案存放在指定的位置，你可以選擇存在家裡的 PC，或者付費獲得額外的雲端儲存空間，讓你可以隨時隨地取得原始檔案。";
 
 /* Class = "IBUITextField"; placeholder = "USERNAME_PLACEHOLDER"; ObjectID = "2Vk-4J-QH3"; */
 "USERNAME_PLACEHOLDER" = "me@example.com";

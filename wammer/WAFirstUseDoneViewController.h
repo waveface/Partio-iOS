@@ -8,8 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
-@interface WAFirstUseDoneViewController : UIViewController
+@interface WAFirstUseDoneViewController : UITableViewController
 
+@property (weak, nonatomic) IBOutlet UITableViewCell *connectionCell;
+@property (weak, nonatomic) IBOutlet UITableViewCell *photoUploadCell;
 @property (weak, nonatomic) IBOutlet UIButton *doneButton;
 
 - (IBAction)handleDone:(id)sender;

@@ -7,29 +7,23 @@
 //
 
 #import "WAFirstUseIntroViewController.h"
-#import "WAFirstUseSignUpView.h"
-#import <FacebookSDK/FacebookSDK.h>
-#import <Accounts/Accounts.h>
-#import "WARemoteInterface.h"
-#import "WAFirstUseViewController.h"
-#import "WAOverlayBezel.h"
-
-
-static NSString * const kWASegueIntroToConnectServices = @"WASegueIntroToConnectServices";
-static NSString * const kWASegueIntroToPhotoImport = @"WASegueIntroToPhotoImport";
+#import "WADefines.h"
 
 @interface WAFirstUseIntroViewController ()
 
-@property (nonatomic, readwrite, strong) NSArray *pages;
+@property (nonatomic, strong) NSArray *pages;
 @property (nonatomic, strong) UITableViewCell *emailCell;
 @property (nonatomic, strong) UITableViewCell *passwordCell;
 @property (nonatomic, strong) UITableViewCell *nicknameCell;
+@property (nonatomic, strong) UITableViewCell *freePlanCell;
+@property (nonatomic, strong) UITableViewCell *premiumPlanCell;
+@property (nonatomic, strong) UITableViewCell *ultimatePlanCell;
 @property (nonatomic, strong) UITextField *emailField;
 @property (nonatomic, strong) UITextField *passwordField;
 @property (nonatomic, strong) UITextField *nicknameField;
-@property (nonatomic, readwrite) BOOL pageControlUsed;
-@property (nonatomic, readwrite, strong) WAFirstUseSignUpView *signupView;
-@property (nonatomic, readwrite) BOOL isKeyboardShown;
+@property (nonatomic) BOOL pageControlUsed;
+@property (nonatomic, strong) UITableView *plansPage;
+@property (nonatomic) BOOL isKeyboardShown;
 
 @end
 
@@ -52,19 +46,9 @@ static NSString * const kWASegueIntroToPhotoImport = @"WASegueIntroToPhotoImport
 
 	self.title = NSLocalizedString(@"INTRODUCTION_TITLE", @"Title on introduction pages");
 
-	self.signupView = [self.pages lastObject];
-	self.signupView.dataSource = self;
-	self.signupView.delegate = self;
-	[self.signupView.facebookSignupButton addTarget:self action:@selector(handleFacebookSignup:) forControlEvents:UIControlEventTouchUpInside];
-	[self.signupView.emailSignupButton addTarget:self action:@selector(handleEmailSignup:) forControlEvents:UIControlEventTouchUpInside];
-
-	if (isPhone()) {
-		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardWasShown:) name:UIKeyboardDidShowNotification object:nil];
-		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardWillBeHidden:) name:UIKeyboardWillHideNotification object:nil];
-	}
-
-	UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleBackgroundWasTouched:)];
-	[self.scrollView addGestureRecognizer:tap];
+	self.plansPage = [self.pages lastObject];
+	self.plansPage.dataSource = self;
+	self.plansPage.delegate = self;
 
 }
 
@@ -95,45 +79,6 @@ static NSString * const kWASegueIntroToPhotoImport = @"WASegueIntroToPhotoImport
 
 }
 
-- (void)dealloc {
-
-	if (isPhone()) {
-		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardWasShown:) name:UIKeyboardDidShowNotification object:nil];
-		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardWillBeHidden:) name:UIKeyboardWillHideNotification object:nil];
-	}
-
-}
-
-
-- (void)updateViewConstraints {
-	
-	[super updateViewConstraints];
-	
-	if (self.emailCell && self.emailField) {
-		self.emailField.translatesAutoresizingMaskIntoConstraints = NO;
-		UITextField *emailField = self.emailField;
-		[self.emailCell.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-110-[emailField]-20-|" options:NSLayoutFormatDirectionLeadingToTrailing metrics:nil views:NSDictionaryOfVariableBindings(emailField)]];
-		[self.emailCell.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-11-[emailField(==40)]" options:NSLayoutFormatDirectionLeadingToTrailing metrics:nil views:NSDictionaryOfVariableBindings(emailField)]];
-	}
-	
-	if (self.passwordCell && self.passwordField) {
-		self.passwordField.translatesAutoresizingMaskIntoConstraints = NO;
-		UITextField *passwordField	= self.passwordField;
-		[self.passwordCell.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-110-[passwordField]-20-|" options:NSLayoutFormatDirectionLeadingToTrailing metrics:nil views:NSDictionaryOfVariableBindings(passwordField)]];
-		[self.passwordCell.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-11-[passwordField(==40)]" options:NSLayoutFormatDirectionLeadingToTrailing metrics:nil views:NSDictionaryOfVariableBindings(passwordField)]];
-	}
-	
-	if (self.nicknameCell && self.nicknameField) {
-		
-		self.nicknameField.translatesAutoresizingMaskIntoConstraints = NO;
-		UITextField *nicknameField	= self.nicknameField;
-		[self.nicknameCell.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-110-[nicknameField]-20-|" options:NSLayoutFormatDirectionLeadingToTrailing metrics:nil views:NSDictionaryOfVariableBindings(nicknameField)]];
-		[self.nicknameCell.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-11-[nicknameField(==40)]" options:NSLayoutFormatDirectionLeadingToTrailing metrics:nil views:NSDictionaryOfVariableBindings(nicknameField)]];
-		
-	}
-	
-}
-
 #pragma mark Target actions
 
 - (IBAction)handleChangePage:(id)sender {
@@ -145,190 +90,13 @@ static NSString * const kWASegueIntroToPhotoImport = @"WASegueIntroToPhotoImport
 	[self.scrollView scrollRectToVisible:frame animated:YES];
 
 	if (page == [self.pages count]-1) {
-		self.title = NSLocalizedString(@"SIGN_UP_CONTROLLER_TITLE", @"Title for view controller signing the user up");
+		self.title = NSLocalizedString(@"PLANS_CONTROLLER_TITLE", @"Title of view controller choosing plans");
 	} else {
 		self.title = NSLocalizedString(@"INTRODUCTION_TITLE", @"Title on introduction pages");
 	}
 
 	self.pageControlUsed = YES;
 
-}
-
-- (void)handleFacebookSignup:(UIButton *)sender {
-
-	sender.enabled = NO;
-	WAOverlayBezel *busyBezel = [WAOverlayBezel bezelWithStyle:WAActivityIndicatorBezelStyle];
-	[busyBezel showWithAnimation:WAOverlayBezelAnimationFade];
-
-	// http://stackoverflow.com/questions/12601191/facebook-sdk-3-1-error-validating-access-token
-	// This should and will be fixed from FB SDK
-
-	ACAccountStore *accountStore;
-	ACAccountType *accountTypeFB;
-	if ((accountStore = [[ACAccountStore alloc] init]) &&
-			(accountTypeFB = [accountStore accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierFacebook] ) ){
-		
-    NSArray *fbAccounts = [accountStore accountsWithAccountType:accountTypeFB];
-    id account;
-    if (fbAccounts && [fbAccounts count] > 0 &&
-        (account = [fbAccounts objectAtIndex:0])){
-			
-			[accountStore renewCredentialsForAccount:account completion:^(ACAccountCredentialRenewResult renewResult, NSError *error) {
-				//we don't actually need to inspect renewResult or error.
-				if (error){
-					
-				}
-			}];
-    }
-	}
-	
-	WAFirstUseViewController *firstUseVC = (WAFirstUseViewController *)self.navigationController;
-	__weak WAFirstUseIntroViewController *wSelf = self;
-
-	[FBSession
-	 openActiveSessionWithReadPermissions:@[@"email", @"user_photos", @"user_videos", @"user_notes", @"user_status", @"read_stream"]
-	 allowLoginUI:YES
-	 completionHandler:^(FBSession *session, FBSessionState status, NSError *error) {
-
-		 if (error) {
-			 NSLog(@"Facebook auth error: %@", error);
-			 return;
-		 }
-		 
-		 [[WARemoteInterface sharedInterface]
-			signupUserWithFacebookToken:session.accessToken
-			withOptions:nil
-			onSuccess:^(NSString *token, NSDictionary *userRep, NSArray *groupReps) {
-
-				dispatch_async(dispatch_get_main_queue(), ^{
-
-					[busyBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
-					sender.enabled = YES;
-
-					if (firstUseVC.didAuthSuccessBlock) {
-						firstUseVC.didAuthSuccessBlock(token, userRep, groupReps);
-					}
-
-					if ([userRep[@"state"] isEqualToString:@"created"]) {
-						[wSelf performSegueWithIdentifier:kWASegueIntroToConnectServices sender:sender];
-					} else {
-						// user might have registered facebook account to Stream, then go login flow.
-						[wSelf performSegueWithIdentifier:kWASegueIntroToPhotoImport sender:sender];
-					}
-
-				});
-
-			} onFailure:^(NSError *error) {
-
-				dispatch_async(dispatch_get_main_queue(), ^{
-
-					[busyBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
-					sender.enabled = YES;
-
-					if (firstUseVC.didAuthFailBlock) {
-						firstUseVC.didAuthFailBlock(error);
-					}
-
-				});
-
-			}];
-
-	 }];
-
-}
-
-- (void)handleEmailSignup:(UIButton *)sender {
-
-	sender.enabled = NO;
-	WAOverlayBezel *busyBezel = [WAOverlayBezel bezelWithStyle:WAActivityIndicatorBezelStyle];
-	[busyBezel showWithAnimation:WAOverlayBezelAnimationFade];
-	
-	[self.emailField resignFirstResponder];
-	[self.passwordField resignFirstResponder];
-	[self.nicknameField resignFirstResponder];
-	
-	NSString *userName = self.emailField.text;
-	NSString *password = self.passwordField.text;
-	NSString *nickname = self.nicknameField.text;
-	
-	WAFirstUseViewController *firstUseVC = (WAFirstUseViewController *)self.navigationController;
-	__weak WAFirstUseIntroViewController *wSelf = self;
-
-	[[WARemoteInterface sharedInterface] registerUser:userName password:password nickname:nickname onSuccess:^(NSString *token, NSDictionary *userRep, NSArray *groupReps) {
-		
-		dispatch_async(dispatch_get_main_queue(), ^{
-			
-			[busyBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
-			sender.enabled = YES;
-			
-			if (firstUseVC.didAuthSuccessBlock) {
-				firstUseVC.didAuthSuccessBlock(token, userRep, groupReps);
-			}
-			
-			if ([userRep[@"state"] isEqualToString:@"created"]) {
-				[wSelf performSegueWithIdentifier:kWASegueIntroToConnectServices sender:sender];
-			}
-			
-		});
-		
-	} onFailure:^(NSError *error) {
-		
-		dispatch_async(dispatch_get_main_queue(), ^{
-			
-			[busyBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
-			sender.enabled = YES;
-			
-			if (firstUseVC.didAuthFailBlock) {
-				firstUseVC.didAuthFailBlock(error);
-			}
-			
-		});
-		
-	}];
-
-}
-
-- (void)handleKeyboardWasShown:(NSNotification *)aNotification {
-
-	if (self.isKeyboardShown) {
-		return;
-	}
-
-	CGSize kbSize = [aNotification.userInfo[UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
-	UIEdgeInsets contentInsets = UIEdgeInsetsMake(0.0, 0.0, kbSize.height, 0.0);
-	self.scrollView.contentInset = contentInsets;
-	self.scrollView.scrollIndicatorInsets = contentInsets;
-
-	CGRect viewRect = self.view.frame;
-	viewRect.size.height -= kbSize.height;
-	CGRect emailSignupButtonFrame = self.signupView.emailSignupButton.frame;
-	CGPoint emailSignupButtonAbsoluteOrigin = [self.signupView.emailSignupButton convertPoint:emailSignupButtonFrame.origin toView:self.view];
-	if (!CGRectContainsPoint(viewRect, emailSignupButtonAbsoluteOrigin)) {
-		CGPoint scrollPoint = CGPointMake(0.0, emailSignupButtonAbsoluteOrigin.y+emailSignupButtonFrame.size.height-viewRect.size.height+6.0);
-		[self.scrollView setContentOffset:scrollPoint animated:YES];
-	}
-
-	self.scrollView.pagingEnabled = NO;
-	self.isKeyboardShown = YES;
-
-}
-
-- (void)handleKeyboardWillBeHidden:(NSNotification *)aNotification {
-
-	self.scrollView.contentInset = UIEdgeInsetsZero;
-	self.scrollView.scrollIndicatorInsets = UIEdgeInsetsZero;
-
-	self.scrollView.pagingEnabled = YES;
-	self.isKeyboardShown = NO;
-
-}
-
-- (void)handleBackgroundWasTouched:(NSNotification *)aNotification {
-	
-	[self.emailField resignFirstResponder];
-	[self.passwordField resignFirstResponder];
-	[self.nicknameField resignFirstResponder];
-	
 }
 
 #pragma mark UIScrollView delegates
@@ -350,7 +118,7 @@ static NSString * const kWASegueIntroToPhotoImport = @"WASegueIntroToPhotoImport
 	self.pageControl.currentPage = page;
 
 	if (page == [self.pages count]-1) {
-		self.title = NSLocalizedString(@"SIGN_UP_CONTROLLER_TITLE", @"Title for view controller signing the user up");
+		self.title = NSLocalizedString(@"PLANS_CONTROLLER_TITLE", @"Title of view controller choosing plans");
 	} else {
 		self.title = NSLocalizedString(@"INTRODUCTION_TITLE", @"Title on introduction pages");
 	}
@@ -369,33 +137,6 @@ static NSString * const kWASegueIntroToPhotoImport = @"WASegueIntroToPhotoImport
 
 }
 
-#pragma mark UITextField delegates
-
-- (BOOL)textFieldShouldReturn:(UITextField *)textField {
-
-	if (!textField.text.length)
-		return NO;
-	
-	if (textField == self.emailField) {
-		
-		[self.passwordField becomeFirstResponder];
-		
-	} else if (textField == self.passwordField) {
-		
-		[self.nicknameField becomeFirstResponder];
-
-	} else if (textField == self.nicknameField) {
-		
-		if ([self.emailField.text length] && [self.passwordField.text length] && [self.nicknameField.text length]) {
-			[self.signupView.emailSignupButton sendActionsForControlEvents:UIControlEventTouchUpInside];
-		}
-		
-	}
-	
-	return YES;
-
-}
-
 #pragma mark UITableView delegates
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -407,6 +148,14 @@ static NSString * const kWASegueIntroToPhotoImport = @"WASegueIntroToPhotoImport
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
 
 	if ([indexPath row] == 0) {
+		if (!self.freePlanCell) {
+			self.freePlanCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"UITableViewCell"];
+			self.freePlanCell.textLabel.text = NSLocalizedString(@"OPTION_FREE_PLAN", @"Free plan option in plans page");
+			self.freePlanCell.detailTextLabel.text = NSLocalizedString(@"FREE_PLAN_DESCRIPTION", @"Free plan details in plans page");
+			self.freePlanCell.accessoryType = UITableViewCellAccessoryCheckmark;
+			[self.view setNeedsUpdateConstraints];
+		}
+		return self.freePlanCell;
 		if (!self.emailCell) {
 			self.emailCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"UITableViewCell"];
 			self.emailCell.textLabel.text = NSLocalizedString(@"NOUN_USERNAME", @"Email title in signup page");
@@ -423,6 +172,13 @@ static NSString * const kWASegueIntroToPhotoImport = @"WASegueIntroToPhotoImport
 		}
 		return self.emailCell;
 	} else if ([indexPath row] == 1) {
+		if (!self.premiumPlanCell) {
+			self.premiumPlanCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"UITableViewCell"];
+			self.premiumPlanCell.textLabel.text = NSLocalizedString(@"OPTION_PREMIUM_PLAN", @"Premium plan option in plans page");
+			self.premiumPlanCell.detailTextLabel.text = NSLocalizedString(@"PREMIUM_PLAN_DESCRIPTION", @"Premium plan details in plans page");
+			[self.view setNeedsUpdateConstraints];
+		}
+		return self.premiumPlanCell;
 		if (!self.passwordCell) {
 			self.passwordCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"UITableViewCell"];
 			self.passwordCell.textLabel.text = NSLocalizedString(@"NOUN_PASSWORD", @"Password title in signup page");
@@ -440,6 +196,13 @@ static NSString * const kWASegueIntroToPhotoImport = @"WASegueIntroToPhotoImport
 		}
 		return self.passwordCell;
 	} else if ([indexPath row] == 2) {
+		if (!self.ultimatePlanCell) {
+			self.ultimatePlanCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"UITableViewCell"];
+			self.ultimatePlanCell.textLabel.text = NSLocalizedString(@"OPTION_ULTIMATE_PLAN", @"Ultimate plan option in plans page");
+			self.ultimatePlanCell.detailTextLabel.text = NSLocalizedString(@"ULTIMATE_PLAN_DESCRIPTION", @"Ultimate plan details in plans page");
+			[self.view setNeedsUpdateConstraints];
+		}
+		return self.ultimatePlanCell;
 		if (!self.nicknameCell) {
 			self.nicknameCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"UITableViewCell"];
 			self.nicknameCell.textLabel.text = NSLocalizedString(@"NOUN_NICKNAME", @"Nickname title in signup page");
@@ -457,6 +220,29 @@ static NSString * const kWASegueIntroToPhotoImport = @"WASegueIntroToPhotoImport
 	}
 
 	return nil;
+
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+	
+	UITableViewCell *hitCell = [tableView cellForRowAtIndexPath:indexPath];
+	
+	self.freePlanCell.accessoryType = UITableViewCellAccessoryNone;
+	self.premiumPlanCell.accessoryType = UITableViewCellAccessoryNone;
+	self.ultimatePlanCell.accessoryType = UITableViewCellAccessoryNone;
+	
+	hitCell.accessoryType = UITableViewCellAccessoryCheckmark;
+	
+	if (hitCell == self.freePlanCell) {
+		[[NSUserDefaults standardUserDefaults] setInteger:WABusinessPlanFree forKey:kWABusinessPlan];
+	} else if (hitCell == self.premiumPlanCell) {
+		[[NSUserDefaults standardUserDefaults] setInteger:WABusinessPlanPremium forKey:kWABusinessPlan];
+	} else if (hitCell == self.ultimatePlanCell) {
+		[[NSUserDefaults standardUserDefaults] setInteger:WABusinessPlanUltimate forKey:kWABusinessPlan];
+	}
+	[[NSUserDefaults standardUserDefaults] synchronize];
+	
+	[tableView deselectRowAtIndexPath:indexPath animated:YES];
 
 }
 

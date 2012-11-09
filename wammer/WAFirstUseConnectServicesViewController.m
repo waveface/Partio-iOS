@@ -23,7 +23,17 @@
 	[self localize];
 
 	self.navigationItem.hidesBackButton = YES;
+
 	self.facebookConnectCell.accessoryView = [[WAFacebookConnectionSwitch alloc] init];
+	UISwitch *twitterSwitch = [[UISwitch alloc] init];
+	twitterSwitch.enabled = NO;
+	self.twitterConnectCell.accessoryView = twitterSwitch;
+	UISwitch *flickrSwitch = [[UISwitch alloc] init];
+	flickrSwitch.enabled = NO;
+	self.flickrConnectCell.accessoryView = flickrSwitch;
+	UISwitch *picasaSwitch = [[UISwitch alloc] init];
+	picasaSwitch.enabled = NO;
+	self.picasaConnectCell.accessoryView = picasaSwitch;
 
 }
 
