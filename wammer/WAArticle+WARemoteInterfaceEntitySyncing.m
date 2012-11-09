@@ -71,6 +71,12 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 		@"hidden": @"hidden",
 		@"style": @"style",
 		@"import": @"import",
+		@"event_tag": @"event",
+		@"tags": @"tags",
+		@"gps": @"location",
+		@"people": @"people",
+		@"extra_parameters": @"descriptiveTags",
+		@"event_description": @"eventDescription",
 		};
 		
 	});
@@ -110,6 +116,10 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 		@"WAPreview", @"previews",
 		@"WAFile", @"attachments",
 		@"WAFile", @"representingFile",
+		@"WALocation", @"gps",
+		@"WAPeople", @"people",
+		@"WATag", @"tags",
+		@"WATagGroup", @"extra_parameters",
 	
 	nil];
 
@@ -208,6 +218,22 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 	
 	}
 	
+	NSArray *people = [incomingRepresentation objectForKey:@"people"];
+	if (!people || people.count == 0) {
+		[returnedDictionary removeObjectForKey:@"people"];
+	}
+	
+	NSArray *tags = [incomingRepresentation objectForKey:@"tags"];
+	if ([tags count]) {
+		
+		NSMutableArray *transformedTags = [NSMutableArray arrayWithCapacity:[tags count]];
+		[tags enumerateObjectsUsingBlock:^(NSString *aTagRep, NSUInteger idx, BOOL *stop) {
+			[transformedTags addObject:@{@"tagValue": aTagRep}];
+		}];
+		
+		[returnedDictionary setObject:transformedTags forKey:@"tags"];
+	}
+		
 	NSDictionary *preview = [incomingRepresentation objectForKey:@"preview"];
 	
 	if ([preview count]) {
@@ -224,7 +250,7 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 		nil] forKey:@"previews"];
 	
 	}
-	
+		
 	for (NSString *style in [incomingRepresentation objectForKey:@"style"]) {
     if ([style isEqualToString:@"url_history"]) {
 			[returnedDictionary setValue:[NSNumber numberWithUnsignedInteger:WAPostStyleURLHistory]
@@ -241,6 +267,12 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 		}
 	} else {
 		[returnedDictionary setValue:[NSNumber numberWithInt:WAImportTypeNone] forKey:@"import"];
+	}
+
+	if ([[incomingRepresentation objectForKey:@"event_tag"] isEqualToString:@"true"]) {
+		[returnedDictionary setValue:[NSNumber numberWithBool:YES] forKey:@"event_tag"];
+	} else {
+		[returnedDictionary setValue:[NSNumber numberWithBool:NO] forKey:@"event_tag"];
 	}
 
 	return returnedDictionary;

@@ -45,6 +45,9 @@
 @property (nonatomic, retain) WAArticle *representedArticle;
 @property (nonatomic, retain) WAFileExif *exif;
 @property (nonatomic, retain) NSSet *caches;
+@property (nonatomic, retain) NSString * webURL;
+@property (nonatomic, retain) NSString * webFaviconURL;
+@property (nonatomic, retain) NSString * webTitle;
 @end
 
 @interface WAFile (CoreDataGeneratedAccessors)

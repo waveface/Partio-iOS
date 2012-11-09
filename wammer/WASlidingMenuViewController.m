@@ -279,4 +279,10 @@
 	}
 }
 
+#pragma mark - IIViewDeckDelegate protocol
+
+- (void)viewDeckController:(IIViewDeckController *)viewDeckController applyShadow:(CALayer *)shadowLayer withBounds:(CGRect)rect {
+	// No shadow
+}
+
 @end
