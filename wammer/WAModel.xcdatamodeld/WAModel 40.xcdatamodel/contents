@@ -29,7 +29,7 @@
             <userInfo/>
         </relationship>
         <relationship name="descriptiveTags" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="WATagGroup" inverseName="article" inverseEntity="WATagGroup" syncable="YES"/>
-        <relationship name="files" optional="YES" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="WAFile" inverseName="article" inverseEntity="WAFile">
+        <relationship name="files" optional="YES" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="WAFile" inverseName="articles" inverseEntity="WAFile">
             <userInfo/>
         </relationship>
         <relationship name="group" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="WAGroup" inverseName="articles" inverseEntity="WAGroup" syncable="YES"/>
@@ -140,7 +140,7 @@
         <attribute name="webFaviconURL" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="webTitle" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="webURL" optional="YES" attributeType="String" syncable="YES"/>
-        <relationship name="article" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="WAArticle" inverseName="files" inverseEntity="WAArticle">
+        <relationship name="articles" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="WAArticle" inverseName="files" inverseEntity="WAArticle">
             <userInfo/>
         </relationship>
         <relationship name="belongToCollection" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="WACollection" inverseName="files" inverseEntity="WACollection" syncable="YES"/>
@@ -304,9 +304,9 @@
     <fetchRequest name="WAFRArticles" entity="WAArticle" predicateString="((draft == nil) OR (draft != 1)) AND ((hidden == nil) OR (hidden == 0))"/>
     <fetchRequest name="WAFRArticlesNeedingSync" entity="WAArticle" predicateString="dirty == 1 AND draft == 0"/>
     <fetchRequest name="WAFRCommentsForArticle" entity="WAComment" predicateString="article == $Article"/>
-    <fetchRequest name="WAFRFilesForArticle" entity="WAFile" predicateString="article == $Article"/>
-    <fetchRequest name="WAFRFilesNeedingDownload" entity="WAFile" predicateString="(article.hidden == 0) AND ((smallThumbnailURL != nil AND smallThumbnailFilePath == nil) OR (thumbnailURL != nil AND thumbnailFilePath == nil))"/>
-    <fetchRequest name="WAFRFilesWithSyncableBlobs" entity="WAFile" predicateString="(assetURL != &quot;&quot; OR resourceFilePath != nil) AND resourceURL == nil AND article.draft == 0"/>
+    <fetchRequest name="WAFRFilesForArticle" entity="WAFile" predicateString="ANY articles == $Article"/>
+    <fetchRequest name="WAFRFilesNeedingDownload" entity="WAFile" predicateString="ANY articles.hidden == 0 AND ((smallThumbnailURL != nil AND smallThumbnailFilePath == nil) OR (thumbnailURL != nil AND thumbnailFilePath == nil))"/>
+    <fetchRequest name="WAFRFilesWithSyncableBlobs" entity="WAFile" predicateString="(assetURL != &quot;&quot; OR resourceFilePath != nil) AND resourceURL == nil AND ANY articles.draft == 0"/>
     <fetchRequest name="WAFRImagesForArticle" entity="WAFile" predicateString="article == $Article AND remoteResourceType == &quot;image&quot;"/>
     <fetchRequest name="WAFRLocalImportedArticles" entity="WAArticle" predicateString="import == 1"/>
     <fetchRequest name="WAFRUser" entity="WAUser" predicateString="identifier == $Identifier"/>
