@@ -29,10 +29,10 @@
 	
 	collection.createDate = [NSDate distantPast];
 	collection.modifyDate = [NSDate date];
-	collection.name = @"This should be collection title";
+	collection.title = @"This should be collection title";
 	collection.creator = [WAUser MR_createEntity];
 	NSArray *collections = [WACollection MR_findAll];
-	STAssertEquals(collection.name, ((WACollection *) collections[0]).name,
+	STAssertEquals(collection.title, ((WACollection *) collections[0]).title,
 								 @"Should be the same.");
 
 	WAFile *photo1 = [WAFile MR_createEntity];

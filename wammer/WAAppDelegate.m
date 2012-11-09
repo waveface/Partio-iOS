@@ -26,6 +26,8 @@
 #import "IRWebAPIEngine+ExternalTransforms.h"
 #import "SSKeychain.h"
 
+#define MR_SHORTHAND
+#import "CoreData+MagicalRecord.h"
 
 @interface WAAppDelegate () <IRRemoteResourcesManagerDelegate>
 
@@ -305,6 +307,8 @@
 		user.identifier = identifier;
 		[user.managedObjectContext save:nil];
 	}
+	
+	[MagicalRecord setupCoreDataStackWithStoreNamed:	[identifier stringByAppendingString:@".sqlite"]];
 	
 #if DEBUG
 

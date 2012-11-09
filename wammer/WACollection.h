@@ -2,7 +2,7 @@
 //  WACollection.h
 //  wammer
 //
-//  Created by jamie on 12/11/5.
+//  Created by jamie on 12/11/9.
 //  Copyright (c) 2012年 Waveface. All rights reserved.
 //
 
@@ -16,7 +16,7 @@
 @property (nonatomic, retain) NSDate * createDate;
 @property (nonatomic, retain) NSString * identifier;
 @property (nonatomic, retain) NSDate * modifyDate;
-@property (nonatomic, retain) NSString * name;
+@property (nonatomic, retain) NSString * title;
 @property (nonatomic, retain) WAUser *creator;
 @property (nonatomic, retain) NSOrderedSet *files;
 @end

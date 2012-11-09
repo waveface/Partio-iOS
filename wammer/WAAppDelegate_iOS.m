@@ -57,6 +57,10 @@
 #import "WAFirstUseViewController.h"
 
 #import "TestFlight.h"
+#import "WAPhotoStreamViewController.h"
+
+#define MR_SHORTHAND
+#import "CoreData+MagicalRecord.h"
 
 static NSString *const kTrackingId = @"UA-27817516-7";
 
@@ -237,9 +241,8 @@ static NSString *const kTrackingId = @"UA-27817516-7";
 	[TestFlight setDeviceIdentifier:[[UIDevice currentDevice] uniqueIdentifier]];
 #pragma clang pop
 #endif
-	
+
 	return YES;
-	
 }
 
 - (void) application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
@@ -846,6 +849,7 @@ static NSInteger networkActivityStackingCount = 0;
 
 - (void)applicationWillTerminate:(UIApplication *)application {
 	[FBSession.activeSession close];
+	[MagicalRecord cleanUp];
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
