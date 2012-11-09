@@ -27,7 +27,7 @@
 	[self.emailLoginButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
 	[self.emailLoginButton setTitleColor:[UIColor whiteColor] forState:UIControlStateDisabled];
 	self.emailLoginButton.layer.cornerRadius = 20.0;
-	self.emailLoginButton.contentEdgeInsets = UIEdgeInsetsMake(5.0, 5.0, 5.0, 5.0);
+	self.emailLoginButton.contentEdgeInsets = UIEdgeInsetsMake(5.0, 15.0, 5.0, 15.0);
 
 }
 

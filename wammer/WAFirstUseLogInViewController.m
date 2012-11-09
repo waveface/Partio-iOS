@@ -134,7 +134,7 @@ static NSString * const kWASegueLogInToConnectServices = @"WASegueLogInToConnect
 
 #pragma mark Target actions
 
-- (IBAction)handleEmailLogin:(UIButton *)sender {
+- (void)handleEmailLogin:(UIButton *)sender {
 
 	sender.enabled = NO;
 	[self.emailField resignFirstResponder];
@@ -180,8 +180,9 @@ static NSString * const kWASegueLogInToConnectServices = @"WASegueLogInToConnect
 	}];
 }
 
-- (IBAction)handleFacebookLogin:(UIButton *)sender {
+- (void)handleFacebookLogin:(UIButton *)sender {
 
+	// TODO: duplicate function, needs refactoring
 	sender.enabled = NO;
 	WAOverlayBezel *busyBezel = [WAOverlayBezel bezelWithStyle:WAActivityIndicatorBezelStyle];
 	[busyBezel showWithAnimation:WAOverlayBezelAnimationFade];
@@ -319,6 +320,18 @@ static NSString * const kWASegueLogInToConnectServices = @"WASegueLogInToConnect
 
 	return YES;
 	
+}
+
+- (BOOL) textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
+
+	if ([self.emailField.text length] && [self.passwordField.text length]) {
+		self.emailLoginButton.enabled = YES;
+	} else {
+		self.emailLoginButton.enabled = NO;
+	}
+
+	return YES;
+
 }
 
 @end

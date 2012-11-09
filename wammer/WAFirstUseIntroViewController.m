@@ -91,11 +91,19 @@
 
 	if (page == [self.pages count]-1) {
 		self.title = NSLocalizedString(@"PLANS_CONTROLLER_TITLE", @"Title of view controller choosing plans");
+		self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"SIGN_UP_BAR_BUTTON_TITLE", @"Title of bar button going sign up page") style:UIBarButtonItemStyleBordered target:self action:@selector(handleGotoSignUpPage:)];
 	} else {
 		self.title = NSLocalizedString(@"INTRODUCTION_TITLE", @"Title on introduction pages");
+		self.navigationItem.rightBarButtonItem = nil;
 	}
 
 	self.pageControlUsed = YES;
+
+}
+
+- (void)handleGotoSignUpPage:(id)sender {
+
+	[self performSegueWithIdentifier:@"WASegueIntroToSignUp" sender:sender];
 
 }
 
@@ -119,8 +127,10 @@
 
 	if (page == [self.pages count]-1) {
 		self.title = NSLocalizedString(@"PLANS_CONTROLLER_TITLE", @"Title of view controller choosing plans");
+		self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"SIGN_UP_BAR_BUTTON_TITLE", @"Title of bar button going sign up page") style:UIBarButtonItemStyleBordered target:self action:@selector(handleGotoSignUpPage:)];
 	} else {
 		self.title = NSLocalizedString(@"INTRODUCTION_TITLE", @"Title on introduction pages");
+		self.navigationItem.rightBarButtonItem = nil;
 	}
 
 }

@@ -387,6 +387,9 @@
 /* Confirmation text for Signing Out */
 "SIGN_OUT_CONFIRMATION" = "確定登出？";
 
+/* Title of bar button going sign up page */
+"SIGN_UP_BAR_BUTTON_TITLE" = "註冊";
+
 /* Title for view controller signing the user up
    Title of view controller signing the user up */
 "SIGN_UP_CONTROLLER_TITLE" = "註冊";

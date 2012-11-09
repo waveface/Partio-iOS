@@ -6,9 +6,9 @@
 //  Copyright (c) 2012年 Waveface. All rights reserved.
 //
 
-#import "WALocalizedCell.h"
+#import "WALocalizedTableViewCell.h"
 
-@implementation WALocalizedCell
+@implementation WALocalizedTableViewCell
 
 - (void) awakeFromNib {
 	

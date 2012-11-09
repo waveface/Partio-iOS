@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface WALocalizedCell : UITableViewCell
+@interface WALocalizedTableViewCell : UITableViewCell
 
 @end

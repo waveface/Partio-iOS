@@ -133,16 +133,11 @@
                             <constraint firstItem="LSZ-hZ-zeM" firstAttribute="trailing" secondItem="5yJ-2d-xzm" secondAttribute="trailing" type="default" id="vai-jJ-olC"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="hsc-HX-bBv">
-                        <barButtonItem key="rightBarButtonItem" title="Sign Up" id="nTj-VS-NIV">
-                            <connections>
-                                <segue destination="7Pv-Do-nuP" kind="push" id="8Nv-sM-Mbr"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" id="hsc-HX-bBv"/>
                     <connections>
                         <outlet property="pageControl" destination="7Bj-Hp-Q1b" id="dno-tO-ne2"/>
                         <outlet property="scrollView" destination="LSZ-hZ-zeM" id="ckM-6Q-rQN"/>
+                        <segue destination="7Pv-Do-nuP" kind="push" identifier="WASegueIntroToSignUp" id="wpV-fX-e5b"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="0IQ-ug-XH4" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -181,7 +176,7 @@
                         <sections>
                             <tableViewSection id="r2E-qF-IGM">
                                 <cells>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" textLabel="749-zj-beb" style="IBUITableViewCellStyleDefault" id="aMQ-tZ-60h" customClass="WALocalizedCell">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" textLabel="749-zj-beb" style="IBUITableViewCellStyleDefault" id="aMQ-tZ-60h" customClass="WALocalizedTableViewCell">
                                         <rect key="frame" x="0.0" y="221" width="320" height="46"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
@@ -233,7 +228,7 @@
                         <sections>
                             <tableViewSection id="U7W-66-bfe">
                                 <cells>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" textLabel="8Ts-v9-BV9" style="IBUITableViewCellStyleDefault" id="Z6K-2v-dnQ" customClass="WALocalizedCell">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" textLabel="8Ts-v9-BV9" style="IBUITableViewCellStyleDefault" id="Z6K-2v-dnQ" customClass="WALocalizedTableViewCell">
                                         <rect key="frame" x="0.0" y="10" width="320" height="45"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
@@ -249,7 +244,7 @@
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         </view>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" textLabel="qlc-Lu-gj2" style="IBUITableViewCellStyleDefault" id="kdf-g6-GmL" customClass="WALocalizedCell">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" textLabel="qlc-Lu-gj2" style="IBUITableViewCellStyleDefault" id="kdf-g6-GmL" customClass="WALocalizedTableViewCell">
                                         <rect key="frame" x="0.0" y="55" width="320" height="45"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
@@ -297,7 +292,7 @@
                         <sections>
                             <tableViewSection id="QSE-3p-L0x">
                                 <cells>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" textLabel="WAR-06-Bm8" style="IBUITableViewCellStyleDefault" id="Rek-sI-9an" customClass="WALocalizedCell">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" textLabel="WAR-06-Bm8" style="IBUITableViewCellStyleDefault" id="Rek-sI-9an" customClass="WALocalizedTableViewCell">
                                         <rect key="frame" x="0.0" y="10" width="320" height="45"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
@@ -313,7 +308,7 @@
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         </view>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" textLabel="OIv-A5-N1k" style="IBUITableViewCellStyleDefault" id="IvQ-KB-jsA" customClass="WALocalizedCell">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" textLabel="OIv-A5-N1k" style="IBUITableViewCellStyleDefault" id="IvQ-KB-jsA" customClass="WALocalizedTableViewCell">
                                         <rect key="frame" x="0.0" y="55" width="320" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
@@ -329,7 +324,7 @@
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         </view>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" indentationWidth="10" textLabel="WOl-eU-Hik" style="IBUITableViewCellStyleDefault" id="p8g-lD-acy" customClass="WALocalizedCell">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" indentationWidth="10" textLabel="WOl-eU-Hik" style="IBUITableViewCellStyleDefault" id="p8g-lD-acy" customClass="WALocalizedTableViewCell">
                                         <rect key="frame" x="0.0" y="99" width="320" height="45"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
@@ -583,7 +578,7 @@
                         <sections>
                             <tableViewSection id="0GS-2a-pHa">
                                 <cells>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" textLabel="51O-As-E34" detailTextLabel="urH-gP-L4v" style="IBUITableViewCellStyleSubtitle" id="r5V-Lx-doH" customClass="WALocalizedCell">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" textLabel="51O-As-E34" detailTextLabel="urH-gP-L4v" style="IBUITableViewCellStyleSubtitle" id="r5V-Lx-doH" customClass="WALocalizedTableViewCell">
                                         <rect key="frame" x="0.0" y="30" width="320" height="45"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
@@ -604,7 +599,7 @@
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         </view>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" textLabel="2wg-Lw-z1H" detailTextLabel="chO-N2-cYE" style="IBUITableViewCellStyleSubtitle" id="Pj9-FO-76v" customClass="WALocalizedCell">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" textLabel="2wg-Lw-z1H" detailTextLabel="chO-N2-cYE" style="IBUITableViewCellStyleSubtitle" id="Pj9-FO-76v" customClass="WALocalizedTableViewCell">
                                         <rect key="frame" x="0.0" y="75" width="320" height="45"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
@@ -712,11 +707,11 @@
         <class className="WALocalizedButton" superclassName="UIButton">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/WALocalizedButton.h"/>
         </class>
-        <class className="WALocalizedCell" superclassName="UITableViewCell">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/WALocalizedCell.h"/>
-        </class>
         <class className="WALocalizedLabel" superclassName="UILabel">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/WALocalizedLabel.h"/>
+        </class>
+        <class className="WALocalizedTableViewCell" superclassName="UITableViewCell">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/WALocalizedTableViewCell.h"/>
         </class>
     </classes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
@@ -725,7 +720,7 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
+        <segue reference="cbj-xd-IHe"/>
         <segue reference="vl7-D0-o14"/>
-        <segue reference="N9p-mN-Fbh"/>
     </inferredMetricsTieBreakers>
 </document>

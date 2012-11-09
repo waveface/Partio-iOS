@@ -78,6 +78,7 @@ static NSString * const kWASegueSignUpToPhotoImport = @"WASegueSignUpToPhotoImpo
 	self.emailSignupButton = footer.emailLoginButton;
 	[self.emailSignupButton setTitle:NSLocalizedString(@"ACTION_SIGN_UP", @"Email sign up button") forState:UIControlStateNormal];
 	[self.emailSignupButton setTitle:NSLocalizedString(@"ACTION_SIGN_UP", @"Email sign up button") forState:UIControlStateDisabled];
+	[self.emailSignupButton setTitle:NSLocalizedString(@"ACTION_SIGN_UP", @"Email sign up button") forState:UIControlStateHighlighted];
 	[self.emailSignupButton addTarget:self action:@selector(handleEmailSignup:) forControlEvents:UIControlEventTouchUpInside];
 
 	UIButton *signup = self.emailSignupButton;
@@ -136,6 +137,7 @@ static NSString * const kWASegueSignUpToPhotoImport = @"WASegueSignUpToPhotoImpo
 
 - (void)handleFacebookSignup:(UIButton *)sender {
 	
+	// TODO: duplicate function, needs refactoring
 	sender.enabled = NO;
 	WAOverlayBezel *busyBezel = [WAOverlayBezel bezelWithStyle:WAActivityIndicatorBezelStyle];
 	[busyBezel showWithAnimation:WAOverlayBezelAnimationFade];
@@ -332,6 +334,18 @@ static NSString * const kWASegueSignUpToPhotoImport = @"WASegueSignUpToPhotoImpo
 			[self.emailSignupButton sendActionsForControlEvents:UIControlEventTouchUpInside];
 		}
 		
+	}
+	
+	return YES;
+	
+}
+
+- (BOOL) textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
+	
+	if ([self.emailField.text length] && [self.passwordField.text length] && [self.nicknameField.text length]) {
+		self.emailSignupButton.enabled = YES;
+	} else {
+		self.emailSignupButton.enabled = NO;
 	}
 	
 	return YES;
