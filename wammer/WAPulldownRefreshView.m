@@ -34,7 +34,7 @@
 	)];
 	
 	highlight.frame = CGRectOffset(highlight.frame, 0, 1);
-	highlight.backgroundColor = [UIColor colorWithWhite:1 alpha:0.125];
+	highlight.backgroundColor = [UIColor colorWithRed:0.95f green:0.95f blue:0.95f alpha:1];
 	highlight.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleTopMargin;
 	
 	[self addSubview:highlight];
@@ -47,37 +47,21 @@
 		kCAGravityBottom
 	)];
 	
-	lining.backgroundColor = [UIColor colorWithWhite:0 alpha:0.125];
+	lining.backgroundColor = [UIColor colorWithRed:0.95f green:0.95f blue:0.95f alpha:1];
 	lining.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleTopMargin;
 	
 	[self addSubview:lining];
 	[self sendSubviewToBack:lining];
 	
-		
-	IRGradientView *pulldownHeaderBackgroundShadow = [[IRGradientView alloc] initWithFrame:IRGravitize(
-		self.bounds,
-		(CGSize){ CGRectGetWidth(self.bounds), 3 },
-		kCAGravityBottom
-	)];
-	
-	pulldownHeaderBackgroundShadow.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleTopMargin;
-	
-	UIColor *fromColor = [UIColor colorWithWhite:0 alpha:0];
-	UIColor *toColor = [UIColor colorWithWhite:0 alpha:0.125];
-	[pulldownHeaderBackgroundShadow setLinearGradientFromColor:fromColor anchor:irTop toColor:toColor anchor:irBottom];
-		
-	[self addSubview:pulldownHeaderBackgroundShadow];
-	[self sendSubviewToBack:pulldownHeaderBackgroundShadow];
-	
-	
 	UIView *pulldownHeaderBackground = [[UIView alloc] initWithFrame:UIEdgeInsetsInsetRect(self.bounds, (UIEdgeInsets){ -256, 0, 0, 0 })];
-	pulldownHeaderBackground.backgroundColor = [UIColor colorWithWhite:0 alpha:0.125];
+	pulldownHeaderBackground.backgroundColor = [UIColor colorWithRed:0.95f green:0.95f blue:0.95f alpha:1];
 	pulldownHeaderBackground.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
 	
 	[self addSubview:pulldownHeaderBackground];
 	[self sendSubviewToBack:pulldownHeaderBackground];
 	
 	
+	self.spinner.color = [UIColor lightGrayColor];
   [self.spinner startAnimating];
   [self.spinner setHidesWhenStopped:NO];
   

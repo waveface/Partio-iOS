@@ -72,7 +72,7 @@ typedef enum WASyncStatus: NSUInteger {
 	WANavigationController *navC = (WANavigationController *)[sb instantiateInitialViewController];
 	NSCParameterAssert([navC isKindOfClass:[WANavigationController class]]);
 	
-	navC.navigationItem.titleView = WAStandardTitleLabelWithString(NSLocalizedString(@"USER_INFO_CONTROLLER_TITLE", @"Settings for User popover"));
+	navC.title = NSLocalizedString(@"USER_INFO_CONTROLLER_TITLE", @"Settings for User popover");
 	WAUserInfoViewController *uiVC = (WAUserInfoViewController *)navC.topViewController;
 	NSCParameterAssert([uiVC isKindOfClass:[WAUserInfoViewController class]]);
 	

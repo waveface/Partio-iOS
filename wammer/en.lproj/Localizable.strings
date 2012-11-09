@@ -188,7 +188,7 @@
 "ERROR_ARTICLE_ENTITY_SYNC_FAILURE_WITH_UNDERLYING_ERROR_DESCRIPTION_FORMAT" = "A necessary task failed: %@ — Your post has been saved as a draft.";
 
 /* Title for Events view */
-"EVENTS_CONTROLLER_TITLE" = "Events";
+"EVENTS_CONTROLLER_TITLE" = "EVENTS";
 
 /* Message for an alert view to show user his FB account has been connected to another Stream user */
 "FACEBOOK_CONNECT_ACCOUNT_OCCUPIED_MESSAGE" = "The Facebook account you’re using has already been registered. Please use another Facebook account.";
@@ -471,24 +471,6 @@
 "PASSWORD_PLACEHOLDER" = "••••••••";
 
 /* Class = "IBUILabel"; text = "FEB"; ObjectID = "50"; */
-"FEB" = "FEB";
-
-/* Class = "IBUILabel"; text = "FEB"; ObjectID = "64"; */
-"FEB" = "FEB";
-
-/* Class = "IBUILabel"; text = "FEB"; ObjectID = "76"; */
-"FEB" = "FEB";
-
-/* Class = "IBUILabel"; text = "FEB"; ObjectID = "90"; */
-"FEB" = "FEB";
-
-/* Class = "IBUILabel"; text = "FEB"; ObjectID = "64"; */
-"FEB" = "FEB";
-
-/* Class = "IBUILabel"; text = "FEB"; ObjectID = "76"; */
-"FEB" = "FEB";
-
-/* Class = "IBUILabel"; text = "FEB"; ObjectID = "90"; */
 "FEB" = "FEB";
 
 /* Class = "IBUILabel"; text = "FEB"; ObjectID = "110"; */

@@ -110,6 +110,10 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
 			@"timestamp", @"file_create_time",
       
 			@"pageElements", @"pageElements",
+							 
+			@"webURL", @"web_url",
+			@"webTitle", @"web_title",
+			@"webFaviconURL", @"web_favicon",
 			
 		nil];
 		
@@ -149,7 +153,18 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
   
   if ([incomingFileType isEqualToString:@"image"]) {
   
-    //  ?
+    NSString *webURLString = [incomingRepresentation valueForKeyPath:@"image_meta.web_url"];
+		if ([webURLString isKindOfClass:[NSString class]])
+			[returnedDictionary setObject:webURLString forKey:@"web_url"];
+		
+		NSString *webFaviconURLString = [incomingRepresentation valueForKeyPath:@"image_meta.web_favicon"];
+		if ([webFaviconURLString isKindOfClass:[NSString class]])
+			[returnedDictionary setObject:webFaviconURLString forKey:@"web_favicon"];
+		
+		NSString *webTitleString = [incomingRepresentation valueForKeyPath:@"image_meta.web_title"];
+		if ([webTitleString isKindOfClass:[NSString class]])
+			[returnedDictionary setObject:webTitleString forKey:@"web_title"];
+		
   
   } else if ([incomingFileType isEqualToString:@"doc"]) {
   

@@ -178,6 +178,12 @@ static NSString * const kObjectQueue = @"+[WAArticleViewController objectQueue]"
 	
 	}
 	
+	__weak WAArticleViewController *wSelf = self;
+	self.navigationItem.leftBarButtonItem = WABackBarButtonItem([UIImage imageNamed:@"back"], @"", ^{
+		[wSelf.navigationController popViewControllerAnimated:YES];
+	});
+
+	
 }
 
 - (void) viewWillUnload {
