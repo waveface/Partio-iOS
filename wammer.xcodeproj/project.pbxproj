@@ -128,8 +128,9 @@
 		7D296DAA1643818000870747 /* libSocketRocket.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D6470A71642218800DBDEA6 /* libSocketRocket.a */; };
 		7D29701B1643B5CE00870747 /* WACollectionTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D29701A1643B5CE00870747 /* WACollectionTests.m */; };
 		7D29702B1643BC2F00870747 /* WAModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = FFCD324114B997B70035C4F5 /* WAModel.xcdatamodeld */; };
-		7D4BCD43164760B70013143D /* WACollection.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D4BCD41164760B70013143D /* WACollection.m */; };
-		7D4BCD44164760B70013143D /* WACollection.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D4BCD41164760B70013143D /* WACollection.m */; };
+		7D7A442E164CF2FB00E156CF /* WACollection.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D7A442D164CF2FB00E156CF /* WACollection.m */; };
+		7D7A442F164CF2FB00E156CF /* WACollection.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D7A442D164CF2FB00E156CF /* WACollection.m */; };
+		7D7A4430164CF2FB00E156CF /* WACollection.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D7A442D164CF2FB00E156CF /* WACollection.m */; };
 		7D857D54164250B80092CF5F /* libAQGridView.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D857D53164249DA0092CF5F /* libAQGridView.a */; };
 		7D85EE6E1637936A00D5630A /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7D85EE6D1637936A00D5630A /* Default-568h@2x.png */; };
 		7D92E5B216070705000C7B06 /* PhotoPostWithURLHistoryStyle.txt in Resources */ = {isa = PBXBuildFile; fileRef = 7D92E5B0160703F6000C7B06 /* PhotoPostWithURLHistoryStyle.txt */; };
@@ -1230,8 +1231,8 @@
 		7D1BC2F116437C9F0060831E /* libPods.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPods.a; path = "Pods/build/Release-iphoneos/libPods.a"; sourceTree = "<group>"; };
 		7D2970191643B5CE00870747 /* WACollectionTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WACollectionTests.h; sourceTree = "<group>"; };
 		7D29701A1643B5CE00870747 /* WACollectionTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WACollectionTests.m; sourceTree = "<group>"; };
-		7D4BCD40164760B70013143D /* WACollection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WACollection.h; sourceTree = "<group>"; };
-		7D4BCD41164760B70013143D /* WACollection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WACollection.m; sourceTree = "<group>"; };
+		7D7A442C164CF2FB00E156CF /* WACollection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WACollection.h; sourceTree = "<group>"; };
+		7D7A442D164CF2FB00E156CF /* WACollection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WACollection.m; sourceTree = "<group>"; };
 		7D857D4B164249DA0092CF5F /* AQGridView.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = AQGridView.xcodeproj; path = external/AQGridView/AQGridView.xcodeproj; sourceTree = "<group>"; };
 		7D85EE6D1637936A00D5630A /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default-568h@2x.png"; path = "Resources/Default-568h@2x.png"; sourceTree = "<group>"; };
 		7D92E5B0160703F6000C7B06 /* PhotoPostWithURLHistoryStyle.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = PhotoPostWithURLHistoryStyle.txt; sourceTree = "<group>"; };
@@ -2869,9 +2870,9 @@
 		FF97382213D821C1003D1722 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				7D4BCD40164760B70013143D /* WACollection.h */,
-				7D4BCD41164760B70013143D /* WACollection.m */,
 				FFCD324114B997B70035C4F5 /* WAModel.xcdatamodeld */,
+				7D7A442C164CF2FB00E156CF /* WACollection.h */,
+				7D7A442D164CF2FB00E156CF /* WACollection.m */,
 				FF4BDEAC156A539100C105D5 /* Data Store */,
 				FF4BDEB1156A540D00C105D5 /* User */,
 				FF4BDEAB156A535300C105D5 /* Article */,
@@ -4485,7 +4486,7 @@
 				7D9B1D99162BE0D2000E5350 /* WAFacebookConnectionSwitch.m in Sources */,
 				7D9B1D9A162BE1B1000E5350 /* WARemoteInterface+SocialNetworks.m in Sources */,
 				7D29701B1643B5CE00870747 /* WACollectionTests.m in Sources */,
-				7D4BCD43164760B70013143D /* WACollection.m in Sources */,
+				7D7A442F164CF2FB00E156CF /* WACollection.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4496,7 +4497,7 @@
 				7D0CDD0C162E5A080027D35F /* Stream_iOS_ApplicationTests.m in Sources */,
 				7D0CDD18162E5FC90027D35F /* WAFacebookConnectionSwitchTest.m in Sources */,
 				7D29702B1643BC2F00870747 /* WAModel.xcdatamodeld in Sources */,
-				7D4BCD44164760B70013143D /* WACollection.m in Sources */,
+				7D7A4430164CF2FB00E156CF /* WACollection.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4769,7 +4770,6 @@
 				80DA985416496FED0030CA21 /* WAEventViewController_Link.m in Sources */,
 				80DA985516496FED0030CA21 /* WAEventViewController_Photo.m in Sources */,
 				80DA985616496FED0030CA21 /* WAEventViewController.m in Sources */,
-				7D4BCD42164760B70013143D /* WACollection.m in Sources */,
 				7DB78A631649005E00E165E9 /* WAPhotoStreamViewController.m in Sources */,
 				7DB78A68164900E400E165E9 /* WAPhotoStreamViewCell.m in Sources */,
 				80B1CCF5164B6ECF009941E5 /* WAPeople+WARemoteInterfaceEntitySyncing.m in Sources */,
@@ -4778,6 +4778,7 @@
 				80B1CCFE164B709A009941E5 /* WALocation+WARemoteInterfaceEntitySyncing.m in Sources */,
 				80638BF2164CA663005695E3 /* WATag.m in Sources */,
 				80638BFC164CA7DA005695E3 /* WATagGroup.m in Sources */,
+				7D7A442E164CF2FB00E156CF /* WACollection.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
