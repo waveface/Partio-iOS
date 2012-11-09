@@ -707,7 +707,7 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 				NSManagedObjectContext *context = [[WADataStore defaultStore] defaultAutoUpdatedMOC];
 				WAFile *savedFile = (WAFile *)[context irManagedObjectForURI:fileURI];
 				
-				NSCParameterAssert(savedFile.article);
+				NSCParameterAssert(savedFile.articles);
 				NSCParameterAssert(savedFile.identifier);
 				aCallback(savedFile.identifier);
 				

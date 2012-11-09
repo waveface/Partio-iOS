@@ -429,8 +429,10 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
 				[options setObject:file.identifier forKey:kWARemoteAttachmentUpdatedObjectIdentifier];
 			}
 
-			if (file.article.identifier) {
-				[options setObject:file.article.identifier forKey:kWARemoteArticleIdentifier];
+			NSAssert1(file.articles.count>0, @"WAFile entity %@ must have already been associated with an article", file);
+			WAArticle *article = [[file.articles allObjects] objectAtIndex:0];  // if the post is from device itself, there should be only one article in db, this should be right, but careful
+			if (article.identifier) {
+				[options setObject:article.identifier forKey:kWARemoteArticleIdentifier];
 			}
 
 			if (file.exif) {
@@ -522,8 +524,9 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
 			if (file.identifier)
 				[options setObject:file.identifier forKey:kWARemoteAttachmentUpdatedObjectIdentifier];
 
-			if (file.article.identifier) {
-				[options setObject:file.article.identifier forKey:kWARemoteArticleIdentifier];
+			WAArticle *article = [[file.articles allObjects] objectAtIndex:0];
+			if (article.identifier) {
+				[options setObject:article.identifier forKey:kWARemoteArticleIdentifier];
 			}
 
 			if (file.exif) {

@@ -192,43 +192,19 @@
 		
 		case 1: {
 
-			if ([article.text length] > 0) {
-
 				return @"PostCell-Stacked-1-Photo";
-
-			} else {
-
-				return @"PostCell-Stacked-1-PhotoOnly";
-
-			}
 
 		}
 		
 		case 2: {
 
-			if ([article.text length] > 0) {
-
 				return @"PostCell-Stacked-2-Photo";
-
-			} else {
-
-				return @"PostCell-Stacked-2-PhotoOnly";
-
-			}
 
 		}
 		
 		default: {
 
-			if ([article.text length] > 0) {
-
 				return @"PostCell-Stacked-3-Photo";
-
-			} else {
-
-				return @"PostCell-Stacked-3-Photo";
-
-			}
 
 		}
 

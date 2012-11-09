@@ -374,7 +374,8 @@
 	__block WAFile *representedFile = [self.article.files objectAtIndex:index];
 	
 	NSParameterAssert(representedFile);
-	NSParameterAssert(representedFile.article);
+	NSParameterAssert(representedFile.articles);
+	NSAssert1(representedFile.articles.count>0, @"WAFile entity %@ must have already been associated with an article", representedFile);
 	
 	if (!cell) {
 	
@@ -397,7 +398,8 @@
 		if (!wCell)
 			return;
 	
-		WAArticle *article = representedFile.article;
+		// FIXME: find the correct post to remove from
+		WAArticle *article = [[representedFile.articles allObjects] objectAtIndex:0];
 		
 		[[UIApplication sharedApplication] beginIgnoringInteractionEvents];
 		[[UIApplication sharedApplication] performSelector:@selector(endIgnoringInteractionEvents) withObject:nil afterDelay:0.5f];
