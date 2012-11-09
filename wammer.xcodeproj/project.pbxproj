@@ -213,7 +213,6 @@
 		80B1CCFE164B709A009941E5 /* WALocation+WARemoteInterfaceEntitySyncing.m in Sources */ = {isa = PBXBuildFile; fileRef = 80B1CCFD164B7099009941E5 /* WALocation+WARemoteInterfaceEntitySyncing.m */; };
 		80B1CD06164B8479009941E5 /* EventCameraIcon in Resources */ = {isa = PBXBuildFile; fileRef = 80B1CCFF164B8479009941E5 /* EventCameraIcon */; };
 		80B1CD07164B8479009941E5 /* EventCameraIcon@2x in Resources */ = {isa = PBXBuildFile; fileRef = 80B1CD00164B8479009941E5 /* EventCameraIcon@2x */; };
-		80B1CD08164B8479009941E5 /* EventCardBG.png in Resources */ = {isa = PBXBuildFile; fileRef = 80B1CD01164B8479009941E5 /* EventCardBG.png */; };
 		80B1CD09164B8479009941E5 /* EventDocIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 80B1CD02164B8479009941E5 /* EventDocIcon.png */; };
 		80B1CD0A164B8479009941E5 /* EventDocIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 80B1CD03164B8479009941E5 /* EventDocIcon@2x.png */; };
 		80B1CD0B164B8479009941E5 /* EventLinkIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 80B1CD04164B8479009941E5 /* EventLinkIcon.png */; };
@@ -4271,7 +4270,6 @@
 				DEF13275164B83CE0051284D /* SettingsIcon@2x.png in Resources */,
 				80B1CD06164B8479009941E5 /* EventCameraIcon in Resources */,
 				80B1CD07164B8479009941E5 /* EventCameraIcon@2x in Resources */,
-				80B1CD08164B8479009941E5 /* EventCardBG.png in Resources */,
 				80B1CD09164B8479009941E5 /* EventDocIcon.png in Resources */,
 				80B1CD0A164B8479009941E5 /* EventDocIcon@2x.png in Resources */,
 				80B1CD0B164B8479009941E5 /* EventLinkIcon.png in Resources */,
