@@ -6,7 +6,9 @@
 //  Copyright (c) 2012 Waveface. All rights reserved.
 //
 
+#import "WARemoteInterfaceEntitySyncing.h"
 #import "WATag.h"
+
 
 @interface WATag (WARemoteInterfaceEntitySyncing)
 

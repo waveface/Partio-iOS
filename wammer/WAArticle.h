@@ -25,7 +25,7 @@ typedef enum {
 } WAImportType;
 
 
-@class WAComment, WAFile, WAGroup, WAPreview, WAUser;
+@class WAComment, WAFile, WAGroup, WAPreview, WAUser, WALocation;
 
 @interface WAArticle : IRManagedObject
 
@@ -47,6 +47,12 @@ typedef enum {
 @property (nonatomic, retain) WAFile *representingFile;
 @property (nonatomic, retain) NSNumber *import;
 @property (nonatomic, retain) NSNumber *style;
+@property (nonatomic, retain) NSNumber *event;
+@property (nonatomic, retain) NSSet *tags;
+@property (nonatomic, retain) NSSet *descriptiveTags;
+@property (nonatomic, retain) NSSet *people;
+@property (nonatomic, retain) WALocation *location;
+@property (nonatomic, retain) NSString *eventDescription;
 @end
 
 @interface WAArticle (CoreDataGeneratedAccessors)

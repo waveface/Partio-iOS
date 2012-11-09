@@ -20,6 +20,7 @@
             <userInfo/>
         </attribute>
         <attribute name="event" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="eventDescription" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="favorite" attributeType="Boolean" defaultValueString="NO" indexed="YES" syncable="YES"/>
         <attribute name="hidden" attributeType="Boolean" defaultValueString="NO" indexed="YES" syncable="YES"/>
         <attribute name="identifier" optional="YES" attributeType="String" indexed="YES">
@@ -35,7 +36,7 @@
         <relationship name="comments" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="WAComment" inverseName="article" inverseEntity="WAComment">
             <userInfo/>
         </relationship>
-        <relationship name="descriptiveTags" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="WATagGroup" inverseName="article" inverseEntity="WATagGroup" syncable="YES"/>
+        <relationship name="descriptiveTags" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="WATagGroup" inverseName="article" inverseEntity="WATagGroup" syncable="YES"/>
         <relationship name="files" optional="YES" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="WAFile" inverseName="article" inverseEntity="WAFile">
             <userInfo/>
         </relationship>
@@ -44,10 +45,10 @@
         <relationship name="owner" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="WAUser" inverseName="articles" inverseEntity="WAUser">
             <userInfo/>
         </relationship>
-        <relationship name="people" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="WAPeople" inverseName="article" inverseEntity="WAPeople" syncable="YES"/>
+        <relationship name="people" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="WAPeople" inverseName="article" inverseEntity="WAPeople" syncable="YES"/>
         <relationship name="previews" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="WAPreview" inverseName="article" inverseEntity="WAPreview" syncable="YES"/>
         <relationship name="representingFile" optional="YES" minCount="1" maxCount="1" deletionRule="Deny" destinationEntity="WAFile" inverseName="representedArticle" inverseEntity="WAFile" syncable="YES"/>
-        <relationship name="tags" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="WATag" inverseName="article" inverseEntity="WATag" syncable="YES"/>
+        <relationship name="tags" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="WATag" inverseName="article" inverseEntity="WATag" syncable="YES"/>
         <compoundIndexes>
             <compoundIndex>
                 <index value="identifier"/>
@@ -193,10 +194,11 @@
             </compoundIndex>
         </compoundIndexes>
     </entity>
-    <entity name="WALocation" syncable="YES">
+    <entity name="WALocation" representedClassName="WALocation" syncable="YES">
         <attribute name="latitude" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
         <attribute name="longitude" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="zoomLevel" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <relationship name="article" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="WAArticle" inverseName="location" inverseEntity="WAArticle" syncable="YES"/>
     </entity>
     <entity name="WAOpenGraphElement" representedClassName="WAOpenGraphElement" syncable="YES">
@@ -218,7 +220,7 @@
         <relationship name="owner" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="WAOpenGraphElement" inverseName="images" inverseEntity="WAOpenGraphElement" syncable="YES"/>
         <relationship name="representedElement" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="WAOpenGraphElement" inverseName="representingImage" inverseEntity="WAOpenGraphElement" syncable="YES"/>
     </entity>
-    <entity name="WAPeople" syncable="YES">
+    <entity name="WAPeople" representedClassName="WAPeople" syncable="YES">
         <attribute name="avatarURL" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="article" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="WAArticle" inverseName="people" inverseEntity="WAArticle" syncable="YES"/>
@@ -247,15 +249,15 @@
         <attribute name="queueStatus" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <relationship name="owner" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="WAUser" inverseName="storages" inverseEntity="WAUser" syncable="YES"/>
     </entity>
-    <entity name="WATag" syncable="YES">
+    <entity name="WATag" representedClassName="WATag" syncable="YES">
         <attribute name="tagValue" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="article" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="WAArticle" inverseName="tags" inverseEntity="WAArticle" syncable="YES"/>
         <relationship name="tagGroup" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="WATagGroup" inverseName="tags" inverseEntity="WATagGroup" syncable="YES"/>
     </entity>
-    <entity name="WATagGroup" syncable="YES">
-        <attribute name="groupLeading" optional="YES" attributeType="String" syncable="YES"/>
+    <entity name="WATagGroup" representedClassName="WATagGroup" syncable="YES">
+        <attribute name="leadingString" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="article" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="WAArticle" inverseName="descriptiveTags" inverseEntity="WAArticle" syncable="YES"/>
-        <relationship name="tags" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="WATag" inverseName="tagGroup" inverseEntity="WATag" syncable="YES"/>
+        <relationship name="tags" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="WATag" inverseName="tagGroup" inverseEntity="WATag" syncable="YES"/>
     </entity>
     <entity name="WAUser" representedClassName="WAUser">
         <attribute name="avatar" optional="YES" attributeType="Transformable" valueTransformerName="IRImageUnarchiveFromDataTransformer">
@@ -309,21 +311,21 @@
     <fetchRequest name="WAFRUser" entity="WAUser" predicateString="identifier == $Identifier"/>
     <elements>
         <element name="Collection" positionX="493" positionY="-153" width="128" height="135"/>
-        <element name="WAArticle" positionX="-36" positionY="-153" width="128" height="388"/>
+        <element name="WAArticle" positionX="-36" positionY="-153" width="128" height="405"/>
         <element name="WACache" positionX="-261" positionY="72" width="128" height="135"/>
         <element name="WAComment" positionX="144" positionY="-450" width="128" height="135"/>
         <element name="WAFile" positionX="376" positionY="81" width="128" height="540"/>
         <element name="WAFileExif" positionX="772" positionY="234" width="128" height="315"/>
         <element name="WAFilePageElement" positionX="-477" positionY="513" width="128" height="90"/>
         <element name="WAGroup" positionX="-180" positionY="483" width="128" height="120"/>
+        <element name="WALocation" positionX="709" positionY="-103" width="128" height="120"/>
         <element name="WAOpenGraphElement" positionX="-495" positionY="198" width="128" height="195"/>
         <element name="WAOpenGraphElementImage" positionX="-477" positionY="15" width="128" height="120"/>
+        <element name="WAPeople" positionX="574" positionY="144" width="128" height="88"/>
         <element name="WAPreview" positionX="-243" positionY="300" width="128" height="150"/>
         <element name="WAStorage" positionX="360" positionY="-450" width="128" height="240"/>
-        <element name="WAUser" positionX="169" positionY="-153" width="128" height="225"/>
-        <element name="WALocation" positionX="709" positionY="-103" width="128" height="103"/>
         <element name="WATag" positionX="567" positionY="2" width="128" height="88"/>
-        <element name="WAPeople" positionX="574" positionY="144" width="128" height="88"/>
-        <element name="WATagGroup" positionX="738" positionY="29" width="128" height="88"/>
+        <element name="WATagGroup" positionX="738" positionY="29" width="128" height="90"/>
+        <element name="WAUser" positionX="169" positionY="-153" width="128" height="225"/>
     </elements>
 </model>

@@ -20,5 +20,7 @@
 @property (nonatomic, strong, readonly) UICollectionView *itemsView;
 
 + (WAEventViewController *) controllerForArticle:(WAArticle *)article;
++ (NSAttributedString *) attributedDescriptionStringForEvent:(WAArticle*)event;
++ (NSAttributedString *) attributedStringForTags:(NSArray*)tags;
 
 @end

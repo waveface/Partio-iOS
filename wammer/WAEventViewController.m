@@ -9,6 +9,11 @@
 #import "WAEventViewController.h"
 #import "WADataStore.h"
 #import "WADataStore+FetchingConveniences.h"
+#import "WAArticle.h"
+#import "WATag.h"
+#import "WATagGroup.h"
+#import "WALocation.h"
+#import "WAPeople.h"
 #import "IRBarButtonItem.h"
 #import "WAAppearance.h"
 #import "WAEventPhotoViewCell.h"
@@ -110,61 +115,124 @@
 	
 }
 
-+ (NSDateFormatter *) dateFormatterForTopLabel {
++ (NSDateFormatter *) dateFormatter {
 	static NSDateFormatter *formatter = nil;
 	
 	static dispatch_once_t onceToken;
 	dispatch_once(&onceToken, ^{
 		
     formatter = [[NSDateFormatter alloc] init];
-		[formatter setDateFormat:@"EEEE | h:mm a"];
+		[formatter setDateFormat:@"EEEE, MMMM d, yyyy"];
 
 	});
 	
 	return formatter;
 }
 
-- (NSAttributedString *) attributedStringForEventDescription {
++ (NSDateFormatter *) timeFormatter {
+	static NSDateFormatter *formatter = nil;
 	
-	NSString *action = @"Take Picture";
-	NSArray *locations = @[@"Baker Street", @"London"];
-	NSArray *people = @[@"Steven Shen"];
+	static dispatch_once_t onceToken;
+	dispatch_once(&onceToken, ^{
+		
+    formatter = [[NSDateFormatter alloc] init];
+		[formatter setDateFormat:@"h:mm a"];
+		
+	});
+	
+	return formatter;
+}
+
++ (NSAttributedString *) attributedDescriptionStringForEvent:(WAArticle*)event {
+
+	NSMutableArray *locations = [NSMutableArray array];
+	if (event.location != nil && event.location.name != nil) {
+		[locations addObject:event.location.name];
+	}
+	
+	NSMutableArray *people = [NSMutableArray array];
+	if (event.people != nil) {
+		[event.people enumerateObjectsUsingBlock:^(WAPeople *aPersonRep, BOOL *stop) {
+			[people addObject:aPersonRep.name];
+		}];
+	}
+	
+	NSMutableArray *otherDesc = [NSMutableArray array];
+	if (event.descriptiveTags != nil) {
+		[event.descriptiveTags enumerateObjectsUsingBlock:^(WATagGroup *aTGRep, BOOL *stop) {
+			NSString *leading = aTGRep.leadingString;
+			if (aTGRep.tags != nil) {
+				NSMutableArray *tags = [NSMutableArray array];
+				[aTGRep.tags enumerateObjectsUsingBlock:^(WATag *aTagRep, BOOL *stop) {
+					[tags addObject:aTagRep.tagValue];
+				}];
+				
+				if (tags.count) {
+					NSString *allTag = [tags componentsJoinedByString:@", "];
+					
+					[otherDesc addObject:[NSString stringWithFormat:@"%@  %@", leading, allTag]];
+				}
+			}
+		}];
+	}
+	
+	UIFont *hlFont = [UIFont fontWithName:@"Georgia-BoldItalic" size:17.0f];
 	
 	NSString *locString = [locations componentsJoinedByString:@","];
 	NSString *peoString = [people componentsJoinedByString:@","];
-	NSString *rawString = [NSString stringWithFormat:@"%@ At %@ with %@", action, locString, peoString];
+	NSString *otherString = [otherDesc componentsJoinedByString:@", "];
+	NSMutableString *rawString = nil;
 	
+	if (event.eventDescription && event.eventDescription.length) {
+		rawString = [NSMutableString stringWithFormat:@"%@", event.eventDescription];
+	} else {
+		rawString = [NSMutableString string];
+	}
+	
+	if (locations && locations.count) {
+		[rawString appendFormat:@" at %@", locString];
+	}
+	
+	if (people && people.count) {
+		[rawString appendFormat:@" with %@", peoString];
+	}
+	
+	if (otherDesc && otherDesc.count) {
+		[rawString appendString:otherString];
+	}
+		
 	NSMutableAttributedString *attrString = [[NSMutableAttributedString alloc] initWithString:rawString];
 
-	UIColor *actionColor = [UIColor orangeColor];
-	UIColor *keywordsColor = [UIColor blueColor];
-	UIColor *locationColor = [UIColor blueColor];
-	UIColor *peopleColor = [UIColor greenColor];
+	UIColor *actionColor = [UIColor colorWithRed:0.96f green:0.64f blue:0.12f alpha:1];
+	UIColor *othersColor = [UIColor colorWithRed:0.5f green:0.85 blue:0.96 alpha:1];
+	UIColor *locationColor = [UIColor colorWithRed:0.5f green:0.85 blue:0.96 alpha:1];
+	UIColor *peopleColor = [UIColor colorWithRed:0.68f green:0.78f blue:0.26f alpha:1];
 	
-	NSDictionary *actionAttr = [[NSDictionary alloc] initWithObjectsAndKeys:actionColor, NSForegroundColorAttributeName, nil];
-	NSDictionary *keywordsAttr = [[NSDictionary alloc] initWithObjectsAndKeys:keywordsColor, NSForegroundColorAttributeName, nil];
-	NSDictionary *locationAttr = [[NSDictionary alloc] initWithObjectsAndKeys:locationColor, NSForegroundColorAttributeName, nil];
-	NSDictionary *peopleAttr = [[NSDictionary alloc] initWithObjectsAndKeys:peopleColor, NSForegroundColorAttributeName, nil];
+	NSDictionary *actionAttr = [[NSDictionary alloc] initWithObjectsAndKeys:actionColor, NSForegroundColorAttributeName, hlFont, NSFontAttributeName ,nil];
+	NSDictionary *othersAttr = [[NSDictionary alloc] initWithObjectsAndKeys:othersColor, NSForegroundColorAttributeName, hlFont, NSFontAttributeName, nil];
+	NSDictionary *locationAttr = [[NSDictionary alloc] initWithObjectsAndKeys:locationColor, NSForegroundColorAttributeName, hlFont, NSFontAttributeName, nil];
+	NSDictionary *peopleAttr = [[NSDictionary alloc] initWithObjectsAndKeys:peopleColor, NSForegroundColorAttributeName, hlFont, NSFontAttributeName, nil];
 
-	if (action && action.length > 0)
-		[attrString setAttributes:actionAttr range:(NSRange){0, action.length}];
+	if (event.eventDescription && event.eventDescription.length > 0)
+		[attrString setAttributes:actionAttr range:(NSRange){0, event.eventDescription.length}];
 	if (locString && locString.length > 0 )
 		[attrString setAttributes:locationAttr range:(NSRange)[rawString rangeOfString:locString]];
 	if (peoString && peoString.length > 0 )
 		[attrString setAttributes:peopleAttr range:(NSRange)[rawString rangeOfString:peoString]];
+	if (otherString && otherString.length > 0 )
+		[attrString setAttributes:othersAttr range:(NSRange)[rawString rangeOfString:otherString]];
 	
 	return attrString;
 	
 }
 
-- (NSAttributedString *) attributedStringForTags {
-	
-	NSArray *tags = @[@"Google", @"Yahoo"];
-	
-	UIColor *bgColor = [UIColor colorWithRed:0.5f green:0.5f blue:0.5f alpha:1];
++ (NSAttributedString *) attributedStringForTags:(NSArray *)tags {
+		
+	UIFont *font = [UIFont fontWithName:@"HelveticaNeue" size:14.0];
+	UIColor *bgColor = [UIColor colorWithRed:0.75f green:0.75f blue:0.75f alpha:1];
 	UIColor *fgColor = [UIColor whiteColor];
 	
-	NSDictionary *attr = [[NSDictionary alloc] initWithObjectsAndKeys:fgColor, NSForegroundColorAttributeName, bgColor, NSBackgroundColorAttributeName ,nil];
+	NSDictionary *attr = [[NSDictionary alloc] initWithObjectsAndKeys:fgColor, NSForegroundColorAttributeName, bgColor, NSBackgroundColorAttributeName ,font, NSFontAttributeName, nil];
 	
 	NSString *rawString = [tags componentsJoinedByString:@" "];
 	NSMutableAttributedString *attrString = [[NSMutableAttributedString alloc] initWithString:rawString];
@@ -183,11 +251,30 @@
 
 	_headerView = [WAEventHeaderView viewFromNib];
 	
-	NSDateFormatter *formatter = [[self class] dateFormatterForTopLabel];
-	_headerView.topLabel.text = [formatter stringFromDate:self.article.creationDate];
+	if (self.article.location.latitude && self.article.location.longitude) {
+		
+		CLLocationCoordinate2D center = { self.article.location.latitude.floatValue, self.article.location.longitude.floatValue };
+		MKCoordinateSpan span = {0.005, 0.005}; // FIXME: should based on api, currently it is hard coded
+		
+		[_headerView.mapView setRegion:(MKCoordinateRegion) {center, span}];
+		
+	} else {
+		
+		// FIXME: hide the map
+		
+	}
 	
-	_headerView.descriptiveTagsLabel.attributedText = [self attributedStringForEventDescription];
-	_headerView.tagsLabel.attributedText = [self attributedStringForTags];
+	_headerView.dateLabel.text = [[[self class] dateFormatter] stringFromDate:self.article.creationDate];
+
+	_headerView.timeLabel.text = [[[self class] timeFormatter] stringFromDate:self.article.creationDate];
+	
+	_headerView.descriptiveTagsLabel.attributedText = [[self class] attributedDescriptionStringForEvent:self.article];
+	
+	NSMutableArray *tags = [NSMutableArray array];
+	[self.article.tags enumerateObjectsUsingBlock:^(WATag *aTagRep, BOOL *stop) {
+		[tags addObject:aTagRep.tagValue];
+	}];
+	_headerView.tagsLabel.attributedText = [[self class]attributedStringForTags:tags];
 		
 	return _headerView;
 

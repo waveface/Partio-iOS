@@ -34,5 +34,11 @@
 @dynamic representingFile;
 @dynamic import;
 @dynamic style;
+@dynamic location;
+@dynamic event;
+@dynamic tags;
+@dynamic people;
+@dynamic descriptiveTags;
+@dynamic eventDescription;
 
 @end

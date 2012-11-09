@@ -228,9 +228,17 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 	NSFetchRequest *fetchRequest = [[WADataStore defaultStore].persistentStoreCoordinator.managedObjectModel fetchRequestFromTemplateWithName:@"WAFRArticles" substitutionVariables:[NSDictionary dictionary]];
 
 	fetchRequest.relationshipKeyPathsForPrefetching = [NSArray arrayWithObjects:
-																										 @"files",@"files.pageElements",nil];
+																										 @"files",
+																										 @"tags",
+																										 @"people",
+																										 @"location",
+																										 @"previews",
+																										 @"descriptiveTags",
+																										 @"files.pageElements",
+																										 nil];
 	fetchRequest.predicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[
 														fetchRequest.predicate,
+														[NSPredicate predicateWithFormat:@"event = TRUE"],
 														[NSPredicate predicateWithFormat:@"files.@count > 0"],
 														[NSPredicate predicateWithFormat:@"import != 2"]]];
 

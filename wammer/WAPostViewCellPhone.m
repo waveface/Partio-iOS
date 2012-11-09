@@ -15,6 +15,7 @@
 #import "WAPreviewBadge.h"
 #import "WARemoteInterface.h"
 #import "WAArticle.h"
+#import "WAEventViewController.h"
 
 
 @interface WAPostViewCellPhone () <IRTableViewCellPrototype>
@@ -225,7 +226,7 @@
 
 			} else {
 
-				return @"PostCell-Stacked-3-PhotoOnly";
+				return @"PostCell-Stacked-3-Photo";
 
 			}
 
@@ -460,7 +461,8 @@
 		
 	}
 		
-	self.commentLabel.text = post.text;
+	self.commentLabel.attributedText = [WAEventViewController attributedDescriptionStringForEvent:self.article];
+//	self.commentLabel.text = post.text;
 	
 	[self.commentLabel sizeToFit];
 	CGFloat newCommentHeight = CGRectGetHeight(self.commentLabel.frame);

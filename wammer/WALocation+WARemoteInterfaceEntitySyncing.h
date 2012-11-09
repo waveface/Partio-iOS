@@ -6,6 +6,7 @@
 //  Copyright (c) 2012 Waveface. All rights reserved.
 //
 
+#import "WARemoteInterfaceEntitySyncing.h"
 #import "WALocation.h"
 
 @interface WALocation (WARemoteInterfaceEntitySyncing)
