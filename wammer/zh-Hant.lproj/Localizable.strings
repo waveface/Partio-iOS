@@ -283,15 +283,6 @@
 /* Plural noun for draft objects */
 "NOUN_DRAFTS" = "草稿";
 
-/* Nickname title in signup page */
-"NOUN_NICKNAME" = "使用者名稱";
-
-/* Password title in signup page */
-"NOUN_PASSWORD" = "密碼";
-
-/* Email title in signup page */
-"NOUN_USERNAME" = "電子郵件";
-
 /* Photo information in cell */
 "NUMBER_OF_PHOTOS" = "%d 張照片";
 
