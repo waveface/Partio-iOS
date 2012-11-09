@@ -47,8 +47,12 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 	self.days = [NSMutableArray array];
 	self.daysControllers = [[NSMutableDictionary alloc] init];
 	
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleCompositionSessionRequest:) name:kWACompositionSessionRequestedNotification object:nil];
-		
+	[[NSNotificationCenter defaultCenter]
+	 addObserver:self
+	 selector:@selector(handleCompositionSessionRequest:)
+	 name:kWACompositionSessionRequestedNotification
+	 object:nil];
+	
 	[self performFetchRequestForIncomingData];
 	
 	self.title = NSLocalizedString(@"EVENTS_CONTROLLER_TITLE", @"Title for Events view");
@@ -147,7 +151,10 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 
 - (void) dealloc {
 
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:kWACompositionSessionRequestedNotification object:nil];
+	[[NSNotificationCenter defaultCenter]
+	 removeObserver:self
+	 name:kWACompositionSessionRequestedNotification
+	 object:nil];
 	
 }
 
@@ -177,7 +184,7 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 	self.navigationItem.titleView.alpha = 1;
 	
 	[self.navigationController.toolbar setHidden:YES];
-
+	
 }
 
 - (void) viewDidAppear:(BOOL)animated {
@@ -269,10 +276,7 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 	self.days = [NSMutableArray array];
 	self.daysControllers = [NSMutableDictionary dictionary];
 	
-	if (objects == nil) {
-		
-	
-	} else {
+	if (objects) {
 
 		[objects enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
 			

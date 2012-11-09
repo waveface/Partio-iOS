@@ -61,6 +61,13 @@ extern NSString * const kWACallbackActionSetUserPasswordResetEndpointURL;
 
 extern NSString * const kWAPhotoImportEnabled;
 
+extern NSString * const kWABusinessPlan;
+typedef enum WABusinessPlanType: NSInteger {
+	WABusinessPlanFree,
+	WABusinessPlanPremium,
+	WABusinessPlanUltimate
+} WABusinessPlanType;
+
 extern NSString * const WAFeedbackRecipient;
 extern NSString * const WAStreamFeaturesURL;
 
