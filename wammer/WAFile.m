@@ -44,5 +44,8 @@
 @dynamic representedArticle;
 @dynamic exif;
 @dynamic caches;
+@dynamic webURL;
+@dynamic webTitle;
+@dynamic webFaviconURL;
 
 @end

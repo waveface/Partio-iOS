@@ -22,6 +22,7 @@
 @property (nonatomic, readwrite, strong) IBOutlet UITextView *contentTextView;
 @property (nonatomic, readwrite, strong) IBOutlet UILabel *dateOriginLabel;
 @property (nonatomic, readwrite, strong) IBOutlet UILabel *dateLabel;
+@property (nonatomic, readwrite, strong) IBOutlet UILabel *timeLabel;
 @property (nonatomic, readwrite, strong) IBOutlet UILabel *originLabel;
 @property (nonatomic, readwrite, strong) IBOutlet IRLabel *commentLabel;
 @property (nonatomic, readwrite, strong) IBOutlet WAPreviewBadge *previewBadge;
@@ -35,6 +36,9 @@
 @property (nonatomic, readwrite, strong) IBOutlet UILabel *dayLabel;
 @property (nonatomic, readwrite, strong) IBOutlet UILabel *monthLabel;
 @property (nonatomic, readwrite, strong) IBOutlet UIImageView *backgroundImageView;
+@property (nonatomic, readwrite, strong) IBOutlet UIView *containerView;
+
+@property (nonatomic, readwrite, strong) IBOutlet UIImageView *eventCardBGImageView;
 
 @property (strong, nonatomic) IBOutletCollection(UIImageView) NSArray *photoImageViews;
 

@@ -7,9 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "IIViewDeckController.h"
 
-
-@interface WASlidingMenuViewController : UITableViewController
+@interface WASlidingMenuViewController : UITableViewController <IIViewDeckControllerDelegate>
 
 @property (nonatomic, weak) id delegate;
 

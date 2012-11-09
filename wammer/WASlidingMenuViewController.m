@@ -18,6 +18,9 @@
 
 @interface WASlidingMenuViewController ()
 
+@property (nonatomic, strong) NSManagedObjectContext *managedObjectContext;
+@property (nonatomic, strong) WAUser *user;
+
 @end
 
 @implementation WASlidingMenuViewController
@@ -26,14 +29,14 @@
 {
     self = [super initWithStyle:style];
     if (self) {
-        // Custom initialization
+		  // Custom initialization
     }
     return self;
 }
 
 - (void)viewDidLoad
 {
-    [super viewDidLoad];
+	[super viewDidLoad];
 	
 }
 
@@ -90,6 +93,27 @@
 	
 }
 
+- (NSManagedObjectContext *) managedObjectContext {
+  
+  if (_managedObjectContext)
+    return _managedObjectContext;
+	
+  _managedObjectContext = [[WADataStore defaultStore] defaultAutoUpdatedMOC];
+  return _managedObjectContext;
+	
+}
+
+- (WAUser *) user {
+	
+	if (_user)
+		return _user;
+	
+	_user = [[WADataStore defaultStore] mainUserInContext:self.managedObjectContext];
+	return _user;
+	
+}
+
+
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -101,35 +125,98 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
 	
-	return 3;
+	return 6;
 	
 }
+
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *CellIdentifier = @"Cell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+	
     if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+			cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+			cell.selectionStyle = UITableViewCellSelectionStyleGray;
     }
-  
+		
 		switch(indexPath.row) {
 			
-			case 0:
-				cell.textLabel.text = NSLocalizedString(@"SLIDING_MENU_TITLE_TIMELINE", @"Title for Timeline in the sliding menu");
+			case 0: {
+				cell.imageView.image = (self.user.avatar)? self.user.avatar: [UIImage imageNamed:@"WAUserGlyph"];
+				cell.textLabel.text = self.user.nickname;
+				cell.selectionStyle = UITableViewCellSelectionStyleNone;
 				break;
+			}
 				
 			case 1:
-				cell.textLabel.text = NSLocalizedString(@"SLIDING_MENU_TITLE_COLLECTION", @"Title for Collection in the sliding menu");
+				cell.imageView.image = [UIImage imageNamed:@"EventsIcon"];
+				cell.textLabel.text = NSLocalizedString(@"SLIDING_MENU_TITLE_EVENTS", @"Title for Events in the sliding menu");
 				break;
 				
 			case 2:
+				cell.imageView.image = [UIImage imageNamed:@"PhotosIcon"];
+				cell.textLabel.text = NSLocalizedString(@"SLIDING_MENU_TITLE_PHOTOS", @"Title for Photos in the sliding menu");
+				break;
+				
+			case 3:
+				cell.imageView.image = [UIImage imageNamed:@"CollectionIcon"];
+				cell.textLabel.text = NSLocalizedString(@"SLIDING_MENU_TITLE_COLLECTIONS", @"Title for Collections in the sliding menu");
+				break;
+				
+			case 4:
+				cell.imageView.image = [UIImage imageNamed:@"CalIcon"];
+				cell.textLabel.text = NSLocalizedString(@"SLIDING_MENU_TITLE_CALENDAR", @"Title for Calendar in the sliding menu");
+				break;
+				
+			case 5:
+				cell.imageView.image = [UIImage imageNamed:@"SettingsIcon"];
 				cell.textLabel.text = NSLocalizedString(@"SLIDING_MENU_TITLE_SETTINGS", @"Title for Settings in the sliding menu");
 				break;
 		}
 	
     return cell;
 }
+
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+	static NSString *CellIdentifier = @"Cell";
+	
+	cell.textLabel.textColor = [UIColor whiteColor];
+	cell.textLabel.font = [UIFont fontWithName:@"HelveticaNeue-Medium" size:16.0];
+	
+	if (cell == nil) {
+		cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+	}
+  
+	switch(indexPath.row) {
+			
+		case 0:
+			break;
+			
+		case 1:
+			cell.backgroundColor = [UIColor colorWithRed:0.957 green:0.376 blue:0.298 alpha:1.0];
+			break;
+			
+		case 2:
+			cell.backgroundColor = [UIColor colorWithRed:0.463 green:0.667 blue:0.8 alpha:1.0];
+			break;
+			
+		case 3:
+			cell.backgroundColor = [UIColor colorWithRed:1 green:0.651 blue:0 alpha:1.0];
+			break;
+			
+		case 4:
+			cell.backgroundColor = [UIColor colorWithRed:0.486 green:0.612 blue:0.208 alpha:1.0];
+			break;
+			
+		case 5:
+			cell.backgroundColor = [UIColor colorWithRed:0.176 green:0.278 blue:0.475 alpha:1.0];
+			break;
+	}
+	
+}
+
 
 /*
 // Override to support conditional editing of the table view.
@@ -174,11 +261,16 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+	[tableView deselectRowAtIndexPath:indexPath animated:NO];
+	
 	NSInteger row = indexPath.row;
 
 	switch (row) {
+		
+		case 0:
+			break;
 			
-		case 0: {
+		case 1: { // Events
 
 			[self.viewDeckController closeLeftView];
 			WADayViewController *swVC = [[WADayViewController alloc] init];
@@ -189,16 +281,28 @@
 			break;
 		}
 			
-		case 1:
+		case 2:
 			break;
 			
-		case 2: { // Settings
+		case 3:
+			break;
+			
+		case 4:
+			break;
+			
+		case 5: { // Settings
 			
 			[self handleUserInfo];
 			break;
 			
 		}
 	}
+}
+
+#pragma mark - IIViewDeckDelegate protocol
+
+- (void)viewDeckController:(IIViewDeckController *)viewDeckController applyShadow:(CALayer *)shadowLayer withBounds:(CGRect)rect {
+	// No shadow
 }
 
 @end

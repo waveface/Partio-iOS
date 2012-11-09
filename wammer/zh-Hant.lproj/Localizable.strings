@@ -391,14 +391,20 @@
    Title of view controller signing the user up */
 "SIGN_UP_CONTROLLER_TITLE" = "註冊";
 
-/* Title for Collection in the sliding menu */
-"SLIDING_MENU_TITLE_COLLECTION" = "Collection";
+/* Title for Calendar in the sliding menu */
+"SLIDING_MENU_TITLE_CALENDAR" = "擇日";
+
+/* Title for Collections in the sliding menu */
+"SLIDING_MENU_TITLE_COLLECTIONS" = "蒐藏";
+
+/* Title for Events in the sliding menu */
+"SLIDING_MENU_TITLE_EVENTS" = "動態";
+
+/* Title for Photos in the sliding menu */
+"SLIDING_MENU_TITLE_PHOTOS" = "相片";
 
 /* Title for Settings in the sliding menu */
 "SLIDING_MENU_TITLE_SETTINGS" = "設定";
-
-/* Title for Timeline in the sliding menu */
-"SLIDING_MENU_TITLE_TIMELINE" = "Timeline";
 
 /* In Account Info Photo Import Section */
 "START_PHOTO_IMPORT_DESCRIPTION" = "匯入所有 Camera Roll 中的照片";
@@ -603,24 +609,6 @@
 "PASSWORD_PLACEHOLDER" = "••••••••";
 
 /* Class = "IBUILabel"; text = "FEB"; ObjectID = "50"; */
-"FEB" = "FEB";
-
-/* Class = "IBUILabel"; text = "FEB"; ObjectID = "64"; */
-"FEB" = "FEB";
-
-/* Class = "IBUILabel"; text = "FEB"; ObjectID = "76"; */
-"FEB" = "FEB";
-
-/* Class = "IBUILabel"; text = "FEB"; ObjectID = "90"; */
-"FEB" = "FEB";
-
-/* Class = "IBUILabel"; text = "FEB"; ObjectID = "64"; */
-"FEB" = "FEB";
-
-/* Class = "IBUILabel"; text = "FEB"; ObjectID = "76"; */
-"FEB" = "FEB";
-
-/* Class = "IBUILabel"; text = "FEB"; ObjectID = "90"; */
 "FEB" = "FEB";
 
 /* Class = "IBUILabel"; text = "FEB"; ObjectID = "110"; */

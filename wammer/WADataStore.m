@@ -65,7 +65,7 @@ NSString * const kLastChangedPostsUpdateDate = @"WALastChangedPostsUpdateDate";
 
 - (NSDate *) dateFromISO8601String:(NSString *)aValue {
 
-	if (![aValue isKindOfClass:[NSString class]])
+	if (![aValue isKindOfClass:[NSString class]] || aValue.length == 0)
 		return nil;
 
 	NSDate *returned = nil;

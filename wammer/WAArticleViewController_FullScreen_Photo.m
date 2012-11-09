@@ -95,7 +95,13 @@
 
 	self.scrollVelocity = CGPointMake(0.0f, 0.0f);
 	
-	self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(handleAction)];
+	
+	__weak WAArticleViewController_FullScreen_Photo *wSelf = self;
+	IRBarButtonItem *editButton = [IRBarButtonItem itemWithCustomImage:[UIImage imageNamed:@"action"] highlightedImage:nil];
+	editButton.block = ^(void) {
+		[wSelf handleAction];
+	};
+	self.navigationItem.rightBarButtonItem = editButton;
 
 }
 

@@ -237,7 +237,7 @@
     [arguments setObject:[(NSDictionary *)aFilter JSONString] forKey:@"filter_entity"];
   }
 
-  [arguments setObject:[[NSArray arrayWithObjects:@"comment", @"preview", @"soul", @"content", nil] JSONString] forKey:@"component_options"];
+  [arguments setObject:[[NSArray arrayWithObjects:@"content", @"attachment", nil] JSONString] forKey:@"component_options"];
 
   [self.engine fireAPIRequestNamed:@"posts/fetchByFilter" withArguments:arguments options:nil validator:WARemoteInterfaceGenericNoErrorValidator() successHandler:^(NSDictionary *inResponseOrNil, IRWebAPIRequestContext *inResponseContext) {
   
