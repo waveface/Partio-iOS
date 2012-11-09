@@ -14,25 +14,22 @@ NSString * const kPhotoStreamCellID = @"PhotoStreamViewCell";
 
 - (id)initWithFrame:(CGRect)frame
 {
-    self = [super initWithFrame:frame];
-    if (self) {
-        // Initialization code
-			NSArray *arrayOfView = [[NSBundle mainBundle] loadNibNamed:@"WAPhotoStreamViewCell" owner:self options:nil];
-			self = [arrayOfView objectAtIndex:0];
-			
-			self.backgroundColor = [UIColor redColor];
-			self.imageView.backgroundColor = [UIColor darkTextColor];
-    }
-    return self;
+	self = [super initWithFrame:frame];
+	if (self) {
+		// Initialization code
+		NSArray *arrayOfView = [[NSBundle mainBundle] loadNibNamed:@"WAPhotoStreamViewCell" owner:self options:nil];
+		self = [arrayOfView objectAtIndex:0];
+	}
+	return self;
 }
 
 /*
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect
-{
-    // Drawing code
-}
-*/
+ // Only override drawRect: if you perform custom drawing.
+ // An empty implementation adversely affects performance during animation.
+ - (void)drawRect:(CGRect)rect
+ {
+ // Drawing code
+ }
+ */
 
 @end
