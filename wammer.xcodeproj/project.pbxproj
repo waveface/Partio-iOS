@@ -2319,6 +2319,15 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		7D7A4431164CF85800E156CF /* Collection */ = {
+			isa = PBXGroup;
+			children = (
+				7D7A442C164CF2FB00E156CF /* WACollection.h */,
+				7D7A442D164CF2FB00E156CF /* WACollection.m */,
+			);
+			name = Collection;
+			sourceTree = "<group>";
+		};
 		7D857D4C164249DA0092CF5F /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -2871,17 +2880,16 @@
 			isa = PBXGroup;
 			children = (
 				FFCD324114B997B70035C4F5 /* WAModel.xcdatamodeld */,
-				7D7A442C164CF2FB00E156CF /* WACollection.h */,
-				7D7A442D164CF2FB00E156CF /* WACollection.m */,
-				FF4BDEAC156A539100C105D5 /* Data Store */,
-				FF4BDEB1156A540D00C105D5 /* User */,
+				FF4BDEAA156A534500C105D5 /* Additions */,
 				FF4BDEAB156A535300C105D5 /* Article */,
+				132D60341622B66F00148829 /* Cache */,
+				7D7A4431164CF85800E156CF /* Collection */,
 				FF4BDEAF156A53D900C105D5 /* Comment */,
+				FF4BDEAC156A539100C105D5 /* Data Store */,
 				FF4BDEAD156A53AD00C105D5 /* File */,
 				13B6DB9E1615740C00B9CC35 /* FileExif */,
-				132D60341622B66F00148829 /* Cache */,
 				FF4BDEB2156A542800C105D5 /* Preview */,
-				FF4BDEAA156A534500C105D5 /* Additions */,
+				FF4BDEB1156A540D00C105D5 /* User */,
 			);
 			name = Model;
 			path = wammer;
