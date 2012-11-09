@@ -128,7 +128,6 @@
 		7D296DAA1643818000870747 /* libSocketRocket.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D6470A71642218800DBDEA6 /* libSocketRocket.a */; };
 		7D29701B1643B5CE00870747 /* WACollectionTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D29701A1643B5CE00870747 /* WACollectionTests.m */; };
 		7D29702B1643BC2F00870747 /* WAModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = FFCD324114B997B70035C4F5 /* WAModel.xcdatamodeld */; };
-		7D4BCD42164760B70013143D /* WACollection.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D4BCD41164760B70013143D /* WACollection.m */; };
 		7D4BCD43164760B70013143D /* WACollection.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D4BCD41164760B70013143D /* WACollection.m */; };
 		7D4BCD44164760B70013143D /* WACollection.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D4BCD41164760B70013143D /* WACollection.m */; };
 		7D857D54164250B80092CF5F /* libAQGridView.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D857D53164249DA0092CF5F /* libAQGridView.a */; };
@@ -4737,7 +4736,6 @@
 				13FDC9901648C6B8005D4C56 /* WAFirstUseFacebookLoginView.m in Sources */,
 				13FDC9931648C6D5005D4C56 /* WAFirstUseEmailLoginFooterView.m in Sources */,
 				13217E3D164A0D3A0030C4A6 /* WALocalizedCell.m in Sources */,
-				7D4BCD42164760B70013143D /* WACollection.m in Sources */,
 				131FCC8D164BC8B3008F71A8 /* WAFirstUseSignUpViewController.m in Sources */,
 				80DA984F16496FED0030CA21 /* WAEventHeaderView.m in Sources */,
 				80DA985116496FED0030CA21 /* WAEventLinkViewCell.m in Sources */,
@@ -4745,7 +4743,6 @@
 				80DA985416496FED0030CA21 /* WAEventViewController_Link.m in Sources */,
 				80DA985516496FED0030CA21 /* WAEventViewController_Photo.m in Sources */,
 				80DA985616496FED0030CA21 /* WAEventViewController.m in Sources */,
-				7D4BCD42164760B70013143D /* WACollection.m in Sources */,
 				80B1CCF5164B6ECF009941E5 /* WAPeople+WARemoteInterfaceEntitySyncing.m in Sources */,
 				80B1CCF8164B6EE9009941E5 /* WATag+WARemoteInterfaceEntitySyncing.m in Sources */,
 				80B1CCFB164B6F37009941E5 /* WATagGroup+WARemoteInterfaceEntitySyncing.m in Sources */,
