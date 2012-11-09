@@ -12,15 +12,9 @@
 @interface WAFirstUseIntroViewController ()
 
 @property (nonatomic, strong) NSArray *pages;
-@property (nonatomic, strong) UITableViewCell *emailCell;
-@property (nonatomic, strong) UITableViewCell *passwordCell;
-@property (nonatomic, strong) UITableViewCell *nicknameCell;
 @property (nonatomic, strong) UITableViewCell *freePlanCell;
 @property (nonatomic, strong) UITableViewCell *premiumPlanCell;
 @property (nonatomic, strong) UITableViewCell *ultimatePlanCell;
-@property (nonatomic, strong) UITextField *emailField;
-@property (nonatomic, strong) UITextField *passwordField;
-@property (nonatomic, strong) UITextField *nicknameField;
 @property (nonatomic) BOOL pageControlUsed;
 @property (nonatomic, strong) UITableView *plansPage;
 @property (nonatomic) BOOL isKeyboardShown;
@@ -166,21 +160,6 @@
 			[self.view setNeedsUpdateConstraints];
 		}
 		return self.freePlanCell;
-		if (!self.emailCell) {
-			self.emailCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"UITableViewCell"];
-			self.emailCell.textLabel.text = NSLocalizedString(@"NOUN_USERNAME", @"Email title in signup page");
-			self.emailField = [[UITextField alloc] init];
-			self.emailField.font = [UIFont systemFontOfSize:17.0];
-			self.emailField.placeholder = NSLocalizedString(@"USERNAME_PLACEHOLDER", @"Email placeholder in signup page");
-			self.emailField.delegate = self;
-			self.emailField.returnKeyType = UIReturnKeyNext;
-			self.emailField.autocorrectionType = UITextAutocorrectionTypeNo;
-			self.emailField.autocapitalizationType = UITextAutocapitalizationTypeNone;
-			self.emailField.keyboardType = UIKeyboardTypeEmailAddress;
-			[self.emailCell.contentView addSubview:self.emailField];
-			[self.view setNeedsUpdateConstraints];
-		}
-		return self.emailCell;
 	} else if ([indexPath row] == 1) {
 		if (!self.premiumPlanCell) {
 			self.premiumPlanCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"UITableViewCell"];
@@ -189,22 +168,6 @@
 			[self.view setNeedsUpdateConstraints];
 		}
 		return self.premiumPlanCell;
-		if (!self.passwordCell) {
-			self.passwordCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"UITableViewCell"];
-			self.passwordCell.textLabel.text = NSLocalizedString(@"NOUN_PASSWORD", @"Password title in signup page");
-			self.passwordField = [[UITextField alloc] init];
-			self.passwordField.font = [UIFont systemFontOfSize:17.0];
-			self.passwordField.secureTextEntry = YES;
-			self.passwordField.placeholder = NSLocalizedString(@"PASSWORD_PLACEHOLDER", @"Password placeholder in signup page");
-			self.passwordField.delegate = self;
-			self.passwordField.returnKeyType = UIReturnKeyNext;
-			self.passwordField.autocorrectionType = UITextAutocorrectionTypeNo;
-			self.passwordField.autocapitalizationType = UITextAutocapitalizationTypeNone;
-			self.passwordField.keyboardType = UIKeyboardTypeASCIICapable;
-			[self.passwordCell.contentView addSubview:self.passwordField];
-			[self.view setNeedsUpdateConstraints];
-		}
-		return self.passwordCell;
 	} else if ([indexPath row] == 2) {
 		if (!self.ultimatePlanCell) {
 			self.ultimatePlanCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"UITableViewCell"];
@@ -213,20 +176,6 @@
 			[self.view setNeedsUpdateConstraints];
 		}
 		return self.ultimatePlanCell;
-		if (!self.nicknameCell) {
-			self.nicknameCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"UITableViewCell"];
-			self.nicknameCell.textLabel.text = NSLocalizedString(@"NOUN_NICKNAME", @"Nickname title in signup page");
-			self.nicknameField = [[UITextField alloc] init];
-			self.nicknameField.font = [UIFont systemFontOfSize:17.0];
-			self.nicknameField.placeholder = NSLocalizedString(@"NICKNAME_PLACEHOLDER", @"Nickname placeholder in signup page");
-			self.nicknameField.delegate = self;
-			self.nicknameField.returnKeyType = UIReturnKeyGo;
-			self.nicknameField.autocorrectionType = UITextAutocorrectionTypeYes;
-			self.nicknameField.autocapitalizationType = UITextAutocapitalizationTypeWords;
-			[self.nicknameCell.contentView addSubview:self.nicknameField];
-			[self.view setNeedsUpdateConstraints];
-		}
-		return self.nicknameCell;
 	}
 
 	return nil;

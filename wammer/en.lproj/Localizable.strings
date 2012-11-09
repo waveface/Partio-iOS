@@ -283,15 +283,6 @@
 /* Plural noun for draft objects */
 "NOUN_DRAFTS" = "Drafts";
 
-/* Nickname title in signup page */
-"NOUN_NICKNAME" = "Name";
-
-/* Password title in signup page */
-"NOUN_PASSWORD" = "Password";
-
-/* Email title in signup page */
-"NOUN_USERNAME" = "Email";
-
 /* Photo information in cell */
 "NUMBER_OF_PHOTOS" = "%d photos";
 

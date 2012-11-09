@@ -93,16 +93,7 @@
 					
 					[[article mutableOrderedSetValueForKey:@"files"] addObject:file];
 					
-					WAThumbnailMakeOptions options = 0;
-					if (idx < 4) {
-						options |= WAThumbnailMakeOptionMedium;
-					}
-					if (idx < 3) {
-						options |= WAThumbnailMakeOptionSmall;
-					}
-					
 					ALAsset *asset = (ALAsset *)obj;
-					[file makeThumbnailsWithImage:[[asset defaultRepresentation] irImage] options:options];
 					
 					UIImage *extraSmallThumbnailImage = [UIImage imageWithCGImage:[asset thumbnail]];
 					file.extraSmallThumbnailFilePath = [[[WADataStore defaultStore] persistentFileURLForData:UIImageJPEGRepresentation(extraSmallThumbnailImage, 0.85f) extension:@"jpeg"] path];
