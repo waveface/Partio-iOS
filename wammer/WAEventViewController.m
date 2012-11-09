@@ -163,7 +163,7 @@
 			NSString *leading = aTGRep.leadingString;
 			if (aTGRep.tags != nil) {
 				NSMutableArray *tags = [NSMutableArray array];
-				[aTGRep.tags enumerateObjectsUsingBlock:^(WATag *aTagRep, BOOL *stop) {
+				[[aTGRep.tags allObjects] enumerateObjectsUsingBlock:^(WATag *aTagRep, NSUInteger idx, BOOL *stop) {
 					[tags addObject:aTagRep.tagValue];
 				}];
 				
@@ -271,7 +271,7 @@
 	_headerView.descriptiveTagsLabel.attributedText = [[self class] attributedDescriptionStringForEvent:self.article];
 	
 	NSMutableArray *tags = [NSMutableArray array];
-	[self.article.tags enumerateObjectsUsingBlock:^(WATag *aTagRep, BOOL *stop) {
+	[[self.article.tags allObjects] enumerateObjectsUsingBlock:^(WATag  *aTagRep, NSUInteger idx, BOOL *stop) {
 		[tags addObject:aTagRep.tagValue];
 	}];
 	_headerView.tagsLabel.attributedText = [[self class]attributedStringForTags:tags];

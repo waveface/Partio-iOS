@@ -10,12 +10,12 @@
 #import <CoreData/CoreData.h>
 #import "CoreData+IRAdditions.h"
 
-@class WAArticle;
+@class WAArticle, WATagGroup;
 
 @interface WATag : IRManagedObject
 
 @property (nonatomic, retain) NSString * tagValue;
 @property (nonatomic, retain) WAArticle *article;
-@property (nonatomic, retain) NSManagedObject *tagGroup;
+@property (nonatomic, retain) WATagGroup *tagGroup;
 
 @end
