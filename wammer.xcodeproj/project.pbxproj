@@ -100,9 +100,26 @@
 		4B87177A15C7D4AF00C9612D /* Fav@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 4B87177915C7D4AF00C9612D /* Fav@2x~iphone.png */; };
 		4B8CA96A14BBE7BA006E06BB /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B8CA96914BBE7BA006E06BB /* SenTestingKit.framework */; };
 		4B8CA97414BBE7BA006E06BB /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4B8CA97214BBE7BA006E06BB /* InfoPlist.strings */; };
-		4B8DFB7214FDFC34000B41C5 /* libsqlite3.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B8DFB7114FDFC34000B41C5 /* libsqlite3.0.dylib */; };
 		4B8DFB7414FDFC3D000B41C5 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B8DFB7314FDFC3D000B41C5 /* CFNetwork.framework */; };
+		4B9B8DE9164DEE2C007A2A74 /* libSocketRocket.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7DC3AC1116422070009A8EA7 /* libSocketRocket.a */; };
+		4B9B8DEA164DEE2D007A2A74 /* libSocketRocket.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7DC3AC1116422070009A8EA7 /* libSocketRocket.a */; };
+		4B9B8DEB164DEE61007A2A74 /* libicucore.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 8002CDE515E5E85600D7BFF0 /* libicucore.dylib */; };
 		4BAD752D164DD1A100ADDE56 /* WADayViewTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BAD752C164DD1A100ADDE56 /* WADayViewTests.m */; };
+		4BAD7577164DEC2900ADDE56 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D215E734098A44479DEC4F88 /* libPods.a */; };
+		4BAD7578164DEC3300ADDE56 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D215E734098A44479DEC4F88 /* libPods.a */; };
+		4BAD7579164DEC5300ADDE56 /* Accounts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D9B1D8C162BB1DE000E5350 /* Accounts.framework */; };
+		4BAD757A164DEC6000ADDE56 /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D9B1D8E162BB1E8000E5350 /* AdSupport.framework */; };
+		4BAD757B164DEC6600ADDE56 /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D9B1D90162BB1F6000E5350 /* Social.framework */; };
+		4BAD757C164DEC8B00ADDE56 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF73A54213D6C2CC00D54EC6 /* UIKit.framework */; };
+		4BAD757D164DEC9100ADDE56 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF73A54413D6C2CC00D54EC6 /* Foundation.framework */; };
+		4BAD757E164DECA800ADDE56 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B8DFB7314FDFC3D000B41C5 /* CFNetwork.framework */; };
+		4BAD757F164DECC500ADDE56 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF73A69913D6E08800D54EC6 /* QuartzCore.framework */; };
+		4BAD7580164DECFB00ADDE56 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF73A54613D6C2CC00D54EC6 /* CoreGraphics.framework */; };
+		4BAD7582164DED1700ADDE56 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4BAD7581164DED1700ADDE56 /* libsqlite3.dylib */; };
+		4BAD7583164DED2E00ADDE56 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF61635E141618BD004738D3 /* MessageUI.framework */; };
+		4BAD7584164DED4300ADDE56 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF666C2F140CD31C00C35CED /* Security.framework */; };
+		4BAD7585164DEDA500ADDE56 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4BAD7581164DED1700ADDE56 /* libsqlite3.dylib */; };
+		4BAD7586164DEDA600ADDE56 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4BAD7581164DED1700ADDE56 /* libsqlite3.dylib */; };
 		4BAE345215DCA30200A9109D /* LoginBackground-Landscape.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BAE344E15DCA30200A9109D /* LoginBackground-Landscape.png */; };
 		4BAE345315DCA30200A9109D /* LoginBackground-Landscape@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BAE344F15DCA30200A9109D /* LoginBackground-Landscape@2x.png */; };
 		4BAE345415DCA30200A9109D /* LoginBackground-Portrait.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BAE345015DCA30200A9109D /* LoginBackground-Portrait.png */; };
@@ -120,11 +137,8 @@
 		4BFC156915C7D9E800DB02F8 /* Unfav@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BFC156715C7D9E800DB02F8 /* Unfav@2x~ipad.png */; };
 		4BFC156A15C7D9E800DB02F8 /* Unfav~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BFC156815C7D9E800DB02F8 /* Unfav~ipad.png */; };
 		7D0CDD01162E5A080027D35F /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D0CDCE7162E59DD0027D35F /* SenTestingKit.framework */; };
-		7D0CDD02162E5A080027D35F /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D0CDCE9162E59DD0027D35F /* UIKit.framework */; };
-		7D0CDD03162E5A080027D35F /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D0CDCEB162E59DD0027D35F /* Foundation.framework */; };
 		7D0CDD09162E5A080027D35F /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 7D0CDD07162E5A080027D35F /* InfoPlist.strings */; };
 		7D0CDD18162E5FC90027D35F /* WAFacebookConnectionSwitchTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D0CDD15162E5F9E0027D35F /* WAFacebookConnectionSwitchTest.m */; };
-		7D1BC2F216437C9F0060831E /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D1BC2F116437C9F0060831E /* libPods.a */; };
 		7D296DAA1643818000870747 /* libSocketRocket.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D6470A71642218800DBDEA6 /* libSocketRocket.a */; };
 		7D29701B1643B5CE00870747 /* WACollectionTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D29701A1643B5CE00870747 /* WACollectionTests.m */; };
 		7D29702B1643BC2F00870747 /* WAModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = FFCD324114B997B70035C4F5 /* WAModel.xcdatamodeld */; };
@@ -297,7 +311,6 @@
 		FF24B4F91552B31E00DD9379 /* libstdc++.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = FF24B3B61552AC7100DD9379 /* libstdc++.dylib */; };
 		FF24B4FA1552B31E00DD9379 /* libc++.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = FF24B3B41552AC6D00DD9379 /* libc++.dylib */; };
 		FF24B4FB1552B31E00DD9379 /* libc++abi.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = FF24B3B21552AC6600DD9379 /* libc++abi.dylib */; };
-		FF24B4FC1552B31E00DD9379 /* libsqlite3.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B8DFB7114FDFC34000B41C5 /* libsqlite3.0.dylib */; };
 		FF24B4FD1552B31E00DD9379 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = FF42755B14F4E8D200824505 /* libz.dylib */; };
 		FF24B4FE1552B32500DD9379 /* WADiscreteLayoutArea.m in Sources */ = {isa = PBXBuildFile; fileRef = FF9737651551292200D6E7A9 /* WADiscreteLayoutArea.m */; };
 		FF2981B414F6DFEB004F6893 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF73A54413D6C2CC00D54EC6 /* Foundation.framework */; };
@@ -1192,11 +1205,11 @@
 		4B8CA97514BBE7BA006E06BB /* WATests_iOS.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WATests_iOS.h; sourceTree = "<group>"; };
 		4B8CA97614BBE7BA006E06BB /* WATests_iOS.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WATests_iOS.m; sourceTree = "<group>"; };
 		4B8CA97814BBE7BA006E06BB /* wammer-iOS-Tests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "wammer-iOS-Tests-Prefix.pch"; sourceTree = "<group>"; };
-		4B8DFB7114FDFC34000B41C5 /* libsqlite3.0.dylib */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.0.dylib; path = usr/lib/libsqlite3.0.dylib; sourceTree = SDKROOT; };
 		4B8DFB7314FDFC3D000B41C5 /* CFNetwork.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
 		4B989DC1141F395D00DD13C9 /* WAPostViewCellPhone-WebLink.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "WAPostViewCellPhone-WebLink.xib"; sourceTree = "<group>"; };
 		4BAD752B164DD1A100ADDE56 /* WADayViewTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WADayViewTests.h; sourceTree = "<group>"; };
 		4BAD752C164DD1A100ADDE56 /* WADayViewTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WADayViewTests.m; sourceTree = "<group>"; };
+		4BAD7581164DED1700ADDE56 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
 		4BAE344E15DCA30200A9109D /* LoginBackground-Landscape.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "LoginBackground-Landscape.png"; path = "Resources/LoginBackground-Landscape.png"; sourceTree = "<group>"; };
 		4BAE344F15DCA30200A9109D /* LoginBackground-Landscape@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "LoginBackground-Landscape@2x.png"; path = "Resources/LoginBackground-Landscape@2x.png"; sourceTree = "<group>"; };
 		4BAE345015DCA30200A9109D /* LoginBackground-Portrait.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "LoginBackground-Portrait.png"; path = "Resources/LoginBackground-Portrait.png"; sourceTree = "<group>"; };
@@ -1227,7 +1240,6 @@
 		7D0CDD0D162E5A080027D35F /* Stream-iOS-ApplicationTests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Stream-iOS-ApplicationTests-Prefix.pch"; sourceTree = "<group>"; };
 		7D0CDD14162E5F9E0027D35F /* WAFacebookConnectionSwitchTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAFacebookConnectionSwitchTest.h; sourceTree = "<group>"; };
 		7D0CDD15162E5F9E0027D35F /* WAFacebookConnectionSwitchTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAFacebookConnectionSwitchTest.m; sourceTree = "<group>"; };
-		7D1BC2F116437C9F0060831E /* libPods.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPods.a; path = "Pods/build/Release-iphoneos/libPods.a"; sourceTree = "<group>"; };
 		7D2970191643B5CE00870747 /* WACollectionTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WACollectionTests.h; sourceTree = "<group>"; };
 		7D29701A1643B5CE00870747 /* WACollectionTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WACollectionTests.m; sourceTree = "<group>"; };
 		7D7A442C164CF2FB00E156CF /* WACollection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WACollection.h; sourceTree = "<group>"; };
@@ -1256,7 +1268,7 @@
 		7DB78A67164900E400E165E9 /* WAPhotoStreamViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAPhotoStreamViewCell.m; sourceTree = "<group>"; };
 		7DB78A6B164900FA00E165E9 /* WAPhotoStreamViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WAPhotoStreamViewCell.xib; sourceTree = "<group>"; };
 		7DC3AC0D1642203C009A8EA7 /* SocketRocket.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SocketRocket.xcodeproj; path = "external/WFPresentation/Bindings/Objective-C/../../../SocketRocket/SocketRocket.xcodeproj"; sourceTree = "<group>"; };
-		7DC3AC1116422070009A8EA7 /* libSocketRocket.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libSocketRocket.a; path = "../../Library/Developer/Xcode/DerivedData/wammer-emtadpmnuosywwdpqrykcuhueoxl/Build/Products/Debug-iphoneos/libSocketRocket.a"; sourceTree = "<group>"; };
+		7DC3AC1116422070009A8EA7 /* libSocketRocket.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libSocketRocket.a; path = "../../../../wammer-emtadpmnuosywwdpqrykcuhueoxl/Build/Products/Debug-iphoneos/libSocketRocket.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7DED9203164103BE00B9D778 /* WAModel 38.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WAModel 38.xcdatamodel"; sourceTree = "<group>"; };
 		8002CDE515E5E85600D7BFF0 /* libicucore.dylib */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "compiled.mach-o.dylib"; name = libicucore.dylib; path = usr/lib/libicucore.dylib; sourceTree = SDKROOT; };
 		8002CDE715E5E92100D7BFF0 /* WARemoteInterface+Notification.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WARemoteInterface+Notification.h"; sourceTree = "<group>"; };
@@ -1996,7 +2008,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				7D296DAA1643818000870747 /* libSocketRocket.a in Frameworks */,
-				7D1BC2F216437C9F0060831E /* libPods.a in Frameworks */,
 				7D9B1D96162BC0AD000E5350 /* Accounts.framework in Frameworks */,
 				7D9B1D97162BC0AD000E5350 /* AdSupport.framework in Frameworks */,
 				7D9B1D98162BC0AD000E5350 /* Social.framework in Frameworks */,
@@ -2027,9 +2038,11 @@
 				FF24B4F91552B31E00DD9379 /* libstdc++.dylib in Frameworks */,
 				FF24B4FA1552B31E00DD9379 /* libc++.dylib in Frameworks */,
 				FF24B4FB1552B31E00DD9379 /* libc++abi.dylib in Frameworks */,
-				FF24B4FC1552B31E00DD9379 /* libsqlite3.0.dylib in Frameworks */,
 				4BD77BBA15A2C8B300CA8486 /* libxml2.dylib in Frameworks */,
 				FF24B4FD1552B31E00DD9379 /* libz.dylib in Frameworks */,
+				4BAD7577164DEC2900ADDE56 /* libPods.a in Frameworks */,
+				4BAD7585164DEDA500ADDE56 /* libsqlite3.dylib in Frameworks */,
+				4B9B8DE9164DEE2C007A2A74 /* libSocketRocket.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2037,10 +2050,22 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4BAD7584164DED4300ADDE56 /* Security.framework in Frameworks */,
+				4BAD7583164DED2E00ADDE56 /* MessageUI.framework in Frameworks */,
+				4BAD7582164DED1700ADDE56 /* libsqlite3.dylib in Frameworks */,
+				4BAD7580164DECFB00ADDE56 /* CoreGraphics.framework in Frameworks */,
+				4BAD757F164DECC500ADDE56 /* QuartzCore.framework in Frameworks */,
+				4BAD757E164DECA800ADDE56 /* CFNetwork.framework in Frameworks */,
+				4BAD757D164DEC9100ADDE56 /* Foundation.framework in Frameworks */,
+				4BAD757C164DEC8B00ADDE56 /* UIKit.framework in Frameworks */,
+				4BAD757B164DEC6600ADDE56 /* Social.framework in Frameworks */,
+				4BAD757A164DEC6000ADDE56 /* AdSupport.framework in Frameworks */,
+				4BAD7579164DEC5300ADDE56 /* Accounts.framework in Frameworks */,
 				7DA474461643C16900EC415C /* CoreData.framework in Frameworks */,
 				7D0CDD01162E5A080027D35F /* SenTestingKit.framework in Frameworks */,
-				7D0CDD02162E5A080027D35F /* UIKit.framework in Frameworks */,
-				7D0CDD03162E5A080027D35F /* Foundation.framework in Frameworks */,
+				4BAD7578164DEC3300ADDE56 /* libPods.a in Frameworks */,
+				4B9B8DEA164DEE2D007A2A74 /* libSocketRocket.a in Frameworks */,
+				4B9B8DEB164DEE61007A2A74 /* libicucore.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2093,7 +2118,6 @@
 				FF24B3B51552AC6D00DD9379 /* libc++.dylib in Frameworks */,
 				FF24B3B31552AC6600DD9379 /* libc++abi.dylib in Frameworks */,
 				FF24B3B71552AC7100DD9379 /* libstdc++.dylib in Frameworks */,
-				4B8DFB7214FDFC34000B41C5 /* libsqlite3.0.dylib in Frameworks */,
 				FF42755C14F4E8D200824505 /* libz.dylib in Frameworks */,
 				FF0CC559158A41150034BD1B /* libxml2.dylib in Frameworks */,
 				FFCFE0BD142111E100B9E6AF /* libIRFoundationsTouch.a in Frameworks */,
@@ -2106,6 +2130,7 @@
 				FFED705E15497D7800E01FFB /* libWFPresentation.a in Frameworks */,
 				7DAD18A21626A73B00F87495 /* libGoogleAnalytics.a in Frameworks */,
 				94EB57761411451780C24560 /* libPods.a in Frameworks */,
+				4BAD7586164DEDA600ADDE56 /* libsqlite3.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2737,7 +2762,6 @@
 		FF73A53313D6C2CC00D54EC6 = {
 			isa = PBXGroup;
 			children = (
-				80A115671647CC0A005A4246 /* MapKit.framework */,
 				7DB81F181637E91B009A3645 /* Collection */,
 				7D0CDD04162E5A080027D35F /* Application Tests */,
 				4B8CA96F14BBE7BA006E06BB /* Logic Tests */,
@@ -2788,7 +2812,8 @@
 		FF73A54113D6C2CC00D54EC6 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				7D1BC2F116437C9F0060831E /* libPods.a */,
+				80A115671647CC0A005A4246 /* MapKit.framework */,
+				4BAD7581164DED1700ADDE56 /* libsqlite3.dylib */,
 				D215E734098A44479DEC4F88 /* libPods.a */,
 				7DC3AC1116422070009A8EA7 /* libSocketRocket.a */,
 				7D9B1D8C162BB1DE000E5350 /* Accounts.framework */,
@@ -3537,7 +3562,6 @@
 				8002CDE515E5E85600D7BFF0 /* libicucore.dylib */,
 				FF24B3B41552AC6D00DD9379 /* libc++.dylib */,
 				FF24B3B21552AC6600DD9379 /* libc++abi.dylib */,
-				4B8DFB7114FDFC34000B41C5 /* libsqlite3.0.dylib */,
 				FF0CC558158A41150034BD1B /* libxml2.dylib */,
 				FF42755B14F4E8D200824505 /* libz.dylib */,
 				FFC813C213EB8F7E007B0683 /* AssetsLibrary.framework */,
@@ -5205,11 +5229,12 @@
 					"\"$(SYSTEM_APPS_DIR)/Xcode.app/Contents/Developer/Library/Frameworks\"",
 					"\"$(SRCROOT)/wammer/Libraries\"",
 				);
-				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_C_LANGUAGE_STANDARD = "compiler-default";
 				GCC_GENERATE_TEST_COVERAGE_FILES = YES;
 				GCC_INSTRUMENT_PROGRAM_FLOW_ARCS = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "wammer-iOS-Tests/wammer-iOS-Tests-Prefix.pch";
+				GCC_WARN_ALLOW_INCOMPLETE_PROTOCOL = YES;
 				HEADER_SEARCH_PATHS = (
 					"${PODS_HEADERS_SEARCH_PATHS}",
 					"\"$(PROJECT_DIR)/external/IRFoundations\"/**",
@@ -5234,7 +5259,9 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/external/Facebook/lib/facebook-ios-sdk\"",
 					"\"$(SRCROOT)/wammer/facebook-ios-sdk\"",
+					"\"$(SRCROOT)/../../Library/Developer/Xcode/DerivedData/wammer-bqdwmujozscbivfnajzluprtrhbu/Build/Products/Debug-iphoneos\"",
 				);
+				OTHER_CFLAGS = "";
 				PODS_BUILD_HEADERS_SEARCH_PATHS = "\"${PODS_ROOT}/BuildHeaders\" \"${PODS_ROOT}/BuildHeaders/DCIntrospect\" \"${PODS_ROOT}/BuildHeaders/Facebook-iOS-SDK\" \"${PODS_ROOT}/BuildHeaders/Facebook-iOS-SDK/FacebookSDK\" \"${PODS_ROOT}/BuildHeaders/InAppSettingsKit\" \"${PODS_ROOT}/BuildHeaders/JSONKit\" \"${PODS_ROOT}/BuildHeaders/MagicalRecord\" \"${PODS_ROOT}/BuildHeaders/OCHamcrest\" \"${PODS_ROOT}/BuildHeaders/OCMock\" \"${PODS_ROOT}/BuildHeaders/SSKeychain\" \"${PODS_ROOT}/BuildHeaders/TestFlightSDK\"";
 				PODS_HEADERS_SEARCH_PATHS = "${PODS_PUBLIC_HEADERS_SEARCH_PATHS}";
 				PODS_PUBLIC_HEADERS_SEARCH_PATHS = "\"${PODS_ROOT}/Headers\" \"${PODS_ROOT}/Headers/DCIntrospect\" \"${PODS_ROOT}/Headers/Facebook-iOS-SDK\" \"${PODS_ROOT}/Headers/Facebook-iOS-SDK/FacebookSDK\" \"${PODS_ROOT}/Headers/InAppSettingsKit\" \"${PODS_ROOT}/Headers/JSONKit\" \"${PODS_ROOT}/Headers/MagicalRecord\" \"${PODS_ROOT}/Headers/OCHamcrest\" \"${PODS_ROOT}/Headers/OCMock\" \"${PODS_ROOT}/Headers/SSKeychain\" \"${PODS_ROOT}/Headers/TestFlightSDK\"";
@@ -5301,11 +5328,12 @@
 					"\"$(SYSTEM_APPS_DIR)/Xcode.app/Contents/Developer/Library/Frameworks\"",
 					"\"$(SRCROOT)/wammer/Libraries\"",
 				);
-				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_C_LANGUAGE_STANDARD = "compiler-default";
 				GCC_GENERATE_TEST_COVERAGE_FILES = YES;
 				GCC_INSTRUMENT_PROGRAM_FLOW_ARCS = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "wammer-iOS-Tests/wammer-iOS-Tests-Prefix.pch";
+				GCC_WARN_ALLOW_INCOMPLETE_PROTOCOL = YES;
 				HEADER_SEARCH_PATHS = (
 					"${PODS_HEADERS_SEARCH_PATHS}",
 					"\"$(PROJECT_DIR)/external/IRFoundations\"/**",
@@ -5330,8 +5358,8 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/wammer\"",
 					"\"$(SRCROOT)/wammer/Libraries\"",
-					"\"$(SRCROOT)/../../Library/Developer/Xcode/DerivedData/wammer-emtadpmnuosywwdpqrykcuhueoxl/Build/Products/Debug-iphoneos\"",
 				);
+				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"-all_load",
@@ -5361,11 +5389,12 @@
 					"\"$(SYSTEM_APPS_DIR)/Xcode.app/Contents/Developer/Library/Frameworks\"",
 					"\"$(SRCROOT)/wammer/Libraries\"",
 				);
-				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_C_LANGUAGE_STANDARD = "compiler-default";
 				GCC_GENERATE_TEST_COVERAGE_FILES = YES;
 				GCC_INSTRUMENT_PROGRAM_FLOW_ARCS = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "wammer-iOS-Tests/wammer-iOS-Tests-Prefix.pch";
+				GCC_WARN_ALLOW_INCOMPLETE_PROTOCOL = YES;
 				HEADER_SEARCH_PATHS = (
 					"${PODS_HEADERS_SEARCH_PATHS}",
 					"\"$(PROJECT_DIR)/external/IRFoundations\"/**",
@@ -5391,7 +5420,9 @@
 					"\"$(SRCROOT)/external/ocmock/Examples/iOS5Example/usr/lib\"",
 					"\"$(SRCROOT)/external/ocmock/Examples/iPhoneExample/Libraries\"",
 					"\"$(SRCROOT)/wammer/Libraries\"",
+					"\"$(SRCROOT)/../../Library/Developer/Xcode/DerivedData/wammer-bqdwmujozscbivfnajzluprtrhbu/Build/Products/Debug-iphoneos\"",
 				);
+				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"-all_load",
@@ -5412,22 +5443,24 @@
 				ALWAYS_SEARCH_USER_PATHS = YES;
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/wammer-iOS.app/wammer-iOS";
 				CLANG_CXX_LANGUAGE_STANDARD = "compiler-default";
-				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_CXX_LIBRARY = "compiler-default";
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
 					"\"$(SDKROOT)/Developer/Library/Frameworks\"",
 					"\"$(DEVELOPER_LIBRARY_DIR)/Frameworks\"",
 					"\"$(SRCROOT)/wammer/Libraries\"",
 				);
 				GCC_C_LANGUAGE_STANDARD = "compiler-default";
+				GCC_GENERATE_TEST_COVERAGE_FILES = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Stream-iOS-ApplicationTests/Stream-iOS-ApplicationTests-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
 				);
-				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				HEADER_SEARCH_PATHS = (
 					"${PODS_HEADERS_SEARCH_PATHS}",
@@ -5450,7 +5483,7 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/wammer/Libraries\"",
 				);
-				ONLY_ACTIVE_ARCH = YES;
+				ONLY_ACTIVE_ARCH = NO;
 				OTHER_CFLAGS = "";
 				PODS_BUILD_HEADERS_SEARCH_PATHS = "\"${PODS_ROOT}/BuildHeaders\" \"${PODS_ROOT}/BuildHeaders/DCIntrospect\" \"${PODS_ROOT}/BuildHeaders/Facebook-iOS-SDK\" \"${PODS_ROOT}/BuildHeaders/Facebook-iOS-SDK/FacebookSDK\" \"${PODS_ROOT}/BuildHeaders/InAppSettingsKit\" \"${PODS_ROOT}/BuildHeaders/JSONKit\" \"${PODS_ROOT}/BuildHeaders/MagicalRecord\" \"${PODS_ROOT}/BuildHeaders/OCHamcrest\" \"${PODS_ROOT}/BuildHeaders/OCMock\" \"${PODS_ROOT}/BuildHeaders/SSKeychain\" \"${PODS_ROOT}/BuildHeaders/TestFlightSDK\"";
 				PODS_HEADERS_SEARCH_PATHS = "${PODS_PUBLIC_HEADERS_SEARCH_PATHS}";
@@ -5468,18 +5501,21 @@
 				ALWAYS_SEARCH_USER_PATHS = YES;
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/wammer-iOS.app/wammer-iOS";
 				CLANG_CXX_LANGUAGE_STANDARD = "compiler-default";
-				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_CXX_LIBRARY = "compiler-default";
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = YES;
 				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
 					"\"$(SDKROOT)/Developer/Library/Frameworks\"",
 					"\"$(DEVELOPER_LIBRARY_DIR)/Frameworks\"",
 					"\"$(SRCROOT)/wammer/Libraries\"",
 				);
 				GCC_C_LANGUAGE_STANDARD = "compiler-default";
+				GCC_GENERATE_TEST_COVERAGE_FILES = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Stream-iOS-ApplicationTests/Stream-iOS-ApplicationTests-Prefix.pch";
+				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				HEADER_SEARCH_PATHS = (
 					"${PODS_HEADERS_SEARCH_PATHS}",
@@ -5502,6 +5538,7 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/wammer/Libraries\"",
 				);
+				ONLY_ACTIVE_ARCH = NO;
 				OTHER_CFLAGS = "";
 				PODS_BUILD_HEADERS_SEARCH_PATHS = "\"${PODS_ROOT}/BuildHeaders\" \"${PODS_ROOT}/BuildHeaders/DCIntrospect\" \"${PODS_ROOT}/BuildHeaders/Facebook-iOS-SDK\" \"${PODS_ROOT}/BuildHeaders/Facebook-iOS-SDK/FacebookSDK\" \"${PODS_ROOT}/BuildHeaders/InAppSettingsKit\" \"${PODS_ROOT}/BuildHeaders/JSONKit\" \"${PODS_ROOT}/BuildHeaders/MagicalRecord\" \"${PODS_ROOT}/BuildHeaders/OCHamcrest\" \"${PODS_ROOT}/BuildHeaders/OCMock\" \"${PODS_ROOT}/BuildHeaders/SSKeychain\" \"${PODS_ROOT}/BuildHeaders/TestFlightSDK\"";
 				PODS_HEADERS_SEARCH_PATHS = "${PODS_PUBLIC_HEADERS_SEARCH_PATHS}";
@@ -5519,18 +5556,21 @@
 				ALWAYS_SEARCH_USER_PATHS = YES;
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/wammer-iOS.app/wammer-iOS";
 				CLANG_CXX_LANGUAGE_STANDARD = "compiler-default";
-				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_CXX_LIBRARY = "compiler-default";
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = YES;
 				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
 					"\"$(SDKROOT)/Developer/Library/Frameworks\"",
 					"\"$(DEVELOPER_LIBRARY_DIR)/Frameworks\"",
 					"\"$(SRCROOT)/wammer/Libraries\"",
 				);
 				GCC_C_LANGUAGE_STANDARD = "compiler-default";
+				GCC_GENERATE_TEST_COVERAGE_FILES = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Stream-iOS-ApplicationTests/Stream-iOS-ApplicationTests-Prefix.pch";
+				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				HEADER_SEARCH_PATHS = (
 					"${PODS_HEADERS_SEARCH_PATHS}",
@@ -5553,6 +5593,7 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/wammer/Libraries\"",
 				);
+				ONLY_ACTIVE_ARCH = NO;
 				OTHER_CFLAGS = "";
 				PODS_BUILD_HEADERS_SEARCH_PATHS = "\"${PODS_ROOT}/BuildHeaders\" \"${PODS_ROOT}/BuildHeaders/DCIntrospect\" \"${PODS_ROOT}/BuildHeaders/Facebook-iOS-SDK\" \"${PODS_ROOT}/BuildHeaders/Facebook-iOS-SDK/FacebookSDK\" \"${PODS_ROOT}/BuildHeaders/InAppSettingsKit\" \"${PODS_ROOT}/BuildHeaders/JSONKit\" \"${PODS_ROOT}/BuildHeaders/MagicalRecord\" \"${PODS_ROOT}/BuildHeaders/OCHamcrest\" \"${PODS_ROOT}/BuildHeaders/OCMock\" \"${PODS_ROOT}/BuildHeaders/SSKeychain\" \"${PODS_ROOT}/BuildHeaders/TestFlightSDK\"";
 				PODS_HEADERS_SEARCH_PATHS = "${PODS_PUBLIC_HEADERS_SEARCH_PATHS}";
