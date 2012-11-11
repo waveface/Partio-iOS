@@ -104,7 +104,6 @@
 		4B9B8DE9164DEE2C007A2A74 /* libSocketRocket.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7DC3AC1116422070009A8EA7 /* libSocketRocket.a */; };
 		4B9B8DEA164DEE2D007A2A74 /* libSocketRocket.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7DC3AC1116422070009A8EA7 /* libSocketRocket.a */; };
 		4B9B8DEB164DEE61007A2A74 /* libicucore.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 8002CDE515E5E85600D7BFF0 /* libicucore.dylib */; };
-		4BAD752D164DD1A100ADDE56 /* WADayViewTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BAD752C164DD1A100ADDE56 /* WADayViewTests.m */; };
 		4BAD7577164DEC2900ADDE56 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D215E734098A44479DEC4F88 /* libPods.a */; };
 		4BAD7578164DEC3300ADDE56 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D215E734098A44479DEC4F88 /* libPods.a */; };
 		4BAD7579164DEC5300ADDE56 /* Accounts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D9B1D8C162BB1DE000E5350 /* Accounts.framework */; };
@@ -126,6 +125,10 @@
 		4BAE345515DCA30200A9109D /* LoginBackground-Portrait@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BAE345115DCA30200A9109D /* LoginBackground-Portrait@2x.png */; };
 		4BB1B6B115C14648002A4BE2 /* Fav~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BB1B6AD15C14648002A4BE2 /* Fav~iphone.png */; };
 		4BB1B6B315C14648002A4BE2 /* Unfav~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BB1B6AF15C14648002A4BE2 /* Unfav~iphone.png */; };
+		4BBEE914164F5F8C00D33EDB /* StreamTests-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4BBEE912164F5F8C00D33EDB /* StreamTests-Info.plist */; };
+		4BBEE917164F5FB800D33EDB /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4BBEE915164F5FB800D33EDB /* InfoPlist.strings */; };
+		4BBEE91C164F5FC300D33EDB /* WADayViewTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BBEE919164F5FC300D33EDB /* WADayViewTests.m */; };
+		4BBEE91D164F5FC300D33EDB /* WAFacebookConnectionSwitchTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BBEE91B164F5FC300D33EDB /* WAFacebookConnectionSwitchTest.m */; };
 		4BD77BB915A2C10500CA8486 /* WABackoffHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 130F09EF159C3C74001796D0 /* WABackoffHandler.m */; };
 		4BD77BBA15A2C8B300CA8486 /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = FF0CC558158A41150034BD1B /* libxml2.dylib */; };
 		4BE6910D14EB8159002B9790 /* WAPreviewInspectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BE6910B14EB8159002B9790 /* WAPreviewInspectionViewController.m */; };
@@ -137,8 +140,6 @@
 		4BFC156915C7D9E800DB02F8 /* Unfav@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BFC156715C7D9E800DB02F8 /* Unfav@2x~ipad.png */; };
 		4BFC156A15C7D9E800DB02F8 /* Unfav~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BFC156815C7D9E800DB02F8 /* Unfav~ipad.png */; };
 		7D0CDD01162E5A080027D35F /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D0CDCE7162E59DD0027D35F /* SenTestingKit.framework */; };
-		7D0CDD09162E5A080027D35F /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 7D0CDD07162E5A080027D35F /* InfoPlist.strings */; };
-		7D0CDD18162E5FC90027D35F /* WAFacebookConnectionSwitchTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D0CDD15162E5F9E0027D35F /* WAFacebookConnectionSwitchTest.m */; };
 		7D296DAA1643818000870747 /* libSocketRocket.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D6470A71642218800DBDEA6 /* libSocketRocket.a */; };
 		7D29701B1643B5CE00870747 /* WACollectionTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D29701A1643B5CE00870747 /* WACollectionTests.m */; };
 		7D29702B1643BC2F00870747 /* WAModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = FFCD324114B997B70035C4F5 /* WAModel.xcdatamodeld */; };
@@ -1207,8 +1208,6 @@
 		4B8CA97814BBE7BA006E06BB /* wammer-iOS-Tests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "wammer-iOS-Tests-Prefix.pch"; sourceTree = "<group>"; };
 		4B8DFB7314FDFC3D000B41C5 /* CFNetwork.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
 		4B989DC1141F395D00DD13C9 /* WAPostViewCellPhone-WebLink.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "WAPostViewCellPhone-WebLink.xib"; sourceTree = "<group>"; };
-		4BAD752B164DD1A100ADDE56 /* WADayViewTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WADayViewTests.h; sourceTree = "<group>"; };
-		4BAD752C164DD1A100ADDE56 /* WADayViewTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WADayViewTests.m; sourceTree = "<group>"; };
 		4BAD7581164DED1700ADDE56 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
 		4BAE344E15DCA30200A9109D /* LoginBackground-Landscape.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "LoginBackground-Landscape.png"; path = "Resources/LoginBackground-Landscape.png"; sourceTree = "<group>"; };
 		4BAE344F15DCA30200A9109D /* LoginBackground-Landscape@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "LoginBackground-Landscape@2x.png"; path = "Resources/LoginBackground-Landscape@2x.png"; sourceTree = "<group>"; };
@@ -1216,6 +1215,13 @@
 		4BAE345115DCA30200A9109D /* LoginBackground-Portrait@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "LoginBackground-Portrait@2x.png"; path = "Resources/LoginBackground-Portrait@2x.png"; sourceTree = "<group>"; };
 		4BB1B6AD15C14648002A4BE2 /* Fav~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Fav~iphone.png"; path = "Resources/Fav~iphone.png"; sourceTree = "<group>"; };
 		4BB1B6AF15C14648002A4BE2 /* Unfav~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Unfav~iphone.png"; path = "Resources/Unfav~iphone.png"; sourceTree = "<group>"; };
+		4BBEE912164F5F8C00D33EDB /* StreamTests-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "StreamTests-Info.plist"; path = "StreamTests/StreamTests-Info.plist"; sourceTree = SOURCE_ROOT; };
+		4BBEE913164F5F8C00D33EDB /* StreamTests-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "StreamTests-Prefix.pch"; path = "StreamTests/StreamTests-Prefix.pch"; sourceTree = SOURCE_ROOT; };
+		4BBEE916164F5FB800D33EDB /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = StreamTests/en.lproj/InfoPlist.strings; sourceTree = SOURCE_ROOT; };
+		4BBEE918164F5FC300D33EDB /* WADayViewTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WADayViewTests.h; path = StreamTests/WADayViewTests.h; sourceTree = SOURCE_ROOT; };
+		4BBEE919164F5FC300D33EDB /* WADayViewTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WADayViewTests.m; path = StreamTests/WADayViewTests.m; sourceTree = SOURCE_ROOT; };
+		4BBEE91A164F5FC300D33EDB /* WAFacebookConnectionSwitchTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WAFacebookConnectionSwitchTest.h; path = StreamTests/WAFacebookConnectionSwitchTest.h; sourceTree = SOURCE_ROOT; };
+		4BBEE91B164F5FC300D33EDB /* WAFacebookConnectionSwitchTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WAFacebookConnectionSwitchTest.m; path = StreamTests/WAFacebookConnectionSwitchTest.m; sourceTree = SOURCE_ROOT; };
 		4BCA9E9F13FCE9DC00978CE9 /* WAPostViewCellPhone-Default.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "WAPostViewCellPhone-Default.xib"; sourceTree = "<group>"; };
 		4BCA9EA013FCE9DC00978CE9 /* WAPostViewCellPhone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAPostViewCellPhone.h; sourceTree = "<group>"; };
 		4BCA9EA113FCE9DC00978CE9 /* WAPostViewCellPhone.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAPostViewCellPhone.m; sourceTree = "<group>"; };
@@ -1232,14 +1238,7 @@
 		4BFC156815C7D9E800DB02F8 /* Unfav~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Unfav~ipad.png"; path = "resources/Unfav~ipad.png"; sourceTree = "<group>"; };
 		5AE49661BAA04638AA81DC49 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = SOURCE_ROOT; };
 		7D0CDCE7162E59DD0027D35F /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
-		7D0CDCE9162E59DD0027D35F /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
-		7D0CDCEB162E59DD0027D35F /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
-		7D0CDD00162E5A080027D35F /* ApplicationTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ApplicationTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
-		7D0CDD06162E5A080027D35F /* Stream-iOS-ApplicationTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Stream-iOS-ApplicationTests-Info.plist"; sourceTree = "<group>"; };
-		7D0CDD08162E5A080027D35F /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		7D0CDD0D162E5A080027D35F /* Stream-iOS-ApplicationTests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Stream-iOS-ApplicationTests-Prefix.pch"; sourceTree = "<group>"; };
-		7D0CDD14162E5F9E0027D35F /* WAFacebookConnectionSwitchTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAFacebookConnectionSwitchTest.h; sourceTree = "<group>"; };
-		7D0CDD15162E5F9E0027D35F /* WAFacebookConnectionSwitchTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAFacebookConnectionSwitchTest.m; sourceTree = "<group>"; };
+		7D0CDD00162E5A080027D35F /* StreamTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = StreamTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
 		7D2970191643B5CE00870747 /* WACollectionTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WACollectionTests.h; sourceTree = "<group>"; };
 		7D29701A1643B5CE00870747 /* WACollectionTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WACollectionTests.m; sourceTree = "<group>"; };
 		7D7A442C164CF2FB00E156CF /* WACollection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WACollection.h; sourceTree = "<group>"; };
@@ -1268,7 +1267,7 @@
 		7DB78A67164900E400E165E9 /* WAPhotoStreamViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAPhotoStreamViewCell.m; sourceTree = "<group>"; };
 		7DB78A6B164900FA00E165E9 /* WAPhotoStreamViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WAPhotoStreamViewCell.xib; sourceTree = "<group>"; };
 		7DC3AC0D1642203C009A8EA7 /* SocketRocket.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SocketRocket.xcodeproj; path = "external/WFPresentation/Bindings/Objective-C/../../../SocketRocket/SocketRocket.xcodeproj"; sourceTree = "<group>"; };
-		7DC3AC1116422070009A8EA7 /* libSocketRocket.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libSocketRocket.a; path = "../../../../wammer-emtadpmnuosywwdpqrykcuhueoxl/Build/Products/Debug-iphoneos/libSocketRocket.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		7DC3AC1116422070009A8EA7 /* libSocketRocket.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; name = libSocketRocket.a; path = "../../../../wammer-emtadpmnuosywwdpqrykcuhueoxl/Build/Products/Debug-iphoneos/libSocketRocket.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7DED9203164103BE00B9D778 /* WAModel 38.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WAModel 38.xcdatamodel"; sourceTree = "<group>"; };
 		8002CDE515E5E85600D7BFF0 /* libicucore.dylib */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "compiled.mach-o.dylib"; name = libicucore.dylib; path = usr/lib/libicucore.dylib; sourceTree = SDKROOT; };
 		8002CDE715E5E92100D7BFF0 /* WARemoteInterface+Notification.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WARemoteInterface+Notification.h"; sourceTree = "<group>"; };
@@ -2276,7 +2275,7 @@
 			name = Icons;
 			sourceTree = "<group>";
 		};
-		4B8CA96F14BBE7BA006E06BB /* Logic Tests */ = {
+		4B8CA96F14BBE7BA006E06BB /* UnitTests */ = {
 			isa = PBXGroup;
 			children = (
 				7D92E5B0160703F6000C7B06 /* PhotoPostWithURLHistoryStyle.txt */,
@@ -2294,7 +2293,7 @@
 				7D2970191643B5CE00870747 /* WACollectionTests.h */,
 				7D29701A1643B5CE00870747 /* WACollectionTests.m */,
 			);
-			name = "Logic Tests";
+			name = UnitTests;
 			path = "wammer-iOS-Tests";
 			sourceTree = SOURCE_ROOT;
 		};
@@ -2309,25 +2308,25 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		7D0CDD04162E5A080027D35F /* Application Tests */ = {
+		7D0CDD04162E5A080027D35F /* StreamTests */ = {
 			isa = PBXGroup;
 			children = (
+				4BBEE918164F5FC300D33EDB /* WADayViewTests.h */,
+				4BBEE919164F5FC300D33EDB /* WADayViewTests.m */,
+				4BBEE91A164F5FC300D33EDB /* WAFacebookConnectionSwitchTest.h */,
+				4BBEE91B164F5FC300D33EDB /* WAFacebookConnectionSwitchTest.m */,
 				7D0CDD05162E5A080027D35F /* Supporting Files */,
-				4BAD752B164DD1A100ADDE56 /* WADayViewTests.h */,
-				4BAD752C164DD1A100ADDE56 /* WADayViewTests.m */,
-				7D0CDD14162E5F9E0027D35F /* WAFacebookConnectionSwitchTest.h */,
-				7D0CDD15162E5F9E0027D35F /* WAFacebookConnectionSwitchTest.m */,
 			);
-			name = "Application Tests";
+			name = StreamTests;
 			path = "Stream-iOS-ApplicationTests";
 			sourceTree = "<group>";
 		};
 		7D0CDD05162E5A080027D35F /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				7D0CDD06162E5A080027D35F /* Stream-iOS-ApplicationTests-Info.plist */,
-				7D0CDD07162E5A080027D35F /* InfoPlist.strings */,
-				7D0CDD0D162E5A080027D35F /* Stream-iOS-ApplicationTests-Prefix.pch */,
+				4BBEE915164F5FB800D33EDB /* InfoPlist.strings */,
+				4BBEE912164F5F8C00D33EDB /* StreamTests-Info.plist */,
+				4BBEE913164F5F8C00D33EDB /* StreamTests-Prefix.pch */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -2763,8 +2762,8 @@
 			isa = PBXGroup;
 			children = (
 				7DB81F181637E91B009A3645 /* Collection */,
-				7D0CDD04162E5A080027D35F /* Application Tests */,
-				4B8CA96F14BBE7BA006E06BB /* Logic Tests */,
+				7D0CDD04162E5A080027D35F /* StreamTests */,
+				4B8CA96F14BBE7BA006E06BB /* UnitTests */,
 				FFC62019149CF1930097C377 /* Environment */,
 				FF946020152D7EDD0034D540 /* Appearance */,
 				FFBBA42615AD5D4900E95C66 /* Facebook */,
@@ -2804,7 +2803,7 @@
 				FFCFE0FB142111E100B9E6AF /* wammer-iOS.app */,
 				FFC648331445E8D700593E5E /* wammer-OSX.app */,
 				4B8CA96814BBE7BA006E06BB /* LogicTests.octest */,
-				7D0CDD00162E5A080027D35F /* ApplicationTests.octest */,
+				7D0CDD00162E5A080027D35F /* StreamTests.octest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -2818,10 +2817,8 @@
 				7DC3AC1116422070009A8EA7 /* libSocketRocket.a */,
 				7D9B1D8C162BB1DE000E5350 /* Accounts.framework */,
 				7D9B1D8E162BB1E8000E5350 /* AdSupport.framework */,
-				7D0CDCEB162E59DD0027D35F /* Foundation.framework */,
 				7D0CDCE7162E59DD0027D35F /* SenTestingKit.framework */,
 				7D9B1D90162BB1F6000E5350 /* Social.framework */,
-				7D0CDCE9162E59DD0027D35F /* UIKit.framework */,
 				7D857D4B164249DA0092CF5F /* AQGridView.xcodeproj */,
 				FFBA66E2140E12AD00BE5A1D /* IRDiscreteLayoutManager.xcodeproj */,
 				FF73A59513D6DC6500D54EC6 /* IRFoundations.xcodeproj */,
@@ -3597,9 +3594,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		4B8CA96714BBE7BA006E06BB /* LogicTests */ = {
+		4B8CA96714BBE7BA006E06BB /* UnitTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 4B8CA97914BBE7BA006E06BB /* Build configuration list for PBXNativeTarget "LogicTests" */;
+			buildConfigurationList = 4B8CA97914BBE7BA006E06BB /* Build configuration list for PBXNativeTarget "UnitTests" */;
 			buildPhases = (
 				4B8CA96314BBE7BA006E06BB /* Sources */,
 				4B8CA96414BBE7BA006E06BB /* Frameworks */,
@@ -3611,14 +3608,14 @@
 			dependencies = (
 				FFA53E3514D934C7001E7B6B /* PBXTargetDependency */,
 			);
-			name = LogicTests;
+			name = UnitTests;
 			productName = "waveface-tests";
 			productReference = 4B8CA96814BBE7BA006E06BB /* LogicTests.octest */;
 			productType = "com.apple.product-type.bundle";
 		};
-		7D0CDCFF162E5A080027D35F /* ApplicationTests */ = {
+		7D0CDCFF162E5A080027D35F /* StreamTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 7D0CDD0E162E5A080027D35F /* Build configuration list for PBXNativeTarget "ApplicationTests" */;
+			buildConfigurationList = 7D0CDD0E162E5A080027D35F /* Build configuration list for PBXNativeTarget "StreamTests" */;
 			buildPhases = (
 				7D0CDCFB162E5A080027D35F /* Sources */,
 				7D0CDCFC162E5A080027D35F /* Frameworks */,
@@ -3629,9 +3626,9 @@
 			);
 			dependencies = (
 			);
-			name = ApplicationTests;
+			name = StreamTests;
 			productName = "Stream-iOS-ApplicationTests";
-			productReference = 7D0CDD00162E5A080027D35F /* ApplicationTests.octest */;
+			productReference = 7D0CDD00162E5A080027D35F /* StreamTests.octest */;
 			productType = "com.apple.product-type.bundle";
 		};
 		FFC648321445E8D700593E5E /* wammer-OSX */ = {
@@ -3755,10 +3752,10 @@
 			projectRoot = "";
 			targets = (
 				FFCFE078142111E100B9E6AF /* wammer-iOS */,
+				4B8CA96714BBE7BA006E06BB /* UnitTests */,
+				7D0CDCFF162E5A080027D35F /* StreamTests */,
 				FF335A3A1445F12100E60C14 /* wammer-OSX-Chameleon */,
 				FFC648321445E8D700593E5E /* wammer-OSX */,
-				4B8CA96714BBE7BA006E06BB /* LogicTests */,
-				7D0CDCFF162E5A080027D35F /* ApplicationTests */,
 			);
 		};
 /* End PBXProject section */
@@ -3947,10 +3944,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7D0CDD09162E5A080027D35F /* InfoPlist.strings in Resources */,
 				7DC3AC101642203C009A8EA7 /* SocketRocket.xcodeproj in Resources */,
 				7DA309321648BC6900B6FABD /* WAPhotoStreamViewController.xib in Resources */,
 				7DB78A6E164900FA00E165E9 /* WAPhotoStreamViewCell.xib in Resources */,
+				4BBEE914164F5F8C00D33EDB /* StreamTests-Info.plist in Resources */,
+				4BBEE917164F5FB800D33EDB /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4524,10 +4522,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7D0CDD18162E5FC90027D35F /* WAFacebookConnectionSwitchTest.m in Sources */,
 				7D29702B1643BC2F00870747 /* WAModel.xcdatamodeld in Sources */,
 				7D7A4430164CF2FB00E156CF /* WACollection.m in Sources */,
-				4BAD752D164DD1A100ADDE56 /* WADayViewTests.m in Sources */,
+				4BBEE91C164F5FC300D33EDB /* WADayViewTests.m in Sources */,
+				4BBEE91D164F5FC300D33EDB /* WAFacebookConnectionSwitchTest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4922,10 +4920,10 @@
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
 		};
-		7D0CDD07162E5A080027D35F /* InfoPlist.strings */ = {
+		4BBEE915164F5FB800D33EDB /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
-				7D0CDD08162E5A080027D35F /* en */,
+				4BBEE916164F5FB800D33EDB /* en */,
 			);
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
@@ -5455,7 +5453,7 @@
 				GCC_C_LANGUAGE_STANDARD = "compiler-default";
 				GCC_GENERATE_TEST_COVERAGE_FILES = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Stream-iOS-ApplicationTests/Stream-iOS-ApplicationTests-Prefix.pch";
+				GCC_PREFIX_HEADER = "StreamTests/StreamTests-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
@@ -5477,7 +5475,7 @@
 					"\"$(PROJECT_DIR)/external/WFPresentation/Bindings/Objective-C\"/**",
 					"\"$(PROJECT_DIR)/external/SocketRocket\"/**",
 				);
-				INFOPLIST_FILE = "Stream-iOS-ApplicationTests/Stream-iOS-ApplicationTests-Info.plist";
+				INFOPLIST_FILE = "StreamTests/StreamTests-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -5514,7 +5512,7 @@
 				GCC_C_LANGUAGE_STANDARD = "compiler-default";
 				GCC_GENERATE_TEST_COVERAGE_FILES = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Stream-iOS-ApplicationTests/Stream-iOS-ApplicationTests-Prefix.pch";
+				GCC_PREFIX_HEADER = "StreamTests/StreamTests-Prefix.pch";
 				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				HEADER_SEARCH_PATHS = (
@@ -5532,7 +5530,7 @@
 					"\"$(PROJECT_DIR)/external/WFPresentation/Bindings/Objective-C\"/**",
 					"\"$(PROJECT_DIR)/external/SocketRocket\"/**",
 				);
-				INFOPLIST_FILE = "Stream-iOS-ApplicationTests/Stream-iOS-ApplicationTests-Info.plist";
+				INFOPLIST_FILE = "StreamTests/StreamTests-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -5569,7 +5567,7 @@
 				GCC_C_LANGUAGE_STANDARD = "compiler-default";
 				GCC_GENERATE_TEST_COVERAGE_FILES = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Stream-iOS-ApplicationTests/Stream-iOS-ApplicationTests-Prefix.pch";
+				GCC_PREFIX_HEADER = "StreamTests/StreamTests-Prefix.pch";
 				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				HEADER_SEARCH_PATHS = (
@@ -5587,7 +5585,7 @@
 					"\"$(PROJECT_DIR)/external/WFPresentation/Bindings/Objective-C\"/**",
 					"\"$(PROJECT_DIR)/external/SocketRocket\"/**",
 				);
-				INFOPLIST_FILE = "Stream-iOS-ApplicationTests/Stream-iOS-ApplicationTests-Info.plist";
+				INFOPLIST_FILE = "StreamTests/StreamTests-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -5881,7 +5879,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		4B8CA97914BBE7BA006E06BB /* Build configuration list for PBXNativeTarget "LogicTests" */ = {
+		4B8CA97914BBE7BA006E06BB /* Build configuration list for PBXNativeTarget "UnitTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				4B8CA97A14BBE7BA006E06BB /* Debug */,
@@ -5891,7 +5889,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		7D0CDD0E162E5A080027D35F /* Build configuration list for PBXNativeTarget "ApplicationTests" */ = {
+		7D0CDD0E162E5A080027D35F /* Build configuration list for PBXNativeTarget "StreamTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				7D0CDD0F162E5A080027D35F /* Debug */,
