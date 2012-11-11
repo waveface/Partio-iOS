@@ -208,10 +208,18 @@
 	UIColor *locationColor = [UIColor colorWithRed:0.5f green:0.85 blue:0.96 alpha:1];
 	UIColor *peopleColor = [UIColor colorWithRed:0.68f green:0.78f blue:0.26f alpha:1];
 	
-	NSDictionary *actionAttr = [[NSDictionary alloc] initWithObjectsAndKeys:actionColor, NSForegroundColorAttributeName, hlFont, NSFontAttributeName ,nil];
-	NSDictionary *othersAttr = [[NSDictionary alloc] initWithObjectsAndKeys:othersColor, NSForegroundColorAttributeName, hlFont, NSFontAttributeName, nil];
-	NSDictionary *locationAttr = [[NSDictionary alloc] initWithObjectsAndKeys:locationColor, NSForegroundColorAttributeName, hlFont, NSFontAttributeName, nil];
-	NSDictionary *peopleAttr = [[NSDictionary alloc] initWithObjectsAndKeys:peopleColor, NSForegroundColorAttributeName, hlFont, NSFontAttributeName, nil];
+	NSDictionary *actionAttr = [[NSDictionary alloc] initWithObjectsAndKeys:
+															actionColor, NSForegroundColorAttributeName,
+															hlFont, NSFontAttributeName ,nil];
+	NSDictionary *othersAttr = [[NSDictionary alloc] initWithObjectsAndKeys:
+															othersColor, NSForegroundColorAttributeName,
+															hlFont, NSFontAttributeName, nil];
+	NSDictionary *locationAttr = [[NSDictionary alloc] initWithObjectsAndKeys:
+																locationColor, NSForegroundColorAttributeName,
+																hlFont, NSFontAttributeName, nil];
+	NSDictionary *peopleAttr = [[NSDictionary alloc] initWithObjectsAndKeys:
+															peopleColor, NSForegroundColorAttributeName,
+															hlFont, NSFontAttributeName, nil];
 
 	if (event.eventDescription && event.eventDescription.length > 0)
 		[attrString setAttributes:actionAttr range:(NSRange){0, event.eventDescription.length}];
@@ -232,7 +240,10 @@
 	UIColor *bgColor = [UIColor colorWithRed:0.75f green:0.75f blue:0.75f alpha:1];
 	UIColor *fgColor = [UIColor whiteColor];
 	
-	NSDictionary *attr = [[NSDictionary alloc] initWithObjectsAndKeys:fgColor, NSForegroundColorAttributeName, bgColor, NSBackgroundColorAttributeName ,font, NSFontAttributeName, nil];
+	NSDictionary *attr = [[NSDictionary alloc]
+												initWithObjectsAndKeys:fgColor, NSForegroundColorAttributeName,
+												bgColor, NSBackgroundColorAttributeName ,
+												font, NSFontAttributeName,nil];
 	
 	NSString *rawString = [tags componentsJoinedByString:@" "];
 	NSMutableAttributedString *attrString = [[NSMutableAttributedString alloc] initWithString:rawString];
@@ -250,32 +261,61 @@
 		return _headerView;
 
 	_headerView = [WAEventHeaderView viewFromNib];
+
+	_headerView.dateLabel.text = [[[self class] dateFormatter] stringFromDate:self.article.creationDate];
 	
+	_headerView.timeLabel.text = [[[self class] timeFormatter] stringFromDate:self.article.creationDate];
+
 	if (self.article.location.latitude && self.article.location.longitude) {
-		
+
 		CLLocationCoordinate2D center = { self.article.location.latitude.floatValue, self.article.location.longitude.floatValue };
 		MKCoordinateSpan span = {0.005, 0.005}; // FIXME: should based on api, currently it is hard coded
 		
 		[_headerView.mapView setRegion:(MKCoordinateRegion) {center, span}];
+		[_headerView.mapView setHidden:NO];
 		
 	} else {
 		
-		// FIXME: hide the map
+		[_headerView.separatorLineBelowMap setHidden:YES];
+		[_headerView.mapView setHidden:YES];
+
+		// reset the constrain to top separation line
+		[_headerView removeConstraint:_headerView.descriptiveTagsLabelToTopConstrain];
+
+		NSLayoutConstraint *constrain = [NSLayoutConstraint
+																		 constraintWithItem:_headerView.descriptiveTagsLabel
+																		 attribute:NSLayoutAttributeTop
+																		 relatedBy:NSLayoutRelationEqual
+																		 toItem:_headerView.separatorLineAboveMap
+																		 attribute:NSLayoutAttributeBottom
+																		 multiplier:1
+																		 constant:4];
 		
+		[_headerView addConstraint:constrain];
+
 	}
 	
-	_headerView.dateLabel.text = [[[self class] dateFormatter] stringFromDate:self.article.creationDate];
-
-	_headerView.timeLabel.text = [[[self class] timeFormatter] stringFromDate:self.article.creationDate];
-	
 	_headerView.descriptiveTagsLabel.attributedText = [[self class] attributedDescriptionStringForEvent:self.article];
+	[_headerView.descriptiveTagsLabel invalidateIntrinsicContentSize];
 	
 	NSMutableArray *tags = [NSMutableArray array];
 	[[self.article.tags allObjects] enumerateObjectsUsingBlock:^(WATag  *aTagRep, NSUInteger idx, BOOL *stop) {
 		[tags addObject:aTagRep.tagValue];
 	}];
-	_headerView.tagsLabel.attributedText = [[self class]attributedStringForTags:tags];
+	
+	if (tags.count) {
 		
+		_headerView.tagsLabel.attributedText = [[self class]attributedStringForTags:tags];
+		[_headerView.tagsLabel invalidateIntrinsicContentSize];
+		
+	} else {
+
+		[_headerView.tagsLabel setHidden:YES];
+		
+	}
+	
+	[_headerView setNeedsLayout];
+	
 	return _headerView;
 
 }
@@ -341,8 +381,24 @@
 }
 
 - (CGSize) collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section {
+
+	// this looks urgly, how to solve this out? determine the size of headerview before it was added to collection view?
+	CGFloat height = 0.0f;
+	if (!self.headerView.mapView.hidden) {
+		height = CGRectGetMaxY(self.headerView.mapView.frame);
+	} else {
+		height = CGRectGetMaxY(self.headerView.separatorLineAboveMap.frame);
+	}
 	
-	return self.headerView.frame.size;
+	height += (CGRectGetHeight(self.headerView.descriptiveTagsLabel.frame) + 4);
+	
+	if (!self.headerView.tagsLabel.hidden) {
+		height += (CGRectGetHeight((self.headerView.tagsLabel.frame)) + 4);
+	}
+	
+	height += 4.0f;
+	
+	return (CGSize) { CGRectGetWidth(self.headerView.frame), height };
 
 }
 
