@@ -198,13 +198,13 @@
 	
 	NSFetchRequest *fetchRequest = [self.persistentStoreCoordinator.managedObjectModel fetchRequestFromTemplateWithName:@"WAFRArticles" substitutionVariables:[NSDictionary dictionary]];
 	
-	fetchRequest.predicate = [NSCompoundPredicate andPredicateWithSubpredicates:[NSArray arrayWithObjects:
-																																							 
-																																							 fetchRequest.predicate,
-																																							 
-																																							 [NSPredicate predicateWithFormat:@"creationDate >= %@ && creationDate <= %@", earlymorning, midnight],
-																																							 
-																																							 nil]];
+	fetchRequest.predicate = [NSCompoundPredicate
+														andPredicateWithSubpredicates:@[
+														fetchRequest.predicate,
+														[NSPredicate predicateWithFormat:@"event = TRUE"],
+														[NSPredicate predicateWithFormat:@"files.@count > 0"],
+														[NSPredicate predicateWithFormat:@"import != %d AND import != %d", WAImportTypeFromOthers, WAImportTypeFromLocal],
+														[NSPredicate predicateWithFormat:@"creationDate >= %@ && creationDate <= %@", earlymorning, midnight]]];
 	
 	fetchRequest.sortDescriptors = [NSArray arrayWithObjects:[NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:NO], nil];
 

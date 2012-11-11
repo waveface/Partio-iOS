@@ -247,7 +247,7 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 														fetchRequest.predicate,
 														[NSPredicate predicateWithFormat:@"event = TRUE"],
 														[NSPredicate predicateWithFormat:@"files.@count > 0"],
-														[NSPredicate predicateWithFormat:@"import = %d", WAImportTypeNone]]];
+														[NSPredicate predicateWithFormat:@"import != %d AND import != %d", WAImportTypeFromOthers, WAImportTypeFromLocal]]];
 
 	fetchRequest.sortDescriptors = [NSArray arrayWithObjects:
 																	[NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:NO],
