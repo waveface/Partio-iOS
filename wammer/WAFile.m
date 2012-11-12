@@ -47,5 +47,6 @@
 @dynamic webURL;
 @dynamic webTitle;
 @dynamic webFaviconURL;
+@dynamic dirty;
 
 @end

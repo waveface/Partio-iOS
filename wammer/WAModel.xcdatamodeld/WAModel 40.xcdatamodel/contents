@@ -94,6 +94,7 @@
         <attribute name="assetURL" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="codeName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="creationDeviceIdentifier" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="dirty" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="extraSmallThumbnailFilePath" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="identifier" optional="YES" attributeType="String" indexed="YES">
             <userInfo/>
@@ -306,16 +307,17 @@
     <fetchRequest name="WAFRCommentsForArticle" entity="WAComment" predicateString="article == $Article"/>
     <fetchRequest name="WAFRFilesForArticle" entity="WAFile" predicateString="ANY articles == $Article"/>
     <fetchRequest name="WAFRFilesNeedingDownload" entity="WAFile" predicateString="ANY articles.hidden == 0 AND ((smallThumbnailURL != nil AND smallThumbnailFilePath == nil) OR (thumbnailURL != nil AND thumbnailFilePath == nil))"/>
+    <fetchRequest name="WAFRFilesNeedingMetaSync" entity="WAFile" predicateString="dirty == 1"/>
     <fetchRequest name="WAFRFilesWithSyncableBlobs" entity="WAFile" predicateString="(assetURL != &quot;&quot; OR resourceFilePath != nil) AND resourceURL == nil AND ANY articles.draft == 0"/>
     <fetchRequest name="WAFRImagesForArticle" entity="WAFile" predicateString="article == $Article AND remoteResourceType == &quot;image&quot;"/>
     <fetchRequest name="WAFRLocalImportedArticles" entity="WAArticle" predicateString="import == 1"/>
     <fetchRequest name="WAFRUser" entity="WAUser" predicateString="identifier == $Identifier"/>
     <elements>
-        <element name="WACollection" positionX="493" positionY="-153" width="128" height="135"/>
         <element name="WAArticle" positionX="-36" positionY="-153" width="128" height="405"/>
         <element name="WACache" positionX="-261" positionY="72" width="128" height="135"/>
+        <element name="WACollection" positionX="493" positionY="-153" width="128" height="135"/>
         <element name="WAComment" positionX="144" positionY="-450" width="128" height="135"/>
-        <element name="WAFile" positionX="376" positionY="81" width="128" height="555"/>
+        <element name="WAFile" positionX="376" positionY="81" width="128" height="570"/>
         <element name="WAFileExif" positionX="772" positionY="234" width="128" height="315"/>
         <element name="WAFilePageElement" positionX="-477" positionY="513" width="128" height="90"/>
         <element name="WAGroup" positionX="-180" positionY="483" width="128" height="120"/>

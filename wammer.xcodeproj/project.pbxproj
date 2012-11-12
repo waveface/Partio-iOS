@@ -28,6 +28,7 @@
 		1324577E15983CB600A97139 /* WAPostViewCellPhone-WebLinkOnly.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1324577D15983CB600A97139 /* WAPostViewCellPhone-WebLinkOnly.xib */; };
 		1327A87E15F87A1700AC7852 /* WAFile+ThumbnailMaker.m in Sources */ = {isa = PBXBuildFile; fileRef = 1327A87D15F87A1700AC7852 /* WAFile+ThumbnailMaker.m */; };
 		132D60331622B66500148829 /* WACache.m in Sources */ = {isa = PBXBuildFile; fileRef = 132D60321622B66500148829 /* WACache.m */; };
+		133058DE1650ABE300C0283F /* WASyncManager+FileMetadataSync.m in Sources */ = {isa = PBXBuildFile; fileRef = 133058DD1650ABE300C0283F /* WASyncManager+FileMetadataSync.m */; };
 		1349AAEE163E9C4600D87A85 /* WAFirstUseIntroViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1349AAEC163E9C4600D87A85 /* WAFirstUseIntroViewController.m */; };
 		1360BC0F1623FA3200AF4EAA /* WACacheManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 1360BC0E1623FA3200AF4EAA /* WACacheManager.m */; };
 		136C170315F48E8E0066B289 /* WAAssetsLibraryManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 136C170215F48E8E0066B289 /* WAAssetsLibraryManager.m */; };
@@ -1080,6 +1081,8 @@
 		1327A87D15F87A1700AC7852 /* WAFile+ThumbnailMaker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WAFile+ThumbnailMaker.m"; sourceTree = "<group>"; };
 		132D60311622B66500148829 /* WACache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WACache.h; sourceTree = "<group>"; };
 		132D60321622B66500148829 /* WACache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WACache.m; sourceTree = "<group>"; };
+		133058DC1650ABE300C0283F /* WASyncManager+FileMetadataSync.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WASyncManager+FileMetadataSync.h"; sourceTree = "<group>"; };
+		133058DD1650ABE300C0283F /* WASyncManager+FileMetadataSync.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WASyncManager+FileMetadataSync.m"; sourceTree = "<group>"; };
 		1332417716156AB0005E31EA /* WAModel 36.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WAModel 36.xcdatamodel"; sourceTree = "<group>"; };
 		1349AAEB163E9C4600D87A85 /* WAFirstUseIntroViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WAFirstUseIntroViewController.h; path = wammer/WAFirstUseIntroViewController.h; sourceTree = "<group>"; };
 		1349AAEC163E9C4600D87A85 /* WAFirstUseIntroViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WAFirstUseIntroViewController.m; path = wammer/WAFirstUseIntroViewController.m; sourceTree = "<group>"; };
@@ -2418,6 +2421,8 @@
 				FF9809361592EB2600462FCD /* WASyncManager+DirtyArticleSync.m */,
 				FF98092F1592E4F700462FCD /* WADataStore+WASyncManagerAdditions.h */,
 				FF9809301592E4F700462FCD /* WADataStore+WASyncManagerAdditions.m */,
+				133058DC1650ABE300C0283F /* WASyncManager+FileMetadataSync.h */,
+				133058DD1650ABE300C0283F /* WASyncManager+FileMetadataSync.m */,
 			);
 			name = "Blob Syncing";
 			path = wammer;
@@ -4785,6 +4790,7 @@
 				80638BF2164CA663005695E3 /* WATag.m in Sources */,
 				80638BFC164CA7DA005695E3 /* WATagGroup.m in Sources */,
 				7D7A442E164CF2FB00E156CF /* WACollection.m in Sources */,
+				133058DE1650ABE300C0283F /* WASyncManager+FileMetadataSync.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

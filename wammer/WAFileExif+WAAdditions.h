@@ -11,5 +11,6 @@
 @interface WAFileExif (WAAdditions)
 
 - (void)initWithExif:(NSDictionary *)exifData tiff:(NSDictionary *)tiffData gps:(NSDictionary *)gpsData;
+- (NSDictionary *)remoteRepresentation;
 
 @end

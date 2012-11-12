@@ -15,6 +15,7 @@
 
 #import "WASyncManager+FullQualityFileSync.h"
 #import "WASyncManager+DirtyArticleSync.h"
+#import "WASyncManager+FileMetadataSync.h"
 
 
 @interface WASyncManager ()
@@ -120,6 +121,7 @@
 	_recurrenceMachine.queue.maxConcurrentOperationCount = 1;
 	_recurrenceMachine.recurrenceInterval = 5;
 	
+	[_recurrenceMachine addRecurringOperation:[self fileMetadataSyncOperation]];
 	[_recurrenceMachine addRecurringOperation:[self dirtyArticleSyncOperationPrototype]];
 	[_recurrenceMachine addRecurringOperation:[self fullQualityFileSyncOperationPrototype]];
 	

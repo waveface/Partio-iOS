@@ -48,6 +48,7 @@
 @property (nonatomic, retain) NSString * webURL;
 @property (nonatomic, retain) NSString * webFaviconURL;
 @property (nonatomic, retain) NSString * webTitle;
+@property (nonatomic, retain) NSNumber * dirty;
 @end
 
 @interface WAFile (CoreDataGeneratedAccessors)
