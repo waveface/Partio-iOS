@@ -246,7 +246,7 @@ extern CFAbsoluteTime StartTime;
 #endif
 
 	dispatch_async(dispatch_get_main_queue(), ^{
-	  NSLog(@"Stream Launched in %f seconds.", CFAbsoluteTimeGetCurrent() - StartTime);
+	  NSLog(@"Stream Launched in %0.2f seconds on %@.", CFAbsoluteTimeGetCurrent() - StartTime, [UIDevice currentDevice].model);
 	});
   
 	return YES;
