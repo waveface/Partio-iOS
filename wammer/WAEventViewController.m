@@ -208,18 +208,14 @@
 	UIColor *locationColor = [UIColor colorWithRed:0.5f green:0.85 blue:0.96 alpha:1];
 	UIColor *peopleColor = [UIColor colorWithRed:0.68f green:0.78f blue:0.26f alpha:1];
 	
-	NSDictionary *actionAttr = [[NSDictionary alloc] initWithObjectsAndKeys:
-															actionColor, NSForegroundColorAttributeName,
-															hlFont, NSFontAttributeName ,nil];
-	NSDictionary *othersAttr = [[NSDictionary alloc] initWithObjectsAndKeys:
-															othersColor, NSForegroundColorAttributeName,
-															hlFont, NSFontAttributeName, nil];
-	NSDictionary *locationAttr = [[NSDictionary alloc] initWithObjectsAndKeys:
-																locationColor, NSForegroundColorAttributeName,
-																hlFont, NSFontAttributeName, nil];
-	NSDictionary *peopleAttr = [[NSDictionary alloc] initWithObjectsAndKeys:
-															peopleColor, NSForegroundColorAttributeName,
-															hlFont, NSFontAttributeName, nil];
+	NSDictionary *actionAttr = @{NSForegroundColorAttributeName: actionColor,
+															 NSFontAttributeName: hlFont};
+	NSDictionary *othersAttr = @{NSForegroundColorAttributeName: othersColor,
+															 NSFontAttributeName: hlFont};
+	NSDictionary *locationAttr = @{NSForegroundColorAttributeName: locationColor,
+															   NSFontAttributeName: hlFont};
+	NSDictionary *peopleAttr = @{NSForegroundColorAttributeName: peopleColor,
+															 NSFontAttributeName: hlFont};
 
 	if (event.eventDescription && event.eventDescription.length > 0)
 		[attrString setAttributes:actionAttr range:(NSRange){0, event.eventDescription.length}];
@@ -382,18 +378,24 @@
 
 - (CGSize) collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section {
 
-	// this looks urgly, how to solve this out? determine the size of headerview before it was added to collection view?
+	// this looks ugly, how to solve this out? determine the size of headerview before it was added to collection view?
 	CGFloat height = 0.0f;
 	if (!self.headerView.mapView.hidden) {
-		height = CGRectGetMaxY(self.headerView.mapView.frame);
+
+		height = CGRectGetMaxY(self.headerView.mapView.frame) + 4;
+		
 	} else {
+
 		height = CGRectGetMaxY(self.headerView.separatorLineAboveMap.frame);
+
 	}
 	
 	height += (CGRectGetHeight(self.headerView.descriptiveTagsLabel.frame) + 4);
 	
 	if (!self.headerView.tagsLabel.hidden) {
+		
 		height += (CGRectGetHeight((self.headerView.tagsLabel.frame)) + 4);
+		
 	}
 	
 	height += 4.0f;
