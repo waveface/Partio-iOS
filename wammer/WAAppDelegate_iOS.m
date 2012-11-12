@@ -368,7 +368,7 @@ static NSString *const kTrackingId = @"UA-27817516-7";
 			viewDeckController.view.backgroundColor = [UIColor blackColor];
 			viewDeckController.leftLedge = self.window.frame.size.width - 200.0f;
 			viewDeckController.rotationBehavior = IIViewDeckRotationKeepsLedgeSizes;
-			viewDeckController.animationBehavior = IIViewDeckAnimationPullIn;
+		//	viewDeckController.animationBehavior = IIViewDeckAnimationPullIn;
 			viewDeckController.panningMode = IIViewDeckNoPanning;
 			[viewDeckController setWantsFullScreenLayout:YES];
 			viewDeckController.delegate = slidingMenu;

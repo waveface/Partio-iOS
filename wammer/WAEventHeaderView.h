@@ -19,4 +19,8 @@
 @property (nonatomic, weak) IBOutlet UILabel *descriptiveTagsLabel;
 @property (nonatomic, weak) IBOutlet UILabel *tagsLabel;
 
+@property (nonatomic, weak) IBOutlet UIView *separatorLineAboveMap;
+@property (nonatomic, weak) IBOutlet UIView *separatorLineBelowMap;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *descriptiveTagsLabelToTopConstrain;
+
 @end
