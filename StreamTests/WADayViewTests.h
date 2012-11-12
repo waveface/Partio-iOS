@@ -1,13 +1,13 @@
 //
-//  WADataStoreTest.h
+//  WADayViewTests.h
 //  wammer
 //
-//  Created by Evadne Wu on 3/26/12.
+//  Created by jamie on 11/10/12.
 //  Copyright (c) 2012 Waveface. All rights reserved.
 //
 
 #import <SenTestingKit/SenTestingKit.h>
 
-@interface WADataStoreTest : SenTestCase
+@interface WADayViewTests : SenTestCase
 
 @end

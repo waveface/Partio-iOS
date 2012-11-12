@@ -170,6 +170,9 @@ static NSString *const kTrackingId = @"UA-27817516-7";
 	
 }
 
+
+extern CFAbsoluteTime StartTime;
+
 - (BOOL) application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
 
 	[self bootstrap];
@@ -242,6 +245,10 @@ static NSString *const kTrackingId = @"UA-27817516-7";
 #pragma clang pop
 #endif
 
+	dispatch_async(dispatch_get_main_queue(), ^{
+	  NSLog(@"Stream Launched in %0.2f seconds on %@.", CFAbsoluteTimeGetCurrent() - StartTime, [UIDevice currentDevice].model);
+	});
+  
 	return YES;
 }
 
