@@ -15,6 +15,7 @@
 #import "WAOverlayBezel.h"
 #import "WAPhotoImportManager.h"
 #import "WADataStore.h"
+#import "Foundation+IRAdditions.h"
 
 @interface WASlidingMenuViewController ()
 
@@ -148,11 +149,25 @@
 			cell.selectionStyle = UITableViewCellSelectionStyleGray;
     }
 		
+		NSKeyValueObservingOptions options = NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew;
+	
 		switch(indexPath.row) {
 			
 			case 0: {
-				cell.imageView.image = (self.user.avatar)? self.user.avatar: [UIImage imageNamed:@"WAUserGlyph"];
-				cell.textLabel.text = self.user.nickname;
+
+				[self irObserveObject:self.user keyPath:@"avatar" options:options context:nil withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
+					
+					UIImage *avatar = (UIImage *)toValue;
+					cell.imageView.image = (avatar)? avatar: [UIImage imageNamed:@"WAUserGlyph"];
+					
+				}];
+
+				[self irObserveObject:self.user keyPath:@"nickname" options:options context:nil withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
+					
+					cell.textLabel.text = (NSString *)toValue;
+					
+				}];
+
 				cell.selectionStyle = UITableViewCellSelectionStyleNone;
 				break;
 			}
