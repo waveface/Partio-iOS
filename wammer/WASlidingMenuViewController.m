@@ -124,6 +124,14 @@
 	return 6;
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+	if (indexPath.row == 0) {
+		return 44;
+	}
+	
+	return 54;
+}
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -178,7 +186,7 @@
 	static NSString *CellIdentifier = @"Cell";
 	
 	cell.textLabel.textColor = [UIColor whiteColor];
-	cell.textLabel.font = [UIFont fontWithName:@"HelveticaNeue-Medium" size:16.0];
+	cell.textLabel.font = [UIFont fontWithName:NSLocalizedString(@"SLIDING_MENU_FONTNAME", @"Font name of the sliding menu") size:18.0];												 
 	
 	if (cell == nil) {
 		cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];

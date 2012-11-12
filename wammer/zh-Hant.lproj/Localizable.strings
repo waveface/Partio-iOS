@@ -385,6 +385,9 @@
    Title of view controller signing the user up */
 "SIGN_UP_CONTROLLER_TITLE" = "註冊";
 
+/* Font name of the sliding menu */
+"SLIDING_MENU_FONTNAME" = "HelveticaNeue-Bold";
+
 /* Title for Calendar in the sliding menu */
 "SLIDING_MENU_TITLE_CALENDAR" = "擇日";
 
