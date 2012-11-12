@@ -123,7 +123,6 @@
 		4BBEEA07164F6A6E00D33EDB /* PostWithCompleteAttachmentInformation.txt in Resources */ = {isa = PBXBuildFile; fileRef = 4BBEEA04164F6A6E00D33EDB /* PostWithCompleteAttachmentInformation.txt */; };
 		4BBEEA08164F6A6E00D33EDB /* PostWithIncompleteAttachmentInformation.txt in Resources */ = {isa = PBXBuildFile; fileRef = 4BBEEA05164F6A6E00D33EDB /* PostWithIncompleteAttachmentInformation.txt */; };
 		4BBEEA0C164F6A8A00D33EDB /* fopenfix.c in Sources */ = {isa = PBXBuildFile; fileRef = 4BBEEA09164F6A8A00D33EDB /* fopenfix.c */; };
-		4BBEEA0D164F6A8A00D33EDB /* UnitTests-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4BBEEA0A164F6A8A00D33EDB /* UnitTests-Info.plist */; };
 		4BBEEA15164F6AA200D33EDB /* WAArticleTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BBEEA12164F6AA200D33EDB /* WAArticleTests.m */; };
 		4BBEEA16164F6AA200D33EDB /* WAAssetLibraryManagerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BBEEA14164F6AA200D33EDB /* WAAssetLibraryManagerTests.m */; };
 		4BBEEA1B164F6AB300D33EDB /* WACollectionTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BBEEA18164F6AB300D33EDB /* WACollectionTests.m */; };
@@ -3934,7 +3933,6 @@
 				4BBEEA06164F6A6E00D33EDB /* PhotoPostWithURLHistoryStyle.txt in Resources */,
 				4BBEEA07164F6A6E00D33EDB /* PostWithCompleteAttachmentInformation.txt in Resources */,
 				4BBEEA08164F6A6E00D33EDB /* PostWithIncompleteAttachmentInformation.txt in Resources */,
-				4BBEEA0D164F6A8A00D33EDB /* UnitTests-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
