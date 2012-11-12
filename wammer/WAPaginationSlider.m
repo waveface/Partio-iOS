@@ -112,7 +112,7 @@
 	self.pageIndicatorLabel.opaque = NO;
 	self.pageIndicatorLabel.alpha = 0;
 	self.pageIndicatorLabel.userInteractionEnabled = NO;
-	self.pageIndicatorLabel.textAlignment = UITextAlignmentCenter;
+	self.pageIndicatorLabel.textAlignment = NSTextAlignmentCenter;
 	self.pageIndicatorLabel.layer.cornerRadius = 4.0f;
 	
 	[self addSubview:self.slider];
