@@ -360,14 +360,9 @@ extern CFAbsoluteTime StartTime;
 		}
 		
 		case UIUserInterfaceIdiomPhone: {
-			
-//			WATimelineViewControllerPhone *timelineVC = [[WATimelineViewControllerPhone alloc] init];
-			WADayViewController *swVC = [[WADayViewController alloc] init];
-
+			WADayViewController *swVC = [[WADayViewController alloc] initWithClassNamed:[WATimelineViewControllerPhone class]];
 			WANavigationController *timelineNavC = [[WANavigationController alloc] initWithRootViewController:swVC];
-			
-		//	[timelineVC setDelegate:self];
-			
+
 			WASlidingMenuViewController *slidingMenu = [[WASlidingMenuViewController alloc] init];
 			slidingMenu.delegate = self;
 
@@ -375,7 +370,7 @@ extern CFAbsoluteTime StartTime;
 			viewDeckController.view.backgroundColor = [UIColor blackColor];
 			viewDeckController.leftLedge = self.window.frame.size.width - 200.0f;
 			viewDeckController.rotationBehavior = IIViewDeckRotationKeepsLedgeSizes;
-		//	viewDeckController.animationBehavior = IIViewDeckAnimationPullIn;
+//			viewDeckController.animationBehavior = IIViewDeckAnimationPullIn;
 			viewDeckController.panningMode = IIViewDeckNoPanning;
 			[viewDeckController setWantsFullScreenLayout:YES];
 			viewDeckController.delegate = slidingMenu;

@@ -260,16 +260,15 @@
 	switch (indexPath.row) {
 		case 1: {
 			[self.viewDeckController closeLeftView];
-			WADayViewController *swVC = [[WADayViewController alloc] init];
+			WADayViewController *swVC = [[WADayViewController alloc] initWithClassNamed:[WATimelineViewControllerPhone class]];
 			WANavigationController *navVC = [[WANavigationController alloc] initWithRootViewController:swVC];
 			self.viewDeckController.centerController = navVC;
 			break;
 		}
 		case 2: {
 			[self.viewDeckController closeLeftView];
-			WAPhotoStreamViewController *photoVC = [[WAPhotoStreamViewController alloc] init];
-			UINavigationController *navVC = [[UINavigationController alloc] initWithRootViewController:photoVC];
-			photoVC.delegate = self.viewDeckController;
+			WADayViewController *swVC = [[WADayViewController alloc] initWithClassNamed:[WAPhotoStreamViewController class]];
+			UINavigationController *navVC = [[UINavigationController alloc] initWithRootViewController:swVC];
 			self.viewDeckController.centerController = navVC;
 			break;
 		}

@@ -22,10 +22,13 @@
 #import "WASlidingMenuViewController.h"
 
 #import "WARemoteInterface.h"
+#import "WAPhotoStreamViewController.h"
 
 static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPostsViewControllerPhone_RepresentedObjectURI";
 
-@interface WADayViewController () <WAArticleDraftsViewControllerDelegate>
+@interface WADayViewController () <WAArticleDraftsViewControllerDelegate> {
+	Class containedClass;
+}
 
 @property (nonatomic, readwrite, strong) IRPaginatedView *paginatedView;
 @property (nonatomic, readwrite, strong) NSMutableDictionary *daysControllers;
@@ -37,6 +40,12 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 @end
 
 @implementation WADayViewController
+
+- (id) initWithClassNamed:(Class)aClass {
+	self = [self initWithNibName:nil bundle:nil];
+	containedClass = aClass;
+	return self;
+}
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -298,39 +307,34 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 	
 }
 
-- (WATimelineViewControllerPhone *) timelineControllerAtPageIndex:(NSUInteger)index {
-	
+- (id) controllerAtPageIndex: (NSUInteger) index {
 	NSDate *dateForPage = [self.days objectAtIndex:index];
 	
-	if (dateForPage) {
-		
-		WATimelineViewControllerPhone *vc = self.daysControllers[dateForPage]; 
-
-		if (vc) {
-			
-			return vc;
-			
-		} else {
-
-			WATimelineViewControllerPhone *newVC = [[WATimelineViewControllerPhone alloc] initWithDate:dateForPage];
-			[self addChildViewController:newVC];
-			[self.daysControllers setObject:newVC forKey:dateForPage];
-			return newVC;
-			
+	if (dateForPage == nil)
+		return nil;
+	
+	id vc = self.daysControllers[dateForPage];
+	
+	if (vc == nil) {
+		vc = [[containedClass alloc]initWithDate:dateForPage];
+		if ( [vc isKindOfClass:[WAPhotoStreamViewController class]]  ) {
+			((WAPhotoStreamViewController *)vc).delegate = self;
 		}
-		
+		[self addChildViewController:vc];
+		[self.daysControllers setObject:vc forKey:dateForPage];
 	}
 	
-	return nil;
+	return vc;
 	
 }
 
 - (UIView *) viewForPaginatedView:(IRPaginatedView *)paginatedView atIndex:(NSUInteger)index {
 
-	WATimelineViewControllerPhone *vc = [self timelineControllerAtPageIndex:index];
 	
-	if (vc)
-		return vc.view;
+	UIViewController *viewController = [self controllerAtPageIndex:index];
+	
+	if (viewController)
+		return viewController.view;
 	
 	return nil;
 	
@@ -346,7 +350,7 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 
 - (UIViewController *) viewControllerForSubviewAtIndex:(NSUInteger)index inPaginatedView:(IRPaginatedView *)paginatedView {
 
-	return [self timelineControllerAtPageIndex:index];
+	return [self controllerAtPageIndex:index];
 	
 }
 

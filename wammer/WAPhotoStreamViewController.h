@@ -11,6 +11,8 @@
 
 @interface WAPhotoStreamViewController : UIViewController <UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UIGestureRecognizerDelegate>
 
-@property (nonatomic, assign) id delegate;
+@property (nonatomic, weak) id delegate;
+
+- (id) initWithDate:(NSDate *) aDate;
 
 @end
