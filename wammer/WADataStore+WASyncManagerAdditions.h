@@ -16,4 +16,6 @@
 
 - (void) enumerateDirtyArticlesInContext:(NSManagedObjectContext *)context usingBlock:(void(^)(WAArticle *anArticle, NSUInteger index, BOOL *stop))block;
 
+- (NSArray *) fetchFilesNeedingMetadataSyncUsingContext:(NSManagedObjectContext *)aContext;
+
 @end

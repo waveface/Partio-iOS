@@ -83,4 +83,16 @@
 
 }
 
+- (NSArray *)fetchFilesNeedingMetadataSyncUsingContext:(NSManagedObjectContext *)aContext {
+	
+	NSParameterAssert(aContext);
+	
+	NSFetchRequest *fr = [aContext.persistentStoreCoordinator.managedObjectModel fetchRequestFromTemplateWithName:@"WAFRFilesNeedingMetaSync" substitutionVariables:@{}];
+
+	fr.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"timestamp" ascending:NO]];
+
+	return [aContext executeFetchRequest:fr error:nil];
+
+}
+
 @end

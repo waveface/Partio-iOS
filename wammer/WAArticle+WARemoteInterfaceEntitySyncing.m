@@ -134,55 +134,6 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 	NSString *groupID = [incomingRepresentation objectForKey:@"group_id"];
 	NSString *representingFileID = [incomingRepresentation objectForKey:@"cover_attach"];
 
-	NSMutableArray *fullAttachmentList = [[incomingRepresentation objectForKey:@"attachment_id_array"] mutableCopy];
-	NSArray *incomingAttachmentList = [[incomingRepresentation objectForKey:@"attachments"] copy];
-	NSMutableArray *returnedAttachmentList = [incomingAttachmentList mutableCopy];
-	if (!returnedAttachmentList) {
-		returnedAttachmentList = [[NSMutableArray alloc] init];
-	}
-	
-	if ([fullAttachmentList count] > [incomingAttachmentList count]) {
-
-		// dedup
-		for (NSDictionary *attachment in incomingAttachmentList) {
-			NSDictionary *imageMeta = [attachment objectForKey:@"image_meta"];
-			if (imageMeta && [imageMeta objectForKey:@"small"] && [imageMeta objectForKey:@"medium"]) {
-				[fullAttachmentList removeObject:[attachment objectForKey:@"object_id"]];
-			} else {
-				[returnedAttachmentList removeObject:attachment];
-			}
-		}
-		
-		for (NSString *objectID in fullAttachmentList) {
-			NSString *attachString = @"/v2/attachments/view?object_id=%@&image_meta=%@";
-			NSString *smallString = [NSString stringWithFormat:attachString, objectID, @"small"];
-			NSString *mediumString =[NSString stringWithFormat:attachString, objectID, @"medium"];
-			NSDictionary *smallDict = [NSDictionary dictionaryWithObjectsAndKeys:
-																 smallString, @"url",
-																 nil];
-			NSDictionary *mediumDict = [NSDictionary dictionaryWithObjectsAndKeys:
-																 mediumString, @"url",
-																 nil];
-			NSDictionary *imageMeta = [NSDictionary dictionaryWithObjectsAndKeys:
-																 smallDict,  @"small",
-																 mediumDict, @"medium",
-																 nil];
-			
-			NSDictionary *attach = @{
-				@"object_id": objectID,
-				@"creator_id": creatorID,
-				@"post_id": articleID,
-				@"image_meta": imageMeta,
-				@"file_name": @"unknown.jpg",
-				@"type": @"image",
-				@"timestamp": [incomingRepresentation objectForKey:@"event_time"],
-				};
-			
-			[returnedAttachmentList addObject:attach];
-		}
-		[returnedDictionary setObject:returnedAttachmentList forKey:@"attachments"];
-	}
-	
 	if ([creatorID length])
 		[returnedDictionary setObject:[NSDictionary dictionaryWithObject:creatorID forKey:@"user_id"] forKey:@"owner"];
 
@@ -688,7 +639,7 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 				return;
 			}
 			
-			if (representedFile.identifier) {
+			if (representedFile.identifier && representedFile.thumbnailURL) {
 				aCallback(representedFile.identifier);
 				return;
 			}
@@ -926,22 +877,6 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 	}
 	
 	[[[self class] sharedSyncQueue] addOperations:operations waitUntilFinished:NO];
-//	__block NSOperationQueue *operationQueue = [[NSOperationQueue alloc] init];
-//	[operationQueue setSuspended:YES];
-//	[operationQueue setMaxConcurrentOperationCount:1];
-//	
-//	NSOperation *cleanupOp = [NSBlockOperation blockOperationWithBlock:^{
-//	
-//		operationQueue = nil;
-//		
-//	}];
-//	
-//	for (NSOperation *op in operations)
-//		[cleanupOp addDependency:op];
-//
-//	[operationQueue addOperations:operations waitUntilFinished:NO];
-//	[operationQueue addOperation:cleanupOp];
-//	[operationQueue setSuspended:NO];
 
 }
 

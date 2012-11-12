@@ -90,6 +90,11 @@
 				@autoreleasepool {
 					
 					WAFile *file = (WAFile *)[WAFile objectInsertingIntoContext:context withRemoteDictionary:@{}];
+					CFUUIDRef theUUID = CFUUIDCreate(kCFAllocatorDefault);
+					if (theUUID)
+						file.identifier = [((__bridge_transfer NSString *)CFUUIDCreateString(kCFAllocatorDefault, theUUID)) lowercaseString];
+					CFRelease(theUUID);
+					file.dirty = (id)kCFBooleanTrue;
 					
 					[[article mutableOrderedSetValueForKey:@"files"] addObject:file];
 					
