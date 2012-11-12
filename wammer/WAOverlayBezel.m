@@ -88,11 +88,11 @@
 	self.captionLabel = [[UILabel alloc] initWithFrame:CGRectZero];
 	self.captionLabel.textColor = [UIColor whiteColor];
 	self.captionLabel.font = [UIFont boldSystemFontOfSize:18.0f];
-	self.captionLabel.lineBreakMode = UILineBreakModeMiddleTruncation;
+	self.captionLabel.lineBreakMode = NSLineBreakByTruncatingMiddle;
 	self.captionLabel.numberOfLines = 1;
 	self.captionLabel.opaque = NO;
 	self.captionLabel.backgroundColor = nil;
-	self.captionLabel.textAlignment = UITextAlignmentCenter;
+	self.captionLabel.textAlignment = NSTextAlignmentCenter;
 	
 	self.deviceOrientationTransform = CATransform3DIdentity;
 	[self handleDeviceOrientationDidChange:nil];

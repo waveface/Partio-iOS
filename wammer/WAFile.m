@@ -38,7 +38,7 @@
 @dynamic title;
 @dynamic extraSmallThumbnailFilePath;
 @dynamic importTime;
-@dynamic article;
+@dynamic articles;
 @dynamic owner;
 @dynamic pageElements;
 @dynamic representedArticle;

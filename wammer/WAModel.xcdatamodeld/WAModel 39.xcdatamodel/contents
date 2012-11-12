@@ -1,13 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model name="" userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="1811" systemVersion="12C60" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
-    <entity name="Collection" syncable="YES">
-        <attribute name="createDate" optional="YES" attributeType="Date" syncable="YES"/>
-        <attribute name="identifier" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="modifyDate" optional="YES" attributeType="Date" syncable="YES"/>
-        <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
-        <relationship name="creator" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="WAUser" inverseName="collections" inverseEntity="WAUser" syncable="YES"/>
-        <relationship name="files" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="WAFile" syncable="YES"/>
-    </entity>
     <entity name="WAArticle" representedClassName="WAArticle">
         <attribute name="creationDate" optional="YES" attributeType="Date" indexed="YES" elementID="timestamp">
             <userInfo/>
@@ -57,6 +49,14 @@
         <attribute name="lastAccessTime" optional="YES" attributeType="Date" syncable="YES"/>
         <relationship name="file" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="WAFile" inverseName="caches" inverseEntity="WAFile" syncable="YES"/>
         <relationship name="ogimage" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="WAOpenGraphElementImage" inverseName="cache" inverseEntity="WAOpenGraphElementImage" syncable="YES"/>
+    </entity>
+    <entity name="WACollection" syncable="YES">
+        <attribute name="createDate" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="identifier" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="modifyDate" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="creator" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="WAUser" inverseName="collections" inverseEntity="WAUser" syncable="YES"/>
+        <relationship name="files" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="WAFile" inverseName="belongToCollection" inverseEntity="WAFile" syncable="YES"/>
     </entity>
     <entity name="WAComment" representedClassName="WAComment">
         <attribute name="creationDeviceName" optional="YES" attributeType="String">
@@ -137,6 +137,7 @@
         <relationship name="article" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="WAArticle" inverseName="files" inverseEntity="WAArticle">
             <userInfo/>
         </relationship>
+        <relationship name="belongToCollection" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="WACollection" inverseName="files" inverseEntity="WACollection" syncable="YES"/>
         <relationship name="caches" optional="YES" toMany="YES" maxCount="5" deletionRule="Nullify" destinationEntity="WACache" inverseName="file" inverseEntity="WACache" syncable="YES"/>
         <relationship name="exif" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="WAFileExif" inverseName="file" inverseEntity="WAFileExif" syncable="YES"/>
         <relationship name="owner" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="WAUser" inverseName="files" inverseEntity="WAUser">
@@ -250,7 +251,7 @@
         <relationship name="articles" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="WAArticle" inverseName="owner" inverseEntity="WAArticle">
             <userInfo/>
         </relationship>
-        <relationship name="collections" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Collection" inverseName="creator" inverseEntity="Collection" syncable="YES"/>
+        <relationship name="collections" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="WACollection" inverseName="creator" inverseEntity="WACollection" syncable="YES"/>
         <relationship name="comments" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="WAComment" inverseName="owner" inverseEntity="WAComment">
             <userInfo/>
         </relationship>
@@ -282,11 +283,11 @@
     <fetchRequest name="WAFRLocalImportedArticles" entity="WAArticle" predicateString="import == 1"/>
     <fetchRequest name="WAFRUser" entity="WAUser" predicateString="identifier == $Identifier"/>
     <elements>
-        <element name="Collection" positionX="493" positionY="-153" width="128" height="135"/>
+        <element name="WACollection" positionX="493" positionY="-153" width="128" height="135"/>
         <element name="WAArticle" positionX="-36" positionY="-153" width="128" height="315"/>
         <element name="WACache" positionX="-261" positionY="72" width="128" height="135"/>
         <element name="WAComment" positionX="144" positionY="-450" width="128" height="135"/>
-        <element name="WAFile" positionX="376" positionY="81" width="128" height="540"/>
+        <element name="WAFile" positionX="376" positionY="81" width="128" height="555"/>
         <element name="WAFileExif" positionX="772" positionY="234" width="128" height="315"/>
         <element name="WAFilePageElement" positionX="-477" positionY="513" width="128" height="90"/>
         <element name="WAGroup" positionX="-180" positionY="483" width="128" height="120"/>

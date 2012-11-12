@@ -39,7 +39,7 @@
 @property (nonatomic, retain) NSString * title;
 @property (nonatomic, retain) NSString * extraSmallThumbnailFilePath;
 @property (nonatomic, retain) NSDate * importTime;
-@property (nonatomic, retain) WAArticle *article;
+@property (nonatomic, retain) NSSet *articles;
 @property (nonatomic, retain) WAUser *owner;
 @property (nonatomic, retain) NSOrderedSet *pageElements;
 @property (nonatomic, retain) WAArticle *representedArticle;
