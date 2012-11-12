@@ -546,7 +546,7 @@
 "LOGIN_LINK_DEVICE" = "Login & link this device";
 
 /* Class = "IBUILabel"; text = "PC_SETUP_DESCRIPTION"; ObjectID = "Jfg-PE-RoZ"; */
-"PC_SETUP_DESCRIPTION" = "Connect to your personal cloud station and enable lighting speed.";
+"PC_SETUP_DESCRIPTION" = "Connect to your personal cloud station and enable lightning speed.";
 
 /* Class = "IBUIButton"; normalTitle = "I_AM_NEW_HERE"; ObjectID = "KXA-OG-bKa"; */
 "I_AM_NEW_HERE" = "I am new here!";
