@@ -113,13 +113,15 @@
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
-	static int remaining_width = 4;
+	
+	static int remaining_width = 2;
 	int width = rand()%remaining_width+1;
 	remaining_width -= width;
 	if (remaining_width == 0)
-		remaining_width = 4;
+		remaining_width = 2;
 	int height_factor = 1;//rand()%2+1;
-	return (CGSize){75*width+6*(width-1),75*height_factor+8*(height_factor-1)};
+	
+	return (CGSize){156*width+6*(width-1),156*height_factor+8*(height_factor-1)};
 }
 
 @end
