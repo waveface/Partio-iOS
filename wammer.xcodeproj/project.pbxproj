@@ -117,8 +117,6 @@
 		4BAE345515DCA30200A9109D /* LoginBackground-Portrait@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BAE345115DCA30200A9109D /* LoginBackground-Portrait@2x.png */; };
 		4BB1B6B115C14648002A4BE2 /* Fav~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BB1B6AD15C14648002A4BE2 /* Fav~iphone.png */; };
 		4BB1B6B315C14648002A4BE2 /* Unfav~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BB1B6AF15C14648002A4BE2 /* Unfav~iphone.png */; };
-		4BBEE914164F5F8C00D33EDB /* StreamTests-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4BBEE912164F5F8C00D33EDB /* StreamTests-Info.plist */; };
-		4BBEE917164F5FB800D33EDB /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4BBEE915164F5FB800D33EDB /* InfoPlist.strings */; };
 		4BBEE91C164F5FC300D33EDB /* WADayViewTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BBEE919164F5FC300D33EDB /* WADayViewTests.m */; };
 		4BBEE91D164F5FC300D33EDB /* WAFacebookConnectionSwitchTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BBEE91B164F5FC300D33EDB /* WAFacebookConnectionSwitchTest.m */; };
 		4BBEEA06164F6A6E00D33EDB /* PhotoPostWithURLHistoryStyle.txt in Resources */ = {isa = PBXBuildFile; fileRef = 4BBEEA03164F6A6E00D33EDB /* PhotoPostWithURLHistoryStyle.txt */; };
@@ -126,7 +124,6 @@
 		4BBEEA08164F6A6E00D33EDB /* PostWithIncompleteAttachmentInformation.txt in Resources */ = {isa = PBXBuildFile; fileRef = 4BBEEA05164F6A6E00D33EDB /* PostWithIncompleteAttachmentInformation.txt */; };
 		4BBEEA0C164F6A8A00D33EDB /* fopenfix.c in Sources */ = {isa = PBXBuildFile; fileRef = 4BBEEA09164F6A8A00D33EDB /* fopenfix.c */; };
 		4BBEEA0D164F6A8A00D33EDB /* UnitTests-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4BBEEA0A164F6A8A00D33EDB /* UnitTests-Info.plist */; };
-		4BBEEA10164F6A9600D33EDB /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4BBEEA0E164F6A9600D33EDB /* InfoPlist.strings */; };
 		4BBEEA15164F6AA200D33EDB /* WAArticleTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BBEEA12164F6AA200D33EDB /* WAArticleTests.m */; };
 		4BBEEA16164F6AA200D33EDB /* WAAssetLibraryManagerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BBEEA14164F6AA200D33EDB /* WAAssetLibraryManagerTests.m */; };
 		4BBEEA1B164F6AB300D33EDB /* WACollectionTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BBEEA18164F6AB300D33EDB /* WACollectionTests.m */; };
@@ -3938,7 +3935,6 @@
 				4BBEEA07164F6A6E00D33EDB /* PostWithCompleteAttachmentInformation.txt in Resources */,
 				4BBEEA08164F6A6E00D33EDB /* PostWithIncompleteAttachmentInformation.txt in Resources */,
 				4BBEEA0D164F6A8A00D33EDB /* UnitTests-Info.plist in Resources */,
-				4BBEEA10164F6A9600D33EDB /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3949,8 +3945,6 @@
 				7DC3AC101642203C009A8EA7 /* SocketRocket.xcodeproj in Resources */,
 				7DA309321648BC6900B6FABD /* WAPhotoStreamViewController.xib in Resources */,
 				7DB78A6E164900FA00E165E9 /* WAPhotoStreamViewCell.xib in Resources */,
-				4BBEE914164F5F8C00D33EDB /* StreamTests-Info.plist in Resources */,
-				4BBEE917164F5FB800D33EDB /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
