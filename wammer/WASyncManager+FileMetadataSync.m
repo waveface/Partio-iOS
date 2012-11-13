@@ -93,7 +93,7 @@
 
 	} callback:^(id results) {
 
-		NSLog(@"Attachment metadata upload finished");
+//		NSLog(@"Attachment metadata upload finished");
 
 	} callbackTrampoline:^(IRAsyncOperationInvoker callback) {
 

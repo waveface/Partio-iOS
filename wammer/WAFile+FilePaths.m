@@ -45,10 +45,6 @@
 				urlString = [NSString stringWithFormat:@"http://invalid.local/v2/attachments/view?object_id=%@&image_meta=%@", self.identifier, @"small"];
 			} else if (urlStringKey == kWAFileThumbnailURL) {
 				urlString = [NSString stringWithFormat:@"http://invalid.local/v2/attachments/view?object_id=%@&image_meta=%@", self.identifier, @"medium"];
-			} else if (urlStringKey == kWAFileLargeThumbnailURL) {
-				urlString = [NSString stringWithFormat:@"http://invalid.local/v2/attachments/view?object_id=%@&image_meta=%@", self.identifier, @"large"];
-			} else if (urlStringKey == kWAFileResourceURL) {
-				urlString = [NSString stringWithFormat:@"http://invalid.local/v2/attachments/view?object_id=%@", self.identifier];
 			}
 		}
 	}
