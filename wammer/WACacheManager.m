@@ -13,7 +13,7 @@
 NSString * const kWACacheSize = @"WACacheSize";
 NSString * const kWACacheFilePathKey = @"filePathKey";
 NSString * const kWACacheFilePath = @"filePath";
-NSUInteger const DEFAULT_CACHE_SIZE = 10*1024*1024; //10MB
+NSUInteger const DEFAULT_CACHE_SIZE = 600*1024*1024; //600MB
 
 @interface WACacheManager ()
 
