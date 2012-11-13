@@ -69,7 +69,6 @@
 
 	NSPredicate *theDay = [NSCompoundPredicate andPredicateWithSubpredicates:@[
 												 [NSPredicate predicateWithFormat:@"files.@count > 0"],
-												 [NSPredicate predicateWithFormat:@"import != %d AND import != %d", WAImportTypeFromOthers, WAImportTypeFromLocal],
 												 [NSPredicate predicateWithFormat:@"creationDate = %@", onDate]
 												 ]];
 	NSArray *eventsOnTheDate = [WAArticle MR_findAllWithPredicate:theDay];
