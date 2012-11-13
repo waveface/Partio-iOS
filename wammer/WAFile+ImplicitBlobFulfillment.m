@@ -104,9 +104,8 @@
 
 }
 
-- (void) retrieveBlobWithURLStringKey:(NSString *)urlStringKey filePathKey:(NSString *)filePathKey {
+- (void) retrieveBlobWithURLString:(NSString *)urlString URLStringKey:(NSString *)urlStringKey filePathKey:(NSString *)filePathKey {
 
-	NSString *urlString = [self valueForKey:urlStringKey];
 	NSURL *url = [NSURL URLWithString:urlString];
 	NSOperationQueuePriority priority = [self retrievalPriorityForBlobFilePathKey:filePathKey];
 

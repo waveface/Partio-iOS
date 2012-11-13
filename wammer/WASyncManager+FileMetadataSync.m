@@ -15,6 +15,8 @@
 
 - (IRAsyncOperation *)fileMetadataSyncOperation {
 
+	__weak WASyncManager *wSelf = self;
+
 	return [IRAsyncOperation operationWithWorker:^(IRAsyncOperationCallback callback) {
 	
 		WADataStore *ds = [WADataStore defaultStore];
@@ -69,7 +71,7 @@
 
 					}];
 
-					[[[self class] sharedFileMetadataSyncOperationQueue] addOperation:operation];
+					[wSelf.fileMetadataSyncOperationQueue addOperation:operation];
 					
 				} failureBlock:^(NSError *error) {
 					NSLog(@"Unable to load assets, error:%@", error);
@@ -81,7 +83,7 @@
 
 		}
 
-		[[[self class] sharedFileMetadataSyncOperationQueue] addOperationWithBlock:^{
+		[wSelf.fileMetadataSyncOperationQueue addOperationWithBlock:^{
 			callback(nil);
 		}];
 
@@ -91,26 +93,13 @@
 
 	} callback:^(id results) {
 
-		NSLog(@"Attachment metadata upload finished");
+//		NSLog(@"Attachment metadata upload finished");
 
 	} callbackTrampoline:^(IRAsyncOperationInvoker callback) {
 
 		dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), callback);
 
 	}];
-
-}
-
-+ (NSOperationQueue *) sharedFileMetadataSyncOperationQueue {
-
-	static NSOperationQueue *queue = nil;
-	static dispatch_once_t onceToken = 0;
-	dispatch_once(&onceToken, ^{
-    queue = [[NSOperationQueue alloc] init];
-		queue.maxConcurrentOperationCount = 1;
-	});
-
-	return queue;
 
 }
 

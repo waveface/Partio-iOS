@@ -12,8 +12,6 @@
 @class IRRecurrenceMachine;
 @interface WASyncManager : NSObject
 
-+ (id) sharedManager;
-
 - (void) beginPostponingSync;
 - (void) endPostponingSync;
 
@@ -22,6 +20,7 @@
 
 @property (nonatomic, readonly, assign) NSUInteger numberOfFiles;
 @property (nonatomic, readonly, strong) IRRecurrenceMachine *recurrenceMachine;
-@property (nonatomic, readonly, strong) NSOperationQueue *operationQueue;
+@property (nonatomic, readonly, strong) NSOperationQueue *fileSyncOperationQueue;
+@property (nonatomic, readonly, strong) NSOperationQueue *fileMetadataSyncOperationQueue;
 
 @end

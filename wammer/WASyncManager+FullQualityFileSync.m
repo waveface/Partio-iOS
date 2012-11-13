@@ -31,7 +31,7 @@ static NSString * const kNumberOfFiles = @"-[WASyncManager(FullQualityFileSync) 
 	
 	return [IRAsyncOperation operationWithWorker:^(IRAsyncOperationCallback callback) {
 	
-		NSCAssert2(!wSelf.operationQueue.operationCount, @"Operation queue %@ must have 0 operations when the recurrence machine hits, but has %i operations pending",wSelf.operationQueue, wSelf.operationQueue.operationCount);
+		NSCAssert2(!wSelf.fileSyncOperationQueue.operationCount, @"Operation queue %@ must have 0 operations when the recurrence machine hits, but has %i operations pending",wSelf.fileSyncOperationQueue, wSelf.fileSyncOperationQueue.operationCount);
 		
 		NSCAssert1(!context, @"Shared context reference should be nil, got %@", context);
 		
@@ -135,7 +135,7 @@ static NSString * const kNumberOfFiles = @"-[WASyncManager(FullQualityFileSync) 
 		
 		[syncOperations addObject:tailOp];
 		
-		[wSelf.operationQueue addOperations:syncOperations waitUntilFinished:NO];
+		[wSelf.fileSyncOperationQueue addOperations:syncOperations waitUntilFinished:NO];
 		
 	} trampoline:^(IRAsyncOperationInvoker block) {
 		

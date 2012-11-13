@@ -20,47 +20,36 @@
 
 @interface WASyncManager ()
 
-@property (nonatomic, readwrite, strong) IRRecurrenceMachine *recurrenceMachine;
-@property (nonatomic, readwrite, strong) NSOperationQueue *operationQueue;
+@property (nonatomic, strong) IRRecurrenceMachine *recurrenceMachine;
+@property (nonatomic, strong) NSOperationQueue *fileSyncOperationQueue;
+@property (nonatomic, strong) NSOperationQueue *fileMetadataSyncOperationQueue;
 
 @end
 
 
 @implementation WASyncManager
-@synthesize recurrenceMachine = _recurrenceMachine;
-@synthesize operationQueue = _operationQueue;
-
-+ (void) load {
-
-	__block id applicationDidFinishLaunchingListener = [[NSNotificationCenter defaultCenter] addObserverForName:UIApplicationDidFinishLaunchingNotification object:nil queue:nil usingBlock:^(NSNotification *note) {
-	
-		[[NSNotificationCenter defaultCenter] removeObserver:applicationDidFinishLaunchingListener];
-		
-		[WASyncManager sharedManager];
-		
-	}];
-
-}
-
-+ (id) sharedManager {
-
-	static dispatch_once_t token = 0;
-	static WASyncManager *manager = nil;
-	dispatch_once(&token, ^{
-		manager = [[self alloc] init];
-	});
-	
-	return manager;
-
-}
 
 - (id) init {
 
 	self = [super init];
-	if (!self)
-		return nil;
-	
-	[self reload];
+
+	if (self) {
+
+		self.fileSyncOperationQueue = [[NSOperationQueue alloc] init];
+		self.fileSyncOperationQueue.maxConcurrentOperationCount = 1;
+		self.fileMetadataSyncOperationQueue = [[NSOperationQueue alloc] init];
+		self.fileMetadataSyncOperationQueue.maxConcurrentOperationCount = 1;
+
+		self.recurrenceMachine = [[IRRecurrenceMachine alloc] init];
+		self.recurrenceMachine.queue.maxConcurrentOperationCount = 1;
+		self.recurrenceMachine.recurrenceInterval = 5;
+		[self.recurrenceMachine addRecurringOperation:[self fileMetadataSyncOperation]];
+		[self.recurrenceMachine addRecurringOperation:[self dirtyArticleSyncOperationPrototype]];
+		[self.recurrenceMachine addRecurringOperation:[self fullQualityFileSyncOperationPrototype]];
+
+		[self reload];
+
+	}
 
 	return self;
 
@@ -68,9 +57,9 @@
 
 - (void) dealloc {
 
-	[_operationQueue cancelAllOperations];
-
-	[[NSNotificationCenter defaultCenter] removeObserver:self];
+	[self.recurrenceMachine.queue cancelAllOperations];
+	[self.fileSyncOperationQueue cancelAllOperations];
+	[self.fileMetadataSyncOperationQueue cancelAllOperations];
 
 }
 
@@ -97,35 +86,6 @@
 		});
 
 	}];
-
-}
-
-- (NSOperationQueue *) operationQueue {
-
-	if (_operationQueue)
-		return _operationQueue;
-	
-	_operationQueue = [[NSOperationQueue alloc] init];
-	_operationQueue.maxConcurrentOperationCount = 1;
-	
-	return _operationQueue;
-
-}
-
-- (IRRecurrenceMachine *) recurrenceMachine {
-
-	if (_recurrenceMachine)
-		return _recurrenceMachine;
-	
-	_recurrenceMachine = [[IRRecurrenceMachine alloc] init];
-	_recurrenceMachine.queue.maxConcurrentOperationCount = 1;
-	_recurrenceMachine.recurrenceInterval = 5;
-	
-	[_recurrenceMachine addRecurringOperation:[self fileMetadataSyncOperation]];
-	[_recurrenceMachine addRecurringOperation:[self dirtyArticleSyncOperationPrototype]];
-	[_recurrenceMachine addRecurringOperation:[self fullQualityFileSyncOperationPrototype]];
-	
-	return _recurrenceMachine;
 
 }
 
