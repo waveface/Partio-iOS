@@ -15,12 +15,13 @@
 #import "WAOverlayBezel.h"
 #import "WAPhotoImportManager.h"
 #import "WADataStore.h"
-#import "Foundation+IRAdditions.h"
+#import <Foundation/Foundation.h>
 
 @interface WASlidingMenuViewController ()
 
 @property (nonatomic, strong) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, strong) WAUser *user;
+@property (nonatomic, strong) UITableViewCell *userCell;
 
 @end
 
@@ -38,6 +39,13 @@
 - (void)viewDidLoad
 {
 	[super viewDidLoad];
+	
+}
+
+- (void)dealloc
+{
+	[self.user removeObserver:self forKeyPath:@"avatar"];
+	[self.user removeObserver:self forKeyPath:@"nickname"];
 	
 }
 
@@ -114,6 +122,22 @@
 	
 }
 
+- (void) observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+{
+	if ([keyPath isEqual:@"avatar"]) {
+		
+		UIImage *avatar = (UIImage *)[change objectForKey:NSKeyValueChangeNewKey];
+		_userCell.imageView.image = (avatar)? avatar: [UIImage imageNamed:@"WAUserGlyph"];
+		
+	}
+	
+	if ([keyPath isEqual:@"nickname"]) {
+		
+		_userCell.textLabel.text = (NSString *)[change objectForKey:NSKeyValueChangeNewKey];
+		
+	}
+	
+}
 
 #pragma mark - Table view data source
 
@@ -154,20 +178,10 @@
 		switch(indexPath.row) {
 			
 			case 0: {
-
-				[self irObserveObject:self.user keyPath:@"avatar" options:options context:nil withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
-					
-					UIImage *avatar = (UIImage *)toValue;
-					cell.imageView.image = (avatar)? avatar: [UIImage imageNamed:@"WAUserGlyph"];
-					
-				}];
-
-				[self irObserveObject:self.user keyPath:@"nickname" options:options context:nil withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
-					
-					cell.textLabel.text = (NSString *)toValue;
-					
-				}];
-
+				[self.user addObserver:self forKeyPath:@"avatar" options:options context:nil];
+				[self.user addObserver:self forKeyPath:@"nickname" options:options context:nil];
+				
+				_userCell = cell;
 				cell.selectionStyle = UITableViewCellSelectionStyleNone;
 				break;
 			}
