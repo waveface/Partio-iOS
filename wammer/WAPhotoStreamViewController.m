@@ -14,8 +14,9 @@
 
 @interface WAPhotoStreamViewController (){
 	NSArray *colorPalette;
-	NSArray *photos;
+	NSMutableArray *photos;
 	NSArray *daysOfPhotos;
+	NSDate *onDate;
 }
 
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
@@ -23,6 +24,14 @@
 @end
 
 @implementation WAPhotoStreamViewController
+
+- (id)initWithDate:(NSDate *)aDate {
+	self = [super init];
+	if (self) {
+		onDate = aDate;
+	}
+	return self;
+}
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -58,8 +67,15 @@
 	
 	self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:slidingMenuButton];
 
-	photos = [WAFile MR_findAllSortedBy:@"identifier" ascending:YES];
-	
+	NSPredicate *theDay = [NSCompoundPredicate andPredicateWithSubpredicates:@[
+												 [NSPredicate predicateWithFormat:@"files.@count > 0"],
+												 [NSPredicate predicateWithFormat:@"creationDate = %@", onDate]
+												 ]];
+	NSArray *eventsOnTheDate = [WAArticle MR_findAllWithPredicate:theDay];
+	photos = [[NSMutableArray alloc] init];
+	for (WAArticle *event in eventsOnTheDate) {
+    [photos addObjectsFromArray:[event.files array]];
+	}
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -94,15 +110,15 @@
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
-	static int remaining_width = 4;
+	
+	static int remaining_width = 2;
 	int width = rand()%remaining_width+1;
 	remaining_width -= width;
 	if (remaining_width == 0)
-		remaining_width = 4;
+		remaining_width = 2;
 	int height_factor = 1;//rand()%2+1;
-	return (CGSize){75*width+6*(width-1),75*height_factor+8*(height_factor-1)};
+	
+	return (CGSize){156*width+6*(width-1),156*height_factor+8*(height_factor-1)};
 }
-
-#pragma mark Swipe gesture
 
 @end

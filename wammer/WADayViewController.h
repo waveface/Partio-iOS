@@ -12,7 +12,7 @@
 
 @interface WADayViewController : UIViewController <IRPaginatedViewDelegate, IIViewDeckControllerDelegate, NSFetchedResultsControllerDelegate>
 
-
+- (id)initWithClassNamed: (Class)containerClass;
 - (void)jumpToToday;
 
 @end

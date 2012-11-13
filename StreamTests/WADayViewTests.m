@@ -10,32 +10,43 @@
 #import "WADayViewController.h"
 #define HC_SHORTHAND
 #import <OCHamcrest/OCHamcrest.h>
+#import <MagicalRecord/CoreData+MagicalRecord.h>
+#import "WADataStore.h"
+
+#import "WAPhotoStreamViewController.h"
+#import "WATimelineViewControllerPhone.h"
 
 @interface WADayViewController (UnitTesting)
 
-@property (nonatomic, readwrite, strong) IRPaginatedView *paginatedView;
-@property (nonatomic, readwrite, strong) NSMutableDictionary *daysControllers;
-@property (nonatomic, readwrite, strong) NSMutableArray *days;
-
-@property (nonatomic, readwrite, strong) NSManagedObjectContext *managedObjectContext;
-@property (nonatomic, readwrite, strong) NSFetchedResultsController *fetchedResultsController;
+- (id) controllerAtPageIndex: (NSUInteger) index;
 
 @end
 
 @implementation WADayViewTests {
-  WADayViewController *dayViewController;
+  WADayViewController *eventDayViewController;
+	WADayViewController *photoDayViewController;
 }
 
 - (void)setUp {
-  dayViewController = [[WADayViewController alloc] init];
+	[MagicalRecord setupCoreDataStackWithAutoMigratingSqliteStoreNamed:@"UserWithTwoEventsAndThreePhotos.sqlite"];
+	eventDayViewController = [[WADayViewController alloc] initWithClassNamed:[WATimelineViewControllerPhone class]];
+	photoDayViewController = [[WADayViewController alloc] initWithClassNamed:[WAPhotoStreamViewController class]];
 }
 
 - (void)tearDown {
-  dayViewController = nil;
+  eventDayViewController = nil;
 }
 
 - (void)testDayViewWithEventView {
-  assertThat(dayViewController, equalTo(dayViewController));
+  [eventDayViewController loadView];
+	assertThat([[eventDayViewController controllerAtPageIndex:0] class], equalTo([WATimelineViewControllerPhone class]));
+}
+
+- (void)testDayViewWithPhotosView {
+	[photoDayViewController loadView];
+	assertThat([[photoDayViewController controllerAtPageIndex:0] class], equalTo([WAPhotoStreamViewController class]));
+	WAPhotoStreamViewController *controller = (WAPhotoStreamViewController *)[photoDayViewController controllerAtPageIndex:0];
+	assertThat([controller.delegate class], equalTo([WADayViewController class]));
 }
 
 @end
