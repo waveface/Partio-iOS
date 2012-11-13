@@ -73,10 +73,8 @@
 												 [NSPredicate predicateWithFormat:@"creationDate = %@", onDate]
 												 ]];
 	NSArray *eventsOnTheDate = [WAArticle MR_findAllWithPredicate:theDay];
-	NSLog(@"%@ =========", onDate);
 	photos = [[NSMutableArray alloc] init];
 	for (WAArticle *event in eventsOnTheDate) {
-		NSLog(@"%@", event.creationDate);
     [photos addObjectsFromArray:[event.files array]];
 	}
 }
