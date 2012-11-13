@@ -39,12 +39,16 @@
 @property (nonatomic, retain) NSString * title;
 @property (nonatomic, retain) NSString * extraSmallThumbnailFilePath;
 @property (nonatomic, retain) NSDate * importTime;
-@property (nonatomic, retain) WAArticle *article;
+@property (nonatomic, retain) NSSet *articles;
 @property (nonatomic, retain) WAUser *owner;
 @property (nonatomic, retain) NSOrderedSet *pageElements;
 @property (nonatomic, retain) WAArticle *representedArticle;
 @property (nonatomic, retain) WAFileExif *exif;
 @property (nonatomic, retain) NSSet *caches;
+@property (nonatomic, retain) NSString * webURL;
+@property (nonatomic, retain) NSString * webFaviconURL;
+@property (nonatomic, retain) NSString * webTitle;
+@property (nonatomic, retain) NSNumber * dirty;
 @end
 
 @interface WAFile (CoreDataGeneratedAccessors)

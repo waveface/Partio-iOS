@@ -135,98 +135,20 @@ static NSString * const kMonitoredHostNames = @"-[WARemoteInterface(Reachability
   
   if ([aRequestName hasPrefix:@"groups/"])
     return incomingURLIsCloud;
-    
-  WAReachabilityDetector *detectorForHost = [self.monitoredHostsToReachabilityDetectors objectForKey:aHost];
-  
-  if (!detectorForHost)
-    if ([[aHost host] isEqualToString:cloudHost])
-      return YES; //  heh
-  
-  return (detectorForHost.state == WAReachabilityStateAvailable);
+
+	return YES;
   
 }
 
 - (NSURL *) bestHostForRequestNamed:(NSString *)aRequestName {
 
-  //  If nothing is monitored, use the base URL
-  
-  if (![self.monitoredHosts count])
-    return self.engine.context.baseURL;
-  
-  NSArray *usableHosts = [[self.monitoredHosts filteredArrayUsingPredicate:[NSPredicate predicateWithBlock: ^ (NSURL *aHost, NSDictionary *bindings) {
-    
-    return [self canHost:aHost handleRequestNamed:aRequestName];
-    
-  }]] sortedArrayUsingComparator: (NSComparator) ^ (NSURL *lhsHost, NSURL *rhsHost) {
-    
-    WAReachabilityDetector *lhsReachabilityDetector = [self.monitoredHostsToReachabilityDetectors objectForKey:lhsHost];
-    WAReachabilityDetector *rhsReachabilityDetector = [self.monitoredHostsToReachabilityDetectors objectForKey:rhsHost];
-    
-    if (!lhsReachabilityDetector && !rhsReachabilityDetector)
-      return NSOrderedSame;
-    else if (lhsReachabilityDetector && !rhsReachabilityDetector)
-      return NSOrderedAscending;
-    else if (!lhsReachabilityDetector && rhsReachabilityDetector)
-      return NSOrderedDescending;
-    
-    WAReachabilityState lhsState = lhsReachabilityDetector.state;
-    WAReachabilityState rhsState = rhsReachabilityDetector.state;
-    
-    BOOL lhsAppLayerAlive = (lhsState == WAReachabilityStateAvailable);
-    BOOL rhsAppLayerAlive = (rhsState == WAReachabilityStateAvailable);
-    
-    if (!lhsAppLayerAlive && !rhsAppLayerAlive)
-      return NSOrderedSame;
-    else if (lhsAppLayerAlive && !rhsAppLayerAlive)
-      return NSOrderedAscending;
-    else if (!lhsAppLayerAlive && rhsAppLayerAlive)
-      return NSOrderedDescending;
-    
-    SCNetworkReachabilityFlags lhsFlags = lhsReachabilityDetector.networkStateFlags;
-    SCNetworkReachabilityFlags rhsFlags = rhsReachabilityDetector.networkStateFlags;
-    
-    BOOL lhsReachable = WASCNetworkReachable(lhsFlags);
-    BOOL rhsReachable = WASCNetworkReachable(rhsFlags);
-    
-    if (!lhsReachable && !rhsReachable)
-      return NSOrderedSame;
-    else if (lhsReachable && !rhsReachable)
-      return NSOrderedAscending;
-    else if (!lhsReachable && rhsReachable)
-      return NSOrderedDescending;
-    
-    BOOL lhsIsDirect = WASCNetworkReachableDirectly(lhsFlags);
-    BOOL rhsIsDirect = WASCNetworkReachableDirectly(rhsFlags);
-    
-    if (lhsIsDirect && !rhsIsDirect)
-      return NSOrderedAscending;
-    else if (!lhsIsDirect && rhsIsDirect)
-      return NSOrderedDescending;
-    
-    BOOL lhsOnWiFi = WASCNetworkReachableViaWifi(lhsFlags);
-    BOOL rhsOnWiFi = WASCNetworkReachableViaWifi(rhsFlags);
-    
-    if (lhsOnWiFi && !rhsOnWiFi)
-      return NSOrderedAscending;
-    else if (!lhsOnWiFi && rhsOnWiFi)
-      return NSOrderedDescending;
-    
-    BOOL lhsOnWWAN = WASCNetworkReachableViaWWAN(lhsFlags);
-    BOOL rhsOnWWAN = WASCNetworkReachableViaWWAN(rhsFlags);
-    
-    if (lhsOnWWAN && !rhsOnWWAN)
-      return NSOrderedAscending;
-    else if (!lhsOnWWAN && rhsOnWWAN)
-      return NSOrderedDescending;
-    
-    return NSOrderedSame;
-    
-  }];
-  
-  if ([usableHosts count])
-    return [usableHosts objectAtIndex:0];
-  
-  return self.engine.context.baseURL;
+	for (int i = [self.monitoredHosts count]-1; i >= 0; i--) {
+		if ([self canHost:self.monitoredHosts[i] handleRequestNamed:aRequestName]) {
+			return self.monitoredHosts[i];
+		}
+	}
+
+	return self.engine.context.baseURL;
 
 }
 

@@ -71,6 +71,12 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 		@"hidden": @"hidden",
 		@"style": @"style",
 		@"import": @"import",
+		@"event_tag": @"event",
+		@"tags": @"tags",
+		@"gps": @"location",
+		@"people": @"people",
+		@"extra_parameters": @"descriptiveTags",
+		@"event_description": @"eventDescription",
 		};
 		
 	});
@@ -110,6 +116,10 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 		@"WAPreview", @"previews",
 		@"WAFile", @"attachments",
 		@"WAFile", @"representingFile",
+		@"WALocation", @"gps",
+		@"WAPeople", @"people",
+		@"WATag", @"tags",
+		@"WATagGroup", @"extra_parameters",
 	
 	nil];
 
@@ -124,52 +134,6 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 	NSString *groupID = [incomingRepresentation objectForKey:@"group_id"];
 	NSString *representingFileID = [incomingRepresentation objectForKey:@"cover_attach"];
 
-	NSMutableArray *fullAttachmentList = [[incomingRepresentation objectForKey:@"attachment_id_array"] mutableCopy];
-	NSArray *incomingAttachmentList = [[incomingRepresentation objectForKey:@"attachments"] copy];
-	NSMutableArray *returnedAttachmentList = [incomingAttachmentList mutableCopy];
-	if (!returnedAttachmentList) {
-		returnedAttachmentList = [[NSMutableArray alloc] init];
-	}
-	
-	if ([fullAttachmentList count] > [incomingAttachmentList count]) {
-
-		// dedup
-		for (NSDictionary *attachment in incomingAttachmentList) {
-			NSDictionary *imageMeta = [attachment objectForKey:@"image_meta"];
-			if (imageMeta && [imageMeta objectForKey:@"small"] && [imageMeta objectForKey:@"medium"]) {
-				[fullAttachmentList removeObject:[attachment objectForKey:@"object_id"]];
-			} else {
-				[returnedAttachmentList removeObject:attachment];
-			}
-		}
-		
-		for (NSString *objectID in fullAttachmentList) {
-			NSString *attachString = @"/v2/attachments/view?object_id=%@&image_meta=%@";
-			NSString *smallString = [NSString stringWithFormat:attachString, objectID, @"small"];
-			NSString *mediumString =[NSString stringWithFormat:attachString, objectID, @"medium"];
-			NSDictionary *smallDict = [NSDictionary dictionaryWithObjectsAndKeys:
-																 smallString, @"url",
-																 nil];
-			NSDictionary *mediumDict = [NSDictionary dictionaryWithObjectsAndKeys:
-																 mediumString, @"url",
-																 nil];
-			NSDictionary *imageMeta = [NSDictionary dictionaryWithObjectsAndKeys:
-																 smallDict,  @"small",
-																 mediumDict, @"medium",
-																 nil];
-			NSDictionary *attach = [NSDictionary dictionaryWithObjectsAndKeys:
-															objectID, @"object_id",
-															creatorID, @"creator_id",
-															articleID, @"post_id",
-															imageMeta, @"image_meta",
-															@"unknown.jpeg", @"file_name",
-															@"image", @"type",
-															nil];
-			[returnedAttachmentList addObject:attach];
-		}
-		[returnedDictionary setObject:returnedAttachmentList forKey:@"attachments"];
-	}
-	
 	if ([creatorID length])
 		[returnedDictionary setObject:[NSDictionary dictionaryWithObject:creatorID forKey:@"user_id"] forKey:@"owner"];
 
@@ -205,6 +169,22 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 	
 	}
 	
+	NSArray *people = [incomingRepresentation objectForKey:@"people"];
+	if (!people || people.count == 0) {
+		[returnedDictionary removeObjectForKey:@"people"];
+	}
+	
+	NSArray *tags = [incomingRepresentation objectForKey:@"tags"];
+	if ([tags count]) {
+		
+		NSMutableArray *transformedTags = [NSMutableArray arrayWithCapacity:[tags count]];
+		[tags enumerateObjectsUsingBlock:^(NSString *aTagRep, NSUInteger idx, BOOL *stop) {
+			[transformedTags addObject:@{@"tagValue": aTagRep}];
+		}];
+		
+		[returnedDictionary setObject:transformedTags forKey:@"tags"];
+	}
+		
 	NSDictionary *preview = [incomingRepresentation objectForKey:@"preview"];
 	
 	if ([preview count]) {
@@ -221,7 +201,7 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 		nil] forKey:@"previews"];
 	
 	}
-	
+		
 	for (NSString *style in [incomingRepresentation objectForKey:@"style"]) {
     if ([style isEqualToString:@"url_history"]) {
 			[returnedDictionary setValue:[NSNumber numberWithUnsignedInteger:WAPostStyleURLHistory]
@@ -238,6 +218,12 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 		}
 	} else {
 		[returnedDictionary setValue:[NSNumber numberWithInt:WAImportTypeNone] forKey:@"import"];
+	}
+
+	if ([[incomingRepresentation objectForKey:@"event_tag"] isEqualToString:@"true"]) {
+		[returnedDictionary setValue:[NSNumber numberWithBool:YES] forKey:@"event_tag"];
+	} else {
+		[returnedDictionary setValue:[NSNumber numberWithBool:NO] forKey:@"event_tag"];
 	}
 
 	return returnedDictionary;
@@ -653,7 +639,7 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 				return;
 			}
 			
-			if (representedFile.identifier) {
+			if (representedFile.identifier && representedFile.thumbnailURL) {
 				aCallback(representedFile.identifier);
 				return;
 			}
@@ -675,7 +661,7 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 				NSManagedObjectContext *context = [[WADataStore defaultStore] defaultAutoUpdatedMOC];
 				WAFile *savedFile = (WAFile *)[context irManagedObjectForURI:fileURI];
 				
-				NSCParameterAssert(savedFile.article);
+				NSCParameterAssert(savedFile.articles);
 				NSCParameterAssert(savedFile.identifier);
 				aCallback(savedFile.identifier);
 				
@@ -891,22 +877,6 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 	}
 	
 	[[[self class] sharedSyncQueue] addOperations:operations waitUntilFinished:NO];
-//	__block NSOperationQueue *operationQueue = [[NSOperationQueue alloc] init];
-//	[operationQueue setSuspended:YES];
-//	[operationQueue setMaxConcurrentOperationCount:1];
-//	
-//	NSOperation *cleanupOp = [NSBlockOperation blockOperationWithBlock:^{
-//	
-//		operationQueue = nil;
-//		
-//	}];
-//	
-//	for (NSOperation *op in operations)
-//		[cleanupOp addDependency:op];
-//
-//	[operationQueue addOperations:operations waitUntilFinished:NO];
-//	[operationQueue addOperation:cleanupOp];
-//	[operationQueue setSuspended:NO];
 
 }
 

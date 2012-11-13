@@ -57,6 +57,10 @@
 #import "WAFirstUseViewController.h"
 
 #import "TestFlight.h"
+#import "WAPhotoStreamViewController.h"
+
+#define MR_SHORTHAND
+#import "CoreData+MagicalRecord.h"
 
 static NSString *const kTrackingId = @"UA-27817516-7";
 
@@ -166,6 +170,9 @@ static NSString *const kTrackingId = @"UA-27817516-7";
 	
 }
 
+
+extern CFAbsoluteTime StartTime;
+
 - (BOOL) application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
 
 	[self bootstrap];
@@ -237,9 +244,12 @@ static NSString *const kTrackingId = @"UA-27817516-7";
 	[TestFlight setDeviceIdentifier:[[UIDevice currentDevice] uniqueIdentifier]];
 #pragma clang pop
 #endif
-	
+
+	dispatch_async(dispatch_get_main_queue(), ^{
+	  NSLog(@"Stream Launched in %0.2f seconds on %@.", CFAbsoluteTimeGetCurrent() - StartTime, [UIDevice currentDevice].model);
+	});
+  
 	return YES;
-	
 }
 
 - (void) application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
@@ -365,9 +375,10 @@ static NSString *const kTrackingId = @"UA-27817516-7";
 			viewDeckController.view.backgroundColor = [UIColor blackColor];
 			viewDeckController.leftLedge = self.window.frame.size.width - 200.0f;
 			viewDeckController.rotationBehavior = IIViewDeckRotationKeepsLedgeSizes;
-			viewDeckController.animationBehavior = IIViewDeckAnimationPullIn;
+		//	viewDeckController.animationBehavior = IIViewDeckAnimationPullIn;
 			viewDeckController.panningMode = IIViewDeckNoPanning;
 			[viewDeckController setWantsFullScreenLayout:YES];
+			viewDeckController.delegate = slidingMenu;
 			viewDeckController.centerhiddenInteractivity = IIViewDeckCenterHiddenNotUserInteractiveWithTapToClose;
 	
 			self.window.rootViewController = viewDeckController;
@@ -711,91 +722,64 @@ static NSString *const kTrackingId = @"UA-27817516-7";
 	
 	}
 	
-	__block WAWelcomeViewController *welcomeVC = [WAWelcomeViewController controllerWithCompletion:^(NSString *token, NSDictionary *userRep, NSArray *groupReps, NSError *error) {
-	
-		if (error) {
-		
-			NSString *message = nil;
-			if ([error code] == 0x9) {
-				message = NSLocalizedString(@"AUTH_ERROR_INVALID_EMAIL_FORMAT", @"Authentication Error Description");
-			} else if ([error code] == 0xb) {
-				message = NSLocalizedString(@"AUTH_ERROR_INVALID_PWD_FORMAT", @"Authentication Error Description");
-			} else if ([error code] == 0x1001) {
-				message = NSLocalizedString(@"AUTH_ERROR_INVALID_EMAIL_PWD", @"Authentication Error Description");
-			} else if ([error code] == 0x1002) {
-				message = NSLocalizedString(@"AUTH_ERROR_ALREADY_REGISTERED", @"Authentication Error Description");
-			} else {
-				message = NSLocalizedString(@"AUTH_UNKNOWN_ERROR", @"Unknown Error");
-			}
-			IRAction *okAction = [IRAction actionWithTitle:NSLocalizedString(@"ACTION_OKAY", @"Alert Dismissal Action") block:nil];
-		
-			IRAlertView *alertView = [IRAlertView alertViewWithTitle:nil message:message cancelAction:okAction otherActions:nil];
-			[alertView show];
-		
-			welcomeVC = nil;
-			return;
-			
-		}
-		
+	WAFirstUseViewController *firstUseVC = [WAFirstUseViewController initWithAuthSuccessBlock:^(NSString *token, NSDictionary *userRep, NSArray *groupReps){
+
 		NSString *userID = [userRep valueForKeyPath:@"user_id"];
-		
+
 		NSString *primaryGroupID = [[[groupReps filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary *bindings) {
-		
+
 			return [[evaluatedObject valueForKeyPath:@"creator_id"] isEqual:userID];
-			
+
 		}]] lastObject] valueForKeyPath:@"group_id"];
-		
+
 		WARemoteInterface * const ri = [WARemoteInterface sharedInterface];
-		
+
 		ri.userIdentifier = userID;
 		ri.userToken = token;
 		ri.primaryGroupIdentifier = primaryGroupID;
-		
+
 		handleAuthSuccess();
 
-		WAFirstUseViewController *firstUseVC = [WAFirstUseViewController initWithCompleteBlock:^{
+	} authFailBlock:^(NSError *error) {
 
-			[wAppDelegate clearViewHierarchy];
-			[wAppDelegate recreateViewHierarchy];
-			
-		}];
+		NSParameterAssert(error);
 
-		switch ([UIDevice currentDevice].userInterfaceIdiom) {
-
-			case UIUserInterfaceIdiomPad:
-				firstUseVC.modalPresentationStyle = UIModalPresentationFormSheet;
-				break;
-
-			case UIUserInterfaceIdiomPhone:
-				firstUseVC.modalPresentationStyle = UIModalPresentationCurrentContext;
-
+		NSString *message = nil;
+		if ([error code] == 0x9) {
+			message = NSLocalizedString(@"AUTH_ERROR_INVALID_EMAIL_FORMAT", @"Authentication Error Description");
+		} else if ([error code] == 0xb) {
+			message = NSLocalizedString(@"AUTH_ERROR_INVALID_PWD_FORMAT", @"Authentication Error Description");
+		} else if ([error code] == 0x1001) {
+			message = NSLocalizedString(@"AUTH_ERROR_INVALID_EMAIL_PWD", @"Authentication Error Description");
+		} else if ([error code] == 0x1002) {
+			message = NSLocalizedString(@"AUTH_ERROR_ALREADY_REGISTERED", @"Authentication Error Description");
+		} else {
+			message = NSLocalizedString(@"AUTH_UNKNOWN_ERROR", @"Unknown Error");
 		}
-		
+		IRAction *okAction = [IRAction actionWithTitle:NSLocalizedString(@"ACTION_OKAY", @"Alert Dismissal Action") block:nil];
+
+		IRAlertView *alertView = [IRAlertView alertViewWithTitle:nil message:message cancelAction:okAction otherActions:nil];
+		[alertView show];
+
+	} finishBlock:^{
+
 		[wAppDelegate clearViewHierarchy];
-		[wAppDelegate.window.rootViewController presentViewController:firstUseVC animated:NO completion:nil];
+		[wAppDelegate recreateViewHierarchy];
 
 	}];
-	
-	UINavigationController *authRequestWrapperVC = [[UINavigationController alloc] initWithRootViewController:welcomeVC];
-	
-	switch ([UIDevice currentDevice].userInterfaceIdiom) {
-	
-		case UIUserInterfaceIdiomPad: {
-			authRequestWrapperVC.modalPresentationStyle = UIModalPresentationFormSheet;
-			break;
-		}
-		
-		case UIUserInterfaceIdiomPhone:
-		default: {
-			authRequestWrapperVC.modalPresentationStyle = UIModalPresentationCurrentContext;
-		}
 
+	switch ([UIDevice currentDevice].userInterfaceIdiom) {
+			
+		case UIUserInterfaceIdiomPad:
+			firstUseVC.modalPresentationStyle = UIModalPresentationFormSheet;
+			break;
+			
+		case UIUserInterfaceIdiomPhone:
+			firstUseVC.modalPresentationStyle = UIModalPresentationCurrentContext;
+			
 	}
-	
-	authRequestWrapperVC.navigationBar.tintColor =  [UIColor colorWithRed:98.0/255.0 green:176.0/255.0 blue:195.0/255.0 alpha:0.0];
-	
-	[self.window.rootViewController presentViewController:authRequestWrapperVC animated:NO completion:nil];
-	
+
+	[self.window.rootViewController presentViewController:firstUseVC animated:NO completion:nil];
 }
 
 - (BOOL) isRunningAuthRequest {
@@ -872,6 +856,7 @@ static NSInteger networkActivityStackingCount = 0;
 
 - (void)applicationWillTerminate:(UIApplication *)application {
 	[FBSession.activeSession close];
+	[MagicalRecord cleanUp];
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {

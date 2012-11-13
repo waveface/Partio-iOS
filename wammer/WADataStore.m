@@ -63,16 +63,16 @@ NSString * const kLastChangedPostsUpdateDate = @"WALastChangedPostsUpdateDate";
 
 }
 
-- (NSDate *) dateFromISO8601String:(NSString *)aValue {
+- (NSDate *) dateFromISO8601String:(NSString *)aDateString {
 
-	if (![aValue isKindOfClass:[NSString class]])
+	if (![aDateString isKindOfClass:[NSString class]] || [aDateString length] == 0)
 		return nil;
 
 	NSDate *returned = nil;
 	NSError *error = nil;
 	
-	if (![[[self class] threadLocalDateFormatter] getObjectValue:&returned forString:aValue range:NULL error:&error]){
-		NSLog(@"%s: %@ -> %@", __PRETTY_FUNCTION__, aValue, error);
+	if (![[[self class] threadLocalDateFormatter] getObjectValue:&returned forString:aDateString range:NULL error:&error]){
+		NSLog(@"%s: %@ -> %@", __PRETTY_FUNCTION__, aDateString, error);
 	}
 	
 	return returned;

@@ -18,7 +18,9 @@
 - (void)viewDidLoad {
 
 	[super viewDidLoad];
-	self.navigationItem.hidesBackButton = YES;
+
+	[self localize];
+
 	[[WARemoteInterface sharedInterface] addObserver:self forKeyPath:@"networkState" options:NSKeyValueObservingOptionInitial context:nil];
 
 }
@@ -29,12 +31,9 @@
 
 }
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-
-	[self.connectActivity startAnimating];
-	self.connectedHost.hidden = YES;
-	[[WARemoteInterface sharedInterface] performAutomaticRemoteUpdatesNow];
-	[tableView deselectRowAtIndexPath:indexPath animated:YES];
+- (void)localize {
+	
+	self.title = NSLocalizedString(@"STORAGE_SETUP_CONTROLLER_TITLE", @"Title of view controller setting personal cloud");
 
 }
 
@@ -46,16 +45,18 @@
 
 	WARemoteInterface *ri = [WARemoteInterface sharedInterface];
 	if ([ri hasReachableStation]) {
-		[self.connectActivity stopAnimating];
-		self.connectedHost.text = ri.monitoredHostNames[1];
-		self.connectedHost.hidden = NO;
+		self.connectionCell.accessoryView = nil;
+		self.connectionCell.detailTextLabel.text = ri.monitoredHostNames[1];
+		self.connectionCell.detailTextLabel.hidden = NO;
 	} else if (ri.monitoredHosts && [ri hasReachableCloud]) {
-			[self.connectActivity stopAnimating];
-			self.connectedHost.text = ri.monitoredHostNames[0];
-			self.connectedHost.hidden = NO;
+		self.connectionCell.accessoryView = nil;
+		self.connectionCell.detailTextLabel.text = ri.monitoredHostNames[0];
+		self.connectionCell.detailTextLabel.hidden = NO;
 	} else {
-		[self.connectActivity startAnimating];
-		self.connectedHost.hidden = YES;
+		UIActivityIndicatorView *activity = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+		[activity startAnimating];
+		self.connectionCell.accessoryView = activity;
+		self.connectionCell.detailTextLabel.hidden = YES;
 	}
 
 }

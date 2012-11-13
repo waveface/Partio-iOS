@@ -10,7 +10,7 @@
 
 @interface WAFirstUsePhotoImportViewController : UITableViewController
 
-@property (weak, nonatomic) IBOutlet UITableViewCell *enablePhotoImportCell;
-@property (weak, nonatomic) IBOutlet UITableViewCell *disablePhotoImportCell;
+@property (weak, nonatomic) IBOutlet UITableViewCell *photoImportSwitchCell;
+@property (nonatomic, readwrite) BOOL isFromConnectServicesPage;
 
 @end

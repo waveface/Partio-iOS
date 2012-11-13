@@ -10,8 +10,16 @@
 
 @interface WAFirstUseViewController : UINavigationController
 
-@property (nonatomic, readwrite, strong) void(^completeBlock)(void);
+typedef void (^WAFirstUseDidFinish)(void);
+typedef void (^WAFirstUseDidAuthSuccess)(NSString *token, NSDictionary *userRep, NSArray *groupReps);
+typedef void (^WAFirstUseDidAuthFail)(NSError *error);
 
-+ (WAFirstUseViewController *)initWithCompleteBlock:(void(^)(void))completeBlock;
+@property (nonatomic, readwrite, strong) WAFirstUseDidFinish didFinishBlock;
+@property (nonatomic, readwrite, strong) WAFirstUseDidAuthSuccess didAuthSuccessBlock;
+@property (nonatomic, readwrite, strong) WAFirstUseDidAuthFail didAuthFailBlock;
+
++ (WAFirstUseViewController *)initWithAuthSuccessBlock:(WAFirstUseDidAuthSuccess)authSuccessBlock
+																				 authFailBlock:(WAFirstUseDidAuthFail)authFailBlock
+																					 finishBlock:(WAFirstUseDidFinish)finishBlock;
 
 @end

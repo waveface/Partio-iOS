@@ -73,7 +73,7 @@
 	label.font = self.font;
 	label.textColor = [UIColor colorWithWhite:0.1 alpha:1.0];
 	label.numberOfLines = 0;
-	label.lineBreakMode = UILineBreakModeTailTruncation;
+	label.lineBreakMode = NSLineBreakByTruncatingMiddle;
 	label.opaque = NO;
 	label.backgroundColor = nil;
 	label.userInteractionEnabled = YES;

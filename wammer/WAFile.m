@@ -38,11 +38,15 @@
 @dynamic title;
 @dynamic extraSmallThumbnailFilePath;
 @dynamic importTime;
-@dynamic article;
+@dynamic articles;
 @dynamic owner;
 @dynamic pageElements;
 @dynamic representedArticle;
 @dynamic exif;
 @dynamic caches;
+@dynamic webURL;
+@dynamic webTitle;
+@dynamic webFaviconURL;
+@dynamic dirty;
 
 @end

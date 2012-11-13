@@ -82,6 +82,9 @@
 /* Action title for Signing Out */
 "ACTION_SIGN_OUT" = "Log Out";
 
+/* Email sign up button */
+"ACTION_SIGN_UP" = "Sign Up";
+
 /* Button title for showing a camera capture controller */
 "ACTION_TAKE_PHOTO_WITH_CAMERA" = "Camera";
 
@@ -137,6 +140,9 @@
 /* Title for the composition view */
 "COMPOSITION_TITLE" = "Compose";
 
+/* Title of view controller connecting services */
+"CONNECT_SERVICES_CONTROLLER_TITLE" = "GETTING STARTED";
+
 /* In iPad overview, (time, device)
    iPhone Timeline */
 "CREATE_TIME_FROM_DEVICE" = "Posted at %1$@ from %2$@";
@@ -188,7 +194,7 @@
 "ERROR_ARTICLE_ENTITY_SYNC_FAILURE_WITH_UNDERLYING_ERROR_DESCRIPTION_FORMAT" = "A necessary task failed: %@ — Your post has been saved as a draft.";
 
 /* Title for Events view */
-"EVENTS_CONTROLLER_TITLE" = "Events";
+"EVENTS_CONTROLLER_TITLE" = "EVENTS";
 
 /* Message for an alert view to show user his FB account has been connected to another Stream user */
 "FACEBOOK_CONNECT_ACCOUNT_OCCUPIED_MESSAGE" = "The Facebook account you’re using has already been registered. Please use another Facebook account.";
@@ -232,11 +238,17 @@
 /* Caption for URL History */
 "FETCH_REQUEST_URL_HISTORY" = "Visited Links";
 
+/* Free plan details in plans page */
+"FREE_PLAN_DESCRIPTION" = "Save all original files to one PC";
+
 /* No comment provided by engineer. */
 "HOUR_PLURAL" = "%d hours";
 
 /* No comment provided by engineer. */
 "HOUR_SINGULAR" = "%d hour";
+
+/* Title on introduction pages */
+"INTRODUCTION_TITLE" = "What is Stream?";
 
 /* In Account Info Photo Import Section */
 "LAST_IMPORT_TIME" = "Photos last imported: %@";
@@ -252,6 +264,9 @@
 
 /* No comment provided by engineer. */
 "MONTH_SINGULAR" = "%d month";
+
+/* Nickname placeholder in signup page */
+"NICKNAME_PLACEHOLDER" = "John Appleseed";
 
 /* Notification messages for photos auto-imported */
 "NOTIFY_PHOTOS_IMPORTED" = "%@ photo(s) have been imported into your Stream account.";
@@ -275,6 +290,19 @@
    iPhone Timeline */
 "NUMBER_OF_PHOTOS_CREATE_TIME_FROM_DEVICE" = "%1$@ posted %2$@ from %3$@";
 
+/* Free plan option in plans page */
+"OPTION_FREE_PLAN" = "Free";
+
+/* Premium plan option in plans page */
+"OPTION_PREMIUM_PLAN" = "$4.99/month";
+
+/* Ultimate plan option in plans page */
+"OPTION_ULTIMATE_PLAN" = "$7.99/month";
+
+/* Password placeholder in login page
+   Password placeholder in signup page */
+"PASSWORD_PLACEHOLDER" = "••••••••";
+
 /* In iPad overview */
 "PHOTO_NOUN" = "1 photo";
 
@@ -284,8 +312,23 @@
 /* in iPhone timeline */
 "PHOTO_SINGULAR" = "%d photo";
 
+/* Title of view controller setting photo upload */
+"PHOTO_UPLOAD_CONTROLLER_TITLE" = "AUTO PHOTO UPLOAD";
+
+/* Subtitle of photo upload status */
+"PHOTO_UPLOAD_STATUS_NOT_UPLOADING" = "Not enabled";
+
+/* Subtitle of photo upload status */
+"PHOTO_UPLOAD_STATUS_UPLOADING" = "Uploading photos";
+
 /* In iPad overview */
 "PHOTOS_PLURAL" = "%d photos";
+
+/* Title of view controller choosing plans */
+"PLANS_CONTROLLER_TITLE" = "PLANS";
+
+/* Premium plan details in plans page */
+"PREMIUM_PLAN_DESCRIPTION" = "250GB cloud storage, unlimited PC storage";
 
 /* Text to show for previews without a provider name */
 "PREVIEW_BADGE_PROVIDER_NAME_PLACEHOLDER" = "(No Provider)";
@@ -311,6 +354,9 @@
 /* No comment provided by engineer. */
 "RESET_SETTINGS_CONFIRMATION_TITLE" = "Reset Settings?";
 
+/* Subtitle of searching network in setup done page. */
+"SEARCHING_NETWORK_SUBTITLE" = "Searching AOStream network...";
+
 /* No comment provided by engineer. */
 "SECOND_PLURAL" = "%d seconds";
 
@@ -323,14 +369,21 @@
 /* Title to show explaining WiFi Sync */
 "SERVICE_INFO_WITHOUT_WIFI" = "Stream only sends your original photos via Wi-Fi connection. \n\nIf you don't have Stream installed on your PC, or it's not up and running, we keep the photos in a temporary cloud space for up to 30 days.";
 
+/* Title of view controller finishing first setup */
+"SETUP_DONE_CONTROLLER_TITLE" = "ALMOST DONE";
+
 /* Title for view controller signing the user in */
-"SIGN_IN_CONTROLLER_TITLE" = "Log In";
+"SIGN_IN_CONTROLLER_TITLE" = "LOG IN";
 
 /* Confirmation text for Signing Out */
 "SIGN_OUT_CONFIRMATION" = "Are you sure?";
 
-/* Title for view controller signing the user up */
-"SIGN_UP_CONTROLLER_TITLE" = "Sign Up";
+/* Title of bar button going sign up page */
+"SIGN_UP_BAR_BUTTON_TITLE" = "Sign Up";
+
+/* Title for view controller signing the user up
+   Title of view controller signing the user up */
+"SIGN_UP_CONTROLLER_TITLE" = "SIGN UP";
 
 /* Font name of the sliding menu */
 "SLIDING_MENU_FONTNAME" = "HelveticaNeue-Medium";
@@ -355,6 +408,9 @@
 
 /* No comment provided by engineer. */
 "STATE_LOADING_SINGLE_DOCUMENT" = "Loading Document…";
+
+/* Title of view controller setting personal cloud */
+"STORAGE_SETUP_CONTROLLER_TITLE" = "SETUP YOUR STORAGE";
 
 /* Cloud Name */
 "Stream Cloud" = "Stream Cloud";
@@ -398,6 +454,9 @@
 /* Alert on no location service enabled when open photo library */
 "TURN_ON_LOCATION_SERVICE" = "Turn on Location Services to allow Stream to access your Photo Library";
 
+/* Ultimate plan details in plans page */
+"ULTIMATE_PLAN_DESCRIPTION" = "500GB cloud storage, unlimited PC storage";
+
 /* Downloading Status on iPhone Timeline */
 "UNABLE_TO_DOWNLOADING_PHOTOS" = "No Internet connection. Syncing incomplete...";
 
@@ -427,6 +486,10 @@
 
 /* Title to show when user has no station, and have exhausted storage on the Cloud */
 "USER_INFO_NAG_LEVEL_3_WITHOUT_STATION" = "Your cloud storage is full.  To sync, install and run Stream for Windows on your PC.";
+
+/* Email placeholder in login page
+   Email placeholder in signup page */
+"USERNAME_PLACEHOLDER" = "me@example.com";
 
 /* preview button in composition view */
 "WEB_PREVIEW" = "Web Preview";
@@ -461,6 +524,75 @@
 /* Class = "IBUILabel"; text = "MONDAY"; ObjectID = "39"; */
 "MONDAY" = "MONDAY";
 
+/* Class = "IBUILabel"; text = "WEBSERVICE_LIST_TITLE"; ObjectID = "0P9-dO-3KX"; */
+"WEBSERVICE_LIST_TITLE" = "Connect to web services:";
+
+/* Class = "IBUILabel"; text = "PHOTO_UPLOAD_STATUS_TITLE"; ObjectID = "2wg-Lw-z1H"; */
+"PHOTO_UPLOAD_STATUS_TITLE" = "Camera Roll Upload Status";
+
+/* Class = "IBUILabel"; text = "CONNECTION_STATUS_TITLE"; ObjectID = "51O-As-E34"; */
+"CONNECTION_STATUS_TITLE" = "Connection Status";
+
+/* Class = "IBUILabel"; text = "PC_SETUP_INSTRUCTIONS"; ObjectID = "6Ib-wQ-B01"; */
+"PC_SETUP_INSTRUCTIONS" = "1. Install AOStream Windows\n2. Turn on WiFi and connect to the same network with your PC.";
+
+/* Class = "IBUILabel"; text = "PHOTO_UPLOAD_SWITCH_TITLE"; ObjectID = "749-zj-beb"; */
+"PHOTO_UPLOAD_SWITCH_TITLE" = "Upload Camera Roll";
+
+/* Class = "IBUILabel"; text = "NOUN_USERNAME"; ObjectID = "8Ts-v9-BV9"; */
+"NOUN_USERNAME" = "Email";
+
+/* Class = "IBUILabel"; text = "CONNECT_SERVICES_DESCRIPTION"; ObjectID = "GEd-xe-bMT"; */
+"CONNECT_SERVICES_DESCRIPTION" = "You can also change these settings whatever you want.";
+
+/* Class = "IBUIButton"; normalTitle = "LOGIN_LINK_DEVICE"; ObjectID = "Gch-g1-VSP"; */
+"LOGIN_LINK_DEVICE" = "Login & link this device";
+
+/* Class = "IBUILabel"; text = "PC_SETUP_DESCRIPTION"; ObjectID = "Jfg-PE-RoZ"; */
+"PC_SETUP_DESCRIPTION" = "Connect to your personal cloud station and enable lightning speed.";
+
+/* Class = "IBUIButton"; normalTitle = "I_AM_NEW_HERE"; ObjectID = "KXA-OG-bKa"; */
+"I_AM_NEW_HERE" = "I am new here!";
+
+/* Class = "IBUILabel"; text = "NOUN_PASSWORD"; ObjectID = "OIv-A5-N1k"; */
+"NOUN_PASSWORD" = "Password";
+
+/* Class = "IBUILabel"; text = "PHOTO_UPLOAD_DESCRIPTION"; ObjectID = "Phx-kE-dRu"; */
+"PHOTO_UPLOAD_DESCRIPTION" = "Stream automatically sync all your photos from your devices to your personal cloud. We create real life events for you, and they are right there anytime, anywhere.";
+
+/* Class = "IBUILabel"; text = "NOUN_USERNAME"; ObjectID = "WAR-06-Bm8"; */
+"NOUN_USERNAME" = "Email";
+
+/* Class = "IBUILabel"; text = "NOUN_NICKNAME"; ObjectID = "WOl-eU-Hik"; */
+"NOUN_NICKNAME" = "Name";
+
+/* Class = "IBUILabel"; text = "PHOTO_UPLOAD_STATUS_SUBTITLE"; ObjectID = "chO-N2-cYE"; */
+"PHOTO_UPLOAD_STATUS_SUBTITLE" = "PHOTO_UPLOAD_STATUS_SUBTITLE";
+
+/* Class = "IBUILabel"; text = "NOUN_PASSWORD"; ObjectID = "qlc-Lu-gj2"; */
+"NOUN_PASSWORD" = "Password";
+
+/* Class = "IBUIButton"; normalTitle = "ACTION_START_STREAM"; ObjectID = "u89-AV-2W1"; */
+"ACTION_START_STREAM" = "Start Stream!";
+
+/* Class = "IBUILabel"; text = "CONNECTION_STATUS_SUBTITLE"; ObjectID = "urH-gP-L4v"; */
+"CONNECTION_STATUS_SUBTITLE" = "CONNECTION_STATUS_SUBTITLE";
+
+/* Class = "IBUILabel"; text = "PC_SETUP_TITLE"; ObjectID = "w7L-CQ-FdG"; */
+"PC_SETUP_TITLE" = "Feel Slow?";
+
+/* Class = "IBUIButton"; normalTitle = "ACTION_SIGN_IN"; ObjectID = "6"; */
+"ACTION_SIGN_IN" = "Log In";
+
+/* Class = "IBUIButton"; normalTitle = "ACTION_CONNECT_FACEBOOK"; ObjectID = "9"; */
+"ACTION_CONNECT_FACEBOOK" = "Connect with Facebook";
+
+/* Class = "IBUILabel"; text = "ACTION_GOTO_WEBSITE"; ObjectID = "189"; */
+"ACTION_GOTO_WEBSITE" = "Learn more on our website";
+
+/* Class = "IBUILabel"; text = "PLANS_DESCRIPTION"; ObjectID = "202"; */
+"PLANS_DESCRIPTION" = "Stream send all your presure moments back to your PC. You can also upgrade to a cloud storage plan and enjoy the benefit of cloud computing.";
+
 /* Class = "IBUITextField"; placeholder = "USERNAME_PLACEHOLDER"; ObjectID = "2Vk-4J-QH3"; */
 "USERNAME_PLACEHOLDER" = "me@example.com";
 
@@ -474,24 +606,6 @@
 "PASSWORD_PLACEHOLDER" = "••••••••";
 
 /* Class = "IBUILabel"; text = "FEB"; ObjectID = "50"; */
-"FEB" = "FEB";
-
-/* Class = "IBUILabel"; text = "FEB"; ObjectID = "64"; */
-"FEB" = "FEB";
-
-/* Class = "IBUILabel"; text = "FEB"; ObjectID = "76"; */
-"FEB" = "FEB";
-
-/* Class = "IBUILabel"; text = "FEB"; ObjectID = "90"; */
-"FEB" = "FEB";
-
-/* Class = "IBUILabel"; text = "FEB"; ObjectID = "64"; */
-"FEB" = "FEB";
-
-/* Class = "IBUILabel"; text = "FEB"; ObjectID = "76"; */
-"FEB" = "FEB";
-
-/* Class = "IBUILabel"; text = "FEB"; ObjectID = "90"; */
 "FEB" = "FEB";
 
 /* Class = "IBUILabel"; text = "FEB"; ObjectID = "110"; */
@@ -606,7 +720,7 @@
 "ACTION_CONNECT_FACEBOOK" = "Connect with Facebook";
 
 /* Class = "IBUIButton"; normalTitle = "ACTION_SIGN_IN"; ObjectID = "8"; */
-"ACTION_SIGN_IN" = "Sign In";
+"ACTION_SIGN_IN" = "Log In";
 
 /* Class = "IBUIButton"; normalTitle = "ACTION_SIGN_UP"; ObjectID = "16"; */
 "ACTION_SIGN_UP" = "Sign Up";
@@ -618,5 +732,5 @@
 "ACTION_SIGN_UP" = "Sign Up";
 
 /* Class = "IBUIButton"; normalTitle = "ACTION_SIGN_IN"; ObjectID = "10"; */
-"ACTION_SIGN_IN" = "Sign In";
+"ACTION_SIGN_IN" = "Log In";
 

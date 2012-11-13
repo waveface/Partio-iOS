@@ -110,6 +110,10 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
 			@"timestamp", @"file_create_time",
       
 			@"pageElements", @"pageElements",
+							 
+			@"webURL", @"web_url",
+			@"webTitle", @"web_title",
+			@"webFaviconURL", @"web_favicon",
 			
 		nil];
 		
@@ -149,7 +153,18 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
   
   if ([incomingFileType isEqualToString:@"image"]) {
   
-    //  ?
+    NSString *webURLString = [incomingRepresentation valueForKeyPath:@"image_meta.web_url"];
+		if ([webURLString isKindOfClass:[NSString class]])
+			[returnedDictionary setObject:webURLString forKey:@"web_url"];
+		
+		NSString *webFaviconURLString = [incomingRepresentation valueForKeyPath:@"image_meta.web_favicon"];
+		if ([webFaviconURLString isKindOfClass:[NSString class]])
+			[returnedDictionary setObject:webFaviconURLString forKey:@"web_favicon"];
+		
+		NSString *webTitleString = [incomingRepresentation valueForKeyPath:@"image_meta.web_title"];
+		if ([webTitleString isKindOfClass:[NSString class]])
+			[returnedDictionary setObject:webTitleString forKey:@"web_title"];
+		
   
   } else if ([incomingFileType isEqualToString:@"doc"]) {
   
@@ -414,8 +429,10 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
 				[options setObject:file.identifier forKey:kWARemoteAttachmentUpdatedObjectIdentifier];
 			}
 
-			if (file.article.identifier) {
-				[options setObject:file.article.identifier forKey:kWARemoteArticleIdentifier];
+			NSAssert1(file.articles.count>0, @"WAFile entity %@ must have already been associated with an article", file);
+			WAArticle *article = [[file.articles allObjects] objectAtIndex:0];  // if the post is from device itself, there should be only one article in db, this should be right, but careful
+			if (article.identifier) {
+				[options setObject:article.identifier forKey:kWARemoteArticleIdentifier];
 			}
 
 			if (file.exif) {
@@ -507,8 +524,9 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
 			if (file.identifier)
 				[options setObject:file.identifier forKey:kWARemoteAttachmentUpdatedObjectIdentifier];
 
-			if (file.article.identifier) {
-				[options setObject:file.article.identifier forKey:kWARemoteArticleIdentifier];
+			WAArticle *article = [[file.articles allObjects] objectAtIndex:0];
+			if (article.identifier) {
+				[options setObject:article.identifier forKey:kWARemoteArticleIdentifier];
 			}
 
 			if (file.exif) {

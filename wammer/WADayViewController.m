@@ -47,13 +47,18 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 	self.days = [NSMutableArray array];
 	self.daysControllers = [[NSMutableDictionary alloc] init];
 	
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleCompositionSessionRequest:) name:kWACompositionSessionRequestedNotification object:nil];
-		
+	[[NSNotificationCenter defaultCenter]
+	 addObserver:self
+	 selector:@selector(handleCompositionSessionRequest:)
+	 name:kWACompositionSessionRequestedNotification
+	 object:nil];
+	
 	[self performFetchRequestForIncomingData];
 	
 	self.title = NSLocalizedString(@"EVENTS_CONTROLLER_TITLE", @"Title for Events view");
 //	self.navigationItem.titleView = WATitleViewForDripdownMenu(self, @selector(dripdownMenuTapped));
-	self.navigationItem.titleView = WAStandardTitleLabelWithString(NSLocalizedString(@"EVENTS_CONTROLLER_TITLE", @"Title for Events view"));
+//	self.navigationItem.titleView = WAStandardTitleLabelWithString(NSLocalizedString(@"EVENTS_CONTROLLER_TITLE", @"Title for Events view"));
+	self.navigationController.title = NSLocalizedString(@"EVENTS_CONTROLLER_TITLE", @"Title for Events view");
 	
 	CGRect rect = (CGRect){ CGPointZero, (CGSize){ 1, 1 } };
 	UIGraphicsBeginImageContext(rect.size);
@@ -146,7 +151,10 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 
 - (void) dealloc {
 
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:kWACompositionSessionRequestedNotification object:nil];
+	[[NSNotificationCenter defaultCenter]
+	 removeObserver:self
+	 name:kWACompositionSessionRequestedNotification
+	 object:nil];
 	
 }
 
@@ -158,6 +166,7 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 
 	CGRect origFrame = self.view.frame;
 	origFrame.origin = CGPointZero;
+	origFrame.size.height -= CGRectGetHeight(self.navigationController.navigationBar.frame);
 	
 	self.view.backgroundColor = [UIColor whiteColor];
 	self.paginatedView = [[IRPaginatedView alloc] initWithFrame:origFrame];
@@ -175,9 +184,7 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 	self.navigationItem.titleView.alpha = 1;
 	
 	[self.navigationController.toolbar setHidden:YES];
-//	[self.navigationController.toolbar setTintColor:[UIColor colorWithWhite:128.0/255.0 alpha:1]];
-//	[self.navigationController.toolbar setBackgroundImage:[UIImage imageNamed:@"ToolbarWithButtons"] forToolbarPosition:UIToolbarPositionAny barMetrics:UIBarMetricsDefault];
-
+	
 }
 
 - (void) viewDidAppear:(BOOL)animated {
@@ -224,21 +231,24 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 
 #pragma mark - delegate methods for IRPaginatedView
 - (void) reloadViewContents {
-	
-	NSManagedObjectContext *moc = [[WADataStore defaultStore] defaultAutoUpdatedMOC];
-	
-	NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-	NSEntityDescription *entity = [NSEntityDescription entityForName:@"WAArticle" inManagedObjectContext:moc];
-	[fetchRequest setEntity:entity];
-	[fetchRequest setResultType:NSDictionaryResultType];
- 	
-	NSExpression *keyToFetch = [NSExpression expressionForKeyPath:@"creationDate"];
-	NSExpressionDescription *description = [[NSExpressionDescription alloc] init];
-	[description setName:@"fetchedCreationDate"];
-	[description setExpression:keyToFetch];
-	[description setExpressionResultType:NSDateAttributeType];
-	[fetchRequest setPropertiesToFetch:[NSArray arrayWithObject:description]];
-	
+		
+	NSFetchRequest *fetchRequest = [[WADataStore defaultStore].persistentStoreCoordinator.managedObjectModel fetchRequestFromTemplateWithName:@"WAFRArticles" substitutionVariables:[NSDictionary dictionary]];
+
+	fetchRequest.relationshipKeyPathsForPrefetching = [NSArray arrayWithObjects:
+																										 @"files",
+																										 @"tags",
+																										 @"people",
+																										 @"location",
+																										 @"previews",
+																										 @"descriptiveTags",
+																										 @"files.pageElements",
+																										 nil];
+	fetchRequest.predicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[
+														fetchRequest.predicate,
+														[NSPredicate predicateWithFormat:@"event = TRUE"],
+														[NSPredicate predicateWithFormat:@"files.@count > 0"],
+														[NSPredicate predicateWithFormat:@"import != %d AND import != %d", WAImportTypeFromOthers, WAImportTypeFromLocal]]];
+
 	fetchRequest.sortDescriptors = [NSArray arrayWithObjects:
 																	[NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:NO],
 																	nil];
@@ -258,21 +268,19 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
   };
 	
 	__block NSDate *currentDate = nil;
-	
+
 	NSError *error = nil;
-	NSArray *objects = [moc executeFetchRequest:fetchRequest error:&error];
+	
+	NSArray *objects = [[[WADataStore defaultStore] defaultAutoUpdatedMOC] executeFetchRequest:fetchRequest error:&error];
 	
 	self.days = [NSMutableArray array];
 	self.daysControllers = [NSMutableDictionary dictionary];
 	
-	if (objects == nil) {
-		
-	
-	} else {
-		
+	if (objects) {
+
 		[objects enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
 			
-			NSDate *theDate = (NSDate*)obj[@"fetchedCreationDate"];
+			NSDate *theDate = [((WAArticle*)obj) creationDate];
 			
 			if (!currentDate || !theSameDay(currentDate, theDate)) {
 				[self.days addObject:theDate];
