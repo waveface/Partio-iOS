@@ -63,6 +63,22 @@ NSString * const kLastChangedPostsUpdateDate = @"WALastChangedPostsUpdateDate";
 
 }
 
++ (NSDateFormatter *) threadTZDateFormatter {
+	static NSString * const key = @"-[WADataStore threadTZDateFormatter]";
+	NSMutableDictionary *dictionary = [[NSThread currentThread] threadDictionary];
+	
+	NSDateFormatter *df = [dictionary objectForKey:key];
+	if (!df) {
+		df = [[NSDateFormatter alloc] init];
+		df.dateFormat = @"yyyy-MM-dd'T'HH:mm:ss.SSSSZ";
+		df.locale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"];
+		[dictionary setObject:df forKey:key];
+	}
+	
+	return df;
+
+}
+
 - (NSDate *) dateFromISO8601String:(NSString *)aDateString {
 
 	if (![aDateString isKindOfClass:[NSString class]] || [aDateString length] == 0)
@@ -72,7 +88,9 @@ NSString * const kLastChangedPostsUpdateDate = @"WALastChangedPostsUpdateDate";
 	NSError *error = nil;
 	
 	if (![[[self class] threadLocalDateFormatter] getObjectValue:&returned forString:aDateString range:NULL error:&error]){
-		NSLog(@"%s: %@ -> %@", __PRETTY_FUNCTION__, aDateString, error);
+		if (![[[self class] threadTZDateFormatter] getObjectValue:&returned forString:aDateString range:NULL error:&error]) {
+			NSLog(@"%s: %@ -> %@", __PRETTY_FUNCTION__, aDateString, error);
+		}
 	}
 	
 	return returned;

@@ -390,11 +390,12 @@
 
 	}
 	
-	height += (CGRectGetHeight(self.headerView.descriptiveTagsLabel.frame) + 4);
+	height += self.headerView.descriptiveTagsLabel.intrinsicContentSize.height + 4;
 	
 	if (!self.headerView.tagsLabel.hidden) {
 		
-		height += (CGRectGetHeight((self.headerView.tagsLabel.frame)) + 4);
+		CGFloat max = MAX(self.headerView.tagsLabel.intrinsicContentSize.height, CGRectGetHeight(self.headerView.tagsLabel.frame));
+		height += max + 4;
 		
 	}
 	

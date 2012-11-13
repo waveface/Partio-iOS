@@ -492,7 +492,13 @@
 		self.typeImageView.image = [[self class] photoEventImage];
 	
 	self.fileNoLabel.frame = CGRectOffset(self.fileNoLabel.frame, leftAlignX + icon.size.width + spacing, 0);
-		
+	
+	// clean cached stuff
+	NSArray *subviews = [self.containerView subviews];
+	[subviews enumerateObjectsUsingBlock:^(UIView *sub, NSUInteger idx, BOOL *stop) {
+		[sub removeFromSuperview];
+	}];
+	
 	[self.containerView addSubview:self.typeImageView];
 	[self.containerView addSubview:self.fileNoLabel];
 	
