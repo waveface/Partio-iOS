@@ -17,6 +17,7 @@
 #import "WADefines.h"
 #import "WAAppDelegate_iOS.h"
 #import "WACacheManager.h"
+#import "WARemoteInterface.h"
 
 
 @implementation WAFile (FilePaths)
@@ -38,8 +39,23 @@
 	NSString *urlString = [self primitiveValueForKey:urlStringKey];
 	[self didAccessValueForKey:urlStringKey];
 	
-	if (!urlString)
+	if (!urlString) {
+		if ([[WARemoteInterface sharedInterface] hasReachableStation]) {
+			if (urlStringKey == kWAFileSmallThumbnailURL) {
+				urlString = [NSString stringWithFormat:@"http://invalid.local/v2/attachments/view?object_id=%@&image_meta=%@", self.identifier, @"small"];
+			} else if (urlStringKey == kWAFileThumbnailURL) {
+				urlString = [NSString stringWithFormat:@"http://invalid.local/v2/attachments/view?object_id=%@&image_meta=%@", self.identifier, @"medium"];
+			} else if (urlStringKey == kWAFileLargeThumbnailURL) {
+				urlString = [NSString stringWithFormat:@"http://invalid.local/v2/attachments/view?object_id=%@&image_meta=%@", self.identifier, @"large"];
+			} else if (urlStringKey == kWAFileResourceURL) {
+				urlString = [NSString stringWithFormat:@"http://invalid.local/v2/attachments/view?object_id=%@", self.identifier];
+			}
+		}
+	}
+	
+	if (!urlString) {
 		return nil;
+	}
 	
 	NSURL *fileURL = [NSURL URLWithString:urlString];
 	if (!fileURL)
@@ -49,7 +65,7 @@
 		return [fileURL path];
 	
 	if ([self displayingSmallThumbnail] || [self displayingThumbnail]) {
-		[self retrieveBlobWithURLStringKey:urlStringKey filePathKey:filePathKey];
+		[self retrieveBlobWithURLString:urlString URLStringKey:urlStringKey filePathKey:filePathKey];
 	}
 	
 	return nil;	

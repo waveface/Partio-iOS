@@ -103,6 +103,8 @@ static NSString *const kTrackingId = @"UA-27817516-7";
 @property (nonatomic, readwrite, assign) BOOL alreadyRequestingAuthentication;
 @property (nonatomic, readwrite) UIBackgroundTaskIdentifier bgTask;
 @property (nonatomic, readwrite, strong) WAPhotoImportManager *photoImportManager;
+@property (nonatomic, strong) WACacheManager *cacheManager;
+@property (nonatomic, strong) WASyncManager *syncManager;
 
 - (void) clearViewHierarchy;
 - (void) recreateViewHierarchy;
@@ -402,6 +404,7 @@ extern CFAbsoluteTime StartTime;
 
 	self.photoImportManager = nil;
 	self.cacheManager = nil;
+	self.syncManager = nil;
 
 	BOOL const WAPhotoImportEnabledDefault = NO;
 
@@ -431,36 +434,35 @@ extern CFAbsoluteTime StartTime;
 			 // bind to user's persistent store
 			 [wSelf bootstrapPersistentStoreWithUserIdentifier:userIdentifier];
 
-			 dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+			 if (!wSelf.photoImportManager) {
+				 wSelf.photoImportManager = [[WAPhotoImportManager alloc] init];
+			 }
+			 if (wSelf.photoImportManager.enabled) {
+				 [wSelf.photoImportManager createPhotoImportArticlesWithCompletionBlock:^{
+					 NSLog(@"All photo import operations are enqueued");
+				 }];
+			 }
 
-				 if (!wSelf.photoImportManager) {
-					 wSelf.photoImportManager = [[WAPhotoImportManager alloc] init];
-				 }
-				 if (wSelf.photoImportManager.enabled) {
-					 [wSelf.photoImportManager createPhotoImportArticlesWithCompletionBlock:^{
-						 NSLog(@"All photo import operations are enqueued");
-					 }];
-				 }
+			 if (!wSelf.cacheManager) {
+				 wSelf.cacheManager = [[WACacheManager alloc] init];
+				 wSelf.cacheManager.delegate = self;
+			 }
+			 [wSelf.cacheManager clearPurgeableFilesIfNeeded];
 
-				 if (!wSelf.cacheManager) {
-					 wSelf.cacheManager = [[WACacheManager alloc] init];
-					 wSelf.cacheManager.delegate = self;
-				 }
-				 [wSelf.cacheManager clearPurgeableFilesIfNeeded];
+			 // reset monitored hosts
+			 WARemoteInterface *ri = [WARemoteInterface sharedInterface];
 
-				 // reset monitored hosts
-				 WARemoteInterface *ri = [WARemoteInterface sharedInterface];
+			 // close websocket if needed
+			 [ri closeWebSocketConnection];
 
-				 // close websocket if needed
-				 [ri closeWebSocketConnection];
+			 ri.monitoredHosts = nil;
+			 [ri performAutomaticRemoteUpdatesNow];
 
-				 ri.monitoredHosts = nil;
-				 [ri performAutomaticRemoteUpdatesNow];
+			 if (!wSelf.syncManager) {
+				 wSelf.syncManager = [[WASyncManager alloc] init];
+				 [wSelf.syncManager reload];
+			 }
 
-				 // reset pending original objects
-				 [[WASyncManager sharedManager] reload];
-
-			 });
 		 }
 												runningOnboardingProcess:YES];
 		
@@ -879,6 +881,10 @@ static NSInteger networkActivityStackingCount = 0;
 		}
 		[self.cacheManager clearPurgeableFilesIfNeeded];
 
+		if (!self.syncManager) {
+			self.syncManager = [[WASyncManager alloc] init];
+			[self.syncManager reload];
+		}
 	}
 
 }

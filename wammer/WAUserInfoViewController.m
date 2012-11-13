@@ -27,6 +27,7 @@
 
 #import "WASyncManager.h"
 #import "WAPhotoImportManager.h"
+#import "WAAppDelegate_iOS.h"
 
 typedef enum WASyncStatus: NSUInteger {
 	WASyncStatusNone = 0,
@@ -141,7 +142,7 @@ typedef enum WASyncStatus: NSUInteger {
 	__weak WAUserInfoViewController *wSelf = self;
 	__weak WADataStore *wDataStore = [WADataStore defaultStore];
 	__weak WAUser *wMainUser = wSelf.user;
-	__weak WASyncManager *wBlobSyncManager = [WASyncManager sharedManager];
+	__weak WASyncManager *wBlobSyncManager = [self syncManager];
 	__weak WARemoteInterface *wRemoteInterface = [WARemoteInterface sharedInterface];
 	
 	NSKeyValueObservingOptions options = NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew;
@@ -153,7 +154,7 @@ typedef enum WASyncStatus: NSUInteger {
 
 	}];
 	
-	[self irObserveObject:wBlobSyncManager keyPath:@"operationQueue.operationCount" options:options context:nil withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
+	[self irObserveObject:wBlobSyncManager keyPath:@"fileSyncOperationQueue.operationCount" options:options context:nil withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
 
 		// avoid blinking sync table view
 		if (![wSelf isSyncing]) {
@@ -403,7 +404,7 @@ typedef enum WASyncStatus: NSUInteger {
 	if (hitCell == syncTableViewCell) {
 	
 		[[WARemoteInterface sharedInterface] performAutomaticRemoteUpdatesNow];
-		[[WASyncManager sharedManager] performSyncNow];
+		[[self syncManager] performSyncNow];
 		
 	} else if (hitCell == stationNagCell) {
 	
@@ -555,16 +556,16 @@ typedef enum WASyncStatus: NSUInteger {
 
 - (WASyncManager *) syncManager {
 
-	return [WASyncManager sharedManager];
+	return [(WAAppDelegate_iOS *)AppDelegate() syncManager];
 
 }
 
 - (WASyncStatus) isSyncing {
 
 	WARemoteInterface * const ri = [WARemoteInterface sharedInterface];
-	WASyncManager * const sm = [WASyncManager sharedManager];
+	WASyncManager * const sm = [self syncManager];
 
-	if (ri.performingAutomaticRemoteUpdates || sm.operationQueue.operationCount)
+	if (ri.performingAutomaticRemoteUpdates || sm.fileSyncOperationQueue.operationCount)
 		return WASyncStatusSyncing;
 
 	if (ri.webSocketConnected)

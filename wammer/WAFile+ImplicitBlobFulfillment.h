@@ -18,7 +18,7 @@
 
 - (void) performBlockSuppressingBlobRetrieval:(void(^)(void))aBlock;
 
-- (void) retrieveBlobWithURLStringKey:(NSString *)urlStringKey filePathKey:(NSString *)filePathKey;
+- (void) retrieveBlobWithURLString:(NSString *)urlString URLStringKey:(NSString *)urlStringKey filePathKey:(NSString *)filePathKey;
 
 - (void) scheduleRetrievalForBlobURL:(NSURL *)blobURL blobKeyPath:(NSString *)blobURLKeyPath filePathKeyPath:(NSString *)filePathKeyPath usingPriority:(NSOperationQueuePriority)priority;
 
