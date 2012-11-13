@@ -15,6 +15,7 @@
 #import "WAOverlayBezel.h"
 #import "WAPhotoImportManager.h"
 #import "WADataStore.h"
+#import <Foundation/Foundation.h>
 #import "WAPhotoStreamViewController.h"
 
 @interface WASlidingMenuViewController () {
@@ -23,6 +24,7 @@
 
 @property (nonatomic, strong) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, strong) WAUser *user;
+@property (nonatomic, strong) UITableViewCell *userCell;
 
 @end
 
@@ -39,7 +41,15 @@
 
 - (void)viewDidLoad
 {
-	[super viewDidLoad];	
+	[super viewDidLoad];
+
+}
+
+- (void)dealloc
+{
+	[self.user removeObserver:self forKeyPath:@"avatar"];
+	[self.user removeObserver:self forKeyPath:@"nickname"];
+	
 }
 
 - (void)didReceiveMemoryWarning
@@ -110,6 +120,34 @@
 	
 }
 
+- (void)registerObserver
+{
+	NSDictionary *oInfo = [self observationInfo];
+	if ([oInfo count] == 0) {
+		NSKeyValueObservingOptions options = NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew;
+		
+		[self.user addObserver:self forKeyPath:@"avatar" options:options context:nil];
+		[self.user addObserver:self forKeyPath:@"nickname" options:options context:nil];
+	}
+
+}
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+{
+	if ([keyPath isEqual:@"avatar"]) {
+		
+		UIImage *avatar = (UIImage *)[change objectForKey:NSKeyValueChangeNewKey];
+		_userCell.imageView.image = (avatar)? avatar: [UIImage imageNamed:@"WAUserGlyph"];
+		
+	}
+	
+	if ([keyPath isEqual:@"nickname"]) {
+		
+		_userCell.textLabel.text = (NSString *)[change objectForKey:NSKeyValueChangeNewKey];
+		
+	}
+	
+}
 
 #pragma mark - Table view data source
 
@@ -135,48 +173,56 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *CellIdentifier = @"Cell";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-	
-    if (cell == nil) {
-			cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
-			cell.selectionStyle = UITableViewCellSelectionStyleGray;
-    }
-		
-		switch(indexPath.row) {
-			
-			case 0: {
-				cell.imageView.image = (self.user.avatar)? self.user.avatar: [UIImage imageNamed:@"WAUserGlyph"];
-				cell.textLabel.text = self.user.nickname;
-				cell.selectionStyle = UITableViewCellSelectionStyleNone;
-				break;
-			}
-				
-			case 1:
-				cell.imageView.image = [UIImage imageNamed:@"EventsIcon"];
-				cell.textLabel.text = NSLocalizedString(@"SLIDING_MENU_TITLE_EVENTS", @"Title for Events in the sliding menu");
-				break;
-				
-			case 2:
-				cell.imageView.image = [UIImage imageNamed:@"PhotosIcon"];
-				cell.textLabel.text = NSLocalizedString(@"SLIDING_MENU_TITLE_PHOTOS", @"Title for Photos in the sliding menu");
-				break;
-				
-			case 3:
-				cell.imageView.image = [UIImage imageNamed:@"CollectionIcon"];
-				cell.textLabel.text = NSLocalizedString(@"SLIDING_MENU_TITLE_COLLECTIONS", @"Title for Collections in the sliding menu");
-				break;
-				
-			case 4:
-				cell.imageView.image = [UIImage imageNamed:@"CalIcon"];
-				cell.textLabel.text = NSLocalizedString(@"SLIDING_MENU_TITLE_CALENDAR", @"Title for Calendar in the sliding menu");
-				break;
-				
-			case 5:
-				cell.imageView.image = [UIImage imageNamed:@"SettingsIcon"];
-				cell.textLabel.text = NSLocalizedString(@"SLIDING_MENU_TITLE_SETTINGS", @"Title for Settings in the sliding menu");
-				break;
+	if (indexPath.row == 0) {
+		if (_userCell) {
+			return _userCell;
 		}
+		
+		_userCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"UserIdentifier"];
+		_userCell.selectionStyle = UITableViewCellSelectionStyleGray;
+		_userCell.selectionStyle = UITableViewCellSelectionStyleNone;
+		
+		[self registerObserver];
+		
+		return _userCell;
+		
+	}
+	
+	static NSString *CellIdentifier = @"Cell";
+	UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+		
+	if (cell == nil) {
+		cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+		cell.selectionStyle = UITableViewCellSelectionStyleGray;
+	}
+	
+	switch(indexPath.row) {
+				
+		case 1:
+			cell.imageView.image = [UIImage imageNamed:@"EventsIcon"];
+			cell.textLabel.text = NSLocalizedString(@"SLIDING_MENU_TITLE_EVENTS", @"Title for Events in the sliding menu");
+			break;
+			
+		case 2:
+			cell.imageView.image = [UIImage imageNamed:@"PhotosIcon"];
+			cell.textLabel.text = NSLocalizedString(@"SLIDING_MENU_TITLE_PHOTOS", @"Title for Photos in the sliding menu");
+			break;
+			
+		case 3:
+			cell.imageView.image = [UIImage imageNamed:@"CollectionIcon"];
+			cell.textLabel.text = NSLocalizedString(@"SLIDING_MENU_TITLE_COLLECTIONS", @"Title for Collections in the sliding menu");
+			break;
+			
+		case 4:
+			cell.imageView.image = [UIImage imageNamed:@"CalIcon"];
+			cell.textLabel.text = NSLocalizedString(@"SLIDING_MENU_TITLE_CALENDAR", @"Title for Calendar in the sliding menu");
+			break;
+			
+		case 5:
+			cell.imageView.image = [UIImage imageNamed:@"SettingsIcon"];
+			cell.textLabel.text = NSLocalizedString(@"SLIDING_MENU_TITLE_SETTINGS", @"Title for Settings in the sliding menu");
+			break;
+	}
 	
 	return cell;
 }
@@ -186,7 +232,7 @@
 	static NSString *CellIdentifier = @"Cell";
 	
 	cell.textLabel.textColor = [UIColor whiteColor];
-	cell.textLabel.font = [UIFont fontWithName:NSLocalizedString(@"SLIDING_MENU_FONTNAME", @"Font name of the sliding menu") size:18.0];												 
+	cell.textLabel.font = [UIFont fontWithName:NSLocalizedString(@"SLIDING_MENU_FONTNAME", @"Font name of the sliding menu") size:18.0];
 	
 	if (cell == nil) {
 		cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
