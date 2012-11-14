@@ -102,7 +102,7 @@ static NSString *const kTrackingId = @"UA-27817516-7";
 
 @property (nonatomic, readwrite, assign) BOOL alreadyRequestingAuthentication;
 @property (nonatomic, readwrite) UIBackgroundTaskIdentifier bgTask;
-@property (nonatomic, readwrite, strong) WAPhotoImportManager *photoImportManager;
+@property (nonatomic, strong) WAPhotoImportManager *photoImportManager;
 @property (nonatomic, strong) WACacheManager *cacheManager;
 @property (nonatomic, strong) WASyncManager *syncManager;
 
@@ -217,7 +217,7 @@ extern CFAbsoluteTime StartTime;
 														withAction:@"App Launched"
 														 withLabel:nil
 														 withValue:@-1];
-	
+
 	[[WARemoteInterface sharedInterface] enableAutomaticRemoteUpdatesTimer];
 	[[WARemoteInterface sharedInterface] performAutomaticRemoteUpdatesNow];
 	[[NSUserDefaults standardUserDefaults] removeObjectForKey:kWAFilterPickerViewSelectedRowIndex];

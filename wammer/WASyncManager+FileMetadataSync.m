@@ -10,6 +10,8 @@
 #import "WADataStore+WASyncManagerAdditions.h"
 #import "WARemoteInterface.h"
 #import "WAAssetsLibraryManager.h"
+#import "WAAppDelegate_iOS.h"
+#import "WADefines+iOS.h"
 
 @implementation WASyncManager (FileMetadataSync)
 
@@ -18,7 +20,12 @@
 	__weak WASyncManager *wSelf = self;
 
 	return [IRAsyncOperation operationWithWorker:^(IRAsyncOperationCallback callback) {
-	
+
+		if ([(WAAppDelegate_iOS *)AppDelegate() photoImportManager].operationQueue.operationCount > 0) {
+			callback(nil);
+			return;
+		}
+
 		WADataStore *ds = [WADataStore defaultStore];
 		NSArray *files = [ds fetchFilesNeedingMetadataSyncUsingContext:[ds disposableMOC]];
 		for (WAFile *file in files) {
@@ -66,6 +73,9 @@
 							} onFailure:^(NSError *error) {
 								NSLog(@"Unable to upload attachment metadata, error: %@", error);
 							}];
+
+							// slow down metadata uploading speed to avoid blocking other http requests
+							[NSThread sleepForTimeInterval:1.0];
 
 						}
 

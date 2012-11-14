@@ -316,10 +316,16 @@
 "PHOTO_UPLOAD_CONTROLLER_TITLE" = "AUTO PHOTO UPLOAD";
 
 /* Subtitle of photo upload status */
+"PHOTO_UPLOAD_STATUS_IMPORTING" = "Importing %d/%d photos";
+
+/* Subtitle of photo upload status */
 "PHOTO_UPLOAD_STATUS_NOT_UPLOADING" = "Not enabled";
 
 /* Subtitle of photo upload status */
-"PHOTO_UPLOAD_STATUS_UPLOADING" = "Uploading photos";
+"PHOTO_UPLOAD_STATUS_PREPROCESSING" = "Preprocessing...";
+
+/* Subtitle of photo upload status */
+"PHOTO_UPLOAD_STATUS_UPLOADING" = "Uploading photos...";
 
 /* In iPad overview */
 "PHOTOS_PLURAL" = "%d photos";

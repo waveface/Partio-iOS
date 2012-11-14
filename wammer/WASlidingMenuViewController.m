@@ -128,10 +128,14 @@
 	if ([keyPath isEqual:@"avatar"]) {
 		
 		UIImage *avatar = (UIImage *)[change objectForKey:NSKeyValueChangeNewKey];
-		_userCell.imageView.image = (avatar)? avatar: [UIImage imageNamed:@"WAUserGlyph"];
-		
+		if ([avatar isEqual:[NSNull null]]) {
+			_userCell.imageView.image = [UIImage imageNamed:@"WAUserGlyph"];
+		} else {
+			_userCell.imageView.image = avatar;
+		}
+
 	}
-	
+
 	if ([keyPath isEqual:@"nickname"]) {
 		
 		_userCell.textLabel.text = (NSString *)[change objectForKey:NSKeyValueChangeNewKey];

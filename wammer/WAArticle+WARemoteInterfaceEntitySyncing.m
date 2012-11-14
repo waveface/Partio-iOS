@@ -134,6 +134,36 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 	NSString *groupID = [incomingRepresentation objectForKey:@"group_id"];
 	NSString *representingFileID = [incomingRepresentation objectForKey:@"cover_attach"];
 
+	NSMutableArray *fullAttachmentList = [[incomingRepresentation objectForKey:@"attachment_id_array"] mutableCopy];
+	NSArray *incomingAttachmentList = [[incomingRepresentation objectForKey:@"attachments"] copy];
+	NSMutableArray *returnedAttachmentList = [incomingAttachmentList mutableCopy];
+	if (!returnedAttachmentList) {
+		returnedAttachmentList = [[NSMutableArray alloc] init];
+	}
+
+	if ([fullAttachmentList count] > [incomingAttachmentList count]) {
+
+		// dedup
+		for (NSDictionary *attachment in incomingAttachmentList) {
+			[fullAttachmentList removeObject:[attachment objectForKey:@"object_id"]];
+		}
+
+		for (NSString *objectID in fullAttachmentList) {
+			NSDictionary *attach = @{
+				@"object_id": objectID,
+				@"creator_id": creatorID,
+				@"post_id": articleID,
+				@"file_name": @"unknown.jpg",
+				@"type": @"image",
+				@"timestamp": [incomingRepresentation objectForKey:@"event_time"],
+			};
+			[returnedAttachmentList addObject:attach];
+		}
+
+		[returnedDictionary setObject:returnedAttachmentList forKey:@"attachments"];
+
+	}
+
 	if ([creatorID length])
 		[returnedDictionary setObject:[NSDictionary dictionaryWithObject:creatorID forKey:@"user_id"] forKey:@"owner"];
 
