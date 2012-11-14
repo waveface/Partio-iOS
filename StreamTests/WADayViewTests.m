@@ -46,7 +46,7 @@
 - (void)testDayViewWithPhotosView {
 	[photoDayViewController loadView];
 	assertThat([[photoDayViewController controllerAtPageIndex:0] class], equalTo([WAPhotoStreamViewController class]));
-	assertThat(photoDayViewController.days, greaterThan(0));
+	STAssertTrue([photoDayViewController.days count] >= 0, @"Must be greater then 0");
 }
 
 @end
