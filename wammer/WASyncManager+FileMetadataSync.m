@@ -67,6 +67,8 @@
 								NSLog(@"Unable to upload attachment metadata, error: %@", error);
 							}];
 
+							[NSThread sleepForTimeInterval:1.0];
+
 						}
 
 					}];
