@@ -103,7 +103,7 @@
 	if (cell) {
 		cell.backgroundColor = colorPalette[rand()%[colorPalette count]];
 		WAFile *photo = (WAFile *)photos[indexPath.row];
-		cell.imageView.image = photo.thumbnailImage;
+		cell.imageView.image = photo.smallestPresentableImage;
 	}
 	
 	return cell;

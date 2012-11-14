@@ -330,6 +330,9 @@
 /* In iPad overview */
 "PHOTOS_PLURAL" = "%d photos";
 
+/* in day view */
+"PHOTOS_TITLE" = "Photos";
+
 /* Title of view controller choosing plans */
 "PLANS_CONTROLLER_TITLE" = "PLANS";
 
