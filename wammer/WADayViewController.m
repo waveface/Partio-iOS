@@ -23,6 +23,7 @@
 
 #import "WARemoteInterface.h"
 #import "WAPhotoStreamViewController.h"
+#import <CoreData+MagicalRecord.h>
 
 static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPostsViewControllerPhone_RepresentedObjectURI";
 
@@ -63,9 +64,6 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 	 object:nil];
 	
 	[self performFetchRequestForIncomingData];
-	
-	self.title = NSLocalizedString(@"EVENTS_CONTROLLER_TITLE", @"Title for Events view");
-	self.navigationController.title = NSLocalizedString(@"EVENTS_CONTROLLER_TITLE", @"Title for Events view");
 	
 	CGRect rect = (CGRect){ CGPointZero, (CGSize){ 1, 1 } };
 	UIGraphicsBeginImageContext(rect.size);
@@ -168,6 +166,11 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 	
 	[self.navigationController.toolbar setHidden:YES];
 	
+	self.title = NSLocalizedString(@"EVENTS_CONTROLLER_TITLE", @"Title for Events view");
+	if ([containedClass isSubclassOfClass:[WAPhotoStreamViewController class]]) {
+		self.title = NSLocalizedString(@"PHOTOS_TITLE", @"in day view");
+	}
+	
 }
 
 - (void) viewDidAppear:(BOOL)animated {
@@ -213,64 +216,89 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 
 
 #pragma mark - delegate methods for IRPaginatedView
+BOOL (^isSameDay) (NSDate *, NSDate *) = ^ (NSDate *d1, NSDate *d2) {
+	
+	NSCalendar* calendar = [NSCalendar currentCalendar];
+	unsigned unitFlags = NSYearCalendarUnit | NSMonthCalendarUnit |  NSDayCalendarUnit;
+	NSDateComponents* comp1 = [calendar components:unitFlags fromDate:d1];
+	NSDateComponents* comp2 = [calendar components:unitFlags fromDate:d2];
+	if ( [comp1 day] == [comp2 day] &&
+			[comp1 month] == [comp2 month] &&
+			[comp1 year]  == [comp2 year])
+		return YES;
+	return NO;
+	
+};
+
 - (void) reloadViewContents {
-		
-	NSFetchRequest *fetchRequest = [[WADataStore defaultStore].persistentStoreCoordinator.managedObjectModel fetchRequestFromTemplateWithName:@"WAFRArticles" substitutionVariables:@{}];
-
-	fetchRequest.relationshipKeyPathsForPrefetching = @[@"files",
-																										 @"tags",
-																										 @"people",
-																										 @"location",
-																										 @"previews",
-																										 @"descriptiveTags",
-																										 @"files.pageElements"];
-	fetchRequest.predicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[
-														fetchRequest.predicate,
-														[NSPredicate predicateWithFormat:@"event = TRUE"],
-												   	[NSPredicate predicateWithFormat:@"files.@count > 0"],
-														[NSPredicate predicateWithFormat:@"import != %d AND import != %d", WAImportTypeFromOthers, WAImportTypeFromLocal]]];
-
-	fetchRequest.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:NO]];
 	
-	BOOL (^theSameDay) (NSDate *, NSDate *) = ^ (NSDate *d1, NSDate *d2) {
-		
-    NSCalendar* calendar = [NSCalendar currentCalendar];
-    unsigned unitFlags = NSYearCalendarUnit | NSMonthCalendarUnit |  NSDayCalendarUnit;
-    NSDateComponents* comp1 = [calendar components:unitFlags fromDate:d1];
-    NSDateComponents* comp2 = [calendar components:unitFlags fromDate:d2];
-    if ( [comp1 day] == [comp2 day] &&
-				[comp1 month] == [comp2 month] &&
-				[comp1 year]  == [comp2 year])
-      return YES;
-    return NO;
-		
-  };
-	
-	__block NSDate *currentDate = nil;
-
-	NSError *error = nil;
-	
-	NSArray *objects = [[[WADataStore defaultStore] defaultAutoUpdatedMOC] executeFetchRequest:fetchRequest error:&error];
-	
+	//reset
 	self.days = [NSMutableArray array];
 	self.daysControllers = [NSMutableDictionary dictionary];
 	
-	if (objects) {
-
-		[objects enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-			
-			NSDate *theDate = [((WAArticle*)obj) creationDate];
-			
-			if (!currentDate || !theSameDay(currentDate, theDate)) {
-				[self.days addObject:theDate];
-				currentDate = theDate;
-			}
-			
-		}];
+	if ([containedClass isSubclassOfClass:[WATimelineViewControllerPhone class]]) {
 		
-	}
+		
+		NSFetchRequest *fetchRequest = [[WADataStore defaultStore].persistentStoreCoordinator.managedObjectModel fetchRequestFromTemplateWithName:@"WAFRArticles" substitutionVariables:@{}];
+		
+		fetchRequest.relationshipKeyPathsForPrefetching = @[
+		@"files",
+		@"tags",
+		@"people",
+		@"location",
+		@"previews",
+		@"descriptiveTags",
+		@"files.pageElements"];
+		fetchRequest.predicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[
+															fetchRequest.predicate,
+															[NSPredicate predicateWithFormat:@"event = TRUE"],
+															[NSPredicate predicateWithFormat:@"files.@count > 0"],
+															[NSPredicate predicateWithFormat:@"import != %d AND import != %d", WAImportTypeFromOthers, WAImportTypeFromLocal]]];
+		
+		fetchRequest.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:NO]];
+		
+		__block NSDate *currentDate = nil;
+		
+		NSError *error = nil;
+		
+		NSArray *objects = [[[WADataStore defaultStore] defaultAutoUpdatedMOC] executeFetchRequest:fetchRequest error:&error];
+		
+		
+		if (objects) {
+			
+			[objects enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+				
+				NSDate *theDate = [((WAArticle*)obj) creationDate];
+				
+				if (!currentDate || !isSameDay(currentDate, theDate)) {
+					[self.days addObject:theDate];
+					currentDate = theDate;
+				}
+				
+			}];
+			
+		}
+	} else { //WAPhotoStreamViewController
+		
+		__block NSDate *currentDate = nil;
+		
+		NSPredicate *withDate =[NSPredicate predicateWithFormat:@"created != nil"];
+		NSArray *photos = [WAFile MR_findAllSortedBy:@"created" ascending:NO withPredicate:withDate];
 
+		if (photos) {
+			[photos enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+				NSDate *theDate = ((WAFile *)obj).created;
+				
+				if (!currentDate || !isSameDay(currentDate, theDate)) {
+					[self.days addObject:theDate];
+					currentDate = theDate;
+				}
+			}];
+		}
+	}
+	
 }
+
 - (NSUInteger)numberOfViewsInPaginatedView:(IRPaginatedView *)paginatedView {
 		
 		return [self.days count];
@@ -300,7 +328,6 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 
 - (UIView *) viewForPaginatedView:(IRPaginatedView *)paginatedView atIndex:(NSUInteger)index {
 
-	
 	UIViewController *viewController = [self controllerAtPageIndex:index];
 	
 	if (viewController)
