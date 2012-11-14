@@ -55,7 +55,7 @@
 	
 	__weak WASlidingMenuViewController *wSelf = self;
 		
-	self.navigationItem.leftBarButtonItem = WABarButtonItem([UIImage imageNamed:@"menu"], @"", ^{
+	userInfoVC.navigationItem.leftBarButtonItem = WABarButtonItem([UIImage imageNamed:@"menu"], @"", ^{
 		[wSelf.viewDeckController toggleLeftView];
 	});
 
