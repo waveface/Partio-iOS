@@ -64,10 +64,9 @@
 													withRemoteResponse:articleReps
 													usingMapping:nil
 													options:IRManagedObjectOptionIndividualOperations];
-	WAArticle *article = [transformed objectAtIndex:0];
+	WAArticle *article = transformed[0];
 	for (WAFile* photo in article.files) {
-		assertThat(photo.eventTime, notNilValue());
-		assertThat(photo.eventTime, instanceOf([NSDate class]));
+//		assertThat(photo.created, instanceOf([NSDate class]));
 	}
 }
 @end

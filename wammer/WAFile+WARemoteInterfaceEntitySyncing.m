@@ -93,7 +93,7 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
 			@"device_id": @"creationDeviceIdentifier",
 			@"file_name": @"remoteFileName",
 			@"file_size": @"remoteFileSize",
-			@"event_time": @"eventTime",
+			@"event_time": @"created",
 			
 			@"image": @"remoteRepresentedImage",
 			@"md5": @"remoteResourceHash",

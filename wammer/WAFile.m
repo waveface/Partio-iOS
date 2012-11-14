@@ -45,7 +45,7 @@
 @dynamic webFaviconURL;
 @dynamic webTitle;
 @dynamic webURL;
-@dynamic eventTime;
+@dynamic created;
 @dynamic articles;
 @dynamic belongToCollection;
 @dynamic caches;

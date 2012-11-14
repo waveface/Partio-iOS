@@ -7,7 +7,7 @@
                 "event_time_source": "exif.date,exif.time",
                 "timezone": 480,
                 "loc": 0,
-                "event_time": "2012-11-11T02:53:04Z",
+                "event_time": "2012-11-11T10:54:34Z",
                 "title": "",
                 "object_id": "5f662add-48da-4c63-9aa1-ff833e8bcaf1",
                 "file_create_time": "",

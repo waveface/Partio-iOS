@@ -43,7 +43,7 @@
 @property (nonatomic, retain) NSString * webFaviconURL;
 @property (nonatomic, retain) NSString * webTitle;
 @property (nonatomic, retain) NSString * webURL;
-@property (nonatomic, retain) NSDate * eventTime;
+@property (nonatomic, retain) NSDate * created;
 @property (nonatomic, retain) NSSet *articles;
 @property (nonatomic, retain) WACollection *belongToCollection;
 @property (nonatomic, retain) NSSet *caches;

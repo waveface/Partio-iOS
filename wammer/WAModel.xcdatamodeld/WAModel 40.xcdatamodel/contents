@@ -93,9 +93,9 @@
     <entity name="WAFile" representedClassName="WAFile">
         <attribute name="assetURL" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="codeName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="created" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="creationDeviceIdentifier" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="dirty" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
-        <attribute name="eventTime" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="extraSmallThumbnailFilePath" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="identifier" optional="YES" attributeType="String" indexed="YES">
             <userInfo/>
