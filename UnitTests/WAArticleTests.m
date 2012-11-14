@@ -56,4 +56,18 @@
 	WAArticle *article = [transformed objectAtIndex:0];
 	STAssertTrue(WAPostStyleURLHistory == article.style.intValue , @"Style should be URL History");
 }
+
+- (void)testArticleWithEventTimeInAttachment {
+	NSArray *articleReps = [self loadDataFile:@"PostWithEventTime"];
+	NSArray *transformed = [WAArticle
+													insertOrUpdateObjectsUsingContext:context
+													withRemoteResponse:articleReps
+													usingMapping:nil
+													options:IRManagedObjectOptionIndividualOperations];
+	WAArticle *article = [transformed objectAtIndex:0];
+	for (WAFile* photo in article.files) {
+		assertThat(photo.eventTime, notNilValue());
+		assertThat(photo.eventTime, instanceOf([NSDate class]));
+	}
+}
 @end

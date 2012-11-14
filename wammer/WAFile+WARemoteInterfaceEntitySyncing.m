@@ -86,12 +86,14 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
 	static dispatch_once_t onceToken;
 	dispatch_once(&onceToken, ^{
     
-		mapping = @{@"code_name": @"codeName",
+		mapping = @{
+			@"code_name": @"codeName",
 			
 			@"description": @"text",
 			@"device_id": @"creationDeviceIdentifier",
 			@"file_name": @"remoteFileName",
 			@"file_size": @"remoteFileSize",
+			@"event_time": @"eventTime",
 			
 			@"image": @"remoteRepresentedImage",
 			@"md5": @"remoteResourceHash",
@@ -196,6 +198,7 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
     // ?
       
   }
+	returnedDictionary[@"eventTime"] = [NSDate date];
 	
 	return returnedDictionary; 
 
@@ -217,6 +220,10 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
   
 	if ([aLocalKeyPath isEqualToString:@"timestamp"])
 		return [[WADataStore defaultStore] dateFromISO8601String:aValue];
+	
+	if ([aLocalKeyPath isEqualToString:@"eventTime"]) {
+		return [[WADataStore defaultStore] dateFromISO8601String:aValue];
+	}
 	
 	if ([aLocalKeyPath isEqualToString:@"identifier"])
 		return IRWebAPIKitStringValue(aValue);
