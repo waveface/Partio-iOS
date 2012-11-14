@@ -109,30 +109,18 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 	[leftUIButton setAccessibilityLabel:NSLocalizedString(@"ACCESS_PREVIOUS_DAY", @"Accessibility label for previous day timeline")];
 	
 	
-	self.toolbarItems = [NSArray arrayWithObjects:
-											 
-											 alphaSpacer,
-											 
+	self.toolbarItems = @[alphaSpacer,
 											 //		datePickUIButton,
 											 leftUIButton,
-											 
 											 omegaSpacer,
-											 
 											 composeUIButton,
-											 
 											 zeroSpacer,
-											 
 											 cameraUIButton,
-											 
 											 omegaSpacer,
-											 
 											 //userInfoUIButton,
 											 rightUIButton,
-											 
-											 alphaSpacer,
-											 
-											 nil];
-
+											 alphaSpacer];
+	
 	__weak WADayViewController *wSelf = self;
 	self.navigationItem.rightBarButtonItem  = WABarButtonItem([UIImage imageNamed:@"Create"], @"", ^{
 		[wSelf.viewDeckController toggleLeftView];
@@ -227,26 +215,22 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 #pragma mark - delegate methods for IRPaginatedView
 - (void) reloadViewContents {
 		
-	NSFetchRequest *fetchRequest = [[WADataStore defaultStore].persistentStoreCoordinator.managedObjectModel fetchRequestFromTemplateWithName:@"WAFRArticles" substitutionVariables:[NSDictionary dictionary]];
+	NSFetchRequest *fetchRequest = [[WADataStore defaultStore].persistentStoreCoordinator.managedObjectModel fetchRequestFromTemplateWithName:@"WAFRArticles" substitutionVariables:@{}];
 
-	fetchRequest.relationshipKeyPathsForPrefetching = [NSArray arrayWithObjects:
-																										 @"files",
+	fetchRequest.relationshipKeyPathsForPrefetching = @[@"files",
 																										 @"tags",
 																										 @"people",
 																										 @"location",
 																										 @"previews",
 																										 @"descriptiveTags",
-																										 @"files.pageElements",
-																										 nil];
+																										 @"files.pageElements"];
 	fetchRequest.predicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[
 														fetchRequest.predicate,
 														[NSPredicate predicateWithFormat:@"event = TRUE"],
 												   	[NSPredicate predicateWithFormat:@"files.@count > 0"],
 														[NSPredicate predicateWithFormat:@"import != %d AND import != %d", WAImportTypeFromOthers, WAImportTypeFromLocal]]];
 
-	fetchRequest.sortDescriptors = [NSArray arrayWithObjects:
-																	[NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:NO],
-																	nil];
+	fetchRequest.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:NO]];
 	
 	BOOL (^theSameDay) (NSDate *, NSDate *) = ^ (NSDate *d1, NSDate *d2) {
 		
@@ -294,7 +278,7 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 }
 
 - (id) controllerAtPageIndex: (NSUInteger) index {
-	NSDate *dateForPage = [self.days objectAtIndex:index];
+	NSDate *dateForPage = (self.days)[index];
 	
 	if (dateForPage == nil)
 		return nil;
@@ -307,7 +291,7 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 			((WAPhotoStreamViewController *)vc).delegate = self;
 		}
 		[self addChildViewController:vc];
-		[self.daysControllers setObject:vc forKey:dateForPage];
+		(self.daysControllers)[dateForPage] = vc;
 	}
 	
 	return vc;
@@ -343,9 +327,7 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 - (void) performFetchRequestForIncomingData {
 	
 	NSFetchRequest *fr = [[WADataStore defaultStore] newFetchRequestForAllArticles];
-	fr.sortDescriptors = [NSArray arrayWithObjects:
-												[NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:NO],
-												nil];
+	fr.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:NO]];
 	
 	self.managedObjectContext = [[WADataStore defaultStore] defaultAutoUpdatedMOC];
 	self.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fr managedObjectContext:self.managedObjectContext sectionNameKeyPath:nil cacheName:nil];
@@ -457,7 +439,7 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 	if (![self isViewLoaded])
 		return;
 	
-	NSURL *contentURL = [[incomingNotification userInfo] objectForKey:@"foundURL"];
+	NSURL *contentURL = [incomingNotification userInfo][@"foundURL"];
 	[self beginCompositionSessionWithURL:contentURL animated:YES onCompositionViewDidAppear:nil];
 	
 }
@@ -494,13 +476,7 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 	
 	[self beginCompositionSessionWithURL:nil animated:NO onCompositionViewDidAppear:^(WACompositionViewController *compositionVC) {
 		
-		[compositionVC handleImageAttachmentInsertionRequestWithOptions:[NSDictionary dictionaryWithObjectsAndKeys:
-																																		 
-																																		 (id)kCFBooleanTrue, WACompositionImageInsertionUsesCamera,
-																																		 (id)kCFBooleanFalse, WACompositionImageInsertionAnimatePresentation,
-																																		 (id)kCFBooleanTrue, WACompositionImageInsertionCancellationTriggersSessionTermination,
-																																		 
-																																		 nil] sender:compositionVC.view];
+		[compositionVC handleImageAttachmentInsertionRequestWithOptions:@{WACompositionImageInsertionUsesCamera: (id)kCFBooleanTrue, WACompositionImageInsertionAnimatePresentation: (id)kCFBooleanFalse, WACompositionImageInsertionCancellationTriggersSessionTermination: (id)kCFBooleanTrue} sender:compositionVC.view];
 		
 		[[UIApplication sharedApplication].keyWindow.layer addAnimation:((^ {
 			
