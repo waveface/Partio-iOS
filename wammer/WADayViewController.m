@@ -263,6 +263,7 @@ BOOL (^isSameDay) (NSDate *, NSDate *) = ^ (NSDate *d1, NSDate *d2) {
 		
 		NSArray *objects = [[[WADataStore defaultStore] defaultAutoUpdatedMOC] executeFetchRequest:fetchRequest error:&error];
 		
+		__weak WADayViewController *weakSelf = self;
 		
 		if (objects) {
 			
@@ -271,7 +272,7 @@ BOOL (^isSameDay) (NSDate *, NSDate *) = ^ (NSDate *d1, NSDate *d2) {
 				NSDate *theDate = [((WAArticle*)obj) creationDate];
 				
 				if (!currentDate || !isSameDay(currentDate, theDate)) {
-					[self.days addObject:theDate];
+					[weakSelf.days addObject:theDate];
 					currentDate = theDate;
 				}
 				
@@ -281,6 +282,7 @@ BOOL (^isSameDay) (NSDate *, NSDate *) = ^ (NSDate *d1, NSDate *d2) {
 	} else { //WAPhotoStreamViewController
 		
 		__block NSDate *currentDate = nil;
+		__weak WADayViewController *weakSelf = self;
 		
 		NSPredicate *withDate =[NSPredicate predicateWithFormat:@"created != nil"];
 		NSArray *photos = [WAFile MR_findAllSortedBy:@"created" ascending:NO withPredicate:withDate];
@@ -290,7 +292,7 @@ BOOL (^isSameDay) (NSDate *, NSDate *) = ^ (NSDate *d1, NSDate *d2) {
 				NSDate *theDate = ((WAFile *)obj).created;
 				
 				if (!currentDate || !isSameDay(currentDate, theDate)) {
-					[self.days addObject:theDate];
+					[weakSelf.days addObject:theDate];
 					currentDate = theDate;
 				}
 			}];

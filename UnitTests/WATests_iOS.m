@@ -9,6 +9,7 @@
 #import "WATests_iOS.h"
 
 @implementation NSCalendar (MySpecialCalculations)
+
 -(NSInteger)daysFromDate:(NSDate *) endDate
 {
 	NSDate *startDate = [NSDate date];
@@ -79,5 +80,35 @@
 	
 	STAssertEquals(preferredLanguage, @"en", @"should rollback to basics");
 	
+}
+
+- (void)testWeakStrong{
+	__weak WATests_iOS* weakSelf = self;
+	
+	void (^aBlock)(void) = ^(void){
+		__strong WATests_iOS* fakeSelf = weakSelf;
+		
+		if (fakeSelf) {
+			fakeSelf.aProperty = @"set";
+		}
+	};
+	
+	@autoreleasepool {
+		aBlock();
+	}
+	
+	assertThat(self.aProperty, equalTo(@"set"));
+	
+	void (^aBlockWithoutStrong)(void) = ^(void){
+		if (weakSelf) {
+			weakSelf.aProperty = @"weakSet";
+		}
+	};
+	
+	@autoreleasepool {
+    aBlockWithoutStrong();
+	}
+	
+	assertThat(self.aProperty, equalTo(@"weakSet"));
 }
 @end
