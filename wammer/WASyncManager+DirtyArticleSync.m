@@ -11,6 +11,8 @@
 #import "WADataStore+WASyncManagerAdditions.h"
 #import "WADataStore+WARemoteInterfaceAdditions.h"
 #import "WARemoteInterface.h"
+#import "WADefines+iOS.h"
+#import "WAAppDelegate_iOS.h"
 
 @implementation WASyncManager (DirtyArticleSync)
 
@@ -20,6 +22,11 @@
 	
 	return [IRAsyncOperation operationWithWorker:^(IRAsyncOperationCallback callback) {
 		
+		if ([(WAAppDelegate_iOS *)AppDelegate() photoImportManager].operationQueue.operationCount > 0) {
+			callback(nil);
+			return;
+		}
+
 		WARemoteInterface * const ri = [WARemoteInterface sharedInterface];
 		if (!ri.userToken) {
 			callback(nil);

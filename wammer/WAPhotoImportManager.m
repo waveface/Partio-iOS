@@ -19,6 +19,8 @@
 
 @interface WAPhotoImportManager ()
 
+@property (nonatomic, readwrite) BOOL preprocessing;
+@property (nonatomic, readwrite) NSUInteger totalOperationCount;
 @property (nonatomic, readwrite, strong) NSOperationQueue *operationQueue;
 @property (nonatomic, readwrite, strong) NSDate *lastOperationTimestamp;
 
@@ -60,6 +62,16 @@
 
 - (void)createPhotoImportArticlesWithCompletionBlock:(void(^)(void))aCallbackBlock {
 
+	__weak WAPhotoImportManager *wSelf = self;
+	if ([NSThread isMainThread]) {
+		dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+			[wSelf createPhotoImportArticlesWithCompletionBlock:aCallbackBlock];
+		});
+		return;
+	}
+
+	self.preprocessing = YES;
+
 	NSDate *importTime = [NSDate date];
 	NSDate *sinceDate = self.lastOperationTimestamp;
 	if (!sinceDate) {
@@ -67,13 +79,13 @@
 		sinceDate = [[ds fetchLatestLocalImportedArticleUsingContext:[ds disposableMOC]] creationDate];
 	}
 
-	__weak WAPhotoImportManager *wSelf = self;
 	[[WAAssetsLibraryManager defaultManager] enumerateSavedPhotosSince:sinceDate onProgess:^(NSArray *assets) {
 
 		if (![assets count]) {
 			return;
 		}
 
+		wSelf.totalOperationCount += [assets count];
 		wSelf.lastOperationTimestamp = [[assets lastObject] valueForProperty:ALAssetPropertyDate];
 
 		__block NSBlockOperation *operation = [NSBlockOperation blockOperationWithBlock:^{
@@ -153,6 +165,7 @@
 
 	} onComplete:^{
 		
+		wSelf.preprocessing = NO;
 		aCallbackBlock();
 		
 	} onFailure:^(NSError *error) {

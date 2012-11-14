@@ -14,6 +14,8 @@
 
 #import "WADataStore+WASyncManagerAdditions.h"
 #import "WAFile+WARemoteInterfaceEntitySyncing.h"
+#import "WAAppDelegate_iOS.h"
+#import "WADefines+iOS.h"
 
 #import <objc/runtime.h>
 
@@ -31,6 +33,11 @@ static NSString * const kNumberOfFiles = @"-[WASyncManager(FullQualityFileSync) 
 	
 	return [IRAsyncOperation operationWithWorker:^(IRAsyncOperationCallback callback) {
 	
+		if ([(WAAppDelegate_iOS *)AppDelegate() photoImportManager].operationQueue.operationCount > 0) {
+			callback(nil);
+			return;
+		}
+
 		NSCAssert2(!wSelf.fileSyncOperationQueue.operationCount, @"Operation queue %@ must have 0 operations when the recurrence machine hits, but has %i operations pending",wSelf.fileSyncOperationQueue, wSelf.fileSyncOperationQueue.operationCount);
 		
 		NSCAssert1(!context, @"Shared context reference should be nil, got %@", context);
