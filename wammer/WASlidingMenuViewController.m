@@ -136,8 +136,8 @@
 {
 	if ([keyPath isEqual:@"avatar"]) {
 		
-		UIImage *avatar = (UIImage *)[change objectForKey:NSKeyValueChangeNewKey];
-		_userCell.imageView.image = (avatar)? avatar: [UIImage imageNamed:@"WAUserGlyph"];
+		id newValue = [change objectForKey:NSKeyValueChangeNewKey];			
+		_userCell.imageView.image = ([newValue isKindOfClass:[UIImage class]])? (UIImage *)newValue : [UIImage imageNamed:@"WAUserGlyph"];
 		
 	}
 	
