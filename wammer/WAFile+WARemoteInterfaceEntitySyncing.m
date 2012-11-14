@@ -20,6 +20,8 @@
 #import "WAFile+ThumbnailMaker.h"
 #import "WAAssetsLibraryManager.h"
 
+#import "SSToolkit/NSDate+SSToolkitAdditions.h"
+
 
 NSString * kWAFileEntitySyncingErrorDomain = @"com.waveface.wammer.file.entitySyncing";
 
@@ -198,7 +200,6 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
     // ?
       
   }
-	returnedDictionary[@"eventTime"] = [NSDate date];
 	
 	return returnedDictionary; 
 
@@ -218,11 +219,8 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
     
   }
   
-	if ([aLocalKeyPath isEqualToString:@"timestamp"])
-		return [[WADataStore defaultStore] dateFromISO8601String:aValue];
-	
-	if ([aLocalKeyPath isEqualToString:@"eventTime"]) {
-		return [[WADataStore defaultStore] dateFromISO8601String:aValue];
+	if ([aLocalKeyPath isEqualToString:@"timestamp"] || [aLocalKeyPath isEqualToString:@"created"]) {
+		return [NSDate dateFromISO8601String:aValue];
 	}
 	
 	if ([aLocalKeyPath isEqualToString:@"identifier"])
