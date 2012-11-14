@@ -39,7 +39,7 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
  
 	NSMutableDictionary *usedDictionary = [inDictionary mutableCopy];
   
-  if ([[usedDictionary objectForKey:@"url"] isEqualToString:@""])
+  if ([usedDictionary[@"url"] isEqualToString:@""])
     [usedDictionary removeObjectForKey:@"url"];
 	
   [super configureWithRemoteDictionary:usedDictionary];
@@ -86,36 +86,32 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
 	static dispatch_once_t onceToken;
 	dispatch_once(&onceToken, ^{
     
-		mapping = [NSDictionary dictionaryWithObjectsAndKeys:
-		
-			@"codeName", @"code_name",
+		mapping = @{@"code_name": @"codeName",
 			
-			@"text", @"description",
-			@"creationDeviceIdentifier", @"device_id",
-			@"remoteFileName", @"file_name",
-			@"remoteFileSize", @"file_size",
+			@"description": @"text",
+			@"device_id": @"creationDeviceIdentifier",
+			@"file_name": @"remoteFileName",
+			@"file_size": @"remoteFileSize",
 			
-			@"remoteRepresentedImage", @"image",
-			@"remoteResourceHash", @"md5",
-			@"resourceType", @"mime_type",
-			@"identifier", @"object_id",
-			@"title", @"title",
-			@"remoteResourceType", @"type",
+			@"image": @"remoteRepresentedImage",
+			@"md5": @"remoteResourceHash",
+			@"mime_type": @"resourceType",
+			@"object_id": @"identifier",
+			@"title": @"title",
+			@"type": @"remoteResourceType",
 			
-			@"smallThumbnailURL", @"small_thumbnail_url",
-			@"thumbnailURL", @"thumbnail_url",
-			@"largeThumbnailURL", @"large_thumbnail_url",
+			@"small_thumbnail_url": @"smallThumbnailURL",
+			@"thumbnail_url": @"thumbnailURL",
+			@"large_thumbnail_url": @"largeThumbnailURL",
 			
-			@"resourceURL", @"url",
-			@"timestamp", @"file_create_time",
+			@"url": @"resourceURL",
+			@"file_create_time": @"timestamp",
       
-			@"pageElements", @"pageElements",
+			@"pageElements": @"pageElements",
 							 
-			@"webURL", @"web_url",
-			@"webTitle", @"web_title",
-			@"webFaviconURL", @"web_favicon",
-			
-		nil];
+			@"web_url": @"webURL",
+			@"web_title": @"webTitle",
+			@"web_favicon": @"webFaviconURL"};
 		
 	});
 
@@ -125,11 +121,7 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
 
 + (NSDictionary *) defaultHierarchicalEntityMapping {
 
-	return [NSDictionary dictionaryWithObjectsAndKeys:
-		
-		@"WAFilePageElement", @"pageElements",
-	
-	nil];
+	return @{@"pageElements": @"WAFilePageElement"};
 
 }
 
@@ -139,31 +131,31 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
 	
 	NSString *smallImageRepURLString = [returnedDictionary valueForKeyPath:@"image_meta.small.url"];
 	if ([smallImageRepURLString isKindOfClass:[NSString class]])
-    [returnedDictionary setObject:smallImageRepURLString forKey:@"small_thumbnail_url"];
+    returnedDictionary[@"small_thumbnail_url"] = smallImageRepURLString;
  
 	NSString *mediumImageRepURLString = [returnedDictionary valueForKeyPath:@"image_meta.medium.url"];
 	if ([mediumImageRepURLString isKindOfClass:[NSString class]])
-    [returnedDictionary setObject:mediumImageRepURLString forKey:@"thumbnail_url"];
+    returnedDictionary[@"thumbnail_url"] = mediumImageRepURLString;
   
 	NSString *largeImageRepURLString = [returnedDictionary valueForKeyPath:@"image_meta.large.url"];
 	if ([largeImageRepURLString isKindOfClass:[NSString class]])
-    [returnedDictionary setObject:largeImageRepURLString forKey:@"large_thumbnail_url"];
+    returnedDictionary[@"large_thumbnail_url"] = largeImageRepURLString;
 	
-	NSString *incomingFileType = [incomingRepresentation objectForKey:@"type"];
+	NSString *incomingFileType = incomingRepresentation[@"type"];
   
   if ([incomingFileType isEqualToString:@"image"]) {
   
     NSString *webURLString = [incomingRepresentation valueForKeyPath:@"image_meta.web_url"];
 		if ([webURLString isKindOfClass:[NSString class]])
-			[returnedDictionary setObject:webURLString forKey:@"web_url"];
+			returnedDictionary[@"web_url"] = webURLString;
 		
 		NSString *webFaviconURLString = [incomingRepresentation valueForKeyPath:@"image_meta.web_favicon"];
 		if ([webFaviconURLString isKindOfClass:[NSString class]])
-			[returnedDictionary setObject:webFaviconURLString forKey:@"web_favicon"];
+			returnedDictionary[@"web_favicon"] = webFaviconURLString;
 		
 		NSString *webTitleString = [incomingRepresentation valueForKeyPath:@"image_meta.web_title"];
 		if ([webTitleString isKindOfClass:[NSString class]])
-			[returnedDictionary setObject:webTitleString forKey:@"web_title"];
+			returnedDictionary[@"web_title"] = webTitleString;
 		
   
   } else if ([incomingFileType isEqualToString:@"doc"]) {
@@ -174,34 +166,28 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
     
       NSUInteger numberOfPages = [pagesValue unsignedIntegerValue];
       
-      [returnedDictionary setObject:((^ {
+      returnedDictionary[@"pageElements"] = ((^ {
       
         NSMutableArray *returnedArray = [NSMutableArray array];
         NSString *ownObjectID = [incomingRepresentation valueForKeyPath:@"object_id"];
         
         for (NSUInteger i = 0; i < numberOfPages; i++) {
         
-          [returnedArray addObject:[NSDictionary dictionaryWithObjectsAndKeys:
-          
-            [IRWebAPIRequestURLWithQueryParameters(
+          [returnedArray addObject:@{@"thumbnailURL": [IRWebAPIRequestURLWithQueryParameters(
               
               [[NSURL URLWithString:@"http://invalid.local"] URLByAppendingPathComponent:@"v2/attachments/view"],
               
-              [NSDictionary dictionaryWithObjectsAndKeys:
-                ownObjectID, @"object_id",
-                @"slide", @"target",
-                [NSNumber numberWithUnsignedInteger:(i + 1)], @"page",
-              nil]
+              @{@"object_id": ownObjectID,
+                @"target": @"slide",
+                @"page": @(i + 1)}
               
-            ) absoluteString], @"thumbnailURL",
-          
-          nil]];
+            ) absoluteString]}];
         
         }
         
         return returnedArray;
       
-      })()) forKey:@"pageElements"];
+      })());
     
     }
   
@@ -225,7 +211,7 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
     if ([aValue isKindOfClass:[NSNumber class]])
       return aValue;
     
-    return [NSNumber numberWithUnsignedInt:[aValue unsignedIntValue]];
+    return @([aValue unsignedIntValue]);
     
   }
   
@@ -245,7 +231,7 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
 		NSArray *possibleTypes = (__bridge_transfer NSArray *)UTTypeCreateAllIdentifiersForTag(kUTTagClassMIMEType, (__bridge CFStringRef)returnedValue, nil);
 		
 		if ([possibleTypes count]) {
-			returnedValue = [possibleTypes objectAtIndex:0];
+			returnedValue = possibleTypes[0];
 		}
     
     //  Incoming stuff is moot (“application/unknown”)
@@ -303,7 +289,7 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
 	
 	}
 	
-	WAFileSyncStrategy syncStrategy = [options objectForKey:kWAFileSyncStrategy];
+	WAFileSyncStrategy syncStrategy = options[kWAFileSyncStrategy];
 	if (!syncStrategy)
 		syncStrategy = kWAFileSyncAdaptiveQualityStrategy;
 
@@ -421,26 +407,26 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
 			NSString *thumbnailFilePath = file.thumbnailFilePath;
 
 			NSMutableDictionary *options = [NSMutableDictionary dictionaryWithObjectsAndKeys:
-																			[NSNumber numberWithUnsignedInteger:WARemoteAttachmentImageType], kWARemoteAttachmentType,
+																			@(WARemoteAttachmentImageType), kWARemoteAttachmentType,
 																			WARemoteAttachmentMediumSubtype, kWARemoteAttachmentSubtype,
 																			nil];
 
 			if (file.identifier) {
-				[options setObject:file.identifier forKey:kWARemoteAttachmentUpdatedObjectIdentifier];
+				options[kWARemoteAttachmentUpdatedObjectIdentifier] = file.identifier;
 			}
 
 			NSAssert1(file.articles.count>0, @"WAFile entity %@ must have already been associated with an article", file);
-			WAArticle *article = [[file.articles allObjects] objectAtIndex:0];  // if the post is from device itself, there should be only one article in db, this should be right, but careful
+			WAArticle *article = [file.articles allObjects][0];  // if the post is from device itself, there should be only one article in db, this should be right, but careful
 			if (article.identifier) {
-				[options setObject:article.identifier forKey:kWARemoteArticleIdentifier];
+				options[kWARemoteArticleIdentifier] = article.identifier;
 			}
 
 			if (file.exif) {
-				[options setObject:file.exif forKey:kWARemoteAttachmentExif];
+				options[kWARemoteAttachmentExif] = file.exif;
 			}
 
 			if (file.importTime) {
-				[options setObject:file.importTime forKey:kWARemoteAttachmentImportTime];
+				options[kWARemoteAttachmentImportTime] = file.importTime;
 			}
 
 			if (!isValidPath(thumbnailFilePath)) {
@@ -517,28 +503,28 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
 			}
 
 			NSMutableDictionary *options = [NSMutableDictionary dictionaryWithObjectsAndKeys:
-				[NSNumber numberWithUnsignedInteger:WARemoteAttachmentImageType], kWARemoteAttachmentType,
+				@(WARemoteAttachmentImageType), kWARemoteAttachmentType,
 				WARemoteAttachmentOriginalSubtype, kWARemoteAttachmentSubtype,
 			nil];
 			
 			if (file.identifier)
-				[options setObject:file.identifier forKey:kWARemoteAttachmentUpdatedObjectIdentifier];
+				options[kWARemoteAttachmentUpdatedObjectIdentifier] = file.identifier;
 
-			WAArticle *article = [[file.articles allObjects] objectAtIndex:0];
+			WAArticle *article = [file.articles allObjects][0];
 			if (article.identifier) {
-				[options setObject:article.identifier forKey:kWARemoteArticleIdentifier];
+				options[kWARemoteArticleIdentifier] = article.identifier;
 			}
 
 			if (file.exif) {
-				[options setObject:file.exif forKey:kWARemoteAttachmentExif];
+				options[kWARemoteAttachmentExif] = file.exif;
 			}
 
 			if (file.timestamp) {
-				[options setObject:file.timestamp forKey:kWARemoteAttachmentCreateTime];
+				options[kWARemoteAttachmentCreateTime] = file.timestamp;
 			}
 
 			if (file.importTime) {
-				[options setObject:file.importTime forKey:kWARemoteAttachmentImportTime];
+				options[kWARemoteAttachmentImportTime] = file.importTime;
 			}
 
 			NSString *sentResourcePath = file.resourceFilePath;
@@ -623,7 +609,7 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
 	
 	[operations enumerateObjectsUsingBlock:^(IRAsyncBarrierOperation *op, NSUInteger idx, BOOL *stop) {
 		if (idx > 0)
-			[op addDependency:(IRAsyncBarrierOperation *)[operations objectAtIndex:(idx - 1)]];
+			[op addDependency:(IRAsyncBarrierOperation *)operations[(idx - 1)]];
 	}];
 	
 	[[[self class] sharedSyncQueue] addOperations:operations waitUntilFinished:NO];
