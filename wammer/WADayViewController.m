@@ -65,8 +65,6 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 	[self performFetchRequestForIncomingData];
 	
 	self.title = NSLocalizedString(@"EVENTS_CONTROLLER_TITLE", @"Title for Events view");
-//	self.navigationItem.titleView = WATitleViewForDripdownMenu(self, @selector(dripdownMenuTapped));
-//	self.navigationItem.titleView = WAStandardTitleLabelWithString(NSLocalizedString(@"EVENTS_CONTROLLER_TITLE", @"Title for Events view"));
 	self.navigationController.title = NSLocalizedString(@"EVENTS_CONTROLLER_TITLE", @"Title for Events view");
 	
 	CGRect rect = (CGRect){ CGPointZero, (CGSize){ 1, 1 } };
@@ -134,27 +132,15 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 											 alphaSpacer,
 											 
 											 nil];
-	
-	UIImage *createImage = [UIImage imageNamed:@"Create"];
-	UIButton *createButton = [UIButton buttonWithType:UIButtonTypeCustom];
-	createButton.frame = (CGRect) {CGPointZero, createImage.size};
-	[createButton setBackgroundImage:createImage forState:UIControlStateNormal];
-//	[calButton setBackgroundImage:[UIImage imageNamed:@"CalHL"] forState:UIControlStateHighlighted];
-	[createButton setShowsTouchWhenHighlighted:YES];
-	[createButton addTarget:self action:@selector(handleCompose:) forControlEvents:UIControlEventTouchUpInside];
-	
-	self.navigationItem.rightBarButtonItem  = [[UIBarButtonItem alloc] initWithCustomView:createButton];
-	
-	UIImage *menuImage = [UIImage imageNamed:@"menu"];
-	UIButton *slidingMenuButton = [UIButton buttonWithType:UIButtonTypeCustom];
-	slidingMenuButton.frame = (CGRect) {CGPointZero, menuImage.size};
-	[slidingMenuButton setBackgroundImage:menuImage forState:UIControlStateNormal];
-//	[slidingMenuButton setBackgroundImage:[UIImage imageNamed:@"menuHL"] forState:UIControlStateHighlighted];
-	[slidingMenuButton setShowsTouchWhenHighlighted:YES];
-	[slidingMenuButton addTarget:self.viewDeckController action:@selector(toggleLeftView) forControlEvents:UIControlEventTouchUpInside];
-	
-	self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:slidingMenuButton];
 
+	__weak WADayViewController *wSelf = self;
+	self.navigationItem.rightBarButtonItem  = WABarButtonItem([UIImage imageNamed:@"Create"], @"", ^{
+		[wSelf.viewDeckController toggleLeftView];
+	});
+	
+	self.navigationItem.leftBarButtonItem = WABarButtonItem([UIImage imageNamed:@"menu"], @"", ^{
+		[wSelf.viewDeckController toggleLeftView];
+	});
 	return self;
 }
 
@@ -234,7 +220,7 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 		if ((idx != self.paginatedView.currentPage) && ((idx + 1) != self.paginatedView.currentPage) && ((idx-1) != self.paginatedView.currentPage))
 			[wSelf.daysControllers removeObjectForKey:self.days[idx] ];
 	}];
-	// Dispose of any resources that can be recreated.
+	
 }
 
 
@@ -255,7 +241,7 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 	fetchRequest.predicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[
 														fetchRequest.predicate,
 														[NSPredicate predicateWithFormat:@"event = TRUE"],
-														[NSPredicate predicateWithFormat:@"files.@count > 0"],
+												   	[NSPredicate predicateWithFormat:@"files.@count > 0"],
 														[NSPredicate predicateWithFormat:@"import != %d AND import != %d", WAImportTypeFromOthers, WAImportTypeFromLocal]]];
 
 	fetchRequest.sortDescriptors = [NSArray arrayWithObjects:

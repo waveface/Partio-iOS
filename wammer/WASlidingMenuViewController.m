@@ -17,9 +17,7 @@
 #import "WADataStore.h"
 #import "WAPhotoStreamViewController.h"
 
-@interface WASlidingMenuViewController () {
-	NSArray *menuItems;
-}
+@interface WASlidingMenuViewController () 
 
 @property (nonatomic, strong) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, strong) WAUser *user;
@@ -56,18 +54,11 @@
 	WAUserInfoViewController *userInfoVC = [WAUserInfoViewController controllerWithWrappingNavController:&navC];
 	
 	__weak WASlidingMenuViewController *wSelf = self;
-	
-	UIImage *menuImage = [UIImage imageNamed:@"menu"];
-	UIButton *slidingMenuButton = [UIButton buttonWithType:UIButtonTypeCustom];
-	slidingMenuButton.frame = (CGRect) {CGPointZero, menuImage.size};
-	[slidingMenuButton setBackgroundImage:menuImage forState:UIControlStateNormal];
-	[slidingMenuButton setBackgroundImage:[UIImage imageNamed:@"menuHL"] forState:UIControlStateHighlighted];
-	[slidingMenuButton setShowsTouchWhenHighlighted:YES];
-	[slidingMenuButton addTarget:self.viewDeckController action:@selector(toggleLeftView) forControlEvents:UIControlEventTouchUpInside];
-	
-	userInfoVC.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:slidingMenuButton];
-	
-	
+		
+	self.navigationItem.leftBarButtonItem = WABarButtonItem([UIImage imageNamed:@"menu"], @"", ^{
+		[wSelf.viewDeckController toggleLeftView];
+	});
+
 	IRAction *cancelAction = [IRAction actionWithTitle:NSLocalizedString(@"ACTION_CANCEL", nil) block:nil];
 	IRAction *signOutAction = [IRAction
 														 actionWithTitle:NSLocalizedString(@"ACTION_SIGN_OUT", nil)
