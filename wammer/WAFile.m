@@ -47,7 +47,7 @@
 @dynamic webTitle;
 @dynamic webURL;
 @dynamic articles;
-@dynamic belongToCollection;
+@dynamic collections;
 @dynamic caches;
 @dynamic exif;
 @dynamic owner;

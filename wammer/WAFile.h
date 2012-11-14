@@ -45,7 +45,7 @@
 @property (nonatomic, retain) NSString * webTitle;
 @property (nonatomic, retain) NSString * webURL;
 @property (nonatomic, retain) NSSet *articles;
-@property (nonatomic, retain) WACollection *belongToCollection;
+@property (nonatomic, retain) NSSet *collections;
 @property (nonatomic, retain) NSSet *caches;
 @property (nonatomic, retain) WAFileExif *exif;
 @property (nonatomic, retain) WAUser *owner;
@@ -59,6 +59,11 @@
 - (void)removeArticlesObject:(WAArticle *)value;
 - (void)addArticles:(NSSet *)values;
 - (void)removeArticles:(NSSet *)values;
+
+- (void)addCollectionsObject:(WACollection *)value;
+- (void)removeCollectionsObject:(WACollection *)value;
+- (void)addCollections:(NSSet *)values;
+- (void)removeCollections:(NSSet *)values;
 
 - (void)addCachesObject:(WACache *)value;
 - (void)removeCachesObject:(WACache *)value;
