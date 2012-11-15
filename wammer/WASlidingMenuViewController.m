@@ -129,8 +129,8 @@
 		
 		UIImage *defaultAvatar = [UIImage imageNamed:@"TempAvatar"];
 		_userCell.imageView.bounds = CGRectMake(0, 0, defaultAvatar.size.width, defaultAvatar.size.height);
-		_userCell.imageView.layer.cornerRadius = 9.0f;
-		_userCell.imageView.clipsToBounds = YES;				
+		_userCell.imageView.layer.cornerRadius = 5.0f;
+		_userCell.imageView.clipsToBounds = YES;
 		_userCell.imageView.image = ([newValue isKindOfClass:[NSNull class]])? defaultAvatar: (UIImage *)newValue;
 		
 	}
@@ -175,8 +175,8 @@
 		_userCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"UserIdentifier"];
 		_userCell.selectionStyle = UITableViewCellSelectionStyleNone;
 				
-		NSDictionary *oInfo = [self observationInfo];
-		if ([oInfo count] == 0) {
+		
+		if ([[self.user observationInfo] count] == 0) {
 			[self registerObserver];
 		}
 		
@@ -227,13 +227,13 @@
 {
 	static NSString *CellIdentifier = @"Cell";
 	
-	cell.textLabel.textColor = [UIColor whiteColor];
-	cell.textLabel.font = [UIFont fontWithName:NSLocalizedString(@"SLIDING_MENU_FONTNAME", @"Font name of the sliding menu") size:18.0];
-	
 	if (cell == nil) {
 		cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
 	}
   
+	cell.textLabel.textColor = [UIColor whiteColor];
+	cell.textLabel.font = [UIFont fontWithName:NSLocalizedString(@"SLIDING_MENU_FONTNAME", @"Font name of the sliding menu") size:18.0];
+	
 	switch(indexPath.row) {
 			
 		case 1:
