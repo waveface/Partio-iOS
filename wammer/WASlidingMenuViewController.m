@@ -174,12 +174,7 @@
 		
 		_userCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"UserIdentifier"];
 		_userCell.selectionStyle = UITableViewCellSelectionStyleNone;
-		
-		UIImage *defaultAvatar = [UIImage imageNamed:@"WAUserGlyph"];
-		_userCell.imageView.bounds = CGRectMake(0, 0, defaultAvatar.size.width, defaultAvatar.size.height);
-		_userCell.imageView.layer.cornerRadius = 9.0f;
-		_userCell.imageView.clipsToBounds = YES;
-		
+				
 		NSDictionary *oInfo = [self observationInfo];
 		if ([oInfo count] == 0) {
 			[self registerObserver];
