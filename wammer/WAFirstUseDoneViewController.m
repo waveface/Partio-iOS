@@ -50,7 +50,8 @@
 - (void)dealloc {
 	
 	[[WARemoteInterface sharedInterface] removeObserver:self forKeyPath:@"networkState"];
-	
+	[[(WAAppDelegate_iOS *)AppDelegate() photoImportManager] removeObserver:self forKeyPath:@"operationQueue.operationCount"];
+
 }
 
 #pragma mark Target actions
