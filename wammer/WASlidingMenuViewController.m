@@ -125,6 +125,9 @@
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
+	if ([[change objectForKey:NSKeyValueChangeNewKey] isKindOfClass:[NSNull class]])
+		return;
+	
 	if ([keyPath isEqual:@"avatar"]) {
 		
 		UIImage *avatar = (UIImage *)[change objectForKey:NSKeyValueChangeNewKey];
