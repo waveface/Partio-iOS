@@ -50,7 +50,9 @@
 - (void)dealloc {
 	
 	[[WARemoteInterface sharedInterface] removeObserver:self forKeyPath:@"networkState"];
-	[[(WAAppDelegate_iOS *)AppDelegate() photoImportManager] removeObserver:self forKeyPath:@"operationQueue.operationCount"];
+	if ([[NSUserDefaults standardUserDefaults] boolForKey:kWAPhotoImportEnabled]) {
+		[[(WAAppDelegate_iOS *)AppDelegate() photoImportManager] removeObserver:self forKeyPath:@"operationQueue.operationCount"];
+	}
 
 }
 
