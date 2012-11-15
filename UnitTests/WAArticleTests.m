@@ -38,10 +38,12 @@
 - (void)testArticleWithFullInformation {
 	NSArray *articleReps = [self loadDataFile:@"PostWithCompleteAttachmentInformation"];
 	STAssertNotNil(articleReps, @"need to be a vaild JSON");
-	NSArray *transformed = [WAArticle insertOrUpdateObjectsUsingContext:context
-																									 withRemoteResponse:articleReps
-																												 usingMapping:nil
-																															options:IRManagedObjectOptionIndividualOperations];
+	NSArray *transformed = [WAArticle
+													insertOrUpdateObjectsUsingContext:context
+													withRemoteResponse:articleReps
+													usingMapping:nil
+													options:IRManagedObjectOptionIndividualOperations];
+	
 	WAArticle *article = [transformed objectAtIndex:0];
 	STAssertEquals((NSUInteger)4, [article.files count],
 								 @"This post should have 4 attachments");
@@ -49,11 +51,29 @@
 
 - (void)testArticleWithURLHistoryStyle {
 	NSArray *articleReps = [self loadDataFile:@"PhotoPostWithURLHistoryStyle"];
-	NSArray *transformed = [WAArticle insertOrUpdateObjectsUsingContext:context
-																									 withRemoteResponse:articleReps
-																												 usingMapping:nil
-																															options:IRManagedObjectOptionIndividualOperations];
+	NSArray *transformed = [WAArticle
+													insertOrUpdateObjectsUsingContext:context
+													withRemoteResponse:articleReps
+													usingMapping:nil
+													options:IRManagedObjectOptionIndividualOperations];
+	
 	WAArticle *article = [transformed objectAtIndex:0];
 	STAssertTrue(WAPostStyleURLHistory == article.style.intValue , @"Style should be URL History");
 }
+
+- (void)testArticleWithEventTimeInAttachment {
+	NSArray *articleReps = [self loadDataFile:@"PostWithEventTime"];
+	NSArray *transformed = [WAArticle
+													insertOrUpdateObjectsUsingContext:context
+													withRemoteResponse:articleReps
+													usingMapping:nil
+													options:IRManagedObjectOptionIndividualOperations];
+	
+	WAArticle *article = transformed[0];
+	for (WAFile* photo in article.files) {
+		assertThat(photo.created, instanceOf([NSDate class]));
+	}
+	
+}
+
 @end

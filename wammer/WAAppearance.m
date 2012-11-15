@@ -26,6 +26,8 @@ void WADefaultAppearance(void) {
 
 	} else {
 		
+		[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackOpaque];
+		
 		UIColor *naviBgColor = [UIColor colorWithRed:0.95f green:0.95f blue:0.95f alpha:1];
 		[[UINavigationBar appearance] setTintColor:naviBgColor];
 		
@@ -82,10 +84,10 @@ void WADefaultBarButtonInitialize (void) {
 
 IRBarButtonItem * WABarButtonItem (UIImage *image, NSString *labelText, void(^aBlock)(void)) {
 
-	IRBarButtonItem *item = [IRBarButtonItem itemWithTitle:labelText action:aBlock];
-	if (image)
-		item.image = image;
-
+	IRBarButtonItem *item = [IRBarButtonItem itemWithCustomImage:image highlightedImage:nil];
+	if (aBlock)
+		item.block = aBlock;
+	
 	return item;
 
 }

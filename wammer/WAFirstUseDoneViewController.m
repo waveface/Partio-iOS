@@ -10,6 +10,8 @@
 #import "WAFirstUseViewController.h"
 #import "WARemoteInterface.h"
 #import "WADefines.h"
+#import "WADefines+iOS.h"
+#import "WAAppDelegate_iOS.h"
 
 @interface WAFirstUseDoneViewController ()
 
@@ -30,12 +32,12 @@
 	[self.doneButton setTitleColor:[UIColor whiteColor] forState:UIControlStateDisabled];
 
 	if ([[NSUserDefaults standardUserDefaults] boolForKey:kWAPhotoImportEnabled]) {
-		self.photoUploadCell.detailTextLabel.text = NSLocalizedString(@"PHOTO_UPLOAD_STATUS_UPLOADING", @"Subtitle of photo upload status");
+		[[(WAAppDelegate_iOS *)AppDelegate() photoImportManager] addObserver:self forKeyPath:@"operationQueue.operationCount" options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionNew context:nil];
 	} else {
 		self.photoUploadCell.detailTextLabel.text = NSLocalizedString(@"PHOTO_UPLOAD_STATUS_NOT_UPLOADING", @"Subtitle of photo upload status");
 	}
 
-	[[WARemoteInterface sharedInterface] addObserver:self forKeyPath:@"networkState" options:NSKeyValueObservingOptionInitial context:nil];
+	[[WARemoteInterface sharedInterface] addObserver:self forKeyPath:@"networkState" options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionNew context:nil];
 
 }
 
@@ -48,7 +50,10 @@
 - (void)dealloc {
 	
 	[[WARemoteInterface sharedInterface] removeObserver:self forKeyPath:@"networkState"];
-	
+	if ([[NSUserDefaults standardUserDefaults] boolForKey:kWAPhotoImportEnabled]) {
+		[[(WAAppDelegate_iOS *)AppDelegate() photoImportManager] removeObserver:self forKeyPath:@"operationQueue.operationCount"];
+	}
+
 }
 
 #pragma mark Target actions
@@ -66,22 +71,44 @@
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
 	
-	NSParameterAssert([keyPath isEqualToString:@"networkState"]);
-	
-	WARemoteInterface *ri = [WARemoteInterface sharedInterface];
-	if ([ri hasReachableStation]) {
-		self.connectionCell.accessoryView = nil;
-		self.connectionCell.detailTextLabel.text = ri.monitoredHostNames[1];
-	} else if (ri.monitoredHosts && [ri hasReachableCloud]) {
-		self.connectionCell.accessoryView = nil;
-		self.connectionCell.detailTextLabel.text = ri.monitoredHostNames[0];
-	} else {
-		UIActivityIndicatorView *activity = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-		[activity startAnimating];
-		self.connectionCell.accessoryView = activity;
-		self.connectionCell.detailTextLabel.text = NSLocalizedString(@"SEARCHING_NETWORK_SUBTITLE", @"Subtitle of searching network in setup done page.");
+	__weak WAFirstUseDoneViewController *wSelf = self;
+
+	if ([keyPath isEqualToString:@"networkState"]) {
+
+		[[NSOperationQueue mainQueue] addOperationWithBlock:^{
+			WARemoteInterface *ri = [WARemoteInterface sharedInterface];
+			if ([ri hasReachableStation]) {
+				wSelf.connectionCell.accessoryView = nil;
+				wSelf.connectionCell.detailTextLabel.text = ri.monitoredHostNames[1];
+			} else if (ri.monitoredHosts && [ri hasReachableCloud]) {
+				wSelf.connectionCell.accessoryView = nil;
+				wSelf.connectionCell.detailTextLabel.text = ri.monitoredHostNames[0];
+			} else {
+				UIActivityIndicatorView *activity = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+				[activity startAnimating];
+				wSelf.connectionCell.accessoryView = activity;
+				wSelf.connectionCell.detailTextLabel.text = NSLocalizedString(@"SEARCHING_NETWORK_SUBTITLE", @"Subtitle of searching network in setup done page.");
+			}
+		}];
+
+	} else if ([keyPath isEqualToString:@"operationQueue.operationCount"]) {
+
+		[[NSOperationQueue mainQueue] addOperationWithBlock:^{
+			WAPhotoImportManager *photoImportManager = [(WAAppDelegate_iOS *)AppDelegate() photoImportManager];
+			if (photoImportManager.preprocessing) {
+				wSelf.photoUploadCell.detailTextLabel.text = NSLocalizedString(@"PHOTO_UPLOAD_STATUS_PREPROCESSING", @"Subtitle of photo upload status");
+			} else {
+				NSNumber *currentCount = change[NSKeyValueChangeNewKey];
+				if ([currentCount isEqualToNumber:@0]) {
+					wSelf.photoUploadCell.detailTextLabel.text = NSLocalizedString(@"PHOTO_UPLOAD_STATUS_UPLOADING", @"Subtitle of photo upload status");
+				} else {
+					wSelf.photoUploadCell.detailTextLabel.text = [NSString stringWithFormat:NSLocalizedString(@"PHOTO_UPLOAD_STATUS_IMPORTING", @"Subtitle of photo upload status"), photoImportManager.totalOperationCount-[currentCount unsignedIntegerValue], photoImportManager.totalOperationCount];
+				}
+			}
+		}];
+
 	}
-	
+
 }
 
 @end

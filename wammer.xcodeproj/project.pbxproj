@@ -39,8 +39,6 @@
 		138D31B81609D92400ECA892 /* TutorialPhotoImport~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 138D31B61609D92400ECA892 /* TutorialPhotoImport~ipad.png */; };
 		139E28FE15C2926700C8521A /* WALocalizedTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 139E28FD15C2926700C8521A /* WALocalizedTextView.m */; };
 		13A15F3E163FABD100F3FF30 /* WAFirstUseLogInViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 13A15F3D163FABD100F3FF30 /* WAFirstUseLogInViewController.m */; };
-		13A1BFB415A572CE00526F39 /* WAFile.m in Sources */ = {isa = PBXBuildFile; fileRef = 13A1BFB315A572CE00526F39 /* WAFile.m */; };
-		13A1BFB515A572CE00526F39 /* WAFile.m in Sources */ = {isa = PBXBuildFile; fileRef = 13A1BFB315A572CE00526F39 /* WAFile.m */; };
 		13A9B111163F8A4D00537835 /* WAFirstUseWelcomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 13A9B110163F8A4D00537835 /* WAFirstUseWelcomeViewController.m */; };
 		13B6DB9D161573FF00B9CC35 /* WAFileExif.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B6DB9C161573FF00B9CC35 /* WAFileExif.m */; };
 		13BD4D9915930A480062EA3A /* WAPostViewCellPhone-ImageOnlyStack.xib in Resources */ = {isa = PBXBuildFile; fileRef = 13BD4D9815930A480062EA3A /* WAPostViewCellPhone-ImageOnlyStack.xib */; };
@@ -59,7 +57,6 @@
 		4B16701215FDCE9900990F4B /* WADefaults.staging.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4B16701115FDCE9900990F4B /* WADefaults.staging.plist */; };
 		4B26970B15E76A5F007E1054 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B8DFB7314FDFC3D000B41C5 /* CFNetwork.framework */; };
 		4B26970C15E76A99007E1054 /* libicucore.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 8002CDE515E5E85600D7BFF0 /* libicucore.dylib */; };
-		4B284E5415AD244200D138C5 /* WAFile.m in Sources */ = {isa = PBXBuildFile; fileRef = 13A1BFB315A572CE00526F39 /* WAFile.m */; };
 		4B31BA9F1591A74C00DC1A70 /* AGImagePickerController+Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B31BA881591A74C00DC1A70 /* AGImagePickerController+Constants.m */; };
 		4B31BAA01591A74C00DC1A70 /* AGImagePickerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B31BA8A1591A74C00DC1A70 /* AGImagePickerController.m */; };
 		4B31BAA11591A74C00DC1A70 /* AGIPC-Checkmark-iPad.png in Resources */ = {isa = PBXBuildFile; fileRef = 4B31BA8B1591A74C00DC1A70 /* AGIPC-Checkmark-iPad.png */; };
@@ -129,6 +126,9 @@
 		4BBEEA1B164F6AB300D33EDB /* WACollectionTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BBEEA18164F6AB300D33EDB /* WACollectionTests.m */; };
 		4BBEEA1C164F6AB300D33EDB /* WAWebSocketTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BBEEA1A164F6AB300D33EDB /* WAWebSocketTests.m */; };
 		4BBEEA1F164F6ABE00D33EDB /* WATests_iOS.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BBEEA1E164F6ABE00D33EDB /* WATests_iOS.m */; };
+		4BD189FE1653DE4200908080 /* WAFile.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BD189FD1653DE4200908080 /* WAFile.m */; };
+		4BD189FF1653DE4200908080 /* WAFile.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BD189FD1653DE4200908080 /* WAFile.m */; };
+		4BD18A001653DE4200908080 /* WAFile.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BD189FD1653DE4200908080 /* WAFile.m */; };
 		4BD77BB915A2C10500CA8486 /* WABackoffHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 130F09EF159C3C74001796D0 /* WABackoffHandler.m */; };
 		4BD77BBA15A2C8B300CA8486 /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = FF0CC558158A41150034BD1B /* libxml2.dylib */; };
 		4BE6910D14EB8159002B9790 /* WAPreviewInspectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BE6910B14EB8159002B9790 /* WAPreviewInspectionViewController.m */; };
@@ -142,6 +142,11 @@
 		7D0CDD01162E5A080027D35F /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D0CDCE7162E59DD0027D35F /* SenTestingKit.framework */; };
 		7D296DAA1643818000870747 /* libSocketRocket.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D6470A71642218800DBDEA6 /* libSocketRocket.a */; };
 		7D29702B1643BC2F00870747 /* WAModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = FFCD324114B997B70035C4F5 /* WAModel.xcdatamodeld */; };
+		7D71DDE21653569500456B52 /* PostWithEventTime.txt in Resources */ = {isa = PBXBuildFile; fileRef = 7D71DDE11653569500456B52 /* PostWithEventTime.txt */; };
+		7D71DE0816537E9900456B52 /* WAPhotoStreamViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DB78A621649005E00E165E9 /* WAPhotoStreamViewController.m */; };
+		7D71DE1516537E9A00456B52 /* WAPhotoStreamViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DB78A621649005E00E165E9 /* WAPhotoStreamViewController.m */; };
+		7D71DE171653805C00456B52 /* WAPhotoStreamViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DB78A67164900E400E165E9 /* WAPhotoStreamViewCell.m */; };
+		7D71DE181653806F00456B52 /* WAPhotoStreamViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DB78A67164900E400E165E9 /* WAPhotoStreamViewCell.m */; };
 		7D7A442E164CF2FB00E156CF /* WACollection.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D7A442D164CF2FB00E156CF /* WACollection.m */; };
 		7D7A442F164CF2FB00E156CF /* WACollection.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D7A442D164CF2FB00E156CF /* WACollection.m */; };
 		7D7A4430164CF2FB00E156CF /* WACollection.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D7A442D164CF2FB00E156CF /* WACollection.m */; };
@@ -1119,8 +1124,6 @@
 		13A15F3C163FABD100F3FF30 /* WAFirstUseLogInViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WAFirstUseLogInViewController.h; path = wammer/WAFirstUseLogInViewController.h; sourceTree = "<group>"; };
 		13A15F3D163FABD100F3FF30 /* WAFirstUseLogInViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WAFirstUseLogInViewController.m; path = wammer/WAFirstUseLogInViewController.m; sourceTree = "<group>"; };
 		13A1BFB115A5728500526F39 /* WAModel 33.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WAModel 33.xcdatamodel"; sourceTree = "<group>"; };
-		13A1BFB215A572CE00526F39 /* WAFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAFile.h; sourceTree = "<group>"; };
-		13A1BFB315A572CE00526F39 /* WAFile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAFile.m; sourceTree = "<group>"; };
 		13A9B10F163F8A4D00537835 /* WAFirstUseWelcomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WAFirstUseWelcomeViewController.h; path = wammer/WAFirstUseWelcomeViewController.h; sourceTree = "<group>"; };
 		13A9B110163F8A4D00537835 /* WAFirstUseWelcomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WAFirstUseWelcomeViewController.m; path = wammer/WAFirstUseWelcomeViewController.m; sourceTree = "<group>"; };
 		13B6DB9B161573FF00B9CC35 /* WAFileExif.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAFileExif.h; sourceTree = "<group>"; };
@@ -1230,6 +1233,8 @@
 		4BCA9E9F13FCE9DC00978CE9 /* WAPostViewCellPhone-Default.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "WAPostViewCellPhone-Default.xib"; sourceTree = "<group>"; };
 		4BCA9EA013FCE9DC00978CE9 /* WAPostViewCellPhone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAPostViewCellPhone.h; sourceTree = "<group>"; };
 		4BCA9EA113FCE9DC00978CE9 /* WAPostViewCellPhone.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAPostViewCellPhone.m; sourceTree = "<group>"; };
+		4BD189FC1653DE4200908080 /* WAFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAFile.h; sourceTree = "<group>"; };
+		4BD189FD1653DE4200908080 /* WAFile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAFile.m; sourceTree = "<group>"; };
 		4BE6910A14EB8159002B9790 /* WAPreviewInspectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAPreviewInspectionViewController.h; sourceTree = "<group>"; };
 		4BE6910B14EB8159002B9790 /* WAPreviewInspectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAPreviewInspectionViewController.m; sourceTree = "<group>"; };
 		4BE6910C14EB8159002B9790 /* WAPreviewInspectionViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WAPreviewInspectionViewController.xib; sourceTree = "<group>"; };
@@ -1244,6 +1249,7 @@
 		5AE49661BAA04638AA81DC49 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = SOURCE_ROOT; };
 		7D0CDCE7162E59DD0027D35F /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
 		7D0CDD00162E5A080027D35F /* StreamTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = StreamTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
+		7D71DDE11653569500456B52 /* PostWithEventTime.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = PostWithEventTime.txt; path = UnitTests/PostWithEventTime.txt; sourceTree = SOURCE_ROOT; };
 		7D7A442C164CF2FB00E156CF /* WACollection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WACollection.h; sourceTree = "<group>"; };
 		7D7A442D164CF2FB00E156CF /* WACollection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WACollection.m; sourceTree = "<group>"; };
 		7D857D4B164249DA0092CF5F /* AQGridView.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = AQGridView.xcodeproj; path = external/AQGridView/AQGridView.xcodeproj; sourceTree = "<group>"; };
@@ -2292,6 +2298,7 @@
 				4BBEEA18164F6AB300D33EDB /* WACollectionTests.m */,
 				4BBEEA19164F6AB300D33EDB /* WAWebSocketTests.h */,
 				4BBEEA1A164F6AB300D33EDB /* WAWebSocketTests.m */,
+				7D71DDE11653569500456B52 /* PostWithEventTime.txt */,
 				4BBEEA03164F6A6E00D33EDB /* PhotoPostWithURLHistoryStyle.txt */,
 				4BBEEA04164F6A6E00D33EDB /* PostWithCompleteAttachmentInformation.txt */,
 				4BBEEA05164F6A6E00D33EDB /* PostWithIncompleteAttachmentInformation.txt */,
@@ -2584,8 +2591,8 @@
 		FF4BDEAD156A53AD00C105D5 /* File */ = {
 			isa = PBXGroup;
 			children = (
-				13A1BFB215A572CE00526F39 /* WAFile.h */,
-				13A1BFB315A572CE00526F39 /* WAFile.m */,
+				4BD189FC1653DE4200908080 /* WAFile.h */,
+				4BD189FD1653DE4200908080 /* WAFile.m */,
 				FFCD325014B9EA4D0035C4F5 /* WAFile+WAAdditions.h */,
 				FFCD325114B9EA4D0035C4F5 /* WAFile+WAAdditions.m */,
 				FF485CC9156A4DC700A6175E /* WAFile+CoreDataGeneratedPrimitiveAccessors.h */,
@@ -3944,6 +3951,7 @@
 				4BBEEA06164F6A6E00D33EDB /* PhotoPostWithURLHistoryStyle.txt in Resources */,
 				4BBEEA07164F6A6E00D33EDB /* PostWithCompleteAttachmentInformation.txt in Resources */,
 				4BBEEA08164F6A6E00D33EDB /* PostWithIncompleteAttachmentInformation.txt in Resources */,
+				7D71DDE21653569500456B52 /* PostWithEventTime.txt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4511,7 +4519,6 @@
 				FF2AC3B9156FD8AC0033ADD6 /* WAStorage.m in Sources */,
 				FF2AC3BA156FD8B20033ADD6 /* WAArticle.m in Sources */,
 				4BD77BB915A2C10500CA8486 /* WABackoffHandler.m in Sources */,
-				4B284E5415AD244200D138C5 /* WAFile.m in Sources */,
 				4B6C222215F6020C00C19A7B /* WAAssetsLibraryManager.m in Sources */,
 				7D9B1D99162BE0D2000E5350 /* WAFacebookConnectionSwitch.m in Sources */,
 				7D9B1D9A162BE1B1000E5350 /* WARemoteInterface+SocialNetworks.m in Sources */,
@@ -4522,6 +4529,9 @@
 				4BBEEA1B164F6AB300D33EDB /* WACollectionTests.m in Sources */,
 				4BBEEA1C164F6AB300D33EDB /* WAWebSocketTests.m in Sources */,
 				4BBEEA1F164F6ABE00D33EDB /* WATests_iOS.m in Sources */,
+				7D71DE0816537E9900456B52 /* WAPhotoStreamViewController.m in Sources */,
+				7D71DE181653806F00456B52 /* WAPhotoStreamViewCell.m in Sources */,
+				4BD189FF1653DE4200908080 /* WAFile.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4533,6 +4543,9 @@
 				7D7A4430164CF2FB00E156CF /* WACollection.m in Sources */,
 				4BBEE91C164F5FC300D33EDB /* WADayViewTests.m in Sources */,
 				4BBEE91D164F5FC300D33EDB /* WAFacebookConnectionSwitchTest.m in Sources */,
+				7D71DE1516537E9A00456B52 /* WAPhotoStreamViewController.m in Sources */,
+				7D71DE171653805C00456B52 /* WAPhotoStreamViewCell.m in Sources */,
+				4BD18A001653DE4200908080 /* WAFile.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4600,7 +4613,6 @@
 				FFDE5274159AFE0A0086F9B0 /* WAOpenGraphElementImage.m in Sources */,
 				FF680463159AFF0F00EBF63B /* WAFile+LazyImages.m in Sources */,
 				FF79B8AD15A4115E000A537A /* WABackoffHandler.m in Sources */,
-				13A1BFB515A572CE00526F39 /* WAFile.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4751,7 +4763,6 @@
 				130F09F0159C3C74001796D0 /* WABackoffHandler.m in Sources */,
 				4BF3656615A5914000E40E42 /* WARemoteInterface+Facebook.m in Sources */,
 				FF09C0EE15A2E83800AEDDAE /* WASlidingSplitViewController.m in Sources */,
-				13A1BFB415A572CE00526F39 /* WAFile.m in Sources */,
 				FF56850715AF72FA00706CC2 /* WAWelcomeViewController.m in Sources */,
 				FF56850D15AF75CF00706CC2 /* WASignUpViewController.m in Sources */,
 				FF6BCFA415AF78D00046AAC8 /* WALogInViewController.m in Sources */,
@@ -4815,6 +4826,7 @@
 				80638BFC164CA7DA005695E3 /* WATagGroup.m in Sources */,
 				7D7A442E164CF2FB00E156CF /* WACollection.m in Sources */,
 				133058DE1650ABE300C0283F /* WASyncManager+FileMetadataSync.m in Sources */,
+				4BD189FE1653DE4200908080 /* WAFile.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5133,7 +5145,7 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 528;
+				CURRENT_PROJECT_VERSION = 530;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"WF_USES_TESTFLIGHT=$(WF_USES_TESTFLIGHT)",
@@ -5639,7 +5651,7 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 528;
+				CURRENT_PROJECT_VERSION = 530;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -5699,7 +5711,7 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 528;
+				CURRENT_PROJECT_VERSION = 530;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"WF_USES_TESTFLIGHT=$(WF_USES_TESTFLIGHT)",

@@ -18,9 +18,7 @@
 #import <Foundation/Foundation.h>
 #import "WAPhotoStreamViewController.h"
 
-@interface WASlidingMenuViewController () {
-	NSArray *menuItems;
-}
+@interface WASlidingMenuViewController () 
 
 @property (nonatomic, strong) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, strong) WAUser *user;
@@ -66,18 +64,11 @@
 	WAUserInfoViewController *userInfoVC = [WAUserInfoViewController controllerWithWrappingNavController:&navC];
 	
 	__weak WASlidingMenuViewController *wSelf = self;
-	
-	UIImage *menuImage = [UIImage imageNamed:@"menu"];
-	UIButton *slidingMenuButton = [UIButton buttonWithType:UIButtonTypeCustom];
-	slidingMenuButton.frame = (CGRect) {CGPointZero, menuImage.size};
-	[slidingMenuButton setBackgroundImage:menuImage forState:UIControlStateNormal];
-	[slidingMenuButton setBackgroundImage:[UIImage imageNamed:@"menuHL"] forState:UIControlStateHighlighted];
-	[slidingMenuButton setShowsTouchWhenHighlighted:YES];
-	[slidingMenuButton addTarget:self.viewDeckController action:@selector(toggleLeftView) forControlEvents:UIControlEventTouchUpInside];
-	
-	userInfoVC.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:slidingMenuButton];
-	
-	
+		
+	userInfoVC.navigationItem.leftBarButtonItem = WABarButtonItem([UIImage imageNamed:@"menu"], @"", ^{
+		[wSelf.viewDeckController toggleLeftView];
+	});
+
 	IRAction *cancelAction = [IRAction actionWithTitle:NSLocalizedString(@"ACTION_CANCEL", nil) block:nil];
 	IRAction *signOutAction = [IRAction
 														 actionWithTitle:NSLocalizedString(@"ACTION_SIGN_OUT", nil)
@@ -134,13 +125,22 @@
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
+	if ([[change objectForKey:NSKeyValueChangeNewKey] isKindOfClass:[NSNull class]])
+		return;
+	
 	if ([keyPath isEqual:@"avatar"]) {
 		
-		id newValue = [change objectForKey:NSKeyValueChangeNewKey];			
-		_userCell.imageView.image = ([newValue isKindOfClass:[UIImage class]])? (UIImage *)newValue : [UIImage imageNamed:@"WAUserGlyph"];
+		id newValue = [change objectForKey:NSKeyValueChangeNewKey];
 		
+		UIImage *avatar = (UIImage *)[change objectForKey:NSKeyValueChangeNewKey];
+		if ([avatar isEqual:[NSNull null]]) {
+			_userCell.imageView.image = [UIImage imageNamed:@"WAUserGlyph"];
+		} else {
+			_userCell.imageView.image = avatar;
+		}
+
 	}
-	
+
 	if ([keyPath isEqual:@"nickname"]) {
 		
 		_userCell.textLabel.text = (NSString *)[change objectForKey:NSKeyValueChangeNewKey];

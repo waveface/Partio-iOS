@@ -10,4 +10,6 @@
 
 @interface WATests_iOS : SenTestCase
 
+@property (nonatomic, strong) NSString *aProperty;
+
 @end
