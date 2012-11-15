@@ -316,13 +316,22 @@
 "PHOTO_UPLOAD_CONTROLLER_TITLE" = "照片自動上傳";
 
 /* Subtitle of photo upload status */
+"PHOTO_UPLOAD_STATUS_IMPORTING" = "正在匯入 %d/%d 張照片";
+
+/* Subtitle of photo upload status */
 "PHOTO_UPLOAD_STATUS_NOT_UPLOADING" = "尚未開啓";
 
 /* Subtitle of photo upload status */
-"PHOTO_UPLOAD_STATUS_UPLOADING" = "照片上傳中";
+"PHOTO_UPLOAD_STATUS_PREPROCESSING" = "處理中...";
+
+/* Subtitle of photo upload status */
+"PHOTO_UPLOAD_STATUS_UPLOADING" = "照片上傳中...";
 
 /* In iPad overview */
 "PHOTOS_PLURAL" = "%d 張照片";
+
+/* in day view */
+"PHOTOS_TITLE" = "照片";
 
 /* Title of view controller choosing plans */
 "PLANS_CONTROLLER_TITLE" = "資費方案";

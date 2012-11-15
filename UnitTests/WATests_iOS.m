@@ -7,8 +7,10 @@
 //
 
 #import "WATests_iOS.h"
+#import <SSToolkit/NSDate+SSToolkitAdditions.h>
 
 @implementation NSCalendar (MySpecialCalculations)
+
 -(NSInteger)daysFromDate:(NSDate *) endDate
 {
 	NSDate *startDate = [NSDate date];
@@ -19,6 +21,7 @@
      return endDay-startDay;
 }
 @end
+
 
 @implementation WATests_iOS
 
@@ -79,5 +82,47 @@
 	
 	STAssertEquals(preferredLanguage, @"en", @"should rollback to basics");
 	
+}
+
+- (void)testWeakStrong{
+	__weak WATests_iOS* weakSelf = self;
+	
+	void (^aBlock)(void) = ^(void){
+		__strong WATests_iOS* fakeSelf = weakSelf;
+		
+		if (fakeSelf) {
+			fakeSelf.aProperty = @"set";
+		}
+	};
+	
+	@autoreleasepool {
+		aBlock();
+	}
+	
+	assertThat(self.aProperty, equalTo(@"set"));
+	
+	void (^aBlockWithoutStrong)(void) = ^(void){
+		if (weakSelf) {
+			weakSelf.aProperty = @"weakSet";
+		}
+	};
+	
+	@autoreleasepool {
+    aBlockWithoutStrong();
+	}
+	
+	assertThat(self.aProperty, equalTo(@"weakSet"));
+	
+}
+
+- (void)testSameDay {
+	NSDate *now = [NSDate date];
+	NSCalendar *gregorian = [[NSCalendar alloc]initWithCalendarIdentifier:NSGregorianCalendar];
+	NSDateComponents *beginOfTomorrow = [gregorian components:NSDayCalendarUnit|NSYearCalendarUnit|NSMonthCalendarUnit fromDate:now];
+	beginOfTomorrow.day += 1;
+	NSDate *endOfToday = [gregorian dateFromComponents:beginOfTomorrow];
+	
+	NSLog(@"***\n%@ %@\n", now, endOfToday);
+	assertThat([now endOfDate], equalTo(endOfToday));
 }
 @end

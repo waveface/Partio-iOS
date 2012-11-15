@@ -18,9 +18,7 @@
 #import <Foundation/Foundation.h>
 #import "WAPhotoStreamViewController.h"
 
-@interface WASlidingMenuViewController () {
-	NSArray *menuItems;
-}
+@interface WASlidingMenuViewController () 
 
 @property (nonatomic, strong) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, strong) WAUser *user;
@@ -66,18 +64,11 @@
 	WAUserInfoViewController *userInfoVC = [WAUserInfoViewController controllerWithWrappingNavController:&navC];
 	
 	__weak WASlidingMenuViewController *wSelf = self;
-	
-	UIImage *menuImage = [UIImage imageNamed:@"menu"];
-	UIButton *slidingMenuButton = [UIButton buttonWithType:UIButtonTypeCustom];
-	slidingMenuButton.frame = (CGRect) {CGPointZero, menuImage.size};
-	[slidingMenuButton setBackgroundImage:menuImage forState:UIControlStateNormal];
-	[slidingMenuButton setBackgroundImage:[UIImage imageNamed:@"menuHL"] forState:UIControlStateHighlighted];
-	[slidingMenuButton setShowsTouchWhenHighlighted:YES];
-	[slidingMenuButton addTarget:self.viewDeckController action:@selector(toggleLeftView) forControlEvents:UIControlEventTouchUpInside];
-	
-	userInfoVC.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:slidingMenuButton];
-	
-	
+		
+	userInfoVC.navigationItem.leftBarButtonItem = WABarButtonItem([UIImage imageNamed:@"menu"], @"", ^{
+		[wSelf.viewDeckController toggleLeftView];
+	});
+
 	IRAction *cancelAction = [IRAction actionWithTitle:NSLocalizedString(@"ACTION_CANCEL", nil) block:nil];
 	IRAction *signOutAction = [IRAction
 														 actionWithTitle:NSLocalizedString(@"ACTION_SIGN_OUT", nil)
@@ -131,11 +122,12 @@
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
+
 	id newValue = [change objectForKey:NSKeyValueChangeNewKey];
 	
 	if ([keyPath isEqual:@"avatar"]) {
 		
-		UIImage *defaultAvatar = [UIImage imageNamed:@"WAUserGlyph"];
+		UIImage *defaultAvatar = [UIImage imageNamed:@"TempAvatar"];
 		_userCell.imageView.bounds = CGRectMake(0, 0, defaultAvatar.size.width, defaultAvatar.size.height);
 		_userCell.imageView.layer.cornerRadius = 9.0f;
 		_userCell.imageView.clipsToBounds = YES;				

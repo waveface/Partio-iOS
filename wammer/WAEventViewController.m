@@ -18,6 +18,18 @@
 #import "WAAppearance.h"
 #import "WAEventPhotoViewCell.h"
 
+@interface WAAnnotation : NSObject <MKAnnotation>
+
+@property (nonatomic, strong) NSString *title;
+@property (nonatomic, strong) NSString *subtitle;
+@property (nonatomic, assign) CLLocationCoordinate2D coordinate;
+
+@end
+@implementation WAAnnotation
+
+
+@end
+
 @interface WAEventViewController ()
 
 @property (nonatomic, strong, readwrite) NSFetchedResultsController *fetchedResultsController;
@@ -266,8 +278,14 @@
 
 		CLLocationCoordinate2D center = { self.article.location.latitude.floatValue, self.article.location.longitude.floatValue };
 		MKCoordinateSpan span = {0.005, 0.005}; // FIXME: should based on api, currently it is hard coded
+	
+		WAAnnotation *pin = [[WAAnnotation alloc] init];
+		pin.coordinate = center;
+		if (self.article.location.name)
+			pin.title = self.article.location.name;
 		
 		[_headerView.mapView setRegion:(MKCoordinateRegion) {center, span}];
+		[_headerView.mapView addAnnotation:pin];
 		[_headerView.mapView setHidden:NO];
 		
 	} else {

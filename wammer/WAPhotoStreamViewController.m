@@ -12,9 +12,22 @@
 #import "WADataStore.h"
 #import "WAPhotoStreamViewCell.h"
 
+@implementation NSDate (Addons)
+
+-(NSDate *)endOfDate {
+	
+	NSCalendar *gregorian = [[NSCalendar alloc]initWithCalendarIdentifier:NSGregorianCalendar];
+	NSDateComponents *beginOfTomorrow = [gregorian components:NSDayCalendarUnit|NSYearCalendarUnit|NSMonthCalendarUnit fromDate:self];
+	beginOfTomorrow.day += 1;
+	
+	return [gregorian dateFromComponents:beginOfTomorrow];
+}
+
+@end
+
 @interface WAPhotoStreamViewController (){
 	NSArray *colorPalette;
-	NSMutableArray *photos;
+	NSArray *photos;
 	NSArray *daysOfPhotos;
 	NSDate *onDate;
 }
@@ -29,6 +42,8 @@
 	self = [super init];
 	if (self) {
 		onDate = aDate;
+		NSPredicate *allFromToday = [NSPredicate predicateWithFormat:@"created BETWEEN {%@, %@}", aDate, [aDate endOfDate]];
+		photos = [WAFile MR_findAllWithPredicate:allFromToday];
 	}
 	return self;
 }
@@ -57,25 +72,6 @@
 	[UIColor colorWithRed:0.486 green:0.612 blue:0.208 alpha:1.000],
 	[UIColor colorWithRed:0.176 green:0.278 blue:0.475 alpha:1.000]
 	];
-	
-	UIImage *menuImage = [UIImage imageNamed:@"menu"];
-	UIButton *slidingMenuButton = [UIButton buttonWithType:UIButtonTypeCustom];
-	slidingMenuButton.frame = (CGRect) {CGPointZero, menuImage.size};
-	[slidingMenuButton setBackgroundImage:menuImage forState:UIControlStateNormal];
-	[slidingMenuButton setShowsTouchWhenHighlighted:YES];
-	[slidingMenuButton addTarget:self.delegate action:@selector(toggleLeftView) forControlEvents:UIControlEventTouchUpInside];
-	
-	self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:slidingMenuButton];
-
-	NSPredicate *theDay = [NSCompoundPredicate andPredicateWithSubpredicates:@[
-												 [NSPredicate predicateWithFormat:@"files.@count > 0"],
-												 [NSPredicate predicateWithFormat:@"creationDate = %@", onDate]
-												 ]];
-	NSArray *eventsOnTheDate = [WAArticle MR_findAllWithPredicate:theDay];
-	photos = [[NSMutableArray alloc] init];
-	for (WAArticle *event in eventsOnTheDate) {
-    [photos addObjectsFromArray:[event.files array]];
-	}
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -103,7 +99,7 @@
 	if (cell) {
 		cell.backgroundColor = colorPalette[rand()%[colorPalette count]];
 		WAFile *photo = (WAFile *)photos[indexPath.row];
-		cell.imageView.image = photo.thumbnailImage;
+		cell.imageView.image = photo.smallestPresentableImage;
 	}
 	
 	return cell;
@@ -116,7 +112,7 @@
 	remaining_width -= width;
 	if (remaining_width == 0)
 		remaining_width = 2;
-	int height_factor = 1;//rand()%2+1;
+	int height_factor = 1;
 	
 	return (CGSize){156*width+6*(width-1),156*height_factor+8*(height_factor-1)};
 }
