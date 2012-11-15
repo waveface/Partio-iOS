@@ -122,28 +122,30 @@
 
 - (void)registerObserver
 {
-	NSDictionary *oInfo = [self observationInfo];
-	if ([oInfo count] == 0) {
-		NSKeyValueObservingOptions options = NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew;
-		
-		[self.user addObserver:self forKeyPath:@"avatar" options:options context:nil];
-		[self.user addObserver:self forKeyPath:@"nickname" options:options context:nil];
-	}
-
+	NSKeyValueObservingOptions options = NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew;
+	
+	[self.user addObserver:self forKeyPath:@"avatar" options:options context:nil];
+	[self.user addObserver:self forKeyPath:@"nickname" options:options context:nil];
+	
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
+	id newValue = [change objectForKey:NSKeyValueChangeNewKey];
+	
 	if ([keyPath isEqual:@"avatar"]) {
 		
-		id newValue = [change objectForKey:NSKeyValueChangeNewKey];			
-		_userCell.imageView.image = ([newValue isKindOfClass:[UIImage class]])? (UIImage *)newValue : [UIImage imageNamed:@"WAUserGlyph"];
+		UIImage *defaultAvatar = [UIImage imageNamed:@"WAUserGlyph"];
+		_userCell.imageView.bounds = CGRectMake(0, 0, defaultAvatar.size.width, defaultAvatar.size.height);
+		_userCell.imageView.layer.cornerRadius = 9.0f;
+		_userCell.imageView.clipsToBounds = YES;				
+		_userCell.imageView.image = ([newValue isKindOfClass:[NSNull class]])? defaultAvatar: (UIImage *)newValue;
 		
 	}
 	
-	if ([keyPath isEqual:@"nickname"]) {
+	if ([keyPath isEqual:@"nickname"] && newValue) {
 		
-		_userCell.textLabel.text = (NSString *)[change objectForKey:NSKeyValueChangeNewKey];
+		_userCell.textLabel.text = (NSString *)newValue;
 		
 	}
 	
@@ -179,10 +181,17 @@
 		}
 		
 		_userCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"UserIdentifier"];
-		_userCell.selectionStyle = UITableViewCellSelectionStyleGray;
 		_userCell.selectionStyle = UITableViewCellSelectionStyleNone;
 		
-		[self registerObserver];
+		UIImage *defaultAvatar = [UIImage imageNamed:@"WAUserGlyph"];
+		_userCell.imageView.bounds = CGRectMake(0, 0, defaultAvatar.size.width, defaultAvatar.size.height);
+		_userCell.imageView.layer.cornerRadius = 9.0f;
+		_userCell.imageView.clipsToBounds = YES;
+		
+		NSDictionary *oInfo = [self observationInfo];
+		if ([oInfo count] == 0) {
+			[self registerObserver];
+		}
 		
 		return _userCell;
 		
@@ -239,9 +248,6 @@
 	}
   
 	switch(indexPath.row) {
-			
-		case 0:
-			break;
 			
 		case 1:
 			cell.backgroundColor = [UIColor colorWithRed:0.957 green:0.376 blue:0.298 alpha:1.0];
