@@ -135,8 +135,12 @@
 		
 	}
 	
-	if ([keyPath isEqual:@"nickname"] && newValue) {
+	if ([keyPath isEqual:@"nickname"]) {
 		
+		if ([newValue isKindOfClass:[NSNull class]]) {
+			return;
+		}
+				 
 		_userCell.textLabel.text = (NSString *)newValue;
 		
 	}
