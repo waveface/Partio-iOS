@@ -334,7 +334,7 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 
 			[ds performBlock:^{
 
-				NSManagedObjectContext *context = [ds disposableMOC];
+				NSManagedObjectContext *context = [ds autoUpdatingMOC];
 				context.mergePolicy = NSMergeByPropertyStoreTrumpMergePolicy;
 
 				[[self class] insertOrUpdateObjectsUsingContext:context withRemoteResponse:postReps usingMapping:nil options:IRManagedObjectOptionIndividualOperations];
@@ -377,7 +377,7 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 
 			[ds performBlock:^{
 				
-				NSManagedObjectContext *context = [ds disposableMOC];
+				NSManagedObjectContext *context = [ds autoUpdatingMOC];
 				
 				NSArray *touchedArticles = [WAArticle insertOrUpdateObjectsUsingContext:context withRemoteResponse:postReps usingMapping:nil options:IRManagedObjectOptionIndividualOperations];
 				
@@ -438,7 +438,7 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 													onProgress:^(NSArray *changedArticleReps, NSDate *continuation)
 		 {
 			 [ds performBlock:^{
-				 NSManagedObjectContext *context = [ds disposableMOC];
+				 NSManagedObjectContext *context = [ds autoUpdatingMOC];
 				 
 				 NSArray *touchedArticles = [WAArticle insertOrUpdateObjectsUsingContext:context withRemoteResponse:changedArticleReps usingMapping:nil options:IRManagedObjectOptionIndividualOperations];
 				 
