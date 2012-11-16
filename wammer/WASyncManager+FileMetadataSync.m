@@ -13,6 +13,7 @@
 #import "WAAppDelegate_iOS.h"
 #import "WADefines+iOS.h"
 #import "WAFileExif+WAAdditions.h"
+#import <NSDate+SSToolkitAdditions.h>
 
 @implementation WASyncManager (FileMetadataSync)
 
@@ -57,7 +58,7 @@
 							meta[@"object_id"] = file.identifier;
 						}
 						if (file.timestamp) {
-							meta[@"file_create_time"] = [[WADataStore defaultStore] ISO8601StringFromDate:file.timestamp];
+							meta[@"file_create_time"] = [file.timestamp ISO8601String];
 						}
 						if (file.exif) {
 							meta[@"exif"] = [file.exif remoteRepresentation];
