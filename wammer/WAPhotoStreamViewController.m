@@ -11,19 +11,7 @@
 #import "WAFile.h"
 #import "WADataStore.h"
 #import "WAPhotoStreamViewCell.h"
-
-@implementation NSDate (Addons)
-
--(NSDate *)endOfDate {
-	
-	NSCalendar *gregorian = [[NSCalendar alloc]initWithCalendarIdentifier:NSGregorianCalendar];
-	NSDateComponents *beginOfTomorrow = [gregorian components:NSDayCalendarUnit|NSYearCalendarUnit|NSMonthCalendarUnit fromDate:self];
-	beginOfTomorrow.day += 1;
-	
-	return [gregorian dateFromComponents:beginOfTomorrow];
-}
-
-@end
+#import "NSDate+WAAdditions.h"
 
 @interface WAPhotoStreamViewController (){
 	NSArray *colorPalette;
@@ -42,7 +30,7 @@
 	self = [super init];
 	if (self) {
 		onDate = aDate;
-		NSPredicate *allFromToday = [NSPredicate predicateWithFormat:@"created BETWEEN {%@, %@}", aDate, [aDate endOfDate]];
+		NSPredicate *allFromToday = [NSPredicate predicateWithFormat:@"created BETWEEN {%@, %@}", aDate, [aDate dayEnd]];
 		photos = [WAFile MR_findAllWithPredicate:allFromToday];
 	}
 	return self;

@@ -12,20 +12,21 @@
 
 - (NSDate *)dayEnd {
 	
-	NSCalendar *cal = [NSCalendar currentCalendar];
-
-	NSDateComponents *dcomponents = [cal components:(NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit) fromDate:self];
-	[dcomponents setDay:[dcomponents day] + 1];
-	return [cal dateFromComponents:dcomponents];
+	NSCalendar *calendar = [NSCalendar currentCalendar];
+	NSDateComponents *dateComponents = [calendar components:(NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit)
+																				 fromDate:self];
+	dateComponents.day += 1;
+	return [calendar dateFromComponents:dateComponents];
 
 }
 
 - (NSDate *)dayBegin {
 
-	NSCalendar *cal = [NSCalendar currentCalendar];
+	NSCalendar *calendar = [NSCalendar currentCalendar];
 
-	NSDateComponents *dcomponents = [cal components:(NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit) fromDate:self];
-	return [cal dateFromComponents:dcomponents];
+	NSDateComponents *dateComponents = [calendar components:(NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit)
+																								 fromDate:self];
+	return [calendar dateFromComponents:dateComponents];
 
 }
 
