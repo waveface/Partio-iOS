@@ -32,7 +32,7 @@
 	[self.doneButton setTitleColor:[UIColor whiteColor] forState:UIControlStateDisabled];
 
 	if ([[NSUserDefaults standardUserDefaults] boolForKey:kWAPhotoImportEnabled]) {
-		[[(WAAppDelegate_iOS *)AppDelegate() photoImportManager] addObserver:self forKeyPath:@"operationQueue.operationCount" options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionNew context:nil];
+		[[(WAAppDelegate_iOS *)AppDelegate() photoImportManager] addObserver:self forKeyPath:@"importedFilesCount" options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionNew context:nil];
 	} else {
 		self.photoUploadCell.detailTextLabel.text = NSLocalizedString(@"PHOTO_UPLOAD_STATUS_NOT_UPLOADING", @"Subtitle of photo upload status");
 	}
@@ -51,7 +51,7 @@
 	
 	[[WARemoteInterface sharedInterface] removeObserver:self forKeyPath:@"networkState"];
 	if ([[NSUserDefaults standardUserDefaults] boolForKey:kWAPhotoImportEnabled]) {
-		[[(WAAppDelegate_iOS *)AppDelegate() photoImportManager] removeObserver:self forKeyPath:@"operationQueue.operationCount"];
+		[[(WAAppDelegate_iOS *)AppDelegate() photoImportManager] removeObserver:self forKeyPath:@"importedFilesCount"];
 	}
 
 }
@@ -91,7 +91,7 @@
 			}
 		}];
 
-	} else if ([keyPath isEqualToString:@"operationQueue.operationCount"]) {
+	} else if ([keyPath isEqualToString:@"importedFilesCount"]) {
 
 		[[NSOperationQueue mainQueue] addOperationWithBlock:^{
 			WAPhotoImportManager *photoImportManager = [(WAAppDelegate_iOS *)AppDelegate() photoImportManager];
@@ -99,10 +99,10 @@
 				wSelf.photoUploadCell.detailTextLabel.text = NSLocalizedString(@"PHOTO_UPLOAD_STATUS_PREPROCESSING", @"Subtitle of photo upload status");
 			} else {
 				NSNumber *currentCount = change[NSKeyValueChangeNewKey];
-				if ([currentCount isEqualToNumber:@0]) {
+				if ([currentCount unsignedIntegerValue] == photoImportManager.totalFilesCount) {
 					wSelf.photoUploadCell.detailTextLabel.text = NSLocalizedString(@"PHOTO_UPLOAD_STATUS_UPLOADING", @"Subtitle of photo upload status");
 				} else {
-					wSelf.photoUploadCell.detailTextLabel.text = [NSString stringWithFormat:NSLocalizedString(@"PHOTO_UPLOAD_STATUS_IMPORTING", @"Subtitle of photo upload status"), photoImportManager.totalOperationCount-[currentCount unsignedIntegerValue], photoImportManager.totalOperationCount];
+					wSelf.photoUploadCell.detailTextLabel.text = [NSString stringWithFormat:NSLocalizedString(@"PHOTO_UPLOAD_STATUS_IMPORTING", @"Subtitle of photo upload status"), [currentCount unsignedIntegerValue], photoImportManager.totalFilesCount];
 				}
 			}
 		}];

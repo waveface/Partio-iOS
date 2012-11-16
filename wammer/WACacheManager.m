@@ -51,6 +51,9 @@ NSUInteger const DEFAULT_CACHE_SIZE = 600*1024*1024; //600MB
 
 - (void)initCacheEntities {
 
+	// the following two loops over files and ogimages is for migration,
+	// since we do not support migration from old client anymore,
+	// it's ok to keep them here, even in main thread.
 	NSManagedObjectContext *context = [[WADataStore defaultStore] disposableMOC];
 
 	NSArray *files = [[WADataStore defaultStore] fetchAllFilesUsingContext:context];
@@ -145,17 +148,21 @@ NSUInteger const DEFAULT_CACHE_SIZE = 600*1024*1024; //600MB
 			
 		}
 		
-		NSError *error = nil;
-		[context save:&error];
-		if (error) {
-			NSLog(@"Error saving: %s %@", __PRETTY_FUNCTION__, error);
-		}
+		[context save:nil];
 
 	}];
  
 }
 
 - (void)clearPurgeableFilesIfNeeded {
+
+	__weak WACacheManager *wSelf = self;
+	if ([NSThread isMainThread]) {
+		dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+			[wSelf clearPurgeableFilesIfNeeded];
+		});
+		return;
+	}
 
 	if (self.size == 0) {
 		NSLog(@"Cache entities has not been initialized yet, skip it");

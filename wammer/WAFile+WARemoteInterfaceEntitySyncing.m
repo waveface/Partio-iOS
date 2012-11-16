@@ -334,7 +334,7 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
 	BOOL needsSendingThumbnailImage = !self.thumbnailURL;
 	
 	NSMutableArray *operations = [NSMutableArray array];
-	NSManagedObjectContext *context = [ds disposableMOC];
+	NSManagedObjectContext *context = [ds autoUpdatingMOC];
 	context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
 	
 	BOOL (^isValidPath)(NSString *) = ^ (NSString *aPath) {
