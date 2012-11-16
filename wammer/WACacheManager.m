@@ -145,11 +145,7 @@ NSUInteger const DEFAULT_CACHE_SIZE = 600*1024*1024; //600MB
 			
 		}
 		
-		NSError *error = nil;
-		[context save:&error];
-		if (error) {
-			NSLog(@"Error saving: %s %@", __PRETTY_FUNCTION__, error);
-		}
+		[context save:nil];
 
 	}];
  

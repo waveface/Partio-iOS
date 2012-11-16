@@ -20,7 +20,8 @@
 @interface WAPhotoImportManager ()
 
 @property (nonatomic, readwrite) BOOL preprocessing;
-@property (nonatomic, readwrite) NSUInteger totalOperationCount;
+@property (nonatomic, readwrite) NSUInteger importedFilesCount;
+@property (nonatomic, readwrite) NSUInteger totalFilesCount;
 @property (nonatomic, readwrite, strong) NSOperationQueue *operationQueue;
 @property (nonatomic, readwrite, strong) NSDate *lastOperationTimestamp;
 
@@ -71,6 +72,8 @@
 	}
 
 	self.preprocessing = YES;
+	self.totalFilesCount = 0;
+	self.importedFilesCount = 0;
 
 	NSDate *importTime = [NSDate date];
 	NSDate *sinceDate = self.lastOperationTimestamp;
@@ -85,7 +88,7 @@
 			return;
 		}
 
-		wSelf.totalOperationCount += [assets count];
+		wSelf.totalFilesCount += [assets count];
 		wSelf.lastOperationTimestamp = [[assets lastObject] valueForProperty:ALAssetPropertyDate];
 
 		__block NSBlockOperation *operation = [NSBlockOperation blockOperationWithBlock:^{
@@ -134,7 +137,9 @@
 						}
 					}
 					
-				}
+					wSelf.importedFilesCount += 1;
+
+			 }
 				
 			}];
 			

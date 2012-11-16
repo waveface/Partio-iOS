@@ -12,7 +12,8 @@
 @interface WAPhotoImportManager : NSObject
 
 @property (nonatomic, readonly) BOOL preprocessing;
-@property (nonatomic, readonly) NSUInteger totalOperationCount;
+@property (nonatomic, readonly) NSUInteger importedFilesCount;
+@property (nonatomic, readonly) NSUInteger totalFilesCount;
 @property (nonatomic, readonly, strong) NSOperationQueue *operationQueue;
 @property (nonatomic) BOOL enabled;
 

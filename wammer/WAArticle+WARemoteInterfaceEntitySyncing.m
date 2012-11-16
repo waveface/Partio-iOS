@@ -669,7 +669,7 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 				return;
 			}
 			
-			if (representedFile.identifier && representedFile.thumbnailURL) {
+			if (representedFile.identifier && (representedFile.thumbnailURL || representedFile.resourceURL)) {
 				aCallback(representedFile.identifier);
 				return;
 			}
