@@ -70,6 +70,6 @@ typedef NSString * const WARemoteAttachmentSubtype;
 - (void) createAttachmentWithFileAtURL:(NSURL *)aFileURL inGroup:(NSString *)aGroupIdentifier representingImageURL:(NSURL *)aRepresentingImageForBinaryTypesOrNil withTitle:(NSString *)aTitle description:(NSString *)aDescription replacingAttachment:(NSString *)replacedAttachmentIdentifierOrNil asType:(WARemoteAttachmentType)aType onSuccess:(void(^)(NSString *attachmentIdentifier))successBlock onFailure:(void(^)(NSError *error))failureBlock DEPRECATED_ATTRIBUTE;
 
 // POST attachments/upload_metadata
-- (void) createAttachmentWithName:(NSString *)aFileName options:(NSDictionary *)options onSuccess:(void(^)(void))successBlock onFailure:(void(^)(NSError *error))failureBlock;
+- (void) createAttachmentMetas:(NSArray *)metas onSuccess:(void(^)(void))successBlock onFailure:(void(^)(NSError *error))failureBlock;
 
 @end

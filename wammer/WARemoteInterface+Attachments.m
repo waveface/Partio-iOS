@@ -225,53 +225,17 @@ NSString * const WARemoteAttachmentSmallSubtype = @"small";
 
 }
 
-- (void)createAttachmentWithName:(NSString *)aFileName options:(NSDictionary *)options onSuccess:(void (^)(void))successBlock onFailure:(void (^)(NSError *))failureBlock {
-
-	NSMutableDictionary *sentRemoteOptions = [@{@"file_name":aFileName} mutableCopy];
-
-	WARemoteAttachmentType type = [options[kWARemoteAttachmentType] unsignedIntegerValue];
-	switch (type) {
-		case WARemoteAttachmentImageType: {
-			[sentRemoteOptions setObject:@"image" forKey:@"type"];
-			break;
-		}
-		case WARemoteAttachmentDocumentType: {
-			[sentRemoteOptions setObject:@"doc" forKey:@"type"];
-			break;
-		}
-		case WARemoteAttachmentUnknownType:
-		default: {
-			[NSException raise:NSInternalInconsistencyException format:@"Could not send a file %@ with unknown remote type", aFileName];
-			break;
-		}
-	}
+- (void)createAttachmentMetas:(NSArray *)metas onSuccess:(void (^)(void))successBlock onFailure:(void (^)(NSError *))failureBlock {
 	
-	void (^stitch)(id, NSString *) = ^ (id anObject, NSString *aKey) {
-		if (anObject && aKey)
-			[sentRemoteOptions setObject:anObject forKey:aKey];
-	};
-	
-	NSString *updatedObjectID = options[kWARemoteAttachmentUpdatedObjectIdentifier];
-	stitch(updatedObjectID, @"object_id");
-
-	NSString *fileCreateTime = [[WADataStore defaultStore] ISO8601StringFromDate:options[kWARemoteAttachmentCreateTime]];
-	stitch(fileCreateTime, @"file_create_time");
-
-	NSString *timezone = [NSString stringWithFormat:@"%d", [[NSTimeZone localTimeZone] secondsFromGMT]/60];
-	stitch(timezone, @"timezone");
-
-	WAFileExif *exif = options[kWARemoteAttachmentExif];
-	stitch([exif remoteRepresentation], @"exif");
-	
-	if ([NSJSONSerialization isValidJSONObject:@[sentRemoteOptions]]) {
+	if ([NSJSONSerialization isValidJSONObject:metas]) {
 
 		NSError *error = nil;
-		NSData *sentMetadata = [NSJSONSerialization dataWithJSONObject:@[sentRemoteOptions] options:0 error:&error];
+		NSData *sentMetadata = [NSJSONSerialization dataWithJSONObject:metas options:0 error:&error];
 		NSString *sentMetadataString = [[NSString alloc] initWithData:sentMetadata encoding:NSUTF8StringEncoding];
 
 		if (error) {
 
-			NSLog(@"Unable to convert JSON from attachment meta: %@", sentRemoteOptions);
+			NSLog(@"Unable to convert JSON from attachment metas: %@", metas);
 
 		} else {
 
