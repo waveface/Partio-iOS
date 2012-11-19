@@ -76,7 +76,7 @@
 + (WACompositionViewController *) controllerWithArticle:(NSURL *)anArticleURLOrNil completion:(void(^)(NSURL *anArticleURLOrNil))aBlock {
 
 	WACompositionViewController *returnedController = [[self alloc] init];
-	returnedController.managedObjectContext = [[WADataStore defaultStore] disposableMOC];
+	returnedController.managedObjectContext = [[WADataStore defaultStore] autoUpdatingMOC];
 	returnedController.managedObjectContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
 	
 	if (anArticleURLOrNil) {

@@ -20,9 +20,11 @@
 @interface WAPhotoImportManager ()
 
 @property (nonatomic, readwrite) BOOL preprocessing;
-@property (nonatomic, readwrite) NSUInteger totalOperationCount;
+@property (nonatomic, readwrite) NSUInteger importedFilesCount;
+@property (nonatomic, readwrite) NSUInteger totalFilesCount;
 @property (nonatomic, readwrite, strong) NSOperationQueue *operationQueue;
 @property (nonatomic, readwrite, strong) NSDate *lastOperationTimestamp;
+@property (nonatomic, strong) NSOperationQueue *threadSafetyQueue;
 
 @end
 
@@ -34,6 +36,8 @@
 	if (self) {
 		self.operationQueue = [[NSOperationQueue alloc] init];
 		self.operationQueue.maxConcurrentOperationCount = 1;
+		self.threadSafetyQueue = [[NSOperationQueue alloc] init];
+		self.threadSafetyQueue.maxConcurrentOperationCount = 1;
 
 		NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 		self.enabled = [defaults boolForKey:kWAPhotoImportEnabled];
@@ -63,12 +67,14 @@
 - (void)createPhotoImportArticlesWithCompletionBlock:(void(^)(void))aCallbackBlock {
 
 	__weak WAPhotoImportManager *wSelf = self;
-	if ([NSThread isMainThread]) {
-		dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+	if (![[NSOperationQueue currentQueue] isEqual:self.threadSafetyQueue]) {
+		[self.threadSafetyQueue addOperationWithBlock:^{
 			[wSelf createPhotoImportArticlesWithCompletionBlock:aCallbackBlock];
-		});
+		}];
 		return;
 	}
+
+	NSParameterAssert([[NSOperationQueue currentQueue] isEqual:self.threadSafetyQueue]);
 
 	self.preprocessing = YES;
 
@@ -85,7 +91,7 @@
 			return;
 		}
 
-		wSelf.totalOperationCount += [assets count];
+		wSelf.totalFilesCount += [assets count];
 		wSelf.lastOperationTimestamp = [[assets lastObject] valueForProperty:ALAssetPropertyDate];
 
 		__block NSBlockOperation *operation = [NSBlockOperation blockOperationWithBlock:^{
@@ -118,6 +124,7 @@
 					file.assetURL = [[[asset defaultRepresentation] url] absoluteString];
 					file.resourceType = (NSString *)kUTTypeImage;
 					file.timestamp = [asset valueForProperty:ALAssetPropertyDate];
+					file.created = file.timestamp;
 					file.importTime = importTime;
 					
 					WAFileExif *exif = (WAFileExif *)[WAFileExif objectInsertingIntoContext:context withRemoteDictionary:@{}];
@@ -134,7 +141,9 @@
 						}
 					}
 					
-				}
+					wSelf.importedFilesCount += 1;
+
+			 }
 				
 			}];
 			
@@ -167,6 +176,8 @@
 		
 		wSelf.preprocessing = NO;
 		aCallbackBlock();
+
+		[wSelf.threadSafetyQueue setSuspended:NO];
 		
 	} onFailure:^(NSError *error) {
 		
@@ -174,7 +185,9 @@
 		aCallbackBlock();
 
 	}];
-	
+
+	[[NSOperationQueue currentQueue] setSuspended:YES];
+
 }
 
 - (void)dealloc {
