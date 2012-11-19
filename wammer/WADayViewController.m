@@ -134,7 +134,7 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 	});
 
 	self.statusBar = [[WAStatusBar alloc] initWithFrame:CGRectZero];
-	[[(WAAppDelegate_iOS *)AppDelegate() photoImportManager] addObserver:self forKeyPath:@"operationQueue.operationCount" options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionNew context:nil];
+	[[(WAAppDelegate_iOS *)AppDelegate() photoImportManager] addObserver:self forKeyPath:@"importedFilesCount" options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionNew context:nil];
 	
 	return self;
 
@@ -227,20 +227,26 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
 
 	__weak WADayViewController *wSelf = self;
-	if ([keyPath isEqualToString:@"operationQueue.operationCount"]) {
+	if ([keyPath isEqualToString:@"importedFilesCount"]) {
 		[[NSOperationQueue mainQueue] addOperationWithBlock:^{
 			if (!wSelf.statusBar) {
 				return;
 			}
 			WAPhotoImportManager *photoImportManager = [(WAAppDelegate_iOS *)AppDelegate() photoImportManager];
 			if (photoImportManager.preprocessing) {
-				wSelf.statusBar.statusLabel.text = NSLocalizedString(@"PHOTO_UPLOAD_STATUS_PREPROCESSING", @"String on customized status bar");
+				wSelf.statusBar.statusLabel.text = NSLocalizedString(@"PHOTO_UPLOAD_STATUS_BAR_PREPROCESSING", @"String on customized status bar");
 			} else {
-				NSNumber *currentCount = change[NSKeyValueChangeNewKey];
-				
+				NSUInteger currentCount = [change[NSKeyValueChangeNewKey] unsignedIntegerValue];
+				if (currentCount == photoImportManager.totalFilesCount) {
+					wSelf.statusBar.statusLabel.text = NSLocalizedString(@"PHOTO_UPLOAD_STATUS_BAR_UPLOADING", @"String on customized status bar");
+				} else {
+					wSelf.statusBar.statusLabel.text = NSLocalizedString(@"PHOTO_UPLOAD_STATUS_BAR_IMPORTING", @"String on customized status bar");
+					wSelf.statusBar.progressView.progress = (currentCount * 1.0 / photoImportManager.totalFilesCount) / 3;
+				}
 			}
 		}];
 	}
+
 }
 
 
