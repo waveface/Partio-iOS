@@ -113,35 +113,35 @@
 
 - (void)registerObserver
 {
-	NSDictionary *oInfo = [self observationInfo];
-	if ([oInfo count] == 0) {
-		NSKeyValueObservingOptions options = NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew;
-		
-		[self.user addObserver:self forKeyPath:@"avatar" options:options context:nil];
-		[self.user addObserver:self forKeyPath:@"nickname" options:options context:nil];
-	}
-
+	NSKeyValueObservingOptions options = NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew;
+	
+	[self.user addObserver:self forKeyPath:@"avatar" options:options context:nil];
+	[self.user addObserver:self forKeyPath:@"nickname" options:options context:nil];
+	
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
-	if ([[change objectForKey:NSKeyValueChangeNewKey] isKindOfClass:[NSNull class]])
-		return;
+
+	id newValue = [change objectForKey:NSKeyValueChangeNewKey];
 	
 	if ([keyPath isEqual:@"avatar"]) {
 		
-		UIImage *avatar = (UIImage *)[change objectForKey:NSKeyValueChangeNewKey];
-		if ([avatar isEqual:[NSNull null]]) {
-			_userCell.imageView.image = [UIImage imageNamed:@"WAUserGlyph"];
-		} else {
-			_userCell.imageView.image = avatar;
-		}
-
+		UIImage *defaultAvatar = [UIImage imageNamed:@"TempAvatar"];
+		_userCell.imageView.bounds = CGRectMake(0, 0, defaultAvatar.size.width, defaultAvatar.size.height);
+		_userCell.imageView.layer.cornerRadius = 5.0f;
+		_userCell.imageView.clipsToBounds = YES;
+		_userCell.imageView.image = ([newValue isKindOfClass:[NSNull class]])? defaultAvatar: (UIImage *)newValue;
+		
 	}
-
+	
 	if ([keyPath isEqual:@"nickname"]) {
 		
-		_userCell.textLabel.text = (NSString *)[change objectForKey:NSKeyValueChangeNewKey];
+		if ([newValue isKindOfClass:[NSNull class]]) {
+			return;
+		}
+				 
+		_userCell.textLabel.text = (NSString *)newValue;
 		
 	}
 	
@@ -177,10 +177,12 @@
 		}
 		
 		_userCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"UserIdentifier"];
-		_userCell.selectionStyle = UITableViewCellSelectionStyleGray;
 		_userCell.selectionStyle = UITableViewCellSelectionStyleNone;
+				
 		
-		[self registerObserver];
+		if ([[self.user observationInfo] count] == 0) {
+			[self registerObserver];
+		}
 		
 		return _userCell;
 		
@@ -229,17 +231,14 @@
 {
 	static NSString *CellIdentifier = @"Cell";
 	
-	cell.textLabel.textColor = [UIColor whiteColor];
-	cell.textLabel.font = [UIFont fontWithName:NSLocalizedString(@"SLIDING_MENU_FONTNAME", @"Font name of the sliding menu") size:18.0];
-	
 	if (cell == nil) {
 		cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
 	}
   
+	cell.textLabel.textColor = [UIColor whiteColor];
+	cell.textLabel.font = [UIFont fontWithName:NSLocalizedString(@"SLIDING_MENU_FONTNAME", @"Font name of the sliding menu") size:18.0];
+	
 	switch(indexPath.row) {
-			
-		case 0:
-			break;
 			
 		case 1:
 			cell.backgroundColor = [UIColor colorWithRed:0.957 green:0.376 blue:0.298 alpha:1.0];

@@ -12,6 +12,8 @@
 #import "WAAssetsLibraryManager.h"
 #import "WAAppDelegate_iOS.h"
 #import "WADefines+iOS.h"
+#import "WAFileExif+WAAdditions.h"
+#import <NSDate+SSToolkitAdditions.h>
 
 @implementation WASyncManager (FileMetadataSync)
 
@@ -26,72 +28,79 @@
 			return;
 		}
 
+		__block NSMutableArray *fileMetas = [@[] mutableCopy];
+		const NSUInteger MAX_FILEMETAS_COUNT = 20;
 		WADataStore *ds = [WADataStore defaultStore];
 		NSArray *files = [ds fetchFilesNeedingMetadataSyncUsingContext:[ds disposableMOC]];
-		for (WAFile *file in files) {
+		[files enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
 
-			if (file.assetURL) {
+			WAFile *file = obj;
+			NSAssert(file.assetURL, @"Imported file should have its asset URL");
 
-				[[WAAssetsLibraryManager defaultManager] assetForURL:[NSURL URLWithString:file.assetURL] resultBlock:^(ALAsset *asset) {
-
-					NSURL *ownURL = [[file objectID] URIRepresentation];
-
-					__block NSOperation *operation = [NSBlockOperation blockOperationWithBlock:^{
-
-						if ([operation isCancelled]) {
-							return;
+			[[WAAssetsLibraryManager defaultManager] assetForURL:[NSURL URLWithString:file.assetURL] resultBlock:^(ALAsset *asset) {
+				
+				NSURL *ownURL = [[file objectID] URIRepresentation];
+				
+				__block NSOperation *operation = [NSBlockOperation blockOperationWithBlock:^{
+					
+					if ([operation isCancelled]) {
+						return;
+					}
+					
+					WAFile *file = (WAFile *)[[[WADataStore defaultStore] disposableMOC] irManagedObjectForURI:ownURL];
+					if ([file.dirty isEqualToNumber:(id)kCFBooleanTrue]) {
+						
+						NSMutableDictionary *meta = [@{} mutableCopy];
+						meta[@"file_name"] = [[asset defaultRepresentation] filename];
+						meta[@"type"] = @"image";
+						meta[@"timezone"] = [NSString stringWithFormat:@"%d", [[NSTimeZone localTimeZone] secondsFromGMT]/60];
+						if (file.identifier) {
+							meta[@"object_id"] = file.identifier;
+						}
+						if (file.timestamp) {
+							meta[@"file_create_time"] = [file.timestamp ISO8601String];
+						}
+						if (file.exif) {
+							meta[@"exif"] = [file.exif remoteRepresentation];
 						}
 
-						WAFile *file = (WAFile *)[[[WADataStore defaultStore] disposableMOC] irManagedObjectForURI:ownURL];
-						if ([file.dirty isEqualToNumber:(id)kCFBooleanTrue]) {
+						[fileMetas addObject:meta];
+						if ([fileMetas count] == MAX_FILEMETAS_COUNT || idx == [files count]-1) {
 
-							NSMutableDictionary *options = [@{kWARemoteAttachmentType: [NSNumber numberWithUnsignedInteger:WARemoteAttachmentImageType]} mutableCopy];
-							
-							if (file.identifier) {
-								options[kWARemoteAttachmentUpdatedObjectIdentifier] = file.identifier;
-							}
-							if (file.timestamp) {
-								options[kWARemoteAttachmentCreateTime] = file.timestamp;
-							}
-							if (file.exif) {
-								options[kWARemoteAttachmentExif] = file.exif;
-							}
-							
-							[[WARemoteInterface sharedInterface] createAttachmentWithName:[[asset defaultRepresentation] filename] options:options onSuccess:^{
-
+							[[WARemoteInterface sharedInterface] createAttachmentMetas:fileMetas onSuccess:^{
+								
 								NSManagedObjectContext *context = [[WADataStore defaultStore] disposableMOC];
 								context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
 								WAFile *file = (WAFile *)[context irManagedObjectForURI:ownURL];
 								file.dirty = (id)kCFBooleanFalse;
-
+								
 								NSError *error = nil;
 								[context save:&error];
 								if (error) {
 									NSLog(@"Unable to save file: %@, error: %@", file, error);
 								}
-
+								
 							} onFailure:^(NSError *error) {
 								NSLog(@"Unable to upload attachment metadata, error: %@", error);
 							}];
+							
+							[fileMetas removeAllObjects];
 
 							// slow down metadata uploading speed to avoid blocking other http requests
-							[NSThread sleepForTimeInterval:1.0];
-
+							[NSThread sleepForTimeInterval:3.0];
+							
 						}
-
-					}];
-
-					[wSelf.fileMetadataSyncOperationQueue addOperation:operation];
+					}
 					
-				} failureBlock:^(NSError *error) {
-					NSLog(@"Unable to load assets, error:%@", error);
 				}];
-
-			} else {
-				NSLog(@"File %@ does not have assetURL", file);
-			}
-
-		}
+				
+				[wSelf.fileMetadataSyncOperationQueue addOperation:operation];
+				
+			} failureBlock:^(NSError *error) {
+				NSLog(@"Unable to load assets, error:%@", error);
+			}];
+			
+		}];
 
 		[wSelf.fileMetadataSyncOperationQueue addOperationWithBlock:^{
 			callback(nil);

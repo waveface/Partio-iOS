@@ -316,7 +316,7 @@
 "PHOTO_UPLOAD_CONTROLLER_TITLE" = "照片自動上傳";
 
 /* Subtitle of photo upload status */
-"PHOTO_UPLOAD_STATUS_IMPORTING" = "正在匯入 %d/%d 張照片";
+"PHOTO_UPLOAD_STATUS_IMPORTING" = "正在掃瞄 %d/%d 張照片";
 
 /* Subtitle of photo upload status */
 "PHOTO_UPLOAD_STATUS_NOT_UPLOADING" = "尚未開啓";

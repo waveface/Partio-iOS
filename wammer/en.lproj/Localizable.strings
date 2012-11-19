@@ -316,7 +316,7 @@
 "PHOTO_UPLOAD_CONTROLLER_TITLE" = "AUTO PHOTO UPLOAD";
 
 /* Subtitle of photo upload status */
-"PHOTO_UPLOAD_STATUS_IMPORTING" = "Importing %d/%d photos";
+"PHOTO_UPLOAD_STATUS_IMPORTING" = "Scanning %d/%d photos";
 
 /* Subtitle of photo upload status */
 "PHOTO_UPLOAD_STATUS_NOT_UPLOADING" = "Not enabled";
