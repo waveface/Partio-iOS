@@ -12,8 +12,9 @@
 
 + (id) viewFromNib {
 	
+	__weak id wSelf = self;
 	return [[[[UINib nibWithNibName:NSStringFromClass(self) bundle:[NSBundle bundleForClass:self]] instantiateWithOwner:nil options:nil] filteredArrayUsingPredicate:[NSPredicate predicateWithBlock: ^ (id evaluatedObject, NSDictionary *bindings) {
-		return [evaluatedObject isKindOfClass:self];
+		return [evaluatedObject isKindOfClass:wSelf];
 	}]] lastObject];
 	
 }

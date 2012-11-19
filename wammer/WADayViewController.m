@@ -206,12 +206,18 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 	
 	[super didReceiveMemoryWarning];
 	
-	NSLog(@"Clean up day view memory cache");
 	__weak WADayViewController *wSelf = self;
 
 	[self.days enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-		if ((idx != self.paginatedView.currentPage) && ((idx + 1) != self.paginatedView.currentPage) && ((idx-1) != self.paginatedView.currentPage))
-			[wSelf.daysControllers removeObjectForKey:self.days[idx] ];
+		if ((idx != wSelf.paginatedView.currentPage) && ((idx + 1) != wSelf.paginatedView.currentPage) && ((idx-1) != wSelf.paginatedView.currentPage)) {
+			UIViewController *controller = [wSelf.daysControllers objectForKey:wSelf.days[idx]];
+			if (controller) {
+				
+				[controller removeFromParentViewController];
+				[wSelf.daysControllers removeObjectForKey:wSelf.days[idx] ];
+				
+			}
+		}
 	}];
 	
 }
@@ -342,6 +348,11 @@ BOOL (^isSameDay) (NSDate *, NSDate *) = ^ (NSDate *d1, NSDate *d2) {
 }
 
 - (void) willRemoveView:(UIView *)view atIndex:(NSUInteger)index {
+
+	NSDate *dateOfPage = (self.days)[index];
+	UIViewController *controller = (self.daysControllers)[dateOfPage];
+	if (controller)
+		[controller removeFromParentViewController];
 	
 }
 
