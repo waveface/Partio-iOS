@@ -15,12 +15,12 @@
 
 @interface WAPhotoStreamViewController (){
 	NSArray *colorPalette;
-	NSArray *photos;
 	NSArray *daysOfPhotos;
 	NSDate *onDate;
 }
 
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
+@property (strong, nonatomic) NSArray *photos;
 
 @end
 
@@ -30,8 +30,8 @@
 	self = [super init];
 	if (self) {
 		onDate = aDate;
-		NSPredicate *allFromToday = [NSPredicate predicateWithFormat:@"created BETWEEN {%@, %@}", aDate, [aDate dayEnd]];
-		photos = [WAFile MR_findAllWithPredicate:allFromToday];
+		NSPredicate *allFromToday = [NSPredicate predicateWithFormat:@"created BETWEEN {%@, %@}", [aDate dayBegin], [aDate dayEnd]];
+		_photos = [WAFile MR_findAllWithPredicate:allFromToday];
 	}
 	return self;
 }
@@ -77,7 +77,7 @@
 #pragma mark Collection delegate
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-	return [photos count];
+	return [_photos count];
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
@@ -86,7 +86,7 @@
 	
 	if (cell) {
 		cell.backgroundColor = colorPalette[rand()%[colorPalette count]];
-		WAFile *photo = (WAFile *)photos[indexPath.row];
+		WAFile *photo = (WAFile *)_photos[indexPath.row];
 		cell.imageView.image = photo.smallestPresentableImage;
 	}
 	

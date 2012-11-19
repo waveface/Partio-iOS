@@ -23,6 +23,12 @@
 
 @end
 
+@interface WAPhotoStreamViewController (UnitTesting)
+
+@property (strong, nonatomic) NSArray *photos;
+
+@end
+
 @implementation WADayViewTests {
   WADayViewController *eventDayViewController;
 	WADayViewController *photoDayViewController;
@@ -45,8 +51,18 @@
 
 - (void)testDayViewWithPhotosView {
 	[photoDayViewController loadView];
+	STAssertTrue([photoDayViewController.days count] >= 0, @"Must be gpreater then 0");
+
 	assertThat([[photoDayViewController controllerAtPageIndex:0] class], equalTo([WAPhotoStreamViewController class]));
-	STAssertTrue([photoDayViewController.days count] >= 0, @"Must be greater then 0");
+	WAPhotoStreamViewController *controller = [photoDayViewController controllerAtPageIndex:0];
+	for (int i=0; i<[photoDayViewController numberOfViewsInPaginatedView:nil]; i++) {
+		controller = [photoDayViewController controllerAtPageIndex:i];
+		NSLog(@"%@, %d", photoDayViewController.days[i], [controller.photos count]);
+	}
 }
 
+- (void)testPhotoStreamViewController {
+	WAPhotoStreamViewController *photoStream = [[WAPhotoStreamViewController alloc] initWithDate:[[NSDate alloc]initWithTimeIntervalSince1970:NSTimeIntervalSince1970 +  366018890.0f]];
+	STAssertEquals([photoStream.photos count], (NSUInteger)158, @"158 photos");
+}
 @end
