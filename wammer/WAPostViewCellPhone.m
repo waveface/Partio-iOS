@@ -318,63 +318,65 @@
 
 		self.accessibilityHint = [NSString stringWithFormat:photoInfo, [post.files count]];
 
-		__weak WAPostViewCellPhone *wSelf = self;
+		// The block commented code seems to retain the entire cell, which caused the cell is kept in memory, even the controller is dead.
 
-		void (^showSyncCompletedInCell)(void) = ^ {
-			WAArticle *article = wSelf.representedObject;
-			wSelf.originLabel.textColor = [UIColor lightGrayColor];
-			wSelf.originLabel.text = [NSString stringWithFormat:NSLocalizedString(@"NUMBER_OF_PHOTOS_CREATE_TIME_FROM_DEVICE", @"iPhone Timeline"), wSelf.accessibilityHint, [[[wSelf class] timeFormatter] stringFromDate:article.presentationDate], article.creationDeviceName];
-		};
-
-		void (^showSyncingStatusInCell)(void) = ^ {
-			wSelf.originLabel.textColor = [UIColor colorWithRed:0x6c/255.0 green:0xbc/255.0 blue:0xd3/255.0 alpha:1.0];
-			wSelf.originLabel.text = [NSString stringWithFormat:NSLocalizedString(@"DOWNLOADING_PHOTOS", @"Downloading Status on iPhone Timeline")];
-		};
-
-		void (^showSyncingInterruptedInCell)(void) = ^ {
-			wSelf.originLabel.textColor = [UIColor colorWithRed:0x6c/255.0 green:0xbc/255.0 blue:0xd3/255.0 alpha:1.0];
-			wSelf.originLabel.text = [NSString stringWithFormat:NSLocalizedString(@"UNABLE_TO_DOWNLOADING_PHOTOS", @"Downloading Status on iPhone Timeline")];
-		};
-
-		if ([self.article.dirty isEqualToNumber:(id)kCFBooleanFalse]) {
-
-			showSyncCompletedInCell();
-
-		} else {
-
-			[self.representedObject irObserve:@"dirty" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:nil withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
-				if ([self.article.dirty isEqualToNumber:(id)kCFBooleanFalse]) {
-					dispatch_async(dispatch_get_main_queue(), ^{
-						showSyncCompletedInCell();
-					});
-				}
-			}];
-
-			if ([[WARemoteInterface sharedInterface] hasReachableCloud]) {
-				showSyncingStatusInCell();
-			} else {
-				showSyncingInterruptedInCell();
-			}
-		}
-
-		[[WARemoteInterface sharedInterface] irObserve:@"networkState" options:NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew context:nil withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
-			if ([self.article.dirty isEqualToNumber:(id)kCFBooleanFalse]) {
-				dispatch_async(dispatch_get_main_queue(), ^{
-					showSyncCompletedInCell();
-				});
-			} else {
-				if ([[WARemoteInterface sharedInterface] hasReachableCloud]) {
-					dispatch_async(dispatch_get_main_queue(), ^{
-						showSyncingStatusInCell();
-					});
-				}
-				else {
-					dispatch_async(dispatch_get_main_queue(), ^{
-						showSyncingInterruptedInCell();
-					});
-				}
-			}
-		}];
+//		__weak WAPostViewCellPhone *wSelf = self;
+//
+//		void (^showSyncCompletedInCell)(void) = ^ {
+//			WAArticle *article = wSelf.representedObject;
+//			wSelf.originLabel.textColor = [UIColor lightGrayColor];
+//			wSelf.originLabel.text = [NSString stringWithFormat:NSLocalizedString(@"NUMBER_OF_PHOTOS_CREATE_TIME_FROM_DEVICE", @"iPhone Timeline"), wSelf.accessibilityHint, [[[wSelf class] timeFormatter] stringFromDate:article.presentationDate], article.creationDeviceName];
+//		};
+//
+//		void (^showSyncingStatusInCell)(void) = ^ {
+//			wSelf.originLabel.textColor = [UIColor colorWithRed:0x6c/255.0 green:0xbc/255.0 blue:0xd3/255.0 alpha:1.0];
+//			wSelf.originLabel.text = [NSString stringWithFormat:NSLocalizedString(@"DOWNLOADING_PHOTOS", @"Downloading Status on iPhone Timeline")];
+//		};
+//
+//		void (^showSyncingInterruptedInCell)(void) = ^ {
+//			wSelf.originLabel.textColor = [UIColor colorWithRed:0x6c/255.0 green:0xbc/255.0 blue:0xd3/255.0 alpha:1.0];
+//			wSelf.originLabel.text = [NSString stringWithFormat:NSLocalizedString(@"UNABLE_TO_DOWNLOADING_PHOTOS", @"Downloading Status on iPhone Timeline")];
+//		};
+//
+//		if ([self.article.dirty isEqualToNumber:(id)kCFBooleanFalse]) {
+//
+//			showSyncCompletedInCell();
+//
+//		} else {
+//
+//			[self.representedObject irObserve:@"dirty" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:nil withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
+//				if ([self.article.dirty isEqualToNumber:(id)kCFBooleanFalse]) {
+//					dispatch_async(dispatch_get_main_queue(), ^{
+//						showSyncCompletedInCell();
+//					});
+//				}
+//			}];
+//
+//			if ([[WARemoteInterface sharedInterface] hasReachableCloud]) {
+//				showSyncingStatusInCell();
+//			} else {
+//				showSyncingInterruptedInCell();
+//			}
+//		}
+//
+//		[[WARemoteInterface sharedInterface] irObserve:@"networkState" options:NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew context:nil withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
+//			if ([self.article.dirty isEqualToNumber:(id)kCFBooleanFalse]) {
+//				dispatch_async(dispatch_get_main_queue(), ^{
+//					showSyncCompletedInCell();
+//				});
+//			} else {
+//				if ([[WARemoteInterface sharedInterface] hasReachableCloud]) {
+//					dispatch_async(dispatch_get_main_queue(), ^{
+//						showSyncingStatusInCell();
+//					});
+//				}
+//				else {
+//					dispatch_async(dispatch_get_main_queue(), ^{
+//						showSyncingInterruptedInCell();
+//					});
+//				}
+//			}
+//		}];
 
 		NSMutableArray *displayedFiles = [[allFiles subarrayWithRange:(NSRange){ 0, MIN(numberOfPhotoImageViews, numberOfFiles)}] mutableCopy];
 				
@@ -513,9 +515,22 @@
 		}
 	};
 	
-	self.eventCardBGImageView.image = [[UIImage imageNamed:@"EventCardBG"] resizableImageWithCapInsets:UIEdgeInsetsMake(15, 15, 15, 15)];
+	self.eventCardBGImageView.image = [[self class] eventCardBackgroundImage];
 
 	[self setNeedsLayout];
+	
+}
+
++ (UIImage *) eventCardBackgroundImage {
+	
+	static UIImage *image = nil;
+	
+	static dispatch_once_t onceToken;
+	dispatch_once(&onceToken, ^{
+    image = [[UIImage imageNamed:@"EventCardBG"] resizableImageWithCapInsets:UIEdgeInsetsMake(15, 15, 15, 15)];
+	});
+	
+	return image;
 	
 }
 

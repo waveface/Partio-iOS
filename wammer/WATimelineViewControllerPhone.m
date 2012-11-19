@@ -58,6 +58,7 @@
 @property (nonatomic, readwrite, retain) IRActionSheetController *settingsActionSheetController;
 @property (nonatomic, readwrite) BOOL scrollToTopmostPost;
 @property (nonatomic, readwrite, retain) NSDate *currentDisplayedDate;
+@property (nonatomic, readwrite, retain) UILongPressGestureRecognizer *longPressGR;
 
 - (void) refreshData;
 
@@ -68,13 +69,9 @@
 
 @implementation WATimelineViewControllerPhone
 @synthesize delegate;
-@synthesize fetchedResultsController;
-@synthesize managedObjectContext;
-@synthesize settingsActionSheetController;
-@synthesize scrollToTopmostPost;
 
 - (void) dealloc {
-	
+
   [[WARemoteInterface sharedInterface] removeObserver:self forKeyPath:@"isPostponingDataRetrievalTimerFiring"];
   
 }
@@ -231,8 +228,8 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 
 - (IRActionSheetController *) settingsActionSheetController {
 
-	if (settingsActionSheetController)
-		return settingsActionSheetController;
+	if (_settingsActionSheetController)
+		return _settingsActionSheetController;
 	
 	__weak WATimelineViewControllerPhone *wSelf = self;
 	
@@ -254,28 +251,28 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 		
 	}];
 	
-	settingsActionSheetController = [IRActionSheetController actionSheetControllerWithTitle:nil cancelAction:cancelAction destructiveAction:signOutAction otherActions:nil];
+	_settingsActionSheetController = [IRActionSheetController actionSheetControllerWithTitle:nil cancelAction:cancelAction destructiveAction:signOutAction otherActions:nil];
 
-	return settingsActionSheetController;
+	return _settingsActionSheetController;
 
 }
 
 #pragma mark - MOC and NSFetchResultsController
 - (NSManagedObjectContext *) managedObjectContext {
 
-	if (managedObjectContext)
-		return managedObjectContext;
+	if (_managedObjectContext)
+		return _managedObjectContext;
 	
-	managedObjectContext = [[WADataStore defaultStore] defaultAutoUpdatedMOC];
+	_managedObjectContext = [[WADataStore defaultStore] defaultAutoUpdatedMOC];
 
-	return managedObjectContext;
+	return _managedObjectContext;
 
 }
 
 - (NSFetchedResultsController *) fetchedResultsController {
 
-	if (fetchedResultsController)
-		return fetchedResultsController;
+	if (_fetchedResultsController)
+		return _fetchedResultsController;
 	
 	if (!self.currentDisplayedDate)
 		self.currentDisplayedDate = [NSDate date];
@@ -287,18 +284,18 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 	[formatter setDateFormat:formatString];
 	
 	NSString *cacheName = [NSString stringWithFormat:@"fetchedTableCache-%@", [formatter stringFromDate:self.currentDisplayedDate]];
-	fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fr managedObjectContext:self.managedObjectContext sectionNameKeyPath:nil cacheName:cacheName];
+	_fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fr managedObjectContext:self.managedObjectContext sectionNameKeyPath:nil cacheName:cacheName];
 	
-	fetchedResultsController.delegate = self;
+	_fetchedResultsController.delegate = self;
   
   NSError *fetchingError;
-	if (![fetchedResultsController performFetch:&fetchingError])
+	if (![_fetchedResultsController performFetch:&fetchingError])
 		NSLog(@"error fetching: %@", fetchingError);
 	
 	if ([self isViewLoaded])
 		[self.tableView reloadData];
 	
-	return fetchedResultsController;
+	return _fetchedResultsController;
 	
 }
 
@@ -337,60 +334,42 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 
 	[super viewDidLoad];
 	
-	__weak WATimelineViewControllerPhone *wSelf = self;
+	self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 	
-	IRTableView* (^setupTableView)(IRTableView *) = ^(IRTableView *tbView) {
-				
-		tbView.separatorStyle = UITableViewCellSeparatorStyleNone;
-		
-		WAPulldownRefreshView *pulldownHeader = [self defaultPulldownRefreshView];
-		
-		tbView.pullDownHeaderView = pulldownHeader;
-		tbView.onPullDownMove = ^ (CGFloat progress) {
-			[pulldownHeader setProgress:progress animated:YES];
-		};
-		tbView.onPullDownEnd = ^ (BOOL didFinish) {
-			if (didFinish) {
-				pulldownHeader.progress = 0;
-				[pulldownHeader setBusy:YES animated:YES];
-				[[WARemoteInterface sharedInterface] performAutomaticRemoteUpdatesNow];
-			}
-		};
-		tbView.onPullDownReset = ^ {
-			[pulldownHeader setBusy:NO animated:YES];
-		};
-		
-//		tbView.separatorColor = [UIColor colorWithRed:232.0/255.0 green:232/255.0 blue:226/255.0 alpha:1.0];
-//		tbView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
-		/*
-		tbView.layer.masksToBounds = NO;
-		tbView.layer.shadowRadius = 10;
-		tbView.layer.shadowOpacity = 0.5;
-		tbView.layer.shadowColor = [[UIColor blackColor] CGColor];
-		tbView.layer.shadowOffset = CGSizeZero;
-		tbView.layer.shadowPath = [[UIBezierPath bezierPathWithRect:tbView.bounds] CGPath];
-		*/
-		WADayHeaderView *headerView = [WADayHeaderView viewFromNib];
-		headerView.dayLabel.text = [self.currentDisplayedDate dayString];
-		headerView.monthLabel.text = [self.currentDisplayedDate localizedMonthShortString];
-		headerView.wdayLabel.text = [self.currentDisplayedDate localizedWeekDayFullString];
-		[headerView.leftButton addTarget:self.parentViewController action:@selector(handleSwipeRight:) forControlEvents:UIControlEventTouchUpInside];
-		[headerView.rightButton addTarget:self.parentViewController action:@selector(handleSwipeLeft:) forControlEvents:UIControlEventTouchUpInside];
-		[headerView.centerButton addTarget:self.parentViewController action:@selector(handleDateSelect:) forControlEvents:UIControlEventTouchUpInside];
-		
-		tbView.tableHeaderView = headerView;
-		tbView.delegate = wSelf;
-		tbView.dataSource = wSelf;
-		return tbView;
-		
+	WAPulldownRefreshView *pulldownHeader = [self defaultPulldownRefreshView];
+	
+	self.tableView.pullDownHeaderView = pulldownHeader;
+	self.tableView.onPullDownMove = ^ (CGFloat progress) {
+		[pulldownHeader setProgress:progress animated:YES];
+	};
+	self.tableView.onPullDownEnd = ^ (BOOL didFinish) {
+		if (didFinish) {
+			pulldownHeader.progress = 0;
+			[pulldownHeader setBusy:YES animated:YES];
+			[[WARemoteInterface sharedInterface] performAutomaticRemoteUpdatesNow];
+		}
+	};
+	self.tableView.onPullDownReset = ^ {
+		[pulldownHeader setBusy:NO animated:YES];
 	};
 	
-	setupTableView(self.tableView);
+	WADayHeaderView *headerView = [WADayHeaderView viewFromNib];
+	headerView.dayLabel.text = [self.currentDisplayedDate dayString];
+	headerView.monthLabel.text = [self.currentDisplayedDate localizedMonthShortString];
+	headerView.wdayLabel.text = [self.currentDisplayedDate localizedWeekDayFullString];
+	[headerView.leftButton addTarget:self.parentViewController action:@selector(handleSwipeRight:) forControlEvents:UIControlEventTouchUpInside];
+	[headerView.rightButton addTarget:self.parentViewController action:@selector(handleSwipeLeft:) forControlEvents:UIControlEventTouchUpInside];
+	[headerView.centerButton addTarget:self.parentViewController action:@selector(handleDateSelect:) forControlEvents:UIControlEventTouchUpInside];
 	
 	self.tableView.backgroundColor = [UIColor colorWithRed:0.95f green:0.95f blue:0.95f alpha:1];
+	self.tableView.tableHeaderView = headerView;
+	self.tableView.delegate = self;
+	self.tableView.dataSource = self;
 	
-	UILongPressGestureRecognizer *longPressGR = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleMenu:)];
-	[self.view addGestureRecognizer:longPressGR];
+		
+	self.longPressGR = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleMenu:)];
+	[self.view addGestureRecognizer:self.longPressGR];
+		
 }
 
 - (void) viewWillAppear:(BOOL)animated {
@@ -472,6 +451,8 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 
 	[super viewDidUnload];
 
+	[self.view removeGestureRecognizer:self.longPressGR];
+	
 }
 
 #pragma mark - 

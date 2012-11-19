@@ -244,7 +244,7 @@ NSString * const kWADataStoreArticleUpdateShowsBezels = @"WADataStoreArticleUpda
 			
 				//	Fresh user with “seeding” database.
 				
-				if (failureBlock);
+				if (failureBlock)
 					failureBlock();
 				
 				return;
