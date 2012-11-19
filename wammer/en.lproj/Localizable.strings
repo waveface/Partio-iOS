@@ -319,10 +319,7 @@
 "PHOTO_UPLOAD_STATUS_BAR_IMPORTING" = "Scanning Camera Roll";
 
 /* String on customized status bar */
-"PHOTO_UPLOAD_STATUS_BAR_PREPROCESSING" = "Preprocessing...";
-
-/* String on customized status bar */
-"PHOTO_UPLOAD_STATUS_BAR_UPLOADING" = "Uploading photos";
+"PHOTO_UPLOAD_STATUS_BAR_UPLOADING" = "Uploading photos %d/%d";
 
 /* Subtitle of photo upload status */
 "PHOTO_UPLOAD_STATUS_IMPORTING" = "Scanning %d/%d photos";

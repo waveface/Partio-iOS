@@ -48,13 +48,17 @@
 			}];
 
 			dispatch_async(dispatch_get_main_queue(), ^{
-			
+
+				[(WAAppDelegate_iOS *)AppDelegate() syncManager].preprocessingArticleSync = YES;
+
 				for (NSURL *articleURL in articleURIs)
 					if (![ds isUpdatingArticle:articleURL])
 						[ds updateArticle:articleURL onSuccess:nil onFailure:nil];
 				
 				callback((id)kCFBooleanTrue);
 				
+				[(WAAppDelegate_iOS *)AppDelegate() syncManager].preprocessingArticleSync = NO;
+
 			});
 
 		}];

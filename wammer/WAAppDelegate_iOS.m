@@ -429,20 +429,8 @@ extern CFAbsoluteTime StartTime;
 			 // bind to user's persistent store
 			 [wSelf bootstrapPersistentStoreWithUserIdentifier:userIdentifier];
 
-			 if (!wSelf.photoImportManager) {
-				 wSelf.photoImportManager = [[WAPhotoImportManager alloc] init];
-			 }
-			 if (wSelf.photoImportManager.enabled) {
-				 [wSelf.photoImportManager createPhotoImportArticlesWithCompletionBlock:^{
-					 NSLog(@"All photo import operations are enqueued");
-				 }];
-			 }
-
-			 if (!wSelf.cacheManager) {
-				 wSelf.cacheManager = [[WACacheManager alloc] init];
-				 wSelf.cacheManager.delegate = self;
-			 }
-			 [wSelf.cacheManager clearPurgeableFilesIfNeeded];
+			 [wSelf photoImportManager];
+			 [wSelf cacheManager];
 
 			 // reset monitored hosts
 			 WARemoteInterface *ri = [WARemoteInterface sharedInterface];
@@ -453,10 +441,7 @@ extern CFAbsoluteTime StartTime;
 			 ri.monitoredHosts = nil;
 			 [ri performAutomaticRemoteUpdatesNow];
 
-			 if (!wSelf.syncManager) {
-				 wSelf.syncManager = [[WASyncManager alloc] init];
-				 [wSelf.syncManager reload];
-			 }
+			 [wSelf syncManager];
 
 		 }
 												runningOnboardingProcess:YES];
@@ -861,27 +846,41 @@ static NSInteger networkActivityStackingCount = 0;
 
 	if ([self hasAuthenticationData]) {
 
-		if (!self.photoImportManager) {
-			self.photoImportManager = [[WAPhotoImportManager alloc] init];
-		}
-		if (self.photoImportManager.enabled) {
-			[self.photoImportManager createPhotoImportArticlesWithCompletionBlock:^{
+		[self photoImportManager];
+		[self cacheManager];
+		[self syncManager];
+
+	}
+
+}
+
+- (WAPhotoImportManager *)photoImportManager {
+	if (!_photoImportManager) {
+		_photoImportManager = [[WAPhotoImportManager alloc] init];
+		if (_photoImportManager.enabled) {
+			[_photoImportManager createPhotoImportArticlesWithCompletionBlock:^{
 				NSLog(@"All photo import operations are enqueued");
 			}];
 		}
-
-		if (!self.cacheManager) {
-			self.cacheManager = [[WACacheManager alloc] init];
-			self.cacheManager.delegate = self;
-		}
-		[self.cacheManager clearPurgeableFilesIfNeeded];
-
-		if (!self.syncManager) {
-			self.syncManager = [[WASyncManager alloc] init];
-			[self.syncManager reload];
-		}
 	}
+	return _photoImportManager;
+}
 
+- (WACacheManager *)cacheManager {
+	if (!_cacheManager) {
+		_cacheManager = [[WACacheManager alloc] init];
+		_cacheManager.delegate = self;
+		[_cacheManager clearPurgeableFilesIfNeeded];
+	}
+	return _cacheManager;
+}
+
+-(WASyncManager *)syncManager {
+	if (!_syncManager) {
+		_syncManager = [[WASyncManager alloc] init];
+		[_syncManager reload];
+	}
+	return _syncManager;
 }
 
 #pragma mark WACacheManager delegates

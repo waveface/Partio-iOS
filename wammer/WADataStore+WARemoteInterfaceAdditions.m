@@ -159,13 +159,9 @@ NSString * const kWADataStoreArticleUpdateShowsBezels = @"WADataStoreArticleUpda
 		
 	};
 	
-	[context performBlock:^ {
-	
-		[article synchronizeWithCompletion:^(BOOL didFinish, NSError *error) {
-			
-			handleResult(didFinish, error);
-			
-		}];
+	[article synchronizeWithCompletion:^(BOOL didFinish, NSError *error) {
+		
+		handleResult(didFinish, error);
 		
 	}];
 

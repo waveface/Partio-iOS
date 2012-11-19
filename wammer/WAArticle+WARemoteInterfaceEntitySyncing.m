@@ -14,6 +14,7 @@
 #import "Foundation+IRAdditions.h"
 #import "IRAsyncOperation.h"
 #import "WADefines.h"
+#import "WAAppDelegate_iOS.h"
 
 
 NSString * const kWAArticleEntitySyncingErrorDomain = @"com.waveface.wammer.WAArticle.entitySyncing.error";
@@ -711,7 +712,11 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 			NSParameterAssert([attachmentIDs isKindOfClass:[NSMutableArray class]]);
 			[attachmentIDs addObject:result];
 		
+			[(WAAppDelegate_iOS *)AppDelegate() syncManager].syncedFilesCount += 1;
+
 		}]];
+		
+		[(WAAppDelegate_iOS *)AppDelegate() syncManager].needingSyncFilesCount += 1;
 		
 	}];
 	
@@ -888,6 +893,10 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 		
 			NSError *error = (NSError *)([results isKindOfClass:[NSError class]] ? results : nil);
 			completionBlock(NO, error);
+
+			// sync will be aborted so we dismiss the customized uploading status bar by pretending all files are synced
+			WASyncManager *syncManager = [(WAAppDelegate_iOS *)AppDelegate() syncManager];
+			syncManager.syncedFilesCount = syncManager.needingSyncFilesCount;
 			
 		}
 		

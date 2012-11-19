@@ -25,9 +25,6 @@
 #import "WAPhotoStreamViewController.h"
 #import <CoreData+MagicalRecord.h>
 
-#import "WAStatusBar.h"
-#import "WAAppDelegate_iOS.h"
-
 static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPostsViewControllerPhone_RepresentedObjectURI";
 
 @interface WADayViewController () <WAArticleDraftsViewControllerDelegate> {
@@ -40,8 +37,6 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 
 @property (nonatomic, readwrite, strong) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, readwrite, strong) NSFetchedResultsController *fetchedResultsController;
-
-@property (nonatomic, strong) WAStatusBar *statusBar;
 
 @end
 
@@ -133,9 +128,6 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 		[wSelf.viewDeckController toggleLeftView];
 	});
 
-	self.statusBar = [[WAStatusBar alloc] initWithFrame:CGRectZero];
-	[[(WAAppDelegate_iOS *)AppDelegate() photoImportManager] addObserver:self forKeyPath:@"importedFilesCount" options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionNew context:nil];
-	
 	return self;
 
 }
@@ -222,31 +214,6 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 			[wSelf.daysControllers removeObjectForKey:self.days[idx] ];
 	}];
 	
-}
-
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
-
-	__weak WADayViewController *wSelf = self;
-	if ([keyPath isEqualToString:@"importedFilesCount"]) {
-		[[NSOperationQueue mainQueue] addOperationWithBlock:^{
-			if (!wSelf.statusBar) {
-				return;
-			}
-			WAPhotoImportManager *photoImportManager = [(WAAppDelegate_iOS *)AppDelegate() photoImportManager];
-			if (photoImportManager.preprocessing) {
-				wSelf.statusBar.statusLabel.text = NSLocalizedString(@"PHOTO_UPLOAD_STATUS_BAR_PREPROCESSING", @"String on customized status bar");
-			} else {
-				NSUInteger currentCount = [change[NSKeyValueChangeNewKey] unsignedIntegerValue];
-				if (currentCount == photoImportManager.totalFilesCount) {
-					wSelf.statusBar.statusLabel.text = NSLocalizedString(@"PHOTO_UPLOAD_STATUS_BAR_UPLOADING", @"String on customized status bar");
-				} else {
-					wSelf.statusBar.statusLabel.text = NSLocalizedString(@"PHOTO_UPLOAD_STATUS_BAR_IMPORTING", @"String on customized status bar");
-					wSelf.statusBar.progressView.progress = (currentCount * 1.0 / photoImportManager.totalFilesCount) / 3;
-				}
-			}
-		}];
-	}
-
 }
 
 

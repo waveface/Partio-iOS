@@ -23,4 +23,8 @@
 @property (nonatomic, readonly, strong) NSOperationQueue *fileSyncOperationQueue;
 @property (nonatomic, readonly, strong) NSOperationQueue *fileMetadataSyncOperationQueue;
 
+@property (nonatomic, readwrite) BOOL preprocessingArticleSync;
+@property (nonatomic, readwrite) NSUInteger needingSyncFilesCount;
+@property (nonatomic, readwrite) NSUInteger syncedFilesCount;
+
 @end
