@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface WADayHeaderView : UIView
+@interface WADayHeaderView : UICollectionReusableView
 
 + (id)viewFromNib;
 
@@ -19,5 +19,6 @@
 @property (nonatomic, weak) IBOutlet UIButton *leftButton;
 @property (nonatomic, weak) IBOutlet UIButton *rightButton;
 @property (nonatomic, weak) IBOutlet UIButton *centerButton;
+@property (weak, nonatomic) IBOutlet UIView *placeHolderView;
 
 @end

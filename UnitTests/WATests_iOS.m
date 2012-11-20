@@ -7,6 +7,7 @@
 //
 
 #import "WATests_iOS.h"
+#import "NSDate+WAAdditions.h"
 #import <SSToolkit/NSDate+SSToolkitAdditions.h>
 
 @implementation NSCalendar (MySpecialCalculations)
@@ -21,7 +22,6 @@
      return endDay-startDay;
 }
 @end
-
 
 @implementation WATests_iOS
 
@@ -121,8 +121,6 @@
 	NSDateComponents *beginOfTomorrow = [gregorian components:NSDayCalendarUnit|NSYearCalendarUnit|NSMonthCalendarUnit fromDate:now];
 	beginOfTomorrow.day += 1;
 	NSDate *endOfToday = [gregorian dateFromComponents:beginOfTomorrow];
-	
-	NSLog(@"***\n%@ %@\n", now, endOfToday);
-	assertThat([now endOfDate], equalTo(endOfToday));
+	assertThat([now dayEnd], equalTo(endOfToday));
 }
 @end

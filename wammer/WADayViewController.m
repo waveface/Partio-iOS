@@ -105,6 +105,7 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 }
 
 - (void) viewWillAppear:(BOOL)animated {
+	[super viewWillAppear:animated];
 
 	self.navigationItem.titleView.alpha = 1;
 		
@@ -118,6 +119,7 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 }
 
 - (void) viewDidAppear:(BOOL)animated {
+	[super viewDidAppear:animated];
 	
 	__block NSDate *currentDate = nil;
 	__weak WADayViewController *wSelf = self;
