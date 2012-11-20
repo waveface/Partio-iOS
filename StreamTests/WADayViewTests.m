@@ -77,8 +77,6 @@
 			STAssertFalse( [lastLayout isEqual:currentLayout], @"Layout should not repeat" );
 			lastLayout = currentLayout;
 			currentLayout = [NSMutableArray arrayWithCapacity:max];
-			
-			NSLog(@"\n--- %@ ---",lastLayout);
 		}
 		
 		[currentLayout addObject:aLayout];

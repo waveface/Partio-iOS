@@ -161,6 +161,8 @@
 		7DB78A6C164900FA00E165E9 /* WAPhotoStreamViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7DB78A6B164900FA00E165E9 /* WAPhotoStreamViewCell.xib */; };
 		7DB78A6D164900FA00E165E9 /* WAPhotoStreamViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7DB78A6B164900FA00E165E9 /* WAPhotoStreamViewCell.xib */; };
 		7DB78A6E164900FA00E165E9 /* WAPhotoStreamViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7DB78A6B164900FA00E165E9 /* WAPhotoStreamViewCell.xib */; };
+		7DBE8DF5165B3818005C2347 /* WADayHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 80C129B716398933001DDFE2 /* WADayHeaderView.m */; };
+		7DBE8DF6165B383C005C2347 /* WADayHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 80C129B716398933001DDFE2 /* WADayHeaderView.m */; };
 		7DC3AC0E1642203C009A8EA7 /* SocketRocket.xcodeproj in Resources */ = {isa = PBXBuildFile; fileRef = 7DC3AC0D1642203C009A8EA7 /* SocketRocket.xcodeproj */; };
 		7DC3AC0F1642203C009A8EA7 /* SocketRocket.xcodeproj in Resources */ = {isa = PBXBuildFile; fileRef = 7DC3AC0D1642203C009A8EA7 /* SocketRocket.xcodeproj */; };
 		7DC3AC101642203C009A8EA7 /* SocketRocket.xcodeproj in Resources */ = {isa = PBXBuildFile; fileRef = 7DC3AC0D1642203C009A8EA7 /* SocketRocket.xcodeproj */; };
@@ -4297,6 +4299,7 @@
 				7D71DE181653806F00456B52 /* WAPhotoStreamViewCell.m in Sources */,
 				4BD189FF1653DE4200908080 /* WAFile.m in Sources */,
 				4B4AA30C16564BEE00A04DDE /* NSDate+WAAdditions.m in Sources */,
+				7DBE8DF6165B383C005C2347 /* WADayHeaderView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4312,6 +4315,7 @@
 				7D71DE171653805C00456B52 /* WAPhotoStreamViewCell.m in Sources */,
 				4BD18A001653DE4200908080 /* WAFile.m in Sources */,
 				4B4AA30D16564BF000A04DDE /* NSDate+WAAdditions.m in Sources */,
+				7DBE8DF5165B3818005C2347 /* WADayHeaderView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
