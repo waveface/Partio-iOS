@@ -52,13 +52,14 @@
  */
 - (void)reloadLayout:(NSArray *)partition
 {
+	NSInteger MAX = [[partition[0] valueForKeyPath:@"@sum.intValue"] integerValue];
 	_layout = [@[]mutableCopy];
 	NSArray *aLayout;
 	int previousLayout=[_photos count]+1;
 	for (int i=0; i<[_photos count]; i+=[aLayout count]) {
 		int candidateLayout = arc4random_uniform([partition count]);
 		if (candidateLayout == previousLayout)
-			candidateLayout = (candidateLayout+1)%[aLayout count];
+			candidateLayout = (candidateLayout+1) % MAX;
 		previousLayout = candidateLayout;
 		aLayout=partition[candidateLayout];
 		[_layout addObjectsFromArray:aLayout];
