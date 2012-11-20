@@ -19,7 +19,8 @@
 }
 
 - (void) awakeFromNib {
-	
+  self.placeHolderView.layer.cornerRadius = 5.0f;
+  self.placeHolderView.layer.masksToBounds = YES;
 }
 
 

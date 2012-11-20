@@ -61,6 +61,8 @@
 		4B31BAAD1591A74C00DC1A70 /* ALAsset+AGIPC.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B31BA9D1591A74C00DC1A70 /* ALAsset+AGIPC.m */; };
 		4B31BAAE1591A74C00DC1A70 /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = 4B31BA9E1591A74C00DC1A70 /* LICENSE */; };
 		4B362548156630D400F07032 /* IRRelativeDateFormatter+WAAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B362547156630D400F07032 /* IRRelativeDateFormatter+WAAdditions.m */; };
+		4B4AA30C16564BEE00A04DDE /* NSDate+WAAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 80A13C73162071C4002880A9 /* NSDate+WAAdditions.m */; };
+		4B4AA30D16564BF000A04DDE /* NSDate+WAAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 80A13C73162071C4002880A9 /* NSDate+WAAdditions.m */; };
 		4B52734015624E1800C6F55D /* WFPreviewTemplate-Discrete_Web_ImageWithDescription_Horizontal_for_6.html in Resources */ = {isa = PBXBuildFile; fileRef = 4B52733F15624E1800C6F55D /* WFPreviewTemplate-Discrete_Web_ImageWithDescription_Horizontal_for_6.html */; };
 		4B52734415625B3500C6F55D /* ProviderIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 4B52734315625B3500C6F55D /* ProviderIcon.png */; };
 		4B57F2F9157F5D4300467AD4 /* WFPreviewTemplate-Discrete_Web_Image_Vertical.html in Resources */ = {isa = PBXBuildFile; fileRef = 4B57F2F8157F5D4300467AD4 /* WFPreviewTemplate-Discrete_Web_Image_Vertical.html */; };
@@ -160,6 +162,8 @@
 		7DB78A6C164900FA00E165E9 /* WAPhotoStreamViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7DB78A6B164900FA00E165E9 /* WAPhotoStreamViewCell.xib */; };
 		7DB78A6D164900FA00E165E9 /* WAPhotoStreamViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7DB78A6B164900FA00E165E9 /* WAPhotoStreamViewCell.xib */; };
 		7DB78A6E164900FA00E165E9 /* WAPhotoStreamViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7DB78A6B164900FA00E165E9 /* WAPhotoStreamViewCell.xib */; };
+		7DBE8DF5165B3818005C2347 /* WADayHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 80C129B716398933001DDFE2 /* WADayHeaderView.m */; };
+		7DBE8DF6165B383C005C2347 /* WADayHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 80C129B716398933001DDFE2 /* WADayHeaderView.m */; };
 		7DC3AC0E1642203C009A8EA7 /* SocketRocket.xcodeproj in Resources */ = {isa = PBXBuildFile; fileRef = 7DC3AC0D1642203C009A8EA7 /* SocketRocket.xcodeproj */; };
 		7DC3AC0F1642203C009A8EA7 /* SocketRocket.xcodeproj in Resources */ = {isa = PBXBuildFile; fileRef = 7DC3AC0D1642203C009A8EA7 /* SocketRocket.xcodeproj */; };
 		7DC3AC101642203C009A8EA7 /* SocketRocket.xcodeproj in Resources */ = {isa = PBXBuildFile; fileRef = 7DC3AC0D1642203C009A8EA7 /* SocketRocket.xcodeproj */; };
@@ -4299,6 +4303,8 @@
 				7D71DE0816537E9900456B52 /* WAPhotoStreamViewController.m in Sources */,
 				7D71DE181653806F00456B52 /* WAPhotoStreamViewCell.m in Sources */,
 				4BD189FF1653DE4200908080 /* WAFile.m in Sources */,
+				4B4AA30C16564BEE00A04DDE /* NSDate+WAAdditions.m in Sources */,
+				7DBE8DF6165B383C005C2347 /* WADayHeaderView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4313,6 +4319,8 @@
 				7D71DE1516537E9A00456B52 /* WAPhotoStreamViewController.m in Sources */,
 				7D71DE171653805C00456B52 /* WAPhotoStreamViewCell.m in Sources */,
 				4BD18A001653DE4200908080 /* WAFile.m in Sources */,
+				4B4AA30D16564BF000A04DDE /* NSDate+WAAdditions.m in Sources */,
+				7DBE8DF5165B3818005C2347 /* WADayHeaderView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -533,8 +533,8 @@
 /* Class = "IBUILabel"; text = "COMPOSITION_NO_PHOTO_REMINDER_DESCRIPTION"; ObjectID = "26"; */
 "COMPOSITION_NO_PHOTO_REMINDER_DESCRIPTION" = " ";
 
-/* Class = "IBUILabel"; text = "AUG"; ObjectID = "15"; */
-"AUG" = "AUG";
+/* Class = "IBUILabel"; text = "AUGUST"; ObjectID = "15"; */
+"AUGUST" = "AUGUST";
 
 /* Class = "IBUILabel"; text = "MONDAY"; ObjectID = "39"; */
 "MONDAY" = "MONDAY";
