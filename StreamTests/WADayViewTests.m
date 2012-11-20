@@ -26,6 +26,7 @@
 @interface WAPhotoStreamViewController (UnitTesting)
 
 @property (strong, nonatomic) NSArray *photos;
+@property (strong, nonatomic) NSMutableArray *layout;
 
 @end
 
@@ -64,5 +65,23 @@
 - (void)testPhotoStreamViewController {
 	WAPhotoStreamViewController *photoStream = [[WAPhotoStreamViewController alloc] initWithDate:[[NSDate alloc]initWithTimeIntervalSince1970:NSTimeIntervalSince1970 +  366018890.0f]];
 	STAssertEquals([photoStream.photos count], (NSUInteger)158, @"158 photos");
+	
+	[photoStream viewDidLoad];
+	
+	NSInteger max = 3;
+	NSMutableArray *lastLayout = [@[@0]mutableCopy];
+	NSMutableArray *currentLayout = [@[@(max)]mutableCopy];
+	for (NSNumber *aLayout in photoStream.layout) {
+		//reset
+		if ([[currentLayout valueForKeyPath:@"@sum.intValue"] integerValue] == max){
+			STAssertFalse( [lastLayout isEqual:currentLayout], @"Layout should not repeat" );
+			lastLayout = currentLayout;
+			currentLayout = [NSMutableArray arrayWithCapacity:max];
+			
+			NSLog(@"\n--- %@ ---",lastLayout);
+		}
+		
+		[currentLayout addObject:aLayout];
+	}
 }
 @end

@@ -18,11 +18,11 @@
 	NSArray *colorPalette;
 	NSArray *daysOfPhotos;
 	NSDate *onDate;
-	NSMutableArray *layout;
 }
 
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 @property (strong, nonatomic) NSArray *photos;
+@property (strong, nonatomic) NSMutableArray *layout;
 
 @end
 
@@ -76,7 +76,7 @@
 	];
 
 	NSArray *aLayout;
-	layout = [@[]mutableCopy];
+	_layout = [@[]mutableCopy];
 	int lastLayout=[_photos count]+1;
 	for (int i=0; i<[_photos count]; i+=[aLayout count]) {
 		int random_index = arc4random_uniform([partition count]);
@@ -84,7 +84,7 @@
 			random_index = (random_index+1)%[aLayout count];
 		lastLayout = random_index;
 		aLayout=partition[random_index];
-		[layout addObjectsFromArray:aLayout];
+		[_layout addObjectsFromArray:aLayout];
 	}
 }
 
@@ -133,7 +133,7 @@
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
 	
-	NSInteger width_unit = [layout[indexPath.row] integerValue];
+	NSInteger width_unit = [_layout[indexPath.row] integerValue];
 	return (CGSize){96*width_unit + 8*(width_unit-1), 96};
 	
 }
