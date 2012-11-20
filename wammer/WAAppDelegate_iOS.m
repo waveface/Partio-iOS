@@ -858,32 +858,50 @@ static NSInteger networkActivityStackingCount = 0;
 }
 
 - (WAPhotoImportManager *)photoImportManager {
-	if (!_photoImportManager) {
-		_photoImportManager = [[WAPhotoImportManager alloc] init];
-		if (_photoImportManager.enabled) {
-			[_photoImportManager createPhotoImportArticlesWithCompletionBlock:^{
-				NSLog(@"All photo import operations are enqueued");
-			}];
+
+	static dispatch_once_t onceToken = 0;
+	dispatch_once(&onceToken, ^{
+		if (!_photoImportManager) {
+			_photoImportManager = [[WAPhotoImportManager alloc] init];
+			if (_photoImportManager.enabled) {
+				[_photoImportManager createPhotoImportArticlesWithCompletionBlock:^{
+					NSLog(@"All photo import operations are enqueued");
+				}];
+			}
 		}
-	}
+	});
+
 	return _photoImportManager;
+
 }
 
 - (WACacheManager *)cacheManager {
-	if (!_cacheManager) {
-		_cacheManager = [[WACacheManager alloc] init];
-		_cacheManager.delegate = self;
-		[_cacheManager clearPurgeableFilesIfNeeded];
-	}
+
+	static dispatch_once_t onceToken = 0;
+	dispatch_once(&onceToken, ^{
+		if (!_cacheManager) {
+			_cacheManager = [[WACacheManager alloc] init];
+			_cacheManager.delegate = self;
+			[_cacheManager clearPurgeableFilesIfNeeded];
+		}
+	});
+
 	return _cacheManager;
+
 }
 
 -(WASyncManager *)syncManager {
-	if (!_syncManager) {
-		_syncManager = [[WASyncManager alloc] init];
-		[_syncManager reload];
-	}
+
+	static dispatch_once_t onceToken = 0;
+	dispatch_once(&onceToken, ^{
+		if (!_syncManager) {
+			_syncManager = [[WASyncManager alloc] init];
+			[_syncManager reload];
+		}
+	});
+
 	return _syncManager;
+
 }
 
 #pragma mark WACacheManager delegates

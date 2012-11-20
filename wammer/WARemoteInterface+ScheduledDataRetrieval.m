@@ -215,7 +215,7 @@
 			
 			[[WADataStore defaultStore] updateArticlesOnSuccess:^{
 
-				[[WADataStore defaultStore] updateAttachmentsOnSuccess:^{
+				[[WADataStore defaultStore] updateAttachmentsMetaOnSuccess:^{
 
 					[wSelf endPerformingAutomaticRemoteUpdates];
 					[wSelf endPostponingDataRetrievalTimerFiring];
