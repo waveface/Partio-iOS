@@ -180,65 +180,62 @@
 	__weak WARemoteInterface *wSelf = self;
 
 	return [NSArray arrayWithObjects:
-	
+
+		[^ {
+
+			if (!wSelf.userToken || !wSelf.apiKey || !wSelf.primaryGroupIdentifier)
+				return;
+
+			[wSelf beginPerformingAutomaticRemoteUpdates];
+			[wSelf beginPostponingDataRetrievalTimerFiring];
+
+			[[WADataStore defaultStore] updateCurrentUserOnSuccess:^{
+
+				[wSelf endPerformingAutomaticRemoteUpdates];
+				[wSelf endPostponingDataRetrievalTimerFiring];
+
+			} onFailure: ^ {
+
+				[wSelf endPerformingAutomaticRemoteUpdates];
+				[wSelf endPostponingDataRetrievalTimerFiring];
+
+			}];
+
+		} copy],
+
+		[self defaultScheduledMonitoredHostsUpdatingBlock],
+
 		[^ {
 		
 			if (!wSelf.userToken || !wSelf.apiKey || !wSelf.primaryGroupIdentifier)
 				return;
 				
-			//[AppDelegate() beginNetworkActivity];
-
-			[wSelf beginPerformingAutomaticRemoteUpdates];		
+			[wSelf beginPerformingAutomaticRemoteUpdates];
 			[wSelf beginPostponingDataRetrievalTimerFiring];
 			
 			[[WADataStore defaultStore] updateArticlesOnSuccess:^{
 
-				[wSelf endPerformingAutomaticRemoteUpdates];		
-				[wSelf endPostponingDataRetrievalTimerFiring];
+				[[WADataStore defaultStore] updateAttachmentsMetaOnSuccess:^{
 
-				//[AppDelegate() endNetworkActivity];
-				
+					[wSelf endPerformingAutomaticRemoteUpdates];
+					[wSelf endPostponingDataRetrievalTimerFiring];
+
+				} onFailure:^(NSError *error) {
+
+					[wSelf endPerformingAutomaticRemoteUpdates];
+					[wSelf endPostponingDataRetrievalTimerFiring];
+
+				}];
+
 			} onFailure: ^ (NSError *error) {
 			
 				[wSelf endPerformingAutomaticRemoteUpdates];
 				[wSelf endPostponingDataRetrievalTimerFiring];
 				
-				//[AppDelegate() endNetworkActivity];
-				
 			}];
 		
 		} copy],
 		
-		[^ {
-		
-			if (!wSelf.userToken || !wSelf.apiKey || !wSelf.primaryGroupIdentifier)
-				return;
-				
-			//[AppDelegate() beginNetworkActivity];
-
-			[wSelf beginPerformingAutomaticRemoteUpdates];		
-			[wSelf beginPostponingDataRetrievalTimerFiring];
-			
-			[[WADataStore defaultStore] updateCurrentUserOnSuccess:^{
-
-				[wSelf endPerformingAutomaticRemoteUpdates];		
-				[wSelf endPostponingDataRetrievalTimerFiring];
-
-				//[AppDelegate() endNetworkActivity];
-				
-			} onFailure: ^ {
-			
-				[wSelf endPerformingAutomaticRemoteUpdates];		
-				[wSelf endPostponingDataRetrievalTimerFiring];
-				
-				//[AppDelegate() endNetworkActivity];
-				
-			}];
-		
-		} copy],
-    
-    [self defaultScheduledMonitoredHostsUpdatingBlock],
-	
 	nil];
 
 }

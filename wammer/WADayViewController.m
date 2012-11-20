@@ -127,7 +127,9 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 	self.navigationItem.leftBarButtonItem = WABarButtonItem([UIImage imageNamed:@"menu"], @"", ^{
 		[wSelf.viewDeckController toggleLeftView];
 	});
+
 	return self;
+
 }
 
 - (void) dealloc {

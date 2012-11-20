@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		130F09F0159C3C74001796D0 /* WABackoffHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 130F09EF159C3C74001796D0 /* WABackoffHandler.m */; };
+		131AEC2F1654DF0D000F9E74 /* WAStatusBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 131AEC2E1654DF0D000F9E74 /* WAStatusBar.m */; };
 		131FCC8D164BC8B3008F71A8 /* WAFirstUseSignUpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 131FCC8C164BC8B3008F71A8 /* WAFirstUseSignUpViewController.m */; };
 		13206265163F01D00064E770 /* WAFirstUseIntroView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 13206264163F01D00064E770 /* WAFirstUseIntroView.xib */; };
 		13217E3D164A0D3A0030C4A6 /* WALocalizedTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 13217E3C164A0D3A0030C4A6 /* WALocalizedTableViewCell.m */; };
@@ -953,6 +954,8 @@
 		130F09EE159C3C74001796D0 /* WABackoffHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WABackoffHandler.h; sourceTree = "<group>"; };
 		130F09EF159C3C74001796D0 /* WABackoffHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WABackoffHandler.m; sourceTree = "<group>"; };
 		1312968A161EC0B200540A86 /* WAModel 37.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WAModel 37.xcdatamodel"; sourceTree = "<group>"; };
+		131AEC2D1654DF0D000F9E74 /* WAStatusBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAStatusBar.h; sourceTree = "<group>"; };
+		131AEC2E1654DF0D000F9E74 /* WAStatusBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAStatusBar.m; sourceTree = "<group>"; };
 		131FCC8B164BC8B3008F71A8 /* WAFirstUseSignUpViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WAFirstUseSignUpViewController.h; path = wammer/WAFirstUseSignUpViewController.h; sourceTree = "<group>"; };
 		131FCC8C164BC8B3008F71A8 /* WAFirstUseSignUpViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WAFirstUseSignUpViewController.m; path = wammer/WAFirstUseSignUpViewController.m; sourceTree = "<group>"; };
 		131FDE2015F5D3F90073A182 /* WAModel 34.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WAModel 34.xcdatamodel"; sourceTree = "<group>"; };
@@ -2365,6 +2368,8 @@
 				FFD2D914141F4D3600F21D22 /* WAPreviewBadge.m */,
 				13217E3B164A0D3A0030C4A6 /* WALocalizedTableViewCell.h */,
 				13217E3C164A0D3A0030C4A6 /* WALocalizedTableViewCell.m */,
+				131AEC2D1654DF0D000F9E74 /* WAStatusBar.h */,
+				131AEC2E1654DF0D000F9E74 /* WAStatusBar.m */,
 			);
 			name = Views;
 			path = wammer;
@@ -4522,6 +4527,7 @@
 				7D7A442E164CF2FB00E156CF /* WACollection.m in Sources */,
 				133058DE1650ABE300C0283F /* WASyncManager+FileMetadataSync.m in Sources */,
 				4BD189FE1653DE4200908080 /* WAFile.m in Sources */,
+				131AEC2F1654DF0D000F9E74 /* WAStatusBar.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

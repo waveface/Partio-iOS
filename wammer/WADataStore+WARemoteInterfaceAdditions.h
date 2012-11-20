@@ -27,4 +27,6 @@ extern NSString * const kWADataStoreArticleUpdateShowsBezels;	//	pass kCFBoolean
 - (void) addComment:(NSString *)commentText onArticle:(NSURL *)anArticleURI onSuccess:(void(^)(void))successBlock onFailure:(void(^)(void))failureBlock;
 - (void) updateCurrentUserOnSuccess:(void(^)(void))successBlock onFailure:(void(^)(void))failureBlock;
 
+- (void) updateAttachmentsMetaOnSuccess:(void(^)(void))successBlock onFailure:(void(^)(NSError *))failureBlock;
+
 @end

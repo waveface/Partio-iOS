@@ -513,4 +513,21 @@
 
 }
 
+- (NSArray *)fetchFilesWithoutMetaUsingContext:(NSManagedObjectContext *)aContext {
+
+	NSFetchRequest *request = [[NSFetchRequest alloc] init];
+	request.entity = [NSEntityDescription entityForName:@"WAFile" inManagedObjectContext:aContext];
+	request.predicate = [NSPredicate predicateWithFormat:@"created==nil"];
+
+	NSError *fetchingError = nil;
+	NSArray *fetchedFiles = [aContext executeFetchRequest:request error:&fetchingError];
+	if (fetchingError) {
+		NSLog(@"%@", fetchingError);
+		return nil;
+	}
+
+	return [fetchedFiles count] > 0 ? fetchedFiles : nil;
+
+}
+
 @end

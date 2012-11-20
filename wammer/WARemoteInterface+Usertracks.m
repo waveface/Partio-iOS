@@ -58,19 +58,29 @@
 				return;
 				
 			}
-			
-			[self retrievePostsInGroup:groupID withIdentifiers:changedArticleIDs onSuccess:^(NSArray *postReps) {
-			
-				if (progressBlock)
-					progressBlock(postReps, continuation);
-					
-				fetchAndProcessArticlesSince(continuation);
-				
-			} onFailure:^(NSError *error) {
-			
-				if (failureBlock)
-					failureBlock(error);
-				
+
+			__block NSMutableArray *sentChangedArticleIDs = [@[] mutableCopy];
+			const NSUInteger MAX_CHANGED_ARTICLES_COUNT = 10;
+			[changedArticleIDs enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+				[sentChangedArticleIDs addObject:obj];
+				if ([sentChangedArticleIDs count] == MAX_CHANGED_ARTICLES_COUNT || idx == [changedArticleIDs count] - 1) {
+					[self retrievePostsInGroup:groupID withIdentifiers:sentChangedArticleIDs onSuccess:^(NSArray *postReps) {
+						
+						if (progressBlock)
+							progressBlock(postReps, continuation);
+
+						if (idx == [changedArticleIDs count] - 1) {
+							fetchAndProcessArticlesSince(continuation);
+						}
+						
+					} onFailure:^(NSError *error) {
+						
+						if (failureBlock)
+							failureBlock(error);
+						
+					}];
+					[sentChangedArticleIDs removeAllObjects];
+				}
 			}];
 			
 		} onFailure:^(NSError *error) {

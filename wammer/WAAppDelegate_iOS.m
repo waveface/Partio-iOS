@@ -412,8 +412,6 @@ extern CFAbsoluteTime StartTime;
 
 - (void) applicationRootViewControllerDidRequestReauthentication:(id<WAApplicationRootViewController>)controller {
 
-	[self logout];
-
 	__weak WAAppDelegate_iOS *wSelf = self;
 	dispatch_async(dispatch_get_main_queue(), ^ {
 
@@ -429,20 +427,8 @@ extern CFAbsoluteTime StartTime;
 			 // bind to user's persistent store
 			 [wSelf bootstrapPersistentStoreWithUserIdentifier:userIdentifier];
 
-			 if (!wSelf.photoImportManager) {
-				 wSelf.photoImportManager = [[WAPhotoImportManager alloc] init];
-			 }
-			 if (wSelf.photoImportManager.enabled) {
-				 [wSelf.photoImportManager createPhotoImportArticlesWithCompletionBlock:^{
-					 NSLog(@"All photo import operations are enqueued");
-				 }];
-			 }
-
-			 if (!wSelf.cacheManager) {
-				 wSelf.cacheManager = [[WACacheManager alloc] init];
-				 wSelf.cacheManager.delegate = self;
-			 }
-			 [wSelf.cacheManager clearPurgeableFilesIfNeeded];
+			 [wSelf photoImportManager];
+			 [wSelf cacheManager];
 
 			 // reset monitored hosts
 			 WARemoteInterface *ri = [WARemoteInterface sharedInterface];
@@ -453,10 +439,7 @@ extern CFAbsoluteTime StartTime;
 			 ri.monitoredHosts = nil;
 			 [ri performAutomaticRemoteUpdatesNow];
 
-			 if (!wSelf.syncManager) {
-				 wSelf.syncManager = [[WASyncManager alloc] init];
-				 [wSelf.syncManager reload];
-			 }
+			 [wSelf syncManager];
 
 		 }
 												runningOnboardingProcess:YES];
@@ -666,11 +649,16 @@ extern CFAbsoluteTime StartTime;
   if (allowsCancellation)
     NSParameterAssert(!eraseAuthInfo);
 
-	if (eraseAuthInfo)
-    [self removeAuthenticationData];
-	
 	if (zapEverything)
 		[self clearViewHierarchy];
+
+	if (eraseAuthInfo) {
+		// run logout after all views are cleared to ensure no KVO registrations left
+		[[NSOperationQueue mainQueue] addOperationWithBlock:^{
+			[self logout];
+			[self removeAuthenticationData];
+		}];
+	}
 	
 	[self handleAuthRequest:aReason
 							withOptions:nil
@@ -861,26 +849,58 @@ static NSInteger networkActivityStackingCount = 0;
 
 	if ([self hasAuthenticationData]) {
 
-		if (!self.photoImportManager) {
-			self.photoImportManager = [[WAPhotoImportManager alloc] init];
-		}
-		if (self.photoImportManager.enabled) {
-			[self.photoImportManager createPhotoImportArticlesWithCompletionBlock:^{
-				NSLog(@"All photo import operations are enqueued");
-			}];
-		}
+		[self photoImportManager];
+		[self cacheManager];
+		[self syncManager];
 
-		if (!self.cacheManager) {
-			self.cacheManager = [[WACacheManager alloc] init];
-			self.cacheManager.delegate = self;
-		}
-		[self.cacheManager clearPurgeableFilesIfNeeded];
-
-		if (!self.syncManager) {
-			self.syncManager = [[WASyncManager alloc] init];
-			[self.syncManager reload];
-		}
 	}
+
+}
+
+- (WAPhotoImportManager *)photoImportManager {
+
+	static dispatch_once_t onceToken = 0;
+	dispatch_once(&onceToken, ^{
+		if (!_photoImportManager) {
+			_photoImportManager = [[WAPhotoImportManager alloc] init];
+			if (_photoImportManager.enabled) {
+				[_photoImportManager createPhotoImportArticlesWithCompletionBlock:^{
+					NSLog(@"All photo import operations are enqueued");
+				}];
+			}
+		}
+	});
+
+	return _photoImportManager;
+
+}
+
+- (WACacheManager *)cacheManager {
+
+	static dispatch_once_t onceToken = 0;
+	dispatch_once(&onceToken, ^{
+		if (!_cacheManager) {
+			_cacheManager = [[WACacheManager alloc] init];
+			_cacheManager.delegate = self;
+			[_cacheManager clearPurgeableFilesIfNeeded];
+		}
+	});
+
+	return _cacheManager;
+
+}
+
+-(WASyncManager *)syncManager {
+
+	static dispatch_once_t onceToken = 0;
+	dispatch_once(&onceToken, ^{
+		if (!_syncManager) {
+			_syncManager = [[WASyncManager alloc] init];
+			[_syncManager reload];
+		}
+	});
+
+	return _syncManager;
 
 }
 

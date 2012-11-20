@@ -309,7 +309,7 @@
     <fetchRequest name="WAFRFilesForArticle" entity="WAFile" predicateString="ANY articles == $Article"/>
     <fetchRequest name="WAFRFilesNeedingDownload" entity="WAFile" predicateString="ANY articles.hidden == 0 AND ((smallThumbnailURL != nil AND smallThumbnailFilePath == nil) OR (thumbnailURL != nil AND thumbnailFilePath == nil))"/>
     <fetchRequest name="WAFRFilesNeedingMetaSync" entity="WAFile" predicateString="dirty == 1"/>
-    <fetchRequest name="WAFRFilesWithSyncableBlobs" entity="WAFile" predicateString="(assetURL != &quot;&quot; OR resourceFilePath != nil) AND resourceURL == nil AND ANY articles.draft == 0"/>
+    <fetchRequest name="WAFRFilesWithSyncableBlobs" entity="WAFile" predicateString="(assetURL != &quot;&quot; OR resourceFilePath != nil) AND resourceURL == nil AND thumbnailURL != &quot;&quot; AND ANY articles.draft == 0"/>
     <fetchRequest name="WAFRImagesForArticle" entity="WAFile" predicateString="article == $Article AND remoteResourceType == &quot;image&quot;"/>
     <fetchRequest name="WAFRLocalImportedArticles" entity="WAArticle" predicateString="import == 1"/>
     <fetchRequest name="WAFRUser" entity="WAUser" predicateString="identifier == $Identifier"/>

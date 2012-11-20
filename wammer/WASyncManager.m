@@ -43,9 +43,9 @@
 		self.recurrenceMachine = [[IRRecurrenceMachine alloc] init];
 		self.recurrenceMachine.queue.maxConcurrentOperationCount = 1;
 		self.recurrenceMachine.recurrenceInterval = 5;
-		[self.recurrenceMachine addRecurringOperation:[self fileMetadataSyncOperation]];
 		[self.recurrenceMachine addRecurringOperation:[self dirtyArticleSyncOperationPrototype]];
 		[self.recurrenceMachine addRecurringOperation:[self fullQualityFileSyncOperationPrototype]];
+		[self.recurrenceMachine addRecurringOperation:[self fileMetadataSyncOperation]];
 
 		[self reload];
 
@@ -107,6 +107,27 @@
 	
 	[[self recurrenceMachine] scheduleOperationsNow];
 	
+}
+
+- (void)setPreprocessingArticleSync:(BOOL)preprocessingArticleSync {
+
+	NSParameterAssert([NSThread isMainThread]);
+	NSParameterAssert(_preprocessingArticleSync != preprocessingArticleSync);
+
+	_preprocessingArticleSync = preprocessingArticleSync;
+
+}
+
+- (void)setNeedingSyncFilesCount:(NSUInteger)needingSyncFilesCount {
+
+	NSParameterAssert([NSThread isMainThread]);
+
+	if (needingSyncFilesCount != 0) {
+		NSParameterAssert(_preprocessingArticleSync);
+	}
+	
+	_needingSyncFilesCount = needingSyncFilesCount;
+
 }
 
 @end

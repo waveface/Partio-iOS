@@ -17,12 +17,16 @@
 #import "WADataStore.h"
 #import <Foundation/Foundation.h>
 #import "WAPhotoStreamViewController.h"
+#import "WAAppDelegate_iOS.h"
+#import "WAStatusBar.h"
 
 @interface WASlidingMenuViewController () 
 
 @property (nonatomic, strong) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, strong) WAUser *user;
 @property (nonatomic, strong) UITableViewCell *userCell;
+
+@property (nonatomic, strong) WAStatusBar *statusBar;
 
 @end
 
@@ -41,13 +45,27 @@
 {
 	[super viewDidLoad];
 
+	WAPhotoImportManager *photoImportManager = [(WAAppDelegate_iOS *)AppDelegate() photoImportManager];
+	[photoImportManager addObserver:self forKeyPath:@"importedFilesCount" options:NSKeyValueObservingOptionNew context:nil];
+
+	WASyncManager *syncManager = [(WAAppDelegate_iOS *)AppDelegate() syncManager];
+	[syncManager addObserver:self forKeyPath:@"preprocessingArticleSync" options:NSKeyValueObservingOptionNew context:nil];
+	[syncManager addObserver:self forKeyPath:@"syncedFilesCount" options:NSKeyValueObservingOptionNew context:nil];
+	
 }
 
 - (void)dealloc
 {
 	[self.user removeObserver:self forKeyPath:@"avatar"];
 	[self.user removeObserver:self forKeyPath:@"nickname"];
-	
+
+	WAPhotoImportManager *photoImportManager = [(WAAppDelegate_iOS *)AppDelegate() photoImportManager];
+	[photoImportManager removeObserver:self forKeyPath:@"importedFilesCount"];
+
+	WASyncManager *syncManager = [(WAAppDelegate_iOS *)AppDelegate() syncManager];
+	[syncManager removeObserver:self forKeyPath:@"syncedFilesCount"];
+	[syncManager removeObserver:self forKeyPath:@"preprocessingArticleSync"];
+
 }
 
 - (void)didReceiveMemoryWarning
@@ -143,6 +161,56 @@
 				 
 		_userCell.textLabel.text = (NSString *)newValue;
 		
+	}
+
+	__weak WASlidingMenuViewController *wSelf = self;
+	if ([keyPath isEqualToString:@"importedFilesCount"]) {
+		[[NSOperationQueue mainQueue] addOperationWithBlock:^{
+			WAPhotoImportManager *photoImportManager = [(WAAppDelegate_iOS *)AppDelegate() photoImportManager];
+			if (!photoImportManager.preprocessing) {
+				NSUInteger currentCount = [change[NSKeyValueChangeNewKey] unsignedIntegerValue];
+				if (currentCount == photoImportManager.totalFilesCount) {
+					wSelf.statusBar = nil;
+				} else {
+					if (!wSelf.statusBar) {
+						wSelf.statusBar = [[WAStatusBar alloc] initWithFrame:CGRectZero];
+					}
+					wSelf.statusBar.statusLabel.text = NSLocalizedString(@"PHOTO_UPLOAD_STATUS_BAR_IMPORTING", @"String on customized status bar");
+					wSelf.statusBar.progressView.progress = currentCount * 1.0 / photoImportManager.totalFilesCount;
+				}
+			}
+		}];
+	}
+	
+	if ([keyPath isEqualToString:@"preprocessingArticleSync"]) {
+		[[NSOperationQueue mainQueue] addOperationWithBlock:^{
+			WASyncManager *syncManager = [(WAAppDelegate_iOS *)AppDelegate() syncManager];
+			if (!syncManager.preprocessingArticleSync && syncManager.needingSyncFilesCount > 0) {
+				if (!wSelf.statusBar) {
+					wSelf.statusBar = [[WAStatusBar alloc] initWithFrame:CGRectZero];
+				}
+				wSelf.statusBar.statusLabel.text = [NSString stringWithFormat:NSLocalizedString(@"PHOTO_UPLOAD_STATUS_BAR_UPLOADING", @"String on customized status bar"), syncManager.syncedFilesCount, syncManager.needingSyncFilesCount];
+				wSelf.statusBar.progressView.progress = syncManager.syncedFilesCount * 1.0 / syncManager.needingSyncFilesCount;
+			}
+		}];
+	}
+	
+	if ([keyPath isEqualToString:@"syncedFilesCount"]) {
+		[[NSOperationQueue mainQueue] addOperationWithBlock:^{
+			WASyncManager *syncManager = [(WAAppDelegate_iOS *)AppDelegate() syncManager];
+			NSUInteger currentCount = [change[NSKeyValueChangeNewKey] unsignedIntegerValue];
+			if (currentCount == syncManager.needingSyncFilesCount) {
+				syncManager.syncedFilesCount = 0;
+				syncManager.needingSyncFilesCount = 0;
+				wSelf.statusBar = nil;
+			} else {
+				if (!wSelf.statusBar) {
+					wSelf.statusBar = [[WAStatusBar alloc] initWithFrame:CGRectZero];
+				}
+				wSelf.statusBar.statusLabel.text = [NSString stringWithFormat:NSLocalizedString(@"PHOTO_UPLOAD_STATUS_BAR_UPLOADING", @"String on customized status bar"), currentCount, syncManager.needingSyncFilesCount];
+				wSelf.statusBar.progressView.progress = currentCount * 1.0 / syncManager.needingSyncFilesCount;
+			}
+		}];
 	}
 	
 }
