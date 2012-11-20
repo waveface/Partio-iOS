@@ -161,6 +161,7 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 }
 
 - (void) viewWillAppear:(BOOL)animated {
+	[super viewWillAppear:animated];
 
 	self.navigationItem.titleView.alpha = 1;
 	
@@ -171,12 +172,12 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 		self.title = NSLocalizedString(@"PHOTOS_TITLE", @"in day view");
 	}
 	
+
 }
 
 - (void) viewDidAppear:(BOOL)animated {
-
+	[super viewDidAppear:animated];
 	[self.navigationController setToolbarHidden:YES animated:animated];
-
 }
 
 - (void) viewWillDisappear:(BOOL)animated {
@@ -196,7 +197,7 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 		return transition;
 		
 	})()) forKey:kCATransition];
-
+	[super viewWillDisappear:animated];
 }
 
 - (void)didReceiveMemoryWarning
