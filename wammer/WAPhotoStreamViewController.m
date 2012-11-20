@@ -18,6 +18,7 @@
 	NSArray *colorPalette;
 	NSArray *daysOfPhotos;
 	NSDate *onDate;
+	NSMutableArray *layout;
 }
 
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
@@ -67,6 +68,24 @@
 	
 	self.collectionView.backgroundColor = [UIColor colorWithWhite:0.16f alpha:1.0f];
 	
+	NSArray *partition = @[
+		@[@1,@1,@1],
+		@[@1,@2],
+		@[@2,@1],
+		@[@3]
+	];
+
+	NSArray *aLayout;
+	layout = [@[]mutableCopy];
+	int lastLayout=[_photos count]+1;
+	for (int i=0; i<[_photos count]; i+=[aLayout count]) {
+		int random_index = arc4random_uniform([partition count]);
+		if (random_index == lastLayout)
+			random_index = (random_index+1)%[aLayout count];
+		lastLayout = random_index;
+		aLayout=partition[random_index];
+		[layout addObjectsFromArray:aLayout];
+	}
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -100,23 +119,23 @@
 	
 	if (cell) {
 		cell.backgroundColor = colorPalette[rand()%[colorPalette count]];
-		WAFile *photo = (WAFile *)_photos[indexPath.row];
-		cell.imageView.image = photo.smallestPresentableImage;
+		cell.layer.borderWidth = 1.0f;
+		cell.layer.borderColor = [UIColor colorWithWhite:100/255.0 alpha:1.0f].CGColor;
+		cell.backgroundView.layer.cornerRadius = 1.0f;
+		cell.backgroundView.layer.masksToBounds = YES;
 	}
+	
+	WAFile *photo = (WAFile *)_photos[indexPath.row];
+	cell.imageView.image = photo.smallestPresentableImage;
 	
 	return cell;
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
 	
-	static int remaining_width = 2;
-	int width = rand()%remaining_width+1;
-	remaining_width -= width;
-	if (remaining_width == 0)
-		remaining_width = 2;
-	int height_factor = 1;
+	NSInteger width_unit = [layout[indexPath.row] integerValue];
+	return (CGSize){96*width_unit + 8*(width_unit-1), 96};
 	
-	return (CGSize){156*width+6*(width-1),156*height_factor+8*(height_factor-1)};
 }
 
 - (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath {
