@@ -58,14 +58,6 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
     
   }
   
-  if (!self.thumbnailURL)
-  if (self.remoteRepresentedImage)
-    self.thumbnailURL = [[self class] transformedValue:self.remoteRepresentedImage fromRemoteKeyPath:nil toLocalKeyPath:@"thumbnailURL"];        
-  
-  if (!self.resourceURL)
-  if (self.identifier && self.remoteResourceHash)
-    self.resourceURL = [[self class] transformedValue:[@"/v2/attachments/view?object_id=" stringByAppendingFormat:@"%@", self.identifier] fromRemoteKeyPath:nil toLocalKeyPath:@"resourceURL"];
-  
 }
 
 + (NSString *) keyPathHoldingUniqueValue {
@@ -383,7 +375,7 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
 				BOOL didSave = [context save:&error];
 				NSCAssert1(didSave, @"Generated thumbnail uploaded but metadata is not saved correctly: %@", error);
 				
-				callback(attachmentIdentifier);
+				callback(error);
 				
 			}];
 			
@@ -488,7 +480,15 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
 		
 			[context performBlock:block];
 			
-		} callback:nil callbackTrampoline:^(IRAsyncOperationInvoker block) {
+		} callback:^(id results) {
+
+			if ([results isKindOfClass:[NSError class]]) {
+				completionBlock(NO, results);
+			} else {
+				completionBlock(YES, nil);
+			}
+
+		} callbackTrampoline:^(IRAsyncOperationInvoker block) {
 		
 			[context performBlock:block];
 			
@@ -545,73 +545,22 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
 			
 			[context performBlock:block];
 			
-		} callback:nil callbackTrampoline:^(IRAsyncOperationInvoker block) {
+		} callback:^(id results) {
+
+			if ([results isKindOfClass:[NSError class]]) {
+				completionBlock(NO, results);
+			} else {
+				completionBlock(YES, nil);
+			}
+
+		} callbackTrampoline:^(IRAsyncOperationInvoker block) {
 		
 			[context performBlock:block];
 			
 		}]];
 	
 	}
-	
-	[operations addObject:[IRAsyncBarrierOperation operationWithWorker:^(IRAsyncOperationCallback callback) {
-		
-		WAFile *file = (WAFile *)[context irManagedObjectForURI:ownURL];
 
-		if (file.identifier) {
-		
-			[ri retrieveAttachment:file.identifier onSuccess:^(NSDictionary *attachmentRep) {
-				
-				callback(attachmentRep);
-
-			} onFailure:^(NSError *error) {
-			
-				callback(error);
-				
-			}];
-		
-		} else {
-		
-			callback(nil);
-		
-		}
-
-	} trampoline:^(IRAsyncOperationInvoker block) {
-	
-		[context performBlock:block];
-		
-	} callback:^(id results) {
-		
-		if ([results isKindOfClass:[NSDictionary class]]) {
-		
-			WAFile *file = (WAFile *)[context irManagedObjectForURI:ownURL];
-			[file configureWithRemoteDictionary:(NSDictionary *)results];
-			
-			NSError *error = nil;
-			BOOL didSave = [context save:&error];
-			NSCAssert1(didSave, @"File entity syncing should merge remote information: %@", error);
-		
-			if (completionBlock)
-				completionBlock(didSave, error);
-
-		} else if ([results isKindOfClass:[NSError class]]){
-		
-			if (completionBlock)
-				completionBlock(NO, (NSError *)results);
-
-		} else {
-		
-			if (completionBlock)
-				completionBlock(NO, nil);
-
-		}
-
-	} callbackTrampoline:^(IRAsyncOperationInvoker block) {
-		
-		[context performBlock:block];
-
-	}]];
-	
-	
 	[operations enumerateObjectsUsingBlock:^(IRAsyncBarrierOperation *op, NSUInteger idx, BOOL *stop) {
 		if (idx > 0)
 			[op addDependency:(IRAsyncBarrierOperation *)operations[(idx - 1)]];

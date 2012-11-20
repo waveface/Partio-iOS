@@ -158,10 +158,12 @@
 			
 			NSError *savingError = nil;
 			if ([context save:&savingError]) {
-				[[GAI sharedInstance].defaultTracker trackEventWithCategory:@"CreatePost"
-																												 withAction:@"CameraRoll"
-																													withLabel:@"Photos"
-																													withValue:@([article.files count])];
+				[[NSOperationQueue mainQueue] addOperationWithBlock:^{
+					[[GAI sharedInstance].defaultTracker trackEventWithCategory:@"CreatePost"
+																													 withAction:@"CameraRoll"
+																														withLabel:@"Photos"
+																														withValue:@([article.files count])];
+				}];
 			} else {
 				NSLog(@"Error saving: %s %@", __PRETTY_FUNCTION__, savingError);
 			}

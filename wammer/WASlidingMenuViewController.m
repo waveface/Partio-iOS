@@ -47,6 +47,7 @@
 
 	WAPhotoImportManager *photoImportManager = [(WAAppDelegate_iOS *)AppDelegate() photoImportManager];
 	[photoImportManager addObserver:self forKeyPath:@"importedFilesCount" options:NSKeyValueObservingOptionNew context:nil];
+
 	WASyncManager *syncManager = [(WAAppDelegate_iOS *)AppDelegate() syncManager];
 	[syncManager addObserver:self forKeyPath:@"preprocessingArticleSync" options:NSKeyValueObservingOptionNew context:nil];
 	[syncManager addObserver:self forKeyPath:@"syncedFilesCount" options:NSKeyValueObservingOptionNew context:nil];
@@ -58,9 +59,12 @@
 	[self.user removeObserver:self forKeyPath:@"avatar"];
 	[self.user removeObserver:self forKeyPath:@"nickname"];
 
-	[[(WAAppDelegate_iOS *)AppDelegate() photoImportManager] removeObserver:self forKeyPath:@"importedFilesCount"];
-	[[(WAAppDelegate_iOS *)AppDelegate() syncManager] removeObserver:self forKeyPath:@"syncedFilesCount"];
-	[[(WAAppDelegate_iOS *)AppDelegate() syncManager] removeObserver:self forKeyPath:@"preprocessingArticleSync"];
+	WAPhotoImportManager *photoImportManager = [(WAAppDelegate_iOS *)AppDelegate() photoImportManager];
+	[photoImportManager removeObserver:self forKeyPath:@"importedFilesCount"];
+
+	WASyncManager *syncManager = [(WAAppDelegate_iOS *)AppDelegate() syncManager];
+	[syncManager removeObserver:self forKeyPath:@"syncedFilesCount"];
+	[syncManager removeObserver:self forKeyPath:@"preprocessingArticleSync"];
 
 }
 

@@ -261,4 +261,33 @@ NSString * const WARemoteAttachmentSmallSubtype = @"small";
 
 }
 
+- (void)retrieveMetaForAttachments:(NSArray *)identifiers onSuccess:(void(^)(NSArray *))successBlock onFailure:(void(^)(NSError *))failureBlock {
+
+	if ([NSJSONSerialization isValidJSONObject:identifiers]) {
+		NSError *error = nil;
+		NSData *sentIdentifiers = [NSJSONSerialization dataWithJSONObject:identifiers options:0 error:&error];
+		NSString *sentIdentifiersString = [[NSString alloc] initWithData:sentIdentifiers encoding:NSUTF8StringEncoding];
+		if (error) {
+			NSLog(@"Unable to convert JSON from attachment identifiers: %@", identifiers);
+		} else {
+			NSDictionary *apiOptions = @{
+				kIRWebAPIEngineRequestContextFormURLEncodingFieldsKey:@{@"object_ids":sentIdentifiersString},
+				kIRWebAPIEngineRequestHTTPMethod:@"POST"
+			};
+
+			[self.engine fireAPIRequestNamed:@"attachments/multiple_get"
+												 withArguments:nil
+															 options:apiOptions
+														 validator:WARemoteInterfaceGenericNoErrorValidator()
+												successHandler: ^ (NSDictionary *inResponseOrNil, IRWebAPIRequestContext *inResponseContext) {
+				if (successBlock)
+					successBlock(inResponseOrNil[@"results"]);}
+												failureHandler:WARemoteInterfaceGenericFailureHandler(^ (NSError *anError){
+				if (failureBlock)
+					failureBlock(anError);})];
+		}
+	}
+
+}
+
 @end

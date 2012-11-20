@@ -72,4 +72,7 @@ typedef NSString * const WARemoteAttachmentSubtype;
 // POST attachments/upload_metadata
 - (void) createAttachmentMetas:(NSArray *)metas onSuccess:(void(^)(void))successBlock onFailure:(void(^)(NSError *error))failureBlock;
 
+// POST attachments/multiple_get
+- (void) retrieveMetaForAttachments:(NSArray *)identifiers onSuccess:(void(^)(NSArray *attachmentReps))successBlock onFailure:(void(^)(NSError *error))failureBlock;
+
 @end

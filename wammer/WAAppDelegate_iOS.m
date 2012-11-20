@@ -412,8 +412,6 @@ extern CFAbsoluteTime StartTime;
 
 - (void) applicationRootViewControllerDidRequestReauthentication:(id<WAApplicationRootViewController>)controller {
 
-	[self logout];
-
 	__weak WAAppDelegate_iOS *wSelf = self;
 	dispatch_async(dispatch_get_main_queue(), ^ {
 
@@ -651,11 +649,16 @@ extern CFAbsoluteTime StartTime;
   if (allowsCancellation)
     NSParameterAssert(!eraseAuthInfo);
 
-	if (eraseAuthInfo)
-    [self removeAuthenticationData];
-	
 	if (zapEverything)
 		[self clearViewHierarchy];
+
+	if (eraseAuthInfo) {
+		// run logout after all views are cleared to ensure no KVO registrations left
+		[[NSOperationQueue mainQueue] addOperationWithBlock:^{
+			[self logout];
+			[self removeAuthenticationData];
+		}];
+	}
 	
 	[self handleAuthRequest:aReason
 							withOptions:nil

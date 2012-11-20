@@ -52,6 +52,51 @@ NSString * const kWADataStoreArticleUpdateShowsBezels = @"WADataStoreArticleUpda
 
 }
 
+- (void)updateAttachmentsOnSuccess:(void (^)(void))successBlock onFailure:(void (^)(NSError *))failureBlock {
+
+	dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+
+		const NSUInteger MAX_UPDATING_FILES_COUNT = 50;
+		NSMutableDictionary *updatingFiles = [@{} mutableCopy];
+
+		WADataStore *ds = [WADataStore defaultStore];
+		NSArray *files = [ds fetchFilesWithoutMetaUsingContext:[ds disposableMOC]];
+		[files enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+
+			updatingFiles[[obj identifier]] = [[obj objectID] URIRepresentation];
+
+			if ([updatingFiles count] == MAX_UPDATING_FILES_COUNT || idx == [files count] - 1) {
+
+				NSDictionary *sentUpdatingFiles = [updatingFiles copy];
+				[[WARemoteInterface sharedInterface] retrieveMetaForAttachments:[updatingFiles allKeys] onSuccess:^(NSArray *attachmentReps) {
+
+					for (NSDictionary *attachment in attachmentReps) {
+						NSURL *ownURL = sentUpdatingFiles[attachment[@"object_id"]];
+						NSManagedObjectContext *context = [ds autoUpdatingMOC];
+						context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
+						WAFile *file = (WAFile *)[context irManagedObjectForURI:ownURL];
+						[file configureWithRemoteDictionary:attachment];
+						[context save:nil];
+					}
+
+				} onFailure:^(NSError *error) {
+
+					NSLog(@"Unable to retrieve attachment metas:%@ error:%@", updatingFiles, error);
+
+				}];
+
+				[updatingFiles removeAllObjects];
+
+			}
+
+		}];
+
+		successBlock();
+
+	});
+
+}
+
 - (void) updateArticlesOnSuccess:(void (^)(void))successBlock onFailure:(void (^)(NSError *error))failureBlock {
 
 	NSMutableDictionary *options = [NSMutableDictionary dictionaryWithObjectsAndKeys:
