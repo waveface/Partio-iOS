@@ -47,17 +47,20 @@
 	return self;
 }
 
+/* Reflow Layout engine base on Partition (Number Theory)
+ http://en.wikipedia.org/wiki/Partition_(number_theory)
+ */
 - (void)reloadLayout:(NSArray *)partition
 {
 	_layout = [@[]mutableCopy];
 	NSArray *aLayout;
-	int lastLayout=[_photos count]+1;
+	int previousLayout=[_photos count]+1;
 	for (int i=0; i<[_photos count]; i+=[aLayout count]) {
-		int random_index = arc4random_uniform([partition count]);
-		if (random_index == lastLayout)
-			random_index = (random_index+1)%[aLayout count];
-		lastLayout = random_index;
-		aLayout=partition[random_index];
+		int candidateLayout = arc4random_uniform([partition count]);
+		if (candidateLayout == previousLayout)
+			candidateLayout = (candidateLayout+1)%[aLayout count];
+		previousLayout = candidateLayout;
+		aLayout=partition[candidateLayout];
 		[_layout addObjectsFromArray:aLayout];
 	}
 }
