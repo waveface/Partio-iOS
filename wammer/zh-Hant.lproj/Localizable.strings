@@ -1,20 +1,8 @@
 /* accessibility label for adding photos in composition view */
 "ACCESS_ADD_PHOTO" = "加照片";
 
-/* Accessibility label for camera in iPhone timeline */
-"ACCESS_CAMERA" = "照相";
-
-/* Accessibility label for composer in iPhone timeline */
-"ACCESS_COMPOSE" = "貼文";
-
-/* Accessibility label for next day timeline */
-"ACCESS_NEXT_DAY" = "ACCESS_NEXT_DAY";
-
 /* accessibility label for webpage preview in composition view */
 "ACCESS_PREVIEW" = "預覽";
-
-/* Accessibility label for previous day timeline */
-"ACCESS_PREVIOUS_DAY" = "ACCESS_PREVIOUS_DAY";
 
 /* add photo button in composition view */
 "ACTION_ADD" = "加照片";
