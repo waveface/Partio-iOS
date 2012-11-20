@@ -57,27 +57,22 @@ NSString * const kWADataStoreArticleUpdateShowsBezels = @"WADataStoreArticleUpda
 	dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
 
 		const NSUInteger MAX_UPDATING_FILES_COUNT = 50;
-		NSMutableDictionary *updatingFiles = [@{} mutableCopy];
+		NSMutableArray *updatingFiles = [@[] mutableCopy];
 
 		WADataStore *ds = [WADataStore defaultStore];
 		NSArray *files = [ds fetchFilesWithoutMetaUsingContext:[ds disposableMOC]];
 		[files enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
 
-			updatingFiles[[obj identifier]] = [[obj objectID] URIRepresentation];
+			[updatingFiles addObject:[obj identifier]];
 
 			if ([updatingFiles count] == MAX_UPDATING_FILES_COUNT || idx == [files count] - 1) {
 
-				NSDictionary *sentUpdatingFiles = [updatingFiles copy];
-				[[WARemoteInterface sharedInterface] retrieveMetaForAttachments:[updatingFiles allKeys] onSuccess:^(NSArray *attachmentReps) {
+				[[WARemoteInterface sharedInterface] retrieveMetaForAttachments:updatingFiles onSuccess:^(NSArray *attachmentReps) {
 
-					for (NSDictionary *attachment in attachmentReps) {
-						NSURL *ownURL = sentUpdatingFiles[attachment[@"object_id"]];
-						NSManagedObjectContext *context = [ds autoUpdatingMOC];
-						context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
-						WAFile *file = (WAFile *)[context irManagedObjectForURI:ownURL];
-						[file configureWithRemoteDictionary:attachment];
-						[context save:nil];
-					}
+					NSManagedObjectContext *context = [ds autoUpdatingMOC];
+					context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
+					[WAFile insertOrUpdateObjectsUsingContext:context withRemoteResponse:attachmentReps usingMapping:nil options:IRManagedObjectOptionIndividualOperations];
+					[context save:nil];
 
 				} onFailure:^(NSError *error) {
 

@@ -159,7 +159,7 @@
 	if (!self)
 		return nil;
 	
-	self.defaultBatchSize = 30;
+	self.defaultBatchSize = 10;
 	self.dataRetrievalInterval = 15;
 	
 	[self addRepeatingDataRetrievalBlocks:[self defaultDataRetrievalBlocks]];

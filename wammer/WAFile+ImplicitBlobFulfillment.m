@@ -122,13 +122,23 @@
 	Class class = [self class];
 	
 	[[IRRemoteResourcesManager sharedManager] retrieveResourceAtURL:blobURL usingPriority:priority forced:NO withCompletionBlock:^(NSURL *tempFileURLOrNil) {
-	
+
 		if (!tempFileURLOrNil) {
 			return;
 		}
 
 		if (!class)
 			return;
+
+		if (![UIImage imageWithContentsOfFile:[tempFileURLOrNil path]]) {
+			__weak WAFile *wSelf = self;
+			int64_t delayInSeconds = 3.0;
+			dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+			dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+				[wSelf scheduleRetrievalForBlobURL:blobURL blobKeyPath:blobURLKeyPath filePathKeyPath:filePathKeyPath usingPriority:priority];
+			});
+			return;
+		}
 		
 		dispatch_async([class sharedExtraSmallThumbnailMakingQueue], ^{
 			
