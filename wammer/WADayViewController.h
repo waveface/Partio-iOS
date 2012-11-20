@@ -10,7 +10,7 @@
 #import "IRPaginatedView.h"
 #import "IIViewDeckController.h"
 
-@interface WADayViewController : UIViewController <IRPaginatedViewDelegate, IIViewDeckControllerDelegate, NSFetchedResultsControllerDelegate>
+@interface WADayViewController : UIViewController <IRPaginatedViewDelegate, IIViewDeckControllerDelegate>
 
 - (id)initWithClassNamed: (Class)containerClass;
 - (void)jumpToToday;
