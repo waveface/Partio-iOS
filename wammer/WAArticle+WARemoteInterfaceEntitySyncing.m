@@ -894,7 +894,7 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 			NSError *error = (NSError *)([results isKindOfClass:[NSError class]] ? results : nil);
 
 			// post id already exists
-			if ([[error domain] isEqualToString:kWAArticleEntitySyncingErrorDomain] && [error code] == 0x3019) {
+			if ([[error domain] isEqualToString:kWARemoteInterfaceDomain] && [error code] == 0x3000 + 25) {
 				NSManagedObjectContext *context = [[WADataStore defaultStore] disposableMOC];
 				context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
 				WAArticle *savedPost = (WAArticle *)[context irManagedObjectForURI:postEntityURL];
