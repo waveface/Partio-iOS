@@ -134,7 +134,19 @@
 	}
 	
 	WAFile *photo = (WAFile *)_photos[indexPath.row];
-	cell.imageView.image = photo.smallestPresentableImage;
+	
+	[photo irObserve:@"smallThumbnailImage"
+					 options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew
+					 context:nil
+				 withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
+					 
+					 dispatch_async(dispatch_get_main_queue(), ^{
+						 
+						 cell.imageView.image = (UIImage*)toValue;
+						 
+					 });
+					 
+				 }];
 	
 	return cell;
 }
