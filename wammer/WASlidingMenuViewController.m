@@ -197,12 +197,24 @@
 	
 	if ([keyPath isEqualToString:@"syncedFilesCount"]) {
 		[[NSOperationQueue mainQueue] addOperationWithBlock:^{
+			if (wSelf.statusBar == nil) {
+				return;
+			}
 			WASyncManager *syncManager = [(WAAppDelegate_iOS *)AppDelegate() syncManager];
 			NSUInteger currentCount = [change[NSKeyValueChangeNewKey] unsignedIntegerValue];
 			if (currentCount == syncManager.needingSyncFilesCount) {
-				syncManager.syncedFilesCount = 0;
-				syncManager.needingSyncFilesCount = 0;
-				wSelf.statusBar = nil;
+				if (syncManager.needingSyncFilesCount == 0) {
+					wSelf.statusBar.statusLabel.text = NSLocalizedString(@"PHOTO_UPLOAD_STATUS_BAR_FAIL", @"String on customized status bar");
+					int64_t delayInSeconds = 2.0;
+					dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+					dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+						wSelf.statusBar = nil;
+					});
+				} else {
+					syncManager.needingSyncFilesCount = 0;
+					syncManager.syncedFilesCount = 0;
+					wSelf.statusBar = nil;
+				}
 			} else {
 				if (!wSelf.statusBar) {
 					wSelf.statusBar = [[WAStatusBar alloc] initWithFrame:CGRectZero];

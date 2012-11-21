@@ -908,8 +908,9 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 
 			completionBlock(NO, error);
 
-			// sync will be aborted so we dismiss the customized uploading status bar by pretending all files are synced
+			// dismissing customized status bar by zeroing both needingSyncFilesCount and syncedFilesCount
 			WASyncManager *syncManager = [(WAAppDelegate_iOS *)AppDelegate() syncManager];
+			syncManager.needingSyncFilesCount = 0;
 			syncManager.syncedFilesCount = syncManager.needingSyncFilesCount;
 			
 		}

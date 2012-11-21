@@ -304,6 +304,9 @@
 "PHOTO_UPLOAD_CONTROLLER_TITLE" = "照片自動上傳";
 
 /* String on customized status bar */
+"PHOTO_UPLOAD_STATUS_BAR_FAIL" = "上傳失敗";
+
+/* String on customized status bar */
 "PHOTO_UPLOAD_STATUS_BAR_IMPORTING" = "正在掃描相機膠卷";
 
 /* String on customized status bar */

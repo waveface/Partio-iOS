@@ -42,7 +42,7 @@
 		NSDictionary *viewDic = NSDictionaryOfVariableBindings(status, progress);
 		[self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:[status(==20@500)]-[progress(==100)]-5-|" options:NSLayoutFormatDirectionLeadingToTrailing metrics:nil views:viewDic]];
 		[self addConstraint:[NSLayoutConstraint constraintWithItem:self.statusLabel attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeCenterY multiplier:1.0 constant:0]];
-		[self addConstraint:[NSLayoutConstraint constraintWithItem:self.progressView attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeCenterY multiplier:1.0 constant:0]];
+		[self addConstraint:[NSLayoutConstraint constraintWithItem:self.progressView attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeCenterY multiplier:1.0 constant:-1]];
 
 	}
 	return self;
