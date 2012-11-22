@@ -9,7 +9,7 @@
 #import "WAAppearance.h"
 #import <UIKit/UIKit.h>
 #import "UIKit+IRAdditions.h"
-
+#import "WAFirstUseViewController.h"
 
 #pragma mark - UIAppearance
 void WADefaultAppearance(void) {
@@ -28,18 +28,19 @@ void WADefaultAppearance(void) {
 		
 		[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackOpaque];
 		
+		// set the appearance for first use flow
 		UIColor *naviBgColor = [UIColor colorWithRed:0.95f green:0.95f blue:0.95f alpha:1];
-		[[UINavigationBar appearance] setTintColor:naviBgColor];
+		[[UINavigationBar appearanceWhenContainedIn:[WAFirstUseViewController class], nil] setTintColor:naviBgColor];
 		
 		NSValue *shadowOffset = [NSValue valueWithUIOffset:(UIOffset){0,0}];
 														 
 		UIColor *textColor = [UIColor colorWithRed:0.30f green:0.30f blue:0.30f alpha:1];
-		[[UINavigationBar appearance] setTitleTextAttributes:@{UITextAttributeTextColor: textColor, UITextAttributeTextShadowOffset:shadowOffset}];
+		[[UINavigationBar appearanceWhenContainedIn:[WAFirstUseViewController class], nil] setTitleTextAttributes:@{UITextAttributeTextColor: textColor, UITextAttributeTextShadowOffset:shadowOffset}];
 
 		UIColor *btnTextColor = [UIColor colorWithRed:0.45f green:0.45f blue:0.45f alpha:1];
-		[[UIBarButtonItem appearance] setTitleTextAttributes:@{UITextAttributeTextColor: btnTextColor, UITextAttributeTextShadowOffset:shadowOffset} forState:UIControlStateNormal];
+		[[UIBarButtonItem appearanceWhenContainedIn:[WAFirstUseViewController class], nil] setTitleTextAttributes:@{UITextAttributeTextColor: btnTextColor, UITextAttributeTextShadowOffset:shadowOffset} forState:UIControlStateNormal];
 		
-		[[UIBarButtonItem appearance] setTintColor:naviBgColor];
+		[[UIBarButtonItem appearanceWhenContainedIn:[WAFirstUseViewController class], nil] setTintColor:naviBgColor];
 		
 		[[UIToolbar appearance] setTintColor:naviBgColor];
 		
