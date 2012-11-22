@@ -326,8 +326,6 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
 	BOOL needsSendingThumbnailImage = !self.thumbnailURL;
 	
 	NSMutableArray *operations = [NSMutableArray array];
-	NSManagedObjectContext *context = [ds autoUpdatingMOC];
-	context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
 	
 	BOOL (^isValidPath)(NSString *) = ^ (NSString *aPath) {
 		
@@ -354,10 +352,39 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
 		
 		[ri createAttachmentWithFile:fileURL group:ri.primaryGroupIdentifier options:options onSuccess: ^ (NSString *attachmentIdentifier) {
 			
-			[context performBlock:^{
+			NSManagedObjectContext *context = [ds autoUpdatingMOC];
+			context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
+
+			WAFile *file = (WAFile *)[context irManagedObjectForURI:ownURL];
+			file.identifier = attachmentIdentifier;
+			
+			if ([[options valueForKey:kWARemoteAttachmentSubtype] isEqualToString:WARemoteAttachmentMediumSubtype]) {
 				
+				file.thumbnailURL = [[file class] transformedValue:[@"/v2/attachments/view?object_id=" stringByAppendingFormat:@"%@&image_meta=medium", file.identifier] fromRemoteKeyPath:nil toLocalKeyPath:@"thumbnailURL"];
+				
+			} else if ([[options valueForKey:kWARemoteAttachmentSubtype] isEqualToString:WARemoteAttachmentOriginalSubtype]) {
+				
+				file.resourceURL = [[file class] transformedValue:[@"/v2/attachments/view?object_id=" stringByAppendingFormat:@"%@", file.identifier] fromRemoteKeyPath:nil toLocalKeyPath:@"resourceURL"];
+				
+				[[WADataStore defaultStore] setLastSyncSuccessDate:[NSDate date]];
+				
+			}
+			
+			NSError *error = nil;
+			BOOL didSave = [context save:&error];
+			NSCAssert1(didSave, @"Generated thumbnail uploaded but metadata is not saved correctly: %@", error);
+			
+			callback(error);
+			
+		} onFailure: ^ (NSError *error) {
+			
+			// file is existed
+			if ([[error domain] isEqualToString:kWARemoteInterfaceDomain] && [error code] == 0x6000 + 14) {
+
+				NSManagedObjectContext *context = [ds autoUpdatingMOC];
+				context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
+
 				WAFile *file = (WAFile *)[context irManagedObjectForURI:ownURL];
-				file.identifier = attachmentIdentifier;
 				
 				if ([[options valueForKey:kWARemoteAttachmentSubtype] isEqualToString:WARemoteAttachmentMediumSubtype]) {
 					
@@ -377,11 +404,11 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
 				
 				callback(error);
 				
-			}];
-			
-		} onFailure: ^ (NSError *error) {
-			
-			callback(error);
+			} else {
+				
+				callback(error);
+
+			}
 			
 		}];
 		
@@ -391,9 +418,12 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
 		
 		/* this probably won't happen since all selected photos will be generated with thumbnails while composition
 		 */
-		
+
 		[operations addObject:[IRAsyncBarrierOperation operationWithWorker:^(IRAsyncOperationCallback callback) {
 			
+			NSManagedObjectContext *context = [ds autoUpdatingMOC];
+			context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
+
 			WAFile *file = (WAFile *)[context irManagedObjectForURI:ownURL];
 			
 			if (file.thumbnailURL) {
@@ -476,10 +506,6 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
 
 			}
 
-		} trampoline:^(IRAsyncOperationInvoker block) {
-		
-			[context performBlock:block];
-			
 		} callback:^(id results) {
 
 			if ([results isKindOfClass:[NSError class]]) {
@@ -488,10 +514,6 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
 				completionBlock(YES, nil);
 			}
 
-		} callbackTrampoline:^(IRAsyncOperationInvoker block) {
-		
-			[context performBlock:block];
-			
 		}]];
 	
 	}
@@ -500,6 +522,8 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
 
 		[operations addObject:[IRAsyncBarrierOperation operationWithWorker:^(IRAsyncOperationCallback callback) {
 			
+			NSManagedObjectContext *context = [ds disposableMOC];
+
 			WAFile *file = (WAFile *)[context irManagedObjectForURI:ownURL];
 
 			if (file.resourceURL || ![[WARemoteInterface sharedInterface] hasReachableStation]) {
@@ -541,10 +565,6 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
 				uploadAttachment([NSURL fileURLWithPath:sentResourcePath], options, callback);
 			}
 			
-		} trampoline:^(IRAsyncOperationInvoker block) {
-			
-			[context performBlock:block];
-			
 		} callback:^(id results) {
 
 			if ([results isKindOfClass:[NSError class]]) {
@@ -553,10 +573,6 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
 				completionBlock(YES, nil);
 			}
 
-		} callbackTrampoline:^(IRAsyncOperationInvoker block) {
-		
-			[context performBlock:block];
-			
 		}]];
 	
 	}
