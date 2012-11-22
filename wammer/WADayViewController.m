@@ -254,7 +254,6 @@ BOOL (^isSameDay) (NSDate *, NSDate *) = ^ (NSDate *d1, NSDate *d2) {
 		if ( [vc isKindOfClass:[WAPhotoStreamViewController class]]  ) {
 			((WAPhotoStreamViewController *)vc).delegate = self;
 		}
-		[self addChildViewController:vc];
 		(self.daysControllers)[dateForPage] = vc;
 	}
 	
@@ -265,6 +264,9 @@ BOOL (^isSameDay) (NSDate *, NSDate *) = ^ (NSDate *d1, NSDate *d2) {
 - (UIView *) viewForPaginatedView:(IRPaginatedView *)paginatedView atIndex:(NSUInteger)index {
 
 	UIViewController *viewController = [self controllerAtPageIndex:index];
+	
+	if (!viewController.parentViewController)
+		[self addChildViewController:viewController];
 	
 	if (viewController)
 		return viewController.view;
