@@ -98,11 +98,8 @@
 }
 
 - (void)viewWillAppear:(BOOL)animated {
+
 	[super viewWillAppear:animated];
-	//[[UINavigationBar appearance] setTintColor:[UIColor greenColor]];
-	self.navigationController.navigationBar.tintColor = [UIColor colorWithWhite:0.157 alpha:1.000];
-	self.navigationController.navigationBar.titleTextAttributes = @{UITextAttributeTextColor: [UIColor whiteColor]};
-	
 	
 }
 
