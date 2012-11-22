@@ -66,6 +66,9 @@
 
 - (void)createPhotoImportArticlesWithCompletionBlock:(void(^)(void))aCallbackBlock {
 
+	// set the state synchronously so we do not upload until importing finished
+	self.preprocessing = YES;
+
 	__weak WAPhotoImportManager *wSelf = self;
 	if (![[NSOperationQueue currentQueue] isEqual:self.threadSafetyQueue]) {
 		[self.threadSafetyQueue addOperationWithBlock:^{
@@ -75,8 +78,6 @@
 	}
 
 	NSParameterAssert([[NSOperationQueue currentQueue] isEqual:self.threadSafetyQueue]);
-
-	self.preprocessing = YES;
 
 	NSDate *importTime = [NSDate date];
 	NSDate *sinceDate = self.lastOperationTimestamp;

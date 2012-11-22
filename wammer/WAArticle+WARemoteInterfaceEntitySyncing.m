@@ -846,6 +846,31 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 	
 		NSCParameterAssert(results);
 		
+
+		void (^dismissSyncStatusBarIfNeeded)(BOOL forced) = ^(BOOL forced) {
+
+			WASyncManager *syncManager = [(WAAppDelegate_iOS *)AppDelegate() syncManager];
+			
+			if (forced) {
+
+				if (!syncManager.syncStopped) {
+
+					[syncManager resetSyncFilesCount];
+
+				}
+
+			} else {
+				
+				if (syncManager.syncCompleted) {
+					
+					[syncManager resetSyncFilesCount];
+				
+				}
+
+			}
+
+		};
+
 		if ([results isKindOfClass:[NSDictionary class]]) {
 		
 			WADataStore *ds = [WADataStore defaultStore];
@@ -886,7 +911,9 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 				BOOL didSave = [context save:&savingError];
 				
 				completionBlock(didSave, savingError);
-			
+
+				dismissSyncStatusBarIfNeeded(NO);
+
 			} waitUntilDone:NO];
 		
 		} else {
@@ -908,11 +935,8 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 
 			completionBlock(NO, error);
 
-			// dismissing customized status bar by zeroing both needingSyncFilesCount and syncedFilesCount
-			WASyncManager *syncManager = [(WAAppDelegate_iOS *)AppDelegate() syncManager];
-			syncManager.needingSyncFilesCount = 0;
-			syncManager.syncedFilesCount = syncManager.needingSyncFilesCount;
-			
+			dismissSyncStatusBarIfNeeded(YES);
+
 		}
 		
 	}]];

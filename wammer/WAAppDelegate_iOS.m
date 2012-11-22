@@ -859,8 +859,8 @@ static NSInteger networkActivityStackingCount = 0;
 
 - (WAPhotoImportManager *)photoImportManager {
 
-	static dispatch_once_t onceToken = 0;
-	dispatch_once(&onceToken, ^{
+	@synchronized(self) {
+
 		if (!_photoImportManager) {
 			_photoImportManager = [[WAPhotoImportManager alloc] init];
 			if (_photoImportManager.enabled) {
@@ -869,7 +869,8 @@ static NSInteger networkActivityStackingCount = 0;
 				}];
 			}
 		}
-	});
+
+	};
 
 	return _photoImportManager;
 
@@ -877,14 +878,15 @@ static NSInteger networkActivityStackingCount = 0;
 
 - (WACacheManager *)cacheManager {
 
-	static dispatch_once_t onceToken = 0;
-	dispatch_once(&onceToken, ^{
+	@synchronized(self) {
+
 		if (!_cacheManager) {
 			_cacheManager = [[WACacheManager alloc] init];
 			_cacheManager.delegate = self;
 			[_cacheManager clearPurgeableFilesIfNeeded];
 		}
-	});
+
+	};
 
 	return _cacheManager;
 
@@ -892,13 +894,14 @@ static NSInteger networkActivityStackingCount = 0;
 
 -(WASyncManager *)syncManager {
 
-	static dispatch_once_t onceToken = 0;
-	dispatch_once(&onceToken, ^{
+	@synchronized(self) {
+
 		if (!_syncManager) {
 			_syncManager = [[WASyncManager alloc] init];
 			[_syncManager reload];
 		}
-	});
+
+	};
 
 	return _syncManager;
 
