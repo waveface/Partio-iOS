@@ -13,6 +13,7 @@
 #import "WAPhotoStreamViewCell.h"
 #import "NSDate+WAAdditions.h"
 #import "WADayHeaderView.h"
+#import "WAGalleryViewController.h"
 
 @interface WAPhotoStreamViewController (){
 	NSArray *colorPalette;
@@ -52,13 +53,14 @@
  */
 - (void)reloadLayout:(NSArray *)partition
 {
+	NSInteger MAX = [[partition[0] valueForKeyPath:@"@sum.intValue"] integerValue];
 	_layout = [@[]mutableCopy];
 	NSArray *aLayout;
 	int previousLayout=[_photos count]+1;
 	for (int i=0; i<[_photos count]; i+=[aLayout count]) {
 		int candidateLayout = arc4random_uniform([partition count]);
 		if (candidateLayout == previousLayout)
-			candidateLayout = (candidateLayout+1)%[aLayout count];
+			candidateLayout = (candidateLayout+1) % MAX;
 		previousLayout = candidateLayout;
 		aLayout=partition[candidateLayout];
 		[_layout addObjectsFromArray:aLayout];
@@ -133,7 +135,19 @@
 	}
 	
 	WAFile *photo = (WAFile *)_photos[indexPath.row];
-	cell.imageView.image = photo.smallestPresentableImage;
+	
+	[photo irObserve:@"smallThumbnailImage"
+					 options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew
+					 context:nil
+				 withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
+					 
+					 dispatch_async(dispatch_get_main_queue(), ^{
+						 
+						 cell.imageView.image = (UIImage*)toValue;
+						 
+					 });
+					 
+				 }];
 	
 	return cell;
 }
@@ -164,6 +178,23 @@
 	headerView.monthLabel.textColor =[UIColor colorWithWhite:0.53 alpha:1.0f];
 	headerView.wdayLabel.textColor = [UIColor colorWithWhite:0.53 alpha:1.0f];
 	return headerView;
+}
+
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
+	__weak WAGalleryViewController *galleryVC = nil;
+	
+	WAFile *file = [self.photos objectAtIndex:indexPath.row];
+	
+	galleryVC = [WAGalleryViewController
+							 controllerRepresentingArticleAtURI:[[[file.articles anyObject] objectID] URIRepresentation]
+							 context:@{kWAGalleryViewControllerContextPreferredFileObjectURI:[[file objectID] URIRepresentation]}
+							 ];
+	
+	galleryVC.onDismiss = ^ {
+		[galleryVC.navigationController popViewControllerAnimated:YES];
+	};
+	
+	[self.navigationController pushViewController:galleryVC animated:YES];
 }
 
 @end
