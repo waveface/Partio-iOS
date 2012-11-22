@@ -10,6 +10,7 @@
 #import "WADefines.h"
 #import "WATimelineViewControllerPhone.h"
 #import "WADataStore.h"
+#import "NSDate+WAAdditions.h"
 #import "WADataStore+WARemoteInterfaceAdditions.h"
 
 #import "WADataStore+FetchingConveniences.h"
@@ -27,7 +28,7 @@
 
 static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPostsViewControllerPhone_RepresentedObjectURI";
 
-@interface WADayViewController () <WAArticleDraftsViewControllerDelegate> {
+@interface WADayViewController () <WAArticleDraftsViewControllerDelegate, NSFetchedResultsControllerDelegate> {
 	Class containedClass;
 }
 
@@ -62,63 +63,7 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 	 selector:@selector(handleCompositionSessionRequest:)
 	 name:kWACompositionSessionRequestedNotification
 	 object:nil];
-	
-	[self performFetchRequestForIncomingData];
-	
-	CGRect rect = (CGRect){ CGPointZero, (CGSize){ 1, 1 } };
-	UIGraphicsBeginImageContext(rect.size);
-	CGContextRef context = UIGraphicsGetCurrentContext();
-	CGContextSetFillColorWithColor(context, [UIColor clearColor].CGColor);
-	CGContextFillRect(context, rect);
-	UIImage *transparentImage = UIGraphicsGetImageFromCurrentImageContext();
-	UIGraphicsEndImageContext();
-	
-	UIImage *cameraPressed = [UIImage imageNamed:@"CameraPressed"];
-	UIButton *cameraButton = [[UIButton alloc] initWithFrame:(CGRect){ CGPointZero, cameraPressed.size }];
-	[cameraButton setBackgroundImage:cameraPressed forState:UIControlStateHighlighted];
-	[cameraButton addTarget:self action:@selector(handleCameraCapture:) forControlEvents:UIControlEventTouchUpInside];
-	[cameraButton setShowsTouchWhenHighlighted:YES];
-	
-	UIImage *notePressed = [UIImage imageNamed:@"NotePressed"];
-	UIButton *noteButton = [[UIButton alloc] initWithFrame:(CGRect){ CGPointZero, notePressed.size }];
-	[noteButton setBackgroundImage:notePressed forState:UIControlStateHighlighted];
-	[noteButton addTarget:self action:@selector(handleCompose:) forControlEvents:UIControlEventTouchUpInside];
-	[noteButton setShowsTouchWhenHighlighted:YES];
-	
-	UIBarButtonItem *alphaSpacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
-	alphaSpacer.width = 14.0;
-	
-	UIBarButtonItem *omegaSpacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
-	omegaSpacer.width = 34.0;
-	
-	UIBarButtonItem *zeroSpacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
-	zeroSpacer.width = -10;
-	
-	UIBarButtonItem *leftUIButton = [[UIBarButtonItem alloc] initWithImage:transparentImage style:UIBarButtonItemStylePlain target:self action:@selector(handleSwipeRight:)];
-	[leftUIButton setAccessibilityLabel:NSLocalizedString(@"ACCESS_NEXT_DAY", @"Accessibility label for next day timeline")];
-
-	UIBarButtonItem *composeUIButton = [[UIBarButtonItem alloc] initWithCustomView:noteButton];
-	[composeUIButton setAccessibilityLabel:NSLocalizedString(@"ACCESS_COMPOSE", @"Accessibility label for composer in iPhone timeline")];
-	
-	UIBarButtonItem *cameraUIButton = [[UIBarButtonItem alloc] initWithCustomView:cameraButton];
-	[cameraButton setAccessibilityLabel:NSLocalizedString(@"ACCESS_CAMERA", @"Accessibility label for camera in iPhone timeline")];
-	
-	UIBarButtonItem *rightUIButton = [[UIBarButtonItem alloc] initWithImage:transparentImage style:UIBarButtonItemStylePlain target:self action:@selector(handleSwipeLeft:)];
-	[leftUIButton setAccessibilityLabel:NSLocalizedString(@"ACCESS_PREVIOUS_DAY", @"Accessibility label for previous day timeline")];
-	
-	
-	self.toolbarItems = @[alphaSpacer,
-											 //		datePickUIButton,
-											 leftUIButton,
-											 omegaSpacer,
-											 composeUIButton,
-											 zeroSpacer,
-											 cameraUIButton,
-											 omegaSpacer,
-											 //userInfoUIButton,
-											 rightUIButton,
-											 alphaSpacer];
-	
+			
 	__weak WADayViewController *wSelf = self;
 	self.navigationItem.rightBarButtonItem  = WABarButtonItem([UIImage imageNamed:@"Create"], @"", ^{
 		[wSelf handleCompose:wSelf.navigationItem.rightBarButtonItem];
@@ -157,49 +102,51 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 	
 	[self.view addSubview: self.paginatedView];
 
-	[self reloadViewContents];
-	[self.paginatedView reloadViews];
-	
 }
 
 - (void) viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
 
 	self.navigationItem.titleView.alpha = 1;
-	
-	[self.navigationController.toolbar setHidden:YES];
-	
+		
 	self.title = NSLocalizedString(@"EVENTS_CONTROLLER_TITLE", @"Title for Events view");
 	if ([containedClass isSubclassOfClass:[WAPhotoStreamViewController class]]) {
 		self.title = NSLocalizedString(@"PHOTOS_TITLE", @"in day view");
 	}
 	
+	[self.paginatedView reloadViews];
 
 }
 
 - (void) viewDidAppear:(BOOL)animated {
 	[super viewDidAppear:animated];
-	[self.navigationController setToolbarHidden:YES animated:animated];
-}
+	
+	__block NSDate *currentDate = nil;
+	__weak WADayViewController *wSelf = self;
+	
+	[self.fetchedResultsController.fetchedObjects enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+		
+		NSDate *theDate = nil;
+		
+		if ([containedClass isSubclassOfClass:[WATimelineViewControllerPhone class]]) {
 
-- (void) viewWillDisappear:(BOOL)animated {
+			theDate = [((WAArticle*)obj) creationDate];
+			
+		} else {
+			
+			theDate = [((WAFile*)obj) created];
 
-	UIToolbar *toolbar = self.navigationController.toolbar;
-	
-	[toolbar setBackgroundImage:[UIImage imageNamed:@"Toolbar"] forToolbarPosition:UIToolbarPositionAny barMetrics:UIBarMetricsDefault];
-	
-	[toolbar setNeedsLayout];
-	
-	[toolbar.layer addAnimation:((^ {
+		}
 		
-		CATransition *transition = [CATransition animation];
-		transition.duration = animated ? 0.5 : 0;
-		transition.type = kCATransitionFade;
+		if (!currentDate || !isSameDay(currentDate, theDate)) {
+			[wSelf.days addObject:theDate];
+			currentDate = theDate;
+		}
 		
-		return transition;
-		
-	})()) forKey:kCATransition];
-	[super viewWillDisappear:animated];
+	}];
+
+	[self.paginatedView reloadViews];
+
 }
 
 - (void)didReceiveMemoryWarning
@@ -239,15 +186,13 @@ BOOL (^isSameDay) (NSDate *, NSDate *) = ^ (NSDate *d1, NSDate *d2) {
 	
 };
 
-- (void) reloadViewContents {
+-(void) viewDidLoad {
 	
-	//reset
 	self.days = [NSMutableArray array];
 	self.daysControllers = [NSMutableDictionary dictionary];
 	
 	if ([containedClass isSubclassOfClass:[WATimelineViewControllerPhone class]]) {
-		
-		
+	
 		NSFetchRequest *fetchRequest = [[WADataStore defaultStore].persistentStoreCoordinator.managedObjectModel fetchRequestFromTemplateWithName:@"WAFRArticles" substitutionVariables:@{}];
 		
 		fetchRequest.relationshipKeyPathsForPrefetching = @[
@@ -266,53 +211,33 @@ BOOL (^isSameDay) (NSDate *, NSDate *) = ^ (NSDate *d1, NSDate *d2) {
 		
 		fetchRequest.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:NO]];
 		
-		__block NSDate *currentDate = nil;
+		self.fetchedResultsController = [[NSFetchedResultsController alloc]
+																		 initWithFetchRequest:fetchRequest
+																		 managedObjectContext:[[WADataStore defaultStore] defaultAutoUpdatedMOC]
+																		 sectionNameKeyPath:nil
+																		 cacheName:nil];
+		
+		self.fetchedResultsController.delegate = self;
 		
 		NSError *error = nil;
 		
-		NSArray *objects = [[[WADataStore defaultStore] defaultAutoUpdatedMOC] executeFetchRequest:fetchRequest error:&error];
-		
-		__weak WADayViewController *weakSelf = self;
-		
-		if (objects) {
-			
-			[objects enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-				
-				NSDate *theDate = [((WAArticle*)obj) creationDate];
-				
-				if (!currentDate || !isSameDay(currentDate, theDate)) {
-					[weakSelf.days addObject:theDate];
-					currentDate = theDate;
-				}
-				
-			}];
-			
-		}
-	} else { //WAPhotoStreamViewController
-		
-		__block NSDate *currentDate = nil;
-		__weak WADayViewController *weakSelf = self;
-		
-		NSPredicate *withDate =[NSPredicate predicateWithFormat:@"created != nil"];
-		NSArray *photos = [WAFile MR_findAllSortedBy:@"created" ascending:NO withPredicate:withDate];
+		if(![self.fetchedResultsController performFetch:&error]) {
+			NSLog(@"%@: failed to fetch articles for events", __FUNCTION__);
+		}		
 
-		if (photos) {
-			[photos enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-				NSDate *theDate = ((WAFile *)obj).created;
-				
-				if (!currentDate || !isSameDay(currentDate, theDate)) {
-					[weakSelf.days addObject:theDate];
-					currentDate = theDate;
-				}
-			}];
-		}
+	} else { //WAPhotoStreamViewController
+
+		NSPredicate *withDate =[NSPredicate predicateWithFormat:@"created != nil"];
+		self.fetchedResultsController = [WAFile MR_fetchAllSortedBy:@"created" ascending:NO withPredicate:withDate groupBy:nil delegate:self];
+		
 	}
-	
+
+
 }
 
 - (NSUInteger)numberOfViewsInPaginatedView:(IRPaginatedView *)paginatedView {
-		
-		return [self.days count];
+	
+	return [self.days count];
 	
 }
 
@@ -367,33 +292,66 @@ BOOL (^isSameDay) (NSDate *, NSDate *) = ^ (NSDate *d1, NSDate *d2) {
 	
 }
 
-- (void) performFetchRequestForIncomingData {
-	
-	NSFetchRequest *fr = [[WADataStore defaultStore] newFetchRequestForAllArticles];
-	fr.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:NO]];
-	
-	self.managedObjectContext = [[WADataStore defaultStore] defaultAutoUpdatedMOC];
-	self.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fr managedObjectContext:self.managedObjectContext sectionNameKeyPath:nil cacheName:nil];
-	
-	self.fetchedResultsController.delegate = self;
-	
-	[self.fetchedResultsController performFetch:nil];
 
-}
-
-- (void) controllerDidChangeContent:(NSFetchedResultsController *)controller {
+- (void) controller:(NSFetchedResultsController *)controller didChangeObject:(id)anObject atIndexPath:(NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type newIndexPath:(NSIndexPath *)newIndexPath {
 	
 	NSParameterAssert([NSThread isMainThread]);
+
 	
-	if ([self isViewLoaded]) {
-		
-		[self reloadViewContents];
-		[self.paginatedView reloadViews];
+	NSDate *theNewDate = nil;
+	if ([containedClass isSubclassOfClass:[WATimelineViewControllerPhone class]]) {
+
+		theNewDate = [((WAArticle*)anObject) creationDate];
+
+	} else {
+
+		theNewDate = [((WAFile*)anObject) created];
 		
 	}
 	
+	switch (type) {
+		case NSFetchedResultsChangeInsert:
+		{
+			
+			__block BOOL found = NO;
+			[self.days enumerateObjectsUsingBlock:^(NSDate *date, NSUInteger idx, BOOL *stop) {
+				if (isSameDay(date, theNewDate)) {
+					*stop = YES;
+					found = YES;
+				} 
+			}];
+			
+			if (!found) {
+				
+				// insertion sort
+				NSUInteger newIndex = [self.days indexOfObject:theNewDate
+																				 inSortedRange:(NSRange){0, self.days.count}
+																							 options:NSBinarySearchingInsertionIndex
+																			 usingComparator:^NSComparisonResult(NSDate *obj1, NSDate *obj2) {
+																				 return [obj2 compare:obj1];
+																			 }];
+				[self.days insertObject:theNewDate atIndex:newIndex];
+				
+				if ([self isViewLoaded]) {
+					[self.paginatedView reloadViews];
+				}
+				
+			}
+			
+			// TODO: if found, notify that view controller to update
+			
+			break;
+		}
+			
+		case NSFetchedResultsChangeDelete: {
+			// any chance to delete?
+			break;
+		}
+			
+		default:
+			break;
+	}
 }
-
 
 #pragma mark - delegate methods for WAArticleDraftsViewControllerDelegate
 - (BOOL) articleDraftsViewController:(WAArticleDraftsViewController *)aController shouldEnableArticle:(NSURL *)anObjectURIOrNil {
@@ -630,7 +588,6 @@ BOOL dripdownMenuOpened = NO;
 		[menu.view removeFromSuperview];
 		[menu didMoveToParentViewController:nil];
 		
-		[wSelf.navigationController setToolbarHidden:NO animated:NO];
 		[wSelf.navigationItem.leftBarButtonItem setEnabled:YES];
 		[wSelf.navigationItem.rightBarButtonItem setEnabled:YES];
 		
@@ -651,7 +608,6 @@ BOOL dripdownMenuOpened = NO;
 		return;
 	}
 	
-	[self.navigationController setToolbarHidden:YES animated:YES];
 	__block WADripdownMenuViewController *ddMenu = [[WADripdownMenuViewController alloc] initWithCompletion:^{
 		
 		dismissDDMenu(ddMenu);

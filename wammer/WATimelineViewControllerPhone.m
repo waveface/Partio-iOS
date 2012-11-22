@@ -286,7 +286,8 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 	NSString *cacheName = [NSString stringWithFormat:@"fetchedTableCache-%@", [formatter stringFromDate:self.currentDisplayedDate]];
 	_fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fr managedObjectContext:self.managedObjectContext sectionNameKeyPath:nil cacheName:cacheName];
 	
-	_fetchedResultsController.delegate = self;
+	// TODO: we don't monitor here, leverage DayViewController to notify
+	//	_fetchedResultsController.delegate = self;
   
   NSError *fetchingError;
 	if (![_fetchedResultsController performFetch:&fetchingError])
