@@ -36,32 +36,17 @@
 }
 
 - (void)setUp {
-	[MagicalRecord setupCoreDataStackWithAutoMigratingSqliteStoreNamed:@"UserWithEvents.sqlite"];
-	eventDayViewController = [[WADayViewController alloc] initWithClassNamed:[WATimelineViewControllerPhone class]];
-	photoDayViewController = [[WADayViewController alloc] initWithClassNamed:[WAPhotoStreamViewController class]];
+	[MagicalRecord cleanUp];
+	[MagicalRecord setupCoreDataStackWithStoreNamed:@"UserWithEvents.sqlite"];
 }
 
 - (void)tearDown {
-  eventDayViewController = nil;
 }
 
-- (void)t1estDayViewWithEventView {
-  [eventDayViewController loadView];
-	assertThat([[eventDayViewController controllerAtPageIndex:0] class], equalTo([WATimelineViewControllerPhone class]));
-}
-
-- (void)testDayViewWithPhotosView {
-	[photoDayViewController loadView];
-	STAssertTrue([photoDayViewController.days count] >= 0, @"Must be gpreater then 0");
-
-	assertThat([[photoDayViewController controllerAtPageIndex:0] class], equalTo([WAPhotoStreamViewController class]));
-	WAPhotoStreamViewController *controller = [photoDayViewController controllerAtPageIndex:0];
-	for (int i=0; i<[photoDayViewController numberOfViewsInPaginatedView:nil]; i++) {
-		controller = [photoDayViewController controllerAtPageIndex:i];
-		NSLog(@"%@, %d", photoDayViewController.days[i], [controller.photos count]);
-	}
-}
-
+/*
+ * To make this test run, 
+ * `cp wammer-iOS.app/UserWithEvents.sqlite Library/Application\ Support/wammer-iOS`
+ */
 - (void)testPhotoStreamViewController {
 	WAPhotoStreamViewController *photoStream = [[WAPhotoStreamViewController alloc] initWithDate:[[NSDate alloc]initWithTimeIntervalSince1970:NSTimeIntervalSince1970 +  366018890.0f]];
 	STAssertEquals([photoStream.photos count], (NSUInteger)158, @"158 photos");
