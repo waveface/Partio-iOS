@@ -296,7 +296,9 @@
 		[user.managedObjectContext save:nil];
 	}
 	
+	[MagicalRecord cleanUp];
 	[MagicalRecord setupCoreDataStackWithStoreNamed:	[identifier stringByAppendingString:@".sqlite"]];
+	[NSManagedObjectContext contextWithStoreCoordinator:[context persistentStoreCoordinator]];
 	
 #if DEBUG
 
