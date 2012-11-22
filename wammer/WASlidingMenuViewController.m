@@ -104,12 +104,6 @@
 		
 	}];
 	
-	NSValue *shadowOffset = [NSValue valueWithUIOffset:(UIOffset){0,0}];
-	UIColor *btnTextColor = [UIColor colorWithRed:0.45f green:0.45f blue:0.45f alpha:1];
-	[userInfoVC.navigationItem.rightBarButtonItem setTitleTextAttributes:@{UITextAttributeTextColor: btnTextColor, UITextAttributeTextShadowOffset:shadowOffset}
-																												forState:UIControlStateNormal];
-	
-	//	[self presentViewController:navC animated:YES completion:nil];
 	[self.viewDeckController setCenterController:navC];
 	
 }

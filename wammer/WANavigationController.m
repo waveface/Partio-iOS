@@ -60,24 +60,6 @@
 	UINavigationBar *navigationBar = (UINavigationBar *)self.navigationBar;
 	[navigationBar setClipsToBounds:YES];
 	
-	UIColor *naviBgColor = [UIColor colorWithRed:0.95f green:0.95f blue:0.95f alpha:1];
-	[navigationBar setTintColor:naviBgColor];
-	
-	NSValue *shadowOffset = [NSValue valueWithUIOffset:(UIOffset){0,0}];
-	
-	UIColor *textColor = [UIColor colorWithRed:0.30f green:0.30f blue:0.30f alpha:1];
-	[navigationBar setTitleTextAttributes:@{UITextAttributeTextColor: textColor, UITextAttributeTextShadowOffset:shadowOffset}];
-	[navigationBar setBarStyle:UIBarStyleDefault];
-	
-	UIColor *btnTextColor = [UIColor colorWithRed:0.45f green:0.45f blue:0.45f alpha:1];
-	[self.navigationItem.leftBarButtonItem setTitleTextAttributes:@{UITextAttributeTextColor: btnTextColor, UITextAttributeTextShadowOffset:shadowOffset} forState:UIControlStateNormal];
-	[self.navigationItem.rightBarButtonItem setTitleTextAttributes:@{UITextAttributeTextColor: btnTextColor, UITextAttributeTextShadowOffset:shadowOffset} forState:UIControlStateNormal];
-	[self.navigationItem.backBarButtonItem setTitleTextAttributes:@{UITextAttributeTextColor: btnTextColor, UITextAttributeTextShadowOffset:shadowOffset} forState:UIControlStateNormal];
-	
-	[self.navigationItem.leftBarButtonItem setTintColor:naviBgColor];
-	[self.navigationItem.rightBarButtonItem setTintColor:naviBgColor];
-
-
 	if (self.onViewDidLoad)
 		self.onViewDidLoad(self);
 
