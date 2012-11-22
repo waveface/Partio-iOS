@@ -250,6 +250,7 @@
 		80F800F615C2624C00132A96 /* IRAQ-Checkmark.png in Resources */ = {isa = PBXBuildFile; fileRef = 80F800F415C2624C00132A96 /* IRAQ-Checkmark.png */; };
 		80F800F715C2624C00132A96 /* IRAQ-Checkmark@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 80F800F515C2624C00132A96 /* IRAQ-Checkmark@2x.png */; };
 		94EB57761411451780C24560 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D215E734098A44479DEC4F88 /* libPods.a */; };
+		DE46FC17165E228300CC4FFF /* WACalendarPickerByTypeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DE46FC16165E228300CC4FFF /* WACalendarPickerByTypeViewController.m */; };
 		DE7B35151654B7FC00718262 /* TempAvatar.png in Resources */ = {isa = PBXBuildFile; fileRef = DE7B35131654B7FC00718262 /* TempAvatar.png */; };
 		DE7B35161654B7FC00718262 /* TempAvatar@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DE7B35141654B7FC00718262 /* TempAvatar@2x.png */; };
 		DEF13267164B83B50051284D /* CalIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = DEF13262164B83B50051284D /* CalIcon.png */; };
@@ -1267,6 +1268,8 @@
 		80F800F415C2624C00132A96 /* IRAQ-Checkmark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "IRAQ-Checkmark.png"; sourceTree = "<group>"; };
 		80F800F515C2624C00132A96 /* IRAQ-Checkmark@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "IRAQ-Checkmark@2x.png"; sourceTree = "<group>"; };
 		D215E734098A44479DEC4F88 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		DE46FC15165E228300CC4FFF /* WACalendarPickerByTypeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WACalendarPickerByTypeViewController.h; path = wammer/WACalendarPickerByTypeViewController.h; sourceTree = "<group>"; };
+		DE46FC16165E228300CC4FFF /* WACalendarPickerByTypeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WACalendarPickerByTypeViewController.m; path = wammer/WACalendarPickerByTypeViewController.m; sourceTree = "<group>"; };
 		DE7B35131654B7FC00718262 /* TempAvatar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = TempAvatar.png; path = Resources/TempAvatar.png; sourceTree = "<group>"; };
 		DE7B35141654B7FC00718262 /* TempAvatar@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "TempAvatar@2x.png"; path = "Resources/TempAvatar@2x.png"; sourceTree = "<group>"; };
 		DEF13262164B83B50051284D /* CalIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = CalIcon.png; path = Resources/CalIcon.png; sourceTree = "<group>"; };
@@ -2296,6 +2299,15 @@
 			name = "Event View";
 			sourceTree = "<group>";
 		};
+		DE7B38A0165CBB9900718262 /* Calendar Picker */ = {
+			isa = PBXGroup;
+			children = (
+				DE46FC15165E228300CC4FFF /* WACalendarPickerByTypeViewController.h */,
+				DE46FC16165E228300CC4FFF /* WACalendarPickerByTypeViewController.m */,
+			);
+			name = "Calendar Picker";
+			sourceTree = "<group>";
+		};
 		FF0024F914B44CC500F54AAF /* Blob Syncing */ = {
 			isa = PBXGroup;
 			children = (
@@ -2630,6 +2642,7 @@
 		FF73A53313D6C2CC00D54EC6 = {
 			isa = PBXGroup;
 			children = (
+				DE7B38A0165CBB9900718262 /* Calendar Picker */,
 				7DB81F181637E91B009A3645 /* Collection */,
 				7D0CDD04162E5A080027D35F /* StreamTests */,
 				4B8CA96F14BBE7BA006E06BB /* UnitTests */,
@@ -4536,6 +4549,7 @@
 				133058DE1650ABE300C0283F /* WASyncManager+FileMetadataSync.m in Sources */,
 				4BD189FE1653DE4200908080 /* WAFile.m in Sources */,
 				131AEC2F1654DF0D000F9E74 /* WAStatusBar.m in Sources */,
+				DE46FC17165E228300CC4FFF /* WACalendarPickerByTypeViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

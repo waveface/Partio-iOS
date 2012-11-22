@@ -15,7 +15,8 @@
 
 #import "WADataStore+FetchingConveniences.h"
 #import "IRTableView.h"
-#import "WADatePickerViewController.h"
+//#import "WADatePickerViewController.h"
+#import "WACalendarPickerByTypeViewController.h"
 #import "WADripdownMenuViewController.h"
 #import "WAArticleDraftsViewController.h"
 #import "WANavigationController.h"
@@ -504,7 +505,8 @@ BOOL (^isSameDay) (NSDate *, NSDate *) = ^ (NSDate *d1, NSDate *d2) {
 	[self.days enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
 		
 		NSDate *articleDate = (NSDate*)obj;
-		NSComparisonResult result = [date compare:articleDate];
+		NSDate *selectedDate = [date dateByAddingTimeInterval:86399]; // add time interval to 23:59
+		NSComparisonResult result = [selectedDate compare:articleDate];
 		if (result == NSOrderedSame || result == NSOrderedDescending) {
 			foundIdx = idx;
 			found = YES;
@@ -524,14 +526,15 @@ BOOL (^isSameDay) (NSDate *, NSDate *) = ^ (NSDate *d1, NSDate *d2) {
 - (void) handleDateSelect:(UIBarButtonItem *)sender {
 	
 	NSManagedObjectContext *moc = [[WADataStore defaultStore] defaultAutoUpdatedMOC];
+
 	__weak WADayViewController *wSelf = self;
 	
-	__block WADatePickerViewController *dpVC = [WADatePickerViewController controllerWithCompletion:^(NSDate *date) {
-		
+	__block WACalendarPickerByTypeViewController *dpVC = [WACalendarPickerByTypeViewController controllerWithCompletion:^(NSDate *date) {
+	
 		if (date) {
 			
 			[wSelf jumpToTimelineOnDate:date];
-			
+		
 		}
 		
 		[dpVC willMoveToParentViewController:nil];
@@ -569,7 +572,7 @@ BOOL (^isSameDay) (NSDate *, NSDate *) = ^ (NSDate *d1, NSDate *d2) {
 	
 	dpVC.view.frame = hostingVC.view.bounds;
 	[hostingVC.view addSubview:dpVC.view];
-	[dpVC didMoveToParentViewController:hostingVC];
+	//[dpVC didMoveToParentViewController:hostingVC];
 	
 }
 

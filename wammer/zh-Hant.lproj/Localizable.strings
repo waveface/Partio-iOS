@@ -154,6 +154,9 @@
 /* Title for confirming a post deletion */
 "DELETE_POST_CONFIRMATION_TITLE" = "是否要刪除貼文？";
 
+/* No comment provided by engineer. */
+"DONE" = "DONE";
+
 /* Downloading Status on iPhone Timeline */
 "DOWNLOADING_PHOTOS" = "內容同步中...";
 
