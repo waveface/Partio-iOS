@@ -146,7 +146,7 @@ static NSString *const kTrackingId = @"UA-27817516-7";
 			
 			id observer = [[NSNotificationCenter defaultCenter] addObserverForName:kWAAppEventNotification object:nil queue:nil usingBlock:^(NSNotification *note) {
 				
-				NSString *eventTitle = [[note userInfo] objectForKey:kWAAppEventTitle];
+				NSString *eventTitle = [note userInfo][kWAAppEventTitle];
 				[TestFlight passCheckpoint:eventTitle];
 				
 			}];
@@ -450,7 +450,7 @@ extern CFAbsoluteTime StartTime;
 
 - (void) handleObservedAuthenticationFailure:(NSNotification *)aNotification {
 
-	NSError *error = [[aNotification userInfo] objectForKey:@"error"];
+	NSError *error = [aNotification userInfo][@"error"];
 	
 	[self unsubscribeRemoteNotification];
 
@@ -472,7 +472,7 @@ extern CFAbsoluteTime StartTime;
 	NSString *command = nil;
 	NSDictionary *params = nil;
 	
-	if (!WAIsXCallbackURL([[aNotification userInfo] objectForKey:@"url"], &command, &params))
+	if (!WAIsXCallbackURL([aNotification userInfo][@"url"], &command, &params))
 		return;
 	
 	if ([command isEqualToString:kWACallbackActionSetAdvancedFeaturesEnabled]) {
@@ -497,11 +497,11 @@ extern CFAbsoluteTime StartTime;
 		__block __typeof__(self) nrSelf = self;
 		void (^zapAndRequestReauthentication)() = ^ {
 
-			[[NSUserDefaults standardUserDefaults] setObject:[params objectForKey:@"url"] forKey:kWARemoteEndpointURL];
-			[[NSUserDefaults standardUserDefaults] setObject:[params objectForKey:@"RegistrationUrl"] forKey:kWAUserRegistrationEndpointURL];
-			[[NSUserDefaults standardUserDefaults] setObject:[params objectForKey:@"PasswordResetUrl"] forKey:kWAUserPasswordResetEndpointURL];
-			[[NSUserDefaults standardUserDefaults] setObject:[params objectForKey:@"FacebookAuthUrl"] forKey:kWAUserFacebookAuthenticationEndpointURL];
-			[[NSUserDefaults standardUserDefaults] setObject:[params objectForKey:@"FacebookAppID"] forKey:kWAFacebookAppID];
+			[[NSUserDefaults standardUserDefaults] setObject:params[@"url"] forKey:kWARemoteEndpointURL];
+			[[NSUserDefaults standardUserDefaults] setObject:params[@"RegistrationUrl"] forKey:kWAUserRegistrationEndpointURL];
+			[[NSUserDefaults standardUserDefaults] setObject:params[@"PasswordResetUrl"] forKey:kWAUserPasswordResetEndpointURL];
+			[[NSUserDefaults standardUserDefaults] setObject:params[@"FacebookAuthUrl"] forKey:kWAUserFacebookAuthenticationEndpointURL];
+			[[NSUserDefaults standardUserDefaults] setObject:params[@"FacebookAppID"] forKey:kWAFacebookAppID];
 			[[NSUserDefaults standardUserDefaults] synchronize];
 
 			if (nrSelf.alreadyRequestingAuthentication) {
@@ -514,14 +514,12 @@ extern CFAbsoluteTime StartTime;
 		};
 		
 		NSString *alertTitle = @"Switch endpoint to";
-		NSString *alertText = [params objectForKey:@"url"];
+		NSString *alertText = params[@"url"];
 		
 		IRAction *cancelAction = [IRAction actionWithTitle:@"Cancel" block:nil];
 		IRAction *confirmAction = [IRAction actionWithTitle:@"Yes, Switch" block:zapAndRequestReauthentication];
 		
-		[[IRAlertView alertViewWithTitle:alertTitle message:alertText cancelAction:cancelAction otherActions:[NSArray arrayWithObjects:
-			confirmAction,
-		nil]] show];
+		[[IRAlertView alertViewWithTitle:alertTitle message:alertText cancelAction:cancelAction otherActions:@[confirmAction]] show];
 	}
 	
 }
@@ -535,7 +533,7 @@ extern CFAbsoluteTime StartTime;
 
 - (void) handleIASKSettingsDidRequestAction:(NSNotification *)aNotification {
 
-	NSString *action = [[aNotification userInfo] objectForKey:@"key"];
+	NSString *action = [aNotification userInfo][@"key"];
 	
 	if ([action isEqualToString:@"WASettingsActionResetDefaults"]) {
 	
@@ -559,11 +557,7 @@ extern CFAbsoluteTime StartTime;
 		
 		}];
 		
-		IRAlertView *alertView = [IRAlertView alertViewWithTitle:alertTitle message:alertText cancelAction:cancelAction otherActions:[NSArray arrayWithObjects:
-			
-			resetAction,
-			
-		nil]];
+		IRAlertView *alertView = [IRAlertView alertViewWithTitle:alertTitle message:alertText cancelAction:cancelAction otherActions:@[resetAction]];
 		
 		[alertView show];
 	
@@ -610,9 +604,7 @@ extern CFAbsoluteTime StartTime;
 		//	User is not authenticated, and also we’re already at the auth view
 		//	Can zap
 		
-		alertView = [IRAlertView alertViewWithTitle:alertTitle message:alertText cancelAction:nil otherActions:[NSArray arrayWithObjects:
-			okayAndZapAction,
-		nil]];
+		alertView = [IRAlertView alertViewWithTitle:alertTitle message:alertText cancelAction:nil otherActions:@[okayAndZapAction]];
 	
 	} else if (![self hasAuthenticationData]) {
 	
@@ -624,9 +616,7 @@ extern CFAbsoluteTime StartTime;
 	
 		//	Can zap
 	
-		alertView = [IRAlertView alertViewWithTitle:alertTitle message:alertText cancelAction:laterAction otherActions:[NSArray arrayWithObjects:
-			signOutAction,
-		nil]];
+		alertView = [IRAlertView alertViewWithTitle:alertTitle message:alertText cancelAction:laterAction otherActions:@[signOutAction]];
 	
 	}
 	
@@ -814,11 +804,9 @@ static NSInteger networkActivityStackingCount = 0;
 	if ([[url scheme] hasPrefix:@"fb"]) {
 		[FBSession.activeSession handleOpenURL:url];
 	} else {
-		NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:
-			url, @"url",
-			sourceApplication, @"sourceApplication",
-			annotation, @"annotation",
-		nil];
+		NSDictionary *userInfo = @{@"url": url,
+			@"sourceApplication": sourceApplication,
+			@"annotation": annotation};
 
 		[[NSNotificationCenter defaultCenter] postNotificationName:kWAApplicationDidReceiveRemoteURLNotification object:url userInfo:userInfo];
 	}
@@ -831,11 +819,7 @@ static NSInteger networkActivityStackingCount = 0;
 
 - (void) applicationDidReceiveMemoryWarning:(UIApplication *)application {
 
-	WAPostAppEvent(@"did-receive-memory-warning", [NSDictionary dictionaryWithObjectsAndKeys:
-	
-		//	TBD
-	
-	nil]);
+	WAPostAppEvent(@"did-receive-memory-warning", @{});
 
 }
 
