@@ -354,6 +354,7 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 		
 		navC.navigationBar.barStyle = UIBarStyleBlackTranslucent;
 		navC.navigationBar.translucent = YES;
+		navC.navigationBar.tintColor = [UIColor clearColor];
 		
 		navC.toolbar.barStyle = UIBarStyleBlackTranslucent;
 		navC.toolbar.translucent = YES;

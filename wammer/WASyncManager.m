@@ -28,6 +28,7 @@
 
 
 @implementation WASyncManager
+@dynamic syncCompleted, syncStopped;
 
 - (id) init {
 
@@ -111,7 +112,6 @@
 
 - (void)setPreprocessingArticleSync:(BOOL)preprocessingArticleSync {
 
-	NSParameterAssert([NSThread isMainThread]);
 	NSParameterAssert(_preprocessingArticleSync != preprocessingArticleSync);
 
 	_preprocessingArticleSync = preprocessingArticleSync;
@@ -120,13 +120,30 @@
 
 - (void)setNeedingSyncFilesCount:(NSUInteger)needingSyncFilesCount {
 
-	NSParameterAssert([NSThread isMainThread]);
-
 	if (needingSyncFilesCount != 0) {
 		NSParameterAssert(_preprocessingArticleSync);
 	}
 	
 	_needingSyncFilesCount = needingSyncFilesCount;
+
+}
+
+- (BOOL)syncCompleted {
+
+	return (self.needingSyncFilesCount == self.syncedFilesCount && self.needingSyncFilesCount != 0);
+
+}
+
+- (BOOL)syncStopped {
+
+	return (self.needingSyncFilesCount == self.syncedFilesCount && self.needingSyncFilesCount == 0);
+
+}
+
+- (void)resetSyncFilesCount {
+
+	self.syncedFilesCount = 0;
+	self.needingSyncFilesCount = 0;
 
 }
 

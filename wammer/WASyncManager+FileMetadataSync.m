@@ -23,7 +23,8 @@
 
 	return [IRAsyncOperation operationWithWorker:^(IRAsyncOperationCallback callback) {
 
-		if ([(WAAppDelegate_iOS *)AppDelegate() photoImportManager].operationQueue.operationCount > 0) {
+		WAPhotoImportManager *photoImportManager = [(WAAppDelegate_iOS *)AppDelegate() photoImportManager];
+		if (photoImportManager.preprocessing || photoImportManager.operationQueue.operationCount > 0) {
 			callback(nil);
 			return;
 		}

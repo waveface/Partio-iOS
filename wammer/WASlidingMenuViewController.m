@@ -50,7 +50,7 @@
 
 	WASyncManager *syncManager = [(WAAppDelegate_iOS *)AppDelegate() syncManager];
 	[syncManager addObserver:self forKeyPath:@"preprocessingArticleSync" options:NSKeyValueObservingOptionNew context:nil];
-	[syncManager addObserver:self forKeyPath:@"syncedFilesCount" options:NSKeyValueObservingOptionNew context:nil];
+	[syncManager addObserver:self forKeyPath:@"syncedFilesCount" options:NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew context:nil];
 	
 }
 
@@ -104,7 +104,6 @@
 		
 	}];
 	
-	//	[self presentViewController:navC animated:YES completion:nil];
 	[self.viewDeckController setCenterController:navC];
 	
 }
@@ -196,21 +195,47 @@
 	}
 	
 	if ([keyPath isEqualToString:@"syncedFilesCount"]) {
-		[[NSOperationQueue mainQueue] addOperationWithBlock:^{
-			WASyncManager *syncManager = [(WAAppDelegate_iOS *)AppDelegate() syncManager];
-			NSUInteger currentCount = [change[NSKeyValueChangeNewKey] unsignedIntegerValue];
-			if (currentCount == syncManager.needingSyncFilesCount) {
-				syncManager.syncedFilesCount = 0;
-				syncManager.needingSyncFilesCount = 0;
-				wSelf.statusBar = nil;
+
+		NSUInteger oldCount = [change[NSKeyValueChangeOldKey] unsignedIntegerValue];
+		NSUInteger currentCount = [change[NSKeyValueChangeNewKey] unsignedIntegerValue];
+		WASyncManager *syncManager = [(WAAppDelegate_iOS *)AppDelegate() syncManager];
+		if (currentCount == 0) {
+
+			if (syncManager.needingSyncFilesCount == oldCount) {
+				// sync complete
+				[[NSOperationQueue mainQueue] addOperationWithBlock:^{
+					if (wSelf.statusBar) {
+						wSelf.statusBar.statusLabel.text = NSLocalizedString(@"PHOTO_UPLOAD_STATUS_BAR_COMPLETE", @"String on customized status bar");
+						int64_t delayInSeconds = 2.0;
+						dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+						dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+							wSelf.statusBar = nil;
+						});
+					}
+				}];
 			} else {
-				if (!wSelf.statusBar) {
-					wSelf.statusBar = [[WAStatusBar alloc] initWithFrame:CGRectZero];
-				}
+				// sync fail
+				[[NSOperationQueue mainQueue] addOperationWithBlock:^{
+					if (wSelf.statusBar) {
+						wSelf.statusBar.statusLabel.text = NSLocalizedString(@"PHOTO_UPLOAD_STATUS_BAR_FAIL", @"String on customized status bar");
+						int64_t delayInSeconds = 2.0;
+						dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+						dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+							wSelf.statusBar = nil;
+						});
+					}
+				}];
+			}
+
+		} else {
+
+			if (wSelf.statusBar) {
 				wSelf.statusBar.statusLabel.text = [NSString stringWithFormat:NSLocalizedString(@"PHOTO_UPLOAD_STATUS_BAR_UPLOADING", @"String on customized status bar"), currentCount, syncManager.needingSyncFilesCount];
 				wSelf.statusBar.progressView.progress = currentCount * 1.0 / syncManager.needingSyncFilesCount;
 			}
-		}];
+
+		}
+		
 	}
 	
 }
@@ -332,45 +357,6 @@
 }
 
 
-/*
- // Override to support conditional editing of the table view.
- - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
- {
- // Return NO if you do not want the specified item to be editable.
- return YES;
- }
- */
-
-/*
- // Override to support editing the table view.
- - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
- {
- if (editingStyle == UITableViewCellEditingStyleDelete) {
- // Delete the row from the data source
- [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
- }
- else if (editingStyle == UITableViewCellEditingStyleInsert) {
- // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
- }
- }
- */
-
-/*
- // Override to support rearranging the table view.
- - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
- {
- }
- */
-
-/*
- // Override to support conditional rearranging of the table view.
- - (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
- {
- // Return NO if you do not want the item to be re-orderable.
- return YES;
- }
- */
-
 #pragma mark - Table view delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -387,7 +373,10 @@
 		case 2: {
 			[self.viewDeckController closeLeftView];
 			WADayViewController *swVC = [[WADayViewController alloc] initWithClassNamed:[WAPhotoStreamViewController class]];
-			UINavigationController *navVC = [[UINavigationController alloc] initWithRootViewController:swVC];
+			WANavigationController *navVC = [[WANavigationController alloc] initWithRootViewController:swVC];
+			swVC.navigationController.navigationBar.tintColor = [UIColor colorWithWhite:0.157 alpha:1.000];
+			swVC.navigationController.navigationBar.titleTextAttributes = @{UITextAttributeTextColor: [UIColor whiteColor]};
+
 			self.viewDeckController.centerController = navVC;
 			break;
 		}

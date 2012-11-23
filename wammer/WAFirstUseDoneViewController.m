@@ -32,7 +32,8 @@
 	[self.doneButton setTitleColor:[UIColor whiteColor] forState:UIControlStateDisabled];
 
 	if ([[NSUserDefaults standardUserDefaults] boolForKey:kWAPhotoImportEnabled]) {
-		[[(WAAppDelegate_iOS *)AppDelegate() photoImportManager] addObserver:self forKeyPath:@"importedFilesCount" options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionNew context:nil];
+		WAPhotoImportManager *photoImportManager = [(WAAppDelegate_iOS *)AppDelegate() photoImportManager];
+		[photoImportManager addObserver:self forKeyPath:@"importedFilesCount" options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionNew context:nil];
 	} else {
 		self.photoUploadCell.detailTextLabel.text = NSLocalizedString(@"PHOTO_UPLOAD_STATUS_NOT_UPLOADING", @"Subtitle of photo upload status");
 	}
