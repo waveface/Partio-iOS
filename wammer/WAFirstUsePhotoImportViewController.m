@@ -8,9 +8,13 @@
 
 #import "WAFirstUsePhotoImportViewController.h"
 #import "WADefines.h"
+#import "WAAppearance.h"
+
 
 // save switch value in global so that the switch status can be kept even the view controller is dismissed
 static BOOL enabled = YES;
+
+static NSString * const kWASeguePhotoImportToDone = @"WASeguePhotoImportToDone";
 
 @interface WAFirstUsePhotoImportViewController ()
 
@@ -26,15 +30,35 @@ static BOOL enabled = YES;
 
 	[self localize];
 
-	if (!self.isFromConnectServicesPage) {
-		self.navigationItem.hidesBackButton = YES;
-	}
-
 	self.photoImportSwitch = [[UISwitch alloc] init];
 	[self.photoImportSwitch addTarget:self action:@selector(handleSwitchValueChange:) forControlEvents:UIControlEventValueChanged];
 	self.photoImportSwitchCell.accessoryView = self.photoImportSwitch;
 
 	[self.photoImportSwitch setOn:enabled animated:NO];
+
+	__weak WAFirstUsePhotoImportViewController *wSelf = self;
+	UIImage *backImage = [UIImage imageNamed:@"back"];
+	if (!self.isFromConnectServicesPage) {
+		self.navigationItem.hidesBackButton = YES;
+	} else {
+		self.navigationItem.leftBarButtonItem = (UIBarButtonItem *)WABackBarButtonItem(backImage, @"", ^{
+			[wSelf.navigationController popViewControllerAnimated:YES];
+		});
+	}
+	
+	UIGraphicsBeginImageContext(backImage.size);
+	CGContextRef context = UIGraphicsGetCurrentContext();
+	CGAffineTransform flippedHorizontal = CGAffineTransformMake(-1, 0, 0, 1, backImage.size.width, 0);
+	CGContextConcatCTM(context, flippedHorizontal);
+	[backImage drawAtPoint:CGPointZero];
+	UIImage *flippedBackImage = UIGraphicsGetImageFromCurrentImageContext();
+	UIGraphicsEndImageContext();
+	
+	UIBarButtonItem *nextButton = (UIBarButtonItem *)WABackBarButtonItem(flippedBackImage, @"", ^{
+		[wSelf performSegueWithIdentifier:kWASeguePhotoImportToDone sender:nil];
+	});
+
+	self.navigationItem.rightBarButtonItem = nextButton;
 
 }
 

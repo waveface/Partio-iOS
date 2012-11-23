@@ -201,21 +201,15 @@
                             <outlet property="delegate" destination="vd3-aZ-YWy" id="kpU-lM-Ukh"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Auto Photo Upload" id="A43-eI-pJf">
-                        <barButtonItem key="backBarButtonItem" title="Back" id="PZW-h5-Xo1"/>
-                        <barButtonItem key="rightBarButtonItem" title="Next" id="5Af-eN-38U">
-                            <connections>
-                                <segue destination="hIp-JY-HcX" kind="push" id="Jdp-Bu-12I"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" title="Auto Photo Upload" id="A43-eI-pJf"/>
                     <connections>
                         <outlet property="photoImportSwitchCell" destination="aMQ-tZ-60h" id="f8q-w4-sa3"/>
+                        <segue destination="hIp-JY-HcX" kind="push" identifier="WASeguePhotoImportToDone" id="jXw-LO-PNV"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="aJK-NL-pJ3" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2576" y="99"/>
+            <point key="canvasLocation" x="2514" y="99"/>
         </scene>
         <!--First Use Log In View Controller - Log In-->
         <scene sceneID="hPv-I8-sSz">
@@ -487,20 +481,14 @@
                             <outlet property="delegate" destination="qOw-kL-dR9" id="C0k-N2-ZO8"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Getting Started" id="87C-z3-ceQ">
-                        <barButtonItem key="backBarButtonItem" title="Back" id="uom-ls-VtV"/>
-                        <barButtonItem key="rightBarButtonItem" title="Next" id="OsH-YD-ekd">
-                            <connections>
-                                <segue destination="vd3-aZ-YWy" kind="push" id="vl7-D0-o14"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" title="Getting Started" id="87C-z3-ceQ"/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                     <connections>
                         <outlet property="facebookConnectCell" destination="HN0-Dd-wTd" id="c9H-je-ln4"/>
                         <outlet property="flickrConnectCell" destination="nrS-EN-0QK" id="DAA-C5-HVM"/>
                         <outlet property="picasaConnectCell" destination="M8L-Gm-izS" id="V8X-iK-L9l"/>
                         <outlet property="twitterConnectCell" destination="HDW-Jb-BnY" id="nv6-2f-Zd0"/>
+                        <segue destination="vd3-aZ-YWy" kind="push" identifier="WASegueConnectServicesToPhotoImport" id="Zwo-cb-NTz"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SqC-Zh-e1G" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -720,7 +708,7 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="3Ad-Cy-rl6"/>
         <segue reference="N9p-mN-Fbh"/>
+        <segue reference="Zwo-cb-NTz"/>
     </inferredMetricsTieBreakers>
 </document>
