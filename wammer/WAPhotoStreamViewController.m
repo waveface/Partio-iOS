@@ -140,7 +140,7 @@
 					 
 					 dispatch_async(dispatch_get_main_queue(), ^{
 						 
-						 cell.imageView.image = (UIImage*)toValue;
+						 ((WAPhotoStreamViewCell *)[collectionView cellForItemAtIndexPath:indexPath]).imageView.image = (UIImage*)toValue;
 						 
 					 });
 					 
