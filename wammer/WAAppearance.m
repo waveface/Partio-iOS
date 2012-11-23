@@ -29,10 +29,33 @@ void WADefaultAppearance(void) {
 		
 		// set the appearance for all major UINavigationBar and toolbar
 		UIColor *naviBgColor = [UIColor colorWithRed:0.95f green:0.95f blue:0.95f alpha:1];
-		[[UINavigationBar appearance] setTintColor:naviBgColor];
+
+		CGSize barSize = CGSizeMake(CGRectGetWidth(([UIApplication sharedApplication].statusBarFrame)), 44.0);
+		UIGraphicsBeginImageContext(barSize);
+		CGContextRef context = UIGraphicsGetCurrentContext();
+		CGContextSetFillColorWithColor(context, naviBgColor.CGColor);
+		CGContextAddRect(context, CGRectMake(0, 0, barSize.width, barSize.height));
+		CGContextFillPath(context);
+		UIImage *naviBg = UIGraphicsGetImageFromCurrentImageContext();
+		UIGraphicsEndImageContext();
+		[[UINavigationBar appearance] setBackgroundImage:naviBg forBarMetrics:UIBarMetricsDefault];
+
+		CGSize shadowSize = CGSizeMake(CGRectGetWidth(([UIApplication sharedApplication].statusBarFrame)), 2);
+		UIGraphicsBeginImageContext(shadowSize);
+		CGContextRef shadowContext = UIGraphicsGetCurrentContext();
+		CGContextSetStrokeColorWithColor(shadowContext, [UIColor grayColor].CGColor);
+		CGPoint addLines[2];
+		addLines[0] = CGPointMake(7, 0);
+		addLines[1] = CGPointMake(CGRectGetWidth(([UIApplication sharedApplication].statusBarFrame)) - 7, 0);
+		CGContextSetLineWidth(shadowContext, 1);
+		CGContextAddLines(shadowContext, addLines, 2);
+		CGContextStrokePath(shadowContext);
+		UIImage *naviShadow = UIGraphicsGetImageFromCurrentImageContext();
+		UIGraphicsEndImageContext();
+		[[UINavigationBar appearance] setShadowImage:naviShadow];
 		
 		NSValue *shadowOffset = [NSValue valueWithUIOffset:(UIOffset){0,0}];
-														 
+
 		UIColor *textColor = [UIColor colorWithRed:0.30f green:0.30f blue:0.30f alpha:1];
 		[[UINavigationBar appearance] setTitleTextAttributes:@{UITextAttributeTextColor: textColor, UITextAttributeTextShadowOffset:shadowOffset}];
 
@@ -41,7 +64,7 @@ void WADefaultAppearance(void) {
 		[[UIBarButtonItem appearance] setTintColor:naviBgColor];
 		
 		[[UIToolbar appearance] setTintColor:naviBgColor];
-						
+
 	}
 	
 	
