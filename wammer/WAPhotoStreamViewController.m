@@ -13,6 +13,7 @@
 #import "WAPhotoStreamViewCell.h"
 #import "NSDate+WAAdditions.h"
 #import "WADayHeaderView.h"
+#import "WAGalleryViewController.h"
 
 @interface WAPhotoStreamViewController (){
 	NSArray *colorPalette;
@@ -97,11 +98,8 @@
 }
 
 - (void)viewWillAppear:(BOOL)animated {
+
 	[super viewWillAppear:animated];
-	//[[UINavigationBar appearance] setTintColor:[UIColor greenColor]];
-	self.navigationController.navigationBar.tintColor = [UIColor colorWithWhite:0.157 alpha:1.000];
-	self.navigationController.navigationBar.titleTextAttributes = @{UITextAttributeTextColor: [UIColor whiteColor]};
-	
 	
 }
 
@@ -134,7 +132,19 @@
 	}
 	
 	WAFile *photo = (WAFile *)_photos[indexPath.row];
-	cell.imageView.image = photo.smallestPresentableImage;
+	
+	[photo irObserve:@"smallThumbnailImage"
+					 options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew
+					 context:nil
+				 withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
+					 
+					 dispatch_async(dispatch_get_main_queue(), ^{
+						 
+						 cell.imageView.image = (UIImage*)toValue;
+						 
+					 });
+					 
+				 }];
 	
 	return cell;
 }
@@ -165,6 +175,23 @@
 	headerView.monthLabel.textColor =[UIColor colorWithWhite:0.53 alpha:1.0f];
 	headerView.wdayLabel.textColor = [UIColor colorWithWhite:0.53 alpha:1.0f];
 	return headerView;
+}
+
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
+	__weak WAGalleryViewController *galleryVC = nil;
+	
+	WAFile *file = [self.photos objectAtIndex:indexPath.row];
+	
+	galleryVC = [WAGalleryViewController
+							 controllerRepresentingArticleAtURI:[[[file.articles anyObject] objectID] URIRepresentation]
+							 context:@{kWAGalleryViewControllerContextPreferredFileObjectURI:[[file objectID] URIRepresentation]}
+							 ];
+	
+	galleryVC.onDismiss = ^ {
+		[galleryVC.navigationController popViewControllerAnimated:YES];
+	};
+	
+	[self.navigationController pushViewController:galleryVC animated:YES];
 }
 
 @end

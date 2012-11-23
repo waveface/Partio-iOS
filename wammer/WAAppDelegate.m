@@ -209,16 +209,12 @@
 		NSString *replacementHost = [currentBaseURL host];
 		NSNumber *replacementPort = [currentBaseURL port];    
 		
-		NSString *constructedURLString = [[NSArray arrayWithObjects:
-			
-			[replacementScheme stringByAppendingString:@"://"],
+		NSString *constructedURLString = [@[[replacementScheme stringByAppendingString:@"://"],
 			replacementHost,	//	[givenURL host] ? [givenURL host] : @"",
 			replacementPort ? [@":" stringByAppendingString:[replacementPort stringValue]] : @"",
 			[givenURL path] ? [givenURL path] : @"",
 			[givenURL query] ? [@"?" stringByAppendingString:[givenURL query]] : @"",
-			[givenURL fragment] ? [@"#" stringByAppendingString:[givenURL fragment]] : @"",
-			
-		nil] componentsJoinedByString:@""];
+			[givenURL fragment] ? [@"#" stringByAppendingString:[givenURL fragment]] : @""] componentsJoinedByString:@""];
 		
 		NSURL *constructedURL = [NSURL URLWithString:constructedURLString];
 		
@@ -281,20 +277,12 @@
 	
 	if (!user) {
 		
-		NSArray *foundUsers = [WAUser insertOrUpdateObjectsUsingContext:context withRemoteResponse:[NSArray arrayWithObjects:
-		
-			[NSDictionary dictionaryWithObjectsAndKeys:
-			
-				identifier, @"user_id",
-			
-			nil],
-		
-		nil] usingMapping:nil options:0];
+		NSArray *foundUsers = [WAUser insertOrUpdateObjectsUsingContext:context withRemoteResponse:@[@{@"user_id": identifier}] usingMapping:nil options:0];
 		
 		NSCParameterAssert([foundUsers count] == 1);	
 		user = [foundUsers lastObject];
 		
-		[context obtainPermanentIDsForObjects:[NSArray arrayWithObject:user] error:nil];
+		[context obtainPermanentIDsForObjects:@[user] error:nil];
 		
 		if ([context save:nil]) {
 			[ds setMainUser:user inContext:context];
@@ -308,7 +296,9 @@
 		[user.managedObjectContext save:nil];
 	}
 	
+	[MagicalRecord cleanUp];
 	[MagicalRecord setupCoreDataStackWithStoreNamed:	[identifier stringByAppendingString:@".sqlite"]];
+	[NSManagedObjectContext contextWithStoreCoordinator:[context persistentStoreCoordinator]];
 	
 #if DEBUG
 

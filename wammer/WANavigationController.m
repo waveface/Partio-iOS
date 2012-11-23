@@ -59,6 +59,7 @@
 		
 	UINavigationBar *navigationBar = (UINavigationBar *)self.navigationBar;
 	[navigationBar setClipsToBounds:YES];
+	
 	if (self.onViewDidLoad)
 		self.onViewDidLoad(self);
 

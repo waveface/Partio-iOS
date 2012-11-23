@@ -10,7 +10,6 @@
 #import <UIKit/UIKit.h>
 #import "UIKit+IRAdditions.h"
 
-
 #pragma mark - UIAppearance
 void WADefaultAppearance(void) {
 	
@@ -28,6 +27,7 @@ void WADefaultAppearance(void) {
 		
 		[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackOpaque];
 		
+		// set the appearance for all major UINavigationBar and toolbar
 		UIColor *naviBgColor = [UIColor colorWithRed:0.95f green:0.95f blue:0.95f alpha:1];
 		[[UINavigationBar appearance] setTintColor:naviBgColor];
 		
@@ -38,11 +38,10 @@ void WADefaultAppearance(void) {
 
 		UIColor *btnTextColor = [UIColor colorWithRed:0.45f green:0.45f blue:0.45f alpha:1];
 		[[UIBarButtonItem appearance] setTitleTextAttributes:@{UITextAttributeTextColor: btnTextColor, UITextAttributeTextShadowOffset:shadowOffset} forState:UIControlStateNormal];
-		
 		[[UIBarButtonItem appearance] setTintColor:naviBgColor];
 		
 		[[UIToolbar appearance] setTintColor:naviBgColor];
-		
+						
 	}
 	
 	
