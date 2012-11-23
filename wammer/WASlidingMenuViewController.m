@@ -376,6 +376,7 @@
 			WANavigationController *navVC = [[WANavigationController alloc] initWithRootViewController:swVC];
 			swVC.navigationController.navigationBar.tintColor = [UIColor colorWithWhite:0.157 alpha:1.000];
 			swVC.navigationController.navigationBar.titleTextAttributes = @{UITextAttributeTextColor: [UIColor whiteColor]};
+			[swVC.navigationController.navigationBar setBackgroundImage:nil forBarMetrics:UIBarMetricsDefault];
 
 			self.viewDeckController.centerController = navVC;
 			break;
