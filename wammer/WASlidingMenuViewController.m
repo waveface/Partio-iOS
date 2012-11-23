@@ -27,6 +27,8 @@
 @property (nonatomic, strong) UITableViewCell *userCell;
 
 @property (nonatomic, strong) WAStatusBar *statusBar;
+@property (nonatomic, strong) WAPhotoImportManager *photoImportManager;
+@property (nonatomic, strong) WASyncManager *syncManager;
 
 @end
 
@@ -45,12 +47,12 @@
 {
 	[super viewDidLoad];
 
-	WAPhotoImportManager *photoImportManager = [(WAAppDelegate_iOS *)AppDelegate() photoImportManager];
-	[photoImportManager addObserver:self forKeyPath:@"importedFilesCount" options:NSKeyValueObservingOptionNew context:nil];
+	self.photoImportManager = [(WAAppDelegate_iOS *)AppDelegate() photoImportManager];
+	[self.photoImportManager addObserver:self forKeyPath:@"importedFilesCount" options:NSKeyValueObservingOptionNew context:nil];
 
-	WASyncManager *syncManager = [(WAAppDelegate_iOS *)AppDelegate() syncManager];
-	[syncManager addObserver:self forKeyPath:@"preprocessingArticleSync" options:NSKeyValueObservingOptionNew context:nil];
-	[syncManager addObserver:self forKeyPath:@"syncedFilesCount" options:NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew context:nil];
+	self.syncManager = [(WAAppDelegate_iOS *)AppDelegate() syncManager];
+	[self.syncManager addObserver:self forKeyPath:@"preprocessingArticleSync" options:NSKeyValueObservingOptionNew context:nil];
+	[self.syncManager addObserver:self forKeyPath:@"syncedFilesCount" options:NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew context:nil];
 	
 }
 
@@ -59,12 +61,10 @@
 	[self.user removeObserver:self forKeyPath:@"avatar"];
 	[self.user removeObserver:self forKeyPath:@"nickname"];
 
-	WAPhotoImportManager *photoImportManager = [(WAAppDelegate_iOS *)AppDelegate() photoImportManager];
-	[photoImportManager removeObserver:self forKeyPath:@"importedFilesCount"];
+	[self.photoImportManager removeObserver:self forKeyPath:@"importedFilesCount"];
 
-	WASyncManager *syncManager = [(WAAppDelegate_iOS *)AppDelegate() syncManager];
-	[syncManager removeObserver:self forKeyPath:@"syncedFilesCount"];
-	[syncManager removeObserver:self forKeyPath:@"preprocessingArticleSync"];
+	[self.syncManager removeObserver:self forKeyPath:@"syncedFilesCount"];
+	[self.syncManager removeObserver:self forKeyPath:@"preprocessingArticleSync"];
 
 }
 
