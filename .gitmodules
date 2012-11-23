@@ -18,7 +18,7 @@
 	url = git://github.com/waveface/NSLogger.git
 [submodule "external/IRTextAttributor"]
 	path = external/IRTextAttributor
-	url = git://github.com/waveface/IRTextAttributor.git
+	url = git@github.com:waveface/IRTextAttributor.git
 [submodule "external/IRRecurrenceMachine"]
 	path = external/IRRecurrenceMachine
 	url = git://github.com/waveface/IRRecurrenceMachine.git
