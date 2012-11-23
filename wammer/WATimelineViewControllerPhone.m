@@ -336,24 +336,7 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 	[super viewDidLoad];
 	
 	self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-	
-	WAPulldownRefreshView *pulldownHeader = [self defaultPulldownRefreshView];
-	
-	self.tableView.pullDownHeaderView = pulldownHeader;
-	self.tableView.onPullDownMove = ^ (CGFloat progress) {
-		[pulldownHeader setProgress:progress animated:YES];
-	};
-	self.tableView.onPullDownEnd = ^ (BOOL didFinish) {
-		if (didFinish) {
-			pulldownHeader.progress = 0;
-			[pulldownHeader setBusy:YES animated:YES];
-			[[WARemoteInterface sharedInterface] performAutomaticRemoteUpdatesNow];
-		}
-	};
-	self.tableView.onPullDownReset = ^ {
-		[pulldownHeader setBusy:NO animated:YES];
-	};
-	
+		
 	WADayHeaderView *headerView = [WADayHeaderView viewFromNib];
 	headerView.dayLabel.text = [self.currentDisplayedDate dayString];
 	headerView.monthLabel.text = [self.currentDisplayedDate localizedMonthShortString];
@@ -550,7 +533,6 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 	NSCParameterAssert([post isKindOfClass:[WAArticle class]]);
 	
 	UIViewController *pushedVC = [WAEventViewController controllerForArticle:post];
-//	UIViewController *pushedVC = [WAArticleViewController controllerForArticle:post style:(WAFullScreenArticleStyle|WASuggestedStyleForArticle(post))];
 
 	[self.navigationController pushViewController:pushedVC animated:YES];
 	

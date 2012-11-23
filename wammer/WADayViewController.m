@@ -130,11 +130,11 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 		
 		if ([containedClass isSubclassOfClass:[WATimelineViewControllerPhone class]]) {
 
-			theDate = [((WAArticle*)obj) creationDate];
+			theDate = [[((WAArticle*)obj) creationDate] dayBegin];
 			
 		} else {
 			
-			theDate = [((WAFile*)obj) created];
+			theDate = [[((WAFile*)obj) created] dayBegin];
 
 		}
 		
@@ -254,7 +254,6 @@ BOOL (^isSameDay) (NSDate *, NSDate *) = ^ (NSDate *d1, NSDate *d2) {
 		if ( [vc isKindOfClass:[WAPhotoStreamViewController class]]  ) {
 			((WAPhotoStreamViewController *)vc).delegate = self;
 		}
-		[self addChildViewController:vc];
 		(self.daysControllers)[dateForPage] = vc;
 	}
 	
@@ -265,6 +264,9 @@ BOOL (^isSameDay) (NSDate *, NSDate *) = ^ (NSDate *d1, NSDate *d2) {
 - (UIView *) viewForPaginatedView:(IRPaginatedView *)paginatedView atIndex:(NSUInteger)index {
 
 	UIViewController *viewController = [self controllerAtPageIndex:index];
+	
+	if (!viewController.parentViewController)
+		[self addChildViewController:viewController];
 	
 	if (viewController)
 		return viewController.view;
@@ -301,28 +303,26 @@ BOOL (^isSameDay) (NSDate *, NSDate *) = ^ (NSDate *d1, NSDate *d2) {
 	NSDate *theNewDate = nil;
 	if ([containedClass isSubclassOfClass:[WATimelineViewControllerPhone class]]) {
 
-		theNewDate = [((WAArticle*)anObject) creationDate];
+		theNewDate = [[((WAArticle*)anObject) creationDate] dayBegin];
 
 	} else {
 
-		theNewDate = [((WAFile*)anObject) created];
+		theNewDate = [[((WAFile*)anObject) created] dayBegin];
 		
 	}
 	
 	switch (type) {
 		case NSFetchedResultsChangeInsert:
 		{
-			
-			__block BOOL found = NO;
-			[self.days enumerateObjectsUsingBlock:^(NSDate *date, NSUInteger idx, BOOL *stop) {
-				if (isSameDay(date, theNewDate)) {
-					*stop = YES;
-					found = YES;
-				} 
-			}];
-			
-			if (!found) {
-				
+
+			NSUInteger oldIndex = [self.days indexOfObject:theNewDate
+																			 inSortedRange:(NSRange){0, self.days.count}
+																						 options:NSBinarySearchingFirstEqual
+																		 usingComparator:^NSComparisonResult(NSDate *obj1, NSDate *obj2) {
+																			 return [obj2 compare:obj1];
+																		 }];
+			if (oldIndex == NSNotFound) {
+
 				// insertion sort
 				NSUInteger newIndex = [self.days indexOfObject:theNewDate
 																				 inSortedRange:(NSRange){0, self.days.count}
@@ -332,6 +332,7 @@ BOOL (^isSameDay) (NSDate *, NSDate *) = ^ (NSDate *d1, NSDate *d2) {
 																			 }];
 				[self.days insertObject:theNewDate atIndex:newIndex];
 				
+
 				if ([self isViewLoaded]) {
 					[self.paginatedView reloadViews];
 				}
