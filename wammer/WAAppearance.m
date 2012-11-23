@@ -9,8 +9,6 @@
 #import "WAAppearance.h"
 #import <UIKit/UIKit.h>
 #import "UIKit+IRAdditions.h"
-#import "WAFirstUseViewController.h"
-#import "WANavigationController.h"
 
 #pragma mark - UIAppearance
 void WADefaultAppearance(void) {
