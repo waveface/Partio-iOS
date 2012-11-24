@@ -27,14 +27,15 @@
 #import "WAApplicationRootViewControllerDelegate.h"
 #import "WAOverviewController.h"
 #import "WATimelineViewControllerPhone.h"
+#import "WATimelineViewControllerPad.h"
 #import "WAUserInfoViewController.h"
 #import "WAOverlayBezel.h"
 
-#import "Foundation+IRAdditions.h"
-#import "UIKit+IRAdditions.h"
-
 #import "IRSlidingSplitViewController.h"
 #import "WASlidingSplitViewController.h"
+
+#import "Foundation+IRAdditions.h"
+#import "UIKit+IRAdditions.h"
 
 #import "IASKSettingsReader.h"
 #import	"DCIntrospect.h"
@@ -346,17 +347,25 @@ extern CFAbsoluteTime StartTime;
 	
 		case UIUserInterfaceIdiomPad: {
 		
-			IRSlidingSplitViewController *ssVC = [WASlidingSplitViewController new];
-		
-			WAOverviewController *presentedViewController = [[WAOverviewController alloc] init];
-			WANavigationController *rootNavC = [[WANavigationController alloc] initWithRootViewController:presentedViewController];
+			WADayViewController *swVC = [[WADayViewController alloc] initWithClassNamed:[WATimelineViewControllerPad class]];
+			WANavigationController *timelineNavC = [[WANavigationController alloc] initWithRootViewController:swVC];
+						
+			WASlidingMenuViewController *slidingMenu = [[WASlidingMenuViewController alloc] init];
+			slidingMenu.delegate = self;
 			
-			[presentedViewController setDelegate:self];
+			IIViewDeckController *viewDeckController = [[IIViewDeckController alloc] initWithCenterViewController:timelineNavC
+																																												 leftViewController:slidingMenu];
+			viewDeckController.view.backgroundColor = [UIColor blackColor];
+			viewDeckController.leftLedge = self.window.frame.size.width - 200.0f;
+			viewDeckController.rotationBehavior = IIViewDeckRotationKeepsLedgeSizes;
+			//			viewDeckController.animationBehavior = IIViewDeckAnimationPullIn;
+			viewDeckController.panningMode = IIViewDeckNoPanning;
+			[viewDeckController setWantsFullScreenLayout:YES];
+			viewDeckController.delegate = slidingMenu;
+			viewDeckController.centerhiddenInteractivity = IIViewDeckCenterHiddenNotUserInteractiveWithTapToClose;
 			
-			ssVC.masterViewController = rootNavC;
-			
-			self.window.rootViewController = ssVC;
-		
+			self.window.rootViewController = viewDeckController;
+
 			break;
 		
 		}

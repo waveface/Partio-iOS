@@ -101,36 +101,12 @@
 }
 
 - (NSUInteger) supportedInterfaceOrientations {
-
-	#if __IPHONE_OS_VERSION_MIN_REQUIRED < 60000
-		#define UIInterfaceOrientationMaskLandscapeLeft 16
-		#define UIInterfaceOrientationMaskLandscapeRight 8
-		#define UIInterfaceOrientationMaskPortrait 2
-		#define UIInterfaceOrientationMaskPortraitUpsideDown 4
-	#endif
-
-	UIViewController *topVC = self.topViewController;
 	
-	if (_poppingViewController)
-		if ([self.viewControllers count] > 1)
-			topVC = [self.viewControllers objectAtIndex:([self.viewControllers count] - 2)];
+	if (isPad())
+		return UIInterfaceOrientationMaskAll;
+	else
+		return UIInterfaceOrientationMaskPortrait;
 	
-	NSUInteger mask = 0;
-	
-	if ([topVC shouldAutorotateToInterfaceOrientation:UIInterfaceOrientationPortrait])
-		mask |= UIInterfaceOrientationMaskPortrait;
-	
-	if ([topVC shouldAutorotateToInterfaceOrientation:UIInterfaceOrientationPortraitUpsideDown])
-		mask |= UIInterfaceOrientationMaskPortraitUpsideDown;
-	
-	if ([topVC shouldAutorotateToInterfaceOrientation:UIInterfaceOrientationLandscapeLeft])
-		mask |= UIInterfaceOrientationMaskLandscapeLeft;
-	
-	if ([topVC shouldAutorotateToInterfaceOrientation:UIInterfaceOrientationLandscapeRight])
-		mask |= UIInterfaceOrientationMaskLandscapeRight;
-	
-	return mask;
-
 }
 
 @end

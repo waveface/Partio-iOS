@@ -90,6 +90,7 @@
 	self.itemsView.alwaysBounceHorizontal = NO;
 	self.itemsView.allowsSelection = YES;
 	self.itemsView.allowsMultipleSelection = NO;
+	self.itemsView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
 
 	self.itemsView.dataSource = self;
 	self.itemsView.delegate = self;
@@ -98,7 +99,13 @@
 
 	__weak WAEventViewController *wSelf = self;
 	self.navigationItem.leftBarButtonItem = WABackBarButtonItem([UIImage imageNamed:@"back"], @"", ^{
-		[wSelf.navigationController popViewControllerAnimated:YES];
+		
+		if (isPad()) {
+			[wSelf.navigationController dismissViewControllerAnimated:YES completion:nil];
+		} else {
+			[wSelf.navigationController popViewControllerAnimated:YES];
+		}
+		
 	});
 
 }
@@ -328,6 +335,11 @@
 		
 	}
 	
+	CGRect newFrame = _headerView.frame;
+	newFrame.size.width = CGRectGetWidth(self.itemsView.frame);
+	_headerView.frame = newFrame;
+	_headerView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+ 
 	[_headerView setNeedsLayout];
 	
 	return _headerView;
@@ -356,7 +368,6 @@
 
 - (NSInteger) collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
 	
-	//	return [[self.fetchedResultsController fetchedObjects] count];
 	return self.article.files.count;
 	
 }
@@ -419,7 +430,7 @@
 	
 	height += 4.0f;
 	
-	return (CGSize) { CGRectGetWidth(self.headerView.frame), height };
+	return (CGSize) { CGRectGetWidth(collectionView.frame), height };
 
 }
 
