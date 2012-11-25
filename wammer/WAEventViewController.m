@@ -77,7 +77,7 @@
 	
 		
 	CGRect rect = (CGRect){ CGPointZero, self.view.frame.size };
-	rect.size.height -= CGRectGetHeight(self.navigationController.navigationBar.frame);
+//	rect.size.height -= CGRectGetHeight(self.navigationController.navigationBar.frame);
 	
 	UICollectionViewFlowLayout *flowlayout = [[UICollectionViewFlowLayout alloc] init];
 	flowlayout.scrollDirection = UICollectionViewScrollDirectionVertical;

@@ -93,17 +93,15 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 	
 	[super loadView];
 
-	CGRect origFrame = self.view.frame;
-	origFrame.origin = CGPointZero;
-	origFrame.size.height -= CGRectGetHeight(self.navigationController.navigationBar.frame);
-	
+	CGRect rect = (CGRect) { CGPointZero, self.view.frame.size };
+	[self.navigationController setToolbarHidden:YES];
 	self.view.backgroundColor = [UIColor whiteColor];
-	self.paginatedView = [[IRPaginatedView alloc] initWithFrame:origFrame];
+	self.paginatedView = [[IRPaginatedView alloc] initWithFrame:rect];
 	self.paginatedView.delegate = self;
 	self.paginatedView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
 	
 	[self.view addSubview: self.paginatedView];
-
+	
 }
 
 - (void) viewWillAppear:(BOOL)animated {

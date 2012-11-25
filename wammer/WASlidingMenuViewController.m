@@ -11,6 +11,7 @@
 #import "WADefines.h"
 #import "WANavigationController.h"
 #import "WATimelineViewControllerPhone.h"
+#import "WATimelineViewControllerPad.h"
 #import "WAUserInfoViewController.h"
 #import "WAOverlayBezel.h"
 #import "WAPhotoImportManager.h"
@@ -339,7 +340,14 @@
 	switch (indexPath.row) {
 		case 1: {
 			[self.viewDeckController closeLeftView];
-			WADayViewController *swVC = [[WADayViewController alloc] initWithClassNamed:[WATimelineViewControllerPhone class]];
+			
+			id loadedClass = nil;
+			if (isPad())
+				loadedClass = [WATimelineViewControllerPad class];
+			else
+				loadedClass = [WATimelineViewControllerPhone class];
+			
+			WADayViewController *swVC = [[WADayViewController alloc] initWithClassNamed:loadedClass];
 			WANavigationController *navVC = [[WANavigationController alloc] initWithRootViewController:swVC];
 			self.viewDeckController.centerController = navVC;
 			break;

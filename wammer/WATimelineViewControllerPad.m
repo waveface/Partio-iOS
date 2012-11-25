@@ -69,6 +69,12 @@
 	
 }
 
+- (void) viewWillAppear:(BOOL)animated {
+	
+	[self.collectionView.collectionViewLayout invalidateLayout];
+	
+}
+
 - (void)didReceiveMemoryWarning
 {
 	
