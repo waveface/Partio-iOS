@@ -304,6 +304,12 @@
 "PHOTO_UPLOAD_CONTROLLER_TITLE" = "AUTO PHOTO UPLOAD";
 
 /* String on customized status bar */
+"PHOTO_UPLOAD_STATUS_BAR_COMPLETE" = "Upload complete";
+
+/* String on customized status bar */
+"PHOTO_UPLOAD_STATUS_BAR_FAIL" = "Upload fail";
+
+/* String on customized status bar */
 "PHOTO_UPLOAD_STATUS_BAR_IMPORTING" = "Scanning Camera Roll";
 
 /* String on customized status bar */

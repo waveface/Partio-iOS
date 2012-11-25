@@ -846,6 +846,31 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 	
 		NSCParameterAssert(results);
 		
+
+		void (^dismissSyncStatusBarIfNeeded)(BOOL forced) = ^(BOOL forced) {
+
+			WASyncManager *syncManager = [(WAAppDelegate_iOS *)AppDelegate() syncManager];
+			
+			if (forced) {
+
+				if (!syncManager.syncStopped) {
+
+					[syncManager resetSyncFilesCount];
+
+				}
+
+			} else {
+				
+				if (syncManager.syncCompleted) {
+					
+					[syncManager resetSyncFilesCount];
+				
+				}
+
+			}
+
+		};
+
 		if ([results isKindOfClass:[NSDictionary class]]) {
 		
 			WADataStore *ds = [WADataStore defaultStore];
@@ -886,7 +911,9 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 				BOOL didSave = [context save:&savingError];
 				
 				completionBlock(didSave, savingError);
-			
+
+				dismissSyncStatusBarIfNeeded(NO);
+
 			} waitUntilDone:NO];
 		
 		} else {
@@ -894,7 +921,7 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 			NSError *error = (NSError *)([results isKindOfClass:[NSError class]] ? results : nil);
 
 			// post id already exists
-			if ([[error domain] isEqualToString:kWAArticleEntitySyncingErrorDomain] && [error code] == 0x3019) {
+			if ([[error domain] isEqualToString:kWARemoteInterfaceDomain] && [error code] == 0x3000 + 25) {
 				NSManagedObjectContext *context = [[WADataStore defaultStore] disposableMOC];
 				context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
 				WAArticle *savedPost = (WAArticle *)[context irManagedObjectForURI:postEntityURL];
@@ -908,10 +935,8 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 
 			completionBlock(NO, error);
 
-			// sync will be aborted so we dismiss the customized uploading status bar by pretending all files are synced
-			WASyncManager *syncManager = [(WAAppDelegate_iOS *)AppDelegate() syncManager];
-			syncManager.syncedFilesCount = syncManager.needingSyncFilesCount;
-			
+			dismissSyncStatusBarIfNeeded(YES);
+
 		}
 		
 	}]];

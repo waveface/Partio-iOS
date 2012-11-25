@@ -129,6 +129,19 @@
 		4BFC156915C7D9E800DB02F8 /* Unfav@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BFC156715C7D9E800DB02F8 /* Unfav@2x~ipad.png */; };
 		4BFC156A15C7D9E800DB02F8 /* Unfav~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BFC156815C7D9E800DB02F8 /* Unfav~ipad.png */; };
 		7D0CDD01162E5A080027D35F /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D0CDCE7162E59DD0027D35F /* SenTestingKit.framework */; };
+		7D2152AE165E3EF900AD0A17 /* WAGalleryImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = FF878C0713FA730100B76807 /* WAGalleryImageView.m */; };
+		7D2152BE165E3F1C00AD0A17 /* WAGalleryImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = FF878C0713FA730100B76807 /* WAGalleryImageView.m */; };
+		7D2152BF165E404100AD0A17 /* WAGalleryImageScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = FF4050741573817A001A14DA /* WAGalleryImageScrollView.m */; };
+		7D2152C0165E404200AD0A17 /* WAGalleryImageScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = FF4050741573817A001A14DA /* WAGalleryImageScrollView.m */; };
+		7D2152C1165E404700AD0A17 /* WAGalleryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FF6FFCC413F86445000C582D /* WAGalleryViewController.m */; };
+		7D2152C2165E404800AD0A17 /* WAGalleryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FF6FFCC413F86445000C582D /* WAGalleryViewController.m */; };
+		7D2152C3165E405D00AD0A17 /* WAImageStreamPickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = FF7D466714024FD800C916F5 /* WAImageStreamPickerView.m */; };
+		7D2152C4165E405E00AD0A17 /* WAImageStreamPickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = FF7D466714024FD800C916F5 /* WAImageStreamPickerView.m */; };
+		7D2152C5165E406E00AD0A17 /* WAImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = FF584C4C1435CB320058E109 /* WAImageView.m */; };
+		7D2152C6165E406E00AD0A17 /* WAImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = FF584C4C1435CB320058E109 /* WAImageView.m */; };
+		7D2152C7165E408100AD0A17 /* WAAsyncImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = FF14886614978C5800D8B0AD /* WAAsyncImageView.m */; };
+		7D2152C8165E408200AD0A17 /* WAAsyncImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = FF14886614978C5800D8B0AD /* WAAsyncImageView.m */; };
+		7D2152CE165E4B7900AD0A17 /* UserWithEvents.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 7D2152C9165E41B900AD0A17 /* UserWithEvents.sqlite */; };
 		7D296DAA1643818000870747 /* libSocketRocket.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D6470A71642218800DBDEA6 /* libSocketRocket.a */; };
 		7D29702B1643BC2F00870747 /* WAModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = FFCD324114B997B70035C4F5 /* WAModel.xcdatamodeld */; };
 		7D71DDE21653569500456B52 /* PostWithEventTime.txt in Resources */ = {isa = PBXBuildFile; fileRef = 7D71DDE11653569500456B52 /* PostWithEventTime.txt */; };
@@ -1126,6 +1139,7 @@
 		5AE49661BAA04638AA81DC49 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = SOURCE_ROOT; };
 		7D0CDCE7162E59DD0027D35F /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
 		7D0CDD00162E5A080027D35F /* StreamTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = StreamTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
+		7D2152C9165E41B900AD0A17 /* UserWithEvents.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; name = UserWithEvents.sqlite; path = StreamTests/UserWithEvents.sqlite; sourceTree = SOURCE_ROOT; };
 		7D71DDE11653569500456B52 /* PostWithEventTime.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = PostWithEventTime.txt; path = UnitTests/PostWithEventTime.txt; sourceTree = SOURCE_ROOT; };
 		7D7A442C164CF2FB00E156CF /* WACollection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WACollection.h; sourceTree = "<group>"; };
 		7D7A442D164CF2FB00E156CF /* WACollection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WACollection.m; sourceTree = "<group>"; };
@@ -2201,6 +2215,7 @@
 		7D0CDD05162E5A080027D35F /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				7D2152C9165E41B900AD0A17 /* UserWithEvents.sqlite */,
 				4BBEE915164F5FB800D33EDB /* InfoPlist.strings */,
 				4BBEE912164F5F8C00D33EDB /* StreamTests-Info.plist */,
 				4BBEE913164F5F8C00D33EDB /* StreamTests-Prefix.pch */,
@@ -3811,6 +3826,7 @@
 				7DC3AC101642203C009A8EA7 /* SocketRocket.xcodeproj in Resources */,
 				7DA309321648BC6900B6FABD /* WAPhotoStreamViewController.xib in Resources */,
 				7DB78A6E164900FA00E165E9 /* WAPhotoStreamViewCell.xib in Resources */,
+				7D2152CE165E4B7900AD0A17 /* UserWithEvents.sqlite in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4327,6 +4343,12 @@
 				4BD189FF1653DE4200908080 /* WAFile.m in Sources */,
 				4B4AA30C16564BEE00A04DDE /* NSDate+WAAdditions.m in Sources */,
 				7DBE8DF6165B383C005C2347 /* WADayHeaderView.m in Sources */,
+				7D2152BE165E3F1C00AD0A17 /* WAGalleryImageView.m in Sources */,
+				7D2152BF165E404100AD0A17 /* WAGalleryImageScrollView.m in Sources */,
+				7D2152C2165E404800AD0A17 /* WAGalleryViewController.m in Sources */,
+				7D2152C3165E405D00AD0A17 /* WAImageStreamPickerView.m in Sources */,
+				7D2152C5165E406E00AD0A17 /* WAImageView.m in Sources */,
+				7D2152C7165E408100AD0A17 /* WAAsyncImageView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4343,6 +4365,12 @@
 				4BD18A001653DE4200908080 /* WAFile.m in Sources */,
 				4B4AA30D16564BF000A04DDE /* NSDate+WAAdditions.m in Sources */,
 				7DBE8DF5165B3818005C2347 /* WADayHeaderView.m in Sources */,
+				7D2152AE165E3EF900AD0A17 /* WAGalleryImageView.m in Sources */,
+				7D2152C0165E404200AD0A17 /* WAGalleryImageScrollView.m in Sources */,
+				7D2152C1165E404700AD0A17 /* WAGalleryViewController.m in Sources */,
+				7D2152C4165E405E00AD0A17 /* WAImageStreamPickerView.m in Sources */,
+				7D2152C6165E406E00AD0A17 /* WAImageView.m in Sources */,
+				7D2152C8165E408200AD0A17 /* WAAsyncImageView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
