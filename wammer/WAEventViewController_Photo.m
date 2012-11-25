@@ -11,6 +11,8 @@
 #import "WAFile+LazyImages.h"
 #import "WAGalleryViewController.h"
 #import "IRBindings.h"
+#import "WAAppearance.h"
+#import "WAEventActionsViewController.h"
 
 @interface WAEventViewController_Photo () 
 
@@ -32,6 +34,18 @@
 - (void)viewDidLoad
 {
 	[super viewDidLoad];
+	
+	__weak WAEventViewController *wSelf = self;
+	
+	self.navigationItem.rightBarButtonItem = WABarButtonItem([UIImage imageNamed:@"action"], nil, ^{
+		WAEventActionsViewController *editingModeVC = [WAEventActionsViewController new];
+		editingModeVC.article = wSelf.article;
+
+		WANavigationController *navVC = [[WANavigationController alloc] initWithRootViewController:editingModeVC];
+		navVC.modalPresentationStyle = UIModalPresentationPageSheet;
+
+		[wSelf presentViewController:navVC animated:YES completion:nil];
+	});
 	
 	[self.itemsView registerClass:[WAEventPhotoViewCell class] forCellWithReuseIdentifier:@"EventPhotoCell"];
 	

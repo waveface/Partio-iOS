@@ -34,6 +34,12 @@
 /* In iPad composition view */
 "ACTION_DONE" = "Stream!";
 
+/* Share thru Email */
+"ACTION_EMAIL" = "Email";
+
+/* Share to Facebook action */
+"ACTION_FACEBOOK" = "Facebook";
+
 /* Action title for feedback composition */
 "ACTION_FEEDBACK" = "Feedback";
 
@@ -75,6 +81,9 @@
 
 /* Button title for showing a camera capture controller */
 "ACTION_TAKE_PHOTO_WITH_CAMERA" = "Camera";
+
+/* Share to Twitter action */
+"ACTION_TWITTER" = "Twitter";
 
 /* Action marking article as not favorite */
 "ACTION_UNMARK_FAVORITE" = "Unfavorite";

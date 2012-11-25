@@ -34,6 +34,12 @@
 /* In iPad composition view */
 "ACTION_DONE" = "完成";
 
+/* Share thru Email */
+"ACTION_EMAIL" = "郵寄";
+
+/* Share to Facebook action */
+"ACTION_FACEBOOK" = "Facebook";
+
 /* Action title for feedback composition */
 "ACTION_FEEDBACK" = "回報";
 
@@ -75,6 +81,9 @@
 
 /* Button title for showing a camera capture controller */
 "ACTION_TAKE_PHOTO_WITH_CAMERA" = "相機";
+
+/* Share to Twitter action */
+"ACTION_TWITTER" = "Twitter";
 
 /* Action marking article as not favorite */
 "ACTION_UNMARK_FAVORITE" = "取消最愛";

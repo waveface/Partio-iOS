@@ -251,6 +251,7 @@
 		80C129C2163989C6001DDFE2 /* cloudy@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 80C129C0163989C6001DDFE2 /* cloudy@2x.png */; };
 		80C129C516398A0D001DDFE2 /* Create.png in Resources */ = {isa = PBXBuildFile; fileRef = 80C129C316398A0D001DDFE2 /* Create.png */; };
 		80C129C616398A0D001DDFE2 /* Create@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 80C129C416398A0D001DDFE2 /* Create@2x.png */; };
+		80C9218A166265450055EE11 /* WAEventActionsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 80C92189166265450055EE11 /* WAEventActionsViewController.m */; };
 		80C979F71649796A004F0CF4 /* EventCardBG.png in Resources */ = {isa = PBXBuildFile; fileRef = 80C979F61649796A004F0CF4 /* EventCardBG.png */; };
 		80C979FA16497EF1004F0CF4 /* LightDateBG.png in Resources */ = {isa = PBXBuildFile; fileRef = 80C979F816497EF1004F0CF4 /* LightDateBG.png */; };
 		80C979FB16497EF1004F0CF4 /* LightDateBG@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 80C979F916497EF1004F0CF4 /* LightDateBG@2x.png */; };
@@ -1270,6 +1271,8 @@
 		80C129C0163989C6001DDFE2 /* cloudy@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "cloudy@2x.png"; path = "Resources/cloudy@2x.png"; sourceTree = "<group>"; };
 		80C129C316398A0D001DDFE2 /* Create.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Create.png; path = Resources/Create.png; sourceTree = "<group>"; };
 		80C129C416398A0D001DDFE2 /* Create@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Create@2x.png"; path = "Resources/Create@2x.png"; sourceTree = "<group>"; };
+		80C92188166265450055EE11 /* WAEventActionsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WAEventActionsViewController.h; path = wammer/WAEventActionsViewController.h; sourceTree = "<group>"; };
+		80C92189166265450055EE11 /* WAEventActionsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WAEventActionsViewController.m; path = wammer/WAEventActionsViewController.m; sourceTree = "<group>"; };
 		80C979F61649796A004F0CF4 /* EventCardBG.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = EventCardBG.png; path = Resources/EventCardBG.png; sourceTree = "<group>"; };
 		80C979F816497EF1004F0CF4 /* LightDateBG.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = LightDateBG.png; path = Resources/LightDateBG.png; sourceTree = "<group>"; };
 		80C979F916497EF1004F0CF4 /* LightDateBG@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "LightDateBG@2x.png"; path = "Resources/LightDateBG@2x.png"; sourceTree = "<group>"; };
@@ -1979,10 +1982,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7D9B1D91162BB1F6000E5350 /* Social.framework in Frameworks */,
 				80A115681647CC0B005A4246 /* MapKit.framework in Frameworks */,
 				7D857D54164250B80092CF5F /* libAQGridView.a in Frameworks */,
 				7DC3AC1216422070009A8EA7 /* libSocketRocket.a in Frameworks */,
-				7D9B1D91162BB1F6000E5350 /* Social.framework in Frameworks */,
 				7D9B1D8F162BB1E8000E5350 /* AdSupport.framework in Frameworks */,
 				7D9B1D8D162BB1DE000E5350 /* Accounts.framework in Frameworks */,
 				8002CDE615E5E85600D7BFF0 /* libicucore.dylib in Frameworks */,
@@ -2319,6 +2322,8 @@
 				80DA984C16496FED0030CA21 /* WAEventViewController_Photo.m */,
 				80DA984D16496FED0030CA21 /* WAEventViewController.h */,
 				80DA984E16496FED0030CA21 /* WAEventViewController.m */,
+				80C92188166265450055EE11 /* WAEventActionsViewController.h */,
+				80C92189166265450055EE11 /* WAEventActionsViewController.m */,
 			);
 			name = "Event View";
 			sourceTree = "<group>";
@@ -4588,6 +4593,7 @@
 				131AEC2F1654DF0D000F9E74 /* WAStatusBar.m in Sources */,
 				807C0F1F165B298500197FC3 /* WATimelineViewControllerPad.m in Sources */,
 				80175AF9165B2CAF007E783B /* WAPostViewCellPad.m in Sources */,
+				80C9218A166265450055EE11 /* WAEventActionsViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -68,7 +68,13 @@ void WADefaultBarButtonInitialize (void) {
 
 IRBarButtonItem * WABarButtonItem (UIImage *image, NSString *labelText, void(^aBlock)(void)) {
 
-	IRBarButtonItem *item = [IRBarButtonItem itemWithCustomImage:image highlightedImage:nil];
+	IRBarButtonItem *item = nil;
+	
+	if (image)
+		item = [IRBarButtonItem itemWithCustomImage:image highlightedImage:nil];
+	else
+		item = [[IRBarButtonItem alloc] initWithTitle:labelText style:UIBarButtonItemStyleBordered target:nil action:nil];
+	
 	if (aBlock)
 		item.block = aBlock;
 	

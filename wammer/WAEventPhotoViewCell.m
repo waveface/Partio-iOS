@@ -14,11 +14,20 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
+			
 			self.imageView = [[UIImageView alloc] initWithFrame:(CGRect){CGPointZero, frame.size}];
 			self.imageView.backgroundColor = [UIColor lightGrayColor];
 			self.imageView.contentMode = UIViewContentModeScaleAspectFill;
 			self.imageView.clipsToBounds = YES;
 			[self addSubview:self.imageView];
+			
+			self.checkMarkView = [[UIImageView alloc] initWithFrame:(CGRect) {CGPointZero, {32, 32}}];
+			self.checkMarkView.backgroundColor = [UIColor clearColor];
+			self.checkMarkView.clipsToBounds = YES;
+			self.checkMarkView.image = nil;
+			[self addSubview:self.checkMarkView];
+			[self bringSubviewToFront:self.checkMarkView];
+
     }
     return self;
 }

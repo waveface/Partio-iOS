@@ -32,7 +32,6 @@
 
 @interface WAEventViewController ()
 
-@property (nonatomic, strong, readwrite) NSFetchedResultsController *fetchedResultsController;
 @property (nonatomic, strong, readwrite) UICollectionView *itemsView;
 @property (nonatomic, strong) WAEventHeaderView *headerView;
 
@@ -74,10 +73,8 @@
 {
 	
 	[super viewDidLoad];
-	
 		
 	CGRect rect = (CGRect){ CGPointZero, self.view.frame.size };
-//	rect.size.height -= CGRectGetHeight(self.navigationController.navigationBar.frame);
 	
 	UICollectionViewFlowLayout *flowlayout = [[UICollectionViewFlowLayout alloc] init];
 	flowlayout.scrollDirection = UICollectionViewScrollDirectionVertical;
@@ -114,24 +111,6 @@
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
-}
-
-- (NSFetchedResultsController *) fetchedResultsController {
-	
-	if (_fetchedResultsController)
-		return _fetchedResultsController;
-	
-	NSFetchRequest *fetchRequest = [[WADataStore defaultStore] newFetchRequestForFilesInArticle:self.article];
-	
-	_fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest managedObjectContext:self.article.managedObjectContext sectionNameKeyPath:nil cacheName:nil];
-	_fetchedResultsController.delegate = self;
-	
-	NSError *fetchError = nil;
-	if (![_fetchedResultsController performFetch:&fetchError])
-		NSLog(@"Error fetching: %@", fetchError);
-	
-	return _fetchedResultsController;
-	
 }
 
 + (NSDateFormatter *) dateFormatter {
