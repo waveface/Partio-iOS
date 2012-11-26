@@ -14,6 +14,7 @@
 #import "WAFirstUseEmailLoginFooterView.h"
 #import <FacebookSDK/FacebookSDK.h>
 #import <Accounts/Accounts.h>
+#import "WAAppearance.h"
 
 
 static NSString * const kWASegueLogInToPhotoImport = @"WASegueLogInToPhotoImport";
@@ -82,6 +83,11 @@ static NSString * const kWASegueLogInToConnectServices = @"WASegueLogInToConnect
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardWasShown:) name:UIKeyboardDidShowNotification object:nil];
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardWillBeHidden:) name:UIKeyboardWillHideNotification object:nil];
 	}
+
+	__weak WAFirstUseLogInViewController *wSelf = self;
+	self.navigationItem.leftBarButtonItem = (UIBarButtonItem *)WABackBarButtonItem([UIImage imageNamed:@"back"], @"", ^{
+		[wSelf.navigationController popViewControllerAnimated:YES];
+	});
 
 }
 

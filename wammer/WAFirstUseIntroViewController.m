@@ -8,6 +8,7 @@
 
 #import "WAFirstUseIntroViewController.h"
 #import "WADefines.h"
+#import "WAAppearance.h"
 
 @interface WAFirstUseIntroViewController ()
 
@@ -43,6 +44,11 @@
 	self.plansPage = [self.pages lastObject];
 	self.plansPage.dataSource = self;
 	self.plansPage.delegate = self;
+
+	__weak WAFirstUseIntroViewController *wSelf = self;
+	self.navigationItem.leftBarButtonItem = (UIBarButtonItem *)WABackBarButtonItem([UIImage imageNamed:@"back"], @"", ^{
+		[wSelf.navigationController popViewControllerAnimated:YES];
+	});
 
 }
 
