@@ -30,7 +30,7 @@ void WADefaultAppearance(void) {
 		// set the appearance for all major UINavigationBar and toolbar
 		UIColor *naviBgColor = [UIColor colorWithRed:0.95f green:0.95f blue:0.95f alpha:1];
 
-		CGSize barSize = CGSizeMake(CGRectGetWidth(([UIApplication sharedApplication].statusBarFrame)), 44.0);
+		CGSize barSize = CGSizeMake(1.0, 44.0);
 		UIGraphicsBeginImageContext(barSize);
 		CGContextRef context = UIGraphicsGetCurrentContext();
 		CGContextSetFillColorWithColor(context, naviBgColor.CGColor);
@@ -40,19 +40,16 @@ void WADefaultAppearance(void) {
 		UIGraphicsEndImageContext();
 		[[UINavigationBar appearance] setBackgroundImage:naviBg forBarMetrics:UIBarMetricsDefault];
 
-		CGSize shadowSize = CGSizeMake(CGRectGetWidth(([UIApplication sharedApplication].statusBarFrame)), 2);
+		CGSize shadowSize = CGSizeMake(15.0, 1.0);
 		UIGraphicsBeginImageContext(shadowSize);
 		CGContextRef shadowContext = UIGraphicsGetCurrentContext();
-		CGContextSetStrokeColorWithColor(shadowContext, [UIColor grayColor].CGColor);
-		CGPoint addLines[2];
-		addLines[0] = CGPointMake(7, 0);
-		addLines[1] = CGPointMake(CGRectGetWidth(([UIApplication sharedApplication].statusBarFrame)) - 7, 0);
-		CGContextSetLineWidth(shadowContext, 1);
-		CGContextAddLines(shadowContext, addLines, 2);
-		CGContextStrokePath(shadowContext);
+		CGContextSetFillColorWithColor(shadowContext, [UIColor colorWithRed:193/255.0 green:193/255.0 blue:193/255.0 alpha:1].CGColor);
+		CGContextAddRect(shadowContext, CGRectMake(7.0, 0, 1.0, shadowSize.height));
+		CGContextFillPath(shadowContext);
 		UIImage *naviShadow = UIGraphicsGetImageFromCurrentImageContext();
+		UIImage *naviShadowWithInsets = [naviShadow resizableImageWithCapInsets:UIEdgeInsetsMake(0, 7, 0, 7)];
 		UIGraphicsEndImageContext();
-		[[UINavigationBar appearance] setShadowImage:naviShadow];
+		[[UINavigationBar appearance] setShadowImage:naviShadowWithInsets];
 		
 		NSValue *shadowOffset = [NSValue valueWithUIOffset:(UIOffset){0,0}];
 
