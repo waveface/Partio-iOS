@@ -17,6 +17,9 @@
    Title for the action responsible for presenting a controller changing the representing file of an article */
 "ACTION_CHANGE_REPRESENTING_FILE" = "Change Cover";
 
+/* Place photos in collections */
+"ACTION_COLLECTION" = "Collections";
+
 /* Short action title for connecting Facebook creds */
 "ACTION_CONNECT_FACEBOOK_SHORT" = "Start Importing";
 
@@ -249,6 +252,9 @@
 
 /* In Account Info Photo Import Section */
 "LAST_IMPORT_TIME" = "Photos last imported: %@";
+
+/* The email subject users will share photos thru. The nickname of user will be appended to this subject. */
+"MAIL_ACTION_SUBJECT" = "%@ wants to share photo(s) with you thru Stream App.";
 
 /* No comment provided by engineer. */
 "MINUTE_PLURAL" = "%d minutes";

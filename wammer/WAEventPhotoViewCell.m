@@ -21,7 +21,7 @@
 			self.imageView.clipsToBounds = YES;
 			[self addSubview:self.imageView];
 			
-			self.checkMarkView = [[UIImageView alloc] initWithFrame:(CGRect) {CGPointZero, {32, 32}}];
+			self.checkMarkView = [[UIImageView alloc] initWithFrame:(CGRect) {{5, 5}, {32, 32}}];
 			self.checkMarkView.backgroundColor = [UIColor clearColor];
 			self.checkMarkView.clipsToBounds = YES;
 			self.checkMarkView.image = nil;

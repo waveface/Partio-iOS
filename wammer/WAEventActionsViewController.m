@@ -7,6 +7,8 @@
 //
 
 #import <Social/Social.h>
+#import <MessageUI/MessageUI.h>
+#import <MessageUI/MFMailComposeViewController.h>
 
 #import "WAEventActionsViewController.h"
 #import "WAAppearance.h"
@@ -14,8 +16,10 @@
 #import "WAEventPhotoViewCell.h"
 #import "WAFile.h"
 #import "WAFile+LazyImages.h"
+#import "WAUser.h"
+#import "WADataStore.h"
 
-@interface WAEventActionsViewController () <UICollectionViewDataSource, UICollectionViewDelegateFlowLayout>
+@interface WAEventActionsViewController () <UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, MFMailComposeViewControllerDelegate>
 
 @property (nonatomic, strong) UICollectionView *itemsView;
 @property (nonatomic, strong) NSMutableIndexSet *selectedPhotos;
@@ -98,16 +102,37 @@ void (^displayAlert)(NSString *, NSString *) = ^(NSString *title, NSString *msg)
 		composeForSL(SLServiceTypeTwitter);
 	});
 	
-	IRBarButtonItem *clButton = WABarButtonItem(nil, NSLocalizedString(@"SLIDING_MENU_TITLE_COLLECTIONS", nil), ^{
+	IRBarButtonItem *clButton = WABarButtonItem(nil, NSLocalizedString(@"ACTION_COLLECTION", @"Place photos in collections"), ^{
 		displayAlert(@"Sorry", @"Collection editiing will be available soon.");
 	});
+	
 	IRBarButtonItem *mlButton = WABarButtonItem(nil, NSLocalizedString(@"ACTION_EMAIL", @"Share thru Email"), ^{
-		displayAlert(@"Sorry", @"Email sharing will be available soon.");
+		
+		if (![MFMailComposeViewController canSendMail])
+			return;
+		
+		MFMailComposeViewController *mailer = [[MFMailComposeViewController alloc] init];
+		mailer.mailComposeDelegate = wSelf;
+		WAUser *user = [[WADataStore defaultStore] mainUserInContext:[[WADataStore defaultStore] disposableMOC]];
+		NSString *subject = [NSString stringWithFormat:NSLocalizedString(@"MAIL_ACTION_SUBJECT", @"The email subject users will share photos thru. The nickname of user will be appended to this subject."), user.nickname];
+		[mailer setSubject:subject];
+		NSString *body = [WAEventViewController attributedDescriptionStringForEvent:wSelf.article].string;
+		[mailer setMessageBody:body isHTML:NO];
+
+		[wSelf.selectedPhotos enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop) {
+			
+			WAFile *file = wSelf.article.files[idx];
+			NSString *imageFilename = [NSString stringWithFormat:@"image-%d.jpg", idx];
+			[mailer addAttachmentData:[NSData dataWithContentsOfFile:file.smallThumbnailFilePath] mimeType:@"image/jpeg" fileName:imageFilename];
+
+		}];
+		[wSelf presentViewController:mailer animated:YES completion:nil];
+		
 	});
 
 
 	self.toolbarItems = @[fbButton, twButton, clButton, mlButton];
-
+	
 	self.navigationController.navigationBar.barStyle = UIBarStyleBlackTranslucent;
 	self.navigationController.navigationBar.tintColor = [UIColor clearColor];
 	
@@ -143,6 +168,12 @@ void (^displayAlert)(NSString *, NSString *) = ^(NSString *title, NSString *msg)
 	}];
 	
 	return [NSArray arrayWithArray:marray];
+	
+}
+
+- (void) mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error {
+	
+	[controller dismissViewControllerAnimated:YES completion:nil];
 	
 }
 
