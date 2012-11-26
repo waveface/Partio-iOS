@@ -17,10 +17,30 @@ void WADefaultAppearance(void) {
 		
 		// set the appearance for all major UINavigationBar and toolbar
 		UIColor *naviBgColor = [UIColor colorWithRed:0.95f green:0.95f blue:0.95f alpha:1];
-		[[UINavigationBar appearance] setTintColor:naviBgColor];
+
+		CGSize barSize = CGSizeMake(1.0, 44.0);
+		UIGraphicsBeginImageContext(barSize);
+		CGContextRef context = UIGraphicsGetCurrentContext();
+		CGContextSetFillColorWithColor(context, naviBgColor.CGColor);
+		CGContextAddRect(context, CGRectMake(0, 0, barSize.width, barSize.height));
+		CGContextFillPath(context);
+		UIImage *naviBg = UIGraphicsGetImageFromCurrentImageContext();
+		UIGraphicsEndImageContext();
+		[[UINavigationBar appearance] setBackgroundImage:naviBg forBarMetrics:UIBarMetricsDefault];
+
+		CGSize shadowSize = CGSizeMake(15.0, 1.0);
+		UIGraphicsBeginImageContext(shadowSize);
+		CGContextRef shadowContext = UIGraphicsGetCurrentContext();
+		CGContextSetFillColorWithColor(shadowContext, [UIColor colorWithRed:193/255.0 green:193/255.0 blue:193/255.0 alpha:1].CGColor);
+		CGContextAddRect(shadowContext, CGRectMake(7.0, 0, 1.0, shadowSize.height));
+		CGContextFillPath(shadowContext);
+		UIImage *naviShadow = UIGraphicsGetImageFromCurrentImageContext();
+		UIImage *naviShadowWithInsets = [naviShadow resizableImageWithCapInsets:UIEdgeInsetsMake(0, 7, 0, 7)];
+		UIGraphicsEndImageContext();
+		[[UINavigationBar appearance] setShadowImage:naviShadowWithInsets];
 		
 		NSValue *shadowOffset = [NSValue valueWithUIOffset:(UIOffset){0,0}];
-														 
+
 		UIColor *textColor = [UIColor colorWithRed:0.30f green:0.30f blue:0.30f alpha:1];
 		[[UINavigationBar appearance] setTitleTextAttributes:@{UITextAttributeTextColor: textColor, UITextAttributeTextShadowOffset:shadowOffset}];
 

@@ -14,6 +14,7 @@
 #import <Accounts/Accounts.h>
 #import "WARemoteInterface.h"
 #import "WAOverlayBezel.h"
+#import "WAAppearance.h"
 
 static NSString * const kWASegueSignUpToConnectServices = @"WASegueSignUpToConnectServices";
 static NSString * const kWASegueSignUpToPhotoImport = @"WASegueSignUpToPhotoImport";
@@ -94,7 +95,12 @@ static NSString * const kWASegueSignUpToPhotoImport = @"WASegueSignUpToPhotoImpo
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardWasShown:) name:UIKeyboardDidShowNotification object:nil];
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardWillBeHidden:) name:UIKeyboardWillHideNotification object:nil];
 	}
-	
+
+	__weak WAFirstUseSignUpViewController *wSelf = self;
+	self.navigationItem.leftBarButtonItem = (UIBarButtonItem *)WABackBarButtonItem([UIImage imageNamed:@"back"], @"", ^{
+		[wSelf.navigationController popViewControllerAnimated:YES];
+	});
+
 }
 
 - (void)updateViewConstraints {

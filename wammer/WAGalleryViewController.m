@@ -360,10 +360,12 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 		BOOL oldToolBarWasTranslucent = navC.toolbar.translucent;
 		BOOL toolbarWasHidden = navC.toolbarHidden;
 		UIColor *oldNavBarTintColor = navC.navigationBar.tintColor;
+		UIImage *oldNavBarBackgroundImage = [navC.navigationBar backgroundImageForBarMetrics:UIBarMetricsDefault];
 		
 		navC.navigationBar.barStyle = UIBarStyleBlackTranslucent;
 		navC.navigationBar.translucent = YES;
 		navC.navigationBar.tintColor = [UIColor clearColor];
+		[navC.navigationBar setBackgroundImage:nil forBarMetrics:UIBarMetricsDefault];
 		
 		navC.toolbar.barStyle = UIBarStyleBlackTranslucent;
 		navC.toolbar.translucent = YES;
@@ -409,6 +411,7 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 				navC.toolbar.barStyle = oldToolBarStyle;
 				navC.toolbar.translucent = oldToolBarWasTranslucent;
 				navC.navigationBar.tintColor = oldNavBarTintColor;
+				[navC.navigationBar setBackgroundImage:oldNavBarBackgroundImage forBarMetrics:UIBarMetricsDefault];
 				
 				wSelf.paginatedView.frame = wSelf.paginatedView.superview.bounds;
 				

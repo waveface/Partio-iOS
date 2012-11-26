@@ -9,6 +9,9 @@
 #import "WAFirstUseConnectServicesViewController.h"
 #import "WAFirstUsePhotoImportViewController.h"
 #import "WAFacebookConnectionSwitch.h"
+#import "WAAppearance.h"
+
+static NSString * const kWASegueConnectServicesToPhotoImport = @"WASegueConnectServicesToPhotoImport";
 
 @interface WAFirstUseConnectServicesViewController ()
 
@@ -34,6 +37,13 @@
 	UISwitch *picasaSwitch = [[UISwitch alloc] init];
 	picasaSwitch.enabled = NO;
 	self.picasaConnectCell.accessoryView = picasaSwitch;
+
+	__weak WAFirstUseConnectServicesViewController *wSelf = self;
+	UIBarButtonItem *nextButton = (UIBarButtonItem *)WABackBarButtonItem([UIImage imageNamed:@"forward"], @"", ^{
+		[wSelf performSegueWithIdentifier:kWASegueConnectServicesToPhotoImport sender:nil];
+	});
+
+	self.navigationItem.rightBarButtonItem = nextButton;
 
 }
 

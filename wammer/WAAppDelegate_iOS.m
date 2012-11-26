@@ -652,11 +652,8 @@ extern CFAbsoluteTime StartTime;
 		[self clearViewHierarchy];
 
 	if (eraseAuthInfo) {
-		// run logout after all views are cleared to ensure no KVO registrations left
-		[[NSOperationQueue mainQueue] addOperationWithBlock:^{
-			[self logout];
-			[self removeAuthenticationData];
-		}];
+		[self logout];
+		[self removeAuthenticationData];
 	}
 	
 	[self handleAuthRequest:aReason

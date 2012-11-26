@@ -19,6 +19,8 @@
 		1349AAEE163E9C4600D87A85 /* WAFirstUseIntroViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1349AAEC163E9C4600D87A85 /* WAFirstUseIntroViewController.m */; };
 		1360BC0F1623FA3200AF4EAA /* WACacheManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 1360BC0E1623FA3200AF4EAA /* WACacheManager.m */; };
 		136C170315F48E8E0066B289 /* WAAssetsLibraryManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 136C170215F48E8E0066B289 /* WAAssetsLibraryManager.m */; };
+		136DD1AC166323B9001ECE60 /* forward.png in Resources */ = {isa = PBXBuildFile; fileRef = 136DD1AB166323B9001ECE60 /* forward.png */; };
+		136DD1AE166323C2001ECE60 /* forward@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 136DD1AD166323C2001ECE60 /* forward@2x.png */; };
 		13793344162C0EA000FA9E8F /* WAFileExif+WAAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 13793343162C0EA000FA9E8F /* WAFileExif+WAAdditions.m */; };
 		138CCA351609D22700B477CE /* TutorialPhotoImport~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 138CCA331609D22700B477CE /* TutorialPhotoImport~iphone.png */; };
 		138CCA381609D23C00B477CE /* TutorialPhotoImport@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 138CCA361609D23C00B477CE /* TutorialPhotoImport@2x~iphone.png */; };
@@ -993,6 +995,8 @@
 		1360BC0E1623FA3200AF4EAA /* WACacheManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WACacheManager.m; path = wammer/WACacheManager.m; sourceTree = "<group>"; };
 		136C170115F48E8E0066B289 /* WAAssetsLibraryManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAAssetsLibraryManager.h; sourceTree = "<group>"; };
 		136C170215F48E8E0066B289 /* WAAssetsLibraryManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAAssetsLibraryManager.m; sourceTree = "<group>"; };
+		136DD1AB166323B9001ECE60 /* forward.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = forward.png; path = Resources/forward.png; sourceTree = "<group>"; };
+		136DD1AD166323C2001ECE60 /* forward@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "forward@2x.png"; path = "Resources/forward@2x.png"; sourceTree = "<group>"; };
 		13793342162C0EA000FA9E8F /* WAFileExif+WAAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WAFileExif+WAAdditions.h"; sourceTree = "<group>"; };
 		13793343162C0EA000FA9E8F /* WAFileExif+WAAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WAFileExif+WAAdditions.m"; sourceTree = "<group>"; };
 		138CCA341609D22700B477CE /* en */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = en; path = "en.lproj/TutorialPhotoImport~iphone.png"; sourceTree = "<group>"; };
@@ -2994,6 +2998,8 @@
 				8090AB241646AE79007E2AC0 /* action@2x.png */,
 				8090AB251646AE79007E2AC0 /* back.png */,
 				8090AB261646AE79007E2AC0 /* back@2x.png */,
+				136DD1AB166323B9001ECE60 /* forward.png */,
+				136DD1AD166323C2001ECE60 /* forward@2x.png */,
 				806A5C8A16241E2800867E56 /* Cal.png */,
 				806A5C8B16241E2800867E56 /* Cal@2x.png */,
 				806A5C8C16241E2800867E56 /* CalHL.png */,
@@ -4157,6 +4163,8 @@
 				80175AFB165B4108007E783B /* WAPostViewCellPad-ImageStack-3.xib in Resources */,
 				80EF84CE165F379D009D29A5 /* WAPostViewCellPad-ImageStack-1.xib in Resources */,
 				80EF84D0165F37C4009D29A5 /* WAPostViewCellPad-ImageStack-2.xib in Resources */,
+				136DD1AC166323B9001ECE60 /* forward.png in Resources */,
+				136DD1AE166323C2001ECE60 /* forward@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
