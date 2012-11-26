@@ -27,4 +27,20 @@
 	
 }
 
+- (BOOL) shouldAutorotate {
+
+	if (isPad())
+		return YES;
+	return NO;
+
+}
+
+- (NSUInteger) supportedInterfaceOrientations {
+	
+	if (isPad())
+		return UIInterfaceOrientationMaskAll;
+	return UIInterfaceOrientationMaskPortrait;
+	
+}
+
 @end

@@ -172,7 +172,10 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 
 - (NSUInteger) supportedInterfaceOrientations {
 
-	return [self.parentViewController supportedInterfaceOrientations];
+	if (isPad())
+		return UIInterfaceOrientationMaskAll;
+	else
+		return UIInterfaceOrientationMaskPortrait;
 
 }
 

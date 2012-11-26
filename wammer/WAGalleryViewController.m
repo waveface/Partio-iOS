@@ -131,10 +131,16 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 
 }
 
-- (BOOL) shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
+- (NSUInteger) supportedInterfaceOrientations {
+	
+	return UIInterfaceOrientationMaskAll;
+	
+}
 
+- (BOOL) shouldAutorotate {
+	
 	return YES;
-
+	
 }
 
 - (void) willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {

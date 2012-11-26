@@ -544,10 +544,10 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 
 }
 
-- (BOOL) shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)newOrientation {
-  
-	return newOrientation == UIInterfaceOrientationPortrait;
-	
+- (BOOL) shouldAutorotate {
+
+	return NO;
+
 }
 
 - (NSUInteger) supportedInterfaceOrientations {

@@ -113,6 +113,22 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (BOOL) shouldAutorotate {
+
+	if (isPad())
+		return YES;
+	return NO;
+
+}
+
+- (NSUInteger) supportedInterfaceOrientations {
+
+	if (isPad())
+		return UIInterfaceOrientationMaskAll;
+	return UIInterfaceOrientationMaskPortrait;
+
+}
+
 + (NSDateFormatter *) dateFormatter {
 	static NSDateFormatter *formatter = nil;
 	

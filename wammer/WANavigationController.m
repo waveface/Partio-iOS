@@ -100,12 +100,15 @@
 
 }
 
+- (BOOL) shouldAutorotate {
+	
+	return [self.topViewController shouldAutorotate];
+
+}
+
 - (NSUInteger) supportedInterfaceOrientations {
 	
-	if (isPad())
-		return UIInterfaceOrientationMaskAll;
-	else
-		return UIInterfaceOrientationMaskPortrait;
+	return [self.topViewController supportedInterfaceOrientations];
 	
 }
 

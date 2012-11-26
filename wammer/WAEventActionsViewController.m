@@ -238,19 +238,21 @@ void (^displayAlert)(NSString *, NSString *) = ^(NSString *title, NSString *msg)
 	
 	WAEventPhotoViewCell *cell = (WAEventPhotoViewCell*)[collectionView cellForItemAtIndexPath:indexPath];
 
-	if ([self.selectedPhotos containsIndex:indexPath.row]) {
+	cell.checkMarkView.hidden = NO;
+	cell.checkMarkView.image = [UIImage imageNamed:@"IRAQ-Checkmark"];
 
-		cell.checkMarkView.image = nil;
-		cell.checkMarkView.hidden = YES;
-		[self.selectedPhotos removeIndex:indexPath.row];
+	[self.selectedPhotos addIndex:indexPath.row];
+	
+}
 
-	} else {
-		
-		cell.checkMarkView.hidden = NO;
-		cell.checkMarkView.image = [UIImage imageNamed:@"IRAQ-Checkmark"];
-		[self.selectedPhotos addIndex:indexPath.row];
-		
-	}
+- (void) collectionView:(UICollectionView *)collectionView didDeselectItemAtIndexPath:(NSIndexPath *)indexPath {
+	
+	WAEventPhotoViewCell *cell = (WAEventPhotoViewCell*)[collectionView cellForItemAtIndexPath:indexPath];
+	
+	cell.checkMarkView.hidden = YES;
+	cell.checkMarkView.image = nil;
+	
+	[self.selectedPhotos removeIndex:indexPath.row];
 	
 }
 
