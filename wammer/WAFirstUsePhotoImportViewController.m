@@ -37,24 +37,15 @@ static NSString * const kWASeguePhotoImportToDone = @"WASeguePhotoImportToDone";
 	[self.photoImportSwitch setOn:enabled animated:NO];
 
 	__weak WAFirstUsePhotoImportViewController *wSelf = self;
-	UIImage *backImage = [UIImage imageNamed:@"back"];
 	if (!self.isFromConnectServicesPage) {
 		self.navigationItem.hidesBackButton = YES;
 	} else {
-		self.navigationItem.leftBarButtonItem = (UIBarButtonItem *)WABackBarButtonItem(backImage, @"", ^{
+		self.navigationItem.leftBarButtonItem = (UIBarButtonItem *)WABackBarButtonItem([UIImage imageNamed:@"back"], @"", ^{
 			[wSelf.navigationController popViewControllerAnimated:YES];
 		});
 	}
 	
-	UIGraphicsBeginImageContext(backImage.size);
-	CGContextRef context = UIGraphicsGetCurrentContext();
-	CGAffineTransform flippedHorizontal = CGAffineTransformMake(-1, 0, 0, 1, backImage.size.width, 0);
-	CGContextConcatCTM(context, flippedHorizontal);
-	[backImage drawAtPoint:CGPointZero];
-	UIImage *flippedBackImage = UIGraphicsGetImageFromCurrentImageContext();
-	UIGraphicsEndImageContext();
-	
-	UIBarButtonItem *nextButton = (UIBarButtonItem *)WABackBarButtonItem(flippedBackImage, @"", ^{
+	UIBarButtonItem *nextButton = (UIBarButtonItem *)WABackBarButtonItem([UIImage imageNamed:@"forward"], @"", ^{
 		[wSelf performSegueWithIdentifier:kWASeguePhotoImportToDone sender:nil];
 	});
 

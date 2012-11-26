@@ -39,16 +39,7 @@ static NSString * const kWASegueConnectServicesToPhotoImport = @"WASegueConnectS
 	self.picasaConnectCell.accessoryView = picasaSwitch;
 
 	__weak WAFirstUseConnectServicesViewController *wSelf = self;
-	UIImage *backImage = [UIImage imageNamed:@"back"];
-	UIGraphicsBeginImageContext(backImage.size);
-	CGContextRef context = UIGraphicsGetCurrentContext();
-	CGAffineTransform flippedHorizontal = CGAffineTransformMake(-1, 0, 0, 1, backImage.size.width, 0);
-	CGContextConcatCTM(context, flippedHorizontal);
-	[backImage drawAtPoint:CGPointZero];
-	UIImage *flippedBackImage = UIGraphicsGetImageFromCurrentImageContext();
-	UIGraphicsEndImageContext();
-	
-	UIBarButtonItem *nextButton = (UIBarButtonItem *)WABackBarButtonItem(flippedBackImage, @"", ^{
+	UIBarButtonItem *nextButton = (UIBarButtonItem *)WABackBarButtonItem([UIImage imageNamed:@"forward"], @"", ^{
 		[wSelf performSegueWithIdentifier:kWASegueConnectServicesToPhotoImport sender:nil];
 	});
 
