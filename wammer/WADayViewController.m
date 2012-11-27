@@ -8,14 +8,13 @@
 
 #import "WADayViewController.h"
 #import "WADefines.h"
-#import "WATimelineViewControllerPhone.h"
-#import "WATimelineViewControllerPad.h"
+#import "WATimelineViewController.h"
 #import "WADataStore.h"
 #import "NSDate+WAAdditions.h"
 #import "WADataStore+WARemoteInterfaceAdditions.h"
 
 #import "WADataStore+FetchingConveniences.h"
-#import "IRTableView.h"
+#import "IRBarButtonItem.h"
 #import "WADatePickerViewController.h"
 #import "WADripdownMenuViewController.h"
 #import "WAArticleDraftsViewController.h"
@@ -128,7 +127,7 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 		
 		NSDate *theDate = nil;
 		
-		if ([containedClass isSubclassOfClass:[WATimelineViewControllerPhone class]] || [containedClass isSubclassOfClass:[WATimelineViewControllerPad class]]) {
+		if ([containedClass isSubclassOfClass:[WATimelineViewController class]]) {
 
 			theDate = [[((WAArticle*)obj) creationDate] dayBegin];
 			
@@ -206,7 +205,7 @@ BOOL (^isSameDay) (NSDate *, NSDate *) = ^ (NSDate *d1, NSDate *d2) {
 	self.days = [NSMutableArray array];
 	self.daysControllers = [NSMutableDictionary dictionary];
 	
-	if ([containedClass isSubclassOfClass:[WATimelineViewControllerPhone class]] || [containedClass isSubclassOfClass:[WATimelineViewControllerPad class]]) {
+	if ([containedClass isSubclassOfClass:[WATimelineViewController class]]) {
 	
 		NSFetchRequest *fetchRequest = [[WADataStore defaultStore].persistentStoreCoordinator.managedObjectModel fetchRequestFromTemplateWithName:@"WAFRArticles" substitutionVariables:@{}];
 		
@@ -316,7 +315,7 @@ BOOL (^isSameDay) (NSDate *, NSDate *) = ^ (NSDate *d1, NSDate *d2) {
 
 	
 	NSDate *theNewDate = nil;
-	if ([containedClass isSubclassOfClass:[WATimelineViewControllerPhone class]] || [containedClass isSubclassOfClass:[WATimelineViewControllerPad class]]) {
+	if ([containedClass isSubclassOfClass:[WATimelineViewController class]]) {
 
 		theNewDate = [[((WAArticle*)anObject) creationDate] dayBegin];
 

@@ -8,7 +8,6 @@
 
 #import "WAEventViewController.h"
 #import "WADataStore.h"
-#import "WADataStore+FetchingConveniences.h"
 #import "WAArticle.h"
 #import "WATag.h"
 #import "WATagGroup.h"
@@ -17,6 +16,7 @@
 #import "IRBarButtonItem.h"
 #import "WAAppearance.h"
 #import "WAEventPhotoViewCell.h"
+#import "GAI.h"
 
 @interface WAAnnotation : NSObject <MKAnnotation>
 
@@ -104,7 +104,20 @@
 		}
 		
 	});
+	
+	[[GAI sharedInstance].defaultTracker trackEventWithCategory:@"Events"
+																									 withAction:@"Enter single event"
+																										withLabel:nil
+																										withValue:nil];
+	
+}
 
+- (void) viewDidAppear:(BOOL)animated {
+	[super viewDidAppear:animated];
+	
+	if (self.completion)
+		self.completion();
+	
 }
 
 - (void)didReceiveMemoryWarning

@@ -17,6 +17,8 @@
 #import "IRAsyncOperation.h"
 #import "WACompositionViewController.h"
 
+#import "GAI.h"
+
 NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGalleryViewControllerContextPreferredFileObjectURI";
 
 
@@ -346,6 +348,12 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 			[[wSelf.article.files objectAtIndex:index] cleanImageCache];
 		}
 	}];
+	
+	[[GAI sharedInstance].defaultTracker trackEventWithCategory:@"Gallery"
+																									 withAction:@"Enter gallery"
+																										withLabel:nil
+																										withValue:nil];
+
 }
 
 - (void) viewWillAppear:(BOOL)animated {
@@ -812,16 +820,16 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 
 }
 
-- (void) viewDidUnload {
-
+- (void) dealloc {
+	
 	[self.paginatedView irRemoveObserverBlocksForKeyPath:@"currentPage"];
 	for (WAFile *file in self.article.files) {
     [file irRemoveObserverBlocksForKeyPath:@"bestPresentableImage"];
 		[file irRemoveObserverBlocksForKeyPath:@"smallestPresentableImage"];
 	}
-
+	
 	[self.streamPickerView irRemoveObserverBlocksForKeyPath:@"selectedItemIndex"];
-
+	
 	self.paginatedView = nil;
 	self.navigationBar = nil;
 	self.toolbar = nil;
@@ -837,12 +845,7 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 	
 	self.operationQueue = nil;
 
-	[super viewDidUnload];
-
-}
-
-- (void) dealloc {
-
+	
 	[self.paginatedView irRemoveObserverBlocksForKeyPath:@"currentPage"];
 	
 	if ([self isViewLoaded])
