@@ -144,6 +144,7 @@
 		7D2152CE165E4B7900AD0A17 /* UserWithEvents.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 7D2152C9165E41B900AD0A17 /* UserWithEvents.sqlite */; };
 		7D296DAA1643818000870747 /* libSocketRocket.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D6470A71642218800DBDEA6 /* libSocketRocket.a */; };
 		7D29702B1643BC2F00870747 /* WAModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = FFCD324114B997B70035C4F5 /* WAModel.xcdatamodeld */; };
+		7D3D8C3B1664B4A9003B9D19 /* libIRFoundationsTouch.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FF73A59D13D6DC6500D54EC6 /* libIRFoundationsTouch.a */; };
 		7D71DDE21653569500456B52 /* PostWithEventTime.txt in Resources */ = {isa = PBXBuildFile; fileRef = 7D71DDE11653569500456B52 /* PostWithEventTime.txt */; };
 		7D71DE0816537E9900456B52 /* WAPhotoStreamViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DB78A621649005E00E165E9 /* WAPhotoStreamViewController.m */; };
 		7D71DE1516537E9A00456B52 /* WAPhotoStreamViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DB78A621649005E00E165E9 /* WAPhotoStreamViewController.m */; };
@@ -336,7 +337,6 @@
 		FF2981BA14F6DFF1004F6893 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF73A69713D6E08100D54EC6 /* CoreData.framework */; };
 		FF2981BB14F6DFF1004F6893 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF73A54613D6C2CC00D54EC6 /* CoreGraphics.framework */; };
 		FF2981BC14F6DFF1004F6893 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FFB67956141E345C006F84E3 /* CoreText.framework */; };
-		FF2981BD14F6DFF1004F6893 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FFD14F0514C5E24C0053116F /* Crashlytics.framework */; };
 		FF2981BE14F6DFF2004F6893 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF61635E141618BD004738D3 /* MessageUI.framework */; };
 		FF2981BF14F6DFF2004F6893 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF21C8D113E14B4E009B980D /* MobileCoreServices.framework */; };
 		FF2981C014F6DFF2004F6893 /* OpenAL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF1A105D1462B10C004FD00D /* OpenAL.framework */; };
@@ -679,7 +679,6 @@
 		FFCEF41D15199F000021AECB /* WAOpenGraphElement.m in Sources */ = {isa = PBXBuildFile; fileRef = FFC9DB1C14FF46EE004197EC /* WAOpenGraphElement.m */; };
 		FFCEF42015199F000021AECB /* WAOpenGraphElementImage.m in Sources */ = {isa = PBXBuildFile; fileRef = FF35892114EE7F8F005B452C /* WAOpenGraphElementImage.m */; };
 		FFCEF42215199F000021AECB /* WAPreview.m in Sources */ = {isa = PBXBuildFile; fileRef = FFDDB4B51418BB5900FE9CE2 /* WAPreview.m */; };
-		FFCEF43F15199F550021AECB /* libIRFoundationsTouch.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FF73A59D13D6DC6500D54EC6 /* libIRFoundationsTouch.a */; };
 		FFCF28BD156B99AF00B70D63 /* WAFile+WAConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = FF4BDE9F156A4FCE00C105D5 /* WAFile+WAConstants.m */; };
 		FFCF28BE156B99AF00B70D63 /* WAFile+Validation.m in Sources */ = {isa = PBXBuildFile; fileRef = FF4BDEA2156A50D400C105D5 /* WAFile+Validation.m */; };
 		FFCF28BF156B99AF00B70D63 /* WAFile+FilePaths.m in Sources */ = {isa = PBXBuildFile; fileRef = FF4BDEA8156A52A000C105D5 /* WAFile+FilePaths.m */; };
@@ -1889,6 +1888,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7D3D8C3B1664B4A9003B9D19 /* libIRFoundationsTouch.a in Frameworks */,
 				7D296DAA1643818000870747 /* libSocketRocket.a in Frameworks */,
 				7D9B1D96162BC0AD000E5350 /* Accounts.framework in Frameworks */,
 				7D9B1D97162BC0AD000E5350 /* AdSupport.framework in Frameworks */,
@@ -1897,7 +1897,6 @@
 				4B26970B15E76A5F007E1054 /* CFNetwork.framework in Frameworks */,
 				FF586BBA1519B59E00F308E2 /* libIRRecurrenceMachine.a in Frameworks */,
 				FF586BB11519B51700F308E2 /* libIRWebAPIKit.a in Frameworks */,
-				FFCEF43F15199F550021AECB /* libIRFoundationsTouch.a in Frameworks */,
 				FFCEF41215199ED10021AECB /* libIRDiscreteLayoutManager.a in Frameworks */,
 				4B8CA96A14BBE7BA006E06BB /* SenTestingKit.framework in Frameworks */,
 				FF2981B414F6DFEB004F6893 /* Foundation.framework in Frameworks */,
@@ -1909,7 +1908,6 @@
 				FF2981BA14F6DFF1004F6893 /* CoreData.framework in Frameworks */,
 				FF2981BB14F6DFF1004F6893 /* CoreGraphics.framework in Frameworks */,
 				FF2981BC14F6DFF1004F6893 /* CoreText.framework in Frameworks */,
-				FF2981BD14F6DFF1004F6893 /* Crashlytics.framework in Frameworks */,
 				FF2981BE14F6DFF2004F6893 /* MessageUI.framework in Frameworks */,
 				FF2981BF14F6DFF2004F6893 /* MobileCoreServices.framework in Frameworks */,
 				FF2981C014F6DFF2004F6893 /* OpenAL.framework in Frameworks */,
@@ -2154,10 +2152,6 @@
 				4BBEEA18164F6AB300D33EDB /* WACollectionTests.m */,
 				4BBEEA19164F6AB300D33EDB /* WAWebSocketTests.h */,
 				4BBEEA1A164F6AB300D33EDB /* WAWebSocketTests.m */,
-				7D71DDE11653569500456B52 /* PostWithEventTime.txt */,
-				4BBEEA03164F6A6E00D33EDB /* PhotoPostWithURLHistoryStyle.txt */,
-				4BBEEA04164F6A6E00D33EDB /* PostWithCompleteAttachmentInformation.txt */,
-				4BBEEA05164F6A6E00D33EDB /* PostWithIncompleteAttachmentInformation.txt */,
 				4B8CA97014BBE7BA006E06BB /* Supporting Files */,
 			);
 			name = UnitTests;
@@ -2167,6 +2161,10 @@
 		4B8CA97014BBE7BA006E06BB /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				7D71DDE11653569500456B52 /* PostWithEventTime.txt */,
+				4BBEEA03164F6A6E00D33EDB /* PhotoPostWithURLHistoryStyle.txt */,
+				4BBEEA04164F6A6E00D33EDB /* PostWithCompleteAttachmentInformation.txt */,
+				4BBEEA05164F6A6E00D33EDB /* PostWithIncompleteAttachmentInformation.txt */,
 				4BBEEA0E164F6A9600D33EDB /* InfoPlist.strings */,
 				4BBEEA09164F6A8A00D33EDB /* fopenfix.c */,
 				4BBEEA0A164F6A8A00D33EDB /* UnitTests-Info.plist */,
@@ -4990,6 +4988,8 @@
 				PODS_ROOT = "${SRCROOT}/Pods";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_AFTER_BUILD = YES;
+				WF_USES_CRASHLYTICS = 0;
+				WF_USES_TESTFLIGHT = 0;
 				WRAPPER_EXTENSION = octest;
 			};
 			name = Beta;
@@ -5050,6 +5050,8 @@
 				PODS_ROOT = "${SRCROOT}/Pods";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_AFTER_BUILD = YES;
+				WF_USES_CRASHLYTICS = 0;
+				WF_USES_TESTFLIGHT = 0;
 				WRAPPER_EXTENSION = octest;
 			};
 			name = Debug;
@@ -5113,6 +5115,8 @@
 				PODS_ROOT = "${SRCROOT}/Pods";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_AFTER_BUILD = YES;
+				WF_USES_CRASHLYTICS = 0;
+				WF_USES_TESTFLIGHT = 0;
 				WRAPPER_EXTENSION = octest;
 			};
 			name = Release;
@@ -5171,6 +5175,8 @@
 				PODS_ROOT = "${SRCROOT}/Pods";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUNDLE_LOADER)";
+				WF_USES_CRASHLYTICS = 0;
+				WF_USES_TESTFLIGHT = 0;
 				WRAPPER_EXTENSION = octest;
 			};
 			name = Debug;
@@ -5226,6 +5232,8 @@
 				PODS_ROOT = "${SRCROOT}/Pods";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUNDLE_LOADER)";
+				WF_USES_CRASHLYTICS = 0;
+				WF_USES_TESTFLIGHT = 0;
 				WRAPPER_EXTENSION = octest;
 			};
 			name = Release;
@@ -5281,6 +5289,8 @@
 				PODS_ROOT = "${SRCROOT}/Pods";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUNDLE_LOADER)";
+				WF_USES_CRASHLYTICS = 0;
+				WF_USES_TESTFLIGHT = 0;
 				WRAPPER_EXTENSION = octest;
 			};
 			name = Beta;
