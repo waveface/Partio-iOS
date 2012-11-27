@@ -34,7 +34,7 @@
 	if (self) {
 		onDate = aDate;
 		NSPredicate *allFromToday = [NSPredicate predicateWithFormat:@"created BETWEEN {%@, %@}", [aDate dayBegin], [aDate dayEnd]];
-		_photos = [WAFile MR_findAllWithPredicate:allFromToday];
+		_photos = [WAFile MR_findAllWithPredicate:allFromToday inContext:[[WADataStore defaultStore] defaultAutoUpdatedMOC]];
 	}
 	return self;
 }
