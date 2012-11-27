@@ -55,9 +55,6 @@
 /* Action marking article as favorite */
 "ACTION_MARK_FAVORITE" = "設為最愛";
 
-/* No comment provided by engineer. */
-"ACTION_MORE_INFO" = "瞭解更多";
-
 /* Action title for creating a new post */
 "ACTION_NEW_POST" = "新文章";
 
@@ -439,24 +436,6 @@
 /* Cloud Name */
 "Stream Cloud" = "Stream Cloud";
 
-/* Text for About Stream dialog */
-"STREAM_ABOUT_TEXT" = "Stream 的雲端服務，能在 Wi-Fi 環境下，自動幫您將所有的原始照片檔案送回您的 PC 中，只要從我們官網上安裝免費的 Station 至 PC 上，即可享受全自動的無線傳輸服務。";
-
-/* Title for About Stream dialog */
-"STREAM_ABOUT_TITLE" = "詳細資訊";
-
-/* Caption to show a persistent connection to station is held. */
-"SYNC_BUTTON_CAPTION_WITH_PERSISTENT_CONNECTION" = "已連線";
-
-/* Caption to show in account info when station is connected */
-"SYNC_BUTTON_CAPTION_WITH_STATION_CONNECTED" = "正在同步到 Station";
-
-/* Caption to show when app is syncing data without station */
-"SYNC_BUTTON_NORMAL_TITLE" = "正在同步到 Cloud";
-
-/* Caption to show when app is not syncing data, but sync is usable */
-"SYNC_BUTTON_USABLE_TITLE" = "現在同步";
-
 /* In Account Info Sync Section */
 "SYNC_INFO_FOOTER" = "上次同步：%@";
 
@@ -486,30 +465,6 @@
 
 /* Settings for User popover */
 "USER_INFO_CONTROLLER_TITLE" = "帳戶資訊";
-
-/* Title to show when user has a station but have not activated the account */
-"USER_INFO_NAG_LEVEL_0_WITH_STATION" = "只要在Wi-Fi環境下，Stream會幫您將原始檔案暫存在雲端上，並妥善送回PC中。";
-
-/* Title to show when user has no station and have not activated the account */
-"USER_INFO_NAG_LEVEL_0_WITHOUT_STATION" = "Stream可以幫您將原始檔案妥善送回PC中, 請儘快下載與安裝Station至PC上";
-
-/* Title to show when user has a station, and still have ample storage on the Cloud */
-"USER_INFO_NAG_LEVEL_1_WITH_STATION" = "您已有原始檔暫存在雲端上，請開啟Station，讓我們將檔案送回您的PC。";
-
-/* Title to show when user has no station, and still have ample storage on the Cloud */
-"USER_INFO_NAG_LEVEL_1_WITHOUT_STATION" = "您已有原始檔暫存在雲端上，請儘快下載與安裝Station，讓我們將檔案送回您的PC上";
-
-/* Title to show when user has a station, and is using up most of the storage on the Cloud */
-"USER_INFO_NAG_LEVEL_2_WITH_STATION" = "雲端暫存容量即將用完，請開啟Station，讓我們將檔案送回您的PC中。";
-
-/* Title to show when user has no station, and is using up most of the storage on the Cloud */
-"USER_INFO_NAG_LEVEL_2_WITHOUT_STATION" = "您已有原始檔暫存在雲端上，請儘快下載與安裝Station，讓我們將檔案送回您的PC中";
-
-/* Title to show when user has a station, and have exhausted storage on the Cloud */
-"USER_INFO_NAG_LEVEL_3_WITH_STATION" = "雲端暫存容量已滿，超過的部分僅會保留七天，請立即開啟Station，存放所有原始檔案。";
-
-/* Title to show when user has no station, and have exhausted storage on the Cloud */
-"USER_INFO_NAG_LEVEL_3_WITHOUT_STATION" = "您已有原始檔暫存在雲端上，請儘快下載與安裝Station，讓我們將檔案送回您的PC中";
 
 /* Email placeholder in login page
    Email placeholder in signup page */
@@ -719,8 +674,8 @@
 /* Class = "IBUILabel"; text = "LOCAL_PENDING_OBJECTS_TITLE"; ObjectID = "Uku-UE-EAs"; */
 "LOCAL_PENDING_OBJECTS_TITLE" = "本裝置尚未上傳原檔數量";
 
-/* Class = "IBUITableViewSection"; footerTitle = "SYNC_INFO_FOOTER"; ObjectID = "aHi-Wv-Eu2"; */
-"SYNC_INFO_FOOTER" = "上次同步：%@";
+/* Class = "IBUILabel"; text = "CONNECTION_STATUS_DETAIL"; ObjectID = "bJb-Bz-WkJ"; */
+"CONNECTION_STATUS_DETAIL" = "CONNECTION_STATUS_DETAIL";
 
 /* Class = "IBUILabel"; text = "NOUN_NICKNAME"; ObjectID = "btU-SG-jyB"; */
 "NOUN_NICKNAME" = "使用者名稱";
@@ -730,6 +685,9 @@
 
 /* Class = "IBUILabel"; text = "NOUN_CURRENT_DEVICE"; ObjectID = "fZ9-vs-r6f"; */
 "NOUN_CURRENT_DEVICE" = "裝置名稱";
+
+/* Class = "IBUILabel"; text = "CONNECTION_STATUS_TITLE"; ObjectID = "oOp-ya-swS"; */
+"CONNECTION_STATUS_TITLE" = "連線狀態";
 
 /* Class = "IBUILabel"; text = "PHOTO_IMPORT_TITLE"; ObjectID = "obe-LE-yqs"; */
 "PHOTO_IMPORT_TITLE" = "自動匯入照片";

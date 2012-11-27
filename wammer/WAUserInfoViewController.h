@@ -15,21 +15,14 @@
 
 + (id) controllerWithWrappingNavController:(WANavigationController **)navController;
 
-@property (weak, nonatomic) IBOutlet UITableViewCell *syncTableViewCell;
 @property (strong, nonatomic) IBOutlet UITableViewCell *serviceTableViewCell;
 @property (weak, nonatomic) IBOutlet UITableViewCell *contactTableViewCell;
-@property (weak, nonatomic) IBOutlet UITableViewCell *stationNagCell;
-
-@property (weak, nonatomic) IBOutlet UILabel *lastSyncDateLabel;
+@property (weak, nonatomic) IBOutlet UITableViewCell *connectionTableViewCell;
 @property (weak, nonatomic) IBOutlet UILabel *numberOfPendingFilesLabel;
-@property (weak, nonatomic) IBOutlet UILabel *numberOfFilesNotOnStationLabel;
-@property (weak, nonatomic) IBOutlet UILabel *stationNagLabel;
-
 @property (weak, nonatomic) IBOutlet UILabel *userEmailLabel;
 @property (weak, nonatomic) IBOutlet UILabel *userNameLabel;
 
 @property (weak, nonatomic) IBOutlet UILabel *deviceNameLabel;
-@property (strong, nonatomic) UIActivityIndicatorView *activity;
 
 @property (weak, nonatomic) IBOutlet UISwitch *photoImportSwitch;
 
