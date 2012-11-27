@@ -9,6 +9,7 @@
 #import "WADayViewController.h"
 #import "WADefines.h"
 #import "WATimelineViewControllerPhone.h"
+#import "WATimelineViewControllerPad.h"
 #import "WADataStore.h"
 #import "NSDate+WAAdditions.h"
 #import "WADataStore+WARemoteInterfaceAdditions.h"
@@ -65,6 +66,7 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 	 object:nil];
 			
 	__weak WADayViewController *wSelf = self;
+
 	self.navigationItem.rightBarButtonItem  = WABarButtonItem([UIImage imageNamed:@"Create"], @"", ^{
 		[wSelf handleCompose:wSelf.navigationItem.rightBarButtonItem];
 	});
@@ -86,22 +88,20 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 	
 }
 
-
 - (void)loadView
 {
 	
 	[super loadView];
 
-	CGRect origFrame = self.view.frame;
-	origFrame.origin = CGPointZero;
-	origFrame.size.height -= CGRectGetHeight(self.navigationController.navigationBar.frame);
-	
+	CGRect rect = (CGRect) { CGPointZero, self.view.frame.size };
+	[self.navigationController setToolbarHidden:YES];
 	self.view.backgroundColor = [UIColor whiteColor];
-	self.paginatedView = [[IRPaginatedView alloc] initWithFrame:origFrame];
+	self.paginatedView = [[IRPaginatedView alloc] initWithFrame:rect];
 	self.paginatedView.delegate = self;
+	self.paginatedView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
 	
 	[self.view addSubview: self.paginatedView];
-
+	
 }
 
 - (void) viewWillAppear:(BOOL)animated {
@@ -128,7 +128,7 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 		
 		NSDate *theDate = nil;
 		
-		if ([containedClass isSubclassOfClass:[WATimelineViewControllerPhone class]]) {
+		if ([containedClass isSubclassOfClass:[WATimelineViewControllerPhone class]] || [containedClass isSubclassOfClass:[WATimelineViewControllerPad class]]) {
 
 			theDate = [[((WAArticle*)obj) creationDate] dayBegin];
 			
@@ -170,6 +170,21 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 	
 }
 
+- (NSUInteger) supportedInterfaceOrientations {
+
+	if (isPad())
+		return UIInterfaceOrientationMaskAll;
+	else
+		return UIInterfaceOrientationMaskPortrait;
+
+}
+
+- (BOOL) shouldAutorotate {
+	
+	return YES;
+	
+}
+
 
 #pragma mark - delegate methods for IRPaginatedView
 BOOL (^isSameDay) (NSDate *, NSDate *) = ^ (NSDate *d1, NSDate *d2) {
@@ -191,7 +206,7 @@ BOOL (^isSameDay) (NSDate *, NSDate *) = ^ (NSDate *d1, NSDate *d2) {
 	self.days = [NSMutableArray array];
 	self.daysControllers = [NSMutableDictionary dictionary];
 	
-	if ([containedClass isSubclassOfClass:[WATimelineViewControllerPhone class]]) {
+	if ([containedClass isSubclassOfClass:[WATimelineViewControllerPhone class]] || [containedClass isSubclassOfClass:[WATimelineViewControllerPad class]]) {
 	
 		NSFetchRequest *fetchRequest = [[WADataStore defaultStore].persistentStoreCoordinator.managedObjectModel fetchRequestFromTemplateWithName:@"WAFRArticles" substitutionVariables:@{}];
 		
@@ -301,7 +316,7 @@ BOOL (^isSameDay) (NSDate *, NSDate *) = ^ (NSDate *d1, NSDate *d2) {
 
 	
 	NSDate *theNewDate = nil;
-	if ([containedClass isSubclassOfClass:[WATimelineViewControllerPhone class]]) {
+	if ([containedClass isSubclassOfClass:[WATimelineViewControllerPhone class]] || [containedClass isSubclassOfClass:[WATimelineViewControllerPad class]]) {
 
 		theNewDate = [[((WAArticle*)anObject) creationDate] dayBegin];
 

@@ -12,18 +12,6 @@
 
 #pragma mark - UIAppearance
 void WADefaultAppearance(void) {
-	
-	if (isPad()) {
-
-		
-		[[UINavigationBar appearance] setTintColor:[UIColor colorWithRed:98.0/255.0 green:176.0/255.0 blue:195.0/255.0 alpha:0.0]];
-		[[UINavigationBar appearance] setBackgroundImage:[UIImage imageNamed:@"WANavigationBar"] forBarMetrics:UIBarMetricsDefault];
-
-		// iPad user info pop-over
-		[[UINavigationBar appearanceWhenContainedIn:[UIPopoverController class], nil] setBackgroundImage:nil forBarMetrics:UIBarMetricsDefault];
-		
-
-	} else {
 		
 		[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackOpaque];
 		
@@ -61,9 +49,6 @@ void WADefaultAppearance(void) {
 		[[UIBarButtonItem appearance] setTintColor:naviBgColor];
 		
 		[[UIToolbar appearance] setTintColor:naviBgColor];
-
-	}
-	
 	
 }
 
@@ -103,7 +88,13 @@ void WADefaultBarButtonInitialize (void) {
 
 IRBarButtonItem * WABarButtonItem (UIImage *image, NSString *labelText, void(^aBlock)(void)) {
 
-	IRBarButtonItem *item = [IRBarButtonItem itemWithCustomImage:image highlightedImage:nil];
+	IRBarButtonItem *item = nil;
+	
+	if (image)
+		item = [IRBarButtonItem itemWithCustomImage:image highlightedImage:nil];
+	else
+		item = [[IRBarButtonItem alloc] initWithTitle:labelText style:UIBarButtonItemStyleBordered target:nil action:nil];
+	
 	if (aBlock)
 		item.block = aBlock;
 	
@@ -114,22 +105,8 @@ IRBarButtonItem * WABarButtonItem (UIImage *image, NSString *labelText, void(^aB
 IRBarButtonItem * WABackBarButtonItem (UIImage *image, NSString *labelText, void(^aBlock)(void)) {
 
 	IRBarButtonItem *item;
-	
-	if (isPad()) {
-		UIImage *normalImage = [IRBarButtonItem buttonImageForStyle:IRBarButtonItemStyleBack withImage:image title:labelText font:kWADefaultBarButtonTitleFont color:kWADefaultBarButtonTitleColor shadow:kWADefaultBarButtonTitleShadow backgroundColor:kWADefaultBarButtonBackgroundColor gradientColors:kWADefaultBarButtonGradientColors innerShadow:kWADefaultBarButtonInnerShadow border:kWADefaultBarButtonBorder shadow:kWADefaultBarButtonShadow];
 		
-		UIImage *normalLandscapePhoneImage = [IRBarButtonItem buttonImageForStyle:IRBarButtonItemStyleBackLandscapePhone withImage:image title:labelText font:kWADefaultBarButtonTitleFont color:kWADefaultBarButtonTitleColor shadow:kWADefaultBarButtonTitleShadow backgroundColor:kWADefaultBarButtonBackgroundColor gradientColors:kWADefaultBarButtonGradientColors innerShadow:kWADefaultBarButtonInnerShadow border:kWADefaultBarButtonBorder shadow:kWADefaultBarButtonShadow];
-	
-		UIImage *highlightedImage = [IRBarButtonItem buttonImageForStyle:IRBarButtonItemStyleBack withImage:image title:labelText font:kWADefaultBarButtonTitleFont color:kWADefaultBarButtonTitleColor shadow:kWADefaultBarButtonTitleShadow backgroundColor:kWADefaultBarButtonHighlightedBackgroundColor gradientColors:kWADefaultBarButtonHighlightedGradientColors innerShadow:kWADefaultBarButtonInnerShadow border:kWADefaultBarButtonBorder shadow:kWADefaultBarButtonShadow];
-	
-		UIImage *highlightedLandscapePhoneImage = [IRBarButtonItem buttonImageForStyle:IRBarButtonItemStyleBackLandscapePhone withImage:image title:labelText font:kWADefaultBarButtonTitleFont color:kWADefaultBarButtonTitleColor shadow:kWADefaultBarButtonTitleShadow backgroundColor:kWADefaultBarButtonHighlightedBackgroundColor gradientColors:kWADefaultBarButtonHighlightedGradientColors innerShadow:kWADefaultBarButtonInnerShadow border:kWADefaultBarButtonBorder shadow:kWADefaultBarButtonShadow];
-	
-		item = [IRBarButtonItem itemWithCustomImage:normalImage landscapePhoneImage:normalLandscapePhoneImage highlightedImage:highlightedImage highlightedLandscapePhoneImage:highlightedLandscapePhoneImage];
-	} else {
-			
-		item = [IRBarButtonItem itemWithCustomImage:image highlightedImage:nil];
-		
-	}
+	item = [IRBarButtonItem itemWithCustomImage:image highlightedImage:nil];
 	
 	if (aBlock)
 		item.block = aBlock;

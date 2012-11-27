@@ -32,7 +32,6 @@
 
 @interface WAEventViewController ()
 
-@property (nonatomic, strong, readwrite) NSFetchedResultsController *fetchedResultsController;
 @property (nonatomic, strong, readwrite) UICollectionView *itemsView;
 @property (nonatomic, strong) WAEventHeaderView *headerView;
 
@@ -74,10 +73,8 @@
 {
 	
 	[super viewDidLoad];
-	
 		
 	CGRect rect = (CGRect){ CGPointZero, self.view.frame.size };
-	rect.size.height -= CGRectGetHeight(self.navigationController.navigationBar.frame);
 	
 	UICollectionViewFlowLayout *flowlayout = [[UICollectionViewFlowLayout alloc] init];
 	flowlayout.scrollDirection = UICollectionViewScrollDirectionVertical;
@@ -90,6 +87,7 @@
 	self.itemsView.alwaysBounceHorizontal = NO;
 	self.itemsView.allowsSelection = YES;
 	self.itemsView.allowsMultipleSelection = NO;
+	self.itemsView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
 
 	self.itemsView.dataSource = self;
 	self.itemsView.delegate = self;
@@ -98,7 +96,13 @@
 
 	__weak WAEventViewController *wSelf = self;
 	self.navigationItem.leftBarButtonItem = WABackBarButtonItem([UIImage imageNamed:@"back"], @"", ^{
-		[wSelf.navigationController popViewControllerAnimated:YES];
+		
+		if (isPad()) {
+			[wSelf.navigationController dismissViewControllerAnimated:YES completion:nil];
+		} else {
+			[wSelf.navigationController popViewControllerAnimated:YES];
+		}
+		
 	});
 
 }
@@ -109,22 +113,20 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (NSFetchedResultsController *) fetchedResultsController {
-	
-	if (_fetchedResultsController)
-		return _fetchedResultsController;
-	
-	NSFetchRequest *fetchRequest = [[WADataStore defaultStore] newFetchRequestForFilesInArticle:self.article];
-	
-	_fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest managedObjectContext:self.article.managedObjectContext sectionNameKeyPath:nil cacheName:nil];
-	_fetchedResultsController.delegate = self;
-	
-	NSError *fetchError = nil;
-	if (![_fetchedResultsController performFetch:&fetchError])
-		NSLog(@"Error fetching: %@", fetchError);
-	
-	return _fetchedResultsController;
-	
+- (BOOL) shouldAutorotate {
+
+	if (isPad())
+		return YES;
+	return NO;
+
+}
+
+- (NSUInteger) supportedInterfaceOrientations {
+
+	if (isPad())
+		return UIInterfaceOrientationMaskAll;
+	return UIInterfaceOrientationMaskPortrait;
+
 }
 
 + (NSDateFormatter *) dateFormatter {
@@ -328,6 +330,11 @@
 		
 	}
 	
+	CGRect newFrame = _headerView.frame;
+	newFrame.size.width = CGRectGetWidth(self.itemsView.frame);
+	_headerView.frame = newFrame;
+	_headerView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+ 
 	[_headerView setNeedsLayout];
 	
 	return _headerView;
@@ -356,7 +363,6 @@
 
 - (NSInteger) collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
 	
-	//	return [[self.fetchedResultsController fetchedObjects] count];
 	return self.article.files.count;
 	
 }
@@ -419,7 +425,7 @@
 	
 	height += 4.0f;
 	
-	return (CGSize) { CGRectGetWidth(self.headerView.frame), height };
+	return (CGSize) { CGRectGetWidth(collectionView.frame), height };
 
 }
 

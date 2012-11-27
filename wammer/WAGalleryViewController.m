@@ -131,10 +131,16 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 
 }
 
-- (BOOL) shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
+- (NSUInteger) supportedInterfaceOrientations {
+	
+	return UIInterfaceOrientationMaskAll;
+	
+}
 
+- (BOOL) shouldAutorotate {
+	
 	return YES;
-
+	
 }
 
 - (void) willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
@@ -272,7 +278,9 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 	self.navigationBar.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleBottomMargin;
 	self.navigationBar.barStyle = UIBarStyleBlackTranslucent;
 	self.navigationBar.delegate = self;
-	
+	self.navigationBar.translucent = YES;
+	self.navigationBar.tintColor = [UIColor clearColor];
+
 	NSParameterAssert(self.previousNavigationItem);
 	NSParameterAssert(self.navigationItem);
 	
@@ -282,6 +290,7 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 	self.toolbar = [[UIToolbar alloc] initWithFrame:(CGRect){ 0.0f, CGRectGetHeight(self.view.bounds) - 44.0f, CGRectGetWidth(self.view.bounds), 44.0f }];
 	self.toolbar.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleTopMargin;
 	self.toolbar.barStyle = UIBarStyleBlackTranslucent;
+	self.toolbar.tintColor = [UIColor clearColor];
 	self.toolbar.translucent = YES;
 	
 	self.toolbarItems = [NSArray arrayWithObjects:

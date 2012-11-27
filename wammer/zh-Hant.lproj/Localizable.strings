@@ -17,6 +17,9 @@
    Title for the action responsible for presenting a controller changing the representing file of an article */
 "ACTION_CHANGE_REPRESENTING_FILE" = "更換封面";
 
+/* Place photos in collections */
+"ACTION_COLLECTION" = "蒐藏";
+
 /* Short action title for connecting Facebook creds */
 "ACTION_CONNECT_FACEBOOK_SHORT" = "同步";
 
@@ -33,6 +36,12 @@
 
 /* In iPad composition view */
 "ACTION_DONE" = "完成";
+
+/* Share thru Email */
+"ACTION_EMAIL" = "電郵";
+
+/* Share to Facebook action */
+"ACTION_FACEBOOK" = "臉書";
 
 /* Action title for feedback composition */
 "ACTION_FEEDBACK" = "回報";
@@ -75,6 +84,9 @@
 
 /* Button title for showing a camera capture controller */
 "ACTION_TAKE_PHOTO_WITH_CAMERA" = "相機";
+
+/* Share to Twitter action */
+"ACTION_TWITTER" = "推特";
 
 /* Action marking article as not favorite */
 "ACTION_UNMARK_FAVORITE" = "取消最愛";
@@ -240,6 +252,9 @@
 
 /* In Account Info Photo Import Section */
 "LAST_IMPORT_TIME" = "最新匯入照片時間：%@";
+
+/* The email subject users will share photos thru. The nickname of user will be appended to this subject. */
+"MAIL_ACTION_SUBJECT" = "%@ 透過 Stream app 與你分享照片。";
 
 /* No comment provided by engineer. */
 "MINUTE_PLURAL" = "%d分鐘";
