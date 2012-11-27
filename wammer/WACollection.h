@@ -9,9 +9,11 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
+#import "CoreData+IRAdditions.h"
+
 @class WAFile, WAUser;
 
-@interface WACollection : NSManagedObject
+@interface WACollection : IRManagedObject
 
 @property (nonatomic, retain) NSDate * createDate;
 @property (nonatomic, retain) NSString * identifier;

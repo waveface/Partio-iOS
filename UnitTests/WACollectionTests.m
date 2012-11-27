@@ -14,6 +14,18 @@
 
 @implementation WACollectionTests
 
+- (id)loadDataFile: (NSString *)fileString {
+	NSString *filePath = [[NSBundle bundleForClass:[self class]]
+												pathForResource:fileString
+												ofType:@"json"];
+	
+	NSData *inputData = [NSData dataWithContentsOfFile:filePath];
+	return [NSJSONSerialization
+					JSONObjectWithData:inputData
+					options:NSJSONReadingMutableContainers
+					error:nil];
+}
+
 - (void)setUp {
 	[MagicalRecord setDefaultModelFromClass:[self class]];
 	[MagicalRecord setupCoreDataStackWithInMemoryStore];
@@ -43,6 +55,22 @@
 	NSOrderedSet *photos = ((WACollection *) collections[0]).files;
 	STAssertEqualObjects(@"URL1", ((WAFile*)photos[0]).thumbnailURL,
 								 @"Thumbnail URL persistent");
+}
+
+- (void)testGetCollection {
+	NSArray *collectionsRep = [self loadDataFile:@"GetCollections"];
+	STAssertNotNil(collectionsRep, @"need to be a vaild JSON");
+	
+	NSArray *aCollection = [[collectionsRep valueForKey:@"collections"] objectAtIndex:0];
+	
+	NSArray *transformed = [WACollection
+													insertOrUpdateObjectsUsingContext:[NSManagedObjectContext MR_context]
+													withRemoteResponse:aCollection
+													usingMapping:nil
+													options:IRManagedObjectOptionIndividualOperations];
+
+	WACollection *collection = transformed[0];
+//	STAssertNotNil(collection.identifier, @"identifier should not be nil");
 }
 
 @end
