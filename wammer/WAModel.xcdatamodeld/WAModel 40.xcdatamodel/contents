@@ -57,11 +57,12 @@
         <relationship name="ogimage" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="WAOpenGraphElementImage" inverseName="cache" inverseEntity="WAOpenGraphElementImage" syncable="YES"/>
     </entity>
     <entity name="WACollection" representedClassName="WACollection" syncable="YES">
-        <attribute name="createDate" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="creationDate" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="identifier" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="isHidden" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="isSmart" optional="YES" attributeType="Boolean" syncable="YES"/>
-        <attribute name="modifyDate" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="modificationDate" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="sequenceNumber" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="creator" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="WAUser" inverseName="collections" inverseEntity="WAUser" syncable="YES"/>
         <relationship name="files" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="WAFile" inverseName="collections" inverseEntity="WAFile" syncable="YES"/>
@@ -318,7 +319,7 @@
     <elements>
         <element name="WAArticle" positionX="0" positionY="0" width="128" height="405"/>
         <element name="WACache" positionX="0" positionY="0" width="128" height="135"/>
-        <element name="WACollection" positionX="0" positionY="0" width="128" height="163"/>
+        <element name="WACollection" positionX="0" positionY="0" width="128" height="180"/>
         <element name="WAComment" positionX="0" positionY="0" width="128" height="135"/>
         <element name="WAFile" positionX="0" positionY="0" width="128" height="585"/>
         <element name="WAFileExif" positionX="0" positionY="0" width="128" height="315"/>

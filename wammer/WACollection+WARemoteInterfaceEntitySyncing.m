@@ -30,7 +30,7 @@
 + (NSDictionary *) defaultHierarchicalEntityMapping {
 	
 	return @{
-		@"files": @"WAFiles",
+		@"files": @"WAFile",
 		@"creator": @"WAUser",
 	};
 	
@@ -45,11 +45,11 @@
     
 		mapping = @{
 			@"name": @"title",
-//			@"seq_num": @"sequenceNumber",
-//			@"files": @"files",
+			@"seq_num": @"sequenceNumber",
+			@"files": @"files",
 			@"creator": @"creator",
-			@"create_time": @"createDate",
-			@"modify_time": @"modifyDate",
+			@"create_time": @"creationDate",
+			@"modify_time": @"modificationDate",
 			@"collection_id": @"identifier",
 			@"hidden": @"isHidden",
 			@"smart": @"isSmart",
@@ -66,23 +66,22 @@
 	
 	NSString *creatorID = [incomingRepresentation objectForKey:@"creator_id"];
 	if ([creatorID length])
-		[returnedDictionary setObject:[NSDictionary dictionaryWithObject:creatorID forKey:@"user_id"] forKey:@"creator"];
+		[returnedDictionary setObject:[NSDictionary dictionaryWithObject:creatorID forKey:@"user_id"]
+													 forKey:@"creator"];
 
 	NSArray *incomingAttachmentList;
 	if ([[incomingRepresentation objectForKey:@"object_id_list"] isKindOfClass:[NSString class]]) {
 		incomingAttachmentList = nil;
 	} else {
-	  incomingAttachmentList = [incomingRepresentation objectForKey:@"object_id_list"];
+	  incomingAttachmentList = [[incomingRepresentation objectForKey:@"object_id_list"] copy];
 	}
 	
-	NSMutableArray *returnedAttachmentList = [incomingAttachmentList mutableCopy];
-	if (returnedAttachmentList == nil) {
-		returnedAttachmentList = [[NSMutableArray alloc] init];
+	NSMutableArray *returnedAttachmentList = [[NSMutableArray alloc] init];
+	
+	for (NSString *objectID in incomingAttachmentList) {
+    [returnedAttachmentList addObject: @{@"object_id": objectID}];
 	}
 	
-	for (NSString *fileID in incomingAttachmentList) {
-    [returnedAttachmentList addObject: @{@"object_id": fileID}];
-	}
 	[returnedDictionary setObject:returnedAttachmentList forKey:@"files"];
 	
 	return returnedDictionary;
@@ -96,8 +95,8 @@
 	if ([aLocalKeyPath isEqualToString:@"identifier"])
 		return IRWebAPIKitStringValue(aValue);
 	
-	if ([aLocalKeyPath isEqualToString:@"modifyDate"] ||
-			[aLocalKeyPath isEqualToString:@"createDate"] )
+	if ([aLocalKeyPath isEqualToString:@"modificationDate"] ||
+			[aLocalKeyPath isEqualToString:@"creationDate"] )
 		return [NSDate dateFromISO8601String:aValue];
 	
 	if ([aLocalKeyPath isEqualToString:@"isHidden"] ||

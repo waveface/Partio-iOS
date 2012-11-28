@@ -40,8 +40,8 @@
 	WACollection *collection = [WACollection MR_createEntity];
 	STAssertNotNil(collection, @"Should not be nil");
 	
-	collection.createDate = [NSDate distantPast];
-	collection.modifyDate = [NSDate date];
+	collection.creationDate = [NSDate distantPast];
+	collection.modificationDate = [NSDate date];
 	collection.title = @"This should be collection title";
 	collection.creator = [WAUser MR_createEntity];
 	NSArray *collections = [WACollection MR_findAll];
@@ -62,7 +62,7 @@
 	NSArray *collectionsRep = [self loadDataFile:@"GetCollections"];
 	STAssertNotNil(collectionsRep, @"need to be a vaild JSON");
 	
-	NSArray *aCollection = [[collectionsRep valueForKey:@"collections"] objectAtIndex:0];
+	NSArray *aCollection = collectionsRep;
 	
 	NSArray *transformed = [WACollection
 													insertOrUpdateObjectsUsingContext:[NSManagedObjectContext MR_context]
@@ -70,8 +70,17 @@
 													usingMapping:nil
 													options:IRManagedObjectOptionIndividualOperations];
 
-	WACollection *collection = transformed[0];
-//	STAssertNotNil(collection.identifier, @"identifier should not be nil");
+	for (WACollection *coll in transformed) {
+		STAssertNotNil(coll.identifier, @"identifier should not be nil");
+		if ([coll.identifier isEqualToString:@"92a20008-0287-4477-a146-20caab9849ca"]) {
+			assertThat(coll.isHidden, equalTo(@(0)));
+			assertThat(coll.isSmart, equalTo(@(0)));
+			assertThat(coll.sequenceNumber, equalTo(@(34907)));
+		}
+		if ([coll.identifier isEqualToString:@"d3c8f16d-6864-49ae-b2d7-d341532c32c4"]) {
+			assertThat(coll.isHidden, equalTo(@(1)));
+		}
+  }
 }
 
 @end
