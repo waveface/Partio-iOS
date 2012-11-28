@@ -306,20 +306,19 @@ typedef enum WASyncStatus: NSUInteger {
 
 }
 
-- (BOOL) shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-  
-	switch ([UIDevice currentDevice].userInterfaceIdiom) {
-		
-		case UIUserInterfaceIdiomPad: {
-			return YES;
-		}
-		
-		default: {
-			return interfaceOrientation == UIInterfaceOrientationPortrait;
-		}
-		
-	}
-  
+- (NSUInteger) supportedInterfaceOrientations {
+	
+	if (isPad())
+		return UIInterfaceOrientationMaskAll;
+	else
+		return UIInterfaceOrientationMaskPortrait;
+	
+}
+
+- (BOOL) shouldAutorotate {
+	
+	return YES;
+	
 }
 
 - (void) viewDidUnload {
