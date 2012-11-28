@@ -12,7 +12,7 @@
 #import "WADataStore.h"
 
 #import "WAPhotoStreamViewController.h"
-#import "WATimelineViewControllerPhone.h"
+#import "WATimelineViewController.h"
 
 @interface WADayViewController (UnitTesting)
 
