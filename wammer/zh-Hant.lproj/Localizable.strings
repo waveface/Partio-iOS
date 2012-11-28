@@ -325,7 +325,7 @@
 "PHOTO_UPLOAD_STATUS_BAR_IMPORTING" = "正在掃描相機膠卷";
 
 /* String on customized status bar */
-"PHOTO_UPLOAD_STATUS_BAR_UPLOADING" = "照片上傳中 %d/%d";
+"PHOTO_UPLOAD_STATUS_BAR_UPLOADING" = "照片匯入中 %d/%d";
 
 /* Subtitle of photo upload status */
 "PHOTO_UPLOAD_STATUS_IMPORTING" = "正在掃瞄 %d/%d 張照片";
@@ -337,7 +337,7 @@
 "PHOTO_UPLOAD_STATUS_PREPROCESSING" = "處理中...";
 
 /* Subtitle of photo upload status */
-"PHOTO_UPLOAD_STATUS_UPLOADING" = "照片上傳中...";
+"PHOTO_UPLOAD_STATUS_UPLOADING" = "照片匯入中...";
 
 /* In iPad overview */
 "PHOTOS_PLURAL" = "%d 張照片";
@@ -384,12 +384,6 @@
 /* No comment provided by engineer. */
 "SECOND_SINGULAR" = "%d秒";
 
-/* Title to show explaining WiFi Sync */
-"SERVICE_INFO_WITH_WIFI" = "在 Wi-Fi 環境中，Stream 會幫您將原始檔案妥善保存。只要下載並且開啓 PC 上的 Stream，您有 30 天的時間將檔案從雲端送回 PC 保存";
-
-/* Title to show explaining WiFi Sync */
-"SERVICE_INFO_WITHOUT_WIFI" = "⚠ 僅會在 Wi-Fi 連線時上傳原檔\n\n在 Wi-Fi 環境中，Stream 會幫您將原始檔案妥善保存。只要下載並且開啓 PC 上的 Stream，您有 30 天的時間將檔案從雲端送回 PC 保存。";
-
 /* Title of view controller finishing first setup */
 "SETUP_DONE_CONTROLLER_TITLE" = "設定完成";
 
@@ -432,9 +426,6 @@
 
 /* Cloud Name */
 "Stream Cloud" = "Stream Cloud";
-
-/* In Account Info Sync Section */
-"SYNC_INFO_FOOTER" = "上次同步：%@";
 
 /* Title on the text stack more / less toggle button for “Less” */
 "TEXT_ELEMENT_TOGGLE_LESS_TITLE" = "更少";
@@ -659,20 +650,26 @@
 /* Class = "IBUIButton"; normalTitle = "ACTION_IMPORT_PHOTO"; ObjectID = "58"; */
 "ACTION_IMPORT_PHOTO" = "確定匯入";
 
+/* Class = "IBUILabel"; text = "UPGRADE_ACCOUNT"; ObjectID = "0eH-Fu-1wD"; */
+"UPGRADE_ACCOUNT" = "升級帳號";
+
 /* Class = "IBUILabel"; text = "PHOTO_IMPORT_TITLE"; ObjectID = "2Vy-5o-43I"; */
 "PHOTO_IMPORT_TITLE" = "照片匯入";
-
-/* Class = "IBUITableViewSection"; footerTitle = "SERVICE_INFO_FOOTER"; ObjectID = "9vM-w4-lTb"; */
-"SERVICE_INFO_FOOTER" = "⚠ 僅會在Wi-Fi連線時上傳原檔\n\n在 Wi-Fi 環境中，Stream 會幫您將原始檔案妥善保存。只要下載並且開啓 PC 上的 Stream，您有30天的時間將檔案從雲端送回PC保存";
 
 /* Class = "IBUILabel"; text = "IMPORT_CAMERA_ROLL"; ObjectID = "Ehm-FE-RdU"; */
 "IMPORT_CAMERA_ROLL" = "匯入相機膠卷";
 
+/* Class = "IBUITableViewSection"; headerTitle = "WEB_SERVICES_HEADER"; ObjectID = "FEo-JU-xSP"; */
+"WEB_SERVICES_HEADER" = "可連接的網路服務";
+
 /* Class = "IBUITableViewSection"; headerTitle = "ACCOUNT_INFO_HEADER"; ObjectID = "Gw1-xy-FWK"; */
 "ACCOUNT_INFO_HEADER" = "帳戶資訊";
 
-/* Class = "IBUILabel"; text = "LOCAL_PENDING_OBJECTS_TITLE"; ObjectID = "Uku-UE-EAs"; */
-"LOCAL_PENDING_OBJECTS_TITLE" = "本裝置尚未上傳原檔數量";
+/* Class = "IBUILabel"; text = "NON_BACKED_UP_FILES"; ObjectID = "Ldp-qK-xdo"; */
+"NON_BACKED_UP_FILES" = "尚未備份的照片";
+
+/* Class = "IBUILabel"; text = "AUTO_BACKUP_TO_CLOUD"; ObjectID = "T7w-pO-igg"; */
+"AUTO_BACKUP_TO_CLOUD" = "自動備份到 Cloud";
 
 /* Class = "IBUILabel"; text = "CONNECTION_STATUS_DETAIL"; ObjectID = "bJb-Bz-WkJ"; */
 "CONNECTION_STATUS_DETAIL" = "CONNECTION_STATUS_DETAIL";
@@ -686,8 +683,20 @@
 /* Class = "IBUILabel"; text = "NOUN_CURRENT_DEVICE"; ObjectID = "fZ9-vs-r6f"; */
 "NOUN_CURRENT_DEVICE" = "裝置名稱";
 
+/* Class = "IBUITableViewSection"; footerTitle = "BACKUP_FOOTER"; ObjectID = "gj0-e5-1Bs"; */
+"BACKUP_FOOTER" = "升級帳號或安裝 Stream Windows，讓 Stream 幫你備份這台裝置的所有照片。";
+
+/* Class = "IBUITableViewSection"; headerTitle = "BACKUP_HEADER"; ObjectID = "gj0-e5-1Bs"; */
+"BACKUP_HEADER" = "照片備份";
+
 /* Class = "IBUILabel"; text = "WEB_SERVICES_TITLE"; ObjectID = "gjy-px-XbS"; */
 "WEB_SERVICES_TITLE" = "網路服務";
+
+/* Class = "IBUILabel"; text = "NONE"; ObjectID = "gvB-Dr-HXB"; */
+"NONE" = "NONE";
+
+/* Class = "IBUILabel"; text = "AUTO_BACKUP_TO_PC"; ObjectID = "kVF-T3-Q5G"; */
+"AUTO_BACKUP_TO_PC" = "自動備份到 PC";
 
 /* Class = "IBUILabel"; text = "CONNECTION_STATUS_TITLE"; ObjectID = "oOp-ya-swS"; */
 "CONNECTION_STATUS_TITLE" = "連線狀態";

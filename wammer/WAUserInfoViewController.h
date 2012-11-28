@@ -15,10 +15,8 @@
 
 + (id) controllerWithWrappingNavController:(WANavigationController **)navController;
 
-@property (strong, nonatomic) IBOutlet UITableViewCell *serviceTableViewCell;
 @property (weak, nonatomic) IBOutlet UITableViewCell *contactTableViewCell;
 @property (weak, nonatomic) IBOutlet UITableViewCell *connectionTableViewCell;
-@property (weak, nonatomic) IBOutlet UILabel *numberOfPendingFilesLabel;
 @property (weak, nonatomic) IBOutlet UILabel *userEmailLabel;
 @property (weak, nonatomic) IBOutlet UILabel *userNameLabel;
 

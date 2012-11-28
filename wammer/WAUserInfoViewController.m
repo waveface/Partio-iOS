@@ -25,36 +25,15 @@
 #import "IRMailComposeViewController.h"
 #import "IRRelativeDateFormatter+WAAdditions.h"
 
-#import "WASyncManager.h"
-#import "WAPhotoImportManager.h"
-#import "WAAppDelegate_iOS.h"
-
-typedef enum WASyncStatus: NSUInteger {
-	WASyncStatusNone = 0,
-	WASyncStatusSyncing,
-	WASyncStatusConnected
-} WASyncStatus;
-
-
 @interface WAUserInfoViewController ()
 
 @property (nonatomic, readwrite, retain) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, retain) WAUser *user;
 
-@property (nonatomic, readonly, assign) BOOL syncing;
-
 @end
 
 
 @implementation WAUserInfoViewController
-@synthesize contactTableViewCell;
-@synthesize serviceTableViewCell;
-@synthesize numberOfPendingFilesLabel;
-@synthesize userEmailLabel;
-@synthesize userNameLabel;
-@synthesize deviceNameLabel;
-@synthesize managedObjectContext;
-@synthesize user;
 
 + (id) controllerWithWrappingNavController:(WANavigationController **)outNavController {
 
@@ -118,17 +97,10 @@ typedef enum WASyncStatus: NSUInteger {
 	
 	__weak WAUserInfoViewController *wSelf = self;
 	__weak WAUser *wMainUser = wSelf.user;
-	__weak WASyncManager *wBlobSyncManager = [self syncManager];
 	
 	NSKeyValueObservingOptions options = NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew;
 	WARemoteInterface * const ri = [WARemoteInterface sharedInterface];
 	
-	[self irObserveObject:wBlobSyncManager keyPath:@"numberOfFiles" options:options context:nil withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
-	
-		wSelf.numberOfPendingFilesLabel.text = [toValue stringValue];
-		
-	}];
-		
 	[self irObserveObject:wMainUser keyPath:@"nickname" options:options context:nil withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
 	
 		wSelf.userNameLabel.text = (NSString *)toValue;
@@ -184,45 +156,29 @@ typedef enum WASyncStatus: NSUInteger {
 
 - (NSManagedObjectContext *) managedObjectContext {
   
-  if (managedObjectContext)
-    return managedObjectContext;
+  if (_managedObjectContext)
+    return _managedObjectContext;
     
-  managedObjectContext = [[WADataStore defaultStore] defaultAutoUpdatedMOC];
-  return managedObjectContext;
+  _managedObjectContext = [[WADataStore defaultStore] defaultAutoUpdatedMOC];
+  return _managedObjectContext;
 
 }
 
 - (WAUser *) user {
 
-	if (user)
-		return user;
+	if (_user)
+		return _user;
 	
-	user = [[WADataStore defaultStore] mainUserInContext:self.managedObjectContext];
-	return user;
+	_user = [[WADataStore defaultStore] mainUserInContext:self.managedObjectContext];
+	return _user;
 
-}
-
-- (BOOL) shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-  
-	switch ([UIDevice currentDevice].userInterfaceIdiom) {
-		
-		case UIUserInterfaceIdiomPad: {
-			return YES;
-		}
-		
-		default: {
-			return interfaceOrientation == UIInterfaceOrientationPortrait;
-		}
-		
-	}
-  
 }
 
 - (void) tableView:(UITableView *)aTV didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 
 	UITableViewCell *hitCell = [aTV cellForRowAtIndexPath:indexPath];
 	
-	if (hitCell == contactTableViewCell) {
+	if (hitCell == self.contactTableViewCell) {
 
 		if (![IRMailComposeViewController canSendMail])
 			return;
@@ -284,78 +240,12 @@ typedef enum WASyncStatus: NSUInteger {
 - (NSString *) tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section {
 
 	NSString *superAnswer = [super tableView:tableView titleForFooterInSection:section];
-	
-	if ([superAnswer isEqualToString:@"SERVICE_INFO_FOOTER"]) {
-	
-		if ([[WARemoteInterface sharedInterface] hasWiFiConnection])
-			return NSLocalizedString(@"SERVICE_INFO_WITH_WIFI", @"Title to show explaining WiFi Sync");
-		else
-			return NSLocalizedString(@"SERVICE_INFO_WITHOUT_WIFI", @"Title to show explaining WiFi Sync");
-		
-	}
-	
-	if ([superAnswer isEqualToString:@"SYNC_INFO_FOOTER"]) {
-	
-		WADataStore *dataStore = [WADataStore defaultStore];
-		NSDate *date = [dataStore lastSyncSuccessDate];
-		
-		if (date) {
-		
-			NSString *dateString = [[IRRelativeDateFormatter sharedFormatter] stringFromDate:date];
-			
-			return [NSString stringWithFormat:
-				NSLocalizedString(@"SYNC_INFO_FOOTER", @"In Account Info Sync Section"),
-				dateString
-			];
-		
-		}
-		
-		return nil;
-		
-	}
-	
+
 	if ([superAnswer isEqualToString:@"VERSION"])
 		return [[NSBundle mainBundle] displayVersionString];
 	
 	return NSLocalizedString(superAnswer, nil);
 
-}
-
-+ (NSSet *) keyPathsForValuesAffectingSyncing {
-
-	return [NSSet setWithObjects:
-	
-		@"remoteInterface.performingAutomaticRemoteUpdates",
-		@"syncManager.operationQueue.operationCount",
-	
-	nil];
-
-}
-
-- (WARemoteInterface *) remoteInterface {
-	
-	return [WARemoteInterface sharedInterface];
-
-}
-
-- (WASyncManager *) syncManager {
-
-	return [(WAAppDelegate_iOS *)AppDelegate() syncManager];
-
-}
-
-- (WASyncStatus) isSyncing {
-
-	WARemoteInterface * const ri = [WARemoteInterface sharedInterface];
-	WASyncManager * const sm = [self syncManager];
-
-	if (ri.performingAutomaticRemoteUpdates || sm.fileSyncOperationQueue.operationCount)
-		return WASyncStatusSyncing;
-
-	if (ri.webSocketConnected)
-		return WASyncStatusConnected;
-
-	return WASyncStatusNone;
 }
 
 @end

@@ -325,7 +325,7 @@
 "PHOTO_UPLOAD_STATUS_BAR_IMPORTING" = "Scanning Camera Roll";
 
 /* String on customized status bar */
-"PHOTO_UPLOAD_STATUS_BAR_UPLOADING" = "Uploading photos %d/%d";
+"PHOTO_UPLOAD_STATUS_BAR_UPLOADING" = "Importing photos %d/%d";
 
 /* Subtitle of photo upload status */
 "PHOTO_UPLOAD_STATUS_IMPORTING" = "Scanning %d/%d photos";
@@ -337,7 +337,7 @@
 "PHOTO_UPLOAD_STATUS_PREPROCESSING" = "Preprocessing...";
 
 /* Subtitle of photo upload status */
-"PHOTO_UPLOAD_STATUS_UPLOADING" = "Uploading photos...";
+"PHOTO_UPLOAD_STATUS_UPLOADING" = "Importing photos...";
 
 /* In iPad overview */
 "PHOTOS_PLURAL" = "%d photos";
@@ -384,12 +384,6 @@
 /* No comment provided by engineer. */
 "SECOND_SINGULAR" = "%d second";
 
-/* Title to show explaining WiFi Sync */
-"SERVICE_INFO_WITH_WIFI" = "Stream transfers original-sized photos back to your PC using Wi-Fi. These photos are available to you in the cloud for up to 30 days. To bring these photos home, install Stream for Windows on your PC. Visit waveface.com to find out more.";
-
-/* Title to show explaining WiFi Sync */
-"SERVICE_INFO_WITHOUT_WIFI" = "Stream only sends your original photos via Wi-Fi connection. \n\nIf you don't have Stream installed on your PC, or it's not up and running, we keep the photos in a temporary cloud space for up to 30 days.";
-
 /* Title of view controller finishing first setup */
 "SETUP_DONE_CONTROLLER_TITLE" = "ALMOST DONE";
 
@@ -432,9 +426,6 @@
 
 /* Cloud Name */
 "Stream Cloud" = "Stream Cloud";
-
-/* In Account Info Sync Section */
-"SYNC_INFO_FOOTER" = "Last Sync: %@";
 
 /* Title on the text stack more / less toggle button for “Less” */
 "TEXT_ELEMENT_TOGGLE_LESS_TITLE" = "Less";
@@ -659,20 +650,26 @@
 /* Class = "IBUIButton"; normalTitle = "ACTION_IMPORT_PHOTO"; ObjectID = "58"; */
 "ACTION_IMPORT_PHOTO" = "Yes!";
 
+/* Class = "IBUILabel"; text = "UPGRADE_ACCOUNT"; ObjectID = "0eH-Fu-1wD"; */
+"UPGRADE_ACCOUNT" = "Upgrade Account";
+
 /* Class = "IBUILabel"; text = "PHOTO_IMPORT_TITLE"; ObjectID = "2Vy-5o-43I"; */
 "PHOTO_IMPORT_TITLE" = "Photo Import";
-
-/* Class = "IBUITableViewSection"; footerTitle = "SERVICE_INFO_FOOTER"; ObjectID = "9vM-w4-lTb"; */
-"SERVICE_INFO_FOOTER" = "Stream uses Wi-Fi to send original size photos back to your PC. If you don't have Stream installed on your PC, or it's not up and running, we keep the photos in a temporary cloud space for up to 30 days.";
 
 /* Class = "IBUILabel"; text = "IMPORT_CAMERA_ROLL"; ObjectID = "Ehm-FE-RdU"; */
 "IMPORT_CAMERA_ROLL" = "Import Camera Roll";
 
+/* Class = "IBUITableViewSection"; headerTitle = "WEB_SERVICES_HEADER"; ObjectID = "FEo-JU-xSP"; */
+"WEB_SERVICES_HEADER" = "Web Services";
+
 /* Class = "IBUITableViewSection"; headerTitle = "ACCOUNT_INFO_HEADER"; ObjectID = "Gw1-xy-FWK"; */
 "ACCOUNT_INFO_HEADER" = "Account Info";
 
-/* Class = "IBUILabel"; text = "LOCAL_PENDING_OBJECTS_TITLE"; ObjectID = "Uku-UE-EAs"; */
-"LOCAL_PENDING_OBJECTS_TITLE" = "Photos Pending";
+/* Class = "IBUILabel"; text = "NON_BACKED_UP_FILES"; ObjectID = "Ldp-qK-xdo"; */
+"NON_BACKED_UP_FILES" = "Photos Not Backup";
+
+/* Class = "IBUILabel"; text = "AUTO_BACKUP_TO_CLOUD"; ObjectID = "T7w-pO-igg"; */
+"AUTO_BACKUP_TO_CLOUD" = "Auto Backup to Cloud";
 
 /* Class = "IBUILabel"; text = "CONNECTION_STATUS_DETAIL"; ObjectID = "bJb-Bz-WkJ"; */
 "CONNECTION_STATUS_DETAIL" = "CONNECTION_STATUS_DETAIL";
@@ -686,8 +683,20 @@
 /* Class = "IBUILabel"; text = "NOUN_CURRENT_DEVICE"; ObjectID = "fZ9-vs-r6f"; */
 "NOUN_CURRENT_DEVICE" = "Device";
 
+/* Class = "IBUITableViewSection"; footerTitle = "BACKUP_FOOTER"; ObjectID = "gj0-e5-1Bs"; */
+"BACKUP_FOOTER" = "Upgrade account or install Stream Windows so Stream can help you to backup all photos in this device.";
+
+/* Class = "IBUITableViewSection"; headerTitle = "BACKUP_HEADER"; ObjectID = "gj0-e5-1Bs"; */
+"BACKUP_HEADER" = "Photo Backup";
+
 /* Class = "IBUILabel"; text = "WEB_SERVICES_TITLE"; ObjectID = "gjy-px-XbS"; */
 "WEB_SERVICES_TITLE" = "Web Services";
+
+/* Class = "IBUILabel"; text = "NONE"; ObjectID = "gvB-Dr-HXB"; */
+"NONE" = "NONE";
+
+/* Class = "IBUILabel"; text = "AUTO_BACKUP_TO_PC"; ObjectID = "kVF-T3-Q5G"; */
+"AUTO_BACKUP_TO_PC" = "Auto Backup to PC";
 
 /* Class = "IBUILabel"; text = "CONNECTION_STATUS_TITLE"; ObjectID = "oOp-ya-swS"; */
 "CONNECTION_STATUS_TITLE" = "Connection Status";

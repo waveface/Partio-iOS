@@ -40,4 +40,13 @@
 
 }
 
+#pragma mark - UITableView delegates
+
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+
+	NSString *headerTitleID = [super tableView:tableView titleForHeaderInSection:section];
+	return NSLocalizedString(headerTitleID, @"Header title of web service setting view controller");
+
+}
+
 @end
