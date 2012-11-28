@@ -55,9 +55,6 @@
 /* Action marking article as favorite */
 "ACTION_MARK_FAVORITE" = "Favorite";
 
-/* No comment provided by engineer. */
-"ACTION_MORE_INFO" = "More Info";
-
 /* Action title for creating a new post */
 "ACTION_NEW_POST" = "New Post";
 
@@ -246,9 +243,6 @@
 /* Title on introduction pages */
 "INTRODUCTION_TITLE" = "What is Stream?";
 
-/* In Account Info Photo Import Section */
-"LAST_IMPORT_TIME" = "Photos last imported: %@";
-
 /* The email subject users will share photos thru. The nickname of user will be appended to this subject. */
 "MAIL_ACTION_SUBJECT" = "%@ wants to share photo(s) with you thru Stream App.";
 
@@ -298,6 +292,9 @@
    Password placeholder in signup page */
 "PASSWORD_PLACEHOLDER" = "••••••••";
 
+/* Title of photo import settings view controller */
+"PHOTO_IMPORT_TITLE" = "Photo Import";
+
 /* In iPad overview */
 "PHOTO_NOUN" = "1 photo";
 
@@ -320,7 +317,7 @@
 "PHOTO_UPLOAD_STATUS_BAR_IMPORTING" = "Scanning Camera Roll";
 
 /* String on customized status bar */
-"PHOTO_UPLOAD_STATUS_BAR_UPLOADING" = "Uploading photos %d/%d";
+"PHOTO_UPLOAD_STATUS_BAR_UPLOADING" = "Importing photos %d/%d";
 
 /* Subtitle of photo upload status */
 "PHOTO_UPLOAD_STATUS_IMPORTING" = "Scanning %d/%d photos";
@@ -332,7 +329,7 @@
 "PHOTO_UPLOAD_STATUS_PREPROCESSING" = "Preprocessing...";
 
 /* Subtitle of photo upload status */
-"PHOTO_UPLOAD_STATUS_UPLOADING" = "Uploading photos...";
+"PHOTO_UPLOAD_STATUS_UPLOADING" = "Importing photos...";
 
 /* In iPad overview */
 "PHOTOS_PLURAL" = "%d photos";
@@ -379,12 +376,6 @@
 /* No comment provided by engineer. */
 "SECOND_SINGULAR" = "%d second";
 
-/* Title to show explaining WiFi Sync */
-"SERVICE_INFO_WITH_WIFI" = "Stream transfers original-sized photos back to your PC using Wi-Fi. These photos are available to you in the cloud for up to 30 days. To bring these photos home, install Stream for Windows on your PC. Visit waveface.com to find out more.";
-
-/* Title to show explaining WiFi Sync */
-"SERVICE_INFO_WITHOUT_WIFI" = "Stream only sends your original photos via Wi-Fi connection. \n\nIf you don't have Stream installed on your PC, or it's not up and running, we keep the photos in a temporary cloud space for up to 30 days.";
-
 /* Title of view controller finishing first setup */
 "SETUP_DONE_CONTROLLER_TITLE" = "ALMOST DONE";
 
@@ -419,9 +410,6 @@
 /* Title for Settings in the sliding menu */
 "SLIDING_MENU_TITLE_SETTINGS" = "SETTINGS";
 
-/* In Account Info Photo Import Section */
-"START_PHOTO_IMPORT_DESCRIPTION" = "Import all your Camera Roll photos";
-
 /* No comment provided by engineer. */
 "STATE_LOADING_SINGLE_DOCUMENT" = "Loading Document…";
 
@@ -430,27 +418,6 @@
 
 /* Cloud Name */
 "Stream Cloud" = "Stream Cloud";
-
-/* Text for About Stream dialog */
-"STREAM_ABOUT_TEXT" = "Stream saves all your photos on all your devices to your PC.";
-
-/* Title for About Stream dialog */
-"STREAM_ABOUT_TITLE" = "About Stream";
-
-/* Caption to show a persistent connection to station is held. */
-"SYNC_BUTTON_CAPTION_WITH_PERSISTENT_CONNECTION" = "Connected";
-
-/* Caption to show in account info when station is connected */
-"SYNC_BUTTON_CAPTION_WITH_STATION_CONNECTED" = "Syncing with Station";
-
-/* Caption to show when app is syncing data without station */
-"SYNC_BUTTON_NORMAL_TITLE" = "Syncing with Cloud";
-
-/* Caption to show when app is not syncing data, but sync is usable */
-"SYNC_BUTTON_USABLE_TITLE" = "Sync";
-
-/* In Account Info Sync Section */
-"SYNC_INFO_FOOTER" = "Last Sync: %@";
 
 /* Title on the text stack more / less toggle button for “Less” */
 "TEXT_ELEMENT_TOGGLE_LESS_TITLE" = "Less";
@@ -476,36 +443,15 @@
 /* Settings for User popover */
 "USER_INFO_CONTROLLER_TITLE" = "User";
 
-/* Title to show when user has a station but have not activated the account */
-"USER_INFO_NAG_LEVEL_0_WITH_STATION" = "To sync your account, run Stream for Windows on your Station PC.";
-
-/* Title to show when user has no station and have not activated the account */
-"USER_INFO_NAG_LEVEL_0_WITHOUT_STATION" = "To sync your account, install and run Stream for Windows on your PC.";
-
-/* Title to show when user has a station, and still have ample storage on the Cloud */
-"USER_INFO_NAG_LEVEL_1_WITH_STATION" = "You have photos waiting to sync. Run Stream for Windows on your PC.";
-
-/* Title to show when user has no station, and still have ample storage on the Cloud */
-"USER_INFO_NAG_LEVEL_1_WITHOUT_STATION" = "You have photos waiting to sync. Install and run Stream for Windows on your PC.";
-
-/* Title to show when user has a station, and is using up most of the storage on the Cloud */
-"USER_INFO_NAG_LEVEL_2_WITH_STATION" = "Your cloud storage is nearly full.  To sync, run Stream for Windows on your PC.";
-
-/* Title to show when user has no station, and is using up most of the storage on the Cloud */
-"USER_INFO_NAG_LEVEL_2_WITHOUT_STATION" = "Your cloud storage is nearly full.  To sync, install and run Stream for Windows on your PC.";
-
-/* Title to show when user has a station, and have exhausted storage on the Cloud */
-"USER_INFO_NAG_LEVEL_3_WITH_STATION" = "Your cloud storage is full. To sync, run Stream for Windows on your PC.";
-
-/* Title to show when user has no station, and have exhausted storage on the Cloud */
-"USER_INFO_NAG_LEVEL_3_WITHOUT_STATION" = "Your cloud storage is full.  To sync, install and run Stream for Windows on your PC.";
-
 /* Email placeholder in login page
    Email placeholder in signup page */
 "USERNAME_PLACEHOLDER" = "me@example.com";
 
 /* preview button in composition view */
 "WEB_PREVIEW" = "Web Preview";
+
+/* Title of web service settings view controller */
+"WEB_SERVICES_TITLE" = "Web Services";
 
 /* No comment provided by engineer. */
 "WEEK_PLURAL" = "%d weeks";
@@ -678,23 +624,29 @@
 /* Class = "IBUIButton"; normalTitle = "ACTION_IMPORT_PHOTO"; ObjectID = "58"; */
 "ACTION_IMPORT_PHOTO" = "Yes!";
 
-/* Class = "IBUITableViewSection"; footerTitle = "SERVICE_INFO_FOOTER"; ObjectID = "9vM-w4-lTb"; */
-"SERVICE_INFO_FOOTER" = "Stream uses Wi-Fi to send original size photos back to your PC. If you don't have Stream installed on your PC, or it's not up and running, we keep the photos in a temporary cloud space for up to 30 days.";
+/* Class = "IBUILabel"; text = "UPGRADE_ACCOUNT"; ObjectID = "0eH-Fu-1wD"; */
+"UPGRADE_ACCOUNT" = "Upgrade Account";
 
-/* Class = "IBUILabel"; text = "FACEBOOK_CONNECT_TITLE"; ObjectID = "Fh9-Wq-UDR"; */
-"FACEBOOK_CONNECT_TITLE" = "Facebook Import";
+/* Class = "IBUILabel"; text = "PHOTO_IMPORT_TITLE"; ObjectID = "2Vy-5o-43I"; */
+"PHOTO_IMPORT_TITLE" = "Photo Import";
+
+/* Class = "IBUILabel"; text = "IMPORT_CAMERA_ROLL"; ObjectID = "Ehm-FE-RdU"; */
+"IMPORT_CAMERA_ROLL" = "Import Camera Roll";
+
+/* Class = "IBUITableViewSection"; headerTitle = "WEB_SERVICES_HEADER"; ObjectID = "FEo-JU-xSP"; */
+"WEB_SERVICES_HEADER" = "Web Services";
 
 /* Class = "IBUITableViewSection"; headerTitle = "ACCOUNT_INFO_HEADER"; ObjectID = "Gw1-xy-FWK"; */
 "ACCOUNT_INFO_HEADER" = "Account Info";
 
-/* Class = "IBUITableViewSection"; footerTitle = "PHOTO_IMPORT_FOOTER"; ObjectID = "IP4-fz-MdU"; */
-"PHOTO_IMPORT_FOOTER" = "PHOTO_IMPORT_FOOTER";
+/* Class = "IBUILabel"; text = "NON_BACKED_UP_FILES"; ObjectID = "Ldp-qK-xdo"; */
+"NON_BACKED_UP_FILES" = "Photos Not Backup";
 
-/* Class = "IBUILabel"; text = "LOCAL_PENDING_OBJECTS_TITLE"; ObjectID = "Uku-UE-EAs"; */
-"LOCAL_PENDING_OBJECTS_TITLE" = "Photos Pending";
+/* Class = "IBUILabel"; text = "AUTO_BACKUP_TO_CLOUD"; ObjectID = "T7w-pO-igg"; */
+"AUTO_BACKUP_TO_CLOUD" = "Auto Backup to Cloud";
 
-/* Class = "IBUITableViewSection"; footerTitle = "SYNC_INFO_FOOTER"; ObjectID = "aHi-Wv-Eu2"; */
-"SYNC_INFO_FOOTER" = "Last Sync: %@";
+/* Class = "IBUILabel"; text = "CONNECTION_STATUS_DETAIL"; ObjectID = "bJb-Bz-WkJ"; */
+"CONNECTION_STATUS_DETAIL" = "CONNECTION_STATUS_DETAIL";
 
 /* Class = "IBUILabel"; text = "NOUN_NICKNAME"; ObjectID = "btU-SG-jyB"; */
 "NOUN_NICKNAME" = "Name";
@@ -705,8 +657,23 @@
 /* Class = "IBUILabel"; text = "NOUN_CURRENT_DEVICE"; ObjectID = "fZ9-vs-r6f"; */
 "NOUN_CURRENT_DEVICE" = "Device";
 
-/* Class = "IBUILabel"; text = "PHOTO_IMPORT_TITLE"; ObjectID = "obe-LE-yqs"; */
-"PHOTO_IMPORT_TITLE" = "Auto-import photos";
+/* Class = "IBUITableViewSection"; footerTitle = "BACKUP_FOOTER"; ObjectID = "gj0-e5-1Bs"; */
+"BACKUP_FOOTER" = "Upgrade account or install Stream Windows so Stream can help you to backup all photos in this device.";
+
+/* Class = "IBUITableViewSection"; headerTitle = "BACKUP_HEADER"; ObjectID = "gj0-e5-1Bs"; */
+"BACKUP_HEADER" = "Photo Backup";
+
+/* Class = "IBUILabel"; text = "WEB_SERVICES_TITLE"; ObjectID = "gjy-px-XbS"; */
+"WEB_SERVICES_TITLE" = "Web Services";
+
+/* Class = "IBUILabel"; text = "NONE"; ObjectID = "gvB-Dr-HXB"; */
+"NONE" = "NONE";
+
+/* Class = "IBUILabel"; text = "AUTO_BACKUP_TO_PC"; ObjectID = "kVF-T3-Q5G"; */
+"AUTO_BACKUP_TO_PC" = "Auto Backup to PC";
+
+/* Class = "IBUILabel"; text = "CONNECTION_STATUS_TITLE"; ObjectID = "oOp-ya-swS"; */
+"CONNECTION_STATUS_TITLE" = "Connection Status";
 
 /* Class = "IBUITableViewSection"; footerTitle = "VERSION"; ObjectID = "rMk-eV-Pjl"; */
 "VERSION" = "Version";
