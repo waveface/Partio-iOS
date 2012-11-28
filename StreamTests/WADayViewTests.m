@@ -68,9 +68,4 @@
 	}
 }
 
-- (void)testModelFetchRequest {
-	NSArray *allFiles = [WAFile MR_findAll];
-	STAssertTrue([allFiles count] == 1160, @"All files");
-}
-
 @end
