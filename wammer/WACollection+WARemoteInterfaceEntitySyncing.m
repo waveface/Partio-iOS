@@ -9,7 +9,6 @@
 #import "WACollection+WARemoteInterfaceEntitySyncing.h"
 #import "IRWebAPIKit.h"
 #import <SSToolkit/NSDate+SSToolkitAdditions.h>
-#import <JSONKit/JSONKit.h>
 
 @implementation WACollection (WARemoteInterfaceEntitySyncing)
 
@@ -61,39 +60,27 @@
 	
 }
 
-+ (NSDictionary *) transformedRepresentationForRemoteRepresentation:(NSDictionary *)incomingRepresentation {
-	NSMutableDictionary *returnedDictionary = [incomingRepresentation mutableCopy];
++ (NSDictionary *) transformedRepresentationForRemoteRepresentation:(NSDictionary *)incomingDictionary {
+	NSMutableDictionary *returnedDictionary = [incomingDictionary mutableCopy];
 	
-	NSString *creatorID = [incomingRepresentation objectForKey:@"creator_id"];
+	NSString *creatorID = incomingDictionary[@"creator_id"];
 	if ([creatorID length])
-		[returnedDictionary setObject:[NSDictionary dictionaryWithObject:creatorID forKey:@"user_id"]
-													 forKey:@"creator"];
+		returnedDictionary[@"creator"] = @{@"user_id": creatorID};
 
-	NSArray *incomingAttachmentList;
-	if ([[incomingRepresentation objectForKey:@"object_id_list"] isKindOfClass:[NSString class]]) {
-		incomingAttachmentList = nil;
-	} else {
-	  incomingAttachmentList = [[incomingRepresentation objectForKey:@"object_id_list"] copy];
+	NSArray *objects = [incomingDictionary[@"object_id_list"] copy];
+	
+	NSMutableArray *returnedObjects = [[NSMutableArray alloc] init];
+	for (NSString *object in objects) {
+    [returnedObjects addObject: @{@"object_id": object}];
 	}
-	
-	NSMutableArray *returnedAttachmentList = [[NSMutableArray alloc] init];
-	
-	for (NSString *objectID in incomingAttachmentList) {
-    [returnedAttachmentList addObject: @{@"object_id": objectID}];
-	}
-	
-	[returnedDictionary setObject:returnedAttachmentList forKey:@"files"];
+	returnedDictionary[@"files"] = returnedObjects;
 	
 	return returnedDictionary;
-	
 }
 
 + (id) transformedValue:(id)aValue
 			fromRemoteKeyPath:(NSString *)aRemoteKeyPath
 				 toLocalKeyPath:(NSString *)aLocalKeyPath {
-	
-	if ([aLocalKeyPath isEqualToString:@"identifier"])
-		return IRWebAPIKitStringValue(aValue);
 	
 	if ([aLocalKeyPath isEqualToString:@"modificationDate"] ||
 			[aLocalKeyPath isEqualToString:@"creationDate"] )
@@ -101,9 +88,11 @@
 	
 	if ([aLocalKeyPath isEqualToString:@"isHidden"] ||
 			[aLocalKeyPath isEqualToString:@"isSmart"] )
-		return ([aValue isEqual:@"false"] || [aValue isEqual:@"0"] || [aValue isEqual:[NSNumber numberWithInt:0]]) ? (id)kCFBooleanFalse	 : (id)kCFBooleanTrue;
+		return ([aValue isEqual:@"false"] || [aValue isEqual:@"0"] || [aValue isEqual:@0]) ? (id)kCFBooleanFalse	 : (id)kCFBooleanTrue;
 	
-	return [super transformedValue:aValue fromRemoteKeyPath:aRemoteKeyPath toLocalKeyPath:aLocalKeyPath];
+	return [super transformedValue:aValue
+							 fromRemoteKeyPath:aRemoteKeyPath
+									toLocalKeyPath:aLocalKeyPath];
 	
 }
 
