@@ -113,7 +113,7 @@ typedef enum WASyncStatus: NSUInteger {
 - (void) viewDidLoad {
 
   [super viewDidLoad];
-	
+
   [self.tableView reloadData];
 	
 	__weak WAUserInfoViewController *wSelf = self;
@@ -163,8 +163,6 @@ typedef enum WASyncStatus: NSUInteger {
 	
 	self.deviceNameLabel.text = WADeviceName();
   
-	[self.photoImportSwitch setOn:[[NSUserDefaults standardUserDefaults] boolForKey:kWAPhotoImportEnabled]];
-	
 }
 
 - (void) irObserveObject:(id)target keyPath:(NSString *)keyPath options:(NSKeyValueObservingOptions)options context:(void *)context withBlock:(IRObservingsCallbackBlock)block {
@@ -218,20 +216,6 @@ typedef enum WASyncStatus: NSUInteger {
 		
 	}
   
-}
-
-- (void) viewDidUnload {
-  
-	[self setNumberOfPendingFilesLabel:nil];
-	[self setUserEmailLabel:nil];
-	[self setUserNameLabel:nil];
-	[self setDeviceNameLabel:nil];
-	[self setContactTableViewCell:nil];
-	
-	[self setServiceTableViewCell:nil];
-  [self setPhotoImportSwitch:nil];
-  [super viewDidUnload];
-	
 }
 
 - (void) tableView:(UITableView *)aTV didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -330,18 +314,6 @@ typedef enum WASyncStatus: NSUInteger {
 		
 	}
 	
-	if ([superAnswer isEqualToString:@"PHOTO_IMPORT_FOOTER"]) {
-		WADataStore *dataStore = [WADataStore defaultStore];
-		WAArticle *article = [dataStore fetchLatestLocalImportedArticleUsingContext:[dataStore disposableMOC]];
-		if (article) {
-			NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-			[dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
-			NSString *dateString = [dateFormatter stringFromDate:article.creationDate];
-			return [NSString stringWithFormat:NSLocalizedString(@"LAST_IMPORT_TIME", @"In Account Info Photo Import Section"), dateString];
-		}
-		return NSLocalizedString(@"START_PHOTO_IMPORT_DESCRIPTION", @"In Account Info Photo Import Section");
-	}
-	
 	if ([superAnswer isEqualToString:@"VERSION"])
 		return [[NSBundle mainBundle] displayVersionString];
 	
@@ -384,18 +356,6 @@ typedef enum WASyncStatus: NSUInteger {
 		return WASyncStatusConnected;
 
 	return WASyncStatusNone;
-}
-
-- (IBAction)handlePhotoImportSwitchChanged:(id)sender {
-
-	UISwitch *photoImportSwitch = sender;
-	if ([photoImportSwitch isOn]) {
-		[[NSUserDefaults standardUserDefaults] setBool:YES forKey:kWAPhotoImportEnabled];
-	} else {
-		[[NSUserDefaults standardUserDefaults] setBool:NO forKey:kWAPhotoImportEnabled];
-	}
-	[[NSUserDefaults standardUserDefaults] synchronize];
-
 }
 
 @end

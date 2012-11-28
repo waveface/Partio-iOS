@@ -81,7 +81,7 @@
 	
 	WANavigationController *navC = nil;
 	WAUserInfoViewController *userInfoVC = [WAUserInfoViewController controllerWithWrappingNavController:&navC];
-	
+
 	__weak WASlidingMenuViewController *wSelf = self;
 		
 	userInfoVC.navigationItem.leftBarButtonItem = WABarButtonItem([UIImage imageNamed:@"menu"], @"", ^{

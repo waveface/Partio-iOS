@@ -24,8 +24,4 @@
 
 @property (weak, nonatomic) IBOutlet UILabel *deviceNameLabel;
 
-@property (weak, nonatomic) IBOutlet UISwitch *photoImportSwitch;
-
-- (IBAction)handlePhotoImportSwitchChanged:(id)sender;
-
 @end

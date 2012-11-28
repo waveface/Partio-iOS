@@ -247,9 +247,6 @@
 /* Title on introduction pages */
 "INTRODUCTION_TITLE" = "What is Stream?";
 
-/* In Account Info Photo Import Section */
-"LAST_IMPORT_TIME" = "Photos last imported: %@";
-
 /* The email subject users will share photos thru. The nickname of user will be appended to this subject. */
 "MAIL_ACTION_SUBJECT" = "%@ wants to share photo(s) with you thru Stream App.";
 
@@ -302,6 +299,9 @@
 /* Password placeholder in login page
    Password placeholder in signup page */
 "PASSWORD_PLACEHOLDER" = "••••••••";
+
+/* Title of photo import settings view controller */
+"PHOTO_IMPORT_TITLE" = "Photo Import";
 
 /* In iPad overview */
 "PHOTO_NOUN" = "1 photo";
@@ -424,9 +424,6 @@
 /* Title for Settings in the sliding menu */
 "SLIDING_MENU_TITLE_SETTINGS" = "SETTINGS";
 
-/* In Account Info Photo Import Section */
-"START_PHOTO_IMPORT_DESCRIPTION" = "Import all your Camera Roll photos";
-
 /* No comment provided by engineer. */
 "STATE_LOADING_SINGLE_DOCUMENT" = "Loading Document…";
 
@@ -472,6 +469,9 @@
 
 /* preview button in composition view */
 "WEB_PREVIEW" = "Web Preview";
+
+/* Title of web service settings view controller */
+"WEB_SERVICES_TITLE" = "Web Services";
 
 /* No comment provided by engineer. */
 "WEEK_PLURAL" = "%d weeks";
@@ -659,17 +659,17 @@
 /* Class = "IBUIButton"; normalTitle = "ACTION_IMPORT_PHOTO"; ObjectID = "58"; */
 "ACTION_IMPORT_PHOTO" = "Yes!";
 
+/* Class = "IBUILabel"; text = "PHOTO_IMPORT_TITLE"; ObjectID = "2Vy-5o-43I"; */
+"PHOTO_IMPORT_TITLE" = "Photo Import";
+
 /* Class = "IBUITableViewSection"; footerTitle = "SERVICE_INFO_FOOTER"; ObjectID = "9vM-w4-lTb"; */
 "SERVICE_INFO_FOOTER" = "Stream uses Wi-Fi to send original size photos back to your PC. If you don't have Stream installed on your PC, or it's not up and running, we keep the photos in a temporary cloud space for up to 30 days.";
 
-/* Class = "IBUILabel"; text = "FACEBOOK_CONNECT_TITLE"; ObjectID = "Fh9-Wq-UDR"; */
-"FACEBOOK_CONNECT_TITLE" = "Facebook Import";
+/* Class = "IBUILabel"; text = "IMPORT_CAMERA_ROLL"; ObjectID = "Ehm-FE-RdU"; */
+"IMPORT_CAMERA_ROLL" = "Import Camera Roll";
 
 /* Class = "IBUITableViewSection"; headerTitle = "ACCOUNT_INFO_HEADER"; ObjectID = "Gw1-xy-FWK"; */
 "ACCOUNT_INFO_HEADER" = "Account Info";
-
-/* Class = "IBUITableViewSection"; footerTitle = "PHOTO_IMPORT_FOOTER"; ObjectID = "IP4-fz-MdU"; */
-"PHOTO_IMPORT_FOOTER" = "PHOTO_IMPORT_FOOTER";
 
 /* Class = "IBUILabel"; text = "LOCAL_PENDING_OBJECTS_TITLE"; ObjectID = "Uku-UE-EAs"; */
 "LOCAL_PENDING_OBJECTS_TITLE" = "Photos Pending";
@@ -686,11 +686,11 @@
 /* Class = "IBUILabel"; text = "NOUN_CURRENT_DEVICE"; ObjectID = "fZ9-vs-r6f"; */
 "NOUN_CURRENT_DEVICE" = "Device";
 
+/* Class = "IBUILabel"; text = "WEB_SERVICES_TITLE"; ObjectID = "gjy-px-XbS"; */
+"WEB_SERVICES_TITLE" = "Web Services";
+
 /* Class = "IBUILabel"; text = "CONNECTION_STATUS_TITLE"; ObjectID = "oOp-ya-swS"; */
 "CONNECTION_STATUS_TITLE" = "Connection Status";
-
-/* Class = "IBUILabel"; text = "PHOTO_IMPORT_TITLE"; ObjectID = "obe-LE-yqs"; */
-"PHOTO_IMPORT_TITLE" = "Auto-import photos";
 
 /* Class = "IBUITableViewSection"; footerTitle = "VERSION"; ObjectID = "rMk-eV-Pjl"; */
 "VERSION" = "Version";

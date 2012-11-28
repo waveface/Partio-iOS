@@ -247,9 +247,6 @@
 /* Title on introduction pages */
 "INTRODUCTION_TITLE" = "Stream 是什麼？";
 
-/* In Account Info Photo Import Section */
-"LAST_IMPORT_TIME" = "最新匯入照片時間：%@";
-
 /* The email subject users will share photos thru. The nickname of user will be appended to this subject. */
 "MAIL_ACTION_SUBJECT" = "%@ 透過 Stream app 與你分享照片。";
 
@@ -302,6 +299,9 @@
 /* Password placeholder in login page
    Password placeholder in signup page */
 "PASSWORD_PLACEHOLDER" = "••••••••";
+
+/* Title of photo import settings view controller */
+"PHOTO_IMPORT_TITLE" = "照片匯入";
 
 /* In iPad overview */
 "PHOTO_NOUN" = "一張照片";
@@ -424,9 +424,6 @@
 /* Title for Settings in the sliding menu */
 "SLIDING_MENU_TITLE_SETTINGS" = "設定";
 
-/* In Account Info Photo Import Section */
-"START_PHOTO_IMPORT_DESCRIPTION" = "匯入所有 Camera Roll 中的照片";
-
 /* No comment provided by engineer. */
 "STATE_LOADING_SINGLE_DOCUMENT" = "正在載入文件…";
 
@@ -472,6 +469,9 @@
 
 /* preview button in composition view */
 "WEB_PREVIEW" = "預覽";
+
+/* Title of web service settings view controller */
+"WEB_SERVICES_TITLE" = "網路服務";
 
 /* No comment provided by engineer. */
 "WEEK_PLURAL" = "%d週";
@@ -659,17 +659,17 @@
 /* Class = "IBUIButton"; normalTitle = "ACTION_IMPORT_PHOTO"; ObjectID = "58"; */
 "ACTION_IMPORT_PHOTO" = "確定匯入";
 
+/* Class = "IBUILabel"; text = "PHOTO_IMPORT_TITLE"; ObjectID = "2Vy-5o-43I"; */
+"PHOTO_IMPORT_TITLE" = "照片匯入";
+
 /* Class = "IBUITableViewSection"; footerTitle = "SERVICE_INFO_FOOTER"; ObjectID = "9vM-w4-lTb"; */
 "SERVICE_INFO_FOOTER" = "⚠ 僅會在Wi-Fi連線時上傳原檔\n\n在 Wi-Fi 環境中，Stream 會幫您將原始檔案妥善保存。只要下載並且開啓 PC 上的 Stream，您有30天的時間將檔案從雲端送回PC保存";
 
-/* Class = "IBUILabel"; text = "FACEBOOK_CONNECT_TITLE"; ObjectID = "Fh9-Wq-UDR"; */
-"FACEBOOK_CONNECT_TITLE" = "Facebook 同步";
+/* Class = "IBUILabel"; text = "IMPORT_CAMERA_ROLL"; ObjectID = "Ehm-FE-RdU"; */
+"IMPORT_CAMERA_ROLL" = "匯入相機膠卷";
 
 /* Class = "IBUITableViewSection"; headerTitle = "ACCOUNT_INFO_HEADER"; ObjectID = "Gw1-xy-FWK"; */
 "ACCOUNT_INFO_HEADER" = "帳戶資訊";
-
-/* Class = "IBUITableViewSection"; footerTitle = "PHOTO_IMPORT_FOOTER"; ObjectID = "IP4-fz-MdU"; */
-"PHOTO_IMPORT_FOOTER" = "PHOTO_IMPORT_FOOTER";
 
 /* Class = "IBUILabel"; text = "LOCAL_PENDING_OBJECTS_TITLE"; ObjectID = "Uku-UE-EAs"; */
 "LOCAL_PENDING_OBJECTS_TITLE" = "本裝置尚未上傳原檔數量";
@@ -686,11 +686,11 @@
 /* Class = "IBUILabel"; text = "NOUN_CURRENT_DEVICE"; ObjectID = "fZ9-vs-r6f"; */
 "NOUN_CURRENT_DEVICE" = "裝置名稱";
 
+/* Class = "IBUILabel"; text = "WEB_SERVICES_TITLE"; ObjectID = "gjy-px-XbS"; */
+"WEB_SERVICES_TITLE" = "網路服務";
+
 /* Class = "IBUILabel"; text = "CONNECTION_STATUS_TITLE"; ObjectID = "oOp-ya-swS"; */
 "CONNECTION_STATUS_TITLE" = "連線狀態";
-
-/* Class = "IBUILabel"; text = "PHOTO_IMPORT_TITLE"; ObjectID = "obe-LE-yqs"; */
-"PHOTO_IMPORT_TITLE" = "自動匯入照片";
 
 /* Class = "IBUITableViewSection"; footerTitle = "VERSION"; ObjectID = "rMk-eV-Pjl"; */
 "VERSION" = "版本";
