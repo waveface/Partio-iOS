@@ -63,20 +63,24 @@
 	
 	NSArray *aCollection = collectionsRep;
 	
-	NSArray *transformed = [WACollection
-													insertOrUpdateObjectsUsingContext:[NSManagedObjectContext MR_context]
-													withRemoteResponse:aCollection
-													usingMapping:nil
-													options:IRManagedObjectOptionIndividualOperations];
-
+	NSArray *transformed;
+	@autoreleasepool {
+		transformed = [WACollection
+									 insertOrUpdateObjectsUsingContext:[NSManagedObjectContext MR_context]
+									 withRemoteResponse:aCollection
+									 usingMapping:nil
+									 options:IRManagedObjectOptionIndividualOperations];
+	}
+	
 	for (WACollection *coll in transformed) {
 		STAssertNotNil(coll.identifier, @"identifier should not be nil");
-		if ([coll.identifier isEqualToString:@"92a20008-0287-4477-a146-20caab9849ca"]) {
+		if ([coll.identifier isEqualToString:@"abca95d7-9b72-463d-931f-de9fa8f9a2f3"]) {
 			assertThat(coll.isHidden, equalTo(@(0)));
 			assertThat(coll.isSmart, equalTo(@(0)));
-			assertThat(coll.sequenceNumber, equalTo(@(34907)));
+			assertThat(coll.sequenceNumber, equalTo(@(33784)));
+			STAssertEquals([coll.files count], (NSUInteger)3, @"With Object IDs");
 		}
-		if ([coll.identifier isEqualToString:@"d3c8f16d-6864-49ae-b2d7-d341532c32c4"]) {
+		if ([coll.identifier isEqualToString:@"38627127-dff1-4892-91bd-bd29415b46ed"]) {
 			assertThat(coll.isHidden, equalTo(@(1)));
 		}
   }

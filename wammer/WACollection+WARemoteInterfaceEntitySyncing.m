@@ -67,13 +67,7 @@
 	if ([creatorID length])
 		returnedDictionary[@"creator"] = @{@"user_id": creatorID};
 
-	NSArray *objects = [incomingDictionary[@"object_id_list"] copy];
-	
-	NSMutableArray *returnedObjects = [[NSMutableArray alloc] init];
-	for (NSString *object in objects) {
-    [returnedObjects addObject: @{@"object_id": object}];
-	}
-	returnedDictionary[@"files"] = returnedObjects;
+	returnedDictionary[@"files"] = incomingDictionary[@"object_list"];
 	
 	return returnedDictionary;
 }
@@ -85,10 +79,6 @@
 	if ([aLocalKeyPath isEqualToString:@"modificationDate"] ||
 			[aLocalKeyPath isEqualToString:@"creationDate"] )
 		return [NSDate dateFromISO8601String:aValue];
-	
-	if ([aLocalKeyPath isEqualToString:@"isHidden"] ||
-			[aLocalKeyPath isEqualToString:@"isSmart"] )
-		return ([aValue isEqual:@"false"] || [aValue isEqual:@"0"] || [aValue isEqual:@0]) ? (id)kCFBooleanFalse	 : (id)kCFBooleanTrue;
 	
 	return [super transformedValue:aValue
 							 fromRemoteKeyPath:aRemoteKeyPath
