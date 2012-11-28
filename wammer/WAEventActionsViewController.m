@@ -19,6 +19,8 @@
 #import "WAUser.h"
 #import "WADataStore.h"
 
+#import "GAI.h"
+
 @interface WAEventActionsViewController () <UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, MFMailComposeViewControllerDelegate>
 
 @property (nonatomic, strong) UICollectionView *itemsView;
@@ -90,7 +92,13 @@ void (^displayAlert)(NSString *, NSString *) = ^(NSString *title, NSString *msg)
 		composeVC.completionHandler = ^ (SLComposeViewControllerResult result){
 			[wComposeVC dismissViewControllerAnimated:YES completion:nil];
 		};
-		[wSelf presentViewController:composeVC animated:YES completion:nil];		
+		[wSelf presentViewController:composeVC animated:YES completion:nil];
+		
+		[[GAI sharedInstance].defaultTracker trackEventWithCategory:@"Events"
+																										 withAction:@"Export"
+																											withLabel:SLname
+																											withValue:nil];
+
 	};
 	
 	// set toolbar buttons
@@ -127,7 +135,12 @@ void (^displayAlert)(NSString *, NSString *) = ^(NSString *title, NSString *msg)
 
 		}];
 		[wSelf presentViewController:mailer animated:YES completion:nil];
-		
+
+		[[GAI sharedInstance].defaultTracker trackEventWithCategory:@"Events"
+																										 withAction:@"Export"
+																											withLabel:@"Mail"
+																											withValue:nil];
+
 	});
 
 
@@ -135,6 +148,7 @@ void (^displayAlert)(NSString *, NSString *) = ^(NSString *title, NSString *msg)
 	
 	self.navigationController.navigationBar.barStyle = UIBarStyleBlackTranslucent;
 	self.navigationController.navigationBar.tintColor = [UIColor clearColor];
+	[self.navigationController.navigationBar setBackgroundImage:nil forBarMetrics:UIBarMetricsDefault];
 	
 	self.navigationController.toolbar.barStyle = UIBarStyleBlackTranslucent;
 	self.navigationController.toolbar.tintColor = [UIColor clearColor];
@@ -144,6 +158,12 @@ void (^displayAlert)(NSString *, NSString *) = ^(NSString *title, NSString *msg)
 		[wSelf.navigationController dismissViewControllerAnimated:YES completion:nil];
 		
 	});
+	
+	[[GAI sharedInstance].defaultTracker trackEventWithCategory:@"Events"
+																									 withAction:@"Enter event actions"
+																										withLabel:nil
+																										withValue:nil];
+
 }
 
 - (void) viewWillAppear:(BOOL)animated {

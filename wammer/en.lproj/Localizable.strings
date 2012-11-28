@@ -143,8 +143,7 @@
 /* Title of view controller connecting services */
 "CONNECT_SERVICES_CONTROLLER_TITLE" = "GETTING STARTED";
 
-/* In iPad overview, (time, device)
-   iPhone Timeline */
+/* In iPad overview, (time, device) */
 "CREATE_TIME_FROM_DEVICE" = "Posted at %1$@ from %2$@";
 
 /* in relative date format */
@@ -165,9 +164,6 @@
 
 /* Title for confirming a post deletion */
 "DELETE_POST_CONFIRMATION_TITLE" = "Delete Now?";
-
-/* Downloading Status on iPhone Timeline */
-"DOWNLOADING_PHOTOS" = "Syncing...";
 
 /* State for drafts without content text */
 "DRAFT_STATE_NO_CONTENT" = "(No Content)";
@@ -286,11 +282,7 @@
 /* Plural noun for draft objects */
 "NOUN_DRAFTS" = "Drafts";
 
-/* Photo information in cell */
-"NUMBER_OF_PHOTOS" = "%d photos";
-
-/* In iPad overview
-   iPhone Timeline */
+/* In iPad overview */
 "NUMBER_OF_PHOTOS_CREATE_TIME_FROM_DEVICE" = "%1$@ posted %2$@ from %3$@";
 
 /* Free plan option in plans page */
@@ -481,9 +473,6 @@
 /* Ultimate plan details in plans page */
 "ULTIMATE_PLAN_DESCRIPTION" = "500GB cloud storage, unlimited PC storage";
 
-/* Downloading Status on iPhone Timeline */
-"UNABLE_TO_DOWNLOADING_PHOTOS" = "No Internet connection. Syncing incomplete...";
-
 /* Settings for User popover */
 "USER_INFO_CONTROLLER_TITLE" = "User";
 
@@ -628,21 +617,6 @@
 
 /* Class = "IBUITextField"; placeholder = "PASSWORD_PLACEHOLDER"; ObjectID = "g7o-DD-LvS"; */
 "PASSWORD_PLACEHOLDER" = "••••••••";
-
-/* Class = "IBUILabel"; text = "FEB"; ObjectID = "50"; */
-"FEB" = "FEB";
-
-/* Class = "IBUILabel"; text = "FEB"; ObjectID = "110"; */
-"FEB" = "FEB";
-
-/* Class = "IBUILabel"; text = "FEB"; ObjectID = "114"; */
-"FEB" = "FEB";
-
-/* Class = "IBUILabel"; text = "FEB"; ObjectID = "110"; */
-"FEB" = "FEB";
-
-/* Class = "IBUILabel"; text = "FEB"; ObjectID = "114"; */
-"FEB" = "FEB";
 
 /* Class = "IBUITextField"; placeholder = "USERNAME_PLACEHOLDER"; ObjectID = "2Vk-4J-QH3"; */
 "USERNAME_PLACEHOLDER" = "me@example.com";

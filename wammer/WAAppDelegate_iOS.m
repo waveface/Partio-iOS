@@ -26,8 +26,7 @@
 #import "WANavigationController.h"
 #import "WAApplicationRootViewControllerDelegate.h"
 #import "WAOverviewController.h"
-#import "WATimelineViewControllerPhone.h"
-#import "WATimelineViewControllerPad.h"
+#import "WATimelineViewController.h"
 #import "WAUserInfoViewController.h"
 #import "WAOverlayBezel.h"
 
@@ -347,7 +346,7 @@ extern CFAbsoluteTime StartTime;
 	
 		case UIUserInterfaceIdiomPad: {
 		
-			WADayViewController *swVC = [[WADayViewController alloc] initWithClassNamed:[WATimelineViewControllerPad class]];
+			WADayViewController *swVC = [[WADayViewController alloc] initWithClassNamed:[WATimelineViewController class]];
 			WANavigationController *timelineNavC = [[WANavigationController alloc] initWithRootViewController:swVC];
 						
 			WASlidingMenuViewController *slidingMenu = [[WASlidingMenuViewController alloc] init];
@@ -371,7 +370,7 @@ extern CFAbsoluteTime StartTime;
 		}
 		
 		case UIUserInterfaceIdiomPhone: {
-			WADayViewController *swVC = [[WADayViewController alloc] initWithClassNamed:[WATimelineViewControllerPhone class]];
+			WADayViewController *swVC = [[WADayViewController alloc] initWithClassNamed:[WATimelineViewController class]];
 			WANavigationController *timelineNavC = [[WANavigationController alloc] initWithRootViewController:swVC];
 
 			WASlidingMenuViewController *slidingMenu = [[WASlidingMenuViewController alloc] init];

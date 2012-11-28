@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface WATimelineViewControllerPad : UIViewController
+@interface WATimelineViewController : UIViewController
 
 - (id) initWithDate:(NSDate*)date;
 
