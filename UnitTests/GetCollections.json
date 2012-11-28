@@ -3,8 +3,12 @@
         {
             "name": "camge's ",
             "seq_num": 33784,
-            "object_id_list": "['c3e3a2bf-ad28-40a7-befe-3638ccc0225f', 'dea172fd-db7d-45dc-b553-4cd99c52dcd1', 'ca35e4d7-d1ed-483b-9270-2aefcc3a44ff']",
-            "creator_id": "752032ea-ad15-4758-9b9c-88b698441e2d",
+						"object_id_list": [
+															 "c3e3a2bf-ad28-40a7-befe-3638ccc0225f",
+															 "dea172fd-db7d-45dc-b553-4cd99c52dcd1",
+															 "ca35e4d7-d1ed-483b-9270-2aefcc3a44ff"
+															 ],
+						"creator_id": "752032ea-ad15-4758-9b9c-88b698441e2d",
             "create_time": "2012-11-19T07:05:09Z",
             "modify_time": "2012-11-19T07:05:09Z",
             "collection_id": "abca95d7-9b72-463d-931f-de9fa8f9a2f3",

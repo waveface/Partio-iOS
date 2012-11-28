@@ -11,6 +11,7 @@
 #import "WACollection.h"
 #import "WAUser.h"
 #import "WAFile.h"
+#import <JSONKit/JSONKit.h>
 
 @implementation WACollectionTests
 

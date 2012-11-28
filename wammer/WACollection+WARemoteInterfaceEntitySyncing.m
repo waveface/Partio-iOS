@@ -9,6 +9,7 @@
 #import "WACollection+WARemoteInterfaceEntitySyncing.h"
 #import "IRWebAPIKit.h"
 #import <SSToolkit/NSDate+SSToolkitAdditions.h>
+#import <JSONKit/JSONKit.h>
 
 @implementation WACollection (WARemoteInterfaceEntitySyncing)
 
@@ -29,10 +30,11 @@
 + (NSDictionary *) defaultHierarchicalEntityMapping {
 	
 	return @{
-//		@"files": @"WAFiles",
+		@"files": @"WAFiles",
 		@"creator": @"WAUser",
 	};
 	
+
 }
 
 + (NSDictionary *) remoteDictionaryConfigurationMapping {
@@ -44,13 +46,13 @@
 		mapping = @{
 			@"name": @"title",
 //			@"seq_num": @"sequenceNumber",
-//			@"object_id_list": @"files",
-//			@"creator_id": @"creator",
+//			@"files": @"files",
+			@"creator": @"creator",
 			@"create_time": @"createDate",
 			@"modify_time": @"modifyDate",
 			@"collection_id": @"identifier",
-//			@"hidden": @"isHidden",
-//			@"smart": @"isSmart",
+			@"hidden": @"isHidden",
+			@"smart": @"isSmart",
 		};
 		
 	});
@@ -66,18 +68,30 @@
 	if ([creatorID length])
 		[returnedDictionary setObject:[NSDictionary dictionaryWithObject:creatorID forKey:@"user_id"] forKey:@"creator"];
 
+	NSArray *incomingAttachmentList;
+	if ([[incomingRepresentation objectForKey:@"object_id_list"] isKindOfClass:[NSString class]]) {
+		incomingAttachmentList = nil;
+	} else {
+	  incomingAttachmentList = [incomingRepresentation objectForKey:@"object_id_list"];
+	}
+	
+	NSMutableArray *returnedAttachmentList = [incomingAttachmentList mutableCopy];
+	if (returnedAttachmentList == nil) {
+		returnedAttachmentList = [[NSMutableArray alloc] init];
+	}
+	
+	for (NSString *fileID in incomingAttachmentList) {
+    [returnedAttachmentList addObject: @{@"object_id": fileID}];
+	}
+	[returnedDictionary setObject:returnedAttachmentList forKey:@"files"];
+	
 	return returnedDictionary;
 	
 }
 
-- (void) configureWithRemoteDictionary:(NSDictionary *)inDictionary {
-	
-	[super configureWithRemoteDictionary:inDictionary];
-	
-	
-}
-
-+ (id) transformedValue:(id)aValue fromRemoteKeyPath:(NSString *)aRemoteKeyPath toLocalKeyPath:(NSString *)aLocalKeyPath {
++ (id) transformedValue:(id)aValue
+			fromRemoteKeyPath:(NSString *)aRemoteKeyPath
+				 toLocalKeyPath:(NSString *)aLocalKeyPath {
 	
 	if ([aLocalKeyPath isEqualToString:@"identifier"])
 		return IRWebAPIKitStringValue(aValue);
@@ -86,12 +100,24 @@
 			[aLocalKeyPath isEqualToString:@"createDate"] )
 		return [NSDate dateFromISO8601String:aValue];
 	
+	if ([aLocalKeyPath isEqualToString:@"isHidden"] ||
+			[aLocalKeyPath isEqualToString:@"isSmart"] )
+		return ([aValue isEqual:@"false"] || [aValue isEqual:@"0"] || [aValue isEqual:[NSNumber numberWithInt:0]]) ? (id)kCFBooleanFalse	 : (id)kCFBooleanTrue;
+	
 	return [super transformedValue:aValue fromRemoteKeyPath:aRemoteKeyPath toLocalKeyPath:aLocalKeyPath];
 	
 }
 
-- (void)synchronizeWithCompletion:(WAEntitySyncCallback)block {
++ (void)synchronizeWithOptions:(NSDictionary *)options completion:(WAEntitySyncCallback)completionBlock {
 	
+}
+
++ (void)synchronizeWithCompletion:(WAEntitySyncCallback)block {
+	
+}
+
+- (void)synchronizeWithCompletion:(WAEntitySyncCallback)block {
+		[self synchronizeWithOptions:nil completion:block];
 }
 
 - (void)synchronizeWithOptions:(NSDictionary *)options completion:(WAEntitySyncCallback)completionBlock {
