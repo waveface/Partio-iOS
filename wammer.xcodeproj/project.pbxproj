@@ -129,6 +129,9 @@
 		4BFC156915C7D9E800DB02F8 /* Unfav@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BFC156715C7D9E800DB02F8 /* Unfav@2x~ipad.png */; };
 		4BFC156A15C7D9E800DB02F8 /* Unfav~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BFC156815C7D9E800DB02F8 /* Unfav~ipad.png */; };
 		7D0CDD01162E5A080027D35F /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D0CDCE7162E59DD0027D35F /* SenTestingKit.framework */; };
+		7D109C0B1665A680000E422F /* libGoogleAnalytics.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7DAD18A11626A73B00F87495 /* libGoogleAnalytics.a */; };
+		7D109C1C1665A680000E422F /* libGoogleAnalytics.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7DAD18A11626A73B00F87495 /* libGoogleAnalytics.a */; };
+		7D109C1D1665A68C000E422F /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FFD14F0514C5E24C0053116F /* Crashlytics.framework */; };
 		7D2152AE165E3EF900AD0A17 /* WAGalleryImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = FF878C0713FA730100B76807 /* WAGalleryImageView.m */; };
 		7D2152BE165E3F1C00AD0A17 /* WAGalleryImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = FF878C0713FA730100B76807 /* WAGalleryImageView.m */; };
 		7D2152BF165E404100AD0A17 /* WAGalleryImageScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = FF4050741573817A001A14DA /* WAGalleryImageScrollView.m */; };
@@ -1934,6 +1937,7 @@
 				4BAD7585164DEDA500ADDE56 /* libsqlite3.dylib in Frameworks */,
 				4B9B8DE9164DEE2C007A2A74 /* libSocketRocket.a in Frameworks */,
 				7D8B4BD61665B0C200CDEE55 /* libGoogleAnalytics.a in Frameworks */,
+				7D109C0B1665A680000E422F /* libGoogleAnalytics.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1959,6 +1963,8 @@
 				4B9B8DEB164DEE61007A2A74 /* libicucore.dylib in Frameworks */,
 				7D8B4BC51665B0B500CDEE55 /* SystemConfiguration.framework in Frameworks */,
 				7D8B4BD71665B0C300CDEE55 /* libGoogleAnalytics.a in Frameworks */,
+				7D109C1C1665A680000E422F /* libGoogleAnalytics.a in Frameworks */,
+				7D109C1D1665A68C000E422F /* Crashlytics.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5156,6 +5162,7 @@
 					"\"$(SDKROOT)/Developer/Library/Frameworks\"",
 					"\"$(DEVELOPER_LIBRARY_DIR)/Frameworks\"",
 					"\"$(SRCROOT)/wammer/Libraries\"",
+					"\"$(SRCROOT)/external/CrashlyticsSDK\"",
 				);
 				GCC_C_LANGUAGE_STANDARD = "compiler-default";
 				GCC_GENERATE_TEST_COVERAGE_FILES = YES;
@@ -5217,6 +5224,7 @@
 					"\"$(SDKROOT)/Developer/Library/Frameworks\"",
 					"\"$(DEVELOPER_LIBRARY_DIR)/Frameworks\"",
 					"\"$(SRCROOT)/wammer/Libraries\"",
+					"\"$(SRCROOT)/external/CrashlyticsSDK\"",
 				);
 				GCC_C_LANGUAGE_STANDARD = "compiler-default";
 				GCC_GENERATE_TEST_COVERAGE_FILES = YES;
@@ -5274,6 +5282,7 @@
 					"\"$(SDKROOT)/Developer/Library/Frameworks\"",
 					"\"$(DEVELOPER_LIBRARY_DIR)/Frameworks\"",
 					"\"$(SRCROOT)/wammer/Libraries\"",
+					"\"$(SRCROOT)/external/CrashlyticsSDK\"",
 				);
 				GCC_C_LANGUAGE_STANDARD = "compiler-default";
 				GCC_GENERATE_TEST_COVERAGE_FILES = YES;
