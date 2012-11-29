@@ -92,29 +92,28 @@ NSString * const kWADataStoreArticleUpdateShowsBezels = @"WADataStoreArticleUpda
 
 }
 
-- (void) updateArticlesOnSuccess:(void (^)(void))successBlock onFailure:(void (^)(NSError *error))failureBlock {
-
-	NSMutableDictionary *options = [NSMutableDictionary dictionaryWithObjectsAndKeys:
-		
-		kWAArticleSyncDefaultStrategy, kWAArticleSyncStrategy,
-		
-	nil];
+- (void) updateArticlesOnSuccess:(void (^)(void))successBlock
+											 onFailure:(void (^)(NSError *error))failureBlock {
 	
-	[WAArticle synchronizeWithOptions:options completion:^(BOOL didFinish, NSError *anError) {
+	NSDictionary *defaultOption = @{kWAArticleSyncStrategy: kWAArticleSyncDefaultStrategy};
 	
-		if (didFinish) {
-
-			if (successBlock)
-				successBlock();
-			
-		} else {
-		
-			if (failureBlock)
-				failureBlock(anError);
-		
-		}
-		
-	}];
+	[WAArticle
+	 synchronizeWithOptions: defaultOption
+	 completion:^(BOOL didFinish, NSError *anError) {
+		 
+		 if (didFinish) {
+			 
+			 if (successBlock)
+				 successBlock();
+			 
+		 } else {
+			 
+			 if (failureBlock)
+				 failureBlock(anError);
+			 
+		 }
+		 
+	 }];
 	
 }
 
