@@ -232,7 +232,29 @@
 				
 			}];
 		
-		} copy]];
+		} copy],
+					
+		[^ {
+			
+			if (!wSelf.userToken || !wSelf.apiKey || !wSelf.primaryGroupIdentifier)
+				return;
+			
+			[wSelf beginPerformingAutomaticRemoteUpdates];
+			[wSelf beginPostponingDataRetrievalTimerFiring];
+			
+			[[WADataStore defaultStore]
+			 updateCollectionsOnSuccess:^{
+				 [wSelf endPerformingAutomaticRemoteUpdates];
+				 [wSelf endPostponingDataRetrievalTimerFiring];
+				 
+			} onFailure:^(NSError *error) {
+				[wSelf endPerformingAutomaticRemoteUpdates];
+				[wSelf endPostponingDataRetrievalTimerFiring];
+				
+			}];
+			
+		} copy]
+	];
 
 }
 

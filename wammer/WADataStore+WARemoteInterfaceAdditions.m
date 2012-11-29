@@ -335,6 +335,40 @@ NSString * const kWADataStoreArticleUpdateShowsBezels = @"WADataStoreArticleUpda
 
 }
 
+- (void) updateCollectionsOnSuccess: (void (^)(void))successBlock
+													onFailure: (void (^)(NSError *))failureBlock {
+	
+	WARemoteInterface *remoteInterface = [WARemoteInterface sharedInterface];
+	
+	__weak WADataStore *weakSelf = self;
+
+	[remoteInterface.engine
+	 fireAPIRequestNamed:@"collections/getAll"
+	 withArguments:nil
+	 options:nil
+	 validator:WARemoteInterfaceGenericNoErrorValidator()
+	 successHandler:^(NSDictionary *response, IRWebAPIRequestContext *context) {
+		 NSManagedObjectContext *moc = [weakSelf autoUpdatingMOC];
+		 moc.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
+		 NSArray *collections = [WACollection
+			insertOrUpdateObjectsUsingContext:moc
+			withRemoteResponse:[response objectForKey:@"collections"]
+			usingMapping:nil
+			options:IRManagedObjectOptionIndividualOperations
+			];
+		 		 
+		 NSError *error;
+		 [moc save:&error];
+		 if (error) 
+			 NSLog(@"Error on saving collection: %@", error);
+		 
+		 successBlock();
+		 
+	 }
+	 failureHandler:WARemoteInterfaceGenericFailureHandler(failureBlock)
+	 ];
+}
+
 @end
 
 
