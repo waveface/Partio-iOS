@@ -139,7 +139,7 @@ NSString * const kWADataStoreArticleUpdateShowsBezels = @"WADataStoreArticleUpda
 
 	NSParameterAssert([NSThread isMainThread]);
 	
-	BOOL usesBezels = [[options objectForKey:kWADataStoreArticleUpdateShowsBezels] isEqual:(id)kCFBooleanTrue];
+	BOOL usesBezels = [options[kWADataStoreArticleUpdateShowsBezels] isEqual:(id)kCFBooleanTrue];
 	
 	__weak WADataStore *wSelf = self;
 	
@@ -238,7 +238,7 @@ NSString * const kWADataStoreArticleUpdateShowsBezels = @"WADataStoreArticleUpda
 			NSManagedObjectContext *context = [self disposableMOC];
 			context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
 			
-			[WAArticle insertOrUpdateObjectsUsingContext:context withRemoteResponse:[NSArray arrayWithObject:updatedPostRep] usingMapping:nil options:IRManagedObjectOptionIndividualOperations];
+			[WAArticle insertOrUpdateObjectsUsingContext:context withRemoteResponse:@[updatedPostRep] usingMapping:nil options:IRManagedObjectOptionIndividualOperations];
 			
 			NSError *savingError = nil;
 			if (![context save:&savingError])
@@ -287,7 +287,7 @@ NSString * const kWADataStoreArticleUpdateShowsBezels = @"WADataStoreArticleUpda
 				
 			}
 			
-			NSArray *touchedUsers = [WAUser insertOrUpdateObjectsUsingContext:context withRemoteResponse:[NSArray arrayWithObject:userRep] usingMapping:nil options:0];
+			NSArray *touchedUsers = [WAUser insertOrUpdateObjectsUsingContext:context withRemoteResponse:@[userRep] usingMapping:nil options:0];
 			
 			NSCParameterAssert([touchedUsers count] == 1);
 //			NSCParameterAssert([touchedUsers containsObject:user]);

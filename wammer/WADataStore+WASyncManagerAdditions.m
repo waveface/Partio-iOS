@@ -12,7 +12,7 @@
 
 - (NSFetchRequest *) fetchRequestForFilesWithSyncableBlobsInContext:(NSManagedObjectContext *)context {
 
-	return [context.persistentStoreCoordinator.managedObjectModel fetchRequestFromTemplateWithName:@"WAFRFilesWithSyncableBlobs" substitutionVariables:[NSDictionary dictionary]];
+	return [context.persistentStoreCoordinator.managedObjectModel fetchRequestFromTemplateWithName:@"WAFRFilesWithSyncableBlobs" substitutionVariables:@{}];
 
 }
 
@@ -25,9 +25,7 @@
 	
 	NSFetchRequest *fr = [self fetchRequestForFilesWithSyncableBlobsInContext:context];
 	
-	fr.sortDescriptors = [NSArray arrayWithObjects:
-		[NSSortDescriptor sortDescriptorWithKey:@"timestamp" ascending:NO],
-	nil];
+	fr.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"timestamp" ascending:NO]];
 	
 	NSArray *files = [context executeFetchRequest:fr error:nil];
 	
@@ -56,7 +54,7 @@
 
 - (NSFetchRequest *) fetchRequestForDirtyArticlesInContext:(NSManagedObjectContext *)context {
 
-	return [context.persistentStoreCoordinator.managedObjectModel fetchRequestFromTemplateWithName:@"WAFRArticlesNeedingSync" substitutionVariables:[NSDictionary dictionary]];
+	return [context.persistentStoreCoordinator.managedObjectModel fetchRequestFromTemplateWithName:@"WAFRArticlesNeedingSync" substitutionVariables:@{}];
 
 }
 
@@ -69,9 +67,7 @@
 	
 	NSFetchRequest *fr = [self fetchRequestForDirtyArticlesInContext:context];
 	
-	fr.sortDescriptors = [NSArray arrayWithObjects:
-		[NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:NO],
-	nil];
+	fr.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:NO]];
 	
 	NSArray *articles = [context executeFetchRequest:fr error:nil];
 	
