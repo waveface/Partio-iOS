@@ -31,8 +31,11 @@
 		13A9B111163F8A4D00537835 /* WAFirstUseWelcomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 13A9B110163F8A4D00537835 /* WAFirstUseWelcomeViewController.m */; };
 		13AA17951664B1F6006ED7B2 /* WAImportSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 13AA17941664B1F6006ED7B2 /* WAImportSettingsViewController.m */; };
 		13B6DB9D161573FF00B9CC35 /* WAFileExif.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B6DB9C161573FF00B9CC35 /* WAFileExif.m */; };
+		13BAB307166725B600BC79B2 /* WAOAuthViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 13BAB306166725B600BC79B2 /* WAOAuthViewController.m */; };
+		13BAB30B16674C0300BC79B2 /* WAOAuthSwitch.m in Sources */ = {isa = PBXBuildFile; fileRef = 13BAB30A16674C0300BC79B2 /* WAOAuthSwitch.m */; };
 		13BFC39B164A40DE00FC39A4 /* WAFirstUseEmailLoginFooterView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 13BFC39A164A40DE00FC39A4 /* WAFirstUseEmailLoginFooterView.xib */; };
 		13BFC39D164A40E600FC39A4 /* WAFirstUseFacebookLoginView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 13BFC39C164A40E600FC39A4 /* WAFirstUseFacebookLoginView.xib */; };
+		13C1AB1D16688BEA004E6437 /* WAGoogleConnectSwitch.m in Sources */ = {isa = PBXBuildFile; fileRef = 13C1AB1C16688BEA004E6437 /* WAGoogleConnectSwitch.m */; };
 		13C30CDD1640DCB0000A8414 /* WAFirstUseChoosePlanViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 13C30CDC1640DCB0000A8414 /* WAFirstUseChoosePlanViewController.m */; };
 		13DE12EB1637F30A00757F7C /* WAFirstUseDoneViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 13DE12E71637F30A00757F7C /* WAFirstUseDoneViewController.m */; };
 		13DE12EC1637F30A00757F7C /* WAFirstUseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 13DE12E91637F30A00757F7C /* WAFirstUseViewController.m */; };
@@ -1020,8 +1023,14 @@
 		13AA17941664B1F6006ED7B2 /* WAImportSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAImportSettingsViewController.m; sourceTree = "<group>"; };
 		13B6DB9B161573FF00B9CC35 /* WAFileExif.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAFileExif.h; sourceTree = "<group>"; };
 		13B6DB9C161573FF00B9CC35 /* WAFileExif.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAFileExif.m; sourceTree = "<group>"; };
+		13BAB305166725B600BC79B2 /* WAOAuthViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAOAuthViewController.h; sourceTree = "<group>"; };
+		13BAB306166725B600BC79B2 /* WAOAuthViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAOAuthViewController.m; sourceTree = "<group>"; };
+		13BAB30916674C0300BC79B2 /* WAOAuthSwitch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WAOAuthSwitch.h; path = wammer/WAOAuthSwitch.h; sourceTree = "<group>"; };
+		13BAB30A16674C0300BC79B2 /* WAOAuthSwitch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WAOAuthSwitch.m; path = wammer/WAOAuthSwitch.m; sourceTree = "<group>"; };
 		13BFC39A164A40DE00FC39A4 /* WAFirstUseEmailLoginFooterView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = WAFirstUseEmailLoginFooterView.xib; path = wammer/WAFirstUseEmailLoginFooterView.xib; sourceTree = "<group>"; };
 		13BFC39C164A40E600FC39A4 /* WAFirstUseFacebookLoginView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = WAFirstUseFacebookLoginView.xib; path = wammer/WAFirstUseFacebookLoginView.xib; sourceTree = "<group>"; };
+		13C1AB1B16688BEA004E6437 /* WAGoogleConnectSwitch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WAGoogleConnectSwitch.h; path = wammer/WAGoogleConnectSwitch.h; sourceTree = "<group>"; };
+		13C1AB1C16688BEA004E6437 /* WAGoogleConnectSwitch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WAGoogleConnectSwitch.m; path = wammer/WAGoogleConnectSwitch.m; sourceTree = "<group>"; };
 		13C30CDB1640DCB0000A8414 /* WAFirstUseChoosePlanViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WAFirstUseChoosePlanViewController.h; path = wammer/WAFirstUseChoosePlanViewController.h; sourceTree = "<group>"; };
 		13C30CDC1640DCB0000A8414 /* WAFirstUseChoosePlanViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WAFirstUseChoosePlanViewController.m; path = wammer/WAFirstUseChoosePlanViewController.m; sourceTree = "<group>"; };
 		13DE12E61637F30A00757F7C /* WAFirstUseDoneViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WAFirstUseDoneViewController.h; path = wammer/WAFirstUseDoneViewController.h; sourceTree = "<group>"; };
@@ -2054,6 +2063,17 @@
 			name = FileExif;
 			sourceTree = "<group>";
 		};
+		13BAB30816674BDE00BC79B2 /* OAuth */ = {
+			isa = PBXGroup;
+			children = (
+				13BAB30916674C0300BC79B2 /* WAOAuthSwitch.h */,
+				13BAB30A16674C0300BC79B2 /* WAOAuthSwitch.m */,
+				13C1AB1B16688BEA004E6437 /* WAGoogleConnectSwitch.h */,
+				13C1AB1C16688BEA004E6437 /* WAGoogleConnectSwitch.m */,
+			);
+			name = OAuth;
+			sourceTree = "<group>";
+		};
 		13DE12E41637F2D100757F7C /* First Use */ = {
 			isa = PBXGroup;
 			children = (
@@ -2666,6 +2686,7 @@
 				FFC62019149CF1930097C377 /* Environment */,
 				FF946020152D7EDD0034D540 /* Appearance */,
 				FFBBA42615AD5D4900E95C66 /* Facebook */,
+				13BAB30816674BDE00BC79B2 /* OAuth */,
 				FF890CAB1416297C00CD7D1F /* Authentication */,
 				FF6BD00A15AFBE640046AAC8 /* Tutorial */,
 				13DE12E41637F2D100757F7C /* First Use */,
@@ -3444,6 +3465,8 @@
 				13AA17941664B1F6006ED7B2 /* WAImportSettingsViewController.m */,
 				139C87A41665B75D00F258C9 /* WAWebServiceSettingsViewController.h */,
 				139C87A51665B75D00F258C9 /* WAWebServiceSettingsViewController.m */,
+				13BAB305166725B600BC79B2 /* WAOAuthViewController.h */,
+				13BAB306166725B600BC79B2 /* WAOAuthViewController.m */,
 			);
 			name = "User Info";
 			path = wammer;
@@ -4581,6 +4604,9 @@
 				7D5999C11665F8410050DEA9 /* WACollection.m in Sources */,
 				13AA17951664B1F6006ED7B2 /* WAImportSettingsViewController.m in Sources */,
 				139C87A61665B75D00F258C9 /* WAWebServiceSettingsViewController.m in Sources */,
+				13BAB307166725B600BC79B2 /* WAOAuthViewController.m in Sources */,
+				13BAB30B16674C0300BC79B2 /* WAOAuthSwitch.m in Sources */,
+				13C1AB1D16688BEA004E6437 /* WAGoogleConnectSwitch.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -6,6 +6,8 @@
 	<string>https://develop.waveface.com/v2/</string>
 	<key>WARemoteEndpointCurrentVersion</key>
 	<integer>2</integer>
+	<key>WARemoteEndpointWebURL</key>
+	<string>https://devweb.waveface.com/</string>
 	<key>WAAdvancedFeaturesEnabled</key>
 	<false/>
 	<key>WAUserRegistrationUsesWebVersion</key>

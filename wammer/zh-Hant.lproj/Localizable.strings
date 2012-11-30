@@ -23,6 +23,9 @@
 /* Short action title for connecting Facebook creds */
 "ACTION_CONNECT_FACEBOOK_SHORT" = "同步";
 
+/* Short action title for connecting Google */
+"ACTION_CONNECT_GOOGLE_SHORT" = "同步";
+
 /* Action deleting an article
    Title for deleting an article from the Overview
    Title for deleting an article from the Timeline */
@@ -33,6 +36,9 @@
 
 /* Short action title for disconnecting Facebook creds */
 "ACTION_DISCONNECT_FACEBOOK" = "停止";
+
+/* Short action title for disconnecting Google */
+"ACTION_DISCONNECT_GOOGLE" = "停止";
 
 /* In iPad composition view */
 "ACTION_DONE" = "完成";
@@ -233,6 +239,24 @@
 
 /* Free plan details in plans page */
 "FREE_PLAN_DESCRIPTION" = "將所有原始檔案存放在你的一台 PC 裡。";
+
+/* Title for an alert view to show Google connection failure */
+"GOOGLE_CONNECT_FAIL_TITLE" = "無法同步Google";
+
+/* Message for alert view asking if user wants to connect her Google account */
+"GOOGLE_CONNECT_REQUEST_MESSAGE" = "啟動之後，Stream將會開始同步您在Google上的新貼文。";
+
+/* Title for alert view asking if user wants to connect her Google account */
+"GOOGLE_CONNECT_REQUEST_TITLE" = "確認同步Google";
+
+/* Title for an alert view to show Google disconnection failure */
+"GOOGLE_DISCONNECT_FAIL_TITLE" = "無法停止同步";
+
+/* Message for alert view asking if user wants to disconnect her Google account */
+"GOOGLE_DISCONNECT_REQUEST_MESSAGE" = "確認取消後，Stream將會停止同步您在Google上的新貼文。";
+
+/* Title for alert view asking if user wants to disconnect her Google account */
+"GOOGLE_DISCONNECT_REQUEST_TITLE" = "確認取消Google同步";
 
 /* No comment provided by engineer. */
 "HOUR_PLURAL" = "%d小時";
