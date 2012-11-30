@@ -264,7 +264,7 @@
 }
 
 - (WAEventHeaderView *) headerView {
-	
+
 	if (_headerView)
 		return _headerView;
 

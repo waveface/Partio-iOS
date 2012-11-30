@@ -147,6 +147,7 @@
 		
 		UIImage *defaultAvatar = [UIImage imageNamed:@"TempAvatar"];
 		_userCell.imageView.bounds = CGRectMake(0, 0, defaultAvatar.size.width, defaultAvatar.size.height);
+		_userCell.imageView.frame = _userCell.imageView.bounds;
 		_userCell.imageView.layer.cornerRadius = 5.0f;
 		_userCell.imageView.clipsToBounds = YES;
 		_userCell.imageView.image = ([newValue isKindOfClass:[NSNull class]])? defaultAvatar: (UIImage *)newValue;

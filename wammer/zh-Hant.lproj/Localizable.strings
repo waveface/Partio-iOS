@@ -109,6 +109,15 @@
 /* Unknown Error */
 "AUTH_UNKNOWN_ERROR" = "未知錯誤";
 
+/* Cancel button in calendar picker */
+"CALENDAR_CANCEL_BUTTON" = "取消";
+
+/* Description for no event day in calendar */
+"CALENDAR_NO_EVENT" = "沒有動態";
+
+/* Today button in calendar picker */
+"CALENDAR_TODAY_BUTTON" = "今天";
+
 /* Prompt for Cover Image picker */
 "CHANGE_REPRESENTING_FILE_PROMPT" = "選擇喜歡的相片作為封面。";
 
@@ -153,9 +162,6 @@
 
 /* Title for confirming a post deletion */
 "DELETE_POST_CONFIRMATION_TITLE" = "是否要刪除貼文？";
-
-/* No comment provided by engineer. */
-"DONE" = "DONE";
 
 /* Downloading Status on iPhone Timeline */
 "DOWNLOADING_PHOTOS" = "內容同步中...";

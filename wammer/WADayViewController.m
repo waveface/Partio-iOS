@@ -15,8 +15,7 @@
 
 #import "WADataStore+FetchingConveniences.h"
 #import "IRTableView.h"
-//#import "WADatePickerViewController.h"
-#import "WACalendarPickerByTypeViewController.h"
+#import "WACalendarPickerViewController.h"
 #import "WADripdownMenuViewController.h"
 #import "WAArticleDraftsViewController.h"
 #import "WANavigationController.h"
@@ -26,6 +25,7 @@
 #import "WARemoteInterface.h"
 #import "WAPhotoStreamViewController.h"
 #import <CoreData+MagicalRecord.h>
+#import "WACalendarPickerDataSource.h"
 
 static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPostsViewControllerPhone_RepresentedObjectURI";
 
@@ -173,19 +173,6 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 
 
 #pragma mark - delegate methods for IRPaginatedView
-BOOL (^isSameDay) (NSDate *, NSDate *) = ^ (NSDate *d1, NSDate *d2) {
-	
-	NSCalendar* calendar = [NSCalendar currentCalendar];
-	unsigned unitFlags = NSYearCalendarUnit | NSMonthCalendarUnit |  NSDayCalendarUnit;
-	NSDateComponents* comp1 = [calendar components:unitFlags fromDate:d1];
-	NSDateComponents* comp2 = [calendar components:unitFlags fromDate:d2];
-	if ( [comp1 day] == [comp2 day] &&
-			[comp1 month] == [comp2 month] &&
-			[comp1 year]  == [comp2 year])
-		return YES;
-	return NO;
-	
-};
 
 -(void) viewDidLoad {
 	
@@ -505,8 +492,7 @@ BOOL (^isSameDay) (NSDate *, NSDate *) = ^ (NSDate *d1, NSDate *d2) {
 	[self.days enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
 		
 		NSDate *articleDate = (NSDate*)obj;
-		NSDate *selectedDate = [date dateByAddingTimeInterval:86399]; // add time interval to 23:59
-		NSComparisonResult result = [selectedDate compare:articleDate];
+		NSComparisonResult result = [date compare:articleDate];
 		if (result == NSOrderedSame || result == NSOrderedDescending) {
 			foundIdx = idx;
 			found = YES;
@@ -524,13 +510,11 @@ BOOL (^isSameDay) (NSDate *, NSDate *) = ^ (NSDate *d1, NSDate *d2) {
 }
 
 - (void) handleDateSelect:(UIBarButtonItem *)sender {
-	
-	NSManagedObjectContext *moc = [[WADataStore defaultStore] defaultAutoUpdatedMOC];
-
+		
 	__weak WADayViewController *wSelf = self;
 	
-	__block WACalendarPickerByTypeViewController *dpVC = [WACalendarPickerByTypeViewController controllerWithCompletion:^(NSDate *date) {
-	
+	__block WACalendarPickerViewController *dpVC = [WACalendarPickerViewController controllerWithCompletion:^(NSDate *date) {
+		
 		if (date) {
 			
 			[wSelf jumpToTimelineOnDate:date];
@@ -546,33 +530,20 @@ BOOL (^isSameDay) (NSDate *, NSDate *) = ^ (NSDate *d1, NSDate *d2) {
 		
 	}];
 	
-	NSFetchRequest *newestFr = [[WADataStore defaultStore] newFetchRequestForNewestArticle];
-	NSFetchRequest *oldestFr = [[WADataStore defaultStore] newFetchRequestForOldestArticle];
+	WACalendarPickerDataSource *ds = [[WACalendarPickerDataSource alloc] init];
+	ds.days = [self.days copy];
+	ds.events = [self.fetchedResultsController.fetchedObjects copy];
+	dpVC.dataSource = (id) ds;
+
+	UINavigationController *presentedViewController = self.navigationController;
 	
-	WAArticle *newestArticle = (WAArticle*)[[moc executeFetchRequest:newestFr error:nil] lastObject];
-	WAArticle *oldestArticle = (WAArticle*)[[moc executeFetchRequest:oldestFr error:nil] lastObject];
+	if (!presentedViewController)
+		presentedViewController = (UINavigationController *)self;
 	
-	if (oldestArticle == nil){ // empty timeline
-		return;
-	}
-	
-	NSDate *minDate = oldestArticle.modificationDate ? oldestArticle.modificationDate : oldestArticle.creationDate;
-	
-	NSDate *maxDate = newestArticle.modificationDate ? newestArticle.modificationDate : newestArticle.creationDate;
-	
-	NSCParameterAssert(minDate && maxDate);
-	dpVC.minDate = minDate;
-	dpVC.maxDate = maxDate;
-	
-	UIViewController *hostingVC = self.navigationController;
-	if (!hostingVC)
-		hostingVC = self;
-	
-	[hostingVC addChildViewController:dpVC];
-	
-	dpVC.view.frame = hostingVC.view.bounds;
-	[hostingVC.view addSubview:dpVC.view];
-	//[dpVC didMoveToParentViewController:hostingVC];
+	[presentedViewController addChildViewController:dpVC];
+	dpVC.view.frame = presentedViewController.view.bounds;
+	[presentedViewController.view addSubview:dpVC.view];
+	[dpVC didMoveToParentViewController:presentedViewController];
 	
 }
 

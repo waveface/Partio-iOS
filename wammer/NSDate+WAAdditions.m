@@ -71,4 +71,18 @@
 	
 }
 
+BOOL (^isSameDay) (NSDate *, NSDate *) = ^ (NSDate *d1, NSDate *d2) {
+	
+	NSCalendar* calendar = [NSCalendar currentCalendar];
+	unsigned unitFlags = NSYearCalendarUnit | NSMonthCalendarUnit |  NSDayCalendarUnit;
+	NSDateComponents* comp1 = [calendar components:unitFlags fromDate:d1];
+	NSDateComponents* comp2 = [calendar components:unitFlags fromDate:d2];
+	if ( [comp1 day] == [comp2 day] &&
+			[comp1 month] == [comp2 month] &&
+			[comp1 year]  == [comp2 year])
+		return YES;
+	return NO;
+	
+};
+
 @end

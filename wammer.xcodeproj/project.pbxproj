@@ -250,9 +250,10 @@
 		80F800F615C2624C00132A96 /* IRAQ-Checkmark.png in Resources */ = {isa = PBXBuildFile; fileRef = 80F800F415C2624C00132A96 /* IRAQ-Checkmark.png */; };
 		80F800F715C2624C00132A96 /* IRAQ-Checkmark@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 80F800F515C2624C00132A96 /* IRAQ-Checkmark@2x.png */; };
 		94EB57761411451780C24560 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D215E734098A44479DEC4F88 /* libPods.a */; };
-		DE46FC17165E228300CC4FFF /* WACalendarPickerByTypeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DE46FC16165E228300CC4FFF /* WACalendarPickerByTypeViewController.m */; };
+		DE46FC17165E228300CC4FFF /* WACalendarPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DE46FC16165E228300CC4FFF /* WACalendarPickerViewController.m */; };
 		DE7B35151654B7FC00718262 /* TempAvatar.png in Resources */ = {isa = PBXBuildFile; fileRef = DE7B35131654B7FC00718262 /* TempAvatar.png */; };
 		DE7B35161654B7FC00718262 /* TempAvatar@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DE7B35141654B7FC00718262 /* TempAvatar@2x.png */; };
+		DEBD4933165E7C7E008F96D3 /* libKal.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DEBD492F165E74A8008F96D3 /* libKal.a */; };
 		DEF13267164B83B50051284D /* CalIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = DEF13262164B83B50051284D /* CalIcon.png */; };
 		DEF13268164B83B50051284D /* CollectionIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = DEF13263164B83B50051284D /* CollectionIcon.png */; };
 		DEF13269164B83B50051284D /* EventsIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = DEF13264164B83B50051284D /* EventsIcon.png */; };
@@ -263,6 +264,15 @@
 		DEF13273164B83CE0051284D /* EventsIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DEF1326E164B83CE0051284D /* EventsIcon@2x.png */; };
 		DEF13274164B83CE0051284D /* PhotosIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DEF1326F164B83CE0051284D /* PhotosIcon@2x.png */; };
 		DEF13275164B83CE0051284D /* SettingsIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DEF13270164B83CE0051284D /* SettingsIcon@2x.png */; };
+		DEF28871165F6A0D0078B1D7 /* WACalendarPickerDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = DEF28870165F6A0D0078B1D7 /* WACalendarPickerDataSource.m */; };
+		DEF2887A1664653F0078B1D7 /* CalBtn.png in Resources */ = {isa = PBXBuildFile; fileRef = DEF288721664653D0078B1D7 /* CalBtn.png */; };
+		DEF2887B1664653F0078B1D7 /* CalBtn@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DEF288731664653D0078B1D7 /* CalBtn@2x.png */; };
+		DEF2887C1664653F0078B1D7 /* CalBtnPress.png in Resources */ = {isa = PBXBuildFile; fileRef = DEF288741664653D0078B1D7 /* CalBtnPress.png */; };
+		DEF2887D1664653F0078B1D7 /* CalBtnPress@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DEF288751664653D0078B1D7 /* CalBtnPress@2x.png */; };
+		DEF2887E1664653F0078B1D7 /* leftAR.png in Resources */ = {isa = PBXBuildFile; fileRef = DEF288761664653E0078B1D7 /* leftAR.png */; };
+		DEF2887F1664653F0078B1D7 /* leftAR@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DEF288771664653E0078B1D7 /* leftAR@2x.png */; };
+		DEF288801664653F0078B1D7 /* rightAR.png in Resources */ = {isa = PBXBuildFile; fileRef = DEF288781664653F0078B1D7 /* rightAR.png */; };
+		DEF288811664653F0078B1D7 /* rightAR@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DEF288791664653F0078B1D7 /* rightAR@2x.png */; };
 		FF0024FF14B44D5400F54AAF /* WASyncManager.m in Sources */ = {isa = PBXBuildFile; fileRef = FF0024FE14B44D5400F54AAF /* WASyncManager.m */; };
 		FF01135715B6522F0058C6ED /* WAWelcomeViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = FF01135615B6522F0058C6ED /* WAWelcomeViewController~ipad.xib */; };
 		FF0505EF14C08900002EA455 /* WAButton.m in Sources */ = {isa = PBXBuildFile; fileRef = FF0505EE14C088FF002EA455 /* WAButton.m */; };
@@ -778,6 +788,20 @@
 			remoteGlobalIDString = D2AAC07E0554694100DB518D;
 			remoteInfo = AQGridView;
 		};
+		DEBD492E165E74A8008F96D3 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = DEBD4927165E74A7008F96D3 /* Kal.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D2AAC07E0554694100DB518D;
+			remoteInfo = Kal;
+		};
+		DEBD4931165E7C4A008F96D3 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = DEBD4927165E74A7008F96D3 /* Kal.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = D2AAC07D0554694100DB518D;
+			remoteInfo = Kal;
+		};
 		FF09C0DE15A2DD6F00AEDDAE /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = FF09C0D715A2DD6F00AEDDAE /* IRSlidingSplitViewController.xcodeproj */;
@@ -1268,10 +1292,11 @@
 		80F800F415C2624C00132A96 /* IRAQ-Checkmark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "IRAQ-Checkmark.png"; sourceTree = "<group>"; };
 		80F800F515C2624C00132A96 /* IRAQ-Checkmark@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "IRAQ-Checkmark@2x.png"; sourceTree = "<group>"; };
 		D215E734098A44479DEC4F88 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		DE46FC15165E228300CC4FFF /* WACalendarPickerByTypeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WACalendarPickerByTypeViewController.h; path = wammer/WACalendarPickerByTypeViewController.h; sourceTree = "<group>"; };
-		DE46FC16165E228300CC4FFF /* WACalendarPickerByTypeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WACalendarPickerByTypeViewController.m; path = wammer/WACalendarPickerByTypeViewController.m; sourceTree = "<group>"; };
+		DE46FC15165E228300CC4FFF /* WACalendarPickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WACalendarPickerViewController.h; path = wammer/WACalendarPickerViewController.h; sourceTree = "<group>"; };
+		DE46FC16165E228300CC4FFF /* WACalendarPickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WACalendarPickerViewController.m; path = wammer/WACalendarPickerViewController.m; sourceTree = "<group>"; };
 		DE7B35131654B7FC00718262 /* TempAvatar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = TempAvatar.png; path = Resources/TempAvatar.png; sourceTree = "<group>"; };
 		DE7B35141654B7FC00718262 /* TempAvatar@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "TempAvatar@2x.png"; path = "Resources/TempAvatar@2x.png"; sourceTree = "<group>"; };
+		DEBD4927165E74A7008F96D3 /* Kal.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Kal.xcodeproj; path = external/Kal/src/Kal.xcodeproj; sourceTree = "<group>"; };
 		DEF13262164B83B50051284D /* CalIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = CalIcon.png; path = Resources/CalIcon.png; sourceTree = "<group>"; };
 		DEF13263164B83B50051284D /* CollectionIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = CollectionIcon.png; path = Resources/CollectionIcon.png; sourceTree = "<group>"; };
 		DEF13264164B83B50051284D /* EventsIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = EventsIcon.png; path = Resources/EventsIcon.png; sourceTree = "<group>"; };
@@ -1282,6 +1307,16 @@
 		DEF1326E164B83CE0051284D /* EventsIcon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "EventsIcon@2x.png"; path = "Resources/EventsIcon@2x.png"; sourceTree = "<group>"; };
 		DEF1326F164B83CE0051284D /* PhotosIcon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "PhotosIcon@2x.png"; path = "Resources/PhotosIcon@2x.png"; sourceTree = "<group>"; };
 		DEF13270164B83CE0051284D /* SettingsIcon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "SettingsIcon@2x.png"; path = "Resources/SettingsIcon@2x.png"; sourceTree = "<group>"; };
+		DEF2886F165F6A0D0078B1D7 /* WACalendarPickerDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WACalendarPickerDataSource.h; path = wammer/WACalendarPickerDataSource.h; sourceTree = "<group>"; };
+		DEF28870165F6A0D0078B1D7 /* WACalendarPickerDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WACalendarPickerDataSource.m; path = wammer/WACalendarPickerDataSource.m; sourceTree = "<group>"; };
+		DEF288721664653D0078B1D7 /* CalBtn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = CalBtn.png; path = Resources/CalBtn.png; sourceTree = "<group>"; };
+		DEF288731664653D0078B1D7 /* CalBtn@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "CalBtn@2x.png"; path = "Resources/CalBtn@2x.png"; sourceTree = "<group>"; };
+		DEF288741664653D0078B1D7 /* CalBtnPress.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = CalBtnPress.png; path = Resources/CalBtnPress.png; sourceTree = "<group>"; };
+		DEF288751664653D0078B1D7 /* CalBtnPress@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "CalBtnPress@2x.png"; path = "Resources/CalBtnPress@2x.png"; sourceTree = "<group>"; };
+		DEF288761664653E0078B1D7 /* leftAR.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = leftAR.png; path = Resources/leftAR.png; sourceTree = "<group>"; };
+		DEF288771664653E0078B1D7 /* leftAR@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "leftAR@2x.png"; path = "Resources/leftAR@2x.png"; sourceTree = "<group>"; };
+		DEF288781664653F0078B1D7 /* rightAR.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = rightAR.png; path = Resources/rightAR.png; sourceTree = "<group>"; };
+		DEF288791664653F0078B1D7 /* rightAR@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "rightAR@2x.png"; path = "Resources/rightAR@2x.png"; sourceTree = "<group>"; };
 		FF0024FD14B44D5400F54AAF /* WASyncManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WASyncManager.h; sourceTree = "<group>"; };
 		FF0024FE14B44D5400F54AAF /* WASyncManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WASyncManager.m; sourceTree = "<group>"; };
 		FF01135615B6522F0058C6ED /* WAWelcomeViewController~ipad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "WAWelcomeViewController~ipad.xib"; sourceTree = "<group>"; };
@@ -1956,6 +1991,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DEBD4933165E7C7E008F96D3 /* libKal.a in Frameworks */,
 				80A115681647CC0B005A4246 /* MapKit.framework in Frameworks */,
 				7D857D54164250B80092CF5F /* libAQGridView.a in Frameworks */,
 				7DC3AC1216422070009A8EA7 /* libSocketRocket.a in Frameworks */,
@@ -2302,10 +2338,20 @@
 		DE7B38A0165CBB9900718262 /* Calendar Picker */ = {
 			isa = PBXGroup;
 			children = (
-				DE46FC15165E228300CC4FFF /* WACalendarPickerByTypeViewController.h */,
-				DE46FC16165E228300CC4FFF /* WACalendarPickerByTypeViewController.m */,
+				DE46FC15165E228300CC4FFF /* WACalendarPickerViewController.h */,
+				DE46FC16165E228300CC4FFF /* WACalendarPickerViewController.m */,
+				DEF2886F165F6A0D0078B1D7 /* WACalendarPickerDataSource.h */,
+				DEF28870165F6A0D0078B1D7 /* WACalendarPickerDataSource.m */,
 			);
 			name = "Calendar Picker";
+			sourceTree = "<group>";
+		};
+		DEBD4928165E74A7008F96D3 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				DEBD492F165E74A8008F96D3 /* libKal.a */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 		FF0024F914B44CC500F54AAF /* Blob Syncing */ = {
@@ -2358,7 +2404,6 @@
 				139E28FD15C2926700C8521A /* WALocalizedTextView.m */,
 				FFD5295515B94DCA008DA71B /* WALocalizedTextField.h */,
 				FFD5295615B94DCA008DA71B /* WALocalizedTextField.m */,
-				FF0505ED14C088FF002EA455 /* WAButton.h */,
 				FF0505EE14C088FF002EA455 /* WAButton.m */,
 				FF91960B14AB09C400352E4D /* WADimmingView.h */,
 				FF91960C14AB09C400352E4D /* WADimmingView.m */,
@@ -2370,6 +2415,7 @@
 				FF14885F14977E4500D8B0AD /* WATiledImageView.m */,
 				FF14886514978C5800D8B0AD /* WAAsyncImageView.h */,
 				FFA87D02143F01450074AAE4 /* WANavigationController.h */,
+				FF0505ED14C088FF002EA455 /* WAButton.h */,
 				FF14886614978C5800D8B0AD /* WAAsyncImageView.m */,
 				FFA87D03143F01450074AAE4 /* WANavigationController.m */,
 				FF5ACC20152D917E00F1DF3D /* WANavigationState.h */,
@@ -2692,6 +2738,7 @@
 		FF73A54113D6C2CC00D54EC6 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				DEBD4927165E74A7008F96D3 /* Kal.xcodeproj */,
 				80A115671647CC0A005A4246 /* MapKit.framework */,
 				4BAD7581164DED1700ADDE56 /* libsqlite3.dylib */,
 				D215E734098A44479DEC4F88 /* libPods.a */,
@@ -2971,6 +3018,14 @@
 		FFC2E04C13DD706600816EA1 /* iOS Resources */ = {
 			isa = PBXGroup;
 			children = (
+				DEF288721664653D0078B1D7 /* CalBtn.png */,
+				DEF288731664653D0078B1D7 /* CalBtn@2x.png */,
+				DEF288741664653D0078B1D7 /* CalBtnPress.png */,
+				DEF288751664653D0078B1D7 /* CalBtnPress@2x.png */,
+				DEF288761664653E0078B1D7 /* leftAR.png */,
+				DEF288771664653E0078B1D7 /* leftAR@2x.png */,
+				DEF288781664653F0078B1D7 /* rightAR.png */,
+				DEF288791664653F0078B1D7 /* rightAR@2x.png */,
 				8090AB231646AE79007E2AC0 /* action.png */,
 				8090AB241646AE79007E2AC0 /* action@2x.png */,
 				8090AB251646AE79007E2AC0 /* back.png */,
@@ -3530,6 +3585,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				DEBD4932165E7C4A008F96D3 /* PBXTargetDependency */,
 				FFD4F93B157E08460027BF3F /* PBXTargetDependency */,
 				FFB117C5147F8B34002094E5 /* PBXTargetDependency */,
 				FFB3C179145E9A6F00ED7A56 /* PBXTargetDependency */,
@@ -3601,6 +3657,10 @@
 					ProjectRef = FF73A59E13D6DC6A00D54EC6 /* IRWebAPIKit.xcodeproj */;
 				},
 				{
+					ProductGroup = DEBD4928165E74A7008F96D3 /* Products */;
+					ProjectRef = DEBD4927165E74A7008F96D3 /* Kal.xcodeproj */;
+				},
+				{
 					ProductGroup = 7D6470A01642218800DBDEA6 /* Products */;
 					ProjectRef = 7DC3AC0D1642203C009A8EA7 /* SocketRocket.xcodeproj */;
 				},
@@ -3666,6 +3726,13 @@
 			fileType = archive.ar;
 			path = libAQGridView.a;
 			remoteRef = 7D857D52164249DA0092CF5F /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		DEBD492F165E74A8008F96D3 /* libKal.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libKal.a;
+			remoteRef = DEBD492E165E74A8008F96D3 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		FF09C0DF15A2DD6F00AEDDAE /* libIRSlidingSplitViewController.a */ = {
@@ -4136,6 +4203,14 @@
 				80B1CD0C164B8479009941E5 /* EventLinkIcon@2x.png in Resources */,
 				DE7B35151654B7FC00718262 /* TempAvatar.png in Resources */,
 				DE7B35161654B7FC00718262 /* TempAvatar@2x.png in Resources */,
+				DEF2887A1664653F0078B1D7 /* CalBtn.png in Resources */,
+				DEF2887B1664653F0078B1D7 /* CalBtn@2x.png in Resources */,
+				DEF2887C1664653F0078B1D7 /* CalBtnPress.png in Resources */,
+				DEF2887D1664653F0078B1D7 /* CalBtnPress@2x.png in Resources */,
+				DEF2887E1664653F0078B1D7 /* leftAR.png in Resources */,
+				DEF2887F1664653F0078B1D7 /* leftAR@2x.png in Resources */,
+				DEF288801664653F0078B1D7 /* rightAR.png in Resources */,
+				DEF288811664653F0078B1D7 /* rightAR@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4549,13 +4624,19 @@
 				133058DE1650ABE300C0283F /* WASyncManager+FileMetadataSync.m in Sources */,
 				4BD189FE1653DE4200908080 /* WAFile.m in Sources */,
 				131AEC2F1654DF0D000F9E74 /* WAStatusBar.m in Sources */,
-				DE46FC17165E228300CC4FFF /* WACalendarPickerByTypeViewController.m in Sources */,
+				DE46FC17165E228300CC4FFF /* WACalendarPickerViewController.m in Sources */,
+				DEF28871165F6A0D0078B1D7 /* WACalendarPickerDataSource.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		DEBD4932165E7C4A008F96D3 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = Kal;
+			targetProxy = DEBD4931165E7C4A008F96D3 /* PBXContainerItemProxy */;
+		};
 		FF09C0E215A2DD8700AEDDAE /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = IRSlidingSplitViewController;
@@ -4883,6 +4964,7 @@
 					"\"$(PROJECT_DIR)/external/WFPresentation/Bindings/Objective-C\"/**",
 					"\"$(PROJECT_DIR)/external/Facebook\"/**",
 					"\"$(PROJECT_DIR)/external/SocketRocket\"/**",
+					"\"$(PROJECT_DIR)/external/Kal\"/**",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				OTHER_CFLAGS = "-fno-objc-default-synthesize-properties";
@@ -5331,6 +5413,7 @@
 					"\"$(PROJECT_DIR)/external/WFPresentation/Bindings/Objective-C\"/**",
 					"\"$(PROJECT_DIR)/external/Facebook\"/**",
 					"\"$(PROJECT_DIR)/external/SocketRocket\"/**",
+					"\"$(PROJECT_DIR)/external/Kal\"/**",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				OTHER_CFLAGS = "-fno-objc-default-synthesize-properties";
@@ -5387,6 +5470,7 @@
 					"\"$(PROJECT_DIR)/external/WFPresentation/Bindings/Objective-C\"/**",
 					"\"$(PROJECT_DIR)/external/Facebook\"/**",
 					"\"$(PROJECT_DIR)/external/SocketRocket\"/**",
+					"\"$(PROJECT_DIR)/external/Kal\"/**",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				OTHER_CFLAGS = "-fno-objc-default-synthesize-properties";

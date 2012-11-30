@@ -19,4 +19,6 @@
 - (NSString *) localizedWeekDayShortString;
 - (NSString *) localizedWeekDayFullString;
 
+extern BOOL (^isSameDay) (NSDate *, NSDate *);
+
 @end
