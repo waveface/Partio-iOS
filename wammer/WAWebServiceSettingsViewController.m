@@ -8,8 +8,15 @@
 
 #import "WAWebServiceSettingsViewController.h"
 #import "WAFacebookConnectionSwitch.h"
+#import "WAOAuthViewController.h"
+#import "WAGoogleConnectSwitch.h"
+
+static NSString * const kWASegueSettingsToOAuth = @"WASegueSettingsToOAuth";
 
 @interface WAWebServiceSettingsViewController ()
+
+@property (nonatomic, strong) NSURLRequest *sentRequest;
+@property (nonatomic, strong) WAOAuthDidComplete didCompleteBlock;
 
 @end
 
@@ -32,11 +39,28 @@
 	picasaSwitch.enabled = NO;
 	self.picasaConnectCell.accessoryView = picasaSwitch;
 
+	WAGoogleConnectSwitch *googleOAuthSwitch = [[WAGoogleConnectSwitch alloc] init];
+	googleOAuthSwitch.delegate = self;
+	self.googleConnectCell.accessoryView = googleOAuthSwitch;
+
 }
 
-- (void)didReceiveMemoryWarning {
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
 
-	[super didReceiveMemoryWarning];
+	WAOAuthViewController *vc = [segue destinationViewController];
+	vc.request = self.sentRequest;
+	vc.didCompleteBlock = self.didCompleteBlock;
+
+}
+
+#pragma mark - WAOAuthSwitch delegates
+
+- (void)openOAuthWebViewWithRequest:(NSURLRequest *)request completeBlock:(WAOAuthDidComplete)didCompleteBlock {
+
+	self.sentRequest = request;
+	self.didCompleteBlock = didCompleteBlock;
+
+	[self performSegueWithIdentifier:kWASegueSettingsToOAuth sender:nil];
 
 }
 

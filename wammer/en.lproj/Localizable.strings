@@ -23,6 +23,9 @@
 /* Short action title for connecting Facebook creds */
 "ACTION_CONNECT_FACEBOOK_SHORT" = "Start Importing";
 
+/* Short action title for connecting Google */
+"ACTION_CONNECT_GOOGLE_SHORT" = "Start Importing";
+
 /* Action deleting an article
    Title for deleting an article from the Overview
    Title for deleting an article from the Timeline */
@@ -33,6 +36,9 @@
 
 /* Short action title for disconnecting Facebook creds */
 "ACTION_DISCONNECT_FACEBOOK" = "Stop Importing";
+
+/* Short action title for disconnecting Google */
+"ACTION_DISCONNECT_GOOGLE" = "Stop Importing";
 
 /* In iPad composition view */
 "ACTION_DONE" = "Stream!";
@@ -212,7 +218,7 @@
 "FACEBOOK_DISCONNECT_REQUEST_MESSAGE" = "Stream will stop importing posts from your Facebook account";
 
 /* Title for alert view asking if user wants to disconnect her Facebook account */
-"FACEBOOK_DISCONNECT_REQUEST_TITLE" = "Confirm to stop importing";
+"FACEBOOK_DISCONNECT_REQUEST_TITLE" = "Confirm to stop importing from Facebook";
 
 /* Display title for a fetch request working against all the articles */
 "FETCH_REQUEST_ALL_ARTICLES_DISPLAY_TITLE" = "All (My Days)";
@@ -237,6 +243,24 @@
 
 /* Free plan details in plans page */
 "FREE_PLAN_DESCRIPTION" = "Save all original files to one PC";
+
+/* Title for an alert view to show Google connection failure */
+"GOOGLE_CONNECT_FAIL_TITLE" = "Unable to import from Google";
+
+/* Message for alert view asking if user wants to connect her Google account */
+"GOOGLE_CONNECT_REQUEST_MESSAGE" = "Stream will start importing posts from your Google account";
+
+/* Title for alert view asking if user wants to connect her Google account */
+"GOOGLE_CONNECT_REQUEST_TITLE" = "Confirm to import from Google";
+
+/* Title for an alert view to show Google disconnection failure */
+"GOOGLE_DISCONNECT_FAIL_TITLE" = "Unable to stop importing";
+
+/* Message for alert view asking if user wants to disconnect her Google account */
+"GOOGLE_DISCONNECT_REQUEST_MESSAGE" = "Stream will stop importing posts from your Google account";
+
+/* Title for alert view asking if user wants to disconnect her Google account */
+"GOOGLE_DISCONNECT_REQUEST_TITLE" = "Confirm to stop importing from Google";
 
 /* No comment provided by engineer. */
 "HOUR_PLURAL" = "%d hours";

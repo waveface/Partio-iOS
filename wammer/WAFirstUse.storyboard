@@ -385,7 +385,7 @@
                             </constraints>
                         </view>
                         <view key="tableFooterView" contentMode="scaleToFill" id="bfb-P8-MBP">
-                            <rect key="frame" x="0.0" y="244" width="320" height="90"/>
+                            <rect key="frame" x="0.0" y="288" width="320" height="90"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="CONNECT_SERVICES_DESCRIPTION" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="280" translatesAutoresizingMaskIntoConstraints="NO" id="GEd-xe-bMT" customClass="WALocalizedLabel">
@@ -425,8 +425,24 @@
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         </view>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" textLabel="BCc-WX-0h1" style="IBUITableViewCellStyleDefault" id="HDW-Jb-BnY">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" textLabel="ndS-za-T9J" style="IBUITableViewCellStyleDefault" id="Suk-pP-6gT">
                                         <rect key="frame" x="0.0" y="101" width="320" height="44"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                                            <rect key="frame" x="10" y="0.0" width="300" height="43"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Google" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ndS-za-T9J">
+                                                    <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
+                                                    <color key="textColor" red="0.44705882349999998" green="0.43921568630000002" blue="0.43921568630000002" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <color key="highlightedColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                                </label>
+                                            </subviews>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        </view>
+                                    </tableViewCell>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" textLabel="BCc-WX-0h1" style="IBUITableViewCellStyleDefault" id="HDW-Jb-BnY">
+                                        <rect key="frame" x="0.0" y="145" width="320" height="44"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                                             <rect key="frame" x="10" y="0.0" width="300" height="43"/>
@@ -442,7 +458,7 @@
                                         </view>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" textLabel="ufL-zC-xah" style="IBUITableViewCellStyleDefault" id="nrS-EN-0QK">
-                                        <rect key="frame" x="0.0" y="145" width="320" height="44"/>
+                                        <rect key="frame" x="0.0" y="189" width="320" height="44"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                                             <rect key="frame" x="10" y="0.0" width="300" height="43"/>
@@ -458,7 +474,7 @@
                                         </view>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" textLabel="qku-A1-WF9" style="IBUITableViewCellStyleDefault" id="M8L-Gm-izS">
-                                        <rect key="frame" x="0.0" y="189" width="320" height="45"/>
+                                        <rect key="frame" x="0.0" y="233" width="320" height="45"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                                             <rect key="frame" x="10" y="0.0" width="300" height="43"/>
@@ -486,14 +502,45 @@
                     <connections>
                         <outlet property="facebookConnectCell" destination="HN0-Dd-wTd" id="c9H-je-ln4"/>
                         <outlet property="flickrConnectCell" destination="nrS-EN-0QK" id="DAA-C5-HVM"/>
+                        <outlet property="googleConnectCell" destination="Suk-pP-6gT" id="EhF-Tl-x9C"/>
                         <outlet property="picasaConnectCell" destination="M8L-Gm-izS" id="V8X-iK-L9l"/>
                         <outlet property="twitterConnectCell" destination="HDW-Jb-BnY" id="nv6-2f-Zd0"/>
                         <segue destination="vd3-aZ-YWy" kind="push" identifier="WASegueConnectServicesToPhotoImport" id="Zwo-cb-NTz"/>
+                        <segue destination="SSD-xc-Icc" kind="push" identifier="WASegueConnectServicesToOAuth" id="EvV-28-WSr"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SqC-Zh-e1G" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2514" y="-667"/>
+        </scene>
+        <!--Auth View Controller-->
+        <scene sceneID="lrq-ag-IBW">
+            <objects>
+                <viewController id="SSD-xc-Icc" customClass="WAOAuthViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="EL0-vN-NLU">
+                        <rect key="frame" x="0.0" y="64" width="320" height="416"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <webView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rmu-F0-6u8">
+                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                            </webView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="rmu-F0-6u8" firstAttribute="bottom" secondItem="EL0-vN-NLU" secondAttribute="bottom" type="default" id="Ewk-ud-ZOi"/>
+                            <constraint firstItem="rmu-F0-6u8" firstAttribute="trailing" secondItem="EL0-vN-NLU" secondAttribute="trailing" type="default" id="SmJ-0e-Q8X"/>
+                            <constraint firstItem="rmu-F0-6u8" firstAttribute="leading" secondItem="EL0-vN-NLU" secondAttribute="leading" type="default" id="dGV-XM-6Z1"/>
+                            <constraint firstItem="rmu-F0-6u8" firstAttribute="top" secondItem="EL0-vN-NLU" secondAttribute="top" type="default" id="xRt-ao-HFN"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="3I4-OB-1Ky"/>
+                    <connections>
+                        <outlet property="webview" destination="rmu-F0-6u8" id="wWb-BG-83Q"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="FEd-mC-2dr" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3049" y="-667"/>
         </scene>
         <!--First Use Done View Controller - Almost Done-->
         <scene sceneID="vDz-VJ-hiS">
@@ -631,6 +678,84 @@
     <resources>
         <image name="FacebookLogo.png" width="33" height="33"/>
     </resources>
+    <classes>
+        <class className="NSLayoutConstraint" superclassName="NSObject">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/NSLayoutConstraint.h"/>
+        </class>
+        <class className="WAFirstUseConnectServicesViewController" superclassName="UITableViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/WAFirstUseConnectServicesViewController.h"/>
+            <relationships>
+                <relationship kind="outlet" name="facebookConnectCell" candidateClass="UITableViewCell"/>
+                <relationship kind="outlet" name="flickrConnectCell" candidateClass="UITableViewCell"/>
+                <relationship kind="outlet" name="googleConnectCell" candidateClass="UITableViewCell"/>
+                <relationship kind="outlet" name="picasaConnectCell" candidateClass="UITableViewCell"/>
+                <relationship kind="outlet" name="twitterConnectCell" candidateClass="UITableViewCell"/>
+            </relationships>
+        </class>
+        <class className="WAFirstUseDoneViewController" superclassName="UITableViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/WAFirstUseDoneViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="handleDone:"/>
+                <relationship kind="outlet" name="connectionCell" candidateClass="UITableViewCell"/>
+                <relationship kind="outlet" name="doneButton" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="photoUploadCell" candidateClass="UITableViewCell"/>
+            </relationships>
+        </class>
+        <class className="WAFirstUseIntroViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/WAFirstUseIntroViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="handleChangePage:"/>
+                <relationship kind="outlet" name="pageControl" candidateClass="UIPageControl"/>
+                <relationship kind="outlet" name="scrollView" candidateClass="UIScrollView"/>
+            </relationships>
+        </class>
+        <class className="WAFirstUseLogInViewController" superclassName="UITableViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/WAFirstUseLogInViewController.h"/>
+            <relationships>
+                <relationship kind="outlet" name="emailCell" candidateClass="UITableViewCell"/>
+                <relationship kind="outlet" name="passwordCell" candidateClass="UITableViewCell"/>
+            </relationships>
+        </class>
+        <class className="WAFirstUsePhotoImportViewController" superclassName="UITableViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/WAFirstUsePhotoImportViewController.h"/>
+            <relationships>
+                <relationship kind="outlet" name="photoImportSwitchCell" candidateClass="UITableViewCell"/>
+            </relationships>
+        </class>
+        <class className="WAFirstUseSignUpViewController" superclassName="UITableViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/WAFirstUseSignUpViewController.h"/>
+            <relationships>
+                <relationship kind="outlet" name="emailCell" candidateClass="UITableViewCell"/>
+                <relationship kind="outlet" name="nicknameCell" candidateClass="UITableViewCell"/>
+                <relationship kind="outlet" name="passwordCell" candidateClass="UITableViewCell"/>
+            </relationships>
+        </class>
+        <class className="WAFirstUseViewController" superclassName="UINavigationController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/WAFirstUseViewController.h"/>
+        </class>
+        <class className="WAFirstUseWelcomeViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/WAFirstUseWelcomeViewController.h"/>
+            <relationships>
+                <relationship kind="outlet" name="loginButton" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="signupButton" candidateClass="UIButton"/>
+            </relationships>
+        </class>
+        <class className="WALocalizedButton" superclassName="UIButton">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/WALocalizedButton.h"/>
+        </class>
+        <class className="WALocalizedLabel" superclassName="UILabel">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/WALocalizedLabel.h"/>
+        </class>
+        <class className="WALocalizedTableViewCell" superclassName="UITableViewCell">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/WALocalizedTableViewCell.h"/>
+        </class>
+        <class className="WAOAuthViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/WAOAuthViewController.h"/>
+            <relationships>
+                <relationship kind="outlet" name="webview" candidateClass="UIWebView"/>
+            </relationships>
+        </class>
+    </classes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>
