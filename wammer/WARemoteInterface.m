@@ -88,7 +88,7 @@
 			return (NSDictionary *)nil;
 		}
 		
-		return (NSDictionary *)([anObject isKindOfClass:[NSDictionary class]] ? anObject : [NSDictionary dictionaryWithObject:anObject forKey:@"response"]);
+		return (NSDictionary *)([anObject isKindOfClass:[NSDictionary class]] ? anObject : @{@"response": anObject});
 	
 	} copy];
 
@@ -126,21 +126,17 @@
 			UIDevice *device = [UIDevice currentDevice];
 			NSBundle *bundle = [NSBundle mainBundle];
 
-			deviceInfo = [[NSDictionary dictionaryWithObjectsAndKeys:
-				
-				@"iOS", @"deviceType",
-				device.name, @"deviceName",
-				device.model, @"deviceModel",
-				device.systemName, @"deviceSystemName",
-				device.systemVersion, @"deviceSystemVersion",
+			deviceInfo = [@{@"deviceType": @"iOS",
+				@"deviceName": device.name,
+				@"deviceModel": device.model,
+				@"deviceSystemName": device.systemName,
+				@"deviceSystemVersion": device.systemVersion,
 
-				[[bundle infoDictionary] objectForKey:(id)kCFBundleVersionKey], @"bundleVersion",
-				[[bundle infoDictionary] objectForKey:(id)kCFBundleNameKey], @"bundleName",
-				[[bundle infoDictionary] objectForKey:@"IRCommitSHA"], @"bundleCommit",
-
-			nil] JSONString];
+				@"bundleVersion": [bundle infoDictionary][(id)kCFBundleVersionKey],
+				@"bundleName": [bundle infoDictionary][(id)kCFBundleNameKey],
+				@"bundleCommit": [bundle infoDictionary][@"IRCommitSHA"]} JSONString];
 				
-			verString = [NSString stringWithFormat:@"%@.%@", [[bundle infoDictionary] objectForKey:@"CFBundleShortVersionString"], [[bundle infoDictionary] objectForKey:(id)kCFBundleVersionKey]];
+			verString = [NSString stringWithFormat:@"%@.%@", [bundle infoDictionary][@"CFBundleShortVersionString"], [bundle infoDictionary][(id)kCFBundleVersionKey]];
 
 		});
 	

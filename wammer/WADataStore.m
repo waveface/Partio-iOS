@@ -50,13 +50,13 @@ NSString * const kLastChangedPostsUpdateDate = @"WALastChangedPostsUpdateDate";
 	static NSString * const key = @"-[WADataStore threadLocalDateFormatter]";
 	NSMutableDictionary *dictionary = [[NSThread currentThread] threadDictionary];
 	
-	NSDateFormatter *df = [dictionary objectForKey:key];
+	NSDateFormatter *df = dictionary[key];
 	if (!df) {
 		df = [[NSDateFormatter alloc] init];
 		df.dateFormat = @"yyyy-MM-dd'T'HH:mm:ss'Z'";
 		df.locale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"];
 		df.timeZone = [NSTimeZone timeZoneForSecondsFromGMT:0];
-		[dictionary setObject:df forKey:key];
+		dictionary[key] = df;
 	}
 	
 	return df;
@@ -67,12 +67,12 @@ NSString * const kLastChangedPostsUpdateDate = @"WALastChangedPostsUpdateDate";
 	static NSString * const key = @"-[WADataStore threadTZDateFormatter]";
 	NSMutableDictionary *dictionary = [[NSThread currentThread] threadDictionary];
 	
-	NSDateFormatter *df = [dictionary objectForKey:key];
+	NSDateFormatter *df = dictionary[key];
 	if (!df) {
 		df = [[NSDateFormatter alloc] init];
 		df.dateFormat = @"yyyy-MM-dd'T'HH:mm:ss.SSSSZ";
 		df.locale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"];
-		[dictionary setObject:df forKey:key];
+		dictionary[key] = df;
 	}
 	
 	return df;
@@ -106,7 +106,7 @@ NSString * const kLastChangedPostsUpdateDate = @"WALastChangedPostsUpdateDate";
 - (WAUser *) mainUserInContext:(NSManagedObjectContext *)context {
 
 	NSDictionary *metadata = [self metadata];
-	NSString *userEntityURIString = [metadata objectForKey:kMainUserEntityURIString];
+	NSString *userEntityURIString = metadata[kMainUserEntityURIString];
 	NSURL *userEntityURI = [NSURL URLWithString:userEntityURIString];
 	
 	if (!userEntityURI)
