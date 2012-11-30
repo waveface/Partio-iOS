@@ -238,7 +238,7 @@ void (^displayAlert)(NSString *, NSString *) = ^(NSString *title, NSString *msg)
 #pragma mark - UICollectionViewFlowLayout delegate
 - (CGSize) collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
 	
-	return (CGSize){72, 72};
+	return (CGSize){100, 100};
 	
 }
 
