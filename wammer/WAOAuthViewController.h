@@ -12,7 +12,7 @@ typedef void(^WAOAuthDidComplete)(NSURL *resultURL);
 
 @interface WAOAuthViewController : UIViewController <UIWebViewDelegate>
 
-@property (weak, nonatomic) IBOutlet UIWebView *webview;
+@property (weak, nonatomic) IBOutlet UIWebView *webView;
 @property (nonatomic, strong) NSURLRequest *request;
 @property (nonatomic, strong) WAOAuthDidComplete didCompleteBlock;
 

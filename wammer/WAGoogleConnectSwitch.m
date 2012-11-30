@@ -31,7 +31,7 @@
 	NSString *cancelTitle = NSLocalizedString(@"ACTION_CANCEL", nil);
 	IRAction *cancelAction = [IRAction actionWithTitle:cancelTitle block:^{
 
-		[wSelf setOn:!wSelf.on animated:YES];
+		[wSelf setOn:NO animated:YES];
 		
 	}];
 	
@@ -58,7 +58,7 @@
 	NSString *cancelTitle = NSLocalizedString(@"ACTION_CANCEL", nil);
 	IRAction *cancelAction = [IRAction actionWithTitle:cancelTitle block:^{
 		
-		[wSelf setOn:!wSelf.on animated:YES];
+		[wSelf setOn:YES animated:YES];
 
 	}];
 	
@@ -106,7 +106,13 @@
 		if ([wSelf isSuccessURL:resultURL]) {
 			[wSelf setOn:YES animated:YES];
 		} else {
-			[[[IRAlertView alloc] initWithTitle:NSLocalizedString(@"GOOGLE_CONNECT_FAIL_TITLE", @"Title for an alert view to show Google connection failure") message:nil delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
+			IRAlertView *alert =
+			[[IRAlertView alloc] initWithTitle:NSLocalizedString(@"GOOGLE_CONNECT_FAIL_TITLE", @"Title for an alert view to show Google connection failure")
+																 message:nil
+																delegate:nil
+											 cancelButtonTitle:@"OK"
+											 otherButtonTitles:nil];
+			[alert show];
 			[wSelf setOn:NO animated:YES];
 		}
 	}];
@@ -141,7 +147,13 @@
 		if ([wSelf isSuccessURL:resultURL]) {
 			[wSelf setOn:NO animated:YES];
 		} else {
-			[[[IRAlertView alloc] initWithTitle:NSLocalizedString(@"GOOGLE_DISCONNECT_FAIL_TITLE", @"Title for an alert view to show Google disconnection failure") message:nil delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
+			IRAlertView *alert =
+			[[IRAlertView alloc] initWithTitle:NSLocalizedString(@"GOOGLE_DISCONNECT_FAIL_TITLE", @"Title for an alert view to show Google disconnection failure")
+																 message:nil
+																delegate:nil
+											 cancelButtonTitle:@"OK"
+											 otherButtonTitles:nil];
+			[alert show];
 			[wSelf setOn:YES animated:YES];
 		}
 	}];

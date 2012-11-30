@@ -495,7 +495,7 @@
                     </view>
                     <navigationItem key="navigationItem" id="jcc-YR-Ftr"/>
                     <connections>
-                        <outlet property="webview" destination="NeW-kz-pas" id="8jH-nV-kg7"/>
+                        <outlet property="webView" destination="NeW-kz-pas" id="gkz-GX-Ywj"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="79s-M8-UUK" userLabel="First Responder" sceneMemberID="firstResponder"/>

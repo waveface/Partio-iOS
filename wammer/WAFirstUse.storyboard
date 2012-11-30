@@ -535,7 +535,7 @@
                     </view>
                     <navigationItem key="navigationItem" id="3I4-OB-1Ky"/>
                     <connections>
-                        <outlet property="webview" destination="rmu-F0-6u8" id="wWb-BG-83Q"/>
+                        <outlet property="webView" destination="rmu-F0-6u8" id="yPN-ug-86R"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="FEd-mC-2dr" userLabel="First Responder" sceneMemberID="firstResponder"/>
