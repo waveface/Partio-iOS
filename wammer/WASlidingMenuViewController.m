@@ -9,9 +9,12 @@
 #import "WASlidingMenuViewController.h"
 #import "WAAppDelegate.h"
 #import "WADefines.h"
+#import "IRAction.h"
+#import "IRAlertView.h"
+#import "IRBarButtonItem.h"
+#import "WADayViewController.h"
 #import "WANavigationController.h"
-#import "WATimelineViewControllerPhone.h"
-#import "WATimelineViewControllerPad.h"
+#import "WATimelineViewController.h"
 #import "WAUserInfoViewController.h"
 #import "WAOverlayBezel.h"
 #import "WAPhotoImportManager.h"
@@ -93,7 +96,7 @@
 														 actionWithTitle:NSLocalizedString(@"ACTION_SIGN_OUT", nil)
 														 block: ^ {
 															 if ([wSelf.delegate respondsToSelector:@selector(applicationRootViewControllerDidRequestReauthentication:)])
-																 [wSelf.delegate applicationRootViewControllerDidRequestReauthentication:nil];
+																 [wSelf.delegate performSelector:@selector( applicationRootViewControllerDidRequestReauthentication: ) withObject:nil];
 														 }];
 	
 	userInfoVC.navigationItem.rightBarButtonItem = [IRBarButtonItem itemWithTitle:NSLocalizedString(@"ACTION_SIGN_OUT", nil) action:^{
@@ -366,14 +369,8 @@
 	switch (indexPath.row) {
 		case 1: {
 			[self.viewDeckController closeLeftView];
-			
-			id loadedClass = nil;
-			if (isPad())
-				loadedClass = [WATimelineViewControllerPad class];
-			else
-				loadedClass = [WATimelineViewControllerPhone class];
-			
-			WADayViewController *swVC = [[WADayViewController alloc] initWithClassNamed:loadedClass];
+						
+			WADayViewController *swVC = [[WADayViewController alloc] initWithClassNamed:[WATimelineViewController class]];
 			WANavigationController *navVC = [[WANavigationController alloc] initWithRootViewController:swVC];
 			self.viewDeckController.centerController = navVC;
 			break;

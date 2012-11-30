@@ -11,12 +11,14 @@
 #import "WAArticle.h"
 #import "WAEventHeaderView.h"
 
+typedef void (^completionHandler) (void);
+
 @interface WAEventViewController : UIViewController <NSFetchedResultsControllerDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout>
 
 @property (nonatomic, strong, readonly) WAEventHeaderView *headerView;
 
 @property (nonatomic, strong) WAArticle *article;
-@property (nonatomic, strong, readonly) NSFetchedResultsController *fetchedResultsController;
+@property (nonatomic, copy) completionHandler completion;
 @property (nonatomic, strong, readonly) UICollectionView *itemsView;
 
 + (WAEventViewController *) controllerForArticle:(WAArticle *)article;

@@ -10,7 +10,7 @@
 #import "WAArticle.h"
 #import "IRLabel.h"
 
-@interface WAPostViewCellPad : UICollectionViewCell
+@interface WATimelineViewCell : UICollectionViewCell
 
 @property (nonatomic, strong) WAArticle *representedArticle;
 @property (nonatomic, readwrite, strong) IBOutlet IRLabel *commentLabel;

@@ -42,7 +42,11 @@
 		editingModeVC.article = wSelf.article;
 
 		WANavigationController *navVC = [[WANavigationController alloc] initWithRootViewController:editingModeVC];
-		navVC.modalPresentationStyle = UIModalPresentationPageSheet;
+		if (isPad()) {
+			navVC.modalPresentationStyle = UIModalPresentationCurrentContext;
+			navVC.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+		} else
+			navVC.modalPresentationStyle = UIModalPresentationPageSheet;
 
 		[wSelf presentViewController:navVC animated:YES completion:nil];
 	});

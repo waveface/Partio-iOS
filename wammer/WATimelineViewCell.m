@@ -7,13 +7,13 @@
 //
 
 
-#import "WAPostViewCellPad.h"
+#import "WATimelineViewCell.h"
 #import "WAArticle+WAAdditions.h"
 #import "WAFile.h"
 #import "IRLabel.h"
 #import "WAEventViewController.h"
 
-@interface WAPostViewCellPad ()
+@interface WATimelineViewCell ()
 
 @property (strong, nonatomic) IBOutletCollection(UIImageView) NSArray *photoImageViews;
 @property (nonatomic, readwrite, strong) IBOutlet UILabel *timeLabel;
@@ -26,7 +26,7 @@
 
 @end
 
-@implementation WAPostViewCellPad
+@implementation WATimelineViewCell
 
 - (id)initWithFrame:(CGRect)frame
 {
