@@ -7,7 +7,7 @@
 //
 
 #import "WACollectionTests.h"
-#import "CoreData+MagicalRecord.h"
+#import <MagicalRecord/CoreData+MagicalRecord.h>
 #import "WACollection.h"
 #import "WAUser.h"
 #import "WAFile.h"
@@ -57,7 +57,7 @@
 								 @"Thumbnail URL persistent");
 }
 
-- (void)testGetCollection {
+- (void)testGetSingleCollection {
 	NSArray *collectionsRep = [self loadDataFile:@"GetCollections"];
 	STAssertNotNil(collectionsRep, @"need to be a vaild JSON");
 	

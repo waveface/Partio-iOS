@@ -98,10 +98,10 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 		return IRWebAPIKitStringValue(aValue);
 	
 	if ([aLocalKeyPath isEqualToString:@"favorite"])
-		return (![aValue isEqual:@"false"] && ![aValue isEqual:@"0"] && ![aValue isEqual:[NSNumber numberWithInt:0]]) ? (id)kCFBooleanTrue : (id)kCFBooleanFalse;
+		return (![aValue isEqual:@"false"] && ![aValue isEqual:@"0"] && ![aValue isEqual:@0]) ? (id)kCFBooleanTrue : (id)kCFBooleanFalse;
 	
 	if ([aLocalKeyPath isEqualToString:@"hidden"])
-		return (![aValue isEqual:@"false"] && ![aValue isEqual:@"0"] && ![aValue isEqual:[NSNumber numberWithInt:0]]) ? (id)kCFBooleanTrue : (id)kCFBooleanFalse;
+		return (![aValue isEqual:@"false"] && ![aValue isEqual:@"0"] && ![aValue isEqual:@0]) ? (id)kCFBooleanTrue : (id)kCFBooleanFalse;
 	
 	return [super transformedValue:aValue fromRemoteKeyPath:aRemoteKeyPath toLocalKeyPath:aLocalKeyPath];
 
@@ -109,20 +109,16 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 
 + (NSDictionary *) defaultHierarchicalEntityMapping {
 
-	return [NSDictionary dictionaryWithObjectsAndKeys:
-		
-		@"WAGroup", @"group",
-		@"WAComment", @"comments",
-		@"WAUser", @"owner",
-		@"WAPreview", @"previews",
-		@"WAFile", @"attachments",
-		@"WAFile", @"representingFile",
-		@"WALocation", @"gps",
-		@"WAPeople", @"people",
-		@"WATag", @"tags",
-		@"WATagGroup", @"extra_parameters",
-	
-	nil];
+	return @{@"group": @"WAGroup",
+		@"comments": @"WAComment",
+		@"owner": @"WAUser",
+		@"previews": @"WAPreview",
+		@"attachments": @"WAFile",
+		@"representingFile": @"WAFile",
+		@"gps": @"WALocation",
+		@"people": @"WAPeople",
+		@"tags": @"WATag",
+		@"extra_parameters": @"WATagGroup"};
 
 }
 
@@ -130,13 +126,13 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 
 	NSMutableDictionary *returnedDictionary = [incomingRepresentation mutableCopy];
 
-	NSString *creatorID = [incomingRepresentation objectForKey:@"creator_id"];
-	NSString *articleID = [incomingRepresentation objectForKey:@"post_id"];
-	NSString *groupID = [incomingRepresentation objectForKey:@"group_id"];
-	NSString *representingFileID = [incomingRepresentation objectForKey:@"cover_attach"];
+	NSString *creatorID = incomingRepresentation[@"creator_id"];
+	NSString *articleID = incomingRepresentation[@"post_id"];
+	NSString *groupID = incomingRepresentation[@"group_id"];
+	NSString *representingFileID = incomingRepresentation[@"cover_attach"];
 
-	NSMutableArray *fullAttachmentList = [[incomingRepresentation objectForKey:@"attachment_id_array"] mutableCopy];
-	NSArray *incomingAttachmentList = [[incomingRepresentation objectForKey:@"attachments"] copy];
+	NSMutableArray *fullAttachmentList = [incomingRepresentation[@"attachment_id_array"] mutableCopy];
+	NSArray *incomingAttachmentList = [incomingRepresentation[@"attachments"] copy];
 	NSMutableArray *returnedAttachmentList = [incomingAttachmentList mutableCopy];
 	if (!returnedAttachmentList) {
 		returnedAttachmentList = [[NSMutableArray alloc] init];
@@ -146,7 +142,7 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 
 		// dedup
 		for (NSDictionary *attachment in incomingAttachmentList) {
-			[fullAttachmentList removeObject:[attachment objectForKey:@"object_id"]];
+			[fullAttachmentList removeObject:attachment[@"object_id"]];
 		}
 
 		for (NSString *objectID in fullAttachmentList) {
@@ -156,25 +152,25 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 				@"post_id": articleID,
 				@"file_name": @"unknown.jpg",
 				@"type": @"image",
-				@"timestamp": [incomingRepresentation objectForKey:@"event_time"],
+				@"timestamp": incomingRepresentation[@"event_time"],
 			};
 			[returnedAttachmentList addObject:attach];
 		}
 
-		[returnedDictionary setObject:returnedAttachmentList forKey:@"attachments"];
+		returnedDictionary[@"attachments"] = returnedAttachmentList;
 
 	}
 
 	if ([creatorID length])
-		[returnedDictionary setObject:[NSDictionary dictionaryWithObject:creatorID forKey:@"user_id"] forKey:@"owner"];
+		returnedDictionary[@"owner"] = @{@"user_id": creatorID};
 
 	if ([groupID length])
-		[returnedDictionary setObject:[NSDictionary dictionaryWithObject:groupID forKey:@"group_id"] forKey:@"group"];
+		returnedDictionary[@"group"] = @{@"group_id": groupID};
 	
 	if ([representingFileID length])
-		[returnedDictionary setObject:[NSDictionary dictionaryWithObject:representingFileID forKey:@"object_id"] forKey:@"representingFile"];
+		returnedDictionary[@"representingFile"] = @{@"object_id": representingFileID};
 	
-	NSArray *comments = [incomingRepresentation objectForKey:@"comments"];
+	NSArray *comments = incomingRepresentation[@"comments"];
 	if ([comments count] && articleID) {
 	
 		NSMutableArray *transformedComments = [comments mutableCopy];
@@ -182,30 +178,30 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 		[comments enumerateObjectsUsingBlock: ^ (NSDictionary *aCommentRep, NSUInteger idx, BOOL *stop) {
 		
 			NSMutableDictionary *transformedComment = [aCommentRep mutableCopy];
-			NSString *commentID = [transformedComment objectForKey:@"comment_id"];
-			id aTimestamp = [aCommentRep objectForKey:@"timestamp"];
+			NSString *commentID = transformedComment[@"comment_id"];
+			id aTimestamp = aCommentRep[@"timestamp"];
 			if (!aTimestamp)
 				aTimestamp = IRWebAPIKitNonce();
 			
 			if (!commentID) {
 				commentID = [NSString stringWithFormat:@"Synthesized_Article_%@_Timestamp_%@", articleID, aTimestamp];
-				[transformedComment setObject:commentID forKey:@"comment_id"];
+				transformedComment[@"comment_id"] = commentID;
 			}
 			
-			[transformedComments replaceObjectAtIndex:idx withObject:transformedComment];
+			transformedComments[idx] = transformedComment;
 			
 		}];
 		
-		[returnedDictionary setObject:transformedComments forKey:@"comments"];
+		returnedDictionary[@"comments"] = transformedComments;
 	
 	}
 	
-	NSArray *people = [incomingRepresentation objectForKey:@"people"];
+	NSArray *people = incomingRepresentation[@"people"];
 	if (!people || people.count == 0) {
 		[returnedDictionary removeObjectForKey:@"people"];
 	}
 	
-	NSArray *tags = [incomingRepresentation objectForKey:@"tags"];
+	NSArray *tags = incomingRepresentation[@"tags"];
 	if ([tags count]) {
 		
 		NSMutableArray *transformedTags = [NSMutableArray arrayWithCapacity:[tags count]];
@@ -213,48 +209,40 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 			[transformedTags addObject:@{@"tagValue": aTagRep}];
 		}];
 		
-		[returnedDictionary setObject:transformedTags forKey:@"tags"];
+		returnedDictionary[@"tags"] = transformedTags;
 	}
 		
-	NSDictionary *preview = [incomingRepresentation objectForKey:@"preview"];
+	NSDictionary *preview = incomingRepresentation[@"preview"];
 	
 	if ([preview count]) {
 	
-		[returnedDictionary setObject:[NSArray arrayWithObjects:
-		
-			[NSDictionary dictionaryWithObjectsAndKeys:
-			
-				preview, @"og",
-				[preview valueForKeyPath:@"url"], @"id",
-			
-			nil],
-		
-		nil] forKey:@"previews"];
+		returnedDictionary[@"previews"] = @[@{@"og": preview,
+				@"id": [preview valueForKeyPath:@"url"]}];
 	
 	}
 		
-	for (NSString *style in [incomingRepresentation objectForKey:@"style"]) {
+	for (NSString *style in incomingRepresentation[@"style"]) {
     if ([style isEqualToString:@"url_history"]) {
-			[returnedDictionary setValue:[NSNumber numberWithUnsignedInteger:WAPostStyleURLHistory]
+			[returnedDictionary setValue:@(WAPostStyleURLHistory)
 														forKey:@"style"];
 		}
 	}
 	
-	if ([[incomingRepresentation objectForKey:@"import"] isEqualToString:@"true"]) {
-		NSString *deviceID = [incomingRepresentation objectForKey:@"device_id"];
+	if ([incomingRepresentation[@"import"] isEqualToString:@"true"]) {
+		NSString *deviceID = incomingRepresentation[@"device_id"];
 		if ([deviceID isEqualToString:WADeviceIdentifier()]) {
-			[returnedDictionary setValue:[NSNumber numberWithInt:WAImportTypeFromLocal] forKey:@"import"];
+			[returnedDictionary setValue:@(WAImportTypeFromLocal) forKey:@"import"];
 		} else {
-			[returnedDictionary setValue:[NSNumber numberWithInt:WAImportTypeFromOthers] forKey:@"import"];
+			[returnedDictionary setValue:@(WAImportTypeFromOthers) forKey:@"import"];
 		}
 	} else {
-		[returnedDictionary setValue:[NSNumber numberWithInt:WAImportTypeNone] forKey:@"import"];
+		[returnedDictionary setValue:@(WAImportTypeNone) forKey:@"import"];
 	}
 
-	if ([[incomingRepresentation objectForKey:@"event_tag"] isEqualToString:@"true"]) {
-		[returnedDictionary setValue:[NSNumber numberWithBool:YES] forKey:@"event_tag"];
+	if ([incomingRepresentation[@"event_tag"] isEqualToString:@"true"]) {
+		[returnedDictionary setValue:@YES forKey:@"event_tag"];
 	} else {
-		[returnedDictionary setValue:[NSNumber numberWithBool:NO] forKey:@"event_tag"];
+		[returnedDictionary setValue:@NO forKey:@"event_tag"];
 	}
 
 	return returnedDictionary;
@@ -263,17 +251,13 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 
 + (void) synchronizeWithCompletion:(void (^)(BOOL, NSError *))completionBlock {
 
-  [self synchronizeWithOptions:[NSDictionary dictionaryWithObjectsAndKeys:
-  
-    kWAArticleSyncDefaultStrategy, kWAArticleSyncStrategy,
-  
-  nil] completion:completionBlock];
+  [self synchronizeWithOptions:@{kWAArticleSyncStrategy: kWAArticleSyncDefaultStrategy} completion:completionBlock];
 
 }
 
 + (void) synchronizeWithOptions:(NSDictionary *)options completion:(void (^)(BOOL, NSError *))completionBlock {
 
-	WAArticleSyncStrategy wantedStrategy = [options objectForKey:kWAArticleSyncStrategy];
+	WAArticleSyncStrategy wantedStrategy = options[kWAArticleSyncStrategy];
 	WAArticleSyncStrategy syncStrategy = wantedStrategy;
 	
 	WARemoteInterface *ri = [WARemoteInterface sharedInterface];
@@ -282,9 +266,7 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 	NSUInteger usedBatchLimit = ri.defaultBatchSize;
 	
 	if (!usedGroupIdentifier) {
-		completionBlock(NO, [NSError errorWithDomain:@"com.waveface.wammer.dataStore.article" code:0 userInfo:[NSDictionary dictionaryWithObjectsAndKeys:
-			@"Article sync requires a primary group identifier", NSLocalizedDescriptionKey,
-		nil]]);
+		completionBlock(NO, [NSError errorWithDomain:@"com.waveface.wammer.dataStore.article" code:0 userInfo:@{NSLocalizedDescriptionKey: @"Article sync requires a primary group identifier"}]);
 		return;
 	}
 	
@@ -292,11 +274,7 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 	
 		//	The default thing to do is to first get all the new stuff, then get all the changed stuff
 		
-		[self synchronizeWithOptions:[NSDictionary dictionaryWithObjectsAndKeys:
-		
-			kWAArticleSyncFullyFetchStrategy, kWAArticleSyncStrategy,
-		
-		nil] completion:^(BOOL didFinish, NSError *error) {
+		[self synchronizeWithOptions:@{kWAArticleSyncStrategy: kWAArticleSyncFullyFetchStrategy} completion:^(BOOL didFinish, NSError *error) {
 		
 			if (!didFinish) {
 		
@@ -307,11 +285,7 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 				
 			}
 		
-			[self synchronizeWithOptions:[NSDictionary dictionaryWithObjectsAndKeys:
-		
-				kWAArticleSyncDeltaFetchStrategy, kWAArticleSyncStrategy,
-			
-			nil] completion:^(BOOL didFinish, NSError *error) {
+			[self synchronizeWithOptions:@{kWAArticleSyncStrategy: kWAArticleSyncDeltaFetchStrategy} completion:^(BOOL didFinish, NSError *error) {
 			
 				if (completionBlock)
 					completionBlock(didFinish, error);
@@ -369,10 +343,8 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 		formatter.locale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"];
 		formatter.timeZone = [NSTimeZone timeZoneForSecondsFromGMT:0];
 		NSString *datum = [formatter stringFromDate:usedDate];
-		NSDictionary *filterEntity = [NSDictionary dictionaryWithObjectsAndKeys:
-																	[NSNumber numberWithUnsignedInteger:usedBatchLimit], @"limit",
-																	datum, @"timestamp",
-																	nil];
+		NSDictionary *filterEntity = @{@"limit": @(usedBatchLimit),
+																	@"timestamp": datum};
 
 		[ri retrievePostsInGroup:usedGroupIdentifier usingFilter:filterEntity onSuccess:^(NSArray *postReps) {
 
@@ -411,7 +383,7 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 			NSDate *latestTimestamp = usedDate;
 			
 			for (NSDictionary *postRep in postReps) {
-				NSDate *timestamp = [[WADataStore defaultStore] dateFromISO8601String:[postRep objectForKey:@"timestamp"]];
+				NSDate *timestamp = [[WADataStore defaultStore] dateFromISO8601String:postRep[@"timestamp"]];
 				latestTimestamp = [latestTimestamp laterDate:timestamp];
 				NSCParameterAssert(latestTimestamp);
 			}
@@ -526,7 +498,7 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 	
 	*/
 
-	id mergePolicy = [options objectForKey:WAMergePolicyKey];
+	id mergePolicy = options[WAMergePolicyKey];
 	if (!mergePolicy)
 		mergePolicy = WAOverwriteWithLatestMergePolicy;
 	
@@ -553,7 +525,7 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 	BOOL isDraft = ([self.draft isEqualToNumber:(id)kCFBooleanTrue] || !self.identifier || !self.modificationDate);
 	BOOL isFavorite = [self.favorite isEqualToNumber:(id)kCFBooleanTrue];
 	BOOL isHidden = [self.hidden isEqualToNumber:(id)kCFBooleanTrue];
-	BOOL isImport = [self.import isEqualToNumber:[NSNumber numberWithInt:WAImportTypeFromLocal]];
+	BOOL isImport = [self.import isEqualToNumber:@(WAImportTypeFromLocal)];
 	
 	if (!isDraft) {
 	
@@ -573,7 +545,7 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 		
 			if ([results isKindOfClass:[NSDictionary class]]) {
 
-				[context setObject:results forKey:kPostExistingRemoteRep];
+				context[kPostExistingRemoteRep] = results;
 				
 			}
 			
@@ -584,7 +556,7 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 	
 	[operations addObject:[IRAsyncBarrierOperation operationWithWorkerBlock:^(IRAsyncOperationCallback callback) {
 	
-		NSDictionary *postExistingRemoteRep = [context objectForKey:kPostExistingRemoteRep];
+		NSDictionary *postExistingRemoteRep = context[kPostExistingRemoteRep];
 		if (!postExistingRemoteRep) {
 			callback((id)kCFBooleanTrue);
 			return;
@@ -597,7 +569,7 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 		id (^mappedValue)(NSString *) = ^ (NSString *localKeyPath) {
 		
 			NSString *remoteKeyPath = [[mapping allKeysForObject:localKeyPath] lastObject];	//	Assumed that there will only be one key pointing to this object
-			id remoteValue = [postExistingRemoteRep objectForKey:remoteKeyPath];
+			id remoteValue = postExistingRemoteRep[remoteKeyPath];
 			
 			return [WAArticle transformedValue:remoteValue fromRemoteKeyPath:remoteKeyPath toLocalKeyPath:localKeyPath];
 		
@@ -613,8 +585,8 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 			return;
 		}
 		
-		[context setObject:remoteDate forKey:kPostExistingRemoteRepDate];
-		[context setObject:localDate forKey:kPostLocalModDate];
+		context[kPostExistingRemoteRepDate] = remoteDate;
+		context[kPostLocalModDate] = localDate;
 		
 		NSComparisonResult comparisonResult = [remoteDate compare:localDate];
 		if (comparisonResult == NSOrderedDescending || comparisonResult == NSOrderedSame) {
@@ -678,11 +650,7 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 			NSURL *fileURI = [[representedFile objectID] URIRepresentation];
 			NSString *fileSyncStrategy = [ri hasReachableStation] ? kWAFileSyncFullQualityStrategy : kWAFileSyncReducedQualityStrategy;
 			
-			[representedFile synchronizeWithOptions:[NSDictionary dictionaryWithObjectsAndKeys:
-			
-				fileSyncStrategy, kWAFileSyncStrategy,
-			
-			nil] completion:^(BOOL didFinish, NSError *error) {
+			[representedFile synchronizeWithOptions:@{kWAFileSyncStrategy: fileSyncStrategy} completion:^(BOOL didFinish, NSError *error) {
 			
 				if (!didFinish) {
 					aCallback(error);
@@ -703,10 +671,10 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 			if (![result isKindOfClass:[NSString class]])
 				return;
 			
-			NSMutableArray *attachmentIDs = [context objectForKey:kPostAttachmentIDs];
+			NSMutableArray *attachmentIDs = context[kPostAttachmentIDs];
 			if (!attachmentIDs) {
 				attachmentIDs = [NSMutableArray array];
-				[context setObject:attachmentIDs forKey:kPostAttachmentIDs];
+				context[kPostAttachmentIDs] = attachmentIDs;
 			}
 			
 			NSParameterAssert([attachmentIDs isKindOfClass:[NSMutableArray class]]);
@@ -755,17 +723,17 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 
 				// use the first preview image for thumbnail_url while creating posts
 				if (isDraft) {
-					[previewEntity setObject:[[[savedPreview.graphElement.images array] objectAtIndex:0] imageRemoteURL] forKey:@"thumbnail_url"];
+					previewEntity[@"thumbnail_url"] = [[savedPreview.graphElement.images array][0] imageRemoteURL];
 				} else {
 					NSString *thumbnailURL = savedPreview.graphElement.representingImage.imageRemoteURL;
-					[previewEntity setObject:(thumbnailURL ? thumbnailURL : @"") forKey:@"thumbnail_url"];
+					previewEntity[@"thumbnail_url"] = (thumbnailURL ? thumbnailURL : @"");
 				}
 
-				[context setObject:previewEntity forKey:kPostWebPreview];
+				context[kPostWebPreview] = previewEntity;
 			
 			} else {
 			
-				[context setObject:results forKey:kPostWebPreview];
+				context[kPostWebPreview] = results;
 			
 			}
 			
@@ -776,8 +744,8 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 	
 	[operations addObject:[IRAsyncBarrierOperation operationWithWorkerBlock:^(IRAsyncOperationCallback callback) {
 	
-		NSArray *attachments = [context objectForKey:kPostAttachmentIDs];
-		NSDictionary *preview = [context objectForKey:kPostWebPreview];
+		NSArray *attachments = context[kPostAttachmentIDs];
+		NSDictionary *preview = context[kPostWebPreview];
 		
 		if (isDraft) {
 
@@ -826,7 +794,7 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 
 			} else {
 
-				NSDate *lastPostModDate = [context objectForKey:kPostExistingRemoteRepDate];
+				NSDate *lastPostModDate = context[kPostExistingRemoteRepDate];
 				
 				[ri updatePost:postID inGroup:groupID withText:postText attachments:attachments mainAttachment:postCoverPhotoID preview:preview favorite:isFavorite hidden:isHidden replacingDataWithDate:lastPostModDate updateTime:postModificationDate onSuccess:^(NSDictionary *postRep) {
 
@@ -886,13 +854,13 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 				NSDictionary * const mapping = [WAArticle remoteDictionaryConfigurationMapping];
 				id (^valueForMappingKey)(NSString *) = ^ (NSString *hostKey) {
 					NSString *networkKey = [[mapping allKeysForObject:hostKey] lastObject];
-					return [[self class] transformedValue:[results objectForKey:networkKey] fromRemoteKeyPath:networkKey toLocalKeyPath:hostKey];
+					return [[self class] transformedValue:results[networkKey] fromRemoteKeyPath:networkKey toLocalKeyPath:hostKey];
 				};
 				
 				if (!savedPost.identifier)
 					savedPost.identifier = valueForMappingKey(@"identifier");
 				
-				NSArray *touchedArticles = [WAArticle insertOrUpdateObjectsUsingContext:context withRemoteResponse:[NSArray arrayWithObject:results] usingMapping:nil options:IRManagedObjectOptionIndividualOperations];
+				NSArray *touchedArticles = [WAArticle insertOrUpdateObjectsUsingContext:context withRemoteResponse:@[results] usingMapping:nil options:IRManagedObjectOptionIndividualOperations];
 				NSCParameterAssert([touchedArticles containsObject:savedPost] && ([touchedArticles count] == 1));
 				
 				NSDate *remoteModDate = valueForMappingKey(@"modificationDate");	//	FIXME: may NOT have it
@@ -945,13 +913,13 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 	[operations enumerateObjectsUsingBlock: ^ (IRAsyncBarrierOperation *operation, NSUInteger idx, BOOL *stop) {
 	
 		if (idx > 0)
-			[operation addDependency:[operations objectAtIndex:(idx - 1)]];
+			[operation addDependency:operations[(idx - 1)]];
 		
 	}];
 	
 	IRAsyncOperation *lastOperation = [[[[self class] sharedSyncQueue] operations] lastObject];
 	if (lastOperation) {
-		[[operations objectAtIndex:0] addDependency:lastOperation];
+		[operations[0] addDependency:lastOperation];
 	}
 	
 	[[[self class] sharedSyncQueue] addOperations:operations waitUntilFinished:NO];

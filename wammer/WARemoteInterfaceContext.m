@@ -58,16 +58,12 @@ NSString * const kWARemoteInterfaceContextNewBaseURL = @"WARemoteInterfaceContex
 	static dispatch_once_t onceToken;
 	dispatch_once(&onceToken, ^{
    
-		map = [NSDictionary dictionaryWithObjectsAndKeys:
-		
-			@"posts/fetch_all/", @"articles",
-			@"users/fetch_all/", @"users",
-			@"post/create_new_post/", @"createArticle",
-			@"file/upload_file/", @"createFile",
-			@"post/create_new_comment/", @"createComment",
-			@"users/latest_read_post_id/", @"lastReadArticleContext",
-			
-		nil];
+		map = @{@"articles": @"posts/fetch_all/",
+			@"users": @"users/fetch_all/",
+			@"createArticle": @"post/create_new_post/",
+			@"createFile": @"file/upload_file/",
+			@"createComment": @"post/create_new_comment/",
+			@"lastReadArticleContext": @"users/latest_read_post_id/"};
 		
 	});
 
@@ -97,12 +93,8 @@ NSString * const kWARemoteInterfaceContextNewBaseURL = @"WARemoteInterfaceContex
 	
 	self.baseURL = newBaseURL;
 	
-	[[NSNotificationCenter defaultCenter] postNotificationName:kWARemoteInterfaceContextDidChangeBaseURLNotification object:self userInfo:[NSDictionary dictionaryWithObjectsAndKeys:
-		
-		oldBaseURL, kWARemoteInterfaceContextOldBaseURL,
-		newBaseURL, kWARemoteInterfaceContextNewBaseURL,
-		
-	nil]];
+	[[NSNotificationCenter defaultCenter] postNotificationName:kWARemoteInterfaceContextDidChangeBaseURLNotification object:self userInfo:@{kWARemoteInterfaceContextOldBaseURL: oldBaseURL,
+		kWARemoteInterfaceContextNewBaseURL: newBaseURL}];
 
 }
 
@@ -117,7 +109,7 @@ NSString * const kWARemoteInterfaceContextNewBaseURL = @"WARemoteInterfaceContex
 	NSURL *returnedURL = [super baseURLForMethodNamed:inMethodName];
 	NSString *mappedPath = nil;
 	
-	if ((mappedPath = [[[self class] methodMap] objectForKey:inMethodName]))
+	if ((mappedPath = [[self class] methodMap][inMethodName]))
 		return [NSURL URLWithString:mappedPath relativeToURL:self.baseURL];
 	
 	return returnedURL;
