@@ -28,14 +28,14 @@
 	});
 	
 
-	self.webview.delegate = self;
+	self.webView.delegate = self;
 
 }
 
 - (void)viewDidAppear:(BOOL)animated {
 
 	// load request after view controller pushing animation finished
-	[self.webview loadRequest:self.request];
+	[self.webView loadRequest:self.request];
 	
 }
 
