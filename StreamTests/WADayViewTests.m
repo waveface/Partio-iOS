@@ -12,7 +12,7 @@
 #import "WADataStore.h"
 
 #import "WAPhotoStreamViewController.h"
-#import "WATimelineViewControllerPhone.h"
+#import "WATimelineViewController.h"
 
 @interface WADayViewController (UnitTesting)
 
@@ -66,11 +66,6 @@
 		
 		[currentLayout addObject:aLayout];
 	}
-}
-
-- (void)testModelFetchRequest {
-	NSArray *allFiles = [WAFile MR_findAll];
-	STAssertTrue([allFiles count] == 1160, @"All files");
 }
 
 @end

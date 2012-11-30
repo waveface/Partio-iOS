@@ -37,15 +37,15 @@ NSError * WARemoteInterfaceGenericError (NSDictionary *response, IRWebAPIRequest
 	NSMutableDictionary *errorUserInfo = [NSMutableDictionary dictionary];
 	NSUInteger errorCode = WARemoteInterfaceEndpointReturnCode(response);
 	
-	[errorUserInfo setObject:[NSNumber numberWithUnsignedInt:WARemoteInterfaceEndpointReturnCode(response)] forKey:kWARemoteInterfaceRemoteErrorCode];
+	errorUserInfo[kWARemoteInterfaceRemoteErrorCode] = @(WARemoteInterfaceEndpointReturnCode(response));
 	
 	if (context.error)
-		[errorUserInfo setObject:context.error forKey:NSUnderlyingErrorKey];
+		errorUserInfo[NSUnderlyingErrorKey] = context.error;
 	
 	if (context)
-		[errorUserInfo setObject:context forKey:kWARemoteInterfaceUnderlyingContext];
+		errorUserInfo[kWARemoteInterfaceUnderlyingContext] = context;
 		
-	[errorUserInfo setObject:WARemoteInterfaceEndpointReturnMessage(response) forKey:NSLocalizedDescriptionKey];
+	errorUserInfo[NSLocalizedDescriptionKey] = WARemoteInterfaceEndpointReturnMessage(response);
 
 	return [NSError errorWithDomain:kWARemoteInterfaceDomain code:errorCode userInfo:errorUserInfo];
 
@@ -70,7 +70,7 @@ IRWebAPIResponseValidator WARemoteInterfaceGenericNoErrorValidator () {
 
 	return ^ (NSDictionary *inResponseOrNil, IRWebAPIRequestContext *inResponseContext) {
 	
-		BOOL answer = [[inResponseOrNil valueForKey:@"api_ret_code"] isEqual:[NSNumber numberWithInt:WASuccess]];
+		BOOL answer = [[inResponseOrNil valueForKey:@"api_ret_code"] isEqual:@(WASuccess)];
 		answer &= (inResponseContext.urlResponse.statusCode == 200);
 		
 		return answer;
@@ -84,7 +84,7 @@ NSDictionary *WARemoteInterfaceRFC3986EncodedDictionary (NSDictionary *encodedDi
 	NSMutableDictionary *returnedDictionary = [NSMutableDictionary dictionaryWithCapacity:[encodedDictionary count]];
 	
 	[encodedDictionary enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
-		[returnedDictionary setObject:IRWebAPIKitRFC3986EncodedStringMake(obj) forKey:key];
+		returnedDictionary[key] = IRWebAPIKitRFC3986EncodedStringMake(obj);
 	}];
 	
 	return returnedDictionary;
@@ -96,9 +96,9 @@ NSDictionary *WARemoteInterfaceEnginePostFormEncodedOptionsDictionary (NSDiction
 	NSMutableDictionary *returnedDictionary = [NSMutableDictionary dictionary];
 	
 	if (parameters)
-		[returnedDictionary setObject:parameters forKey:kIRWebAPIEngineRequestContextFormURLEncodingFieldsKey];
+		returnedDictionary[kIRWebAPIEngineRequestContextFormURLEncodingFieldsKey] = parameters;
 	
-	[returnedDictionary setObject:@"POST" forKey:kIRWebAPIEngineRequestHTTPMethod];
+	returnedDictionary[kIRWebAPIEngineRequestHTTPMethod] = @"POST";
 	
 	if (mergedOtherOptionsOrNil)
 		[returnedDictionary addEntriesFromDictionary:mergedOtherOptionsOrNil];

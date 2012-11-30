@@ -17,6 +17,7 @@ extern BOOL WAApplicationHasDebuggerAttached (void);
 extern NSString * const kWARemoteEndpointURL;
 extern NSString * const kWARemoteEndpointVersion;
 extern NSString * const kWARemoteEndpointCurrentVersion;
+extern NSString * const kWARemoteEndpointWebURL;
 extern NSString * const kWALastAuthenticatedUserTokenKeychainItem;
 extern NSString * const kWALastAuthenticatedUserPrimaryGroupIdentifier;
 extern NSString * const kWALastAuthenticatedUserIdentifier;
@@ -60,6 +61,8 @@ extern NSString * const kWACallbackActionSetUserRegistrationEndpointURL;
 extern NSString * const kWACallbackActionSetUserPasswordResetEndpointURL;
 
 extern NSString * const kWAPhotoImportEnabled;
+extern NSString * const kWABackupFilesToPCEnabled;
+extern NSString * const kWABackupFilesToCloudEnabled;
 
 extern NSString * const kWABusinessPlan;
 typedef enum WABusinessPlanType: NSInteger {
@@ -67,6 +70,8 @@ typedef enum WABusinessPlanType: NSInteger {
 	WABusinessPlanPremium,
 	WABusinessPlanUltimate
 } WABusinessPlanType;
+
+extern NSString * const kWASNSGoogleConnectEnabled;
 
 extern NSString * const WAFeedbackRecipient;
 extern NSString * const WAStreamFeaturesURL;

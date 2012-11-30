@@ -10,7 +10,7 @@
 #import "WARemoteInterfaceEntitySyncing.h"
 #import "WAArticle+WARemoteInterfaceEntitySyncing.h"
 #import "WAFile+WARemoteInterfaceEntitySyncing.h"
-
+#import "WACollection+WARemoteInterfaceEntitySyncing.h"
 
 extern NSString * const kWADataStoreArticleUpdateShowsBezels;	//	pass kCFBooleanTrue or kCFBooleanFalse
 
@@ -28,5 +28,7 @@ extern NSString * const kWADataStoreArticleUpdateShowsBezels;	//	pass kCFBoolean
 - (void) updateCurrentUserOnSuccess:(void(^)(void))successBlock onFailure:(void(^)(void))failureBlock;
 
 - (void) updateAttachmentsMetaOnSuccess:(void(^)(void))successBlock onFailure:(void(^)(NSError *))failureBlock;
+
+- (void) updateCollectionsOnSuccess:(void(^)(void))successBlock onFailure:(void(^)(NSError *))failureBlock;
 
 @end

@@ -1,15 +1,15 @@
 //
-//  WAFirstUseConnectServicesViewController.h
+//  WAWebServiceSettingsViewController.h
 //  wammer
 //
-//  Created by kchiu on 12/10/24.
+//  Created by kchiu on 12/11/28.
 //  Copyright (c) 2012年 Waveface. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
 #import "WAOAuthSwitch.h"
 
-@interface WAFirstUseConnectServicesViewController : UITableViewController <WAOAuthSwitchDelegate>
+@interface WAWebServiceSettingsViewController : UITableViewController <WAOAuthSwitchDelegate>
 
 @property (weak, nonatomic) IBOutlet UITableViewCell *facebookConnectCell;
 @property (weak, nonatomic) IBOutlet UITableViewCell *twitterConnectCell;

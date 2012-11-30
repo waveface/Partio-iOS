@@ -16,6 +16,7 @@
 #import "WAFile+WARemoteInterfaceEntitySyncing.h"
 #import "WAAppDelegate_iOS.h"
 #import "WADefines+iOS.h"
+#import "WADefines.h"
 
 #import <objc/runtime.h>
 
@@ -35,6 +36,11 @@ static NSString * const kNumberOfFiles = @"-[WASyncManager(FullQualityFileSync) 
 	
 		WAPhotoImportManager *photoImportManager = [(WAAppDelegate_iOS *)AppDelegate() photoImportManager];
 		if (photoImportManager.preprocessing || photoImportManager.operationQueue.operationCount > 0) {
+			callback(nil);
+			return;
+		}
+
+		if (![[NSUserDefaults standardUserDefaults] boolForKey:kWABackupFilesToPCEnabled]) {
 			callback(nil);
 			return;
 		}

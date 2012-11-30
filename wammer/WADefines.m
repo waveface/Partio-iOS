@@ -27,6 +27,7 @@ BOOL WAAdvancedFeaturesEnabled (void) {
 NSString * const kWARemoteEndpointURL = @"WARemoteEndpointURL";
 NSString * const kWARemoteEndpointVersion = @"WARemoteEndpointVersion";
 NSString * const kWARemoteEndpointCurrentVersion = @"WARemoteEndpointCurrentVersion";
+NSString * const kWARemoteEndpointWebURL = @"WARemoteEndpointWebURL";
 NSString * const kWALastAuthenticatedUserTokenKeychainItem = @"WALastAuthenticatedUserTokenKeychainItem";
 NSString * const kWALastAuthenticatedUserPrimaryGroupIdentifier = @"WALastAuthenticatedUserPrimaryGroupIdentifier";
 NSString * const kWALastAuthenticatedUserIdentifier = @"WALastAuthenticatedUserIdentifier";
@@ -72,7 +73,11 @@ NSString * const kWACallbackActionSetUserRegistrationEndpointURL = @"setUserRegi
 NSString * const kWACallbackActionSetUserPasswordResetEndpointURL = @"setUserPasswordResetEndpointURL";
 
 NSString * const kWAPhotoImportEnabled = @"WAPhotoImportEnabled";
+NSString * const kWABackupFilesToPCEnabled = @"WABackupFilesToPCEnabled";
+NSString * const kWABackupFilesToCloudEnabled = @"WABackupFilesToCloudEnabled";
 NSString * const kWABusinessPlan = @"WABusinessPlan";
+
+NSString * const kWASNSGoogleConnectEnabled = @"WAGoogleConnectEnabled";
 
 void WARegisterUserDefaults () {
 
