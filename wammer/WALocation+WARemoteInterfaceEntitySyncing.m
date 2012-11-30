@@ -38,7 +38,7 @@
 							 @"latitude", @"latitude",
 							 @"longitude", @"longitude",
 							 @"name", @"name",
-							 @"zoom_level", @"zoomLevel",
+							 @"zoomLevel", @"zoom_level",
 							 nil];
 		
 	});

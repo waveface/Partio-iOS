@@ -168,10 +168,25 @@
 
 	if (_user)
 		return _user;
-	
+
 	_user = [[WADataStore defaultStore] mainUserInContext:self.managedObjectContext];
 	return _user;
 
+}
+	
+- (NSUInteger) supportedInterfaceOrientations {
+	
+	if (isPad())
+		return UIInterfaceOrientationMaskAll;
+	else
+		return UIInterfaceOrientationMaskPortrait;
+	
+}
+
+- (BOOL) shouldAutorotate {
+	
+	return YES;
+	
 }
 
 - (void) tableView:(UITableView *)aTV didSelectRowAtIndexPath:(NSIndexPath *)indexPath {

@@ -17,6 +17,7 @@
 #import "WAAppearance.h"
 #import "WAEventPhotoViewCell.h"
 #import "GAI.h"
+#import "MKMapView+ZoomLevel.h"
 
 @interface WAAnnotation : NSObject <MKAnnotation>
 
@@ -114,6 +115,22 @@
 
 - (void) viewDidAppear:(BOOL)animated {
 	[super viewDidAppear:animated];
+	
+	if (self.article.location.latitude && self.article.location.longitude) {
+		
+		CLLocationCoordinate2D center = { self.article.location.latitude.floatValue, self.article.location.longitude.floatValue };
+		NSUInteger zoomLevel = [self.article.location.zoomLevel unsignedIntegerValue];
+		
+		WAAnnotation *pin = [[WAAnnotation alloc] init];
+		pin.coordinate = center;
+		if (self.article.location.name)
+			pin.title = self.article.location.name;
+		
+		[_headerView.mapView setCenterCoordinate:center zoomLevel:zoomLevel animated:YES];
+		[_headerView.mapView addAnnotation:pin];
+		[_headerView.mapView setHidden:NO];
+		
+	}
 	
 	if (self.completion)
 		self.completion();
@@ -289,21 +306,7 @@
 	
 	_headerView.timeLabel.text = [[[self class] timeFormatter] stringFromDate:self.article.creationDate];
 
-	if (self.article.location.latitude && self.article.location.longitude) {
-
-		CLLocationCoordinate2D center = { self.article.location.latitude.floatValue, self.article.location.longitude.floatValue };
-		MKCoordinateSpan span = {0.005, 0.005}; // FIXME: should based on api, currently it is hard coded
-	
-		WAAnnotation *pin = [[WAAnnotation alloc] init];
-		pin.coordinate = center;
-		if (self.article.location.name)
-			pin.title = self.article.location.name;
-		
-		[_headerView.mapView setRegion:(MKCoordinateRegion) {center, span}];
-		[_headerView.mapView addAnnotation:pin];
-		[_headerView.mapView setHidden:NO];
-		
-	} else {
+	if (!self.article.location.latitude || !self.article.location.longitude) {
 		
 		[_headerView.separatorLineBelowMap setHidden:YES];
 		[_headerView.mapView setHidden:YES];

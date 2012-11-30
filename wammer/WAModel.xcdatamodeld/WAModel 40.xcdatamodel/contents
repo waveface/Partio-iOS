@@ -306,7 +306,7 @@
     <fetchRequest name="WAFRAllOGImages" entity="WAOpenGraphElementImage"/>
     <fetchRequest name="WAFRArticle" entity="WAArticle" predicateString="identifier == $Identifier"/>
     <fetchRequest name="WAFRArticleDrafts" entity="WAArticle" predicateString="draft == 1"/>
-    <fetchRequest name="WAFRArticles" entity="WAArticle" predicateString="((draft == nil) OR (draft != 1)) AND ((hidden == nil) OR (hidden == 0))"/>
+    <fetchRequest name="WAFRArticles" entity="WAArticle" predicateString="(draft == 0 OR draft != 1) AND (hidden == 0)"/>
     <fetchRequest name="WAFRArticlesNeedingSync" entity="WAArticle" predicateString="dirty == 1 AND draft == 0"/>
     <fetchRequest name="WAFRCommentsForArticle" entity="WAComment" predicateString="article == $Article"/>
     <fetchRequest name="WAFRFilesForArticle" entity="WAFile" predicateString="ANY articles == $Article"/>

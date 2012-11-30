@@ -36,7 +36,7 @@
     
 		mapping = [NSDictionary dictionaryWithObjectsAndKeys:
 							 @"name", @"name",
-							 @"avatar", @"avatarURL",
+							 @"avatarURL", @"avatar",
 							 nil];
 		
 	});
