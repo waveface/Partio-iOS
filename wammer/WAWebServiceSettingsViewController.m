@@ -17,6 +17,7 @@ static NSString * const kWASegueSettingsToOAuth = @"WASegueSettingsToOAuth";
 
 @property (nonatomic, strong) NSURLRequest *sentRequest;
 @property (nonatomic, strong) WAOAuthDidComplete didCompleteBlock;
+@property (nonatomic, strong) WAGoogleConnectSwitch *googleConnectSwitch;
 
 @end
 
@@ -39,9 +40,9 @@ static NSString * const kWASegueSettingsToOAuth = @"WASegueSettingsToOAuth";
 	picasaSwitch.enabled = NO;
 	self.picasaConnectCell.accessoryView = picasaSwitch;
 
-	WAGoogleConnectSwitch *googleOAuthSwitch = [[WAGoogleConnectSwitch alloc] init];
-	googleOAuthSwitch.delegate = self;
-	self.googleConnectCell.accessoryView = googleOAuthSwitch;
+	self.googleConnectSwitch = [[WAGoogleConnectSwitch alloc] init];
+	self.googleConnectSwitch.delegate = self;
+	self.googleConnectCell.accessoryView = self.googleConnectSwitch;
 
 }
 
@@ -50,6 +51,12 @@ static NSString * const kWASegueSettingsToOAuth = @"WASegueSettingsToOAuth";
 	WAOAuthViewController *vc = [segue destinationViewController];
 	vc.request = self.sentRequest;
 	vc.didCompleteBlock = self.didCompleteBlock;
+
+}
+
+- (void)dealloc {
+
+	self.googleConnectSwitch.delegate = nil;
 
 }
 

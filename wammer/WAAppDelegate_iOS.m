@@ -105,6 +105,7 @@ static NSString *const kTrackingId = @"UA-27817516-7";
 @property (nonatomic, strong) WAPhotoImportManager *photoImportManager;
 @property (nonatomic, strong) WACacheManager *cacheManager;
 @property (nonatomic, strong) WASyncManager *syncManager;
+@property (nonatomic, strong) WASlidingMenuViewController *slidingMenu;
 
 - (void) clearViewHierarchy;
 - (void) recreateViewHierarchy;
@@ -320,6 +321,8 @@ extern CFAbsoluteTime StartTime;
 
 - (void) clearViewHierarchy {
 	
+	self.slidingMenu = nil;
+
 	UIViewController *rootVC = self.window.rootViewController;
 	
 	__block void (^zapModal)(UIViewController *) = [^ (UIViewController *aVC) {
@@ -349,18 +352,18 @@ extern CFAbsoluteTime StartTime;
 			WADayViewController *swVC = [[WADayViewController alloc] initWithClassNamed:[WATimelineViewController class]];
 			WANavigationController *timelineNavC = [[WANavigationController alloc] initWithRootViewController:swVC];
 						
-			WASlidingMenuViewController *slidingMenu = [[WASlidingMenuViewController alloc] init];
-			slidingMenu.delegate = self;
+			self.slidingMenu = [[WASlidingMenuViewController alloc] init];
+			self.slidingMenu.delegate = self;
 			
 			IIViewDeckController *viewDeckController = [[IIViewDeckController alloc] initWithCenterViewController:timelineNavC
-																																												 leftViewController:slidingMenu];
+																																												 leftViewController:self.slidingMenu];
 			viewDeckController.view.backgroundColor = [UIColor blackColor];
 			viewDeckController.leftLedge = self.window.frame.size.width - 200.0f;
 			viewDeckController.rotationBehavior = IIViewDeckRotationKeepsLedgeSizes;
 			//			viewDeckController.animationBehavior = IIViewDeckAnimationPullIn;
 			viewDeckController.panningMode = IIViewDeckNoPanning;
 			[viewDeckController setWantsFullScreenLayout:YES];
-			viewDeckController.delegate = slidingMenu;
+			viewDeckController.delegate = self.slidingMenu;
 			viewDeckController.centerhiddenInteractivity = IIViewDeckCenterHiddenNotUserInteractiveWithTapToClose;
 			
 			self.window.rootViewController = viewDeckController;
@@ -373,17 +376,17 @@ extern CFAbsoluteTime StartTime;
 			WADayViewController *swVC = [[WADayViewController alloc] initWithClassNamed:[WATimelineViewController class]];
 			WANavigationController *timelineNavC = [[WANavigationController alloc] initWithRootViewController:swVC];
 
-			WASlidingMenuViewController *slidingMenu = [[WASlidingMenuViewController alloc] init];
-			slidingMenu.delegate = self;
+			self.slidingMenu = [[WASlidingMenuViewController alloc] init];
+			self.slidingMenu.delegate = self;
 
-			IIViewDeckController *viewDeckController = [[IIViewDeckController alloc] initWithCenterViewController:timelineNavC leftViewController:slidingMenu];
+			IIViewDeckController *viewDeckController = [[IIViewDeckController alloc] initWithCenterViewController:timelineNavC leftViewController:self.slidingMenu];
 			viewDeckController.view.backgroundColor = [UIColor blackColor];
 			viewDeckController.leftLedge = self.window.frame.size.width - 200.0f;
 			viewDeckController.rotationBehavior = IIViewDeckRotationKeepsLedgeSizes;
 //			viewDeckController.animationBehavior = IIViewDeckAnimationPullIn;
 			viewDeckController.panningMode = IIViewDeckNoPanning;
 			[viewDeckController setWantsFullScreenLayout:YES];
-			viewDeckController.delegate = slidingMenu;
+			viewDeckController.delegate = self.slidingMenu;
 			viewDeckController.centerhiddenInteractivity = IIViewDeckCenterHiddenNotUserInteractiveWithTapToClose;
 	
 			self.window.rootViewController = viewDeckController;

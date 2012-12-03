@@ -16,6 +16,8 @@
 #import "Foundation+IRAdditions.h"
 #import "IRAsyncOperation.h"
 #import "WACompositionViewController.h"
+#import "WAAppDelegate_iOS.h"
+#import "WADefines.h"
 
 #import "GAI.h"
 
@@ -348,7 +350,9 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 			[[wSelf.article.files objectAtIndex:index] cleanImageCache];
 		}
 	}];
-	
+
+	[(WAAppDelegate_iOS *)AppDelegate() slidingMenu].statusBar.hidden = YES;
+
 	[[GAI sharedInstance].defaultTracker trackEventWithCategory:@"Gallery"
 																									 withAction:@"Enter gallery"
 																										withLabel:nil
@@ -470,6 +474,8 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 
 	if (self.onViewDidDisappear)
 		self.onViewDidDisappear(animated);
+
+	[(WAAppDelegate_iOS *)AppDelegate() slidingMenu].statusBar.hidden = NO;
 
 }
 

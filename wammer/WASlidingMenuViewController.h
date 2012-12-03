@@ -8,9 +8,11 @@
 
 #import <UIKit/UIKit.h>
 #import "IIViewDeckController.h"
+#import "WAStatusBar.h"
 
 @interface WASlidingMenuViewController : UITableViewController <IIViewDeckControllerDelegate>
 
 @property (nonatomic, weak) id delegate;
+@property (nonatomic, readonly, strong) WAStatusBar *statusBar;
 
 @end
