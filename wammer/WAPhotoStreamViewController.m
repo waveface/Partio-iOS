@@ -93,8 +93,19 @@
 	@[@2,@1],
 	@[@3]
 	];
+	
+	NSArray *partitionOfFour = @[
+	@[@1,@1,@1,@1],
+	@[@1,@2,@1],
+	@[@1,@1,@2],
+	@[@1,@3],
+	@[@3,@1]
+	];
 
-	[self reloadLayout:partitionOfThree];
+	if (isPad()) 
+		[self reloadLayout:partitionOfFour];
+	else
+		[self reloadLayout:partitionOfThree];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -152,7 +163,11 @@
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
 	
 	NSInteger width_unit = [_layout[indexPath.row] integerValue];
-	return (CGSize){96*width_unit + 8*(width_unit-1), 96};
+	
+	if (isPad())
+		return (CGSize){182*width_unit + 8*(width_unit-1), 192};
+	else
+		return (CGSize){96*width_unit + 8*(width_unit-1), 96};
 	
 }
 
