@@ -351,8 +351,6 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 		}
 	}];
 
-	[(WAAppDelegate_iOS *)AppDelegate() slidingMenu].statusBar.hidden = YES;
-
 	[[GAI sharedInstance].defaultTracker trackEventWithCategory:@"Gallery"
 																									 withAction:@"Enter gallery"
 																										withLabel:nil
@@ -474,8 +472,6 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 
 	if (self.onViewDidDisappear)
 		self.onViewDidDisappear(animated);
-
-	[(WAAppDelegate_iOS *)AppDelegate() slidingMenu].statusBar.hidden = NO;
 
 }
 
@@ -763,9 +759,9 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 		});
 
 	}
-	
+
 	[[UIApplication sharedApplication] setStatusBarHidden:willHide withAnimation:(animate ? UIStatusBarAnimationFade : UIStatusBarAnimationNone)];
-	
+
 	[self.view setNeedsLayout];
 	[self.view layoutSubviews];
 	
@@ -802,6 +798,8 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 		self.navigationController.toolbar.alpha = (willHide ? 0.0f : 1.0f);
 		
 		self.navigationController.navigationBar.frame = oldNavControllerNavBarFrame;
+
+		[(WAAppDelegate_iOS *)AppDelegate() slidingMenu].statusBar.alpha = willHide ? 0.0f : 1.0f;
 		
 	} completion: ^ (BOOL didFinish){
 

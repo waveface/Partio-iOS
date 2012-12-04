@@ -138,7 +138,7 @@ static NSString * kWAImageStreamPickerComponentThumbnail = @"WAImageStreamPicker
 	CGRect usableRect = UIEdgeInsetsInsetRect(self.bounds, self.edgeInsets);
 	CGFloat usableWidth = CGRectGetWidth(usableRect);
 	CGFloat usableHeight = CGRectGetHeight(usableRect);
-	NSUInteger numberOfItems = [self.delegate numberOfItemsInImageStreamPickerView:self];
+	NSUInteger numberOfItems = [self.items count];
 	NSMutableIndexSet *thumbnailedItemIndices = [NSMutableIndexSet indexSet];
   
   if (numberOfItems > 0) {

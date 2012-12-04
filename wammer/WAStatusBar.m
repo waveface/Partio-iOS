@@ -64,7 +64,12 @@
 
 - (void)rotateToStatusBarFrame {
 
-	self.alpha = 0;
+	BOOL visibleBeforeTransformation = YES;
+	if (self.alpha == 0) {
+		visibleBeforeTransformation = NO;
+	} else {
+		self.alpha = 0;
+	}
 
 	UIInterfaceOrientation orientation = [UIApplication sharedApplication].statusBarOrientation;
 	if (orientation == UIDeviceOrientationPortrait) {
@@ -81,14 +86,16 @@
 		self.frame = CGRectMake(0, kScreenHeight-kStatusBarHeight, kScreenWidth, kStatusBarHeight);
 	}
 
-	__weak WAStatusBar *wSelf = self;
-	[UIView animateWithDuration:0.3f
-												delay:[UIApplication sharedApplication].statusBarOrientationAnimationDuration
-											options:UIViewAnimationCurveEaseInOut
-									 animations:^{
-										 wSelf.alpha = 1.0;
-									 }
-									 completion:nil];
+	if (visibleBeforeTransformation) {
+		__weak WAStatusBar *wSelf = self;
+		[UIView animateWithDuration:0.0f
+													delay:[UIApplication sharedApplication].statusBarOrientationAnimationDuration
+												options:UIViewAnimationOptionTransitionNone
+										 animations:^{
+											 wSelf.alpha = 1.0;
+										 }
+										 completion:nil];
+	}
 
 }
 
