@@ -72,6 +72,13 @@
 
 - (void)enumerateSavedPhotosSince:(NSDate *)sinceDate onProgess:(void (^)(NSArray *))onProgressBlock onComplete:(void (^)())onCompleteBlock onFailure:(void (^)(NSError *))onFailureBlock {
 
+	NSCalendar *calendar = [NSCalendar currentCalendar];
+	NSInteger comps = (NSDayCalendarUnit|NSMonthCalendarUnit|NSYearCalendarUnit);
+	if (sinceDate) {
+		NSDateComponents *sinceDateComponents = [calendar components:comps fromDate:sinceDate];
+		sinceDate = [calendar dateFromComponents:sinceDateComponents];
+	}
+
 	__block NSMutableArray *insertedAssets = [[NSMutableArray alloc] init];
 	__block NSDate *midnight = sinceDate ? [sinceDate laterMidnight] : nil;
 
@@ -85,7 +92,8 @@
 				if (result) {
 
 					NSDate *assetDate = [result valueForProperty:ALAssetPropertyDate];
-
+					NSDateComponents *assetDateComponents = [calendar components:comps fromDate:assetDate];
+					assetDate = [calendar dateFromComponents:assetDateComponents];
 					if (sinceDate && ([assetDate compare:sinceDate] != NSOrderedDescending)) {
 						return;
 					}
