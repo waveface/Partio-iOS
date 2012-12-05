@@ -647,18 +647,27 @@ BOOL dripdownMenuOpened = NO;
 }
 
 
-- (void) handleSwipeRight:(id) sender {
+- (BOOL)jumpToDate:(NSDate*)date animated:(BOOL)animated{
 	
-	if (self.paginatedView.currentPage > 0)
-		[self.paginatedView scrollToPageAtIndex:self.paginatedView.currentPage-1 animated:YES];
+	__block BOOL found = NO;
+	__block NSUInteger foundIndex = 0;
+	[self.days enumerateObjectsUsingBlock:^(NSDate *day, NSUInteger idx, BOOL *stop) {
+		
+		if (isSameDay(day, date)) {
+			*stop = YES;
+			foundIndex = idx;
+			found = YES;
+		}
+		
+	}];
+	
+	if (found) {
+		
+		[self.paginatedView scrollToPageAtIndex:foundIndex animated:animated];
+		
+	}
+	
+	return NO;
 }
-
-- (void) handleSwipeLeft:(id) sender {
-	
-	if (self.paginatedView.currentPage < [self.days count])
-		[self.paginatedView scrollToPageAtIndex:self.paginatedView.currentPage+1 animated:YES];
-	
-}
-
 
 @end
