@@ -429,17 +429,17 @@
 
 - (void) switchToViewStyle:(WADayViewSupportedStyle)viewStyle {
 	
-	[self switchToViewStyle:viewStyle date:nil animated:NO];
+	[self switchToViewStyle:viewStyle onDate:nil animated:NO];
 	
 }
 
-- (void) switchToViewStyle:(WADayViewSupportedStyle)viewStyle date:(NSDate*)date {
+- (void) switchToViewStyle:(WADayViewSupportedStyle)viewStyle onDate:(NSDate*)date {
 	
-	[self switchToViewStyle:viewStyle date:date animated:NO];
+	[self switchToViewStyle:viewStyle onDate:date animated:NO];
 	
 }
 
-- (void) switchToViewStyle:(WADayViewSupportedStyle)viewStyle date:(NSDate*)date animated:(BOOL)animated {
+- (void) switchToViewStyle:(WADayViewSupportedStyle)viewStyle onDate:(NSDate*)date animated:(BOOL)animated {
 	CGFloat animationDuration = 0.3f;
 	__weak WASlidingMenuViewController *wSelf = self;
 
@@ -468,23 +468,23 @@
 	currentViewStyle = viewStyle;
 }
 
-- (void) switchNextAvailableViewWithDate:(NSDate*)date {
+- (void) switchNextAvailableViewOnDate:(NSDate*)date {
 	
 	if (currentViewStyle == WAEventsViewStyle) {
 	
-		[self switchToViewStyle:WAPhotosViewStyle date:date animated:YES];
+		[self switchToViewStyle:WAPhotosViewStyle onDate:date animated:YES];
 		
 	} else if (currentViewStyle == WAPhotosViewStyle) {
 		
-		[self switchToViewStyle:WAEventsViewStyle date:date animated:YES];
+		[self switchToViewStyle:WAEventsViewStyle onDate:date animated:YES];
 		
 	}
 	
 }
 
-- (void) switchPrevAvailableViewWithDate:(NSDate*)date {
+- (void) switchPrevAvailableViewOnDate:(NSDate*)date {
 	
-	[self switchNextAvailableViewWithDate:date];
+	[self switchNextAvailableViewOnDate:date];
 	
 }
 @end

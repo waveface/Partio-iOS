@@ -10,10 +10,10 @@
 #import "IIViewDeckController.h"
 #import "WAStatusBar.h"
 
-typedef enum WADayViewSupportedStyle: NSUInteger {
+typedef NS_ENUM(NSUInteger, WADayViewSupportedStyle) {
 	WAEventsViewStyle,
 	WAPhotosViewStyle,
-} WADayViewSupportedStyle;
+};
 
 @interface WASlidingMenuViewController : UITableViewController <IIViewDeckControllerDelegate>
 
@@ -23,7 +23,7 @@ typedef enum WADayViewSupportedStyle: NSUInteger {
 + (UIViewController *)viewControllerForViewStyle:(WADayViewSupportedStyle)viewStyle ;
 
 - (void) switchToViewStyle:(WADayViewSupportedStyle)viewStyle;
-- (void) switchToViewStyle:(WADayViewSupportedStyle)viewStyle date:(NSDate*)date;
-- (void) switchToViewStyle:(WADayViewSupportedStyle)viewStyle date:(NSDate*)date animated:(BOOL)animated;
+- (void) switchToViewStyle:(WADayViewSupportedStyle)viewStyle onDate:(NSDate*)date;
+- (void) switchToViewStyle:(WADayViewSupportedStyle)viewStyle onDate:(NSDate*)date animated:(BOOL)animated;
 
 @end
