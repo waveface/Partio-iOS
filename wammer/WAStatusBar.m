@@ -8,6 +8,10 @@
 
 #import "WAStatusBar.h"
 
+#define kStatusBarHeight 20.0f
+#define kScreenWidth ((CGFloat)([UIScreen mainScreen].bounds.size.width))
+#define kScreenHeight ((CGFloat)([UIScreen mainScreen].bounds.size.height))
+
 @implementation WAStatusBar
 
 - (id)initWithFrame:(CGRect)frame {
@@ -16,9 +20,9 @@
 	if (self) {
 
 		self.windowLevel = UIWindowLevelStatusBar + 1.0;
-		self.frame = [UIApplication sharedApplication].statusBarFrame;
 		self.backgroundColor = [UIColor blackColor];
 		self.hidden = NO;
+		self.opaque = NO;
 		
 		self.statusLabel = [[UILabel alloc] init];
 		self.statusLabel.translatesAutoresizingMaskIntoConstraints = NO;
@@ -44,8 +48,62 @@
 		[self addConstraint:[NSLayoutConstraint constraintWithItem:self.statusLabel attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeCenterY multiplier:1.0 constant:0]];
 		[self addConstraint:[NSLayoutConstraint constraintWithItem:self.progressView attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeCenterY multiplier:1.0 constant:-1]];
 
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didChangeStatusBarFrame:) name:UIApplicationDidChangeStatusBarFrameNotification object:nil];
+
+		[self rotateToStatusBarFrame];
 	}
 	return self;
+
+}
+
+- (void)dealloc {
+
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
+
+}
+
+- (void)rotateToStatusBarFrame {
+
+	BOOL visibleBeforeTransformation = YES;
+	if (self.alpha == 0) {
+		visibleBeforeTransformation = NO;
+	} else {
+		self.alpha = 0;
+	}
+
+	UIInterfaceOrientation orientation = [UIApplication sharedApplication].statusBarOrientation;
+	if (orientation == UIDeviceOrientationPortrait) {
+		self.transform = CGAffineTransformIdentity;
+		self.frame = CGRectMake(0, 0, kScreenWidth, kStatusBarHeight);
+	} else if (orientation == UIDeviceOrientationLandscapeLeft) {
+		self.transform = CGAffineTransformMakeRotation(M_PI_2);
+		self.frame = CGRectMake(kScreenWidth-kStatusBarHeight, 0, kStatusBarHeight, kScreenHeight);
+	} else if (orientation == UIDeviceOrientationLandscapeRight) {
+		self.transform = CGAffineTransformMakeRotation(-M_PI_2);
+		self.frame = CGRectMake(0, 0, kStatusBarHeight, kScreenHeight);
+	} else if (orientation == UIDeviceOrientationPortraitUpsideDown) {
+		self.transform = CGAffineTransformMakeRotation(M_PI);
+		self.frame = CGRectMake(0, kScreenHeight-kStatusBarHeight, kScreenWidth, kStatusBarHeight);
+	}
+
+	if (visibleBeforeTransformation) {
+		__weak WAStatusBar *wSelf = self;
+		[UIView animateWithDuration:0.0f
+													delay:[UIApplication sharedApplication].statusBarOrientationAnimationDuration
+												options:UIViewAnimationOptionTransitionNone
+										 animations:^{
+											 wSelf.alpha = 1.0;
+										 }
+										 completion:nil];
+	}
+
+}
+
+#pragma mark - Target actions
+
+- (void)didChangeStatusBarFrame:(NSNotification *)notification {
+
+	[self rotateToStatusBarFrame];
 
 }
 

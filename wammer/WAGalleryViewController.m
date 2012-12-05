@@ -16,6 +16,8 @@
 #import "Foundation+IRAdditions.h"
 #import "IRAsyncOperation.h"
 #import "WACompositionViewController.h"
+#import "WAAppDelegate_iOS.h"
+#import "WADefines.h"
 
 #import "GAI.h"
 
@@ -348,7 +350,7 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 			[[wSelf.article.files objectAtIndex:index] cleanImageCache];
 		}
 	}];
-	
+
 	[[GAI sharedInstance].defaultTracker trackEventWithCategory:@"Gallery"
 																									 withAction:@"Enter gallery"
 																										withLabel:nil
@@ -757,9 +759,9 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 		});
 
 	}
-	
+
 	[[UIApplication sharedApplication] setStatusBarHidden:willHide withAnimation:(animate ? UIStatusBarAnimationFade : UIStatusBarAnimationNone)];
-	
+
 	[self.view setNeedsLayout];
 	[self.view layoutSubviews];
 	
@@ -796,6 +798,8 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 		self.navigationController.toolbar.alpha = (willHide ? 0.0f : 1.0f);
 		
 		self.navigationController.navigationBar.frame = oldNavControllerNavBarFrame;
+
+		[(WAAppDelegate_iOS *)AppDelegate() slidingMenu].statusBar.alpha = willHide ? 0.0f : 1.0f;
 		
 	} completion: ^ (BOOL didFinish){
 
