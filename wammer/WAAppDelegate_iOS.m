@@ -82,8 +82,10 @@ static NSString *const kTrackingId = @"UA-27817516-7";
 	self.view.backgroundColor = [self decoratedBackgroundColor:[[UIDevice currentDevice] orientation]];
 }
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
+- (BOOL) shouldAutorotate {
+
 	return YES;
+
 }
 
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
@@ -345,57 +347,22 @@ extern CFAbsoluteTime StartTime;
 
 	[[IRRemoteResourcesManager sharedManager].queue cancelAllOperations];
 	
-	switch (UI_USER_INTERFACE_IDIOM()) {
-	
-		case UIUserInterfaceIdiomPad: {
-		
-			WADayViewController *swVC = [[WADayViewController alloc] initWithClassNamed:[WATimelineViewController class]];
-			WANavigationController *timelineNavC = [[WANavigationController alloc] initWithRootViewController:swVC];
-						
-			self.slidingMenu = [[WASlidingMenuViewController alloc] init];
-			self.slidingMenu.delegate = self;
+	self.slidingMenu = [[WASlidingMenuViewController alloc] init];
+	self.slidingMenu.delegate = self;
 			
-			IIViewDeckController *viewDeckController = [[IIViewDeckController alloc] initWithCenterViewController:timelineNavC
+	IIViewDeckController *viewDeckController = [[IIViewDeckController alloc] initWithCenterViewController:[WASlidingMenuViewController viewControllerForViewStyle:WAEventsViewStyle]
 																																												 leftViewController:self.slidingMenu];
-			viewDeckController.view.backgroundColor = [UIColor blackColor];
-			viewDeckController.leftLedge = self.window.frame.size.width - 200.0f;
-			viewDeckController.rotationBehavior = IIViewDeckRotationKeepsLedgeSizes;
-			//			viewDeckController.animationBehavior = IIViewDeckAnimationPullIn;
-			viewDeckController.panningMode = IIViewDeckNoPanning;
-			[viewDeckController setWantsFullScreenLayout:YES];
-			viewDeckController.delegate = self.slidingMenu;
-			viewDeckController.centerhiddenInteractivity = IIViewDeckCenterHiddenNotUserInteractiveWithTapToClose;
+	viewDeckController.view.backgroundColor = [UIColor blackColor];
+	viewDeckController.leftLedge = self.window.frame.size.width - 200.0f;
+	viewDeckController.rotationBehavior = IIViewDeckRotationKeepsLedgeSizes;
+	//			viewDeckController.animationBehavior = IIViewDeckAnimationPullIn;
+	viewDeckController.panningMode = IIViewDeckNoPanning;
+	[viewDeckController setWantsFullScreenLayout:YES];
+	viewDeckController.delegate = self.slidingMenu;
+	viewDeckController.centerhiddenInteractivity = IIViewDeckCenterHiddenNotUserInteractiveWithTapToClose;
 			
-			self.window.rootViewController = viewDeckController;
+	self.window.rootViewController = viewDeckController;
 
-			break;
-		
-		}
-		
-		case UIUserInterfaceIdiomPhone: {
-			WADayViewController *swVC = [[WADayViewController alloc] initWithClassNamed:[WATimelineViewController class]];
-			WANavigationController *timelineNavC = [[WANavigationController alloc] initWithRootViewController:swVC];
-
-			self.slidingMenu = [[WASlidingMenuViewController alloc] init];
-			self.slidingMenu.delegate = self;
-
-			IIViewDeckController *viewDeckController = [[IIViewDeckController alloc] initWithCenterViewController:timelineNavC leftViewController:self.slidingMenu];
-			viewDeckController.view.backgroundColor = [UIColor blackColor];
-			viewDeckController.leftLedge = self.window.frame.size.width - 200.0f;
-			viewDeckController.rotationBehavior = IIViewDeckRotationKeepsLedgeSizes;
-//			viewDeckController.animationBehavior = IIViewDeckAnimationPullIn;
-			viewDeckController.panningMode = IIViewDeckNoPanning;
-			[viewDeckController setWantsFullScreenLayout:YES];
-			viewDeckController.delegate = self.slidingMenu;
-			viewDeckController.centerhiddenInteractivity = IIViewDeckCenterHiddenNotUserInteractiveWithTapToClose;
-	
-			self.window.rootViewController = viewDeckController;
-		
-			break;
-		
-		}
-	
-	}
 	
 	UIViewController *vc = self.window.rootViewController;
 	
