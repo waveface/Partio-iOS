@@ -21,6 +21,9 @@
 		136DD1AC166323B9001ECE60 /* forward.png in Resources */ = {isa = PBXBuildFile; fileRef = 136DD1AB166323B9001ECE60 /* forward.png */; };
 		136DD1AE166323C2001ECE60 /* forward@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 136DD1AD166323C2001ECE60 /* forward@2x.png */; };
 		1374524D166F1A250027582D /* WAFilePageElement+WAAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 1374524C166F1A250027582D /* WAFilePageElement+WAAdditions.m */; };
+		13745256166F483D0027582D /* WADocumentStreamViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 13745254166F483D0027582D /* WADocumentStreamViewController.m */; };
+		13745257166F483D0027582D /* WADocumentStreamViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 13745255166F483D0027582D /* WADocumentStreamViewController.xib */; };
+		1374525A166F4A780027582D /* WADocumentStreamViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 13745259166F4A770027582D /* WADocumentStreamViewCell.m */; };
 		13793344162C0EA000FA9E8F /* WAFileExif+WAAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 13793343162C0EA000FA9E8F /* WAFileExif+WAAdditions.m */; };
 		138CCA351609D22700B477CE /* TutorialPhotoImport~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 138CCA331609D22700B477CE /* TutorialPhotoImport~iphone.png */; };
 		138CCA381609D23C00B477CE /* TutorialPhotoImport@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 138CCA361609D23C00B477CE /* TutorialPhotoImport@2x~iphone.png */; };
@@ -1004,6 +1007,11 @@
 		136DD1AD166323C2001ECE60 /* forward@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "forward@2x.png"; path = "Resources/forward@2x.png"; sourceTree = "<group>"; };
 		1374524B166F1A250027582D /* WAFilePageElement+WAAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WAFilePageElement+WAAdditions.h"; sourceTree = "<group>"; };
 		1374524C166F1A250027582D /* WAFilePageElement+WAAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WAFilePageElement+WAAdditions.m"; sourceTree = "<group>"; };
+		13745253166F483D0027582D /* WADocumentStreamViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WADocumentStreamViewController.h; sourceTree = "<group>"; };
+		13745254166F483D0027582D /* WADocumentStreamViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WADocumentStreamViewController.m; sourceTree = "<group>"; };
+		13745255166F483D0027582D /* WADocumentStreamViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WADocumentStreamViewController.xib; sourceTree = "<group>"; };
+		13745258166F4A770027582D /* WADocumentStreamViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WADocumentStreamViewCell.h; sourceTree = "<group>"; };
+		13745259166F4A770027582D /* WADocumentStreamViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WADocumentStreamViewCell.m; sourceTree = "<group>"; };
 		13793342162C0EA000FA9E8F /* WAFileExif+WAAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WAFileExif+WAAdditions.h"; sourceTree = "<group>"; };
 		13793343162C0EA000FA9E8F /* WAFileExif+WAAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WAFileExif+WAAdditions.m"; sourceTree = "<group>"; };
 		138CCA341609D22700B477CE /* en */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = en; path = "en.lproj/TutorialPhotoImport~iphone.png"; sourceTree = "<group>"; };
@@ -2666,6 +2674,11 @@
 				80EF84CD165F379D009D29A5 /* WATimelineViewCell-ImageStack-1.xib */,
 				80EF84CF165F37C4009D29A5 /* WATimelineViewCell-ImageStack-2.xib */,
 				80175AFA165B4107007E783B /* WATimelineViewCell-ImageStack-3.xib */,
+				13745253166F483D0027582D /* WADocumentStreamViewController.h */,
+				13745254166F483D0027582D /* WADocumentStreamViewController.m */,
+				13745255166F483D0027582D /* WADocumentStreamViewController.xib */,
+				13745258166F4A770027582D /* WADocumentStreamViewCell.h */,
+				13745259166F4A770027582D /* WADocumentStreamViewCell.m */,
 			);
 			name = Timeline;
 			path = wammer;
@@ -4185,6 +4198,7 @@
 				80EF84D0165F37C4009D29A5 /* WATimelineViewCell-ImageStack-2.xib in Resources */,
 				136DD1AC166323B9001ECE60 /* forward.png in Resources */,
 				136DD1AE166323C2001ECE60 /* forward@2x.png in Resources */,
+				13745257166F483D0027582D /* WADocumentStreamViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4619,6 +4633,8 @@
 				13BAB30B16674C0300BC79B2 /* WAOAuthSwitch.m in Sources */,
 				13C1AB1D16688BEA004E6437 /* WAGoogleConnectSwitch.m in Sources */,
 				1374524D166F1A250027582D /* WAFilePageElement+WAAdditions.m in Sources */,
+				13745256166F483D0027582D /* WADocumentStreamViewController.m in Sources */,
+				1374525A166F4A780027582D /* WADocumentStreamViewCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
