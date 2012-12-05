@@ -156,7 +156,7 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
   
   } else if ([incomingFileType isEqualToString:@"doc"]) {
   
-    NSNumber *pagesValue = [incomingRepresentation valueForKeyPath:@"doc_meta.pages"];
+    NSNumber *pagesValue = [incomingRepresentation valueForKeyPath:@"doc_meta.preview_pages"];
     
     if ([pagesValue isKindOfClass:[NSNumber class]]) {
     
@@ -169,15 +169,19 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
         
         for (NSUInteger i = 0; i < numberOfPages; i++) {
         
-          [returnedArray addObject:@{@"thumbnailURL": [IRWebAPIRequestURLWithQueryParameters(
+          [returnedArray addObject:
+						
+						@{@"thumbnailURL": [IRWebAPIRequestURLWithQueryParameters(
               
               [[NSURL URLWithString:@"http://invalid.local"] URLByAppendingPathComponent:@"v2/attachments/view"],
               
-              @{@"object_id": ownObjectID,
-                @"target": @"slide",
-                @"page": @(i + 1)}
+              @{@"object_id": ownObjectID, @"target": @"preview", @"page": @(i + 1)}
               
-            ) absoluteString]}];
+																																			) absoluteString],
+							@"page": @(i + 1)
+						}
+
+					];
         
         }
         

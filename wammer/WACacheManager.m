@@ -121,8 +121,11 @@ NSUInteger const DEFAULT_CACHE_SIZE = 600*1024*1024; //600MB
 		context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
 
 		id relatedObject = [context irManagedObjectForURI:relationshipURL];
+		
 		BOOL isWAFile = [relatedObject isKindOfClass:[WAFile class]];
 		BOOL isWAOpenGraphElementImage = [relatedObject isKindOfClass:[WAOpenGraphElementImage class]];
+		BOOL isWAFilePageElement = [relatedObject isKindOfClass:[WAFilePageElement class]];
+
 		NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K == %@ && %K == %@", kWACacheFilePathKey, filePathKey, kWACacheFilePath, filePath];
 		WACache *currentCache = [[WADataStore defaultStore] fetchCacheWithPredicate:predicate usingContext:context];
 		WACache *savedCache = nil;
@@ -144,6 +147,8 @@ NSUInteger const DEFAULT_CACHE_SIZE = 600*1024*1024; //600MB
 				savedCache.file = (WAFile *)relatedObject;
 			} else if (isWAOpenGraphElementImage) {
 				savedCache.ogimage = (WAOpenGraphElementImage *)relatedObject;
+			} else if (isWAFilePageElement) {
+				savedCache.pageElement = (WAFilePageElement *)relatedObject;
 			}
 			
 		}
