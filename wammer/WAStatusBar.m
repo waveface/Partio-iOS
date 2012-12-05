@@ -9,8 +9,8 @@
 #import "WAStatusBar.h"
 
 #define kStatusBarHeight 20.0f
-#define kScreenWidth [UIScreen mainScreen].bounds.size.width
-#define kScreenHeight [UIScreen mainScreen].bounds.size.height
+#define kScreenWidth ((CGFloat)([UIScreen mainScreen].bounds.size.width))
+#define kScreenHeight ((CGFloat)([UIScreen mainScreen].bounds.size.height))
 
 @implementation WAStatusBar
 
