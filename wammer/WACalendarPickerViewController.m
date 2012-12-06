@@ -132,7 +132,8 @@
 {
 	[super viewDidLoad];
   
-	self.view.frame = CGRectMake(0, 0, kCalWidth, kCalHeight);
+	self.view.backgroundColor = [UIColor blackColor];
+	calPicker.view.frame = CGRectMake(0, 0, kCalWidth, kCalHeight);
 	self.view.layer.cornerRadius = 3.f;
 	self.view.clipsToBounds = YES;
 	
@@ -205,17 +206,17 @@
 	const CGFloat kScreenWidth = ((CGFloat)([UIScreen mainScreen].bounds.size.width));
 	const CGFloat kScreenHeight = ((CGFloat)([UIScreen mainScreen].bounds.size.height));
 	
-		if (toInterfaceOrientation == UIInterfaceOrientationMaskPortrait) {
-		self.view.frame = CGRectMake(0, 0, kCalWidth, kCalHeight);
+	if (toInterfaceOrientation == UIInterfaceOrientationMaskPortrait) {
+		calPicker.view.frame = CGRectMake(0, 0, kCalWidth, kCalHeight);
 	}
 	else if (toInterfaceOrientation == UIInterfaceOrientationLandscapeLeft) {
-		self.view.frame = CGRectMake(kScreenWidth, 0, kCalHeight, kCalWidth); 
+		calPicker.view.frame = CGRectMake(kScreenWidth - kCalHeight, 0, kCalHeight, kCalWidth);
 	}
 	else if (toInterfaceOrientation == UIInterfaceOrientationPortraitUpsideDown) {
-		self.view.frame = CGRectMake(kScreenWidth - kCalWidth, kScreenHeight - kCalHeight, kCalWidth, kCalHeight);
+		calPicker.view.frame = CGRectMake(0, 0, kCalWidth, kCalHeight);
 	}
 	else if (toInterfaceOrientation == UIInterfaceOrientationLandscapeRight) {
-		self.view.frame = CGRectMake(0, kScreenHeight - kCalWidth, kCalHeight, kCalWidth);
+		calPicker.view.frame = CGRectMake(0, kScreenHeight - kCalWidth, kCalHeight, kCalWidth);
 	}
 }
 
