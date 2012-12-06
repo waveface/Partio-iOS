@@ -9,9 +9,17 @@
 #import "WADocumentStreamViewCell.h"
 #import "Foundation+IRAdditions.h"
 
-NSString * const kWADocumentStreamViewCellID = @"WADocumentStreamViewCell";
+NSString * const kWADocumentStreamViewCellID = @"DocumentStreamViewCell";
 
 @implementation WADocumentStreamViewCell
+
+- (id)initWithFrame:(CGRect)frame {
+
+	self = [[NSBundle mainBundle] loadNibNamed:@"WADocumentStreamViewCell" owner:self options:nil][0];
+
+	return self;
+
+}
 
 #pragma mark - UICollectionReusableView delegates
 

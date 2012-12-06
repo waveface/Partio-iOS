@@ -20,6 +20,7 @@
 @property (nonatomic, retain) NSDate * created;
 @property (nonatomic, retain) NSString * creationDeviceIdentifier;
 @property (nonatomic, retain) NSNumber * dirty;
+@property (nonatomic, retain) NSDate * docAccessTime;
 @property (nonatomic, retain) NSString * extraSmallThumbnailFilePath;
 @property (nonatomic, retain) NSString * identifier;
 @property (nonatomic, retain) NSDate * importTime;

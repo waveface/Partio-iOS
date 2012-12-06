@@ -41,6 +41,7 @@
 		13BFC39D164A40E600FC39A4 /* WAFirstUseFacebookLoginView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 13BFC39C164A40E600FC39A4 /* WAFirstUseFacebookLoginView.xib */; };
 		13C1AB1D16688BEA004E6437 /* WAGoogleConnectSwitch.m in Sources */ = {isa = PBXBuildFile; fileRef = 13C1AB1C16688BEA004E6437 /* WAGoogleConnectSwitch.m */; };
 		13C30CDD1640DCB0000A8414 /* WAFirstUseChoosePlanViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 13C30CDC1640DCB0000A8414 /* WAFirstUseChoosePlanViewController.m */; };
+		13DAAD7C166FB100002900D7 /* WADocumentStreamViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 13DAAD7B166FB100002900D7 /* WADocumentStreamViewCell.xib */; };
 		13DE12EB1637F30A00757F7C /* WAFirstUseDoneViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 13DE12E71637F30A00757F7C /* WAFirstUseDoneViewController.m */; };
 		13DE12EC1637F30A00757F7C /* WAFirstUseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 13DE12E91637F30A00757F7C /* WAFirstUseViewController.m */; };
 		13DE12EE1637F37C00757F7C /* WAFirstUse.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 13DE12ED1637F37C00757F7C /* WAFirstUse.storyboard */; };
@@ -1045,6 +1046,7 @@
 		13C1AB1C16688BEA004E6437 /* WAGoogleConnectSwitch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WAGoogleConnectSwitch.m; path = wammer/WAGoogleConnectSwitch.m; sourceTree = "<group>"; };
 		13C30CDB1640DCB0000A8414 /* WAFirstUseChoosePlanViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WAFirstUseChoosePlanViewController.h; path = wammer/WAFirstUseChoosePlanViewController.h; sourceTree = "<group>"; };
 		13C30CDC1640DCB0000A8414 /* WAFirstUseChoosePlanViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WAFirstUseChoosePlanViewController.m; path = wammer/WAFirstUseChoosePlanViewController.m; sourceTree = "<group>"; };
+		13DAAD7B166FB100002900D7 /* WADocumentStreamViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WADocumentStreamViewCell.xib; sourceTree = "<group>"; };
 		13DE12E61637F30A00757F7C /* WAFirstUseDoneViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WAFirstUseDoneViewController.h; path = wammer/WAFirstUseDoneViewController.h; sourceTree = "<group>"; };
 		13DE12E71637F30A00757F7C /* WAFirstUseDoneViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WAFirstUseDoneViewController.m; path = wammer/WAFirstUseDoneViewController.m; sourceTree = "<group>"; };
 		13DE12E81637F30A00757F7C /* WAFirstUseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WAFirstUseViewController.h; path = wammer/WAFirstUseViewController.h; sourceTree = "<group>"; };
@@ -2679,6 +2681,7 @@
 				13745255166F483D0027582D /* WADocumentStreamViewController.xib */,
 				13745258166F4A770027582D /* WADocumentStreamViewCell.h */,
 				13745259166F4A770027582D /* WADocumentStreamViewCell.m */,
+				13DAAD7B166FB100002900D7 /* WADocumentStreamViewCell.xib */,
 			);
 			name = Timeline;
 			path = wammer;
@@ -4199,6 +4202,7 @@
 				136DD1AC166323B9001ECE60 /* forward.png in Resources */,
 				136DD1AE166323C2001ECE60 /* forward@2x.png in Resources */,
 				13745257166F483D0027582D /* WADocumentStreamViewController.xib in Resources */,
+				13DAAD7C166FB100002900D7 /* WADocumentStreamViewCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

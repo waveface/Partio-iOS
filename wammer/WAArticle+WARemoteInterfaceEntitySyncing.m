@@ -130,6 +130,7 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 	NSString *articleID = incomingRepresentation[@"post_id"];
 	NSString *groupID = incomingRepresentation[@"group_id"];
 	NSString *representingFileID = incomingRepresentation[@"cover_attach"];
+	NSString *type = incomingRepresentation[@"type"];
 
 	NSMutableArray *fullAttachmentList = [incomingRepresentation[@"attachment_id_array"] mutableCopy];
 	NSArray *incomingAttachmentList = [incomingRepresentation[@"attachments"] copy];
@@ -146,15 +147,27 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 		}
 
 		for (NSString *objectID in fullAttachmentList) {
-			NSDictionary *attach = @{
-				@"object_id": objectID,
-				@"creator_id": creatorID,
-				@"post_id": articleID,
-				@"file_name": @"unknown.jpg",
-				@"type": @"image",
-				@"timestamp": incomingRepresentation[@"event_time"],
-			};
-			[returnedAttachmentList addObject:attach];
+			if ([type isEqualToString:@"image"]) {
+				NSDictionary *attach = @{
+					@"object_id": objectID,
+					@"creator_id": creatorID,
+					@"post_id": articleID,
+					@"file_name": @"unknown.jpg",
+					@"type": @"image",
+					@"timestamp": incomingRepresentation[@"event_time"],
+				};
+				[returnedAttachmentList addObject:attach];
+			} else if ([type isEqualToString:@"doc"]) {
+				NSDictionary *attach = @{
+					@"object_id": objectID,
+					@"creator_id": creatorID,
+					@"post_id": articleID,
+					@"file_name": @"unknown.txt",
+					@"type": @"doc",
+					@"timestamp": incomingRepresentation[@"event_time"],
+				};
+				[returnedAttachmentList addObject:attach];				
+			}
 		}
 
 		returnedDictionary[@"attachments"] = returnedAttachmentList;

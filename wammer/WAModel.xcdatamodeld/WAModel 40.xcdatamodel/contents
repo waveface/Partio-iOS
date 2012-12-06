@@ -100,6 +100,7 @@
         <attribute name="created" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="creationDeviceIdentifier" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="dirty" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
+        <attribute name="docAccessTime" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="extraSmallThumbnailFilePath" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="identifier" optional="YES" attributeType="String" indexed="YES">
             <userInfo/>
@@ -324,7 +325,7 @@
         <element name="WACache" positionX="0" positionY="0" width="128" height="150"/>
         <element name="WACollection" positionX="0" positionY="0" width="128" height="180"/>
         <element name="WAComment" positionX="0" positionY="0" width="128" height="135"/>
-        <element name="WAFile" positionX="0" positionY="0" width="128" height="585"/>
+        <element name="WAFile" positionX="0" positionY="0" width="128" height="600"/>
         <element name="WAFileExif" positionX="0" positionY="0" width="128" height="315"/>
         <element name="WAFilePageElement" positionX="0" positionY="0" width="128" height="120"/>
         <element name="WAGroup" positionX="0" positionY="0" width="128" height="120"/>

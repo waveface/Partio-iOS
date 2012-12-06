@@ -9,8 +9,10 @@
 #import <UIKit/UIKit.h>
 #import "WAFile.h"
 
-@interface WADocumentStreamViewController : UICollectionViewController <NSFetchedResultsControllerDelegate>
+@interface WADocumentStreamViewController : UIViewController <UICollectionViewDelegate, UICollectionViewDataSource,  NSFetchedResultsControllerDelegate>
 
-+ (WADocumentStreamViewController *)initWithDate:(NSDate *)date;
+@property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
+
+- (id)initWithDate:(NSDate *)date;
 
 @end
