@@ -14,6 +14,6 @@
 
 - (id)initWithClassNamed: (Class)containerClass;
 - (void)jumpToToday;
-- (void)jumpToTimelineOnDate:(NSDate*)date;
+- (BOOL)jumpToDate:(NSDate*)date animated:(BOOL)animated;
 
 @end

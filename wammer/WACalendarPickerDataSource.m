@@ -39,9 +39,8 @@
 	return self;
 }
 
-- (void)loadDataDatesFrom:(NSDate *)fromDate to:(NSDate *)toDate delegate:(id<KalDataSourceCallbacks>)delegate
-{	
-	// Load events
+- (NSArray *)fetchAllArticlesFrom:(NSDate *)fromDate to:(NSDate *)toDate
+{
 	NSFetchRequest *fetchRequest = [[WADataStore defaultStore].persistentStoreCoordinator.managedObjectModel fetchRequestFromTemplateWithName:@"WAFRArticles" substitutionVariables:@{}];
 	
 	fetchRequest.relationshipKeyPathsForPrefetching = @[
@@ -73,45 +72,21 @@
 	NSError *error = nil;
 	
 	if(![self.fetchedResultsController performFetch:&error]) {
-	
+		
 		NSLog(@"%@: failed to fetch articles for events", __FUNCTION__);
-	
+		
 	}
-	else {
-		
-		_events = [self.fetchedResultsController.fetchedObjects mutableCopy];
-		
-		__block NSDate *currentDate = nil;
-		
-		[_events enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-			
-			NSDate *theDate = nil;
-			NSMutableDictionary *aDay = [@{
-																	 @"date": [NSDate date],
-																	 @"events": @0,
-																	 @"photos": @0
-																	 } mutableCopy];
-			
-			theDate = [[((WAArticle*)obj) creationDate] dayBegin];
-			
-			if (!currentDate || !isSameDay(currentDate, theDate)) {
-				aDay[@"date"] = theDate;
-				aDay[@"events"] = @1;
-				[_days addObject:aDay];
-				currentDate = theDate;
-			}
-			
-		}];
 
-		
-	}
-	
-	// Load photos
+	return self.fetchedResultsController.fetchedObjects;
+}
+
+- (NSArray *)fetchAllFilesFrom:(NSDate *)fromDate to:(NSDate *)toDate
+{
 	NSFetchRequest *fileFetchRequest = [[WADataStore defaultStore].persistentStoreCoordinator.managedObjectModel fetchRequestFromTemplateWithName:@"WAFRAllFiles" substitutionVariables:@{}];
-		
+	
 	fileFetchRequest.predicate = [NSPredicate predicateWithFormat:@"created >= %@ AND created <= %@", fromDate, toDate];
 	fileFetchRequest.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"created" ascending:NO]];
-		
+	
 	self.fetchedResultsController = [[NSFetchedResultsController alloc]
 																	 initWithFetchRequest:fileFetchRequest
 																	 managedObjectContext:[[WADataStore defaultStore] defaultAutoUpdatedMOC]
@@ -120,51 +95,87 @@
 	
 	self.fetchedResultsController.delegate = self;
 	
-	error = nil;
+	NSError *error = nil;
 	
 	if(![self.fetchedResultsController performFetch:&error]) {
 		
 		NSLog(@"%@: failed to fetch articles for events", __FUNCTION__);
 		
 	}
-	else {
-		_files = [self.fetchedResultsController.fetchedObjects mutableCopy];
-		
-		NSArray *fileOfDistinctDates = [_files valueForKeyPath:@"@distinctUnionOfObjects.created.dayBegin"];
-		
-		[fileOfDistinctDates enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-			
-			NSDate *date = obj;
-			
-			NSMutableDictionary *aDay = [@{
-																	 @"date": date,
-																	 @"events": @0,
-																	 @"photos": @0
-																	 } mutableCopy];
-			
-			NSPredicate *finder = [NSPredicate predicateWithFormat:@"date.dayBegin == %@", [date dayBegin]];
-			NSMutableDictionary *targetSameDay = [[_days filteredArrayUsingPredicate:finder] lastObject];
-			
-			if (!targetSameDay) {
-				aDay[@"date"] = date;
-				aDay[@"photos"] = @1;
-				[_days addObject:aDay];
-			}
-			else if([targetSameDay[@"photos"] isEqual:@0]) {
-				targetSameDay[@"photos"] = @1;
-				[_days replaceObjectAtIndex:[_days indexOfObject:targetSameDay] withObject:targetSameDay];
-			}
-			
-		}];
+	
+	return self.fetchedResultsController.fetchedObjects;
+}
 
-				
-		_days = [[_days sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2){
-			NSDate *d1 = obj1[@"date"];
-			NSDate *d2 = obj2[@"date"];
-			return [d2 compare:d1];
-		}] mutableCopy];
+- (void)loadDataDatesFrom:(NSDate *)fromDate to:(NSDate *)toDate delegate:(id<KalDataSourceCallbacks>)delegate
+{	
+	// Load events and event days	
+	_events = [[self fetchAllArticlesFrom:fromDate to:toDate] mutableCopy];
+	
+	__block NSDate *currentDate = nil;
+	
+	[_events enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+		
+		NSDate *theDate = nil;
+		NSMutableDictionary *aDay = [@{
+																 @"date": [NSDate date],
+																 @"events": @0,
+																 @"photos": @0
+																 } mutableCopy];
+		
+		theDate = [[((WAArticle*)obj) creationDate] dayBegin];
+		
+		if (!currentDate || !isSameDay(currentDate, theDate)) {
 
-	}
+			aDay[@"date"] = theDate;
+			aDay[@"events"] = @1;
+			[_days addObject:aDay];
+			currentDate = theDate;
+		
+		}
+		
+	}];
+	
+	// Load photos and photo days
+	_files = [[self fetchAllFilesFrom:fromDate to:toDate] mutableCopy];
+		
+	NSArray *fileOfDistinctDates = [_files valueForKeyPath:@"@distinctUnionOfObjects.created.dayBegin"];
+	
+	[fileOfDistinctDates enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+		
+		NSDate *date = obj;
+		
+		NSMutableDictionary *aDay = [@{
+																 @"date": date,
+																 @"events": @0,
+																 @"photos": @0
+																 } mutableCopy];
+		
+		NSPredicate *finder = [NSPredicate predicateWithFormat:@"date.dayBegin == %@", [date dayBegin]];
+		NSMutableDictionary *targetSameDay = [[_days filteredArrayUsingPredicate:finder] lastObject];
+		
+		if (!targetSameDay) {
+			
+			aDay[@"date"] = date;
+			aDay[@"photos"] = @1;
+			[_days addObject:aDay];
+		
+		}
+		else if([targetSameDay[@"photos"] isEqual:@0]) {
+		
+			targetSameDay[@"photos"] = @1;
+			[_days replaceObjectAtIndex:[_days indexOfObject:targetSameDay] withObject:targetSameDay];
+		
+		}
+		
+	}];
+	
+	
+	_days = [[_days sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2){
+		NSDate *d1 = obj1[@"date"];
+		NSDate *d2 = obj2[@"date"];
+		return [d2 compare:d1];
+	}] mutableCopy];
+
 	
 	[delegate loadedDataSource:self];
 }
@@ -186,17 +197,10 @@
 
 - (void)loadItemsFromDate:(NSDate *)fromDate toDate:(NSDate *)toDate
 {
-	_items = [NSMutableArray array];
 	
-	for (WAArticle *event in _events) {
-		
-		if (isSameDay(event.creationDate, fromDate))
-			[_items addObject:event];
+	[_items addObjectsFromArray:[self fetchAllArticlesFrom:fromDate to:toDate]];
 	
-	}
-	
-	NSPredicate *selecteDate = [NSPredicate predicateWithFormat:@"created.dayBegin == %@", fromDate];
-	NSArray *filesOfDate = [_files filteredArrayUsingPredicate:selecteDate];
+	NSArray *filesOfDate = [self fetchAllFilesFrom:fromDate to:toDate];
 	
 	if ([filesOfDate count]) {
 	

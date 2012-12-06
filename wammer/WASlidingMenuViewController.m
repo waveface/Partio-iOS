@@ -37,13 +37,45 @@
 
 @end
 
-@implementation WASlidingMenuViewController
+@implementation WASlidingMenuViewController {
+	WADayViewSupportedStyle currentViewStyle;
+}
+
++ (UIViewController *)viewControllerForViewStyle:(WADayViewSupportedStyle)viewStyle {
+	
+	switch (viewStyle) {
+		case WAEventsViewStyle: {
+			WADayViewController *swVC = [[WADayViewController alloc] initWithClassNamed:[WATimelineViewController class]];
+			WANavigationController *navVC = [[WANavigationController alloc] initWithRootViewController:swVC];
+			swVC.view.backgroundColor = [UIColor colorWithRed:0.95f green:0.95f blue:0.95f alpha:1];
+			
+			return navVC;
+		}
+			
+		case WAPhotosViewStyle: {
+			WADayViewController *swVC = [[WADayViewController alloc] initWithClassNamed:[WAPhotoStreamViewController class]];
+			WANavigationController *navVC = [[WANavigationController alloc] initWithRootViewController:swVC];
+						
+			swVC.navigationController.navigationBar.tintColor = [UIColor colorWithWhite:0.157 alpha:1.000];
+			swVC.navigationController.navigationBar.titleTextAttributes = @{UITextAttributeTextColor: [UIColor whiteColor]};
+			[swVC.navigationController.navigationBar setBackgroundImage:nil forBarMetrics:UIBarMetricsDefault];
+			swVC.view.backgroundColor = [UIColor colorWithWhite:0.16f alpha:1.0f];
+
+			return navVC;
+		}
+			
+		default:
+			return nil;
+	}
+}
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
 	self = [super initWithStyle:style];
 	if (self) {
 		// Custom initialization
+		
+		currentViewStyle = WAEventsViewStyle;
 	}
 	return self;
 }
@@ -372,20 +404,15 @@
 		case 1: {
 			[self.viewDeckController closeLeftView];
 						
-			WADayViewController *swVC = [[WADayViewController alloc] initWithClassNamed:[WATimelineViewController class]];
-			WANavigationController *navVC = [[WANavigationController alloc] initWithRootViewController:swVC];
-			self.viewDeckController.centerController = navVC;
+			[self switchToViewStyle:WAEventsViewStyle];
+			
 			break;
 		}
 		case 2: {
 			[self.viewDeckController closeLeftView];
-			WADayViewController *swVC = [[WADayViewController alloc] initWithClassNamed:[WAPhotoStreamViewController class]];
-			WANavigationController *navVC = [[WANavigationController alloc] initWithRootViewController:swVC];
-			swVC.navigationController.navigationBar.tintColor = [UIColor colorWithWhite:0.157 alpha:1.000];
-			swVC.navigationController.navigationBar.titleTextAttributes = @{UITextAttributeTextColor: [UIColor whiteColor]};
-			[swVC.navigationController.navigationBar setBackgroundImage:nil forBarMetrics:UIBarMetricsDefault];
-
-			self.viewDeckController.centerController = navVC;
+			
+			[self switchToViewStyle:WAPhotosViewStyle];
+			
 			break;
 		}
 		case 4: {
@@ -407,4 +434,66 @@
 	// No shadow
 }
 
+#pragma mark - switch methods
+
+- (void) switchToViewStyle:(WADayViewSupportedStyle)viewStyle {
+	
+	[self switchToViewStyle:viewStyle onDate:nil animated:NO];
+	
+}
+
+- (void) switchToViewStyle:(WADayViewSupportedStyle)viewStyle onDate:(NSDate*)date {
+	
+	[self switchToViewStyle:viewStyle onDate:date animated:NO];
+	
+}
+
+- (void) switchToViewStyle:(WADayViewSupportedStyle)viewStyle onDate:(NSDate*)date animated:(BOOL)animated {
+	CGFloat animationDuration = 0.3f;
+	__weak WASlidingMenuViewController *wSelf = self;
+
+	UINavigationController *navVC = (UINavigationController *)[[self class] viewControllerForViewStyle:viewStyle];
+	WADayViewController *swVC = (WADayViewController*)navVC.topViewController;
+			
+	if (date)
+		[swVC jumpToDate:date animated:NO];
+			
+	if (animated) {
+				
+		[UIView animateWithDuration:animationDuration
+													delay:0.0f
+												options:UIViewAnimationOptionCurveEaseInOut | UIViewAnimationOptionTransitionFlipFromBottom
+										 animations: ^{
+											 wSelf.viewDeckController.centerController = navVC;
+										 }
+										 completion:nil];
+				
+	} else {
+				
+		self.viewDeckController.centerController = navVC;
+				
+	}
+	
+	currentViewStyle = viewStyle;
+}
+
+- (void) switchNextAvailableViewOnDate:(NSDate*)date {
+	
+	if (currentViewStyle == WAEventsViewStyle) {
+	
+		[self switchToViewStyle:WAPhotosViewStyle onDate:date animated:YES];
+		
+	} else if (currentViewStyle == WAPhotosViewStyle) {
+		
+		[self switchToViewStyle:WAEventsViewStyle onDate:date animated:YES];
+		
+	}
+	
+}
+
+- (void) switchPrevAvailableViewOnDate:(NSDate*)date {
+	
+	[self switchNextAvailableViewOnDate:date];
+	
+}
 @end

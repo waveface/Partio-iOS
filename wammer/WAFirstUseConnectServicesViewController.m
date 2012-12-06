@@ -21,6 +21,8 @@ static NSString * const kWASegueConnectServicesToOAuth = @"WASegueConnectService
 @property (nonatomic, strong) NSURLRequest *sentRequest;
 @property (nonatomic, strong) WAOAuthDidComplete didCompleteBlock;
 
+@property (nonatomic, strong) WAGoogleConnectSwitch *googleConnectSwitch;
+
 @end
 
 @implementation WAFirstUseConnectServicesViewController
@@ -44,9 +46,9 @@ static NSString * const kWASegueConnectServicesToOAuth = @"WASegueConnectService
 	picasaSwitch.enabled = NO;
 	self.picasaConnectCell.accessoryView = picasaSwitch;
 
-	WAGoogleConnectSwitch *googleConnectSwitch = [[WAGoogleConnectSwitch alloc] init];
-	googleConnectSwitch.delegate = self;
-	self.googleConnectCell.accessoryView = googleConnectSwitch;
+	self.googleConnectSwitch = [[WAGoogleConnectSwitch alloc] init];
+	self.googleConnectSwitch.delegate = self;
+	self.googleConnectCell.accessoryView = self.googleConnectSwitch;
 	
 	__weak WAFirstUseConnectServicesViewController *wSelf = self;
 	UIBarButtonItem *nextButton = (UIBarButtonItem *)WABackBarButtonItem([UIImage imageNamed:@"forward"], @"", ^{
@@ -73,6 +75,12 @@ static NSString * const kWASegueConnectServicesToOAuth = @"WASegueConnectService
 - (void)localize {
 
 	self.title = NSLocalizedString(@"CONNECT_SERVICES_CONTROLLER_TITLE", @"Title of view controller connecting services");
+
+}
+
+- (void)dealloc {
+
+	self.googleConnectSwitch.delegate = nil;
 
 }
 

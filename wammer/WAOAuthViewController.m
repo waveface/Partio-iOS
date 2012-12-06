@@ -46,6 +46,12 @@
 
 }
 
+- (void)dealloc {
+
+	self.webView.delegate = nil;
+
+}
+
 #pragma mark - UIWebView delegates
 
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {

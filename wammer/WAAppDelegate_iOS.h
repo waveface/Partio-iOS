@@ -10,6 +10,7 @@
 #import "WACacheManager.h"
 #import "WASyncManager.h"
 #import "WAPhotoImportManager.h"
+#import "WASlidingMenuViewController.h"
 #import "GAI.h"
 
 @interface WAAppDelegate_iOS : WAAppDelegate <UIApplicationDelegate, UIAlertViewDelegate>
@@ -19,6 +20,7 @@
 @property (nonatomic, readonly, strong) WAPhotoImportManager *photoImportManager;
 @property (nonatomic, readonly, strong) WACacheManager *cacheManager;
 @property (nonatomic, readonly, strong) WASyncManager *syncManager;
+@property (nonatomic, readonly, strong) WASlidingMenuViewController *slidingMenu;
 
 - (void) recreateViewHierarchy;
 
