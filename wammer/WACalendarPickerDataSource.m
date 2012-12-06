@@ -106,7 +106,7 @@
 	return self.fetchedResultsController.fetchedObjects;
 }
 
-- (void)loadDataDatesFrom:(NSDate *)fromDate to:(NSDate *)toDate delegate:(id<KalDataSourceCallbacks>)delegate
+- (void)loadDataFrom:(NSDate *)fromDate to:(NSDate *)toDate delegate:(id<KalDataSourceCallbacks>)delegate
 {	
 	// Load events and event days	
 	_events = [[self fetchAllArticlesFrom:fromDate to:toDate] mutableCopy];
@@ -151,31 +151,23 @@
 																 } mutableCopy];
 		
 		NSPredicate *finder = [NSPredicate predicateWithFormat:@"date.dayBegin == %@", [date dayBegin]];
-		NSMutableDictionary *targetSameDay = [[_days filteredArrayUsingPredicate:finder] lastObject];
+		NSMutableDictionary *dayWithEvent = [[_days filteredArrayUsingPredicate:finder] lastObject];
 		
-		if (!targetSameDay) {
+		if (!dayWithEvent) {
 			
 			aDay[@"date"] = date;
 			aDay[@"photos"] = @1;
 			[_days addObject:aDay];
 		
 		}
-		else if([targetSameDay[@"photos"] isEqual:@0]) {
+		else if([dayWithEvent[@"photos"] isEqual:@0]) {
 		
-			targetSameDay[@"photos"] = @1;
-			[_days replaceObjectAtIndex:[_days indexOfObject:targetSameDay] withObject:targetSameDay];
+			dayWithEvent[@"photos"] = @1;
+			[_days replaceObjectAtIndex:[_days indexOfObject:dayWithEvent] withObject:dayWithEvent];
 		
 		}
 		
 	}];
-	
-	
-	_days = [[_days sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2){
-		NSDate *d1 = obj1[@"date"];
-		NSDate *d2 = obj2[@"date"];
-		return [d2 compare:d1];
-	}] mutableCopy];
-
 	
 	[delegate loadedDataSource:self];
 }
@@ -184,8 +176,10 @@
 
 - (void)presentingDatesFrom:(NSDate *)fromDate to:(NSDate *)toDate delegate:(id<KalDataSourceCallbacks>)delegate
 {
-	[self removeAllItems];
-	[self loadDataDatesFrom:(NSDate *)fromDate to:(NSDate *)toDate delegate:delegate];
+	[_days removeAllObjects];
+	[_events removeAllObjects];
+	[_files removeAllObjects];
+	[self loadDataFrom:(NSDate *)fromDate to:(NSDate *)toDate delegate:delegate];
 }
 
 - (NSArray *)markedDatesFrom:(NSDate *)fromDate to:(NSDate *)toDate
@@ -197,7 +191,6 @@
 
 - (void)loadItemsFromDate:(NSDate *)fromDate toDate:(NSDate *)toDate
 {
-	
 	[_items addObjectsFromArray:[self fetchAllArticlesFrom:fromDate to:toDate]];
 	
 	NSArray *filesOfDate = [self fetchAllFilesFrom:fromDate to:toDate];
@@ -211,7 +204,6 @@
 
 - (void)removeAllItems
 {
-	[_days removeAllObjects];
 	[_items removeAllObjects];
 }
 
@@ -251,7 +243,7 @@
 		if ([item isKindOfClass:[WAArticle class]]) {
 			WAArticle *event = item;
 			
-			// TODO: show thumbnail images in kvo way
+			// TODO: show event / thumbnail images in kvo way
 			UIImageView *thumbnail = [[UIImageView alloc] initWithImage:event.representingFile.extraSmallThumbnailImage];
 			[thumbnail setBackgroundColor:[UIColor grayColor]];
 			[thumbnail setBounds:CGRectMake(4, 4, 45, 45)];
@@ -280,7 +272,7 @@
 			[cell.contentView addSubview:thumbnail];
 
 			UILabel *title = [[UILabel alloc] init];
-			[title setText:@"PHOTOS"];
+			[title setText:NSLocalizedString(@"SLIDING_MENU_TITLE_PHOTOS", @"Title for Photos in the sliding menu")];
 			[title setBackgroundColor:[UIColor colorWithRed:0.89f green:0.89f blue:0.89f alpha:1.f]];
 			title.numberOfLines = 0;
 			[title setFrame:CGRectMake(60, 0, 220, 54)];
@@ -297,10 +289,12 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-	if (![_items count])
+	NSInteger count = [_items count];
+	
+	if (!count)
 		return 1;
 	
-	return [_items count];
+	return count;
 }
 
 #pragma mark -

@@ -10,22 +10,16 @@
 #import <CoreData/CoreData.h>
 #import "KalViewController.h"
 #import "WAArticle.h"
+#import "WANavigationController.h"
 
-@interface WACalendarPickerViewController : UIViewController <UITableViewDelegate>
+typedef NS_ENUM(NSInteger, UIBarButtonCalItem) {
+	UIBarButtonCalItemMenu,
+	UIBarButtonCalItemToday,
+	UIBarButtonCalItemCancel
+};
 
-typedef void (^callbackBlock) (NSDate *date);
+@interface WACalendarPickerViewController : WANavigationController <UITableViewDelegate>
 
-@property (strong, nonatomic) IBOutlet KalViewController *calPicker;
-@property (copy, nonatomic) id dataSource;
-
-@property (weak, nonatomic) IBOutlet UIView *backdropView;
-@property (weak, nonatomic) IBOutlet UIView *containerView;
-
-- (void) runPresentingAnimationWithCompletion:(void(^)(void))callback;
-- (void) runDismissingAnimationWithCompletion:(void(^)(void))callback;
-
-+ (id) controllerWithCompletion:(callbackBlock)callback;
-
-- (id)initWithClassNamed: (Class)containerClass;
+- (id)initWithLeftButton:(UIBarButtonCalItem)leftBarButton RightButton:(UIBarButtonCalItem)rightBarButton navBarHidden:(BOOL)hidden;
 
 @end

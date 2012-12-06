@@ -25,7 +25,6 @@
 #import "WARemoteInterface.h"
 #import "WAPhotoStreamViewController.h"
 #import <CoreData+MagicalRecord.h>
-#import "WACalendarPickerDataSource.h"
 
 static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPostsViewControllerPhone_RepresentedObjectURI";
 
@@ -525,40 +524,14 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 }
 
 - (void) handleDateSelect:(UIBarButtonItem *)sender {
-		
-	__weak WADayViewController *wSelf = self;
 	
-	__block WACalendarPickerViewController *dpVC = [WACalendarPickerViewController controllerWithCompletion:^(NSDate *date) {
-		
-		if (date) {
-			
-			[wSelf jumpToTimelineOnDate:date];
-		
-		}
-		
-		[dpVC willMoveToParentViewController:nil];
-		[dpVC removeFromParentViewController];
-		[dpVC.view removeFromSuperview];
-		[dpVC didMoveToParentViewController:nil];
-		
-		dpVC = nil;
-		
-	}];
+	WACalendarPickerViewController *dpVC = [[WACalendarPickerViewController alloc]
+																					initWithLeftButton:UIBarButtonCalItemCancel
+																					RightButton:UIBarButtonCalItemToday
+																					navBarHidden:YES];
 	
-	WACalendarPickerDataSource *ds = [[WACalendarPickerDataSource alloc] init];
-	ds.days = [self.days copy];
-	ds.events = [self.fetchedResultsController.fetchedObjects copy];
-	dpVC.dataSource = (id) ds;
-
-	UINavigationController *presentedViewController = self.navigationController;
-	
-	if (!presentedViewController)
-		presentedViewController = (UINavigationController *)self;
-	
-	[presentedViewController addChildViewController:dpVC];
-	dpVC.view.frame = presentedViewController.view.bounds;
-	[presentedViewController.view addSubview:dpVC.view];
-	[dpVC didMoveToParentViewController:presentedViewController];
+	//[self.navigationController pushViewController:dpVC animated:YES];
+	[self presentViewController:dpVC animated:YES completion:nil];
 	
 }
 

@@ -20,6 +20,5 @@
 
 + (WACalendarPickerDataSource *)dataSource;
 - (WAArticle *)eventAtIndexPath:(NSIndexPath *)indexPath;
-- (void) loadEventsFiles;
 
 @end

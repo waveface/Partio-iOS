@@ -12,127 +12,81 @@
 #import "WADayViewController.h"
 #import "WANavigationController.h"
 #import "WAAppearance.h"
+#import "WASlidingMenuViewController.h"
+
+#define kCalWidth 320.f
+#define kCalHeight 640.f
 
 @interface WACalendarPickerViewController ()
 {
-	WANavigationController *calNavController;
+	KalViewController *calPicker;
 	id dataSource;
 	UITableView *tableView;
 	WAArticle *selectedEvent;
-	Class containedClass;
 }
-
-@property (nonatomic, readwrite, copy) void(^callback)(NSDate *);
 
 @end
 
 @implementation WACalendarPickerViewController
 
-
-- (id) initWithClassNamed:(Class)aClass {
-	self = [self initWithNibName:nil bundle:nil];
-	containedClass = aClass;
-	return self;
-}
-
-- (void) didMoveToParentViewController:(UIViewController *)parent {
-	
-	[super didMoveToParentViewController:parent];
-	
-	[self runPresentingAnimationWithCompletion:nil];
-	
-}
-
-- (void) runPresentingAnimationWithCompletion:(void(^)(void))block {
-	
-	CGRect containerToRect = self.containerView.frame;
-	CGRect containerFromRect = CGRectOffset(containerToRect, 0, CGRectGetHeight(containerToRect));
-	
-	self.backdropView.alpha = 0;
-	self.containerView.frame = containerFromRect;
-	
-	[UIView animateWithDuration:0.5 animations:^{
-		
-		self.backdropView.alpha = 1;
-		self.containerView.frame = containerToRect;
-		
-	} completion:^(BOOL finished) {
-		
-		if (block)
-			block();
-		
-	}];
-	
-}
-
-- (void) runDismissingAnimationWithCompletion:(void(^)(void))block {
-	
-	CGRect containerFromRect = self.containerView.frame;
-	CGRect containerToRect = CGRectOffset(containerFromRect, 0, CGRectGetHeight(containerFromRect));
-	
-	self.backdropView.alpha = 1;
-	self.containerView.frame = containerFromRect;
-	
-	[UIView animateWithDuration:0.5 animations:^{
-		
-		self.backdropView.alpha = 0;
-		self.containerView.frame = containerToRect;
-		
-	} completion:^(BOOL finished) {
-		
-		if (block)
-			block();
-		
-	}];
-	
-}
-
-+ (id) controllerWithCompletion:(callbackBlock)block {
-	
-	WACalendarPickerViewController *controller = [[self alloc] initWithNibName:nil bundle:nil];
-	if (!controller)
-		return nil;
-	
-	controller.callback = [block copy];
-	return controller;
-	
-}
-
-- (void)handleCancel:(UIButton *)sender
+- (id)initWithLeftButton:(UIBarButtonCalItem)leftBarButton
+						 RightButton:(UIBarButtonCalItem)rightBarButton
+						navBarHidden:(BOOL)hidden
 {
-	[self runDismissingAnimationWithCompletion:^{
-		if (self.callback)
-			self.callback(nil);
-	}];
-}
-
-- (void)handleDone:(UIButton *)sender
-{
-	[self runDismissingAnimationWithCompletion:^{
-		if (self.callback)
-			// add time interval to 23:59
-			self.callback([[self.calPicker selectedDate] dateByAddingTimeInterval:86399]);
-	}];
-}
-
-- (void) handleSelectToday
-{
-	[_calPicker showAndSelectDate:[NSDate date]];
-}
-
-
-- (void)viewDidLoad
-{
-	[super viewDidLoad];
-	
-	//self.view.backgroundColor = [UIColor colorWithWhite:0.f alpha:0.4f];
-
-  _calPicker = [[KalViewController alloc] init];
-	_calPicker.title = NSLocalizedString(@"CALENDAR_TITLE", @"Title of Canlendar");
-	_calPicker.delegate = self;
+	calPicker = [[KalViewController alloc] init];
+	calPicker.title = NSLocalizedString(@"CALENDAR_TITLE", @"Title of Canlendar");
+	calPicker.delegate = self;
 	dataSource = [[WACalendarPickerDataSource alloc] init];
-	_calPicker.dataSource = dataSource;
-	
+	calPicker.dataSource = dataSource;
+
+	calPicker.navigationController.navigationBarHidden = hidden;
+
+	switch (leftBarButton) {
+		case UIBarButtonCalItemMenu:
+			[calPicker.navigationItem setLeftBarButtonItem:[self menuBarButton] animated:YES];
+			break;
+			
+		case UIBarButtonCalItemToday:
+			[calPicker.navigationItem setLeftBarButtonItem:[self todayBarButton] animated:YES];
+			break;
+			
+		case UIBarButtonCalItemCancel:
+			[calPicker.navigationItem setLeftBarButtonItem:[self cancelBarButton] animated:YES];
+			break;
+			
+		default:
+			break;
+	}
+		
+	switch (rightBarButton) {
+		case UIBarButtonCalItemMenu:
+			[calPicker.navigationItem setRightBarButtonItem:[self menuBarButton] animated:YES];
+			break;
+			
+		case UIBarButtonCalItemToday:
+			[calPicker.navigationItem setRightBarButtonItem:[self todayBarButton] animated:YES];
+			break;
+			
+		case UIBarButtonCalItemCancel:
+			[calPicker.navigationItem setRightBarButtonItem:[self cancelBarButton] animated:YES];
+			break;
+			
+		default:
+			break;
+	}
+
+	return [self initWithRootViewController:calPicker];
+}
+
+- (UIBarButtonItem *)menuBarButton
+{
+	return (UIBarButtonItem *)WABarButtonItem([UIImage imageNamed:@"menu"], @"", ^{
+		[self.viewDeckController toggleLeftView];
+	});
+}
+
+- (UIBarButtonItem *)todayBarButton
+{
 	UIButton *todayButton = [UIButton buttonWithType:UIButtonTypeCustom];
 	[todayButton setFrame:CGRectMake(0, 0, 57, 26)];
 	[todayButton setBackgroundImage:[UIImage imageNamed:@"CalBtn"] forState:UIControlStateNormal];
@@ -144,6 +98,11 @@
   todayButton.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
 	[todayButton addTarget:self action:@selector(handleSelectToday) forControlEvents:UIControlEventTouchUpInside];
 
+	return [[UIBarButtonItem alloc] initWithCustomView:todayButton];
+}
+
+- (UIBarButtonItem *)cancelBarButton
+{
 	UIButton *cancelButton = [UIButton buttonWithType:UIButtonTypeCustom];
 	[cancelButton setFrame:CGRectMake(0, 0, 57, 26)];
 	[cancelButton setBackgroundImage:[UIImage imageNamed:@"CalBtn"] forState:UIControlStateNormal];
@@ -156,42 +115,26 @@
   cancelButton.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
 	[cancelButton addTarget:self action:@selector(handleCancel:) forControlEvents:UIControlEventTouchUpInside];
 	
-	
-	UIBarButtonItem *todayBarButton = [[UIBarButtonItem alloc] initWithCustomView:todayButton];
-	UIBarButtonItem *cancelBarButton = [[UIBarButtonItem alloc] initWithCustomView:cancelButton];
+	return [[UIBarButtonItem alloc] initWithCustomView:cancelButton];
+}
 
-	calNavController = [[UINavigationController alloc] initWithRootViewController:_calPicker];
-	
-	if ([containedClass isSubclassOfClass:[WACalendarPickerViewController class]]) {
-		_calPicker.navigationController.navigationBarHidden = YES;
-		calNavController.view.frame = CGRectMake(0, 0, 320, 640);
-				
-		self.navigationItem.leftBarButtonItem = WABarButtonItem([UIImage imageNamed:@"menu"], @"", ^{
-			[self.viewDeckController toggleLeftView];
-		});
+- (void)handleCancel:(UIButton *)sender
+{
+	[self dismissViewControllerAnimated:YES completion:nil];
+}
 
-		[self.navigationItem setRightBarButtonItem:todayBarButton animated:YES];
-		
-		[self.navigationItem setTitle:NSLocalizedString(@"CALENDAR_TITLE", @"Title of Canlendar")];
-		
-	}
-	else {
-		calNavController.view.frame = CGRectMake(0, 20, 320, 640);
-		calNavController.view.layer.cornerRadius = 3.f;
-		calNavController.view.clipsToBounds = YES;
+- (void) handleSelectToday
+{
+	[calPicker showAndSelectDate:[NSDate date]];
+}
 
-		[_calPicker.navigationItem setLeftBarButtonItem:todayBarButton animated:YES];
-		[_calPicker.navigationItem setRightBarButtonItem:cancelBarButton animated:YES];
-	}
-	
-
-  [self addChildViewController:calNavController];
-  [self.view addSubview:calNavController.view];
-
-  [UIView beginAnimations:nil context:nil];
-	[UIView setAnimationDuration:0.3];
-	[UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
-	[UIView commitAnimations];
+- (void)viewDidLoad
+{
+	[super viewDidLoad];
+  
+	self.view.frame = CGRectMake(0, 0, kCalWidth, kCalHeight);
+	self.view.layer.cornerRadius = 3.f;
+	self.view.clipsToBounds = YES;
 	
 }
 
@@ -203,9 +146,9 @@
 
 - (void)setDataSource:(id)aDataSource
 {
-  if (_dataSource != aDataSource) {
-    _dataSource = aDataSource;
-    tableView.dataSource = _dataSource;
+  if (dataSource != aDataSource) {
+    dataSource = aDataSource;
+    tableView.dataSource = dataSource;
   }
 }
 
@@ -223,18 +166,56 @@
 	if ([selectedEvent isKindOfClass:[WAArticle class]]) {
 
 		WAEventViewController *eventVC = [WAEventViewController controllerForArticle:selectedEvent];
-
-		if ([containedClass isSubclassOfClass:[WACalendarPickerViewController class]]) {
-			[self.navigationController pushViewController:eventVC animated:YES];
-		}
-		else {
-			[calNavController pushViewController:eventVC animated:YES];
-		}
+		[self pushViewController:eventVC animated:YES];
 		
 	}
 	else if ([selectedEvent isKindOfClass:[WAFile class]]) {
 
+		WAFile *photo = (WAFile *)selectedEvent;
+	
+		WASlidingMenuViewController *smVC = (WASlidingMenuViewController *)[self.viewDeckController leftController];
+		[smVC switchToViewStyle:WAPhotosViewStyle onDate:photo.created animated:YES];
 		
+	}
+}
+
+#pragma mark - Orientation
+
+- (NSUInteger)supportedInterfaceOrientations
+{
+	
+	if (isPad()) {
+		return UIInterfaceOrientationMaskAll;
+	} else
+		return UIInterfaceOrientationMaskPortrait;
+	
+}
+
+- (BOOL)shouldAutorotate
+{
+	
+	return YES;
+	
+}
+
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+{
+	[super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
+
+	const CGFloat kScreenWidth = ((CGFloat)([UIScreen mainScreen].bounds.size.width));
+	const CGFloat kScreenHeight = ((CGFloat)([UIScreen mainScreen].bounds.size.height));
+	
+		if (toInterfaceOrientation == UIInterfaceOrientationMaskPortrait) {
+		self.view.frame = CGRectMake(0, 0, kCalWidth, kCalHeight);
+	}
+	else if (toInterfaceOrientation == UIInterfaceOrientationLandscapeLeft) {
+		self.view.frame = CGRectMake(kScreenWidth, 0, kCalHeight, kCalWidth); 
+	}
+	else if (toInterfaceOrientation == UIInterfaceOrientationPortraitUpsideDown) {
+		self.view.frame = CGRectMake(kScreenWidth - kCalWidth, kScreenHeight - kCalHeight, kCalWidth, kCalHeight);
+	}
+	else if (toInterfaceOrientation == UIInterfaceOrientationLandscapeRight) {
+		self.view.frame = CGRectMake(0, kScreenHeight - kCalWidth, kCalHeight, kCalWidth);
 	}
 }
 

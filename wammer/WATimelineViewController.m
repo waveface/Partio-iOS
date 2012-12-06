@@ -28,6 +28,7 @@
 #import "IRActionSheetController.h"
 #import "WADayViewController.h"
 #import "WACalendarPickerViewController.h"
+#import "Kal.h"
 
 @interface WATimelineViewController () <NSFetchedResultsControllerDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout>
 
@@ -230,42 +231,10 @@ CGFloat (^rowSpacing) (UICollectionView *) = ^ (UICollectionView *collectionView
 	headerView.wdayLabel.text = [[self.currentDisplayedDate localizedWeekDayFullString] uppercaseString];
 	headerView.backgroundColor = [UIColor colorWithRed:0.95f green:0.95f blue:0.95f alpha:1];
 
-//	[headerView.centerButton addTarget:self.dayViewController action:@selector(handleDateSelect:) forControlEvents:UIControlEventTouchUpInside];
+	[headerView.centerButton addTarget:self action:@selector(handleDateSelect:) forControlEvents:UIControlEventTouchUpInside];
 	[headerView setNeedsLayout];
 	return headerView;
 
-}
-
-
-- (void) handleDateSelect:(UIBarButtonItem *)sender {
-		
-	__block WACalendarPickerViewController *dpVC = [WACalendarPickerViewController controllerWithCompletion:^(NSDate *date) {
-		
-//		if (date) {
-//			
-//			[wSelf jumpToTimelineOnDate:date];
-//			
-//		}
-		
-		[dpVC willMoveToParentViewController:nil];
-		[dpVC removeFromParentViewController];
-		[dpVC.view removeFromSuperview];
-		[dpVC didMoveToParentViewController:nil];
-		
-		dpVC = nil;
-		
-	}];
-		
-	UINavigationController *presentedViewController = self.navigationController;
-	
-	if (!presentedViewController)
-		presentedViewController = (UINavigationController *)self;
-	
-	[presentedViewController addChildViewController:dpVC];
-	dpVC.view.frame = presentedViewController.view.bounds;
-	[presentedViewController.view addSubview:dpVC.view];
-	[dpVC didMoveToParentViewController:presentedViewController];
-	
 }
 
 - (CGFloat) collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout minimumInteritemSpacingForSectionAtIndex:(NSInteger)section {
@@ -294,6 +263,20 @@ CGFloat (^rowSpacing) (UICollectionView *) = ^ (UICollectionView *collectionView
 	} else {
 		return UIEdgeInsetsMake(0, 0, 5, 0);
 	}
+}
+
+#pragma mark - Calendar
+
+- (void) handleDateSelect:(UIBarButtonItem *)sender {
+	
+	WACalendarPickerViewController *dpVC = [[WACalendarPickerViewController alloc]
+																					initWithLeftButton:UIBarButtonCalItemCancel
+																					RightButton:UIBarButtonCalItemToday
+																					navBarHidden:YES];
+
+	//[self.navigationController pushViewController:dpVC animated:YES];
+	[self presentViewController:dpVC animated:YES completion:nil];
+		
 }
 
 #pragma mark - UICollectionView delegate
