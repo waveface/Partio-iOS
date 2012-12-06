@@ -26,15 +26,15 @@
 #import "WANavigationController.h"
 #import "WAApplicationRootViewControllerDelegate.h"
 #import "WAOverviewController.h"
-#import "WATimelineViewControllerPhone.h"
+#import "WATimelineViewController.h"
 #import "WAUserInfoViewController.h"
 #import "WAOverlayBezel.h"
 
-#import "Foundation+IRAdditions.h"
-#import "UIKit+IRAdditions.h"
-
 #import "IRSlidingSplitViewController.h"
 #import "WASlidingSplitViewController.h"
+
+#import "Foundation+IRAdditions.h"
+#import "UIKit+IRAdditions.h"
 
 #import "IASKSettingsReader.h"
 #import	"DCIntrospect.h"
@@ -146,7 +146,7 @@ static NSString *const kTrackingId = @"UA-27817516-7";
 			
 			id observer = [[NSNotificationCenter defaultCenter] addObserverForName:kWAAppEventNotification object:nil queue:nil usingBlock:^(NSNotification *note) {
 				
-				NSString *eventTitle = [[note userInfo] objectForKey:kWAAppEventTitle];
+				NSString *eventTitle = [note userInfo][kWAAppEventTitle];
 				[TestFlight passCheckpoint:eventTitle];
 				
 			}];
@@ -346,23 +346,31 @@ extern CFAbsoluteTime StartTime;
 	
 		case UIUserInterfaceIdiomPad: {
 		
-			IRSlidingSplitViewController *ssVC = [WASlidingSplitViewController new];
-		
-			WAOverviewController *presentedViewController = [[WAOverviewController alloc] init];
-			WANavigationController *rootNavC = [[WANavigationController alloc] initWithRootViewController:presentedViewController];
+			WADayViewController *swVC = [[WADayViewController alloc] initWithClassNamed:[WATimelineViewController class]];
+			WANavigationController *timelineNavC = [[WANavigationController alloc] initWithRootViewController:swVC];
+						
+			WASlidingMenuViewController *slidingMenu = [[WASlidingMenuViewController alloc] init];
+			slidingMenu.delegate = self;
 			
-			[presentedViewController setDelegate:self];
+			IIViewDeckController *viewDeckController = [[IIViewDeckController alloc] initWithCenterViewController:timelineNavC
+																																												 leftViewController:slidingMenu];
+			viewDeckController.view.backgroundColor = [UIColor blackColor];
+			viewDeckController.leftLedge = self.window.frame.size.width - 200.0f;
+			viewDeckController.rotationBehavior = IIViewDeckRotationKeepsLedgeSizes;
+			//			viewDeckController.animationBehavior = IIViewDeckAnimationPullIn;
+			viewDeckController.panningMode = IIViewDeckNoPanning;
+			[viewDeckController setWantsFullScreenLayout:YES];
+			viewDeckController.delegate = slidingMenu;
+			viewDeckController.centerhiddenInteractivity = IIViewDeckCenterHiddenNotUserInteractiveWithTapToClose;
 			
-			ssVC.masterViewController = rootNavC;
-			
-			self.window.rootViewController = ssVC;
-		
+			self.window.rootViewController = viewDeckController;
+
 			break;
 		
 		}
 		
 		case UIUserInterfaceIdiomPhone: {
-			WADayViewController *swVC = [[WADayViewController alloc] initWithClassNamed:[WATimelineViewControllerPhone class]];
+			WADayViewController *swVC = [[WADayViewController alloc] initWithClassNamed:[WATimelineViewController class]];
 			WANavigationController *timelineNavC = [[WANavigationController alloc] initWithRootViewController:swVC];
 
 			WASlidingMenuViewController *slidingMenu = [[WASlidingMenuViewController alloc] init];
@@ -450,7 +458,7 @@ extern CFAbsoluteTime StartTime;
 
 - (void) handleObservedAuthenticationFailure:(NSNotification *)aNotification {
 
-	NSError *error = [[aNotification userInfo] objectForKey:@"error"];
+	NSError *error = [aNotification userInfo][@"error"];
 	
 	[self unsubscribeRemoteNotification];
 
@@ -472,7 +480,7 @@ extern CFAbsoluteTime StartTime;
 	NSString *command = nil;
 	NSDictionary *params = nil;
 	
-	if (!WAIsXCallbackURL([[aNotification userInfo] objectForKey:@"url"], &command, &params))
+	if (!WAIsXCallbackURL([aNotification userInfo][@"url"], &command, &params))
 		return;
 	
 	if ([command isEqualToString:kWACallbackActionSetAdvancedFeaturesEnabled]) {
@@ -497,11 +505,11 @@ extern CFAbsoluteTime StartTime;
 		__block __typeof__(self) nrSelf = self;
 		void (^zapAndRequestReauthentication)() = ^ {
 
-			[[NSUserDefaults standardUserDefaults] setObject:[params objectForKey:@"url"] forKey:kWARemoteEndpointURL];
-			[[NSUserDefaults standardUserDefaults] setObject:[params objectForKey:@"RegistrationUrl"] forKey:kWAUserRegistrationEndpointURL];
-			[[NSUserDefaults standardUserDefaults] setObject:[params objectForKey:@"PasswordResetUrl"] forKey:kWAUserPasswordResetEndpointURL];
-			[[NSUserDefaults standardUserDefaults] setObject:[params objectForKey:@"FacebookAuthUrl"] forKey:kWAUserFacebookAuthenticationEndpointURL];
-			[[NSUserDefaults standardUserDefaults] setObject:[params objectForKey:@"FacebookAppID"] forKey:kWAFacebookAppID];
+			[[NSUserDefaults standardUserDefaults] setObject:params[@"url"] forKey:kWARemoteEndpointURL];
+			[[NSUserDefaults standardUserDefaults] setObject:params[@"RegistrationUrl"] forKey:kWAUserRegistrationEndpointURL];
+			[[NSUserDefaults standardUserDefaults] setObject:params[@"PasswordResetUrl"] forKey:kWAUserPasswordResetEndpointURL];
+			[[NSUserDefaults standardUserDefaults] setObject:params[@"FacebookAuthUrl"] forKey:kWAUserFacebookAuthenticationEndpointURL];
+			[[NSUserDefaults standardUserDefaults] setObject:params[@"FacebookAppID"] forKey:kWAFacebookAppID];
 			[[NSUserDefaults standardUserDefaults] synchronize];
 
 			if (nrSelf.alreadyRequestingAuthentication) {
@@ -514,14 +522,12 @@ extern CFAbsoluteTime StartTime;
 		};
 		
 		NSString *alertTitle = @"Switch endpoint to";
-		NSString *alertText = [params objectForKey:@"url"];
+		NSString *alertText = params[@"url"];
 		
 		IRAction *cancelAction = [IRAction actionWithTitle:@"Cancel" block:nil];
 		IRAction *confirmAction = [IRAction actionWithTitle:@"Yes, Switch" block:zapAndRequestReauthentication];
 		
-		[[IRAlertView alertViewWithTitle:alertTitle message:alertText cancelAction:cancelAction otherActions:[NSArray arrayWithObjects:
-			confirmAction,
-		nil]] show];
+		[[IRAlertView alertViewWithTitle:alertTitle message:alertText cancelAction:cancelAction otherActions:@[confirmAction]] show];
 	}
 	
 }
@@ -535,7 +541,7 @@ extern CFAbsoluteTime StartTime;
 
 - (void) handleIASKSettingsDidRequestAction:(NSNotification *)aNotification {
 
-	NSString *action = [[aNotification userInfo] objectForKey:@"key"];
+	NSString *action = [aNotification userInfo][@"key"];
 	
 	if ([action isEqualToString:@"WASettingsActionResetDefaults"]) {
 	
@@ -559,11 +565,7 @@ extern CFAbsoluteTime StartTime;
 		
 		}];
 		
-		IRAlertView *alertView = [IRAlertView alertViewWithTitle:alertTitle message:alertText cancelAction:cancelAction otherActions:[NSArray arrayWithObjects:
-			
-			resetAction,
-			
-		nil]];
+		IRAlertView *alertView = [IRAlertView alertViewWithTitle:alertTitle message:alertText cancelAction:cancelAction otherActions:@[resetAction]];
 		
 		[alertView show];
 	
@@ -610,9 +612,7 @@ extern CFAbsoluteTime StartTime;
 		//	User is not authenticated, and also we’re already at the auth view
 		//	Can zap
 		
-		alertView = [IRAlertView alertViewWithTitle:alertTitle message:alertText cancelAction:nil otherActions:[NSArray arrayWithObjects:
-			okayAndZapAction,
-		nil]];
+		alertView = [IRAlertView alertViewWithTitle:alertTitle message:alertText cancelAction:nil otherActions:@[okayAndZapAction]];
 	
 	} else if (![self hasAuthenticationData]) {
 	
@@ -624,9 +624,7 @@ extern CFAbsoluteTime StartTime;
 	
 		//	Can zap
 	
-		alertView = [IRAlertView alertViewWithTitle:alertTitle message:alertText cancelAction:laterAction otherActions:[NSArray arrayWithObjects:
-			signOutAction,
-		nil]];
+		alertView = [IRAlertView alertViewWithTitle:alertTitle message:alertText cancelAction:laterAction otherActions:@[signOutAction]];
 	
 	}
 	
@@ -653,11 +651,8 @@ extern CFAbsoluteTime StartTime;
 		[self clearViewHierarchy];
 
 	if (eraseAuthInfo) {
-		// run logout after all views are cleared to ensure no KVO registrations left
-		[[NSOperationQueue mainQueue] addOperationWithBlock:^{
-			[self logout];
-			[self removeAuthenticationData];
-		}];
+		[self logout];
+		[self removeAuthenticationData];
 	}
 	
 	[self handleAuthRequest:aReason
@@ -814,11 +809,9 @@ static NSInteger networkActivityStackingCount = 0;
 	if ([[url scheme] hasPrefix:@"fb"]) {
 		[FBSession.activeSession handleOpenURL:url];
 	} else {
-		NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:
-			url, @"url",
-			sourceApplication, @"sourceApplication",
-			annotation, @"annotation",
-		nil];
+		NSDictionary *userInfo = @{@"url": url,
+			@"sourceApplication": sourceApplication,
+			@"annotation": annotation};
 
 		[[NSNotificationCenter defaultCenter] postNotificationName:kWAApplicationDidReceiveRemoteURLNotification object:url userInfo:userInfo];
 	}
@@ -831,11 +824,7 @@ static NSInteger networkActivityStackingCount = 0;
 
 - (void) applicationDidReceiveMemoryWarning:(UIApplication *)application {
 
-	WAPostAppEvent(@"did-receive-memory-warning", [NSDictionary dictionaryWithObjectsAndKeys:
-	
-		//	TBD
-	
-	nil]);
+	WAPostAppEvent(@"did-receive-memory-warning", @{});
 
 }
 
@@ -859,8 +848,8 @@ static NSInteger networkActivityStackingCount = 0;
 
 - (WAPhotoImportManager *)photoImportManager {
 
-	static dispatch_once_t onceToken = 0;
-	dispatch_once(&onceToken, ^{
+	@synchronized(self) {
+
 		if (!_photoImportManager) {
 			_photoImportManager = [[WAPhotoImportManager alloc] init];
 			if (_photoImportManager.enabled) {
@@ -869,7 +858,8 @@ static NSInteger networkActivityStackingCount = 0;
 				}];
 			}
 		}
-	});
+
+	};
 
 	return _photoImportManager;
 
@@ -877,14 +867,15 @@ static NSInteger networkActivityStackingCount = 0;
 
 - (WACacheManager *)cacheManager {
 
-	static dispatch_once_t onceToken = 0;
-	dispatch_once(&onceToken, ^{
+	@synchronized(self) {
+
 		if (!_cacheManager) {
 			_cacheManager = [[WACacheManager alloc] init];
 			_cacheManager.delegate = self;
 			[_cacheManager clearPurgeableFilesIfNeeded];
 		}
-	});
+
+	};
 
 	return _cacheManager;
 
@@ -892,13 +883,14 @@ static NSInteger networkActivityStackingCount = 0;
 
 -(WASyncManager *)syncManager {
 
-	static dispatch_once_t onceToken = 0;
-	dispatch_once(&onceToken, ^{
+	@synchronized(self) {
+
 		if (!_syncManager) {
 			_syncManager = [[WASyncManager alloc] init];
 			[_syncManager reload];
 		}
-	});
+
+	};
 
 	return _syncManager;
 

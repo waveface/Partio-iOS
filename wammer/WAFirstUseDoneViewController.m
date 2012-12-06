@@ -32,12 +32,18 @@
 	[self.doneButton setTitleColor:[UIColor whiteColor] forState:UIControlStateDisabled];
 
 	if ([[NSUserDefaults standardUserDefaults] boolForKey:kWAPhotoImportEnabled]) {
-		[[(WAAppDelegate_iOS *)AppDelegate() photoImportManager] addObserver:self forKeyPath:@"importedFilesCount" options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionNew context:nil];
+		WAPhotoImportManager *photoImportManager = [(WAAppDelegate_iOS *)AppDelegate() photoImportManager];
+		[photoImportManager addObserver:self forKeyPath:@"importedFilesCount" options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionNew context:nil];
 	} else {
 		self.photoUploadCell.detailTextLabel.text = NSLocalizedString(@"PHOTO_UPLOAD_STATUS_NOT_UPLOADING", @"Subtitle of photo upload status");
 	}
 
 	[[WARemoteInterface sharedInterface] addObserver:self forKeyPath:@"networkState" options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionNew context:nil];
+
+	__weak WAFirstUseDoneViewController *wSelf = self;
+	self.navigationItem.leftBarButtonItem = (UIBarButtonItem *)WABackBarButtonItem([UIImage imageNamed:@"back"], @"", ^{
+		[wSelf.navigationController popViewControllerAnimated:YES];
+	});
 
 }
 

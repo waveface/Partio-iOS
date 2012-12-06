@@ -7,12 +7,14 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "WAOAuthSwitch.h"
 
-@interface WAFirstUseConnectServicesViewController : UITableViewController
+@interface WAFirstUseConnectServicesViewController : UITableViewController <WAOAuthSwitchDelegate>
 
 @property (weak, nonatomic) IBOutlet UITableViewCell *facebookConnectCell;
 @property (weak, nonatomic) IBOutlet UITableViewCell *twitterConnectCell;
 @property (weak, nonatomic) IBOutlet UITableViewCell *flickrConnectCell;
 @property (weak, nonatomic) IBOutlet UITableViewCell *picasaConnectCell;
+@property (weak, nonatomic) IBOutlet UITableViewCell *googleConnectCell;
 
 @end

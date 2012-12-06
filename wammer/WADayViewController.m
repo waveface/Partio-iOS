@@ -8,14 +8,14 @@
 
 #import "WADayViewController.h"
 #import "WADefines.h"
-#import "WATimelineViewControllerPhone.h"
+#import "WATimelineViewController.h"
 #import "WADataStore.h"
 #import "NSDate+WAAdditions.h"
 #import "WADataStore+WARemoteInterfaceAdditions.h"
 
 #import "WADataStore+FetchingConveniences.h"
-#import "IRTableView.h"
 #import "WACalendarPickerViewController.h"
+#import "IRBarButtonItem.h"
 #import "WADripdownMenuViewController.h"
 #import "WAArticleDraftsViewController.h"
 #import "WANavigationController.h"
@@ -66,6 +66,7 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 	 object:nil];
 			
 	__weak WADayViewController *wSelf = self;
+
 	self.navigationItem.rightBarButtonItem  = WABarButtonItem([UIImage imageNamed:@"Create"], @"", ^{
 		[wSelf handleCompose:wSelf.navigationItem.rightBarButtonItem];
 	});
@@ -87,22 +88,20 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 	
 }
 
-
 - (void)loadView
 {
 	
 	[super loadView];
 
-	CGRect origFrame = self.view.frame;
-	origFrame.origin = CGPointZero;
-	origFrame.size.height -= CGRectGetHeight(self.navigationController.navigationBar.frame);
-	
+	CGRect rect = (CGRect) { CGPointZero, self.view.frame.size };
+	[self.navigationController setToolbarHidden:YES];
 	self.view.backgroundColor = [UIColor whiteColor];
-	self.paginatedView = [[IRPaginatedView alloc] initWithFrame:origFrame];
+	self.paginatedView = [[IRPaginatedView alloc] initWithFrame:rect];
 	self.paginatedView.delegate = self;
+	self.paginatedView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
 	
 	[self.view addSubview: self.paginatedView];
-
+	
 }
 
 - (void) viewWillAppear:(BOOL)animated {
@@ -129,13 +128,13 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 		
 		NSDate *theDate = nil;
 		
-		if ([containedClass isSubclassOfClass:[WATimelineViewControllerPhone class]]) {
+		if ([containedClass isSubclassOfClass:[WATimelineViewController class]]) {
 
-			theDate = [((WAArticle*)obj) creationDate];
+			theDate = [[((WAArticle*)obj) creationDate] dayBegin];
 			
 		} else {
 			
-			theDate = [((WAFile*)obj) created];
+			theDate = [[((WAFile*)obj) created] dayBegin];
 
 		}
 		
@@ -171,6 +170,21 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 	
 }
 
+- (NSUInteger) supportedInterfaceOrientations {
+
+	if (isPad())
+		return UIInterfaceOrientationMaskAll;
+	else
+		return UIInterfaceOrientationMaskPortrait;
+
+}
+
+- (BOOL) shouldAutorotate {
+	
+	return YES;
+	
+}
+
 
 #pragma mark - delegate methods for IRPaginatedView
 
@@ -179,7 +193,7 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 	self.days = [NSMutableArray array];
 	self.daysControllers = [NSMutableDictionary dictionary];
 	
-	if ([containedClass isSubclassOfClass:[WATimelineViewControllerPhone class]]) {
+	if ([containedClass isSubclassOfClass:[WATimelineViewController class]]) {
 	
 		NSFetchRequest *fetchRequest = [[WADataStore defaultStore].persistentStoreCoordinator.managedObjectModel fetchRequestFromTemplateWithName:@"WAFRArticles" substitutionVariables:@{}];
 		
@@ -242,7 +256,6 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 		if ( [vc isKindOfClass:[WAPhotoStreamViewController class]]  ) {
 			((WAPhotoStreamViewController *)vc).delegate = self;
 		}
-		[self addChildViewController:vc];
 		(self.daysControllers)[dateForPage] = vc;
 	}
 	
@@ -253,6 +266,9 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 - (UIView *) viewForPaginatedView:(IRPaginatedView *)paginatedView atIndex:(NSUInteger)index {
 
 	UIViewController *viewController = [self controllerAtPageIndex:index];
+	
+	if (!viewController.parentViewController)
+		[self addChildViewController:viewController];
 	
 	if (viewController)
 		return viewController.view;
@@ -287,30 +303,28 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 
 	
 	NSDate *theNewDate = nil;
-	if ([containedClass isSubclassOfClass:[WATimelineViewControllerPhone class]]) {
+	if ([containedClass isSubclassOfClass:[WATimelineViewController class]]) {
 
-		theNewDate = [((WAArticle*)anObject) creationDate];
+		theNewDate = [[((WAArticle*)anObject) creationDate] dayBegin];
 
 	} else {
 
-		theNewDate = [((WAFile*)anObject) created];
+		theNewDate = [[((WAFile*)anObject) created] dayBegin];
 		
 	}
 	
 	switch (type) {
 		case NSFetchedResultsChangeInsert:
 		{
-			
-			__block BOOL found = NO;
-			[self.days enumerateObjectsUsingBlock:^(NSDate *date, NSUInteger idx, BOOL *stop) {
-				if (isSameDay(date, theNewDate)) {
-					*stop = YES;
-					found = YES;
-				} 
-			}];
-			
-			if (!found) {
-				
+
+			NSUInteger oldIndex = [self.days indexOfObject:theNewDate
+																			 inSortedRange:(NSRange){0, self.days.count}
+																						 options:NSBinarySearchingFirstEqual
+																		 usingComparator:^NSComparisonResult(NSDate *obj1, NSDate *obj2) {
+																			 return [obj2 compare:obj1];
+																		 }];
+			if (oldIndex == NSNotFound) {
+
 				// insertion sort
 				NSUInteger newIndex = [self.days indexOfObject:theNewDate
 																				 inSortedRange:(NSRange){0, self.days.count}
@@ -320,6 +334,7 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 																			 }];
 				[self.days insertObject:theNewDate atIndex:newIndex];
 				
+
 				if ([self isViewLoaded]) {
 					[self.paginatedView reloadViews];
 				}

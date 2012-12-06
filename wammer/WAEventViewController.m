@@ -8,7 +8,6 @@
 
 #import "WAEventViewController.h"
 #import "WADataStore.h"
-#import "WADataStore+FetchingConveniences.h"
 #import "WAArticle.h"
 #import "WATag.h"
 #import "WATagGroup.h"
@@ -17,6 +16,8 @@
 #import "IRBarButtonItem.h"
 #import "WAAppearance.h"
 #import "WAEventPhotoViewCell.h"
+#import "GAI.h"
+#import "MKMapView+ZoomLevel.h"
 
 @interface WAAnnotation : NSObject <MKAnnotation>
 
@@ -32,7 +33,6 @@
 
 @interface WAEventViewController ()
 
-@property (nonatomic, strong, readwrite) NSFetchedResultsController *fetchedResultsController;
 @property (nonatomic, strong, readwrite) UICollectionView *itemsView;
 @property (nonatomic, strong) WAEventHeaderView *headerView;
 
@@ -74,10 +74,8 @@
 {
 	
 	[super viewDidLoad];
-	
 		
 	CGRect rect = (CGRect){ CGPointZero, self.view.frame.size };
-	rect.size.height -= CGRectGetHeight(self.navigationController.navigationBar.frame);
 	
 	UICollectionViewFlowLayout *flowlayout = [[UICollectionViewFlowLayout alloc] init];
 	flowlayout.scrollDirection = UICollectionViewScrollDirectionVertical;
@@ -90,6 +88,7 @@
 	self.itemsView.alwaysBounceHorizontal = NO;
 	self.itemsView.allowsSelection = YES;
 	self.itemsView.allowsMultipleSelection = NO;
+	self.itemsView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
 
 	self.itemsView.dataSource = self;
 	self.itemsView.delegate = self;
@@ -98,9 +97,44 @@
 
 	__weak WAEventViewController *wSelf = self;
 	self.navigationItem.leftBarButtonItem = WABackBarButtonItem([UIImage imageNamed:@"back"], @"", ^{
-		[wSelf.navigationController popViewControllerAnimated:YES];
+		
+		if (isPad()) {
+			[wSelf.navigationController dismissViewControllerAnimated:YES completion:nil];
+		} else {
+			[wSelf.navigationController popViewControllerAnimated:YES];
+		}
+		
 	});
+	
+	[[GAI sharedInstance].defaultTracker trackEventWithCategory:@"Events"
+																									 withAction:@"Enter single event"
+																										withLabel:nil
+																										withValue:nil];
+	
+}
 
+- (void) viewDidAppear:(BOOL)animated {
+	[super viewDidAppear:animated];
+	
+	if (self.article.location.latitude && self.article.location.longitude) {
+		
+		CLLocationCoordinate2D center = { self.article.location.latitude.floatValue, self.article.location.longitude.floatValue };
+		NSUInteger zoomLevel = [self.article.location.zoomLevel unsignedIntegerValue];
+		
+		WAAnnotation *pin = [[WAAnnotation alloc] init];
+		pin.coordinate = center;
+		if (self.article.location.name)
+			pin.title = self.article.location.name;
+		
+		[_headerView.mapView setCenterCoordinate:center zoomLevel:zoomLevel animated:YES];
+		[_headerView.mapView addAnnotation:pin];
+		[_headerView.mapView setHidden:NO];
+		
+	}
+	
+	if (self.completion)
+		self.completion();
+	
 }
 
 - (void)didReceiveMemoryWarning
@@ -109,22 +143,20 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (NSFetchedResultsController *) fetchedResultsController {
-	
-	if (_fetchedResultsController)
-		return _fetchedResultsController;
-	
-	NSFetchRequest *fetchRequest = [[WADataStore defaultStore] newFetchRequestForFilesInArticle:self.article];
-	
-	_fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest managedObjectContext:self.article.managedObjectContext sectionNameKeyPath:nil cacheName:nil];
-	_fetchedResultsController.delegate = self;
-	
-	NSError *fetchError = nil;
-	if (![_fetchedResultsController performFetch:&fetchError])
-		NSLog(@"Error fetching: %@", fetchError);
-	
-	return _fetchedResultsController;
-	
+- (BOOL) shouldAutorotate {
+
+	if (isPad())
+		return YES;
+	return NO;
+
+}
+
+- (NSUInteger) supportedInterfaceOrientations {
+
+	if (isPad())
+		return UIInterfaceOrientationMaskAll;
+	return UIInterfaceOrientationMaskPortrait;
+
 }
 
 + (NSDateFormatter *) dateFormatter {
@@ -274,21 +306,7 @@
 	
 	_headerView.timeLabel.text = [[[self class] timeFormatter] stringFromDate:self.article.creationDate];
 
-	if (self.article.location.latitude && self.article.location.longitude) {
-
-		CLLocationCoordinate2D center = { self.article.location.latitude.floatValue, self.article.location.longitude.floatValue };
-		MKCoordinateSpan span = {0.005, 0.005}; // FIXME: should based on api, currently it is hard coded
-	
-		WAAnnotation *pin = [[WAAnnotation alloc] init];
-		pin.coordinate = center;
-		if (self.article.location.name)
-			pin.title = self.article.location.name;
-		
-		[_headerView.mapView setRegion:(MKCoordinateRegion) {center, span}];
-		[_headerView.mapView addAnnotation:pin];
-		[_headerView.mapView setHidden:NO];
-		
-	} else {
+	if (!self.article.location.latitude || !self.article.location.longitude) {
 		
 		[_headerView.separatorLineBelowMap setHidden:YES];
 		[_headerView.mapView setHidden:YES];
@@ -328,6 +346,11 @@
 		
 	}
 	
+	CGRect newFrame = _headerView.frame;
+	newFrame.size.width = CGRectGetWidth(self.itemsView.frame);
+	_headerView.frame = newFrame;
+	_headerView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+ 
 	[_headerView setNeedsLayout];
 	
 	return _headerView;
@@ -356,7 +379,6 @@
 
 - (NSInteger) collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
 	
-	//	return [[self.fetchedResultsController fetchedObjects] count];
 	return self.article.files.count;
 	
 }
@@ -419,7 +441,7 @@
 	
 	height += 4.0f;
 	
-	return (CGSize) { CGRectGetWidth(self.headerView.frame), height };
+	return (CGSize) { CGRectGetWidth(collectionView.frame), height };
 
 }
 

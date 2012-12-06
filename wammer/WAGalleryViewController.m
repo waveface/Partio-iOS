@@ -17,6 +17,8 @@
 #import "IRAsyncOperation.h"
 #import "WACompositionViewController.h"
 
+#import "GAI.h"
+
 NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGalleryViewControllerContextPreferredFileObjectURI";
 
 
@@ -131,10 +133,16 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 
 }
 
-- (BOOL) shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
+- (NSUInteger) supportedInterfaceOrientations {
+	
+	return UIInterfaceOrientationMaskAll;
+	
+}
 
+- (BOOL) shouldAutorotate {
+	
 	return YES;
-
+	
 }
 
 - (void) willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
@@ -272,7 +280,9 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 	self.navigationBar.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleBottomMargin;
 	self.navigationBar.barStyle = UIBarStyleBlackTranslucent;
 	self.navigationBar.delegate = self;
-	
+	self.navigationBar.translucent = YES;
+	self.navigationBar.tintColor = [UIColor clearColor];
+
 	NSParameterAssert(self.previousNavigationItem);
 	NSParameterAssert(self.navigationItem);
 	
@@ -282,6 +292,7 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 	self.toolbar = [[UIToolbar alloc] initWithFrame:(CGRect){ 0.0f, CGRectGetHeight(self.view.bounds) - 44.0f, CGRectGetWidth(self.view.bounds), 44.0f }];
 	self.toolbar.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleTopMargin;
 	self.toolbar.barStyle = UIBarStyleBlackTranslucent;
+	self.toolbar.tintColor = [UIColor clearColor];
 	self.toolbar.translucent = YES;
 	
 	self.toolbarItems = [NSArray arrayWithObjects:
@@ -337,6 +348,12 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 			[[wSelf.article.files objectAtIndex:index] cleanImageCache];
 		}
 	}];
+	
+	[[GAI sharedInstance].defaultTracker trackEventWithCategory:@"Gallery"
+																									 withAction:@"Enter gallery"
+																										withLabel:nil
+																										withValue:nil];
+
 }
 
 - (void) viewWillAppear:(BOOL)animated {
@@ -351,9 +368,12 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 		BOOL oldToolBarWasTranslucent = navC.toolbar.translucent;
 		BOOL toolbarWasHidden = navC.toolbarHidden;
 		UIColor *oldNavBarTintColor = navC.navigationBar.tintColor;
+		UIImage *oldNavBarBackgroundImage = [navC.navigationBar backgroundImageForBarMetrics:UIBarMetricsDefault];
 		
 		navC.navigationBar.barStyle = UIBarStyleBlackTranslucent;
 		navC.navigationBar.translucent = YES;
+		navC.navigationBar.tintColor = [UIColor clearColor];
+		[navC.navigationBar setBackgroundImage:nil forBarMetrics:UIBarMetricsDefault];
 		
 		navC.toolbar.barStyle = UIBarStyleBlackTranslucent;
 		navC.toolbar.translucent = YES;
@@ -399,6 +419,7 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 				navC.toolbar.barStyle = oldToolBarStyle;
 				navC.toolbar.translucent = oldToolBarWasTranslucent;
 				navC.navigationBar.tintColor = oldNavBarTintColor;
+				[navC.navigationBar setBackgroundImage:oldNavBarBackgroundImage forBarMetrics:UIBarMetricsDefault];
 				
 				wSelf.paginatedView.frame = wSelf.paginatedView.superview.bounds;
 				
@@ -799,16 +820,16 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 
 }
 
-- (void) viewDidUnload {
-
+- (void) dealloc {
+	
 	[self.paginatedView irRemoveObserverBlocksForKeyPath:@"currentPage"];
 	for (WAFile *file in self.article.files) {
     [file irRemoveObserverBlocksForKeyPath:@"bestPresentableImage"];
 		[file irRemoveObserverBlocksForKeyPath:@"smallestPresentableImage"];
 	}
-
+	
 	[self.streamPickerView irRemoveObserverBlocksForKeyPath:@"selectedItemIndex"];
-
+	
 	self.paginatedView = nil;
 	self.navigationBar = nil;
 	self.toolbar = nil;
@@ -824,12 +845,7 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 	
 	self.operationQueue = nil;
 
-	[super viewDidUnload];
-
-}
-
-- (void) dealloc {
-
+	
 	[self.paginatedView irRemoveObserverBlocksForKeyPath:@"currentPage"];
 	
 	if ([self isViewLoaded])

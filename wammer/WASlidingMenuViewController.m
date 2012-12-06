@@ -9,8 +9,12 @@
 #import "WASlidingMenuViewController.h"
 #import "WAAppDelegate.h"
 #import "WADefines.h"
+#import "IRAction.h"
+#import "IRAlertView.h"
+#import "IRBarButtonItem.h"
+#import "WADayViewController.h"
 #import "WANavigationController.h"
-#import "WATimelineViewControllerPhone.h"
+#import "WATimelineViewController.h"
 #import "WAUserInfoViewController.h"
 #import "WAOverlayBezel.h"
 #import "WAPhotoImportManager.h"
@@ -19,6 +23,7 @@
 #import "WAPhotoStreamViewController.h"
 #import "WAAppDelegate_iOS.h"
 #import "WAStatusBar.h"
+#import "WACalendarPickerViewController.h"
 
 @interface WASlidingMenuViewController () 
 
@@ -27,6 +32,8 @@
 @property (nonatomic, strong) UITableViewCell *userCell;
 
 @property (nonatomic, strong) WAStatusBar *statusBar;
+@property (nonatomic, strong) WAPhotoImportManager *photoImportManager;
+@property (nonatomic, strong) WASyncManager *syncManager;
 
 @end
 
@@ -45,12 +52,12 @@
 {
 	[super viewDidLoad];
 
-	WAPhotoImportManager *photoImportManager = [(WAAppDelegate_iOS *)AppDelegate() photoImportManager];
-	[photoImportManager addObserver:self forKeyPath:@"importedFilesCount" options:NSKeyValueObservingOptionNew context:nil];
+	self.photoImportManager = [(WAAppDelegate_iOS *)AppDelegate() photoImportManager];
+	[self.photoImportManager addObserver:self forKeyPath:@"importedFilesCount" options:NSKeyValueObservingOptionNew context:nil];
 
-	WASyncManager *syncManager = [(WAAppDelegate_iOS *)AppDelegate() syncManager];
-	[syncManager addObserver:self forKeyPath:@"preprocessingArticleSync" options:NSKeyValueObservingOptionNew context:nil];
-	[syncManager addObserver:self forKeyPath:@"syncedFilesCount" options:NSKeyValueObservingOptionNew context:nil];
+	self.syncManager = [(WAAppDelegate_iOS *)AppDelegate() syncManager];
+	[self.syncManager addObserver:self forKeyPath:@"preprocessingArticleSync" options:NSKeyValueObservingOptionNew context:nil];
+	[self.syncManager addObserver:self forKeyPath:@"syncedFilesCount" options:NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew context:nil];
 	
 }
 
@@ -59,12 +66,10 @@
 	[self.user removeObserver:self forKeyPath:@"avatar"];
 	[self.user removeObserver:self forKeyPath:@"nickname"];
 
-	WAPhotoImportManager *photoImportManager = [(WAAppDelegate_iOS *)AppDelegate() photoImportManager];
-	[photoImportManager removeObserver:self forKeyPath:@"importedFilesCount"];
+	[self.photoImportManager removeObserver:self forKeyPath:@"importedFilesCount"];
 
-	WASyncManager *syncManager = [(WAAppDelegate_iOS *)AppDelegate() syncManager];
-	[syncManager removeObserver:self forKeyPath:@"syncedFilesCount"];
-	[syncManager removeObserver:self forKeyPath:@"preprocessingArticleSync"];
+	[self.syncManager removeObserver:self forKeyPath:@"syncedFilesCount"];
+	[self.syncManager removeObserver:self forKeyPath:@"preprocessingArticleSync"];
 
 }
 
@@ -80,7 +85,7 @@
 	
 	WANavigationController *navC = nil;
 	WAUserInfoViewController *userInfoVC = [WAUserInfoViewController controllerWithWrappingNavController:&navC];
-	
+
 	__weak WASlidingMenuViewController *wSelf = self;
 		
 	userInfoVC.navigationItem.leftBarButtonItem = WABarButtonItem([UIImage imageNamed:@"menu"], @"", ^{
@@ -92,7 +97,7 @@
 														 actionWithTitle:NSLocalizedString(@"ACTION_SIGN_OUT", nil)
 														 block: ^ {
 															 if ([wSelf.delegate respondsToSelector:@selector(applicationRootViewControllerDidRequestReauthentication:)])
-																 [wSelf.delegate applicationRootViewControllerDidRequestReauthentication:nil];
+																 [wSelf.delegate performSelector:@selector( applicationRootViewControllerDidRequestReauthentication: ) withObject:nil];
 														 }];
 	
 	userInfoVC.navigationItem.rightBarButtonItem = [IRBarButtonItem itemWithTitle:NSLocalizedString(@"ACTION_SIGN_OUT", nil) action:^{
@@ -104,7 +109,6 @@
 		
 	}];
 	
-	//	[self presentViewController:navC animated:YES completion:nil];
 	[self.viewDeckController setCenterController:navC];
 	
 }
@@ -197,21 +201,47 @@
 	}
 	
 	if ([keyPath isEqualToString:@"syncedFilesCount"]) {
-		[[NSOperationQueue mainQueue] addOperationWithBlock:^{
-			WASyncManager *syncManager = [(WAAppDelegate_iOS *)AppDelegate() syncManager];
-			NSUInteger currentCount = [change[NSKeyValueChangeNewKey] unsignedIntegerValue];
-			if (currentCount == syncManager.needingSyncFilesCount) {
-				syncManager.syncedFilesCount = 0;
-				syncManager.needingSyncFilesCount = 0;
-				wSelf.statusBar = nil;
+
+		NSUInteger oldCount = [change[NSKeyValueChangeOldKey] unsignedIntegerValue];
+		NSUInteger currentCount = [change[NSKeyValueChangeNewKey] unsignedIntegerValue];
+		WASyncManager *syncManager = [(WAAppDelegate_iOS *)AppDelegate() syncManager];
+		if (currentCount == 0) {
+
+			if (syncManager.needingSyncFilesCount == oldCount) {
+				// sync complete
+				[[NSOperationQueue mainQueue] addOperationWithBlock:^{
+					if (wSelf.statusBar) {
+						wSelf.statusBar.statusLabel.text = NSLocalizedString(@"PHOTO_UPLOAD_STATUS_BAR_COMPLETE", @"String on customized status bar");
+						int64_t delayInSeconds = 2.0;
+						dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+						dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+							wSelf.statusBar = nil;
+						});
+					}
+				}];
 			} else {
-				if (!wSelf.statusBar) {
-					wSelf.statusBar = [[WAStatusBar alloc] initWithFrame:CGRectZero];
-				}
+				// sync fail
+				[[NSOperationQueue mainQueue] addOperationWithBlock:^{
+					if (wSelf.statusBar) {
+						wSelf.statusBar.statusLabel.text = NSLocalizedString(@"PHOTO_UPLOAD_STATUS_BAR_FAIL", @"String on customized status bar");
+						int64_t delayInSeconds = 2.0;
+						dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+						dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+							wSelf.statusBar = nil;
+						});
+					}
+				}];
+			}
+
+		} else {
+
+			if (wSelf.statusBar) {
 				wSelf.statusBar.statusLabel.text = [NSString stringWithFormat:NSLocalizedString(@"PHOTO_UPLOAD_STATUS_BAR_UPLOADING", @"String on customized status bar"), currentCount, syncManager.needingSyncFilesCount];
 				wSelf.statusBar.progressView.progress = currentCount * 1.0 / syncManager.needingSyncFilesCount;
 			}
-		}];
+
+		}
+		
 	}
 	
 }
@@ -333,45 +363,6 @@
 }
 
 
-/*
- // Override to support conditional editing of the table view.
- - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
- {
- // Return NO if you do not want the specified item to be editable.
- return YES;
- }
- */
-
-/*
- // Override to support editing the table view.
- - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
- {
- if (editingStyle == UITableViewCellEditingStyleDelete) {
- // Delete the row from the data source
- [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
- }
- else if (editingStyle == UITableViewCellEditingStyleInsert) {
- // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
- }
- }
- */
-
-/*
- // Override to support rearranging the table view.
- - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
- {
- }
- */
-
-/*
- // Override to support conditional rearranging of the table view.
- - (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
- {
- // Return NO if you do not want the item to be re-orderable.
- return YES;
- }
- */
-
 #pragma mark - Table view delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -380,7 +371,8 @@
 	switch (indexPath.row) {
 		case 1: {
 			[self.viewDeckController closeLeftView];
-			WADayViewController *swVC = [[WADayViewController alloc] initWithClassNamed:[WATimelineViewControllerPhone class]];
+						
+			WADayViewController *swVC = [[WADayViewController alloc] initWithClassNamed:[WATimelineViewController class]];
 			WANavigationController *navVC = [[WANavigationController alloc] initWithRootViewController:swVC];
 			self.viewDeckController.centerController = navVC;
 			break;
@@ -388,7 +380,18 @@
 		case 2: {
 			[self.viewDeckController closeLeftView];
 			WADayViewController *swVC = [[WADayViewController alloc] initWithClassNamed:[WAPhotoStreamViewController class]];
-			UINavigationController *navVC = [[UINavigationController alloc] initWithRootViewController:swVC];
+			WANavigationController *navVC = [[WANavigationController alloc] initWithRootViewController:swVC];
+			swVC.navigationController.navigationBar.tintColor = [UIColor colorWithWhite:0.157 alpha:1.000];
+			swVC.navigationController.navigationBar.titleTextAttributes = @{UITextAttributeTextColor: [UIColor whiteColor]};
+			[swVC.navigationController.navigationBar setBackgroundImage:nil forBarMetrics:UIBarMetricsDefault];
+
+			self.viewDeckController.centerController = navVC;
+			break;
+		}
+		case 4: {
+			[self.viewDeckController closeLeftView];
+			WACalendarPickerViewController *calVC = [[WACalendarPickerViewController alloc] initWithClassNamed:[WACalendarPickerViewController class]];
+			WANavigationController *navVC = [[WANavigationController alloc] initWithRootViewController:calVC];
 			self.viewDeckController.centerController = navVC;
 			break;
 		}

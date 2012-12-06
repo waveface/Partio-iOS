@@ -8,9 +8,13 @@
 
 #import "WAFirstUsePhotoImportViewController.h"
 #import "WADefines.h"
+#import "WAAppearance.h"
+
 
 // save switch value in global so that the switch status can be kept even the view controller is dismissed
 static BOOL enabled = YES;
+
+static NSString * const kWASeguePhotoImportToDone = @"WASeguePhotoImportToDone";
 
 @interface WAFirstUsePhotoImportViewController ()
 
@@ -26,15 +30,26 @@ static BOOL enabled = YES;
 
 	[self localize];
 
-	if (!self.isFromConnectServicesPage) {
-		self.navigationItem.hidesBackButton = YES;
-	}
-
 	self.photoImportSwitch = [[UISwitch alloc] init];
 	[self.photoImportSwitch addTarget:self action:@selector(handleSwitchValueChange:) forControlEvents:UIControlEventValueChanged];
 	self.photoImportSwitchCell.accessoryView = self.photoImportSwitch;
 
 	[self.photoImportSwitch setOn:enabled animated:NO];
+
+	__weak WAFirstUsePhotoImportViewController *wSelf = self;
+	if (!self.isFromConnectServicesPage) {
+		self.navigationItem.hidesBackButton = YES;
+	} else {
+		self.navigationItem.leftBarButtonItem = (UIBarButtonItem *)WABackBarButtonItem([UIImage imageNamed:@"back"], @"", ^{
+			[wSelf.navigationController popViewControllerAnimated:YES];
+		});
+	}
+	
+	UIBarButtonItem *nextButton = (UIBarButtonItem *)WABackBarButtonItem([UIImage imageNamed:@"forward"], @"", ^{
+		[wSelf performSegueWithIdentifier:kWASeguePhotoImportToDone sender:nil];
+	});
+
+	self.navigationItem.rightBarButtonItem = nextButton;
 
 }
 

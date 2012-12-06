@@ -34,7 +34,7 @@
 	if (self) {
 		onDate = aDate;
 		NSPredicate *allFromToday = [NSPredicate predicateWithFormat:@"created BETWEEN {%@, %@}", [aDate dayBegin], [aDate dayEnd]];
-		_photos = [WAFile MR_findAllWithPredicate:allFromToday];
+		_photos = [WAFile MR_findAllWithPredicate:allFromToday inContext:[[WADataStore defaultStore] defaultAutoUpdatedMOC]];
 	}
 	return self;
 }
@@ -98,11 +98,8 @@
 }
 
 - (void)viewWillAppear:(BOOL)animated {
+
 	[super viewWillAppear:animated];
-	//[[UINavigationBar appearance] setTintColor:[UIColor greenColor]];
-	self.navigationController.navigationBar.tintColor = [UIColor colorWithWhite:0.157 alpha:1.000];
-	self.navigationController.navigationBar.titleTextAttributes = @{UITextAttributeTextColor: [UIColor whiteColor]};
-	
 	
 }
 
@@ -143,7 +140,7 @@
 					 
 					 dispatch_async(dispatch_get_main_queue(), ^{
 						 
-						 cell.imageView.image = (UIImage*)toValue;
+						 ((WAPhotoStreamViewCell *)[collectionView cellForItemAtIndexPath:indexPath]).imageView.image = (UIImage*)toValue;
 						 
 					 });
 					 

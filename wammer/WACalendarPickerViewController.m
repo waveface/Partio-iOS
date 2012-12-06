@@ -7,24 +7,33 @@
 //
 
 #import "WACalendarPickerViewController.h"
+#import "WACalendarPickerDataSource.h"
 #import "WAEventViewController.h"
 #import "WADayViewController.h"
 #import "WANavigationController.h"
+#import "WAAppearance.h"
 
 @interface WACalendarPickerViewController ()
 {
 	WANavigationController *calNavController;
+	id dataSource;
 	UITableView *tableView;
 	WAArticle *selectedEvent;
+	Class containedClass;
 }
 
 @property (nonatomic, readwrite, copy) void(^callback)(NSDate *);
 
-- (NSArray *)markedDatesFrom:(NSDate *)fromDate to:(NSDate *)toDate;
-
 @end
 
 @implementation WACalendarPickerViewController
+
+
+- (id) initWithClassNamed:(Class)aClass {
+	self = [self initWithNibName:nil bundle:nil];
+	containedClass = aClass;
+	return self;
+}
 
 - (void) didMoveToParentViewController:(UIViewController *)parent {
 	
@@ -115,16 +124,15 @@
 - (void)viewDidLoad
 {
 	[super viewDidLoad];
-
-//	self.view.backgroundColor = [UIColor colorWithWhite:0.f alpha:0.4f];
+	
+	//self.view.backgroundColor = [UIColor colorWithWhite:0.f alpha:0.4f];
 
   _calPicker = [[KalViewController alloc] init];
-	_calPicker.title = @"CALENDAR";
+	_calPicker.title = NSLocalizedString(@"CALENDAR_TITLE", @"Title of Canlendar");
 	_calPicker.delegate = self;
-	_calPicker.dataSource = _dataSource;
+	dataSource = [[WACalendarPickerDataSource alloc] init];
+	_calPicker.dataSource = dataSource;
 	
-	calNavController = [[UINavigationController alloc] initWithRootViewController:_calPicker];
-
 	UIButton *todayButton = [UIButton buttonWithType:UIButtonTypeCustom];
 	[todayButton setFrame:CGRectMake(0, 0, 57, 26)];
 	[todayButton setBackgroundImage:[UIImage imageNamed:@"CalBtn"] forState:UIControlStateNormal];
@@ -151,12 +159,31 @@
 	
 	UIBarButtonItem *todayBarButton = [[UIBarButtonItem alloc] initWithCustomView:todayButton];
 	UIBarButtonItem *cancelBarButton = [[UIBarButtonItem alloc] initWithCustomView:cancelButton];
-	[_calPicker.navigationItem setLeftBarButtonItem:todayBarButton animated:YES];
-	[_calPicker.navigationItem setRightBarButtonItem:cancelBarButton animated:YES];
+
+	calNavController = [[UINavigationController alloc] initWithRootViewController:_calPicker];
 	
-	calNavController.view.frame = CGRectMake(0, 20, 320, 640);
-	calNavController.view.layer.cornerRadius = 3.f;
-	calNavController.view.clipsToBounds = YES;
+	if ([containedClass isSubclassOfClass:[WACalendarPickerViewController class]]) {
+		_calPicker.navigationController.navigationBarHidden = YES;
+		calNavController.view.frame = CGRectMake(0, 0, 320, 640);
+				
+		self.navigationItem.leftBarButtonItem = WABarButtonItem([UIImage imageNamed:@"menu"], @"", ^{
+			[self.viewDeckController toggleLeftView];
+		});
+
+		[self.navigationItem setRightBarButtonItem:todayBarButton animated:YES];
+		
+		[self.navigationItem setTitle:NSLocalizedString(@"CALENDAR_TITLE", @"Title of Canlendar")];
+		
+	}
+	else {
+		calNavController.view.frame = CGRectMake(0, 20, 320, 640);
+		calNavController.view.layer.cornerRadius = 3.f;
+		calNavController.view.clipsToBounds = YES;
+
+		[_calPicker.navigationItem setLeftBarButtonItem:todayBarButton animated:YES];
+		[_calPicker.navigationItem setRightBarButtonItem:cancelBarButton animated:YES];
+	}
+	
 
   [self addChildViewController:calNavController];
   [self.view addSubview:calNavController.view];
@@ -191,9 +218,24 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	selectedEvent = [[_dataSource items] objectAtIndex:indexPath.row];
-	WAEventViewController *eventVC = [WAEventViewController controllerForArticle:selectedEvent];
-	[calNavController pushViewController:eventVC animated:YES];
+	selectedEvent = [[dataSource items] objectAtIndex:indexPath.row];
+		
+	if ([selectedEvent isKindOfClass:[WAArticle class]]) {
+
+		WAEventViewController *eventVC = [WAEventViewController controllerForArticle:selectedEvent];
+
+		if ([containedClass isSubclassOfClass:[WACalendarPickerViewController class]]) {
+			[self.navigationController pushViewController:eventVC animated:YES];
+		}
+		else {
+			[calNavController pushViewController:eventVC animated:YES];
+		}
+		
+	}
+	else if ([selectedEvent isKindOfClass:[WAFile class]]) {
+
+		
+	}
 }
 
 @end

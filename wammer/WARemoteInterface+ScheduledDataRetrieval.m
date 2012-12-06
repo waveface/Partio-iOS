@@ -179,9 +179,7 @@
 
 	__weak WARemoteInterface *wSelf = self;
 
-	return [NSArray arrayWithObjects:
-
-		[^ {
+	return @[[^ {
 
 			if (!wSelf.userToken || !wSelf.apiKey || !wSelf.primaryGroupIdentifier)
 				return;
@@ -235,8 +233,28 @@
 			}];
 		
 		} copy],
-		
-	nil];
+					
+		[^ {
+			
+			if (!wSelf.userToken || !wSelf.apiKey || !wSelf.primaryGroupIdentifier)
+				return;
+			
+			[wSelf beginPerformingAutomaticRemoteUpdates];
+			[wSelf beginPostponingDataRetrievalTimerFiring];
+			
+			[[WADataStore defaultStore]
+			 updateCollectionsOnSuccess:^{
+				 [wSelf endPerformingAutomaticRemoteUpdates];
+				 [wSelf endPostponingDataRetrievalTimerFiring];
+				 
+			} onFailure:^(NSError *error) {
+				[wSelf endPerformingAutomaticRemoteUpdates];
+				[wSelf endPostponingDataRetrievalTimerFiring];
+				
+			}];
+			
+		} copy]
+	];
 
 }
 
@@ -268,7 +286,7 @@ static NSString * const kDataRetrievalTimerEnabled = @"dataRetrievalTimerEnabled
 
 - (void) setDataRetrievalInterval:(NSTimeInterval)newDataRetrievalInterval {
 
-	objc_setAssociatedObject(self, &kDataRetrievalInterval, [NSNumber numberWithDouble:newDataRetrievalInterval], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+	objc_setAssociatedObject(self, &kDataRetrievalInterval, @(newDataRetrievalInterval), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 	
 }
 
@@ -281,7 +299,7 @@ static NSString * const kDataRetrievalTimerEnabled = @"dataRetrievalTimerEnabled
 
 - (void) setDataRetrievalTimerEnabled:(BOOL)dataRetrievalTimerEnabled
 {
-	objc_setAssociatedObject(self, &kDataRetrievalTimerEnabled, [NSNumber numberWithBool:dataRetrievalTimerEnabled], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+	objc_setAssociatedObject(self, &kDataRetrievalTimerEnabled, @(dataRetrievalTimerEnabled), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
 - (BOOL) dataRetrievalTimerEnabled
@@ -301,7 +319,7 @@ static NSString * const kDataRetrievalTimerEnabled = @"dataRetrievalTimerEnabled
 	NSArray *value = objc_getAssociatedObject(self, &kDataRetrievalBlocks);
 	if (!value) {
 		
-		value = [NSArray array];
+		value = @[];
 		objc_setAssociatedObject(self, &kDataRetrievalBlocks, value, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 		
 	}
@@ -323,7 +341,7 @@ static NSString * const kDataRetrievalTimerEnabled = @"dataRetrievalTimerEnabled
 
 - (void) setDataRetrievalTimerPostponingCount:(int)newDataRetrievalTimerPostponingCount {
 	
-	objc_setAssociatedObject(self, &kDataRetrievalTimerPostponingCount, [NSNumber numberWithInt:newDataRetrievalTimerPostponingCount], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+	objc_setAssociatedObject(self, &kDataRetrievalTimerPostponingCount, @(newDataRetrievalTimerPostponingCount), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 	
 }
 
@@ -336,7 +354,7 @@ static NSString * const kDataRetrievalTimerEnabled = @"dataRetrievalTimerEnabled
 
 - (void) setAutomaticRemoteUpdatesPerformingCount:(int)newAutomaticRemoteUpdatesPerformingCount {
 
-	objc_setAssociatedObject(self, &kDataRetrievalTimerPerformingCount, [NSNumber numberWithInt:newAutomaticRemoteUpdatesPerformingCount], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+	objc_setAssociatedObject(self, &kDataRetrievalTimerPerformingCount, @(newAutomaticRemoteUpdatesPerformingCount), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 	
 }
 

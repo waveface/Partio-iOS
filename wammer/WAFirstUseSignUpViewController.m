@@ -14,6 +14,7 @@
 #import <Accounts/Accounts.h>
 #import "WARemoteInterface.h"
 #import "WAOverlayBezel.h"
+#import "WAAppearance.h"
 
 static NSString * const kWASegueSignUpToConnectServices = @"WASegueSignUpToConnectServices";
 static NSString * const kWASegueSignUpToPhotoImport = @"WASegueSignUpToPhotoImport";
@@ -94,7 +95,12 @@ static NSString * const kWASegueSignUpToPhotoImport = @"WASegueSignUpToPhotoImpo
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardWasShown:) name:UIKeyboardDidShowNotification object:nil];
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardWillBeHidden:) name:UIKeyboardWillHideNotification object:nil];
 	}
-	
+
+	__weak WAFirstUseSignUpViewController *wSelf = self;
+	self.navigationItem.leftBarButtonItem = (UIBarButtonItem *)WABackBarButtonItem([UIImage imageNamed:@"back"], @"", ^{
+		[wSelf.navigationController popViewControllerAnimated:YES];
+	});
+
 }
 
 - (void)updateViewConstraints {
@@ -168,7 +174,7 @@ static NSString * const kWASegueSignUpToPhotoImport = @"WASegueSignUpToPhotoImpo
 	__weak WAFirstUseSignUpViewController *wSelf = self;
 	
 	[FBSession
-	 openActiveSessionWithReadPermissions:@[@"email", @"user_photos", @"user_videos", @"user_notes", @"user_status", @"read_stream"]
+	 openActiveSessionWithReadPermissions:@[@"email", @"user_photos", @"user_videos", @"user_notes", @"user_status", @"read_stream", @"friends_photos", @"friends_videos", @"friends_status", @"friends_notes"]
 	 allowLoginUI:YES
 	 completionHandler:^(FBSession *session, FBSessionState status, NSError *error) {
 		 

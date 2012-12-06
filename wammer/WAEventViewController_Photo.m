@@ -11,6 +11,8 @@
 #import "WAFile+LazyImages.h"
 #import "WAGalleryViewController.h"
 #import "IRBindings.h"
+#import "WAAppearance.h"
+#import "WAEventActionsViewController.h"
 
 @interface WAEventViewController_Photo () 
 
@@ -33,6 +35,22 @@
 {
 	[super viewDidLoad];
 	
+	__weak WAEventViewController *wSelf = self;
+	
+	self.navigationItem.rightBarButtonItem = WABarButtonItem([UIImage imageNamed:@"action"], nil, ^{
+		WAEventActionsViewController *editingModeVC = [WAEventActionsViewController new];
+		editingModeVC.article = wSelf.article;
+
+		WANavigationController *navVC = [[WANavigationController alloc] initWithRootViewController:editingModeVC];
+		if (isPad()) {
+			navVC.modalPresentationStyle = UIModalPresentationCurrentContext;
+			navVC.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+		} else
+			navVC.modalPresentationStyle = UIModalPresentationPageSheet;
+
+		[wSelf presentViewController:navVC animated:YES completion:nil];
+	});
+	
 	[self.itemsView registerClass:[WAEventPhotoViewCell class] forCellWithReuseIdentifier:@"EventPhotoCell"];
 	
 }
@@ -50,8 +68,14 @@
 	WAEventPhotoViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"EventPhotoCell" forIndexPath:indexPath];
 	
 	WAFile *file = [self.article.files objectAtIndex:indexPath.row];
+
 	[cell.imageView irUnbind:@"image"];
-	[cell.imageView irBind:@"image" toObject:file keyPath:@"extraSmallThumbnailImage" options:[NSDictionary dictionaryWithObjectsAndKeys: (id)kCFBooleanTrue, kIRBindingsAssignOnMainThreadOption, nil]];
+
+	dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+		
+		[cell.imageView irBind:@"image" toObject:file keyPath:@"extraSmallThumbnailImage" options:[NSDictionary dictionaryWithObjectsAndKeys: (id)kCFBooleanTrue, kIRBindingsAssignOnMainThreadOption, nil]];
+
+	});
 
 	return cell;
 	
@@ -60,7 +84,7 @@
 #pragma mark - UICollectionViewFlowLayout delegate
 - (CGSize) collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
 	
-	return (CGSize){72, 72};
+	return (CGSize){100, 100};
 	
 }
 

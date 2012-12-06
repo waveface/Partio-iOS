@@ -10,41 +10,45 @@
 #import <UIKit/UIKit.h>
 #import "UIKit+IRAdditions.h"
 
-
 #pragma mark - UIAppearance
 void WADefaultAppearance(void) {
-	
-	if (isPad()) {
-
-		
-		[[UINavigationBar appearance] setTintColor:[UIColor colorWithRed:98.0/255.0 green:176.0/255.0 blue:195.0/255.0 alpha:0.0]];
-		[[UINavigationBar appearance] setBackgroundImage:[UIImage imageNamed:@"WANavigationBar"] forBarMetrics:UIBarMetricsDefault];
-
-		// iPad user info pop-over
-		[[UINavigationBar appearanceWhenContainedIn:[UIPopoverController class], nil] setBackgroundImage:nil forBarMetrics:UIBarMetricsDefault];
-		
-
-	} else {
 		
 		[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackOpaque];
 		
+		// set the appearance for all major UINavigationBar and toolbar
 		UIColor *naviBgColor = [UIColor colorWithRed:0.95f green:0.95f blue:0.95f alpha:1];
-		[[UINavigationBar appearance] setTintColor:naviBgColor];
+
+		CGSize barSize = CGSizeMake(1.0, 44.0);
+		UIGraphicsBeginImageContext(barSize);
+		CGContextRef context = UIGraphicsGetCurrentContext();
+		CGContextSetFillColorWithColor(context, naviBgColor.CGColor);
+		CGContextAddRect(context, CGRectMake(0, 0, barSize.width, barSize.height));
+		CGContextFillPath(context);
+		UIImage *naviBg = UIGraphicsGetImageFromCurrentImageContext();
+		UIGraphicsEndImageContext();
+		[[UINavigationBar appearance] setBackgroundImage:naviBg forBarMetrics:UIBarMetricsDefault];
+
+		CGSize shadowSize = CGSizeMake(15.0, 1.0);
+		UIGraphicsBeginImageContext(shadowSize);
+		CGContextRef shadowContext = UIGraphicsGetCurrentContext();
+		CGContextSetFillColorWithColor(shadowContext, [UIColor colorWithRed:193/255.0 green:193/255.0 blue:193/255.0 alpha:1].CGColor);
+		CGContextAddRect(shadowContext, CGRectMake(7.0, 0, 1.0, shadowSize.height));
+		CGContextFillPath(shadowContext);
+		UIImage *naviShadow = UIGraphicsGetImageFromCurrentImageContext();
+		UIImage *naviShadowWithInsets = [naviShadow resizableImageWithCapInsets:UIEdgeInsetsMake(0, 7, 0, 7)];
+		UIGraphicsEndImageContext();
+		[[UINavigationBar appearance] setShadowImage:naviShadowWithInsets];
 		
 		NSValue *shadowOffset = [NSValue valueWithUIOffset:(UIOffset){0,0}];
-														 
+
 		UIColor *textColor = [UIColor colorWithRed:0.30f green:0.30f blue:0.30f alpha:1];
 		[[UINavigationBar appearance] setTitleTextAttributes:@{UITextAttributeTextColor: textColor, UITextAttributeTextShadowOffset:shadowOffset}];
 
 		UIColor *btnTextColor = [UIColor colorWithRed:0.45f green:0.45f blue:0.45f alpha:1];
 		[[UIBarButtonItem appearance] setTitleTextAttributes:@{UITextAttributeTextColor: btnTextColor, UITextAttributeTextShadowOffset:shadowOffset} forState:UIControlStateNormal];
-		
 		[[UIBarButtonItem appearance] setTintColor:naviBgColor];
 		
 		[[UIToolbar appearance] setTintColor:naviBgColor];
-		
-	}
-	
 	
 }
 
@@ -84,7 +88,13 @@ void WADefaultBarButtonInitialize (void) {
 
 IRBarButtonItem * WABarButtonItem (UIImage *image, NSString *labelText, void(^aBlock)(void)) {
 
-	IRBarButtonItem *item = [IRBarButtonItem itemWithCustomImage:image highlightedImage:nil];
+	IRBarButtonItem *item = nil;
+	
+	if (image)
+		item = [IRBarButtonItem itemWithCustomImage:image highlightedImage:nil];
+	else
+		item = [[IRBarButtonItem alloc] initWithTitle:labelText style:UIBarButtonItemStyleBordered target:nil action:nil];
+	
 	if (aBlock)
 		item.block = aBlock;
 	
@@ -95,22 +105,8 @@ IRBarButtonItem * WABarButtonItem (UIImage *image, NSString *labelText, void(^aB
 IRBarButtonItem * WABackBarButtonItem (UIImage *image, NSString *labelText, void(^aBlock)(void)) {
 
 	IRBarButtonItem *item;
-	
-	if (isPad()) {
-		UIImage *normalImage = [IRBarButtonItem buttonImageForStyle:IRBarButtonItemStyleBack withImage:image title:labelText font:kWADefaultBarButtonTitleFont color:kWADefaultBarButtonTitleColor shadow:kWADefaultBarButtonTitleShadow backgroundColor:kWADefaultBarButtonBackgroundColor gradientColors:kWADefaultBarButtonGradientColors innerShadow:kWADefaultBarButtonInnerShadow border:kWADefaultBarButtonBorder shadow:kWADefaultBarButtonShadow];
 		
-		UIImage *normalLandscapePhoneImage = [IRBarButtonItem buttonImageForStyle:IRBarButtonItemStyleBackLandscapePhone withImage:image title:labelText font:kWADefaultBarButtonTitleFont color:kWADefaultBarButtonTitleColor shadow:kWADefaultBarButtonTitleShadow backgroundColor:kWADefaultBarButtonBackgroundColor gradientColors:kWADefaultBarButtonGradientColors innerShadow:kWADefaultBarButtonInnerShadow border:kWADefaultBarButtonBorder shadow:kWADefaultBarButtonShadow];
-	
-		UIImage *highlightedImage = [IRBarButtonItem buttonImageForStyle:IRBarButtonItemStyleBack withImage:image title:labelText font:kWADefaultBarButtonTitleFont color:kWADefaultBarButtonTitleColor shadow:kWADefaultBarButtonTitleShadow backgroundColor:kWADefaultBarButtonHighlightedBackgroundColor gradientColors:kWADefaultBarButtonHighlightedGradientColors innerShadow:kWADefaultBarButtonInnerShadow border:kWADefaultBarButtonBorder shadow:kWADefaultBarButtonShadow];
-	
-		UIImage *highlightedLandscapePhoneImage = [IRBarButtonItem buttonImageForStyle:IRBarButtonItemStyleBackLandscapePhone withImage:image title:labelText font:kWADefaultBarButtonTitleFont color:kWADefaultBarButtonTitleColor shadow:kWADefaultBarButtonTitleShadow backgroundColor:kWADefaultBarButtonHighlightedBackgroundColor gradientColors:kWADefaultBarButtonHighlightedGradientColors innerShadow:kWADefaultBarButtonInnerShadow border:kWADefaultBarButtonBorder shadow:kWADefaultBarButtonShadow];
-	
-		item = [IRBarButtonItem itemWithCustomImage:normalImage landscapePhoneImage:normalLandscapePhoneImage highlightedImage:highlightedImage highlightedLandscapePhoneImage:highlightedLandscapePhoneImage];
-	} else {
-			
-		item = [IRBarButtonItem itemWithCustomImage:image highlightedImage:nil];
-		
-	}
+	item = [IRBarButtonItem itemWithCustomImage:image highlightedImage:nil];
 	
 	if (aBlock)
 		item.block = aBlock;

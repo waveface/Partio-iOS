@@ -24,20 +24,20 @@
 @synthesize disablesAutomaticKeyboardDismissal;
 @synthesize poppingViewController = _poppingViewController;
 
-+ (id) alloc {
-
-	UIViewController *fauxVC = [[UIViewController alloc] init];
-	WANavigationController *fauxNavController = [super alloc];
-	fauxNavController = [fauxNavController initWithRootViewController:fauxVC];
-	
-	NSData *fauxNavCData = [NSKeyedArchiver archivedDataWithRootObject:fauxNavController];
-	NSKeyedUnarchiver *unarchiver = [[NSKeyedUnarchiver alloc] initForReadingWithData:fauxNavCData];
-	[unarchiver setClass:[UINavigationBar class] forClassName:@"UINavigationBar"];
-
-	return [unarchiver decodeObjectForKey:@"root"];
-		
-}
-
+//+ (id) alloc {
+//
+//	UIViewController *fauxVC = [[UIViewController alloc] init];
+//	WANavigationController *fauxNavController = [super alloc];
+//	fauxNavController = [fauxNavController initWithRootViewController:fauxVC];
+//	
+//	NSData *fauxNavCData = [NSKeyedArchiver archivedDataWithRootObject:fauxNavController];
+//	NSKeyedUnarchiver *unarchiver = [[NSKeyedUnarchiver alloc] initForReadingWithData:fauxNavCData];
+//	[unarchiver setClass:[UINavigationBar class] forClassName:@"UINavigationBar"];
+//
+//	return [unarchiver decodeObjectForKey:@"root"];
+//		
+//}
+//
 - (id) initWithRootViewController:(UIViewController *)presentedViewController {
 
 	NSParameterAssert(!presentedViewController.navigationController);
@@ -56,10 +56,9 @@
 - (void) viewDidLoad {
 
 	[super viewDidLoad];
-		
-	UINavigationBar *navigationBar = (UINavigationBar *)self.navigationBar;
-	[navigationBar setClipsToBounds:YES];
-	
+
+	self.navigationBar.clipsToBounds = NO;
+
 	if (self.onViewDidLoad)
 		self.onViewDidLoad(self);
 
@@ -100,37 +99,16 @@
 
 }
 
+- (BOOL) shouldAutorotate {
+	
+	return [self.topViewController shouldAutorotate];
+
+}
+
 - (NSUInteger) supportedInterfaceOrientations {
-
-	#if __IPHONE_OS_VERSION_MIN_REQUIRED < 60000
-		#define UIInterfaceOrientationMaskLandscapeLeft 16
-		#define UIInterfaceOrientationMaskLandscapeRight 8
-		#define UIInterfaceOrientationMaskPortrait 2
-		#define UIInterfaceOrientationMaskPortraitUpsideDown 4
-	#endif
-
-	UIViewController *topVC = self.topViewController;
 	
-	if (_poppingViewController)
-		if ([self.viewControllers count] > 1)
-			topVC = [self.viewControllers objectAtIndex:([self.viewControllers count] - 2)];
+	return [self.topViewController supportedInterfaceOrientations];
 	
-	NSUInteger mask = 0;
-	
-	if ([topVC shouldAutorotateToInterfaceOrientation:UIInterfaceOrientationPortrait])
-		mask |= UIInterfaceOrientationMaskPortrait;
-	
-	if ([topVC shouldAutorotateToInterfaceOrientation:UIInterfaceOrientationPortraitUpsideDown])
-		mask |= UIInterfaceOrientationMaskPortraitUpsideDown;
-	
-	if ([topVC shouldAutorotateToInterfaceOrientation:UIInterfaceOrientationLandscapeLeft])
-		mask |= UIInterfaceOrientationMaskLandscapeLeft;
-	
-	if ([topVC shouldAutorotateToInterfaceOrientation:UIInterfaceOrientationLandscapeRight])
-		mask |= UIInterfaceOrientationMaskLandscapeRight;
-	
-	return mask;
-
 }
 
 @end

@@ -17,8 +17,14 @@
    Title for the action responsible for presenting a controller changing the representing file of an article */
 "ACTION_CHANGE_REPRESENTING_FILE" = "更換封面";
 
+/* Place photos in collections */
+"ACTION_COLLECTION" = "蒐藏";
+
 /* Short action title for connecting Facebook creds */
 "ACTION_CONNECT_FACEBOOK_SHORT" = "同步";
+
+/* Short action title for connecting Google */
+"ACTION_CONNECT_GOOGLE_SHORT" = "同步";
 
 /* Action deleting an article
    Title for deleting an article from the Overview
@@ -31,8 +37,17 @@
 /* Short action title for disconnecting Facebook creds */
 "ACTION_DISCONNECT_FACEBOOK" = "停止";
 
+/* Short action title for disconnecting Google */
+"ACTION_DISCONNECT_GOOGLE" = "停止";
+
 /* In iPad composition view */
 "ACTION_DONE" = "完成";
+
+/* Share thru Email */
+"ACTION_EMAIL" = "電郵";
+
+/* Share to Facebook action */
+"ACTION_FACEBOOK" = "臉書";
 
 /* Action title for feedback composition */
 "ACTION_FEEDBACK" = "回報";
@@ -45,9 +60,6 @@
 
 /* Action marking article as favorite */
 "ACTION_MARK_FAVORITE" = "設為最愛";
-
-/* No comment provided by engineer. */
-"ACTION_MORE_INFO" = "瞭解更多";
 
 /* Action title for creating a new post */
 "ACTION_NEW_POST" = "新文章";
@@ -75,6 +87,9 @@
 
 /* Button title for showing a camera capture controller */
 "ACTION_TAKE_PHOTO_WITH_CAMERA" = "相機";
+
+/* Share to Twitter action */
+"ACTION_TWITTER" = "推特";
 
 /* Action marking article as not favorite */
 "ACTION_UNMARK_FAVORITE" = "取消最愛";
@@ -115,6 +130,9 @@
 /* Description for no event day in calendar */
 "CALENDAR_NO_EVENT" = "沒有動態";
 
+/* Title of Canlendar */
+"CALENDAR_TITLE" = "行事曆";
+
 /* Today button in calendar picker */
 "CALENDAR_TODAY_BUTTON" = "今天";
 
@@ -140,8 +158,7 @@
 /* Title of view controller connecting services */
 "CONNECT_SERVICES_CONTROLLER_TITLE" = "連接其他帳號";
 
-/* In iPad overview, (time, device)
-   iPhone Timeline */
+/* In iPad overview, (time, device) */
 "CREATE_TIME_FROM_DEVICE" = "%1$@來自 %2$@";
 
 /* in relative date format */
@@ -162,9 +179,6 @@
 
 /* Title for confirming a post deletion */
 "DELETE_POST_CONFIRMATION_TITLE" = "是否要刪除貼文？";
-
-/* Downloading Status on iPhone Timeline */
-"DOWNLOADING_PHOTOS" = "內容同步中...";
 
 /* State for drafts without content text */
 "DRAFT_STATE_NO_CONTENT" = "（沒有內容）";
@@ -238,6 +252,24 @@
 /* Free plan details in plans page */
 "FREE_PLAN_DESCRIPTION" = "將所有原始檔案存放在你的一台 PC 裡。";
 
+/* Title for an alert view to show Google connection failure */
+"GOOGLE_CONNECT_FAIL_TITLE" = "無法同步Google";
+
+/* Message for alert view asking if user wants to connect her Google account */
+"GOOGLE_CONNECT_REQUEST_MESSAGE" = "啟動之後，Stream將會開始同步您在Google上的新貼文。";
+
+/* Title for alert view asking if user wants to connect her Google account */
+"GOOGLE_CONNECT_REQUEST_TITLE" = "確認同步Google";
+
+/* Title for an alert view to show Google disconnection failure */
+"GOOGLE_DISCONNECT_FAIL_TITLE" = "無法停止同步";
+
+/* Message for alert view asking if user wants to disconnect her Google account */
+"GOOGLE_DISCONNECT_REQUEST_MESSAGE" = "確認取消後，Stream將會停止同步您在Google上的新貼文。";
+
+/* Title for alert view asking if user wants to disconnect her Google account */
+"GOOGLE_DISCONNECT_REQUEST_TITLE" = "確認取消Google同步";
+
 /* No comment provided by engineer. */
 "HOUR_PLURAL" = "%d小時";
 
@@ -247,8 +279,8 @@
 /* Title on introduction pages */
 "INTRODUCTION_TITLE" = "Stream 是什麼？";
 
-/* In Account Info Photo Import Section */
-"LAST_IMPORT_TIME" = "最新匯入照片時間：%@";
+/* The email subject users will share photos thru. The nickname of user will be appended to this subject. */
+"MAIL_ACTION_SUBJECT" = "%@ 透過 Stream app 與你分享照片。";
 
 /* No comment provided by engineer. */
 "MINUTE_PLURAL" = "%d分鐘";
@@ -280,11 +312,7 @@
 /* Plural noun for draft objects */
 "NOUN_DRAFTS" = "草稿";
 
-/* Photo information in cell */
-"NUMBER_OF_PHOTOS" = "%d 張照片";
-
-/* In iPad overview
-   iPhone Timeline */
+/* In iPad overview */
 "NUMBER_OF_PHOTOS_CREATE_TIME_FROM_DEVICE" = "%1$@於%2$@來自 %3$@";
 
 /* Free plan option in plans page */
@@ -300,6 +328,9 @@
    Password placeholder in signup page */
 "PASSWORD_PLACEHOLDER" = "••••••••";
 
+/* Title of photo import settings view controller */
+"PHOTO_IMPORT_TITLE" = "照片匯入";
+
 /* In iPad overview */
 "PHOTO_NOUN" = "一張照片";
 
@@ -313,10 +344,16 @@
 "PHOTO_UPLOAD_CONTROLLER_TITLE" = "照片自動上傳";
 
 /* String on customized status bar */
+"PHOTO_UPLOAD_STATUS_BAR_COMPLETE" = "上傳完成";
+
+/* String on customized status bar */
+"PHOTO_UPLOAD_STATUS_BAR_FAIL" = "上傳失敗";
+
+/* String on customized status bar */
 "PHOTO_UPLOAD_STATUS_BAR_IMPORTING" = "正在掃描相機膠卷";
 
 /* String on customized status bar */
-"PHOTO_UPLOAD_STATUS_BAR_UPLOADING" = "照片上傳中 %d/%d";
+"PHOTO_UPLOAD_STATUS_BAR_UPLOADING" = "照片匯入中 %d/%d";
 
 /* Subtitle of photo upload status */
 "PHOTO_UPLOAD_STATUS_IMPORTING" = "正在掃瞄 %d/%d 張照片";
@@ -328,7 +365,7 @@
 "PHOTO_UPLOAD_STATUS_PREPROCESSING" = "處理中...";
 
 /* Subtitle of photo upload status */
-"PHOTO_UPLOAD_STATUS_UPLOADING" = "照片上傳中...";
+"PHOTO_UPLOAD_STATUS_UPLOADING" = "照片匯入中...";
 
 /* In iPad overview */
 "PHOTOS_PLURAL" = "%d 張照片";
@@ -375,12 +412,6 @@
 /* No comment provided by engineer. */
 "SECOND_SINGULAR" = "%d秒";
 
-/* Title to show explaining WiFi Sync */
-"SERVICE_INFO_WITH_WIFI" = "在 Wi-Fi 環境中，Stream 會幫您將原始檔案妥善保存。只要下載並且開啓 PC 上的 Stream，您有 30 天的時間將檔案從雲端送回 PC 保存";
-
-/* Title to show explaining WiFi Sync */
-"SERVICE_INFO_WITHOUT_WIFI" = "⚠ 僅會在 Wi-Fi 連線時上傳原檔\n\n在 Wi-Fi 環境中，Stream 會幫您將原始檔案妥善保存。只要下載並且開啓 PC 上的 Stream，您有 30 天的時間將檔案從雲端送回 PC 保存。";
-
 /* Title of view controller finishing first setup */
 "SETUP_DONE_CONTROLLER_TITLE" = "設定完成";
 
@@ -415,9 +446,6 @@
 /* Title for Settings in the sliding menu */
 "SLIDING_MENU_TITLE_SETTINGS" = "設定";
 
-/* In Account Info Photo Import Section */
-"START_PHOTO_IMPORT_DESCRIPTION" = "匯入所有 Camera Roll 中的照片";
-
 /* No comment provided by engineer. */
 "STATE_LOADING_SINGLE_DOCUMENT" = "正在載入文件…";
 
@@ -426,27 +454,6 @@
 
 /* Cloud Name */
 "Stream Cloud" = "Stream Cloud";
-
-/* Text for About Stream dialog */
-"STREAM_ABOUT_TEXT" = "Stream 的雲端服務，能在 Wi-Fi 環境下，自動幫您將所有的原始照片檔案送回您的 PC 中，只要從我們官網上安裝免費的 Station 至 PC 上，即可享受全自動的無線傳輸服務。";
-
-/* Title for About Stream dialog */
-"STREAM_ABOUT_TITLE" = "詳細資訊";
-
-/* Caption to show a persistent connection to station is held. */
-"SYNC_BUTTON_CAPTION_WITH_PERSISTENT_CONNECTION" = "已連線";
-
-/* Caption to show in account info when station is connected */
-"SYNC_BUTTON_CAPTION_WITH_STATION_CONNECTED" = "正在同步到 Station";
-
-/* Caption to show when app is syncing data without station */
-"SYNC_BUTTON_NORMAL_TITLE" = "正在同步到 Cloud";
-
-/* Caption to show when app is not syncing data, but sync is usable */
-"SYNC_BUTTON_USABLE_TITLE" = "現在同步";
-
-/* In Account Info Sync Section */
-"SYNC_INFO_FOOTER" = "上次同步：%@";
 
 /* Title on the text stack more / less toggle button for “Less” */
 "TEXT_ELEMENT_TOGGLE_LESS_TITLE" = "更少";
@@ -469,35 +476,8 @@
 /* Ultimate plan details in plans page */
 "ULTIMATE_PLAN_DESCRIPTION" = "500GB 雲端儲存空間，PC 數量無限制。";
 
-/* Downloading Status on iPhone Timeline */
-"UNABLE_TO_DOWNLOADING_PHOTOS" = "網路斷線，內容尚未同步完成...";
-
 /* Settings for User popover */
 "USER_INFO_CONTROLLER_TITLE" = "帳戶資訊";
-
-/* Title to show when user has a station but have not activated the account */
-"USER_INFO_NAG_LEVEL_0_WITH_STATION" = "只要在Wi-Fi環境下，Stream會幫您將原始檔案暫存在雲端上，並妥善送回PC中。";
-
-/* Title to show when user has no station and have not activated the account */
-"USER_INFO_NAG_LEVEL_0_WITHOUT_STATION" = "Stream可以幫您將原始檔案妥善送回PC中, 請儘快下載與安裝Station至PC上";
-
-/* Title to show when user has a station, and still have ample storage on the Cloud */
-"USER_INFO_NAG_LEVEL_1_WITH_STATION" = "您已有原始檔暫存在雲端上，請開啟Station，讓我們將檔案送回您的PC。";
-
-/* Title to show when user has no station, and still have ample storage on the Cloud */
-"USER_INFO_NAG_LEVEL_1_WITHOUT_STATION" = "您已有原始檔暫存在雲端上，請儘快下載與安裝Station，讓我們將檔案送回您的PC上";
-
-/* Title to show when user has a station, and is using up most of the storage on the Cloud */
-"USER_INFO_NAG_LEVEL_2_WITH_STATION" = "雲端暫存容量即將用完，請開啟Station，讓我們將檔案送回您的PC中。";
-
-/* Title to show when user has no station, and is using up most of the storage on the Cloud */
-"USER_INFO_NAG_LEVEL_2_WITHOUT_STATION" = "您已有原始檔暫存在雲端上，請儘快下載與安裝Station，讓我們將檔案送回您的PC中";
-
-/* Title to show when user has a station, and have exhausted storage on the Cloud */
-"USER_INFO_NAG_LEVEL_3_WITH_STATION" = "雲端暫存容量已滿，超過的部分僅會保留七天，請立即開啟Station，存放所有原始檔案。";
-
-/* Title to show when user has no station, and have exhausted storage on the Cloud */
-"USER_INFO_NAG_LEVEL_3_WITHOUT_STATION" = "您已有原始檔暫存在雲端上，請儘快下載與安裝Station，讓我們將檔案送回您的PC中";
 
 /* Email placeholder in login page
    Email placeholder in signup page */
@@ -505,6 +485,9 @@
 
 /* preview button in composition view */
 "WEB_PREVIEW" = "預覽";
+
+/* Title of web service settings view controller */
+"WEB_SERVICES_TITLE" = "網路服務";
 
 /* No comment provided by engineer. */
 "WEEK_PLURAL" = "%d週";
@@ -617,21 +600,6 @@
 /* Class = "IBUITextField"; placeholder = "PASSWORD_PLACEHOLDER"; ObjectID = "g7o-DD-LvS"; */
 "PASSWORD_PLACEHOLDER" = "••••••••";
 
-/* Class = "IBUILabel"; text = "FEB"; ObjectID = "50"; */
-"FEB" = "FEB";
-
-/* Class = "IBUILabel"; text = "FEB"; ObjectID = "110"; */
-"FEB" = "FEB";
-
-/* Class = "IBUILabel"; text = "FEB"; ObjectID = "114"; */
-"FEB" = "FEB";
-
-/* Class = "IBUILabel"; text = "FEB"; ObjectID = "110"; */
-"FEB" = "FEB";
-
-/* Class = "IBUILabel"; text = "FEB"; ObjectID = "114"; */
-"FEB" = "FEB";
-
 /* Class = "IBUITextField"; placeholder = "USERNAME_PLACEHOLDER"; ObjectID = "2Vk-4J-QH3"; */
 "USERNAME_PLACEHOLDER" = "me@example.com";
 
@@ -692,23 +660,29 @@
 /* Class = "IBUIButton"; normalTitle = "ACTION_IMPORT_PHOTO"; ObjectID = "58"; */
 "ACTION_IMPORT_PHOTO" = "確定匯入";
 
-/* Class = "IBUITableViewSection"; footerTitle = "SERVICE_INFO_FOOTER"; ObjectID = "9vM-w4-lTb"; */
-"SERVICE_INFO_FOOTER" = "⚠ 僅會在Wi-Fi連線時上傳原檔\n\n在 Wi-Fi 環境中，Stream 會幫您將原始檔案妥善保存。只要下載並且開啓 PC 上的 Stream，您有30天的時間將檔案從雲端送回PC保存";
+/* Class = "IBUILabel"; text = "UPGRADE_ACCOUNT"; ObjectID = "0eH-Fu-1wD"; */
+"UPGRADE_ACCOUNT" = "升級帳號";
 
-/* Class = "IBUILabel"; text = "FACEBOOK_CONNECT_TITLE"; ObjectID = "Fh9-Wq-UDR"; */
-"FACEBOOK_CONNECT_TITLE" = "Facebook 同步";
+/* Class = "IBUILabel"; text = "PHOTO_IMPORT_TITLE"; ObjectID = "2Vy-5o-43I"; */
+"PHOTO_IMPORT_TITLE" = "照片匯入";
+
+/* Class = "IBUILabel"; text = "IMPORT_CAMERA_ROLL"; ObjectID = "Ehm-FE-RdU"; */
+"IMPORT_CAMERA_ROLL" = "匯入相機膠卷";
+
+/* Class = "IBUITableViewSection"; headerTitle = "WEB_SERVICES_HEADER"; ObjectID = "FEo-JU-xSP"; */
+"WEB_SERVICES_HEADER" = "可連接的網路服務";
 
 /* Class = "IBUITableViewSection"; headerTitle = "ACCOUNT_INFO_HEADER"; ObjectID = "Gw1-xy-FWK"; */
 "ACCOUNT_INFO_HEADER" = "帳戶資訊";
 
-/* Class = "IBUITableViewSection"; footerTitle = "PHOTO_IMPORT_FOOTER"; ObjectID = "IP4-fz-MdU"; */
-"PHOTO_IMPORT_FOOTER" = "PHOTO_IMPORT_FOOTER";
+/* Class = "IBUILabel"; text = "NON_BACKED_UP_FILES"; ObjectID = "Ldp-qK-xdo"; */
+"NON_BACKED_UP_FILES" = "尚未備份的照片";
 
-/* Class = "IBUILabel"; text = "LOCAL_PENDING_OBJECTS_TITLE"; ObjectID = "Uku-UE-EAs"; */
-"LOCAL_PENDING_OBJECTS_TITLE" = "本裝置尚未上傳原檔數量";
+/* Class = "IBUILabel"; text = "AUTO_BACKUP_TO_CLOUD"; ObjectID = "T7w-pO-igg"; */
+"AUTO_BACKUP_TO_CLOUD" = "自動備份到 Cloud";
 
-/* Class = "IBUITableViewSection"; footerTitle = "SYNC_INFO_FOOTER"; ObjectID = "aHi-Wv-Eu2"; */
-"SYNC_INFO_FOOTER" = "上次同步：%@";
+/* Class = "IBUILabel"; text = "CONNECTION_STATUS_DETAIL"; ObjectID = "bJb-Bz-WkJ"; */
+"CONNECTION_STATUS_DETAIL" = "CONNECTION_STATUS_DETAIL";
 
 /* Class = "IBUILabel"; text = "NOUN_NICKNAME"; ObjectID = "btU-SG-jyB"; */
 "NOUN_NICKNAME" = "使用者名稱";
@@ -719,8 +693,23 @@
 /* Class = "IBUILabel"; text = "NOUN_CURRENT_DEVICE"; ObjectID = "fZ9-vs-r6f"; */
 "NOUN_CURRENT_DEVICE" = "裝置名稱";
 
-/* Class = "IBUILabel"; text = "PHOTO_IMPORT_TITLE"; ObjectID = "obe-LE-yqs"; */
-"PHOTO_IMPORT_TITLE" = "自動匯入照片";
+/* Class = "IBUITableViewSection"; footerTitle = "BACKUP_FOOTER"; ObjectID = "gj0-e5-1Bs"; */
+"BACKUP_FOOTER" = "升級帳號或安裝 Stream Windows，讓 Stream 幫你備份這台裝置的所有照片。";
+
+/* Class = "IBUITableViewSection"; headerTitle = "BACKUP_HEADER"; ObjectID = "gj0-e5-1Bs"; */
+"BACKUP_HEADER" = "照片備份";
+
+/* Class = "IBUILabel"; text = "WEB_SERVICES_TITLE"; ObjectID = "gjy-px-XbS"; */
+"WEB_SERVICES_TITLE" = "網路服務";
+
+/* Class = "IBUILabel"; text = "NONE"; ObjectID = "gvB-Dr-HXB"; */
+"NONE" = "NONE";
+
+/* Class = "IBUILabel"; text = "AUTO_BACKUP_TO_PC"; ObjectID = "kVF-T3-Q5G"; */
+"AUTO_BACKUP_TO_PC" = "自動備份到 PC";
+
+/* Class = "IBUILabel"; text = "CONNECTION_STATUS_TITLE"; ObjectID = "oOp-ya-swS"; */
+"CONNECTION_STATUS_TITLE" = "連線狀態";
 
 /* Class = "IBUITableViewSection"; footerTitle = "VERSION"; ObjectID = "rMk-eV-Pjl"; */
 "VERSION" = "版本";

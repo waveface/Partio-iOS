@@ -26,4 +26,6 @@ typedef void (^callbackBlock) (NSDate *date);
 
 + (id) controllerWithCompletion:(callbackBlock)callback;
 
+- (id)initWithClassNamed: (Class)containerClass;
+
 @end

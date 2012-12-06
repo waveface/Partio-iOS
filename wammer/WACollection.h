@@ -2,21 +2,26 @@
 //  WACollection.h
 //  wammer
 //
-//  Created by jamie on 12/11/9.
+//  Created by jamie on 12/11/28.
 //  Copyright (c) 2012年 Waveface. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
+#import "CoreData+IRAdditions.h"
+
 @class WAFile, WAUser;
 
-@interface WACollection : NSManagedObject
+@interface WACollection : IRManagedObject
 
-@property (nonatomic, retain) NSDate * createDate;
+@property (nonatomic, retain) NSDate * creationDate;
 @property (nonatomic, retain) NSString * identifier;
-@property (nonatomic, retain) NSDate * modifyDate;
+@property (nonatomic, retain) NSNumber * isHidden;
+@property (nonatomic, retain) NSNumber * isSmart;
+@property (nonatomic, retain) NSDate * modificationDate;
 @property (nonatomic, retain) NSString * title;
+@property (nonatomic, retain) NSNumber * sequenceNumber;
 @property (nonatomic, retain) WAUser *creator;
 @property (nonatomic, retain) NSOrderedSet *files;
 @end
