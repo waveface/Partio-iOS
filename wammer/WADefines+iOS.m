@@ -72,3 +72,11 @@ NSString * WADeviceName (void) {
 	return [[UIDevice currentDevice] name];
 	
 }
+
+BOOL isPad() {
+	return (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad);
+}
+
+BOOL isPhone() {
+	return (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone);
+}
