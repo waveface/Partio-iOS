@@ -39,8 +39,6 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 @property (nonatomic, readwrite, copy) void (^onViewWillDisappear)(BOOL animated);
 @property (nonatomic, readwrite, copy) void (^onViewDidDisappear)(BOOL animated);
 
-@property (nonatomic, readwrite, retain) NSOperationQueue *operationQueue;
-
 - (void) waSubviewWillLayout;
 
 @property (nonatomic, readwrite, assign) BOOL contextControlsShown;
@@ -62,7 +60,6 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 @synthesize contextControlsShown;
 @synthesize onDismiss;
 @synthesize onViewDidLoad, onViewDidAppear, onViewWillDisappear, onViewDidDisappear;
-@synthesize operationQueue;
 @synthesize requiresReloadOnFetchedResultsChange;
 
 
@@ -88,7 +85,7 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 
 }
 
-- (id) initWithImageFiles:(NSArray *)files atIndex:(NSUInteger)index {
+- (WAGalleryViewController *) initWithImageFiles:(NSArray *)files atIndex:(NSUInteger)index {
 
 	self = [super init];
 
@@ -348,18 +345,6 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 
 }
 
-- (NSOperationQueue *) operationQueue {
-
-	if (operationQueue)
-		return operationQueue;
-	
-	operationQueue = [[NSOperationQueue alloc] init];
-	operationQueue.maxConcurrentOperationCount = 1;
-	
-	return operationQueue;
-
-}
-
 - (void) handlePan:(UIPanGestureRecognizer *)panGR {
 	
 	if (panGR.state == UIGestureRecognizerStateChanged) {
@@ -399,9 +384,14 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 
 - (void)willRemoveView:(UIView *)view atIndex:(NSUInteger)index {
 
-	[self.imageFiles[index] irRemoveObserverBlocksForKeyPath:@"smallestPresentableImage"];
-	[self.imageFiles[index] irRemoveObserverBlocksForKeyPath:@"bestPresentableImage"];
-	[self.imageFiles[index] cleanImageCache];
+	id file = self.imageFiles[index];
+	if ([file isKindOfClass:[WAFile class]]) {
+		[file irRemoveObserverBlocksForKeyPath:@"smallestPresentableImage"];
+		[file irRemoveObserverBlocksForKeyPath:@"bestPresentableImage"];
+		[file cleanImageCache];
+	} else if ([file isKindOfClass:[WAFilePageElement class]]) {
+		[file irRemoveObserverBlocksForKeyPath:@"thumbnailImage"];
+	}
 
 }
 
@@ -418,12 +408,23 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 
 - (UIView *) viewForPaginatedView:(IRPaginatedView *)aPaginatedView atIndex:(NSUInteger)index {
 	
-	WAFile *file = self.imageFiles[index];
 	WAGalleryImageView *view = [WAGalleryImageView viewForImage:nil];
-	
 	view.frame = (CGRect){ CGPointZero, aPaginatedView.bounds.size };
-	
-	return [self configureGalleryImageView:view withFile:file degradeQuality:NO forceSync:YES];
+
+	id file = self.imageFiles[index];
+	if ([file isKindOfClass:[WAFile class]]) {
+		return [self configureGalleryImageView:view withFile:file degradeQuality:NO forceSync:YES];
+	} else if ([file isKindOfClass:[WAFilePageElement class]]) {
+		[file irObserve:@"thumbnailImage" options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:nil withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
+			[view setImage:toValue animated:NO synchronized:YES];
+			[view setNeedsLayout];
+		}];
+		view.delegate = self;
+		[view reset];
+		return view;
+	}
+
+	return nil;
 
 }
 
@@ -436,41 +437,41 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 - (WAGalleryImageView *) configureGalleryImageView:(WAGalleryImageView *)aView withFile:(WAFile *)aFile degradeQuality:(BOOL)exclusivelyUsesThumbnail forceSync:(BOOL)forceSynchronousImageDecode {
 
 	if (exclusivelyUsesThumbnail) {
-		
+
 		__weak WAGalleryViewController *wSelf = self;
 		[aFile irObserve:@"smallestPresentableImage" options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:nil withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
-
+			
 			dispatch_async(dispatch_get_main_queue(), ^{
-
+				
 				[aView setImage:toValue animated:NO synchronized:forceSynchronousImageDecode];
 				[aView setNeedsLayout];
-
+				
 				// Show image in streamPickerView when download completed
 				if (!fromValue && toValue) {
 					[[wSelf streamPickerView] reloadData];
 				}
-
+				
 			});
-
+			
 		}];
 		
 	} else {
 		
 		__weak WAGalleryViewController *wSelf = self;
 		[aFile irObserve:@"bestPresentableImage" options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:nil withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
-
+			
 			dispatch_async(dispatch_get_main_queue(), ^{
-
+				
 				[aView setImage:toValue animated:NO synchronized:forceSynchronousImageDecode];
 				[aView setNeedsLayout];
-
+				
 				// Show image in streamPickerView when download completed
 				if (!fromValue && toValue) {
 					[[wSelf streamPickerView] reloadData];
 				}
-
+				
 			});
-
+			
 		}];
 		
 	}
@@ -516,14 +517,18 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 
 - (id) itemAtIndex:(NSUInteger)anIndex inImageStreamPickerView:(WAImageStreamPickerView *)picker {
 
-  WAFile *representedFile = self.imageFiles[anIndex];
-	return representedFile;
+  return self.imageFiles[anIndex];
 
 }
 
-- (UIImage *) thumbnailForItem:(WAFile *)aFile inImageStreamPickerView:(WAImageStreamPickerView *)picker {
+- (UIImage *) thumbnailForItem:(id)anItem inImageStreamPickerView:(WAImageStreamPickerView *)picker {
 
-	return aFile.extraSmallThumbnailImage;
+	if ([anItem isKindOfClass:[WAFile class]]) {
+		return [anItem extraSmallThumbnailImage];
+	} else if ([anItem isKindOfClass:[WAFilePageElement class]]) {
+		return nil;
+	}
+	return nil;
 
 }
 
@@ -660,9 +665,13 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 - (void) dealloc {
 	
 	[self.paginatedView irRemoveObserverBlocksForKeyPath:@"currentPage"];
-	for (WAFile *file in self.imageFiles) {
-    [file irRemoveObserverBlocksForKeyPath:@"bestPresentableImage"];
-		[file irRemoveObserverBlocksForKeyPath:@"smallestPresentableImage"];
+	for (id file in self.imageFiles) {
+		if ([file isKindOfClass:[WAFile class]]) {
+			[file irRemoveObserverBlocksForKeyPath:@"bestPresentableImage"];
+			[file irRemoveObserverBlocksForKeyPath:@"smallestPresentableImage"];
+		} else if ([file isKindOfClass:[WAFilePageElement class]]) {
+			[file irRemoveObserverBlocksForKeyPath:@"thumbnailImage"];
+		}
 	}
 	
 	[self.streamPickerView irRemoveObserverBlocksForKeyPath:@"selectedItemIndex"];
@@ -672,22 +681,13 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 	self.toolbar = nil;
 	self.previousNavigationItem = nil;
 	self.streamPickerView = nil;
-	
-	[operationQueue cancelAllOperations];
-	[operationQueue waitUntilAllOperationsAreFinished];
-	
-	self.operationQueue = nil;
-
-	
+		
 	[self.paginatedView irRemoveObserverBlocksForKeyPath:@"currentPage"];
 	
 	if ([self isViewLoaded])
 		self.view.onLayoutSubviews = nil;
 
-	[paginatedView removeFromSuperview];	//	Also triggers page deallocation
-
-	[operationQueue cancelAllOperations];
-	[operationQueue waitUntilAllOperationsAreFinished];
+	[self.paginatedView removeFromSuperview];	//	Also triggers page deallocation
 
 }
 

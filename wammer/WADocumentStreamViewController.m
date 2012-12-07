@@ -13,6 +13,7 @@
 #import "NSDate+WAAdditions.h"
 #import "WADayHeaderView.h"
 #import "WAFilePageElement+WAAdditions.h"
+#import "WAGalleryViewController.h"
 
 @interface WADocumentStreamViewController ()
 
@@ -104,6 +105,15 @@
 	}];
 
 	return cell;
+
+}
+
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
+
+	WAFile *document = self.documents[[indexPath row]];
+	WAGalleryViewController *galleryVC = [[WAGalleryViewController alloc] initWithImageFiles:[document.pageElements array] atIndex:0];
+
+	[self.navigationController pushViewController:galleryVC animated:YES];
 
 }
 

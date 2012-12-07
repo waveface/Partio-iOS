@@ -12,4 +12,6 @@
 
 @property (nonatomic, readonly) UIImage *thumbnailImage;
 
+- (void)cleanImageCache;
+
 @end

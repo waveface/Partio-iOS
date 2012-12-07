@@ -121,41 +121,6 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 
 }
 
-- (void) viewDidAppear:(BOOL)animated {
-	[super viewDidAppear:animated];
-	
-	__block NSDate *currentDate = nil;
-	__weak WADayViewController *wSelf = self;
-	
-	[self.fetchedResultsController.fetchedObjects enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-		
-		NSDate *theDate = nil;
-		
-		if ([containedClass isSubclassOfClass:[WATimelineViewController class]]) {
-
-			theDate = [[((WAArticle*)obj) creationDate] dayBegin];
-			
-		} else if ([containedClass isSubclassOfClass:[WAPhotoStreamViewController class]]) {
-			
-			theDate = [[((WAFile*)obj) created] dayBegin];
-
-		} else if ([containedClass isSubclassOfClass:[WADocumentStreamViewController class]]) {
-
-			theDate = [[((WAFile*)obj) docAccessTime] dayBegin];
-
-		}
-		
-		if (!currentDate || !isSameDay(currentDate, theDate)) {
-			[wSelf.days addObject:theDate];
-			currentDate = theDate;
-		}
-		
-	}];
-
-	[self.paginatedView reloadViews];
-
-}
-
 - (void)didReceiveMemoryWarning
 {
 	
@@ -269,6 +234,35 @@ BOOL (^isSameDay) (NSDate *, NSDate *) = ^ (NSDate *d1, NSDate *d2) {
 
 	}
 
+	__block NSDate *currentDate = nil;
+	__weak WADayViewController *wSelf = self;
+	
+	[self.fetchedResultsController.fetchedObjects enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+		
+		NSDate *theDate = nil;
+		
+		if ([containedClass isSubclassOfClass:[WATimelineViewController class]]) {
+			
+			theDate = [[((WAArticle*)obj) creationDate] dayBegin];
+			
+		} else if ([containedClass isSubclassOfClass:[WAPhotoStreamViewController class]]) {
+			
+			theDate = [[((WAFile*)obj) created] dayBegin];
+			
+		} else if ([containedClass isSubclassOfClass:[WADocumentStreamViewController class]]) {
+			
+			theDate = [[((WAFile*)obj) docAccessTime] dayBegin];
+			
+		}
+
+		if (theDate) {
+			if (!currentDate || !isSameDay(currentDate, theDate)) {
+				[wSelf.days addObject:theDate];
+				currentDate = theDate;
+			}
+		}
+		
+	}];
 
 }
 

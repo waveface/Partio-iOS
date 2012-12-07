@@ -129,6 +129,12 @@ static NSString * const kWAFilePageElementThumbnailImage = @"thumbnailImage";
 
 }
 
+- (void)cleanImageCache {
+
+	[self irAssociateObject:nil usingKey:&kWAFilePageElementThumbnailImage policy:OBJC_ASSOCIATION_ASSIGN changingObservedKey:nil];
+
+}
+
 + (NSOperationQueue *)sharedResourceHandlingQueue {
 
 	static NSOperationQueue *queue;

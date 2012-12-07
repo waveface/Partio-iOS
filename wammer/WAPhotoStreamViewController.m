@@ -194,11 +194,7 @@
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
 	
-	__block WAGalleryViewController *galleryVC = [[WAGalleryViewController alloc] initWithImageFiles:self.photos atIndex:[indexPath row]];
-	
-	galleryVC.onDismiss = ^ {
-		[galleryVC.navigationController popViewControllerAnimated:YES];
-	};
+	WAGalleryViewController *galleryVC = [[WAGalleryViewController alloc] initWithImageFiles:self.photos atIndex:[indexPath row]];
 	
 	[self.navigationController pushViewController:galleryVC animated:YES];
 
