@@ -8,7 +8,6 @@
 
 #import <UIKit/UIKit.h>
 #import <CoreData/CoreData.h>
-#import "KalViewController.h"
 #import "WAArticle.h"
 #import "WANavigationController.h"
 
@@ -20,6 +19,8 @@ typedef NS_ENUM(NSInteger, UIBarButtonCalItem) {
 
 @interface WACalendarPickerViewController : WANavigationController <UITableViewDelegate>
 
-- (id)initWithLeftButton:(UIBarButtonCalItem)leftBarButton RightButton:(UIBarButtonCalItem)rightBarButton navBarHidden:(BOOL)hidden;
+@property (nonatomic, strong) id delegate;
+
+- (id)initWithLeftButton:(UIBarButtonCalItem)leftBarButton RightButton:(UIBarButtonCalItem)rightBarButton;
 
 @end

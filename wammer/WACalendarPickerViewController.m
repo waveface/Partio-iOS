@@ -9,13 +9,12 @@
 #import "WACalendarPickerViewController.h"
 #import "WACalendarPickerDataSource.h"
 #import "WAEventViewController.h"
-#import "WADayViewController.h"
-#import "WANavigationController.h"
 #import "WAAppearance.h"
 #import "WASlidingMenuViewController.h"
+#import "Kal.h"
 
 #define kCalWidth 320.f
-#define kCalHeight 640.f
+#define kCalHeight ((CGFloat)([UIScreen mainScreen].bounds.size.height))
 
 @interface WACalendarPickerViewController ()
 {
@@ -31,15 +30,12 @@
 
 - (id)initWithLeftButton:(UIBarButtonCalItem)leftBarButton
 						 RightButton:(UIBarButtonCalItem)rightBarButton
-						navBarHidden:(BOOL)hidden
 {
 	calPicker = [[KalViewController alloc] init];
 	calPicker.title = NSLocalizedString(@"CALENDAR_TITLE", @"Title of Canlendar");
 	calPicker.delegate = self;
 	dataSource = [[WACalendarPickerDataSource alloc] init];
 	calPicker.dataSource = dataSource;
-
-	calPicker.navigationController.navigationBarHidden = hidden;
 
 	switch (leftBarButton) {
 		case UIBarButtonCalItemMenu:
@@ -132,11 +128,14 @@
 {
 	[super viewDidLoad];
   
+	if (isPad()) {
+		self.modalPresentationStyle = UIModalPresentationFormSheet;
+	}
+	
 	self.view.backgroundColor = [UIColor blackColor];
-	calPicker.view.frame = CGRectMake(0, 0, kCalWidth, kCalHeight);
 	self.view.layer.cornerRadius = 3.f;
 	self.view.clipsToBounds = YES;
-	
+
 }
 
 - (void)didReceiveMemoryWarning
@@ -173,10 +172,15 @@
 	else if ([selectedEvent isKindOfClass:[WAFile class]]) {
 
 		WAFile *photo = (WAFile *)selectedEvent;
-	
+		
 		WASlidingMenuViewController *smVC = (WASlidingMenuViewController *)[self.viewDeckController leftController];
 		[smVC switchToViewStyle:WAPhotosViewStyle onDate:photo.created animated:YES];
-		
+
+		if (!smVC) {
+			smVC = (WASlidingMenuViewController *)[[[self delegate] viewDeckController] leftController];
+			[smVC switchToViewStyle:WAPhotosViewStyle onDate:photo.created animated:NO];
+			[self dismissViewControllerAnimated:YES completion:nil];
+		}
 	}
 }
 

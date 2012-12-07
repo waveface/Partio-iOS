@@ -219,10 +219,9 @@
 	
 	WACalendarPickerViewController *dpVC = [[WACalendarPickerViewController alloc]
 																					initWithLeftButton:UIBarButtonCalItemCancel
-																					RightButton:UIBarButtonCalItemToday
-																					navBarHidden:YES];
+																					RightButton:UIBarButtonCalItemToday];
 	
-	//[self.navigationController pushViewController:dpVC animated:YES];
+	dpVC.delegate = self;
 	[self presentViewController:dpVC animated:YES completion:nil];
 	
 }

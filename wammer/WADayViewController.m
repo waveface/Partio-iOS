@@ -523,20 +523,6 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 	
 }
 
-- (void) handleDateSelect:(UIBarButtonItem *)sender {
-	
-	WACalendarPickerViewController *dpVC = [[WACalendarPickerViewController alloc]
-																					initWithLeftButton:UIBarButtonCalItemCancel
-																					RightButton:UIBarButtonCalItemToday
-																					navBarHidden:YES];
-	
-	//[self.navigationController pushViewController:dpVC animated:YES];
-	[self presentViewController:dpVC animated:YES completion:nil];
-	
-}
-
-
-
 #pragma mark - Dripdown menu
 BOOL dripdownMenuOpened = NO;
 - (void) dripdownMenuTapped {
