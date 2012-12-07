@@ -10,8 +10,6 @@
 #import <CoreData/CoreData.h>
 #import "UIKit+IRAdditions.h"
 
-#define WAGalleryViewController_UsesProxyOverlay 0
-
 extern NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI;
 
 @interface WAGalleryViewController : UIViewController
@@ -23,6 +21,7 @@ extern NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI;
 @property (nonatomic, readonly, assign) BOOL contextControlsShown;
 @property (nonatomic, readwrite, copy) void (^onDismiss)();
 
+- (id) initWithImageFiles:(NSArray *)files atIndex:(NSUInteger)index;
 - (void) setContextControlsHidden:(BOOL)willHide animated:(BOOL)animate completion:(void(^)(void))callback;
 - (void) setContextControlsHidden:(BOOL)willHide animated:(BOOL)animate barringInteraction:(BOOL)barringInteraction completion:(void(^)(void))callback;
 

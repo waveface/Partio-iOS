@@ -193,20 +193,15 @@
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-	__weak WAGalleryViewController *galleryVC = nil;
 	
-	WAFile *file = [self.photos objectAtIndex:indexPath.row];
-	
-	galleryVC = [WAGalleryViewController
-							 controllerRepresentingArticleAtURI:[[[file.articles anyObject] objectID] URIRepresentation]
-							 context:@{kWAGalleryViewControllerContextPreferredFileObjectURI:[[file objectID] URIRepresentation]}
-							 ];
+	__block WAGalleryViewController *galleryVC = [[WAGalleryViewController alloc] initWithImageFiles:self.photos atIndex:[indexPath row]];
 	
 	galleryVC.onDismiss = ^ {
 		[galleryVC.navigationController popViewControllerAnimated:YES];
 	};
 	
 	[self.navigationController pushViewController:galleryVC animated:YES];
+
 }
 
 @end
