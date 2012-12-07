@@ -169,7 +169,6 @@
 														andPredicateWithSubpredicates:@[
 														fetchRequest.predicate,
 														[NSPredicate predicateWithFormat:@"event = TRUE"],
-														[NSPredicate predicateWithFormat:@"files.@count > 0"],
 														[NSPredicate predicateWithFormat:@"import != %d AND import != %d", WAImportTypeFromOthers, WAImportTypeFromLocal],
 														[NSPredicate predicateWithFormat:@"creationDate >= %@ && creationDate <= %@", earlymorning, midnight]]];
 	

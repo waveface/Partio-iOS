@@ -25,6 +25,7 @@
         <attribute name="text" optional="YES" attributeType="String">
             <userInfo/>
         </attribute>
+        <relationship name="checkins" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="WALocation" syncable="YES"/>
         <relationship name="comments" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="WAComment" inverseName="article" inverseEntity="WAComment">
             <userInfo/>
         </relationship>
@@ -318,7 +319,7 @@
     <fetchRequest name="WAFRLocalImportedArticles" entity="WAArticle" predicateString="import == 1"/>
     <fetchRequest name="WAFRUser" entity="WAUser" predicateString="identifier == $Identifier"/>
     <elements>
-        <element name="WAArticle" positionX="0" positionY="0" width="128" height="405"/>
+        <element name="WAArticle" positionX="0" positionY="0" width="128" height="420"/>
         <element name="WACache" positionX="0" positionY="0" width="128" height="135"/>
         <element name="WACollection" positionX="0" positionY="0" width="128" height="180"/>
         <element name="WAComment" positionX="0" positionY="0" width="128" height="135"/>

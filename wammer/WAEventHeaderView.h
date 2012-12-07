@@ -26,5 +26,6 @@
 
 @property (nonatomic, weak) IBOutlet UIView *avatarPlacehoder;
 @property (nonatomic, weak) IBOutlet UILabel *locationLabel;
+@property (nonatomic, weak) IBOutlet UIImageView *locationMarkImageView;
 
 @end

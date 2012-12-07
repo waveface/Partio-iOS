@@ -193,7 +193,7 @@
 "ERROR_ARTICLE_ENTITY_SYNC_FAILURE_WITH_UNDERLYING_ERROR_DESCRIPTION_FORMAT" = "上傳時發生錯誤：%@。本文已存成草稿。";
 
 /* EVENT_PHOTO_NUMBER_LABEL */
-"EVENT_PHOTO_NUMBER_LABEL" = "%d 照片";
+"EVENT_PHOTO_NUMBER_LABEL" = "%d 張照片";
 
 /* Title for Events view */
 "EVENTS_CONTROLLER_TITLE" = "事件";
@@ -511,7 +511,7 @@
 "MONDAY" = "MONDAY";
 
 /* Class = "IBUILabel"; text = "PHOTOS"; ObjectID = "627"; */
-"PHOTOS" = "PHOTOS";
+"PHOTOS" = "照片";
 
 /* Class = "IBUILabel"; text = "WEBSERVICE_LIST_TITLE"; ObjectID = "0P9-dO-3KX"; */
 "WEBSERVICE_LIST_TITLE" = "可連接的服務";

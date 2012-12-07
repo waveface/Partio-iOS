@@ -202,6 +202,7 @@
 		8002CDE915E5E92100D7BFF0 /* WARemoteInterface+Notification.m in Sources */ = {isa = PBXBuildFile; fileRef = 8002CDE815E5E92100D7BFF0 /* WARemoteInterface+Notification.m */; };
 		8002CDEC15E5F6F300D7BFF0 /* WARemoteInterface+WebSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 8002CDEB15E5F6F300D7BFF0 /* WARemoteInterface+WebSocket.m */; };
 		800D9A9216719B5D0034CDF6 /* MKMapView+ZoomLevel.m in Sources */ = {isa = PBXBuildFile; fileRef = 800D9A9116719B5D0034CDF6 /* MKMapView+ZoomLevel.m */; };
+		800E4FCE1671DD0C00F50E0B /* WATimelineViewCell-Checkin.xib in Resources */ = {isa = PBXBuildFile; fileRef = 800E4FCD1671DD0C00F50E0B /* WATimelineViewCell-Checkin.xib */; };
 		80175AF9165B2CAF007E783B /* WATimelineViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 80175AF8165B2CAF007E783B /* WATimelineViewCell.m */; };
 		80175AFB165B4108007E783B /* WATimelineViewCell-ImageStack-3.xib in Resources */ = {isa = PBXBuildFile; fileRef = 80175AFA165B4107007E783B /* WATimelineViewCell-ImageStack-3.xib */; };
 		80316A0A15C0EC20009D43F0 /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 803169F815C0EC20009D43F0 /* .gitignore */; };
@@ -261,7 +262,7 @@
 		80B1CD0B164B8479009941E5 /* EventLinkIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 80B1CD04164B8479009941E5 /* EventLinkIcon.png */; };
 		80B1CD0C164B8479009941E5 /* EventLinkIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 80B1CD05164B8479009941E5 /* EventLinkIcon@2x.png */; };
 		80B9E50516719B1200222F57 /* Location@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 80B9E4FB16719B1100222F57 /* Location@2x.png */; };
-		80B9E50616719B1200222F57 /* Location1.png in Resources */ = {isa = PBXBuildFile; fileRef = 80B9E4FC16719B1100222F57 /* Location1.png */; };
+		80B9E50616719B1200222F57 /* Location.png in Resources */ = {isa = PBXBuildFile; fileRef = 80B9E4FC16719B1100222F57 /* Location.png */; };
 		80B9E50716719B1200222F57 /* NoLocation.png in Resources */ = {isa = PBXBuildFile; fileRef = 80B9E4FD16719B1100222F57 /* NoLocation.png */; };
 		80B9E50816719B1200222F57 /* NoLocation@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 80B9E4FE16719B1100222F57 /* NoLocation@2x.png */; };
 		80B9E50916719B1200222F57 /* P1.png in Resources */ = {isa = PBXBuildFile; fileRef = 80B9E4FF16719B1100222F57 /* P1.png */; };
@@ -1193,6 +1194,7 @@
 		8002CDEB15E5F6F300D7BFF0 /* WARemoteInterface+WebSocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WARemoteInterface+WebSocket.m"; sourceTree = "<group>"; };
 		800D9A9016719B5D0034CDF6 /* MKMapView+ZoomLevel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "MKMapView+ZoomLevel.h"; path = "wammer/MKMapView+ZoomLevel.h"; sourceTree = "<group>"; };
 		800D9A9116719B5D0034CDF6 /* MKMapView+ZoomLevel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "MKMapView+ZoomLevel.m"; path = "wammer/MKMapView+ZoomLevel.m"; sourceTree = "<group>"; };
+		800E4FCD1671DD0C00F50E0B /* WATimelineViewCell-Checkin.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "WATimelineViewCell-Checkin.xib"; sourceTree = "<group>"; };
 		80175AF7165B2CAF007E783B /* WATimelineViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WATimelineViewCell.h; sourceTree = "<group>"; };
 		80175AF8165B2CAF007E783B /* WATimelineViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WATimelineViewCell.m; sourceTree = "<group>"; };
 		80175AFA165B4107007E783B /* WATimelineViewCell-ImageStack-3.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "WATimelineViewCell-ImageStack-3.xib"; sourceTree = "<group>"; };
@@ -1279,7 +1281,7 @@
 		80B1CD04164B8479009941E5 /* EventLinkIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = EventLinkIcon.png; path = Resources/EventLinkIcon.png; sourceTree = "<group>"; };
 		80B1CD05164B8479009941E5 /* EventLinkIcon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "EventLinkIcon@2x.png"; path = "Resources/EventLinkIcon@2x.png"; sourceTree = "<group>"; };
 		80B9E4FB16719B1100222F57 /* Location@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Location@2x.png"; path = "Resources/Location@2x.png"; sourceTree = "<group>"; };
-		80B9E4FC16719B1100222F57 /* Location1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Location1.png; path = Resources/Location1.png; sourceTree = "<group>"; };
+		80B9E4FC16719B1100222F57 /* Location.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Location.png; path = Resources/Location.png; sourceTree = "<group>"; };
 		80B9E4FD16719B1100222F57 /* NoLocation.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = NoLocation.png; path = Resources/NoLocation.png; sourceTree = "<group>"; };
 		80B9E4FE16719B1100222F57 /* NoLocation@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "NoLocation@2x.png"; path = "Resources/NoLocation@2x.png"; sourceTree = "<group>"; };
 		80B9E4FF16719B1100222F57 /* P1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = P1.png; path = Resources/P1.png; sourceTree = "<group>"; };
@@ -2681,6 +2683,7 @@
 				80EF84CD165F379D009D29A5 /* WATimelineViewCell-ImageStack-1.xib */,
 				80EF84CF165F37C4009D29A5 /* WATimelineViewCell-ImageStack-2.xib */,
 				80175AFA165B4107007E783B /* WATimelineViewCell-ImageStack-3.xib */,
+				800E4FCD1671DD0C00F50E0B /* WATimelineViewCell-Checkin.xib */,
 			);
 			name = Timeline;
 			path = wammer;
@@ -3064,7 +3067,7 @@
 				DEF1326F164B83CE0051284D /* PhotosIcon@2x.png */,
 				DEF13270164B83CE0051284D /* SettingsIcon@2x.png */,
 				80B9E4FB16719B1100222F57 /* Location@2x.png */,
-				80B9E4FC16719B1100222F57 /* Location1.png */,
+				80B9E4FC16719B1100222F57 /* Location.png */,
 				80B9E4FD16719B1100222F57 /* NoLocation.png */,
 				80B9E4FE16719B1100222F57 /* NoLocation@2x.png */,
 				80B9E4FF16719B1100222F57 /* P1.png */,
@@ -4211,7 +4214,7 @@
 				136DD1AE166323C2001ECE60 /* forward@2x.png in Resources */,
 				80499B1116718F0400842788 /* WAEventHeaderView.xib in Resources */,
 				80B9E50516719B1200222F57 /* Location@2x.png in Resources */,
-				80B9E50616719B1200222F57 /* Location1.png in Resources */,
+				80B9E50616719B1200222F57 /* Location.png in Resources */,
 				80B9E50716719B1200222F57 /* NoLocation.png in Resources */,
 				80B9E50816719B1200222F57 /* NoLocation@2x.png in Resources */,
 				80B9E50916719B1200222F57 /* P1.png in Resources */,
@@ -4220,6 +4223,7 @@
 				80B9E50C16719B1200222F57 /* P2@2x.png in Resources */,
 				80B9E50D16719B1200222F57 /* P3.png in Resources */,
 				80B9E50E16719B1200222F57 /* P3@2x.png in Resources */,
+				800E4FCE1671DD0C00F50E0B /* WATimelineViewCell-Checkin.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
