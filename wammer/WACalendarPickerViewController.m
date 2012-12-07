@@ -172,14 +172,20 @@
 	else if ([selectedEvent isKindOfClass:[WAFile class]]) {
 
 		WAFile *photo = (WAFile *)selectedEvent;
+		WASlidingMenuViewController *smVC;
 		
-		WASlidingMenuViewController *smVC = (WASlidingMenuViewController *)[self.viewDeckController leftController];
-		[smVC switchToViewStyle:WAPhotosViewStyle onDate:photo.created animated:YES];
-
-		if (!smVC) {
+		if (self.viewDeckController) {
+			
+			smVC = (WASlidingMenuViewController *)[self.viewDeckController leftController];
+			[smVC switchToViewStyle:WAPhotosViewStyle onDate:photo.created animated:YES];
+		
+		}
+		else {
+			
 			smVC = (WASlidingMenuViewController *)[[[self delegate] viewDeckController] leftController];
 			[smVC switchToViewStyle:WAPhotosViewStyle onDate:photo.created animated:NO];
 			[self dismissViewControllerAnimated:YES completion:nil];
+		
 		}
 	}
 }

@@ -184,8 +184,7 @@
 
 - (NSArray *)markedDatesFrom:(NSDate *)fromDate to:(NSDate *)toDate
 {
-	NSPredicate *inRange = [NSPredicate predicateWithFormat:@"date BETWEEN %@",
-													@[fromDate, toDate]];
+	NSPredicate *inRange = [NSPredicate predicateWithFormat:@"date BETWEEN %@", @[fromDate, toDate]];
 	return [_days filteredArrayUsingPredicate:inRange];
 }
 
@@ -243,7 +242,7 @@
 		if ([item isKindOfClass:[WAArticle class]]) {
 			WAArticle *event = item;
 			
-			// TODO: show event / thumbnail images in kvo way
+			// TODO: show event / thumbnail images in kvo way?
 			UIImageView *thumbnail = [[UIImageView alloc] initWithImage:event.representingFile.extraSmallThumbnailImage];
 			[thumbnail setBackgroundColor:[UIColor grayColor]];
 			[thumbnail setBounds:CGRectMake(4, 4, 45, 45)];
