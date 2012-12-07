@@ -187,7 +187,7 @@
 	return formatter;
 }
 
-+ (NSAttributedString *) attributedDescriptionStringForEvent:(WAArticle*)event {
++ (NSAttributedString *) attributedDescriptionStringForEvent:(WAArticle*)event forCalendar:(BOOL)forCalendar {
 
 	NSMutableArray *locations = [NSMutableArray array];
 	if (event.location != nil && event.location.name != nil) {
@@ -221,11 +221,14 @@
 	}
 	
 	UIFont *hlFont = [UIFont fontWithName:@"Georgia-BoldItalic" size:17.0f];
-	
+
 	NSString *locString = [locations componentsJoinedByString:@","];
 	NSString *peoString = [people componentsJoinedByString:@","];
 	NSString *otherString = [otherDesc componentsJoinedByString:@", "];
 	NSMutableString *rawString = nil;
+	NSString *atJointString = @"at";
+	NSString *withJointString = @"with";
+	NSString *dotEndString = @"";
 	
 	if (event.eventDescription && event.eventDescription.length) {
 		rawString = [NSMutableString stringWithFormat:@"%@", event.eventDescription];
@@ -233,44 +236,80 @@
 		rawString = [NSMutableString string];
 	}
 	
+	if (forCalendar) {
+		atJointString = @"At";
+		withJointString = @"With";
+		dotEndString = @".";
+	}
+	
 	if (locations && locations.count) {
-		[rawString appendFormat:@" at %@", locString];
+		[rawString appendFormat:@" %@ %@", atJointString, locString];
 	}
 	
 	if (people && people.count) {
-		[rawString appendFormat:@" with %@", peoString];
+		[rawString appendFormat:@" %@ %@", withJointString, peoString];
 	}
 	
 	if (otherDesc && otherDesc.count) {
 		[rawString appendString:otherString];
 	}
+	
+	[rawString appendString:dotEndString];
 		
 	NSMutableAttributedString *attrString = [[NSMutableAttributedString alloc] initWithString:rawString];
 
-	UIColor *actionColor = [UIColor colorWithRed:0.96f green:0.64f blue:0.12f alpha:1];
-	UIColor *othersColor = [UIColor colorWithRed:0.5f green:0.85 blue:0.96 alpha:1];
-	UIColor *locationColor = [UIColor colorWithRed:0.5f green:0.85 blue:0.96 alpha:1];
-	UIColor *peopleColor = [UIColor colorWithRed:0.68f green:0.78f blue:0.26f alpha:1];
-	
-	NSDictionary *actionAttr = @{NSForegroundColorAttributeName: actionColor,
-															 NSFontAttributeName: hlFont};
-	NSDictionary *othersAttr = @{NSForegroundColorAttributeName: othersColor,
-															 NSFontAttributeName: hlFont};
-	NSDictionary *locationAttr = @{NSForegroundColorAttributeName: locationColor,
-															   NSFontAttributeName: hlFont};
-	NSDictionary *peopleAttr = @{NSForegroundColorAttributeName: peopleColor,
-															 NSFontAttributeName: hlFont};
+	if (forCalendar) {
+		
+		UIFont *calFont = [UIFont fontWithName:@"Georgia-Italic" size:14.0f];
+		UIFont *calBFont = [UIFont boldSystemFontOfSize:14.f];
+		UIColor *calTextColor = [UIColor colorWithRed:0.353f green:0.361f blue:0.361f alpha:1.f];
 
-	if (event.eventDescription && event.eventDescription.length > 0)
-		[attrString setAttributes:actionAttr range:(NSRange){0, event.eventDescription.length}];
-	if (locString && locString.length > 0 )
-		[attrString setAttributes:locationAttr range:(NSRange)[rawString rangeOfString:locString]];
-	if (peoString && peoString.length > 0 )
-		[attrString setAttributes:peopleAttr range:(NSRange)[rawString rangeOfString:peoString]];
-	if (otherString && otherString.length > 0 )
-		[attrString setAttributes:othersAttr range:(NSRange)[rawString rangeOfString:otherString]];
+		NSDictionary *actionAttr = @{NSForegroundColorAttributeName: calTextColor, NSFontAttributeName: calFont};
+		NSDictionary *locationAttr = @{NSForegroundColorAttributeName: calTextColor, NSFontAttributeName: calFont};
+		NSDictionary *peopleAttr = @{NSForegroundColorAttributeName: calTextColor, NSFontAttributeName: calFont};
+		NSDictionary *othersAttr = @{NSForegroundColorAttributeName: calTextColor, NSFontAttributeName: calBFont};
+		
+		if (attrString.length > 0)
+			[attrString setAttributes:othersAttr range:(NSRange)[rawString rangeOfString:rawString]];
+		if (event.eventDescription && event.eventDescription.length > 0)
+			[attrString setAttributes:actionAttr range:(NSRange){0, event.eventDescription.length}];
+		if (locString && locString.length > 0 )
+			[attrString setAttributes:locationAttr range:(NSRange)[rawString rangeOfString:locString]];
+		if (peoString && peoString.length > 0 )
+			[attrString setAttributes:peopleAttr range:(NSRange)[rawString rangeOfString:peoString]];
+
+	}
+	else {
+		
+		UIColor *actionColor = [UIColor colorWithRed:0.96f green:0.64f blue:0.12f alpha:1];
+		UIColor *othersColor = [UIColor colorWithRed:0.5f green:0.85 blue:0.96 alpha:1];
+		UIColor *locationColor = [UIColor colorWithRed:0.5f green:0.85 blue:0.96 alpha:1];
+		UIColor *peopleColor = [UIColor colorWithRed:0.68f green:0.78f blue:0.26f alpha:1];
+		
+		
+		NSDictionary *actionAttr = @{NSForegroundColorAttributeName: actionColor, NSFontAttributeName: hlFont};
+		NSDictionary *othersAttr = @{NSForegroundColorAttributeName: othersColor, NSFontAttributeName: hlFont};
+		NSDictionary *locationAttr = @{NSForegroundColorAttributeName: locationColor, NSFontAttributeName: hlFont};
+		NSDictionary *peopleAttr = @{NSForegroundColorAttributeName: peopleColor, NSFontAttributeName: hlFont};
+		
+		if (event.eventDescription && event.eventDescription.length > 0)
+			[attrString setAttributes:actionAttr range:(NSRange){0, event.eventDescription.length}];
+		if (locString && locString.length > 0 )
+			[attrString setAttributes:locationAttr range:(NSRange)[rawString rangeOfString:locString]];
+		if (peoString && peoString.length > 0 )
+			[attrString setAttributes:peopleAttr range:(NSRange)[rawString rangeOfString:peoString]];
+		if (otherString && otherString.length > 0 )
+			[attrString setAttributes:othersAttr range:(NSRange)[rawString rangeOfString:otherString]];
+		
+	}
 	
 	return attrString;
+	
+}
+
++ (NSAttributedString *) attributedDescriptionStringForEvent:(WAArticle*)event {
+	
+	return [[self class] attributedDescriptionStringForEvent:event forCalendar:NO];
 	
 }
 

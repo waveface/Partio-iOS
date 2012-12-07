@@ -10,6 +10,7 @@
 #import "NSDate+WAAdditions.h"
 #import "WADataStore.h"
 #import "WADataStore+WARemoteInterfaceAdditions.h"
+#import "WAEventViewController.h"
 
 @interface WACalendarPickerDataSource	() <NSFetchedResultsControllerDelegate>
 
@@ -251,7 +252,7 @@
 			[cell.contentView addSubview:thumbnail];
 			
 			UILabel *title = [[UILabel alloc] init];
-			title.attributedText = [[self class] attributedDescStringforEvent:event];
+			title.attributedText = [[WAEventViewController class] attributedDescriptionStringForEvent:event forCalendar:YES];
 			[title setBackgroundColor:[UIColor colorWithRed:0.89f green:0.89f blue:0.89f alpha:1.f]];
 			title.numberOfLines = 0;
 			[title setFrame:CGRectMake(60, 0, 220, 54)];
@@ -294,63 +295,6 @@
 		return 1;
 	
 	return count;
-}
-
-#pragma mark -
-
-+ (NSAttributedString *)attributedDescStringforEvent:(WAArticle *)event
-{
-	NSMutableArray *locations = [NSMutableArray array];
-	if (event.location != nil && event.location.name != nil) {
-		[locations addObject:event.location.name];
-	}
-	
-	NSMutableArray *people = [NSMutableArray array];
-	if (event.people != nil) {
-		[event.people enumerateObjectsUsingBlock:^(WAPeople *aPersonRep, BOOL *stop) {
-			[people addObject:aPersonRep.name];
-		}];
-	}
-		
-	UIFont *hlFont = [UIFont fontWithName:@"Georgia-Italic" size:14.0f];
-	UIFont *bFont = [UIFont boldSystemFontOfSize:14.f];
-	
-	NSString *locString = [locations componentsJoinedByString:@","];
-	NSString *peoString = [people componentsJoinedByString:@","];
-	NSMutableString *rawString = nil;
-	
-	if (event.eventDescription && event.eventDescription.length) {
-		rawString = [NSMutableString stringWithFormat:@"%@", event.eventDescription];
-	} else {
-		rawString = [NSMutableString string];
-	}
-	
-	if (locations && locations.count) {
-		[rawString appendFormat:@"At %@", locString];
-	}
-	
-	if (people && people.count) {
-		[rawString appendFormat:@" With %@.", peoString];
-	}
-		
-	NSMutableAttributedString *attrString = [[NSMutableAttributedString alloc] initWithString:rawString];
-	
-	UIColor *descColor = [UIColor colorWithRed:0.353f green:0.361f blue:0.361f alpha:1.f];
-	
-	NSDictionary *actionAttr = @{NSForegroundColorAttributeName: descColor, NSFontAttributeName: hlFont};
-	NSDictionary *locationAttr = @{NSForegroundColorAttributeName: descColor, NSFontAttributeName: hlFont};
-	NSDictionary *peopleAttr = @{NSForegroundColorAttributeName: descColor, NSFontAttributeName: hlFont};
-	NSDictionary *othersAttr = @{NSForegroundColorAttributeName: descColor, NSFontAttributeName: bFont};
-	
-	[attrString setAttributes:othersAttr range:(NSRange)[rawString rangeOfString:rawString]];
-	if (event.eventDescription && event.eventDescription.length > 0)
-		[attrString setAttributes:actionAttr range:(NSRange){0, event.eventDescription.length}];
-	if (locString && locString.length > 0 )
-		[attrString setAttributes:locationAttr range:(NSRange)[rawString rangeOfString:locString]];
-	if (peoString && peoString.length > 0 )
-		[attrString setAttributes:peopleAttr range:(NSRange)[rawString rangeOfString:peoString]];
-	
-	return attrString;
 }
 
 @end

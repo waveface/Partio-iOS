@@ -120,29 +120,7 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 - (void) viewDidAppear:(BOOL)animated {
 	[super viewDidAppear:animated];
 	
-	__block NSDate *currentDate = nil;
-	__weak WADayViewController *wSelf = self;
-	
-	[self.fetchedResultsController.fetchedObjects enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-		
-		NSDate *theDate = nil;
-		
-		if ([containedClass isSubclassOfClass:[WATimelineViewController class]]) {
-
-			theDate = [[((WAArticle*)obj) creationDate] dayBegin];
-			
-		} else {
-			
-			theDate = [[((WAFile*)obj) created] dayBegin];
-
-		}
-		
-		if (!currentDate || !isSameDay(currentDate, theDate)) {
-			[wSelf.days addObject:theDate];
-			currentDate = theDate;
-		}
-		
-	}];
+	[self loadDays];
 
 	[self.paginatedView reloadViews];
 
@@ -184,6 +162,35 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 	
 }
 
+#pragma mark - calculate events/photos days
+
+- (void)loadDays
+{
+	__block NSDate *currentDate = nil;
+	__weak WADayViewController *wSelf = self;
+	
+
+	[self.fetchedResultsController.fetchedObjects enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+		
+		NSDate *theDate = nil;
+		
+		if ([containedClass isSubclassOfClass:[WATimelineViewController class]]) {
+			
+			theDate = [[((WAArticle*)obj) creationDate] dayBegin];
+			
+		} else {
+			
+			theDate = [[((WAFile*)obj) created] dayBegin];
+			
+		}
+		
+		if (!currentDate || !isSameDay(currentDate, theDate)) {
+			[wSelf.days addObject:theDate];
+			currentDate = theDate;
+		}
+		
+	}];
+}
 
 #pragma mark - delegate methods for IRPaginatedView
 
@@ -584,6 +591,10 @@ BOOL dripdownMenuOpened = NO;
 	
 	__block BOOL found = NO;
 	__block NSUInteger foundIndex = 0;
+	
+	if (![self.days count])
+		[self loadDays];
+	
 	[self.days enumerateObjectsUsingBlock:^(NSDate *day, NSUInteger idx, BOOL *stop) {
 		
 		if (isSameDay(day, date)) {
@@ -602,5 +613,6 @@ BOOL dripdownMenuOpened = NO;
 	
 	return NO;
 }
+
 
 @end

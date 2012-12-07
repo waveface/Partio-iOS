@@ -23,6 +23,7 @@ typedef void (^completionHandler) (void);
 
 + (WAEventViewController *) controllerForArticle:(WAArticle *)article;
 + (NSAttributedString *) attributedDescriptionStringForEvent:(WAArticle*)event;
++ (NSAttributedString *) attributedDescriptionStringForEvent:(WAArticle*)event forCalendar:(BOOL)forCalendar;
 + (NSAttributedString *) attributedStringForTags:(NSArray*)tags;
 
 @end
