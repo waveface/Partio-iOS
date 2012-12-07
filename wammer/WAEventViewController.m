@@ -18,6 +18,7 @@
 #import "WAEventPhotoViewCell.h"
 #import "GAI.h"
 #import "MKMapView+ZoomLevel.h"
+#import "NINetworkImageView.h"
 
 @interface WAAnnotation : NSObject <MKAnnotation>
 
@@ -166,7 +167,7 @@
 	dispatch_once(&onceToken, ^{
 		
     formatter = [[NSDateFormatter alloc] init];
-		[formatter setDateFormat:@"EEEE, MMMM d, yyyy"];
+		[formatter setDateFormat:@"EEEE, d MMM"];
 
 	});
 	
@@ -305,7 +306,10 @@
 	_headerView.dateLabel.text = [[[self class] dateFormatter] stringFromDate:self.article.creationDate];
 	
 	_headerView.timeLabel.text = [[[self class] timeFormatter] stringFromDate:self.article.creationDate];
+	
+	_headerView.numberLabel.text = [NSString stringWithFormat:NSLocalizedString(@"EVENT_PHOTO_NUMBER_LABEL", @"EVENT_PHOTO_NUMBER_LABEL"), self.article.files.count];
 
+	/*
 	if (!self.article.location.latitude || !self.article.location.longitude) {
 		
 		[_headerView.separatorLineBelowMap setHidden:YES];
@@ -326,7 +330,42 @@
 		[_headerView addConstraint:constrain];
 
 	}
+	 */
 	
+	if (self.article.people != nil) {
+		
+		NSUInteger idx = 0;
+		CGRect avatarRect = (CGRect){ {4, 4}, {36, 36}};
+
+		for (WAPeople *aPersonRep in self.article.people) {
+			
+			NINetworkImageView *avatarImageView = [[NINetworkImageView alloc] initWithFrame:avatarRect];
+			[avatarImageView setPathToNetworkImage:aPersonRep.avatarURL contentMode:UIViewContentModeCenter];
+			[self.headerView.avatarPlacehoder addSubview:avatarImageView];
+
+			avatarRect.origin.y = avatarRect.origin.y + avatarRect.size.height + 4;
+
+			idx ++;
+			if (idx >= 3)
+				break;
+		}
+	}
+	
+	if (self.article.location) {
+		
+		NSMutableArray *allTags = [NSMutableArray array];
+
+		if (self.article.location.name)
+			[allTags addObject:self.article.location.name];
+				
+		for (WATag *aTagRep in self.article.location.tags) {
+			[allTags addObject:aTagRep.tagValue];
+		}
+				
+		if (allTags.count)
+			_headerView.locationLabel.text = [NSString stringWithFormat:@"at %@", [allTags componentsJoinedByString:@", "]];
+	}
+
 	_headerView.descriptiveTagsLabel.attributedText = [[self class] attributedDescriptionStringForEvent:self.article];
 	[_headerView.descriptiveTagsLabel invalidateIntrinsicContentSize];
 	
@@ -418,30 +457,8 @@
 
 - (CGSize) collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section {
 
-	// this looks ugly, how to solve this out? determine the size of headerview before it was added to collection view?
-	CGFloat height = 0.0f;
-	if (!self.headerView.mapView.hidden) {
-
-		height = CGRectGetMaxY(self.headerView.mapView.frame) + 4;
-		
-	} else {
-
-		height = CGRectGetMaxY(self.headerView.separatorLineAboveMap.frame);
-
-	}
-	
-	height += self.headerView.descriptiveTagsLabel.intrinsicContentSize.height + 4;
-	
-	if (!self.headerView.tagsLabel.hidden) {
-		
-		CGFloat max = MAX(self.headerView.tagsLabel.intrinsicContentSize.height, CGRectGetHeight(self.headerView.tagsLabel.frame));
-		height += max + 4;
-		
-	}
-	
-	height += 4.0f;
-	
-	return (CGSize) { CGRectGetWidth(collectionView.frame), height };
+	CGFloat height = MAX(self.headerView.frame.size.height, CGRectGetMaxY(self.headerView.separatorLineBelowMap.frame));
+	return (CGSize) { CGRectGetWidth(collectionView.frame), height + 7 };
 
 }
 

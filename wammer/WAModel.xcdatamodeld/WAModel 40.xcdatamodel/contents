@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model name="" userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="2057" systemVersion="12C60" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
+<model name="" userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="1811" systemVersion="12C60" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="WAArticle" representedClassName="WAArticle">
         <attribute name="creationDate" optional="YES" attributeType="Date" indexed="YES" elementID="timestamp">
             <userInfo/>
@@ -206,6 +206,7 @@
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="zoomLevel" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <relationship name="article" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="WAArticle" inverseName="location" inverseEntity="WAArticle" syncable="YES"/>
+        <relationship name="tags" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="WATag" syncable="YES"/>
     </entity>
     <entity name="WAOpenGraphElement" representedClassName="WAOpenGraphElement" syncable="YES">
         <attribute name="providerDisplayName" optional="YES" attributeType="String" syncable="YES"/>
@@ -325,7 +326,7 @@
         <element name="WAFileExif" positionX="0" positionY="0" width="128" height="315"/>
         <element name="WAFilePageElement" positionX="0" positionY="0" width="128" height="90"/>
         <element name="WAGroup" positionX="0" positionY="0" width="128" height="120"/>
-        <element name="WALocation" positionX="0" positionY="0" width="128" height="120"/>
+        <element name="WALocation" positionX="0" positionY="0" width="128" height="135"/>
         <element name="WAOpenGraphElement" positionX="0" positionY="0" width="128" height="195"/>
         <element name="WAOpenGraphElementImage" positionX="0" positionY="0" width="128" height="120"/>
         <element name="WAPeople" positionX="0" positionY="0" width="128" height="90"/>
