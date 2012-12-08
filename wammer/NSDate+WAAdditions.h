@@ -12,6 +12,10 @@
 
 - (NSDate *)dayEnd;
 - (NSDate *)dayBegin;
+- (NSDate *)dateOfPreviousMonth;
+- (NSDate *)dateOfFollowingMonth;
+- (NSDate *)dateOfPreviousWeek;
+- (NSDate *)dateOfFollowingWeek;
 
 - (NSString *) dayString;
 - (NSString *) localizedMonthShortString;

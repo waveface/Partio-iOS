@@ -120,7 +120,30 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 - (void) viewDidAppear:(BOOL)animated {
 	[super viewDidAppear:animated];
 	
-	[self loadDays];
+	__block NSDate *currentDate = nil;
+	__weak WADayViewController *wSelf = self;
+	
+	
+	[self.fetchedResultsController.fetchedObjects enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+		
+		NSDate *theDate = nil;
+		
+		if ([containedClass isSubclassOfClass:[WATimelineViewController class]]) {
+			
+			theDate = [[((WAArticle*)obj) creationDate] dayBegin];
+			
+		} else {
+			
+			theDate = [[((WAFile*)obj) created] dayBegin];
+			
+		}
+		
+		if (!currentDate || !isSameDay(currentDate, theDate)) {
+			[wSelf.days addObject:theDate];
+			currentDate = theDate;
+		}
+		
+	}];
 
 	[self.paginatedView reloadViews];
 
@@ -162,13 +185,100 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 	
 }
 
-#pragma mark - calculate events/photos days
+#pragma mark - fetch events/photos days
 
-- (void)loadDays
+- (void)fetchEventsFrom:(NSDate *)fromDate to:(NSDate *)toDate
 {
+	NSFetchRequest *fetchRequest = [[WADataStore defaultStore].persistentStoreCoordinator.managedObjectModel fetchRequestFromTemplateWithName:@"WAFRArticles" substitutionVariables:@{}];
+	
+	fetchRequest.relationshipKeyPathsForPrefetching = @[
+	@"files",
+	@"tags",
+	@"people",
+	@"location",
+	@"previews",
+	@"descriptiveTags",
+	@"files.pageElements"];
+	fetchRequest.predicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[
+														fetchRequest.predicate,
+														[NSPredicate predicateWithFormat:@"event = TRUE"],
+														[NSPredicate predicateWithFormat:@"files.@count > 0"],
+														[NSPredicate predicateWithFormat:@"import != %d AND import != %d", WAImportTypeFromOthers, WAImportTypeFromLocal]]];
+	
+	if (fromDate) {
+		fetchRequest.predicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[
+		fetchRequest.predicate,
+		[NSPredicate predicateWithFormat:@"creationDate >= %@", fromDate]]];
+	}
+	
+	if (toDate) {
+		fetchRequest.predicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[
+															fetchRequest.predicate,
+															[NSPredicate predicateWithFormat:@"creationDate <= %@", toDate]]];
+	}
+	
+	fetchRequest.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:NO]];
+	
+	self.fetchedResultsController = [[NSFetchedResultsController alloc]
+																	 initWithFetchRequest:fetchRequest
+																	 managedObjectContext:[[WADataStore defaultStore] defaultAutoUpdatedMOC]
+																	 sectionNameKeyPath:nil
+																	 cacheName:nil];
+	
+	self.fetchedResultsController.delegate = self;
+	
+	NSError *error = nil;
+	
+	if(![self.fetchedResultsController performFetch:&error]) {
+		NSLog(@"%@: failed to fetch articles for events", __FUNCTION__);
+	}
+}
+
+- (void)fetchPhotosFrom:(NSDate *)fromDate to:(NSDate *)toDate
+{
+	NSFetchRequest *fetchRequest = [[WADataStore defaultStore].persistentStoreCoordinator.managedObjectModel fetchRequestFromTemplateWithName:@"WAFRAllFiles" substitutionVariables:@{}];
+
+	fetchRequest.predicate =[NSPredicate predicateWithFormat:@"created != nil"];
+
+	if (fromDate) {
+		fetchRequest.predicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[
+															fetchRequest.predicate,
+															[NSPredicate predicateWithFormat:@"created >= %@", fromDate]]];
+	}
+	
+	if (toDate) {
+		fetchRequest.predicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[
+															fetchRequest.predicate,
+															[NSPredicate predicateWithFormat:@"created <= %@", toDate]]];
+	}
+
+	fetchRequest.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"created" ascending:NO]];
+	
+	self.fetchedResultsController = [[NSFetchedResultsController alloc]
+																	 initWithFetchRequest:fetchRequest
+																	 managedObjectContext:[[WADataStore defaultStore] defaultAutoUpdatedMOC]
+																	 sectionNameKeyPath:nil
+																	 cacheName:nil];
+	
+	self.fetchedResultsController.delegate = self;
+	
+	NSError *error = nil;
+	
+	if(![self.fetchedResultsController performFetch:&error]) {
+		NSLog(@"%@: failed to fetch articles for events", __FUNCTION__);
+	}
+
+}
+
+- (void)loadDaysFrom:(NSDate *)fromDate to:(NSDate *)toDate
+{
+	if ([containedClass isSubclassOfClass:[WATimelineViewController class]])
+		[self fetchEventsFrom:fromDate to:toDate];
+	else
+		[self fetchPhotosFrom:fromDate to:toDate];
+	
 	__block NSDate *currentDate = nil;
 	__weak WADayViewController *wSelf = self;
-	
 
 	[self.fetchedResultsController.fetchedObjects enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
 		
@@ -190,6 +300,11 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 		}
 		
 	}];
+}
+
+- (void)loadDays
+{
+	[self loadDaysFrom:nil to:nil];
 }
 
 #pragma mark - delegate methods for IRPaginatedView
@@ -593,7 +708,8 @@ BOOL dripdownMenuOpened = NO;
 	__block NSUInteger foundIndex = 0;
 	
 	if (![self.days count])
-		[self loadDays];
+		[self loadDaysFrom:date.dateOfPreviousWeek to:date.dateOfFollowingWeek];
+	
 	
 	[self.days enumerateObjectsUsingBlock:^(NSDate *day, NSUInteger idx, BOOL *stop) {
 		

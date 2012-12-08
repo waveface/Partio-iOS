@@ -30,6 +30,50 @@
 
 }
 
+- (NSDate *)dateOfPreviousMonth {
+  
+	NSCalendar *calendar = [NSCalendar currentCalendar];
+  
+	NSDateComponents *dateComponents = [calendar components:(NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit)
+																								 fromDate:self];
+  dateComponents.month -= 1;
+	return [calendar dateFromComponents:dateComponents];
+  
+}
+
+- (NSDate *)dateOfFollowingMonth {
+  
+	NSCalendar *calendar = [NSCalendar currentCalendar];
+  
+	NSDateComponents *dateComponents = [calendar components:(NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit)
+																								 fromDate:self];
+  dateComponents.month += 1;
+	return [calendar dateFromComponents:dateComponents];
+  
+}
+
+- (NSDate *)dateOfPreviousWeek {
+  
+	NSCalendar *calendar = [NSCalendar currentCalendar];
+  
+	NSDateComponents *dateComponents = [calendar components:(NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit)
+																								 fromDate:self];
+  dateComponents.day -= 7;
+	return [calendar dateFromComponents:dateComponents];
+  
+}
+
+- (NSDate *)dateOfFollowingWeek {
+  
+	NSCalendar *calendar = [NSCalendar currentCalendar];
+  
+	NSDateComponents *dateComponents = [calendar components:(NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit)
+																								 fromDate:self];
+  dateComponents.day += 7;
+	return [calendar dateFromComponents:dateComponents];
+  
+}
+
 - (NSString *) dayString {
 	
 	NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
