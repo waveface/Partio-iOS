@@ -68,6 +68,7 @@
 	[self.collectionView registerNib:[UINib nibWithNibName:@"WATimelineViewCell-ImageStack-1" bundle:nil] forCellWithReuseIdentifier:@"PostCell-Photo-1"];
 	[self.collectionView registerNib:[UINib nibWithNibName:@"WATimelineViewCell-ImageStack-2" bundle:nil] forCellWithReuseIdentifier:@"PostCell-Photo-2"];
 	[self.collectionView registerNib:[UINib nibWithNibName:@"WATimelineViewCell-ImageStack-3" bundle:nil] forCellWithReuseIdentifier:@"PostCell-Photo-3"];
+	[self.collectionView registerNib:[UINib nibWithNibName:@"WATimelineViewCell-Checkin" bundle:nil] forCellWithReuseIdentifier:@"PostCell-Checkin"];
 
 	self.collectionView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
 	[self.view addSubview:self.collectionView];
@@ -174,16 +175,21 @@
 	
 	WAArticle *post = [self.fetchedResultsController objectAtIndexPath:indexPath];
 	
-	NSString *identifier = [NSMutableString stringWithString:@"PostCell-Photo"];
-
-	NSAssert(post.files.count > 0, @"Event post needs more then one photo");
+	NSString *identifier = [NSMutableString stringWithString:@"PostCell-"];
 	
-	if (post.files.count == 1)
-		identifier = [identifier stringByAppendingString:@"-1"];
-	else if (post.files.count == 2)
-		identifier = [identifier stringByAppendingString:@"-2"];
-	else
-		identifier = [identifier stringByAppendingString:@"-3"];
+	switch (post.files.count) {
+		case 0:
+			identifier = [identifier stringByAppendingString:@"Checkin"];
+			break;
+		case 1:
+			identifier = [identifier stringByAppendingString:@"Photo-1"];
+			break;
+		case 2:
+			identifier = [identifier stringByAppendingString:@"Photo-2"];
+			break;
+		default:
+			identifier = [identifier stringByAppendingString:@"Photo-3"];
+	}
 		
 	WATimelineViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:identifier forIndexPath:indexPath];
 	
@@ -192,6 +198,7 @@
 	return cell;
 	
 }
+
 
 #pragma mark - UICollectionViewFlowLayout datasource
 

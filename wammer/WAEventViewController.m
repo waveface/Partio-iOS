@@ -18,6 +18,7 @@
 #import "WAEventPhotoViewCell.h"
 #import "GAI.h"
 #import "MKMapView+ZoomLevel.h"
+#import "NINetworkImageView.h"
 
 @interface WAAnnotation : NSObject <MKAnnotation>
 
@@ -31,7 +32,7 @@
 
 @end
 
-@interface WAEventViewController ()
+@interface WAEventViewController () <MKMapViewDelegate>
 
 @property (nonatomic, strong, readwrite) UICollectionView *itemsView;
 @property (nonatomic, strong) WAEventHeaderView *headerView;
@@ -121,13 +122,22 @@
 		CLLocationCoordinate2D center = { self.article.location.latitude.floatValue, self.article.location.longitude.floatValue };
 		NSUInteger zoomLevel = [self.article.location.zoomLevel unsignedIntegerValue];
 		
-		WAAnnotation *pin = [[WAAnnotation alloc] init];
-		pin.coordinate = center;
-		if (self.article.location.name)
-			pin.title = self.article.location.name;
+		NSMutableArray *checkins = [NSMutableArray array];
+		for (WALocation *loc in self.article.checkins) {
+			WAAnnotation *pin = [[WAAnnotation alloc] init];
+			
+			CLLocationCoordinate2D checkinCenter = { loc.latitude.floatValue, loc.longitude.floatValue };
+			pin.coordinate = checkinCenter;
+			if (loc.name)
+				pin.title = loc.name;
+			
+			[checkins addObject:pin];
+		}
+		
+		_headerView.mapView.delegate = self;
 		
 		[_headerView.mapView setCenterCoordinate:center zoomLevel:zoomLevel animated:YES];
-		[_headerView.mapView addAnnotation:pin];
+		[_headerView.mapView addAnnotations:checkins];
 		[_headerView.mapView setHidden:NO];
 		
 	}
@@ -166,11 +176,24 @@
 	dispatch_once(&onceToken, ^{
 		
     formatter = [[NSDateFormatter alloc] init];
-		[formatter setDateFormat:@"EEEE, MMMM d, yyyy"];
+		[formatter setDateFormat:@"EEEE, d MMM"];
 
 	});
 	
 	return formatter;
+}
+
+- (MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id<MKAnnotation>)annotation {
+	
+	static NSString *annotationIdentifier = @"EventMapView-Annotation";
+	MKAnnotationView *annView = (MKAnnotationView*)[mapView dequeueReusableAnnotationViewWithIdentifier:annotationIdentifier];
+	if (annView == nil) {
+		annView = [[MKAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:annotationIdentifier];
+	}
+	
+	annView.image = [UIImage imageNamed:@"Location"];
+	return annView;
+	
 }
 
 + (NSDateFormatter *) timeFormatter {
@@ -344,28 +367,76 @@
 	_headerView.dateLabel.text = [[[self class] dateFormatter] stringFromDate:self.article.creationDate];
 	
 	_headerView.timeLabel.text = [[[self class] timeFormatter] stringFromDate:self.article.creationDate];
-
-	if (!self.article.location.latitude || !self.article.location.longitude) {
+	
+	_headerView.numberLabel.text = [NSString stringWithFormat:NSLocalizedString(@"EVENT_PHOTO_NUMBER_LABEL", @"EVENT_PHOTO_NUMBER_LABEL"), self.article.files.count];
+	
+	if (self.article.people != nil) {
 		
-		[_headerView.separatorLineBelowMap setHidden:YES];
-		[_headerView.mapView setHidden:YES];
+		NSUInteger idx = 0;
+		CGRect avatarRect = (CGRect){ {4, 4}, {36, 36}};
 
-		// reset the constrain to top separation line
-		[_headerView removeConstraint:_headerView.descriptiveTagsLabelToTopConstrain];
+		for (WAPeople *aPersonRep in self.article.people) {
+			
+			NINetworkImageView *avatarImageView = [[NINetworkImageView alloc] initWithFrame:avatarRect];
+			[avatarImageView setPathToNetworkImage:aPersonRep.avatarURL contentMode:UIViewContentModeCenter];
+			[self.headerView.avatarPlacehoder addSubview:avatarImageView];
 
-		NSLayoutConstraint *constrain = [NSLayoutConstraint
-																		 constraintWithItem:_headerView.descriptiveTagsLabel
-																		 attribute:NSLayoutAttributeTop
-																		 relatedBy:NSLayoutRelationEqual
-																		 toItem:_headerView.separatorLineAboveMap
-																		 attribute:NSLayoutAttributeBottom
-																		 multiplier:1
-																		 constant:4];
+			avatarRect.origin.y = avatarRect.origin.y + avatarRect.size.height + 4;
+
+			idx ++;
+			if (idx >= 2)
+				break;
+		}
 		
-		[_headerView addConstraint:constrain];
-
+		if (idx == 2 && self.article.people.count > 2) {
+			UIButton *more = [UIButton buttonWithType:UIButtonTypeCustom];
+			more.frame = avatarRect;
+			more.backgroundColor = [UIColor colorWithRed:0.95f green:0.95f blue:0.95f alpha:1];
+			more.titleLabel.font = [UIFont fontWithName:@"HelveticaNeue-Bold" size:12.0];
+			more.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
+			more.titleLabel.textAlignment = NSTextAlignmentCenter;
+			[more setTitle:[NSString stringWithFormat:@"%d More", self.article.people.count - 2] forState:UIControlStateNormal];
+			[self.headerView.avatarPlacehoder addSubview:more];
+		} else {
+			
+			for (int i = 0; i < (3-idx); i++) {
+				UIButton *add = [UIButton buttonWithType:UIButtonTypeCustom];
+				
+				add.frame = avatarRect;
+				NSString *imageName = [NSString stringWithFormat:@"P%d", i+1];
+				[add setBackgroundImage:[UIImage imageNamed:imageName] forState:UIControlStateNormal];
+				avatarRect.origin.y = avatarRect.origin.y + avatarRect.size.height + 4;
+				
+				[self.headerView.avatarPlacehoder addSubview:add];
+				
+			}
+		}
 	}
 	
+	if (self.article.location) {
+		
+		NSMutableArray *allTags = [NSMutableArray array];
+
+		for (WALocation *loc in self.article.checkins) {
+			[allTags addObject:loc.name];
+		}
+		
+		if (allTags.count > 0) // dedup
+			allTags = [NSMutableArray arrayWithArray:[[NSSet setWithArray:allTags] allObjects]];
+		
+		for (WATag *aTagRep in self.article.location.tags) {
+			[allTags addObject:aTagRep.tagValue];
+		}
+				
+		if (allTags.count)
+			_headerView.locationLabel.text = [NSString stringWithFormat:@"at %@", [allTags componentsJoinedByString:@", "]];
+		
+	} else {
+		
+		_headerView.locationMarkImageView.image = [UIImage imageNamed:@"NoLocation"];
+		
+	}
+
 	_headerView.descriptiveTagsLabel.attributedText = [[self class] attributedDescriptionStringForEvent:self.article];
 	[_headerView.descriptiveTagsLabel invalidateIntrinsicContentSize];
 	
@@ -457,30 +528,8 @@
 
 - (CGSize) collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section {
 
-	// this looks ugly, how to solve this out? determine the size of headerview before it was added to collection view?
-	CGFloat height = 0.0f;
-	if (!self.headerView.mapView.hidden) {
-
-		height = CGRectGetMaxY(self.headerView.mapView.frame) + 4;
-		
-	} else {
-
-		height = CGRectGetMaxY(self.headerView.separatorLineAboveMap.frame);
-
-	}
-	
-	height += self.headerView.descriptiveTagsLabel.intrinsicContentSize.height + 4;
-	
-	if (!self.headerView.tagsLabel.hidden) {
-		
-		CGFloat max = MAX(self.headerView.tagsLabel.intrinsicContentSize.height, CGRectGetHeight(self.headerView.tagsLabel.frame));
-		height += max + 4;
-		
-	}
-	
-	height += 4.0f;
-	
-	return (CGSize) { CGRectGetWidth(collectionView.frame), height };
+	CGFloat height = MAX(self.headerView.frame.size.height, CGRectGetMaxY(self.headerView.separatorLineBelowMap.frame));
+	return (CGSize) { CGRectGetWidth(collectionView.frame), height + 7 };
 
 }
 

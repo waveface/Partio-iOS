@@ -53,6 +53,7 @@ typedef enum {
 @property (nonatomic, retain) NSSet *people;
 @property (nonatomic, retain) WALocation *location;
 @property (nonatomic, retain) NSString *eventDescription;
+@property (nonatomic, retain) NSSet *checkins;
 @end
 
 @interface WAArticle (CoreDataGeneratedAccessors)

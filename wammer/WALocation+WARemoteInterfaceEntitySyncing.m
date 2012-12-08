@@ -24,7 +24,20 @@
 
 + (NSDictionary *) transformedRepresentationForRemoteRepresentation:(NSDictionary *)incomingRepresentation {
 
-	return [super transformedRepresentationForRemoteRepresentation:incomingRepresentation];
+	NSMutableDictionary *transformedRepresentation = [NSMutableDictionary dictionaryWithDictionary:incomingRepresentation];
+
+	NSArray *tags = [incomingRepresentation objectForKey:@"region_tags"];
+	if ([tags count]) {
+		
+		NSMutableArray *transformedTags = [NSMutableArray arrayWithCapacity:[tags count]];
+		[tags enumerateObjectsUsingBlock:^(NSString *aTagRep, NSUInteger idx, BOOL *stop) {
+			[transformedTags addObject:@{@"tagValue": aTagRep}];
+		}];
+		
+		[transformedRepresentation setObject:transformedTags forKey:@"region_tags"];
+	}
+
+	return transformedRepresentation;
 	
 }
 
@@ -39,6 +52,7 @@
 							 @"longitude", @"longitude",
 							 @"name", @"name",
 							 @"zoomLevel", @"zoom_level",
+							 @"tags", @"region_tags",
 							 nil];
 		
 	});
@@ -46,5 +60,22 @@
 	return mapping;
 	
 }
+
++ (NSDictionary *) defaultHierarchicalEntityMapping {
+	
+	static NSDictionary *mapping = nil;
+	static dispatch_once_t onceToken;
+	dispatch_once(&onceToken, ^{
+    
+		mapping = [NSDictionary dictionaryWithObjectsAndKeys:
+							 @"WATag", @"region_tags",
+							 nil];
+		
+	});
+	
+	return mapping;
+	
+}
+
 
 @end
