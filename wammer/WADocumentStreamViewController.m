@@ -101,7 +101,12 @@
 	WAFile *document = self.documents[[indexPath row]];
 
 	[[[self class] sharedImageDisplayQueue] addOperationWithBlock:^{
-		[cell.imageView irBind:@"image" toObject:document.pageElements[0] keyPath:@"thumbnailImage" options:@{kIRBindingsAssignOnMainThreadOption:(id)kCFBooleanTrue}];
+		cell.pageElement = document.pageElements[0];
+		[document.pageElements[0] irObserve:@"thumbnailImage" options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:&kWADocumentStreamViewCellKVOContext withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
+			[[NSOperationQueue mainQueue] addOperationWithBlock:^{
+				cell.imageView.image = toValue;
+			}];
+		}];
 	}];
 
 	return cell;

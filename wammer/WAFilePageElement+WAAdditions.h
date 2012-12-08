@@ -10,6 +10,7 @@
 
 @interface WAFilePageElement (WAAdditions)
 
+@property (nonatomic, readonly) UIImage *extraSmallThumbnailImage;
 @property (nonatomic, readonly) UIImage *thumbnailImage;
 
 - (void)cleanImageCache;

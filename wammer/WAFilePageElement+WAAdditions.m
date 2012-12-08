@@ -13,23 +13,29 @@
 #import "WADefines.h"
 #import "IRRemoteResourcesManager.h"
 #import "WADataStore.h"
+#import <UIImage+IRAdditions.h>
+#import <QuartzCore+IRAdditions.h>
 
 static NSString * const kWAFilePageElementThumbnailFilePath = @"thumbnailFilePath";
 static NSString * const kWAFilePageElementThumbnailURL = @"thumbnailURL";
 static NSString * const kWAFilePageElementThumbnailImage = @"thumbnailImage";
+static NSString * const kWAFilePageElementExtraSmallThumbnailFilePath = @"extraSmallThumbnailFilePath";
+static NSString * const kWAFilePageElementExtraSmallThumbnailImage = @"extraSmallThumbnailImage";
 
 @implementation WAFilePageElement (WAAdditions)
 @dynamic thumbnailImage;
+@dynamic extraSmallThumbnailImage;
 
 - (NSString *)thumbnailFilePath {
 
 	NSString *primitivePath = [self primitiveValueForKey:kWAFilePageElementThumbnailFilePath];
-	NSString *filePath = [self absolutePathFromPath:primitivePath];
 	
-	if (primitivePath && [[NSFileManager defaultManager] fileExistsAtPath:filePath]) {
+	if (primitivePath && [[NSFileManager defaultManager] fileExistsAtPath:primitivePath]) {
 		WACacheManager *cacheManager = [(WAAppDelegate_iOS *)AppDelegate() cacheManager];
-		[cacheManager insertOrUpdateCacheWithRelationship:[[self objectID] URIRepresentation] filePath:filePath filePathKey:kWAFilePageElementThumbnailFilePath];
-		return filePath;
+		[cacheManager insertOrUpdateCacheWithRelationship:[[self objectID] URIRepresentation]
+																						 filePath:primitivePath
+																					filePathKey:kWAFilePageElementThumbnailFilePath];
+		return primitivePath;
 	}
 
 	if (!self.thumbnailURL) {
@@ -39,29 +45,63 @@ static NSString * const kWAFilePageElementThumbnailImage = @"thumbnailImage";
 	NSURL *thumbnailURL = [NSURL URLWithString:self.thumbnailURL];
 	if (thumbnailURL && ![thumbnailURL isFileURL]) {
 
-		__weak WAFilePageElement *wSelf = self;
+		Class class = [self class];
+		
 		NSURL *ownURL = [[self objectID] URIRepresentation];
 		[[IRRemoteResourcesManager sharedManager] retrieveResourceAtURL:thumbnailURL withCompletionBlock:^(NSURL *tempFileURLOrNil) {
 
 			if (!tempFileURLOrNil)
 				return;
 
+			if (!class) {
+				return;
+			}
+
 			if (![UIImage imageWithContentsOfFile:[tempFileURLOrNil path]]) {
 				int64_t delayInSeconds = 3.0;
 				dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
 				dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-					[wSelf thumbnailFilePath];
+					NSManagedObjectContext *context = [[WADataStore defaultStore] autoUpdatingMOC];
+					WAFilePageElement *page = (WAFilePageElement *)[context irManagedObjectForURI:ownURL];
+					[page thumbnailFilePath];
 				});
 				return;
 			}
 
-			[[[wSelf class] sharedResourceHandlingQueue] addOperationWithBlock:^{
+			[[class sharedExtraSmallThumbnailMakingQueue] addOperationWithBlock:^{
+
+				// TODO: Will use GPUImage to speed up image processing later
+				NSManagedObjectContext *context = [[WADataStore defaultStore] autoUpdatingMOC];
+				context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
+				
+				WAFilePageElement *page = (WAFilePageElement *)[context irManagedObjectForURI:ownURL];
+				if (!page.extraSmallThumbnailFilePath) {
+					UIImage *image = [UIImage imageWithContentsOfFile:[tempFileURLOrNil path]];
+					UIImage *extraSmallThumbnailImage = [image irScaledImageWithSize:IRGravitize((CGRect){ CGPointZero, (CGSize){150.0	, 150.0} }, image.size, kCAGravityResizeAspectFill).size];
+					page.extraSmallThumbnailFilePath = [[[WADataStore defaultStore] persistentFileURLForData:UIImageJPEGRepresentation(extraSmallThumbnailImage, 0.85f) extension:@"jpeg"] path];
+				}
+
+				NSError *savingError = nil;
+				if (![context save:&savingError]) {
+					NSLog(@"Unable to save extra small thumbnail image: %@", savingError);
+				}
+
+			}];
+			
+			[[class sharedResourceHandlingQueue] addOperationWithBlock:^{
 
 				WADataStore *ds = [WADataStore defaultStore];
 				NSManagedObjectContext *context = [ds autoUpdatingMOC];
 				context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
 
-				WAFilePageElement *updatedObject = (WAFilePageElement *)[ds updateObjectAtURI:ownURL inContext:context takingBlobFromTemporaryFile:[tempFileURLOrNil path] usingResourceType:nil forKeyPath:kWAFilePageElementThumbnailFilePath matchingURL:thumbnailURL forKeyPath:kWAFilePageElementThumbnailURL];
+				WAFilePageElement *updatedObject =
+				(WAFilePageElement *)[ds updateObjectAtURI:ownURL
+																				 inContext:context
+											 takingBlobFromTemporaryFile:[tempFileURLOrNil path]
+																 usingResourceType:nil
+																				forKeyPath:kWAFilePageElementThumbnailFilePath
+																			 matchingURL:thumbnailURL
+																				forKeyPath:kWAFilePageElementThumbnailURL];
 				
 				if ([updatedObject hasChanges]) {
 
@@ -85,10 +125,11 @@ static NSString * const kWAFilePageElementThumbnailImage = @"thumbnailImage";
 
 	[self willChangeValueForKey:kWAFilePageElementThumbnailFilePath];
 
-	NSString *filePath = [self relativePathFromPath:thumbnailFilePath];
-	[self setPrimitiveValue:filePath forKey:kWAFilePageElementThumbnailFilePath];
+	[self setPrimitiveValue:thumbnailFilePath forKey:kWAFilePageElementThumbnailFilePath];
 	WACacheManager *cacheManager = [(WAAppDelegate_iOS *)AppDelegate() cacheManager];
-	[cacheManager insertOrUpdateCacheWithRelationship:[[self objectID] URIRepresentation] filePath:thumbnailFilePath filePathKey:kWAFilePageElementThumbnailFilePath];
+	[cacheManager insertOrUpdateCacheWithRelationship:[[self objectID] URIRepresentation]
+																					 filePath:thumbnailFilePath
+																				filePathKey:kWAFilePageElementThumbnailFilePath];
 
 	[self didChangeValueForKey:kWAFilePageElementThumbnailFilePath];
 
@@ -107,35 +148,95 @@ static NSString * const kWAFilePageElementThumbnailImage = @"thumbnailImage";
 
 - (UIImage *)thumbnailImage {
 
-	UIImage *image = objc_getAssociatedObject(self, &kWAFilePageElementThumbnailImage);
-	if (image)
-		return image;
-
-	NSString *thumbnailFilePath = self.thumbnailFilePath;
-	if (!thumbnailFilePath)
-		return nil;
-
-	image = [UIImage imageWithData:[NSData dataWithContentsOfFile:thumbnailFilePath options:NSDataReadingMappedIfSafe error:nil]];
-	
-	[self irAssociateObject:image usingKey:&kWAFilePageElementThumbnailImage policy:OBJC_ASSOCIATION_RETAIN_NONATOMIC changingObservedKey:nil];
-
-	return image;
+	return [self imageAssociateWithKey:&kWAFilePageElementThumbnailImage filePath:self.thumbnailFilePath];
 
 }
 
-- (void)setThumbnailImage:(UIImage *)newImage {
+- (NSString *)extraSmallThumbnailFilePath {
 
-	[self irAssociateObject:newImage usingKey:&kWAFilePageElementThumbnailImage policy:OBJC_ASSOCIATION_RETAIN_NONATOMIC changingObservedKey:kWAFilePageElementThumbnailImage];
+	NSString *primitivePath = [self primitiveValueForKey:kWAFilePageElementExtraSmallThumbnailFilePath];
+	
+	if (primitivePath && [[NSFileManager defaultManager] fileExistsAtPath:primitivePath]) {
+		WACacheManager *cacheManager = [(WAAppDelegate_iOS *)AppDelegate() cacheManager];
+		[cacheManager insertOrUpdateCacheWithRelationship:[[self objectID] URIRepresentation]
+																						 filePath:primitivePath
+																					filePathKey:kWAFilePageElementExtraSmallThumbnailFilePath];
+		return primitivePath;
+	}
+
+	return nil;
+
+}
+
+- (void)setExtraSmallThumbnailFilePath:(NSString *)extraSmallThumbnailFilePath {
+
+	[self willChangeValueForKey:kWAFilePageElementExtraSmallThumbnailFilePath];
+	
+	[self setPrimitiveValue:extraSmallThumbnailFilePath forKey:kWAFilePageElementExtraSmallThumbnailFilePath];
+	WACacheManager *cacheManager = [(WAAppDelegate_iOS *)AppDelegate() cacheManager];
+	[cacheManager insertOrUpdateCacheWithRelationship:[[self objectID] URIRepresentation]
+																					 filePath:extraSmallThumbnailFilePath
+																				filePathKey:kWAFilePageElementExtraSmallThumbnailFilePath];
+	
+	[self didChangeValueForKey:kWAFilePageElementExtraSmallThumbnailFilePath];
+
+}
+
+
++ (NSSet *) keyPathsForValuesAffectingExtraSmallThumbnailImage {
+	
+	return [NSSet setWithObject:kWAFilePageElementExtraSmallThumbnailFilePath];
+
+}
+
+- (UIImage *)extraSmallThumbnailImage {
+
+	return [self imageAssociateWithKey:&kWAFilePageElementExtraSmallThumbnailImage
+														filePath:self.extraSmallThumbnailFilePath];
+
+}
+
+- (UIImage *)imageAssociateWithKey:(const void *)key filePath:(NSString *)filePath {
+
+	UIImage *image = objc_getAssociatedObject(self, key);
+	if (image)
+		return image;
+	
+	if (!filePath)
+		return nil;
+	
+	image = [UIImage imageWithData:[NSData dataWithContentsOfFile:filePath
+																												options:NSDataReadingMappedIfSafe
+																													error:nil]];
+	
+	[self irAssociateObject:image usingKey:key policy:OBJC_ASSOCIATION_RETAIN_NONATOMIC changingObservedKey:nil];
+	
+	return image;
 
 }
 
 - (void)cleanImageCache {
 
-	[self irAssociateObject:nil usingKey:&kWAFilePageElementThumbnailImage policy:OBJC_ASSOCIATION_ASSIGN changingObservedKey:nil];
+	[self irAssociateObject:nil
+								 usingKey:&kWAFilePageElementThumbnailImage
+									 policy:OBJC_ASSOCIATION_ASSIGN changingObservedKey:nil];
 
 }
 
 + (NSOperationQueue *)sharedResourceHandlingQueue {
+
+	static NSOperationQueue *queue;
+	static dispatch_once_t onceToken;
+	dispatch_once(&onceToken, ^{
+    queue = [[NSOperationQueue alloc] init];
+		[queue setMaxConcurrentOperationCount:1];
+	});
+
+	return queue;
+
+}
+
++ (NSOperationQueue *)sharedExtraSmallThumbnailMakingQueue {
 
 	static NSOperationQueue *queue;
 	static dispatch_once_t onceToken;

@@ -10,6 +10,7 @@
 #import "Foundation+IRAdditions.h"
 
 NSString * const kWADocumentStreamViewCellID = @"DocumentStreamViewCell";
+NSString * kWADocumentStreamViewCellKVOContext = @"DocuementStreamViewCellKVOContext";
 
 @implementation WADocumentStreamViewCell
 
@@ -21,11 +22,20 @@ NSString * const kWADocumentStreamViewCellID = @"DocumentStreamViewCell";
 
 }
 
+- (void)dealloc {
+
+	[self.pageElement irRemoveObserverBlocksForKeyPath:@"thumbnailImage"
+																						 context:&kWADocumentStreamViewCellKVOContext];
+	self.imageView.image = nil;
+
+}
+
 #pragma mark - UICollectionReusableView delegates
 
 - (void)prepareForReuse {
 
-	[self.imageView irUnbind:@"image"];
+	[self.pageElement irRemoveObserverBlocksForKeyPath:@"thumbnailImage"
+																						 context:&kWADocumentStreamViewCellKVOContext];
 	self.imageView.image = nil;
 
 }

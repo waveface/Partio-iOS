@@ -229,6 +229,8 @@ BOOL (^isSameDay) (NSDate *, NSDate *) = ^ (NSDate *d1, NSDate *d2) {
 		
 		self.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:request managedObjectContext:context sectionNameKeyPath:nil cacheName:nil];
 
+		self.fetchedResultsController.delegate = self;
+
 		[self.fetchedResultsController performFetch:nil];
 
 	}
@@ -335,15 +337,23 @@ BOOL (^isSameDay) (NSDate *, NSDate *) = ^ (NSDate *d1, NSDate *d2) {
 
 		theNewDate = [[((WAArticle*)anObject) creationDate] dayBegin];
 
-	} else {
+	} else if ([containedClass isSubclassOfClass:[WAPhotoStreamViewController class]]) {
 
 		theNewDate = [[((WAFile*)anObject) created] dayBegin];
 		
+	} else if ([containedClass isSubclassOfClass:[WADocumentStreamViewController class]]) {
+
+		theNewDate = [[((WAFile*)anObject) docAccessTime] dayBegin];
+
 	}
 	
 	switch (type) {
+		case NSFetchedResultsChangeMove:
 		case NSFetchedResultsChangeInsert:
 		{
+			if (!theNewDate) {
+				break;
+			}
 
 			NSUInteger oldIndex = [self.days indexOfObject:theNewDate
 																			 inSortedRange:(NSRange){0, self.days.count}

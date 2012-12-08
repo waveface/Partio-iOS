@@ -187,6 +187,7 @@
         <relationship name="file" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="WAFile" inverseName="exif" inverseEntity="WAFile" syncable="YES"/>
     </entity>
     <entity name="WAFilePageElement" representedClassName="WAFilePageElement" syncable="YES">
+        <attribute name="extraSmallThumbnailFilePath" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="page" attributeType="Integer 64" defaultValueString="1" syncable="YES"/>
         <attribute name="thumbnailFilePath" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="thumbnailURL" optional="YES" attributeType="String" syncable="YES"/>
@@ -329,7 +330,7 @@
         <element name="WAComment" positionX="0" positionY="0" width="128" height="135"/>
         <element name="WAFile" positionX="0" positionY="0" width="128" height="600"/>
         <element name="WAFileExif" positionX="0" positionY="0" width="128" height="315"/>
-        <element name="WAFilePageElement" positionX="0" positionY="0" width="128" height="120"/>
+        <element name="WAFilePageElement" positionX="0" positionY="0" width="128" height="135"/>
         <element name="WAGroup" positionX="0" positionY="0" width="128" height="120"/>
         <element name="WALocation" positionX="0" positionY="0" width="128" height="135"/>
         <element name="WAOpenGraphElement" positionX="0" positionY="0" width="128" height="195"/>

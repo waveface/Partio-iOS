@@ -7,11 +7,14 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "WAFilePageElement.h"
 
 extern NSString * const kWADocumentStreamViewCellID;
+extern NSString * kWADocumentStreamViewCellKVOContext;
 
 @interface WADocumentStreamViewCell : UICollectionViewCell
 
 @property (weak, nonatomic) IBOutlet UIImageView *imageView;
+@property (nonatomic, strong) WAFilePageElement *pageElement;
 
 @end

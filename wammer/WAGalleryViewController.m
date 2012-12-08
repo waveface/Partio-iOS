@@ -22,6 +22,7 @@
 #import "GAI.h"
 
 NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGalleryViewControllerContextPreferredFileObjectURI";
+static NSString * kWAGalleryViewControllerKVOContext = @"WAGalleryViewControllerKVOContext";
 
 
 @interface WAGalleryViewController () <IRPaginatedViewDelegate, UIGestureRecognizerDelegate, UINavigationBarDelegate, WAImageStreamPickerViewDelegate, NSFetchedResultsControllerDelegate, WAGalleryImageViewDelegate, NSCacheDelegate>
@@ -390,7 +391,8 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 		[file irRemoveObserverBlocksForKeyPath:@"bestPresentableImage"];
 		[file cleanImageCache];
 	} else if ([file isKindOfClass:[WAFilePageElement class]]) {
-		[file irRemoveObserverBlocksForKeyPath:@"thumbnailImage"];
+		[file irRemoveObserverBlocksForKeyPath:@"thumbnailImage" context:&kWAGalleryViewControllerKVOContext];
+		[file cleanImageCache];
 	}
 
 }
@@ -415,7 +417,7 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 	if ([file isKindOfClass:[WAFile class]]) {
 		return [self configureGalleryImageView:view withFile:file degradeQuality:NO forceSync:YES];
 	} else if ([file isKindOfClass:[WAFilePageElement class]]) {
-		[file irObserve:@"thumbnailImage" options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:nil withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
+		[file irObserve:@"thumbnailImage" options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:&kWAGalleryViewControllerKVOContext withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
 			[view setImage:toValue animated:NO synchronized:YES];
 			[view setNeedsLayout];
 		}];
@@ -523,10 +525,12 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 
 - (UIImage *) thumbnailForItem:(id)anItem inImageStreamPickerView:(WAImageStreamPickerView *)picker {
 
+	// FIXME: Should use KVO to refresh items in streamPickerView
+
 	if ([anItem isKindOfClass:[WAFile class]]) {
 		return [anItem extraSmallThumbnailImage];
 	} else if ([anItem isKindOfClass:[WAFilePageElement class]]) {
-		return nil;
+		return [anItem extraSmallThumbnailImage];
 	}
 	return nil;
 
