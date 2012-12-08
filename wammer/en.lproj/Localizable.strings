@@ -192,6 +192,9 @@
 /* Failed, underlying error description %@ */
 "ERROR_ARTICLE_ENTITY_SYNC_FAILURE_WITH_UNDERLYING_ERROR_DESCRIPTION_FORMAT" = "A necessary task failed: %@ — Your post has been saved as a draft.";
 
+/* EVENT_PHOTO_NUMBER_LABEL */
+"EVENT_PHOTO_NUMBER_LABEL" = "%d PHOTOS";
+
 /* Title for Events view */
 "EVENTS_CONTROLLER_TITLE" = "EVENTS";
 
@@ -506,6 +509,9 @@
 
 /* Class = "IBUILabel"; text = "MONDAY"; ObjectID = "39"; */
 "MONDAY" = "MONDAY";
+
+/* Class = "IBUILabel"; text = "PHOTOS"; ObjectID = "627"; */
+"PHOTOS" = "PHOTOS";
 
 /* Class = "IBUILabel"; text = "WEBSERVICE_LIST_TITLE"; ObjectID = "0P9-dO-3KX"; */
 "WEBSERVICE_LIST_TITLE" = "Connect to web services:";
