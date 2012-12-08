@@ -710,7 +710,6 @@ BOOL dripdownMenuOpened = NO;
 	if (![self.days count])
 		[self loadDaysFrom:date.dateOfPreviousWeek to:date.dateOfFollowingWeek];
 	
-	
 	[self.days enumerateObjectsUsingBlock:^(NSDate *day, NSUInteger idx, BOOL *stop) {
 		
 		if (isSameDay(day, date)) {
