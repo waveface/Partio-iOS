@@ -75,6 +75,7 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 		@"event_tag": @"event",
 		@"tags": @"tags",
 		@"gps": @"location",
+		@"checkins": @"checkins",
 		@"people": @"people",
 		@"extra_parameters": @"descriptiveTags",
 		@"event_description": @"eventDescription",
@@ -117,6 +118,7 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 		@"representingFile": @"WAFile",
 		@"gps": @"WALocation",
 		@"people": @"WAPeople",
+		@"checkins": @"WALocation",
 		@"tags": @"WATag",
 		@"extra_parameters": @"WATagGroup"};
 

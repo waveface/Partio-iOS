@@ -25,6 +25,7 @@
         <attribute name="text" optional="YES" attributeType="String">
             <userInfo/>
         </attribute>
+        <relationship name="checkins" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="WALocation" syncable="YES"/>
         <relationship name="comments" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="WAComment" inverseName="article" inverseEntity="WAComment">
             <userInfo/>
         </relationship>
@@ -210,6 +211,7 @@
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="zoomLevel" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <relationship name="article" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="WAArticle" inverseName="location" inverseEntity="WAArticle" syncable="YES"/>
+        <relationship name="tags" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="WATag" syncable="YES"/>
     </entity>
     <entity name="WAOpenGraphElement" representedClassName="WAOpenGraphElement" syncable="YES">
         <attribute name="providerDisplayName" optional="YES" attributeType="String" syncable="YES"/>
@@ -321,15 +323,15 @@
     <fetchRequest name="WAFRLocalImportedArticles" entity="WAArticle" predicateString="import == 1"/>
     <fetchRequest name="WAFRUser" entity="WAUser" predicateString="identifier == $Identifier"/>
     <elements>
-        <element name="WAArticle" positionX="0" positionY="0" width="128" height="405"/>
-        <element name="WACache" positionX="0" positionY="0" width="128" height="150"/>
+        <element name="WAArticle" positionX="0" positionY="0" width="128" height="420"/>
+        <element name="WACache" positionX="0" positionY="0" width="128" height="135"/>
         <element name="WACollection" positionX="0" positionY="0" width="128" height="180"/>
         <element name="WAComment" positionX="0" positionY="0" width="128" height="135"/>
         <element name="WAFile" positionX="0" positionY="0" width="128" height="600"/>
         <element name="WAFileExif" positionX="0" positionY="0" width="128" height="315"/>
         <element name="WAFilePageElement" positionX="0" positionY="0" width="128" height="120"/>
         <element name="WAGroup" positionX="0" positionY="0" width="128" height="120"/>
-        <element name="WALocation" positionX="0" positionY="0" width="128" height="120"/>
+        <element name="WALocation" positionX="0" positionY="0" width="128" height="135"/>
         <element name="WAOpenGraphElement" positionX="0" positionY="0" width="128" height="195"/>
         <element name="WAOpenGraphElementImage" positionX="0" positionY="0" width="128" height="120"/>
         <element name="WAPeople" positionX="0" positionY="0" width="128" height="90"/>
