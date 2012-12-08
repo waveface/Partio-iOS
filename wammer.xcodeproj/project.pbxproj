@@ -172,7 +172,6 @@
 		800D9A9216719B5D0034CDF6 /* MKMapView+ZoomLevel.m in Sources */ = {isa = PBXBuildFile; fileRef = 800D9A9116719B5D0034CDF6 /* MKMapView+ZoomLevel.m */; };
 		800E4FCE1671DD0C00F50E0B /* WATimelineViewCell-Checkin.xib in Resources */ = {isa = PBXBuildFile; fileRef = 800E4FCD1671DD0C00F50E0B /* WATimelineViewCell-Checkin.xib */; };
 		80175AF9165B2CAF007E783B /* WATimelineViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 80175AF8165B2CAF007E783B /* WATimelineViewCell.m */; };
-		80175AFB165B4108007E783B /* WATimelineViewCell-ImageStack-3.xib in Resources */ = {isa = PBXBuildFile; fileRef = 80175AFA165B4107007E783B /* WATimelineViewCell-ImageStack-3.xib */; };
 		80316A0A15C0EC20009D43F0 /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 803169F815C0EC20009D43F0 /* .gitignore */; };
 		80316A0B15C0EC20009D43F0 /* IRAQAlbumCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 803169FA15C0EC20009D43F0 /* IRAQAlbumCell.m */; };
 		80316A0C15C0EC20009D43F0 /* IRAQAlbumListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 803169FC15C0EC20009D43F0 /* IRAQAlbumListViewController.m */; };
@@ -258,8 +257,6 @@
 		80DA985516496FED0030CA21 /* WAEventViewController_Photo.m in Sources */ = {isa = PBXBuildFile; fileRef = 80DA984C16496FED0030CA21 /* WAEventViewController_Photo.m */; };
 		80DA985616496FED0030CA21 /* WAEventViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 80DA984E16496FED0030CA21 /* WAEventViewController.m */; };
 		80E5173C1670F3B200E1C3AD /* WALocation.m in Sources */ = {isa = PBXBuildFile; fileRef = 80E5173B1670F3B200E1C3AD /* WALocation.m */; };
-		80EF84CE165F379D009D29A5 /* WATimelineViewCell-ImageStack-1.xib in Resources */ = {isa = PBXBuildFile; fileRef = 80EF84CD165F379D009D29A5 /* WATimelineViewCell-ImageStack-1.xib */; };
-		80EF84D0165F37C4009D29A5 /* WATimelineViewCell-ImageStack-2.xib in Resources */ = {isa = PBXBuildFile; fileRef = 80EF84CF165F37C4009D29A5 /* WATimelineViewCell-ImageStack-2.xib */; };
 		80F42C0215F70EDF00C8A72B /* WAWebSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 809D428F15F5CE4300CB4F89 /* WAWebSocket.m */; };
 		80F800F615C2624C00132A96 /* IRAQ-Checkmark.png in Resources */ = {isa = PBXBuildFile; fileRef = 80F800F415C2624C00132A96 /* IRAQ-Checkmark.png */; };
 		80F800F715C2624C00132A96 /* IRAQ-Checkmark@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 80F800F515C2624C00132A96 /* IRAQ-Checkmark@2x.png */; };
@@ -286,7 +283,6 @@
 		DE9382F7166D1BCE00446998 /* tile_today.png in Resources */ = {isa = PBXBuildFile; fileRef = DE9382E5166D1BCE00446998 /* tile_today.png */; };
 		DE9382F8166D1BCE00446998 /* tile.png in Resources */ = {isa = PBXBuildFile; fileRef = DE9382E6166D1BCE00446998 /* tile.png */; };
 		DEBD4933165E7C7E008F96D3 /* libKal.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DEBD492F165E74A8008F96D3 /* libKal.a */; };
-		DEBED813166C85B9001A2B24 /* MKMapView+ZoomLevel.m in Sources */ = {isa = PBXBuildFile; fileRef = DEBED812166C85B9001A2B24 /* MKMapView+ZoomLevel.m */; };
 		DEBED815166C8608001A2B24 /* GetCollections.json in Resources */ = {isa = PBXBuildFile; fileRef = DEBED814166C8608001A2B24 /* GetCollections.json */; };
 		DEBED818166C8643001A2B24 /* forward.png in Resources */ = {isa = PBXBuildFile; fileRef = DEBED816166C8643001A2B24 /* forward.png */; };
 		DEBED819166C8643001A2B24 /* forward@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DEBED817166C8643001A2B24 /* forward@2x.png */; };
@@ -300,7 +296,6 @@
 		DEBED837166C8801001A2B24 /* WATimelineViewCell-ImageStack-1.xib in Resources */ = {isa = PBXBuildFile; fileRef = DEBED830166C8801001A2B24 /* WATimelineViewCell-ImageStack-1.xib */; };
 		DEBED838166C8801001A2B24 /* WATimelineViewCell-ImageStack-2.xib in Resources */ = {isa = PBXBuildFile; fileRef = DEBED831166C8801001A2B24 /* WATimelineViewCell-ImageStack-2.xib */; };
 		DEBED839166C8801001A2B24 /* WATimelineViewCell-ImageStack-3.xib in Resources */ = {isa = PBXBuildFile; fileRef = DEBED832166C8801001A2B24 /* WATimelineViewCell-ImageStack-3.xib */; };
-		DEBED83A166C8801001A2B24 /* WATimelineViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DEBED834166C8801001A2B24 /* WATimelineViewCell.m */; };
 		DEBED83B166C8801001A2B24 /* WATimelineViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DEBED836166C8801001A2B24 /* WATimelineViewController.m */; };
 		DEF13267164B83B50051284D /* CalIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = DEF13262164B83B50051284D /* CalIcon.png */; };
 		DEF13268164B83B50051284D /* CollectionIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = DEF13263164B83B50051284D /* CollectionIcon.png */; };
@@ -1356,8 +1351,6 @@
 		DE9382E5166D1BCE00446998 /* tile_today.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = tile_today.png; path = ../external/Kal/src/wammer/tile_today.png; sourceTree = "<group>"; };
 		DE9382E6166D1BCE00446998 /* tile.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = tile.png; path = ../external/Kal/src/wammer/tile.png; sourceTree = "<group>"; };
 		DEBD4927165E74A7008F96D3 /* Kal.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Kal.xcodeproj; path = external/Kal/src/Kal.xcodeproj; sourceTree = "<group>"; };
-		DEBED811166C85B9001A2B24 /* MKMapView+ZoomLevel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MKMapView+ZoomLevel.h"; sourceTree = "<group>"; };
-		DEBED812166C85B9001A2B24 /* MKMapView+ZoomLevel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MKMapView+ZoomLevel.m"; sourceTree = "<group>"; };
 		DEBED814166C8608001A2B24 /* GetCollections.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = GetCollections.json; path = UnitTests/GetCollections.json; sourceTree = SOURCE_ROOT; };
 		DEBED816166C8643001A2B24 /* forward.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = forward.png; path = Resources/forward.png; sourceTree = "<group>"; };
 		DEBED817166C8643001A2B24 /* forward@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "forward@2x.png"; path = "Resources/forward@2x.png"; sourceTree = "<group>"; };
@@ -2398,8 +2391,6 @@
 		80A1155B164773EF005A4246 /* Event View */ = {
 			isa = PBXGroup;
 			children = (
-				DEBED811166C85B9001A2B24 /* MKMapView+ZoomLevel.h */,
-				DEBED812166C85B9001A2B24 /* MKMapView+ZoomLevel.m */,
 				80DA984116496FED0030CA21 /* WAEventHeaderView.h */,
 				80DA984216496FED0030CA21 /* WAEventHeaderView.m */,
 				80499B1016718F0400842788 /* WAEventHeaderView.xib */,
@@ -2418,8 +2409,6 @@
 				DEBED81E166C86C0001A2B24 /* WAEventActionsViewController.m */,
 				800D9A9016719B5D0034CDF6 /* MKMapView+ZoomLevel.h */,
 				800D9A9116719B5D0034CDF6 /* MKMapView+ZoomLevel.m */,
-				80C92188166265450055EE11 /* WAEventActionsViewController.h */,
-				80C92189166265450055EE11 /* WAEventActionsViewController.m */,
 			);
 			name = "Event View";
 			sourceTree = "<group>";
@@ -2755,8 +2744,6 @@
 				809C6D281605845A0016E196 /* WASlidingMenuViewController.h */,
 				809C6D291605845A0016E196 /* WASlidingMenuViewController.m */,
 				809C6D2A1605845A0016E196 /* WASlidingMenuViewController.xib */,
-				807C0F1D165B298500197FC3 /* WATimelineViewController.h */,
-				807C0F1E165B298500197FC3 /* WATimelineViewController.m */,
 				80175AF7165B2CAF007E783B /* WATimelineViewCell.h */,
 				80175AF8165B2CAF007E783B /* WATimelineViewCell.m */,
 				80EF84CD165F379D009D29A5 /* WATimelineViewCell-ImageStack-1.xib */,
@@ -4359,11 +4346,6 @@
 				DEBED837166C8801001A2B24 /* WATimelineViewCell-ImageStack-1.xib in Resources */,
 				DEBED838166C8801001A2B24 /* WATimelineViewCell-ImageStack-2.xib in Resources */,
 				DEBED839166C8801001A2B24 /* WATimelineViewCell-ImageStack-3.xib in Resources */,
-				80175AFB165B4108007E783B /* WATimelineViewCell-ImageStack-3.xib in Resources */,
-				80EF84CE165F379D009D29A5 /* WATimelineViewCell-ImageStack-1.xib in Resources */,
-				80EF84D0165F37C4009D29A5 /* WATimelineViewCell-ImageStack-2.xib in Resources */,
-				136DD1AC166323B9001ECE60 /* forward.png in Resources */,
-				136DD1AE166323C2001ECE60 /* forward@2x.png in Resources */,
 				80499B1116718F0400842788 /* WAEventHeaderView.xib in Resources */,
 				80B9E50516719B1200222F57 /* Location@2x.png in Resources */,
 				80B9E50616719B1200222F57 /* Location.png in Resources */,
@@ -4786,7 +4768,6 @@
 				131AEC2F1654DF0D000F9E74 /* WAStatusBar.m in Sources */,
 				DE46FC17165E228300CC4FFF /* WACalendarPickerViewController.m in Sources */,
 				DEF28871165F6A0D0078B1D7 /* WACalendarPickerDataSource.m in Sources */,
-				DEBED813166C85B9001A2B24 /* MKMapView+ZoomLevel.m in Sources */,
 				DEBED81C166C8689001A2B24 /* WACollection+WARemoteInterfaceEntitySyncing.m in Sources */,
 				DEBED81F166C86C0001A2B24 /* WAEventActionsViewController.m in Sources */,
 				DEBED823166C8713001A2B24 /* WAGoogleConnectSwitch.m in Sources */,
@@ -4794,18 +4775,8 @@
 				DEBED829166C874D001A2B24 /* WAOAuthViewController.m in Sources */,
 				DEBED82C166C8767001A2B24 /* WAImportSettingsViewController.m in Sources */,
 				DEBED82F166C8798001A2B24 /* WAWebServiceSettingsViewController.m in Sources */,
-				DEBED83A166C8801001A2B24 /* WATimelineViewCell.m in Sources */,
 				DEBED83B166C8801001A2B24 /* WATimelineViewController.m in Sources */,
-				807C0F1F165B298500197FC3 /* WATimelineViewController.m in Sources */,
 				80175AF9165B2CAF007E783B /* WATimelineViewCell.m in Sources */,
-				80C9218A166265450055EE11 /* WAEventActionsViewController.m in Sources */,
-				7D3D8C4A1664B8D9003B9D19 /* WACollection+WARemoteInterfaceEntitySyncing.m in Sources */,
-				7D5999C11665F8410050DEA9 /* WACollection.m in Sources */,
-				13AA17951664B1F6006ED7B2 /* WAImportSettingsViewController.m in Sources */,
-				139C87A61665B75D00F258C9 /* WAWebServiceSettingsViewController.m in Sources */,
-				13BAB307166725B600BC79B2 /* WAOAuthViewController.m in Sources */,
-				13BAB30B16674C0300BC79B2 /* WAOAuthSwitch.m in Sources */,
-				13C1AB1D16688BEA004E6437 /* WAGoogleConnectSwitch.m in Sources */,
 				80E5173C1670F3B200E1C3AD /* WALocation.m in Sources */,
 				800D9A9216719B5D0034CDF6 /* MKMapView+ZoomLevel.m in Sources */,
 			);
