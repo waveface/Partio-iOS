@@ -9,7 +9,7 @@
 #import "WAWebServiceSettingsViewController.h"
 #import "WAFacebookConnectionSwitch.h"
 #import "WAOAuthViewController.h"
-#import "WAGoogleConnectSwitch.h"
+#import "WASnsConnectSwitch.h"
 
 static NSString * const kWASegueSettingsToOAuth = @"WASegueSettingsToOAuth";
 
@@ -17,7 +17,8 @@ static NSString * const kWASegueSettingsToOAuth = @"WASegueSettingsToOAuth";
 
 @property (nonatomic, strong) NSURLRequest *sentRequest;
 @property (nonatomic, strong) WAOAuthDidComplete didCompleteBlock;
-@property (nonatomic, strong) WAGoogleConnectSwitch *googleConnectSwitch;
+@property (nonatomic, strong) WASnsConnectSwitch *googleConnectSwitch;
+@property (nonatomic, strong) WASnsConnectSwitch *twitterConnectSwitch;
 
 @end
 
@@ -30,9 +31,7 @@ static NSString * const kWASegueSettingsToOAuth = @"WASegueSettingsToOAuth";
 	self.title = NSLocalizedString(@"WEB_SERVICES_TITLE", @"Title of web service settings view controller");
 
 	self.facebookConnectCell.accessoryView = [[WAFacebookConnectionSwitch alloc] init];
-	UISwitch *twitterSwitch = [[UISwitch alloc] init];
-	twitterSwitch.enabled = NO;
-	self.twitterConnectCell.accessoryView = twitterSwitch;
+
 	UISwitch *flickrSwitch = [[UISwitch alloc] init];
 	flickrSwitch.enabled = NO;
 	self.flickrConnectCell.accessoryView = flickrSwitch;
@@ -40,10 +39,13 @@ static NSString * const kWASegueSettingsToOAuth = @"WASegueSettingsToOAuth";
 	picasaSwitch.enabled = NO;
 	self.picasaConnectCell.accessoryView = picasaSwitch;
 
-	self.googleConnectSwitch = [[WAGoogleConnectSwitch alloc] init];
+	self.googleConnectSwitch = [[WASnsConnectSwitch alloc] initForStyle:WASnsConnectGoogleStyle];
 	self.googleConnectSwitch.delegate = self;
 	self.googleConnectCell.accessoryView = self.googleConnectSwitch;
-
+	
+	self.twitterConnectSwitch = [[WASnsConnectSwitch alloc] initForStyle:WASnsConnectTwitterStyle];
+	self.twitterConnectSwitch.delegate = self;
+	self.twitterConnectCell.accessoryView = self.twitterConnectSwitch;
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
@@ -57,6 +59,7 @@ static NSString * const kWASegueSettingsToOAuth = @"WASegueSettingsToOAuth";
 - (void)dealloc {
 
 	self.googleConnectSwitch.delegate = nil;
+	self.twitterConnectSwitch.delegate = nil;
 
 }
 
