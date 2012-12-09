@@ -25,6 +25,7 @@
 #import "WARemoteInterface.h"
 #import "WAPhotoStreamViewController.h"
 #import <CoreData+MagicalRecord.h>
+#import "WADocumentStreamViewController.h"
 
 static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPostsViewControllerPhone_RepresentedObjectURI";
 
@@ -107,10 +108,13 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 	[super viewWillAppear:animated];
 
 	self.navigationItem.titleView.alpha = 1;
-		
-	self.title = NSLocalizedString(@"EVENTS_CONTROLLER_TITLE", @"Title for Events view");
-	if ([containedClass isSubclassOfClass:[WAPhotoStreamViewController class]]) {
+	
+	if ([containedClass isSubclassOfClass:[WATimelineViewController class]]) {
+		self.title = NSLocalizedString(@"EVENTS_CONTROLLER_TITLE", @"Title for Events view");
+	} else if ([containedClass isSubclassOfClass:[WAPhotoStreamViewController class]]) {
 		self.title = NSLocalizedString(@"PHOTOS_TITLE", @"in day view");
+	} else if ([containedClass isSubclassOfClass:[WADocumentStreamViewController class]]) {
+		self.title = NSLocalizedString(@"DOCUMENTS_CONTROLLER_TITLE", @"Title for document view controller");
 	}
 	
 	[self.paginatedView reloadViews];
@@ -288,9 +292,13 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 			
 			theDate = [[((WAArticle*)obj) creationDate] dayBegin];
 			
-		} else {
+		} else if ([containedClass isSubclassOfClass:[WAPhotoStreamViewController class]]) {
 			
 			theDate = [[((WAFile*)obj) created] dayBegin];
+			
+		} else if ([containedClass isSubclassOfClass:[WADocumentStreamViewController class]]) {
+			
+			theDate = [[((WAFile*)obj) docAccessTime] dayBegin];
 			
 		}
 		
@@ -316,44 +324,37 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 	
 	if ([containedClass isSubclassOfClass:[WATimelineViewController class]]) {
 	
-		NSFetchRequest *fetchRequest = [[WADataStore defaultStore].persistentStoreCoordinator.managedObjectModel fetchRequestFromTemplateWithName:@"WAFRArticles" substitutionVariables:@{}];
+		[self fetchEventsFrom:nil to:nil];
 		
-		fetchRequest.relationshipKeyPathsForPrefetching = @[
-		@"files",
-		@"tags",
-		@"people",
-		@"location",
-		@"previews",
-		@"descriptiveTags",
-		@"files.pageElements"];
-		fetchRequest.predicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[
-															fetchRequest.predicate,
-															[NSPredicate predicateWithFormat:@"event = TRUE"],
-															[NSPredicate predicateWithFormat:@"import != %d AND import != %d", WAImportTypeFromOthers, WAImportTypeFromLocal]]];
-		
-		fetchRequest.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:NO]];
-		
-		self.fetchedResultsController = [[NSFetchedResultsController alloc]
-																		 initWithFetchRequest:fetchRequest
-																		 managedObjectContext:[[WADataStore defaultStore] defaultAutoUpdatedMOC]
-																		 sectionNameKeyPath:nil
-																		 cacheName:nil];
-		
-		self.fetchedResultsController.delegate = self;
-		
-		NSError *error = nil;
-		
-		if(![self.fetchedResultsController performFetch:&error]) {
-			NSLog(@"%@: failed to fetch articles for events", __FUNCTION__);
-		}		
-
-	} else { //WAPhotoStreamViewController
+	} else if ([containedClass isSubclassOfClass:[WAPhotoStreamViewController class]]) {
 
 		NSPredicate *withDate =[NSPredicate predicateWithFormat:@"created != nil"];
 		self.fetchedResultsController = [WAFile MR_fetchAllSortedBy:@"created" ascending:NO withPredicate:withDate groupBy:nil delegate:self];
 		
+	} else if ([containedClass isSubclassOfClass:[WADocumentStreamViewController class]]) {
+
+		NSManagedObjectContext *context = [[WADataStore defaultStore] defaultAutoUpdatedMOC];
+		NSFetchRequest *request = [[NSFetchRequest alloc] init];
+		NSEntityDescription *entity = [NSEntityDescription entityForName:@"WAFile" inManagedObjectContext:context];
+		[request setEntity:entity];
+		NSPredicate *predicate = [NSPredicate predicateWithFormat:@"remoteResourceType == %@", @"doc"];
+		[request setPredicate:predicate];
+		NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"docAccessTime" ascending:NO];
+		[request setSortDescriptors:@[sortDescriptor]];
+		
+		self.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:request managedObjectContext:context sectionNameKeyPath:nil cacheName:nil];
+
+		self.fetchedResultsController.delegate = self;
+
+		NSError *error = nil;
+		
+		if(![self.fetchedResultsController performFetch:&error]) {
+			NSLog(@"%@: failed to fetch files for documents", __FUNCTION__);
+		}
+
 	}
 
+	[self loadDays];
 
 }
 
@@ -427,15 +428,23 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 
 		theNewDate = [[((WAArticle*)anObject) creationDate] dayBegin];
 
-	} else {
+	} else if ([containedClass isSubclassOfClass:[WAPhotoStreamViewController class]]) {
 
 		theNewDate = [[((WAFile*)anObject) created] dayBegin];
 		
+	} else if ([containedClass isSubclassOfClass:[WADocumentStreamViewController class]]) {
+
+		theNewDate = [[((WAFile*)anObject) docAccessTime] dayBegin];
+
 	}
 	
 	switch (type) {
+		case NSFetchedResultsChangeMove:
 		case NSFetchedResultsChangeInsert:
 		{
+			if (!theNewDate) {
+				break;
+			}
 
 			NSUInteger oldIndex = [self.days indexOfObject:theNewDate
 																			 inSortedRange:(NSRange){0, self.days.count}

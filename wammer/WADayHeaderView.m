@@ -8,7 +8,17 @@
 
 #import "WADayHeaderView.h"
 
+NSString * const kWADayHeaderViewID = @"WADayHeaderView";
+
 @implementation WADayHeaderView
+
+- (id)initWithFrame:(CGRect)frame {
+
+	self = [[self class] viewFromNib];
+
+	return self;
+
+}
 
 + (id) viewFromNib {
 	

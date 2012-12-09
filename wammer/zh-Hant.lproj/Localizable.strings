@@ -180,6 +180,9 @@
 /* Title for confirming a post deletion */
 "DELETE_POST_CONFIRMATION_TITLE" = "是否要刪除貼文？";
 
+/* Title for document view controller */
+"DOCUMENTS_CONTROLLER_TITLE" = "文件";
+
 /* State for drafts without content text */
 "DRAFT_STATE_NO_CONTENT" = "（沒有內容）";
 
@@ -439,6 +442,9 @@
 
 /* Title for Collections in the sliding menu */
 "SLIDING_MENU_TITLE_COLLECTIONS" = "蒐藏";
+
+/* Title for Documents in the sliding menu */
+"SLIDING_MENU_TITLE_DOCS" = "文件";
 
 /* Title for Events in the sliding menu */
 "SLIDING_MENU_TITLE_EVENTS" = "動態";

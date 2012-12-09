@@ -30,11 +30,12 @@
 	static dispatch_once_t onceToken;
 	dispatch_once(&onceToken, ^{
     
-		mapping = [NSDictionary dictionaryWithObjectsAndKeys:
+		mapping = @{
 		
-      @"thumbnailURL", @"thumbnailURL",
+      @"thumbnailURL": @"thumbnailURL",
+			@"page": @"page"
 			
-		nil];
+		};
 		
 	});
 

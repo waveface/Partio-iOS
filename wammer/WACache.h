@@ -11,7 +11,7 @@
 
 #import "CoreData+IRAdditions.h"
 
-@class WAFile, WAOpenGraphElementImage;
+@class WAFile, WAOpenGraphElementImage, WAFilePageElement;
 
 @interface WACache : IRManagedObject
 
@@ -21,5 +21,6 @@
 @property (nonatomic, retain) NSDate * lastAccessTime;
 @property (nonatomic, retain) WAFile * file;
 @property (nonatomic, retain) WAOpenGraphElementImage * ogimage;
+@property (nonatomic, retain) WAFilePageElement * pageElement;
 
 @end
