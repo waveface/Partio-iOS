@@ -119,8 +119,9 @@
 		NSDate *theDate = nil;
 		NSMutableDictionary *aDay = [@{
 																 @"date": [NSDate date],
-																 @"events": @0,
-																 @"photos": @0
+																 @"events": @0, @"markedRed": @0,
+																 @"photos": @0, @"markedLightBlue": @0,
+																 @"docs": @0, @"markedOrange": @0,
 																 } mutableCopy];
 		
 		theDate = [[((WAArticle*)obj) creationDate] dayBegin];
@@ -129,6 +130,7 @@
 
 			aDay[@"date"] = theDate;
 			aDay[@"events"] = @1;
+			aDay[@"markedRed"] = @1;
 			[_days addObject:aDay];
 			currentDate = theDate;
 		
@@ -147,8 +149,9 @@
 		
 		NSMutableDictionary *aDay = [@{
 																 @"date": date,
-																 @"events": @0,
-																 @"photos": @0
+																 @"events": @0, @"markedRed": @0,
+																 @"photos": @0, @"markedLightBlue": @0,
+																 @"docs": @0, @"markedOrange": @0,
 																 } mutableCopy];
 		
 		NSPredicate *finder = [NSPredicate predicateWithFormat:@"date.dayBegin == %@", [date dayBegin]];
@@ -158,12 +161,14 @@
 			
 			aDay[@"date"] = date;
 			aDay[@"photos"] = @1;
+			aDay[@"markedLightBlue"] = @1;
 			[_days addObject:aDay];
 		
 		}
 		else if([dayWithEvent[@"photos"] isEqual:@0]) {
 		
 			dayWithEvent[@"photos"] = @1;
+			dayWithEvent[@"markedLightBlue"] = @1;
 			[_days replaceObjectAtIndex:[_days indexOfObject:dayWithEvent] withObject:dayWithEvent];
 		
 		}

@@ -269,24 +269,6 @@
 		DE46FC17165E228300CC4FFF /* WACalendarPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DE46FC16165E228300CC4FFF /* WACalendarPickerViewController.m */; };
 		DE7B35151654B7FC00718262 /* TempAvatar.png in Resources */ = {isa = PBXBuildFile; fileRef = DE7B35131654B7FC00718262 /* TempAvatar.png */; };
 		DE7B35161654B7FC00718262 /* TempAvatar@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DE7B35141654B7FC00718262 /* TempAvatar@2x.png */; };
-		DE9382E7166D1BCE00446998 /* CalBtn.png in Resources */ = {isa = PBXBuildFile; fileRef = DE9382D5166D1BCB00446998 /* CalBtn.png */; };
-		DE9382E8166D1BCE00446998 /* CalBtn@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DE9382D6166D1BCB00446998 /* CalBtn@2x.png */; };
-		DE9382E9166D1BCE00446998 /* CalBtnPress.png in Resources */ = {isa = PBXBuildFile; fileRef = DE9382D7166D1BCB00446998 /* CalBtnPress.png */; };
-		DE9382EA166D1BCE00446998 /* CalBtnPress@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DE9382D8166D1BCC00446998 /* CalBtnPress@2x.png */; };
-		DE9382EB166D1BCE00446998 /* dotDB.png in Resources */ = {isa = PBXBuildFile; fileRef = DE9382D9166D1BCC00446998 /* dotDB.png */; };
-		DE9382EC166D1BCE00446998 /* dotG.png in Resources */ = {isa = PBXBuildFile; fileRef = DE9382DA166D1BCC00446998 /* dotG.png */; };
-		DE9382ED166D1BCE00446998 /* dotLB.png in Resources */ = {isa = PBXBuildFile; fileRef = DE9382DB166D1BCC00446998 /* dotLB.png */; };
-		DE9382EE166D1BCE00446998 /* dotO.png in Resources */ = {isa = PBXBuildFile; fileRef = DE9382DC166D1BCC00446998 /* dotO.png */; };
-		DE9382EF166D1BCE00446998 /* dotR.png in Resources */ = {isa = PBXBuildFile; fileRef = DE9382DD166D1BCC00446998 /* dotR.png */; };
-		DE9382F0166D1BCE00446998 /* grid_background.png in Resources */ = {isa = PBXBuildFile; fileRef = DE9382DE166D1BCD00446998 /* grid_background.png */; };
-		DE9382F1166D1BCE00446998 /* leftAR.png in Resources */ = {isa = PBXBuildFile; fileRef = DE9382DF166D1BCD00446998 /* leftAR.png */; };
-		DE9382F2166D1BCE00446998 /* leftAR@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DE9382E0166D1BCD00446998 /* leftAR@2x.png */; };
-		DE9382F3166D1BCE00446998 /* rightAR.png in Resources */ = {isa = PBXBuildFile; fileRef = DE9382E1166D1BCD00446998 /* rightAR.png */; };
-		DE9382F4166D1BCE00446998 /* rightAR@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DE9382E2166D1BCD00446998 /* rightAR@2x.png */; };
-		DE9382F5166D1BCE00446998 /* tile_selected.png in Resources */ = {isa = PBXBuildFile; fileRef = DE9382E3166D1BCD00446998 /* tile_selected.png */; };
-		DE9382F6166D1BCE00446998 /* tile_today_selected.png in Resources */ = {isa = PBXBuildFile; fileRef = DE9382E4166D1BCE00446998 /* tile_today_selected.png */; };
-		DE9382F7166D1BCE00446998 /* tile_today.png in Resources */ = {isa = PBXBuildFile; fileRef = DE9382E5166D1BCE00446998 /* tile_today.png */; };
-		DE9382F8166D1BCE00446998 /* tile.png in Resources */ = {isa = PBXBuildFile; fileRef = DE9382E6166D1BCE00446998 /* tile.png */; };
 		DEBD4933165E7C7E008F96D3 /* libKal.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DEBD492F165E74A8008F96D3 /* libKal.a */; };
 		DEBED815166C8608001A2B24 /* GetCollections.json in Resources */ = {isa = PBXBuildFile; fileRef = DEBED814166C8608001A2B24 /* GetCollections.json */; };
 		DEBED818166C8643001A2B24 /* forward.png in Resources */ = {isa = PBXBuildFile; fileRef = DEBED816166C8643001A2B24 /* forward.png */; };
@@ -4026,24 +4008,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DE9382E7166D1BCE00446998 /* CalBtn.png in Resources */,
-				DE9382E8166D1BCE00446998 /* CalBtn@2x.png in Resources */,
-				DE9382E9166D1BCE00446998 /* CalBtnPress.png in Resources */,
-				DE9382EA166D1BCE00446998 /* CalBtnPress@2x.png in Resources */,
-				DE9382EB166D1BCE00446998 /* dotDB.png in Resources */,
-				DE9382EC166D1BCE00446998 /* dotG.png in Resources */,
-				DE9382ED166D1BCE00446998 /* dotLB.png in Resources */,
-				DE9382EE166D1BCE00446998 /* dotO.png in Resources */,
-				DE9382EF166D1BCE00446998 /* dotR.png in Resources */,
-				DE9382F0166D1BCE00446998 /* grid_background.png in Resources */,
-				DE9382F1166D1BCE00446998 /* leftAR.png in Resources */,
-				DE9382F2166D1BCE00446998 /* leftAR@2x.png in Resources */,
-				DE9382F3166D1BCE00446998 /* rightAR.png in Resources */,
-				DE9382F4166D1BCE00446998 /* rightAR@2x.png in Resources */,
-				DE9382F5166D1BCE00446998 /* tile_selected.png in Resources */,
-				DE9382F6166D1BCE00446998 /* tile_today_selected.png in Resources */,
-				DE9382F7166D1BCE00446998 /* tile_today.png in Resources */,
-				DE9382F8166D1BCE00446998 /* tile.png in Resources */,
 				FFCFE0C4142111E100B9E6AF /* InfoPlist.strings in Resources */,
 				FFCFE0D3142111E100B9E6AF /* WAArticleCommentsViewController.xib in Resources */,
 				FFCFE0D7142111E100B9E6AF /* WACompositionViewControllerPad.xib in Resources */,
