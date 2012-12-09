@@ -88,6 +88,7 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
 			@"file_name": @"remoteFileName",
 			@"file_size": @"remoteFileSize",
 			@"event_time": @"created",
+		  @"doc_access_time": @"docAccessTime",
 			
 			@"image": @"remoteRepresentedImage",
 			@"md5": @"remoteResourceHash",
@@ -156,36 +157,34 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
   
   } else if ([incomingFileType isEqualToString:@"doc"]) {
   
-    NSNumber *pagesValue = [incomingRepresentation valueForKeyPath:@"doc_meta.pages"];
-    
-    if ([pagesValue isKindOfClass:[NSNumber class]]) {
-    
-      NSUInteger numberOfPages = [pagesValue unsignedIntegerValue];
-      
-      returnedDictionary[@"pageElements"] = ((^ {
-      
-        NSMutableArray *returnedArray = [NSMutableArray array];
-        NSString *ownObjectID = [incomingRepresentation valueForKeyPath:@"object_id"];
-        
-        for (NSUInteger i = 0; i < numberOfPages; i++) {
-        
-          [returnedArray addObject:@{@"thumbnailURL": [IRWebAPIRequestURLWithQueryParameters(
-              
-              [[NSURL URLWithString:@"http://invalid.local"] URLByAppendingPathComponent:@"v2/attachments/view"],
-              
-              @{@"object_id": ownObjectID,
-                @"target": @"slide",
-                @"page": @(i + 1)}
-              
-            ) absoluteString]}];
-        
-        }
-        
-        return returnedArray;
-      
-      })());
-    
-    }
+		if (incomingRepresentation[@"doc_meta"]) {
+
+			returnedDictionary[@"file_name"] = [incomingRepresentation valueForKeyPath:@"doc_meta.file_name"];
+			returnedDictionary[@"doc_access_time"] = [incomingRepresentation valueForKeyPath:@"doc_meta.access_time"];
+			
+			NSNumber *pagesValue = [incomingRepresentation valueForKeyPath:@"doc_meta.preview_pages"];
+			
+			if ([pagesValue isKindOfClass:[NSNumber class]]) {
+				
+				NSUInteger numberOfPages = [pagesValue unsignedIntegerValue];
+				
+				NSMutableArray *returnedArray = [NSMutableArray array];
+				NSString *ownObjectID = [incomingRepresentation valueForKeyPath:@"object_id"];
+				
+				for (NSUInteger i = 0; i < numberOfPages; i++) {
+					NSURL *previewURL = [[NSURL URLWithString:@"http://invalid.local"] URLByAppendingPathComponent:@"v2/attachments/view"];
+					NSDictionary *parameters = @{@"object_id": ownObjectID, @"target": @"preview", @"page": @(i + 1)};
+					NSDictionary *pageElement = @{
+						@"thumbnailURL": [IRWebAPIRequestURLWithQueryParameters(previewURL, parameters) absoluteString],
+						@"page": @(i + 1)
+					};
+					[returnedArray addObject:pageElement];
+				}
+				
+				returnedDictionary[@"pageElements"] = returnedArray;
+			}
+
+		}
   
   } else if ([incomingFileType isEqualToString:@"text"]) {
     
@@ -211,7 +210,7 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
     
   }
   
-	if ([aLocalKeyPath isEqualToString:@"timestamp"] || [aLocalKeyPath isEqualToString:@"created"]) {
+	if ([aLocalKeyPath isEqualToString:@"timestamp"] || [aLocalKeyPath isEqualToString:@"created"] || [aLocalKeyPath isEqualToString:@"docAccessTime"]) {
 		return [NSDate dateFromISO8601String:aValue];
 	}
 	

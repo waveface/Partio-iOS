@@ -29,7 +29,7 @@ enum {
 - (id) itemAtIndex:(NSUInteger)anIndex inImageStreamPickerView:(WAImageStreamPickerView *)picker;
 
 - (UIImage *) thumbnailForItem:(id)anItem inImageStreamPickerView:(WAImageStreamPickerView *)picker;
-- (void) imageStreamPickerView:(WAImageStreamPickerView *)picker didSelectItem:(id)anItem;
+- (void) imageStreamPickerView:(WAImageStreamPickerView *)picker didSelectItemAtIndex:(NSUInteger)index;
 - (NSUInteger) currentIndexForImageStreamPickerView;
 
 @end
@@ -50,5 +50,6 @@ enum {
 @property (nonatomic, readwrite, assign) CGFloat thumbnailAspectRatio;	//	Defaults to 1.  The aspect ratio of the thumbnail is only used when the image stream picker’s style is set to WAClippedThumbnailsStyle; otherwise, the ratio will be calculated from the actual images.
 
 - (void) reloadData;
+- (void) didSelectItemAtIndex:(NSUInteger)index;
 
 @end

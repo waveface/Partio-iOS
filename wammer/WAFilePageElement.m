@@ -14,6 +14,8 @@
 
 @dynamic thumbnailFilePath;
 @dynamic thumbnailURL;
+@dynamic page;
+@dynamic extraSmallThumbnailFilePath;
 @dynamic file;
 
 @end

@@ -40,5 +40,6 @@
 @dynamic people;
 @dynamic descriptiveTags;
 @dynamic eventDescription;
+@dynamic checkins;
 
 @end

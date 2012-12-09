@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model name="" userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="2057" systemVersion="12C60" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
+<model name="" userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="1811" systemVersion="12C60" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="WAArticle" representedClassName="WAArticle">
         <attribute name="creationDate" optional="YES" attributeType="Date" indexed="YES" elementID="timestamp">
             <userInfo/>
@@ -25,6 +25,7 @@
         <attribute name="text" optional="YES" attributeType="String">
             <userInfo/>
         </attribute>
+        <relationship name="checkins" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="WALocation" syncable="YES"/>
         <relationship name="comments" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="WAComment" inverseName="article" inverseEntity="WAComment">
             <userInfo/>
         </relationship>
@@ -55,6 +56,7 @@
         <attribute name="lastAccessTime" optional="YES" attributeType="Date" syncable="YES"/>
         <relationship name="file" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="WAFile" inverseName="caches" inverseEntity="WAFile" syncable="YES"/>
         <relationship name="ogimage" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="WAOpenGraphElementImage" inverseName="cache" inverseEntity="WAOpenGraphElementImage" syncable="YES"/>
+        <relationship name="pageElement" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="WAFilePageElement" inverseName="cache" inverseEntity="WAFilePageElement" syncable="YES"/>
     </entity>
     <entity name="WACollection" representedClassName="WACollection" syncable="YES">
         <attribute name="creationDate" optional="YES" attributeType="Date" syncable="YES"/>
@@ -99,6 +101,7 @@
         <attribute name="created" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="creationDeviceIdentifier" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="dirty" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
+        <attribute name="docAccessTime" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="extraSmallThumbnailFilePath" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="identifier" optional="YES" attributeType="String" indexed="YES">
             <userInfo/>
@@ -184,8 +187,11 @@
         <relationship name="file" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="WAFile" inverseName="exif" inverseEntity="WAFile" syncable="YES"/>
     </entity>
     <entity name="WAFilePageElement" representedClassName="WAFilePageElement" syncable="YES">
+        <attribute name="extraSmallThumbnailFilePath" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="page" attributeType="Integer 64" defaultValueString="1" syncable="YES"/>
         <attribute name="thumbnailFilePath" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="thumbnailURL" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="cache" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="WACache" inverseName="pageElement" inverseEntity="WACache" syncable="YES"/>
         <relationship name="file" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="WAFile" inverseName="pageElements" inverseEntity="WAFile" syncable="YES"/>
     </entity>
     <entity name="WAGroup" representedClassName="WAGroup" syncable="YES">
@@ -206,6 +212,7 @@
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="zoomLevel" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <relationship name="article" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="WAArticle" inverseName="location" inverseEntity="WAArticle" syncable="YES"/>
+        <relationship name="tags" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="WATag" syncable="YES"/>
     </entity>
     <entity name="WAOpenGraphElement" representedClassName="WAOpenGraphElement" syncable="YES">
         <attribute name="providerDisplayName" optional="YES" attributeType="String" syncable="YES"/>
@@ -317,15 +324,15 @@
     <fetchRequest name="WAFRLocalImportedArticles" entity="WAArticle" predicateString="import == 1"/>
     <fetchRequest name="WAFRUser" entity="WAUser" predicateString="identifier == $Identifier"/>
     <elements>
-        <element name="WAArticle" positionX="0" positionY="0" width="128" height="405"/>
+        <element name="WAArticle" positionX="0" positionY="0" width="128" height="420"/>
         <element name="WACache" positionX="0" positionY="0" width="128" height="135"/>
         <element name="WACollection" positionX="0" positionY="0" width="128" height="180"/>
         <element name="WAComment" positionX="0" positionY="0" width="128" height="135"/>
-        <element name="WAFile" positionX="0" positionY="0" width="128" height="585"/>
+        <element name="WAFile" positionX="0" positionY="0" width="128" height="600"/>
         <element name="WAFileExif" positionX="0" positionY="0" width="128" height="315"/>
-        <element name="WAFilePageElement" positionX="0" positionY="0" width="128" height="90"/>
+        <element name="WAFilePageElement" positionX="0" positionY="0" width="128" height="135"/>
         <element name="WAGroup" positionX="0" positionY="0" width="128" height="120"/>
-        <element name="WALocation" positionX="0" positionY="0" width="128" height="120"/>
+        <element name="WALocation" positionX="0" positionY="0" width="128" height="135"/>
         <element name="WAOpenGraphElement" positionX="0" positionY="0" width="128" height="195"/>
         <element name="WAOpenGraphElementImage" positionX="0" positionY="0" width="128" height="120"/>
         <element name="WAPeople" positionX="0" positionY="0" width="128" height="90"/>

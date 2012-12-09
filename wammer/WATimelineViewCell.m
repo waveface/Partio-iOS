@@ -12,13 +12,17 @@
 #import "WAFile.h"
 #import "IRLabel.h"
 #import "WAEventViewController.h"
+#import "WALocation.h"
+#import "MKMapView+ZoomLevel.h"
 
 @interface WATimelineViewCell ()
 
-@property (strong, nonatomic) IBOutletCollection(UIImageView) NSArray *photoImageViews;
-@property (nonatomic, readwrite, strong) IBOutlet UILabel *timeLabel;
-@property (nonatomic, readwrite, strong) IBOutlet UIView *containerView;
-@property (nonatomic, readwrite, strong) IBOutlet UIImageView *eventCardBGImageView;
+@property (nonatomic, strong) IBOutletCollection(UIImageView) NSArray *photoImageViews;
+@property (nonatomic, readwrite, weak) IBOutlet UILabel *timeLabel;
+@property (nonatomic, readwrite, weak) IBOutlet UIView *containerView;
+@property (nonatomic, readwrite, weak) IBOutlet UIImageView *eventCardBGImageView;
+@property (nonatomic, weak) IBOutlet MKMapView *mapView;
+
 @property (nonatomic, strong) UILabel *fileNoLabel;
 @property (nonatomic, strong) UIImageView *typeImageView;
 
@@ -111,6 +115,16 @@
 		}];
 
 	
+	} else {
+	
+		if (post.location) {
+
+			CLLocationCoordinate2D center = { post.location.latitude.floatValue, post.location.longitude.floatValue };
+			NSUInteger zoomLevel = [post.location.zoomLevel unsignedIntegerValue];
+			[self.mapView setCenterCoordinate:center zoomLevel:zoomLevel animated:NO];
+			
+		}
+		
 	}
 
 	CGFloat oldCommentHeight = CGRectGetHeight(self.commentLabel.frame);
@@ -258,7 +272,6 @@
 	return formatter;
 	
 }
-
 
 
 @end

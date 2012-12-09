@@ -366,12 +366,7 @@ static NSString * kWAImageStreamPickerComponentThumbnail = @"WAImageStreamPicker
 	
 	NSUInteger newItemIndex = [self.items indexOfObject:hitItem];
 	
-	if (self.selectedItemIndex == newItemIndex)
-		return;
-	
-	self.selectedItemIndex = newItemIndex;
-	[self.delegate imageStreamPickerView:self didSelectItem:hitItem];
-	[self setNeedsLayout];
+	[self didSelectItemAtIndex:newItemIndex];
 
 }
 
@@ -389,14 +384,20 @@ static NSString * kWAImageStreamPickerComponentThumbnail = @"WAImageStreamPicker
 		return;
 
 	NSUInteger newItemIndex = [self.items indexOfObject:hitItem];
+
+	[self didSelectItemAtIndex:newItemIndex];
 	
-	if (self.selectedItemIndex == newItemIndex)
+}
+
+- (void) didSelectItemAtIndex:(NSUInteger)index {
+
+	if (self.selectedItemIndex == index)
 		return;
 	
-	self.selectedItemIndex = newItemIndex;
-	[self.delegate imageStreamPickerView:self didSelectItem:hitItem];
+	self.selectedItemIndex = index;
+	[self.delegate imageStreamPickerView:self didSelectItemAtIndex:index];
 	[self setNeedsLayout];
-	
+
 }
 
 - (id) itemAtPoint:(CGPoint)aPoint {

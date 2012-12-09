@@ -22,13 +22,12 @@
 #import "GAI.h"
 
 NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGalleryViewControllerContextPreferredFileObjectURI";
+static NSString * kWAGalleryViewControllerKVOContext = @"WAGalleryViewControllerKVOContext";
 
 
 @interface WAGalleryViewController () <IRPaginatedViewDelegate, UIGestureRecognizerDelegate, UINavigationBarDelegate, WAImageStreamPickerViewDelegate, NSFetchedResultsControllerDelegate, WAGalleryImageViewDelegate, NSCacheDelegate>
 
-@property (nonatomic, readwrite, retain) NSManagedObjectContext *managedObjectContext;
-@property (nonatomic, readwrite, retain) NSFetchedResultsController *fetchedResultsController;
-@property (nonatomic, readwrite, retain) WAArticle *article;
+@property (nonatomic, strong) NSArray *imageFiles;
 @property (nonatomic, readwrite, retain) IRPaginatedView *paginatedView;
 
 @property (nonatomic, readwrite, retain) UINavigationBar *navigationBar;
@@ -41,19 +40,11 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 @property (nonatomic, readwrite, copy) void (^onViewWillDisappear)(BOOL animated);
 @property (nonatomic, readwrite, copy) void (^onViewDidDisappear)(BOOL animated);
 
-@property (nonatomic, readwrite, retain) NSOperationQueue *operationQueue;
-
 - (void) waSubviewWillLayout;
-
-- (WAFile *) representedFileAtIndex:(NSUInteger)anIndex;
 
 @property (nonatomic, readwrite, assign) BOOL contextControlsShown;
 
 @property (nonatomic, readwrite, assign) BOOL requiresReloadOnFetchedResultsChange;
-
-#if WAGalleryViewController_UsesProxyOverlay
-@property (nonatomic, readwrite, retain) WAGalleryImageView *swipeOverlay;
-#endif
 
 - (WAGalleryImageView *) configureGalleryImageView:(WAGalleryImageView *)aView withFile:(WAFile *)aFile degradeQuality:(BOOL)exclusivelyUsesThumbnail forceSync:(BOOL)forceSynchronousImageDecode;
 
@@ -64,19 +55,13 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 
 @implementation WAGalleryViewController
 @dynamic view;
-@synthesize managedObjectContext, fetchedResultsController, article;
 @synthesize navigationBar, toolbar, previousNavigationItem;
 @synthesize paginatedView;
 @synthesize streamPickerView;
 @synthesize contextControlsShown;
 @synthesize onDismiss;
 @synthesize onViewDidLoad, onViewDidAppear, onViewWillDisappear, onViewDidDisappear;
-@synthesize operationQueue;
 @synthesize requiresReloadOnFetchedResultsChange;
-
-#if WAGalleryViewController_UsesProxyOverlay
-@synthesize swipeOverlay;
-#endif
 
 
 + (WAGalleryViewController *) controllerRepresentingArticleAtURI:(NSURL *)anArticleURI {
@@ -86,51 +71,41 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 }
 
 + (WAGalleryViewController *) controllerRepresentingArticleAtURI:(NSURL *)anArticleURI context:(NSDictionary *)context {
-
-	WAGalleryViewController *controller = [[self alloc] init];
 	
-	controller.managedObjectContext = [[WADataStore defaultStore] defaultAutoUpdatedMOC];
-	controller.article = (WAArticle *)[controller.managedObjectContext irManagedObjectForURI:anArticleURI];
-	
-	NSURL *preferredObjectURI = [context objectForKey:kWAGalleryViewControllerContextPreferredFileObjectURI];
-	
-	__weak WAGalleryViewController *wController = controller;
-	
-	controller.onViewDidLoad = ^ {
-		
-		if (preferredObjectURI) {
+	NSManagedObjectContext *moc = [[WADataStore defaultStore] defaultAutoUpdatedMOC];
+	WAArticle *article = (WAArticle *)[moc irManagedObjectForURI:anArticleURI];
 
-			IRPaginatedView *pv = wController.paginatedView;
-			WAFile *preferredFile = (WAFile *)[wController.managedObjectContext irManagedObjectForURI:preferredObjectURI];
-			NSUInteger fileIndex = [wController.article.files indexOfObject:preferredFile];
-			
-			if (fileIndex != NSNotFound) {
+	NSURL *preferredObjectURI = context[kWAGalleryViewControllerContextPreferredFileObjectURI];
+	WAFile *preferredFile = (WAFile *)[moc irManagedObjectForURI:preferredObjectURI];
+	NSArray *fileArray = [article.files array];
+	NSUInteger fileIndex = [fileArray indexOfObject:preferredFile];
 
-				//		FIXME: Actually fix IRPaginatedView.  We have copied this hack.
+	WAGalleryViewController *controller = [[self alloc] initWithImageFiles:fileArray atIndex:fileIndex];
 
-				[pv layoutSubviews];
-				[pv scrollToPageAtIndex:fileIndex animated:NO];
-				[pv layoutSubviews];
-				[pv setNeedsLayout];
-
-			}
-
-		}
-
-	};
-	
-	if ([controller isViewLoaded])
-		controller.onViewDidLoad();
-	
 	return controller;
 
 }
 
-- (id) initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
+- (WAGalleryViewController *) initWithImageFiles:(NSArray *)files atIndex:(NSUInteger)index {
 
-	self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-	self.wantsFullScreenLayout = YES;
-	
+	self = [super init];
+
+	if (self) {
+
+		self.wantsFullScreenLayout = YES;
+		self.imageFiles = files;
+
+		__weak WAGalleryViewController *wSelf = self;
+		self.onViewDidLoad = ^ {
+			[wSelf.paginatedView layoutSubviews];
+			[[wSelf streamPickerView] didSelectItemAtIndex:index];
+		};
+		if ([self isViewLoaded]) {
+			self.onViewDidLoad();
+		}
+
+	}
+
 	return self;
 
 }
@@ -155,108 +130,9 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 
 }
 
-- (void) controllerWillChangeContent:(NSFetchedResultsController *)controller {
-
-	self.requiresReloadOnFetchedResultsChange = NO;
-
-}
-
-- (void) controller:(NSFetchedResultsController *)controller didChangeObject:(id)anObject atIndexPath:(NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type newIndexPath:(NSIndexPath *)newIndexPath {
-	
-	switch (type) {
-
-		case NSFetchedResultsChangeUpdate: {
-			
-			NSUInteger index = [self.article.files indexOfObject:[[anObject objectID] URIRepresentation]];
-			if (index != NSNotFound) {
-				
-				WAGalleryImageView *imageView = nil;
-				@try {
-					imageView = (WAGalleryImageView *)[self.paginatedView existingPageAtIndex:index];
-				} @catch (NSException *e) {
-					NSLog(@"Error %@", e);
-				}
-				
-				if (imageView) {
-					[self configureGalleryImageView:imageView withFile:(WAFile *)anObject degradeQuality:NO forceSync:NO];
-				}
-
-			}
-			
-			break;
-		}
-
-		case NSFetchedResultsChangeDelete:
-		case NSFetchedResultsChangeInsert:
-		case NSFetchedResultsChangeMove:
-		default: {
-			self.requiresReloadOnFetchedResultsChange = YES;
-			break;
-		}
-
-	}
-
-}
-
-- (void) controller:(NSFetchedResultsController *)controller didChangeSection:(id<NSFetchedResultsSectionInfo>)sectionInfo atIndex:(NSUInteger)sectionIndex forChangeType:(NSFetchedResultsChangeType)type {
-
-	self.requiresReloadOnFetchedResultsChange = YES;
-
-}
-
-- (void) controllerDidChangeContent:(NSFetchedResultsController *)controller {
-
-	if (!self.requiresReloadOnFetchedResultsChange)
-		return;
-
-	//	Seriously
-	
-	NSUInteger oldCurrentPage = self.paginatedView.currentPage;
-	
-	[self.paginatedView reloadViews];
-	[self.paginatedView scrollToPageAtIndex:oldCurrentPage animated:NO];
-	[self.streamPickerView reloadData];
-	[self.streamPickerView setNeedsLayout];
-
-}
-
-- (WAFile *) representedFileAtIndex:(NSUInteger)anIndex {
-
-	return [self.article.files objectAtIndex:anIndex];
-
-}
-
-- (NSFetchedResultsController *) fetchedResultsController {
-
-	if (fetchedResultsController)
-		return fetchedResultsController;
-
-	NSFetchRequest *fetchRequest = [self.managedObjectContext.persistentStoreCoordinator.managedObjectModel fetchRequestFromTemplateWithName:@"WAFRFilesForArticle" substitutionVariables:[NSDictionary dictionaryWithObjectsAndKeys:
-														self.article, @"Article",
-														nil]];
-	
-	fetchRequest.returnsObjectsAsFaults = NO;
-	fetchRequest.fetchBatchSize = 20;
-	fetchRequest.sortDescriptors = [NSArray arrayWithObjects:
-																	[NSSortDescriptor sortDescriptorWithKey:@"identifier" ascending:YES],
-																	nil];
-
-	self.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest managedObjectContext:self.managedObjectContext sectionNameKeyPath:nil cacheName:nil];
-	self.fetchedResultsController.delegate = self;
-	
-	NSError *fetchingError;
-	if (![self.fetchedResultsController performFetch:&fetchingError])
-		NSLog(@"Error fetching: %@", fetchingError);
-  
-	self.previousNavigationItem.title = self.article.text;
-	
-	return fetchedResultsController;
-
-}
-
 - (void) loadView {
 
-	NSParameterAssert(self.article);
+	NSParameterAssert([self.imageFiles count]);
 
 	__weak WAGalleryViewController *wSelf = self;
 
@@ -266,18 +142,13 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 		[wSelf waSubviewWillLayout];
 	};
 	
-	NSString *articleTitle = self.article.text;
-	if (![[articleTitle stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] length])
-		articleTitle = @"Post";
-	
-	self.previousNavigationItem = [[UINavigationItem alloc] initWithTitle:articleTitle];
-	self.previousNavigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:articleTitle style:UIBarButtonItemStyleBordered target:nil action:nil];
+	self.previousNavigationItem = [[UINavigationItem alloc] init];
 	
 	self.paginatedView = [[IRPaginatedView alloc] initWithFrame:self.view.bounds];
 	self.paginatedView.horizontalSpacing = 24.0f;
 	self.paginatedView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
 	self.paginatedView.delegate = self;
-	
+
 	self.navigationBar = [[UINavigationBar alloc] initWithFrame:(CGRect){ 0.0f, 0.0f, CGRectGetWidth(self.view.bounds), 44.0f }];
 	self.navigationBar.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleBottomMargin;
 	self.navigationBar.barStyle = UIBarStyleBlackTranslucent;
@@ -332,24 +203,10 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 	if (self.onViewDidLoad)
 		self.onViewDidLoad();
 	
-#if WAGalleryViewController_UsesProxyOverlay
-	
-	[self.view insertSubview:self.swipeOverlay aboveSubview:self.paginatedView];
-
-#endif
-
 	self.paginatedView.scrollView.delaysContentTouches = NO;
 	self.paginatedView.scrollView.canCancelContentTouches = NO;
 	
 	[self.paginatedView.scrollView.panGestureRecognizer addTarget:self action:@selector(handlePan:)];
-
-	__weak WAGalleryViewController *wSelf = self;
-	[self.streamPickerView irObserve:@"selectedItemIndex" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:nil withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
-		NSUInteger index = [fromValue unsignedIntegerValue];
-		if (index < [wSelf.article.files count]) {
-			[[wSelf.article.files objectAtIndex:index] cleanImageCache];
-		}
-	}];
 
 	[[GAI sharedInstance].defaultTracker trackEventWithCategory:@"Gallery"
 																									 withAction:@"Enter gallery"
@@ -489,44 +346,6 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 
 }
 
-
-#if WAGalleryViewController_UsesProxyOverlay
-
-- (WAGalleryImageView *) swipeOverlay {
-
-	if (swipeOverlay)
-		return swipeOverlay;
-	
-	swipeOverlay = [[WAGalleryImageView viewForImage:nil] retain];
-	swipeOverlay.hidden = YES;
-	swipeOverlay.frame = self.view.bounds;
-	swipeOverlay.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
-	swipeOverlay.onPointInsideWithEvent = ^ (CGPoint aPoint, UIEvent *anEvent, BOOL superAnswer) {
-		return NO;
-	};
-	
-	swipeOverlay.alpha = 0.5;
-	
-	[swipeOverlay reset];
-	
-	return swipeOverlay;
-
-}
-
-#endif
-
-- (NSOperationQueue *) operationQueue {
-
-	if (operationQueue)
-		return operationQueue;
-	
-	operationQueue = [[NSOperationQueue alloc] init];
-	operationQueue.maxConcurrentOperationCount = 1;
-	
-	return operationQueue;
-
-}
-
 - (void) handlePan:(UIPanGestureRecognizer *)panGR {
 	
 	if (panGR.state == UIGestureRecognizerStateChanged) {
@@ -560,15 +379,21 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 
 - (NSUInteger) numberOfViewsInPaginatedView:(IRPaginatedView *)paginatedView {
 
-	return [self.article.files count];
+	return [self.imageFiles count];
 
 }
 
 - (void)willRemoveView:(UIView *)view atIndex:(NSUInteger)index {
 
-	[[self.article.files objectAtIndex:index] irRemoveObserverBlocksForKeyPath:@"smallestPresentableImage"];
-	[[self.article.files objectAtIndex:index] irRemoveObserverBlocksForKeyPath:@"bestPresentableImage"];
-	[[self representedFileAtIndex:index] cleanImageCache];
+	id file = self.imageFiles[index];
+	if ([file isKindOfClass:[WAFile class]]) {
+		[file irRemoveObserverBlocksForKeyPath:@"smallestPresentableImage"];
+		[file irRemoveObserverBlocksForKeyPath:@"bestPresentableImage"];
+		[file cleanImageCache];
+	} else if ([file isKindOfClass:[WAFilePageElement class]]) {
+		[file irRemoveObserverBlocksForKeyPath:@"thumbnailImage" context:&kWAGalleryViewControllerKVOContext];
+		[file cleanImageCache];
+	}
 
 }
 
@@ -585,12 +410,23 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 
 - (UIView *) viewForPaginatedView:(IRPaginatedView *)aPaginatedView atIndex:(NSUInteger)index {
 	
-	WAFile *file = [self representedFileAtIndex:index];
 	WAGalleryImageView *view = [WAGalleryImageView viewForImage:nil];
-	
 	view.frame = (CGRect){ CGPointZero, aPaginatedView.bounds.size };
-	
-	return [self configureGalleryImageView:view withFile:file degradeQuality:NO forceSync:YES];
+
+	id file = self.imageFiles[index];
+	if ([file isKindOfClass:[WAFile class]]) {
+		return [self configureGalleryImageView:view withFile:file degradeQuality:NO forceSync:YES];
+	} else if ([file isKindOfClass:[WAFilePageElement class]]) {
+		[file irObserve:@"thumbnailImage" options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:&kWAGalleryViewControllerKVOContext withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
+			[view setImage:toValue animated:NO synchronized:YES];
+			[view setNeedsLayout];
+		}];
+		view.delegate = self;
+		[view reset];
+		return view;
+	}
+
+	return nil;
 
 }
 
@@ -603,41 +439,41 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 - (WAGalleryImageView *) configureGalleryImageView:(WAGalleryImageView *)aView withFile:(WAFile *)aFile degradeQuality:(BOOL)exclusivelyUsesThumbnail forceSync:(BOOL)forceSynchronousImageDecode {
 
 	if (exclusivelyUsesThumbnail) {
-		
+
 		__weak WAGalleryViewController *wSelf = self;
 		[aFile irObserve:@"smallestPresentableImage" options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:nil withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
-
+			
 			dispatch_async(dispatch_get_main_queue(), ^{
-
+				
 				[aView setImage:toValue animated:NO synchronized:forceSynchronousImageDecode];
 				[aView setNeedsLayout];
-
+				
 				// Show image in streamPickerView when download completed
 				if (!fromValue && toValue) {
 					[[wSelf streamPickerView] reloadData];
 				}
-
+				
 			});
-
+			
 		}];
 		
 	} else {
 		
 		__weak WAGalleryViewController *wSelf = self;
 		[aFile irObserve:@"bestPresentableImage" options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:nil withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
-
+			
 			dispatch_async(dispatch_get_main_queue(), ^{
-
+				
 				[aView setImage:toValue animated:NO synchronized:forceSynchronousImageDecode];
 				[aView setNeedsLayout];
-
+				
 				// Show image in streamPickerView when download completed
 				if (!fromValue && toValue) {
 					[[wSelf streamPickerView] reloadData];
 				}
-
+				
 			});
-
+			
 		}];
 		
 	}
@@ -677,26 +513,32 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 
 - (NSUInteger) numberOfItemsInImageStreamPickerView:(WAImageStreamPickerView *)picker {
 
-	return [self.article.files count];
+	return [self.imageFiles count];
 
 }
 
 - (id) itemAtIndex:(NSUInteger)anIndex inImageStreamPickerView:(WAImageStreamPickerView *)picker {
 
-  WAFile *representedFile = [self representedFileAtIndex:anIndex];
-	return representedFile;
+  return self.imageFiles[anIndex];
 
 }
 
-- (UIImage *) thumbnailForItem:(WAFile *)aFile inImageStreamPickerView:(WAImageStreamPickerView *)picker {
+- (UIImage *) thumbnailForItem:(id)anItem inImageStreamPickerView:(WAImageStreamPickerView *)picker {
 
-	return aFile.extraSmallThumbnailImage;
+	// FIXME: Should use KVO to refresh items in streamPickerView
+
+	if ([anItem isKindOfClass:[WAFile class]]) {
+		return [anItem extraSmallThumbnailImage];
+	} else if ([anItem isKindOfClass:[WAFilePageElement class]]) {
+		return [anItem extraSmallThumbnailImage];
+	}
+	return nil;
 
 }
 
-- (void) imageStreamPickerView:(WAImageStreamPickerView *)picker didSelectItem:(WAFile *)anItem {
+- (void) imageStreamPickerView:(WAImageStreamPickerView *)picker didSelectItemAtIndex:(NSUInteger)index {
 
-	[self.paginatedView scrollToPageAtIndex:picker.selectedItemIndex animated:NO];
+	[self.paginatedView scrollToPageAtIndex:index animated:NO];
 
 }
 
@@ -827,9 +669,13 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 - (void) dealloc {
 	
 	[self.paginatedView irRemoveObserverBlocksForKeyPath:@"currentPage"];
-	for (WAFile *file in self.article.files) {
-    [file irRemoveObserverBlocksForKeyPath:@"bestPresentableImage"];
-		[file irRemoveObserverBlocksForKeyPath:@"smallestPresentableImage"];
+	for (id file in self.imageFiles) {
+		if ([file isKindOfClass:[WAFile class]]) {
+			[file irRemoveObserverBlocksForKeyPath:@"bestPresentableImage"];
+			[file irRemoveObserverBlocksForKeyPath:@"smallestPresentableImage"];
+		} else if ([file isKindOfClass:[WAFilePageElement class]]) {
+			[file irRemoveObserverBlocksForKeyPath:@"thumbnailImage"];
+		}
 	}
 	
 	[self.streamPickerView irRemoveObserverBlocksForKeyPath:@"selectedItemIndex"];
@@ -839,26 +685,13 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 	self.toolbar = nil;
 	self.previousNavigationItem = nil;
 	self.streamPickerView = nil;
-	
-#if WAGalleryViewController_UsesProxyOverlay
-	self.swipeOverlay = nil;
-#endif
-	
-	[operationQueue cancelAllOperations];
-	[operationQueue waitUntilAllOperationsAreFinished];
-	
-	self.operationQueue = nil;
-
-	
+		
 	[self.paginatedView irRemoveObserverBlocksForKeyPath:@"currentPage"];
 	
 	if ([self isViewLoaded])
 		self.view.onLayoutSubviews = nil;
 
-	[paginatedView removeFromSuperview];	//	Also triggers page deallocation
-
-	[operationQueue cancelAllOperations];
-	[operationQueue waitUntilAllOperationsAreFinished];
+	[self.paginatedView removeFromSuperview];	//	Also triggers page deallocation
 
 }
 
