@@ -168,6 +168,9 @@
 /* Title for confirming a post deletion */
 "DELETE_POST_CONFIRMATION_TITLE" = "Delete Now?";
 
+/* Title for document view controller */
+"DOCUMENTS_CONTROLLER_TITLE" = "DOCUMENTS";
+
 /* State for drafts without content text */
 "DRAFT_STATE_NO_CONTENT" = "(No Content)";
 
@@ -427,6 +430,9 @@
 
 /* Title for Collections in the sliding menu */
 "SLIDING_MENU_TITLE_COLLECTIONS" = "COLLECTIONS";
+
+/* Title for Documents in the sliding menu */
+"SLIDING_MENU_TITLE_DOCS" = "DOCUMENTS";
 
 /* Title for Events in the sliding menu */
 "SLIDING_MENU_TITLE_EVENTS" = "EVENTS";

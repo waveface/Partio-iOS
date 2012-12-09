@@ -19,5 +19,6 @@
 @dynamic lastAccessTime;
 @dynamic file;
 @dynamic ogimage;
+@dynamic pageElement;
 
 @end

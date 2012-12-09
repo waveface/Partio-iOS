@@ -17,6 +17,8 @@
 
 @property (nonatomic, retain) NSString * thumbnailFilePath;
 @property (nonatomic, retain) NSString * thumbnailURL;
+@property (nonatomic, retain) NSNumber * page;
+@property (nonatomic, retain) NSString * extraSmallThumbnailFilePath;
 @property (nonatomic, retain) WAFile *file;
 
 @end

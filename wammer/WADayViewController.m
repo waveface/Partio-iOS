@@ -25,6 +25,7 @@
 #import "WARemoteInterface.h"
 #import "WAPhotoStreamViewController.h"
 #import <CoreData+MagicalRecord.h>
+#import "WADocumentStreamViewController.h"
 
 static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPostsViewControllerPhone_RepresentedObjectURI";
 
@@ -107,43 +108,15 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 	[super viewWillAppear:animated];
 
 	self.navigationItem.titleView.alpha = 1;
-		
-	self.title = NSLocalizedString(@"EVENTS_CONTROLLER_TITLE", @"Title for Events view");
-	if ([containedClass isSubclassOfClass:[WAPhotoStreamViewController class]]) {
+	
+	if ([containedClass isSubclassOfClass:[WATimelineViewController class]]) {
+		self.title = NSLocalizedString(@"EVENTS_CONTROLLER_TITLE", @"Title for Events view");
+	} else if ([containedClass isSubclassOfClass:[WAPhotoStreamViewController class]]) {
 		self.title = NSLocalizedString(@"PHOTOS_TITLE", @"in day view");
+	} else if ([containedClass isSubclassOfClass:[WADocumentStreamViewController class]]) {
+		self.title = NSLocalizedString(@"DOCUMENTS_CONTROLLER_TITLE", @"Title for document view controller");
 	}
 	
-	[self.paginatedView reloadViews];
-
-}
-
-- (void) viewDidAppear:(BOOL)animated {
-	[super viewDidAppear:animated];
-	
-	__block NSDate *currentDate = nil;
-	__weak WADayViewController *wSelf = self;
-	
-	[self.fetchedResultsController.fetchedObjects enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-		
-		NSDate *theDate = nil;
-		
-		if ([containedClass isSubclassOfClass:[WATimelineViewController class]]) {
-
-			theDate = [[((WAArticle*)obj) creationDate] dayBegin];
-			
-		} else {
-			
-			theDate = [[((WAFile*)obj) created] dayBegin];
-
-		}
-		
-		if (!currentDate || !isSameDay(currentDate, theDate)) {
-			[wSelf.days addObject:theDate];
-			currentDate = theDate;
-		}
-		
-	}];
-
 	[self.paginatedView reloadViews];
 
 }
@@ -238,13 +211,59 @@ BOOL (^isSameDay) (NSDate *, NSDate *) = ^ (NSDate *d1, NSDate *d2) {
 			NSLog(@"%@: failed to fetch articles for events", __FUNCTION__);
 		}		
 
-	} else { //WAPhotoStreamViewController
+	} else if ([containedClass isSubclassOfClass:[WAPhotoStreamViewController class]]) {
 
 		NSPredicate *withDate =[NSPredicate predicateWithFormat:@"created != nil"];
 		self.fetchedResultsController = [WAFile MR_fetchAllSortedBy:@"created" ascending:NO withPredicate:withDate groupBy:nil delegate:self];
 		
+	} else if ([containedClass isSubclassOfClass:[WADocumentStreamViewController class]]) {
+
+		NSManagedObjectContext *context = [[WADataStore defaultStore] defaultAutoUpdatedMOC];
+		NSFetchRequest *request = [[NSFetchRequest alloc] init];
+		NSEntityDescription *entity = [NSEntityDescription entityForName:@"WAFile" inManagedObjectContext:context];
+		[request setEntity:entity];
+		NSPredicate *predicate = [NSPredicate predicateWithFormat:@"remoteResourceType == %@", @"doc"];
+		[request setPredicate:predicate];
+		NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"docAccessTime" ascending:NO];
+		[request setSortDescriptors:@[sortDescriptor]];
+		
+		self.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:request managedObjectContext:context sectionNameKeyPath:nil cacheName:nil];
+
+		self.fetchedResultsController.delegate = self;
+
+		[self.fetchedResultsController performFetch:nil];
+
 	}
 
+	__block NSDate *currentDate = nil;
+	__weak WADayViewController *wSelf = self;
+	
+	[self.fetchedResultsController.fetchedObjects enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+		
+		NSDate *theDate = nil;
+		
+		if ([containedClass isSubclassOfClass:[WATimelineViewController class]]) {
+			
+			theDate = [[((WAArticle*)obj) creationDate] dayBegin];
+			
+		} else if ([containedClass isSubclassOfClass:[WAPhotoStreamViewController class]]) {
+			
+			theDate = [[((WAFile*)obj) created] dayBegin];
+			
+		} else if ([containedClass isSubclassOfClass:[WADocumentStreamViewController class]]) {
+			
+			theDate = [[((WAFile*)obj) docAccessTime] dayBegin];
+			
+		}
+
+		if (theDate) {
+			if (!currentDate || !isSameDay(currentDate, theDate)) {
+				[wSelf.days addObject:theDate];
+				currentDate = theDate;
+			}
+		}
+		
+	}];
 
 }
 
@@ -318,15 +337,23 @@ BOOL (^isSameDay) (NSDate *, NSDate *) = ^ (NSDate *d1, NSDate *d2) {
 
 		theNewDate = [[((WAArticle*)anObject) creationDate] dayBegin];
 
-	} else {
+	} else if ([containedClass isSubclassOfClass:[WAPhotoStreamViewController class]]) {
 
 		theNewDate = [[((WAFile*)anObject) created] dayBegin];
 		
+	} else if ([containedClass isSubclassOfClass:[WADocumentStreamViewController class]]) {
+
+		theNewDate = [[((WAFile*)anObject) docAccessTime] dayBegin];
+
 	}
 	
 	switch (type) {
+		case NSFetchedResultsChangeMove:
 		case NSFetchedResultsChangeInsert:
 		{
+			if (!theNewDate) {
+				break;
+			}
 
 			NSUInteger oldIndex = [self.days indexOfObject:theNewDate
 																			 inSortedRange:(NSRange){0, self.days.count}
