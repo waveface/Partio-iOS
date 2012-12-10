@@ -107,7 +107,7 @@
 	return self.fetchedResultsController.fetchedObjects;
 }
 
-- (void)loadDataFrom:(NSDate *)fromDate to:(NSDate *)toDate delegate:(id<KalDataSourceCallbacks>)delegate
+- (void)loadDataFrom:(NSDate *)fromDate to:(NSDate *)toDate
 {	
 	// Load events and event days	
 	_events = [[self fetchAllArticlesFrom:fromDate to:toDate] mutableCopy];
@@ -119,18 +119,16 @@
 		NSDate *theDate = nil;
 		NSMutableDictionary *aDay = [@{
 																 @"date": [NSDate date],
-																 @"events": @0, @"markedRed": @0,
-																 @"photos": @0, @"markedLightBlue": @0,
-																 @"docs": @0, @"markedOrange": @0,
+																 @"markedRed": @NO,
+																 @"photos": @NO, @"markedLightBlue": @NO,
 																 } mutableCopy];
 		
 		theDate = [[((WAArticle*)obj) creationDate] dayBegin];
 		
 		if (!currentDate || !isSameDay(currentDate, theDate)) {
 
-			aDay[@"date"] = theDate;
-			aDay[@"events"] = @1;
-			aDay[@"markedRed"] = @1;
+			aDay[@"date"] = [theDate dayBegin];
+			aDay[@"markedRed"] = @YES;
 			[_days addObject:aDay];
 			currentDate = theDate;
 		
@@ -149,9 +147,8 @@
 		
 		NSMutableDictionary *aDay = [@{
 																 @"date": date,
-																 @"events": @0, @"markedRed": @0,
-																 @"photos": @0, @"markedLightBlue": @0,
-																 @"docs": @0, @"markedOrange": @0,
+																 @"markedRed": @NO,
+																 @"photos": @NO, @"markedLightBlue": @NO,
 																 } mutableCopy];
 		
 		NSPredicate *finder = [NSPredicate predicateWithFormat:@"date.dayBegin == %@", [date dayBegin]];
@@ -159,23 +156,20 @@
 		
 		if (!dayWithEvent) {
 			
-			aDay[@"date"] = date;
-			aDay[@"photos"] = @1;
-			aDay[@"markedLightBlue"] = @1;
+			aDay[@"date"] = [date dayBegin];
+			aDay[@"markedLightBlue"] = @YES;
 			[_days addObject:aDay];
 		
 		}
-		else if([dayWithEvent[@"photos"] isEqual:@0]) {
+		else if([dayWithEvent[@"photos"] isEqual:@NO]) {
 		
-			dayWithEvent[@"photos"] = @1;
-			dayWithEvent[@"markedLightBlue"] = @1;
+			dayWithEvent[@"markedLightBlue"] = @YES;
 			[_days replaceObjectAtIndex:[_days indexOfObject:dayWithEvent] withObject:dayWithEvent];
 		
 		}
 		
 	}];
 	
-	[delegate loadedDataSource:self];
 }
 
 #pragma mark - KalDataSource protocol conformance
@@ -185,7 +179,9 @@
 	[_days removeAllObjects];
 	[_events removeAllObjects];
 	[_files removeAllObjects];
-	[self loadDataFrom:(NSDate *)fromDate to:(NSDate *)toDate delegate:delegate];
+	[self loadDataFrom:(NSDate *)fromDate to:(NSDate *)toDate];
+	[delegate loadedDataSource:self];
+
 }
 
 - (NSArray *)markedDatesFrom:(NSDate *)fromDate to:(NSDate *)toDate
@@ -221,7 +217,7 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	NSString *identifier = @"Cell";
+	static NSString *identifier = @"Cell";
   UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
   if (!cell) {
     cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
@@ -251,27 +247,24 @@
 			// TODO: show event / thumbnail images in kvo way?
 			UIImageView *thumbnail = [[UIImageView alloc] initWithImage:event.representingFile.extraSmallThumbnailImage];
 			[thumbnail setBackgroundColor:[UIColor grayColor]];
-			[thumbnail setBounds:CGRectMake(4, 4, 45, 45)];
 			[thumbnail setFrame:CGRectMake(4, 4, 45, 45)];
 			[thumbnail setClipsToBounds:YES];
 			[cell.contentView addSubview:thumbnail];
 			
 			UILabel *title = [[UILabel alloc] init];
-			title.attributedText = [[WAEventViewController class] attributedDescriptionStringForEvent:event forCalendar:YES];
+			title.attributedText = [[WAEventViewController class] attributedDescriptionStringForEvent:event styleWithColor:NO styleWithFontForTableView:YES];
 			[title setBackgroundColor:[UIColor colorWithRed:0.89f green:0.89f blue:0.89f alpha:1.f]];
 			title.numberOfLines = 0;
 			[title setFrame:CGRectMake(60, 0, 220, 54)];
 			[cell.contentView addSubview:title];
 			[cell setAccessoryView:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"EventCameraIcon"]]];
 		}
-		
-		if ([item isKindOfClass:[WAFile class]]) {
+		else if ([item isKindOfClass:[WAFile class]]) {
 			
 			WAFile *file = item;
 			
 			UIImageView *thumbnail = [[UIImageView alloc] initWithImage:file.extraSmallThumbnailImage];
 			[thumbnail setBackgroundColor:[UIColor grayColor]];
-			[thumbnail setBounds:CGRectMake(4, 4, 45, 45)];
 			[thumbnail setFrame:CGRectMake(4, 4, 45, 45)];
 			[thumbnail setClipsToBounds:YES];
 			[cell.contentView addSubview:thumbnail];

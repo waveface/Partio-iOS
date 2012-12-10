@@ -1327,24 +1327,6 @@
 		DE46FC16165E228300CC4FFF /* WACalendarPickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WACalendarPickerViewController.m; path = wammer/WACalendarPickerViewController.m; sourceTree = "<group>"; };
 		DE7B35131654B7FC00718262 /* TempAvatar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = TempAvatar.png; path = Resources/TempAvatar.png; sourceTree = "<group>"; };
 		DE7B35141654B7FC00718262 /* TempAvatar@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "TempAvatar@2x.png"; path = "Resources/TempAvatar@2x.png"; sourceTree = "<group>"; };
-		DE9382D5166D1BCB00446998 /* CalBtn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = CalBtn.png; path = ../external/Kal/src/wammer/CalBtn.png; sourceTree = "<group>"; };
-		DE9382D6166D1BCB00446998 /* CalBtn@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "CalBtn@2x.png"; path = "../external/Kal/src/wammer/CalBtn@2x.png"; sourceTree = "<group>"; };
-		DE9382D7166D1BCB00446998 /* CalBtnPress.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = CalBtnPress.png; path = ../external/Kal/src/wammer/CalBtnPress.png; sourceTree = "<group>"; };
-		DE9382D8166D1BCC00446998 /* CalBtnPress@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "CalBtnPress@2x.png"; path = "../external/Kal/src/wammer/CalBtnPress@2x.png"; sourceTree = "<group>"; };
-		DE9382D9166D1BCC00446998 /* dotDB.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = dotDB.png; path = ../external/Kal/src/wammer/dotDB.png; sourceTree = "<group>"; };
-		DE9382DA166D1BCC00446998 /* dotG.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = dotG.png; path = ../external/Kal/src/wammer/dotG.png; sourceTree = "<group>"; };
-		DE9382DB166D1BCC00446998 /* dotLB.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = dotLB.png; path = ../external/Kal/src/wammer/dotLB.png; sourceTree = "<group>"; };
-		DE9382DC166D1BCC00446998 /* dotO.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = dotO.png; path = ../external/Kal/src/wammer/dotO.png; sourceTree = "<group>"; };
-		DE9382DD166D1BCC00446998 /* dotR.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = dotR.png; path = ../external/Kal/src/wammer/dotR.png; sourceTree = "<group>"; };
-		DE9382DE166D1BCD00446998 /* grid_background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = grid_background.png; path = ../external/Kal/src/wammer/grid_background.png; sourceTree = "<group>"; };
-		DE9382DF166D1BCD00446998 /* leftAR.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = leftAR.png; path = ../external/Kal/src/wammer/leftAR.png; sourceTree = "<group>"; };
-		DE9382E0166D1BCD00446998 /* leftAR@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "leftAR@2x.png"; path = "../external/Kal/src/wammer/leftAR@2x.png"; sourceTree = "<group>"; };
-		DE9382E1166D1BCD00446998 /* rightAR.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = rightAR.png; path = ../external/Kal/src/wammer/rightAR.png; sourceTree = "<group>"; };
-		DE9382E2166D1BCD00446998 /* rightAR@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "rightAR@2x.png"; path = "../external/Kal/src/wammer/rightAR@2x.png"; sourceTree = "<group>"; };
-		DE9382E3166D1BCD00446998 /* tile_selected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = tile_selected.png; path = ../external/Kal/src/wammer/tile_selected.png; sourceTree = "<group>"; };
-		DE9382E4166D1BCE00446998 /* tile_today_selected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = tile_today_selected.png; path = ../external/Kal/src/wammer/tile_today_selected.png; sourceTree = "<group>"; };
-		DE9382E5166D1BCE00446998 /* tile_today.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = tile_today.png; path = ../external/Kal/src/wammer/tile_today.png; sourceTree = "<group>"; };
-		DE9382E6166D1BCE00446998 /* tile.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = tile.png; path = ../external/Kal/src/wammer/tile.png; sourceTree = "<group>"; };
 		DEBD4927165E74A7008F96D3 /* Kal.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Kal.xcodeproj; path = external/Kal/src/Kal.xcodeproj; sourceTree = "<group>"; };
 		DEBED814166C8608001A2B24 /* GetCollections.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = GetCollections.json; path = UnitTests/GetCollections.json; sourceTree = SOURCE_ROOT; };
 		DEBED816166C8643001A2B24 /* forward.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = forward.png; path = Resources/forward.png; sourceTree = "<group>"; };
@@ -1386,10 +1368,6 @@
 		DEF288731664653D0078B1D7 /* CalBtn@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "CalBtn@2x.png"; path = "Resources/CalBtn@2x.png"; sourceTree = "<group>"; };
 		DEF288741664653D0078B1D7 /* CalBtnPress.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = CalBtnPress.png; path = Resources/CalBtnPress.png; sourceTree = "<group>"; };
 		DEF288751664653D0078B1D7 /* CalBtnPress@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "CalBtnPress@2x.png"; path = "Resources/CalBtnPress@2x.png"; sourceTree = "<group>"; };
-		DEF288761664653E0078B1D7 /* leftAR.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = leftAR.png; path = Resources/leftAR.png; sourceTree = "<group>"; };
-		DEF288771664653E0078B1D7 /* leftAR@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "leftAR@2x.png"; path = "Resources/leftAR@2x.png"; sourceTree = "<group>"; };
-		DEF288781664653F0078B1D7 /* rightAR.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = rightAR.png; path = Resources/rightAR.png; sourceTree = "<group>"; };
-		DEF288791664653F0078B1D7 /* rightAR@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "rightAR@2x.png"; path = "Resources/rightAR@2x.png"; sourceTree = "<group>"; };
 		FF0024FD14B44D5400F54AAF /* WASyncManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WASyncManager.h; sourceTree = "<group>"; };
 		FF0024FE14B44D5400F54AAF /* WASyncManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WASyncManager.m; sourceTree = "<group>"; };
 		FF01135615B6522F0058C6ED /* WAWelcomeViewController~ipad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "WAWelcomeViewController~ipad.xib"; sourceTree = "<group>"; };
@@ -3116,33 +3094,11 @@
 				DEF288731664653D0078B1D7 /* CalBtn@2x.png */,
 				DEF288741664653D0078B1D7 /* CalBtnPress.png */,
 				DEF288751664653D0078B1D7 /* CalBtnPress@2x.png */,
-				DEF288761664653E0078B1D7 /* leftAR.png */,
-				DEF288771664653E0078B1D7 /* leftAR@2x.png */,
-				DEF288781664653F0078B1D7 /* rightAR.png */,
-				DEF288791664653F0078B1D7 /* rightAR@2x.png */,
 				8090AB231646AE79007E2AC0 /* action.png */,
 				8090AB241646AE79007E2AC0 /* action@2x.png */,
 				8090AB251646AE79007E2AC0 /* back.png */,
 				8090AB261646AE79007E2AC0 /* back@2x.png */,
 				806A5C8A16241E2800867E56 /* Cal.png */,
-				DE9382D5166D1BCB00446998 /* CalBtn.png */,
-				DE9382D6166D1BCB00446998 /* CalBtn@2x.png */,
-				DE9382D7166D1BCB00446998 /* CalBtnPress.png */,
-				DE9382D8166D1BCC00446998 /* CalBtnPress@2x.png */,
-				DE9382D9166D1BCC00446998 /* dotDB.png */,
-				DE9382DA166D1BCC00446998 /* dotG.png */,
-				DE9382DB166D1BCC00446998 /* dotLB.png */,
-				DE9382DC166D1BCC00446998 /* dotO.png */,
-				DE9382DD166D1BCC00446998 /* dotR.png */,
-				DE9382DE166D1BCD00446998 /* grid_background.png */,
-				DE9382DF166D1BCD00446998 /* leftAR.png */,
-				DE9382E0166D1BCD00446998 /* leftAR@2x.png */,
-				DE9382E1166D1BCD00446998 /* rightAR.png */,
-				DE9382E2166D1BCD00446998 /* rightAR@2x.png */,
-				DE9382E3166D1BCD00446998 /* tile_selected.png */,
-				DE9382E4166D1BCE00446998 /* tile_today_selected.png */,
-				DE9382E5166D1BCE00446998 /* tile_today.png */,
-				DE9382E6166D1BCE00446998 /* tile.png */,
 				806A5C8B16241E2800867E56 /* Cal@2x.png */,
 				806A5C8C16241E2800867E56 /* CalHL.png */,
 				806A5C8D16241E2800867E56 /* CalHL@2x.png */,

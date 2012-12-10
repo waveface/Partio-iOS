@@ -11,16 +11,16 @@
 #import "WAArticle.h"
 #import "WANavigationController.h"
 
-typedef NS_ENUM(NSInteger, UIBarButtonCalItem) {
-	UIBarButtonCalItemMenu,
-	UIBarButtonCalItemToday,
-	UIBarButtonCalItemCancel
+typedef NS_ENUM(NSInteger, WABarButtonCalItem) {
+	WABarButtonCalItemMenu,
+	WABarButtonCalItemToday,
+	WABarButtonCalItemCancel
 };
 
 @interface WACalendarPickerViewController : WANavigationController <UITableViewDelegate>
 
 @property (nonatomic, strong) id delegate;
 
-- (id)initWithLeftButton:(UIBarButtonCalItem)leftBarButton RightButton:(UIBarButtonCalItem)rightBarButton;
+- (id)initWithLeftButton:(WABarButtonCalItem)leftBarButton RightButton:(WABarButtonCalItem)rightBarButton;
 
 @end

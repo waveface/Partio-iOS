@@ -277,8 +277,8 @@ CGFloat (^rowSpacing) (UICollectionView *) = ^ (UICollectionView *collectionView
 - (void) handleDateSelect:(UIBarButtonItem *)sender {
 	
 	WACalendarPickerViewController *dpVC = [[WACalendarPickerViewController alloc]
-																					initWithLeftButton:UIBarButtonCalItemCancel
-																					RightButton:UIBarButtonCalItemToday];
+																					initWithLeftButton:WABarButtonCalItemCancel
+																					RightButton:WABarButtonCalItemToday];
 
 	dpVC.delegate = self;
 	[self presentViewController:dpVC animated:YES completion:nil];

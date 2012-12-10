@@ -28,8 +28,8 @@
 
 @implementation WACalendarPickerViewController
 
-- (id)initWithLeftButton:(UIBarButtonCalItem)leftBarButton
-						 RightButton:(UIBarButtonCalItem)rightBarButton
+- (id)initWithLeftButton:(WABarButtonCalItem)leftBarButton
+						 RightButton:(WABarButtonCalItem)rightBarButton
 {
 	calPicker = [[KalViewController alloc] init];
 	calPicker.title = NSLocalizedString(@"CALENDAR_TITLE", @"Title of Canlendar");
@@ -38,15 +38,15 @@
 	calPicker.dataSource = dataSource;
 
 	switch (leftBarButton) {
-		case UIBarButtonCalItemMenu:
+		case WABarButtonCalItemMenu:
 			[calPicker.navigationItem setLeftBarButtonItem:[self menuBarButton] animated:YES];
 			break;
 			
-		case UIBarButtonCalItemToday:
+		case WABarButtonCalItemToday:
 			[calPicker.navigationItem setLeftBarButtonItem:[self todayBarButton] animated:YES];
 			break;
 			
-		case UIBarButtonCalItemCancel:
+		case WABarButtonCalItemCancel:
 			[calPicker.navigationItem setLeftBarButtonItem:[self cancelBarButton] animated:YES];
 			break;
 			
@@ -55,15 +55,15 @@
 	}
 		
 	switch (rightBarButton) {
-		case UIBarButtonCalItemMenu:
+		case WABarButtonCalItemMenu:
 			[calPicker.navigationItem setRightBarButtonItem:[self menuBarButton] animated:YES];
 			break;
 			
-		case UIBarButtonCalItemToday:
+		case WABarButtonCalItemToday:
 			[calPicker.navigationItem setRightBarButtonItem:[self todayBarButton] animated:YES];
 			break;
 			
-		case UIBarButtonCalItemCancel:
+		case WABarButtonCalItemCancel:
 			[calPicker.navigationItem setRightBarButtonItem:[self cancelBarButton] animated:YES];
 			break;
 			

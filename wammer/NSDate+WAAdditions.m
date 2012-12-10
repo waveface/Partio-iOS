@@ -34,7 +34,7 @@
   
 	NSCalendar *calendar = [NSCalendar currentCalendar];
   
-	NSDateComponents *dateComponents = [calendar components:(NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit)
+	NSDateComponents *dateComponents = [calendar components:(NSYearCalendarUnit|NSMonthCalendarUnit)
 																								 fromDate:self];
   dateComponents.month -= 1;
 	return [calendar dateFromComponents:dateComponents];
@@ -45,7 +45,7 @@
   
 	NSCalendar *calendar = [NSCalendar currentCalendar];
   
-	NSDateComponents *dateComponents = [calendar components:(NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit)
+	NSDateComponents *dateComponents = [calendar components:(NSYearCalendarUnit|NSMonthCalendarUnit)
 																								 fromDate:self];
   dateComponents.month += 1;
 	return [calendar dateFromComponents:dateComponents];
