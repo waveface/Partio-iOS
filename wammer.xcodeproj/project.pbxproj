@@ -4686,7 +4686,7 @@
 				13C1AB1D16688BEA004E6437 /* WASnsConnectSwitch.m in Sources */,
 				80C05C90167446EB00C88545 /* WAGoogleConnectSwitch.m in Sources */,
 				80C05C93167446FD00C88545 /* WATwitterConnectSwitch.m in Sources */,
-				13C1AB1D16688BEA004E6437 /* WAGoogleConnectSwitch.m in Sources */,
+				13C1AB1D16688BEA004E6437 /* WASnsConnectSwitch.m in Sources */,
 				1374524D166F1A250027582D /* WAFilePageElement+WAAdditions.m in Sources */,
 				13745256166F483D0027582D /* WADocumentStreamViewController.m in Sources */,
 				1374525A166F4A780027582D /* WADocumentStreamViewCell.m in Sources */,
