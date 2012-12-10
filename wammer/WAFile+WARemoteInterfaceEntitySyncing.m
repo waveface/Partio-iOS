@@ -24,9 +24,9 @@
 
 
 NSString * kWAFileEntitySyncingErrorDomain = @"com.waveface.wammer.file.entitySyncing";
-
-#define kWAFileEntitySyncingError(code, descriptionKey, reasonKey) [NSError irErrorWithDomain:kWAFileEntitySyncingErrorDomain code:code descriptionLocalizationKey:descriptionKey reasonLocalizationKey:reasonKey userInfo:nil]
-
+NSError * WAFileEntitySyncingError (NSUInteger code, NSString *descriptionKey, NSString *reasonKey) {
+	return [NSError irErrorWithDomain:kWAFileEntitySyncingErrorDomain code:code descriptionLocalizationKey:descriptionKey reasonLocalizationKey:reasonKey userInfo:nil];
+}
 
 NSString * const kWAFileSyncStrategy = @"WAFileSyncStrategy";
 NSString * const kWAFileSyncDefaultStrategy = @"WAFileSyncDefaultStrategy";
@@ -346,6 +346,11 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
 	void (^uploadAttachment)(NSURL *, NSMutableDictionary *, IRAsyncOperationCallback) = ^ (NSURL *fileURL, NSMutableDictionary *options, IRAsyncOperationCallback callback) {
 		
 		NSParameterAssert(fileURL);
+		
+		if (![[NSUserDefaults standardUserDefaults] boolForKey:kWAPhotoImportEnabled]) {
+			callback(WAFileEntitySyncingError(0, @"Photo import is disabled, stop sync files", nil));
+			return;
+		}
 		
 		WARemoteInterface *ri = [WARemoteInterface sharedInterface];
 		

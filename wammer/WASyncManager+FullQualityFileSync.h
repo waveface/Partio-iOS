@@ -13,9 +13,4 @@
 
 - (IRAsyncOperation *) fullQualityFileSyncOperationPrototype;
 
-- (void) countFilesWithCompletion:(void(^)(NSUInteger count))block;
-- (void) countFilesInContext:(NSManagedObjectContext *)context withCompletion:(void(^)(NSUInteger count))block;
-
-@property (nonatomic, readwrite, assign) NSUInteger numberOfFiles;
-
 @end

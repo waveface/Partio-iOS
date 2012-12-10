@@ -59,6 +59,7 @@
 			}];
 		} else {
 			[self.operationQueue cancelAllOperations];
+			[self waitUntilFinished];
 		}
 	}
 
@@ -93,7 +94,6 @@
 		}
 
 		wSelf.totalFilesCount += [assets count];
-		wSelf.lastOperationTimestamp = [[assets lastObject] valueForProperty:ALAssetPropertyDate];
 
 		__block NSBlockOperation *operation = [NSBlockOperation blockOperationWithBlock:^{
 
@@ -101,6 +101,8 @@
 				NSLog(@"A photo import operation was canceled");
 				return;
 			}
+
+			wSelf.lastOperationTimestamp = [[assets lastObject] valueForProperty:ALAssetPropertyDate];
 
 			NSManagedObjectContext *context = [[WADataStore defaultStore] disposableMOC];
 			WAArticle *article = [WAArticle objectInsertingIntoContext:context withRemoteDictionary:@{}];
@@ -203,6 +205,8 @@
 - (void)waitUntilFinished {
 
 	[self.operationQueue waitUntilAllOperationsAreFinished];
+	self.totalFilesCount = 0;
+	self.importedFilesCount = 0;
 
 }
 

@@ -63,6 +63,21 @@ static NSString * const kWASegueSettingsToOAuth = @"WASegueSettingsToOAuth";
 
 }
 
+- (NSUInteger) supportedInterfaceOrientations {
+	
+	if (isPad())
+		return UIInterfaceOrientationMaskAll;
+	else
+		return UIInterfaceOrientationMaskPortrait;
+	
+}
+
+- (BOOL) shouldAutorotate {
+	
+	return YES;
+	
+}
+
 #pragma mark - WAOAuthSwitch delegates
 
 - (void)openOAuthWebViewWithRequest:(NSURLRequest *)request completeBlock:(WAOAuthDidComplete)didCompleteBlock {
