@@ -194,7 +194,6 @@
 		
 		UIImage *defaultAvatar = [UIImage imageNamed:@"TempAvatar"];
 		UIImageView *avatar = [[UIImageView alloc] initWithImage:defaultAvatar];
-		avatar.bounds = CGRectMake(7.5f, 7.5f, defaultAvatar.size.width, defaultAvatar.size.height);
 		avatar.frame = CGRectMake(7.5f, 7.5f, defaultAvatar.size.width, defaultAvatar.size.height);
 		avatar.layer.cornerRadius = 5.f;
 		avatar.clipsToBounds = YES;
@@ -452,6 +451,7 @@
 			WACalendarPickerViewController *dpVC = [[WACalendarPickerViewController alloc]
 																							initWithLeftButton:WABarButtonCalItemMenu
 																							RightButton:WABarButtonCalItemToday];
+			[dpVC setModalPresentationStyle:UIModalPresentationFullScreen];
 			[self.viewDeckController setCenterController:dpVC];
 
 			break;

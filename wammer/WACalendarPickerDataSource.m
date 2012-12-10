@@ -21,11 +21,6 @@
 
 @implementation WACalendarPickerDataSource
 
-+ (WACalendarPickerDataSource *)dataSource
-{
-	return [[[self class] alloc] init];
-}
-
 - (id)init
 {
 	self = [super init];

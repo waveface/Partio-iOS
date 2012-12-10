@@ -266,6 +266,8 @@
 		80F800F715C2624C00132A96 /* IRAQ-Checkmark@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 80F800F515C2624C00132A96 /* IRAQ-Checkmark@2x.png */; };
 		94EB57761411451780C24560 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D215E734098A44479DEC4F88 /* libPods.a */; };
 		DE46FC17165E228300CC4FFF /* WACalendarPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DE46FC16165E228300CC4FFF /* WACalendarPickerViewController.m */; };
+		DE696E011675D020008DC3F6 /* WASnsConnectSwitch.m in Sources */ = {isa = PBXBuildFile; fileRef = DE696E001675D020008DC3F6 /* WASnsConnectSwitch.m */; };
+		DE696E051675D0AC008DC3F6 /* WATwitterConnectSwitch.m in Sources */ = {isa = PBXBuildFile; fileRef = DE696E041675D0AC008DC3F6 /* WATwitterConnectSwitch.m */; };
 		DE7B35151654B7FC00718262 /* TempAvatar.png in Resources */ = {isa = PBXBuildFile; fileRef = DE7B35131654B7FC00718262 /* TempAvatar.png */; };
 		DE7B35161654B7FC00718262 /* TempAvatar@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DE7B35141654B7FC00718262 /* TempAvatar@2x.png */; };
 		DEBD4933165E7C7E008F96D3 /* libKal.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DEBD492F165E74A8008F96D3 /* libKal.a */; };
@@ -1323,6 +1325,10 @@
 		D215E734098A44479DEC4F88 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		DE46FC15165E228300CC4FFF /* WACalendarPickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WACalendarPickerViewController.h; path = wammer/WACalendarPickerViewController.h; sourceTree = "<group>"; };
 		DE46FC16165E228300CC4FFF /* WACalendarPickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WACalendarPickerViewController.m; path = wammer/WACalendarPickerViewController.m; sourceTree = "<group>"; };
+		DE696DFF1675D020008DC3F6 /* WASnsConnectSwitch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WASnsConnectSwitch.h; path = wammer/WASnsConnectSwitch.h; sourceTree = "<group>"; };
+		DE696E001675D020008DC3F6 /* WASnsConnectSwitch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WASnsConnectSwitch.m; path = wammer/WASnsConnectSwitch.m; sourceTree = "<group>"; };
+		DE696E031675D0AC008DC3F6 /* WATwitterConnectSwitch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WATwitterConnectSwitch.h; path = wammer/WATwitterConnectSwitch.h; sourceTree = "<group>"; };
+		DE696E041675D0AC008DC3F6 /* WATwitterConnectSwitch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WATwitterConnectSwitch.m; path = wammer/WATwitterConnectSwitch.m; sourceTree = "<group>"; };
 		DE7B35131654B7FC00718262 /* TempAvatar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = TempAvatar.png; path = Resources/TempAvatar.png; sourceTree = "<group>"; };
 		DE7B35141654B7FC00718262 /* TempAvatar@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "TempAvatar@2x.png"; path = "Resources/TempAvatar@2x.png"; sourceTree = "<group>"; };
 		DEBD4927165E74A7008F96D3 /* Kal.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Kal.xcodeproj; path = external/Kal/src/Kal.xcodeproj; sourceTree = "<group>"; };
@@ -2384,6 +2390,15 @@
 			name = "Event View";
 			sourceTree = "<group>";
 		};
+		DE696E021675D09A008DC3F6 /* Twitter */ = {
+			isa = PBXGroup;
+			children = (
+				DE696E031675D0AC008DC3F6 /* WATwitterConnectSwitch.h */,
+				DE696E041675D0AC008DC3F6 /* WATwitterConnectSwitch.m */,
+			);
+			name = Twitter;
+			sourceTree = "<group>";
+		};
 		DE7B38A0165CBB9900718262 /* Calendar Picker */ = {
 			isa = PBXGroup;
 			children = (
@@ -2410,6 +2425,8 @@
 				DEBED825166C8739001A2B24 /* WAOAuthSwitch.m */,
 				DEBED821166C8713001A2B24 /* WAGoogleConnectSwitch.h */,
 				DEBED822166C8713001A2B24 /* WAGoogleConnectSwitch.m */,
+				DE696DFF1675D020008DC3F6 /* WASnsConnectSwitch.h */,
+				DE696E001675D020008DC3F6 /* WASnsConnectSwitch.m */,
 			);
 			name = OAuth;
 			sourceTree = "<group>";
@@ -2761,6 +2778,7 @@
 				FFC62019149CF1930097C377 /* Environment */,
 				FF946020152D7EDD0034D540 /* Appearance */,
 				FFBBA42615AD5D4900E95C66 /* Facebook */,
+				DE696E021675D09A008DC3F6 /* Twitter */,
 				DEBED820166C86E9001A2B24 /* OAuth */,
 				FF890CAB1416297C00CD7D1F /* Authentication */,
 				FF6BD00A15AFBE640046AAC8 /* Tutorial */,
@@ -4721,6 +4739,8 @@
 				1374525A166F4A780027582D /* WADocumentStreamViewCell.m in Sources */,
 				80E5173C1670F3B200E1C3AD /* WALocation.m in Sources */,
 				800D9A9216719B5D0034CDF6 /* MKMapView+ZoomLevel.m in Sources */,
+				DE696E011675D020008DC3F6 /* WASnsConnectSwitch.m in Sources */,
+				DE696E051675D0AC008DC3F6 /* WATwitterConnectSwitch.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

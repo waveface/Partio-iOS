@@ -13,8 +13,8 @@
 #import "WASlidingMenuViewController.h"
 #import "Kal.h"
 
-#define kCalWidth 320.f
-#define kCalHeight ((CGFloat)([UIScreen mainScreen].bounds.size.height))
+#define kScreenWidth ((CGFloat)([UIScreen mainScreen].bounds.size.height))
+#define kScreenHeight ((CGFloat)([UIScreen mainScreen].bounds.size.height))
 
 @interface WACalendarPickerViewController ()
 {
@@ -129,7 +129,7 @@
 	[super viewDidLoad];
   
 	if (isPad()) {
-		self.modalPresentationStyle = UIModalPresentationFormSheet;
+		calPicker.view.frame = self.view.frame;
 	}
 	
 	self.view.backgroundColor = [UIColor blackColor];
@@ -142,14 +142,6 @@
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
-}
-
-- (void)setDataSource:(id)aDataSource
-{
-  if (dataSource != aDataSource) {
-    dataSource = aDataSource;
-    tableView.dataSource = dataSource;
-  }
 }
 
 #pragma mark - UITableViewDelegate protocol conformance
@@ -166,8 +158,20 @@
 	if ([selectedEvent isKindOfClass:[WAArticle class]]) {
 
 		WAEventViewController *eventVC = [WAEventViewController controllerForArticle:selectedEvent];
-		[self pushViewController:eventVC animated:YES];
 		
+		if (self.viewDeckController) {
+			
+			UINavigationController *navC = [[WANavigationController alloc] initWithRootViewController:eventVC];
+			
+			navC.modalPresentationStyle = UIModalPresentationFormSheet;
+			[self presentViewController:navC animated:YES completion:nil];
+		
+		}
+		else {
+		
+			[self pushViewController:eventVC animated:YES];
+		
+		}
 	}
 	else if ([selectedEvent isKindOfClass:[WAFile class]]) {
 
@@ -213,20 +217,17 @@
 {
 	[super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
 
-	const CGFloat kScreenWidth = ((CGFloat)([UIScreen mainScreen].bounds.size.width));
-	const CGFloat kScreenHeight = ((CGFloat)([UIScreen mainScreen].bounds.size.height));
-	
 	if (toInterfaceOrientation == UIInterfaceOrientationMaskPortrait) {
-		calPicker.view.frame = CGRectMake(0, 0, kCalWidth, kCalHeight);
+		calPicker.view.frame = CGRectMake(0, 0, kScreenWidth, kScreenHeight);
 	}
 	else if (toInterfaceOrientation == UIInterfaceOrientationLandscapeLeft) {
-		calPicker.view.frame = CGRectMake(kScreenWidth - kCalHeight, 0, kCalHeight, kCalWidth);
+		calPicker.view.frame = CGRectMake(0, 0, kScreenWidth, kScreenHeight);
 	}
 	else if (toInterfaceOrientation == UIInterfaceOrientationPortraitUpsideDown) {
-		calPicker.view.frame = CGRectMake(0, 0, kCalWidth, kCalHeight);
+		calPicker.view.frame = CGRectMake(0, 0, kScreenWidth, kScreenHeight);
 	}
 	else if (toInterfaceOrientation == UIInterfaceOrientationLandscapeRight) {
-		calPicker.view.frame = CGRectMake(0, kScreenHeight - kCalWidth, kCalHeight, kCalWidth);
+		calPicker.view.frame = CGRectMake(0, 0, kScreenHeight, kScreenWidth);
 	}
 }
 

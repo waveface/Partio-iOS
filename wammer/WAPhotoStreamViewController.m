@@ -213,6 +213,7 @@
 																					RightButton:WABarButtonCalItemToday];
 	
 	dpVC.delegate = self;
+	dpVC.modalPresentationStyle = UIModalPresentationFormSheet;
 	[self presentViewController:dpVC animated:YES completion:nil];
 	
 }

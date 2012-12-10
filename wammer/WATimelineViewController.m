@@ -281,6 +281,7 @@ CGFloat (^rowSpacing) (UICollectionView *) = ^ (UICollectionView *collectionView
 																					RightButton:WABarButtonCalItemToday];
 
 	dpVC.delegate = self;
+	dpVC.modalPresentationStyle = UIModalPresentationFormSheet;
 	[self presentViewController:dpVC animated:YES completion:nil];
 		
 }
@@ -291,7 +292,7 @@ CGFloat (^rowSpacing) (UICollectionView *) = ^ (UICollectionView *collectionView
 	
 	WAArticle *post = [self.fetchedResultsController objectAtIndexPath:indexPath];
 	WAEventViewController *eVC = [WAEventViewController controllerForArticle:post];
-	
+		
 	WATimelineViewCell *cell = (WATimelineViewCell*)[collectionView cellForItemAtIndexPath:indexPath];
 	UIColor *origColor = cell.backgroundColor;
 	

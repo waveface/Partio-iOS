@@ -99,7 +99,7 @@
 	__weak WAEventViewController *wSelf = self;
 	self.navigationItem.leftBarButtonItem = WABackBarButtonItem([UIImage imageNamed:@"back"], @"", ^{
 		
-		if (isPad()) {
+		if (isPad() && wSelf.parentViewController.modalPresentationStyle == UIModalPresentationFormSheet) {
 			[wSelf.navigationController dismissViewControllerAnimated:YES completion:nil];
 		} else {
 			[wSelf.navigationController popViewControllerAnimated:YES];

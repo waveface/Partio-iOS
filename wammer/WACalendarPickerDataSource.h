@@ -17,7 +17,6 @@
 @property (nonatomic, strong)	NSMutableArray *items;
 @property (nonatomic, strong) NSMutableArray *files;
 
-+ (WACalendarPickerDataSource *)dataSource;
 - (WAArticle *)eventAtIndexPath:(NSIndexPath *)indexPath;
 
 @end
