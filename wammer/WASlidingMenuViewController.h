@@ -13,7 +13,8 @@
 typedef NS_ENUM(NSUInteger, WADayViewSupportedStyle) {
 	WAEventsViewStyle,
 	WAPhotosViewStyle,
-	WADocumentsViewStyle
+	WADocumentsViewStyle,
+	WACollectionsViewStyle,
 };
 
 @interface WASlidingMenuViewController : UITableViewController <IIViewDeckControllerDelegate>
