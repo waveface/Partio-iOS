@@ -79,6 +79,7 @@ NSString * const kWABusinessPlan = @"WABusinessPlan";
 
 NSString * const kWASNSGoogleConnectEnabled = @"WAGoogleConnectEnabled";
 NSString * const kWASNSTwitterConnectEnabled = @"WATwitterConnectEnabled";
+NSString * const kWASNSFoursquareConnectEnabled = @"WAFoursquareConnectEnabled";
 
 void WARegisterUserDefaults () {
 

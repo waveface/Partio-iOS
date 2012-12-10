@@ -11,6 +11,7 @@
 typedef NS_ENUM(NSUInteger, WASnsConnectStyle) {
 	WASnsConnectGoogleStyle,
 	WASnsConnectTwitterStyle,
+	WASnsConnectFoursquareStyle,
 };
 
 @interface WASnsConnectSwitch : WAOAuthSwitch

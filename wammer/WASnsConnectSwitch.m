@@ -12,6 +12,7 @@
 #import "WADefines.h"
 #import "WAGoogleConnectSwitch.h"
 #import "WATwitterConnectSwitch.h"
+#import "WAFoursquareConnectSwitch.h"
 #import "GAI.h"
 
 @implementation WASnsConnectSwitch
@@ -26,6 +27,11 @@
 			
 		case WASnsConnectTwitterStyle: {
 			self = [[WATwitterConnectSwitch alloc] initForStyle:style];
+			return self;
+		}
+			
+		case WASnsConnectFoursquareStyle: {
+			self = [[WAFoursquareConnectSwitch alloc] initForStyle:style];
 			return self;
 		}
 			

@@ -23,6 +23,9 @@
 /* Short action title for connecting Facebook creds */
 "ACTION_CONNECT_FACEBOOK_SHORT" = "同步";
 
+/* Short action title for connecting Foursquare */
+"ACTION_CONNECT_FOURSQUARE_SHORT" = "同步";
+
 /* Short action title for connecting Google */
 "ACTION_CONNECT_GOOGLE_SHORT" = "同步";
 
@@ -39,6 +42,9 @@
 
 /* Short action title for disconnecting Facebook creds */
 "ACTION_DISCONNECT_FACEBOOK" = "停止";
+
+/* Short action title for disconnecting Foursquare */
+"ACTION_DISCONNECT_FOURSQUARE" = "停止";
 
 /* Short action title for disconnecting Google */
 "ACTION_DISCONNECT_GOOGLE" = "停止";
@@ -248,6 +254,24 @@
 
 /* Caption for URL History */
 "FETCH_REQUEST_URL_HISTORY" = "瀏覽記錄";
+
+/* Title for an alert view to show foursquare connection failure */
+"FOURSQUARE_CONNECT_FAIL_TITLE" = "無法同步Foursquare";
+
+/* Message for alert view asking if user wants to connect her Foursquare account */
+"FOURSQUARE_CONNECT_REQUEST_MESSAGE" = "啟動之後，Stream將會開始同步您在Foursquare上的新貼文。";
+
+/* Title for alert view asking if user wants to connect her Foursquare account */
+"FOURSQUARE_CONNECT_REQUEST_TITLE" = "確認同步Foursquare";
+
+/* Title for an alert view to show foursquare disconnection failure */
+"FOURSQUARE_DISCONNECT_FAIL_TITLE" = "無法停止同步";
+
+/* Message for alert view asking if user wants to disconnect her Foursquare account */
+"FOURSQUARE_DISCONNECT_REQUEST_MESSAGE" = "確認取消後，Stream將會停止同步您在Foursquare上的新貼文。";
+
+/* Title for alert view asking if user wants to disconnect her Foursquare account */
+"FOURSQUARE_DISCONNECT_REQUEST_TITLE" = "確認取消Foursquare同步";
 
 /* Free plan details in plans page */
 "FREE_PLAN_DESCRIPTION" = "將所有原始檔案存放在你的一台 PC 裡。";
