@@ -385,7 +385,8 @@
 		NSMutableArray *allTags = [NSMutableArray array];
 
 		for (WALocation *loc in self.article.checkins) {
-			[allTags addObject:loc.name];
+				if (loc.name)
+					[allTags addObject:loc.name];
 		}
 		
 		if (allTags.count > 0) // dedup

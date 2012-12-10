@@ -19,6 +19,7 @@
 #import "WAUser.h"
 #import "WADataStore.h"
 
+#import "UIKit+IRAdditions.h"
 #import "GAI.h"
 
 @interface WAEventActionsViewController () <UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, MFMailComposeViewControllerDelegate>
@@ -105,15 +106,21 @@ void (^displayAlert)(NSString *, NSString *) = ^(NSString *title, NSString *msg)
 	IRBarButtonItem *fbButton = WABarButtonItem(nil, NSLocalizedString(@"ACTION_FACEBOOK", @"Share to Facebook action"), ^{
 		composeForSL(SLServiceTypeFacebook);
 	});
+	[fbButton setTintColor:[UIColor clearColor]];
+	[fbButton setTitleTextAttributes:@{UITextAttributeTextColor: [UIColor whiteColor]} forState:UIControlStateNormal];
 	
 	IRBarButtonItem *twButton = WABarButtonItem(nil, NSLocalizedString(@"ACTION_TWITTER", @"Share to Twitter action"), ^{
 		composeForSL(SLServiceTypeTwitter);
 	});
-	
+	[twButton setTintColor:[UIColor clearColor]];
+	[twButton setTitleTextAttributes:@{UITextAttributeTextColor: [UIColor whiteColor]} forState:UIControlStateNormal];
+
 	IRBarButtonItem *clButton = WABarButtonItem(nil, NSLocalizedString(@"ACTION_COLLECTION", @"Place photos in collections"), ^{
 		displayAlert(@"Sorry", @"Collection editiing will be available soon.");
 	});
-	
+	[clButton setTintColor:[UIColor clearColor]];
+	[clButton setTitleTextAttributes:@{UITextAttributeTextColor: [UIColor whiteColor]} forState:UIControlStateNormal];
+
 	IRBarButtonItem *mlButton = WABarButtonItem(nil, NSLocalizedString(@"ACTION_EMAIL", @"Share thru Email"), ^{
 		
 		if (![MFMailComposeViewController canSendMail])
@@ -142,7 +149,8 @@ void (^displayAlert)(NSString *, NSString *) = ^(NSString *title, NSString *msg)
 																											withValue:nil];
 
 	});
-
+	[mlButton setTintColor:[UIColor clearColor]];
+	[mlButton setTitleTextAttributes:@{UITextAttributeTextColor: [UIColor whiteColor]} forState:UIControlStateNormal];
 
 	self.toolbarItems = @[fbButton, twButton, clButton, mlButton];
 	
@@ -158,7 +166,9 @@ void (^displayAlert)(NSString *, NSString *) = ^(NSString *title, NSString *msg)
 		[wSelf.navigationController dismissViewControllerAnimated:YES completion:nil];
 		
 	});
-	
+	[self.navigationItem.leftBarButtonItem setTintColor:[UIColor clearColor]];
+	[self.navigationItem.leftBarButtonItem setTitleTextAttributes:@{UITextAttributeTextColor: [UIColor whiteColor]} forState:UIControlStateNormal];
+
 	[[GAI sharedInstance].defaultTracker trackEventWithCategory:@"Events"
 																									 withAction:@"Enter event actions"
 																										withLabel:nil
