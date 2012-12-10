@@ -99,6 +99,8 @@
 	[self.syncManager addObserver:self forKeyPath:@"preprocessingArticleSync" options:NSKeyValueObservingOptionNew context:nil];
 	[self.syncManager addObserver:self forKeyPath:@"syncedFilesCount" options:NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew context:nil];
 	
+	[self.tableView setBackgroundColor:[UIColor colorWithWhite:0.3f alpha:1.0f]];
+	self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 }
 
 - (void)dealloc
