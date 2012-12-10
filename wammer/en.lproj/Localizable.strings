@@ -26,6 +26,9 @@
 /* Short action title for connecting Google */
 "ACTION_CONNECT_GOOGLE_SHORT" = "Start Importing";
 
+/* Short action title for connecting Twitter */
+"ACTION_CONNECT_TWITTER_SHORT" = "Start Importing";
+
 /* Action deleting an article
    Title for deleting an article from the Overview
    Title for deleting an article from the Timeline */
@@ -39,6 +42,9 @@
 
 /* Short action title for disconnecting Google */
 "ACTION_DISCONNECT_GOOGLE" = "Stop Importing";
+
+/* Short action title for disconnecting Twitter */
+"ACTION_DISCONNECT_TWITTER" = "Stop Importing";
 
 /* In iPad composition view */
 "ACTION_DONE" = "Stream!";
@@ -478,6 +484,24 @@
 
 /* Alert on no location service enabled when open photo library */
 "TURN_ON_LOCATION_SERVICE" = "Turn on Location Services to allow Stream to access your Photo Library";
+
+/* Title for an alert view to show Twitter connection failure */
+"TWITTER_CONNECT_FAIL_TITLE" = "Unable to import from Google";
+
+/* Message for alert view asking if user wants to connect her Twitter account */
+"TWITTER_CONNECT_REQUEST_MESSAGE" = "Stream will start importing posts from your Twitter account";
+
+/* Title for alert view asking if user wants to connect her Twitter account */
+"TWITTER_CONNECT_REQUEST_TITLE" = "Confirm to import from Twitter";
+
+/* Title for an alert view to show Twitter disconnection failure */
+"TWITTER_DISCONNECT_FAIL_TITLE" = "Unable to stop importing";
+
+/* Message for alert view asking if user wants to disconnect her Twitter account */
+"TWITTER_DISCONNECT_REQUEST_MESSAGE" = "Stream will stop importing posts from your Twitter account";
+
+/* Title for alert view asking if user wants to disconnect her Twitter account */
+"TWITTER_DISCONNECT_REQUEST_TITLE" = "Confirm to stop importing from Twitter";
 
 /* Ultimate plan details in plans page */
 "ULTIMATE_PLAN_DESCRIPTION" = "500GB cloud storage, unlimited PC storage";

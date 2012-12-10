@@ -26,6 +26,9 @@
 /* Short action title for connecting Google */
 "ACTION_CONNECT_GOOGLE_SHORT" = "同步";
 
+/* Short action title for connecting Twitter */
+"ACTION_CONNECT_TWITTER_SHORT" = "同步";
+
 /* Action deleting an article
    Title for deleting an article from the Overview
    Title for deleting an article from the Timeline */
@@ -39,6 +42,9 @@
 
 /* Short action title for disconnecting Google */
 "ACTION_DISCONNECT_GOOGLE" = "停止";
+
+/* Short action title for disconnecting Twitter */
+"ACTION_DISCONNECT_TWITTER" = "停止";
 
 /* In iPad composition view */
 "ACTION_DONE" = "完成";
@@ -478,6 +484,24 @@
 
 /* Alert on no location service enabled when open photo library */
 "TURN_ON_LOCATION_SERVICE" = "Stream 須開啟定位服務才能存取相簿的內容";
+
+/* Title for an alert view to show Twitter connection failure */
+"TWITTER_CONNECT_FAIL_TITLE" = "無法同步Twitter";
+
+/* Message for alert view asking if user wants to connect her Twitter account */
+"TWITTER_CONNECT_REQUEST_MESSAGE" = "啟動之後，Stream將會開始同步您在Twitter上的新貼文。";
+
+/* Title for alert view asking if user wants to connect her Twitter account */
+"TWITTER_CONNECT_REQUEST_TITLE" = "確認同步Twitter";
+
+/* Title for an alert view to show Twitter disconnection failure */
+"TWITTER_DISCONNECT_FAIL_TITLE" = "無法停止同步";
+
+/* Message for alert view asking if user wants to disconnect her Twitter account */
+"TWITTER_DISCONNECT_REQUEST_MESSAGE" = "確認取消後，Stream將會停止同步您在Twitter上的新貼文。";
+
+/* Title for alert view asking if user wants to disconnect her Twitter account */
+"TWITTER_DISCONNECT_REQUEST_TITLE" = "確認取消Twitter同步";
 
 /* Ultimate plan details in plans page */
 "ULTIMATE_PLAN_DESCRIPTION" = "500GB 雲端儲存空間，PC 數量無限制。";
