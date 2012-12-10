@@ -1,5 +1,5 @@
 //
-//  WAGoogleConnectSwitch.h
+//  WATwitterConnectSwitch.h
 //  wammer
 //
 //  Created by Shen Steven on 12/9/12.
@@ -8,7 +8,7 @@
 
 #import "WASnsConnectSwitch.h"
 
-@interface WAGoogleConnectSwitch : WASnsConnectSwitch
+@interface WATwitterConnectSwitch : WASnsConnectSwitch
 
 - (id) initForStyle:(WASnsConnectStyle)style;
 
