@@ -10,7 +10,7 @@
 #import "WAFirstUsePhotoImportViewController.h"
 #import "WAFacebookConnectionSwitch.h"
 #import "WAAppearance.h"
-#import "WAGoogleConnectSwitch.h"
+#import "WASnsConnectSwitch.h"
 #import "WAOAuthViewController.h"
 
 static NSString * const kWASegueConnectServicesToPhotoImport = @"WASegueConnectServicesToPhotoImport";
@@ -21,7 +21,8 @@ static NSString * const kWASegueConnectServicesToOAuth = @"WASegueConnectService
 @property (nonatomic, strong) NSURLRequest *sentRequest;
 @property (nonatomic, strong) WAOAuthDidComplete didCompleteBlock;
 
-@property (nonatomic, strong) WAGoogleConnectSwitch *googleConnectSwitch;
+@property (nonatomic, strong) WASnsConnectSwitch *googleConnectSwitch;
+@property (nonatomic, strong) WASnsConnectSwitch *twitterConnectSwitch;
 
 @end
 
@@ -36,9 +37,6 @@ static NSString * const kWASegueConnectServicesToOAuth = @"WASegueConnectService
 	self.navigationItem.hidesBackButton = YES;
 
 	self.facebookConnectCell.accessoryView = [[WAFacebookConnectionSwitch alloc] init];
-	UISwitch *twitterSwitch = [[UISwitch alloc] init];
-	twitterSwitch.enabled = NO;
-	self.twitterConnectCell.accessoryView = twitterSwitch;
 	UISwitch *flickrSwitch = [[UISwitch alloc] init];
 	flickrSwitch.enabled = NO;
 	self.flickrConnectCell.accessoryView = flickrSwitch;
@@ -46,9 +44,13 @@ static NSString * const kWASegueConnectServicesToOAuth = @"WASegueConnectService
 	picasaSwitch.enabled = NO;
 	self.picasaConnectCell.accessoryView = picasaSwitch;
 
-	self.googleConnectSwitch = [[WAGoogleConnectSwitch alloc] init];
+	self.googleConnectSwitch = [[WASnsConnectSwitch alloc] initForStyle:WASnsConnectGoogleStyle];
 	self.googleConnectSwitch.delegate = self;
 	self.googleConnectCell.accessoryView = self.googleConnectSwitch;
+	
+	self.twitterConnectSwitch = [[WASnsConnectSwitch alloc] initForStyle:WASnsConnectTwitterStyle];
+	self.twitterConnectSwitch.delegate = self;
+	self.twitterConnectCell.accessoryView = self.twitterConnectSwitch;
 	
 	__weak WAFirstUseConnectServicesViewController *wSelf = self;
 	UIBarButtonItem *nextButton = (UIBarButtonItem *)WABackBarButtonItem([UIImage imageNamed:@"forward"], @"", ^{
@@ -81,6 +83,7 @@ static NSString * const kWASegueConnectServicesToOAuth = @"WASegueConnectService
 - (void)dealloc {
 
 	self.googleConnectSwitch.delegate = nil;
+	self.twitterConnectSwitch.delegate = nil;
 
 }
 

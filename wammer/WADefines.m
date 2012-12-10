@@ -78,6 +78,7 @@ NSString * const kWABackupFilesToCloudEnabled = @"WABackupFilesToCloudEnabled";
 NSString * const kWABusinessPlan = @"WABusinessPlan";
 
 NSString * const kWASNSGoogleConnectEnabled = @"WAGoogleConnectEnabled";
+NSString * const kWASNSTwitterConnectEnabled = @"WATwitterConnectEnabled";
 
 void WARegisterUserDefaults () {
 
