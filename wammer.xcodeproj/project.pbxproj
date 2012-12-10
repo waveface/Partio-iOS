@@ -244,6 +244,21 @@
 		806A5CAC16241E2800867E56 /* rightHL.png in Resources */ = {isa = PBXBuildFile; fileRef = 806A5C9A16241E2800867E56 /* rightHL.png */; };
 		806A5CAD16241E2800867E56 /* rightHL@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 806A5C9B16241E2800867E56 /* rightHL@2x.png */; };
 		807C0F1F165B298500197FC3 /* WATimelineViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 807C0F1E165B298500197FC3 /* WATimelineViewController.m */; };
+		808DAA0C167597C9003652BB /* WAEventPeopleListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 808DAA0B167597C9003652BB /* WAEventPeopleListViewController.m */; };
+		808DAA0F1675B1D2003652BB /* WAEventPeopleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 808DAA0E1675B1D2003652BB /* WAEventPeopleCell.m */; };
+		808DAA111675B1E8003652BB /* WAEventPeopleCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 808DAA101675B1E8003652BB /* WAEventPeopleCell.xib */; };
+		808DAA1F1675DE36003652BB /* add-DB.png in Resources */ = {isa = PBXBuildFile; fileRef = 808DAA131675DE36003652BB /* add-DB.png */; };
+		808DAA201675DE36003652BB /* add-DB@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 808DAA141675DE36003652BB /* add-DB@2x.png */; };
+		808DAA211675DE36003652BB /* add-G.png in Resources */ = {isa = PBXBuildFile; fileRef = 808DAA151675DE36003652BB /* add-G.png */; };
+		808DAA221675DE36003652BB /* add-G@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 808DAA161675DE36003652BB /* add-G@2x.png */; };
+		808DAA231675DE36003652BB /* add-Gray.png in Resources */ = {isa = PBXBuildFile; fileRef = 808DAA171675DE36003652BB /* add-Gray.png */; };
+		808DAA241675DE36003652BB /* add-Gray@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 808DAA181675DE36003652BB /* add-Gray@2x.png */; };
+		808DAA251675DE36003652BB /* add-LB.png in Resources */ = {isa = PBXBuildFile; fileRef = 808DAA191675DE36003652BB /* add-LB.png */; };
+		808DAA261675DE36003652BB /* add-LB@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 808DAA1A1675DE36003652BB /* add-LB@2x.png */; };
+		808DAA271675DE36003652BB /* add-O.png in Resources */ = {isa = PBXBuildFile; fileRef = 808DAA1B1675DE36003652BB /* add-O.png */; };
+		808DAA281675DE36003652BB /* add-O@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 808DAA1C1675DE36003652BB /* add-O@2x.png */; };
+		808DAA291675DE36003652BB /* add-Red.png in Resources */ = {isa = PBXBuildFile; fileRef = 808DAA1D1675DE36003652BB /* add-Red.png */; };
+		808DAA2A1675DE36003652BB /* add-Red@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 808DAA1E1675DE36003652BB /* add-Red@2x.png */; };
 		8090AB271646AE79007E2AC0 /* action.png in Resources */ = {isa = PBXBuildFile; fileRef = 8090AB231646AE79007E2AC0 /* action.png */; };
 		8090AB281646AE79007E2AC0 /* action@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8090AB241646AE79007E2AC0 /* action@2x.png */; };
 		8090AB291646AE79007E2AC0 /* back.png in Resources */ = {isa = PBXBuildFile; fileRef = 8090AB251646AE79007E2AC0 /* back.png */; };
@@ -1260,6 +1275,23 @@
 		806A5C9B16241E2800867E56 /* rightHL@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "rightHL@2x.png"; path = "Resources/rightHL@2x.png"; sourceTree = "<group>"; };
 		807C0F1D165B298500197FC3 /* WATimelineViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WATimelineViewController.h; sourceTree = "<group>"; };
 		807C0F1E165B298500197FC3 /* WATimelineViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WATimelineViewController.m; sourceTree = "<group>"; };
+		808DAA0A167597C9003652BB /* WAEventPeopleListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WAEventPeopleListViewController.h; path = wammer/WAEventPeopleListViewController.h; sourceTree = "<group>"; };
+		808DAA0B167597C9003652BB /* WAEventPeopleListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WAEventPeopleListViewController.m; path = wammer/WAEventPeopleListViewController.m; sourceTree = "<group>"; };
+		808DAA0D1675B1D2003652BB /* WAEventPeopleCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WAEventPeopleCell.h; path = wammer/WAEventPeopleCell.h; sourceTree = "<group>"; };
+		808DAA0E1675B1D2003652BB /* WAEventPeopleCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WAEventPeopleCell.m; path = wammer/WAEventPeopleCell.m; sourceTree = "<group>"; };
+		808DAA101675B1E8003652BB /* WAEventPeopleCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = WAEventPeopleCell.xib; path = wammer/WAEventPeopleCell.xib; sourceTree = "<group>"; };
+		808DAA131675DE36003652BB /* add-DB.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "add-DB.png"; path = "Resources/add-DB.png"; sourceTree = "<group>"; };
+		808DAA141675DE36003652BB /* add-DB@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "add-DB@2x.png"; path = "Resources/add-DB@2x.png"; sourceTree = "<group>"; };
+		808DAA151675DE36003652BB /* add-G.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "add-G.png"; path = "Resources/add-G.png"; sourceTree = "<group>"; };
+		808DAA161675DE36003652BB /* add-G@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "add-G@2x.png"; path = "Resources/add-G@2x.png"; sourceTree = "<group>"; };
+		808DAA171675DE36003652BB /* add-Gray.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "add-Gray.png"; path = "Resources/add-Gray.png"; sourceTree = "<group>"; };
+		808DAA181675DE36003652BB /* add-Gray@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "add-Gray@2x.png"; path = "Resources/add-Gray@2x.png"; sourceTree = "<group>"; };
+		808DAA191675DE36003652BB /* add-LB.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "add-LB.png"; path = "Resources/add-LB.png"; sourceTree = "<group>"; };
+		808DAA1A1675DE36003652BB /* add-LB@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "add-LB@2x.png"; path = "Resources/add-LB@2x.png"; sourceTree = "<group>"; };
+		808DAA1B1675DE36003652BB /* add-O.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "add-O.png"; path = "Resources/add-O.png"; sourceTree = "<group>"; };
+		808DAA1C1675DE36003652BB /* add-O@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "add-O@2x.png"; path = "Resources/add-O@2x.png"; sourceTree = "<group>"; };
+		808DAA1D1675DE36003652BB /* add-Red.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "add-Red.png"; path = "Resources/add-Red.png"; sourceTree = "<group>"; };
+		808DAA1E1675DE36003652BB /* add-Red@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "add-Red@2x.png"; path = "Resources/add-Red@2x.png"; sourceTree = "<group>"; };
 		8090AB231646AE79007E2AC0 /* action.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = action.png; path = Resources/action.png; sourceTree = "<group>"; };
 		8090AB241646AE79007E2AC0 /* action@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "action@2x.png"; path = "Resources/action@2x.png"; sourceTree = "<group>"; };
 		8090AB251646AE79007E2AC0 /* back.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = back.png; path = Resources/back.png; sourceTree = "<group>"; };
@@ -2357,6 +2389,18 @@
 			path = external/IRAQPhotoPicker;
 			sourceTree = "<group>";
 		};
+		808DAA121675C4B7003652BB /* Event People List */ = {
+			isa = PBXGroup;
+			children = (
+				808DAA0D1675B1D2003652BB /* WAEventPeopleCell.h */,
+				808DAA0E1675B1D2003652BB /* WAEventPeopleCell.m */,
+				808DAA101675B1E8003652BB /* WAEventPeopleCell.xib */,
+				808DAA0A167597C9003652BB /* WAEventPeopleListViewController.h */,
+				808DAA0B167597C9003652BB /* WAEventPeopleListViewController.m */,
+			);
+			name = "Event People List";
+			sourceTree = "<group>";
+		};
 		809C6D21160582F40016E196 /* ViewDeck */ = {
 			isa = PBXGroup;
 			children = (
@@ -2389,6 +2433,7 @@
 				800D9A9116719B5D0034CDF6 /* MKMapView+ZoomLevel.m */,
 				80C92188166265450055EE11 /* WAEventActionsViewController.h */,
 				80C92189166265450055EE11 /* WAEventActionsViewController.m */,
+				808DAA121675C4B7003652BB /* Event People List */,
 			);
 			name = "Event View";
 			sourceTree = "<group>";
@@ -2695,13 +2740,13 @@
 				80EF84CD165F379D009D29A5 /* WATimelineViewCell-ImageStack-1.xib */,
 				80EF84CF165F37C4009D29A5 /* WATimelineViewCell-ImageStack-2.xib */,
 				80175AFA165B4107007E783B /* WATimelineViewCell-ImageStack-3.xib */,
+				800E4FCD1671DD0C00F50E0B /* WATimelineViewCell-Checkin.xib */,
 				13745253166F483D0027582D /* WADocumentStreamViewController.h */,
 				13745254166F483D0027582D /* WADocumentStreamViewController.m */,
 				13745255166F483D0027582D /* WADocumentStreamViewController.xib */,
 				13745258166F4A770027582D /* WADocumentStreamViewCell.h */,
 				13745259166F4A770027582D /* WADocumentStreamViewCell.m */,
 				13DAAD7B166FB100002900D7 /* WADocumentStreamViewCell.xib */,
-				800E4FCD1671DD0C00F50E0B /* WATimelineViewCell-Checkin.xib */,
 			);
 			name = Timeline;
 			path = wammer;
@@ -3051,6 +3096,18 @@
 		FFC2E04C13DD706600816EA1 /* iOS Resources */ = {
 			isa = PBXGroup;
 			children = (
+				808DAA131675DE36003652BB /* add-DB.png */,
+				808DAA141675DE36003652BB /* add-DB@2x.png */,
+				808DAA151675DE36003652BB /* add-G.png */,
+				808DAA161675DE36003652BB /* add-G@2x.png */,
+				808DAA171675DE36003652BB /* add-Gray.png */,
+				808DAA181675DE36003652BB /* add-Gray@2x.png */,
+				808DAA191675DE36003652BB /* add-LB.png */,
+				808DAA1A1675DE36003652BB /* add-LB@2x.png */,
+				808DAA1B1675DE36003652BB /* add-O.png */,
+				808DAA1C1675DE36003652BB /* add-O@2x.png */,
+				808DAA1D1675DE36003652BB /* add-Red.png */,
+				808DAA1E1675DE36003652BB /* add-Red@2x.png */,
 				8090AB231646AE79007E2AC0 /* action.png */,
 				8090AB241646AE79007E2AC0 /* action@2x.png */,
 				8090AB251646AE79007E2AC0 /* back.png */,
@@ -4243,6 +4300,19 @@
 				80B9E50D16719B1200222F57 /* P3.png in Resources */,
 				80B9E50E16719B1200222F57 /* P3@2x.png in Resources */,
 				800E4FCE1671DD0C00F50E0B /* WATimelineViewCell-Checkin.xib in Resources */,
+				808DAA111675B1E8003652BB /* WAEventPeopleCell.xib in Resources */,
+				808DAA1F1675DE36003652BB /* add-DB.png in Resources */,
+				808DAA201675DE36003652BB /* add-DB@2x.png in Resources */,
+				808DAA211675DE36003652BB /* add-G.png in Resources */,
+				808DAA221675DE36003652BB /* add-G@2x.png in Resources */,
+				808DAA231675DE36003652BB /* add-Gray.png in Resources */,
+				808DAA241675DE36003652BB /* add-Gray@2x.png in Resources */,
+				808DAA251675DE36003652BB /* add-LB.png in Resources */,
+				808DAA261675DE36003652BB /* add-LB@2x.png in Resources */,
+				808DAA271675DE36003652BB /* add-O.png in Resources */,
+				808DAA281675DE36003652BB /* add-O@2x.png in Resources */,
+				808DAA291675DE36003652BB /* add-Red.png in Resources */,
+				808DAA2A1675DE36003652BB /* add-Red@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4679,6 +4749,8 @@
 				1374525A166F4A780027582D /* WADocumentStreamViewCell.m in Sources */,
 				80E5173C1670F3B200E1C3AD /* WALocation.m in Sources */,
 				800D9A9216719B5D0034CDF6 /* MKMapView+ZoomLevel.m in Sources */,
+				808DAA0C167597C9003652BB /* WAEventPeopleListViewController.m in Sources */,
+				808DAA0F1675B1D2003652BB /* WAEventPeopleCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

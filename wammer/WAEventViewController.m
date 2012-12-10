@@ -7,18 +7,22 @@
 //
 
 #import "WAEventViewController.h"
+
 #import "WADataStore.h"
 #import "WAArticle.h"
 #import "WATag.h"
 #import "WATagGroup.h"
 #import "WALocation.h"
 #import "WAPeople.h"
-#import "IRBarButtonItem.h"
-#import "WAAppearance.h"
+
 #import "WAEventPhotoViewCell.h"
-#import "GAI.h"
+#import "WAEventPeopleListViewController.h"
+#import "WAAppearance.h"
+
+#import "UIKit+IRAdditions.h"
 #import "MKMapView+ZoomLevel.h"
 #import "NINetworkImageView.h"
+#import "GAI.h"
 
 @interface WAAnnotation : NSObject <MKAnnotation>
 
@@ -357,6 +361,7 @@
 			more.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
 			more.titleLabel.textAlignment = NSTextAlignmentCenter;
 			[more setTitle:[NSString stringWithFormat:@"%d More", self.article.people.count - 2] forState:UIControlStateNormal];
+			[more addTarget:self action:@selector(showPeopleBtnPressed:) forControlEvents:UIControlEventTouchUpInside];
 			[self.headerView.avatarPlacehoder addSubview:more];
 		} else {
 			
@@ -367,6 +372,7 @@
 				NSString *imageName = [NSString stringWithFormat:@"P%d", i+1];
 				[add setBackgroundImage:[UIImage imageNamed:imageName] forState:UIControlStateNormal];
 				avatarRect.origin.y = avatarRect.origin.y + avatarRect.size.height + 4;
+				[add addTarget:self action:@selector(addMorePeopleBtnPressed:) forControlEvents:UIControlEventTouchUpInside];
 				
 				[self.headerView.avatarPlacehoder addSubview:add];
 				
@@ -395,6 +401,7 @@
 	} else {
 		
 		_headerView.locationMarkImageView.image = [UIImage imageNamed:@"NoLocation"];
+		_headerView.locationLabel.text = NSLocalizedString(@"LABEL_WITHOUT_GPS_DATA", @"The text of location label when there is no gps information we can refer to");
 		
 	}
 
@@ -417,6 +424,13 @@
 		
 	}
 	
+	if (!self.article.files.count) {
+		
+		_headerView.labelOverSeparationLine.text = NSLocalizedString(@"EVENT_SEPERATION_LABEL_WITHOUT_PHOTOS", @"The text of label on separation line in the event view when there is no photo presented.");
+		[_headerView.labelOverSeparationLine sizeToFit];
+		
+	}
+	
 	CGRect newFrame = _headerView.frame;
 	newFrame.size.width = CGRectGetWidth(self.itemsView.frame);
 	_headerView.frame = newFrame;
@@ -426,6 +440,28 @@
 	
 	return _headerView;
 
+}
+
+#pragma mark - Handle Actions
+
+- (void) showPeopleBtnPressed:(id)sender {
+
+	WAEventPeopleListViewController *plVC = [[WAEventPeopleListViewController alloc] initWithStyle:UITableViewStylePlain];
+	plVC.peopleList = [self.article.people allObjects];
+	
+	UINavigationController *navVC = [[UINavigationController alloc] initWithRootViewController:plVC];
+	plVC.navigationItem.leftBarButtonItem = WABarButtonItem(nil, NSLocalizedString(@"LABEL_MODAL_POPUP_CLOSE_BUTTON", @"Text for modal popup close button"), ^{
+		[plVC dismissViewControllerAnimated:YES completion:nil];
+	});
+	
+	navVC.modalPresentationStyle = UIModalPresentationFormSheet;
+
+	[self presentViewController:navVC animated:YES completion:nil];
+	
+}
+
+- (void) addMorePeopleBtnPressed:(id)sender {
+	
 }
 
 
@@ -449,6 +485,9 @@
 }
 
 - (NSInteger) collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
+	
+	if (!self.article.files.count)
+		return isPad() ? 5 : 3; // add buttons placehoder
 	
 	return self.article.files.count;
 	

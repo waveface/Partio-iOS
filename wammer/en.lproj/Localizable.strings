@@ -198,6 +198,9 @@
 /* EVENT_PHOTO_NUMBER_LABEL */
 "EVENT_PHOTO_NUMBER_LABEL" = "%d PHOTOS";
 
+/* The text of label on separation line in the event view when there is no photo presented. */
+"EVENT_SEPERATION_LABEL_WITHOUT_PHOTOS" = "ADD SOME PHOTOS HERE";
+
 /* Title for Events view */
 "EVENTS_CONTROLLER_TITLE" = "EVENTS";
 
@@ -272,6 +275,12 @@
 
 /* Title on introduction pages */
 "INTRODUCTION_TITLE" = "What is Stream?";
+
+/* Text for modal popup close button */
+"LABEL_MODAL_POPUP_CLOSE_BUTTON" = "Close";
+
+/* The text of location label when there is no gps information we can refer to */
+"LABEL_WITHOUT_GPS_DATA" = "LABEL_WITHOUT_GPS_DATA";
 
 /* The email subject users will share photos thru. The nickname of user will be appended to this subject. */
 "MAIL_ACTION_SUBJECT" = "%@ wants to share photo(s) with you thru Stream App.";

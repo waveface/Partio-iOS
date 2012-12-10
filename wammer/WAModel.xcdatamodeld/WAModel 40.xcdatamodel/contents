@@ -25,7 +25,7 @@
         <attribute name="text" optional="YES" attributeType="String">
             <userInfo/>
         </attribute>
-        <relationship name="checkins" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="WALocation" syncable="YES"/>
+        <relationship name="checkins" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="WALocation" inverseName="article" inverseEntity="WALocation" syncable="YES"/>
         <relationship name="comments" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="WAComment" inverseName="article" inverseEntity="WAComment">
             <userInfo/>
         </relationship>
@@ -211,8 +211,8 @@
         <attribute name="longitude" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="zoomLevel" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
-        <relationship name="article" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="WAArticle" inverseName="location" inverseEntity="WAArticle" syncable="YES"/>
-        <relationship name="tags" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="WATag" syncable="YES"/>
+        <relationship name="article" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="WAArticle" inverseName="checkins" inverseEntity="WAArticle" syncable="YES"/>
+        <relationship name="tags" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="WATag" inverseName="location" inverseEntity="WATag" syncable="YES"/>
     </entity>
     <entity name="WAOpenGraphElement" representedClassName="WAOpenGraphElement" syncable="YES">
         <attribute name="providerDisplayName" optional="YES" attributeType="String" syncable="YES"/>
@@ -265,6 +265,7 @@
     <entity name="WATag" representedClassName="WATag" syncable="YES">
         <attribute name="tagValue" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="article" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="WAArticle" inverseName="tags" inverseEntity="WAArticle" syncable="YES"/>
+        <relationship name="location" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="WALocation" inverseName="tags" inverseEntity="WALocation" syncable="YES"/>
         <relationship name="tagGroup" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="WATagGroup" inverseName="tags" inverseEntity="WATagGroup" syncable="YES"/>
     </entity>
     <entity name="WATagGroup" representedClassName="WATagGroup" syncable="YES">
@@ -338,7 +339,7 @@
         <element name="WAPeople" positionX="0" positionY="0" width="128" height="90"/>
         <element name="WAPreview" positionX="0" positionY="0" width="128" height="150"/>
         <element name="WAStorage" positionX="0" positionY="0" width="128" height="240"/>
-        <element name="WATag" positionX="0" positionY="0" width="128" height="90"/>
+        <element name="WATag" positionX="0" positionY="0" width="128" height="105"/>
         <element name="WATagGroup" positionX="0" positionY="0" width="128" height="90"/>
         <element name="WAUser" positionX="0" positionY="0" width="128" height="225"/>
     </elements>
