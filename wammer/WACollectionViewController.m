@@ -26,20 +26,13 @@
   return self;
 }
 
-- (void)viewDidLoad
-{
+- (void)viewDidLoad{
   [super viewDidLoad];
   
   [self.collectionView registerClass:[WACollectionViewCell class] forCellWithReuseIdentifier:kCollectionViewCellID];
 	
-	NSPredicate *noHiddenCollection = [NSPredicate predicateWithFormat:@"isHidden == FALSE"];
-	_fetchedResultsController = [WACollection MR_fetchAllSortedBy:@"title"
-																											ascending:YES
-																									withPredicate:noHiddenCollection
-																												groupBy:nil
-																											 delegate:self];
-	
-	
+	NSPredicate *allCollections = [NSPredicate predicateWithFormat:@"isHidden == FALSE"];
+	_fetchedResultsController = [WACollection MR_fetchAllSortedBy:@"title" ascending:YES withPredicate:allCollections	groupBy:nil delegate:self];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -61,7 +54,8 @@
 	return [[ [_fetchedResultsController sections] objectAtIndex:section] numberOfObjects];
 }
 
-- (UICollectionViewCell *)collectionView:(UICollectionView *)aCollectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
+- (UICollectionViewCell *)collectionView:(UICollectionView *)aCollectionView
+									        cellForItemAtIndexPath:(NSIndexPath *)indexPath {
 	WACollectionViewCell *cell = [aCollectionView dequeueReusableCellWithReuseIdentifier:kCollectionViewCellID forIndexPath:indexPath];
 	WACollection *aCollection = [_fetchedResultsController objectAtIndexPath:indexPath];
 	
