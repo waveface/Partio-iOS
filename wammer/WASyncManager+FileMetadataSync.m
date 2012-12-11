@@ -14,6 +14,7 @@
 #import "WADefines+iOS.h"
 #import "WAFileExif+WAAdditions.h"
 #import <NSDate+SSToolkitAdditions.h>
+#import "WADefines.h"
 
 @implementation WASyncManager (FileMetadataSync)
 
@@ -22,6 +23,11 @@
 	__weak WASyncManager *wSelf = self;
 
 	return [IRAsyncOperation operationWithWorker:^(IRAsyncOperationCallback callback) {
+
+		if (![[NSUserDefaults standardUserDefaults] boolForKey:kWAPhotoImportEnabled]) {
+			callback(nil);
+			return;
+		}
 
 		WAPhotoImportManager *photoImportManager = [(WAAppDelegate_iOS *)AppDelegate() photoImportManager];
 		if (photoImportManager.preprocessing || photoImportManager.operationQueue.operationCount > 0) {

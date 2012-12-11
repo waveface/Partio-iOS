@@ -24,9 +24,9 @@
 
 
 NSString * kWAFileEntitySyncingErrorDomain = @"com.waveface.wammer.file.entitySyncing";
-
-#define kWAFileEntitySyncingError(code, descriptionKey, reasonKey) [NSError irErrorWithDomain:kWAFileEntitySyncingErrorDomain code:code descriptionLocalizationKey:descriptionKey reasonLocalizationKey:reasonKey userInfo:nil]
-
+NSError * WAFileEntitySyncingError (NSUInteger code, NSString *descriptionKey, NSString *reasonKey) {
+	return [NSError irErrorWithDomain:kWAFileEntitySyncingErrorDomain code:code descriptionLocalizationKey:descriptionKey reasonLocalizationKey:reasonKey userInfo:nil];
+}
 
 NSString * const kWAFileSyncStrategy = @"WAFileSyncStrategy";
 NSString * const kWAFileSyncDefaultStrategy = @"WAFileSyncDefaultStrategy";
@@ -347,6 +347,11 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
 		
 		NSParameterAssert(fileURL);
 		
+		if (![[NSUserDefaults standardUserDefaults] boolForKey:kWAPhotoImportEnabled]) {
+			callback(WAFileEntitySyncingError(0, @"Photo import is disabled, stop sync files", nil));
+			return;
+		}
+		
 		WARemoteInterface *ri = [WARemoteInterface sharedInterface];
 		
 		[ri createAttachmentWithFile:fileURL group:ri.primaryGroupIdentifier options:options onSuccess: ^ (NSString *attachmentIdentifier) {
@@ -419,62 +424,62 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
 		 */
 
 		[operations addObject:[IRAsyncBarrierOperation operationWithWorker:^(IRAsyncOperationCallback callback) {
-			
+
 			NSManagedObjectContext *context = [ds autoUpdatingMOC];
 			context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
-
+			
 			WAFile *file = (WAFile *)[context irManagedObjectForURI:ownURL];
 			
 			if (file.thumbnailURL) {
 				callback(nil);
 				return;
 			}
-
+			
 			NSString *thumbnailFilePath = file.thumbnailFilePath;
-
+			
 			NSMutableDictionary *options = [NSMutableDictionary dictionaryWithObjectsAndKeys:
 																			@(WARemoteAttachmentImageType), kWARemoteAttachmentType,
 																			WARemoteAttachmentMediumSubtype, kWARemoteAttachmentSubtype,
 																			nil];
-
+			
 			if (file.identifier) {
 				options[kWARemoteAttachmentUpdatedObjectIdentifier] = file.identifier;
 			}
-
+			
 			NSAssert1(file.articles.count>0, @"WAFile entity %@ must have already been associated with an article", file);
 			WAArticle *article = [file.articles allObjects][0];  // if the post is from device itself, there should be only one article in db, this should be right, but careful
 			if (article.identifier) {
 				options[kWARemoteArticleIdentifier] = article.identifier;
 			}
-
+			
 			if (file.exif) {
 				options[kWARemoteAttachmentExif] = file.exif;
 			}
-
+			
 			if (file.importTime) {
 				options[kWARemoteAttachmentImportTime] = file.importTime;
 			}
-
+			
 			if (!isValidPath(thumbnailFilePath)) {
 				
 				if (file.assetURL) {
-
+					
 					[[WAAssetsLibraryManager defaultManager] assetForURL:[NSURL URLWithString:file.assetURL] resultBlock:^(ALAsset *asset) {
-
+						
 						UIImage *image = [[asset defaultRepresentation] irImage];
 						[file makeThumbnailsWithImage:image  options:WAThumbnailMakeOptionMedium];
-
+						
 						NSError *error = nil;
 						BOOL didSave = [context save:&error];
 						NSCAssert1(didSave, @"Generated thumbnail could not be saved: %@", error);
-
+						
 						uploadAttachment([NSURL fileURLWithPath:file.thumbnailFilePath], options, callback);
-
+						
 					} failureBlock:^(NSError *error) {
-
+						
 						NSLog(@"Unable to read asset from url: %@", file.assetURL);
 						callback(error);
-
+						
 					}];
 					
 				} else {
@@ -490,20 +495,24 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
 					NSCParameterAssert(bestImage);
 					
 					[file makeThumbnailsWithImage:bestImage options:WAThumbnailMakeOptionMedium];
-
+					
 					NSError *error = nil;
 					BOOL didSave = [context save:&error];
 					NSCAssert1(didSave, @"Generated thumbnail could not be saved: %@", error);
-
+					
 					uploadAttachment([NSURL fileURLWithPath:file.thumbnailFilePath], options, callback);
 					
 				}
-
+				
 			} else {
-
+				
 				uploadAttachment([NSURL fileURLWithPath:file.thumbnailFilePath], options, callback);
-
+				
 			}
+		
+		} trampoline:^(IRAsyncOperationInvoker callback) {
+
+			callback();
 
 		} callback:^(id results) {
 
@@ -513,6 +522,10 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
 				completionBlock(YES, nil);
 			}
 
+		} callbackTrampoline:^(IRAsyncOperationInvoker callback) {
+
+			callback();
+		
 		}]];
 	
 	}
@@ -520,41 +533,41 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
 	if (needsSendingResourceImage && canSendResourceImage) {
 
 		[operations addObject:[IRAsyncBarrierOperation operationWithWorker:^(IRAsyncOperationCallback callback) {
-			
+
 			NSManagedObjectContext *context = [ds disposableMOC];
-
+			
 			WAFile *file = (WAFile *)[context irManagedObjectForURI:ownURL];
-
+			
 			if (file.resourceURL || ![[WARemoteInterface sharedInterface] hasReachableStation]) {
 				callback(nil);
 				return;
 			}
-
+			
 			NSMutableDictionary *options = [NSMutableDictionary dictionaryWithObjectsAndKeys:
-				@(WARemoteAttachmentImageType), kWARemoteAttachmentType,
-				WARemoteAttachmentOriginalSubtype, kWARemoteAttachmentSubtype,
-			nil];
+																			@(WARemoteAttachmentImageType), kWARemoteAttachmentType,
+																			WARemoteAttachmentOriginalSubtype, kWARemoteAttachmentSubtype,
+																			nil];
 			
 			if (file.identifier)
 				options[kWARemoteAttachmentUpdatedObjectIdentifier] = file.identifier;
-
+			
 			WAArticle *article = [file.articles allObjects][0];
 			if (article.identifier) {
 				options[kWARemoteArticleIdentifier] = article.identifier;
 			}
-
+			
 			if (file.exif) {
 				options[kWARemoteAttachmentExif] = file.exif;
 			}
-
+			
 			if (file.timestamp) {
 				options[kWARemoteAttachmentCreateTime] = file.timestamp;
 			}
-
+			
 			if (file.importTime) {
 				options[kWARemoteAttachmentImportTime] = file.importTime;
 			}
-
+			
 			NSString *sentResourcePath = file.resourceFilePath;
 			if (!isValidPath(sentResourcePath)) {
 				if (file.assetURL) {
@@ -563,7 +576,11 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
 			} else {
 				uploadAttachment([NSURL fileURLWithPath:sentResourcePath], options, callback);
 			}
-			
+
+		} trampoline:^(IRAsyncOperationInvoker callback) {
+
+			callback();
+
 		} callback:^(id results) {
 
 			if ([results isKindOfClass:[NSError class]]) {
@@ -571,6 +588,10 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
 			} else {
 				completionBlock(YES, nil);
 			}
+
+		} callbackTrampoline:^(IRAsyncOperationInvoker callback) {
+
+			callback();
 
 		}]];
 	
@@ -591,7 +612,7 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
 	static dispatch_once_t onceToken;
 	dispatch_once(&onceToken, ^{
     
-		queue = [NSOperationQueue new];
+		queue = [[NSOperationQueue alloc] init];
 		queue.maxConcurrentOperationCount = 1;
 		
 	});

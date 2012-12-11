@@ -12,8 +12,6 @@
 
 - (void) enumerateFilesWithSyncableBlobsInContext:(NSManagedObjectContext *)context usingBlock:(void(^)(WAFile *aFile, NSUInteger index, BOOL *stop))block;
 
-- (NSUInteger) numberOfFilesWithSyncableBlobsInContext:(NSManagedObjectContext *)context;
-
 - (void) enumerateDirtyArticlesInContext:(NSManagedObjectContext *)context usingBlock:(void(^)(WAArticle *anArticle, NSUInteger index, BOOL *stop))block;
 
 - (NSArray *) fetchFilesNeedingMetadataSyncUsingContext:(NSManagedObjectContext *)aContext;

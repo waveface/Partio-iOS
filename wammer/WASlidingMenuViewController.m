@@ -294,10 +294,12 @@
 
 		} else {
 
-			if (wSelf.statusBar) {
-				wSelf.statusBar.statusLabel.text = [NSString stringWithFormat:NSLocalizedString(@"PHOTO_UPLOAD_STATUS_BAR_UPLOADING", @"String on customized status bar"), currentCount, syncManager.needingSyncFilesCount];
-				wSelf.statusBar.progressView.progress = currentCount * 1.0 / syncManager.needingSyncFilesCount;
-			}
+			[[NSOperationQueue mainQueue] addOperationWithBlock:^{
+				if (wSelf.statusBar) {
+					wSelf.statusBar.statusLabel.text = [NSString stringWithFormat:NSLocalizedString(@"PHOTO_UPLOAD_STATUS_BAR_UPLOADING", @"String on customized status bar"), currentCount, syncManager.needingSyncFilesCount];
+					wSelf.statusBar.progressView.progress = currentCount * 1.0 / syncManager.needingSyncFilesCount;
+				}
+			}];
 
 		}
 		

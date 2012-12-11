@@ -13,6 +13,7 @@
 #import "WARemoteInterface.h"
 #import "WADefines+iOS.h"
 #import "WAAppDelegate_iOS.h"
+#import "WADefines.h"
 
 @implementation WASyncManager (DirtyArticleSync)
 
@@ -22,6 +23,12 @@
 	
 	return [IRAsyncOperation operationWithWorker:^(IRAsyncOperationCallback callback) {
 		
+		// FIXME: manual posts are also blocked by the setting, but the feature is TBD
+		if (![[NSUserDefaults standardUserDefaults] boolForKey:kWAPhotoImportEnabled]) {
+			callback(nil);
+			return;
+		}
+
 		WAPhotoImportManager *photoImportManager = [(WAAppDelegate_iOS *)AppDelegate() photoImportManager];
 		if (photoImportManager.preprocessing || photoImportManager.operationQueue.operationCount > 0) {
 			callback(nil);
