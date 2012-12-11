@@ -10,6 +10,7 @@
 	#import <Foundation/Foundation.h>
 	#import <CoreData/CoreData.h>
 	#import <QuartzCore/QuartzCore.h>
+	#import "WADefines+iOS.h"
 
 	#if WF_USES_TESTFLIGHT
 	
