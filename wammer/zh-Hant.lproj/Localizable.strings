@@ -213,6 +213,9 @@
 /* EVENT_PHOTO_NUMBER_LABEL */
 "EVENT_PHOTO_NUMBER_LABEL" = "%d 張照片";
 
+/* The text of label on separation line in the event view when there is no photo presented. */
+"EVENT_SEPERATION_LABEL_WITHOUT_PHOTOS" = "加些照片吧";
+
 /* Title for Events view */
 "EVENTS_CONTROLLER_TITLE" = "事件";
 
@@ -305,6 +308,12 @@
 
 /* Title on introduction pages */
 "INTRODUCTION_TITLE" = "Stream 是什麼？";
+
+/* Text for modal popup close button */
+"LABEL_MODAL_POPUP_CLOSE_BUTTON" = "關閉";
+
+/* The text of location label when there is no gps information we can refer to */
+"LABEL_WITHOUT_GPS_DATA" = "LABEL_WITHOUT_GPS_DATA";
 
 /* The email subject users will share photos thru. The nickname of user will be appended to this subject. */
 "MAIL_ACTION_SUBJECT" = "%@ 透過 Stream app 與你分享照片。";
