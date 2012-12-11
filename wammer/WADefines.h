@@ -44,7 +44,6 @@ extern NSString * const kWAFacebookAppID;
 extern NSString * const kWAFacebookTokenKey;
 extern NSString * const kWAFacebookExpirationDateKey;
 
-extern NSString * const kWATestflightTeamToken;
 extern NSString * const kWACrashlyticsAPIKey;
 
 extern NSString * const kWAGoogleAnalyticsAccountID;
