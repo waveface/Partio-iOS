@@ -12,11 +12,17 @@
 
 - (NSDate *)dayEnd;
 - (NSDate *)dayBegin;
+- (NSDate *)dateOfPreviousMonth;
+- (NSDate *)dateOfFollowingMonth;
+- (NSDate *)dateOfPreviousWeek;
+- (NSDate *)dateOfFollowingWeek;
 
 - (NSString *) dayString;
 - (NSString *) localizedMonthShortString;
 - (NSString *) localizedMonthFullString;
 - (NSString *) localizedWeekDayShortString;
 - (NSString *) localizedWeekDayFullString;
+
+extern BOOL (^isSameDay) (NSDate *, NSDate *);
 
 @end

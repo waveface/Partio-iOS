@@ -14,6 +14,7 @@
 #import "NSDate+WAAdditions.h"
 #import "WADayHeaderView.h"
 #import "WAGalleryViewController.h"
+#import "WACalendarPickerViewController.h"
 
 @interface WAPhotoStreamViewController (){
 	NSArray *colorPalette;
@@ -178,6 +179,7 @@
 		[headerView.leftButton addTarget:self.parentViewController action:@selector(handleSwipeRight:) forControlEvents:UIControlEventTouchUpInside];
 		[headerView.rightButton addTarget:self.parentViewController action:@selector(handleSwipeLeft:) forControlEvents:UIControlEventTouchUpInside];
 		[headerView.centerButton addTarget:self.parentViewController action:@selector(handleDateSelect:) forControlEvents:UIControlEventTouchUpInside];
+		
 	}
 	
 	headerView.dayLabel.text = [onDate dayString];
@@ -189,6 +191,8 @@
 	headerView.dayLabel.textColor = [UIColor colorWithWhite:0.53 alpha:1.0f];
 	headerView.monthLabel.textColor =[UIColor colorWithWhite:0.53 alpha:1.0f];
 	headerView.wdayLabel.textColor = [UIColor colorWithWhite:0.53 alpha:1.0f];
+	[headerView.centerButton addTarget:self action:@selector(handleDateSelect:) forControlEvents:UIControlEventTouchUpInside];
+
 	return headerView;
 }
 
@@ -198,6 +202,18 @@
 	
 	[self.navigationController pushViewController:galleryVC animated:YES];
 
+}
+
+#pragma mark - Calendar
+
+- (void) handleDateSelect:(UIBarButtonItem *)sender {
+	
+	WACalendarPickerViewController *dpVC = [[WACalendarPickerViewController alloc] initWithStyle:WACalendarPickerStyleTodayCancel];
+	
+	dpVC.delegate = self;
+	dpVC.modalPresentationStyle = UIModalPresentationFormSheet;
+	[self presentViewController:dpVC animated:YES completion:nil];
+	
 }
 
 @end

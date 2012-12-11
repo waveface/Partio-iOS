@@ -23,6 +23,7 @@ typedef void (^completionHandler) (void);
 
 + (WAEventViewController *) controllerForArticle:(WAArticle *)article;
 + (NSAttributedString *) attributedDescriptionStringForEvent:(WAArticle*)event;
++ (NSAttributedString *) attributedDescriptionStringForEvent:(WAArticle*)event styleWithColor:(BOOL)colonOn styleWithFontForTableView:(BOOL)fontForTableViewOn;
 + (NSAttributedString *) attributedStringForTags:(NSArray*)tags;
 
 @end

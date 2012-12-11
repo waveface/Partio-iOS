@@ -106,7 +106,7 @@
 	__weak WAEventViewController *wSelf = self;
 	self.navigationItem.leftBarButtonItem = WABackBarButtonItem([UIImage imageNamed:@"back"], @"", ^{
 		
-		if (isPad()) {
+		if (isPad() && wSelf.parentViewController.modalPresentationStyle == UIModalPresentationFormSheet) {
 			[wSelf.view.window removeGestureRecognizer:tapGR];
 			[wSelf.navigationController dismissViewControllerAnimated:YES completion:nil];
 		} else {
@@ -245,7 +245,7 @@
 	return formatter;
 }
 
-+ (NSAttributedString *) attributedDescriptionStringForEvent:(WAArticle*)event {
++ (NSAttributedString *) attributedDescriptionStringForEvent:(WAArticle*)event styleWithColor:(BOOL)colonOn styleWithFontForTableView:(BOOL)fontForTableViewOn {
 
 	NSMutableArray *locations = [NSMutableArray array];
 	if (event.location != nil && event.location.name != nil) {
@@ -279,7 +279,10 @@
 	}
 	
 	UIFont *hlFont = [UIFont fontWithName:@"Georgia-BoldItalic" size:17.0f];
-	
+	UIFont *calFont = [UIFont fontWithName:@"Georgia-Italic" size:14.0f];
+	UIFont *calBFont = [UIFont boldSystemFontOfSize:14.f];
+	UIColor *calTextColor = [UIColor colorWithRed:0.353f green:0.361f blue:0.361f alpha:1.f];
+
 	NSString *locString = [locations componentsJoinedByString:@","];
 	NSString *peoString = [people componentsJoinedByString:@","];
 	NSString *otherString = [otherDesc componentsJoinedByString:@", "];
@@ -309,26 +312,29 @@
 	UIColor *othersColor = [UIColor colorWithRed:0.5f green:0.85 blue:0.96 alpha:1];
 	UIColor *locationColor = [UIColor colorWithRed:0.5f green:0.85 blue:0.96 alpha:1];
 	UIColor *peopleColor = [UIColor colorWithRed:0.68f green:0.78f blue:0.26f alpha:1];
-	
-	NSDictionary *actionAttr = @{NSForegroundColorAttributeName: actionColor,
-															 NSFontAttributeName: hlFont};
-	NSDictionary *othersAttr = @{NSForegroundColorAttributeName: othersColor,
-															 NSFontAttributeName: hlFont};
-	NSDictionary *locationAttr = @{NSForegroundColorAttributeName: locationColor,
-															   NSFontAttributeName: hlFont};
-	NSDictionary *peopleAttr = @{NSForegroundColorAttributeName: peopleColor,
-															 NSFontAttributeName: hlFont};
 
+	NSDictionary *actionAttr = @{NSForegroundColorAttributeName: colonOn? actionColor : calTextColor, NSFontAttributeName: fontForTableViewOn? calFont : hlFont};
+	NSDictionary *locationAttr = @{NSForegroundColorAttributeName: colonOn? locationColor : calTextColor, NSFontAttributeName: fontForTableViewOn? calFont : hlFont};
+	NSDictionary *peopleAttr = @{NSForegroundColorAttributeName: colonOn? peopleColor : calTextColor, NSFontAttributeName: fontForTableViewOn? calFont : hlFont};
+	NSDictionary *othersAttr = @{NSForegroundColorAttributeName: colonOn? othersColor : calTextColor, NSFontAttributeName: fontForTableViewOn? calBFont : hlFont};
+	
+	if (attrString.length > 0)
+		[attrString setAttributes:othersAttr range:(NSRange)[rawString rangeOfString:rawString]];
 	if (event.eventDescription && event.eventDescription.length > 0)
 		[attrString setAttributes:actionAttr range:(NSRange){0, event.eventDescription.length}];
 	if (locString && locString.length > 0 )
 		[attrString setAttributes:locationAttr range:(NSRange)[rawString rangeOfString:locString]];
 	if (peoString && peoString.length > 0 )
 		[attrString setAttributes:peopleAttr range:(NSRange)[rawString rangeOfString:peoString]];
-	if (otherString && otherString.length > 0 )
-		[attrString setAttributes:othersAttr range:(NSRange)[rawString rangeOfString:otherString]];
+
 	
 	return attrString;
+	
+}
+
++ (NSAttributedString *) attributedDescriptionStringForEvent:(WAArticle*)event {
+	
+	return [[self class] attributedDescriptionStringForEvent:event styleWithColor:YES styleWithFontForTableView:NO];
 	
 }
 
@@ -354,7 +360,7 @@
 }
 
 - (WAEventHeaderView *) headerView {
-	
+
 	if (_headerView)
 		return _headerView;
 

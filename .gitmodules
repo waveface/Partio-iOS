@@ -55,3 +55,6 @@
 [submodule "external/AQGridView"]
 	path = external/AQGridView
 	url = https://github.com/waveface/AQGridView
+[submodule "external/Kal"]
+	path = external/Kal
+	url = git@github.com:waveface/Kal

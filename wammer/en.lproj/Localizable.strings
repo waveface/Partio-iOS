@@ -136,6 +136,18 @@
 /* Unknown Error */
 "AUTH_UNKNOWN_ERROR" = "Unknown error";
 
+/* Cancel button in calendar picker */
+"CALENDAR_CANCEL_BUTTON" = "CANCEL";
+
+/* Description for no event day in calendar */
+"CALENDAR_NO_EVENT" = "NO EVENT";
+
+/* Title of Canlendar */
+"CALENDAR_TITLE" = "CALENDAR";
+
+/* Today button in calendar picker */
+"CALENDAR_TODAY_BUTTON" = "TODAY";
+
 /* Prompt for Cover Image picker */
 "CHANGE_REPRESENTING_FILE_PROMPT" = "Select a new Cover Photo for this post.";
 

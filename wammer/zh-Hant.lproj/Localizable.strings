@@ -136,6 +136,18 @@
 /* Unknown Error */
 "AUTH_UNKNOWN_ERROR" = "未知錯誤";
 
+/* Cancel button in calendar picker */
+"CALENDAR_CANCEL_BUTTON" = "取消";
+
+/* Description for no event day in calendar */
+"CALENDAR_NO_EVENT" = "沒有動態";
+
+/* Title of Canlendar */
+"CALENDAR_TITLE" = "行事曆";
+
+/* Today button in calendar picker */
+"CALENDAR_TODAY_BUTTON" = "今天";
+
 /* Prompt for Cover Image picker */
 "CHANGE_REPRESENTING_FILE_PROMPT" = "選擇喜歡的相片作為封面。";
 

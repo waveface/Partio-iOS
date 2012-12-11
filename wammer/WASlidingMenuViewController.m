@@ -23,6 +23,7 @@
 #import "WAPhotoStreamViewController.h"
 #import "WAAppDelegate_iOS.h"
 #import "WAStatusBar.h"
+#import "WACalendarPickerViewController.h"
 #import "WADocumentStreamViewController.h"
 #import "WACollectionViewController.h"
 
@@ -202,11 +203,12 @@
 	if ([keyPath isEqual:@"avatar"]) {
 		
 		UIImage *defaultAvatar = [UIImage imageNamed:@"TempAvatar"];
-		_userCell.imageView.bounds = CGRectMake(0, 0, defaultAvatar.size.width, defaultAvatar.size.height);
-		_userCell.imageView.layer.cornerRadius = 5.0f;
-		_userCell.imageView.clipsToBounds = YES;
-		_userCell.imageView.image = ([newValue isKindOfClass:[NSNull class]])? defaultAvatar: (UIImage *)newValue;
-		
+		UIImageView *avatar = [[UIImageView alloc] initWithImage:defaultAvatar];
+		avatar.frame = CGRectMake(7.5f, 7.5f, defaultAvatar.size.width, defaultAvatar.size.height);
+		avatar.layer.cornerRadius = 5.f;
+		avatar.clipsToBounds = YES;
+		avatar.image = ([newValue isKindOfClass:[NSNull class]])? defaultAvatar: (UIImage *)newValue;
+		[_userCell.contentView addSubview:avatar];
 	}
 	
 	if ([keyPath isEqual:@"nickname"]) {
@@ -214,8 +216,14 @@
 		if ([newValue isKindOfClass:[NSNull class]]) {
 			return;
 		}
-				 
-		_userCell.textLabel.text = (NSString *)newValue;
+		
+		UILabel *nameLabel = [[UILabel alloc] init];
+		[nameLabel setFrame:CGRectMake(50, 7, 200, 30)];
+		[nameLabel setText:(NSString *)newValue];
+		[nameLabel setTextColor:[UIColor whiteColor]];
+		[nameLabel setFont:[UIFont fontWithName:NSLocalizedString(@"SLIDING_MENU_FONTNAME", @"Font name of the sliding menu") size:18.0]];
+		[nameLabel setBackgroundColor:[UIColor colorWithRed:0.31f green:0.31f blue:0.31f alpha:1.f]];
+		[_userCell.contentView addSubview:nameLabel];
 		
 	}
 
@@ -441,18 +449,30 @@
 			
 			break;
 		}
-		case 3:
+		case 3: {
 			[self.viewDeckController closeLeftView];
 			[self switchToViewStyle:WADocumentsViewStyle];
 			break;
-
+		}
+			
 		case 4: {
 			[self.viewDeckController closeLeftView];
 			[self switchToViewStyle:WACollectionsViewStyle];
 			break;
 		}
+
+		case 5: {
+			[self.viewDeckController closeLeftView];
+			
+			WACalendarPickerViewController *dpVC = [[WACalendarPickerViewController alloc] initWithStyle:WACalendarPickerStyleMenuToday];
+			[dpVC setModalPresentationStyle:UIModalPresentationFullScreen];
+			[self.viewDeckController setCenterController:dpVC];
+			break;
+		}
+
 		case 6: { // Settings
 			[self handleUserInfo];
+			break;
 		}
 	}
 }

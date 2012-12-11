@@ -26,6 +26,9 @@
 #import "IRAction.h"
 #import "IRActionSheet.h"
 #import "IRActionSheetController.h"
+#import "WADayViewController.h"
+#import "WACalendarPickerViewController.h"
+#import "Kal.h"
 
 @interface WATimelineViewController () <NSFetchedResultsControllerDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout>
 
@@ -235,6 +238,7 @@ CGFloat (^rowSpacing) (UICollectionView *) = ^ (UICollectionView *collectionView
 	headerView.wdayLabel.text = [[self.currentDisplayedDate localizedWeekDayFullString] uppercaseString];
 	headerView.backgroundColor = [UIColor colorWithRed:0.95f green:0.95f blue:0.95f alpha:1];
 
+	[headerView.centerButton addTarget:self action:@selector(handleDateSelect:) forControlEvents:UIControlEventTouchUpInside];
 	[headerView setNeedsLayout];
 	return headerView;
 
@@ -268,13 +272,25 @@ CGFloat (^rowSpacing) (UICollectionView *) = ^ (UICollectionView *collectionView
 	}
 }
 
+#pragma mark - Calendar
+
+- (void) handleDateSelect:(UIBarButtonItem *)sender {
+	
+	WACalendarPickerViewController *dpVC = [[WACalendarPickerViewController alloc] initWithStyle:WACalendarPickerStyleTodayCancel];
+
+	dpVC.delegate = self;
+	dpVC.modalPresentationStyle = UIModalPresentationFormSheet;
+	[self presentViewController:dpVC animated:YES completion:nil];
+		
+}
+
 #pragma mark - UICollectionView delegate
 
 - (void) collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
 	
 	WAArticle *post = [self.fetchedResultsController objectAtIndexPath:indexPath];
 	WAEventViewController *eVC = [WAEventViewController controllerForArticle:post];
-	
+		
 	WATimelineViewCell *cell = (WATimelineViewCell*)[collectionView cellForItemAtIndexPath:indexPath];
 	UIColor *origColor = cell.backgroundColor;
 	

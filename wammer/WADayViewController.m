@@ -14,8 +14,8 @@
 #import "WADataStore+WARemoteInterfaceAdditions.h"
 
 #import "WADataStore+FetchingConveniences.h"
+#import "WACalendarPickerViewController.h"
 #import "IRBarButtonItem.h"
-#import "WADatePickerViewController.h"
 #import "WADripdownMenuViewController.h"
 #import "WAArticleDraftsViewController.h"
 #import "WANavigationController.h"
@@ -121,6 +121,38 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 
 }
 
+- (void) viewDidAppear:(BOOL)animated {
+	[super viewDidAppear:animated];
+	
+	__block NSDate *currentDate = nil;
+	__weak WADayViewController *wSelf = self;
+	
+	
+	[self.fetchedResultsController.fetchedObjects enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+		
+		NSDate *theDate = nil;
+		
+		if ([containedClass isSubclassOfClass:[WATimelineViewController class]]) {
+			
+			theDate = [[((WAArticle*)obj) creationDate] dayBegin];
+			
+		} else {
+			
+			theDate = [[((WAFile*)obj) created] dayBegin];
+			
+		}
+		
+		if (!currentDate || !isSameDay(currentDate, theDate)) {
+			[wSelf.days addObject:theDate];
+			currentDate = theDate;
+		}
+		
+	}];
+
+	[self.paginatedView reloadViews];
+
+}
+
 - (void)didReceiveMemoryWarning
 {
 	
@@ -157,21 +189,7 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 	
 }
 
-
 #pragma mark - delegate methods for IRPaginatedView
-BOOL (^isSameDay) (NSDate *, NSDate *) = ^ (NSDate *d1, NSDate *d2) {
-	
-	NSCalendar* calendar = [NSCalendar currentCalendar];
-	unsigned unitFlags = NSYearCalendarUnit | NSMonthCalendarUnit |  NSDayCalendarUnit;
-	NSDateComponents* comp1 = [calendar components:unitFlags fromDate:d1];
-	NSDateComponents* comp2 = [calendar components:unitFlags fromDate:d2];
-	if ( [comp1 day] == [comp2 day] &&
-			[comp1 month] == [comp2 month] &&
-			[comp1 year]  == [comp2 year])
-		return YES;
-	return NO;
-	
-};
 
 -(void) viewDidLoad {
 	
@@ -209,8 +227,9 @@ BOOL (^isSameDay) (NSDate *, NSDate *) = ^ (NSDate *d1, NSDate *d2) {
 		
 		if(![self.fetchedResultsController performFetch:&error]) {
 			NSLog(@"%@: failed to fetch articles for events", __FUNCTION__);
-		}		
+		}
 
+		
 	} else if ([containedClass isSubclassOfClass:[WAPhotoStreamViewController class]]) {
 
 		NSPredicate *withDate =[NSPredicate predicateWithFormat:@"created != nil"];
@@ -231,7 +250,11 @@ BOOL (^isSameDay) (NSDate *, NSDate *) = ^ (NSDate *d1, NSDate *d2) {
 
 		self.fetchedResultsController.delegate = self;
 
-		[self.fetchedResultsController performFetch:nil];
+		NSError *error = nil;
+		
+		if(![self.fetchedResultsController performFetch:&error]) {
+			NSLog(@"%@: failed to fetch files for documents", __FUNCTION__);
+		}
 
 	}
 
@@ -255,15 +278,14 @@ BOOL (^isSameDay) (NSDate *, NSDate *) = ^ (NSDate *d1, NSDate *d2) {
 			theDate = [[((WAFile*)obj) docAccessTime] dayBegin];
 			
 		}
-
-		if (theDate) {
-			if (!currentDate || !isSameDay(currentDate, theDate)) {
-				[wSelf.days addObject:theDate];
-				currentDate = theDate;
-			}
+		
+		if (!currentDate || !isSameDay(currentDate, theDate)) {
+			[wSelf.days addObject:theDate];
+			currentDate = theDate;
 		}
 		
 	}];
+
 
 }
 
@@ -562,60 +584,6 @@ BOOL (^isSameDay) (NSDate *, NSDate *) = ^ (NSDate *d1, NSDate *d2) {
 	
 }
 
-- (void) handleDateSelect:(UIBarButtonItem *)sender {
-	
-	NSManagedObjectContext *moc = [[WADataStore defaultStore] defaultAutoUpdatedMOC];
-	__weak WADayViewController *wSelf = self;
-	
-	__block WADatePickerViewController *dpVC = [WADatePickerViewController controllerWithCompletion:^(NSDate *date) {
-		
-		if (date) {
-			
-			[wSelf jumpToTimelineOnDate:date];
-			
-		}
-		
-		[dpVC willMoveToParentViewController:nil];
-		[dpVC removeFromParentViewController];
-		[dpVC.view removeFromSuperview];
-		[dpVC didMoveToParentViewController:nil];
-		
-		dpVC = nil;
-		
-	}];
-	
-	NSFetchRequest *newestFr = [[WADataStore defaultStore] newFetchRequestForNewestArticle];
-	NSFetchRequest *oldestFr = [[WADataStore defaultStore] newFetchRequestForOldestArticle];
-	
-	WAArticle *newestArticle = (WAArticle*)[[moc executeFetchRequest:newestFr error:nil] lastObject];
-	WAArticle *oldestArticle = (WAArticle*)[[moc executeFetchRequest:oldestFr error:nil] lastObject];
-	
-	if (oldestArticle == nil){ // empty timeline
-		return;
-	}
-	
-	NSDate *minDate = oldestArticle.modificationDate ? oldestArticle.modificationDate : oldestArticle.creationDate;
-	
-	NSDate *maxDate = newestArticle.modificationDate ? newestArticle.modificationDate : newestArticle.creationDate;
-	
-	NSCParameterAssert(minDate && maxDate);
-	dpVC.minDate = minDate;
-	dpVC.maxDate = maxDate;
-	
-	UIViewController *hostingVC = self.navigationController;
-	if (!hostingVC)
-		hostingVC = self;
-	
-	[hostingVC addChildViewController:dpVC];
-	
-	dpVC.view.frame = hostingVC.view.bounds;
-	[hostingVC.view addSubview:dpVC.view];
-	[dpVC didMoveToParentViewController:hostingVC];
-	
-}
-
-
-
 #pragma mark - Dripdown menu
 BOOL dripdownMenuOpened = NO;
 - (void) dripdownMenuTapped {
@@ -677,6 +645,7 @@ BOOL dripdownMenuOpened = NO;
 	
 	__block BOOL found = NO;
 	__block NSUInteger foundIndex = 0;
+		
 	[self.days enumerateObjectsUsingBlock:^(NSDate *day, NSUInteger idx, BOOL *stop) {
 		
 		if (isSameDay(day, date)) {
@@ -695,5 +664,6 @@ BOOL dripdownMenuOpened = NO;
 	
 	return NO;
 }
+
 
 @end
