@@ -53,11 +53,9 @@
 		4B16701215FDCE9900990F4B /* WADefaults.staging.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4B16701115FDCE9900990F4B /* WADefaults.staging.plist */; };
 		4B26970B15E76A5F007E1054 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B8DFB7314FDFC3D000B41C5 /* CFNetwork.framework */; };
 		4B26970C15E76A99007E1054 /* libicucore.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 8002CDE515E5E85600D7BFF0 /* libicucore.dylib */; };
-		4B274E4F1675BFCC007406D3 /* WACollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B274E4D1675BFCC007406D3 /* WACollectionViewController.m */; };
 		4B274E501675BFCC007406D3 /* WACollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B274E4D1675BFCC007406D3 /* WACollectionViewController.m */; };
 		4B274E511675BFCC007406D3 /* WACollectionViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4B274E4E1675BFCC007406D3 /* WACollectionViewController.xib */; };
 		4B274E521675BFCC007406D3 /* WACollectionViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4B274E4E1675BFCC007406D3 /* WACollectionViewController.xib */; };
-		4B274E691675E0E9007406D3 /* WACollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B274E681675E0E9007406D3 /* WACollectionViewCell.m */; };
 		4B274E6B1675E104007406D3 /* WACollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4B274E6A1675E104007406D3 /* WACollectionViewCell.xib */; };
 		4B31BA9F1591A74C00DC1A70 /* AGImagePickerController+Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B31BA881591A74C00DC1A70 /* AGImagePickerController+Constants.m */; };
 		4B31BAA01591A74C00DC1A70 /* AGImagePickerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B31BA8A1591A74C00DC1A70 /* AGImagePickerController.m */; };
@@ -139,8 +137,10 @@
 		4BE6910E14EB8159002B9790 /* WAPreviewInspectionViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4BE6910C14EB8159002B9790 /* WAPreviewInspectionViewController.xib */; };
 		4BF243E014F23B7C00F4636C /* IRActionSheetController+WAAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BF243DF14F23B7C00F4636C /* IRActionSheetController+WAAdditions.m */; };
 		4BF3656615A5914000E40E42 /* WARemoteInterface+Facebook.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BF3656515A5914000E40E42 /* WARemoteInterface+Facebook.m */; };
-		4BF834E216771A010031A363 /* WASnsConnectSwitch.m in Sources */ = {isa = PBXBuildFile; fileRef = 13C1AB1C16688BEA004E6437 /* WASnsConnectSwitch.m */; };
-		4BF8350D16771D4A0031A363 /* WASnsConnectSwitch.m in Sources */ = {isa = PBXBuildFile; fileRef = 13C1AB1C16688BEA004E6437 /* WASnsConnectSwitch.m */; };
+		4BF8353C167726E30031A363 /* WASnsConnectSwitch.m in Sources */ = {isa = PBXBuildFile; fileRef = 13C1AB1C16688BEA004E6437 /* WASnsConnectSwitch.m */; };
+		4BF8353D1677275F0031A363 /* WACollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B274E681675E0E9007406D3 /* WACollectionViewCell.m */; };
+		4BF8353E167727600031A363 /* WACollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B274E681675E0E9007406D3 /* WACollectionViewCell.m */; };
+		4BF8353F167727630031A363 /* WACollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B274E4D1675BFCC007406D3 /* WACollectionViewController.m */; };
 		4BFC156515C7D9DC00DB02F8 /* Fav@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BFC156315C7D9DC00DB02F8 /* Fav@2x~ipad.png */; };
 		4BFC156615C7D9DC00DB02F8 /* Fav~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BFC156415C7D9DC00DB02F8 /* Fav~ipad.png */; };
 		4BFC156915C7D9E800DB02F8 /* Unfav@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BFC156715C7D9E800DB02F8 /* Unfav@2x~ipad.png */; };
@@ -4572,6 +4572,7 @@
 				7D3D8C4C1664B8D9003B9D19 /* WACollection+WARemoteInterfaceEntitySyncing.m in Sources */,
 				7D5999C31665F8410050DEA9 /* WACollection.m in Sources */,
 				4B274E501675BFCC007406D3 /* WACollectionViewController.m in Sources */,
+				4BF8353E167727600031A363 /* WACollectionViewCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4798,14 +4799,11 @@
 				80E5173C1670F3B200E1C3AD /* WALocation.m in Sources */,
 				800D9A9216719B5D0034CDF6 /* MKMapView+ZoomLevel.m in Sources */,
 				801F71B8167632C2007B3C45 /* WAFoursquareConnectSwitch.m in Sources */,
-				4B274E4F1675BFCC007406D3 /* WACollectionViewController.m in Sources */,
-				4B274E691675E0E9007406D3 /* WACollectionViewCell.m in Sources */,
-				4BF834E216771A010031A363 /* WASnsConnectSwitch.m in Sources */,
 				808DAA0C167597C9003652BB /* WAEventPeopleListViewController.m in Sources */,
 				808DAA0F1675B1D2003652BB /* WAEventPeopleCell.m in Sources */,
-				4B274E4F1675BFCC007406D3 /* WACollectionViewController.m in Sources */,
-				4B274E691675E0E9007406D3 /* WACollectionViewCell.m in Sources */,
-				4BF8350D16771D4A0031A363 /* WASnsConnectSwitch.m in Sources */,
+				4BF8353C167726E30031A363 /* WASnsConnectSwitch.m in Sources */,
+				4BF8353D1677275F0031A363 /* WACollectionViewCell.m in Sources */,
+				4BF8353F167727630031A363 /* WACollectionViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
