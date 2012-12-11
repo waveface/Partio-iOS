@@ -19,6 +19,7 @@ static NSString * const kWASegueSettingsToOAuth = @"WASegueSettingsToOAuth";
 @property (nonatomic, strong) WAOAuthDidComplete didCompleteBlock;
 @property (nonatomic, strong) WASnsConnectSwitch *googleConnectSwitch;
 @property (nonatomic, strong) WASnsConnectSwitch *twitterConnectSwitch;
+@property (nonatomic, strong) WASnsConnectSwitch *foursquareConnectSwitch;
 
 @end
 
@@ -46,6 +47,10 @@ static NSString * const kWASegueSettingsToOAuth = @"WASegueSettingsToOAuth";
 	self.twitterConnectSwitch = [[WASnsConnectSwitch alloc] initForStyle:WASnsConnectTwitterStyle];
 	self.twitterConnectSwitch.delegate = self;
 	self.twitterConnectCell.accessoryView = self.twitterConnectSwitch;
+	
+	self.foursquareConnectSwitch = [[WASnsConnectSwitch alloc] initForStyle:WASnsConnectFoursquareStyle];
+	self.foursquareConnectSwitch.delegate = self;
+	self.foursquareConnectCell.accessoryView = self.foursquareConnectSwitch;
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
@@ -60,6 +65,7 @@ static NSString * const kWASegueSettingsToOAuth = @"WASegueSettingsToOAuth";
 
 	self.googleConnectSwitch.delegate = nil;
 	self.twitterConnectSwitch.delegate = nil;
+	self.foursquareConnectSwitch.delegate = nil;
 
 }
 

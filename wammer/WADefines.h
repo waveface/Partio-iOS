@@ -72,6 +72,7 @@ typedef enum WABusinessPlanType: NSInteger {
 
 extern NSString * const kWASNSGoogleConnectEnabled;
 extern NSString * const kWASNSTwitterConnectEnabled;
+extern NSString * const kWASNSFoursquareConnectEnabled;
 
 extern NSString * const WAFeedbackRecipient;
 extern NSString * const WAStreamFeaturesURL;
