@@ -10,6 +10,7 @@
 	#import <Foundation/Foundation.h>
 	#import <CoreData/CoreData.h>
 	#import <QuartzCore/QuartzCore.h>
+	#import "WADefines+iOS.h"
 
 	#if WF_USES_TESTFLIGHT
 	
@@ -34,7 +35,4 @@
 		#define WF_CRASHLYTICS(...) do {  } while (0)	
 	#endif
 	
-	#define isPad(...)  (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-	#define isPhone(...)	(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
-
 #endif

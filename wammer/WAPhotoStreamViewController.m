@@ -208,9 +208,7 @@
 
 - (void) handleDateSelect:(UIBarButtonItem *)sender {
 	
-	WACalendarPickerViewController *dpVC = [[WACalendarPickerViewController alloc]
-																					initWithLeftButton:WABarButtonCalItemCancel
-																					RightButton:WABarButtonCalItemToday];
+	WACalendarPickerViewController *dpVC = [[WACalendarPickerViewController alloc] initWithStyle:WACalendarPickerStyleTodayCancel];
 	
 	dpVC.delegate = self;
 	dpVC.modalPresentationStyle = UIModalPresentationFormSheet;

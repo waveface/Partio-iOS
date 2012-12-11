@@ -25,6 +25,7 @@
 #import "WAStatusBar.h"
 #import "WACalendarPickerViewController.h"
 #import "WADocumentStreamViewController.h"
+#import "WACollectionViewController.h"
 
 @interface WASlidingMenuViewController () 
 
@@ -64,7 +65,6 @@
 
 			return navVC;
 		}
-
 		case WADocumentsViewStyle: {
 			WADayViewController *swVC = [[WADayViewController alloc] initWithClassNamed:[WADocumentStreamViewController class]];
 			WANavigationController *navVC = [[WANavigationController alloc] initWithRootViewController:swVC];
@@ -72,7 +72,17 @@
 
 			return navVC;
 		}
-
+		case WACollectionsViewStyle: {
+			WACollectionViewController *collectionViewController = [[WACollectionViewController alloc] init];
+			WANavigationController *navController = [[WANavigationController alloc] initWithRootViewController:collectionViewController];
+			collectionViewController.view.backgroundColor = [UIColor colorWithRed:0.95f green:0.95f blue:0.95f alpha:1];
+			
+			collectionViewController.navigationItem.leftBarButtonItem = WABarButtonItem([UIImage imageNamed:@"menu"], @"", ^{
+				[collectionViewController.viewDeckController toggleLeftView];
+			});
+			
+			return navController;
+		}
 		default:
 			return nil;
 	}
@@ -443,21 +453,26 @@
 			[self.viewDeckController closeLeftView];
 			[self switchToViewStyle:WADocumentsViewStyle];
 			break;
-                }
-
-	        case 5: {
+		}
+			
+		case 4: {
 			[self.viewDeckController closeLeftView];
-
-			WACalendarPickerViewController *dpVC = [[WACalendarPickerViewController alloc]
-																							initWithLeftButton:WABarButtonCalItemMenu
-																							RightButton:WABarButtonCalItemToday];
-			[dpVC setModalPresentationStyle:UIModalPresentationFullScreen];
-			[self.viewDeckController setCenterController:dpVC];
-
+			[self switchToViewStyle:WACollectionsViewStyle];
 			break;
 		}
+
+		case 5: {
+			[self.viewDeckController closeLeftView];
+			
+			WACalendarPickerViewController *dpVC = [[WACalendarPickerViewController alloc] initWithStyle:WACalendarPickerStyleMenuToday];
+			[dpVC setModalPresentationStyle:UIModalPresentationFullScreen];
+			[self.viewDeckController setCenterController:dpVC];
+			break;
+		}
+
 		case 6: { // Settings
 			[self handleUserInfo];
+			break;
 		}
 	}
 }

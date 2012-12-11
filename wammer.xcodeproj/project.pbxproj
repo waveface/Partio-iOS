@@ -47,6 +47,12 @@
 		4B16701215FDCE9900990F4B /* WADefaults.staging.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4B16701115FDCE9900990F4B /* WADefaults.staging.plist */; };
 		4B26970B15E76A5F007E1054 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B8DFB7314FDFC3D000B41C5 /* CFNetwork.framework */; };
 		4B26970C15E76A99007E1054 /* libicucore.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 8002CDE515E5E85600D7BFF0 /* libicucore.dylib */; };
+		4B274E4F1675BFCC007406D3 /* WACollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B274E4D1675BFCC007406D3 /* WACollectionViewController.m */; };
+		4B274E501675BFCC007406D3 /* WACollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B274E4D1675BFCC007406D3 /* WACollectionViewController.m */; };
+		4B274E511675BFCC007406D3 /* WACollectionViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4B274E4E1675BFCC007406D3 /* WACollectionViewController.xib */; };
+		4B274E521675BFCC007406D3 /* WACollectionViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4B274E4E1675BFCC007406D3 /* WACollectionViewController.xib */; };
+		4B274E691675E0E9007406D3 /* WACollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B274E681675E0E9007406D3 /* WACollectionViewCell.m */; };
+		4B274E6B1675E104007406D3 /* WACollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4B274E6A1675E104007406D3 /* WACollectionViewCell.xib */; };
 		4B31BA9F1591A74C00DC1A70 /* AGImagePickerController+Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B31BA881591A74C00DC1A70 /* AGImagePickerController+Constants.m */; };
 		4B31BAA01591A74C00DC1A70 /* AGImagePickerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B31BA8A1591A74C00DC1A70 /* AGImagePickerController.m */; };
 		4B31BAA11591A74C00DC1A70 /* AGIPC-Checkmark-iPad.png in Resources */ = {isa = PBXBuildFile; fileRef = 4B31BA8B1591A74C00DC1A70 /* AGIPC-Checkmark-iPad.png */; };
@@ -125,6 +131,7 @@
 		4BD77BBA15A2C8B300CA8486 /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = FF0CC558158A41150034BD1B /* libxml2.dylib */; };
 		4BE6910D14EB8159002B9790 /* WAPreviewInspectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BE6910B14EB8159002B9790 /* WAPreviewInspectionViewController.m */; };
 		4BE6910E14EB8159002B9790 /* WAPreviewInspectionViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4BE6910C14EB8159002B9790 /* WAPreviewInspectionViewController.xib */; };
+		4BEF75941676D6E000BC64CA /* (null) in Sources */ = {isa = PBXBuildFile; };
 		4BF243E014F23B7C00F4636C /* IRActionSheetController+WAAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BF243DF14F23B7C00F4636C /* IRActionSheetController+WAAdditions.m */; };
 		4BF3656615A5914000E40E42 /* WARemoteInterface+Facebook.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BF3656515A5914000E40E42 /* WARemoteInterface+Facebook.m */; };
 		4BFC156515C7D9DC00DB02F8 /* Fav@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BFC156315C7D9DC00DB02F8 /* Fav@2x~ipad.png */; };
@@ -265,12 +272,12 @@
 		80F800F615C2624C00132A96 /* IRAQ-Checkmark.png in Resources */ = {isa = PBXBuildFile; fileRef = 80F800F415C2624C00132A96 /* IRAQ-Checkmark.png */; };
 		80F800F715C2624C00132A96 /* IRAQ-Checkmark@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 80F800F515C2624C00132A96 /* IRAQ-Checkmark@2x.png */; };
 		94EB57761411451780C24560 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D215E734098A44479DEC4F88 /* libPods.a */; };
-		DE2BBDDC16761B9C00EEF922 /* libKal.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DE2BBDDB16761AC100EEF922 /* libKal.a */; };
 		DE46FC17165E228300CC4FFF /* WACalendarPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DE46FC16165E228300CC4FFF /* WACalendarPickerViewController.m */; };
 		DE696E011675D020008DC3F6 /* WASnsConnectSwitch.m in Sources */ = {isa = PBXBuildFile; fileRef = DE696E001675D020008DC3F6 /* WASnsConnectSwitch.m */; };
 		DE696E051675D0AC008DC3F6 /* WATwitterConnectSwitch.m in Sources */ = {isa = PBXBuildFile; fileRef = DE696E041675D0AC008DC3F6 /* WATwitterConnectSwitch.m */; };
 		DE7B35151654B7FC00718262 /* TempAvatar.png in Resources */ = {isa = PBXBuildFile; fileRef = DE7B35131654B7FC00718262 /* TempAvatar.png */; };
 		DE7B35161654B7FC00718262 /* TempAvatar@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DE7B35141654B7FC00718262 /* TempAvatar@2x.png */; };
+		DEB41D26167731A60047B6A1 /* Kal.bundle in Resources */ = {isa = PBXBuildFile; fileRef = DEB41D25167731A60047B6A1 /* Kal.bundle */; };
 		DEBED815166C8608001A2B24 /* GetCollections.json in Resources */ = {isa = PBXBuildFile; fileRef = DEBED814166C8608001A2B24 /* GetCollections.json */; };
 		DEBED818166C8643001A2B24 /* forward.png in Resources */ = {isa = PBXBuildFile; fileRef = DEBED816166C8643001A2B24 /* forward.png */; };
 		DEBED819166C8643001A2B24 /* forward@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DEBED817166C8643001A2B24 /* forward@2x.png */; };
@@ -285,6 +292,7 @@
 		DEBED838166C8801001A2B24 /* WATimelineViewCell-ImageStack-2.xib in Resources */ = {isa = PBXBuildFile; fileRef = DEBED831166C8801001A2B24 /* WATimelineViewCell-ImageStack-2.xib */; };
 		DEBED839166C8801001A2B24 /* WATimelineViewCell-ImageStack-3.xib in Resources */ = {isa = PBXBuildFile; fileRef = DEBED832166C8801001A2B24 /* WATimelineViewCell-ImageStack-3.xib */; };
 		DEBED83B166C8801001A2B24 /* WATimelineViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DEBED836166C8801001A2B24 /* WATimelineViewController.m */; };
+		DEEBFE27167735780095D629 /* libKal.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DEEBFE26167734830095D629 /* libKal.a */; };
 		DEF13267164B83B50051284D /* CalIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = DEF13262164B83B50051284D /* CalIcon.png */; };
 		DEF13268164B83B50051284D /* CollectionIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = DEF13263164B83B50051284D /* CollectionIcon.png */; };
 		DEF13269164B83B50051284D /* EventsIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = DEF13264164B83B50051284D /* EventsIcon.png */; };
@@ -803,11 +811,18 @@
 			remoteGlobalIDString = D2AAC07E0554694100DB518D;
 			remoteInfo = AQGridView;
 		};
-		DE2BBDDA16761AC100EEF922 /* PBXContainerItemProxy */ = {
+		DEEBFE25167734830095D629 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = DE2BBDD616761AC100EEF922 /* Kal.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = D2AAC07E0554694100DB518D;
+			remoteInfo = Kal;
+		};
+		DEEBFE28167736D10095D629 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = DE2BBDD616761AC100EEF922 /* Kal.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = D2AAC07D0554694100DB518D;
 			remoteInfo = Kal;
 		};
 		FF09C0DE15A2DD6F00AEDDAE /* PBXContainerItemProxy */ = {
@@ -1063,6 +1078,12 @@
 		13FDC9911648C6D5005D4C56 /* WAFirstUseEmailLoginFooterView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WAFirstUseEmailLoginFooterView.h; path = wammer/WAFirstUseEmailLoginFooterView.h; sourceTree = "<group>"; };
 		13FDC9921648C6D5005D4C56 /* WAFirstUseEmailLoginFooterView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WAFirstUseEmailLoginFooterView.m; path = wammer/WAFirstUseEmailLoginFooterView.m; sourceTree = "<group>"; };
 		4B16701115FDCE9900990F4B /* WADefaults.staging.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = WADefaults.staging.plist; path = Resources/WADefaults.staging.plist; sourceTree = "<group>"; };
+		4B274E4C1675BFCC007406D3 /* WACollectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WACollectionViewController.h; sourceTree = "<group>"; };
+		4B274E4D1675BFCC007406D3 /* WACollectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WACollectionViewController.m; sourceTree = "<group>"; };
+		4B274E4E1675BFCC007406D3 /* WACollectionViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WACollectionViewController.xib; sourceTree = "<group>"; };
+		4B274E671675E0E9007406D3 /* WACollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WACollectionViewCell.h; sourceTree = "<group>"; };
+		4B274E681675E0E9007406D3 /* WACollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WACollectionViewCell.m; sourceTree = "<group>"; };
+		4B274E6A1675E104007406D3 /* WACollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WACollectionViewCell.xib; sourceTree = "<group>"; };
 		4B31BA871591A74C00DC1A70 /* AGImagePickerController+Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AGImagePickerController+Constants.h"; sourceTree = "<group>"; };
 		4B31BA881591A74C00DC1A70 /* AGImagePickerController+Constants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AGImagePickerController+Constants.m"; sourceTree = "<group>"; };
 		4B31BA891591A74C00DC1A70 /* AGImagePickerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AGImagePickerController.h; sourceTree = "<group>"; };
@@ -1316,7 +1337,7 @@
 		80F800F415C2624C00132A96 /* IRAQ-Checkmark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "IRAQ-Checkmark.png"; sourceTree = "<group>"; };
 		80F800F515C2624C00132A96 /* IRAQ-Checkmark@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "IRAQ-Checkmark@2x.png"; sourceTree = "<group>"; };
 		D215E734098A44479DEC4F88 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		DE2BBDD616761AC100EEF922 /* Kal.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Kal.xcodeproj; path = external/Kal/src/Kal.xcodeproj; sourceTree = "<group>"; };
+		DE2BBDD616761AC100EEF922 /* Kal.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Kal.xcodeproj; path = external/Kal/src/Kal.xcodeproj; sourceTree = SOURCE_ROOT; };
 		DE46FC15165E228300CC4FFF /* WACalendarPickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WACalendarPickerViewController.h; path = wammer/WACalendarPickerViewController.h; sourceTree = "<group>"; };
 		DE46FC16165E228300CC4FFF /* WACalendarPickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WACalendarPickerViewController.m; path = wammer/WACalendarPickerViewController.m; sourceTree = "<group>"; };
 		DE696DFF1675D020008DC3F6 /* WASnsConnectSwitch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WASnsConnectSwitch.h; path = wammer/WASnsConnectSwitch.h; sourceTree = "<group>"; };
@@ -1325,6 +1346,7 @@
 		DE696E041675D0AC008DC3F6 /* WATwitterConnectSwitch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WATwitterConnectSwitch.m; path = wammer/WATwitterConnectSwitch.m; sourceTree = "<group>"; };
 		DE7B35131654B7FC00718262 /* TempAvatar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = TempAvatar.png; path = Resources/TempAvatar.png; sourceTree = "<group>"; };
 		DE7B35141654B7FC00718262 /* TempAvatar@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "TempAvatar@2x.png"; path = "Resources/TempAvatar@2x.png"; sourceTree = "<group>"; };
+		DEB41D25167731A60047B6A1 /* Kal.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = Kal.bundle; path = external/Kal/src/Kal.bundle; sourceTree = SOURCE_ROOT; };
 		DEBED814166C8608001A2B24 /* GetCollections.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = GetCollections.json; path = UnitTests/GetCollections.json; sourceTree = SOURCE_ROOT; };
 		DEBED816166C8643001A2B24 /* forward.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = forward.png; path = Resources/forward.png; sourceTree = "<group>"; };
 		DEBED817166C8643001A2B24 /* forward@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "forward@2x.png"; path = "Resources/forward@2x.png"; sourceTree = "<group>"; };
@@ -2034,7 +2056,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DE2BBDDC16761B9C00EEF922 /* libKal.a in Frameworks */,
+				DEEBFE27167735780095D629 /* libKal.a in Frameworks */,
 				80A115681647CC0B005A4246 /* MapKit.framework in Frameworks */,
 				7D857D54164250B80092CF5F /* libAQGridView.a in Frameworks */,
 				7DC3AC1216422070009A8EA7 /* libSocketRocket.a in Frameworks */,
@@ -2383,17 +2405,10 @@
 			name = "Event View";
 			sourceTree = "<group>";
 		};
-		DE2BBDD716761AC100EEF922 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				DE2BBDDB16761AC100EEF922 /* libKal.a */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 		DE7B38A0165CBB9900718262 /* Calendar Picker */ = {
 			isa = PBXGroup;
 			children = (
+				DEB41D25167731A60047B6A1 /* Kal.bundle */,
 				DE46FC15165E228300CC4FFF /* WACalendarPickerViewController.h */,
 				DE46FC16165E228300CC4FFF /* WACalendarPickerViewController.m */,
 				DEF2886F165F6A0D0078B1D7 /* WACalendarPickerDataSource.h */,
@@ -2417,6 +2432,14 @@
 				DE696E001675D020008DC3F6 /* WASnsConnectSwitch.m */,
 			);
 			name = OAuth;
+			sourceTree = "<group>";
+		};
+		DEEBFE22167734830095D629 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				DEEBFE26167734830095D629 /* libKal.a */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 		FF0024F914B44CC500F54AAF /* Blob Syncing */ = {
@@ -2733,6 +2756,12 @@
 				13745259166F4A770027582D /* WADocumentStreamViewCell.m */,
 				13DAAD7B166FB100002900D7 /* WADocumentStreamViewCell.xib */,
 				800E4FCD1671DD0C00F50E0B /* WATimelineViewCell-Checkin.xib */,
+				4B274E671675E0E9007406D3 /* WACollectionViewCell.h */,
+				4B274E681675E0E9007406D3 /* WACollectionViewCell.m */,
+				4B274E6A1675E104007406D3 /* WACollectionViewCell.xib */,
+				4B274E4C1675BFCC007406D3 /* WACollectionViewController.h */,
+				4B274E4D1675BFCC007406D3 /* WACollectionViewController.m */,
+				4B274E4E1675BFCC007406D3 /* WACollectionViewController.xib */,
 			);
 			name = Timeline;
 			path = wammer;
@@ -3662,6 +3691,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				DEEBFE29167736D10095D629 /* PBXTargetDependency */,
 				FFD4F93B157E08460027BF3F /* PBXTargetDependency */,
 				FFB117C5147F8B34002094E5 /* PBXTargetDependency */,
 				FFB3C179145E9A6F00ED7A56 /* PBXTargetDependency */,
@@ -3733,7 +3763,7 @@
 					ProjectRef = FF73A59E13D6DC6A00D54EC6 /* IRWebAPIKit.xcodeproj */;
 				},
 				{
-					ProductGroup = DE2BBDD716761AC100EEF922 /* Products */;
+					ProductGroup = DEEBFE22167734830095D629 /* Products */;
 					ProjectRef = DE2BBDD616761AC100EEF922 /* Kal.xcodeproj */;
 				},
 				{
@@ -3804,11 +3834,11 @@
 			remoteRef = 7D857D52164249DA0092CF5F /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		DE2BBDDB16761AC100EEF922 /* libKal.a */ = {
+		DEEBFE26167734830095D629 /* libKal.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
 			path = libKal.a;
-			remoteRef = DE2BBDDA16761AC100EEF922 /* PBXContainerItemProxy */;
+			remoteRef = DEEBFE25167734830095D629 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		FF09C0DF15A2DD6F00AEDDAE /* libIRSlidingSplitViewController.a */ = {
@@ -3947,6 +3977,7 @@
 				7DC3AC101642203C009A8EA7 /* SocketRocket.xcodeproj in Resources */,
 				7DA309321648BC6900B6FABD /* WAPhotoStreamViewController.xib in Resources */,
 				7DB78A6E164900FA00E165E9 /* WAPhotoStreamViewCell.xib in Resources */,
+				4B274E521675BFCC007406D3 /* WACollectionViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3954,6 +3985,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DEB41D26167731A60047B6A1 /* Kal.bundle in Resources */,
 				FFCFE0C4142111E100B9E6AF /* InfoPlist.strings in Resources */,
 				FFCFE0D3142111E100B9E6AF /* WAArticleCommentsViewController.xib in Resources */,
 				FFCFE0D7142111E100B9E6AF /* WACompositionViewControllerPad.xib in Resources */,
@@ -4290,6 +4322,8 @@
 				80B9E50D16719B1200222F57 /* P3.png in Resources */,
 				80B9E50E16719B1200222F57 /* P3@2x.png in Resources */,
 				800E4FCE1671DD0C00F50E0B /* WATimelineViewCell-Checkin.xib in Resources */,
+				4B274E511675BFCC007406D3 /* WACollectionViewController.xib in Resources */,
+				4B274E6B1675E104007406D3 /* WACollectionViewCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4488,6 +4522,7 @@
 				4BD18A001653DE4200908080 /* WAFile.m in Sources */,
 				4B4AA30D16564BF000A04DDE /* NSDate+WAAdditions.m in Sources */,
 				7DBE8DF5165B3818005C2347 /* WADayHeaderView.m in Sources */,
+				4B274E501675BFCC007406D3 /* WACollectionViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4716,12 +4751,20 @@
 				800D9A9216719B5D0034CDF6 /* MKMapView+ZoomLevel.m in Sources */,
 				DE696E011675D020008DC3F6 /* WASnsConnectSwitch.m in Sources */,
 				DE696E051675D0AC008DC3F6 /* WATwitterConnectSwitch.m in Sources */,
+				4B274E4F1675BFCC007406D3 /* WACollectionViewController.m in Sources */,
+				4B274E691675E0E9007406D3 /* WACollectionViewCell.m in Sources */,
+				4BEF75941676D6E000BC64CA /* (null) in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		DEEBFE29167736D10095D629 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = Kal;
+			targetProxy = DEEBFE28167736D10095D629 /* PBXContainerItemProxy */;
+		};
 		FF09C0E215A2DD8700AEDDAE /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = IRSlidingSplitViewController;
@@ -5093,9 +5136,37 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/wammer\"",
 					"\"$(SRCROOT)/wammer/Libraries\"",
-					"\"$(SRCROOT)/../../Library/Developer/Xcode/DerivedData/wammer-emtadpmnuosywwdpqrykcuhueoxl/Build/Products/Debug-iphoneos\"",
+					"\"$(BUILT_PRODUCTS_DIR)\"/**",
 				);
 				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = (
+					"-ObjC",
+					"-lTestFlight",
+					"-lsqlite3.0",
+					"-lz",
+					"-framework",
+					CoreData,
+					"-framework",
+					CoreGraphics,
+					"-framework",
+					CoreLocation,
+					"-framework",
+					CoreText,
+					"-framework",
+					MessageUI,
+					"-framework",
+					QuartzCore,
+					"-framework",
+					Security,
+					"-framework",
+					UIKit,
+					"-weak_framework",
+					Accounts,
+					"-weak_framework",
+					AdSupport,
+					"-weak_framework",
+					Social,
+				);
 				PRODUCT_NAME = "wammer-iOS";
 				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos;
@@ -5600,9 +5671,37 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/wammer\"",
 					"\"$(SRCROOT)/wammer/Libraries\"",
-					"\"$(SRCROOT)/../../Library/Developer/Xcode/DerivedData/wammer-emtadpmnuosywwdpqrykcuhueoxl/Build/Products/Debug-iphoneos\"",
+					"\"$(BUILT_PRODUCTS_DIR)\"/**",
 				);
 				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = (
+					"-ObjC",
+					"-lTestFlight",
+					"-lsqlite3.0",
+					"-lz",
+					"-framework",
+					CoreData,
+					"-framework",
+					CoreGraphics,
+					"-framework",
+					CoreLocation,
+					"-framework",
+					CoreText,
+					"-framework",
+					MessageUI,
+					"-framework",
+					QuartzCore,
+					"-framework",
+					Security,
+					"-framework",
+					UIKit,
+					"-weak_framework",
+					Accounts,
+					"-weak_framework",
+					AdSupport,
+					"-weak_framework",
+					Social,
+				);
 				PRODUCT_NAME = "wammer-iOS";
 				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos;
@@ -5639,9 +5738,37 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/wammer\"",
 					"\"$(SRCROOT)/wammer/Libraries\"",
-					"\"$(SRCROOT)/../../Library/Developer/Xcode/DerivedData/wammer-emtadpmnuosywwdpqrykcuhueoxl/Build/Products/Debug-iphoneos\"",
+					"\"$(BUILT_PRODUCTS_DIR)\"/**",
 				);
 				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = (
+					"-ObjC",
+					"-lTestFlight",
+					"-lsqlite3.0",
+					"-lz",
+					"-framework",
+					CoreData,
+					"-framework",
+					CoreGraphics,
+					"-framework",
+					CoreLocation,
+					"-framework",
+					CoreText,
+					"-framework",
+					MessageUI,
+					"-framework",
+					QuartzCore,
+					"-framework",
+					Security,
+					"-framework",
+					UIKit,
+					"-weak_framework",
+					Accounts,
+					"-weak_framework",
+					AdSupport,
+					"-weak_framework",
+					Social,
+				);
 				PRODUCT_NAME = "wammer-iOS";
 				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos;

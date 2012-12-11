@@ -22,17 +22,13 @@
 	id dataSource;
 	UITableView *tableView;
 	WAArticle *selectedEvent;
-	UIView *dateView;
-	UILabel *dayDateLabel;
-	UILabel *fullDateLabel;
 }
 
 @end
 
 @implementation WACalendarPickerViewController
 
-- (id)initWithLeftButton:(WABarButtonCalItem)leftBarButton
-						 RightButton:(WABarButtonCalItem)rightBarButton
+- (id)initWithStyle:(WACalendarPickerStyle)style
 {
 	calPicker = [[KalViewController alloc] init];
 	calPicker.title = NSLocalizedString(@"CALENDAR_TITLE", @"Title of Canlendar");
@@ -40,40 +36,25 @@
 	dataSource = [[WACalendarPickerDataSource alloc] init];
 	calPicker.dataSource = dataSource;
 
-	switch (leftBarButton) {
-		case WABarButtonCalItemMenu:
-			[calPicker.navigationItem setLeftBarButtonItem:[self menuBarButton] animated:YES];
-			break;
-			
-		case WABarButtonCalItemToday:
-			[calPicker.navigationItem setLeftBarButtonItem:[self todayBarButton] animated:YES];
-			break;
-			
-		case WABarButtonCalItemCancel:
-			[calPicker.navigationItem setLeftBarButtonItem:[self cancelBarButton] animated:YES];
-			break;
-			
-		default:
-			break;
-	}
-		
-	switch (rightBarButton) {
-		case WABarButtonCalItemMenu:
-			[calPicker.navigationItem setRightBarButtonItem:[self menuBarButton] animated:YES];
-			break;
-			
-		case WABarButtonCalItemToday:
+	switch (style) {
+		case WACalendarPickerStyleInPopover:
 			[calPicker.navigationItem setRightBarButtonItem:[self todayBarButton] animated:YES];
 			break;
 			
-		case WABarButtonCalItemCancel:
+		case WACalendarPickerStyleMenuToday:
+			[calPicker.navigationItem setLeftBarButtonItem:[self menuBarButton] animated:YES];
+			[calPicker.navigationItem setRightBarButtonItem:[self todayBarButton] animated:YES];
+			break;
+			
+		case WACalendarPickerStyleTodayCancel:
+			[calPicker.navigationItem setLeftBarButtonItem:[self todayBarButton] animated:YES];
 			[calPicker.navigationItem setRightBarButtonItem:[self cancelBarButton] animated:YES];
 			break;
 			
 		default:
 			break;
 	}
-
+		
 	return [self initWithRootViewController:calPicker];
 }
 
@@ -88,8 +69,8 @@
 {
 	UIButton *todayButton = [UIButton buttonWithType:UIButtonTypeCustom];
 	[todayButton setFrame:CGRectMake(0, 0, 57, 26)];
-	[todayButton setBackgroundImage:[UIImage imageNamed:@"CalBtn"] forState:UIControlStateNormal];
-	[todayButton setBackgroundImage:[UIImage imageNamed:@"CalBtnPress"] forState:UIControlStateHighlighted];
+	[todayButton setBackgroundImage:[UIImage imageNamed:@"Kal.bundle/CalBtn"] forState:UIControlStateNormal];
+	[todayButton setBackgroundImage:[UIImage imageNamed:@"Kal.bundle/CalBtnPress"] forState:UIControlStateHighlighted];
 	[todayButton setTitle:NSLocalizedString(@"CALENDAR_TODAY_BUTTON", "Today button in calendar picker") forState:UIControlStateNormal];
 	todayButton.titleLabel.font = [UIFont boldSystemFontOfSize:12.f];
 	[todayButton setTitleColor:[UIColor colorWithRed:0.894f green:0.435f blue:0.353f alpha:1.f] forState:UIControlStateNormal];
@@ -104,8 +85,8 @@
 {
 	UIButton *cancelButton = [UIButton buttonWithType:UIButtonTypeCustom];
 	[cancelButton setFrame:CGRectMake(0, 0, 57, 26)];
-	[cancelButton setBackgroundImage:[UIImage imageNamed:@"CalBtn"] forState:UIControlStateNormal];
-	[cancelButton setBackgroundImage:[UIImage imageNamed:@"CalBtnPress"] forState:UIControlStateHighlighted];
+	[cancelButton setBackgroundImage:[UIImage imageNamed:@"Kal.bundle/CalBtn"] forState:UIControlStateNormal];
+	[cancelButton setBackgroundImage:[UIImage imageNamed:@"Kal.bundle/CalBtnPress"] forState:UIControlStateHighlighted];
 	[cancelButton setTitle:NSLocalizedString(@"CALENDAR_CANCEL_BUTTON", "Cancel button in calendar picker") forState:UIControlStateNormal];
 	cancelButton.titleLabel.font = [UIFont boldSystemFontOfSize:12.f];
 	[cancelButton setTitleColor:[UIColor colorWithRed:0.757f green:0.757f blue:0.757f alpha:1.f] forState:UIControlStateNormal];
@@ -127,17 +108,6 @@
 	[calPicker showAndSelectDate:[NSDate date]];
 }
 
-- (void)setDayDateLabelText:(NSString *)text
-{
-  [dayDateLabel setText:text];
-}
-
-- (void)setFullDateLabelText:(NSString *)text
-{
-  [fullDateLabel setText:text];
-}
-
-
 - (void)viewDidLoad
 {
 	[super viewDidLoad];
@@ -152,10 +122,7 @@
 {
 	[super viewWillAppear:animated];
 
-	if (isPad()) {
-		calPicker.frame = self.view.frame;
-	
-	}
+	calPicker.frame = self.view.frame;
 
 }
 
