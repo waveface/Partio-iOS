@@ -226,7 +226,7 @@
 	
 	annView.canShowCallout = YES;
 	annView.draggable = NO;
-	annView.image = [UIImage imageNamed:@"Location"];
+	annView.image = [UIImage imageNamed:@"pindrop"];
 	return annView;
 	
 }
