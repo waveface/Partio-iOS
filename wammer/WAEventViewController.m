@@ -44,7 +44,9 @@
 
 @end
 
-@implementation WAEventViewController
+@implementation WAEventViewController {
+	UITapGestureRecognizer *tapGR;
+}
 
 + (WAEventViewController *) controllerForArticle:(WAArticle *)article {
 	
@@ -105,12 +107,14 @@
 	self.navigationItem.leftBarButtonItem = WABackBarButtonItem([UIImage imageNamed:@"back"], @"", ^{
 		
 		if (isPad()) {
+			[wSelf.view.window removeGestureRecognizer:tapGR];
 			[wSelf.navigationController dismissViewControllerAnimated:YES completion:nil];
 		} else {
 			[wSelf.navigationController popViewControllerAnimated:YES];
 		}
 		
 	});
+	
 	
 	[[GAI sharedInstance].defaultTracker trackEventWithCategory:@"Events"
 																									 withAction:@"Enter single event"
@@ -147,6 +151,14 @@
 		
 	}
 	
+	if (isPad()) {
+		tapGR = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapOutsideHandler:)];
+		tapGR.numberOfTapsRequired = 1;
+		tapGR.cancelsTouchesInView = NO;
+		[self.view.window addGestureRecognizer:tapGR];
+	}
+
+	
 	if (self.completion)
 		self.completion();
 	
@@ -174,6 +186,22 @@
 
 }
 
+- (void) tapOutsideHandler:(UITapGestureRecognizer*)sender {
+	
+	if (sender.state == UIGestureRecognizerStateEnded) {
+		
+		CGPoint location = [sender locationInView:nil];
+		
+		if (![self.navigationController.view pointInside:[self.navigationController.view convertPoint:location fromView:self.view.window] withEvent:nil]) {
+			
+			[self.view.window removeGestureRecognizer:sender];
+			[self dismissViewControllerAnimated:YES completion:nil];
+			
+		}
+	}
+	
+}
+
 + (NSDateFormatter *) dateFormatter {
 	static NSDateFormatter *formatter = nil;
 	
@@ -196,6 +224,8 @@
 		annView = [[MKAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:annotationIdentifier];
 	}
 	
+	annView.canShowCallout = YES;
+	annView.draggable = NO;
 	annView.image = [UIImage imageNamed:@"Location"];
 	return annView;
 	
