@@ -19,14 +19,14 @@
 			self.imageView.backgroundColor = [UIColor lightGrayColor];
 			self.imageView.contentMode = UIViewContentModeScaleAspectFill;
 			self.imageView.clipsToBounds = YES;
-			[self addSubview:self.imageView];
+			[self.contentView addSubview:self.imageView];
 			
 			self.checkMarkView = [[UIImageView alloc] initWithFrame:(CGRect) {{5, 5}, {32, 32}}];
 			self.checkMarkView.backgroundColor = [UIColor clearColor];
 			self.checkMarkView.clipsToBounds = YES;
 			self.checkMarkView.image = nil;
-			[self addSubview:self.checkMarkView];
-			[self bringSubviewToFront:self.checkMarkView];
+			[self.contentView addSubview:self.checkMarkView];
+			[self.contentView bringSubviewToFront:self.checkMarkView];
 
     }
     return self;

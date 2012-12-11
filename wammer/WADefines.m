@@ -54,7 +54,6 @@ NSString * const kWAFacebookAppID = @"WAFacebookAppID";
 NSString * const kWAFacebookTokenKey = @"FBAccessTokenKey";
 NSString * const kWAFacebookExpirationDateKey = @"FBExpirationDateKey";
 
-NSString * const kWATestflightTeamToken = @"2e0589c9a03560bfeb93e215fdd9cbbb_MTg2ODAyMDExLTA5LTIyIDA0OjM4OjI1LjMzNTEyNg";
 NSString * const kWACrashlyticsAPIKey = @"d79b0f823e42fdf1cdeb7e988a8453032fd85169";
 NSString * const kWAGoogleAnalyticsAccountID = @"UA-27817516-3";
 NSInteger  const kWAGoogleAnalyticsDispatchInterval = 10;
@@ -79,6 +78,7 @@ NSString * const kWABusinessPlan = @"WABusinessPlan";
 
 NSString * const kWASNSGoogleConnectEnabled = @"WAGoogleConnectEnabled";
 NSString * const kWASNSTwitterConnectEnabled = @"WATwitterConnectEnabled";
+NSString * const kWASNSFoursquareConnectEnabled = @"WAFoursquareConnectEnabled";
 
 void WARegisterUserDefaults () {
 

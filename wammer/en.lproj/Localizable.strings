@@ -23,6 +23,9 @@
 /* Short action title for connecting Facebook creds */
 "ACTION_CONNECT_FACEBOOK_SHORT" = "Start Importing";
 
+/* Short action title for connecting Foursquare */
+"ACTION_CONNECT_FOURSQUARE_SHORT" = "Start Importing";
+
 /* Short action title for connecting Google */
 "ACTION_CONNECT_GOOGLE_SHORT" = "Start Importing";
 
@@ -39,6 +42,9 @@
 
 /* Short action title for disconnecting Facebook creds */
 "ACTION_DISCONNECT_FACEBOOK" = "Stop Importing";
+
+/* Short action title for disconnecting Foursquare */
+"ACTION_DISCONNECT_FOURSQUARE" = "Stop Importing";
 
 /* Short action title for disconnecting Google */
 "ACTION_DISCONNECT_GOOGLE" = "Stop Importing";
@@ -136,6 +142,9 @@
 /* Title for Cover Image picker */
 "CHANGE_REPRESENTING_FILE_TITLE" = "Pick Photo";
 
+/* In navigation bar */
+"COLLECTIONS" = "COLLECTIONS";
+
 /* add photo button in composition view */
 "COMPOSITION_MANY_PHOTOS_BUTTON_CAPTION_FORMAT" = "%i Photos";
 
@@ -204,6 +213,9 @@
 /* EVENT_PHOTO_NUMBER_LABEL */
 "EVENT_PHOTO_NUMBER_LABEL" = "%d PHOTOS";
 
+/* The text of label on separation line in the event view when there is no photo presented. */
+"EVENT_SEPERATION_LABEL_WITHOUT_PHOTOS" = "ADD SOME PHOTOS HERE";
+
 /* Title for Events view */
 "EVENTS_CONTROLLER_TITLE" = "EVENTS";
 
@@ -249,6 +261,24 @@
 /* Caption for URL History */
 "FETCH_REQUEST_URL_HISTORY" = "Visited Links";
 
+/* Title for an alert view to show foursquare connection failure */
+"FOURSQUARE_CONNECT_FAIL_TITLE" = "Unable to import from Foursquare";
+
+/* Message for alert view asking if user wants to connect her Foursquare account */
+"FOURSQUARE_CONNECT_REQUEST_MESSAGE" = "Stream will start importing posts from your Foursquare account";
+
+/* Title for alert view asking if user wants to connect her Foursquare account */
+"FOURSQUARE_CONNECT_REQUEST_TITLE" = "Confirm to import from Foursquare";
+
+/* Title for an alert view to show foursquare disconnection failure */
+"FOURSQUARE_DISCONNECT_FAIL_TITLE" = "Unable to stop importing";
+
+/* Message for alert view asking if user wants to disconnect her Foursquare account */
+"FOURSQUARE_DISCONNECT_REQUEST_MESSAGE" = "Stream will stop importing posts from your Foursquare account";
+
+/* Title for alert view asking if user wants to disconnect her Foursquare account */
+"FOURSQUARE_DISCONNECT_REQUEST_TITLE" = "Confirm to stop importing from Foursquare";
+
 /* Free plan details in plans page */
 "FREE_PLAN_DESCRIPTION" = "Save all original files to one PC";
 
@@ -278,6 +308,12 @@
 
 /* Title on introduction pages */
 "INTRODUCTION_TITLE" = "What is Stream?";
+
+/* Text for modal popup close button */
+"LABEL_MODAL_POPUP_CLOSE_BUTTON" = "Close";
+
+/* The text of location label when there is no gps information we can refer to */
+"LABEL_WITHOUT_GPS_DATA" = "LABEL_WITHOUT_GPS_DATA";
 
 /* The email subject users will share photos thru. The nickname of user will be appended to this subject. */
 "MAIL_ACTION_SUBJECT" = "%@ wants to share photo(s) with you thru Stream App.";
@@ -477,7 +513,7 @@
 "TURN_ON_LOCATION_SERVICE" = "Turn on Location Services to allow Stream to access your Photo Library";
 
 /* Title for an alert view to show Twitter connection failure */
-"TWITTER_CONNECT_FAIL_TITLE" = "Unable to import from Google";
+"TWITTER_CONNECT_FAIL_TITLE" = "Unable to import from Twitter";
 
 /* Message for alert view asking if user wants to connect her Twitter account */
 "TWITTER_CONNECT_REQUEST_MESSAGE" = "Stream will start importing posts from your Twitter account";

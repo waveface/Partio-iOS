@@ -44,7 +44,6 @@ extern NSString * const kWAFacebookAppID;
 extern NSString * const kWAFacebookTokenKey;
 extern NSString * const kWAFacebookExpirationDateKey;
 
-extern NSString * const kWATestflightTeamToken;
 extern NSString * const kWACrashlyticsAPIKey;
 
 extern NSString * const kWAGoogleAnalyticsAccountID;
@@ -73,6 +72,7 @@ typedef enum WABusinessPlanType: NSInteger {
 
 extern NSString * const kWASNSGoogleConnectEnabled;
 extern NSString * const kWASNSTwitterConnectEnabled;
+extern NSString * const kWASNSFoursquareConnectEnabled;
 
 extern NSString * const WAFeedbackRecipient;
 extern NSString * const WAStreamFeaturesURL;

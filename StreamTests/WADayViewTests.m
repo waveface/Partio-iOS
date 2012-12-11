@@ -49,6 +49,7 @@
  */
 - (void)testPhotoStreamViewController {
 	WAPhotoStreamViewController *photoStream = [[WAPhotoStreamViewController alloc] initWithDate:[[NSDate alloc]initWithTimeIntervalSince1970:NSTimeIntervalSince1970 +  366018890.0f]];
+	// Update library using larry3@wf.com/111111 when tests fails
 	STAssertEquals([photoStream.photos count], (NSUInteger)158, @"158 photos");
 	
 	[photoStream viewDidLoad];
