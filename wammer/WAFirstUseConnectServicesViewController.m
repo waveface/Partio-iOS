@@ -23,6 +23,7 @@ static NSString * const kWASegueConnectServicesToOAuth = @"WASegueConnectService
 
 @property (nonatomic, strong) WASnsConnectSwitch *googleConnectSwitch;
 @property (nonatomic, strong) WASnsConnectSwitch *twitterConnectSwitch;
+@property (nonatomic, strong) WASnsConnectSwitch *foursquareConnectSwitch;
 
 @end
 
@@ -51,6 +52,10 @@ static NSString * const kWASegueConnectServicesToOAuth = @"WASegueConnectService
 	self.twitterConnectSwitch = [[WASnsConnectSwitch alloc] initForStyle:WASnsConnectTwitterStyle];
 	self.twitterConnectSwitch.delegate = self;
 	self.twitterConnectCell.accessoryView = self.twitterConnectSwitch;
+	
+	self.foursquareConnectSwitch = [[WASnsConnectSwitch alloc] initForStyle:WASnsConnectFoursquareStyle];
+	self.foursquareConnectSwitch.delegate = self;
+	self.foursquareConnectCell.accessoryView = self.foursquareConnectSwitch;
 	
 	__weak WAFirstUseConnectServicesViewController *wSelf = self;
 	UIBarButtonItem *nextButton = (UIBarButtonItem *)WABackBarButtonItem([UIImage imageNamed:@"forward"], @"", ^{
@@ -84,6 +89,7 @@ static NSString * const kWASegueConnectServicesToOAuth = @"WASegueConnectService
 
 	self.googleConnectSwitch.delegate = nil;
 	self.twitterConnectSwitch.delegate = nil;
+	self.foursquareConnectSwitch.delegate = nil;
 
 }
 
