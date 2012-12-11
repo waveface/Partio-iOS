@@ -23,6 +23,7 @@
 #import "MKMapView+ZoomLevel.h"
 #import "NINetworkImageView.h"
 #import "GAI.h"
+#import "WANavigationController.h"
 
 @interface WAAnnotation : NSObject <MKAnnotation>
 
@@ -109,6 +110,7 @@
 		if (isPad() && wSelf.parentViewController.modalPresentationStyle == UIModalPresentationFormSheet) {
 			[wSelf.view.window removeGestureRecognizer:tapGR];
 			[wSelf.navigationController dismissViewControllerAnimated:YES completion:nil];
+			
 		} else {
 			[wSelf.navigationController popViewControllerAnimated:YES];
 		}
