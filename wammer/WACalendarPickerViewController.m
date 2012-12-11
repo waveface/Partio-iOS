@@ -13,7 +13,7 @@
 #import "WASlidingMenuViewController.h"
 #import "Kal.h"
 
-#define kScreenWidth ((CGFloat)([UIScreen mainScreen].bounds.size.height))
+#define kScreenWidth ((CGFloat)([UIScreen mainScreen].bounds.size.width))
 #define kScreenHeight ((CGFloat)([UIScreen mainScreen].bounds.size.height))
 
 @interface WACalendarPickerViewController ()
@@ -22,6 +22,9 @@
 	id dataSource;
 	UITableView *tableView;
 	WAArticle *selectedEvent;
+	UIView *dateView;
+	UILabel *dayDateLabel;
+	UILabel *fullDateLabel;
 }
 
 @end
@@ -124,17 +127,35 @@
 	[calPicker showAndSelectDate:[NSDate date]];
 }
 
+- (void)setDayDateLabelText:(NSString *)text
+{
+  [dayDateLabel setText:text];
+}
+
+- (void)setFullDateLabelText:(NSString *)text
+{
+  [fullDateLabel setText:text];
+}
+
+
 - (void)viewDidLoad
 {
 	[super viewDidLoad];
   
-	if (isPad()) {
-		calPicker.view.frame = self.view.frame;
-	}
-	
-	self.view.backgroundColor = [UIColor blackColor];
+	self.view.backgroundColor = [UIColor whiteColor];
 	self.view.layer.cornerRadius = 3.f;
 	self.view.clipsToBounds = YES;
+	
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+	[super viewWillAppear:animated];
+
+	if (isPad()) {
+		calPicker.frame = self.view.frame;
+	
+	}
 
 }
 
@@ -217,18 +238,16 @@
 {
 	[super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
 
-	if (toInterfaceOrientation == UIInterfaceOrientationMaskPortrait) {
-		calPicker.view.frame = CGRectMake(0, 0, kScreenWidth, kScreenHeight);
-	}
-	else if (toInterfaceOrientation == UIInterfaceOrientationLandscapeLeft) {
-		calPicker.view.frame = CGRectMake(0, 0, kScreenWidth, kScreenHeight);
-	}
-	else if (toInterfaceOrientation == UIInterfaceOrientationPortraitUpsideDown) {
-		calPicker.view.frame = CGRectMake(0, 0, kScreenWidth, kScreenHeight);
-	}
-	else if (toInterfaceOrientation == UIInterfaceOrientationLandscapeRight) {
-		calPicker.view.frame = CGRectMake(0, 0, kScreenHeight, kScreenWidth);
-	}
+  CGFloat kFrameWidth = self.view.frame.size.width;
+  CGFloat kFrameHeight = self.view.frame.size.height;
+	
+  if (UIInterfaceOrientationIsPortrait(toInterfaceOrientation)) {
+    calPicker.view.frame = CGRectMake(0, 0, kFrameWidth, kFrameHeight);
+  }
+  else if (UIInterfaceOrientationIsLandscape(toInterfaceOrientation)) {
+    calPicker.view.frame = CGRectMake(0, 0, kFrameHeight, kFrameWidth);
+  }
+
 }
 
 @end

@@ -265,12 +265,12 @@
 		80F800F615C2624C00132A96 /* IRAQ-Checkmark.png in Resources */ = {isa = PBXBuildFile; fileRef = 80F800F415C2624C00132A96 /* IRAQ-Checkmark.png */; };
 		80F800F715C2624C00132A96 /* IRAQ-Checkmark@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 80F800F515C2624C00132A96 /* IRAQ-Checkmark@2x.png */; };
 		94EB57761411451780C24560 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D215E734098A44479DEC4F88 /* libPods.a */; };
+		DE2BBDDC16761B9C00EEF922 /* libKal.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DE2BBDDB16761AC100EEF922 /* libKal.a */; };
 		DE46FC17165E228300CC4FFF /* WACalendarPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DE46FC16165E228300CC4FFF /* WACalendarPickerViewController.m */; };
 		DE696E011675D020008DC3F6 /* WASnsConnectSwitch.m in Sources */ = {isa = PBXBuildFile; fileRef = DE696E001675D020008DC3F6 /* WASnsConnectSwitch.m */; };
 		DE696E051675D0AC008DC3F6 /* WATwitterConnectSwitch.m in Sources */ = {isa = PBXBuildFile; fileRef = DE696E041675D0AC008DC3F6 /* WATwitterConnectSwitch.m */; };
 		DE7B35151654B7FC00718262 /* TempAvatar.png in Resources */ = {isa = PBXBuildFile; fileRef = DE7B35131654B7FC00718262 /* TempAvatar.png */; };
 		DE7B35161654B7FC00718262 /* TempAvatar@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DE7B35141654B7FC00718262 /* TempAvatar@2x.png */; };
-		DEBD4933165E7C7E008F96D3 /* libKal.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DEBD492F165E74A8008F96D3 /* libKal.a */; };
 		DEBED815166C8608001A2B24 /* GetCollections.json in Resources */ = {isa = PBXBuildFile; fileRef = DEBED814166C8608001A2B24 /* GetCollections.json */; };
 		DEBED818166C8643001A2B24 /* forward.png in Resources */ = {isa = PBXBuildFile; fileRef = DEBED816166C8643001A2B24 /* forward.png */; };
 		DEBED819166C8643001A2B24 /* forward@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DEBED817166C8643001A2B24 /* forward@2x.png */; };
@@ -803,18 +803,11 @@
 			remoteGlobalIDString = D2AAC07E0554694100DB518D;
 			remoteInfo = AQGridView;
 		};
-		DEBD492E165E74A8008F96D3 /* PBXContainerItemProxy */ = {
+		DE2BBDDA16761AC100EEF922 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = DEBD4927165E74A7008F96D3 /* Kal.xcodeproj */;
+			containerPortal = DE2BBDD616761AC100EEF922 /* Kal.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = D2AAC07E0554694100DB518D;
-			remoteInfo = Kal;
-		};
-		DEBD4931165E7C4A008F96D3 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = DEBD4927165E74A7008F96D3 /* Kal.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = D2AAC07D0554694100DB518D;
 			remoteInfo = Kal;
 		};
 		FF09C0DE15A2DD6F00AEDDAE /* PBXContainerItemProxy */ = {
@@ -1323,6 +1316,7 @@
 		80F800F415C2624C00132A96 /* IRAQ-Checkmark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "IRAQ-Checkmark.png"; sourceTree = "<group>"; };
 		80F800F515C2624C00132A96 /* IRAQ-Checkmark@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "IRAQ-Checkmark@2x.png"; sourceTree = "<group>"; };
 		D215E734098A44479DEC4F88 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		DE2BBDD616761AC100EEF922 /* Kal.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Kal.xcodeproj; path = external/Kal/src/Kal.xcodeproj; sourceTree = "<group>"; };
 		DE46FC15165E228300CC4FFF /* WACalendarPickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WACalendarPickerViewController.h; path = wammer/WACalendarPickerViewController.h; sourceTree = "<group>"; };
 		DE46FC16165E228300CC4FFF /* WACalendarPickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WACalendarPickerViewController.m; path = wammer/WACalendarPickerViewController.m; sourceTree = "<group>"; };
 		DE696DFF1675D020008DC3F6 /* WASnsConnectSwitch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WASnsConnectSwitch.h; path = wammer/WASnsConnectSwitch.h; sourceTree = "<group>"; };
@@ -1331,7 +1325,6 @@
 		DE696E041675D0AC008DC3F6 /* WATwitterConnectSwitch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WATwitterConnectSwitch.m; path = wammer/WATwitterConnectSwitch.m; sourceTree = "<group>"; };
 		DE7B35131654B7FC00718262 /* TempAvatar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = TempAvatar.png; path = Resources/TempAvatar.png; sourceTree = "<group>"; };
 		DE7B35141654B7FC00718262 /* TempAvatar@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "TempAvatar@2x.png"; path = "Resources/TempAvatar@2x.png"; sourceTree = "<group>"; };
-		DEBD4927165E74A7008F96D3 /* Kal.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Kal.xcodeproj; path = external/Kal/src/Kal.xcodeproj; sourceTree = "<group>"; };
 		DEBED814166C8608001A2B24 /* GetCollections.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = GetCollections.json; path = UnitTests/GetCollections.json; sourceTree = SOURCE_ROOT; };
 		DEBED816166C8643001A2B24 /* forward.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = forward.png; path = Resources/forward.png; sourceTree = "<group>"; };
 		DEBED817166C8643001A2B24 /* forward@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "forward@2x.png"; path = "Resources/forward@2x.png"; sourceTree = "<group>"; };
@@ -1462,8 +1455,8 @@
 		FF3B1B2514EBA3C7009CFFD1 /* WFPreviewPrint.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; name = WFPreviewPrint.css; path = external/WFPresentation/Source/WFPreviewPrint.css; sourceTree = SOURCE_ROOT; };
 		FF3B1B2614EBA3C7009CFFD1 /* WFPreviewScreen.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; name = WFPreviewScreen.css; path = external/WFPresentation/Source/WFPreviewScreen.css; sourceTree = SOURCE_ROOT; };
 		FF3B1B2714EBA3C7009CFFD1 /* WFPreviewTemplate.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = WFPreviewTemplate.html; path = external/WFPresentation/Source/WFPreviewTemplate.html; sourceTree = SOURCE_ROOT; };
-		FF3B37AF15B690FF00AE357A /* WAFacebookConnectionSwitch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAFacebookConnectionSwitch.h; sourceTree = "<group>"; };
-		FF3B37B015B690FF00AE357A /* WAFacebookConnectionSwitch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAFacebookConnectionSwitch.m; sourceTree = "<group>"; };
+		FF3B37AF15B690FF00AE357A /* WAFacebookConnectionSwitch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WAFacebookConnectionSwitch.h; path = wammer/WAFacebookConnectionSwitch.h; sourceTree = "<group>"; };
+		FF3B37B015B690FF00AE357A /* WAFacebookConnectionSwitch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WAFacebookConnectionSwitch.m; path = wammer/WAFacebookConnectionSwitch.m; sourceTree = "<group>"; };
 		FF4050731573817A001A14DA /* WAGalleryImageScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAGalleryImageScrollView.h; sourceTree = "<group>"; };
 		FF4050741573817A001A14DA /* WAGalleryImageScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAGalleryImageScrollView.m; sourceTree = "<group>"; };
 		FF426FC0155102AF0053D1CA /* WFPreviewTemplate_Discrete_Plaintext.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = WFPreviewTemplate_Discrete_Plaintext.html; path = external/WFPresentation/Source/WFPreviewTemplate_Discrete_Plaintext.html; sourceTree = SOURCE_ROOT; };
@@ -2041,7 +2034,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DEBD4933165E7C7E008F96D3 /* libKal.a in Frameworks */,
+				DE2BBDDC16761B9C00EEF922 /* libKal.a in Frameworks */,
 				80A115681647CC0B005A4246 /* MapKit.framework in Frameworks */,
 				7D857D54164250B80092CF5F /* libAQGridView.a in Frameworks */,
 				7DC3AC1216422070009A8EA7 /* libSocketRocket.a in Frameworks */,
@@ -2390,13 +2383,12 @@
 			name = "Event View";
 			sourceTree = "<group>";
 		};
-		DE696E021675D09A008DC3F6 /* Twitter */ = {
+		DE2BBDD716761AC100EEF922 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				DE696E031675D0AC008DC3F6 /* WATwitterConnectSwitch.h */,
-				DE696E041675D0AC008DC3F6 /* WATwitterConnectSwitch.m */,
+				DE2BBDDB16761AC100EEF922 /* libKal.a */,
 			);
-			name = Twitter;
+			name = Products;
 			sourceTree = "<group>";
 		};
 		DE7B38A0165CBB9900718262 /* Calendar Picker */ = {
@@ -2410,21 +2402,17 @@
 			name = "Calendar Picker";
 			sourceTree = "<group>";
 		};
-		DEBD4928165E74A7008F96D3 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				DEBD492F165E74A8008F96D3 /* libKal.a */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 		DEBED820166C86E9001A2B24 /* OAuth */ = {
 			isa = PBXGroup;
 			children = (
 				DEBED824166C8739001A2B24 /* WAOAuthSwitch.h */,
 				DEBED825166C8739001A2B24 /* WAOAuthSwitch.m */,
+				FF3B37AF15B690FF00AE357A /* WAFacebookConnectionSwitch.h */,
+				FF3B37B015B690FF00AE357A /* WAFacebookConnectionSwitch.m */,
 				DEBED821166C8713001A2B24 /* WAGoogleConnectSwitch.h */,
 				DEBED822166C8713001A2B24 /* WAGoogleConnectSwitch.m */,
+				DE696E031675D0AC008DC3F6 /* WATwitterConnectSwitch.h */,
+				DE696E041675D0AC008DC3F6 /* WATwitterConnectSwitch.m */,
 				DE696DFF1675D020008DC3F6 /* WASnsConnectSwitch.h */,
 				DE696E001675D020008DC3F6 /* WASnsConnectSwitch.m */,
 			);
@@ -2777,8 +2765,6 @@
 				4B8CA96F14BBE7BA006E06BB /* UnitTests */,
 				FFC62019149CF1930097C377 /* Environment */,
 				FF946020152D7EDD0034D540 /* Appearance */,
-				FFBBA42615AD5D4900E95C66 /* Facebook */,
-				DE696E021675D09A008DC3F6 /* Twitter */,
 				DEBED820166C86E9001A2B24 /* OAuth */,
 				FF890CAB1416297C00CD7D1F /* Authentication */,
 				FF6BD00A15AFBE640046AAC8 /* Tutorial */,
@@ -2823,7 +2809,7 @@
 		FF73A54113D6C2CC00D54EC6 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				DEBD4927165E74A7008F96D3 /* Kal.xcodeproj */,
+				DE2BBDD616761AC100EEF922 /* Kal.xcodeproj */,
 				80A115671647CC0A005A4246 /* MapKit.framework */,
 				4BAD7581164DED1700ADDE56 /* libsqlite3.dylib */,
 				D215E734098A44479DEC4F88 /* libPods.a */,
@@ -3090,16 +3076,6 @@
 				FFBA66ED140E12AD00BE5A1D /* IRDiscreteLayoutTests.octest */,
 			);
 			name = Products;
-			sourceTree = "<group>";
-		};
-		FFBBA42615AD5D4900E95C66 /* Facebook */ = {
-			isa = PBXGroup;
-			children = (
-				FF3B37AF15B690FF00AE357A /* WAFacebookConnectionSwitch.h */,
-				FF3B37B015B690FF00AE357A /* WAFacebookConnectionSwitch.m */,
-			);
-			name = Facebook;
-			path = wammer;
 			sourceTree = "<group>";
 		};
 		FFC2E04C13DD706600816EA1 /* iOS Resources */ = {
@@ -3686,7 +3662,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				DEBD4932165E7C4A008F96D3 /* PBXTargetDependency */,
 				FFD4F93B157E08460027BF3F /* PBXTargetDependency */,
 				FFB117C5147F8B34002094E5 /* PBXTargetDependency */,
 				FFB3C179145E9A6F00ED7A56 /* PBXTargetDependency */,
@@ -3758,8 +3733,8 @@
 					ProjectRef = FF73A59E13D6DC6A00D54EC6 /* IRWebAPIKit.xcodeproj */;
 				},
 				{
-					ProductGroup = DEBD4928165E74A7008F96D3 /* Products */;
-					ProjectRef = DEBD4927165E74A7008F96D3 /* Kal.xcodeproj */;
+					ProductGroup = DE2BBDD716761AC100EEF922 /* Products */;
+					ProjectRef = DE2BBDD616761AC100EEF922 /* Kal.xcodeproj */;
 				},
 				{
 					ProductGroup = 7D6470A01642218800DBDEA6 /* Products */;
@@ -3829,11 +3804,11 @@
 			remoteRef = 7D857D52164249DA0092CF5F /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		DEBD492F165E74A8008F96D3 /* libKal.a */ = {
+		DE2BBDDB16761AC100EEF922 /* libKal.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
 			path = libKal.a;
-			remoteRef = DEBD492E165E74A8008F96D3 /* PBXContainerItemProxy */;
+			remoteRef = DE2BBDDA16761AC100EEF922 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		FF09C0DF15A2DD6F00AEDDAE /* libIRSlidingSplitViewController.a */ = {
@@ -4747,11 +4722,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		DEBD4932165E7C4A008F96D3 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = Kal;
-			targetProxy = DEBD4931165E7C4A008F96D3 /* PBXContainerItemProxy */;
-		};
 		FF09C0E215A2DD8700AEDDAE /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = IRSlidingSplitViewController;
