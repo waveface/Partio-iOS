@@ -22,6 +22,7 @@ NSString *const kCollectionViewCellID = @"WACollectionViewCell";
 			self.backgroundImageView.layer.backgroundColor = [UIColor whiteColor].CGColor;
 			self.backgroundImageView.layer.borderColor = [UIColor colorWithWhite:0.9f alpha:1.0f].CGColor;
 			self.backgroundImageView.layer.borderWidth = 1.0f;
+			self.coverImage.layer.cornerRadius = 4.0f;
     }
     return self;
 }
