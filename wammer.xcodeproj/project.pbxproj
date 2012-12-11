@@ -39,7 +39,6 @@
 		13BAB30B16674C0300BC79B2 /* WAOAuthSwitch.m in Sources */ = {isa = PBXBuildFile; fileRef = 13BAB30A16674C0300BC79B2 /* WAOAuthSwitch.m */; };
 		13BFC39B164A40DE00FC39A4 /* WAFirstUseEmailLoginFooterView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 13BFC39A164A40DE00FC39A4 /* WAFirstUseEmailLoginFooterView.xib */; };
 		13BFC39D164A40E600FC39A4 /* WAFirstUseFacebookLoginView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 13BFC39C164A40E600FC39A4 /* WAFirstUseFacebookLoginView.xib */; };
-		13C1AB1D16688BEA004E6437 /* WASnsConnectSwitch.m in Sources */ = {isa = PBXBuildFile; fileRef = 13C1AB1C16688BEA004E6437 /* WASnsConnectSwitch.m */; };
 		13C30CDD1640DCB0000A8414 /* WAFirstUseChoosePlanViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 13C30CDC1640DCB0000A8414 /* WAFirstUseChoosePlanViewController.m */; };
 		13DAAD7C166FB100002900D7 /* WADocumentStreamViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 13DAAD7B166FB100002900D7 /* WADocumentStreamViewCell.xib */; };
 		13DE12EB1637F30A00757F7C /* WAFirstUseDoneViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 13DE12E71637F30A00757F7C /* WAFirstUseDoneViewController.m */; };
@@ -138,6 +137,7 @@
 		4BD77BBA15A2C8B300CA8486 /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = FF0CC558158A41150034BD1B /* libxml2.dylib */; };
 		4BE6910D14EB8159002B9790 /* WAPreviewInspectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BE6910B14EB8159002B9790 /* WAPreviewInspectionViewController.m */; };
 		4BE6910E14EB8159002B9790 /* WAPreviewInspectionViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4BE6910C14EB8159002B9790 /* WAPreviewInspectionViewController.xib */; };
+		4BEF75941676D6E000BC64CA /* WASnsConnectSwitch.m in Sources */ = {isa = PBXBuildFile; fileRef = 13C1AB1C16688BEA004E6437 /* WASnsConnectSwitch.m */; };
 		4BF243E014F23B7C00F4636C /* IRActionSheetController+WAAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BF243DF14F23B7C00F4636C /* IRActionSheetController+WAAdditions.m */; };
 		4BF3656615A5914000E40E42 /* WARemoteInterface+Facebook.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BF3656515A5914000E40E42 /* WARemoteInterface+Facebook.m */; };
 		4BFC156515C7D9DC00DB02F8 /* Fav@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BFC156315C7D9DC00DB02F8 /* Fav@2x~ipad.png */; };
@@ -4705,10 +4705,8 @@
 				139C87A61665B75D00F258C9 /* WAWebServiceSettingsViewController.m in Sources */,
 				13BAB307166725B600BC79B2 /* WAOAuthViewController.m in Sources */,
 				13BAB30B16674C0300BC79B2 /* WAOAuthSwitch.m in Sources */,
-				13C1AB1D16688BEA004E6437 /* WASnsConnectSwitch.m in Sources */,
 				80C05C90167446EB00C88545 /* WAGoogleConnectSwitch.m in Sources */,
 				80C05C93167446FD00C88545 /* WATwitterConnectSwitch.m in Sources */,
-				13C1AB1D16688BEA004E6437 /* WAGoogleConnectSwitch.m in Sources */,
 				1374524D166F1A250027582D /* WAFilePageElement+WAAdditions.m in Sources */,
 				13745256166F483D0027582D /* WADocumentStreamViewController.m in Sources */,
 				1374525A166F4A780027582D /* WADocumentStreamViewCell.m in Sources */,
@@ -4716,6 +4714,7 @@
 				800D9A9216719B5D0034CDF6 /* MKMapView+ZoomLevel.m in Sources */,
 				4B274E4F1675BFCC007406D3 /* WACollectionViewController.m in Sources */,
 				4B274E691675E0E9007406D3 /* WACollectionViewCell.m in Sources */,
+				4BEF75941676D6E000BC64CA /* WASnsConnectSwitch.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5091,7 +5090,6 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/wammer\"",
 					"\"$(SRCROOT)/wammer/Libraries\"",
-					"\"$(SRCROOT)/../../Library/Developer/Xcode/DerivedData/wammer-emtadpmnuosywwdpqrykcuhueoxl/Build/Products/Debug-iphoneos\"",
 				);
 				OTHER_CFLAGS = "";
 				PRODUCT_NAME = "wammer-iOS";
@@ -5621,7 +5619,6 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/wammer\"",
 					"\"$(SRCROOT)/wammer/Libraries\"",
-					"\"$(SRCROOT)/../../Library/Developer/Xcode/DerivedData/wammer-emtadpmnuosywwdpqrykcuhueoxl/Build/Products/Debug-iphoneos\"",
 				);
 				OTHER_CFLAGS = "";
 				PRODUCT_NAME = "wammer-iOS";
@@ -5659,7 +5656,6 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/wammer\"",
 					"\"$(SRCROOT)/wammer/Libraries\"",
-					"\"$(SRCROOT)/../../Library/Developer/Xcode/DerivedData/wammer-emtadpmnuosywwdpqrykcuhueoxl/Build/Products/Debug-iphoneos\"",
 				);
 				OTHER_CFLAGS = "";
 				PRODUCT_NAME = "wammer-iOS";
