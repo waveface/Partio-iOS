@@ -40,6 +40,7 @@
 
 @property (nonatomic, strong, readwrite) UICollectionView *itemsView;
 @property (nonatomic, strong) WAEventHeaderView *headerView;
+@property (nonatomic, strong) UIPopoverController *popover;
 
 @end
 
@@ -447,17 +448,31 @@
 
 - (void) showPeopleBtnPressed:(id)sender {
 
-	WAEventPeopleListViewController *plVC = [[WAEventPeopleListViewController alloc] initWithStyle:UITableViewStylePlain];
-	plVC.peopleList = [self.article.people allObjects];
+	if (isPhone()) {
+		WAEventPeopleListViewController *plVC = [[WAEventPeopleListViewController alloc] initWithStyle:UITableViewStylePlain];
+		plVC.peopleList = [self.article.people allObjects];
 	
-	UINavigationController *navVC = [[UINavigationController alloc] initWithRootViewController:plVC];
-	plVC.navigationItem.leftBarButtonItem = WABarButtonItem(nil, NSLocalizedString(@"LABEL_MODAL_POPUP_CLOSE_BUTTON", @"Text for modal popup close button"), ^{
-		[plVC dismissViewControllerAnimated:YES completion:nil];
-	});
+		UINavigationController *navVC = [[UINavigationController alloc] initWithRootViewController:plVC];
+		plVC.navigationItem.leftBarButtonItem = WABarButtonItem(nil, NSLocalizedString(@"LABEL_MODAL_POPUP_CLOSE_BUTTON", @"Text for modal popup close button"), ^{
+			[plVC dismissViewControllerAnimated:YES completion:nil];
+		});
 	
-	navVC.modalPresentationStyle = UIModalPresentationFormSheet;
+		navVC.modalPresentationStyle = UIModalPresentationFormSheet;
 
-	[self presentViewController:navVC animated:YES completion:nil];
+		[self presentViewController:navVC animated:YES completion:nil];
+		
+	} else {
+		
+		WAEventPeopleListViewController *plVC = [[WAEventPeopleListViewController alloc] initWithStyle:UITableViewStylePlain];
+		plVC.peopleList = [self.article.people allObjects];
+
+		self.popover = [[UIPopoverController alloc] initWithContentViewController:plVC];
+		[self.popover presentPopoverFromRect:CGRectMake(self.headerView.avatarPlacehoder.frame.size.width/2, self.headerView.avatarPlacehoder.frame.size.height - 25, 1, 1)
+																	inView:self.headerView.avatarPlacehoder
+								permittedArrowDirections:UIPopoverArrowDirectionUp
+																animated:YES];
+		
+	}
 	
 }
 
