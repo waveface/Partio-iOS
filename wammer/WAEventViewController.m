@@ -7,18 +7,22 @@
 //
 
 #import "WAEventViewController.h"
+
 #import "WADataStore.h"
 #import "WAArticle.h"
 #import "WATag.h"
 #import "WATagGroup.h"
 #import "WALocation.h"
 #import "WAPeople.h"
-#import "IRBarButtonItem.h"
-#import "WAAppearance.h"
+
 #import "WAEventPhotoViewCell.h"
-#import "GAI.h"
+#import "WAEventPeopleListViewController.h"
+#import "WAAppearance.h"
+
+#import "UIKit+IRAdditions.h"
 #import "MKMapView+ZoomLevel.h"
 #import "NINetworkImageView.h"
+#import "GAI.h"
 
 @interface WAAnnotation : NSObject <MKAnnotation>
 
@@ -36,10 +40,13 @@
 
 @property (nonatomic, strong, readwrite) UICollectionView *itemsView;
 @property (nonatomic, strong) WAEventHeaderView *headerView;
+@property (nonatomic, strong) UIPopoverController *popover;
 
 @end
 
-@implementation WAEventViewController
+@implementation WAEventViewController {
+	UITapGestureRecognizer *tapGR;
+}
 
 + (WAEventViewController *) controllerForArticle:(WAArticle *)article {
 	
@@ -100,12 +107,14 @@
 	self.navigationItem.leftBarButtonItem = WABackBarButtonItem([UIImage imageNamed:@"back"], @"", ^{
 		
 		if (isPad() && wSelf.parentViewController.modalPresentationStyle == UIModalPresentationFormSheet) {
+			[wSelf.view.window removeGestureRecognizer:tapGR];
 			[wSelf.navigationController dismissViewControllerAnimated:YES completion:nil];
 		} else {
 			[wSelf.navigationController popViewControllerAnimated:YES];
 		}
 		
 	});
+	
 	
 	[[GAI sharedInstance].defaultTracker trackEventWithCategory:@"Events"
 																									 withAction:@"Enter single event"
@@ -142,6 +151,14 @@
 		
 	}
 	
+	if (isPad()) {
+		tapGR = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapOutsideHandler:)];
+		tapGR.numberOfTapsRequired = 1;
+		tapGR.cancelsTouchesInView = NO;
+		[self.view.window addGestureRecognizer:tapGR];
+	}
+
+	
 	if (self.completion)
 		self.completion();
 	
@@ -169,6 +186,22 @@
 
 }
 
+- (void) tapOutsideHandler:(UITapGestureRecognizer*)sender {
+	
+	if (sender.state == UIGestureRecognizerStateEnded) {
+		
+		CGPoint location = [sender locationInView:nil];
+		
+		if (![self.navigationController.view pointInside:[self.navigationController.view convertPoint:location fromView:self.view.window] withEvent:nil]) {
+			
+			[self.view.window removeGestureRecognizer:sender];
+			[self dismissViewControllerAnimated:YES completion:nil];
+			
+		}
+	}
+	
+}
+
 + (NSDateFormatter *) dateFormatter {
 	static NSDateFormatter *formatter = nil;
 	
@@ -191,7 +224,9 @@
 		annView = [[MKAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:annotationIdentifier];
 	}
 	
-	annView.image = [UIImage imageNamed:@"Location"];
+	annView.canShowCallout = YES;
+	annView.draggable = NO;
+	annView.image = [UIImage imageNamed:@"pindrop"];
 	return annView;
 	
 }
@@ -363,6 +398,7 @@
 			more.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
 			more.titleLabel.textAlignment = NSTextAlignmentCenter;
 			[more setTitle:[NSString stringWithFormat:@"%d More", self.article.people.count - 2] forState:UIControlStateNormal];
+			[more addTarget:self action:@selector(showPeopleBtnPressed:) forControlEvents:UIControlEventTouchUpInside];
 			[self.headerView.avatarPlacehoder addSubview:more];
 		} else {
 			
@@ -373,6 +409,7 @@
 				NSString *imageName = [NSString stringWithFormat:@"P%d", i+1];
 				[add setBackgroundImage:[UIImage imageNamed:imageName] forState:UIControlStateNormal];
 				avatarRect.origin.y = avatarRect.origin.y + avatarRect.size.height + 4;
+				[add addTarget:self action:@selector(addMorePeopleBtnPressed:) forControlEvents:UIControlEventTouchUpInside];
 				
 				[self.headerView.avatarPlacehoder addSubview:add];
 				
@@ -385,7 +422,8 @@
 		NSMutableArray *allTags = [NSMutableArray array];
 
 		for (WALocation *loc in self.article.checkins) {
-			[allTags addObject:loc.name];
+				if (loc.name)
+					[allTags addObject:loc.name];
 		}
 		
 		if (allTags.count > 0) // dedup
@@ -401,6 +439,7 @@
 	} else {
 		
 		_headerView.locationMarkImageView.image = [UIImage imageNamed:@"NoLocation"];
+		_headerView.locationLabel.text = NSLocalizedString(@"LABEL_WITHOUT_GPS_DATA", @"The text of location label when there is no gps information we can refer to");
 		
 	}
 
@@ -423,6 +462,13 @@
 		
 	}
 	
+	if (!self.article.files.count) {
+		
+		_headerView.labelOverSeparationLine.text = NSLocalizedString(@"EVENT_SEPERATION_LABEL_WITHOUT_PHOTOS", @"The text of label on separation line in the event view when there is no photo presented.");
+		[_headerView.labelOverSeparationLine sizeToFit];
+		
+	}
+	
 	CGRect newFrame = _headerView.frame;
 	newFrame.size.width = CGRectGetWidth(self.itemsView.frame);
 	_headerView.frame = newFrame;
@@ -432,6 +478,42 @@
 	
 	return _headerView;
 
+}
+
+#pragma mark - Handle Actions
+
+- (void) showPeopleBtnPressed:(id)sender {
+
+	if (isPhone()) {
+		WAEventPeopleListViewController *plVC = [[WAEventPeopleListViewController alloc] initWithStyle:UITableViewStylePlain];
+		plVC.peopleList = [self.article.people allObjects];
+	
+		UINavigationController *navVC = [[UINavigationController alloc] initWithRootViewController:plVC];
+		plVC.navigationItem.leftBarButtonItem = WABarButtonItem(nil, NSLocalizedString(@"LABEL_MODAL_POPUP_CLOSE_BUTTON", @"Text for modal popup close button"), ^{
+			[plVC dismissViewControllerAnimated:YES completion:nil];
+		});
+	
+		navVC.modalPresentationStyle = UIModalPresentationFormSheet;
+
+		[self presentViewController:navVC animated:YES completion:nil];
+		
+	} else {
+		
+		WAEventPeopleListViewController *plVC = [[WAEventPeopleListViewController alloc] initWithStyle:UITableViewStylePlain];
+		plVC.peopleList = [self.article.people allObjects];
+
+		self.popover = [[UIPopoverController alloc] initWithContentViewController:plVC];
+		[self.popover presentPopoverFromRect:CGRectMake(self.headerView.avatarPlacehoder.frame.size.width/2, self.headerView.avatarPlacehoder.frame.size.height - 25, 1, 1)
+																	inView:self.headerView.avatarPlacehoder
+								permittedArrowDirections:UIPopoverArrowDirectionUp
+																animated:YES];
+		
+	}
+	
+}
+
+- (void) addMorePeopleBtnPressed:(id)sender {
+	
 }
 
 
@@ -455,6 +537,9 @@
 }
 
 - (NSInteger) collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
+	
+	if (!self.article.files.count)
+		return isPad() ? 5 : 3; // add buttons placehoder
 	
 	return self.article.files.count;
 	

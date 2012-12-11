@@ -28,4 +28,6 @@
 @property (nonatomic, weak) IBOutlet UILabel *locationLabel;
 @property (nonatomic, weak) IBOutlet UIImageView *locationMarkImageView;
 
+@property (nonatomic, weak) IBOutlet UILabel *labelOverSeparationLine;
+
 @end
