@@ -145,7 +145,7 @@ static NSString *const kTrackingId = @"UA-27817516-7";
 				(id)kCFBooleanFalse, @"sendLogOnlyOnCrash",
 			nil]];
 			
-			[TestFlight takeOff:kWATestflightTeamToken];
+			[TestFlight takeOff:@"fc829e58-110d-4cc7-9ee0-39a3dd54e6c9"];
 			
 			id observer = [[NSNotificationCenter defaultCenter] addObserverForName:kWAAppEventNotification object:nil queue:nil usingBlock:^(NSNotification *note) {
 				
@@ -240,8 +240,6 @@ extern CFAbsoluteTime StartTime;
 #if ENABLE_DCINTROSPECT
 	[[DCIntrospect sharedIntrospector] start];
 #endif
-	
-	[TestFlight takeOff:kWATestflightTeamToken];
 
 #if DEBUG
 #pragma clang diagnostic push
