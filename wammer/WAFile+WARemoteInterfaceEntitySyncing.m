@@ -88,7 +88,6 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
 			@"file_name": @"remoteFileName",
 			@"file_size": @"remoteFileSize",
 			@"event_time": @"created",
-		  @"doc_access_time": @"docAccessTime",
 			
 			@"image": @"remoteRepresentedImage",
 			@"md5": @"remoteResourceHash",
@@ -105,6 +104,7 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
 			@"file_create_time": @"timestamp",
       
 			@"pageElements": @"pageElements",
+		  @"accessLogs": @"accessLogs",
 							 
 			@"web_url": @"webURL",
 			@"web_title": @"webTitle",
@@ -118,7 +118,10 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
 
 + (NSDictionary *) defaultHierarchicalEntityMapping {
 
-	return @{@"pageElements": @"WAFilePageElement"};
+	return @{
+		@"accessLogs": @"WAFileAccessLog",
+		@"pageElements": @"WAFilePageElement"
+	};
 
 }
 
@@ -160,7 +163,20 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
 		if (incomingRepresentation[@"doc_meta"]) {
 
 			returnedDictionary[@"file_name"] = [incomingRepresentation valueForKeyPath:@"doc_meta.file_name"];
-			returnedDictionary[@"doc_access_time"] = [incomingRepresentation valueForKeyPath:@"doc_meta.access_time"];
+
+			NSMutableArray *accessLogArray = [NSMutableArray array];
+			for (NSString *accessTime in [incomingRepresentation valueForKeyPath:@"doc_meta.access_time"]) {
+				NSDate *date = [NSDate dateFromISO8601String:accessTime];
+				NSDateComponents *dateComponents = [[NSCalendar currentCalendar] components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit fromDate:date];
+				NSDate *day = [[NSCalendar currentCalendar] dateFromComponents:dateComponents];
+				NSDictionary *accessLog = @{
+					@"accessTime": date,
+					@"filePath": [incomingRepresentation valueForKeyPath:@"file_path"],
+					@"day": @{@"day" : day}
+				};
+				[accessLogArray addObject:accessLog];
+			};
+			returnedDictionary[@"accessLogs"] = accessLogArray;
 			
 			NSNumber *pagesValue = [incomingRepresentation valueForKeyPath:@"doc_meta.preview_pages"];
 			
@@ -210,7 +226,7 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
     
   }
   
-	if ([aLocalKeyPath isEqualToString:@"timestamp"] || [aLocalKeyPath isEqualToString:@"created"] || [aLocalKeyPath isEqualToString:@"docAccessTime"]) {
+	if ([aLocalKeyPath isEqualToString:@"timestamp"] || [aLocalKeyPath isEqualToString:@"created"]) {
 		return [NSDate dateFromISO8601String:aValue];
 	}
 	

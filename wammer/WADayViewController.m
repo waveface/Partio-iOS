@@ -26,6 +26,7 @@
 #import "WAPhotoStreamViewController.h"
 #import <CoreData+MagicalRecord.h>
 #import "WADocumentStreamViewController.h"
+#import "WADocumentDay.h"
 
 static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPostsViewControllerPhone_RepresentedObjectURI";
 
@@ -124,32 +125,32 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 - (void) viewDidAppear:(BOOL)animated {
 	[super viewDidAppear:animated];
 	
-	__block NSDate *currentDate = nil;
-	__weak WADayViewController *wSelf = self;
-	
-	
-	[self.fetchedResultsController.fetchedObjects enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-		
-		NSDate *theDate = nil;
-		
-		if ([containedClass isSubclassOfClass:[WATimelineViewController class]]) {
-			
-			theDate = [[((WAArticle*)obj) creationDate] dayBegin];
-			
-		} else {
-			
-			theDate = [[((WAFile*)obj) created] dayBegin];
-			
-		}
-		
-		if (!currentDate || !isSameDay(currentDate, theDate)) {
-			[wSelf.days addObject:theDate];
-			currentDate = theDate;
-		}
-		
-	}];
-
-	[self.paginatedView reloadViews];
+//	__block NSDate *currentDate = nil;
+//	__weak WADayViewController *wSelf = self;
+//	
+//	
+//	[self.fetchedResultsController.fetchedObjects enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+//		
+//		NSDate *theDate = nil;
+//		
+//		if ([containedClass isSubclassOfClass:[WATimelineViewController class]]) {
+//			
+//			theDate = [[((WAArticle*)obj) creationDate] dayBegin];
+//			
+//		} else {
+//			
+//			theDate = [[((WAFile*)obj) created] dayBegin];
+//			
+//		}
+//		
+//		if (!currentDate || !isSameDay(currentDate, theDate)) {
+//			[wSelf.days addObject:theDate];
+//			currentDate = theDate;
+//		}
+//		
+//	}];
+//
+//	[self.paginatedView reloadViews];
 
 }
 
@@ -239,11 +240,9 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 
 		NSManagedObjectContext *context = [[WADataStore defaultStore] defaultAutoUpdatedMOC];
 		NSFetchRequest *request = [[NSFetchRequest alloc] init];
-		NSEntityDescription *entity = [NSEntityDescription entityForName:@"WAFile" inManagedObjectContext:context];
+		NSEntityDescription *entity = [NSEntityDescription entityForName:@"WADocumentDay" inManagedObjectContext:context];
 		[request setEntity:entity];
-		NSPredicate *predicate = [NSPredicate predicateWithFormat:@"remoteResourceType == %@", @"doc"];
-		[request setPredicate:predicate];
-		NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"docAccessTime" ascending:NO];
+		NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"day" ascending:NO];
 		[request setSortDescriptors:@[sortDescriptor]];
 		
 		self.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:request managedObjectContext:context sectionNameKeyPath:nil cacheName:nil];
@@ -274,11 +273,12 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 			theDate = [[((WAFile*)obj) created] dayBegin];
 			
 		} else if ([containedClass isSubclassOfClass:[WADocumentStreamViewController class]]) {
-			
-			theDate = [[((WAFile*)obj) docAccessTime] dayBegin];
-			
+
+			theDate = [((WADocumentDay*)obj) day];
+
 		}
 		
+		// TODO: Remove the comparison part when all view controllers have their day mapping tables
 		if (!currentDate || !isSameDay(currentDate, theDate)) {
 			[wSelf.days addObject:theDate];
 			currentDate = theDate;
@@ -365,10 +365,11 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 		
 	} else if ([containedClass isSubclassOfClass:[WADocumentStreamViewController class]]) {
 
-		theNewDate = [[((WAFile*)anObject) docAccessTime] dayBegin];
+		theNewDate = [((WADocumentDay*)anObject) day];
 
 	}
 	
+	// TODO: Remove the insertion part when all view controllers have their day mapping tables
 	switch (type) {
 		case NSFetchedResultsChangeMove:
 		case NSFetchedResultsChangeInsert:
