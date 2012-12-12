@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface WACollectionViewCell : UICollectionReusableView
+@interface WACollectionViewCell : UICollectionViewCell
 
 @property (weak, nonatomic) IBOutlet UIImageView *coverImage;
 @property (weak, nonatomic) IBOutlet UIImageView *backgroundImageView;

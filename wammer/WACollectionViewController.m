@@ -11,6 +11,7 @@
 #import "WACollection.h"
 #import "WAFile.h"
 #import <CoreData+MagicalRecord.h>
+#import "WAGalleryViewController.h"
 
 @interface WACollectionViewController ()
 @property (nonatomic, strong) NSFetchedResultsController *fetchedResultsController;
@@ -77,6 +78,15 @@
 
 	
 	return (UICollectionViewCell *)cell;
+}
+
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
+	
+  WACollection *aCollection = [_fetchedResultsController objectAtIndexPath:indexPath];
+	WAGalleryViewController *galleryVC = [[WAGalleryViewController alloc]
+                                        initWithImageFiles:[aCollection.files array]
+                                        atIndex:[indexPath row]];
+	[self.navigationController pushViewController:galleryVC animated:YES];
 }
 
 @end
