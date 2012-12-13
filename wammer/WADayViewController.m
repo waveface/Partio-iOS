@@ -192,7 +192,7 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 															[NSPredicate predicateWithFormat:@"event = TRUE"],
 															[NSPredicate predicateWithFormat:@"import != %d AND import != %d", WAImportTypeFromOthers, WAImportTypeFromLocal]]];
 		
-		fetchRequest.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:NO]];
+		fetchRequest.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"dayOnCreation" ascending:NO]];
 		
 		self.fetchedResultsController = [[NSFetchedResultsController alloc]
 																		 initWithFetchRequest:fetchRequest
