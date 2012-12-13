@@ -58,10 +58,10 @@
 }
 
 - (void)testGetSingleCollection {
-	NSArray *collectionsRep = [self loadDataFile:@"GetCollections"];
+	NSDictionary *collectionsRep = [self loadDataFile:@"GetCollections"];
 	STAssertNotNil(collectionsRep, @"need to be a vaild JSON");
 	
-	NSArray *aCollection = collectionsRep;
+	NSArray *aCollection = [collectionsRep objectForKey:@"collections"];
 	
 	NSArray *transformed;
 	@autoreleasepool {
@@ -72,18 +72,24 @@
 									 options:IRManagedObjectOptionIndividualOperations];
 	}
 	
+	NSUInteger touches = 0;
 	for (WACollection *coll in transformed) {
 		STAssertNotNil(coll.identifier, @"identifier should not be nil");
-		if ([coll.identifier isEqualToString:@"abca95d7-9b72-463d-931f-de9fa8f9a2f3"]) {
+		if ([coll.identifier isEqualToString:@"441d03ce-dc01-4029-bcfe-4be8853396f6"]) {
 			assertThat(coll.isHidden, equalTo(@(0)));
 			assertThat(coll.isSmart, equalTo(@(0)));
-			assertThat(coll.sequenceNumber, equalTo(@(33784)));
-			STAssertEquals([coll.files count], (NSUInteger)3, @"With Object IDs");
+			assertThat(coll.sequenceNumber, equalTo(@(35680)));
+			assertThat(coll.title, equalTo(@"Food"));
+			STAssertEquals([coll.files count], (NSUInteger)8, @"With Object IDs");
+			touches ++;
 		}
-		if ([coll.identifier isEqualToString:@"38627127-dff1-4892-91bd-bd29415b46ed"]) {
+		if ([coll.identifier isEqualToString:@"0bc1d4ce-bbf3-49c0-a5fe-d454b96493a0"]) {
 			assertThat(coll.isHidden, equalTo(@(1)));
+			touches ++;
 		}
   }
+
+	STAssertTrue(touches == 2, @"These two instances must be touched");
 }
 
 @end
