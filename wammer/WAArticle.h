@@ -30,6 +30,7 @@ typedef enum {
 @interface WAArticle : IRManagedObject
 
 @property (nonatomic, retain) NSDate * creationDate;
+@property (nonatomic, retain) NSDate * dayOnCreation;
 @property (nonatomic, retain) NSString * creationDeviceName;
 @property (nonatomic, retain) NSNumber * draft;
 @property (nonatomic, retain) NSNumber * favorite;

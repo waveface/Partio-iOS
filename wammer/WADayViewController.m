@@ -35,7 +35,6 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 
 @property (nonatomic, readwrite, strong) IRPaginatedView *paginatedView;
 @property (nonatomic, readwrite, strong) NSMutableDictionary *daysControllers;
-@property (nonatomic, readwrite, strong) NSMutableArray *days;
 
 @property (nonatomic, readwrite, strong) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, readwrite, strong) NSFetchedResultsController *fetchedResultsController;
@@ -56,7 +55,6 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
     if (!self)
 			return nil;
 		
-	self.days = [NSMutableArray array];
 	self.daysControllers = [[NSMutableDictionary alloc] init];
 	
 	[[NSNotificationCenter defaultCenter]
@@ -117,38 +115,12 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 		self.title = NSLocalizedString(@"DOCUMENTS_CONTROLLER_TITLE", @"Title for document view controller");
 	}
 	
-	[self.paginatedView reloadViews];
 
 }
 
 - (void) viewDidAppear:(BOOL)animated {
 	[super viewDidAppear:animated];
 	
-	__block NSDate *currentDate = nil;
-	__weak WADayViewController *wSelf = self;
-	
-	
-	[self.fetchedResultsController.fetchedObjects enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-		
-		NSDate *theDate = nil;
-		
-		if ([containedClass isSubclassOfClass:[WATimelineViewController class]]) {
-			
-			theDate = [[((WAArticle*)obj) creationDate] dayBegin];
-			
-		} else {
-			
-			theDate = [[((WAFile*)obj) created] dayBegin];
-			
-		}
-		
-		if (!currentDate || !isSameDay(currentDate, theDate)) {
-			[wSelf.days addObject:theDate];
-			currentDate = theDate;
-		}
-		
-	}];
-
 	[self.paginatedView reloadViews];
 
 }
@@ -160,17 +132,25 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 	
 	__weak WADayViewController *wSelf = self;
 
-	[self.days enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+	NSUInteger numOfSections = [self.fetchedResultsController.sections count];
+	for (int idx = 0; idx < numOfSections; idx++ ) {
+		
 		if ((idx != wSelf.paginatedView.currentPage) && ((idx + 1) != wSelf.paginatedView.currentPage) && ((idx-1) != wSelf.paginatedView.currentPage)) {
-			UIViewController *controller = [wSelf.daysControllers objectForKey:wSelf.days[idx]];
+			NSDate *theDay = [[self.fetchedResultsController objectAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:idx]] dayOnCreation];
+
+			if (!theDay)
+				return;
+
+			UIViewController *controller = [wSelf.daysControllers objectForKey:theDay];
 			if (controller) {
 				
 				[controller removeFromParentViewController];
-				[wSelf.daysControllers removeObjectForKey:wSelf.days[idx] ];
+				[wSelf.daysControllers removeObjectForKey:theDay ];
 				
 			}
 		}
-	}];
+		
+	}
 	
 }
 
@@ -193,7 +173,6 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 
 -(void) viewDidLoad {
 	
-	self.days = [NSMutableArray array];
 	self.daysControllers = [NSMutableDictionary dictionary];
 	
 	if ([containedClass isSubclassOfClass:[WATimelineViewController class]]) {
@@ -218,7 +197,7 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 		self.fetchedResultsController = [[NSFetchedResultsController alloc]
 																		 initWithFetchRequest:fetchRequest
 																		 managedObjectContext:[[WADataStore defaultStore] defaultAutoUpdatedMOC]
-																		 sectionNameKeyPath:nil
+																		 sectionNameKeyPath:@"dayOnCreation"
 																		 cacheName:nil];
 		
 		self.fetchedResultsController.delegate = self;
@@ -233,7 +212,7 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 	} else if ([containedClass isSubclassOfClass:[WAPhotoStreamViewController class]]) {
 
 		NSPredicate *withDate =[NSPredicate predicateWithFormat:@"created != nil"];
-		self.fetchedResultsController = [WAFile MR_fetchAllSortedBy:@"created" ascending:NO withPredicate:withDate groupBy:nil delegate:self];
+		self.fetchedResultsController = [WAFile MR_fetchAllSortedBy:@"created" ascending:NO withPredicate:withDate groupBy:@"dayOnCreation" delegate:self];
 		
 	} else if ([containedClass isSubclassOfClass:[WADocumentStreamViewController class]]) {
 
@@ -258,45 +237,17 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 
 	}
 
-	__block NSDate *currentDate = nil;
-	__weak WADayViewController *wSelf = self;
-	
-	[self.fetchedResultsController.fetchedObjects enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-		
-		NSDate *theDate = nil;
-		
-		if ([containedClass isSubclassOfClass:[WATimelineViewController class]]) {
-			
-			theDate = [[((WAArticle*)obj) creationDate] dayBegin];
-			
-		} else if ([containedClass isSubclassOfClass:[WAPhotoStreamViewController class]]) {
-			
-			theDate = [[((WAFile*)obj) created] dayBegin];
-			
-		} else if ([containedClass isSubclassOfClass:[WADocumentStreamViewController class]]) {
-			
-			theDate = [[((WAFile*)obj) docAccessTime] dayBegin];
-			
-		}
-		
-		if (!currentDate || !isSameDay(currentDate, theDate)) {
-			[wSelf.days addObject:theDate];
-			currentDate = theDate;
-		}
-		
-	}];
-
-
 }
 
 - (NSUInteger)numberOfViewsInPaginatedView:(IRPaginatedView *)paginatedView {
 	
-	return [self.days count];
+	return [self.fetchedResultsController.sections count];
 	
 }
 
 - (id) controllerAtPageIndex: (NSUInteger) index {
-	NSDate *dateForPage = (self.days)[index];
+	
+	NSDate *dateForPage = [[self.fetchedResultsController objectAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:index]] dayOnCreation];
 	
 	if (dateForPage == nil)
 		return nil;
@@ -331,7 +282,8 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 
 - (void) willRemoveView:(UIView *)view atIndex:(NSUInteger)index {
 
-	NSDate *dateOfPage = (self.days)[index];
+	NSDate *dateOfPage = [(WAArticle*)[self.fetchedResultsController objectAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:index]] dayOnCreation];
+
 	UIViewController *controller = (self.daysControllers)[dateOfPage];
 	if (controller)
 		[controller removeFromParentViewController];
@@ -348,68 +300,14 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 	
 }
 
-
-- (void) controller:(NSFetchedResultsController *)controller didChangeObject:(id)anObject atIndexPath:(NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type newIndexPath:(NSIndexPath *)newIndexPath {
-	
-	NSParameterAssert([NSThread isMainThread]);
-
-	
-	NSDate *theNewDate = nil;
-	if ([containedClass isSubclassOfClass:[WATimelineViewController class]]) {
-
-		theNewDate = [[((WAArticle*)anObject) creationDate] dayBegin];
-
-	} else if ([containedClass isSubclassOfClass:[WAPhotoStreamViewController class]]) {
-
-		theNewDate = [[((WAFile*)anObject) created] dayBegin];
-		
-	} else if ([containedClass isSubclassOfClass:[WADocumentStreamViewController class]]) {
-
-		theNewDate = [[((WAFile*)anObject) docAccessTime] dayBegin];
-
-	}
+- (void) controller:(NSFetchedResultsController *)controller didChangeSection:(id<NSFetchedResultsSectionInfo>)sectionInfo atIndex:(NSUInteger)sectionIndex forChangeType:(NSFetchedResultsChangeType)type {
 	
 	switch (type) {
-		case NSFetchedResultsChangeMove:
 		case NSFetchedResultsChangeInsert:
-		{
-			if (!theNewDate) {
-				break;
-			}
-
-			NSUInteger oldIndex = [self.days indexOfObject:theNewDate
-																			 inSortedRange:(NSRange){0, self.days.count}
-																						 options:NSBinarySearchingFirstEqual
-																		 usingComparator:^NSComparisonResult(NSDate *obj1, NSDate *obj2) {
-																			 return [obj2 compare:obj1];
-																		 }];
-			if (oldIndex == NSNotFound) {
-
-				// insertion sort
-				NSUInteger newIndex = [self.days indexOfObject:theNewDate
-																				 inSortedRange:(NSRange){0, self.days.count}
-																							 options:NSBinarySearchingInsertionIndex
-																			 usingComparator:^NSComparisonResult(NSDate *obj1, NSDate *obj2) {
-																				 return [obj2 compare:obj1];
-																			 }];
-				[self.days insertObject:theNewDate atIndex:newIndex];
-				
-
-				if ([self isViewLoaded]) {
-					[self.paginatedView reloadViews];
-				}
-				
-			}
-			
-			// TODO: if found, notify that view controller to update
-			
+		case NSFetchedResultsChangeDelete:
+			if ([self isViewLoaded])
+				[self.paginatedView reloadViews];
 			break;
-		}
-			
-		case NSFetchedResultsChangeDelete: {
-			// any chance to delete?
-			break;
-		}
 			
 		default:
 			break;
@@ -557,33 +455,6 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 }
 
 
-#pragma mark -Date picker
-
-- (void) jumpToTimelineOnDate:(NSDate*)date {
-	
-	__block BOOL found = NO;
-	__block NSUInteger foundIdx = 0;
-	
-	[self.days enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-		
-		NSDate *articleDate = (NSDate*)obj;
-		NSComparisonResult result = [date compare:articleDate];
-		if (result == NSOrderedSame || result == NSOrderedDescending) {
-			foundIdx = idx;
-			found = YES;
-			*stop = YES;
-		}
-		
-	}];
-	
-	if (found) {
-		
-		[self.paginatedView scrollToPageAtIndex:foundIdx animated:YES];
-		
-	}
-	
-}
-
 #pragma mark - Dripdown menu
 BOOL dripdownMenuOpened = NO;
 - (void) dripdownMenuTapped {
@@ -634,7 +505,7 @@ BOOL dripdownMenuOpened = NO;
 }
 
 #pragma mark - Jump to specific date
-- (void)jumpToToday {
+- (void)jumpToRecentDay {
 	
 	[self.paginatedView scrollToPageAtIndex:0 animated:YES];
 		
@@ -646,19 +517,25 @@ BOOL dripdownMenuOpened = NO;
 	__block BOOL found = NO;
 	__block NSUInteger foundIndex = 0;
 		
-	[self.days enumerateObjectsUsingBlock:^(NSDate *day, NSUInteger idx, BOOL *stop) {
+	NSUInteger numOfSections = [self.fetchedResultsController.sections count];
+	for (int idx = 0; idx < numOfSections; idx++ ) {
+		NSDate *day = [[self.fetchedResultsController objectAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:idx]] dayOnCreation];
+		
+		if (!day)
+			return NO;
 		
 		if (isSameDay(day, date)) {
-			*stop = YES;
 			foundIndex = idx;
 			found = YES;
+			break;
 		}
 		
-	}];
+	}
 	
 	if (found) {
 		
 		[self.paginatedView scrollToPageAtIndex:foundIndex animated:animated];
+		return YES;
 		
 	}
 	

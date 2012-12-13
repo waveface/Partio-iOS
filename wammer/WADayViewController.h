@@ -13,7 +13,7 @@
 @interface WADayViewController : UIViewController <IRPaginatedViewDelegate, IIViewDeckControllerDelegate>
 
 - (id)initWithClassNamed: (Class)containerClass;
-- (void)jumpToToday;
+- (void)jumpToRecentDay;
 - (BOOL)jumpToDate:(NSDate*)date animated:(BOOL)animated;
 
 @end
