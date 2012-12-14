@@ -14,6 +14,8 @@ extern NSString * kWADocumentStreamViewCellKVOContext;
 
 @interface WADocumentStreamViewCell : UICollectionViewCell
 
+@property (weak, nonatomic) IBOutlet UIImageView *eventCardImageView;
+@property (weak, nonatomic) IBOutlet UILabel *fileNameLabel;
 @property (weak, nonatomic) IBOutlet UIImageView *imageView;
 @property (nonatomic, strong) WAFilePageElement *pageElement;
 

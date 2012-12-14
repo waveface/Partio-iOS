@@ -15,6 +15,7 @@
 #import "IRAsyncOperation.h"
 #import "WADefines.h"
 #import "WAAppDelegate_iOS.h"
+#import "NSDate+WAAdditions.h"
 
 
 NSString * const kWAArticleEntitySyncingErrorDomain = @"com.waveface.wammer.WAArticle.entitySyncing.error";
@@ -64,6 +65,7 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 		@"representingFile": @"representingFile",	//	wraps @"cover_attach"
 		@"code_name": @"creationDeviceName",
 		@"timestamp": @"creationDate",
+		@"dayOnCreation": @"dayOnCreation", // additional attribute for day view controller
 		@"update_time": @"modificationDate",
 		@"content": @"text",
 		@"comments": @"comments",
@@ -94,6 +96,9 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 	
 	if ([aLocalKeyPath isEqualToString:@"modificationDate"])
 		return [[WADataStore defaultStore] dateFromISO8601String:aValue];
+	
+	if ([aLocalKeyPath isEqualToString:@"dayOnCreation"])
+		return [[[WADataStore defaultStore] dateFromISO8601String:aValue] dayBegin];
 	
 	if ([aLocalKeyPath isEqualToString:@"identifier"])
 		return IRWebAPIKitStringValue(aValue);
@@ -253,6 +258,8 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 		[returnedDictionary setValue:@NO forKey:@"event_tag"];
 	}
 
+	[returnedDictionary setObject:incomingRepresentation[@"timestamp"] forKey:@"dayOnCreation"];
+	
 	return returnedDictionary;
 
 }

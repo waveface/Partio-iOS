@@ -505,10 +505,7 @@
 
 	UINavigationController *navVC = (UINavigationController *)[[self class] viewControllerForViewStyle:viewStyle];
 	WADayViewController *swVC = (WADayViewController*)navVC.topViewController;
-			
-	if (date)
-		[swVC jumpToDate:date animated:NO];
-			
+ 
 	if (animated) {
 				
 		[UIView animateWithDuration:animationDuration
@@ -517,11 +514,16 @@
 										 animations: ^{
 											 wSelf.viewDeckController.centerController = navVC;
 										 }
-										 completion:nil];
+										 completion: ^(BOOL complete) {
+											 if (date)
+												 [swVC jumpToDate:date animated:NO];
+										 }];
 				
 	} else {
 				
 		self.viewDeckController.centerController = navVC;
+		if (date)
+			[swVC jumpToDate:date animated:NO];
 				
 	}
 	

@@ -14,11 +14,13 @@
 #import "WADayHeaderView.h"
 #import "WAFilePageElement+WAAdditions.h"
 #import "WAGalleryViewController.h"
+#import "WAFileAccessLog.h"
+#import "WADocumentPreviewController.h"
 
 @interface WADocumentStreamViewController ()
 
 @property (nonatomic, readwrite, strong) NSDate *currentDate;
-@property (nonatomic, readwrite, strong) NSArray *documents;
+@property (nonatomic, readwrite, strong) NSMutableArray *documents;
 @property (nonatomic, readwrite, strong) NSFetchedResultsController *fetchedResultsController;
 
 @end
@@ -34,19 +36,36 @@
 
 		NSManagedObjectContext *context = [[WADataStore defaultStore] defaultAutoUpdatedMOC];
 		NSFetchRequest *request = [[NSFetchRequest alloc] init];
-		NSEntityDescription *entity = [NSEntityDescription entityForName:@"WAFile" inManagedObjectContext:context];
+		NSEntityDescription *entity = [NSEntityDescription entityForName:@"WAFileAccessLog" inManagedObjectContext:context];
 		[request setEntity:entity];
-		NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(docAccessTime BETWEEN {%@, %@}) AND (remoteResourceType == %@)", [date dayBegin], [date dayEnd], @"doc"];
+		NSPredicate *predicate = [NSPredicate predicateWithFormat:@"day.day == %@", self.currentDate];
 		[request setPredicate:predicate];
-		NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"docAccessTime" ascending:YES];
+		NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"accessTime" ascending:YES];
 		[request setSortDescriptors:@[sortDescriptor]];
-		[request setRelationshipKeyPathsForPrefetching:@[@"pageElements"]];
-		
+		[request setRelationshipKeyPathsForPrefetching:@[@"file"]];
+		[request setRelationshipKeyPathsForPrefetching:@[@"day"]];
+
 		self.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:request managedObjectContext:context sectionNameKeyPath:nil cacheName:nil];
 
 		[self.fetchedResultsController performFetch:nil];
 
-		self.documents = self.fetchedResultsController.fetchedObjects;
+		NSMutableDictionary *filePathAccessLogs = [NSMutableDictionary dictionary];
+		[self.fetchedResultsController.fetchedObjects enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+			WAFileAccessLog *accessLog = (WAFileAccessLog *)obj;
+			WAFileAccessLog *currentAccessLog = filePathAccessLogs[accessLog.filePath];
+			if (currentAccessLog) {
+				if ([accessLog.accessTime compare:currentAccessLog.accessTime] == NSOrderedDescending) {
+					filePathAccessLogs[accessLog.filePath] = accessLog;
+				}
+			} else {
+				filePathAccessLogs[accessLog.filePath] = accessLog;
+			}
+		}];
+
+		self.documents = [NSMutableArray array];
+		for (WAFileAccessLog *accessLog in [filePathAccessLogs allValues]) {
+			[self.documents addObject:accessLog.file];
+		}
 
 	}
 	return self;
@@ -109,16 +128,17 @@
 		}];
 	}];
 
+	cell.fileNameLabel.text = document.remoteFileName;
+
 	return cell;
 
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
 
-	WAFile *document = self.documents[[indexPath row]];
-	WAGalleryViewController *galleryVC = [[WAGalleryViewController alloc] initWithImageFiles:[document.pageElements array] atIndex:0];
-
-	[self.navigationController pushViewController:galleryVC animated:YES];
+	WAFile *document = self.documents[indexPath.row];
+	WADocumentPreviewController *previewController = [[WADocumentPreviewController alloc] initWithFile:document];
+	[self.navigationController pushViewController:previewController animated:YES];
 
 }
 

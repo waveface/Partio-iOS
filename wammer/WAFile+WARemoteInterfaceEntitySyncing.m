@@ -20,6 +20,8 @@
 #import "WAFile+ThumbnailMaker.h"
 #import "WAAssetsLibraryManager.h"
 
+#import "NSDate+WAAdditions.h"
+
 #import "SSToolkit/NSDate+SSToolkitAdditions.h"
 
 
@@ -88,7 +90,7 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
 			@"file_name": @"remoteFileName",
 			@"file_size": @"remoteFileSize",
 			@"event_time": @"created",
-		  @"doc_access_time": @"docAccessTime",
+			@"dayOnCreation": @"dayOnCreation",
 			
 			@"image": @"remoteRepresentedImage",
 			@"md5": @"remoteResourceHash",
@@ -105,6 +107,7 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
 			@"file_create_time": @"timestamp",
       
 			@"pageElements": @"pageElements",
+		  @"accessLogs": @"accessLogs",
 							 
 			@"web_url": @"webURL",
 			@"web_title": @"webTitle",
@@ -118,14 +121,17 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
 
 + (NSDictionary *) defaultHierarchicalEntityMapping {
 
-	return @{@"pageElements": @"WAFilePageElement"};
+	return @{
+		@"accessLogs": @"WAFileAccessLog",
+		@"pageElements": @"WAFilePageElement"
+	};
 
 }
 
 + (NSDictionary *) transformedRepresentationForRemoteRepresentation:(NSDictionary *)incomingRepresentation {
 
 	NSMutableDictionary *returnedDictionary = [incomingRepresentation mutableCopy];
-	
+
 	NSString *smallImageRepURLString = [returnedDictionary valueForKeyPath:@"image_meta.small.url"];
 	if ([smallImageRepURLString isKindOfClass:[NSString class]])
     returnedDictionary[@"small_thumbnail_url"] = smallImageRepURLString;
@@ -138,7 +144,12 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
 	if ([largeImageRepURLString isKindOfClass:[NSString class]])
     returnedDictionary[@"large_thumbnail_url"] = largeImageRepURLString;
 	
-	NSString *incomingFileType = incomingRepresentation[@"type"];
+	NSString *eventDateTime = incomingRepresentation[@"event_time"];
+	if ([eventDateTime isKindOfClass:[NSString class]]) {
+		[returnedDictionary setObject:eventDateTime forKey:@"dayOnCreation"];
+	}
+	
+	NSString *incomingFileType = incomingRepresentation[@"type"];	
   
   if ([incomingFileType isEqualToString:@"image"]) {
   
@@ -159,8 +170,19 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
   
 		if (incomingRepresentation[@"doc_meta"]) {
 
-			returnedDictionary[@"file_name"] = [incomingRepresentation valueForKeyPath:@"doc_meta.file_name"];
-			returnedDictionary[@"doc_access_time"] = [incomingRepresentation valueForKeyPath:@"doc_meta.access_time"];
+			NSMutableArray *accessLogArray = [NSMutableArray array];
+			for (NSString *accessTime in [incomingRepresentation valueForKeyPath:@"doc_meta.access_time"]) {
+				NSDate *date = [NSDate dateFromISO8601String:accessTime];
+				NSDateComponents *dateComponents = [[NSCalendar currentCalendar] components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit fromDate:date];
+				NSDate *day = [[NSCalendar currentCalendar] dateFromComponents:dateComponents];
+				NSDictionary *accessLog = @{
+					@"accessTime": date,
+					@"filePath": [incomingRepresentation valueForKeyPath:@"file_path"],
+					@"day": @{@"day" : day}
+				};
+				[accessLogArray addObject:accessLog];
+			};
+			returnedDictionary[@"accessLogs"] = accessLogArray;
 			
 			NSNumber *pagesValue = [incomingRepresentation valueForKeyPath:@"doc_meta.preview_pages"];
 			
@@ -210,9 +232,12 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
     
   }
   
-	if ([aLocalKeyPath isEqualToString:@"timestamp"] || [aLocalKeyPath isEqualToString:@"created"] || [aLocalKeyPath isEqualToString:@"docAccessTime"]) {
+	if ([aLocalKeyPath isEqualToString:@"timestamp"] || [aLocalKeyPath isEqualToString:@"created"]) {
 		return [NSDate dateFromISO8601String:aValue];
 	}
+	
+	if ([aLocalKeyPath isEqualToString:@"dayOnCreation"])
+		return [[NSDate dateFromISO8601String:aValue] dayBegin];
 	
 	if ([aLocalKeyPath isEqualToString:@"identifier"])
 		return IRWebAPIKitStringValue(aValue);

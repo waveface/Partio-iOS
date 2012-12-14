@@ -96,14 +96,17 @@
         </compoundIndexes>
         <userInfo/>
     </entity>
+    <entity name="WADocumentDay" representedClassName="WADocumentDay" syncable="YES">
+        <attribute name="day" optional="YES" attributeType="Date" syncable="YES"/>
+        <relationship name="accessLogs" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="WAFileAccessLog" inverseName="day" inverseEntity="WAFileAccessLog" syncable="YES"/>
+    </entity>
     <entity name="WAFile" representedClassName="WAFile">
         <attribute name="assetURL" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="codeName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="created" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="creationDeviceIdentifier" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="dayOnCreation" optional="YES" attributeType="Date" indexed="YES" syncable="YES"/>
+        <attribute name="dayOnCreation" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="dirty" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
-        <attribute name="docAccessTime" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="extraSmallThumbnailFilePath" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="identifier" optional="YES" attributeType="String" indexed="YES">
             <userInfo/>
@@ -150,6 +153,7 @@
         <attribute name="webFaviconURL" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="webTitle" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="webURL" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="accessLogs" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="WAFileAccessLog" inverseName="file" inverseEntity="WAFileAccessLog" syncable="YES"/>
         <relationship name="articles" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="WAArticle" inverseName="files" inverseEntity="WAArticle">
             <userInfo/>
         </relationship>
@@ -167,6 +171,12 @@
             </compoundIndex>
         </compoundIndexes>
         <userInfo/>
+    </entity>
+    <entity name="WAFileAccessLog" representedClassName="WAFileAccessLog" syncable="YES">
+        <attribute name="accessTime" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="filePath" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="day" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="WADocumentDay" inverseName="accessLogs" inverseEntity="WADocumentDay" syncable="YES"/>
+        <relationship name="file" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="WAFile" inverseName="accessLogs" inverseEntity="WAFile" syncable="YES"/>
     </entity>
     <entity name="WAFileExif" representedClassName="WAFileExif" syncable="YES">
         <attribute name="apertureValue" optional="YES" attributeType="Double" syncable="YES"/>
@@ -328,10 +338,12 @@
     <fetchRequest name="WAFRUser" entity="WAUser" predicateString="identifier == $Identifier"/>
     <elements>
         <element name="WAArticle" positionX="0" positionY="0" width="128" height="435"/>
-        <element name="WACache" positionX="0" positionY="0" width="128" height="135"/>
+        <element name="WACache" positionX="0" positionY="0" width="128" height="150"/>
         <element name="WACollection" positionX="0" positionY="0" width="128" height="180"/>
         <element name="WAComment" positionX="0" positionY="0" width="128" height="135"/>
+        <element name="WADocumentDay" positionX="0" positionY="0" width="128" height="75"/>
         <element name="WAFile" positionX="0" positionY="0" width="128" height="615"/>
+        <element name="WAFileAccessLog" positionX="160" positionY="192" width="128" height="105"/>
         <element name="WAFileExif" positionX="0" positionY="0" width="128" height="315"/>
         <element name="WAFilePageElement" positionX="0" positionY="0" width="128" height="135"/>
         <element name="WAGroup" positionX="0" positionY="0" width="128" height="120"/>

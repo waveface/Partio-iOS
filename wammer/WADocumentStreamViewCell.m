@@ -17,6 +17,10 @@ NSString * kWADocumentStreamViewCellKVOContext = @"DocuementStreamViewCellKVOCon
 - (id)initWithFrame:(CGRect)frame {
 
 	self = [[NSBundle mainBundle] loadNibNamed:@"WADocumentStreamViewCell" owner:self options:nil][0];
+	self.imageView.clipsToBounds = YES;
+	self.imageView.layer.borderColor = [UIColor colorWithWhite:0.95 alpha:1.0].CGColor;
+	self.imageView.layer.borderWidth = 1;
+	self.eventCardImageView.image = [[self class] eventCardBackgroundImage];
 
 	return self;
 
@@ -28,6 +32,19 @@ NSString * kWADocumentStreamViewCellKVOContext = @"DocuementStreamViewCellKVOCon
 																						 context:&kWADocumentStreamViewCellKVOContext];
 	self.imageView.image = nil;
 
+}
+
++ (UIImage *) eventCardBackgroundImage {
+	
+	static UIImage *image = nil;
+	
+	static dispatch_once_t onceToken;
+	dispatch_once(&onceToken, ^{
+    image = [[UIImage imageNamed:@"EventCardBG"] resizableImageWithCapInsets:UIEdgeInsetsMake(15, 15, 15, 15)];
+	});
+	
+	return image;
+	
 }
 
 #pragma mark - UICollectionReusableView delegates
