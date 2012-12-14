@@ -240,13 +240,23 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 
 - (NSUInteger)numberOfViewsInPaginatedView:(IRPaginatedView *)paginatedView {
 	
+	if ([containedClass isSubclassOfClass:[WADocumentStreamViewController class]]) {
+		return [self.fetchedResultsController.fetchedObjects count];
+	}
+
 	return [self.fetchedResultsController.sections count];
 	
 }
 
 - (id) controllerAtPageIndex: (NSUInteger) index {
 	
-	NSDate *dateForPage = [[self.fetchedResultsController objectAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:index]] dayOnCreation];
+	NSDate *dateForPage = nil;
+	
+	if ([containedClass isSubclassOfClass:[WADocumentStreamViewController class]]) {
+		dateForPage = [(WADocumentDay *)self.fetchedResultsController.fetchedObjects[index] day];
+	} else {
+		dateForPage = [[self.fetchedResultsController objectAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:index]] dayOnCreation];
+	}
 	
 	if (dateForPage == nil)
 		return nil;
@@ -254,7 +264,7 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 	id vc = self.daysControllers[dateForPage];
 	
 	if (vc == nil) {
-		vc = [[containedClass alloc]initWithDate:dateForPage];
+		vc = [[containedClass alloc] initWithDate:dateForPage];
 		if ( [vc isKindOfClass:[WAPhotoStreamViewController class]]  ) {
 			((WAPhotoStreamViewController *)vc).delegate = self;
 		}
@@ -297,6 +307,25 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 
 	return [self controllerAtPageIndex:index];
 	
+}
+
+- (void)controller:(NSFetchedResultsController *)controller didChangeObject:(id)anObject atIndexPath:(NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type newIndexPath:(NSIndexPath *)newIndexPath {
+
+	if (![containedClass isSubclassOfClass:[WADocumentStreamViewController class]]) {
+		return;
+	}
+
+	switch (type) {
+		case NSFetchedResultsChangeInsert:
+		case NSFetchedResultsChangeDelete:
+			if ([self isViewLoaded])
+				[self.paginatedView reloadViews];
+			break;
+			
+		default:
+			break;
+	}	
+
 }
 
 - (void) controller:(NSFetchedResultsController *)controller didChangeSection:(id<NSFetchedResultsSectionInfo>)sectionInfo atIndex:(NSUInteger)sectionIndex forChangeType:(NSFetchedResultsChangeType)type {

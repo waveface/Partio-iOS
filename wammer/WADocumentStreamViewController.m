@@ -137,14 +137,8 @@
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
 
 	WAFile *document = self.documents[indexPath.row];
-//	WAGalleryViewController *galleryVC = [[WAGalleryViewController alloc] initWithImageFiles:[document.pageElements array] atIndex:0];
-//	
-//	[self.navigationController pushViewController:galleryVC animated:YES];
-
 	WADocumentPreviewController *previewController = [[WADocumentPreviewController alloc] initWithFile:document];
-	
 	[self.navigationController pushViewController:previewController animated:YES];
-
 
 }
 

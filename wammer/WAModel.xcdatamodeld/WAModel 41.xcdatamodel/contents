@@ -7,6 +7,7 @@
         <attribute name="creationDeviceName" optional="YES" attributeType="String">
             <userInfo/>
         </attribute>
+        <attribute name="dayOnCreation" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="dirty" attributeType="Boolean" defaultValueString="NO" indexed="YES" syncable="YES"/>
         <attribute name="draft" attributeType="Boolean" defaultValueString="NO" indexed="YES">
             <userInfo/>
@@ -104,6 +105,7 @@
         <attribute name="codeName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="created" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="creationDeviceIdentifier" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="dayOnCreation" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="dirty" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="extraSmallThumbnailFilePath" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="identifier" optional="YES" attributeType="String" indexed="YES">
@@ -335,12 +337,13 @@
     <fetchRequest name="WAFRLocalImportedArticles" entity="WAArticle" predicateString="import == 1"/>
     <fetchRequest name="WAFRUser" entity="WAUser" predicateString="identifier == $Identifier"/>
     <elements>
-        <element name="WAArticle" positionX="0" positionY="0" width="128" height="420"/>
+        <element name="WAArticle" positionX="0" positionY="0" width="128" height="435"/>
         <element name="WACache" positionX="0" positionY="0" width="128" height="150"/>
         <element name="WACollection" positionX="0" positionY="0" width="128" height="180"/>
         <element name="WAComment" positionX="0" positionY="0" width="128" height="135"/>
         <element name="WADocumentDay" positionX="0" positionY="0" width="128" height="75"/>
-        <element name="WAFile" positionX="0" positionY="0" width="128" height="600"/>
+        <element name="WAFile" positionX="0" positionY="0" width="128" height="615"/>
+        <element name="WAFileAccessLog" positionX="160" positionY="192" width="128" height="105"/>
         <element name="WAFileExif" positionX="0" positionY="0" width="128" height="315"/>
         <element name="WAFilePageElement" positionX="0" positionY="0" width="128" height="135"/>
         <element name="WAGroup" positionX="0" positionY="0" width="128" height="120"/>
@@ -353,6 +356,5 @@
         <element name="WATag" positionX="0" positionY="0" width="128" height="105"/>
         <element name="WATagGroup" positionX="0" positionY="0" width="128" height="90"/>
         <element name="WAUser" positionX="0" positionY="0" width="128" height="225"/>
-        <element name="WAFileAccessLog" positionX="160" positionY="192" width="128" height="105"/>
     </elements>
 </model>

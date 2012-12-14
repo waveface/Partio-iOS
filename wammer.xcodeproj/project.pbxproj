@@ -2440,6 +2440,11 @@
 				13745258166F4A770027582D /* WADocumentStreamViewCell.h */,
 				13745259166F4A770027582D /* WADocumentStreamViewCell.m */,
 				13DAAD7B166FB100002900D7 /* WADocumentStreamViewCell.xib */,
+				133E8AF216798DD20075843C /* WADocumentPreviewController.h */,
+				133E8AF316798DD20075843C /* WADocumentPreviewController.m */,
+				131560411679CCC500C29BFA /* WADocumentDownloadingView.h */,
+				131560421679CCC500C29BFA /* WADocumentDownloadingView.m */,
+				131560441679CCE400C29BFA /* WADocumentDownloadingView.xib */,
 			);
 			name = Documents;
 			sourceTree = "<group>";
@@ -2868,11 +2873,6 @@
 				806A5C881623CDDE00867E56 /* WADripdownMenuViewController.xib */,
 				809C6D281605845A0016E196 /* WASlidingMenuViewController.h */,
 				809C6D291605845A0016E196 /* WASlidingMenuViewController.m */,
-				133E8AF216798DD20075843C /* WADocumentPreviewController.h */,
-				133E8AF316798DD20075843C /* WADocumentPreviewController.m */,
-				131560411679CCC500C29BFA /* WADocumentDownloadingView.h */,
-				131560421679CCC500C29BFA /* WADocumentDownloadingView.m */,
-				131560441679CCE400C29BFA /* WADocumentDownloadingView.xib */,
 			);
 			name = Timeline;
 			path = wammer;
