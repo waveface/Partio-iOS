@@ -119,16 +119,16 @@
 
 	WAFile *document = self.documents[[indexPath row]];
 
+	cell.pageElement = document.pageElements[0];
+	cell.fileNameLabel.text = document.remoteFileName;
+
 	[[[self class] sharedImageDisplayQueue] addOperationWithBlock:^{
-		cell.pageElement = document.pageElements[0];
 		[document.pageElements[0] irObserve:@"thumbnailImage" options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:&kWADocumentStreamViewCellKVOContext withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
 			[[NSOperationQueue mainQueue] addOperationWithBlock:^{
 				cell.imageView.image = toValue;
 			}];
 		}];
 	}];
-
-	cell.fileNameLabel.text = document.remoteFileName;
 
 	return cell;
 
