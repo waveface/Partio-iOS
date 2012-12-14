@@ -12,7 +12,6 @@
 		131FCC8D164BC8B3008F71A8 /* WAFirstUseSignUpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 131FCC8C164BC8B3008F71A8 /* WAFirstUseSignUpViewController.m */; };
 		13206265163F01D00064E770 /* WAFirstUseIntroView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 13206264163F01D00064E770 /* WAFirstUseIntroView.xib */; };
 		13217E3D164A0D3A0030C4A6 /* WALocalizedTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 13217E3C164A0D3A0030C4A6 /* WALocalizedTableViewCell.m */; };
-		13250C731675C1500095CE22 /* WASnsConnectSwitch.m in Sources */ = {isa = PBXBuildFile; fileRef = 13C1AB1C16688BEA004E6437 /* WASnsConnectSwitch.m */; };
 		1327A87E15F87A1700AC7852 /* WAFile+ThumbnailMaker.m in Sources */ = {isa = PBXBuildFile; fileRef = 1327A87D15F87A1700AC7852 /* WAFile+ThumbnailMaker.m */; };
 		132D60331622B66500148829 /* WACache.m in Sources */ = {isa = PBXBuildFile; fileRef = 132D60321622B66500148829 /* WACache.m */; };
 		133058DE1650ABE300C0283F /* WASyncManager+FileMetadataSync.m in Sources */ = {isa = PBXBuildFile; fileRef = 133058DD1650ABE300C0283F /* WASyncManager+FileMetadataSync.m */; };
@@ -130,10 +129,8 @@
 		4BD77BBA15A2C8B300CA8486 /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = FF0CC558158A41150034BD1B /* libxml2.dylib */; };
 		4BE6910D14EB8159002B9790 /* WAPreviewInspectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BE6910B14EB8159002B9790 /* WAPreviewInspectionViewController.m */; };
 		4BE6910E14EB8159002B9790 /* WAPreviewInspectionViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4BE6910C14EB8159002B9790 /* WAPreviewInspectionViewController.xib */; };
-		4BEF75941676D6E000BC64CA /* (null) in Sources */ = {isa = PBXBuildFile; };
 		4BF243E014F23B7C00F4636C /* IRActionSheetController+WAAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BF243DF14F23B7C00F4636C /* IRActionSheetController+WAAdditions.m */; };
 		4BF3656615A5914000E40E42 /* WARemoteInterface+Facebook.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BF3656515A5914000E40E42 /* WARemoteInterface+Facebook.m */; };
-		4BF8353C167726E30031A363 /* (null) in Sources */ = {isa = PBXBuildFile; };
 		4BF8353D1677275F0031A363 /* WACollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B274E681675E0E9007406D3 /* WACollectionViewCell.m */; };
 		4BF8353E167727600031A363 /* WACollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B274E681675E0E9007406D3 /* WACollectionViewCell.m */; };
 		4BF8353F167727630031A363 /* WACollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B274E4D1675BFCC007406D3 /* WACollectionViewController.m */; };
@@ -184,10 +181,10 @@
 		8002CDE615E5E85600D7BFF0 /* libicucore.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 8002CDE515E5E85600D7BFF0 /* libicucore.dylib */; };
 		8002CDE915E5E92100D7BFF0 /* WARemoteInterface+Notification.m in Sources */ = {isa = PBXBuildFile; fileRef = 8002CDE815E5E92100D7BFF0 /* WARemoteInterface+Notification.m */; };
 		8002CDEC15E5F6F300D7BFF0 /* WARemoteInterface+WebSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 8002CDEB15E5F6F300D7BFF0 /* WARemoteInterface+WebSocket.m */; };
+		800770E016797AE70085E525 /* WATimelineViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DEBED834166C8801001A2B24 /* WATimelineViewCell.m */; };
+		800770E3167982850085E525 /* WAFoursquareConnectSwitch.m in Sources */ = {isa = PBXBuildFile; fileRef = 800770E2167982850085E525 /* WAFoursquareConnectSwitch.m */; };
 		800D9A9216719B5D0034CDF6 /* MKMapView+ZoomLevel.m in Sources */ = {isa = PBXBuildFile; fileRef = 800D9A9116719B5D0034CDF6 /* MKMapView+ZoomLevel.m */; };
 		800E4FCE1671DD0C00F50E0B /* WATimelineViewCell-Checkin.xib in Resources */ = {isa = PBXBuildFile; fileRef = 800E4FCD1671DD0C00F50E0B /* WATimelineViewCell-Checkin.xib */; };
-		80175AF9165B2CAF007E783B /* WATimelineViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 80175AF8165B2CAF007E783B /* WATimelineViewCell.m */; };
-		801F71B8167632C2007B3C45 /* WAFoursquareConnectSwitch.m in Sources */ = {isa = PBXBuildFile; fileRef = 801F71B7167632C2007B3C45 /* WAFoursquareConnectSwitch.m */; };
 		8023BAF116770D2B00E6BED2 /* pindrop.png in Resources */ = {isa = PBXBuildFile; fileRef = 8023BAEF16770D2A00E6BED2 /* pindrop.png */; };
 		8023BAF216770D2B00E6BED2 /* pindrop@2X.png in Resources */ = {isa = PBXBuildFile; fileRef = 8023BAF016770D2A00E6BED2 /* pindrop@2X.png */; };
 		80316A0A15C0EC20009D43F0 /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 803169F815C0EC20009D43F0 /* .gitignore */; };
@@ -1228,13 +1225,11 @@
 		8002CDE815E5E92100D7BFF0 /* WARemoteInterface+Notification.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WARemoteInterface+Notification.m"; sourceTree = "<group>"; };
 		8002CDEA15E5F6F300D7BFF0 /* WARemoteInterface+WebSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WARemoteInterface+WebSocket.h"; sourceTree = "<group>"; };
 		8002CDEB15E5F6F300D7BFF0 /* WARemoteInterface+WebSocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WARemoteInterface+WebSocket.m"; sourceTree = "<group>"; };
+		800770E1167982850085E525 /* WAFoursquareConnectSwitch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WAFoursquareConnectSwitch.h; path = wammer/WAFoursquareConnectSwitch.h; sourceTree = "<group>"; };
+		800770E2167982850085E525 /* WAFoursquareConnectSwitch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WAFoursquareConnectSwitch.m; path = wammer/WAFoursquareConnectSwitch.m; sourceTree = "<group>"; };
 		800D9A9016719B5D0034CDF6 /* MKMapView+ZoomLevel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "MKMapView+ZoomLevel.h"; path = "wammer/MKMapView+ZoomLevel.h"; sourceTree = "<group>"; };
 		800D9A9116719B5D0034CDF6 /* MKMapView+ZoomLevel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "MKMapView+ZoomLevel.m"; path = "wammer/MKMapView+ZoomLevel.m"; sourceTree = "<group>"; };
 		800E4FCD1671DD0C00F50E0B /* WATimelineViewCell-Checkin.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "WATimelineViewCell-Checkin.xib"; sourceTree = "<group>"; };
-		80175AF7165B2CAF007E783B /* WATimelineViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WATimelineViewCell.h; sourceTree = "<group>"; };
-		80175AF8165B2CAF007E783B /* WATimelineViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WATimelineViewCell.m; sourceTree = "<group>"; };
-		80175AFA165B4107007E783B /* WATimelineViewCell-ImageStack-3.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "WATimelineViewCell-ImageStack-3.xib"; sourceTree = "<group>"; };
-		801F71B7167632C2007B3C45 /* WAFoursquareConnectSwitch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WAFoursquareConnectSwitch.m; path = wammer/WAFoursquareConnectSwitch.m; sourceTree = "<group>"; };
 		8023BAEF16770D2A00E6BED2 /* pindrop.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = pindrop.png; path = Resources/pindrop.png; sourceTree = "<group>"; };
 		8023BAF016770D2A00E6BED2 /* pindrop@2X.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "pindrop@2X.png"; path = "Resources/pindrop@2X.png"; sourceTree = "<group>"; };
 		803169F815C0EC20009D43F0 /* .gitignore */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
@@ -1372,8 +1367,6 @@
 		80DA984E16496FED0030CA21 /* WAEventViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WAEventViewController.m; path = wammer/WAEventViewController.m; sourceTree = "<group>"; };
 		80E5173A1670F3B200E1C3AD /* WALocation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WALocation.h; sourceTree = "<group>"; };
 		80E5173B1670F3B200E1C3AD /* WALocation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WALocation.m; sourceTree = "<group>"; };
-		80EF84CD165F379D009D29A5 /* WATimelineViewCell-ImageStack-1.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "WATimelineViewCell-ImageStack-1.xib"; sourceTree = "<group>"; };
-		80EF84CF165F37C4009D29A5 /* WATimelineViewCell-ImageStack-2.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "WATimelineViewCell-ImageStack-2.xib"; sourceTree = "<group>"; };
 		80F0B23116422C2B00BD3F0D /* WAModel 39.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WAModel 39.xcdatamodel"; sourceTree = "<group>"; };
 		80F800F415C2624C00132A96 /* IRAQ-Checkmark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "IRAQ-Checkmark.png"; sourceTree = "<group>"; };
 		80F800F515C2624C00132A96 /* IRAQ-Checkmark@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "IRAQ-Checkmark@2x.png"; sourceTree = "<group>"; };
@@ -2382,6 +2375,60 @@
 			name = Collection;
 			sourceTree = "<group>";
 		};
+		8007709216789A070085E525 /* Events */ = {
+			isa = PBXGroup;
+			children = (
+				DEBED830166C8801001A2B24 /* WATimelineViewCell-ImageStack-1.xib */,
+				DEBED831166C8801001A2B24 /* WATimelineViewCell-ImageStack-2.xib */,
+				DEBED832166C8801001A2B24 /* WATimelineViewCell-ImageStack-3.xib */,
+				DEBED833166C8801001A2B24 /* WATimelineViewCell.h */,
+				DEBED834166C8801001A2B24 /* WATimelineViewCell.m */,
+				DEBED835166C8801001A2B24 /* WATimelineViewController.h */,
+				DEBED836166C8801001A2B24 /* WATimelineViewController.m */,
+				800E4FCD1671DD0C00F50E0B /* WATimelineViewCell-Checkin.xib */,
+			);
+			name = Events;
+			sourceTree = "<group>";
+		};
+		8007709316789A0E0085E525 /* Photos */ = {
+			isa = PBXGroup;
+			children = (
+				7DB78A66164900E400E165E9 /* WAPhotoStreamViewCell.h */,
+				7DB78A67164900E400E165E9 /* WAPhotoStreamViewCell.m */,
+				7DB78A6B164900FA00E165E9 /* WAPhotoStreamViewCell.xib */,
+				7DB78A611649005E00E165E9 /* WAPhotoStreamViewController.h */,
+				7DB78A621649005E00E165E9 /* WAPhotoStreamViewController.m */,
+				7DA3092C1648BC6900B6FABD /* WAPhotoStreamViewController.xib */,
+			);
+			name = Photos;
+			sourceTree = "<group>";
+		};
+		8007709416789A150085E525 /* Documents */ = {
+			isa = PBXGroup;
+			children = (
+				13745253166F483D0027582D /* WADocumentStreamViewController.h */,
+				13745254166F483D0027582D /* WADocumentStreamViewController.m */,
+				13745255166F483D0027582D /* WADocumentStreamViewController.xib */,
+				13745258166F4A770027582D /* WADocumentStreamViewCell.h */,
+				13745259166F4A770027582D /* WADocumentStreamViewCell.m */,
+				13DAAD7B166FB100002900D7 /* WADocumentStreamViewCell.xib */,
+			);
+			name = Documents;
+			sourceTree = "<group>";
+		};
+		8007709516789A540085E525 /* Collection */ = {
+			isa = PBXGroup;
+			children = (
+				4B274E671675E0E9007406D3 /* WACollectionViewCell.h */,
+				4B274E681675E0E9007406D3 /* WACollectionViewCell.m */,
+				4B274E6A1675E104007406D3 /* WACollectionViewCell.xib */,
+				4B274E4C1675BFCC007406D3 /* WACollectionViewController.h */,
+				4B274E4D1675BFCC007406D3 /* WACollectionViewController.m */,
+				4B274E4E1675BFCC007406D3 /* WACollectionViewController.xib */,
+			);
+			name = Collection;
+			sourceTree = "<group>";
+		};
 		803169F715C0EC20009D43F0 /* IRAQPhotoPicker */ = {
 			isa = PBXGroup;
 			children = (
@@ -2484,6 +2531,8 @@
 				DE696E041675D0AC008DC3F6 /* WATwitterConnectSwitch.m */,
 				DE696DFF1675D020008DC3F6 /* WASnsConnectSwitch.h */,
 				DE696E001675D020008DC3F6 /* WASnsConnectSwitch.m */,
+				800770E1167982850085E525 /* WAFoursquareConnectSwitch.h */,
+				800770E2167982850085E525 /* WAFoursquareConnectSwitch.m */,
 			);
 			name = OAuth;
 			sourceTree = "<group>";
@@ -2773,13 +2822,10 @@
 		FF6E168314F2EB6500AE1C05 /* Timeline */ = {
 			isa = PBXGroup;
 			children = (
-				DEBED830166C8801001A2B24 /* WATimelineViewCell-ImageStack-1.xib */,
-				DEBED831166C8801001A2B24 /* WATimelineViewCell-ImageStack-2.xib */,
-				DEBED832166C8801001A2B24 /* WATimelineViewCell-ImageStack-3.xib */,
-				DEBED833166C8801001A2B24 /* WATimelineViewCell.h */,
-				DEBED834166C8801001A2B24 /* WATimelineViewCell.m */,
-				DEBED835166C8801001A2B24 /* WATimelineViewController.h */,
-				DEBED836166C8801001A2B24 /* WATimelineViewController.m */,
+				8007709516789A540085E525 /* Collection */,
+				8007709416789A150085E525 /* Documents */,
+				8007709316789A0E0085E525 /* Photos */,
+				8007709216789A070085E525 /* Events */,
 				80A13C72162071C4002880A9 /* NSDate+WAAdditions.h */,
 				80A13C73162071C4002880A9 /* NSDate+WAAdditions.m */,
 				80C129B616398933001DDFE2 /* WADayHeaderView.h */,
@@ -2790,33 +2836,8 @@
 				806A5C831623C6C500867E56 /* WADripdownMenuViewController.h */,
 				806A5C841623C6C500867E56 /* WADripdownMenuViewController.m */,
 				806A5C881623CDDE00867E56 /* WADripdownMenuViewController.xib */,
-				7DB78A66164900E400E165E9 /* WAPhotoStreamViewCell.h */,
-				7DB78A67164900E400E165E9 /* WAPhotoStreamViewCell.m */,
-				7DB78A6B164900FA00E165E9 /* WAPhotoStreamViewCell.xib */,
-				7DB78A611649005E00E165E9 /* WAPhotoStreamViewController.h */,
-				7DB78A621649005E00E165E9 /* WAPhotoStreamViewController.m */,
-				7DA3092C1648BC6900B6FABD /* WAPhotoStreamViewController.xib */,
 				809C6D281605845A0016E196 /* WASlidingMenuViewController.h */,
 				809C6D291605845A0016E196 /* WASlidingMenuViewController.m */,
-				80175AF7165B2CAF007E783B /* WATimelineViewCell.h */,
-				80175AF8165B2CAF007E783B /* WATimelineViewCell.m */,
-				80EF84CD165F379D009D29A5 /* WATimelineViewCell-ImageStack-1.xib */,
-				80EF84CF165F37C4009D29A5 /* WATimelineViewCell-ImageStack-2.xib */,
-				80175AFA165B4107007E783B /* WATimelineViewCell-ImageStack-3.xib */,
-				800E4FCD1671DD0C00F50E0B /* WATimelineViewCell-Checkin.xib */,
-				13745253166F483D0027582D /* WADocumentStreamViewController.h */,
-				13745254166F483D0027582D /* WADocumentStreamViewController.m */,
-				13745255166F483D0027582D /* WADocumentStreamViewController.xib */,
-				13745258166F4A770027582D /* WADocumentStreamViewCell.h */,
-				13745259166F4A770027582D /* WADocumentStreamViewCell.m */,
-				13DAAD7B166FB100002900D7 /* WADocumentStreamViewCell.xib */,
-				800E4FCD1671DD0C00F50E0B /* WATimelineViewCell-Checkin.xib */,
-				4B274E671675E0E9007406D3 /* WACollectionViewCell.h */,
-				4B274E681675E0E9007406D3 /* WACollectionViewCell.m */,
-				4B274E6A1675E104007406D3 /* WACollectionViewCell.xib */,
-				4B274E4C1675BFCC007406D3 /* WACollectionViewController.h */,
-				4B274E4D1675BFCC007406D3 /* WACollectionViewController.m */,
-				4B274E4E1675BFCC007406D3 /* WACollectionViewController.xib */,
 			);
 			name = Timeline;
 			path = wammer;
@@ -4615,7 +4636,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				13250C731675C1500095CE22 /* WASnsConnectSwitch.m in Sources */,
+				800770E016797AE70085E525 /* WATimelineViewCell.m in Sources */,
 				80638BFD164CA852005695E3 /* WAPeople.m in Sources */,
 				FFCFE086142111E100B9E6AF /* main.m in Sources */,
 				FFCFE087142111E100B9E6AF /* WAAppDelegate.m in Sources */,
@@ -4829,7 +4850,6 @@
 				DEBED82C166C8767001A2B24 /* WAImportSettingsViewController.m in Sources */,
 				DEBED82F166C8798001A2B24 /* WAWebServiceSettingsViewController.m in Sources */,
 				DEBED83B166C8801001A2B24 /* WATimelineViewController.m in Sources */,
-				80175AF9165B2CAF007E783B /* WATimelineViewCell.m in Sources */,
 				1374524D166F1A250027582D /* WAFilePageElement+WAAdditions.m in Sources */,
 				13745256166F483D0027582D /* WADocumentStreamViewController.m in Sources */,
 				1374525A166F4A780027582D /* WADocumentStreamViewCell.m in Sources */,
@@ -4837,13 +4857,11 @@
 				800D9A9216719B5D0034CDF6 /* MKMapView+ZoomLevel.m in Sources */,
 				DE696E011675D020008DC3F6 /* WASnsConnectSwitch.m in Sources */,
 				DE696E051675D0AC008DC3F6 /* WATwitterConnectSwitch.m in Sources */,
-				4BEF75941676D6E000BC64CA /* (null) in Sources */,
-				801F71B8167632C2007B3C45 /* WAFoursquareConnectSwitch.m in Sources */,
 				808DAA0C167597C9003652BB /* WAEventPeopleListViewController.m in Sources */,
 				808DAA0F1675B1D2003652BB /* WAEventPeopleCell.m in Sources */,
-				4BF8353C167726E30031A363 /* (null) in Sources */,
 				4BF8353D1677275F0031A363 /* WACollectionViewCell.m in Sources */,
 				4BF8353F167727630031A363 /* WACollectionViewController.m in Sources */,
+				800770E3167982850085E525 /* WAFoursquareConnectSwitch.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
