@@ -26,6 +26,7 @@
 #import "WAPhotoStreamViewController.h"
 #import <CoreData+MagicalRecord.h>
 #import "WADocumentStreamViewController.h"
+#import "WADocumentDay.h"
 
 static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPostsViewControllerPhone_RepresentedObjectURI";
 
@@ -218,11 +219,9 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 
 		NSManagedObjectContext *context = [[WADataStore defaultStore] defaultAutoUpdatedMOC];
 		NSFetchRequest *request = [[NSFetchRequest alloc] init];
-		NSEntityDescription *entity = [NSEntityDescription entityForName:@"WAFile" inManagedObjectContext:context];
+		NSEntityDescription *entity = [NSEntityDescription entityForName:@"WADocumentDay" inManagedObjectContext:context];
 		[request setEntity:entity];
-		NSPredicate *predicate = [NSPredicate predicateWithFormat:@"remoteResourceType == %@", @"doc"];
-		[request setPredicate:predicate];
-		NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"docAccessTime" ascending:NO];
+		NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"day" ascending:NO];
 		[request setSortDescriptors:@[sortDescriptor]];
 		
 		self.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:request managedObjectContext:context sectionNameKeyPath:nil cacheName:nil];
@@ -241,13 +240,23 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 
 - (NSUInteger)numberOfViewsInPaginatedView:(IRPaginatedView *)paginatedView {
 	
+	if ([containedClass isSubclassOfClass:[WADocumentStreamViewController class]]) {
+		return [self.fetchedResultsController.fetchedObjects count];
+	}
+
 	return [self.fetchedResultsController.sections count];
 	
 }
 
 - (id) controllerAtPageIndex: (NSUInteger) index {
 	
-	NSDate *dateForPage = [[self.fetchedResultsController objectAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:index]] dayOnCreation];
+	NSDate *dateForPage = nil;
+	
+	if ([containedClass isSubclassOfClass:[WADocumentStreamViewController class]]) {
+		dateForPage = [(WADocumentDay *)self.fetchedResultsController.fetchedObjects[index] day];
+	} else {
+		dateForPage = [[self.fetchedResultsController objectAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:index]] dayOnCreation];
+	}
 	
 	if (dateForPage == nil)
 		return nil;
@@ -255,7 +264,7 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 	id vc = self.daysControllers[dateForPage];
 	
 	if (vc == nil) {
-		vc = [[containedClass alloc]initWithDate:dateForPage];
+		vc = [[containedClass alloc] initWithDate:dateForPage];
 		if ( [vc isKindOfClass:[WAPhotoStreamViewController class]]  ) {
 			((WAPhotoStreamViewController *)vc).delegate = self;
 		}
@@ -298,6 +307,25 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 
 	return [self controllerAtPageIndex:index];
 	
+}
+
+- (void)controller:(NSFetchedResultsController *)controller didChangeObject:(id)anObject atIndexPath:(NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type newIndexPath:(NSIndexPath *)newIndexPath {
+
+	if (![containedClass isSubclassOfClass:[WADocumentStreamViewController class]]) {
+		return;
+	}
+
+	switch (type) {
+		case NSFetchedResultsChangeInsert:
+		case NSFetchedResultsChangeDelete:
+			if ([self isViewLoaded])
+				[self.paginatedView reloadViews];
+			break;
+			
+		default:
+			break;
+	}	
+
 }
 
 - (void) controller:(NSFetchedResultsController *)controller didChangeSection:(id<NSFetchedResultsSectionInfo>)sectionInfo atIndex:(NSUInteger)sectionIndex forChangeType:(NSFetchedResultsChangeType)type {

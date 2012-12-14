@@ -195,6 +195,9 @@
 /* Title for confirming a post deletion */
 "DELETE_POST_CONFIRMATION_TITLE" = "Delete Now?";
 
+/* Title of document download */
+"DOC_DOWNLOAD_FAIL_TITLE" = "Unable to download file.";
+
 /* Title for document view controller */
 "DOCUMENTS_CONTROLLER_TITLE" = "DOCUMENTS";
 

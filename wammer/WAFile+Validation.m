@@ -17,9 +17,15 @@
 
 - (BOOL) validateForInsert:(NSError **)error {
 
-	if ([super validateForUpdate:error])
-	if ([self validateChangedImagesWithError:error])
+	if ([super validateForUpdate:error]) {
+		if ([[self resourceType] isEqualToString:@"image"]) {
+			if ([self validateChangedImagesWithError:error]) {
+				return YES;
+			}
+			return NO;
+		}
 		return YES;
+	}
 	
 	return NO;
 
@@ -27,9 +33,15 @@
 
 - (BOOL) validateForUpdate:(NSError **)error {
 
-	if ([super validateForUpdate:error])
-	if ([self validateChangedImagesWithError:error])
-		return YES;
+	if ([super validateForUpdate:error]) {
+		if ([[self resourceType] isEqualToString:@"image"]) {
+			if ([self validateChangedImagesWithError:error]) {
+				return YES;
+			}
+			return NO;
+		}
+		return YES;		
+	}
 	
 	return NO;
 
