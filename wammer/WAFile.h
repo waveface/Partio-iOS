@@ -19,6 +19,7 @@
 @property (nonatomic, retain) NSString * codeName;
 @property (nonatomic, retain) NSDate * created;
 @property (nonatomic, retain) NSString * creationDeviceIdentifier;
+@property (nonatomic, retain) NSDate * dayOnCreation;
 @property (nonatomic, retain) NSNumber * dirty;
 @property (nonatomic, retain) NSString * extraSmallThumbnailFilePath;
 @property (nonatomic, retain) NSString * identifier;

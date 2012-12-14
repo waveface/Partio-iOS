@@ -17,6 +17,7 @@
 @implementation WAArticle
 
 @dynamic creationDate;
+@dynamic dayOnCreation;
 @dynamic creationDeviceName;
 @dynamic draft;
 @dynamic favorite;

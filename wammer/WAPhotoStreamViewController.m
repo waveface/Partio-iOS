@@ -186,8 +186,7 @@
 	headerView.monthLabel.text = [[onDate localizedMonthShortString] uppercaseString];
 	headerView.wdayLabel.text = [[onDate localizedWeekDayFullString] uppercaseString];
 	headerView.backgroundColor = [UIColor colorWithWhite:0.16 alpha:1.000];
-	headerView.placeHolderView.backgroundColor = [UIColor colorWithWhite:0.260 alpha:1.000]
-	;
+	headerView.placeHolderView.backgroundColor = [UIColor colorWithWhite:0.260 alpha:1.000];
 	headerView.dayLabel.textColor = [UIColor colorWithWhite:0.53 alpha:1.0f];
 	headerView.monthLabel.textColor =[UIColor colorWithWhite:0.53 alpha:1.0f];
 	headerView.wdayLabel.textColor = [UIColor colorWithWhite:0.53 alpha:1.0f];

@@ -20,6 +20,8 @@
 #import "WAFile+ThumbnailMaker.h"
 #import "WAAssetsLibraryManager.h"
 
+#import "NSDate+WAAdditions.h"
+
 #import "SSToolkit/NSDate+SSToolkitAdditions.h"
 
 
@@ -88,6 +90,7 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
 			@"file_name": @"remoteFileName",
 			@"file_size": @"remoteFileSize",
 			@"event_time": @"created",
+			@"dayOnCreation": @"dayOnCreation",
 			
 			@"image": @"remoteRepresentedImage",
 			@"md5": @"remoteResourceHash",
@@ -128,7 +131,7 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
 + (NSDictionary *) transformedRepresentationForRemoteRepresentation:(NSDictionary *)incomingRepresentation {
 
 	NSMutableDictionary *returnedDictionary = [incomingRepresentation mutableCopy];
-	
+
 	NSString *smallImageRepURLString = [returnedDictionary valueForKeyPath:@"image_meta.small.url"];
 	if ([smallImageRepURLString isKindOfClass:[NSString class]])
     returnedDictionary[@"small_thumbnail_url"] = smallImageRepURLString;
@@ -141,7 +144,12 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
 	if ([largeImageRepURLString isKindOfClass:[NSString class]])
     returnedDictionary[@"large_thumbnail_url"] = largeImageRepURLString;
 	
-	NSString *incomingFileType = incomingRepresentation[@"type"];
+	NSString *eventDateTime = incomingRepresentation[@"event_time"];
+	if ([eventDateTime isKindOfClass:[NSString class]]) {
+		[returnedDictionary setObject:eventDateTime forKey:@"dayOnCreation"];
+	}
+	
+	NSString *incomingFileType = incomingRepresentation[@"type"];	
   
   if ([incomingFileType isEqualToString:@"image"]) {
   
@@ -227,6 +235,9 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
 	if ([aLocalKeyPath isEqualToString:@"timestamp"] || [aLocalKeyPath isEqualToString:@"created"]) {
 		return [NSDate dateFromISO8601String:aValue];
 	}
+	
+	if ([aLocalKeyPath isEqualToString:@"dayOnCreation"])
+		return [[NSDate dateFromISO8601String:aValue] dayBegin];
 	
 	if ([aLocalKeyPath isEqualToString:@"identifier"])
 		return IRWebAPIKitStringValue(aValue);

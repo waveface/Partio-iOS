@@ -23,6 +23,7 @@
 @dynamic created;
 @dynamic creationDeviceIdentifier;
 @dynamic dirty;
+@dynamic dayOnCreation;
 @dynamic extraSmallThumbnailFilePath;
 @dynamic identifier;
 @dynamic importTime;
