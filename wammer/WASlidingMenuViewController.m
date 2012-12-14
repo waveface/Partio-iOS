@@ -369,6 +369,7 @@
 			break;
 		
 		case 3:
+			cell.imageView.image = [UIImage imageNamed:@"DocumentsIcon"];
 			cell.textLabel.text = NSLocalizedString(@"SLIDING_MENU_TITLE_DOCS", @"Title for Documents in the sliding menu");
 			break;
 
@@ -413,18 +414,18 @@
 			break;
 		
 		case 3:
+			cell.backgroundColor = [UIColor colorWithRed:1 green:0.651 blue:0 alpha:1.0];
 			break;
 
 		case 4:
-			cell.backgroundColor = [UIColor colorWithRed:1 green:0.651 blue:0 alpha:1.0];
-			break;
-			
-		case 5:
 			cell.backgroundColor = [UIColor colorWithRed:0.486 green:0.612 blue:0.208 alpha:1.0];
 			break;
 			
-		case 6:
+		case 5:
 			cell.backgroundColor = [UIColor colorWithRed:0.176 green:0.278 blue:0.475 alpha:1.0];
+			break;
+			
+		case 6:
 			break;
 	}
 	

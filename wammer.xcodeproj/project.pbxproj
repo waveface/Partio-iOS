@@ -17,6 +17,8 @@
 		13206265163F01D00064E770 /* WAFirstUseIntroView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 13206264163F01D00064E770 /* WAFirstUseIntroView.xib */; };
 		13217E3D164A0D3A0030C4A6 /* WALocalizedTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 13217E3C164A0D3A0030C4A6 /* WALocalizedTableViewCell.m */; };
 		1327A87E15F87A1700AC7852 /* WAFile+ThumbnailMaker.m in Sources */ = {isa = PBXBuildFile; fileRef = 1327A87D15F87A1700AC7852 /* WAFile+ThumbnailMaker.m */; };
+		132824C1167B196700B2FB67 /* DocumentsIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 132824BF167B196700B2FB67 /* DocumentsIcon.png */; };
+		132824C2167B196700B2FB67 /* DocumentsIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 132824C0167B196700B2FB67 /* DocumentsIcon@2x.png */; };
 		132D60331622B66500148829 /* WACache.m in Sources */ = {isa = PBXBuildFile; fileRef = 132D60321622B66500148829 /* WACache.m */; };
 		133058DE1650ABE300C0283F /* WASyncManager+FileMetadataSync.m in Sources */ = {isa = PBXBuildFile; fileRef = 133058DD1650ABE300C0283F /* WASyncManager+FileMetadataSync.m */; };
 		1336742316789D490010F6C8 /* WAFileAccessLog.m in Sources */ = {isa = PBXBuildFile; fileRef = 1336742216789D490010F6C8 /* WAFileAccessLog.m */; };
@@ -1047,6 +1049,8 @@
 		13217E3C164A0D3A0030C4A6 /* WALocalizedTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WALocalizedTableViewCell.m; sourceTree = "<group>"; };
 		1327A87C15F87A1700AC7852 /* WAFile+ThumbnailMaker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WAFile+ThumbnailMaker.h"; sourceTree = "<group>"; };
 		1327A87D15F87A1700AC7852 /* WAFile+ThumbnailMaker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WAFile+ThumbnailMaker.m"; sourceTree = "<group>"; };
+		132824BF167B196700B2FB67 /* DocumentsIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = DocumentsIcon.png; path = Resources/DocumentsIcon.png; sourceTree = "<group>"; };
+		132824C0167B196700B2FB67 /* DocumentsIcon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "DocumentsIcon@2x.png"; path = "Resources/DocumentsIcon@2x.png"; sourceTree = "<group>"; };
 		132D60311622B66500148829 /* WACache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WACache.h; sourceTree = "<group>"; };
 		132D60321622B66500148829 /* WACache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WACache.m; sourceTree = "<group>"; };
 		133058DC1650ABE300C0283F /* WASyncManager+FileMetadataSync.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WASyncManager+FileMetadataSync.h"; sourceTree = "<group>"; };
@@ -3267,6 +3271,8 @@
 				806A5C9A16241E2800867E56 /* rightHL.png */,
 				DEF13262164B83B50051284D /* CalIcon.png */,
 				DEF13263164B83B50051284D /* CollectionIcon.png */,
+				132824BF167B196700B2FB67 /* DocumentsIcon.png */,
+				132824C0167B196700B2FB67 /* DocumentsIcon@2x.png */,
 				DEF13264164B83B50051284D /* EventsIcon.png */,
 				DEF13265164B83B50051284D /* PhotosIcon.png */,
 				DEF13266164B83B50051284D /* SettingsIcon.png */,
@@ -4470,6 +4476,8 @@
 				4B274E511675BFCC007406D3 /* WACollectionViewController.xib in Resources */,
 				4B274E6B1675E104007406D3 /* WACollectionViewCell.xib in Resources */,
 				131560451679CCE400C29BFA /* WADocumentDownloadingView.xib in Resources */,
+				132824C1167B196700B2FB67 /* DocumentsIcon.png in Resources */,
+				132824C2167B196700B2FB67 /* DocumentsIcon@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
