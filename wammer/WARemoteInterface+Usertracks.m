@@ -11,7 +11,7 @@
 
 @implementation WARemoteInterface (Usertracks)
 
-- (void) retrieveChangedArticlesSince:(NSDate *)date inGroup:(NSString *)groupID withEntities:(BOOL)includesEntities onSuccess:(void(^)(NSArray *changedArticleIDs, NSArray* changes, NSDate *continuation))successBlock onFailure:(void(^)(NSError *error))failureBlock {
+- (void) retrieveChangesSince:(NSDate *)date inGroup:(NSString *)groupID withEntities:(BOOL)includesEntities onSuccess:(void(^)(NSArray *changedArticleIDs, NSArray *changedFileIDs, NSArray* changes, NSDate *continuation))successBlock onFailure:(void(^)(NSError *error))failureBlock {
 
 	NSDate *usedSinceDate = date ? date : [NSDate dateWithTimeIntervalSince1970:0];
 	NSString *dateString = [[WADataStore defaultStore] ISO8601StringFromDate:usedSinceDate];
@@ -25,6 +25,7 @@
 	nil] options:nil validator:WARemoteInterfaceGenericNoErrorValidator() successHandler:^(NSDictionary *inResponseOrNil, IRWebAPIRequestContext *inResponseContext) {
 		
 		NSArray *changedArticleIDs = [inResponseOrNil valueForKeyPath:@"post_id_list"];
+		NSArray *changedFileIDs = [inResponseOrNil valueForKeyPath:@"attachment_id_list"];
 		NSArray *changeOperations = [inResponseOrNil valueForKeyPath:@"usertrack_list"];
 		NSString *continuationString = [inResponseOrNil valueForKeyPath:@"latest_timestamp"];
 		
@@ -34,19 +35,19 @@
 		NSDate *continuation = [[WADataStore defaultStore] dateFromISO8601String:continuationString];
 		
 		if (successBlock)
-			successBlock(changedArticleIDs, changeOperations, continuation);
+			successBlock(changedArticleIDs, changedFileIDs, changeOperations, continuation);
 		
 	} failureHandler:WARemoteInterfaceGenericFailureHandler(failureBlock)];
 
 }
 
-- (void) retrieveChangedArticlesSince:(NSDate *)date inGroup:(NSString *)groupID onProgress:(void(^)(NSArray *changedArticleReps, NSDate *continuation))progressBlock onSuccess:(void(^)(NSDate *continuation))successBlock onFailure:(void(^)(NSError *error))failureBlock {
+- (void) retrieveChangesSince:(NSDate *)date inGroup:(NSString *)groupID onProgress:(void(^)(NSArray *changedArticleReps, NSDate *continuation))progressBlock onSuccess:(void(^)(NSDate *continuation))successBlock onFailure:(void(^)(NSError *error))failureBlock {
 
 	NSParameterAssert(groupID);
 
 	__block void (^fetchAndProcessArticlesSince)(NSDate *) = [^ (NSDate *sinceDate) {
 
-		[self retrieveChangedArticlesSince:sinceDate inGroup:groupID withEntities:NO onSuccess:^(NSArray *changedArticleIDs, NSArray *changes, NSDate *continuation) {
+		[self retrieveChangesSince:sinceDate inGroup:groupID withEntities:NO onSuccess:^(NSArray *changedArticleIDs, NSArray *changedFileIDs, NSArray *changes, NSDate *continuation) {
 		
 			if (![changedArticleIDs count] || !continuation || [continuation isEqual:sinceDate]) {				
 				
@@ -81,6 +82,29 @@
 					}];
 					[sentChangedArticleIDs removeAllObjects];
 				}
+			}];
+			
+			[changedFileIDs enumerateObjectsUsingBlock:^(NSString *identifier, NSUInteger idx, BOOL *stop) {
+
+				NSManagedObjectContext *context = [[WADataStore defaultStore] autoUpdatingMOC];
+				context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
+				NSMutableDictionary *attach = [@{
+																			 @"object_id": identifier,
+																			 @"creator_id": [[WADataStore defaultStore] mainUserInContext:context],
+//																			 @"timestamp": incomingRepresentation[@"event_time"],
+																			 @"file_name": @"unknown.jpg",
+																			 @"type": @"image",
+																			 @"created": nil
+																			 } mutableCopy];
+
+				// create an WAFile entry for updateAttachmentsMetaOnSuccess to batch retrieve attachment metas
+				[WAFile insertOrUpdateObjectsUsingContext:context
+															 withRemoteResponse:[NSArray arrayWithObject:attach]
+																		 usingMapping:nil
+																					options:IRManagedObjectOptionIndividualOperations];
+				[context save:nil];
+
+				
 			}];
 			
 		} onFailure:^(NSError *error) {

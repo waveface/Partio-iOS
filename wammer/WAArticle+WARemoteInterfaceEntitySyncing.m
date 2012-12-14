@@ -414,7 +414,7 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 		
 		NSDate *usedDate = [ds lastChangedPostsUpdateDate];
 		
-		[ri retrieveChangedArticlesSince:usedDate
+		[ri retrieveChangesSince:usedDate
 														 inGroup:usedGroupIdentifier
 													onProgress:^(NSArray *changedArticleReps, NSDate *continuation)
 		 {
