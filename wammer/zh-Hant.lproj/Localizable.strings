@@ -136,6 +136,12 @@
 /* Unknown Error */
 "AUTH_UNKNOWN_ERROR" = "未知錯誤";
 
+/* Collection View Navigation Bar */
+"By Date" = "按日期";
+
+/* Collection View Navigation Bar */
+"By Name" = "按標題";
+
 /* Cancel button in calendar picker */
 "CALENDAR_CANCEL_BUTTON" = "取消";
 
