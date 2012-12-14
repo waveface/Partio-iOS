@@ -195,6 +195,9 @@
 /* Title for confirming a post deletion */
 "DELETE_POST_CONFIRMATION_TITLE" = "是否要刪除貼文？";
 
+/* Title of document download */
+"DOC_DOWNLOAD_FAIL_TITLE" = "無法下載原始檔案";
+
 /* Title for document view controller */
 "DOCUMENTS_CONTROLLER_TITLE" = "文件";
 

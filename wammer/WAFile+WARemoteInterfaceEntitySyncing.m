@@ -162,8 +162,6 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
   
 		if (incomingRepresentation[@"doc_meta"]) {
 
-			returnedDictionary[@"file_name"] = [incomingRepresentation valueForKeyPath:@"doc_meta.file_name"];
-
 			NSMutableArray *accessLogArray = [NSMutableArray array];
 			for (NSString *accessTime in [incomingRepresentation valueForKeyPath:@"doc_meta.access_time"]) {
 				NSDate *date = [NSDate dateFromISO8601String:accessTime];

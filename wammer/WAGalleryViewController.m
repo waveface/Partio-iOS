@@ -674,7 +674,7 @@ static NSString * kWAGalleryViewControllerKVOContext = @"WAGalleryViewController
 			[file irRemoveObserverBlocksForKeyPath:@"bestPresentableImage"];
 			[file irRemoveObserverBlocksForKeyPath:@"smallestPresentableImage"];
 		} else if ([file isKindOfClass:[WAFilePageElement class]]) {
-			[file irRemoveObserverBlocksForKeyPath:@"thumbnailImage"];
+			[file irRemoveObserverBlocksForKeyPath:@"thumbnailImage" context:&kWAGalleryViewControllerKVOContext];
 		}
 	}
 	

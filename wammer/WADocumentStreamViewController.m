@@ -15,6 +15,7 @@
 #import "WAFilePageElement+WAAdditions.h"
 #import "WAGalleryViewController.h"
 #import "WAFileAccessLog.h"
+#import "WADocumentPreviewController.h"
 
 @interface WADocumentStreamViewController ()
 
@@ -127,16 +128,23 @@
 		}];
 	}];
 
+	cell.fileNameLabel.text = document.remoteFileName;
+
 	return cell;
 
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
 
-	WAFile *document = self.documents[[indexPath row]];
-	WAGalleryViewController *galleryVC = [[WAGalleryViewController alloc] initWithImageFiles:[document.pageElements array] atIndex:0];
+	WAFile *document = self.documents[indexPath.row];
+//	WAGalleryViewController *galleryVC = [[WAGalleryViewController alloc] initWithImageFiles:[document.pageElements array] atIndex:0];
+//	
+//	[self.navigationController pushViewController:galleryVC animated:YES];
 
-	[self.navigationController pushViewController:galleryVC animated:YES];
+	WADocumentPreviewController *previewController = [[WADocumentPreviewController alloc] initWithFile:document];
+	
+	[self.navigationController pushViewController:previewController animated:YES];
+
 
 }
 
