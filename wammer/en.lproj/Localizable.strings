@@ -136,6 +136,12 @@
 /* Unknown Error */
 "AUTH_UNKNOWN_ERROR" = "Unknown error";
 
+/* Collection View Navigation Bar */
+"By Date" = "By Date";
+
+/* Collection View Navigation Bar */
+"By Name" = "By Name";
+
 /* Cancel button in calendar picker */
 "CALENDAR_CANCEL_BUTTON" = "CANCEL";
 

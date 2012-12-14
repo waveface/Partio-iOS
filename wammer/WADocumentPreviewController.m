@@ -12,6 +12,7 @@
 #import "WADataStore.h"
 #import "WAFile+WAConstants.h"
 #import "WADocumentDownloadingView.h"
+#import "WAGalleryViewController.h"
 
 static NSString * kWADocumentPreviewControllerKVOContext = @"WADocumentPreviewControllerKVOContext";
 
@@ -20,6 +21,7 @@ static NSString * kWADocumentPreviewControllerKVOContext = @"WADocumentPreviewCo
 @property (nonatomic, strong) WADocumentDownloadingView *downloadingView;
 @property (nonatomic, strong) WAFile *file;
 @property (nonatomic, strong) MKNetworkOperation *downloadOperation;
+@property (nonatomic, strong) UIBarButtonItem *slideShowButton;
 
 @end
 
@@ -59,6 +61,13 @@ static NSString * kWADocumentPreviewControllerKVOContext = @"WADocumentPreviewCo
 
 	}
 
+	// hide title because file names are often too long to display
+	[self.navigationController.navigationBar setTitleTextAttributes:@{
+		UITextAttributeTextColor:[UIColor colorWithWhite:0.95 alpha:1.0],
+		UITextAttributeTextShadowOffset: [NSValue valueWithUIOffset:(UIOffset){0,0}],
+		UITextAttributeTextShadowColor:[UIColor colorWithWhite:0.95 alpha:1.0]
+	}];
+
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -66,6 +75,17 @@ static NSString * kWADocumentPreviewControllerKVOContext = @"WADocumentPreviewCo
 	[super viewWillAppear:animated];
 
 	[self.view bringSubviewToFront:self.downloadingView];
+
+	NSString *fileExtension = [self.file.remoteFileName pathExtension];
+	if ([fileExtension isEqualToString:@"ppt"] || [fileExtension isEqualToString:@"pptx"]) {
+		// insert slide show button for powerpoint files
+		// however, we cannot insert to right buttons because QLPreviewController will overwrite them with an action button
+		if (!self.slideShowButton) {
+			self.navigationItem.leftItemsSupplementBackButton = YES;
+			self.slideShowButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemPlay target:self action:@selector(handleSlideShow:)];
+			self.navigationItem.leftBarButtonItem = self.slideShowButton;
+		}
+	}
 
 }
 
@@ -128,7 +148,6 @@ static NSString * kWADocumentPreviewControllerKVOContext = @"WADocumentPreviewCo
 		}];
 
 		[operation onDownloadProgressChanged:^(double progress) {
-			NSString *fileSize = [NSByteCountFormatter stringFromByteCount:[wSelf.file.remoteFileSize longLongValue] countStyle:NSByteCountFormatterCountStyleBinary];
 			wSelf.downloadingView.downloadProgress.progress = progress;
 		}];
 
@@ -152,6 +171,21 @@ static NSString * kWADocumentPreviewControllerKVOContext = @"WADocumentPreviewCo
 
 	self.delegate = nil;
 	self.dataSource = nil;
+
+}
+
+#pragma mark - Target actions
+
+- (void)handleSlideShow:(id)sender {
+
+	WAGalleryViewController *galleryVC = [[WAGalleryViewController alloc] initWithImageFiles:[self.file.pageElements array] atIndex:0];
+
+	__weak WAGalleryViewController *wGalleryVC = galleryVC;
+	galleryVC.onDismiss = ^ {
+		[wGalleryVC dismissViewControllerAnimated:YES completion:nil];
+	};
+	galleryVC.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+	[self presentViewController:galleryVC animated:YES completion:nil];
 
 }
 

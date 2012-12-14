@@ -83,6 +83,18 @@
 
 }
 
+- (NSUInteger) supportedInterfaceOrientations {
+	
+	return [self.parentViewController supportedInterfaceOrientations];
+	
+}
+
+- (BOOL)shouldAutorotate {
+
+	return YES;
+
+}
+
 #pragma mark - NSFetchedResultsController delegates
 
 - (void)controller:(NSFetchedResultsController *)controller didChangeObject:(id)anObject atIndexPath:(NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type newIndexPath:(NSIndexPath *)newIndexPath {
@@ -118,17 +130,18 @@
 	WADocumentStreamViewCell *cell = [self.collectionView dequeueReusableCellWithReuseIdentifier:kWADocumentStreamViewCellID forIndexPath:indexPath];
 
 	WAFile *document = self.documents[[indexPath row]];
+	WAFilePageElement *coverPage = document.pageElements[0];
+
+	cell.pageElement = coverPage;
+	cell.fileNameLabel.text = document.remoteFileName;
 
 	[[[self class] sharedImageDisplayQueue] addOperationWithBlock:^{
-		cell.pageElement = document.pageElements[0];
-		[document.pageElements[0] irObserve:@"thumbnailImage" options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:&kWADocumentStreamViewCellKVOContext withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
+		[coverPage irObserve:@"thumbnailImage" options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:&kWADocumentStreamViewCellKVOContext withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
 			[[NSOperationQueue mainQueue] addOperationWithBlock:^{
 				cell.imageView.image = toValue;
 			}];
 		}];
 	}];
-
-	cell.fileNameLabel.text = document.remoteFileName;
 
 	return cell;
 
