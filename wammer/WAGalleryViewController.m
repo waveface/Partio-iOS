@@ -293,6 +293,13 @@ static NSString * kWAGalleryViewControllerKVOContext = @"WAGalleryViewController
 
 		};
 
+	} else {
+
+		self.navigationBar.barStyle = UIBarStyleBlackTranslucent;
+		self.navigationBar.translucent = YES;
+		self.navigationBar.tintColor = [UIColor clearColor];
+		[self.navigationBar setBackgroundImage:nil forBarMetrics:UIBarMetricsDefault];
+
 	}
 	
 	[self adjustStreamPickerView];
