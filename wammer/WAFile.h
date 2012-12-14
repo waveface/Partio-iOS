@@ -2,16 +2,15 @@
 //  WAFile.h
 //  wammer
 //
-//  Created by kchiu on 12/12/12.
-//  Copyright (c) 2012年 Waveface. All rights reserved.
+//  Created by Shen Steven on 12/14/12.
+//  Copyright (c) 2012 Waveface. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
-
 #import <CoreData+IRAdditions.h>
 
-@class WAArticle, WACache, WACollection, WAFileAccessLog, WAFileExif, WAFilePageElement, WAUser;
+@class WAArticle, WACache, WACollection, WAFileAccessLog, WAFileExif, WAFilePageElement, WAPhotoDay, WAUser;
 
 @interface WAFile : IRManagedObject
 
@@ -19,7 +18,6 @@
 @property (nonatomic, retain) NSString * codeName;
 @property (nonatomic, retain) NSDate * created;
 @property (nonatomic, retain) NSString * creationDeviceIdentifier;
-@property (nonatomic, retain) NSDate * dayOnCreation;
 @property (nonatomic, retain) NSNumber * dirty;
 @property (nonatomic, retain) NSString * extraSmallThumbnailFilePath;
 @property (nonatomic, retain) NSString * identifier;
@@ -45,18 +43,29 @@
 @property (nonatomic, retain) NSString * webFaviconURL;
 @property (nonatomic, retain) NSString * webTitle;
 @property (nonatomic, retain) NSString * webURL;
+@property (nonatomic, retain) NSOrderedSet *accessLogs;
 @property (nonatomic, retain) NSSet *articles;
 @property (nonatomic, retain) NSSet *caches;
 @property (nonatomic, retain) NSSet *collections;
-@property (nonatomic, retain) NSOrderedSet *accessLogs;
 @property (nonatomic, retain) WAFileExif *exif;
 @property (nonatomic, retain) WAUser *owner;
 @property (nonatomic, retain) NSOrderedSet *pageElements;
 @property (nonatomic, retain) WAArticle *representedArticle;
+@property (nonatomic, retain) WAPhotoDay *photoDay;
 @end
 
 @interface WAFile (CoreDataGeneratedAccessors)
 
+- (void)insertObject:(WAFileAccessLog *)value inAccessLogsAtIndex:(NSUInteger)idx;
+- (void)removeObjectFromAccessLogsAtIndex:(NSUInteger)idx;
+- (void)insertAccessLogs:(NSArray *)value atIndexes:(NSIndexSet *)indexes;
+- (void)removeAccessLogsAtIndexes:(NSIndexSet *)indexes;
+- (void)replaceObjectInAccessLogsAtIndex:(NSUInteger)idx withObject:(WAFileAccessLog *)value;
+- (void)replaceAccessLogsAtIndexes:(NSIndexSet *)indexes withAccessLogs:(NSArray *)values;
+- (void)addAccessLogsObject:(WAFileAccessLog *)value;
+- (void)removeAccessLogsObject:(WAFileAccessLog *)value;
+- (void)addAccessLogs:(NSOrderedSet *)values;
+- (void)removeAccessLogs:(NSOrderedSet *)values;
 - (void)addArticlesObject:(WAArticle *)value;
 - (void)removeArticlesObject:(WAArticle *)value;
 - (void)addArticles:(NSSet *)values;
@@ -72,16 +81,6 @@
 - (void)addCollections:(NSSet *)values;
 - (void)removeCollections:(NSSet *)values;
 
-- (void)insertObject:(WAFileAccessLog *)value inAccessLogsAtIndex:(NSUInteger)idx;
-- (void)removeObjectFromAccessLogsAtIndex:(NSUInteger)idx;
-- (void)insertAccessLogs:(NSArray *)value atIndexes:(NSIndexSet *)indexes;
-- (void)removeAccessLogsAtIndexes:(NSIndexSet *)indexes;
-- (void)replaceObjectInAccessLogsAtIndex:(NSUInteger)idx withObject:(WAFileAccessLog *)value;
-- (void)replaceAccessLogsAtIndexes:(NSIndexSet *)indexes withAccessLogs:(NSArray *)values;
-- (void)addAccessLogsObject:(WAFileAccessLog *)value;
-- (void)removeAccessLogsObject:(WAFileAccessLog *)value;
-- (void)addAccessLogs:(NSOrderedSet *)values;
-- (void)removeAccessLogs:(NSOrderedSet *)values;
 - (void)insertObject:(WAFilePageElement *)value inPageElementsAtIndex:(NSUInteger)idx;
 - (void)removeObjectFromPageElementsAtIndex:(NSUInteger)idx;
 - (void)insertPageElements:(NSArray *)value atIndexes:(NSIndexSet *)indexes;

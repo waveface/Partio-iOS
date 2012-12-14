@@ -13,7 +13,7 @@
 - (NSDate *)dayEnd {
 	
 	NSCalendar *calendar = [NSCalendar currentCalendar];
-	NSDateComponents *dateComponents = [calendar components:(NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit)
+	NSDateComponents *dateComponents = [calendar components:(NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit|NSTimeZoneCalendarUnit)
 																								 fromDate:self];
 	dateComponents.day += 1;
 	return [calendar dateFromComponents:dateComponents];
@@ -24,7 +24,7 @@
 
 	NSCalendar *calendar = [NSCalendar currentCalendar];
 
-	NSDateComponents *dateComponents = [calendar components:(NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit)
+	NSDateComponents *dateComponents = [calendar components:(NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit|NSTimeZoneCalendarUnit)
 																								 fromDate:self];
 	return [calendar dateFromComponents:dateComponents];
 

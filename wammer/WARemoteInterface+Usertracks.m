@@ -94,7 +94,7 @@
 //																			 @"timestamp": incomingRepresentation[@"event_time"],
 																			 @"file_name": @"unknown.jpg",
 																			 @"type": @"image",
-																			 @"created": nil
+																			 @"created": [NSNull null]
 																			 } mutableCopy];
 
 				// create an WAFile entry for updateAttachmentsMetaOnSuccess to batch retrieve attachment metas

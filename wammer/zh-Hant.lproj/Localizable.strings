@@ -232,7 +232,7 @@
 "EVENT_SEPERATION_LABEL_WITHOUT_PHOTOS" = "加些照片吧";
 
 /* Title for Events view */
-"EVENTS_CONTROLLER_TITLE" = "事件";
+"EVENTS_CONTROLLER_TITLE" = "動態";
 
 /* Message for an alert view to show user his FB account has been connected to another Stream user */
 "FACEBOOK_CONNECT_ACCOUNT_OCCUPIED_MESSAGE" = "這個 Facebook 帳號已經被使用，請您再試試看其他的Facebook帳號。";
@@ -272,9 +272,6 @@
 
 /* Display title for a fetch request working against the latest article on a particular date */
 "FETCH_REQUEST_NEWEST_ARTICLE_OF_PARTICULAR_DATE_DISPLAY_TITLE" = "某日貼文";
-
-/* Caption for URL History */
-"FETCH_REQUEST_URL_HISTORY" = "瀏覽記錄";
 
 /* Title for an alert view to show foursquare connection failure */
 "FOURSQUARE_CONNECT_FAIL_TITLE" = "無法同步Foursquare";
