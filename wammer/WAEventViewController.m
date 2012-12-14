@@ -414,7 +414,7 @@
 		}
 	}
 	
-	if (self.article.location) {
+	if (self.article.location && self.article.location.latitude && self.article.location.longitude) {
 		
 		NSMutableArray *allTags = [NSMutableArray array];
 
