@@ -220,6 +220,10 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
       
   }
 	
+	if (!incomingRepresentation[@"outdated"]) {
+		returnedDictionary[@"outdated"] = @NO;
+	}
+	
 	return returnedDictionary; 
 
 }
