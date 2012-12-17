@@ -121,6 +121,7 @@
         <attribute name="largeThumbnailURL" optional="YES" attributeType="String">
             <userInfo/>
         </attribute>
+        <attribute name="outdated" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="remoteFileName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="remoteFileSize" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="remoteRepresentedImage" optional="YES" attributeType="String" syncable="YES"/>
@@ -355,7 +356,8 @@
         <element name="WACollection" positionX="0" positionY="0" width="128" height="180"/>
         <element name="WAComment" positionX="0" positionY="0" width="128" height="135"/>
         <element name="WADocumentDay" positionX="0" positionY="0" width="128" height="75"/>
-        <element name="WAFile" positionX="0" positionY="0" width="128" height="615"/>
+        <element name="WAEventDay" positionX="160" positionY="192" width="128" height="75"/>
+        <element name="WAFile" positionX="0" positionY="0" width="128" height="630"/>
         <element name="WAFileAccessLog" positionX="160" positionY="192" width="128" height="120"/>
         <element name="WAFileExif" positionX="0" positionY="0" width="128" height="315"/>
         <element name="WAFilePageElement" positionX="0" positionY="0" width="128" height="135"/>
@@ -364,13 +366,12 @@
         <element name="WAOpenGraphElement" positionX="0" positionY="0" width="128" height="195"/>
         <element name="WAOpenGraphElementImage" positionX="0" positionY="0" width="128" height="120"/>
         <element name="WAPeople" positionX="0" positionY="0" width="128" height="90"/>
+        <element name="WAPhotoDay" positionX="160" positionY="192" width="128" height="75"/>
         <element name="WAPreview" positionX="0" positionY="0" width="128" height="150"/>
         <element name="WAStorage" positionX="0" positionY="0" width="128" height="240"/>
         <element name="WATag" positionX="0" positionY="0" width="128" height="105"/>
         <element name="WATagGroup" positionX="0" positionY="0" width="128" height="90"/>
         <element name="WAUser" positionX="0" positionY="0" width="128" height="225"/>
-        <element name="WAEventDay" positionX="160" positionY="192" width="128" height="75"/>
-        <element name="WAPhotoDay" positionX="160" positionY="192" width="128" height="75"/>
         <element name="WAWebpageDay" positionX="160" positionY="192" width="128" height="75"/>
     </elements>
 </model>

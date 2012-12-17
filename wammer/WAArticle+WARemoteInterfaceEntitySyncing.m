@@ -158,6 +158,7 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 				@"creator_id": creatorID,
 				@"post_id": articleID,
 				@"timestamp": incomingRepresentation[@"event_time"],
+				@"outdated": @YES,
 			} mutableCopy];
 			if ([type isEqualToString:@"image"]) {
 				attach[@"file_name"] = @"unknown.jpg";

@@ -188,6 +188,7 @@
 		8002CDE615E5E85600D7BFF0 /* libicucore.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 8002CDE515E5E85600D7BFF0 /* libicucore.dylib */; };
 		8002CDE915E5E92100D7BFF0 /* WARemoteInterface+Notification.m in Sources */ = {isa = PBXBuildFile; fileRef = 8002CDE815E5E92100D7BFF0 /* WARemoteInterface+Notification.m */; };
 		8002CDEC15E5F6F300D7BFF0 /* WARemoteInterface+WebSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 8002CDEB15E5F6F300D7BFF0 /* WARemoteInterface+WebSocket.m */; };
+		80074F8C167EBFAB00A23EED /* WAFile.m in Sources */ = {isa = PBXBuildFile; fileRef = 80074F8B167EBFAB00A23EED /* WAFile.m */; };
 		800770E016797AE70085E525 /* WATimelineViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DEBED834166C8801001A2B24 /* WATimelineViewCell.m */; };
 		800770E3167982850085E525 /* WAFoursquareConnectSwitch.m in Sources */ = {isa = PBXBuildFile; fileRef = 800770E2167982850085E525 /* WAFoursquareConnectSwitch.m */; };
 		800D9A9216719B5D0034CDF6 /* MKMapView+ZoomLevel.m in Sources */ = {isa = PBXBuildFile; fileRef = 800D9A9116719B5D0034CDF6 /* MKMapView+ZoomLevel.m */; };
@@ -233,7 +234,6 @@
 		80719CEC167AFD4600E9729F /* WAEventDay.h in Resources */ = {isa = PBXBuildFile; fileRef = 80719CE6167AFD4600E9729F /* WAEventDay.h */; };
 		80719CED167AFD4600E9729F /* WAEventDay.m in Resources */ = {isa = PBXBuildFile; fileRef = 80719CE7167AFD4600E9729F /* WAEventDay.m */; };
 		80719CF3167AFE3A00E9729F /* WAArticle.m in Sources */ = {isa = PBXBuildFile; fileRef = 80719CF2167AFE3A00E9729F /* WAArticle.m */; };
-		80719CF6167AFE5100E9729F /* WAFile.m in Sources */ = {isa = PBXBuildFile; fileRef = 80719CF5167AFE5100E9729F /* WAFile.m */; };
 		80719CF9167AFF8000E9729F /* WAEventDay+WARemoteInterfaceEntitySyncing.m in Sources */ = {isa = PBXBuildFile; fileRef = 80719CF8167AFF8000E9729F /* WAEventDay+WARemoteInterfaceEntitySyncing.m */; };
 		80719CFC167B03B900E9729F /* WAPhotoDay+WARemoteInterfaceEntitySyncing.m in Sources */ = {isa = PBXBuildFile; fileRef = 80719CFB167B03B900E9729F /* WAPhotoDay+WARemoteInterfaceEntitySyncing.m */; };
 		808DAA0C167597C9003652BB /* WAEventPeopleListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 808DAA0B167597C9003652BB /* WAEventPeopleListViewController.m */; };
@@ -1255,6 +1255,8 @@
 		8002CDE815E5E92100D7BFF0 /* WARemoteInterface+Notification.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WARemoteInterface+Notification.m"; sourceTree = "<group>"; };
 		8002CDEA15E5F6F300D7BFF0 /* WARemoteInterface+WebSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WARemoteInterface+WebSocket.h"; sourceTree = "<group>"; };
 		8002CDEB15E5F6F300D7BFF0 /* WARemoteInterface+WebSocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WARemoteInterface+WebSocket.m"; sourceTree = "<group>"; };
+		80074F8A167EBFAB00A23EED /* WAFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAFile.h; sourceTree = "<group>"; };
+		80074F8B167EBFAB00A23EED /* WAFile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAFile.m; sourceTree = "<group>"; };
 		800770E1167982850085E525 /* WAFoursquareConnectSwitch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WAFoursquareConnectSwitch.h; path = wammer/WAFoursquareConnectSwitch.h; sourceTree = "<group>"; };
 		800770E2167982850085E525 /* WAFoursquareConnectSwitch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WAFoursquareConnectSwitch.m; path = wammer/WAFoursquareConnectSwitch.m; sourceTree = "<group>"; };
 		800D9A9016719B5D0034CDF6 /* MKMapView+ZoomLevel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "MKMapView+ZoomLevel.h"; path = "wammer/MKMapView+ZoomLevel.h"; sourceTree = "<group>"; };
@@ -1318,8 +1320,6 @@
 		80719CE7167AFD4600E9729F /* WAEventDay.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAEventDay.m; sourceTree = "<group>"; };
 		80719CF1167AFE3A00E9729F /* WAArticle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAArticle.h; sourceTree = "<group>"; };
 		80719CF2167AFE3A00E9729F /* WAArticle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAArticle.m; sourceTree = "<group>"; };
-		80719CF4167AFE5100E9729F /* WAFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAFile.h; sourceTree = "<group>"; };
-		80719CF5167AFE5100E9729F /* WAFile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAFile.m; sourceTree = "<group>"; };
 		80719CF7167AFF8000E9729F /* WAEventDay+WARemoteInterfaceEntitySyncing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WAEventDay+WARemoteInterfaceEntitySyncing.h"; sourceTree = "<group>"; };
 		80719CF8167AFF8000E9729F /* WAEventDay+WARemoteInterfaceEntitySyncing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WAEventDay+WARemoteInterfaceEntitySyncing.m"; sourceTree = "<group>"; };
 		80719CFA167B03B900E9729F /* WAPhotoDay+WARemoteInterfaceEntitySyncing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WAPhotoDay+WARemoteInterfaceEntitySyncing.h"; sourceTree = "<group>"; };
@@ -2759,8 +2759,8 @@
 		FF4BDEAD156A53AD00C105D5 /* File */ = {
 			isa = PBXGroup;
 			children = (
-				80719CF4167AFE5100E9729F /* WAFile.h */,
-				80719CF5167AFE5100E9729F /* WAFile.m */,
+				80074F8A167EBFAB00A23EED /* WAFile.h */,
+				80074F8B167EBFAB00A23EED /* WAFile.m */,
 				1336742116789D490010F6C8 /* WAFileAccessLog.h */,
 				1336742216789D490010F6C8 /* WAFileAccessLog.m */,
 				FFCD325014B9EA4D0035C4F5 /* WAFile+WAAdditions.h */,
@@ -4950,9 +4950,9 @@
 				800770E3167982850085E525 /* WAFoursquareConnectSwitch.m in Sources */,
 				80719CD4167AFC4600E9729F /* WAWebpageDay.m in Sources */,
 				80719CF3167AFE3A00E9729F /* WAArticle.m in Sources */,
-				80719CF6167AFE5100E9729F /* WAFile.m in Sources */,
 				80719CF9167AFF8000E9729F /* WAEventDay+WARemoteInterfaceEntitySyncing.m in Sources */,
 				80719CFC167B03B900E9729F /* WAPhotoDay+WARemoteInterfaceEntitySyncing.m in Sources */,
+				80074F8C167EBFAB00A23EED /* WAFile.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

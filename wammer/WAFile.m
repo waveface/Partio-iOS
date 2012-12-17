@@ -2,7 +2,7 @@
 //  WAFile.m
 //  wammer
 //
-//  Created by Shen Steven on 12/14/12.
+//  Created by Shen Steven on 12/17/12.
 //  Copyright (c) 2012 Waveface. All rights reserved.
 //
 
@@ -48,6 +48,7 @@
 @dynamic webFaviconURL;
 @dynamic webTitle;
 @dynamic webURL;
+@dynamic outdated;
 @dynamic accessLogs;
 @dynamic articles;
 @dynamic caches;
@@ -55,7 +56,7 @@
 @dynamic exif;
 @dynamic owner;
 @dynamic pageElements;
-@dynamic representedArticle;
 @dynamic photoDay;
+@dynamic representedArticle;
 
 @end

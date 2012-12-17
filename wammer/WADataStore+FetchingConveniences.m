@@ -441,11 +441,11 @@
 
 }
 
-- (NSArray *)fetchFilesWithoutMetaUsingContext:(NSManagedObjectContext *)aContext {
+- (NSArray *)fetchFilesRequireMetaUpdateUsingContext:(NSManagedObjectContext *)aContext {
 
 	NSFetchRequest *request = [[NSFetchRequest alloc] init];
 	request.entity = [NSEntityDescription entityForName:@"WAFile" inManagedObjectContext:aContext];
-	request.predicate = [NSPredicate predicateWithFormat:@"created==nil"];
+	request.predicate = [NSPredicate predicateWithFormat:@"outdated == TRUE or created==nil"];
 
 	NSError *fetchingError = nil;
 	NSArray *fetchedFiles = [aContext executeFetchRequest:request error:&fetchingError];

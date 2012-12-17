@@ -43,6 +43,6 @@
 - (NSArray *) fetchAllCachesUsingContext:(NSManagedObjectContext *)aContext;
 - (NSNumber *) fetchTotalCacheSizeUsingContext:(NSManagedObjectContext *)aContext;
 - (WACache *) fetchCacheWithPredicate:(NSPredicate *)aPredicate usingContext:(NSManagedObjectContext *)aContext;
-- (NSArray *) fetchFilesWithoutMetaUsingContext:(NSManagedObjectContext *)aContext;
+- (NSArray *) fetchFilesRequireMetaUpdateUsingContext:(NSManagedObjectContext *)aContext;
 
 @end

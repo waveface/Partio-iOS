@@ -2,7 +2,7 @@
 //  WAFile.h
 //  wammer
 //
-//  Created by Shen Steven on 12/14/12.
+//  Created by Shen Steven on 12/17/12.
 //  Copyright (c) 2012 Waveface. All rights reserved.
 //
 
@@ -43,6 +43,7 @@
 @property (nonatomic, retain) NSString * webFaviconURL;
 @property (nonatomic, retain) NSString * webTitle;
 @property (nonatomic, retain) NSString * webURL;
+@property (nonatomic, retain) NSNumber * outdated;
 @property (nonatomic, retain) NSOrderedSet *accessLogs;
 @property (nonatomic, retain) NSSet *articles;
 @property (nonatomic, retain) NSSet *caches;
@@ -50,8 +51,8 @@
 @property (nonatomic, retain) WAFileExif *exif;
 @property (nonatomic, retain) WAUser *owner;
 @property (nonatomic, retain) NSOrderedSet *pageElements;
-@property (nonatomic, retain) WAArticle *representedArticle;
 @property (nonatomic, retain) WAPhotoDay *photoDay;
+@property (nonatomic, retain) WAArticle *representedArticle;
 @end
 
 @interface WAFile (CoreDataGeneratedAccessors)

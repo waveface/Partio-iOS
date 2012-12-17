@@ -90,11 +90,7 @@
 				context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
 				NSMutableDictionary *attach = [@{
 																			 @"object_id": identifier,
-																			 @"creator_id": [[WADataStore defaultStore] mainUserInContext:context],
-//																			 @"timestamp": incomingRepresentation[@"event_time"],
-																			 @"file_name": @"unknown.jpg",
-																			 @"type": @"image",
-																			 @"created": [NSNull null]
+																			 @"outdated": @YES,	// outdated, require sync from cloud
 																			 } mutableCopy];
 
 				// create an WAFile entry for updateAttachmentsMetaOnSuccess to batch retrieve attachment metas
