@@ -1,21 +1,23 @@
 //
 //  WAFileAccessLog.m
-//  wammer
+//  IRTextAttributor
 //
-//  Created by kchiu on 12/12/12.
-//  Copyright (c) 2012年 Waveface. All rights reserved.
+//  Created by Shen Steven on 12/14/12.
+//  Copyright (c) 2012 Iridia Productions. All rights reserved.
 //
 
 #import "WAFileAccessLog.h"
 #import "WADocumentDay.h"
 #import "WAFile.h"
+#import "WAWebpageDay.h"
 
 
 @implementation WAFileAccessLog
 
-@dynamic filePath;
 @dynamic accessTime;
-@dynamic file;
+@dynamic filePath;
 @dynamic day;
+@dynamic file;
+@dynamic dayWebpages;
 
 @end

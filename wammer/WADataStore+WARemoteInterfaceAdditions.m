@@ -60,7 +60,7 @@ NSString * const kWADataStoreArticleUpdateShowsBezels = @"WADataStoreArticleUpda
 		NSMutableArray *updatingFiles = [@[] mutableCopy];
 
 		WADataStore *ds = [WADataStore defaultStore];
-		NSArray *files = [ds fetchFilesWithoutMetaUsingContext:[ds disposableMOC]];
+		NSArray *files = [ds fetchFilesRequireMetaUpdateUsingContext:[ds disposableMOC]];
 		[files enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
 
 			[updatingFiles addObject:[obj identifier]];

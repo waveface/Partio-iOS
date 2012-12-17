@@ -90,7 +90,8 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
 			@"file_name": @"remoteFileName",
 			@"file_size": @"remoteFileSize",
 			@"event_time": @"created",
-			@"dayOnCreation": @"dayOnCreation",
+		  @"photoDay": @"photoDay",
+			@"outdated": @"outdated",
 			
 			@"image": @"remoteRepresentedImage",
 			@"md5": @"remoteResourceHash",
@@ -122,6 +123,7 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
 + (NSDictionary *) defaultHierarchicalEntityMapping {
 
 	return @{
+	  @"photoDay": @"WAPhotoDay",
 		@"accessLogs": @"WAFileAccessLog",
 		@"pageElements": @"WAFilePageElement"
 	};
@@ -143,16 +145,20 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
 	NSString *largeImageRepURLString = [returnedDictionary valueForKeyPath:@"image_meta.large.url"];
 	if ([largeImageRepURLString isKindOfClass:[NSString class]])
     returnedDictionary[@"large_thumbnail_url"] = largeImageRepURLString;
-	
-	NSString *eventDateTime = incomingRepresentation[@"event_time"];
-	if ([eventDateTime isKindOfClass:[NSString class]]) {
-		[returnedDictionary setObject:eventDateTime forKey:@"dayOnCreation"];
-	}
-	
+		
 	NSString *incomingFileType = incomingRepresentation[@"type"];	
-  
   if ([incomingFileType isEqualToString:@"image"]) {
-  
+
+		NSString *eventDateTime = incomingRepresentation[@"event_time"];
+		if ([eventDateTime isKindOfClass:[NSString class]]) {
+			[returnedDictionary setObject: @{@"day": [[NSDate dateFromISO8601String:eventDateTime] dayBegin]}
+														 forKey:@"photoDay"];
+		}
+		
+	} else if ([incomingFileType isEqualToString:@"web"]) {
+		
+		
+		/*
     NSString *webURLString = [incomingRepresentation valueForKeyPath:@"image_meta.web_url"];
 		if ([webURLString isKindOfClass:[NSString class]])
 			returnedDictionary[@"web_url"] = webURLString;
@@ -164,7 +170,7 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
 		NSString *webTitleString = [incomingRepresentation valueForKeyPath:@"image_meta.web_title"];
 		if ([webTitleString isKindOfClass:[NSString class]])
 			returnedDictionary[@"web_title"] = webTitleString;
-		
+		*/
   
   } else if ([incomingFileType isEqualToString:@"doc"]) {
   
@@ -235,10 +241,7 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
 	if ([aLocalKeyPath isEqualToString:@"timestamp"] || [aLocalKeyPath isEqualToString:@"created"]) {
 		return [NSDate dateFromISO8601String:aValue];
 	}
-	
-	if ([aLocalKeyPath isEqualToString:@"dayOnCreation"])
-		return [[NSDate dateFromISO8601String:aValue] dayBegin];
-	
+		
 	if ([aLocalKeyPath isEqualToString:@"identifier"])
 		return IRWebAPIKitStringValue(aValue);
 		

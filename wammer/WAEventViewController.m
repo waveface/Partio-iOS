@@ -52,11 +52,8 @@
 	
 	NSMutableString *literal = [[NSMutableString alloc] initWithString:@"WAEventViewController"];
 	
-	if ([article.style isEqualToNumber:[NSNumber numberWithInteger:WAPostStyleURLHistory]]) {
-		[literal appendString:@"_Link"]; // FIXME
-	} else {
-		[literal appendString:@"_Photo"];
-	}
+	[literal appendString:@"_Photo"];
+
 	
 	Class class = NSClassFromString(literal);
 	if (!class)
@@ -417,7 +414,7 @@
 		}
 	}
 	
-	if (self.article.location) {
+	if (self.article.location && self.article.location.latitude && self.article.location.longitude) {
 		
 		NSMutableArray *allTags = [NSMutableArray array];
 
