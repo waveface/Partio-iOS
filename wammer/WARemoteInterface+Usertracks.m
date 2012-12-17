@@ -86,7 +86,7 @@
 			
 			[changedFileIDs enumerateObjectsUsingBlock:^(NSString *identifier, NSUInteger idx, BOOL *stop) {
 
-				NSManagedObjectContext *context = [[WADataStore defaultStore] autoUpdatingMOC];
+				NSManagedObjectContext *context = [[WADataStore defaultStore] disposableMOC];
 				context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
 				NSMutableDictionary *attach = [@{
 																			 @"object_id": identifier,
