@@ -161,10 +161,8 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 				@"outdated": @YES,
 			} mutableCopy];
 			if ([type isEqualToString:@"image"]) {
-				attach[@"file_name"] = @"unknown.jpg";
 				attach[@"type"] = @"image";
 			} else if ([type isEqualToString:@"doc"]) {
-				attach[@"file_name"] = @"unknown.txt";
 				attach[@"type"] = @"doc";
 			}
 			[returnedAttachmentList addObject:attach];

@@ -51,8 +51,10 @@ NSString * kWADocumentStreamViewCellKVOContext = @"DocuementStreamViewCellKVOCon
 
 - (void)prepareForReuse {
 
-	[self.pageElement irRemoveObserverBlocksForKeyPath:@"thumbnailImage"
-																						 context:&kWADocumentStreamViewCellKVOContext];
+	if (self.pageElement) {
+		[self.pageElement irRemoveObserverBlocksForKeyPath:@"thumbnailImage"
+																							 context:&kWADocumentStreamViewCellKVOContext];
+	}
 	self.imageView.image = nil;
 
 }

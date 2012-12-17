@@ -40,32 +40,26 @@
 		[request setEntity:entity];
 		NSPredicate *predicate = [NSPredicate predicateWithFormat:@"day.day == %@", self.currentDate];
 		[request setPredicate:predicate];
-		NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"accessTime" ascending:YES];
+		NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"accessTime" ascending:NO];
 		[request setSortDescriptors:@[sortDescriptor]];
 		[request setRelationshipKeyPathsForPrefetching:@[@"file"]];
 		[request setRelationshipKeyPathsForPrefetching:@[@"day"]];
 
 		self.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:request managedObjectContext:context sectionNameKeyPath:nil cacheName:nil];
 
+		self.fetchedResultsController.delegate = self;
+
 		[self.fetchedResultsController performFetch:nil];
 
+		self.documents = [NSMutableArray array];
 		NSMutableDictionary *filePathAccessLogs = [NSMutableDictionary dictionary];
 		[self.fetchedResultsController.fetchedObjects enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
 			WAFileAccessLog *accessLog = (WAFileAccessLog *)obj;
-			WAFileAccessLog *currentAccessLog = filePathAccessLogs[accessLog.filePath];
-			if (currentAccessLog) {
-				if ([accessLog.accessTime compare:currentAccessLog.accessTime] == NSOrderedDescending) {
-					filePathAccessLogs[accessLog.filePath] = accessLog;
-				}
-			} else {
+			if (!filePathAccessLogs[accessLog.filePath]) {
 				filePathAccessLogs[accessLog.filePath] = accessLog;
+				[self.documents addObject:accessLog.file];
 			}
 		}];
-
-		self.documents = [NSMutableArray array];
-		for (WAFileAccessLog *accessLog in [filePathAccessLogs allValues]) {
-			[self.documents addObject:accessLog.file];
-		}
 
 	}
 	return self;
@@ -99,8 +93,46 @@
 
 - (void)controller:(NSFetchedResultsController *)controller didChangeObject:(id)anObject atIndexPath:(NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type newIndexPath:(NSIndexPath *)newIndexPath {
 
-	// TODO: monitor changes
-	NSLog(@"object:%@, indexPath:%@, type:%@, newIndexPath:%@", anObject, indexPath, type, newIndexPath);
+	switch (type) {
+		case NSFetchedResultsChangeInsert: {
+			NSUInteger oldIndex = [self.documents indexOfObject:[anObject file]];
+			
+			NSMutableDictionary *filePathAccessLogs = [NSMutableDictionary dictionary];
+			[self.fetchedResultsController.fetchedObjects enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+				if ([anObject isEqual:obj]) {
+					*stop = YES;
+					return;
+				}
+				if ([[anObject accessTime] compare:[obj accessTime]] == NSOrderedDescending) {
+					*stop = YES;
+					return;
+				}
+				if (!filePathAccessLogs[[obj filePath]]) {
+					filePathAccessLogs[[obj filePath]] = obj;
+				}
+			}];
+			
+			NSUInteger newIndex = [filePathAccessLogs count];
+
+			if (oldIndex == NSNotFound) {
+				[self.documents insertObject:[anObject file] atIndex:newIndex];
+				[self.collectionView insertItemsAtIndexPaths:@[[NSIndexPath indexPathForRow:newIndex inSection:0]]];
+			} else {
+				[self.documents removeObject:[anObject file]];
+				[self.documents insertObject:[anObject file] atIndex:newIndex];
+				[self.collectionView moveItemAtIndexPath:[NSIndexPath indexPathForRow:oldIndex inSection:0] toIndexPath:[NSIndexPath indexPathForRow:newIndex inSection:0]];
+			}
+		}
+		case NSFetchedResultsChangeUpdate:
+			// update shouldn't change the item sequence
+			break;
+		case NSFetchedResultsChangeMove:
+		case NSFetchedResultsChangeDelete:
+			NSAssert(NO, @"File access logs should never been changed or purged");
+			break;
+		default:
+			break;
+	}
 
 }
 
@@ -130,18 +162,19 @@
 	WADocumentStreamViewCell *cell = [self.collectionView dequeueReusableCellWithReuseIdentifier:kWADocumentStreamViewCellID forIndexPath:indexPath];
 
 	WAFile *document = self.documents[[indexPath row]];
-	WAFilePageElement *coverPage = document.pageElements[0];
-
-	cell.pageElement = coverPage;
 	cell.fileNameLabel.text = document.remoteFileName;
 
-	[[[self class] sharedImageDisplayQueue] addOperationWithBlock:^{
-		[coverPage irObserve:@"thumbnailImage" options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:&kWADocumentStreamViewCellKVOContext withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
-			[[NSOperationQueue mainQueue] addOperationWithBlock:^{
-				cell.imageView.image = toValue;
+	if ([document.pageElements count]) {
+		WAFilePageElement *coverPage = document.pageElements[0];
+		cell.pageElement = coverPage;
+		[[[self class] sharedImageDisplayQueue] addOperationWithBlock:^{
+			[coverPage irObserve:@"thumbnailImage" options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:&kWADocumentStreamViewCellKVOContext withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
+				[[NSOperationQueue mainQueue] addOperationWithBlock:^{
+					cell.imageView.image = toValue;
+				}];
 			}];
 		}];
-	}];
+	}
 
 	return cell;
 
