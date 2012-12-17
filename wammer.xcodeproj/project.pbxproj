@@ -189,6 +189,11 @@
 		8002CDE915E5E92100D7BFF0 /* WARemoteInterface+Notification.m in Sources */ = {isa = PBXBuildFile; fileRef = 8002CDE815E5E92100D7BFF0 /* WARemoteInterface+Notification.m */; };
 		8002CDEC15E5F6F300D7BFF0 /* WARemoteInterface+WebSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 8002CDEB15E5F6F300D7BFF0 /* WARemoteInterface+WebSocket.m */; };
 		80074F8C167EBFAB00A23EED /* WAFile.m in Sources */ = {isa = PBXBuildFile; fileRef = 80074F8B167EBFAB00A23EED /* WAFile.m */; };
+		80074F90167ED50600A23EED /* WAWebStreamViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 80074F8F167ED50600A23EED /* WAWebStreamViewController.m */; };
+		80074F93167ED52900A23EED /* WAWebStreamViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 80074F92167ED52800A23EED /* WAWebStreamViewCell.m */; };
+		80074F97167F204400A23EED /* WAWebStreamViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 80074F96167F204400A23EED /* WAWebStreamViewCell.xib */; };
+		80074F9A167F34C600A23EED /* Webicon.png in Resources */ = {isa = PBXBuildFile; fileRef = 80074F98167F34C600A23EED /* Webicon.png */; };
+		80074F9B167F34C600A23EED /* Webicon@2X.png in Resources */ = {isa = PBXBuildFile; fileRef = 80074F99167F34C600A23EED /* Webicon@2X.png */; };
 		800770E016797AE70085E525 /* WATimelineViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DEBED834166C8801001A2B24 /* WATimelineViewCell.m */; };
 		800770E3167982850085E525 /* WAFoursquareConnectSwitch.m in Sources */ = {isa = PBXBuildFile; fileRef = 800770E2167982850085E525 /* WAFoursquareConnectSwitch.m */; };
 		800D9A9216719B5D0034CDF6 /* MKMapView+ZoomLevel.m in Sources */ = {isa = PBXBuildFile; fileRef = 800D9A9116719B5D0034CDF6 /* MKMapView+ZoomLevel.m */; };
@@ -1257,6 +1262,13 @@
 		8002CDEB15E5F6F300D7BFF0 /* WARemoteInterface+WebSocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WARemoteInterface+WebSocket.m"; sourceTree = "<group>"; };
 		80074F8A167EBFAB00A23EED /* WAFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAFile.h; sourceTree = "<group>"; };
 		80074F8B167EBFAB00A23EED /* WAFile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAFile.m; sourceTree = "<group>"; };
+		80074F8E167ED50600A23EED /* WAWebStreamViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAWebStreamViewController.h; sourceTree = "<group>"; };
+		80074F8F167ED50600A23EED /* WAWebStreamViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAWebStreamViewController.m; sourceTree = "<group>"; };
+		80074F91167ED52800A23EED /* WAWebStreamViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAWebStreamViewCell.h; sourceTree = "<group>"; };
+		80074F92167ED52800A23EED /* WAWebStreamViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAWebStreamViewCell.m; sourceTree = "<group>"; };
+		80074F96167F204400A23EED /* WAWebStreamViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WAWebStreamViewCell.xib; sourceTree = "<group>"; };
+		80074F98167F34C600A23EED /* Webicon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Webicon.png; path = Resources/Webicon.png; sourceTree = "<group>"; };
+		80074F99167F34C600A23EED /* Webicon@2X.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Webicon@2X.png"; path = "Resources/Webicon@2X.png"; sourceTree = "<group>"; };
 		800770E1167982850085E525 /* WAFoursquareConnectSwitch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WAFoursquareConnectSwitch.h; path = wammer/WAFoursquareConnectSwitch.h; sourceTree = "<group>"; };
 		800770E2167982850085E525 /* WAFoursquareConnectSwitch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WAFoursquareConnectSwitch.m; path = wammer/WAFoursquareConnectSwitch.m; sourceTree = "<group>"; };
 		800D9A9016719B5D0034CDF6 /* MKMapView+ZoomLevel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "MKMapView+ZoomLevel.h"; path = "wammer/MKMapView+ZoomLevel.h"; sourceTree = "<group>"; };
@@ -2433,6 +2445,18 @@
 			name = Collection;
 			sourceTree = "<group>";
 		};
+		80074F8D167ED4A200A23EED /* Web Pages */ = {
+			isa = PBXGroup;
+			children = (
+				80074F8E167ED50600A23EED /* WAWebStreamViewController.h */,
+				80074F8F167ED50600A23EED /* WAWebStreamViewController.m */,
+				80074F91167ED52800A23EED /* WAWebStreamViewCell.h */,
+				80074F92167ED52800A23EED /* WAWebStreamViewCell.m */,
+				80074F96167F204400A23EED /* WAWebStreamViewCell.xib */,
+			);
+			name = "Web Pages";
+			sourceTree = "<group>";
+		};
 		8007709216789A070085E525 /* Events */ = {
 			isa = PBXGroup;
 			children = (
@@ -2887,6 +2911,7 @@
 		FF6E168314F2EB6500AE1C05 /* Timeline */ = {
 			isa = PBXGroup;
 			children = (
+				80074F8D167ED4A200A23EED /* Web Pages */,
 				8007709516789A540085E525 /* Collection */,
 				8007709416789A150085E525 /* Documents */,
 				8007709316789A0E0085E525 /* Photos */,
@@ -3311,6 +3336,8 @@
 				DEF1326E164B83CE0051284D /* EventsIcon@2x.png */,
 				DEF1326F164B83CE0051284D /* PhotosIcon@2x.png */,
 				DEF13270164B83CE0051284D /* SettingsIcon@2x.png */,
+				80074F98167F34C600A23EED /* Webicon.png */,
+				80074F99167F34C600A23EED /* Webicon@2X.png */,
 				80B9E4FB16719B1100222F57 /* Location@2x.png */,
 				80B9E4FC16719B1100222F57 /* Location.png */,
 				80B9E4FD16719B1100222F57 /* NoLocation.png */,
@@ -4512,6 +4539,9 @@
 				80719CED167AFD4600E9729F /* WAEventDay.m in Resources */,
 				132824C1167B196700B2FB67 /* DocumentsIcon.png in Resources */,
 				132824C2167B196700B2FB67 /* DocumentsIcon@2x.png in Resources */,
+				80074F97167F204400A23EED /* WAWebStreamViewCell.xib in Resources */,
+				80074F9A167F34C600A23EED /* Webicon.png in Resources */,
+				80074F9B167F34C600A23EED /* Webicon@2X.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4953,6 +4983,8 @@
 				80719CF9167AFF8000E9729F /* WAEventDay+WARemoteInterfaceEntitySyncing.m in Sources */,
 				80719CFC167B03B900E9729F /* WAPhotoDay+WARemoteInterfaceEntitySyncing.m in Sources */,
 				80074F8C167EBFAB00A23EED /* WAFile.m in Sources */,
+				80074F90167ED50600A23EED /* WAWebStreamViewController.m in Sources */,
+				80074F93167ED52900A23EED /* WAWebStreamViewCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

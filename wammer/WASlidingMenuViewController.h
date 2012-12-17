@@ -13,6 +13,7 @@
 typedef NS_ENUM(NSUInteger, WADayViewSupportedStyle) {
 	WAEventsViewStyle,
 	WAPhotosViewStyle,
+	WAWebpagesViewStyle,
 	WADocumentsViewStyle,
 	WACollectionsViewStyle,
 };

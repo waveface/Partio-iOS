@@ -425,7 +425,7 @@
 "PHOTOS_PLURAL" = "%d photos";
 
 /* in day view */
-"PHOTOS_TITLE" = "Photos";
+"PHOTOS_TITLE" = "PHOTOS";
 
 /* Title of view controller choosing plans */
 "PLANS_CONTROLLER_TITLE" = "PLANS";
@@ -503,6 +503,9 @@
 /* Title for Settings in the sliding menu */
 "SLIDING_MENU_TITLE_SETTINGS" = "SETTINGS";
 
+/* Title for Web pages in the sliding menu */
+"SLIDING_MENU_TITLE_WEBS" = "WEB PAGES";
+
 /* No comment provided by engineer. */
 "STATE_LOADING_SINGLE_DOCUMENT" = "Loading Document…";
 
@@ -563,6 +566,9 @@
 
 /* Title of web service settings view controller */
 "WEB_SERVICES_TITLE" = "Web Services";
+
+/* Title for web pages view controller */
+"WEBPAGES_CONTROLLER_TITLE" = "Web Pages";
 
 /* No comment provided by engineer. */
 "WEEK_PLURAL" = "%d weeks";
