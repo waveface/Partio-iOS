@@ -80,6 +80,21 @@
 
 }
 
+- (NSUInteger) supportedInterfaceOrientations {
+	
+	if (isPad())
+		return UIInterfaceOrientationMaskAll;
+	else
+		return UIInterfaceOrientationMaskPortrait;
+	
+}
+
+- (BOOL) shouldAutorotate {
+	
+	return YES;
+	
+}
+
 #pragma mark - Target actions
 
 - (void)handlePhotoImportSwitchChanged:(id)sender {

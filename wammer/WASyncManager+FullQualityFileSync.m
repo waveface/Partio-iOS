@@ -20,8 +20,6 @@
 
 #import <objc/runtime.h>
 
-static NSString * const kNumberOfFiles = @"-[WASyncManager(FullQualityFileSync) numberOfFiles]";
-
 
 @implementation WASyncManager (FullQualityFileSync)
 
@@ -34,6 +32,11 @@ static NSString * const kNumberOfFiles = @"-[WASyncManager(FullQualityFileSync) 
 	
 	return [IRAsyncOperation operationWithWorker:^(IRAsyncOperationCallback callback) {
 	
+		if (![[NSUserDefaults standardUserDefaults] boolForKey:kWAPhotoImportEnabled]) {
+			callback(nil);
+			return;
+		}
+		
 		WAPhotoImportManager *photoImportManager = [(WAAppDelegate_iOS *)AppDelegate() photoImportManager];
 		if (photoImportManager.preprocessing || photoImportManager.operationQueue.operationCount > 0) {
 			callback(nil);
@@ -51,16 +54,6 @@ static NSString * const kNumberOfFiles = @"-[WASyncManager(FullQualityFileSync) 
 		
 		BOOL const canSync = [wSelf canPerformBlobSync];
 		
-		[wSelf countFilesWithCompletion:^(NSUInteger count) {
-			
-			dispatch_async(dispatch_get_main_queue(), ^{
-				
-				wSelf.numberOfFiles = count;
-				
-			});
-			
-		}];
-
 		if (!canSync) {
 		
 			callback(nil);
@@ -83,16 +76,6 @@ static NSString * const kNumberOfFiles = @"-[WASyncManager(FullQualityFileSync) 
 		
 		[context performBlockAndWait:^{
 		
-			[wSelf countFilesInContext:wContext withCompletion:^(NSUInteger count) {
-			
-				dispatch_async(dispatch_get_main_queue(), ^{
-					
-					wSelf.numberOfFiles = count;
-					
-				});
-
-			}];
-
 			[ds enumerateFilesWithSyncableBlobsInContext:wContext usingBlock:^(WAFile *aFile, NSUInteger index, BOOL *stop) {
 			
 				[syncOperations addObject:[IRAsyncOperation operationWithWorker:^(IRAsyncOperationCallback callback) {
@@ -113,16 +96,6 @@ static NSString * const kNumberOfFiles = @"-[WASyncManager(FullQualityFileSync) 
 					
 				} callback:^(id results) {
 				
-					[wSelf countFilesInContext:wContext withCompletion:^(NSUInteger count) {
-					
-						dispatch_async(dispatch_get_main_queue(), ^{
-							
-							wSelf.numberOfFiles = count;
-							
-						});
-
-					}];
-					
 				} callbackTrampoline:^(IRAsyncOperationInvoker block) {
 					
 					[context performBlock:block];
@@ -181,33 +154,6 @@ static NSString * const kNumberOfFiles = @"-[WASyncManager(FullQualityFileSync) 
 	BOOL const canSync = hasReachableStation && hasWiFiConnection;
 	
 	return canSync;
-
-}
-
-- (void) countFilesWithCompletion:(void (^)(NSUInteger))block {
-
-	[self countFilesInContext:nil withCompletion:block];
-
-}
-
-- (void) countFilesInContext:(NSManagedObjectContext *)context withCompletion:(void (^)(NSUInteger))block {
-
-	WADataStore *ds = [WADataStore defaultStore];
-	NSManagedObjectContext *usedContext = context ? context : [ds disposableMOC];
-	
-	block([ds numberOfFilesWithSyncableBlobsInContext:usedContext]);
-
-}
-
-- (void) setNumberOfFiles:(NSUInteger)numberOfFiles {
-
-	objc_setAssociatedObject(self, &kNumberOfFiles, [NSNumber numberWithUnsignedInteger:numberOfFiles], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-
-}
-
-- (NSUInteger) numberOfFiles {
-
-	return [objc_getAssociatedObject(self, &kNumberOfFiles) unsignedIntegerValue];
 
 }
 

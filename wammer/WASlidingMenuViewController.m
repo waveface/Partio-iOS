@@ -15,6 +15,7 @@
 #import "WADayViewController.h"
 #import "WANavigationController.h"
 #import "WATimelineViewController.h"
+#import "WACalendarPickerViewController.h"
 #import "WAUserInfoViewController.h"
 #import "WAOverlayBezel.h"
 #import "WAPhotoImportManager.h"
@@ -294,10 +295,12 @@
 
 		} else {
 
-			if (wSelf.statusBar) {
-				wSelf.statusBar.statusLabel.text = [NSString stringWithFormat:NSLocalizedString(@"PHOTO_UPLOAD_STATUS_BAR_UPLOADING", @"String on customized status bar"), currentCount, syncManager.needingSyncFilesCount];
-				wSelf.statusBar.progressView.progress = currentCount * 1.0 / syncManager.needingSyncFilesCount;
-			}
+			[[NSOperationQueue mainQueue] addOperationWithBlock:^{
+				if (wSelf.statusBar) {
+					wSelf.statusBar.statusLabel.text = [NSString stringWithFormat:NSLocalizedString(@"PHOTO_UPLOAD_STATUS_BAR_UPLOADING", @"String on customized status bar"), currentCount, syncManager.needingSyncFilesCount];
+					wSelf.statusBar.progressView.progress = currentCount * 1.0 / syncManager.needingSyncFilesCount;
+				}
+			}];
 
 		}
 		
@@ -464,7 +467,7 @@
 		case 5: {
 			[self.viewDeckController closeLeftView];
 			
-			WACalendarPickerViewController *dpVC = [[WACalendarPickerViewController alloc] initWithStyle:WACalendarPickerStyleMenuToday];
+			WACalendarPickerViewController *dpVC = [[WACalendarPickerViewController alloc] initWithFrame:self.view.frame Style:WACalendarPickerStyleMenuToday];
 			[dpVC setModalPresentationStyle:UIModalPresentationFullScreen];
 			[self.viewDeckController setCenterController:dpVC];
 			break;
@@ -503,10 +506,7 @@
 
 	UINavigationController *navVC = (UINavigationController *)[[self class] viewControllerForViewStyle:viewStyle];
 	WADayViewController *swVC = (WADayViewController*)navVC.topViewController;
-			
-	if (date)
-		[swVC jumpToDate:date animated:NO];
-			
+ 
 	if (animated) {
 				
 		[UIView animateWithDuration:animationDuration
@@ -515,11 +515,16 @@
 										 animations: ^{
 											 wSelf.viewDeckController.centerController = navVC;
 										 }
-										 completion:nil];
+										 completion: ^(BOOL complete) {
+											 if (date)
+												 [swVC jumpToDate:date animated:NO];
+										 }];
 				
 	} else {
 				
 		self.viewDeckController.centerController = navVC;
+		if (date)
+			[swVC jumpToDate:date animated:NO];
 				
 	}
 	

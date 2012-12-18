@@ -76,18 +76,6 @@
 
 	[[self recurrenceMachine] scheduleOperationsNow];
 
-	__weak WASyncManager *wSelf = self;
-
-	[self countFilesWithCompletion:^(NSUInteger count) {
-
-		dispatch_async(dispatch_get_main_queue(), ^{
-
-			wSelf.numberOfFiles = count;
-
-		});
-
-	}];
-
 }
 
 - (void) beginPostponingSync {

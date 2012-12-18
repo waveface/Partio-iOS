@@ -12,10 +12,8 @@
 
 @interface WACalendarPickerDataSource : NSObject <UITableViewDataSource, KalDataSource>
 
-@property (nonatomic, strong) NSMutableArray *days;
-@property (nonatomic, strong) NSMutableArray *events;
+@property (nonatomic, strong) NSMutableArray *daysWithAttributes;
 @property (nonatomic, strong)	NSMutableArray *items;
-@property (nonatomic, strong) NSMutableArray *files;
 
 - (WAArticle *)eventAtIndexPath:(NSIndexPath *)indexPath;
 

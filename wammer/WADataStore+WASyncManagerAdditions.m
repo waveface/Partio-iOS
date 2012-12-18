@@ -37,21 +37,6 @@
 
 }
 
-- (NSUInteger) numberOfFilesWithSyncableBlobsInContext:(NSManagedObjectContext *)context {
-
-	if (!context)
-		context = [self disposableMOC];
-	
-	NSFetchRequest *fr = [self fetchRequestForFilesWithSyncableBlobsInContext:context];
-	
-	fr.includesPendingChanges = NO;
-	fr.includesPropertyValues = NO;
-	fr.includesSubentities = NO;
-	
-	return [context countForFetchRequest:fr error:nil];
-	
-}
-
 - (NSFetchRequest *) fetchRequestForDirtyArticlesInContext:(NSManagedObjectContext *)context {
 
 	return [context.persistentStoreCoordinator.managedObjectModel fetchRequestFromTemplateWithName:@"WAFRArticlesNeedingSync" substitutionVariables:@{}];

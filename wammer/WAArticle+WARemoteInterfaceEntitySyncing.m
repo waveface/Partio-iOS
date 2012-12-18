@@ -15,6 +15,7 @@
 #import "IRAsyncOperation.h"
 #import "WADefines.h"
 #import "WAAppDelegate_iOS.h"
+#import "NSDate+WAAdditions.h"
 
 
 NSString * const kWAArticleEntitySyncingErrorDomain = @"com.waveface.wammer.WAArticle.entitySyncing.error";
@@ -64,6 +65,7 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 		@"representingFile": @"representingFile",	//	wraps @"cover_attach"
 		@"code_name": @"creationDeviceName",
 		@"timestamp": @"creationDate",
+		@"dayOnCreation": @"dayOnCreation", // additional attribute for day view controller
 		@"update_time": @"modificationDate",
 		@"content": @"text",
 		@"comments": @"comments",
@@ -94,6 +96,9 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 	
 	if ([aLocalKeyPath isEqualToString:@"modificationDate"])
 		return [[WADataStore defaultStore] dateFromISO8601String:aValue];
+	
+	if ([aLocalKeyPath isEqualToString:@"dayOnCreation"])
+		return [[[WADataStore defaultStore] dateFromISO8601String:aValue] dayBegin];
 	
 	if ([aLocalKeyPath isEqualToString:@"identifier"])
 		return IRWebAPIKitStringValue(aValue);
@@ -253,6 +258,8 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 		[returnedDictionary setValue:@NO forKey:@"event_tag"];
 	}
 
+	[returnedDictionary setObject:incomingRepresentation[@"timestamp"] forKey:@"dayOnCreation"];
+	
 	return returnedDictionary;
 
 }
@@ -537,33 +544,39 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 	
 	if (!isDraft) {
 	
-		[operations addObject:[IRAsyncBarrierOperation operationWithWorkerBlock:^(IRAsyncOperationCallback callback) {
-		
-			[ri retrievePost:postID inGroup:groupID onSuccess:^(NSDictionary *postRep) {
+		[operations addObject:[IRAsyncBarrierOperation operationWithWorker:^(IRAsyncOperationCallback callback) {
 
+			[ri retrievePost:postID inGroup:groupID onSuccess:^(NSDictionary *postRep) {
+				
 				callback(postRep);
 				
 			} onFailure:^(NSError *error) {
-			
+				
 				callback(error);
 				
 			}];
-			
-		} completionBlock:^(id results) {
-		
-			if ([results isKindOfClass:[NSDictionary class]]) {
 
+		} trampoline:^(IRAsyncOperationInvoker callback) {
+
+			callback();
+		
+		} callback:^(id results) {
+
+			if ([results isKindOfClass:[NSDictionary class]]) {
 				context[kPostExistingRemoteRep] = results;
-				
 			}
-			
+
+		} callbackTrampoline:^(IRAsyncOperationInvoker callback) {
+
+			callback();
+
 		}]];
 	
 	}
 	
 	
-	[operations addObject:[IRAsyncBarrierOperation operationWithWorkerBlock:^(IRAsyncOperationCallback callback) {
-	
+	[operations addObject:[IRAsyncBarrierOperation operationWithWorker:^(IRAsyncOperationCallback callback) {
+
 		NSDictionary *postExistingRemoteRep = context[kPostExistingRemoteRep];
 		if (!postExistingRemoteRep) {
 			callback((id)kCFBooleanTrue);
@@ -575,12 +588,12 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 		NSDictionary *mapping = [WAArticle remoteDictionaryConfigurationMapping];
 		
 		id (^mappedValue)(NSString *) = ^ (NSString *localKeyPath) {
-		
+			
 			NSString *remoteKeyPath = [[mapping allKeysForObject:localKeyPath] lastObject];	//	Assumed that there will only be one key pointing to this object
 			id remoteValue = postExistingRemoteRep[remoteKeyPath];
 			
 			return [WAArticle transformedValue:remoteValue fromRemoteKeyPath:remoteKeyPath toLocalKeyPath:localKeyPath];
-		
+			
 		};
 		
 		NSDate *remoteCreationDate = mappedValue(@"creationDate");
@@ -598,60 +611,65 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 		
 		NSComparisonResult comparisonResult = [remoteDate compare:localDate];
 		if (comparisonResult == NSOrderedDescending || comparisonResult == NSOrderedSame) {
-
+			
 			callback(WAArticleEntitySyncingError(1, @"Remote copy is newer, skipping sync", nil));
-
+			
 		} else {
-
+			
 			callback([NSValue valueWithBytes:&(NSComparisonResult){ comparisonResult } objCType:@encode(__typeof__(NSComparisonResult))]);
-
+			
 		}
-		
-	} completionBlock: ^ (id results) {
+
+	} trampoline:^(IRAsyncOperationInvoker callback) {
+
+		callback();
 	
+	} callback:^(id results) {
+
 		NSCParameterAssert(results);
 		
 		if ([results isKindOfClass:[NSError class]]) {
-
+			
 			if ([[(NSError*)results domain] isEqualToString:kWAArticleEntitySyncingErrorDomain] &&
 					[(NSError*)results code] == 1) {
-
+				
 				WADataStore *ds = [WADataStore defaultStore];
-			
+				
 				[ds performBlock:^{
-
+					
 					NSManagedObjectContext *context = [ds disposableMOC];
 					WAArticle *savedPost = (WAArticle *)[context irManagedObjectForURI:postEntityURL];
 					savedPost.dirty = (id)kCFBooleanFalse;
 					NSError *savingError = nil;
 					[context save:&savingError];
-				
+					
 				} waitUntilDone:NO];
-			
+				
 			}
 		}
 	
+	} callbackTrampoline:^(IRAsyncOperationInvoker callback) {
+
+		callback();
+
 	}]];
-	
 	
 	[[self.files array] enumerateObjectsUsingBlock: ^ (WAFile *file, NSUInteger idx, BOOL *stop) {
 	
 		NSURL *aFileURL = [[file objectID] URIRepresentation];
 	
-		[operations addObject:[IRAsyncBarrierOperation operationWithWorkerBlock: ^ (void(^aCallback)(id results)) {
-		
-			//	Re-fetch for clarity, use the shared MOC to avoid duplicating state, as long as we are careful NOT to mutate anything.
-		
+		[operations addObject:[IRAsyncBarrierOperation operationWithWorker:^(IRAsyncOperationCallback callback) {
+
 			NSManagedObjectContext *context = [[WADataStore defaultStore] newContextWithConcurrencyType:NSConfinementConcurrencyType];
 			WAFile *representedFile = (WAFile *)[context irManagedObjectForURI:aFileURL];
 			NSCParameterAssert(![representedFile hasChanges]);
 			if (!representedFile) {
-				aCallback(WAArticleEntitySyncingError(0, [NSString stringWithFormat:@"Unable to find WAFile entity at %@", aFileURL], nil));
+				callback(WAArticleEntitySyncingError(0, [NSString stringWithFormat:@"Unable to find WAFile entity at %@", aFileURL], nil));
 				return;
 			}
 			
 			if (representedFile.identifier && (representedFile.thumbnailURL || representedFile.resourceURL)) {
-				aCallback(representedFile.identifier);
+				callback(representedFile.identifier);
 				return;
 			}
 			
@@ -659,24 +677,28 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 			NSString *fileSyncStrategy = [ri hasReachableStation] ? kWAFileSyncFullQualityStrategy : kWAFileSyncReducedQualityStrategy;
 			
 			[representedFile synchronizeWithOptions:@{kWAFileSyncStrategy: fileSyncStrategy} completion:^(BOOL didFinish, NSError *error) {
-			
+				
 				if (!didFinish) {
-					aCallback(error);
+					callback(error);
 					return;
 				}
-			
+				
 				NSManagedObjectContext *context = [[WADataStore defaultStore] disposableMOC];
 				WAFile *savedFile = (WAFile *)[context irManagedObjectForURI:fileURI];
 				
 				NSCParameterAssert(savedFile.articles);
 				NSCParameterAssert(savedFile.identifier);
-				aCallback(savedFile.identifier);
+				callback(savedFile.identifier);
 				
 			}];
-			
-		} completionBlock:^(id result) {
-		
-			if (![result isKindOfClass:[NSString class]])
+
+		} trampoline:^(IRAsyncOperationInvoker callback) {
+
+			callback();
+
+		} callback:^(id results) {
+
+			if (![results isKindOfClass:[NSString class]])
 				return;
 			
 			NSMutableArray *attachmentIDs = context[kPostAttachmentIDs];
@@ -686,12 +708,16 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 			}
 			
 			NSParameterAssert([attachmentIDs isKindOfClass:[NSMutableArray class]]);
-			[attachmentIDs addObject:result];
-		
+			[attachmentIDs addObject:results];
+			
 			[(WAAppDelegate_iOS *)AppDelegate() syncManager].syncedFilesCount += 1;
 
+		} callbackTrampoline:^(IRAsyncOperationInvoker callback) {
+
+			callback();
+
 		}]];
-		
+
 		[(WAAppDelegate_iOS *)AppDelegate() syncManager].needingSyncFilesCount += 1;
 		
 	}];
@@ -703,20 +729,24 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 	
 	if (previewURL) {
 
-		[operations addObject:[IRAsyncBarrierOperation operationWithWorkerBlock:^(IRAsyncOperationCallback callback) {
+		[operations addObject:[IRAsyncBarrierOperation operationWithWorker:^(IRAsyncOperationCallback callback) {
 
 			[ri retrievePreviewForURL:previewURL onSuccess:^(NSDictionary *aPreviewRep) {
-
+				
 				callback(aPreviewRep);
 				
 			} onFailure:^(NSError *error) {
-			
+				
 				callback(error);
 				
 			}];
+
+		} trampoline:^(IRAsyncOperationInvoker callback) {
+
+			callback();
 		
-		} completionBlock:^(id results) {
-		
+		} callback:^(id results) {
+
 			NSCParameterAssert(results);
 			
 			if (![results isKindOfClass:[NSDictionary class]])
@@ -724,11 +754,11 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 			
 			WAArticle *savedPost = (WAArticle *)[[[WADataStore defaultStore] disposableMOC] irManagedObjectForURI:postEntityURL];
 			WAPreview *savedPreview = [savedPost.previews anyObject];
-
-			if ([savedPreview.graphElement.images count]) {
 			
+			if ([savedPreview.graphElement.images count]) {
+				
 				NSMutableDictionary *previewEntity = [(NSDictionary *)results mutableCopy];
-
+				
 				// use the first preview image for thumbnail_url while creating posts
 				if (isDraft) {
 					previewEntity[@"thumbnail_url"] = [[savedPreview.graphElement.images array][0] imageRemoteURL];
@@ -736,119 +766,127 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 					NSString *thumbnailURL = savedPreview.graphElement.representingImage.imageRemoteURL;
 					previewEntity[@"thumbnail_url"] = (thumbnailURL ? thumbnailURL : @"");
 				}
-
+				
 				context[kPostWebPreview] = previewEntity;
-			
+				
 			} else {
-			
+				
 				context[kPostWebPreview] = results;
-			
+				
 			}
-			
+
+		} callbackTrampoline:^(IRAsyncOperationInvoker callback) {
+
+			callback();
+		
 		}]];
 	
 	}
 	
 	
-	[operations addObject:[IRAsyncBarrierOperation operationWithWorkerBlock:^(IRAsyncOperationCallback callback) {
-	
+	[operations addObject:[IRAsyncBarrierOperation operationWithWorker:^(IRAsyncOperationCallback callback) {
+
 		NSArray *attachments = context[kPostAttachmentIDs];
 		NSDictionary *preview = context[kPostWebPreview];
 		
 		if (isDraft) {
-
+			
 			if (!isHidden) {
-
+				
 				[ri createPostInGroup:groupID withContentText:postText attachments:attachments preview:preview postId:postID createTime:postCreationDate updateTime:postModificationDate favorite:isFavorite import:isImport onSuccess:^(NSDictionary *postRep) {
 					
 					callback(postRep);
-
+					
 				} onFailure: ^ (NSError *error) {
-
+					
 					callback(error);
-
+					
 				}];
-
+				
 			}
-
+			
 		} else {
 			
 			if (isHidden) {
 				
 				[ri configurePost:postID inGroup:groupID withVisibilityStatus:NO onSuccess:^{
-
+					
 					// FIXME: clear dirty flag of the article immediately after calling hide API
 					// it's a workaround because the response and parameters of hide and update APIs are different.
 					// still buggy and needs refactoring
 					WADataStore *ds = [WADataStore defaultStore];
-
+					
 					[ds performBlock:^{
-
+						
 						NSManagedObjectContext *context = [ds disposableMOC];
 						WAArticle *savedPost = (WAArticle *)[context irManagedObjectForURI:postEntityURL];
 						savedPost.dirty = (id)kCFBooleanFalse;
 						NSError *savingError = nil;
 						BOOL didSave = [context save:&savingError];
-
+						
 						completionBlock(didSave, savingError);
-
+						
 					} waitUntilDone:NO];
-
+					
 				} onFailure:^(NSError *error) {
-
+					
 					callback(error);
-
+					
 				}];
-
+				
 			} else {
-
+				
 				NSDate *lastPostModDate = context[kPostExistingRemoteRepDate];
 				
 				[ri updatePost:postID inGroup:groupID withText:postText attachments:attachments mainAttachment:postCoverPhotoID preview:preview favorite:isFavorite hidden:isHidden replacingDataWithDate:lastPostModDate updateTime:postModificationDate onSuccess:^(NSDictionary *postRep) {
-
+					
 					callback(postRep);
-
+					
 				} onFailure:^(NSError *error) {
-
+					
 					callback(error);
-
+					
 				}];
-
+				
 			}
-		
+			
 		}
-		
-	} completionBlock:^(id results) {
+
+	} trampoline:^(IRAsyncOperationInvoker callback) {
+
+		callback();
 	
+	} callback:^(id results) {
+
 		NSCParameterAssert(results);
 		
-
+		
 		void (^dismissSyncStatusBarIfNeeded)(BOOL forced) = ^(BOOL forced) {
-
+			
 			WASyncManager *syncManager = [(WAAppDelegate_iOS *)AppDelegate() syncManager];
 			
 			if (forced) {
-
+				
 				if (!syncManager.syncStopped) {
-
+					
 					[syncManager resetSyncFilesCount];
-
+					
 				}
-
+				
 			} else {
 				
 				if (syncManager.syncCompleted) {
 					
 					[syncManager resetSyncFilesCount];
-				
+					
 				}
-
+				
 			}
-
+			
 		};
-
-		if ([results isKindOfClass:[NSDictionary class]]) {
 		
+		if ([results isKindOfClass:[NSDictionary class]]) {
+			
 			WADataStore *ds = [WADataStore defaultStore];
 			
 			[ds performBlock:^{
@@ -887,15 +925,15 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 				BOOL didSave = [context save:&savingError];
 				
 				completionBlock(didSave, savingError);
-
+				
 				dismissSyncStatusBarIfNeeded(NO);
-
+				
 			} waitUntilDone:NO];
-		
+			
 		} else {
-		
+			
 			NSError *error = (NSError *)([results isKindOfClass:[NSError class]] ? results : nil);
-
+			
 			// post id already exists
 			if ([[error domain] isEqualToString:kWARemoteInterfaceDomain] && [error code] == 0x3000 + 25) {
 				NSManagedObjectContext *context = [[WADataStore defaultStore] disposableMOC];
@@ -908,15 +946,18 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 				CFRelease(theUUID);
 				[context save:nil];
 			}
-
+			
 			completionBlock(NO, error);
-
+			
 			dismissSyncStatusBarIfNeeded(YES);
-
+			
 		}
-		
-	}]];
+
+	} callbackTrampoline:^(IRAsyncOperationInvoker callback) {
+
+		callback();
 	
+	}]];	
 	
 	[operations enumerateObjectsUsingBlock: ^ (IRAsyncBarrierOperation *operation, NSUInteger idx, BOOL *stop) {
 	
@@ -940,7 +981,7 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 	static dispatch_once_t onceToken;
 	dispatch_once(&onceToken, ^{
     
-		queue = [NSOperationQueue new];
+		queue = [[NSOperationQueue alloc] init];
 		queue.maxConcurrentOperationCount = 1;
 		
 	});

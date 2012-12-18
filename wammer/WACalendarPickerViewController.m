@@ -28,13 +28,14 @@
 
 @implementation WACalendarPickerViewController
 
-- (id)initWithStyle:(WACalendarPickerStyle)style
+- (id)initWithFrame:(CGRect)frame Style:(WACalendarPickerStyle)style
 {
 	calPicker = [[KalViewController alloc] init];
 	calPicker.title = NSLocalizedString(@"CALENDAR_TITLE", @"Title of Canlendar");
 	calPicker.delegate = self;
 	dataSource = [[WACalendarPickerDataSource alloc] init];
 	calPicker.dataSource = dataSource;
+	calPicker.frame = frame;
 
 	switch (style) {
 		case WACalendarPickerStyleInPopover:
@@ -147,43 +148,40 @@
 
 		WAEventViewController *eventVC = [WAEventViewController controllerForArticle:selectedEvent];
 		
-		if (self.viewDeckController) {
-		
-			if (isPad()) {
-				UINavigationController *navC = [[WANavigationController alloc] initWithRootViewController:eventVC];
-				navC.modalPresentationStyle = UIModalPresentationFormSheet;
-				[self presentViewController:navC animated:YES completion:nil];
-				
-			} else {
-				[self pushViewController:eventVC animated:YES];
+		if (isPad()) {
+			UINavigationController *navC = [[WANavigationController alloc] initWithRootViewController:eventVC];
+			navC.modalPresentationStyle = UIModalPresentationFormSheet;
+			[self presentViewController:navC animated:YES completion:nil];
 			
-			}
-			
-		}
-		else {
-		
+		} else {
 			[self pushViewController:eventVC animated:YES];
-		
+			
 		}
+
 	}
 	else if ([selectedEvent isKindOfClass:[WAFile class]]) {
 
-		WAFile *photo = (WAFile *)selectedEvent;
+		WAFile *file = (WAFile *)selectedEvent;
 		WASlidingMenuViewController *smVC;
 		
-		if (self.viewDeckController) {
+		if (file.created) {
+			if (self.viewDeckController) {
+				
+				smVC = (WASlidingMenuViewController *)[self.viewDeckController leftController];
+				[smVC switchToViewStyle:WAPhotosViewStyle onDate:file.created animated:YES];
+				
+			}
+			else {
+				
+				smVC = (WASlidingMenuViewController *)[[[self delegate] viewDeckController] leftController];
+				[smVC switchToViewStyle:WAPhotosViewStyle onDate:file.created animated:NO];
+				[self dismissViewControllerAnimated:YES completion:nil];
+			}
 			
-			smVC = (WASlidingMenuViewController *)[self.viewDeckController leftController];
-			[smVC switchToViewStyle:WAPhotosViewStyle onDate:photo.created animated:YES];
+		} else if (file.docAccessTime) {
 		
 		}
-		else {
 			
-			smVC = (WASlidingMenuViewController *)[[[self delegate] viewDeckController] leftController];
-			[smVC switchToViewStyle:WAPhotosViewStyle onDate:photo.created animated:NO];
-			[self dismissViewControllerAnimated:YES completion:nil];
-		
-		}
 	}
 }
 
