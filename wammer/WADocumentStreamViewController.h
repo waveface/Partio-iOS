@@ -15,6 +15,4 @@
 
 - (id)initWithDate:(NSDate *)date;
 
-@property (strong, nonatomic) UIPopoverController *popover;
-
 @end

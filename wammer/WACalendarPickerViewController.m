@@ -179,7 +179,10 @@
 				
 				if (isPhone()) {
 					[self dismissViewControllerAnimated:YES completion:nil];
-			
+								
+				} else {
+					[self.delegate dismissPopoverAnimated:YES];
+					
 				}
 				
 			}
@@ -204,6 +207,9 @@
 			if (isPhone()) {
 				[self dismissViewControllerAnimated:YES completion:nil];
 			
+			} else {
+				[self.delegate dismissPopoverAnimated:YES];
+				
 			}
 			
 		}

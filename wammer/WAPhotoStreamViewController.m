@@ -25,6 +25,7 @@
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 @property (strong, nonatomic) NSArray *photos;
 @property (strong, nonatomic) NSMutableArray *layout;
+@property (strong, nonatomic) UIPopoverController *popover;
 @property (strong, nonatomic) UIButton *calendarButton;
 
 @end
@@ -231,6 +232,11 @@
 		[self presentViewController:dpVC animated:YES completion:nil];
 		
 	}
+}
+
+- (void)dismissPopoverAnimated:(BOOL)animated {
+	[self.popover dismissPopoverAnimated:animated];
+	
 }
 
 @end

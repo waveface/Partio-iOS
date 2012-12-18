@@ -24,6 +24,7 @@
 @property (nonatomic, readwrite, strong) NSMutableArray *documents;
 @property (nonatomic, readwrite, strong) NSFetchedResultsController *fetchedResultsController;
 
+@property (strong, nonatomic) UIPopoverController *popover;
 @property (strong, nonatomic) UIButton *calendarButton;
 
 @end
@@ -207,6 +208,8 @@
 
 }
 
+#pragma mark - Calendar
+
 - (void) handleDateSelect:(UIBarButtonItem *)sender {
 	
 	CGRect frame = isPad()? CGRectMake(0.f, 0.f, 320.f, 568.f) : CGRectMake(0.f, 0.f, 320.f, [UIScreen mainScreen].bounds.size.height);
@@ -233,4 +236,8 @@
 	}
 }
 
+- (void)dismissPopoverAnimated:(BOOL)animated {
+	[self.popover dismissPopoverAnimated:animated];
+	
+}
 @end

@@ -282,6 +282,7 @@ CGFloat (^rowSpacing) (UICollectionView *) = ^ (UICollectionView *collectionView
 	CGRect frame = isPad()? CGRectMake(0.f, 0.f, 320.f, 568.f) : CGRectMake(0.f, 0.f, 320.f, [UIScreen mainScreen].bounds.size.height);
 	
 	if (isPad()) {
+		
 		if ([self.popover isPopoverVisible]) {
 				[self.popover dismissPopoverAnimated:YES];
 		
@@ -290,6 +291,7 @@ CGFloat (^rowSpacing) (UICollectionView *) = ^ (UICollectionView *collectionView
 			dpVC.delegate = self;
 			
 			self.popover = [[UIPopoverController alloc] initWithContentViewController:dpVC];
+			[self.popover setDelegate:self];
 			[self.popover setPopoverContentSize:CGSizeMake(320.f, 568.f)];
 			[self.popover presentPopoverFromRect:self.calendarButton.frame inView:self.view permittedArrowDirections:UIPopoverArrowDirectionUp animated:YES];
 		}
@@ -301,6 +303,11 @@ CGFloat (^rowSpacing) (UICollectionView *) = ^ (UICollectionView *collectionView
 		[self presentViewController:dpVC animated:YES completion:nil];
 	
 	}
+}
+
+- (void)dismissPopoverAnimated:(BOOL)animated {
+	[self.popover dismissPopoverAnimated:animated];
+	
 }
 
 #pragma mark - UICollectionView delegate

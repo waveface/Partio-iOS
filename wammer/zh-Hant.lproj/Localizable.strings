@@ -516,7 +516,7 @@
 "TEXT_ELEMENT_TOGGLE_MORE_TITLE" = "更多";
 
 /* Title of Canlendar */
-"TITLE_CALENDAR" = "TITLE_CALENDAR";
+"TITLE_CALENDAR" = "月曆";
 
 /* Title for menu item Document Stream */
 "TITLE_DOCUMENT_STREAM" = "TITLE_DOCUMENT_STREAM";
