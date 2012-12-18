@@ -150,7 +150,7 @@ CGFloat (^rowSpacingWeb) (UICollectionView *) = ^ (UICollectionView *collectionV
 	
 	CGFloat width = CGRectGetWidth(collectionView.frame);
 	CGFloat spacing = rowSpacingWeb(collectionView);
-	return CGSizeMake(width - spacing * 2, 44);
+	return CGSizeMake(width - spacing * 2, 50);
 	
 }
 
