@@ -185,6 +185,8 @@
 
 - (void) tapOutsideHandler:(UITapGestureRecognizer*)sender {
 	
+	if (self.presentedViewController!=nil)
+		return;
 	if (sender.state == UIGestureRecognizerStateEnded) {
 		
 		CGPoint location = [sender locationInView:nil];
