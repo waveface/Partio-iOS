@@ -27,7 +27,6 @@
 - (NSFetchRequest *) newFetchRequestForArticlesWithPreviews;
 - (NSFetchRequest *) newFetchRequestForArticlesWithPhotos;
 - (NSFetchRequest *) newFetchRequestForArticlesWithoutPreviewsOrPhotos;
-- (NSFetchRequest *) newFetchRequestForUrlHistories;
 
 - (void) fetchLatestCreatedArticleInGroup:(NSString *)aGroupIdentifier onSuccess:(void(^)(NSString *identifier, WAArticle *article))callback;
 
@@ -44,6 +43,6 @@
 - (NSArray *) fetchAllCachesUsingContext:(NSManagedObjectContext *)aContext;
 - (NSNumber *) fetchTotalCacheSizeUsingContext:(NSManagedObjectContext *)aContext;
 - (WACache *) fetchCacheWithPredicate:(NSPredicate *)aPredicate usingContext:(NSManagedObjectContext *)aContext;
-- (NSArray *) fetchFilesWithoutMetaUsingContext:(NSManagedObjectContext *)aContext;
+- (NSArray *) fetchFilesRequireMetaUpdateUsingContext:(NSManagedObjectContext *)aContext;
 
 @end

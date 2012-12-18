@@ -23,6 +23,7 @@
 #import "MKMapView+ZoomLevel.h"
 #import "NINetworkImageView.h"
 #import "GAI.h"
+#import "WANavigationController.h"
 
 @interface WAAnnotation : NSObject <MKAnnotation>
 
@@ -52,11 +53,8 @@
 	
 	NSMutableString *literal = [[NSMutableString alloc] initWithString:@"WAEventViewController"];
 	
-	if ([article.style isEqualToNumber:[NSNumber numberWithInteger:WAPostStyleURLHistory]]) {
-		[literal appendString:@"_Link"]; // FIXME
-	} else {
-		[literal appendString:@"_Photo"];
-	}
+	[literal appendString:@"_Photo"];
+
 	
 	Class class = NSClassFromString(literal);
 	if (!class)
@@ -109,6 +107,7 @@
 		if (isPad() && wSelf.parentViewController.modalPresentationStyle == UIModalPresentationFormSheet) {
 			[wSelf.view.window removeGestureRecognizer:tapGR];
 			[wSelf.navigationController dismissViewControllerAnimated:YES completion:nil];
+			
 		} else {
 			[wSelf.navigationController popViewControllerAnimated:YES];
 		}
@@ -417,7 +416,7 @@
 		}
 	}
 	
-	if (self.article.location) {
+	if (self.article.location && self.article.location.latitude && self.article.location.longitude) {
 		
 		NSMutableArray *allTags = [NSMutableArray array];
 

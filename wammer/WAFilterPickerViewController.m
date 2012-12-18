@@ -47,7 +47,6 @@ NSString * const kWAFilterPickerViewSelectedRowIndex = @"kWAFilterPickerViewSele
 		[dataStore newFetchRequestForAllArticles],
 		[dataStore newFetchRequestForArticlesWithPhotos],
 		[dataStore newFetchRequestForArticlesWithPreviews],
-		[dataStore newFetchRequestForUrlHistories],
 	];
 	
 	return self;

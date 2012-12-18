@@ -279,9 +279,6 @@
 /* Display title for a fetch request working against the latest article on a particular date */
 "FETCH_REQUEST_NEWEST_ARTICLE_OF_PARTICULAR_DATE_DISPLAY_TITLE" = "Post on a particular date";
 
-/* Caption for URL History */
-"FETCH_REQUEST_URL_HISTORY" = "Visited Links";
-
 /* Title for an alert view to show foursquare connection failure */
 "FOURSQUARE_CONNECT_FAIL_TITLE" = "Unable to import from Foursquare";
 
@@ -334,7 +331,7 @@
 "LABEL_MODAL_POPUP_CLOSE_BUTTON" = "Close";
 
 /* The text of location label when there is no gps information we can refer to */
-"LABEL_WITHOUT_GPS_DATA" = "LABEL_WITHOUT_GPS_DATA";
+"LABEL_WITHOUT_GPS_DATA" = "Where were you?";
 
 /* The email subject users will share photos thru. The nickname of user will be appended to this subject. */
 "MAIL_ACTION_SUBJECT" = "%@ wants to share photo(s) with you thru Stream App.";

@@ -8,6 +8,7 @@
 
 #import "WADataStore+FetchingConveniences.h"
 #import "WACache.h"
+#import "NSDate+WAAdditions.h"
 
 @implementation WADataStore (FetchingConveniences)
 
@@ -154,14 +155,16 @@
 }
 
 - (NSFetchRequest *) newFetchRequestForArticlesOnDate:(NSDate*)date {
-	NSCalendar *cal = [NSCalendar currentCalendar];
+//	NSCalendar *cal = [NSCalendar currentCalendar];
 	
-	NSDateComponents *dcomponents = [cal components:(NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit) fromDate:date];
-	[dcomponents setDay:[dcomponents day] + 1];
-	NSDate *midnight = [cal dateFromComponents:dcomponents];
+//	NSDateComponents *dcomponents = [cal components:(NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit) fromDate:date];
+//	[dcomponents setDay:[dcomponents day] + 1];
+//	NSDate *midnight = [cal dateFromComponents:dcomponents];
+	NSDate *midnight = [date dayEnd];
 	
-	dcomponents = [cal components:(NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit) fromDate:date];
-	NSDate *earlymorning = [cal dateFromComponents:dcomponents];
+//	dcomponents = [cal components:(NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit) fromDate:date];
+//	NSDate *earlymorning = [cal dateFromComponents:dcomponents];
+	NSDate *earlymorning = [date dayBegin];
 	
 	NSFetchRequest *fetchRequest = [self.persistentStoreCoordinator.managedObjectModel fetchRequestFromTemplateWithName:@"WAFRArticles" substitutionVariables:@{}];
 	
@@ -234,20 +237,6 @@
 	
 	return fr;
 
-}
-
-- (NSFetchRequest *)newFetchRequestForUrlHistories {
-	
-	NSFetchRequest *fetch = [self newFetchRequestForAllArticles];
-	fetch.predicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[
-										 fetch.predicate,
-										 [NSPredicate predicateWithFormat:@"style == %d", WAPostStyleURLHistory],
-										 [NSPredicate predicateWithFormat:@"files.@count > 0"],
-										 ]];
-	fetch.displayTitle = NSLocalizedString(@"FETCH_REQUEST_URL_HISTORY",
-																				 @"Caption for URL History");
-										 
-	return fetch;
 }
 
 - (NSFetchRequest *) newFetchRequestForFilesInArticle:(WAArticle *)article {
@@ -452,11 +441,11 @@
 
 }
 
-- (NSArray *)fetchFilesWithoutMetaUsingContext:(NSManagedObjectContext *)aContext {
+- (NSArray *)fetchFilesRequireMetaUpdateUsingContext:(NSManagedObjectContext *)aContext {
 
 	NSFetchRequest *request = [[NSFetchRequest alloc] init];
 	request.entity = [NSEntityDescription entityForName:@"WAFile" inManagedObjectContext:aContext];
-	request.predicate = [NSPredicate predicateWithFormat:@"created==nil"];
+	request.predicate = [NSPredicate predicateWithFormat:@"outdated == TRUE or created==nil"];
 
 	NSError *fetchingError = nil;
 	NSArray *fetchedFiles = [aContext executeFetchRequest:request error:&fetchingError];

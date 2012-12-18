@@ -146,11 +146,7 @@
 	CGFloat leftAlignX = CGRectGetWidth(self.containerView.frame) - CGRectGetWidth(self.fileNoLabel.frame) - spacing - icon.size.width;
 	
 	self.typeImageView = [[UIImageView alloc] initWithFrame:(CGRect){ (CGPoint){leftAlignX, 0},  icon.size }];
-	
-	if ([self.article.style isEqualToNumber:[NSNumber numberWithUnsignedInt:WAPostStyleURLHistory]])
-		self.typeImageView.image = [[self class] linkEventImage];
-	else
-		self.typeImageView.image = [[self class] photoEventImage];
+	self.typeImageView.image = [[self class] photoEventImage];
 	
 	self.fileNoLabel.frame = CGRectOffset(self.fileNoLabel.frame, leftAlignX + icon.size.width + spacing, 0);
 	
