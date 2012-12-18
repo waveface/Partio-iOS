@@ -17,7 +17,7 @@
 - (id)loadDataFile: (NSString *)fileString {
   NSString *filePath = [[NSBundle bundleForClass:[self class]]
 		    pathForResource:fileString
-		    ofType:@"txt"];
+		    ofType:@"json"];
   
   NSData *inputData = [NSData dataWithContentsOfFile:filePath];
   return [NSJSONSerialization
