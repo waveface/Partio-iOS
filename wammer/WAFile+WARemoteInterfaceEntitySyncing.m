@@ -150,10 +150,14 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
   if ([incomingFileType isEqualToString:@"image"]) {
 
 		NSString *eventDateTime = incomingRepresentation[@"event_time"];
-		NSDate *day = [[NSDate dateFromISO8601String:eventDateTime] dayBegin];
-		if (day) {
-			[returnedDictionary setObject: @{@"day": day}
-														 forKey:@"photoDay"];
+		if (eventDateTime) {
+			NSDate *day = [[NSDate dateFromISO8601String:eventDateTime] dayBegin];
+			if (day) {
+				[returnedDictionary setObject: @{@"day": day}
+															 forKey:@"photoDay"];
+			} else {
+				NSLog(@"Unable to convert event time");
+			}
 		}
 		
 	} else if ([incomingFileType isEqualToString:@"web"]) {

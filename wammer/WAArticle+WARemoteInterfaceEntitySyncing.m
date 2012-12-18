@@ -157,7 +157,6 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 				@"object_id": objectID,
 				@"creator_id": creatorID,
 				@"post_id": articleID,
-				@"timestamp": incomingRepresentation[@"event_time"],
 				@"outdated": @YES,
 			} mutableCopy];
 			if ([type isEqualToString:@"image"]) {
