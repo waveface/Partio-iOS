@@ -136,14 +136,17 @@
 /* Unknown Error */
 "AUTH_UNKNOWN_ERROR" = "未知錯誤";
 
+/* Collection View Navigation Bar */
+"By Date" = "按日期";
+
+/* Collection View Navigation Bar */
+"By Name" = "按標題";
+
 /* Cancel button in calendar picker */
 "CALENDAR_CANCEL_BUTTON" = "取消";
 
 /* Description for no event day in calendar */
 "CALENDAR_NO_EVENT" = "沒有動態";
-
-/* Title of Canlendar */
-"CALENDAR_TITLE" = "行事曆";
 
 /* Today button in calendar picker */
 "CALENDAR_TODAY_BUTTON" = "今天";
@@ -195,6 +198,9 @@
 /* Title for confirming a post deletion */
 "DELETE_POST_CONFIRMATION_TITLE" = "是否要刪除貼文？";
 
+/* Title of document download */
+"DOC_DOWNLOAD_FAIL_TITLE" = "無法下載原始檔案";
+
 /* Title for document view controller */
 "DOCUMENTS_CONTROLLER_TITLE" = "文件";
 
@@ -229,7 +235,7 @@
 "EVENT_SEPERATION_LABEL_WITHOUT_PHOTOS" = "加些照片吧";
 
 /* Title for Events view */
-"EVENTS_CONTROLLER_TITLE" = "事件";
+"EVENTS_CONTROLLER_TITLE" = "動態";
 
 /* Message for an alert view to show user his FB account has been connected to another Stream user */
 "FACEBOOK_CONNECT_ACCOUNT_OCCUPIED_MESSAGE" = "這個 Facebook 帳號已經被使用，請您再試試看其他的Facebook帳號。";
@@ -269,9 +275,6 @@
 
 /* Display title for a fetch request working against the latest article on a particular date */
 "FETCH_REQUEST_NEWEST_ARTICLE_OF_PARTICULAR_DATE_DISPLAY_TITLE" = "某日貼文";
-
-/* Caption for URL History */
-"FETCH_REQUEST_URL_HISTORY" = "瀏覽記錄";
 
 /* Title for an alert view to show foursquare connection failure */
 "FOURSQUARE_CONNECT_FAIL_TITLE" = "無法同步Foursquare";
@@ -325,7 +328,7 @@
 "LABEL_MODAL_POPUP_CLOSE_BUTTON" = "關閉";
 
 /* The text of location label when there is no gps information we can refer to */
-"LABEL_WITHOUT_GPS_DATA" = "LABEL_WITHOUT_GPS_DATA";
+"LABEL_WITHOUT_GPS_DATA" = "你在哪裡？";
 
 /* The email subject users will share photos thru. The nickname of user will be appended to this subject. */
 "MAIL_ACTION_SUBJECT" = "%@ 透過 Stream app 與你分享照片。";
@@ -480,7 +483,7 @@
 "SLIDING_MENU_FONTNAME" = "HelveticaNeue-Bold";
 
 /* Title for Calendar in the sliding menu */
-"SLIDING_MENU_TITLE_CALENDAR" = "擇日";
+"SLIDING_MENU_TITLE_CALENDAR" = "月曆";
 
 /* Title for Collections in the sliding menu */
 "SLIDING_MENU_TITLE_COLLECTIONS" = "蒐藏";
@@ -511,6 +514,9 @@
 
 /* Title on the text stack more / less toggle button for “More” */
 "TEXT_ELEMENT_TOGGLE_MORE_TITLE" = "更多";
+
+/* Title of Canlendar */
+"TITLE_CALENDAR" = "TITLE_CALENDAR";
 
 /* Title for menu item Document Stream */
 "TITLE_DOCUMENT_STREAM" = "TITLE_DOCUMENT_STREAM";

@@ -16,6 +16,7 @@
 #import "WADefines.h"
 #import "WAAppDelegate_iOS.h"
 #import "NSDate+WAAdditions.h"
+#import <NSDate+SSToolkitAdditions.h>
 
 
 NSString * const kWAArticleEntitySyncingErrorDomain = @"com.waveface.wammer.WAArticle.entitySyncing.error";
@@ -65,7 +66,7 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 		@"representingFile": @"representingFile",	//	wraps @"cover_attach"
 		@"code_name": @"creationDeviceName",
 		@"timestamp": @"creationDate",
-		@"dayOnCreation": @"dayOnCreation", // additional attribute for day view controller
+		@"eventDay": @"eventDay",
 		@"update_time": @"modificationDate",
 		@"content": @"text",
 		@"comments": @"comments",
@@ -96,10 +97,7 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 	
 	if ([aLocalKeyPath isEqualToString:@"modificationDate"])
 		return [[WADataStore defaultStore] dateFromISO8601String:aValue];
-	
-	if ([aLocalKeyPath isEqualToString:@"dayOnCreation"])
-		return [[[WADataStore defaultStore] dateFromISO8601String:aValue] dayBegin];
-	
+
 	if ([aLocalKeyPath isEqualToString:@"identifier"])
 		return IRWebAPIKitStringValue(aValue);
 	
@@ -125,6 +123,7 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 		@"people": @"WAPeople",
 		@"checkins": @"WALocation",
 		@"tags": @"WATag",
+	  @"eventDay": @"WAEventDay",
 		@"extra_parameters": @"WATagGroup"};
 
 }
@@ -159,12 +158,11 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 				@"creator_id": creatorID,
 				@"post_id": articleID,
 				@"timestamp": incomingRepresentation[@"event_time"],
+				@"outdated": @YES,
 			} mutableCopy];
 			if ([type isEqualToString:@"image"]) {
-				attach[@"file_name"] = @"unknown.jpg";
 				attach[@"type"] = @"image";
 			} else if ([type isEqualToString:@"doc"]) {
-				attach[@"file_name"] = @"unknown.txt";
 				attach[@"type"] = @"doc";
 			}
 			[returnedAttachmentList addObject:attach];
@@ -234,12 +232,6 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 	
 	}
 		
-	for (NSString *style in incomingRepresentation[@"style"]) {
-    if ([style isEqualToString:@"url_history"]) {
-			[returnedDictionary setValue:@(WAPostStyleURLHistory)
-														forKey:@"style"];
-		}
-	}
 	
 	if ([incomingRepresentation[@"import"] isEqualToString:@"true"]) {
 		NSString *deviceID = incomingRepresentation[@"device_id"];
@@ -258,7 +250,13 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 		[returnedDictionary setValue:@NO forKey:@"event_tag"];
 	}
 
-	[returnedDictionary setObject:incomingRepresentation[@"timestamp"] forKey:@"dayOnCreation"];
+	NSString *timestamp = incomingRepresentation[@"timestamp"];
+	if (timestamp && [returnedDictionary[@"event_tag"] isEqual:@YES]) {					// It is an event, we record its event day
+
+		[returnedDictionary setValue:@{@"day" : [[NSDate dateFromISO8601String:timestamp] dayBegin]}
+													forKey:@"eventDay"];
+
+	}
 	
 	return returnedDictionary;
 
@@ -421,7 +419,7 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 		
 		NSDate *usedDate = [ds lastChangedPostsUpdateDate];
 		
-		[ri retrieveChangedArticlesSince:usedDate
+		[ri retrieveChangesSince:usedDate
 														 inGroup:usedGroupIdentifier
 													onProgress:^(NSArray *changedArticleReps, NSDate *continuation)
 		 {

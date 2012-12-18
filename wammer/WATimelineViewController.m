@@ -286,7 +286,7 @@ CGFloat (^rowSpacing) (UICollectionView *) = ^ (UICollectionView *collectionView
 				[self.popover dismissPopoverAnimated:YES];
 		
 		} else {
-			WACalendarPickerViewController *dpVC = [[WACalendarPickerViewController alloc] initWithFrame:frame Style:WACalendarPickerStyleInPopover];
+			WACalendarPickerViewController *dpVC = [[WACalendarPickerViewController alloc] initWithFrame:frame style:WACalendarPickerStyleInPopover];
 			dpVC.delegate = self;
 			
 			self.popover = [[UIPopoverController alloc] initWithContentViewController:dpVC];
@@ -295,7 +295,7 @@ CGFloat (^rowSpacing) (UICollectionView *) = ^ (UICollectionView *collectionView
 		}
 		
 	} else {
-		WACalendarPickerViewController *dpVC = [[WACalendarPickerViewController alloc] initWithFrame:frame Style:WACalendarPickerStyleTodayCancel];
+		WACalendarPickerViewController *dpVC = [[WACalendarPickerViewController alloc] initWithFrame:frame style:WACalendarPickerStyleTodayCancel];
 		dpVC.delegate = self;
 		
 		[self presentViewController:dpVC animated:YES completion:nil];

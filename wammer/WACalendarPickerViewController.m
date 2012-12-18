@@ -12,6 +12,7 @@
 #import "WAAppearance.h"
 #import "WASlidingMenuViewController.h"
 #import "Kal.h"
+#import "WAFileAccessLog.h"
 
 #define kScreenWidth ((CGFloat)([UIScreen mainScreen].bounds.size.width))
 #define kScreenHeight ((CGFloat)([UIScreen mainScreen].bounds.size.height))
@@ -28,10 +29,10 @@
 
 @implementation WACalendarPickerViewController
 
-- (id)initWithFrame:(CGRect)frame Style:(WACalendarPickerStyle)style
+- (WACalendarPickerViewController *)initWithFrame:(CGRect)frame style:(WACalendarPickerStyle)style
 {
 	calPicker = [[KalViewController alloc] init];
-	calPicker.title = NSLocalizedString(@"CALENDAR_TITLE", @"Title of Canlendar");
+	calPicker.title = NSLocalizedString(@"TITLE_CALENDAR", @"Title of Canlendar");
 	calPicker.delegate = self;
 	dataSource = [[WACalendarPickerDataSource alloc] init];
 	calPicker.dataSource = dataSource;
@@ -48,8 +49,8 @@
 			break;
 			
 		case WACalendarPickerStyleTodayCancel:
-			[calPicker.navigationItem setLeftBarButtonItem:[self todayBarButton] animated:YES];
-			[calPicker.navigationItem setRightBarButtonItem:[self cancelBarButton] animated:YES];
+			[calPicker.navigationItem setLeftBarButtonItem:[self cancelBarButton] animated:YES];
+			[calPicker.navigationItem setRightBarButtonItem:[self todayBarButton] animated:YES];
 			break;
 			
 		default:
@@ -175,14 +176,40 @@
 				
 				smVC = (WASlidingMenuViewController *)[[[self delegate] viewDeckController] leftController];
 				[smVC switchToViewStyle:WAPhotosViewStyle onDate:file.created animated:NO];
+				
+				if (isPhone()) {
+					[self dismissViewControllerAnimated:YES completion:nil];
+			
+				}
+				
+			}
+		}
+		
+	} else if ([selectedEvent isKindOfClass:[WAFileAccessLog class]]) {
+
+		WAFileAccessLog *file = (WAFileAccessLog *)selectedEvent;
+		WASlidingMenuViewController *smVC;
+
+		if (self.viewDeckController) {
+			
+			smVC = (WASlidingMenuViewController *)[self.viewDeckController leftController];
+			[smVC switchToViewStyle:WADocumentsViewStyle onDate:file.accessTime animated:YES];
+			
+		}
+		else {
+			
+			smVC = (WASlidingMenuViewController *)[[[self delegate] viewDeckController] leftController];
+			[smVC switchToViewStyle:WADocumentsViewStyle onDate:file.accessTime animated:NO];
+			
+			if (isPhone()) {
 				[self dismissViewControllerAnimated:YES completion:nil];
+			
 			}
 			
-		} else if (file.docAccessTime) {
-		
 		}
-			
+
 	}
+	
 }
 
 #pragma mark - Orientation

@@ -12,11 +12,16 @@
 #import "WADataStore+WARemoteInterfaceAdditions.h"
 #import "WAEventViewController.h"
 #import "WADayViewController.h"
+#import "WAFileAccessLog.h"
 
 @interface WACalendarPickerDataSource	() <NSFetchedResultsControllerDelegate>
 
 @property (nonatomic, readwrite, strong) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, readwrite, strong) NSFetchedResultsController *fetchedResultsController;
+
+typedef void (^completionBlock) (NSArray *days);
+@property (nonatomic, readwrite, copy) completionBlock callback;
+
 
 @end
 
@@ -34,7 +39,48 @@
 	return self;
 }
 
-- (void)loadDatesFrom:(NSDate *)fromDate to:(NSDate *)toDate
+- (void)loadDayswithStyle:(WACalendarLoadObject)style from:(NSDate *)fromDate to:(NSDate *)toDate completionBlock:(completionBlock)block
+{
+	NSString *entityName = nil;
+	
+	if (style == WACalendarLoadObjectEvent) {
+		entityName = @"WAEventDay";
+		
+	} else if (style == WACalendarLoadObjectPhoto) {
+		
+		entityName = @"WAPhotoDay";
+		
+	} else if (style == WACalendarLoadObjectDoc) {
+		
+		entityName = @"WADocumentDay";
+		
+	}
+	
+	NSManagedObjectContext *context = [[WADataStore defaultStore] defaultAutoUpdatedMOC];
+	NSFetchRequest *request = [[NSFetchRequest alloc] init];
+	NSEntityDescription *entity = [NSEntityDescription entityForName:entityName inManagedObjectContext:context];
+	[request setEntity:entity];
+	NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"day" ascending:NO];
+	[request setSortDescriptors:@[sortDescriptor]];
+	
+	self.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:request managedObjectContext:context sectionNameKeyPath:nil cacheName:nil];
+	
+	self.fetchedResultsController.delegate = self;
+	
+	NSError *error = nil;
+	
+	if(![self.fetchedResultsController performFetch:&error]) {
+		NSLog(@"%@: failed to fetch files for documents", __FUNCTION__);
+	}
+
+	NSArray *passingDays = [self.fetchedResultsController.fetchedObjects isKindOfClass:[NSNull class]]? nil: [self.fetchedResultsController.fetchedObjects valueForKey:@"day"];
+	self.callback = block;
+	if (self.callback)
+		self.callback(passingDays);
+	
+}
+
+- (void)fetchDatesFrom:(NSDate *)fromDate to:(NSDate *)toDate
 {
 	/*
 	 * dot marker types:
@@ -45,8 +91,7 @@
 	 * - markedDarkBlue:
 	 */
 		
-	WADayViewController *dVC = [WADayViewController alloc];
-	[dVC loadDaysWithStyle:WADayViewStyleTimeline From:fromDate to:toDate completionBlock:^(NSArray *days){
+	[self loadDayswithStyle:WACalendarLoadObjectEvent from:fromDate to:toDate completionBlock:^(NSArray *days){
 	
 		for (NSDate *day in days) {
 			[_daysWithAttributes addObject:[[NSMutableDictionary alloc]
@@ -57,7 +102,7 @@
 	}];
 	
 	
-	[dVC loadDaysWithStyle:WADayViewStylePhotoStream From:fromDate to:toDate completionBlock:^(NSArray *days){
+	[self loadDayswithStyle:WACalendarLoadObjectPhoto from:fromDate to:toDate completionBlock:^(NSArray *days){
 	
 		for (NSDate *day in days) {
 			NSPredicate *finder = [NSPredicate predicateWithFormat:@"date == %@", day];
@@ -79,7 +124,7 @@
 	}];
 	
 	
-	[dVC loadDaysWithStyle:WADayViewStyleDocumentStream From:fromDate to:toDate completionBlock:^(NSArray *days){
+	[self loadDayswithStyle:WACalendarLoadObjectDoc from:fromDate to:toDate completionBlock:^(NSArray *days){
 		
 		for (NSDate *day in days) {
 			NSPredicate *finder = [NSPredicate predicateWithFormat:@"date == %@", day];
@@ -101,97 +146,53 @@
 	
 }
 
-- (NSArray *)fetchEventsFrom:(NSDate *)fromDate to:(NSDate *)toDate
+- (NSArray *)fetchObject:(WACalendarLoadObject)object from:(NSDate *)fromDate to:(NSDate *)toDate
 {
-	NSFetchRequest *fetchRequest = [[WADataStore defaultStore].persistentStoreCoordinator.managedObjectModel fetchRequestFromTemplateWithName:@"WAFRArticles" substitutionVariables:@{}];
-	fetchRequest.relationshipKeyPathsForPrefetching = @[
-	@"files",
-	@"tags",
-	@"people",
-	@"location",
-	@"previews",
-	@"descriptiveTags",
-	@"files.pageElements"];
-	fetchRequest.predicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[
-														fetchRequest.predicate,
-														[NSPredicate predicateWithFormat:@"event == TRUE"],
-														[NSPredicate predicateWithFormat:@"import != %d AND import != %d", WAImportTypeFromOthers, WAImportTypeFromLocal]]];
+	NSString *entityName = nil;
+	NSArray *relationshipKeyPath = nil;
+	NSString *predicateStr = nil;
+	NSString *sortKey = nil;
 	
-	if (fromDate && toDate) {
-		fetchRequest.predicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[
-															fetchRequest.predicate,
-															[NSPredicate predicateWithFormat:@"creationDate >= %@ AND creationDate <= %@", fromDate, toDate]]];
+	if (object == WACalendarLoadObjectEvent) {
+		entityName = @"WAArticle";
+		relationshipKeyPath = @[@"files"];
+		predicateStr = @"event == TRUE AND creationDate >= %@ AND creationDate <= %@";
+		sortKey = @"creationDate";
+		
+	} else if (object == WACalendarLoadObjectPhoto ) {
+		entityName = @"WAFile";
+		relationshipKeyPath = @[];
+		predicateStr = @"created >= %@ AND created <= %@";
+		sortKey = @"created";
+		
+	} else if (object == WACalendarLoadObjectDoc) {
+		entityName = @"WAFileAccessLog";
+		relationshipKeyPath = @[@"day", @"dayWebpages", @"file"];
+		predicateStr = @"accessTime >= %@ AND accessTime <= %@";
+		sortKey = @"accessTime";
+		
 	}
 	
-	fetchRequest.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:NO]];
+	NSManagedObjectContext *moc = [[WADataStore defaultStore] defaultAutoUpdatedMOC];
+	NSEntityDescription *entity = [NSEntityDescription entityForName:entityName inManagedObjectContext:moc];
+	NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+	[fetchRequest setEntity:entity];
+	fetchRequest.relationshipKeyPathsForPrefetching = relationshipKeyPath;
+	NSPredicate *dayRange = [NSPredicate predicateWithFormat:predicateStr, fromDate, toDate];
+	[fetchRequest setPredicate:dayRange];
+	NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:sortKey ascending:NO];
+	[fetchRequest setSortDescriptors:@[sortDescriptor]];
 	
-	self.fetchedResultsController = [[NSFetchedResultsController alloc]
-																	 initWithFetchRequest:fetchRequest
-																	 managedObjectContext:[[WADataStore defaultStore] defaultAutoUpdatedMOC]
-																	 sectionNameKeyPath:nil
-																	 cacheName:nil];
+	self.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest managedObjectContext:moc sectionNameKeyPath:nil cacheName:nil];
 	self.fetchedResultsController.delegate = self;
 	
-	NSError *err = nil;
-	if (![self.fetchedResultsController performFetch:&err]) 
-		NSLog(@"%@: failed to fetch articles for events", __FUNCTION__);
-	
-	return self.fetchedResultsController.fetchedObjects;
-
-}
-
-- (NSArray *)fetchPhotosFrom:(NSDate *)fromDate to:(NSDate *)toDate
-{
-	NSFetchRequest *fetchReqest = [[WADataStore defaultStore].persistentStoreCoordinator.managedObjectModel fetchRequestFromTemplateWithName:@"WAFRAllFiles" substitutionVariables:@{}];
-	
-	if (fromDate && toDate) {
-		fetchReqest.predicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[
-														 //fetchReqest.predicate,
-														 [NSPredicate predicateWithFormat:@"created >= %@ AND created <= %@", fromDate, toDate]]];
+	NSError *error = nil;
+	if (![self.fetchedResultsController performFetch:&error]) {
+		NSLog(@"%@: failed to fetch objects for %@", __FUNCTION__, predicateStr);
+		
 	}
-	
-	fetchReqest.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"created" ascending:NO]];
-	
-	self.fetchedResultsController = [[NSFetchedResultsController alloc]
-																	 initWithFetchRequest:fetchReqest
-																	 managedObjectContext:[[WADataStore defaultStore] defaultAutoUpdatedMOC]
-																	 sectionNameKeyPath:nil
-																	 cacheName:nil];
-	self.fetchedResultsController.delegate = self;
-	
-	NSError *err = nil;
-	if (![self.fetchedResultsController performFetch:&err])
-		NSLog(@"%@: failed to fetch photos", __FUNCTION__);
-	
-	return self.fetchedResultsController.fetchedObjects;
-	
-}
 
-- (NSArray *)fetchDocsFrom:(NSDate *)fromDate to:(NSDate *)toDate
-{
-	NSFetchRequest *fetchRequest = [[WADataStore defaultStore].persistentStoreCoordinator.managedObjectModel fetchRequestFromTemplateWithName:@"WAFRAllFiles" substitutionVariables:@{}];
-	
-	if (fromDate && toDate) {
-		fetchRequest.predicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[
-															//fetchRequest.predicate,
-															[NSPredicate predicateWithFormat:@"docAccessTime >= %@ AND docAccessTime <= %@", fromDate, toDate]]];
-	}
-	
-	fetchRequest.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"docAccessTime" ascending:NO]];
-	
-	self.fetchedResultsController = [[NSFetchedResultsController alloc]
-																	 initWithFetchRequest:fetchRequest
-																	 managedObjectContext:[[WADataStore defaultStore] defaultAutoUpdatedMOC]
-																	 sectionNameKeyPath:nil
-																	 cacheName:nil];
-	self.fetchedResultsController.delegate = self;
-	
-	NSError *err = nil;
-	if (![self.fetchedResultsController performFetch:&err])
-		NSLog(@"%@: failed to fetch docs", __FUNCTION__);
-	
 	return self.fetchedResultsController.fetchedObjects;
-
 }
 
 #pragma mark - KalDataSource protocol conformance
@@ -199,7 +200,7 @@
 - (void)presentingDatesFrom:(NSDate *)fromDate to:(NSDate *)toDate delegate:(id<KalDataSourceCallbacks>)delegate
 {
 	[_daysWithAttributes removeAllObjects];
-	[self loadDatesFrom:(NSDate *)fromDate to:(NSDate *)toDate];
+	[self fetchDatesFrom:(NSDate *)fromDate to:(NSDate *)toDate];
 	[delegate loadedDataSource:self];
 
 }
@@ -212,15 +213,15 @@
 
 - (void)loadItemsFromDate:(NSDate *)fromDate toDate:(NSDate *)toDate
 {
-	[_items addObjectsFromArray:[self fetchEventsFrom:fromDate to:toDate]];
+	[_items addObjectsFromArray:[self fetchObject:WACalendarLoadObjectEvent from:fromDate to:toDate]];
 	
-	NSArray *photo = [self fetchPhotosFrom:fromDate to:toDate];
+	NSArray *photo = [self fetchObject:WACalendarLoadObjectPhoto from:fromDate to:toDate];
 	if ([photo count]) {
 		[_items addObject:[photo lastObject]];
 	
 	}
 
-	NSArray *doc = [self fetchDocsFrom:fromDate to:toDate];
+	NSArray *doc = [self fetchObject:WACalendarLoadObjectDoc from:fromDate to:toDate];
 	if ([doc count]) {		
 		[_items addObject:[doc lastObject]];
 		
@@ -282,8 +283,8 @@
 			[title setFrame:CGRectMake(60, 0, 220, 54)];
 			[cell.contentView addSubview:title];
 			[cell setAccessoryView:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"EventCameraIcon"]]];
-		}
-		else if ([item isKindOfClass:[WAFile class]]) {
+			
+		} else if ([item isKindOfClass:[WAFile class]]) {
 			
 			WAFile *file = item;
 			
@@ -302,16 +303,18 @@
 				[cell.contentView addSubview:title];
 				
 				[cell setAccessoryView:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"PhotosIcon"]]];
-
-			} else if (file.docAccessTime) {
-				[cell.textLabel setText:@"Documents"];
 				
 			}
 			
+		} else if ([item isKindOfClass:[WAFileAccessLog class]]) {
+				[cell.textLabel setText:@"Documents"];
+				[cell setAccessoryView:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"DocumentsIcon"]]];
+		
 		}
 		
 		[cell setSelectionStyle:UITableViewCellSelectionStyleGray];
 	}
+	
 	return cell;
 }
 

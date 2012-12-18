@@ -14,12 +14,17 @@
 #import "WADayHeaderView.h"
 #import "WAFilePageElement+WAAdditions.h"
 #import "WAGalleryViewController.h"
+#import "WAFileAccessLog.h"
+#import "WADocumentPreviewController.h"
+#import "WACalendarPickerViewController.h"
 
 @interface WADocumentStreamViewController ()
 
 @property (nonatomic, readwrite, strong) NSDate *currentDate;
-@property (nonatomic, readwrite, strong) NSArray *documents;
+@property (nonatomic, readwrite, strong) NSMutableArray *documents;
 @property (nonatomic, readwrite, strong) NSFetchedResultsController *fetchedResultsController;
+
+@property (strong, nonatomic) UIButton *calendarButton;
 
 @end
 
@@ -34,19 +39,30 @@
 
 		NSManagedObjectContext *context = [[WADataStore defaultStore] defaultAutoUpdatedMOC];
 		NSFetchRequest *request = [[NSFetchRequest alloc] init];
-		NSEntityDescription *entity = [NSEntityDescription entityForName:@"WAFile" inManagedObjectContext:context];
+		NSEntityDescription *entity = [NSEntityDescription entityForName:@"WAFileAccessLog" inManagedObjectContext:context];
 		[request setEntity:entity];
-		NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(docAccessTime BETWEEN {%@, %@}) AND (remoteResourceType == %@)", [date dayBegin], [date dayEnd], @"doc"];
+		NSPredicate *predicate = [NSPredicate predicateWithFormat:@"day.day == %@", self.currentDate];
 		[request setPredicate:predicate];
-		NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"docAccessTime" ascending:YES];
+		NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"accessTime" ascending:NO];
 		[request setSortDescriptors:@[sortDescriptor]];
-		[request setRelationshipKeyPathsForPrefetching:@[@"pageElements"]];
-		
+		[request setRelationshipKeyPathsForPrefetching:@[@"file"]];
+		[request setRelationshipKeyPathsForPrefetching:@[@"day"]];
+
 		self.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:request managedObjectContext:context sectionNameKeyPath:nil cacheName:nil];
+
+		self.fetchedResultsController.delegate = self;
 
 		[self.fetchedResultsController performFetch:nil];
 
-		self.documents = self.fetchedResultsController.fetchedObjects;
+		self.documents = [NSMutableArray array];
+		NSMutableDictionary *filePathAccessLogs = [NSMutableDictionary dictionary];
+		[self.fetchedResultsController.fetchedObjects enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+			WAFileAccessLog *accessLog = (WAFileAccessLog *)obj;
+			if (!filePathAccessLogs[accessLog.filePath]) {
+				filePathAccessLogs[accessLog.filePath] = accessLog;
+				[self.documents addObject:accessLog.file];
+			}
+		}];
 
 	}
 	return self;
@@ -64,12 +80,62 @@
 
 }
 
+- (NSUInteger) supportedInterfaceOrientations {
+	
+	return [self.parentViewController supportedInterfaceOrientations];
+	
+}
+
+- (BOOL)shouldAutorotate {
+
+	return YES;
+
+}
+
 #pragma mark - NSFetchedResultsController delegates
 
 - (void)controller:(NSFetchedResultsController *)controller didChangeObject:(id)anObject atIndexPath:(NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type newIndexPath:(NSIndexPath *)newIndexPath {
 
-	// TODO: monitor changes
-	NSLog(@"object:%@, indexPath:%@, type:%@, newIndexPath:%@", anObject, indexPath, type, newIndexPath);
+	switch (type) {
+		case NSFetchedResultsChangeInsert: {
+			NSUInteger oldIndex = [self.documents indexOfObject:[anObject file]];
+			
+			NSMutableDictionary *filePathAccessLogs = [NSMutableDictionary dictionary];
+			[self.fetchedResultsController.fetchedObjects enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+				if ([anObject isEqual:obj]) {
+					*stop = YES;
+					return;
+				}
+				if ([[anObject accessTime] compare:[obj accessTime]] == NSOrderedDescending) {
+					*stop = YES;
+					return;
+				}
+				if (!filePathAccessLogs[[obj filePath]]) {
+					filePathAccessLogs[[obj filePath]] = obj;
+				}
+			}];
+			
+			NSUInteger newIndex = [filePathAccessLogs count];
+
+			if (oldIndex == NSNotFound) {
+				[self.documents insertObject:[anObject file] atIndex:newIndex];
+				[self.collectionView insertItemsAtIndexPaths:@[[NSIndexPath indexPathForRow:newIndex inSection:0]]];
+			} else {
+				[self.documents removeObject:[anObject file]];
+				[self.documents insertObject:[anObject file] atIndex:newIndex];
+				[self.collectionView moveItemAtIndexPath:[NSIndexPath indexPathForRow:oldIndex inSection:0] toIndexPath:[NSIndexPath indexPathForRow:newIndex inSection:0]];
+			}
+		}
+		case NSFetchedResultsChangeUpdate:
+			// update shouldn't change the item sequence
+			break;
+		case NSFetchedResultsChangeMove:
+		case NSFetchedResultsChangeDelete:
+			NSAssert(NO, @"File access logs should never been changed or purged");
+			break;
+		default:
+			break;
+	}
 
 }
 
@@ -90,6 +156,9 @@
 	headerView.wdayLabel.text = [[self.currentDate localizedWeekDayFullString] uppercaseString];
 	headerView.backgroundColor = [UIColor colorWithRed:0.95f green:0.95f blue:0.95f alpha:1];
 
+	[headerView.centerButton addTarget:self action:@selector(handleDateSelect:) forControlEvents:UIControlEventTouchUpInside];
+	self.calendarButton = headerView.centerButton;
+	
 	return headerView;
 
 }
@@ -99,15 +168,19 @@
 	WADocumentStreamViewCell *cell = [self.collectionView dequeueReusableCellWithReuseIdentifier:kWADocumentStreamViewCellID forIndexPath:indexPath];
 
 	WAFile *document = self.documents[[indexPath row]];
+	cell.fileNameLabel.text = document.remoteFileName;
 
-	[[[self class] sharedImageDisplayQueue] addOperationWithBlock:^{
-		cell.pageElement = document.pageElements[0];
-		[document.pageElements[0] irObserve:@"thumbnailImage" options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:&kWADocumentStreamViewCellKVOContext withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
-			[[NSOperationQueue mainQueue] addOperationWithBlock:^{
-				cell.imageView.image = toValue;
+	if ([document.pageElements count]) {
+		WAFilePageElement *coverPage = document.pageElements[0];
+		cell.pageElement = coverPage;
+		[[[self class] sharedImageDisplayQueue] addOperationWithBlock:^{
+			[coverPage irObserve:@"thumbnailImage" options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:&kWADocumentStreamViewCellKVOContext withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
+				[[NSOperationQueue mainQueue] addOperationWithBlock:^{
+					cell.imageView.image = toValue;
+				}];
 			}];
 		}];
-	}];
+	}
 
 	return cell;
 
@@ -115,10 +188,9 @@
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
 
-	WAFile *document = self.documents[[indexPath row]];
-	WAGalleryViewController *galleryVC = [[WAGalleryViewController alloc] initWithImageFiles:[document.pageElements array] atIndex:0];
-
-	[self.navigationController pushViewController:galleryVC animated:YES];
+	WAFile *document = self.documents[indexPath.row];
+	WADocumentPreviewController *previewController = [[WADocumentPreviewController alloc] initWithFile:document];
+	[self.navigationController pushViewController:previewController animated:YES];
 
 }
 
@@ -133,6 +205,32 @@
 
 	return queue;
 
+}
+
+- (void) handleDateSelect:(UIBarButtonItem *)sender {
+	
+	CGRect frame = isPad()? CGRectMake(0.f, 0.f, 320.f, 568.f) : CGRectMake(0.f, 0.f, 320.f, [UIScreen mainScreen].bounds.size.height);
+	
+	if (isPad()) {
+		if ([self.popover isPopoverVisible]) {
+			[self.popover dismissPopoverAnimated:YES];
+			
+		} else {
+			WACalendarPickerViewController *dpVC = [[WACalendarPickerViewController alloc] initWithFrame:frame style:WACalendarPickerStyleInPopover];
+			dpVC.delegate = self;
+			
+			self.popover = [[UIPopoverController alloc] initWithContentViewController:dpVC];
+			[self.popover setPopoverContentSize:CGSizeMake(320.f, 568.f)];
+			[self.popover presentPopoverFromRect:self.calendarButton.frame inView:self.view permittedArrowDirections:UIPopoverArrowDirectionUp animated:YES];
+		}
+		
+	} else {
+		WACalendarPickerViewController *dpVC = [[WACalendarPickerViewController alloc] initWithFrame:frame style:WACalendarPickerStyleTodayCancel];
+		dpVC.delegate = self;
+		
+		[self presentViewController:dpVC animated:YES completion:nil];
+		
+	}
 }
 
 @end

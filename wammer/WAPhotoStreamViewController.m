@@ -25,7 +25,6 @@
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 @property (strong, nonatomic) NSArray *photos;
 @property (strong, nonatomic) NSMutableArray *layout;
-@property (strong, nonatomic) UIPopoverController *popover;
 @property (strong, nonatomic) UIButton *calendarButton;
 
 @end
@@ -217,7 +216,7 @@
 			[self.popover dismissPopoverAnimated:YES];
 			
 		} else {
-			WACalendarPickerViewController *dpVC = [[WACalendarPickerViewController alloc] initWithFrame:frame Style:WACalendarPickerStyleInPopover];
+			WACalendarPickerViewController *dpVC = [[WACalendarPickerViewController alloc] initWithFrame:frame style:WACalendarPickerStyleInPopover];
 			dpVC.delegate = self;
 			
 			self.popover = [[UIPopoverController alloc] initWithContentViewController:dpVC];
@@ -226,11 +225,12 @@
 		}
 		
 	} else {
-		WACalendarPickerViewController *dpVC = [[WACalendarPickerViewController alloc] initWithFrame:frame Style:WACalendarPickerStyleTodayCancel];
+		WACalendarPickerViewController *dpVC = [[WACalendarPickerViewController alloc] initWithFrame:frame style:WACalendarPickerStyleTodayCancel];
 		dpVC.delegate = self;
 		
 		[self presentViewController:dpVC animated:YES completion:nil];
 		
 	}
 }
+
 @end

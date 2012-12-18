@@ -293,6 +293,13 @@ static NSString * kWAGalleryViewControllerKVOContext = @"WAGalleryViewController
 
 		};
 
+	} else {
+
+		self.navigationBar.barStyle = UIBarStyleBlackTranslucent;
+		self.navigationBar.translucent = YES;
+		self.navigationBar.tintColor = [UIColor clearColor];
+		[self.navigationBar setBackgroundImage:nil forBarMetrics:UIBarMetricsDefault];
+
 	}
 	
 	[self adjustStreamPickerView];
@@ -674,7 +681,7 @@ static NSString * kWAGalleryViewControllerKVOContext = @"WAGalleryViewController
 			[file irRemoveObserverBlocksForKeyPath:@"bestPresentableImage"];
 			[file irRemoveObserverBlocksForKeyPath:@"smallestPresentableImage"];
 		} else if ([file isKindOfClass:[WAFilePageElement class]]) {
-			[file irRemoveObserverBlocksForKeyPath:@"thumbnailImage"];
+			[file irRemoveObserverBlocksForKeyPath:@"thumbnailImage" context:&kWAGalleryViewControllerKVOContext];
 		}
 	}
 	
