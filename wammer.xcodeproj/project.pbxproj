@@ -95,13 +95,14 @@
 		4B85823B15F7ABCF00EE11AC /* WADefaults.develop.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4B85823A15F7ABCF00EE11AC /* WADefaults.develop.plist */; };
 		4B87177815C7D4A200C9612D /* Unfav@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 4B87177715C7D4A200C9612D /* Unfav@2x~iphone.png */; };
 		4B87177A15C7D4AF00C9612D /* Fav@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 4B87177915C7D4AF00C9612D /* Fav@2x~iphone.png */; };
+		4B877F4D168069590039CD15 /* WAArticle.m in Sources */ = {isa = PBXBuildFile; fileRef = 80719CF2167AFE3A00E9729F /* WAArticle.m */; };
+		4B877F5D168069760039CD15 /* WAFile.m in Sources */ = {isa = PBXBuildFile; fileRef = 80074F8B167EBFAB00A23EED /* WAFile.m */; };
 		4B8CA96A14BBE7BA006E06BB /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B8CA96914BBE7BA006E06BB /* SenTestingKit.framework */; };
 		4B8DFB7414FDFC3D000B41C5 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B8DFB7314FDFC3D000B41C5 /* CFNetwork.framework */; };
 		4B9B8DE9164DEE2C007A2A74 /* libSocketRocket.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7DC3AC1116422070009A8EA7 /* libSocketRocket.a */; };
 		4B9B8DEA164DEE2D007A2A74 /* libSocketRocket.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7DC3AC1116422070009A8EA7 /* libSocketRocket.a */; };
 		4B9B8DEB164DEE61007A2A74 /* libicucore.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 8002CDE515E5E85600D7BFF0 /* libicucore.dylib */; };
-		4BAD7577164DEC2900ADDE56 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D215E734098A44479DEC4F88 /* libPods.a */; };
-		4BAD7578164DEC3300ADDE56 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D215E734098A44479DEC4F88 /* libPods.a */; };
+		4BAA582B168014EF006324CF /* GetCollections.json in Resources */ = {isa = PBXBuildFile; fileRef = DEBED814166C8608001A2B24 /* GetCollections.json */; };
 		4BAD7579164DEC5300ADDE56 /* Accounts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D9B1D8C162BB1DE000E5350 /* Accounts.framework */; };
 		4BAD757A164DEC6000ADDE56 /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D9B1D8E162BB1E8000E5350 /* AdSupport.framework */; };
 		4BAD757B164DEC6600ADDE56 /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D9B1D90162BB1F6000E5350 /* Social.framework */; };
@@ -119,13 +120,15 @@
 		4BAE345315DCA30200A9109D /* LoginBackground-Landscape@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BAE344F15DCA30200A9109D /* LoginBackground-Landscape@2x.png */; };
 		4BAE345415DCA30200A9109D /* LoginBackground-Portrait.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BAE345015DCA30200A9109D /* LoginBackground-Portrait.png */; };
 		4BAE345515DCA30200A9109D /* LoginBackground-Portrait@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BAE345115DCA30200A9109D /* LoginBackground-Portrait@2x.png */; };
+		4BB0400916804C68009C3D08 /* WACollection+WARemoteInterfaceEntitySyncing.m in Sources */ = {isa = PBXBuildFile; fileRef = DEBED81B166C8689001A2B24 /* WACollection+WARemoteInterfaceEntitySyncing.m */; };
+		4BB0400A16804E1B009C3D08 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF154657148E06D600352428 /* SystemConfiguration.framework */; };
 		4BB1B6B115C14648002A4BE2 /* Fav~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BB1B6AD15C14648002A4BE2 /* Fav~iphone.png */; };
 		4BB1B6B315C14648002A4BE2 /* Unfav~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BB1B6AF15C14648002A4BE2 /* Unfav~iphone.png */; };
 		4BBEE91C164F5FC300D33EDB /* WADayViewTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BBEE919164F5FC300D33EDB /* WADayViewTests.m */; };
 		4BBEE91D164F5FC300D33EDB /* WAFacebookConnectionSwitchTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BBEE91B164F5FC300D33EDB /* WAFacebookConnectionSwitchTest.m */; };
-		4BBEEA06164F6A6E00D33EDB /* PhotoPostWithURLHistoryStyle.txt in Resources */ = {isa = PBXBuildFile; fileRef = 4BBEEA03164F6A6E00D33EDB /* PhotoPostWithURLHistoryStyle.txt */; };
-		4BBEEA07164F6A6E00D33EDB /* PostWithCompleteAttachmentInformation.txt in Resources */ = {isa = PBXBuildFile; fileRef = 4BBEEA04164F6A6E00D33EDB /* PostWithCompleteAttachmentInformation.txt */; };
-		4BBEEA08164F6A6E00D33EDB /* PostWithIncompleteAttachmentInformation.txt in Resources */ = {isa = PBXBuildFile; fileRef = 4BBEEA05164F6A6E00D33EDB /* PostWithIncompleteAttachmentInformation.txt */; };
+		4BBEEA06164F6A6E00D33EDB /* PhotoPostWithURLHistoryStyle.json in Resources */ = {isa = PBXBuildFile; fileRef = 4BBEEA03164F6A6E00D33EDB /* PhotoPostWithURLHistoryStyle.json */; };
+		4BBEEA07164F6A6E00D33EDB /* PostWithCompleteAttachmentInformation.json in Resources */ = {isa = PBXBuildFile; fileRef = 4BBEEA04164F6A6E00D33EDB /* PostWithCompleteAttachmentInformation.json */; };
+		4BBEEA08164F6A6E00D33EDB /* PostWithIncompleteAttachmentInformation.json in Resources */ = {isa = PBXBuildFile; fileRef = 4BBEEA05164F6A6E00D33EDB /* PostWithIncompleteAttachmentInformation.json */; };
 		4BBEEA0C164F6A8A00D33EDB /* fopenfix.c in Sources */ = {isa = PBXBuildFile; fileRef = 4BBEEA09164F6A8A00D33EDB /* fopenfix.c */; };
 		4BBEEA15164F6AA200D33EDB /* WAArticleTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BBEEA12164F6AA200D33EDB /* WAArticleTests.m */; };
 		4BBEEA16164F6AA200D33EDB /* WAAssetLibraryManagerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BBEEA14164F6AA200D33EDB /* WAAssetLibraryManagerTests.m */; };
@@ -145,12 +148,12 @@
 		4BFC156615C7D9DC00DB02F8 /* Fav~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BFC156415C7D9DC00DB02F8 /* Fav~ipad.png */; };
 		4BFC156915C7D9E800DB02F8 /* Unfav@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BFC156715C7D9E800DB02F8 /* Unfav@2x~ipad.png */; };
 		4BFC156A15C7D9E800DB02F8 /* Unfav~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BFC156815C7D9E800DB02F8 /* Unfav~ipad.png */; };
+		4BFCA3B1167B22D300A5F015 /* (null) in Sources */ = {isa = PBXBuildFile; };
+		715215A3A1F04FB48D4F0167 /* libPods-UnitTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 901DE7AF667E488983AF1C2F /* libPods-UnitTests.a */; };
 		7D0CDD01162E5A080027D35F /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D0CDCE7162E59DD0027D35F /* SenTestingKit.framework */; };
 		7D296DAA1643818000870747 /* libSocketRocket.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D6470A71642218800DBDEA6 /* libSocketRocket.a */; };
 		7D29702B1643BC2F00870747 /* WAModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = FFCD324114B997B70035C4F5 /* WAModel.xcdatamodeld */; };
-		7D71DDE21653569500456B52 /* PostWithEventTime.txt in Resources */ = {isa = PBXBuildFile; fileRef = 7D71DDE11653569500456B52 /* PostWithEventTime.txt */; };
-		7D71DE0816537E9900456B52 /* WAPhotoStreamViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DB78A621649005E00E165E9 /* WAPhotoStreamViewController.m */; };
-		7D71DE1516537E9A00456B52 /* WAPhotoStreamViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DB78A621649005E00E165E9 /* WAPhotoStreamViewController.m */; };
+		7D71DDE21653569500456B52 /* PostWithEventTime.json in Resources */ = {isa = PBXBuildFile; fileRef = 7D71DDE11653569500456B52 /* PostWithEventTime.json */; };
 		7D71DE171653805C00456B52 /* WAPhotoStreamViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DB78A67164900E400E165E9 /* WAPhotoStreamViewCell.m */; };
 		7D71DE181653806F00456B52 /* WAPhotoStreamViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DB78A67164900E400E165E9 /* WAPhotoStreamViewCell.m */; };
 		7D7A442E164CF2FB00E156CF /* WACollection.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D7A442D164CF2FB00E156CF /* WACollection.m */; };
@@ -314,7 +317,6 @@
 		DE7B35151654B7FC00718262 /* TempAvatar.png in Resources */ = {isa = PBXBuildFile; fileRef = DE7B35131654B7FC00718262 /* TempAvatar.png */; };
 		DE7B35161654B7FC00718262 /* TempAvatar@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DE7B35141654B7FC00718262 /* TempAvatar@2x.png */; };
 		DEB41D26167731A60047B6A1 /* Kal.bundle in Resources */ = {isa = PBXBuildFile; fileRef = DEB41D25167731A60047B6A1 /* Kal.bundle */; };
-		DEBED815166C8608001A2B24 /* GetCollections.json in Resources */ = {isa = PBXBuildFile; fileRef = DEBED814166C8608001A2B24 /* GetCollections.json */; };
 		DEBED818166C8643001A2B24 /* forward.png in Resources */ = {isa = PBXBuildFile; fileRef = DEBED816166C8643001A2B24 /* forward.png */; };
 		DEBED819166C8643001A2B24 /* forward@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DEBED817166C8643001A2B24 /* forward@2x.png */; };
 		DEBED81C166C8689001A2B24 /* WACollection+WARemoteInterfaceEntitySyncing.m in Sources */ = {isa = PBXBuildFile; fileRef = DEBED81B166C8689001A2B24 /* WACollection+WARemoteInterfaceEntitySyncing.m */; };
@@ -340,6 +342,7 @@
 		DEF13274164B83CE0051284D /* PhotosIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DEF1326F164B83CE0051284D /* PhotosIcon@2x.png */; };
 		DEF13275164B83CE0051284D /* SettingsIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DEF13270164B83CE0051284D /* SettingsIcon@2x.png */; };
 		DEF28871165F6A0D0078B1D7 /* WACalendarPickerDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = DEF28870165F6A0D0078B1D7 /* WACalendarPickerDataSource.m */; };
+		EF9E0C9C541A4EF1A6A9E7DC /* libPods-StreamTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 42236E14FA134346B7F52CB6 /* libPods-StreamTests.a */; };
 		FF0024FF14B44D5400F54AAF /* WASyncManager.m in Sources */ = {isa = PBXBuildFile; fileRef = FF0024FE14B44D5400F54AAF /* WASyncManager.m */; };
 		FF01135715B6522F0058C6ED /* WAWelcomeViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = FF01135615B6522F0058C6ED /* WAWelcomeViewController~ipad.xib */; };
 		FF0505EF14C08900002EA455 /* WAButton.m in Sources */ = {isa = PBXBuildFile; fileRef = FF0505EE14C088FF002EA455 /* WAButton.m */; };
@@ -1037,6 +1040,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		013FBE51B0514B9CB679D303 /* libPods-StreamTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-StreamTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		01BDA1BD7BB746E8B2A7004D /* Pods-UnitTests.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UnitTests.xcconfig"; path = "Pods/Pods-UnitTests.xcconfig"; sourceTree = SOURCE_ROOT; };
 		130AB5571678433E00CFFA5A /* WAModel 41.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WAModel 41.xcdatamodel"; sourceTree = "<group>"; };
 		130AB5591678480900CFFA5A /* WADocumentDay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WADocumentDay.h; sourceTree = "<group>"; };
 		130AB55A1678480900CFFA5A /* WADocumentDay.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WADocumentDay.m; sourceTree = "<group>"; };
@@ -1127,6 +1132,8 @@
 		13FDC98F1648C6B8005D4C56 /* WAFirstUseFacebookLoginView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WAFirstUseFacebookLoginView.m; path = wammer/WAFirstUseFacebookLoginView.m; sourceTree = "<group>"; };
 		13FDC9911648C6D5005D4C56 /* WAFirstUseEmailLoginFooterView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WAFirstUseEmailLoginFooterView.h; path = wammer/WAFirstUseEmailLoginFooterView.h; sourceTree = "<group>"; };
 		13FDC9921648C6D5005D4C56 /* WAFirstUseEmailLoginFooterView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WAFirstUseEmailLoginFooterView.m; path = wammer/WAFirstUseEmailLoginFooterView.m; sourceTree = "<group>"; };
+		42236E14FA134346B7F52CB6 /* libPods-StreamTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-StreamTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		49320A35B57B404A94A27775 /* Pods-StreamTests.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-StreamTests.xcconfig"; path = "Pods/Pods-StreamTests.xcconfig"; sourceTree = SOURCE_ROOT; };
 		4B16701115FDCE9900990F4B /* WADefaults.staging.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = WADefaults.staging.plist; path = Resources/WADefaults.staging.plist; sourceTree = "<group>"; };
 		4B274E4C1675BFCC007406D3 /* WACollectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WACollectionViewController.h; sourceTree = "<group>"; };
 		4B274E4D1675BFCC007406D3 /* WACollectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WACollectionViewController.m; sourceTree = "<group>"; };
@@ -1188,12 +1195,12 @@
 		4BBEE913164F5F8C00D33EDB /* StreamTests-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "StreamTests-Prefix.pch"; path = "StreamTests/StreamTests-Prefix.pch"; sourceTree = SOURCE_ROOT; };
 		4BBEE916164F5FB800D33EDB /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = StreamTests/en.lproj/InfoPlist.strings; sourceTree = SOURCE_ROOT; };
 		4BBEE918164F5FC300D33EDB /* WADayViewTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WADayViewTests.h; path = StreamTests/WADayViewTests.h; sourceTree = SOURCE_ROOT; };
-		4BBEE919164F5FC300D33EDB /* WADayViewTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WADayViewTests.m; path = StreamTests/WADayViewTests.m; sourceTree = SOURCE_ROOT; };
+		4BBEE919164F5FC300D33EDB /* WADayViewTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WADayViewTests.m; path = StreamTests/WADayViewTests.m; sourceTree = SOURCE_ROOT; usesTabs = 0; };
 		4BBEE91A164F5FC300D33EDB /* WAFacebookConnectionSwitchTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WAFacebookConnectionSwitchTest.h; path = StreamTests/WAFacebookConnectionSwitchTest.h; sourceTree = SOURCE_ROOT; };
 		4BBEE91B164F5FC300D33EDB /* WAFacebookConnectionSwitchTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WAFacebookConnectionSwitchTest.m; path = StreamTests/WAFacebookConnectionSwitchTest.m; sourceTree = SOURCE_ROOT; };
-		4BBEEA03164F6A6E00D33EDB /* PhotoPostWithURLHistoryStyle.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = PhotoPostWithURLHistoryStyle.txt; path = UnitTests/PhotoPostWithURLHistoryStyle.txt; sourceTree = SOURCE_ROOT; };
-		4BBEEA04164F6A6E00D33EDB /* PostWithCompleteAttachmentInformation.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = PostWithCompleteAttachmentInformation.txt; path = UnitTests/PostWithCompleteAttachmentInformation.txt; sourceTree = SOURCE_ROOT; };
-		4BBEEA05164F6A6E00D33EDB /* PostWithIncompleteAttachmentInformation.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = PostWithIncompleteAttachmentInformation.txt; path = UnitTests/PostWithIncompleteAttachmentInformation.txt; sourceTree = SOURCE_ROOT; };
+		4BBEEA03164F6A6E00D33EDB /* PhotoPostWithURLHistoryStyle.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = PhotoPostWithURLHistoryStyle.json; path = UnitTests/PhotoPostWithURLHistoryStyle.json; sourceTree = SOURCE_ROOT; };
+		4BBEEA04164F6A6E00D33EDB /* PostWithCompleteAttachmentInformation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = PostWithCompleteAttachmentInformation.json; path = UnitTests/PostWithCompleteAttachmentInformation.json; sourceTree = SOURCE_ROOT; };
+		4BBEEA05164F6A6E00D33EDB /* PostWithIncompleteAttachmentInformation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = PostWithIncompleteAttachmentInformation.json; path = UnitTests/PostWithIncompleteAttachmentInformation.json; sourceTree = SOURCE_ROOT; };
 		4BBEEA09164F6A8A00D33EDB /* fopenfix.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = fopenfix.c; path = UnitTests/fopenfix.c; sourceTree = SOURCE_ROOT; };
 		4BBEEA0A164F6A8A00D33EDB /* UnitTests-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "UnitTests-Info.plist"; path = "UnitTests/UnitTests-Info.plist"; sourceTree = SOURCE_ROOT; };
 		4BBEEA0B164F6A8A00D33EDB /* UnitTests-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UnitTests-Prefix.pch"; path = "UnitTests/UnitTests-Prefix.pch"; sourceTree = SOURCE_ROOT; };
@@ -1203,7 +1210,7 @@
 		4BBEEA13164F6AA200D33EDB /* WAAssetLibraryManagerTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WAAssetLibraryManagerTests.h; path = UnitTests/WAAssetLibraryManagerTests.h; sourceTree = SOURCE_ROOT; };
 		4BBEEA14164F6AA200D33EDB /* WAAssetLibraryManagerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WAAssetLibraryManagerTests.m; path = UnitTests/WAAssetLibraryManagerTests.m; sourceTree = SOURCE_ROOT; };
 		4BBEEA17164F6AB300D33EDB /* WACollectionTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WACollectionTests.h; path = UnitTests/WACollectionTests.h; sourceTree = SOURCE_ROOT; };
-		4BBEEA18164F6AB300D33EDB /* WACollectionTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WACollectionTests.m; path = UnitTests/WACollectionTests.m; sourceTree = SOURCE_ROOT; };
+		4BBEEA18164F6AB300D33EDB /* WACollectionTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WACollectionTests.m; path = UnitTests/WACollectionTests.m; sourceTree = SOURCE_ROOT; usesTabs = 0; };
 		4BBEEA19164F6AB300D33EDB /* WAWebSocketTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WAWebSocketTests.h; path = UnitTests/WAWebSocketTests.h; sourceTree = SOURCE_ROOT; };
 		4BBEEA1A164F6AB300D33EDB /* WAWebSocketTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WAWebSocketTests.m; path = UnitTests/WAWebSocketTests.m; sourceTree = SOURCE_ROOT; };
 		4BBEEA1D164F6ABE00D33EDB /* WATests_iOS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WATests_iOS.h; path = UnitTests/WATests_iOS.h; sourceTree = SOURCE_ROOT; };
@@ -1222,7 +1229,7 @@
 		5AE49661BAA04638AA81DC49 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = SOURCE_ROOT; };
 		7D0CDCE7162E59DD0027D35F /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
 		7D0CDD00162E5A080027D35F /* StreamTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = StreamTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
-		7D71DDE11653569500456B52 /* PostWithEventTime.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = PostWithEventTime.txt; path = UnitTests/PostWithEventTime.txt; sourceTree = SOURCE_ROOT; };
+		7D71DDE11653569500456B52 /* PostWithEventTime.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = PostWithEventTime.json; path = UnitTests/PostWithEventTime.json; sourceTree = SOURCE_ROOT; };
 		7D7A442C164CF2FB00E156CF /* WACollection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WACollection.h; sourceTree = "<group>"; };
 		7D7A442D164CF2FB00E156CF /* WACollection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WACollection.m; sourceTree = "<group>"; };
 		7D857D4B164249DA0092CF5F /* AQGridView.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = AQGridView.xcodeproj; path = external/AQGridView/AQGridView.xcodeproj; sourceTree = "<group>"; };
@@ -1414,7 +1421,11 @@
 		80F0B23116422C2B00BD3F0D /* WAModel 39.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WAModel 39.xcdatamodel"; sourceTree = "<group>"; };
 		80F800F415C2624C00132A96 /* IRAQ-Checkmark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "IRAQ-Checkmark.png"; sourceTree = "<group>"; };
 		80F800F515C2624C00132A96 /* IRAQ-Checkmark@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "IRAQ-Checkmark@2x.png"; sourceTree = "<group>"; };
+		886BB6844D1A477790E22EEC /* libPods-UnitTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-UnitTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		901DE7AF667E488983AF1C2F /* libPods-UnitTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-UnitTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		9A79ED179A7140438E44ACD8 /* Pods-UnitTests.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UnitTests.xcconfig"; path = "Pods/Pods-UnitTests.xcconfig"; sourceTree = SOURCE_ROOT; };
 		D215E734098A44479DEC4F88 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		D26DABE040324ABAAAC5058D /* Pods-StreamTests.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-StreamTests.xcconfig"; path = "Pods/Pods-StreamTests.xcconfig"; sourceTree = SOURCE_ROOT; };
 		DE2BBDD616761AC100EEF922 /* Kal.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Kal.xcodeproj; path = external/Kal/src/Kal.xcodeproj; sourceTree = SOURCE_ROOT; };
 		DE46FC15165E228300CC4FFF /* WACalendarPickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WACalendarPickerViewController.h; path = wammer/WACalendarPickerViewController.h; sourceTree = "<group>"; };
 		DE46FC16165E228300CC4FFF /* WACalendarPickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WACalendarPickerViewController.m; path = wammer/WACalendarPickerViewController.m; sourceTree = "<group>"; };
@@ -1425,7 +1436,7 @@
 		DE7B35131654B7FC00718262 /* TempAvatar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = TempAvatar.png; path = Resources/TempAvatar.png; sourceTree = "<group>"; };
 		DE7B35141654B7FC00718262 /* TempAvatar@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "TempAvatar@2x.png"; path = "Resources/TempAvatar@2x.png"; sourceTree = "<group>"; };
 		DEB41D25167731A60047B6A1 /* Kal.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = Kal.bundle; path = external/Kal/src/Kal.bundle; sourceTree = SOURCE_ROOT; };
-		DEBED814166C8608001A2B24 /* GetCollections.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = GetCollections.json; path = UnitTests/GetCollections.json; sourceTree = SOURCE_ROOT; };
+		DEBED814166C8608001A2B24 /* GetCollections.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = GetCollections.json; path = UnitTests/GetCollections.json; sourceTree = SOURCE_ROOT; usesTabs = 0; };
 		DEBED816166C8643001A2B24 /* forward.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = forward.png; path = Resources/forward.png; sourceTree = "<group>"; };
 		DEBED817166C8643001A2B24 /* forward@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "forward@2x.png"; path = "Resources/forward@2x.png"; sourceTree = "<group>"; };
 		DEBED81A166C8689001A2B24 /* WACollection+WARemoteInterfaceEntitySyncing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WACollection+WARemoteInterfaceEntitySyncing.h"; sourceTree = "<group>"; };
@@ -2099,9 +2110,9 @@
 				FF24B4FB1552B31E00DD9379 /* libc++abi.dylib in Frameworks */,
 				4BD77BBA15A2C8B300CA8486 /* libxml2.dylib in Frameworks */,
 				FF24B4FD1552B31E00DD9379 /* libz.dylib in Frameworks */,
-				4BAD7577164DEC2900ADDE56 /* libPods.a in Frameworks */,
 				4BAD7585164DEDA500ADDE56 /* libsqlite3.dylib in Frameworks */,
 				4B9B8DE9164DEE2C007A2A74 /* libSocketRocket.a in Frameworks */,
+				715215A3A1F04FB48D4F0167 /* libPods-UnitTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2109,6 +2120,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4BB0400A16804E1B009C3D08 /* SystemConfiguration.framework in Frameworks */,
 				4B7FF980167994D700CC46BF /* CoreText.framework in Frameworks */,
 				4BAD7584164DED4300ADDE56 /* Security.framework in Frameworks */,
 				4BAD7583164DED2E00ADDE56 /* MessageUI.framework in Frameworks */,
@@ -2123,9 +2135,9 @@
 				4BAD7579164DEC5300ADDE56 /* Accounts.framework in Frameworks */,
 				7DA474461643C16900EC415C /* CoreData.framework in Frameworks */,
 				7D0CDD01162E5A080027D35F /* SenTestingKit.framework in Frameworks */,
-				4BAD7578164DEC3300ADDE56 /* libPods.a in Frameworks */,
 				4B9B8DEA164DEE2D007A2A74 /* libSocketRocket.a in Frameworks */,
 				4B9B8DEB164DEE61007A2A74 /* libicucore.dylib in Frameworks */,
+				EF9E0C9C541A4EF1A6A9E7DC /* libPods-StreamTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2348,10 +2360,10 @@
 				4BBEEA18164F6AB300D33EDB /* WACollectionTests.m */,
 				4BBEEA19164F6AB300D33EDB /* WAWebSocketTests.h */,
 				4BBEEA1A164F6AB300D33EDB /* WAWebSocketTests.m */,
-				7D71DDE11653569500456B52 /* PostWithEventTime.txt */,
-				4BBEEA03164F6A6E00D33EDB /* PhotoPostWithURLHistoryStyle.txt */,
-				4BBEEA04164F6A6E00D33EDB /* PostWithCompleteAttachmentInformation.txt */,
-				4BBEEA05164F6A6E00D33EDB /* PostWithIncompleteAttachmentInformation.txt */,
+				7D71DDE11653569500456B52 /* PostWithEventTime.json */,
+				4BBEEA03164F6A6E00D33EDB /* PhotoPostWithURLHistoryStyle.json */,
+				4BBEEA04164F6A6E00D33EDB /* PostWithCompleteAttachmentInformation.json */,
+				4BBEEA05164F6A6E00D33EDB /* PostWithIncompleteAttachmentInformation.json */,
 				4B8CA97014BBE7BA006E06BB /* Supporting Files */,
 			);
 			name = UnitTests;
@@ -2962,6 +2974,10 @@
 				FF73A54113D6C2CC00D54EC6 /* Frameworks */,
 				FF73A53F13D6C2CC00D54EC6 /* Products */,
 				5AE49661BAA04638AA81DC49 /* Pods.xcconfig */,
+				01BDA1BD7BB746E8B2A7004D /* Pods-UnitTests.xcconfig */,
+				D26DABE040324ABAAAC5058D /* Pods-StreamTests.xcconfig */,
+				9A79ED179A7140438E44ACD8 /* Pods-UnitTests.xcconfig */,
+				49320A35B57B404A94A27775 /* Pods-StreamTests.xcconfig */,
 			);
 			sourceTree = "<group>";
 			usesTabs = 1;
@@ -3001,6 +3017,10 @@
 				FFC9D96614FF28B2004197EC /* Google Analytics SDK */,
 				FFFDEFB414211D5C0083BEFB /* iOS */,
 				FF59F87914419581005508FC /* OSX */,
+				886BB6844D1A477790E22EEC /* libPods-UnitTests.a */,
+				013FBE51B0514B9CB679D303 /* libPods-StreamTests.a */,
+				901DE7AF667E488983AF1C2F /* libPods-UnitTests.a */,
+				42236E14FA134346B7F52CB6 /* libPods-StreamTests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -3812,6 +3832,8 @@
 				4B8CA96414BBE7BA006E06BB /* Frameworks */,
 				4B8CA96514BBE7BA006E06BB /* Resources */,
 				4B8CA96614BBE7BA006E06BB /* ShellScript */,
+				B237A78281964809ADD80F0C /* Copy Pods Resources */,
+				20599D49D9A94E6C815410AC /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -3831,6 +3853,8 @@
 				7D0CDCFC162E5A080027D35F /* Frameworks */,
 				7D0CDCFD162E5A080027D35F /* Resources */,
 				7D0CDCFE162E5A080027D35F /* ShellScript */,
+				D7B34C082C524D73A01F92DC /* Copy Pods Resources */,
+				6B8E011F66324A95B0AFB629 /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -3878,7 +3902,7 @@
 		FF73A53513D6C2CC00D54EC6 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0450;
+				LastUpgradeCheck = 0460;
 				ORGANIZATIONNAME = Waveface;
 			};
 			buildConfigurationList = FF73A53813D6C2CC00D54EC6 /* Build configuration list for PBXProject "wammer" */;
@@ -4129,10 +4153,11 @@
 				7DC3AC0F1642203C009A8EA7 /* SocketRocket.xcodeproj in Resources */,
 				7DA309311648BC6900B6FABD /* WAPhotoStreamViewController.xib in Resources */,
 				7DB78A6D164900FA00E165E9 /* WAPhotoStreamViewCell.xib in Resources */,
-				4BBEEA06164F6A6E00D33EDB /* PhotoPostWithURLHistoryStyle.txt in Resources */,
-				4BBEEA07164F6A6E00D33EDB /* PostWithCompleteAttachmentInformation.txt in Resources */,
-				4BBEEA08164F6A6E00D33EDB /* PostWithIncompleteAttachmentInformation.txt in Resources */,
-				7D71DDE21653569500456B52 /* PostWithEventTime.txt in Resources */,
+				4BBEEA06164F6A6E00D33EDB /* PhotoPostWithURLHistoryStyle.json in Resources */,
+				4BBEEA07164F6A6E00D33EDB /* PostWithCompleteAttachmentInformation.json in Resources */,
+				4BBEEA08164F6A6E00D33EDB /* PostWithIncompleteAttachmentInformation.json in Resources */,
+				7D71DDE21653569500456B52 /* PostWithEventTime.json in Resources */,
+				4BAA582B168014EF006324CF /* GetCollections.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4468,7 +4493,6 @@
 				80B1CD0C164B8479009941E5 /* EventLinkIcon@2x.png in Resources */,
 				DE7B35151654B7FC00718262 /* TempAvatar.png in Resources */,
 				DE7B35161654B7FC00718262 /* TempAvatar@2x.png in Resources */,
-				DEBED815166C8608001A2B24 /* GetCollections.json in Resources */,
 				DEBED818166C8643001A2B24 /* forward.png in Resources */,
 				DEBED819166C8643001A2B24 /* forward@2x.png in Resources */,
 				DEBED837166C8801001A2B24 /* WATimelineViewCell-ImageStack-1.xib in Resources */,
@@ -4518,6 +4542,20 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		20599D49D9A94E6C815410AC /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Pods-UnitTests-resources.sh\"\n";
+		};
 		4B59AB5A14A3BBB700891F99 /* Run Localize Script */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -4573,6 +4611,20 @@
 			shellPath = /bin/bash;
 			shellScript = "# KEYWORDS=\"TODO:|FIXME:\"\n# find \"${SRCROOT}\" \\( -name \"*.h\" -or -name \"*.m\" \\) -print0 | xargs -0 egrep --with-filename --line-number --only-matching \"($KEYWORDS).*\\$\" | perl -p -e \"s/($KEYWORDS)/ warning: \\$1/\"";
 		};
+		6B8E011F66324A95B0AFB629 /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Pods-StreamTests-resources.sh\"\n";
+		};
 		7D0CDCFE162E5A080027D35F /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -4585,6 +4637,34 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "# Run the unit tests in this test bundle.\n\"${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests\"\n";
+		};
+		B237A78281964809ADD80F0C /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Pods-UnitTests-resources.sh\"\n";
+		};
+		D7B34C082C524D73A01F92DC /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Pods-StreamTests-resources.sh\"\n";
 		};
 		FFCFE0F7142111E100B9E6AF /* IRCommitSHA */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -4688,10 +4768,13 @@
 				4BBEEA1B164F6AB300D33EDB /* WACollectionTests.m in Sources */,
 				4BBEEA1C164F6AB300D33EDB /* WAWebSocketTests.m in Sources */,
 				4BBEEA1F164F6ABE00D33EDB /* WATests_iOS.m in Sources */,
-				7D71DE0816537E9900456B52 /* WAPhotoStreamViewController.m in Sources */,
 				7D71DE181653806F00456B52 /* WAPhotoStreamViewCell.m in Sources */,
 				4B4AA30C16564BEE00A04DDE /* NSDate+WAAdditions.m in Sources */,
 				7DBE8DF6165B383C005C2347 /* WADayHeaderView.m in Sources */,
+				4BFCA3B1167B22D300A5F015 /* (null) in Sources */,
+				4BB0400916804C68009C3D08 /* WACollection+WARemoteInterfaceEntitySyncing.m in Sources */,
+				4B877F4D168069590039CD15 /* WAArticle.m in Sources */,
+				4B877F5D168069760039CD15 /* WAFile.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4703,7 +4786,6 @@
 				7D7A4430164CF2FB00E156CF /* WACollection.m in Sources */,
 				4BBEE91C164F5FC300D33EDB /* WADayViewTests.m in Sources */,
 				4BBEE91D164F5FC300D33EDB /* WAFacebookConnectionSwitchTest.m in Sources */,
-				7D71DE1516537E9A00456B52 /* WAPhotoStreamViewController.m in Sources */,
 				7D71DE171653805C00456B52 /* WAPhotoStreamViewCell.m in Sources */,
 				4B4AA30D16564BF000A04DDE /* NSDate+WAAdditions.m in Sources */,
 				7DBE8DF5165B3818005C2347 /* WADayHeaderView.m in Sources */,
@@ -5259,6 +5341,10 @@
 				ALWAYS_SEARCH_USER_PATHS = YES;
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 540;
@@ -5274,6 +5360,7 @@
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = (
 					"\"$(PROJECT_DIR)/external/IRFoundations\"/**",
@@ -5381,6 +5468,7 @@
 		};
 		4B8581A415F78A6B00EE11AC /* Beta */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 9A79ED179A7140438E44ACD8 /* Pods-UnitTests.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
@@ -5439,6 +5527,7 @@
 		};
 		4B8CA97A14BBE7BA006E06BB /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 9A79ED179A7140438E44ACD8 /* Pods-UnitTests.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
@@ -5499,6 +5588,7 @@
 		};
 		4B8CA97B14BBE7BA006E06BB /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 9A79ED179A7140438E44ACD8 /* Pods-UnitTests.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
@@ -5562,6 +5652,7 @@
 		};
 		7D0CDD0F162E5A080027D35F /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 49320A35B57B404A94A27775 /* Pods-StreamTests.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = YES;
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/wammer-iOS.app/wammer-iOS";
@@ -5620,6 +5711,7 @@
 		};
 		7D0CDD10162E5A080027D35F /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 49320A35B57B404A94A27775 /* Pods-StreamTests.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = YES;
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/wammer-iOS.app/wammer-iOS";
@@ -5675,6 +5767,7 @@
 		};
 		7D0CDD11162E5A080027D35F /* Beta */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 49320A35B57B404A94A27775 /* Pods-StreamTests.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = YES;
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/wammer-iOS.app/wammer-iOS";
@@ -5734,6 +5827,10 @@
 				ALWAYS_SEARCH_USER_PATHS = YES;
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 540;
@@ -5752,6 +5849,7 @@
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = (
 					"\"$(PROJECT_DIR)/external/IRFoundations\"/**",
@@ -5795,6 +5893,10 @@
 				ALWAYS_SEARCH_USER_PATHS = YES;
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 540;
@@ -5809,6 +5911,7 @@
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = (
 					"\"$(PROJECT_DIR)/external/IRFoundations\"/**",
