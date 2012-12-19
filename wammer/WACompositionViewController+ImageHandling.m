@@ -16,7 +16,6 @@
 #import "WACompositionViewController+SubclassEyesOnly.h"
 #import "IRAQPhotoPickerController.h"
 #import "WAAssetsLibraryManager.h"
-#import "WAFile+ThumbnailMaker.h"
 #import "WAFileExif.h"
 #import "WAFileExif+WAAdditions.h"
 
@@ -209,13 +208,6 @@ NSString * const kDismissesSelfIfCameraCancelled = @"-[WACompositionViewControll
 		
 		WADataStore *ds = [WADataStore defaultStore];
 
-		if (options & (WAThumbnailMakeOptionSmall|WAThumbnailMakeOptionMedium)) {
-
-			UIImage *image = [[representedAsset defaultRepresentation] irImage];
-			[file makeThumbnailsWithImage:image options:(options & (WAThumbnailMakeOptionSmall|WAThumbnailMakeOptionMedium))];
-			
-		}
-		
 		if (options & WAThumbnailMakeOptionExtraSmall) {
 			
 			UIImage *extraSmallThumbnailImage = [UIImage imageWithCGImage:[representedAsset thumbnail]];

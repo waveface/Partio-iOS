@@ -12,7 +12,7 @@
 
 #import "WARemoteInterface.h"
 #import "WADataStore.h"
-#import "WAFile+ThumbnailMaker.h"
+#import "WAImageProcessing.h"
 
 @implementation WAFile (ImplicitBlobFulfillment)
 
@@ -140,28 +140,17 @@
 			return;
 		}
 		
-		dispatch_async([class sharedExtraSmallThumbnailMakingQueue], ^{
-			
+		[WAImageProcessing makeThumbnailWithImageFilePath:[tempFileURLOrNil path] options:WAThumbnailMakeOptionExtraSmall completeBlock:^(UIImage *image) {
+
 			NSManagedObjectContext *context = [[WADataStore defaultStore] autoUpdatingMOC];
 			context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
+			WAFile *file = (WAFile *)[context irManagedObjectForURI:ownURL];
+			if (!file.extraSmallThumbnailFilePath) {
+				file.extraSmallThumbnailFilePath = [[[WADataStore defaultStore] persistentFileURLForData:UIImageJPEGRepresentation(image, 0.85f) extension:@"jpeg"] path];
+				[context save:nil];
+			}
 
-			[context performBlockAndWait:^{
-				
-				WAFile *file = (WAFile *)[context irManagedObjectForURI:ownURL];
-				if (!file.extraSmallThumbnailFilePath) {
-					
-					UIImage *image = [UIImage imageWithContentsOfFile:[tempFileURLOrNil path]];
-					[file makeThumbnailsWithImage:image options:WAThumbnailMakeOptionExtraSmall];
-					
-					NSError *savingError = nil;
-					if (![context save:&savingError])
-						NSLog(@"Error saving: %@", savingError);
-					
-				}
-				
-			}];
-			
-		});
+		}];
 		
 		dispatch_async([class sharedResourceHandlingQueue], ^ {
 

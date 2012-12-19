@@ -8,7 +8,7 @@
 
 #import "WACompositionViewController.h"
 #import "WAFile.h"
-#import "WAFile+ThumbnailMaker.h"
+#import "WAImageProcessing.h"
 
 
 @class ALAsset;

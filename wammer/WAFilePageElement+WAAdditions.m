@@ -13,8 +13,7 @@
 #import "WADefines.h"
 #import "IRRemoteResourcesManager.h"
 #import "WADataStore.h"
-#import <UIImage+IRAdditions.h>
-#import <QuartzCore+IRAdditions.h>
+#import "WAImageProcessing.h"
 
 static NSString * const kWAFilePageElementThumbnailFilePath = @"thumbnailFilePath";
 static NSString * const kWAFilePageElementThumbnailURL = @"thumbnailURL";
@@ -68,26 +67,18 @@ static NSString * const kWAFilePageElementExtraSmallThumbnailImage = @"extraSmal
 				return;
 			}
 
-			[[class sharedExtraSmallThumbnailMakingQueue] addOperationWithBlock:^{
+			[WAImageProcessing makeThumbnailWithImageFilePath:[tempFileURLOrNil path] options:WAThumbnailMakeOptionExtraSmall completeBlock:^(UIImage *image) {
 
-				// TODO: Will use GPUImage to speed up image processing later
 				NSManagedObjectContext *context = [[WADataStore defaultStore] autoUpdatingMOC];
 				context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
-				
 				WAFilePageElement *page = (WAFilePageElement *)[context irManagedObjectForURI:ownURL];
 				if (!page.extraSmallThumbnailFilePath) {
-					UIImage *image = [UIImage imageWithContentsOfFile:[tempFileURLOrNil path]];
-					UIImage *extraSmallThumbnailImage = [image irScaledImageWithSize:IRGravitize((CGRect){ CGPointZero, (CGSize){150.0	, 150.0} }, image.size, kCAGravityResizeAspectFill).size];
-					page.extraSmallThumbnailFilePath = [[[WADataStore defaultStore] persistentFileURLForData:UIImageJPEGRepresentation(extraSmallThumbnailImage, 0.85f) extension:@"jpeg"] path];
-				}
-
-				NSError *savingError = nil;
-				if (![context save:&savingError]) {
-					NSLog(@"Unable to save extra small thumbnail image: %@", savingError);
+					page.extraSmallThumbnailFilePath = [[[WADataStore defaultStore] persistentFileURLForData:UIImageJPEGRepresentation(image, 0.85f) extension:@"jpeg"] path];
+					[context save:nil];
 				}
 
 			}];
-			
+
 			[[class sharedResourceHandlingQueue] addOperationWithBlock:^{
 
 				WADataStore *ds = [WADataStore defaultStore];
@@ -224,19 +215,6 @@ static NSString * const kWAFilePageElementExtraSmallThumbnailImage = @"extraSmal
 }
 
 + (NSOperationQueue *)sharedResourceHandlingQueue {
-
-	static NSOperationQueue *queue;
-	static dispatch_once_t onceToken;
-	dispatch_once(&onceToken, ^{
-    queue = [[NSOperationQueue alloc] init];
-		[queue setMaxConcurrentOperationCount:1];
-	});
-
-	return queue;
-
-}
-
-+ (NSOperationQueue *)sharedExtraSmallThumbnailMakingQueue {
 
 	static NSOperationQueue *queue;
 	static dispatch_once_t onceToken;

@@ -17,12 +17,12 @@
 
 #import "UIImage+WAAdditions.h"
 #import "ALAssetRepresentation+IRAdditions.h"
-#import "WAFile+ThumbnailMaker.h"
 #import "WAAssetsLibraryManager.h"
 
 #import "NSDate+WAAdditions.h"
 
 #import "SSToolkit/NSDate+SSToolkitAdditions.h"
+#import "WAImageProcessing.h"
 
 
 NSString * kWAFileEntitySyncingErrorDomain = @"com.waveface.wammer.file.entitySyncing";
@@ -395,7 +395,7 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
 			
 			NSManagedObjectContext *context = [ds autoUpdatingMOC];
 			context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
-
+			
 			WAFile *file = (WAFile *)[context irManagedObjectForURI:ownURL];
 			file.identifier = attachmentIdentifier;
 			
@@ -421,10 +421,10 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
 			
 			// file is existed
 			if ([[error domain] isEqualToString:kWARemoteInterfaceDomain] && [error code] == 0x6000 + 14) {
-
+				
 				NSManagedObjectContext *context = [ds autoUpdatingMOC];
 				context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
-
+				
 				WAFile *file = (WAFile *)[context irManagedObjectForURI:ownURL];
 				
 				if ([[options valueForKey:kWARemoteAttachmentSubtype] isEqualToString:WARemoteAttachmentMediumSubtype]) {
@@ -448,7 +448,7 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
 			} else {
 				
 				callback(error);
-
+				
 			}
 			
 		}];
@@ -462,8 +462,7 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
 
 		[operations addObject:[IRAsyncBarrierOperation operationWithWorker:^(IRAsyncOperationCallback callback) {
 
-			NSManagedObjectContext *context = [ds autoUpdatingMOC];
-			context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
+			NSManagedObjectContext *context = [ds disposableMOC];
 			
 			WAFile *file = (WAFile *)[context irManagedObjectForURI:ownURL];
 			
@@ -503,14 +502,22 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
 					
 					[[WAAssetsLibraryManager defaultManager] assetForURL:[NSURL URLWithString:file.assetURL] resultBlock:^(ALAsset *asset) {
 						
-						UIImage *image = [[asset defaultRepresentation] irImage];
-						[file makeThumbnailsWithImage:image  options:WAThumbnailMakeOptionMedium];
-						
-						NSError *error = nil;
-						BOOL didSave = [context save:&error];
-						NSCAssert1(didSave, @"Generated thumbnail could not be saved: %@", error);
-						
-						uploadAttachment([NSURL fileURLWithPath:file.thumbnailFilePath], options, callback);
+						[WAImageProcessing makeThumbnailWithAsset:asset options:WAThumbnailMakeOptionMedium completeBlock:^(UIImage *image) {
+
+							NSManagedObjectContext *context = [ds autoUpdatingMOC];
+							context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
+							
+							WAFile *file = (WAFile *)[context irManagedObjectForURI:ownURL];
+
+							file.thumbnailFilePath = [[[WADataStore defaultStore] persistentFileURLForData:UIImageJPEGRepresentation(image, 0.85f) extension:@"jpeg"] path];
+							
+							NSError *error = nil;
+							BOOL didSave = [context save:&error];
+							NSCAssert1(didSave, @"Generated thumbnail could not be saved: %@", error);
+							
+							uploadAttachment([NSURL fileURLWithPath:file.thumbnailFilePath], options, callback);
+
+						}];
 						
 					} failureBlock:^(NSError *error) {
 						
@@ -518,26 +525,6 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
 						callback(error);
 						
 					}];
-					
-				} else {
-					
-					UIImage *bestImage = [file resourceImage];
-					if (! bestImage)
-						bestImage = [file bestPresentableImage];
-					if (!bestImage) {
-						NSLog(@"bestImage of file %@ does not exist", [file identifier]);
-						callback(nil);
-						return;
-					}
-					NSCParameterAssert(bestImage);
-					
-					[file makeThumbnailsWithImage:bestImage options:WAThumbnailMakeOptionMedium];
-					
-					NSError *error = nil;
-					BOOL didSave = [context save:&error];
-					NSCAssert1(didSave, @"Generated thumbnail could not be saved: %@", error);
-					
-					uploadAttachment([NSURL fileURLWithPath:file.thumbnailFilePath], options, callback);
 					
 				}
 				

@@ -12,8 +12,8 @@
 #import "WAAssetsLibraryManager.h"
 
 #import "UIKit+IRAdditions.h"
-#import "WAFile+ThumbnailMaker.h"
 #import "WADataStore.h"
+#import "WAImageProcessing.h"
 
 static NSString * const kMemoryWarningObserver = @"-[WAFile(LazyImages) handleDidReceiveMemoryWarning:]";
 static NSString * const kMemoryWarningObserverCreationDisabled = @"-[WAFile(LazyImages) isMemoryWarningObserverCreationDisabled]";
@@ -151,26 +151,18 @@ static NSString * const kMemoryWarningObserverCreationDisabled = @"-[WAFile(Lazy
 
 		if (self.assetURL) {
 
-			__weak WAFile *wSelf = self;
+			NSURL *ownURL = [[self objectID] URIRepresentation];
+
 			[[WAAssetsLibraryManager defaultManager] assetForURL:[NSURL URLWithString:self.assetURL] resultBlock:^(ALAsset *asset) {
 
-				NSManagedObjectContext *context = [[WADataStore defaultStore] disposableMOC];
-				[context performBlock:^{
-
-					if (!wSelf.extraSmallThumbnailFilePath) {
-
-						UIImage *extraSmallThumbnailImage = [UIImage imageWithCGImage:[asset thumbnail]];
-						wSelf.extraSmallThumbnailFilePath = [[[WADataStore defaultStore] persistentFileURLForData:UIImageJPEGRepresentation(extraSmallThumbnailImage, 0.85f) extension:@"jpeg"] path];
-
-						NSError *error = nil;
-						[context save:&error];
-						if (error) {
-							NSLog(@"Error saving: %s %@", __PRETTY_FUNCTION__, error);
-						}
-
-					}
-
-				}];
+				NSManagedObjectContext *context = [[WADataStore defaultStore] autoUpdatingMOC];
+				context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
+				WAFile *file = (WAFile *)[context irManagedObjectForURI:ownURL];
+				if (!file.extraSmallThumbnailFilePath) {
+					UIImage *extraSmallThumbnailImage = [UIImage imageWithCGImage:[asset thumbnail]];
+					file.extraSmallThumbnailFilePath = [[[WADataStore defaultStore] persistentFileURLForData:UIImageJPEGRepresentation(extraSmallThumbnailImage, 0.85f) extension:@"jpeg"] path];
+					[context save:nil];
+				}
 
 			} failureBlock:^(NSError *error) {
 
@@ -185,24 +177,19 @@ static NSString * const kMemoryWarningObserverCreationDisabled = @"-[WAFile(Lazy
 
 			if (self.smallThumbnailFilePath) {
 
-				__weak WAFile *wSelf = self;
-				dispatch_async([[self class] sharedExtraSmallThumbnailMakingQueue], ^{
+				NSURL *ownURL = [[self objectID] URIRepresentation];
 
-					NSManagedObjectContext *context = [[WADataStore defaultStore] disposableMOC];
-					if (!wSelf.extraSmallThumbnailFilePath) {
-						
-						UIImage *image = [wSelf imageAssociatedWithKey:&kWAFileSmallThumbnailImage filePath:wSelf.smallThumbnailFilePath];
-						[wSelf makeThumbnailsWithImage:image options:WAThumbnailMakeOptionExtraSmall];
-						
-						NSError *error = nil;
-						[context save:&error];
-						if (error) {
-							NSLog(@"Error saving: %s %@", __PRETTY_FUNCTION__, error);
-						}
-						
+				[WAImageProcessing makeThumbnailWithImageFilePath:self.smallThumbnailFilePath options:WAThumbnailMakeOptionExtraSmall completeBlock:^(UIImage *image) {
+
+					NSManagedObjectContext *context = [[WADataStore defaultStore] autoUpdatingMOC];
+					context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
+					WAFile *file = (WAFile *)[context irManagedObjectForURI:ownURL];
+					if (!file.extraSmallThumbnailFilePath) {
+						file.extraSmallThumbnailFilePath = [[[WADataStore defaultStore] persistentFileURLForData:UIImageJPEGRepresentation(image, 0.85f) extension:@"jpeg"] path];
+						[context save:nil];
 					}
 
-				});
+				}];
 
 			}
 
@@ -372,18 +359,6 @@ static NSString * const kMemoryWarningObserverCreationDisabled = @"-[WAFile(Lazy
 	[self irAssociateObject:nil usingKey:&kWAFileLargeThumbnailImage policy:OBJC_ASSOCIATION_ASSIGN changingObservedKey:nil];
 	[self irAssociateObject:nil usingKey:&kWAFileResourceImage policy:OBJC_ASSOCIATION_ASSIGN changingObservedKey:nil];
 
-}
-
-
-+ (dispatch_queue_t)sharedExtraSmallThumbnailMakingQueue {
-	static dispatch_queue_t dispatchQueue = nil;
-	static dispatch_once_t onceToken = 0;
-
-	dispatch_once(&onceToken, ^{
-    dispatchQueue = dispatch_queue_create("com.waveface.xsthumbnails", DISPATCH_QUEUE_SERIAL);
-	});
-
-	return dispatchQueue;
 }
 
 @end
