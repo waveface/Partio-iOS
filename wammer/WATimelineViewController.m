@@ -279,7 +279,7 @@ CGFloat (^rowSpacing) (UICollectionView *) = ^ (UICollectionView *collectionView
 
 - (void) handleDateSelect:(UIBarButtonItem *)sender {
 	
-	CGRect frame = isPad()? CGRectMake(0.f, 0.f, 320.f, 568.f) : CGRectMake(0.f, 0.f, 320.f, [UIScreen mainScreen].bounds.size.height);
+	CGRect calFrame = isPad()? CGRectMake(0.f, 0.f, 320.f, 568.f) : CGRectMake(0.f, 0.f, 320.f, [UIScreen mainScreen].bounds.size.height);
 	
 	if (isPad()) {
 		
@@ -287,7 +287,7 @@ CGFloat (^rowSpacing) (UICollectionView *) = ^ (UICollectionView *collectionView
 				[self.popover dismissPopoverAnimated:YES];
 		
 		} else {
-			WACalendarPickerViewController *dpVC = [[WACalendarPickerViewController alloc] initWithFrame:frame style:WACalendarPickerStyleInPopover];
+			WACalendarPickerViewController *dpVC = [[WACalendarPickerViewController alloc] initWithFrame:calFrame style:WACalendarPickerStyleInPopover];
 			dpVC.delegate = self;
 			
 			self.popover = [[UIPopoverController alloc] initWithContentViewController:dpVC];
@@ -297,7 +297,7 @@ CGFloat (^rowSpacing) (UICollectionView *) = ^ (UICollectionView *collectionView
 		}
 		
 	} else {
-		WACalendarPickerViewController *dpVC = [[WACalendarPickerViewController alloc] initWithFrame:frame style:WACalendarPickerStyleTodayCancel];
+		WACalendarPickerViewController *dpVC = [[WACalendarPickerViewController alloc] initWithFrame:calFrame style:WACalendarPickerStyleTodayCancel];
 		dpVC.delegate = self;
 		
 		[self presentViewController:dpVC animated:YES completion:nil];

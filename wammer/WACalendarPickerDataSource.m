@@ -307,8 +307,12 @@ typedef void (^completionBlock) (NSArray *days);
 			}
 			
 		} else if ([item isKindOfClass:[WAFileAccessLog class]]) {
-				[cell.textLabel setText:@"Documents"];
-				[cell setAccessoryView:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"DocumentsIcon"]]];
+			WAFileAccessLog *file = item;
+			
+			[cell.textLabel setText:[NSString stringWithFormat:@"Opened %@", file.filePath]];
+			[cell.textLabel setNumberOfLines:0];
+			[cell.textLabel setFont:[UIFont systemFontOfSize:16.f]];
+			[cell setAccessoryView:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"DocumentsIcon"]]];
 		
 		}
 		

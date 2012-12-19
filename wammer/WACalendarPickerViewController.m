@@ -37,7 +37,7 @@
 	dataSource = [[WACalendarPickerDataSource alloc] init];
 	calPicker.dataSource = dataSource;
 	calPicker.frame = frame;
-
+	
 	switch (style) {
 		case WACalendarPickerStyleInPopover:
 			[calPicker.navigationItem setRightBarButtonItem:[self todayBarButton] animated:YES];
