@@ -150,8 +150,9 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
   if ([incomingFileType isEqualToString:@"image"]) {
 
 		NSString *eventDateTime = incomingRepresentation[@"event_time"];
-		if ([eventDateTime isKindOfClass:[NSString class]]) {
-			[returnedDictionary setObject: @{@"day": [[NSDate dateFromISO8601String:eventDateTime] dayBegin]}
+		NSDate *day = [[NSDate dateFromISO8601String:eventDateTime] dayBegin];
+		if (day) {
+			[returnedDictionary setObject: @{@"day": day}
 														 forKey:@"photoDay"];
 		}
 		
@@ -219,6 +220,10 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
     // ?
       
   }
+	
+	if (!incomingRepresentation[@"outdated"]) {
+		returnedDictionary[@"outdated"] = @NO;
+	}
 	
 	return returnedDictionary; 
 

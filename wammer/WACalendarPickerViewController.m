@@ -148,12 +148,17 @@
 		WAEventViewController *eventVC = [WAEventViewController controllerForArticle:selectedEvent];
 		
 		if (self.viewDeckController) {
-			
-			UINavigationController *navC = [[WANavigationController alloc] initWithRootViewController:eventVC];
-			
-			navC.modalPresentationStyle = UIModalPresentationFormSheet;
-			[self presentViewController:navC animated:YES completion:nil];
 		
+			if (isPad()) {
+				UINavigationController *navC = [[WANavigationController alloc] initWithRootViewController:eventVC];
+				navC.modalPresentationStyle = UIModalPresentationFormSheet;
+				[self presentViewController:navC animated:YES completion:nil];
+				
+			} else {
+				[self pushViewController:eventVC animated:YES];
+			
+			}
+			
 		}
 		else {
 		

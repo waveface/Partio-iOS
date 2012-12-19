@@ -11,69 +11,42 @@
 #import "WAArticle.h"
 
 @implementation WAArticleTests {
-	NSManagedObjectContext *context;
+  NSManagedObjectContext *context;
 }
 
 - (id)loadDataFile: (NSString *)fileString {
-	NSString *filePath = [[NSBundle bundleForClass:[self class]]
-												pathForResource:fileString
-												ofType:@"txt"];
-	
-	NSData *inputData = [NSData dataWithContentsOfFile:filePath];
-	return [NSJSONSerialization
-					JSONObjectWithData:inputData
-					options:NSJSONReadingMutableContainers
-					error:nil];
+  NSString *filePath = [[NSBundle bundleForClass:[self class]]
+		    pathForResource:fileString
+		    ofType:@"json"];
+  
+  NSData *inputData = [NSData dataWithContentsOfFile:filePath];
+  return [NSJSONSerialization
+	JSONObjectWithData:inputData
+	options:NSJSONReadingMutableContainers
+	error:nil];
 }
 
 - (void)setUp {
-	context = [[WADataStore defaultStore] disposableMOC];
-	
+  context = [[WADataStore defaultStore] disposableMOC];
+  
 }
 
 - (void)tearDown {
-	context = nil;
+  context = nil;
 }
 
 - (void)testArticleWithFullInformation {
-	NSArray *articleReps = [self loadDataFile:@"PostWithCompleteAttachmentInformation"];
-	STAssertNotNil(articleReps, @"need to be a vaild JSON");
-	NSArray *transformed = [WAArticle
-													insertOrUpdateObjectsUsingContext:context
-													withRemoteResponse:articleReps
-													usingMapping:nil
-													options:IRManagedObjectOptionIndividualOperations];
-	
-	WAArticle *article = [transformed objectAtIndex:0];
-	STAssertEquals((NSUInteger)4, [article.files count],
-								 @"This post should have 4 attachments");
-}
-
-- (void)testArticleWithURLHistoryStyle {
-	NSArray *articleReps = [self loadDataFile:@"PhotoPostWithURLHistoryStyle"];
-	NSArray *transformed = [WAArticle
-													insertOrUpdateObjectsUsingContext:context
-													withRemoteResponse:articleReps
-													usingMapping:nil
-													options:IRManagedObjectOptionIndividualOperations];
-	
-	WAArticle *article = [transformed objectAtIndex:0];
-	STAssertTrue(WAPostStyleURLHistory == article.style.intValue , @"Style should be URL History");
-}
-
-- (void)testArticleWithEventTimeInAttachment {
-	NSArray *articleReps = [self loadDataFile:@"PostWithEventTime"];
-	NSArray *transformed = [WAArticle
-													insertOrUpdateObjectsUsingContext:context
-													withRemoteResponse:articleReps
-													usingMapping:nil
-													options:IRManagedObjectOptionIndividualOperations];
-	
-	WAArticle *article = transformed[0];
-	for (WAFile* photo in article.files) {
-		assertThat(photo.created, instanceOf([NSDate class]));
-	}
-	
+  NSArray *articleReps = [self loadDataFile:@"PostWithCompleteAttachmentInformation"];
+  STAssertNotNil(articleReps, @"need to be a vaild JSON");
+  NSArray *transformed = [WAArticle
+		      insertOrUpdateObjectsUsingContext:context
+		      withRemoteResponse:articleReps
+		      usingMapping:nil
+		      options:IRManagedObjectOptionIndividualOperations];
+  
+  WAArticle *article = [transformed objectAtIndex:0];
+  STAssertEquals((NSUInteger)4, [article.files count],
+	       @"This post should have 4 attachments");
 }
 
 @end
