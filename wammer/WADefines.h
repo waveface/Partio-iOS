@@ -64,11 +64,19 @@ extern NSString * const kWABackupFilesToPCEnabled;
 extern NSString * const kWABackupFilesToCloudEnabled;
 
 extern NSString * const kWABusinessPlan;
-typedef enum WABusinessPlanType: NSInteger {
-	WABusinessPlanFree,
-	WABusinessPlanPremium,
-	WABusinessPlanUltimate
-} WABusinessPlanType;
+
+typedef NS_ENUM(NSInteger, WABusinessPlanType) {
+  WABusinessPlanFree,
+  WABusinessPlanPremium,
+  WABusinessPlanUltimate
+};
+
+typedef NS_ENUM(NSInteger, WAThumbnailType) {
+  WAThumbnailTypeExtraSmall,
+  WAThumbnailTypeSmall,
+  WAThumbnailTypeMedium,
+  WAThumbnailTypeLarge
+};
 
 extern NSString * const kWASNSGoogleConnectEnabled;
 extern NSString * const kWASNSTwitterConnectEnabled;
