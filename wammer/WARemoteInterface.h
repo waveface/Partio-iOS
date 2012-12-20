@@ -42,3 +42,7 @@
 #import "WARemoteInterface+Environment.h"
 #import "WARemoteInterface+Facebook.h"
 #import "WARemoteInterface+SocialNetworks.h"
+#import "WARemoteInterface+Notification.h"
+#import "WARemoteInterface+RemoteNotifications.h"
+#import "WARemoteInterface+Users.h"
+#import "WARemoteInterface+WebSocket.h"

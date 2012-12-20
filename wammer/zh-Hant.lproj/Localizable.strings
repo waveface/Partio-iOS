@@ -348,6 +348,12 @@
 /* No comment provided by engineer. */
 "MONTH_SINGULAR" = "%d月";
 
+/* Navigation bar title while loading web page failed */
+"NAVI_TITLE_WEB_FAILED" = "載入失敗";
+
+/* Navigation bar title for web preview while loading */
+"NAVI_TITLE_WEB_LOADING" = "載入中..";
+
 /* Nickname placeholder in signup page */
 "NICKNAME_PLACEHOLDER" = "John Appleseed";
 
@@ -503,6 +509,9 @@
 /* Title for Settings in the sliding menu */
 "SLIDING_MENU_TITLE_SETTINGS" = "設定";
 
+/* Title for Web pages in the sliding menu */
+"SLIDING_MENU_TITLE_WEBS" = "網頁";
+
 /* No comment provided by engineer. */
 "STATE_LOADING_SINGLE_DOCUMENT" = "正在載入文件…";
 
@@ -563,6 +572,9 @@
 
 /* Title of web service settings view controller */
 "WEB_SERVICES_TITLE" = "網路服務";
+
+/* Title for web pages view controller */
+"WEBPAGES_CONTROLLER_TITLE" = "網頁";
 
 /* No comment provided by engineer. */
 "WEEK_PLURAL" = "%d週";
