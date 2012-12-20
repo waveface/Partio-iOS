@@ -14,6 +14,12 @@
 #import "WADayViewController.h"
 #import "WAFileAccessLog.h"
 
+NSString *const kMarkedEvents = @"markedRed";
+NSString *const kMarkedPhotos = @"markedLightBlue";
+NSString *const kMarkedDocuments = @"markedOrange";
+NSString *const kMarkedWebpages = @"markedGreen";
+NSString *const kMarkedCollections = @"markedDarkBlue";
+
 @interface WACalendarPickerDataSource	() <NSFetchedResultsControllerDelegate>
 
 @property (nonatomic, readwrite, strong) NSManagedObjectContext *managedObjectContext;
@@ -72,7 +78,7 @@ typedef void (^completionBlock) (NSArray *days);
 	if(![self.fetchedResultsController performFetch:&error]) {
 		NSLog(@"%@: failed to fetch files for documents", __FUNCTION__);
 	}
-
+	
 	if (block) {
 		self.callback = block;
 		NSArray *passingDays = [self.fetchedResultsController.fetchedObjects isKindOfClass:[NSNull class]]? nil: [self.fetchedResultsController.fetchedObjects valueForKey:@"day"];
@@ -82,45 +88,44 @@ typedef void (^completionBlock) (NSArray *days);
 
 - (void)fetchDatesFrom:(NSDate *)fromDate to:(NSDate *)toDate
 {
-	/*
-	 * dot marker types:
-	 * - markedRed: Events
-	 * - markedLightBlue: Photos
-	 * - markedOrange: Documents
-	 * - markedGreen:
-	 * - markedDarkBlue:
-	 */
-		
-	[self loadDayswithStyle:WACalendarLoadObjectEvent from:fromDate to:toDate completionBlock:^(NSArray *days){
 	
+	[self loadDayswithStyle:WACalendarLoadObjectEvent from:fromDate to:toDate completionBlock:^(NSArray *days){
+		
 		for (NSDate *day in days) {
-			[_daysWithAttributes addObject:[[NSMutableDictionary alloc]
-																			initWithObjects:@[day, @YES, @NO, @NO, @NO, @NO]
-																			forKeys:@[@"date", @"markedRed", @"markedLightBlue", @"markedOrange", @"markedGreen", @"markedDarkBlue"]]];
+			[_daysWithAttributes addObject: [@{@"date": day,
+											 kMarkedEvents: @YES,
+											 kMarkedPhotos: @NO,
+										kMarkedDocuments: @NO,
+										 kMarkedWebpages: @NO,
+									kMarkedCollections: @NO} mutableCopy]];
+			
 		}
 		
 	}];
 	
 	
 	[self loadDayswithStyle:WACalendarLoadObjectPhoto from:fromDate to:toDate completionBlock:^(NSArray *days){
-	
+		
 		for (NSDate *day in days) {
 			NSPredicate *finder = [NSPredicate predicateWithFormat:@"date == %@", day];
 			NSMutableDictionary *dayWithEvent = [[_daysWithAttributes filteredArrayUsingPredicate:finder] lastObject];
 			
 			if (!dayWithEvent) {
-				[_daysWithAttributes addObject:[[NSMutableDictionary alloc]
-																				initWithObjects:@[day, @NO, @YES, @NO, @NO, @NO]
-																				forKeys:@[@"date", @"markedRed", @"markedLightBlue", @"markedOrange", @"markedGreen", @"markedDarkBlue"]]];
+				[_daysWithAttributes addObject: [@{@"date": day,
+												 kMarkedEvents: @NO,
+												 kMarkedPhotos: @YES,
+											kMarkedDocuments: @NO,
+											 kMarkedWebpages: @NO,
+										kMarkedCollections: @NO} mutableCopy]];
 			} else {
 				NSMutableDictionary *modifiedObject = [dayWithEvent mutableCopy];
-				[modifiedObject setValue:@YES forKey:@"markedLightBlue"];
+				modifiedObject[kMarkedPhotos] = @YES;
 				
 				[_daysWithAttributes replaceObjectAtIndex:[_daysWithAttributes indexOfObject:dayWithEvent] withObject:modifiedObject];
 				
 			}
 		}
-
+		
 	}];
 	
 	
@@ -131,17 +136,20 @@ typedef void (^completionBlock) (NSArray *days);
 			NSMutableDictionary *dayWithEventPhoto = [[_daysWithAttributes filteredArrayUsingPredicate:finder] lastObject];
 			
 			if (!dayWithEventPhoto) {
-				[_daysWithAttributes addObject:[[NSMutableDictionary alloc]
-																				initWithObjects:@[day, @NO, @NO, @YES, @NO, @NO]
-																				forKeys:@[@"date", @"markedRed", @"markedLightBlue", @"markedOrange", @"markedGreen", @"markedDarkBlue"]]];
+				[_daysWithAttributes addObject:[@{@"date": day,
+												 kMarkedEvents: @NO,
+												 kMarkedPhotos: @NO,
+											kMarkedDocuments: @YES,
+											 kMarkedWebpages: @NO,
+										kMarkedCollections: @NO} mutableCopy]];
 			} else {
 				NSMutableDictionary *modifiedObject = [dayWithEventPhoto mutableCopy];
-				[modifiedObject setValue:@YES forKey:@"markedOrange"];
+				modifiedObject[kMarkedDocuments] = @YES;
 				
 				[_daysWithAttributes replaceObjectAtIndex:[_daysWithAttributes indexOfObject:dayWithEventPhoto] withObject:modifiedObject];
 			}
 		}
-
+		
 	}];
 	
 }
@@ -191,7 +199,7 @@ typedef void (^completionBlock) (NSArray *days);
 		NSLog(@"%@: failed to fetch objects for %@", __FUNCTION__, predicateStr);
 		
 	}
-
+	
 	return self.fetchedResultsController.fetchedObjects;
 }
 
@@ -202,13 +210,13 @@ typedef void (^completionBlock) (NSArray *days);
 	[_daysWithAttributes removeAllObjects];
 	[self fetchDatesFrom:(NSDate *)fromDate to:(NSDate *)toDate];
 	[delegate loadedDataSource:self];
-
+	
 }
 
 - (NSArray *)markedDatesFrom:(NSDate *)fromDate to:(NSDate *)toDate
 {
 	NSPredicate *inRange = [NSPredicate predicateWithFormat:@"date >= %@ AND date <= %@", fromDate, toDate];
-	return [_daysWithAttributes filteredArrayUsingPredicate:inRange];
+	return [[_daysWithAttributes filteredArrayUsingPredicate:inRange] copy];
 }
 
 - (void)loadItemsFromDate:(NSDate *)fromDate toDate:(NSDate *)toDate
@@ -218,15 +226,15 @@ typedef void (^completionBlock) (NSArray *days);
 	NSArray *photo = [self fetchObject:WACalendarLoadObjectPhoto from:fromDate to:toDate];
 	if ([photo count]) {
 		[_items addObject:[photo lastObject]];
-	
+		
 	}
-
+	
 	NSArray *doc = [self fetchObject:WACalendarLoadObjectDoc from:fromDate to:toDate];
-	if ([doc count]) {		
+	if ([doc count]) {
 		[_items addObject:[doc lastObject]];
 		
 	}
-
+	
 }
 
 - (void)removeAllItems
@@ -248,10 +256,10 @@ typedef void (^completionBlock) (NSArray *days);
   if (!cell) {
     cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
 	}
-
+	
 	for (UIView *subview in cell.contentView.subviews)
 		[subview removeFromSuperview];
-		
+	
 	if (![_items count]) {
 		UILabel *title = [[UILabel alloc] initWithFrame:CGRectMake(54, 0, 200 , 54)];
 		[title setText:NSLocalizedString(@"CALENDAR_NO_EVENT", "Description for no event day in calendar")];
@@ -315,9 +323,9 @@ typedef void (^completionBlock) (NSArray *days);
 			title.numberOfLines = 0;
 			[title setFrame:CGRectMake(10, 0, 220, 54)];
 			[cell.contentView addSubview:title];
-
+			
 			[cell setAccessoryView:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"DocumentsIcon"]]];
-		
+			
 		}
 		
 		[cell setSelectionStyle:UITableViewCellSelectionStyleGray];
