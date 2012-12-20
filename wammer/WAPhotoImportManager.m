@@ -10,8 +10,6 @@
 #import "WADataStore.h"
 #import "WAArticle.h"
 #import "WAAssetsLibraryManager.h"
-#import "WAFile+ThumbnailMaker.h"
-#import <AssetsLibrary+IRAdditions.h>
 #import "WAFileExif.h"
 #import "GAI.h"
 #import "WADefines.h"

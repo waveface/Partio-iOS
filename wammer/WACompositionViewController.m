@@ -162,14 +162,7 @@
 					
 					[wSelf.managedObjectContext performBlock:^{
 						
-						WAThumbnailMakeOptions options = WAThumbnailMakeOptionExtraSmall;
-						if (idx < 4) {
-							options |= WAThumbnailMakeOptionMedium;
-						}
-						if (idx < 3) {
-							options |= WAThumbnailMakeOptionSmall;
-						}
-						[wSelf makeAssociatedImagesOfFile:file withRepresentedAsset:asset options:options];
+						[wSelf makeAssociatedImagesOfFile:file withRepresentedAsset:asset type:WAThumbnailTypeExtraSmall];
 						
 					}];
 					
