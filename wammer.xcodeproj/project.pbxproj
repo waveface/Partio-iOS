@@ -295,6 +295,9 @@
 		80BC54D816816231005D1967 /* WAArticle.m in Sources */ = {isa = PBXBuildFile; fileRef = 80719CF2167AFE3A00E9729F /* WAArticle.m */; };
 		80BC54D916816277005D1967 /* WAFile.m in Sources */ = {isa = PBXBuildFile; fileRef = 80074F8B167EBFAB00A23EED /* WAFile.m */; };
 		80BE685B161DC13800A37CEB /* WADayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 80BE685A161DC13800A37CEB /* WADayViewController.m */; };
+		80C058431682FB4900BC46A7 /* libPods-UnitTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 80C058421682FB4900BC46A7 /* libPods-UnitTests.a */; };
+		80C058441682FBAE00BC46A7 /* libIRWebAPIKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FF73A5A713D6DC6A00D54EC6 /* libIRWebAPIKit.a */; };
+		80C058491682FC6500BC46A7 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B8CA96914BBE7BA006E06BB /* SenTestingKit.framework */; };
 		80C129B916398933001DDFE2 /* WADayHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 80C129B716398933001DDFE2 /* WADayHeaderView.m */; };
 		80C129BA16398933001DDFE2 /* WADayHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 80C129B816398933001DDFE2 /* WADayHeaderView.xib */; };
 		80C129BD163989AF001DDFE2 /* dayViewHeaderBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = 80C129BB163989AE001DDFE2 /* dayViewHeaderBackground.png */; };
@@ -1416,6 +1419,7 @@
 		80BC54D41680740D005D1967 /* WAWebpageDay+WARemoteInterfaceEntitySyncing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WAWebpageDay+WARemoteInterfaceEntitySyncing.m"; sourceTree = "<group>"; };
 		80BE6859161DC13800A37CEB /* WADayViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WADayViewController.h; sourceTree = "<group>"; };
 		80BE685A161DC13800A37CEB /* WADayViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WADayViewController.m; sourceTree = "<group>"; };
+		80C058421682FB4900BC46A7 /* libPods-UnitTests.a */ = {isa = PBXFileReference; lastKnownFileType = file; name = "libPods-UnitTests.a"; path = "Pods/build/Release-iphoneos/libPods-UnitTests.a"; sourceTree = "<group>"; };
 		80C129B616398933001DDFE2 /* WADayHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WADayHeaderView.h; sourceTree = "<group>"; };
 		80C129B716398933001DDFE2 /* WADayHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WADayHeaderView.m; sourceTree = "<group>"; };
 		80C129B816398933001DDFE2 /* WADayHeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WADayHeaderView.xib; sourceTree = "<group>"; };
@@ -2100,6 +2104,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				80C058491682FC6500BC46A7 /* SenTestingKit.framework in Frameworks */,
+				80C058441682FBAE00BC46A7 /* libIRWebAPIKit.a in Frameworks */,
+				80C058431682FB4900BC46A7 /* libPods-UnitTests.a in Frameworks */,
 				137E28A41682BE7100FE39EA /* CoreImage.framework in Frameworks */,
 				7D296DAA1643818000870747 /* libSocketRocket.a in Frameworks */,
 				7D9B1D96162BC0AD000E5350 /* Accounts.framework in Frameworks */,
@@ -3054,6 +3061,7 @@
 			isa = PBXGroup;
 			children = (
 				80B6323916817F9A00A9E2A5 /* libPods-StreamTests.a */,
+				80C058421682FB4900BC46A7 /* libPods-UnitTests.a */,
 				80B6323716817F8A00A9E2A5 /* libPods-UnitTests.a */,
 				DE2BBDD616761AC100EEF922 /* Kal.xcodeproj */,
 				13222F4E16806B22000C57A7 /* CoreImage.framework */,
