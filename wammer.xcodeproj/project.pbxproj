@@ -33,6 +33,8 @@
 		13745257166F483D0027582D /* WADocumentStreamViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 13745255166F483D0027582D /* WADocumentStreamViewController.xib */; };
 		1374525A166F4A780027582D /* WADocumentStreamViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 13745259166F4A770027582D /* WADocumentStreamViewCell.m */; };
 		13793344162C0EA000FA9E8F /* WAFileExif+WAAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 13793343162C0EA000FA9E8F /* WAFileExif+WAAdditions.m */; };
+		137E28A41682BE7100FE39EA /* CoreImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 13222F4E16806B22000C57A7 /* CoreImage.framework */; };
+		137E28A51682BE9000FE39EA /* WAImageProcessing.m in Sources */ = {isa = PBXBuildFile; fileRef = 13222F4C16806A58000C57A7 /* WAImageProcessing.m */; };
 		138CCA351609D22700B477CE /* TutorialPhotoImport~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 138CCA331609D22700B477CE /* TutorialPhotoImport~iphone.png */; };
 		138CCA381609D23C00B477CE /* TutorialPhotoImport@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 138CCA361609D23C00B477CE /* TutorialPhotoImport@2x~iphone.png */; };
 		138D31B31609D8F800ECA892 /* TutorialPhotoImport@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 138D31B11609D8F800ECA892 /* TutorialPhotoImport@2x~ipad.png */; };
@@ -149,7 +151,6 @@
 		4BFC156615C7D9DC00DB02F8 /* Fav~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BFC156415C7D9DC00DB02F8 /* Fav~ipad.png */; };
 		4BFC156915C7D9E800DB02F8 /* Unfav@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BFC156715C7D9E800DB02F8 /* Unfav@2x~ipad.png */; };
 		4BFC156A15C7D9E800DB02F8 /* Unfav~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BFC156815C7D9E800DB02F8 /* Unfav~ipad.png */; };
-		4BFCA3B1167B22D300A5F015 /* (null) in Sources */ = {isa = PBXBuildFile; };
 		715215A3A1F04FB48D4F0167 /* libPods-UnitTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 901DE7AF667E488983AF1C2F /* libPods-UnitTests.a */; };
 		7D0CDD01162E5A080027D35F /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D0CDCE7162E59DD0027D35F /* SenTestingKit.framework */; };
 		7D296DAA1643818000870747 /* libSocketRocket.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D6470A71642218800DBDEA6 /* libSocketRocket.a */; };
@@ -2079,6 +2080,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				137E28A41682BE7100FE39EA /* CoreImage.framework in Frameworks */,
 				7D296DAA1643818000870747 /* libSocketRocket.a in Frameworks */,
 				7D9B1D96162BC0AD000E5350 /* Accounts.framework in Frameworks */,
 				7D9B1D97162BC0AD000E5350 /* AdSupport.framework in Frameworks */,
@@ -2951,7 +2953,6 @@
 		FF73A53313D6C2CC00D54EC6 = {
 			isa = PBXGroup;
 			children = (
-				13222F4E16806B22000C57A7 /* CoreImage.framework */,
 				DE7B38A0165CBB9900718262 /* Calendar Picker */,
 				7DB81F181637E91B009A3645 /* Collection */,
 				7D0CDD04162E5A080027D35F /* StreamTests */,
@@ -3008,6 +3009,7 @@
 			isa = PBXGroup;
 			children = (
 				DE2BBDD616761AC100EEF922 /* Kal.xcodeproj */,
+				13222F4E16806B22000C57A7 /* CoreImage.framework */,
 				80A115671647CC0A005A4246 /* MapKit.framework */,
 				4BAD7581164DED1700ADDE56 /* libsqlite3.dylib */,
 				D215E734098A44479DEC4F88 /* libPods.a */,
@@ -4712,6 +4714,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				137E28A51682BE9000FE39EA /* WAImageProcessing.m in Sources */,
 				80F42C0215F70EDF00C8A72B /* WAWebSocket.m in Sources */,
 				80A2217515ED1AFD006236AC /* WARemoteInterface+WebSocket.m in Sources */,
 				FFCEF41315199F000021AECB /* WAArticle+DiscreteLayoutAdditions.m in Sources */,
@@ -4783,7 +4786,6 @@
 				7D71DE181653806F00456B52 /* WAPhotoStreamViewCell.m in Sources */,
 				4B4AA30C16564BEE00A04DDE /* NSDate+WAAdditions.m in Sources */,
 				7DBE8DF6165B383C005C2347 /* WADayHeaderView.m in Sources */,
-				4BFCA3B1167B22D300A5F015 /* (null) in Sources */,
 				4BB0400916804C68009C3D08 /* WACollection+WARemoteInterfaceEntitySyncing.m in Sources */,
 				4B877F4D168069590039CD15 /* WAArticle.m in Sources */,
 				4B877F5D168069760039CD15 /* WAFile.m in Sources */,

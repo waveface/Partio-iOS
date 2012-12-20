@@ -9,12 +9,12 @@
 #import <Foundation/Foundation.h>
 #import <AssetsLibrary/AssetsLibrary.h>
 
-enum {
+typedef NS_OPTIONS(NSInteger, WAThumbnailMakeOptions) {
 	WAThumbnailMakeOptionExtraSmall = 1,
 	WAThumbnailMakeOptionSmall = 1 << 1,
 	WAThumbnailMakeOptionMedium = 1 << 2,
 	WAThumbnailMakeOptionLarge = 1 << 3
-}; typedef NSInteger WAThumbnailMakeOptions;
+};
 
 typedef void(^WAImageProcessComplete)(UIImage *image);
 
