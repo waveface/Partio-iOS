@@ -9,6 +9,7 @@
 #import "WAAppearance.h"
 #import <UIKit/UIKit.h>
 #import "UIKit+IRAdditions.h"
+#import "WACalendarPickerViewController.h"
 
 #pragma mark - UIAppearance
 void WADefaultAppearance(void) {
@@ -27,7 +28,7 @@ void WADefaultAppearance(void) {
 		UIImage *naviBg = UIGraphicsGetImageFromCurrentImageContext();
 		UIGraphicsEndImageContext();
 		[[UINavigationBar appearance] setBackgroundImage:naviBg forBarMetrics:UIBarMetricsDefault];
-
+	
 		CGSize shadowSize = CGSizeMake(15.0, 1.0);
 		UIGraphicsBeginImageContext(shadowSize);
 		CGContextRef shadowContext = UIGraphicsGetCurrentContext();
@@ -50,6 +51,8 @@ void WADefaultAppearance(void) {
 		
 		[[UIToolbar appearance] setTintColor:naviBgColor];
 	
+		[[UINavigationBar appearanceWhenContainedIn:[WACalendarPickerViewController class], nil] setShadowImage:[[UIImage alloc] init]];
+		
 }
 
 #pragma mark - Origianl appearance settings
@@ -100,6 +103,20 @@ IRBarButtonItem * WABarButtonItem (UIImage *image, NSString *labelText, void(^aB
 	
 	return item;
 
+}
+
+IRBarButtonItem * WABarButtonItemWithButton (UIButton *aButton, void(^aBlock)(void)) {
+	
+	IRBarButtonItem *item = nil;
+	
+	if (aBlock)
+		item.block = aBlock;
+
+	if (aButton) 
+		item = [IRBarButtonItem itemWithButton:aButton wiredAction:aBlock?item.block:nil];
+	
+	return item;
+	
 }
 
 IRBarButtonItem * WABackBarButtonItem (UIImage *image, NSString *labelText, void(^aBlock)(void)) {

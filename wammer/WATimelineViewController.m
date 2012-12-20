@@ -289,8 +289,14 @@ CGFloat (^rowSpacing) (UICollectionView *) = ^ (UICollectionView *collectionView
 		} else {
 			WACalendarPickerViewController *dpVC = [[WACalendarPickerViewController alloc] initWithFrame:calFrame style:WACalendarPickerStyleInPopover];
 			dpVC.delegate = self;
+
+			UIViewController *container = [[UIViewController alloc] init];
+			UINavigationBar *navBar = [[UINavigationBar alloc] initWithFrame:CGRectMake(0.f, 0.f, 320.f, 44.f)];
+			[navBar setBarStyle:UIBarStyleBlack];
+			[container.view addSubview:navBar];
+			[container.view addSubview:dpVC.view];
 			
-			self.popover = [[UIPopoverController alloc] initWithContentViewController:dpVC];
+			self.popover = [[UIPopoverController alloc] initWithContentViewController:container];
 			[self.popover setDelegate:self];
 			[self.popover setPopoverContentSize:CGSizeMake(320.f, 568.f)];
 			[self.popover presentPopoverFromRect:self.calendarButton.frame inView:self.view permittedArrowDirections:UIPopoverArrowDirectionUp animated:YES];

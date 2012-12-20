@@ -220,7 +220,13 @@
 			WACalendarPickerViewController *dpVC = [[WACalendarPickerViewController alloc] initWithFrame:frame style:WACalendarPickerStyleInPopover];
 			dpVC.delegate = self;
 			
-			self.popover = [[UIPopoverController alloc] initWithContentViewController:dpVC];
+			UIViewController *container = [[UIViewController alloc] init];
+			UINavigationBar *navBar = [[UINavigationBar alloc] initWithFrame:CGRectMake(0.f, 0.f, 320.f, 44.f)];
+			[navBar setBarStyle:UIBarStyleBlack];
+			[container.view addSubview:navBar];
+			[container.view addSubview:dpVC.view];
+			
+			self.popover = [[UIPopoverController alloc] initWithContentViewController:container];
 			[self.popover setPopoverContentSize:CGSizeMake(320.f, 568.f)];
 			[self.popover presentPopoverFromRect:self.calendarButton.frame inView:self.view permittedArrowDirections:UIPopoverArrowDirectionUp animated:YES];
 		}

@@ -73,11 +73,11 @@ typedef void (^completionBlock) (NSArray *days);
 		NSLog(@"%@: failed to fetch files for documents", __FUNCTION__);
 	}
 
-	NSArray *passingDays = [self.fetchedResultsController.fetchedObjects isKindOfClass:[NSNull class]]? nil: [self.fetchedResultsController.fetchedObjects valueForKey:@"day"];
-	self.callback = block;
-	if (self.callback)
+	if (block) {
+		self.callback = block;
+		NSArray *passingDays = [self.fetchedResultsController.fetchedObjects isKindOfClass:[NSNull class]]? nil: [self.fetchedResultsController.fetchedObjects valueForKey:@"day"];
 		self.callback(passingDays);
-	
+	}
 }
 
 - (void)fetchDatesFrom:(NSDate *)fromDate to:(NSDate *)toDate
@@ -309,9 +309,13 @@ typedef void (^completionBlock) (NSArray *days);
 		} else if ([item isKindOfClass:[WAFileAccessLog class]]) {
 			WAFileAccessLog *file = item;
 			
-			[cell.textLabel setText:[NSString stringWithFormat:@"Opened %@", file.filePath]];
-			[cell.textLabel setNumberOfLines:0];
-			[cell.textLabel setFont:[UIFont systemFontOfSize:16.f]];
+			UILabel *title = [[UILabel alloc] init];
+			[title setText:[NSString stringWithFormat:@"Opened %@", [[file.filePath componentsSeparatedByString:@"\\"] lastObject]]];
+			[title setBackgroundColor:[UIColor colorWithRed:0.89f green:0.89f blue:0.89f alpha:1.f]];
+			title.numberOfLines = 0;
+			[title setFrame:CGRectMake(10, 0, 220, 54)];
+			[cell.contentView addSubview:title];
+
 			[cell setAccessoryView:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"DocumentsIcon"]]];
 		
 		}

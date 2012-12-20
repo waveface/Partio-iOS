@@ -39,6 +39,7 @@ extern NSArray *kWADefaultBarButtonHighlightedGradientColors;
 extern UIColor *kWADefaultBarButtonHighlightedBackgroundColor;
 
 extern IRBarButtonItem * WABarButtonItem (UIImage *image, NSString *title, void(^block)(void));
+extern IRBarButtonItem * WABarButtonItemWithButton (UIButton *button, void(^block)(void));
 extern IRBarButtonItem * WABackBarButtonItem (UIImage *image, NSString *title, void(^block)(void));
 extern IRBarButtonItem * WATransparentBlackBackBarButtonItem (UIImage *image, NSString *title, void(^block)(void));
 
