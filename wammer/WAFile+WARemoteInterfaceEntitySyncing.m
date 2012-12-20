@@ -156,7 +156,7 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
         [returnedDictionary setObject: @{@"day": day}
 			 forKey:@"photoDay"];
       } else {
-        NSLog(@"Unable to convert event time");
+        NSLog(@"Unable to convert event time on attachment: %@", incomingRepresentation);
       }
     }
     
