@@ -25,9 +25,11 @@
 #import "WAPhotoStreamViewController.h"
 #import <CoreData+MagicalRecord.h>
 #import "WADocumentStreamViewController.h"
+#import "WAWebStreamViewController.h"
 #import "WADocumentDay.h"
 #import "WAEventDay.h"
 #import "WAPhotoDay.h"
+#import "WAWebpageDay.h"
 
 static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPostsViewControllerPhone_RepresentedObjectURI";
 
@@ -117,6 +119,8 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 		self.title = NSLocalizedString(@"PHOTOS_TITLE", @"in day view");
 	} else if ([containedClass isSubclassOfClass:[WADocumentStreamViewController class]]) {
 		self.title = NSLocalizedString(@"DOCUMENTS_CONTROLLER_TITLE", @"Title for document view controller");
+	} else if ([containedClass isSubclassOfClass:[WAWebStreamViewController class]]) {
+		self.title = NSLocalizedString(@"WEBPAGES_CONTROLLER_TITLE", @"Title for web pages view controller");
 	}
 	
 
@@ -141,14 +145,7 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 		
 		if ((idx != wSelf.paginatedView.currentPage) && ((idx + 1) != wSelf.paginatedView.currentPage) && ((idx-1) != wSelf.paginatedView.currentPage)) {
 			
-			NSDate *theDay = nil;
-			if ([containedClass isSubclassOfClass:[WATimelineViewController class]])
-				theDay = [(WAEventDay*)self.fetchedResultsController.fetchedObjects[idx] day];
-			else if ([containedClass isSubclassOfClass:[WAPhotoStreamViewController class]])
-				theDay = [(WAPhotoDay*)self.fetchedResultsController.fetchedObjects[idx] day];
-			else if ([containedClass isSubclassOfClass:[WADocumentStreamViewController class]])
-				theDay = [(WADocumentDay*)self.fetchedResultsController.fetchedObjects[idx] day];
-
+			NSDate *theDay = [self dayAtPageIndex:idx];
 			if (!theDay)
 				return;
 
@@ -189,6 +186,7 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 	NSString *entityName = nil;
 	
 	if ([containedClass isSubclassOfClass:[WATimelineViewController class]]) {
+		
 		entityName = @"WAEventDay";
 		
 	} else if ([containedClass isSubclassOfClass:[WAPhotoStreamViewController class]]) {
@@ -199,6 +197,10 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 		
 		entityName = @"WADocumentDay";
 
+	} else if ([containedClass isSubclassOfClass:[WAWebStreamViewController class]]) {
+
+		entityName = @"WAWebpageDay";
+		
 	}
 	
 	NSManagedObjectContext *context = [[WADataStore defaultStore] defaultAutoUpdatedMOC];
@@ -229,15 +231,9 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 
 - (id) controllerAtPageIndex: (NSUInteger) index {
 	
-	NSDate *dateForPage = nil;
-	if ([containedClass isSubclassOfClass:[WATimelineViewController class]])
-		dateForPage = [(WAEventDay*)self.fetchedResultsController.fetchedObjects[index] day];
-	else if ([containedClass isSubclassOfClass:[WAPhotoStreamViewController class]])
-		dateForPage = [(WAPhotoDay*)self.fetchedResultsController.fetchedObjects[index] day];
-	else if ([containedClass isSubclassOfClass:[WADocumentStreamViewController class]])
-		dateForPage = [(WADocumentDay*)self.fetchedResultsController.fetchedObjects[index] day];
+	NSDate *dateForPage = [self dayAtPageIndex:index];
 	
-	if (dateForPage == nil)
+	if (!dateForPage)
 		return nil;
 	
 	id vc = self.daysControllers[dateForPage];
@@ -254,6 +250,21 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 	
 }
 
+- (NSDate *) dayAtPageIndex:(NSInteger)idx {
+	
+	NSDate *theDay = nil;
+	if ([containedClass isSubclassOfClass:[WATimelineViewController class]])
+		theDay = [(WAEventDay*)self.fetchedResultsController.fetchedObjects[idx] day];
+	else if ([containedClass isSubclassOfClass:[WAPhotoStreamViewController class]])
+		theDay = [(WAPhotoDay*)self.fetchedResultsController.fetchedObjects[idx] day];
+	else if ([containedClass isSubclassOfClass:[WADocumentStreamViewController class]])
+		theDay = [(WADocumentDay*)self.fetchedResultsController.fetchedObjects[idx] day];
+	else if ([containedClass isSubclassOfClass:[WAWebStreamViewController class]])
+		theDay = [(WAWebpageDay*)self.fetchedResultsController.fetchedObjects[idx] day];
+
+	return theDay;
+	
+}
 
 - (UIView *) viewForPaginatedView:(IRPaginatedView *)paginatedView atIndex:(NSUInteger)index {
 
@@ -273,13 +284,7 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 
 - (void) willRemoveView:(UIView *)view atIndex:(NSUInteger)index {
 
-	NSDate *dateForPage = nil;
-	if ([containedClass isSubclassOfClass:[WATimelineViewController class]])
-		dateForPage = [(WAEventDay*)self.fetchedResultsController.fetchedObjects[index] day];
-	else if ([containedClass isSubclassOfClass:[WAPhotoStreamViewController class]])
-		dateForPage = [(WAPhotoDay*)self.fetchedResultsController.fetchedObjects[index] day];
-	else if ([containedClass isSubclassOfClass:[WADocumentStreamViewController class]])
-		dateForPage = [(WADocumentDay*)self.fetchedResultsController.fetchedObjects[index] day];
+	NSDate *dateForPage = [self dayAtPageIndex:index];
 
 	UIViewController *controller = (self.daysControllers)[dateForPage];
 	if (controller)
@@ -519,14 +524,7 @@ BOOL dripdownMenuOpened = NO;
 	NSUInteger numOfObjects = [self.fetchedResultsController.fetchedObjects count];
 	for (int idx = 0; idx < numOfObjects; idx++ ) {
 
-		NSDate *theDay = nil;
-		if ([containedClass isSubclassOfClass:[WATimelineViewController class]])
-			theDay = [(WAEventDay*)self.fetchedResultsController.fetchedObjects[idx] day];
-		else if ([containedClass isSubclassOfClass:[WAPhotoStreamViewController class]])
-			theDay = [(WAPhotoDay*)self.fetchedResultsController.fetchedObjects[idx] day];
-		else if ([containedClass isSubclassOfClass:[WADocumentStreamViewController class]])
-			theDay = [(WADocumentDay*)self.fetchedResultsController.fetchedObjects[idx] day];
-
+		NSDate *theDay = [self dayAtPageIndex:idx];
 		if (!theDay)
 			return NO;
 		

@@ -219,7 +219,7 @@ CGFloat (^rowSpacing) (UICollectionView *) = ^ (UICollectionView *collectionView
 
 	CGFloat width = CGRectGetWidth(collectionView.frame);
 	CGFloat spacing = rowSpacing(collectionView);
-	return CGSizeMake(width - spacing * 2, 44);
+	return CGSizeMake(width - spacing * 2, 50);
 	
 }
 

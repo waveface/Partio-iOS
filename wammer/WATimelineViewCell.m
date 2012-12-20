@@ -15,6 +15,8 @@
 #import "WALocation.h"
 #import "MKMapView+ZoomLevel.h"
 
+NSString * kWAEventTimelineViewCellKVOContext = @"EventTimelineViewCellKVOContext";
+
 @interface WATimelineViewCell ()
 
 @property (nonatomic, strong) IBOutletCollection(UIImageView) NSArray *photoImageViews;
@@ -101,7 +103,7 @@
 			
 			[file irObserve:@"smallThumbnailImage"
 							options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew
-							context:nil
+							context:&kWAEventTimelineViewCellKVOContext
 						withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
 							
 							dispatch_async(dispatch_get_main_queue(), ^{
@@ -269,5 +271,19 @@
 	
 }
 
+#pragma mark - UICollectionReusableView delegates
+
+- (void)prepareForReuse {
+	
+	if (self.representedArticle) {
+		for (WAFile *file in self.representedArticle.files) {
+			[file irRemoveObserverBlocksForKeyPath:@"smallThumbnailImage" context:&kWAEventTimelineViewCellKVOContext];
+		}
+	}
+	for (UIImageView *view in self.photoImageViews) {
+    view.image = nil;
+	}
+
+}
 
 @end

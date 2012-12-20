@@ -26,6 +26,7 @@
 #import "WAStatusBar.h"
 #import "WACalendarPickerViewController.h"
 #import "WADocumentStreamViewController.h"
+#import "WAWebStreamViewController.h"
 #import "WACollectionViewController.h"
 
 @interface WASlidingMenuViewController () 
@@ -66,6 +67,14 @@
 
 			return navVC;
 		}
+			
+		case WAWebpagesViewStyle: {
+			WADayViewController *swVC = [[WADayViewController alloc] initWithClassNamed:[WAWebStreamViewController class]];
+			WANavigationController *navVC = [[WANavigationController alloc] initWithRootViewController:swVC];
+			swVC.view.backgroundColor = [UIColor colorWithRed:0.95f green:0.95f blue:0.95f alpha:1];
+			return navVC;
+		}
+			
 		case WADocumentsViewStyle: {
 			WADayViewController *swVC = [[WADayViewController alloc] initWithClassNamed:[WADocumentStreamViewController class]];
 			WANavigationController *navVC = [[WANavigationController alloc] initWithRootViewController:swVC];
@@ -73,6 +82,7 @@
 
 			return navVC;
 		}
+			
 		case WACollectionsViewStyle: {
 			WACollectionViewController *collectionViewController = [[WACollectionViewController alloc] init];
 			WANavigationController *navController = [[WANavigationController alloc] initWithRootViewController:collectionViewController];
@@ -318,7 +328,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-	return 7;
+	return 8;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -373,18 +383,23 @@
 			cell.imageView.image = [UIImage imageNamed:@"DocumentsIcon"];
 			cell.textLabel.text = NSLocalizedString(@"SLIDING_MENU_TITLE_DOCS", @"Title for Documents in the sliding menu");
 			break;
-
+			
 		case 4:
+			cell.imageView.image = [UIImage imageNamed:@"Webicon"];
+			cell.textLabel.text = NSLocalizedString(@"SLIDING_MENU_TITLE_WEBS", @"Title for Web pages in the sliding menu");
+			break;
+
+		case 5:
 			cell.imageView.image = [UIImage imageNamed:@"CollectionIcon"];
 			cell.textLabel.text = NSLocalizedString(@"SLIDING_MENU_TITLE_COLLECTIONS", @"Title for Collections in the sliding menu");
 			break;
 			
-		case 5:
+		case 6:
 			cell.imageView.image = [UIImage imageNamed:@"CalIcon"];
 			cell.textLabel.text = NSLocalizedString(@"SLIDING_MENU_TITLE_CALENDAR", @"Title for Calendar in the sliding menu");
 			break;
 			
-		case 6:
+		case 7:
 			cell.imageView.image = [UIImage imageNamed:@"SettingsIcon"];
 			cell.textLabel.text = NSLocalizedString(@"SLIDING_MENU_TITLE_SETTINGS", @"Title for Settings in the sliding menu");
 			break;
@@ -411,22 +426,27 @@
 			break;
 			
 		case 2:
-			cell.backgroundColor = [UIColor colorWithRed:0.463 green:0.667 blue:0.8 alpha:1.0];
+			cell.backgroundColor = [UIColor colorWithRed:0.96f green:0.647f blue:0.011f alpha:1.0];
 			break;
 		
 		case 3:
-			cell.backgroundColor = [UIColor colorWithRed:1 green:0.651 blue:0 alpha:1.0];
-			break;
-
-		case 4:
-			cell.backgroundColor = [UIColor colorWithRed:0.486 green:0.612 blue:0.208 alpha:1.0];
+			cell.backgroundColor = [UIColor colorWithRed:0.72f green:0.701f blue:0.69f alpha:1.0];
 			break;
 			
+		case 4:
+			cell.backgroundColor = [UIColor colorWithRed:0.211f green:0.694f blue:0.749f alpha:1.0f];
+			break;
+
 		case 5:
-			cell.backgroundColor = [UIColor colorWithRed:0.176 green:0.278 blue:0.475 alpha:1.0];
+			cell.backgroundColor = [UIColor colorWithRed:0.039f green:0.423f blue:0.529f alpha:1.0];
 			break;
 			
 		case 6:
+			cell.backgroundColor = [UIColor colorWithRed:0.949f green:0.49f blue:0.305f alpha:1.0];
+			break;
+			
+		case 7:
+			cell.backgroundColor = [UIColor colorWithRed:0.572f green:0.8f blue:0.647f alpha:1.0f];
 			break;
 	}
 	
@@ -461,11 +481,17 @@
 			
 		case 4: {
 			[self.viewDeckController closeLeftView];
+			[self switchToViewStyle:WAWebpagesViewStyle];
+			break;
+		}
+			
+		case 5: {
+			[self.viewDeckController closeLeftView];
 			[self switchToViewStyle:WACollectionsViewStyle];
 			break;
 		}
 
-		case 5: {
+		case 6: {
 			[self.viewDeckController closeLeftView];
 			
 			WACalendarPickerViewController *dpVC = [[WACalendarPickerViewController alloc] initWithFrame:self.view.frame style:WACalendarPickerStyleMenuToday];
@@ -474,7 +500,7 @@
 			break;
 		}
 
-		case 6: { // Settings
+		case 7: { // Settings
 			[self handleUserInfo];
 			break;
 		}

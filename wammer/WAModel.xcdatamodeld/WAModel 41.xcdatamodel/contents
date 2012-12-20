@@ -333,7 +333,7 @@
     </entity>
     <entity name="WAWebpageDay" representedClassName="WAWebpageDay" syncable="YES">
         <attribute name="day" optional="YES" attributeType="Date" syncable="YES"/>
-        <relationship name="accessLogs" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="WAFileAccessLog" inverseName="dayWebpages" inverseEntity="WAFileAccessLog" syncable="YES"/>
+        <relationship name="accessLogs" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="WAFileAccessLog" inverseName="dayWebpages" inverseEntity="WAFileAccessLog" syncable="YES"/>
     </entity>
     <fetchRequest name="WAFRAllCaches" entity="WACache"/>
     <fetchRequest name="WAFRAllFiles" entity="WAFile"/>

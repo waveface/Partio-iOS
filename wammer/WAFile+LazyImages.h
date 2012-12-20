@@ -16,8 +16,6 @@
 @property (nonatomic, readonly, retain) UIImage *smallThumbnailImage;
 @property (nonatomic, readonly, retain) UIImage *extraSmallThumbnailImage;
 
-+ (dispatch_queue_t) sharedExtraSmallThumbnailMakingQueue;
-
 - (UIImage *) smallestPresentableImage;	//	Conforms to KVO; automatically chooses the lowest resolution thing
 - (UIImage *) bestPresentableImage;	//	Conforms to KVO; automatically chooses the highest resolution thing
 

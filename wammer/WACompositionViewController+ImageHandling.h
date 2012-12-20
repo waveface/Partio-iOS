@@ -8,7 +8,7 @@
 
 #import "WACompositionViewController.h"
 #import "WAFile.h"
-#import "WAFile+ThumbnailMaker.h"
+#import "WADefines.h"
 
 
 @class ALAsset;
@@ -33,14 +33,14 @@
  *	@param representedAsset The asset of file from camera roll.
  *	@param options The options specify what kind of thumbnails to be generated.
  */
-- (void) makeAssociatedImagesOfFile:(WAFile *)file withRepresentedAsset:(ALAsset *)representedAsset options:(WAThumbnailMakeOptions)options;
+- (void) makeAssociatedImagesOfFile:(WAFile *)file withRepresentedAsset:(ALAsset *)representedAsset type:(WAThumbnailType)type;
 
 /** Handle incoming assets from camera roll.
  *
  *	@param representedAsset The asset of file from camera roll.
  *	@param options The options specify what kind of thumbnails to be generated, will be passed to makeAssociatedImagesOfFile:withRepresentedAsset:options:.
  */
-- (void) handleIncomingSelectedAsset:(ALAsset *)representedAsset options:(WAThumbnailMakeOptions)options;
+- (void) handleIncomingSelectedAsset:(ALAsset *)representedAsset type:(WAThumbnailType)type;
 
 - (BOOL) shouldDismissSelfOnCameraCancellation;
 
