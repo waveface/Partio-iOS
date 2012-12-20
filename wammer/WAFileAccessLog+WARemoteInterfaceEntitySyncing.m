@@ -20,6 +20,7 @@
 	
 	return @{
 		@"day": @"WADocumentDay",
+		@"dayWebpages": @"WAWebpageDay",
 	};
 	
 }
@@ -33,7 +34,8 @@
 		mapping = @{
 			@"accessTime": @"accessTime",
 			@"filePath": @"filePath",
-			@"day": @"day"
+			@"day": @"day",
+			@"dayWebpages": @"dayWebpages"
 		};
 
 	});

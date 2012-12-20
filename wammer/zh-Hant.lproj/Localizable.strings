@@ -348,6 +348,12 @@
 /* No comment provided by engineer. */
 "MONTH_SINGULAR" = "%d月";
 
+/* Navigation bar title while loading web page failed */
+"NAVI_TITLE_WEB_FAILED" = "載入失敗";
+
+/* Navigation bar title for web preview while loading */
+"NAVI_TITLE_WEB_LOADING" = "載入中..";
+
 /* Nickname placeholder in signup page */
 "NICKNAME_PLACEHOLDER" = "John Appleseed";
 

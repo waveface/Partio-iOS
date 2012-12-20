@@ -10,13 +10,19 @@
 #import "WAWebStreamViewCell.h"
 #import "WADayHeaderView.h"
 #import "NSDate+WAAdditions.h"
+#import "WAFileAccessLog.h"
+#import "NINetworkImageView.h"
 #import "WADataStore.h"
+#import "WANavigationController.h"
+#import "WAWebPreviewViewController.h"
+#import "WAAppearance.h"
 
 @interface WAWebStreamViewController () <NSFetchedResultsControllerDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout>
 
 @property (nonatomic, readwrite, strong) NSDate *currentDate;
 @property (nonatomic, readwrite, strong) NSFetchedResultsController *fetchedResultsController;
 @property (nonatomic, readwrite, strong) UICollectionView *collectionView;
+@property (nonatomic, readwrite, strong) NSArray *webPages;
 
 @end
 
@@ -27,24 +33,38 @@
 	self = [super init];
 	if (self) {
 		
-		self.currentDate = date;
+		self.currentDate = [date dayBegin];
 		
-		NSManagedObjectContext *context = [[WADataStore defaultStore] autoUpdatingMOC];
+		NSManagedObjectContext *context = [[WADataStore defaultStore] defaultAutoUpdatedMOC];
 		
 		NSFetchRequest *fr = [[NSFetchRequest alloc] init];
-		NSEntityDescription *entity = [NSEntityDescription entityForName:@"WAFile" inManagedObjectContext:context];
+		NSEntityDescription *entity = [NSEntityDescription entityForName:@"WAFileAccessLog" inManagedObjectContext:context];
 		[fr setEntity:entity];
-		NSPredicate *predicate = [NSPredicate predicateWithFormat:@"created BETWEEN {%@, %@} AND type == 'web'", [self.currentDate dayBegin], [self.currentDate dayEnd]];
+		NSPredicate *predicate = [NSPredicate predicateWithFormat:@"dayWebpages.day == %@", self.currentDate];
 		[fr setPredicate:predicate];
-		NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"created" ascending:YES];
+		NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"accessTime" ascending:YES];
 		[fr setSortDescriptors:@[sortDescriptor]];
-		
+		[fr setRelationshipKeyPathsForPrefetching:@[@"file"]];
+		[fr setRelationshipKeyPathsForPrefetching:@[@"dayWebpages"]];
+
 		self.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fr managedObjectContext:context sectionNameKeyPath:nil cacheName:nil];
-		self.fetchedResultsController.delegate = self;
 		
 		NSError *fetchingError;
-		if (![self.fetchedResultsController performFetch:&fetchingError])
+		if (![self.fetchedResultsController performFetch:&fetchingError]) {
 			NSLog(@"error fetching: %@", fetchingError);
+		} else {
+			
+			NSMutableDictionary *dict = [NSMutableDictionary dictionary];
+			for (WAFileAccessLog *log in self.fetchedResultsController.fetchedObjects) {
+				if (![dict objectForKey:log.file.identifier]) {
+					
+					dict[log.file.identifier] = log;
+					
+				}
+			}
+			self.webPages = [[dict allValues] copy];
+			
+		}
 
 	}
 	
@@ -57,7 +77,10 @@
 	[super viewDidLoad];
 	
 	UICollectionViewFlowLayout *flowlayout = [[UICollectionViewFlowLayout alloc] init];
-	flowlayout.itemSize = (CGSize) {320, 310};
+	flowlayout.itemSize = (CGSize) {320, 250};
+	flowlayout.sectionInset = UIEdgeInsetsMake(0, 0, 2, 0);
+	flowlayout.minimumLineSpacing = 0;
+	flowlayout.minimumInteritemSpacing = 0;
 	flowlayout.scrollDirection = UICollectionViewScrollDirectionVertical;
 
 	CGRect rect = (CGRect) { CGPointZero, self.view.frame.size };
@@ -73,7 +96,7 @@
 	self.view.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
 	
 	[self.collectionView registerNib:[UINib nibWithNibName:@"WAWebStreamViewCell" bundle:nil] forCellWithReuseIdentifier:@"WAWebStreamViewCell"];
-	[self.collectionView registerNib:[UINib nibWithNibName:@"WADayHeaderView" bundle:nil] forCellWithReuseIdentifier:@""];
+	[self.collectionView registerNib:[UINib nibWithNibName:@"WADayHeaderView" bundle:nil] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"WADayHeaderView"];
 
 }
 
@@ -103,6 +126,19 @@
 	
 }
 
++ (UIImage *) cardBackgroundImage {
+	
+	static UIImage *image = nil;
+	
+	static dispatch_once_t onceToken;
+	dispatch_once(&onceToken, ^{
+    image = [[UIImage imageNamed:@"EventCardBG"] resizableImageWithCapInsets:UIEdgeInsetsMake(15, 15, 15, 15) resizingMode:UIImageResizingModeTile];
+	});
+	
+	return image;
+	
+}
+
 #pragma mark - UICollectionView DataSource
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
 
@@ -112,14 +148,13 @@
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
 	
-	return [self.fetchedResultsController.sections[0] numberOfObjects];
+	return self.webPages.count;
 	
 }
 
 - (UICollectionViewCell*) collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
-	WAFile *file = [self.fetchedResultsController objectAtIndexPath:indexPath];
-	if (!file)
-		return nil;
+	WAFile *file = ((WAFileAccessLog*)self.webPages[indexPath.row]).file;
+	NSAssert(file!=nil, @"Web page access log should refer to one WAFile");
 	
 	WAWebStreamViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"WAWebStreamViewCell" forIndexPath:indexPath];
 	
@@ -129,8 +164,43 @@
 	NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
 	[formatter setDateFormat:@"hh:mm"];
 
-	cell.dateTimeLabel.text = [formatter stringFromDate:file.created];
+	cell.dateTimeLabel.text = [formatter stringFromDate:((WAFileAccessLog*)self.webPages[indexPath.row]).accessTime];
+
+
+	[file irObserve:@"thumbnailImage"
+					options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew
+					context:nil
+				withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
+					
+					dispatch_async(dispatch_get_main_queue(), ^{
+						
+						cell.imageView.image = (UIImage*)toValue;
+						
+					});
+					
+				}];
+
 	
+	if (file.webFaviconURL) {
+		[cell.faviconImageView setPathToNetworkImage:file.webFaviconURL];
+		cell.faviconImageView.hidden = NO;
+
+		CGRect newFrame = cell.webURLLabel.frame;
+		newFrame.origin = cell.faviconImageView.frame.origin;
+		newFrame.origin.x += cell.faviconImageView.frame.size.width + 1;
+		cell.webURLLabel.frame = newFrame;
+
+	} else {
+		cell.faviconImageView.image = nil;
+		cell.faviconImageView.hidden = YES;
+
+		CGRect newFrame = cell.webURLLabel.frame;
+		newFrame.origin = cell.faviconImageView.frame.origin;
+		cell.webURLLabel.frame = newFrame;
+
+	}
+	
+	cell.cardBGImageView.image = [[self class] cardBackgroundImage];
 	return cell;
 	
 }
@@ -180,6 +250,37 @@ CGFloat (^rowSpacingWeb) (UICollectionView *) = ^ (UICollectionView *collectionV
 
 #pragma mark - UICollectionView Delegate
 -(void) collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
+	
+	WAFile *file = ((WAFileAccessLog*)self.webPages[indexPath.row]).file;
+	NSAssert(file!=nil, @"Web page access log should refer to one WAFile");
+
+	WAWebPreviewViewController *webVC = [[WAWebPreviewViewController alloc] init];
+
+	webVC.urlString = file.webURL;
+
+	WAWebStreamViewCell *cell = (WAWebStreamViewCell*)[collectionView cellForItemAtIndexPath:indexPath];
+	UIColor *origColor = cell.backgroundColor;
+	cell.backgroundColor = [UIColor lightGrayColor];
+	
+	if (isPad()) {
+		
+		WANavigationController *navVC = [[WANavigationController alloc] initWithRootViewController:webVC];
+		
+		navVC.modalPresentationStyle = UIModalPresentationFormSheet;
+
+		[self presentViewController:navVC animated:YES completion:^{
+			cell.backgroundColor = origColor;
+			webVC.navigationItem.leftBarButtonItem = (UIBarButtonItem*)WABarButtonItem([UIImage imageNamed:@"back"], @"", ^{
+				[webVC dismissViewControllerAnimated:YES completion:nil];
+			});
+
+		}];
+	} else {
+		
+		[self.navigationController pushViewController:webVC animated:YES];
+		cell.backgroundColor = origColor;
+		
+	}
 	
 }
 

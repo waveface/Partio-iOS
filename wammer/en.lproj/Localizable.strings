@@ -348,6 +348,12 @@
 /* No comment provided by engineer. */
 "MONTH_SINGULAR" = "%d month";
 
+/* Navigation bar title while loading web page failed */
+"NAVI_TITLE_WEB_FAILED" = "Page Loaded Failed";
+
+/* Navigation bar title for web preview while loading */
+"NAVI_TITLE_WEB_LOADING" = "Loading..";
+
 /* Nickname placeholder in signup page */
 "NICKNAME_PLACEHOLDER" = "John Appleseed";
 
@@ -568,7 +574,7 @@
 "WEB_SERVICES_TITLE" = "Web Services";
 
 /* Title for web pages view controller */
-"WEBPAGES_CONTROLLER_TITLE" = "Web Pages";
+"WEBPAGES_CONTROLLER_TITLE" = "WEB PAGES";
 
 /* No comment provided by engineer. */
 "WEEK_PLURAL" = "%d weeks";

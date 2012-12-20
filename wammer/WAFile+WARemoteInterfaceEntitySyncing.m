@@ -156,23 +156,39 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
 														 forKey:@"photoDay"];
 		}
 		
-	} else if ([incomingFileType isEqualToString:@"web"]) {
+	} else if ([incomingFileType isEqualToString:@"webthumb"]) {
 		
+		if (incomingRepresentation[@"web_meta"]) {
 		
-		/*
-    NSString *webURLString = [incomingRepresentation valueForKeyPath:@"image_meta.web_url"];
-		if ([webURLString isKindOfClass:[NSString class]])
-			returnedDictionary[@"web_url"] = webURLString;
+			NSString *resourceURLString = [returnedDictionary valueForKeyPath:@"url"];
+			if ([resourceURLString isKindOfClass:[NSString class]])
+				returnedDictionary[@"thumbnail_url"] = [NSString stringWithFormat:@"%@&image_meta=medium", resourceURLString];
+			
+			NSString *webURLString = [incomingRepresentation valueForKeyPath:@"web_meta.url"];
+			if ([webURLString isKindOfClass:[NSString class]])
+				returnedDictionary[@"web_url"] = webURLString;
 		
-		NSString *webFaviconURLString = [incomingRepresentation valueForKeyPath:@"image_meta.web_favicon"];
-		if ([webFaviconURLString isKindOfClass:[NSString class]])
-			returnedDictionary[@"web_favicon"] = webFaviconURLString;
+			NSString *webFaviconURLString = [incomingRepresentation valueForKeyPath:@"web_meta.favicon"];
+			if ([webFaviconURLString isKindOfClass:[NSString class]])
+				returnedDictionary[@"web_favicon"] = webFaviconURLString;
 		
-		NSString *webTitleString = [incomingRepresentation valueForKeyPath:@"image_meta.web_title"];
-		if ([webTitleString isKindOfClass:[NSString class]])
-			returnedDictionary[@"web_title"] = webTitleString;
-		*/
-  
+			NSString *webTitleString = [incomingRepresentation valueForKeyPath:@"web_meta.title"];
+			if ([webTitleString isKindOfClass:[NSString class]])
+				returnedDictionary[@"web_title"] = webTitleString;
+		
+			NSMutableArray *accessLogArray = [NSMutableArray array];
+			for (NSDictionary *access in [incomingRepresentation valueForKeyPath:@"web_meta.accesses"]) {
+				NSDate *date = [NSDate dateFromISO8601String:access[@"time"]];
+				NSDictionary *accessLog = @{
+					@"accessTime" : date,
+					@"dayWebpages": @{@"day": [date dayBegin]}
+				};
+				[accessLogArray addObject:accessLog];
+			}
+			if (accessLogArray.count)
+				returnedDictionary[@"accessLogs"] = accessLogArray;
+		}
+		
   } else if ([incomingFileType isEqualToString:@"doc"]) {
   
 		if (incomingRepresentation[@"doc_meta"]) {
