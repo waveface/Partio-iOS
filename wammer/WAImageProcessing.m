@@ -8,7 +8,6 @@
 
 #import "WAImageProcessing.h"
 #import <CoreImage/CoreImage.h>
-#import "AssetsLibrary+IRAdditions.h"
 
 static CGFloat const kWAFileExtraSmallImageSideLength = 150; // the side length of asset's square thumbnails in retina display
 static CGFloat const kWAFileSmallImageSideLength = 512;
@@ -17,109 +16,25 @@ static CGFloat const kWAFileLargeImageSideLength = 2048;
 
 @implementation WAImageProcessing
 
-+ (void)makeThumbnailWithImageFilePath:(NSString *)filePath options:(WAThumbnailMakeOptions)options completeBlock:(WAImageProcessComplete)didCompleteBlock {
++ (UIImage *)scaledImageWithCGImage:(CGImageRef)image type:(WAThumbnailType)type orientation:(UIImageOrientation)orientation {
   
-  if (options & WAThumbnailMakeOptionExtraSmall) {
-    [[WAImageProcessing sharedImageProcessQueue] addOperationWithBlock:^{
-      UIImage *image = [UIImage imageWithData:[NSData dataWithContentsOfFile:filePath options:NSDataReadingMappedIfSafe error:nil]];
-      UIImage *scaledImage = [WAImageProcessing scaledImageWithCGImage:image.CGImage sideLength:kWAFileExtraSmallImageSideLength orientation:image.imageOrientation];
-      didCompleteBlock(scaledImage);
-    }];
+  CGFloat sideLength = 0;
+  switch (type) {
+    case WAThumbnailTypeExtraSmall:
+      sideLength = kWAFileExtraSmallImageSideLength;
+      break;
+    case WAThumbnailTypeSmall:
+      sideLength = kWAFileSmallImageSideLength;
+      break;
+    case WAThumbnailTypeMedium:
+      sideLength = kWAFileMediumImageSideLength;
+      break;
+    case WAThumbnailTypeLarge:
+      sideLength = kWAFileLargeImageSideLength;
+      break;
+    default:
+      break;
   }
-  
-  if (options & WAThumbnailMakeOptionSmall) {
-    [[WAImageProcessing sharedImageProcessQueue] addOperationWithBlock:^{
-      UIImage *image = [UIImage imageWithData:[NSData dataWithContentsOfFile:filePath options:NSDataReadingMappedIfSafe error:nil]];
-      UIImage *scaledImage = [WAImageProcessing scaledImageWithCGImage:image.CGImage sideLength:kWAFileSmallImageSideLength orientation:image.imageOrientation];
-      didCompleteBlock(scaledImage);
-    }];
-  }
-  
-  if (options & WAThumbnailMakeOptionMedium) {
-    [[WAImageProcessing sharedImageProcessQueue] addOperationWithBlock:^{
-      UIImage *image = [UIImage imageWithData:[NSData dataWithContentsOfFile:filePath options:NSDataReadingMappedIfSafe error:nil]];
-      UIImage *scaledImage = [WAImageProcessing scaledImageWithCGImage:image.CGImage sideLength:kWAFileMediumImageSideLength orientation:image.imageOrientation];
-      didCompleteBlock(scaledImage);
-    }];
-  }
-  
-  if (options & WAThumbnailMakeOptionLarge) {
-    [[WAImageProcessing sharedImageProcessQueue] addOperationWithBlock:^{
-      UIImage *image = [UIImage imageWithData:[NSData dataWithContentsOfFile:filePath options:NSDataReadingMappedIfSafe error:nil]];
-      UIImage *scaledImage = [WAImageProcessing scaledImageWithCGImage:image.CGImage sideLength:kWAFileLargeImageSideLength orientation:image.imageOrientation];
-      didCompleteBlock(scaledImage);
-    }];
-  }
-  
-}
-
-+ (void)makeThumbnailWithUIImage:(UIImage *)image options:(WAThumbnailMakeOptions)options completeBlock:(WAImageProcessComplete)didCompleteBlock {
-  
-  if (options & WAThumbnailMakeOptionExtraSmall) {
-    [[WAImageProcessing sharedImageProcessQueue] addOperationWithBlock:^{
-      UIImage *scaledImage = [WAImageProcessing scaledImageWithCGImage:image.CGImage sideLength:kWAFileExtraSmallImageSideLength orientation:image.imageOrientation];
-      didCompleteBlock(scaledImage);
-    }];
-  }
-  
-  if (options & WAThumbnailMakeOptionSmall) {
-    [[WAImageProcessing sharedImageProcessQueue] addOperationWithBlock:^{
-      UIImage *scaledImage = [WAImageProcessing scaledImageWithCGImage:image.CGImage sideLength:kWAFileSmallImageSideLength orientation:image.imageOrientation];
-      didCompleteBlock(scaledImage);
-    }];
-  }
-  
-  if (options & WAThumbnailMakeOptionMedium) {
-    [[WAImageProcessing sharedImageProcessQueue] addOperationWithBlock:^{
-      UIImage *scaledImage = [WAImageProcessing scaledImageWithCGImage:image.CGImage sideLength:kWAFileMediumImageSideLength orientation:image.imageOrientation];
-      didCompleteBlock(scaledImage);
-    }];
-  }
-  
-  if (options & WAThumbnailMakeOptionLarge) {
-    [[WAImageProcessing sharedImageProcessQueue] addOperationWithBlock:^{
-      UIImage *scaledImage = [WAImageProcessing scaledImageWithCGImage:image.CGImage sideLength:kWAFileLargeImageSideLength orientation:image.imageOrientation];
-      didCompleteBlock(scaledImage);
-    }];
-  }
-  
-}
-
-+ (void)makeThumbnailWithAsset:(ALAsset *)asset options:(WAThumbnailMakeOptions)options completeBlock:(WAImageProcessComplete)didCompleteBlock {
-  
-  ALAssetRepresentation *representation = [asset defaultRepresentation];
-  
-  if (options & WAThumbnailMakeOptionExtraSmall) {
-    [[WAImageProcessing sharedImageProcessQueue] addOperationWithBlock:^{
-      UIImage *scaledImage = [WAImageProcessing scaledImageWithCGImage:[representation fullResolutionImage] sideLength:kWAFileExtraSmallImageSideLength orientation:irUIImageOrientationFromAssetOrientation([representation orientation])];
-      didCompleteBlock(scaledImage);
-    }];
-  }
-  
-  if (options & WAThumbnailMakeOptionSmall) {
-    [[WAImageProcessing sharedImageProcessQueue] addOperationWithBlock:^{
-      UIImage *scaledImage = [WAImageProcessing scaledImageWithCGImage:[representation fullResolutionImage] sideLength:kWAFileSmallImageSideLength orientation:irUIImageOrientationFromAssetOrientation([representation orientation])];
-      didCompleteBlock(scaledImage);
-    }];
-  }
-  
-  if (options & WAThumbnailMakeOptionMedium) {
-    [[WAImageProcessing sharedImageProcessQueue] addOperationWithBlock:^{
-      UIImage *scaledImage = [WAImageProcessing scaledImageWithCGImage:[representation fullResolutionImage] sideLength:kWAFileMediumImageSideLength orientation:irUIImageOrientationFromAssetOrientation([representation orientation])];
-      didCompleteBlock(scaledImage);
-    }];
-  }
-  
-  if (options & WAThumbnailMakeOptionLarge) {
-    [[WAImageProcessing sharedImageProcessQueue] addOperationWithBlock:^{
-      UIImage *scaledImage = [WAImageProcessing scaledImageWithCGImage:[representation fullResolutionImage] sideLength:kWAFileLargeImageSideLength orientation:irUIImageOrientationFromAssetOrientation([representation orientation])];
-      didCompleteBlock(scaledImage);
-    }];
-  }
-  
-}
-
-+ (UIImage *)scaledImageWithCGImage:(CGImageRef)image sideLength:(CGFloat)sideLength orientation:(UIImageOrientation)orientation {
   
   CGFloat imageWidth = CGImageGetWidth(image);
   CGFloat imageHeight = CGImageGetHeight(image);
