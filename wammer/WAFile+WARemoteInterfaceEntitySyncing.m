@@ -23,6 +23,7 @@
 
 #import "SSToolkit/NSDate+SSToolkitAdditions.h"
 #import "ALAsset+WAAdditions.h"
+#import "NSDate+WAAdditions.h"
 
 
 NSString * kWAFileEntitySyncingErrorDomain = @"com.waveface.wammer.file.entitySyncing";
@@ -184,12 +185,10 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
       NSMutableArray *accessLogArray = [NSMutableArray array];
       for (NSString *accessTime in [incomingRepresentation valueForKeyPath:@"doc_meta.access_time"]) {
         NSDate *date = [NSDate dateFromISO8601String:accessTime];
-        NSDateComponents *dateComponents = [[NSCalendar currentCalendar] components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit fromDate:date];
-        NSDate *day = [[NSCalendar currentCalendar] dateFromComponents:dateComponents];
         NSDictionary *accessLog = @{
         @"accessTime": date,
         @"filePath": [incomingRepresentation valueForKeyPath:@"file_path"],
-        @"day": @{@"day" : day}
+        @"day": @{@"day" : [date dayBegin]}
         };
         [accessLogArray addObject:accessLog];
       };
