@@ -22,9 +22,6 @@ NSString *const kMarkedCollections = @"markedDarkBlue";
 
 @interface WACalendarPickerDataSource	() <NSFetchedResultsControllerDelegate>
 
-@property (nonatomic, readwrite, strong) NSManagedObjectContext *managedObjectContext;
-@property (nonatomic, readwrite, strong) NSFetchedResultsController *fetchedResultsController;
-
 typedef void (^completionBlock) (NSArray *days);
 @property (nonatomic, readwrite, copy) completionBlock callback;
 
@@ -62,26 +59,24 @@ typedef void (^completionBlock) (NSArray *days);
 		
 	}
 	
-	NSManagedObjectContext *context = [[WADataStore defaultStore] defaultAutoUpdatedMOC];
+	NSManagedObjectContext *context = [[WADataStore defaultStore] disposableMOC];
 	NSFetchRequest *request = [[NSFetchRequest alloc] init];
 	NSEntityDescription *entity = [NSEntityDescription entityForName:entityName inManagedObjectContext:context];
 	[request setEntity:entity];
 	NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"day" ascending:NO];
 	[request setSortDescriptors:@[sortDescriptor]];
 	
-	self.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:request managedObjectContext:context sectionNameKeyPath:nil cacheName:nil];
-	
-	self.fetchedResultsController.delegate = self;
-	
+	NSFetchedResultsController *fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:request managedObjectContext:context sectionNameKeyPath:nil cacheName:nil];
+		
 	NSError *error = nil;
 	
-	if(![self.fetchedResultsController performFetch:&error]) {
+	if(![fetchedResultsController performFetch:&error]) {
 		NSLog(@"%@: failed to fetch files for documents", __FUNCTION__);
 	}
 	
 	if (block) {
 		self.callback = block;
-		NSArray *passingDays = [self.fetchedResultsController.fetchedObjects isKindOfClass:[NSNull class]]? nil: [self.fetchedResultsController.fetchedObjects valueForKey:@"day"];
+		NSArray *passingDays = [fetchedResultsController.fetchedObjects isKindOfClass:[NSNull class]]? nil: [fetchedResultsController.fetchedObjects valueForKey:@"day"];
 		self.callback(passingDays);
 	}
 }
@@ -181,7 +176,7 @@ typedef void (^completionBlock) (NSArray *days);
 		
 	}
 	
-	NSManagedObjectContext *moc = [[WADataStore defaultStore] defaultAutoUpdatedMOC];
+	NSManagedObjectContext *moc = [[WADataStore defaultStore] autoUpdatingMOC];
 	NSEntityDescription *entity = [NSEntityDescription entityForName:entityName inManagedObjectContext:moc];
 	NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
 	[fetchRequest setEntity:entity];
@@ -191,16 +186,15 @@ typedef void (^completionBlock) (NSArray *days);
 	NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:sortKey ascending:NO];
 	[fetchRequest setSortDescriptors:@[sortDescriptor]];
 	
-	self.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest managedObjectContext:moc sectionNameKeyPath:nil cacheName:nil];
-	self.fetchedResultsController.delegate = self;
+	NSFetchedResultsController *fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest managedObjectContext:moc sectionNameKeyPath:nil cacheName:nil];
 	
 	NSError *error = nil;
-	if (![self.fetchedResultsController performFetch:&error]) {
+	if (![fetchedResultsController performFetch:&error]) {
 		NSLog(@"%@: failed to fetch objects for %@", __FUNCTION__, predicateStr);
 		
 	}
 	
-	return self.fetchedResultsController.fetchedObjects;
+	return [fetchedResultsController.fetchedObjects copy];
 }
 
 #pragma mark - KalDataSource protocol conformance
@@ -277,8 +271,9 @@ typedef void (^completionBlock) (NSArray *days);
 		
 		if ([item isKindOfClass:[WAArticle class]]) {
 			WAArticle *event = item;
+			UIImage *xsThumbnail = event.representingFile.extraSmallThumbnailImage;
 			
-			UIImageView *thumbnail = [[UIImageView alloc] initWithImage:event.representingFile.extraSmallThumbnailImage];
+			UIImageView *thumbnail = [[UIImageView alloc] initWithImage:xsThumbnail?xsThumbnail:nil];
 			[thumbnail setBackgroundColor:[UIColor grayColor]];
 			[thumbnail setFrame:CGRectMake(4, 4, 45, 45)];
 			[thumbnail setClipsToBounds:YES];
@@ -297,7 +292,7 @@ typedef void (^completionBlock) (NSArray *days);
 			WAFile *file = item;
 			
 			if (file.created) {
-				UIImageView *thumbnail = [[UIImageView alloc] initWithImage:file.extraSmallThumbnailImage];
+				UIImageView *thumbnail = [[UIImageView alloc] initWithImage:file.extraSmallThumbnailImage?file.extraSmallThumbnailImage:nil];
 				[thumbnail setBackgroundColor:[UIColor grayColor]];
 				[thumbnail setFrame:CGRectMake(4, 4, 45, 45)];
 				[thumbnail setClipsToBounds:YES];
