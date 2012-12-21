@@ -12,11 +12,12 @@
 
 - (void)makeThumbnailWithOptions:(WAThumbnailType)type completeBlock:(WAImageProcessComplete)didCompleteBlock {
 
-  NSAssert1([[NSFileManager defaultManager] fileExistsAtPath:self], @"%s only avaiable for existing file path", __FUNCTION__);
+  NSString *filePath = [self copy];
 
-  __weak NSString *wSelf = self;
+  NSAssert1([[NSFileManager defaultManager] fileExistsAtPath:filePath], @"%s only avaiable for existing file path", __FUNCTION__);
+
   [[WAImageProcessing sharedImageProcessQueue] addOperationWithBlock:^{
-    UIImage *image = [UIImage imageWithData:[NSData dataWithContentsOfFile:wSelf options:NSDataReadingMappedIfSafe error:nil]];
+    UIImage *image = [UIImage imageWithData:[NSData dataWithContentsOfFile:filePath options:NSDataReadingMappedIfSafe error:nil]];
     UIImage *scaledImage = [WAImageProcessing scaledImageWithCGImage:image.CGImage type:type orientation:image.imageOrientation];
     didCompleteBlock(scaledImage);
   }];
