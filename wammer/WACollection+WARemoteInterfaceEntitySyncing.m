@@ -31,6 +31,7 @@
   return @{
   @"files": @"WAFile",
   @"creator": @"WAUser",
+  @"cover": @"WAFile",
   };
   
 }
@@ -51,6 +52,7 @@
     @"collection_id": @"identifier",
     @"hidden": @"isHidden",
     @"smart": @"isSmart",
+    @"cover": @"cover",
     };
     
   });
@@ -67,6 +69,10 @@
     returnedDictionary[@"creator"] = @{@"user_id": creatorID};
   
   returnedDictionary[@"files"] = incomingDictionary[@"object_list"];
+  
+  NSString *collectionCover = incomingDictionary[@"cover"];
+  if ([collectionCover length])
+    returnedDictionary[@"cover"] = @{@"object_id": collectionCover};
   
   return returnedDictionary;
 }
