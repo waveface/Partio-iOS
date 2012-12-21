@@ -43,7 +43,6 @@
 	
 	switch (style) {
 		case WACalendarPickerStyleInPopover: {
-			[calPicker.navigationItem setLeftBarButtonItem:[self dismissBarButton] animated:YES];
 			[calPicker.navigationItem setRightBarButtonItem:[self todayBarButton] animated:YES];
 			break;
 		}

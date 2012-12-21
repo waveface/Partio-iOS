@@ -715,8 +715,6 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
       
     }]];
     
-    [(WAAppDelegate_iOS *)AppDelegate() syncManager].needingSyncFilesCount += 1;
-    
   }];
   
   

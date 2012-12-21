@@ -21,10 +21,10 @@
 - (void) resetSyncFilesCount;
 
 @property (nonatomic, readonly, strong) IRRecurrenceMachine *recurrenceMachine;
+@property (nonatomic, readonly, strong) NSOperationQueue *articleSyncOperationQueue;
 @property (nonatomic, readonly, strong) NSOperationQueue *fileSyncOperationQueue;
 @property (nonatomic, readonly, strong) NSOperationQueue *fileMetadataSyncOperationQueue;
 
-@property (nonatomic, readwrite) BOOL preprocessingArticleSync;
 @property (nonatomic, readwrite) NSUInteger needingSyncFilesCount;
 @property (nonatomic, readwrite) NSUInteger syncedFilesCount;
 @property (nonatomic, readonly) BOOL syncCompleted;

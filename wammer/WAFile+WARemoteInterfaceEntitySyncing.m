@@ -241,7 +241,8 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
     
   }
   
-  if (!incomingRepresentation[@"outdated"]) {
+  // only attachments/multiple_get returns attachment meta with timestamp
+  if (incomingRepresentation[@"timestamp"]) {
     returnedDictionary[@"outdated"] = @NO;
   }
   
