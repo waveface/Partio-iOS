@@ -60,6 +60,7 @@ NSString * const kWADataStoreArticleUpdateShowsBezels = @"WADataStoreArticleUpda
     NSMutableArray *updatingFiles = [@[] mutableCopy];
     
     WADataStore *ds = [WADataStore defaultStore];
+    // TODO: need a better way to fetch the latest files needing update meta
     NSArray *files = [ds fetchFilesRequireMetaUpdateUsingContext:[ds disposableMOC]];
     [files enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
       
@@ -317,22 +318,28 @@ NSString * const kWADataStoreArticleUpdateShowsBezels = @"WADataStoreArticleUpda
    options:nil
    validator:WARemoteInterfaceGenericNoErrorValidator()
    successHandler:^(NSDictionary *response, IRWebAPIRequestContext *context) {
-     NSManagedObjectContext *moc = [weakSelf autoUpdatingMOC];
-     moc.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
-     NSArray *collections = [WACollection
-		         insertOrUpdateObjectsUsingContext:moc
-		         withRemoteResponse:[response objectForKey:@"collections"]
-		         usingMapping:nil
-		         options:IRManagedObjectOptionIndividualOperations
-		         ];
-     
-     NSError *error;
-     [moc save:&error];
-     if (error)
-       NSLog(@"Error on saving collection: %@", error);
-     
-     successBlock();
-     
+
+     // TODO: need a better way to fetch collections without blocking data retrieval
+     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+
+       NSManagedObjectContext *moc = [weakSelf autoUpdatingMOC];
+       moc.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
+       NSArray *collections = [WACollection
+			 insertOrUpdateObjectsUsingContext:moc
+			 withRemoteResponse:[response objectForKey:@"collections"]
+			 usingMapping:nil
+			 options:IRManagedObjectOptionIndividualOperations
+			 ];
+       
+       NSError *error;
+       [moc save:&error];
+       if (error)
+         NSLog(@"Error on saving collection: %@", error);
+       
+     });
+
+     successBlock();     
+
    }
    failureHandler:WARemoteInterfaceGenericFailureHandler(failureBlock)
    ];
