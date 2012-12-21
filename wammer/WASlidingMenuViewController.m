@@ -15,6 +15,7 @@
 #import "WADayViewController.h"
 #import "WANavigationController.h"
 #import "WATimelineViewController.h"
+#import "WACalendarPickerViewController.h"
 #import "WAUserInfoViewController.h"
 #import "WAOverlayBezel.h"
 #import "WAPhotoImportManager.h"
@@ -497,7 +498,7 @@
     case 6: {
       [self.viewDeckController closeLeftView];
       
-      WACalendarPickerViewController *dpVC = [[WACalendarPickerViewController alloc] initWithStyle:WACalendarPickerStyleMenuToday];
+      WACalendarPickerViewController *dpVC = [[WACalendarPickerViewController alloc] initWithFrame:self.view.frame style:WACalendarPickerStyleMenuToday];
       [dpVC setModalPresentationStyle:UIModalPresentationFullScreen];
       [self.viewDeckController setCenterController:dpVC];
       break;
@@ -508,6 +509,7 @@
       break;
     }
   }
+
 }
 
 #pragma mark - IIViewDeckDelegate protocol

@@ -16,12 +16,16 @@
 #import "WAGalleryViewController.h"
 #import "WAFileAccessLog.h"
 #import "WADocumentPreviewController.h"
+#import "WACalendarPickerViewController.h"
 
 @interface WADocumentStreamViewController ()
 
 @property (nonatomic, readwrite, strong) NSDate *currentDate;
 @property (nonatomic, readwrite, strong) NSMutableArray *documents;
 @property (nonatomic, readwrite, strong) NSFetchedResultsController *fetchedResultsController;
+
+@property (strong, nonatomic) UIPopoverController *popover;
+@property (strong, nonatomic) UIButton *calendarButton;
 
 @end
 
@@ -153,6 +157,9 @@
 	headerView.wdayLabel.text = [[self.currentDate localizedWeekDayFullString] uppercaseString];
 	headerView.backgroundColor = [UIColor colorWithRed:0.95f green:0.95f blue:0.95f alpha:1];
 
+	[headerView.centerButton addTarget:self action:@selector(handleDateSelect:) forControlEvents:UIControlEventTouchUpInside];
+	self.calendarButton = headerView.centerButton;
+	
 	return headerView;
 
 }
@@ -201,4 +208,36 @@
 
 }
 
+#pragma mark - Calendar
+
+- (void) handleDateSelect:(UIBarButtonItem *)sender {
+	
+	CGRect frame = isPad()? CGRectMake(0.f, 0.f, 320.f, 568.f) : CGRectMake(0.f, 0.f, 320.f, [UIScreen mainScreen].bounds.size.height);
+	
+	if (isPad()) {
+		if ([self.popover isPopoverVisible]) {
+			[self.popover dismissPopoverAnimated:YES];
+			
+		} else {
+			WACalendarPickerViewController *dpVC = [[WACalendarPickerViewController alloc] initWithFrame:frame style:WACalendarPickerStyleInPopover];
+			dpVC.delegate = self;
+			
+			self.popover = [[UIPopoverController alloc] initWithContentViewController:dpVC];
+			[self.popover setPopoverContentSize:CGSizeMake(320.f, 568.f)];
+			[self.popover presentPopoverFromRect:self.calendarButton.frame inView:self.view permittedArrowDirections:UIPopoverArrowDirectionUp animated:YES];
+		}
+		
+	} else {
+		WACalendarPickerViewController *dpVC = [[WACalendarPickerViewController alloc] initWithFrame:frame style:WACalendarPickerStyleTodayCancel];
+		dpVC.delegate = self;
+		
+		[self presentViewController:dpVC animated:YES completion:nil];
+		
+	}
+}
+
+- (void)dismissPopoverAnimated:(BOOL)animated {
+	[self.popover dismissPopoverAnimated:animated];
+	
+}
 @end

@@ -25,6 +25,8 @@
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 @property (strong, nonatomic) NSArray *photos;
 @property (strong, nonatomic) NSMutableArray *layout;
+@property (strong, nonatomic) UIPopoverController *popover;
+@property (strong, nonatomic) UIButton *calendarButton;
 
 @end
 
@@ -191,7 +193,8 @@
 	headerView.monthLabel.textColor =[UIColor colorWithWhite:0.53 alpha:1.0f];
 	headerView.wdayLabel.textColor = [UIColor colorWithWhite:0.53 alpha:1.0f];
 	[headerView.centerButton addTarget:self action:@selector(handleDateSelect:) forControlEvents:UIControlEventTouchUpInside];
-
+	self.calendarButton = headerView.centerButton;
+	
 	return headerView;
 }
 
@@ -207,11 +210,32 @@
 
 - (void) handleDateSelect:(UIBarButtonItem *)sender {
 	
-	WACalendarPickerViewController *dpVC = [[WACalendarPickerViewController alloc] initWithStyle:WACalendarPickerStyleTodayCancel];
+	CGRect frame = isPad()? CGRectMake(0.f, 0.f, 320.f, 568.f) : CGRectMake(0.f, 0.f, 320.f, [UIScreen mainScreen].bounds.size.height);
 	
-	dpVC.delegate = self;
-	dpVC.modalPresentationStyle = UIModalPresentationFormSheet;
-	[self presentViewController:dpVC animated:YES completion:nil];
+	if (isPad()) {
+		if ([self.popover isPopoverVisible]) {
+			[self.popover dismissPopoverAnimated:YES];
+			
+		} else {
+			WACalendarPickerViewController *dpVC = [[WACalendarPickerViewController alloc] initWithFrame:frame style:WACalendarPickerStyleInPopover];
+			dpVC.delegate = self;
+			
+			self.popover = [[UIPopoverController alloc] initWithContentViewController:dpVC];
+			[self.popover setPopoverContentSize:CGSizeMake(320.f, 568.f)];
+			[self.popover presentPopoverFromRect:self.calendarButton.frame inView:self.view permittedArrowDirections:UIPopoverArrowDirectionUp animated:YES];
+		}
+		
+	} else {
+		WACalendarPickerViewController *dpVC = [[WACalendarPickerViewController alloc] initWithFrame:frame style:WACalendarPickerStyleTodayCancel];
+		dpVC.delegate = self;
+		
+		[self presentViewController:dpVC animated:YES completion:nil];
+		
+	}
+}
+
+- (void)dismissPopoverAnimated:(BOOL)animated {
+	[self.popover dismissPopoverAnimated:animated];
 	
 }
 

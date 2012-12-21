@@ -12,6 +12,7 @@
 #import "WAAppearance.h"
 #import "WASlidingMenuViewController.h"
 #import "Kal.h"
+#import "WAFileAccessLog.h"
 
 #define kScreenWidth ((CGFloat)([UIScreen mainScreen].bounds.size.width))
 #define kScreenHeight ((CGFloat)([UIScreen mainScreen].bounds.size.height))
@@ -22,24 +23,29 @@
 	id dataSource;
 	UITableView *tableView;
 	WAArticle *selectedEvent;
+	WACalendarPickerStyle calStyle;
 }
 
 @end
 
 @implementation WACalendarPickerViewController
 
-- (id)initWithStyle:(WACalendarPickerStyle)style
+- (WACalendarPickerViewController *)initWithFrame:(CGRect)frame style:(WACalendarPickerStyle)style
 {
+	
 	calPicker = [[KalViewController alloc] init];
-	calPicker.title = NSLocalizedString(@"CALENDAR_TITLE", @"Title of Canlendar");
+	calPicker.title = NSLocalizedString(@"TITLE_CALENDAR", @"Title of Canlendar");
 	calPicker.delegate = self;
 	dataSource = [[WACalendarPickerDataSource alloc] init];
 	calPicker.dataSource = dataSource;
-
+	calPicker.frame = frame;
+	calStyle = style;
+	
 	switch (style) {
-		case WACalendarPickerStyleInPopover:
+		case WACalendarPickerStyleInPopover: {
 			[calPicker.navigationItem setRightBarButtonItem:[self todayBarButton] animated:YES];
 			break;
+		}
 			
 		case WACalendarPickerStyleMenuToday:
 			[calPicker.navigationItem setLeftBarButtonItem:[self menuBarButton] animated:YES];
@@ -47,15 +53,22 @@
 			break;
 			
 		case WACalendarPickerStyleTodayCancel:
-			[calPicker.navigationItem setLeftBarButtonItem:[self todayBarButton] animated:YES];
-			[calPicker.navigationItem setRightBarButtonItem:[self cancelBarButton] animated:YES];
+			[calPicker.navigationItem setLeftBarButtonItem:[self cancelBarButton] animated:YES];
+			[calPicker.navigationItem setRightBarButtonItem:[self todayBarButton] animated:YES];
 			break;
 			
 		default:
 			break;
 	}
 		
-	return [self initWithRootViewController:calPicker];
+	return [super initWithRootViewController:calPicker];
+}
+
+- (UIBarButtonItem *)dismissBarButton
+{
+	return (UIBarButtonItem *)WABarButtonItemWithButton([self cancelUIButton], ^{
+		[self.delegate dismissPopoverAnimated:YES];
+	});
 }
 
 - (UIBarButtonItem *)menuBarButton
@@ -68,7 +81,7 @@
 - (UIBarButtonItem *)todayBarButton
 {
 	UIButton *todayButton = [UIButton buttonWithType:UIButtonTypeCustom];
-	[todayButton setFrame:CGRectMake(0, 0, 57, 26)];
+	[todayButton setFrame:CGRectMake(0.f, 0.f, 57.f, 26.f)];
 	[todayButton setBackgroundImage:[UIImage imageNamed:@"Kal.bundle/CalBtn"] forState:UIControlStateNormal];
 	[todayButton setBackgroundImage:[UIImage imageNamed:@"Kal.bundle/CalBtnPress"] forState:UIControlStateHighlighted];
 	[todayButton setTitle:NSLocalizedString(@"CALENDAR_TODAY_BUTTON", "Today button in calendar picker") forState:UIControlStateNormal];
@@ -81,7 +94,7 @@
 	return [[UIBarButtonItem alloc] initWithCustomView:todayButton];
 }
 
-- (UIBarButtonItem *)cancelBarButton
+- (UIButton *)cancelUIButton
 {
 	UIButton *cancelButton = [UIButton buttonWithType:UIButtonTypeCustom];
 	[cancelButton setFrame:CGRectMake(0, 0, 57, 26)];
@@ -90,11 +103,17 @@
 	[cancelButton setTitle:NSLocalizedString(@"CALENDAR_CANCEL_BUTTON", "Cancel button in calendar picker") forState:UIControlStateNormal];
 	cancelButton.titleLabel.font = [UIFont boldSystemFontOfSize:12.f];
 	[cancelButton setTitleColor:[UIColor colorWithRed:0.757f green:0.757f blue:0.757f alpha:1.f] forState:UIControlStateNormal];
-	[cancelButton setTitleColor:[UIColor whiteColor] forState:UIControlStateHighlighted];
   cancelButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
   cancelButton.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
-	[cancelButton addTarget:self action:@selector(handleCancel:) forControlEvents:UIControlEventTouchUpInside];
 	
+	return cancelButton;
+}
+
+- (UIBarButtonItem *)cancelBarButton
+{
+	UIButton *cancelButton = [self cancelUIButton];
+	[cancelButton addTarget:self action:@selector(handleCancel:) forControlEvents:UIControlEventTouchUpInside];
+
 	return [[UIBarButtonItem alloc] initWithCustomView:cancelButton];
 }
 
@@ -118,14 +137,6 @@
 	
 }
 
-- (void)viewWillAppear:(BOOL)animated
-{
-	[super viewWillAppear:animated];
-
-	calPicker.frame = self.view.frame;
-
-}
-
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
@@ -147,44 +158,73 @@
 
 		WAEventViewController *eventVC = [WAEventViewController controllerForArticle:selectedEvent];
 		
-		if (self.viewDeckController) {
-		
-			if (isPad()) {
-				UINavigationController *navC = [[WANavigationController alloc] initWithRootViewController:eventVC];
-				navC.modalPresentationStyle = UIModalPresentationFormSheet;
-				[self presentViewController:navC animated:YES completion:nil];
-				
-			} else {
-				[self pushViewController:eventVC animated:YES];
+		if (isPad()) {
+			UINavigationController *navC = [[WANavigationController alloc] initWithRootViewController:eventVC];
+			navC.modalPresentationStyle = UIModalPresentationFormSheet;
+			[self presentViewController:navC animated:YES completion:nil];
 			
-			}
-			
-		}
-		else {
-		
+		} else {
 			[self pushViewController:eventVC animated:YES];
-		
+			
 		}
+
 	}
 	else if ([selectedEvent isKindOfClass:[WAFile class]]) {
 
-		WAFile *photo = (WAFile *)selectedEvent;
+		WAFile *file = (WAFile *)selectedEvent;
 		WASlidingMenuViewController *smVC;
 		
+		if (file.created) {
+			if (self.viewDeckController) {
+				
+				smVC = (WASlidingMenuViewController *)[self.viewDeckController leftController];
+				[smVC switchToViewStyle:WAPhotosViewStyle onDate:file.created animated:YES];
+				
+			}
+			else {
+				
+				smVC = (WASlidingMenuViewController *)[[[self delegate] viewDeckController] leftController];
+				[smVC switchToViewStyle:WAPhotosViewStyle onDate:file.created animated:NO];
+				
+				if (isPhone()) {
+					[self dismissViewControllerAnimated:YES completion:nil];
+								
+				} else {
+					[self.delegate dismissPopoverAnimated:YES];
+					
+				}
+				
+			}
+		}
+		
+	} else if ([selectedEvent isKindOfClass:[WAFileAccessLog class]]) {
+
+		WAFileAccessLog *file = (WAFileAccessLog *)selectedEvent;
+		WASlidingMenuViewController *smVC;
+
 		if (self.viewDeckController) {
 			
 			smVC = (WASlidingMenuViewController *)[self.viewDeckController leftController];
-			[smVC switchToViewStyle:WAPhotosViewStyle onDate:photo.created animated:YES];
-		
+			[smVC switchToViewStyle:WADocumentsViewStyle onDate:file.accessTime animated:YES];
+			
 		}
 		else {
 			
 			smVC = (WASlidingMenuViewController *)[[[self delegate] viewDeckController] leftController];
-			[smVC switchToViewStyle:WAPhotosViewStyle onDate:photo.created animated:NO];
-			[self dismissViewControllerAnimated:YES completion:nil];
-		
+			[smVC switchToViewStyle:WADocumentsViewStyle onDate:file.accessTime animated:NO];
+			
+			if (isPhone()) {
+				[self dismissViewControllerAnimated:YES completion:nil];
+			
+			} else {
+				[self.delegate dismissPopoverAnimated:YES];
+				
+			}
+			
 		}
+
 	}
+	
 }
 
 #pragma mark - Orientation
