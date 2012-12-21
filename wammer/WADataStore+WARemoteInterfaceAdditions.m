@@ -136,26 +136,14 @@ NSString * const kWADataStoreArticleUpdateShowsBezels = @"WADataStoreArticleUpda
 
 - (void) updateArticle:(NSURL *)anArticleURI withOptions:(NSDictionary *)options onSuccess:(void (^)(void))successBlock onFailure:(void (^)(NSError *error))failureBlock {
   
-  NSParameterAssert([NSThread isMainThread]);
+  NSManagedObjectContext *context = [self disposableMOC];
+  WAArticle *article = (WAArticle *)[context irManagedObjectForURI:anArticleURI];
   
-  BOOL usesBezels = [options[kWADataStoreArticleUpdateShowsBezels] isEqual:(id)kCFBooleanTrue];
+  [[self articlesCurrentlyBeingUpdated] addObject:anArticleURI];
   
   __weak WADataStore *wSelf = self;
   
-  NSManagedObjectContext *context = [self defaultAutoUpdatedMOC];
-  WAArticle *article = (WAArticle *)[context irManagedObjectForURI:anArticleURI];
-  
-  [[wSelf articlesCurrentlyBeingUpdated] addObject:anArticleURI];
-  
-  WAOverlayBezel *busyBezel = nil;
-  if (usesBezels) {
-    busyBezel = [WAOverlayBezel bezelWithStyle:WAActivityIndicatorBezelStyle];
-    [busyBezel showWithAnimation:WAOverlayBezelAnimationFade];
-  }
-  
   void (^fireCallback)(BOOL, NSError *) = ^ (BOOL didFinish, NSError *error) {
-    
-    NSCParameterAssert([NSThread isMainThread]);
     
     if (didFinish) {
       
@@ -175,26 +163,7 @@ NSString * const kWADataStoreArticleUpdateShowsBezels = @"WADataStoreArticleUpda
   
   void (^handleResult)(BOOL, NSError *) = ^ (BOOL didFinish, NSError *error) {
     
-    dispatch_async(dispatch_get_main_queue(), ^{
-      
-      if (usesBezels) {
-        
-        [busyBezel dismissWithAnimation:WAOverlayBezelAnimationNone];
-        
-        WAOverlayBezel *resultBezel = [WAOverlayBezel bezelWithStyle:(didFinish ? WACheckmarkBezelStyle : WAErrorBezelStyle)];
-        [resultBezel showWithAnimation:WAOverlayBezelAnimationNone];
-        
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 2.0 * NSEC_PER_SEC), dispatch_get_main_queue(), ^(void){
-	
-	[resultBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
-	
-        });
-        
-      }
-      
-      fireCallback(didFinish, error);
-      
-    });
+    fireCallback(didFinish, error);
     
   };
   

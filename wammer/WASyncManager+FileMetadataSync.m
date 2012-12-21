@@ -8,6 +8,7 @@
 
 #import "WASyncManager+FileMetadataSync.h"
 #import "WADataStore+WASyncManagerAdditions.h"
+#import "IRRecurrenceMachine.h"
 #import "WARemoteInterface.h"
 #import "WAAssetsLibraryManager.h"
 #import "WAAppDelegate_iOS.h"
@@ -19,113 +20,164 @@
 @implementation WASyncManager (FileMetadataSync)
 
 - (IRAsyncOperation *)fileMetadataSyncOperation {
+  
+  __weak WASyncManager *wSelf = self;
+  
+  return [IRAsyncOperation operationWithWorker:^(IRAsyncOperationCallback callback) {
+    
+    if (![wSelf canPerformMetaSync]) {
+      callback(nil);
+      return;
+    }
 
-	__weak WASyncManager *wSelf = self;
+    [[wSelf recurrenceMachine] beginPostponingOperations];
 
-	return [IRAsyncOperation operationWithWorker:^(IRAsyncOperationCallback callback) {
+    __block NSMutableArray *fileMetas = [@[] mutableCopy];
+    const NSUInteger MAX_FILEMETAS_COUNT = 20;
+    WADataStore *ds = [WADataStore defaultStore];
+    NSArray *files = [ds fetchFilesNeedingMetadataSyncUsingContext:[ds disposableMOC]];
+    [files enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+      
+      WAFile *file = obj;
+      NSAssert(file.assetURL, @"Imported file should have its asset URL");
 
-		if (![[NSUserDefaults standardUserDefaults] boolForKey:kWAPhotoImportEnabled]) {
-			callback(nil);
-			return;
-		}
+      NSURL *fileAssetURL = [NSURL URLWithString:file.assetURL];
+      NSURL *ownURL = [[file objectID] URIRepresentation];
 
-		WAPhotoImportManager *photoImportManager = [(WAAppDelegate_iOS *)AppDelegate() photoImportManager];
-		if (photoImportManager.preprocessing || photoImportManager.operationQueue.operationCount > 0) {
-			callback(nil);
-			return;
-		}
+      IRAsyncBarrierOperation *operation = [IRAsyncBarrierOperation operationWithWorker:^(IRAsyncOperationCallback callback) {
+        
+        [[WAAssetsLibraryManager defaultManager] assetForURL:fileAssetURL resultBlock:^(ALAsset *asset) {
+	
+	WAFile *file = (WAFile *)[[[WADataStore defaultStore] disposableMOC] irManagedObjectForURI:ownURL];
 
-		__block NSMutableArray *fileMetas = [@[] mutableCopy];
-		const NSUInteger MAX_FILEMETAS_COUNT = 20;
-		WADataStore *ds = [WADataStore defaultStore];
-		NSArray *files = [ds fetchFilesNeedingMetadataSyncUsingContext:[ds disposableMOC]];
-		[files enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+	if ([file.dirty isEqualToNumber:(id)kCFBooleanTrue]) {
+	  
+	  NSMutableDictionary *meta = [@{} mutableCopy];
+	  meta[@"file_name"] = [[asset defaultRepresentation] filename];
+	  meta[@"type"] = @"image";
+	  meta[@"timezone"] = [NSString stringWithFormat:@"%d", [[NSTimeZone localTimeZone] secondsFromGMT]/60];
+	  if (file.identifier) {
+	    meta[@"object_id"] = file.identifier;
+	  }
+	  if (file.timestamp) {
+	    meta[@"file_create_time"] = [file.timestamp ISO8601String];
+	  }
+	  if (file.exif) {
+	    meta[@"exif"] = [file.exif remoteRepresentation];
+	  }
+	  
+	  [fileMetas addObject:meta];
 
-			WAFile *file = obj;
-			NSAssert(file.assetURL, @"Imported file should have its asset URL");
+	  if ([fileMetas count] == MAX_FILEMETAS_COUNT || idx == [files count]-1) {
+	    
+	    [[WARemoteInterface sharedInterface] createAttachmentMetas:fileMetas onSuccess:^{
+	      
+	      NSManagedObjectContext *context = [[WADataStore defaultStore] disposableMOC];
+	      context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
+	      WAFile *file = (WAFile *)[context irManagedObjectForURI:ownURL];
+	      file.dirty = (id)kCFBooleanFalse;
+	      
+	      NSError *error = nil;
+	      [context save:&error];
+	      if (error) {
+	        NSLog(@"Unable to save file: %@, error: %@", file, error);
+	      }
+	      
+	      callback(nil);
+	      
+	    } onFailure:^(NSError *error) {
+	      
+	      NSLog(@"Unable to upload attachment metadata, error: %@", error);
+	      
+	      callback(error);
+	      
+	    }];
+	    
+	    [fileMetas removeAllObjects];
+	    
+	    return;
+	    
+	  }
+	  
+	}
+	
+	callback(nil);
+	
+        } failureBlock:^(NSError *error) {
+	
+	NSLog(@"Unable to load assets, error:%@", error);
+	
+	callback(error);
+	
+        }];
 
-			[[WAAssetsLibraryManager defaultManager] assetForURL:[NSURL URLWithString:file.assetURL] resultBlock:^(ALAsset *asset) {
-				
-				NSURL *ownURL = [[file objectID] URIRepresentation];
-				
-				__block NSOperation *operation = [NSBlockOperation blockOperationWithBlock:^{
-					
-					if ([operation isCancelled]) {
-						return;
-					}
-					
-					WAFile *file = (WAFile *)[[[WADataStore defaultStore] disposableMOC] irManagedObjectForURI:ownURL];
-					if ([file.dirty isEqualToNumber:(id)kCFBooleanTrue]) {
-						
-						NSMutableDictionary *meta = [@{} mutableCopy];
-						meta[@"file_name"] = [[asset defaultRepresentation] filename];
-						meta[@"type"] = @"image";
-						meta[@"timezone"] = [NSString stringWithFormat:@"%d", [[NSTimeZone localTimeZone] secondsFromGMT]/60];
-						if (file.identifier) {
-							meta[@"object_id"] = file.identifier;
-						}
-						if (file.timestamp) {
-							meta[@"file_create_time"] = [file.timestamp ISO8601String];
-						}
-						if (file.exif) {
-							meta[@"exif"] = [file.exif remoteRepresentation];
-						}
+      } trampoline:^(IRAsyncOperationInvoker callback) {
+        
+        NSParameterAssert(![NSThread isMainThread]);
+        callback();
+        
+      } callback:^(id results) {
+        
+        // NO OP
+        
+      } callbackTrampoline:^(IRAsyncOperationInvoker callback) {
+        
+        NSParameterAssert(![NSThread isMainThread]);
+        callback();
+        
+      }];
+      
+      [wSelf.fileMetadataSyncOperationQueue addOperation:operation];
+      
+    }];
 
-						[fileMetas addObject:meta];
-						if ([fileMetas count] == MAX_FILEMETAS_COUNT || idx == [files count]-1) {
+    NSBlockOperation *tailOp = [NSBlockOperation blockOperationWithBlock:^{
+      [[wSelf recurrenceMachine] endPostponingOperations];
+    }];
 
-							[[WARemoteInterface sharedInterface] createAttachmentMetas:fileMetas onSuccess:^{
-								
-								NSManagedObjectContext *context = [[WADataStore defaultStore] disposableMOC];
-								context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
-								WAFile *file = (WAFile *)[context irManagedObjectForURI:ownURL];
-								file.dirty = (id)kCFBooleanFalse;
-								
-								NSError *error = nil;
-								[context save:&error];
-								if (error) {
-									NSLog(@"Unable to save file: %@, error: %@", file, error);
-								}
-								
-							} onFailure:^(NSError *error) {
-								NSLog(@"Unable to upload attachment metadata, error: %@", error);
-							}];
-							
-							[fileMetas removeAllObjects];
+    for (NSOperation *operation in wSelf.fileMetadataSyncOperationQueue.operations) {
+      [tailOp addDependency:operation];
+    }
 
-							// slow down metadata uploading speed to avoid blocking other http requests
-							[NSThread sleepForTimeInterval:3.0];
-							
-						}
-					}
-					
-				}];
-				
-				[wSelf.fileMetadataSyncOperationQueue addOperation:operation];
-				
-			} failureBlock:^(NSError *error) {
-				NSLog(@"Unable to load assets, error:%@", error);
-			}];
-			
-		}];
+    [wSelf.fileMetadataSyncOperationQueue addOperation:tailOp];
 
-		[wSelf.fileMetadataSyncOperationQueue addOperationWithBlock:^{
-			callback(nil);
-		}];
+    callback(nil);
+    
+  } trampoline:^(IRAsyncOperationInvoker callback) {
+    
+    NSParameterAssert(![NSThread isMainThread]);
+    callback();
+    
+  } callback:^(id results) {
 
-	} trampoline:^(IRAsyncOperationInvoker callback) {
+    // NO OP
 
-		dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), callback);
+  } callbackTrampoline:^(IRAsyncOperationInvoker callback) {
+    
+    NSParameterAssert(![NSThread isMainThread]);
+    callback();
+    
+  }];
+  
+}
 
-	} callback:^(id results) {
+- (BOOL)canPerformMetaSync {
 
-//		NSLog(@"Attachment metadata upload finished");
+  if (![[NSUserDefaults standardUserDefaults] boolForKey:kWAPhotoImportEnabled]) {
+    return NO;
+  }
+  
+  WAPhotoImportManager *photoImportManager = [(WAAppDelegate_iOS *)AppDelegate() photoImportManager];
+  if (photoImportManager.preprocessing || photoImportManager.operationQueue.operationCount > 0) {
+    return NO;
+  }
 
-	} callbackTrampoline:^(IRAsyncOperationInvoker callback) {
-
-		dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), callback);
-
-	}];
+  WARemoteInterface * const ri = [WARemoteInterface sharedInterface];
+  if (!ri.userToken) {
+    return NO;
+  }
+  
+  return YES;
 
 }
 

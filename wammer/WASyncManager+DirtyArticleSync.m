@@ -8,6 +8,7 @@
 
 #import "WASyncManager+DirtyArticleSync.h"
 #import "Foundation+IRAdditions.h"
+#import "IRRecurrenceMachine.h"
 #import "WADataStore+WASyncManagerAdditions.h"
 #import "WADataStore+WARemoteInterfaceAdditions.h"
 #import "WARemoteInterface.h"
@@ -18,72 +19,138 @@
 @implementation WASyncManager (DirtyArticleSync)
 
 - (IRAsyncOperation *) dirtyArticleSyncOperationPrototype {
+  
+  __weak WASyncManager *wSelf = self;
+  
+  return [IRAsyncOperation operationWithWorker:^(IRAsyncOperationCallback callback) {
 
-	__block NSManagedObjectContext *context = nil;
-	
-	return [IRAsyncOperation operationWithWorker:^(IRAsyncOperationCallback callback) {
-		
-		// FIXME: manual posts are also blocked by the setting, but the feature is TBD
-		if (![[NSUserDefaults standardUserDefaults] boolForKey:kWAPhotoImportEnabled]) {
-			callback(nil);
-			return;
-		}
+    if (![wSelf canPerformArticleSync]) {
+      callback(nil);
+      return;
+    }
 
-		WAPhotoImportManager *photoImportManager = [(WAAppDelegate_iOS *)AppDelegate() photoImportManager];
-		if (photoImportManager.preprocessing || photoImportManager.operationQueue.operationCount > 0) {
-			callback(nil);
-			return;
-		}
+    WADataStore *ds = [WADataStore defaultStore];
+    NSMutableArray *articleURIs = [NSMutableArray array];
+    
+    [ds enumerateDirtyArticlesInContext:nil usingBlock:^(WAArticle *anArticle, NSUInteger index, BOOL *stop) {
+      
+      NSURL *articleURL = [[anArticle objectID] URIRepresentation];
+      [articleURIs addObject:articleURL];
+      
+    }];
 
-		WARemoteInterface * const ri = [WARemoteInterface sharedInterface];
-		if (!ri.userToken) {
-			callback(nil);
-			return;
-		}
-		
-		WADataStore * const ds = [WADataStore defaultStore];
-		context = [ds disposableMOC];
-		
-		[context performBlockAndWait:^{
-		
-			NSMutableArray *articleURIs = [NSMutableArray array];
-			
-			[ds enumerateDirtyArticlesInContext:context usingBlock:^(WAArticle *anArticle, NSUInteger index, BOOL *stop) {
-			
-				NSURL *articleURL = [[anArticle objectID] URIRepresentation];
-				[articleURIs addObject:articleURL];
-				
-			}];
+    if ([articleURIs count] == 0) {
+      callback(nil);
+      return;
+    }
 
-			dispatch_async(dispatch_get_main_queue(), ^{
+    [[wSelf recurrenceMachine] beginPostponingOperations];
 
-				[(WAAppDelegate_iOS *)AppDelegate() syncManager].preprocessingArticleSync = YES;
+    dispatch_sync(dispatch_get_main_queue(), ^{
+      [(WAAppDelegate_iOS *)AppDelegate() syncManager].preprocessingArticleSync = YES;
+    });
+    
+    __block NSInteger articlesCount = [articleURIs count];
 
-				for (NSURL *articleURL in articleURIs)
-					if (![ds isUpdatingArticle:articleURL])
-						[ds updateArticle:articleURL onSuccess:nil onFailure:nil];
-				
-				callback((id)kCFBooleanTrue);
-				
-				[(WAAppDelegate_iOS *)AppDelegate() syncManager].preprocessingArticleSync = NO;
+    NSParameterAssert(articlesCount); // ensure preprocessingArticleSync will be reset to NO
 
-			});
+    for (NSURL *articleURL in articleURIs) {
 
-		}];
-		
-	} trampoline:^(IRAsyncOperationInvoker block) {
-		
-		dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), block);
-		
-	} callback:^(id results) {
-		
-		//	NO OP
-		
-	} callbackTrampoline:^(IRAsyncOperationInvoker block) {
-		
-		dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), block);
-		
+      // manual updated articles are possibly already in the updating article list
+      if (![ds isUpdatingArticle:articleURL]) {
+
+        IRAsyncOperation *operation = [IRAsyncOperation operationWithWorker:^(IRAsyncOperationCallback callback) {
+
+	[ds updateArticle:articleURL onSuccess:^{
+	  callback(nil);
+	} onFailure:^(NSError *error) {
+	  callback(error);
 	}];
+
+	dispatch_sync(dispatch_get_main_queue(), ^{
+	  articlesCount -= 1;
+	  if (articlesCount == 0) {
+	    [(WAAppDelegate_iOS *)AppDelegate() syncManager].preprocessingArticleSync = NO;
+	  }
+	});
+
+        } trampoline:^(IRAsyncOperationInvoker callback) {
+
+	NSParameterAssert(![NSThread isMainThread]);
+	callback();
+
+        } callback:^(id results) {
+
+	// NO OP
+
+        } callbackTrampoline:^(IRAsyncOperationInvoker callback) {
+
+	NSParameterAssert(![NSThread isMainThread]);
+	callback();
+
+        }];
+        
+        [wSelf.articleSyncOperationQueue addOperation:operation];
+
+      } else {
+
+        dispatch_sync(dispatch_get_main_queue(), ^{
+	articlesCount -= 1;
+	if (articlesCount == 0) {
+	  [(WAAppDelegate_iOS *)AppDelegate() syncManager].preprocessingArticleSync = NO;
+	}
+        });
+
+      }
+    }
+    
+    NSBlockOperation *tailOp = [NSBlockOperation blockOperationWithBlock:^{
+      [[wSelf recurrenceMachine] endPostponingOperations];
+    }];
+    
+    for (NSOperation *operation in wSelf.articleSyncOperationQueue.operations) {
+      [tailOp addDependency:operation];
+    }
+    
+    [wSelf.articleSyncOperationQueue addOperation:tailOp];
+
+    callback((id)kCFBooleanTrue);
+    
+  } trampoline:^(IRAsyncOperationInvoker block) {
+    
+    NSParameterAssert(![NSThread isMainThread]);
+    block();
+    
+  } callback:^(id results) {
+    
+    // NO OP
+    
+  } callbackTrampoline:^(IRAsyncOperationInvoker block) {
+    
+    NSParameterAssert(![NSThread isMainThread]);
+    block();
+    
+  }];
+  
+}
+
+- (BOOL)canPerformArticleSync {
+
+  if (![[NSUserDefaults standardUserDefaults] boolForKey:kWAPhotoImportEnabled]) {
+    return NO;
+  }
+  
+  WAPhotoImportManager *photoImportManager = [(WAAppDelegate_iOS *)AppDelegate() photoImportManager];
+  if (photoImportManager.preprocessing || photoImportManager.operationQueue.operationCount > 0) {
+    return NO;
+  }
+  
+  WARemoteInterface * const ri = [WARemoteInterface sharedInterface];
+  if (!ri.userToken) {
+    return NO;
+  }
+
+  return YES;
 
 }
 
