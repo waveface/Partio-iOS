@@ -103,20 +103,7 @@
   
 }
 
-- (void)setPreprocessingArticleSync:(BOOL)preprocessingArticleSync {
-  
-  NSParameterAssert([NSThread isMainThread]);
-  NSParameterAssert(_preprocessingArticleSync != preprocessingArticleSync);
-  
-  _preprocessingArticleSync = preprocessingArticleSync;
-  
-}
-
 - (void)setNeedingSyncFilesCount:(NSUInteger)needingSyncFilesCount {
-
-  if (needingSyncFilesCount != 0) {
-    NSParameterAssert(_preprocessingArticleSync);
-  }
 
   _needingSyncFilesCount = needingSyncFilesCount;
   

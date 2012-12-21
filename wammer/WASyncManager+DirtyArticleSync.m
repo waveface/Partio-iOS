@@ -31,28 +31,25 @@
 
     WADataStore *ds = [WADataStore defaultStore];
     NSMutableArray *articleURIs = [NSMutableArray array];
-    
+
+    __block NSUInteger filesCount = 0;
     [ds enumerateDirtyArticlesInContext:nil usingBlock:^(WAArticle *anArticle, NSUInteger index, BOOL *stop) {
       
+      filesCount += [anArticle.files count];
       NSURL *articleURL = [[anArticle objectID] URIRepresentation];
       [articleURIs addObject:articleURL];
       
     }];
-
+    
     if ([articleURIs count] == 0) {
       callback(nil);
       return;
     }
 
+    NSAssert(wSelf.needingSyncFilesCount == 0, @"file sync count should be reset before starting article sync");
+    wSelf.needingSyncFilesCount = filesCount; // display status bar via KVO
+
     [[wSelf recurrenceMachine] beginPostponingOperations];
-
-    dispatch_sync(dispatch_get_main_queue(), ^{
-      [(WAAppDelegate_iOS *)AppDelegate() syncManager].preprocessingArticleSync = YES;
-    });
-    
-    __block NSInteger articlesCount = [articleURIs count];
-
-    NSParameterAssert(articlesCount); // ensure preprocessingArticleSync will be reset to NO
 
     for (NSURL *articleURL in articleURIs) {
 
@@ -66,13 +63,6 @@
 	} onFailure:^(NSError *error) {
 	  callback(error);
 	}];
-
-	dispatch_sync(dispatch_get_main_queue(), ^{
-	  articlesCount -= 1;
-	  if (articlesCount == 0) {
-	    [(WAAppDelegate_iOS *)AppDelegate() syncManager].preprocessingArticleSync = NO;
-	  }
-	});
 
         } trampoline:^(IRAsyncOperationInvoker callback) {
 
@@ -92,16 +82,8 @@
         
         [wSelf.articleSyncOperationQueue addOperation:operation];
 
-      } else {
-
-        dispatch_sync(dispatch_get_main_queue(), ^{
-	articlesCount -= 1;
-	if (articlesCount == 0) {
-	  [(WAAppDelegate_iOS *)AppDelegate() syncManager].preprocessingArticleSync = NO;
-	}
-        });
-
       }
+
     }
     
     NSBlockOperation *tailOp = [NSBlockOperation blockOperationWithBlock:^{
