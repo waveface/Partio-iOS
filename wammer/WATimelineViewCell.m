@@ -30,6 +30,9 @@ NSString * kWAEventTimelineViewCellKVOContext = @"EventTimelineViewCellKVOContex
 
 @property (nonatomic, strong) WAArticle *article;
 
+@property (nonatomic, readonly) CGFloat origCommentHeight;
+@property (nonatomic, readonly) CGFloat origCardBGHeight;
+
 @end
 
 @implementation WATimelineViewCell
@@ -41,6 +44,13 @@ NSString * kWAEventTimelineViewCellKVOContext = @"EventTimelineViewCellKVOContex
         // Initialization code
     }
     return self;
+}
+
+- (void) awakeFromNib {
+	
+	_origCommentHeight = CGRectGetHeight(self.commentLabel.frame);
+	_origCardBGHeight = CGRectGetHeight(self.eventCardBGImageView.frame);
+	
 }
 
 - (void) setRepresentedArticle:(WAArticle *)representedArticle {
@@ -128,8 +138,6 @@ NSString * kWAEventTimelineViewCellKVOContext = @"EventTimelineViewCellKVOContex
 		}
 		
 	}
-
-	CGFloat oldCommentHeight = CGRectGetHeight(self.commentLabel.frame);
 	
 	self.commentLabel.attributedText = [WAEventViewController attributedDescriptionStringForEvent:self.article];
 	[self.commentLabel sizeToFit];
@@ -161,14 +169,14 @@ NSString * kWAEventTimelineViewCellKVOContext = @"EventTimelineViewCellKVOContex
 	[self.containerView addSubview:self.typeImageView];
 	[self.containerView addSubview:self.fileNoLabel];
 
-	CGFloat delta = newCommentHeight - oldCommentHeight;
+	CGFloat delta = newCommentHeight - self.origCommentHeight;
 	if (delta < 0) delta = 0;
 
 	self.eventCardBGImageView.frame = (CGRect){
 		self.eventCardBGImageView.frame.origin,
 		(CGSize) {
 			self.eventCardBGImageView.frame.size.width,
-			self.eventCardBGImageView.frame.size.height + delta
+			self.origCardBGHeight + delta
 		}
 	};
 	
