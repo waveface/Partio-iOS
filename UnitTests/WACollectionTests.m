@@ -22,7 +22,7 @@
   NSData *inputData = [NSData dataWithContentsOfFile:filePath];
   return [NSJSONSerialization
 	JSONObjectWithData:inputData
-	options:nil
+	options:(NSJSONReadingOptions)0
 	error:nil];
 }
 
@@ -58,38 +58,39 @@
 }
 
 - (void)testGetSingleCollection {
-  NSDictionary *collectionsRep = [self loadDataFile:@"GetCollections"];
-  STAssertNotNil(collectionsRep, @"need to be a vaild JSON");
-  
-  NSArray *collections = [collectionsRep objectForKey:@"collections"];
+  NSDictionary *collectionsResponse = [self loadDataFile:@"GetCollections"];
+  STAssertNotNil(collectionsResponse, @"need to be a vaild JSON");
   
   NSArray *transformed;
   @autoreleasepool {
     transformed = [WACollection
 	         insertOrUpdateObjectsUsingContext:[NSManagedObjectContext MR_context]
-	         withRemoteResponse:collections
+	         withRemoteResponse:[collectionsResponse objectForKey:@"collections"]
 	         usingMapping:nil
 	         options:IRManagedObjectOptionIndividualOperations];
   }
   
   NSUInteger touches = 0;
-  for (WACollection *coll in transformed) {
-    STAssertNotNil(coll.identifier, @"identifier should not be nil");
-    if ([coll.identifier isEqualToString:@"441d03ce-dc01-4029-bcfe-4be8853396f6"]) {
-      assertThat(coll.isHidden, equalTo(@(0)));
-      assertThat(coll.isSmart, equalTo(@(0)));
-      assertThat(coll.sequenceNumber, equalTo(@(35680)));
-      assertThat(coll.title, equalTo(@"Food"));
-      STAssertEquals([coll.files count], (NSUInteger)8, @"With Object IDs");
+  for (WACollection *collection in transformed) {
+    STAssertNotNil(collection.identifier, @"identifier should not be nil");
+    //replace OCHamcrest Collection style
+    if ([collection.identifier isEqualToString:@"441d03ce-dc01-4029-bcfe-4be8853396f6"]) {
+      assertThat(collection.isHidden, equalTo(@(0)));
+      assertThat(collection.isSmart, equalTo(@(0)));
+      assertThat(collection.sequenceNumber, equalTo(@(35680)));
+      assertThat(collection.title, equalTo(@"Food"));
+      assertThat(collection.cover.identifier, equalTo(@"aabe6dc8-6d2a-4e78-90e9-2bec081aa79f"));
+      STAssertEquals([collection.files count], (NSUInteger)8, @"With Object IDs");
       touches ++;
     }
-    if ([coll.identifier isEqualToString:@"0bc1d4ce-bbf3-49c0-a5fe-d454b96493a0"]) {
-      assertThat(coll.isHidden, equalTo(@(1)));
+    if ([collection.identifier isEqualToString:@"0bc1d4ce-bbf3-49c0-a5fe-d454b96493a0"]) {
+      assertThat(collection.isHidden, equalTo(@(1)));
       touches ++;
     }
   }
   
   STAssertTrue(touches == 2, @"These two instances must be touched");
+  
 }
 
 @end

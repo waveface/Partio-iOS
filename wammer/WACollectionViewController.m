@@ -97,20 +97,20 @@ typedef NS_ENUM(NSUInteger, WACollectionSortMode){
 							    forIndexPath:indexPath];
   WACollection *aCollection = [_fetchedResultsController objectAtIndexPath:indexPath];
   
-  WAFile *cover = (WAFile *)[aCollection.files objectAtIndex:0];
   cell.title.text = [aCollection.title stringByAppendingFormat:@" (%d)", [aCollection.files count]];
   
-  [cover irObserve:@"smallThumbnailImage"
+  //Document
+  WAFile *coverFile = aCollection.cover;
+  if ([coverFile.pageElements count]) {
+    coverFile = coverFile.pageElements[0];
+  }
+  [coverFile irObserve:@"thumbnailImage"
 	 options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew
 	 context:nil
          withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
-	 
 	 dispatch_async(dispatch_get_main_queue(), ^{
-	   
 	   ((WACollectionViewCell *)[aCollectionView cellForItemAtIndexPath:indexPath]).coverImage.image = (UIImage*)toValue;
-	   
 	 });
-	 
          }];
   
   
