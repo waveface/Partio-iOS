@@ -205,7 +205,7 @@
 		
 		cell.sourceImageView.image = [UIImage imageNamed:@"facebook"];
 		
-	} else if([accessLog.accessSource isEqualToString:@"google"]) {
+	} else if([accessLog.accessSource isEqualToString:@"GoogleReader"]) {
 		
 		cell.sourceImageView.image = [UIImage imageNamed:@"googlereader"];
 		
