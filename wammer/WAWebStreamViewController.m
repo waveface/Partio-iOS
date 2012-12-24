@@ -126,18 +126,6 @@
 	
 }
 
-+ (UIImage *) cardBackgroundImage {
-	
-	static UIImage *image = nil;
-	
-	static dispatch_once_t onceToken;
-	dispatch_once(&onceToken, ^{
-    image = [[UIImage imageNamed:@"EventCardBG"] resizableImageWithCapInsets:UIEdgeInsetsMake(15, 15, 15, 15) resizingMode:UIImageResizingModeTile];
-	});
-	
-	return image;
-	
-}
 
 #pragma mark - UICollectionView DataSource
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
@@ -168,12 +156,17 @@
 
 	cell.dateTimeLabel.text = [formatter stringFromDate:((WAFileAccessLog*)self.webPages[indexPath.row]).accessTime];
 
-
-	[cell irUnbind:@"imageView.image"];
-	[cell irBind:@"imageView.image"
-			toObject:file
-			 keyPath:@"thumbnailImage"
-			 options:[NSDictionary dictionaryWithObjectsAndKeys: (id)kCFBooleanTrue, kIRBindingsAssignOnMainThreadOption, nil]];
+	[file irObserve:@"thumbnailImage" options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew
+					context:&kWAWebStreamViewCellKVOContext
+				withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
+						
+						dispatch_async(dispatch_get_main_queue(), ^{
+							cell.imageView.image = (UIImage*)toValue;
+						});
+					
+					}];
+	
+	cell.file = file;
 	
 	if (file.webFaviconURL) {
 		[cell.faviconImageView setPathToNetworkImage:file.webFaviconURL];
@@ -193,9 +186,6 @@
 		cell.webURLLabel.frame = newFrame;
 
 	}
-	
-	cell.cardBGImageView.image = [[self class] cardBackgroundImage];
-	
 
 	if ([accessLog.accessSource isEqualToString:@"twitter"]) {
 
