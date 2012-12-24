@@ -14,7 +14,6 @@
 #import "WADataStore+WARemoteInterfaceAdditions.h"
 
 #import "WADataStore+FetchingConveniences.h"
-#import "WACalendarPickerViewController.h"
 #import "IRBarButtonItem.h"
 #import "WADripdownMenuViewController.h"
 #import "WAArticleDraftsViewController.h"
@@ -522,8 +521,8 @@ BOOL dripdownMenuOpened = NO;
 	__block BOOL found = NO;
 	__block NSUInteger foundIndex = 0;
 		
-	NSUInteger numOfSections = [self.fetchedResultsController.sections count];
-	for (int idx = 0; idx < numOfSections; idx++ ) {
+	NSUInteger numOfObjects = [self.fetchedResultsController.fetchedObjects count];
+	for (int idx = 0; idx < numOfObjects; idx++ ) {
 
 		NSDate *theDay = [self dayAtPageIndex:idx];
 		if (!theDay)

@@ -148,9 +148,6 @@
 /* Description for no event day in calendar */
 "CALENDAR_NO_EVENT" = "沒有動態";
 
-/* Title of Canlendar */
-"CALENDAR_TITLE" = "行事曆";
-
 /* Today button in calendar picker */
 "CALENDAR_TODAY_BUTTON" = "今天";
 
@@ -492,7 +489,7 @@
 "SLIDING_MENU_FONTNAME" = "HelveticaNeue-Bold";
 
 /* Title for Calendar in the sliding menu */
-"SLIDING_MENU_TITLE_CALENDAR" = "擇日";
+"SLIDING_MENU_TITLE_CALENDAR" = "月曆";
 
 /* Title for Collections in the sliding menu */
 "SLIDING_MENU_TITLE_COLLECTIONS" = "蒐藏";
@@ -526,6 +523,9 @@
 
 /* Title on the text stack more / less toggle button for “More” */
 "TEXT_ELEMENT_TOGGLE_MORE_TITLE" = "更多";
+
+/* Title of Canlendar */
+"TITLE_CALENDAR" = "月曆";
 
 /* Title for menu item Document Stream */
 "TITLE_DOCUMENT_STREAM" = "TITLE_DOCUMENT_STREAM";

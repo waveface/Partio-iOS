@@ -24,20 +24,20 @@
 @synthesize disablesAutomaticKeyboardDismissal;
 @synthesize poppingViewController = _poppingViewController;
 
-//+ (id) alloc {
-//
-//	UIViewController *fauxVC = [[UIViewController alloc] init];
-//	WANavigationController *fauxNavController = [super alloc];
-//	fauxNavController = [fauxNavController initWithRootViewController:fauxVC];
-//	
-//	NSData *fauxNavCData = [NSKeyedArchiver archivedDataWithRootObject:fauxNavController];
-//	NSKeyedUnarchiver *unarchiver = [[NSKeyedUnarchiver alloc] initForReadingWithData:fauxNavCData];
-//	[unarchiver setClass:[UINavigationBar class] forClassName:@"UINavigationBar"];
-//
-//	return [unarchiver decodeObjectForKey:@"root"];
-//		
-//}
-//
++ (id) alloc {
+
+	UIViewController *fauxVC = [[UIViewController alloc] init];
+	WANavigationController *fauxNavController = [super alloc];
+	fauxNavController = [fauxNavController initWithRootViewController:fauxVC];
+	
+	NSData *fauxNavCData = [NSKeyedArchiver archivedDataWithRootObject:fauxNavController];
+	NSKeyedUnarchiver *unarchiver = [[NSKeyedUnarchiver alloc] initForReadingWithData:fauxNavCData];
+	[unarchiver setClass:[UINavigationBar class] forClassName:@"UINavigationBar"];
+
+	return [unarchiver decodeObjectForKey:@"root"];
+		
+}
+
 - (id) initWithRootViewController:(UIViewController *)presentedViewController {
 
 	NSParameterAssert(!presentedViewController.navigationController);
