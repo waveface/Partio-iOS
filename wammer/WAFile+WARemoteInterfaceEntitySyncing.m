@@ -185,8 +185,10 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
 			NSMutableArray *accessLogArray = [NSMutableArray array];
 			for (NSDictionary *access in [incomingRepresentation valueForKeyPath:@"web_meta.accesses"]) {
 				NSDate *date = [NSDate dateFromISO8601String:access[@"time"]];
+				NSString *source = access[@"from"];
 				NSDictionary *accessLog = @{
 					@"accessTime" : date,
+					@"accessSource": source,
 					@"dayWebpages": @{@"day": [date dayBegin]}
 				};
 				[accessLogArray addObject:accessLog];

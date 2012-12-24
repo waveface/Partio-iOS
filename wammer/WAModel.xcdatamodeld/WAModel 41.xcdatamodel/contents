@@ -178,6 +178,7 @@
         <userInfo/>
     </entity>
     <entity name="WAFileAccessLog" representedClassName="WAFileAccessLog" syncable="YES">
+        <attribute name="accessSource" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="accessTime" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="filePath" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="day" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="WADocumentDay" inverseName="accessLogs" inverseEntity="WADocumentDay" syncable="YES"/>
@@ -358,7 +359,7 @@
         <element name="WADocumentDay" positionX="0" positionY="0" width="128" height="75"/>
         <element name="WAEventDay" positionX="160" positionY="192" width="128" height="75"/>
         <element name="WAFile" positionX="0" positionY="0" width="128" height="630"/>
-        <element name="WAFileAccessLog" positionX="160" positionY="192" width="128" height="120"/>
+        <element name="WAFileAccessLog" positionX="160" positionY="192" width="128" height="135"/>
         <element name="WAFileExif" positionX="0" positionY="0" width="128" height="315"/>
         <element name="WAFilePageElement" positionX="0" positionY="0" width="128" height="135"/>
         <element name="WAGroup" positionX="0" positionY="0" width="128" height="120"/>

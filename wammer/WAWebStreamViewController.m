@@ -77,7 +77,7 @@
 	[super viewDidLoad];
 	
 	UICollectionViewFlowLayout *flowlayout = [[UICollectionViewFlowLayout alloc] init];
-	flowlayout.itemSize = (CGSize) {320, 250};
+	flowlayout.itemSize = (CGSize) {320, 270};
 	flowlayout.sectionInset = UIEdgeInsetsMake(0, 0, 2, 0);
 	flowlayout.minimumLineSpacing = 0;
 	flowlayout.minimumInteritemSpacing = 0;
@@ -153,7 +153,9 @@
 }
 
 - (UICollectionViewCell*) collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
-	WAFile *file = ((WAFileAccessLog*)self.webPages[indexPath.row]).file;
+	WAFileAccessLog *accessLog = self.webPages[indexPath.row];
+	NSAssert(accessLog, @"There should be one access log");
+	WAFile *file = accessLog.file;
 	NSAssert(file!=nil, @"Web page access log should refer to one WAFile");
 	
 	WAWebStreamViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"WAWebStreamViewCell" forIndexPath:indexPath];
@@ -167,19 +169,11 @@
 	cell.dateTimeLabel.text = [formatter stringFromDate:((WAFileAccessLog*)self.webPages[indexPath.row]).accessTime];
 
 
-	[file irObserve:@"thumbnailImage"
-					options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew
-					context:nil
-				withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
-					
-					dispatch_async(dispatch_get_main_queue(), ^{
-						
-						cell.imageView.image = (UIImage*)toValue;
-						
-					});
-					
-				}];
-
+	[cell irUnbind:@"imageView.image"];
+	[cell irBind:@"imageView.image"
+			toObject:file
+			 keyPath:@"thumbnailImage"
+			 options:[NSDictionary dictionaryWithObjectsAndKeys: (id)kCFBooleanTrue, kIRBindingsAssignOnMainThreadOption, nil]];
 	
 	if (file.webFaviconURL) {
 		[cell.faviconImageView setPathToNetworkImage:file.webFaviconURL];
@@ -201,6 +195,28 @@
 	}
 	
 	cell.cardBGImageView.image = [[self class] cardBackgroundImage];
+	
+
+	if ([accessLog.accessSource isEqualToString:@"twitter"]) {
+
+		cell.sourceImageView.image = [UIImage imageNamed:@"twitter"];
+		
+	} else if([accessLog.accessSource isEqualToString:@"facebook"]) {
+		
+		cell.sourceImageView.image = [UIImage imageNamed:@"facebook"];
+		
+	} else if([accessLog.accessSource isEqualToString:@"google"]) {
+		
+		cell.sourceImageView.image = [UIImage imageNamed:@"googlereader"];
+		
+	} else if([accessLog.accessSource isEqualToString:@"Chrome Extension"]) {
+		
+		cell.sourceImageView.image = [UIImage imageNamed:@"chrome"];
+		
+	}
+	
+	cell.sourceLabel.text = accessLog.accessSource;
+	
 	return cell;
 	
 }

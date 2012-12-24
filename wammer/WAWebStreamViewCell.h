@@ -17,7 +17,7 @@
 @property (nonatomic, weak) IBOutlet UIImageView *imageView;
 @property (nonatomic, weak) IBOutlet NINetworkImageView *faviconImageView;
 @property (nonatomic, readwrite, weak) IBOutlet UIImageView *cardBGImageView;
-
-@property (nonatomic, weak) IBOutlet NSLayoutConstraint *urlLabelLeadingSpaceToSuperviewConstraint;
+@property (nonatomic, weak) IBOutlet UIImageView *sourceImageView;
+@property (nonatomic, weak) IBOutlet UILabel *sourceLabel;
 
 @end
