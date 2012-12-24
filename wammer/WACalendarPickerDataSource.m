@@ -11,11 +11,20 @@
 #import "WADataStore.h"
 #import "WADataStore+WARemoteInterfaceAdditions.h"
 #import "WAEventViewController.h"
+#import "WADayViewController.h"
+#import "WAFileAccessLog.h"
+
+NSString *const kMarkedEvents = @"markedRed";
+NSString *const kMarkedPhotos = @"markedLightBlue";
+NSString *const kMarkedDocuments = @"markedOrange";
+NSString *const kMarkedWebpages = @"markedGreen";
+NSString *const kMarkedCollections = @"markedDarkBlue";
 
 @interface WACalendarPickerDataSource	() <NSFetchedResultsControllerDelegate>
 
-@property (nonatomic, readwrite, strong) NSManagedObjectContext *managedObjectContext;
-@property (nonatomic, readwrite, strong) NSFetchedResultsController *fetchedResultsController;
+typedef void (^completionBlock) (NSArray *days);
+@property (nonatomic, readwrite, copy) completionBlock callback;
+
 
 @end
 
@@ -26,176 +35,200 @@
 	self = [super init];
 	
 	if (self) {
-		_days = [[NSMutableArray alloc] init];
+		_daysWithAttributes = [[NSMutableArray alloc] init];
 		_items = [[NSMutableArray alloc] init];
-		_events = [[NSMutableArray alloc] init];
-		_files = [[NSMutableArray alloc] init];
 	}
 	
 	return self;
 }
 
-- (NSArray *)fetchAllArticlesFrom:(NSDate *)fromDate to:(NSDate *)toDate
+- (void)loadDayswithStyle:(WACalendarLoadObject)style from:(NSDate *)fromDate to:(NSDate *)toDate completionBlock:(completionBlock)block
 {
-	NSFetchRequest *fetchRequest = [[WADataStore defaultStore].persistentStoreCoordinator.managedObjectModel fetchRequestFromTemplateWithName:@"WAFRArticles" substitutionVariables:@{}];
+	NSString *entityName = nil;
 	
-	fetchRequest.relationshipKeyPathsForPrefetching = @[
-	@"files",
-	@"tags",
-	@"people",
-	@"location",
-	@"previews",
-	@"descriptiveTags",
-	@"files.pageElements"];
-	fetchRequest.predicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[
-														fetchRequest.predicate,
-														[NSPredicate predicateWithFormat:@"creationDate >= %@ AND creationDate <= %@",
-														 fromDate, toDate],
-														[NSPredicate predicateWithFormat:@"event = TRUE"],
-														[NSPredicate predicateWithFormat:@"files.@count > 0"],
-														[NSPredicate predicateWithFormat:@"import != %d AND import != %d", WAImportTypeFromOthers, WAImportTypeFromLocal]]];
-	
-	fetchRequest.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:NO]];
-	
-	self.fetchedResultsController = [[NSFetchedResultsController alloc]
-																	 initWithFetchRequest:fetchRequest
-																	 managedObjectContext:[[WADataStore defaultStore] defaultAutoUpdatedMOC]
-																	 sectionNameKeyPath:nil
-																	 cacheName:nil];
-	
-	self.fetchedResultsController.delegate = self;
-	
-	NSError *error = nil;
-	
-	if(![self.fetchedResultsController performFetch:&error]) {
+	if (style == WACalendarLoadObjectEvent) {
+		entityName = @"WAEventDay";
 		
-		NSLog(@"%@: failed to fetch articles for events", __FUNCTION__);
+	} else if (style == WACalendarLoadObjectPhoto) {
 		
-	}
-
-	return self.fetchedResultsController.fetchedObjects;
-}
-
-- (NSArray *)fetchAllFilesFrom:(NSDate *)fromDate to:(NSDate *)toDate
-{
-	NSFetchRequest *fileFetchRequest = [[WADataStore defaultStore].persistentStoreCoordinator.managedObjectModel fetchRequestFromTemplateWithName:@"WAFRAllFiles" substitutionVariables:@{}];
-	
-	fileFetchRequest.predicate = [NSPredicate predicateWithFormat:@"created >= %@ AND created <= %@", fromDate, toDate];
-	fileFetchRequest.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"created" ascending:NO]];
-	
-	self.fetchedResultsController = [[NSFetchedResultsController alloc]
-																	 initWithFetchRequest:fileFetchRequest
-																	 managedObjectContext:[[WADataStore defaultStore] defaultAutoUpdatedMOC]
-																	 sectionNameKeyPath:nil
-																	 cacheName:nil];
-	
-	self.fetchedResultsController.delegate = self;
-	
-	NSError *error = nil;
-	
-	if(![self.fetchedResultsController performFetch:&error]) {
+		entityName = @"WAPhotoDay";
 		
-		NSLog(@"%@: failed to fetch articles for events", __FUNCTION__);
+	} else if (style == WACalendarLoadObjectDoc) {
+		
+		entityName = @"WADocumentDay";
 		
 	}
 	
-	return self.fetchedResultsController.fetchedObjects;
+	NSManagedObjectContext *context = [[WADataStore defaultStore] disposableMOC];
+	NSFetchRequest *request = [[NSFetchRequest alloc] init];
+	NSEntityDescription *entity = [NSEntityDescription entityForName:entityName inManagedObjectContext:context];
+	[request setEntity:entity];
+	NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"day" ascending:NO];
+	[request setSortDescriptors:@[sortDescriptor]];
+	
+	NSFetchedResultsController *fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:request managedObjectContext:context sectionNameKeyPath:nil cacheName:nil];
+		
+	NSError *error = nil;
+	
+	if(![fetchedResultsController performFetch:&error]) {
+		NSLog(@"%@: failed to fetch files for documents", __FUNCTION__);
+	}
+	
+	if (block) {
+		self.callback = block;
+		NSArray *passingDays = [fetchedResultsController.fetchedObjects isKindOfClass:[NSNull class]]? nil: [fetchedResultsController.fetchedObjects valueForKey:@"day"];
+		self.callback(passingDays);
+	}
 }
 
-- (void)loadDataFrom:(NSDate *)fromDate to:(NSDate *)toDate
-{	
-	// Load events and event days	
-	_events = [[self fetchAllArticlesFrom:fromDate to:toDate] mutableCopy];
+- (void)fetchDatesFrom:(NSDate *)fromDate to:(NSDate *)toDate
+{
 	
-	__block NSDate *currentDate = nil;
-	
-	[_events enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+	[self loadDayswithStyle:WACalendarLoadObjectEvent from:fromDate to:toDate completionBlock:^(NSArray *days){
 		
-		NSDate *theDate = nil;
-		NSMutableDictionary *aDay = [@{
-																 @"date": [NSDate date],
-																 @"markedRed": @NO,
-																 @"photos": @NO, @"markedLightBlue": @NO,
-																 } mutableCopy];
-		
-		theDate = [[((WAArticle*)obj) creationDate] dayBegin];
-		
-		if (!currentDate || !isSameDay(currentDate, theDate)) {
-
-			aDay[@"date"] = [theDate dayBegin];
-			aDay[@"markedRed"] = @YES;
-			[_days addObject:aDay];
-			currentDate = theDate;
-		
-		}
-		
-	}];
-	
-	// Load photos and photo days
-	_files = [[self fetchAllFilesFrom:fromDate to:toDate] mutableCopy];
-		
-	NSArray *fileOfDistinctDates = [_files valueForKeyPath:@"@distinctUnionOfObjects.created.dayBegin"];
-	
-	[fileOfDistinctDates enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-		
-		NSDate *date = obj;
-		
-		NSMutableDictionary *aDay = [@{
-																 @"date": date,
-																 @"markedRed": @NO,
-																 @"photos": @NO, @"markedLightBlue": @NO,
-																 } mutableCopy];
-		
-		NSPredicate *finder = [NSPredicate predicateWithFormat:@"date.dayBegin == %@", [date dayBegin]];
-		NSMutableDictionary *dayWithEvent = [[_days filteredArrayUsingPredicate:finder] lastObject];
-		
-		if (!dayWithEvent) {
+		for (NSDate *day in days) {
+			[_daysWithAttributes addObject: [@{@"date": day,
+											 kMarkedEvents: @YES,
+											 kMarkedPhotos: @NO,
+										kMarkedDocuments: @NO,
+										 kMarkedWebpages: @NO,
+									kMarkedCollections: @NO} mutableCopy]];
 			
-			aDay[@"date"] = [date dayBegin];
-			aDay[@"markedLightBlue"] = @YES;
-			[_days addObject:aDay];
-		
-		}
-		else if([dayWithEvent[@"photos"] isEqual:@NO]) {
-		
-			dayWithEvent[@"markedLightBlue"] = @YES;
-			[_days replaceObjectAtIndex:[_days indexOfObject:dayWithEvent] withObject:dayWithEvent];
-		
 		}
 		
 	}];
 	
+	
+	[self loadDayswithStyle:WACalendarLoadObjectPhoto from:fromDate to:toDate completionBlock:^(NSArray *days){
+		
+		for (NSDate *day in days) {
+			NSPredicate *finder = [NSPredicate predicateWithFormat:@"date == %@", day];
+			NSMutableDictionary *dayWithEvent = [[_daysWithAttributes filteredArrayUsingPredicate:finder] lastObject];
+			
+			if (!dayWithEvent) {
+				[_daysWithAttributes addObject: [@{@"date": day,
+												 kMarkedEvents: @NO,
+												 kMarkedPhotos: @YES,
+											kMarkedDocuments: @NO,
+											 kMarkedWebpages: @NO,
+										kMarkedCollections: @NO} mutableCopy]];
+			} else {
+				NSMutableDictionary *modifiedObject = [dayWithEvent mutableCopy];
+				modifiedObject[kMarkedPhotos] = @YES;
+				
+				[_daysWithAttributes replaceObjectAtIndex:[_daysWithAttributes indexOfObject:dayWithEvent] withObject:modifiedObject];
+				
+			}
+		}
+		
+	}];
+	
+	
+	[self loadDayswithStyle:WACalendarLoadObjectDoc from:fromDate to:toDate completionBlock:^(NSArray *days){
+		
+		for (NSDate *day in days) {
+			NSPredicate *finder = [NSPredicate predicateWithFormat:@"date == %@", day];
+			NSMutableDictionary *dayWithEventPhoto = [[_daysWithAttributes filteredArrayUsingPredicate:finder] lastObject];
+			
+			if (!dayWithEventPhoto) {
+				[_daysWithAttributes addObject:[@{@"date": day,
+												 kMarkedEvents: @NO,
+												 kMarkedPhotos: @NO,
+											kMarkedDocuments: @YES,
+											 kMarkedWebpages: @NO,
+										kMarkedCollections: @NO} mutableCopy]];
+			} else {
+				NSMutableDictionary *modifiedObject = [dayWithEventPhoto mutableCopy];
+				modifiedObject[kMarkedDocuments] = @YES;
+				
+				[_daysWithAttributes replaceObjectAtIndex:[_daysWithAttributes indexOfObject:dayWithEventPhoto] withObject:modifiedObject];
+			}
+		}
+		
+	}];
+	
+}
+
+- (NSArray *)fetchObject:(WACalendarLoadObject)object from:(NSDate *)fromDate to:(NSDate *)toDate
+{
+	NSString *entityName = nil;
+	NSArray *relationshipKeyPath = nil;
+	NSString *predicateStr = nil;
+	NSString *sortKey = nil;
+	
+	if (object == WACalendarLoadObjectEvent) {
+		entityName = @"WAArticle";
+		relationshipKeyPath = @[@"files"];
+		predicateStr = @"event == TRUE AND creationDate >= %@ AND creationDate <= %@";
+		sortKey = @"creationDate";
+		
+	} else if (object == WACalendarLoadObjectPhoto ) {
+		entityName = @"WAFile";
+		relationshipKeyPath = @[];
+		predicateStr = @"created >= %@ AND created <= %@";
+		sortKey = @"created";
+		
+	} else if (object == WACalendarLoadObjectDoc) {
+		entityName = @"WAFileAccessLog";
+		relationshipKeyPath = @[@"day", @"dayWebpages", @"file"];
+		predicateStr = @"accessTime >= %@ AND accessTime <= %@";
+		sortKey = @"accessTime";
+		
+	}
+	
+	NSManagedObjectContext *moc = [[WADataStore defaultStore] autoUpdatingMOC];
+	NSEntityDescription *entity = [NSEntityDescription entityForName:entityName inManagedObjectContext:moc];
+	NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+	[fetchRequest setEntity:entity];
+	fetchRequest.relationshipKeyPathsForPrefetching = relationshipKeyPath;
+	NSPredicate *dayRange = [NSPredicate predicateWithFormat:predicateStr, fromDate, toDate];
+	[fetchRequest setPredicate:dayRange];
+	NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:sortKey ascending:NO];
+	[fetchRequest setSortDescriptors:@[sortDescriptor]];
+	
+	NSFetchedResultsController *fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest managedObjectContext:moc sectionNameKeyPath:nil cacheName:nil];
+	
+	NSError *error = nil;
+	if (![fetchedResultsController performFetch:&error]) {
+		NSLog(@"%@: failed to fetch objects for %@", __FUNCTION__, predicateStr);
+		
+	}
+	
+	return [fetchedResultsController.fetchedObjects copy];
 }
 
 #pragma mark - KalDataSource protocol conformance
 
 - (void)presentingDatesFrom:(NSDate *)fromDate to:(NSDate *)toDate delegate:(id<KalDataSourceCallbacks>)delegate
 {
-	[_days removeAllObjects];
-	[_events removeAllObjects];
-	[_files removeAllObjects];
-	[self loadDataFrom:(NSDate *)fromDate to:(NSDate *)toDate];
+	[_daysWithAttributes removeAllObjects];
+	[self fetchDatesFrom:(NSDate *)fromDate to:(NSDate *)toDate];
 	[delegate loadedDataSource:self];
-
+	
 }
 
 - (NSArray *)markedDatesFrom:(NSDate *)fromDate to:(NSDate *)toDate
 {
-	NSPredicate *inRange = [NSPredicate predicateWithFormat:@"date BETWEEN %@", @[fromDate, toDate]];
-	return [_days filteredArrayUsingPredicate:inRange];
+	NSPredicate *inRange = [NSPredicate predicateWithFormat:@"date >= %@ AND date <= %@", fromDate, toDate];
+	return [[_daysWithAttributes filteredArrayUsingPredicate:inRange] copy];
 }
 
 - (void)loadItemsFromDate:(NSDate *)fromDate toDate:(NSDate *)toDate
 {
-	[_items addObjectsFromArray:[self fetchAllArticlesFrom:fromDate to:toDate]];
+	[_items addObjectsFromArray:[self fetchObject:WACalendarLoadObjectEvent from:fromDate to:toDate]];
 	
-	NSArray *filesOfDate = [self fetchAllFilesFrom:fromDate to:toDate];
-	
-	if ([filesOfDate count]) {
-	
-		[_items addObject:[filesOfDate lastObject]];
-	
+	NSArray *photo = [self fetchObject:WACalendarLoadObjectPhoto from:fromDate to:toDate];
+	if ([photo count]) {
+		[_items addObject:[photo lastObject]];
+		
 	}
+	
+	NSArray *doc = [self fetchObject:WACalendarLoadObjectDoc from:fromDate to:toDate];
+	if ([doc count]) {
+		[_items addObject:[doc lastObject]];
+		
+	}
+	
 }
 
 - (void)removeAllItems
@@ -217,12 +250,12 @@
   if (!cell) {
     cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
 	}
-
+	
 	for (UIView *subview in cell.contentView.subviews)
 		[subview removeFromSuperview];
-		
+	
 	if (![_items count]) {
-		UILabel *title = [[UILabel alloc] initWithFrame:CGRectMake(54, 0, 200, 54)];
+		UILabel *title = [[UILabel alloc] initWithFrame:CGRectMake(54, 0, 200 , 54)];
 		[title setText:NSLocalizedString(@"CALENDAR_NO_EVENT", "Description for no event day in calendar")];
 		[title setTextAlignment:NSTextAlignmentCenter];
 		[title setFont:[UIFont boldSystemFontOfSize:16.f]];
@@ -238,9 +271,9 @@
 		
 		if ([item isKindOfClass:[WAArticle class]]) {
 			WAArticle *event = item;
+			UIImage *xsThumbnail = event.representingFile.extraSmallThumbnailImage;
 			
-			// TODO: show event / thumbnail images in kvo way?
-			UIImageView *thumbnail = [[UIImageView alloc] initWithImage:event.representingFile.extraSmallThumbnailImage];
+			UIImageView *thumbnail = [[UIImageView alloc] initWithImage:xsThumbnail?xsThumbnail:nil];
 			[thumbnail setBackgroundColor:[UIColor grayColor]];
 			[thumbnail setFrame:CGRectMake(4, 4, 45, 45)];
 			[thumbnail setClipsToBounds:YES];
@@ -253,30 +286,46 @@
 			[title setFrame:CGRectMake(60, 0, 220, 54)];
 			[cell.contentView addSubview:title];
 			[cell setAccessoryView:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"EventCameraIcon"]]];
-		}
-		else if ([item isKindOfClass:[WAFile class]]) {
+			
+		} else if ([item isKindOfClass:[WAFile class]]) {
 			
 			WAFile *file = item;
 			
-			UIImageView *thumbnail = [[UIImageView alloc] initWithImage:file.extraSmallThumbnailImage];
-			[thumbnail setBackgroundColor:[UIColor grayColor]];
-			[thumbnail setFrame:CGRectMake(4, 4, 45, 45)];
-			[thumbnail setClipsToBounds:YES];
-			[cell.contentView addSubview:thumbnail];
-
+			if (file.created) {
+				UIImageView *thumbnail = [[UIImageView alloc] initWithImage:file.extraSmallThumbnailImage?file.extraSmallThumbnailImage:nil];
+				[thumbnail setBackgroundColor:[UIColor grayColor]];
+				[thumbnail setFrame:CGRectMake(4, 4, 45, 45)];
+				[thumbnail setClipsToBounds:YES];
+				[cell.contentView addSubview:thumbnail];
+				
+				UILabel *title = [[UILabel alloc] init];
+				[title setText:NSLocalizedString(@"SLIDING_MENU_TITLE_PHOTOS", @"Title for Photos in the sliding menu")];
+				[title setBackgroundColor:[UIColor colorWithRed:0.89f green:0.89f blue:0.89f alpha:1.f]];
+				title.numberOfLines = 0;
+				[title setFrame:CGRectMake(60, 0, 220, 54)];
+				[cell.contentView addSubview:title];
+				
+				[cell setAccessoryView:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"PhotosIcon"]]];
+				
+			}
+			
+		} else if ([item isKindOfClass:[WAFileAccessLog class]]) {
+			WAFileAccessLog *file = item;
+			
 			UILabel *title = [[UILabel alloc] init];
-			[title setText:NSLocalizedString(@"SLIDING_MENU_TITLE_PHOTOS", @"Title for Photos in the sliding menu")];
+			[title setText:[NSString stringWithFormat:@"Opened %@", [[file.filePath componentsSeparatedByString:@"\\"] lastObject]]];
 			[title setBackgroundColor:[UIColor colorWithRed:0.89f green:0.89f blue:0.89f alpha:1.f]];
 			title.numberOfLines = 0;
-			[title setFrame:CGRectMake(60, 0, 220, 54)];
+			[title setFrame:CGRectMake(10, 0, 220, 54)];
 			[cell.contentView addSubview:title];
 			
-			[cell setAccessoryView:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"PhotosIcon"]]];
-
+			[cell setAccessoryView:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"DocumentsIcon"]]];
+			
 		}
 		
 		[cell setSelectionStyle:UITableViewCellSelectionStyleGray];
 	}
+	
 	return cell;
 }
 

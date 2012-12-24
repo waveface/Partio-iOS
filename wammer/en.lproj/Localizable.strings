@@ -148,9 +148,6 @@
 /* Description for no event day in calendar */
 "CALENDAR_NO_EVENT" = "NO EVENT";
 
-/* Title of Canlendar */
-"CALENDAR_TITLE" = "CALENDAR";
-
 /* Today button in calendar picker */
 "CALENDAR_TODAY_BUTTON" = "TODAY";
 
@@ -348,6 +345,12 @@
 /* No comment provided by engineer. */
 "MONTH_SINGULAR" = "%d month";
 
+/* Navigation bar title while loading web page failed */
+"NAVI_TITLE_WEB_FAILED" = "Page Loaded Failed";
+
+/* Navigation bar title for web preview while loading */
+"NAVI_TITLE_WEB_LOADING" = "Loading..";
+
 /* Nickname placeholder in signup page */
 "NICKNAME_PLACEHOLDER" = "John Appleseed";
 
@@ -425,7 +428,7 @@
 "PHOTOS_PLURAL" = "%d photos";
 
 /* in day view */
-"PHOTOS_TITLE" = "Photos";
+"PHOTOS_TITLE" = "PHOTOS";
 
 /* Title of view controller choosing plans */
 "PLANS_CONTROLLER_TITLE" = "PLANS";
@@ -503,6 +506,9 @@
 /* Title for Settings in the sliding menu */
 "SLIDING_MENU_TITLE_SETTINGS" = "SETTINGS";
 
+/* Title for Web pages in the sliding menu */
+"SLIDING_MENU_TITLE_WEBS" = "WEB PAGES";
+
 /* No comment provided by engineer. */
 "STATE_LOADING_SINGLE_DOCUMENT" = "Loading Document…";
 
@@ -517,6 +523,9 @@
 
 /* Title on the text stack more / less toggle button for “More” */
 "TEXT_ELEMENT_TOGGLE_MORE_TITLE" = "More";
+
+/* Title of Canlendar */
+"TITLE_CALENDAR" = "Calendar";
 
 /* Title for menu item Document Stream */
 "TITLE_DOCUMENT_STREAM" = "Document Stream";
@@ -563,6 +572,9 @@
 
 /* Title of web service settings view controller */
 "WEB_SERVICES_TITLE" = "Web Services";
+
+/* Title for web pages view controller */
+"WEBPAGES_CONTROLLER_TITLE" = "WEB PAGES";
 
 /* No comment provided by engineer. */
 "WEEK_PLURAL" = "%d weeks";

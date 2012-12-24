@@ -15,6 +15,8 @@
 #import "WALocation.h"
 #import "MKMapView+ZoomLevel.h"
 
+NSString * kWAEventTimelineViewCellKVOContext = @"EventTimelineViewCellKVOContext";
+
 @interface WATimelineViewCell ()
 
 @property (nonatomic, strong) IBOutletCollection(UIImageView) NSArray *photoImageViews;
@@ -28,6 +30,9 @@
 
 @property (nonatomic, strong) WAArticle *article;
 
+@property (nonatomic, readonly) CGFloat origCommentHeight;
+@property (nonatomic, readonly) CGFloat origCardBGHeight;
+
 @end
 
 @implementation WATimelineViewCell
@@ -39,6 +44,13 @@
         // Initialization code
     }
     return self;
+}
+
+- (void) awakeFromNib {
+	
+	_origCommentHeight = CGRectGetHeight(self.commentLabel.frame);
+	_origCardBGHeight = CGRectGetHeight(self.eventCardBGImageView.frame);
+	
 }
 
 - (void) setRepresentedArticle:(WAArticle *)representedArticle {
@@ -101,7 +113,7 @@
 			
 			[file irObserve:@"smallThumbnailImage"
 							options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew
-							context:nil
+							context:&kWAEventTimelineViewCellKVOContext
 						withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
 							
 							dispatch_async(dispatch_get_main_queue(), ^{
@@ -126,8 +138,6 @@
 		}
 		
 	}
-
-	CGFloat oldCommentHeight = CGRectGetHeight(self.commentLabel.frame);
 	
 	self.commentLabel.attributedText = [WAEventViewController attributedDescriptionStringForEvent:self.article];
 	[self.commentLabel sizeToFit];
@@ -159,14 +169,14 @@
 	[self.containerView addSubview:self.typeImageView];
 	[self.containerView addSubview:self.fileNoLabel];
 
-	CGFloat delta = newCommentHeight - oldCommentHeight;
+	CGFloat delta = newCommentHeight - self.origCommentHeight;
 	if (delta < 0) delta = 0;
 
 	self.eventCardBGImageView.frame = (CGRect){
 		self.eventCardBGImageView.frame.origin,
 		(CGSize) {
 			self.eventCardBGImageView.frame.size.width,
-			self.eventCardBGImageView.frame.size.height + delta
+			self.origCardBGHeight + delta
 		}
 	};
 	
@@ -269,5 +279,19 @@
 	
 }
 
+#pragma mark - UICollectionReusableView delegates
+
+- (void)prepareForReuse {
+	
+	if (self.representedArticle) {
+		for (WAFile *file in self.representedArticle.files) {
+			[file irRemoveObserverBlocksForKeyPath:@"smallThumbnailImage" context:&kWAEventTimelineViewCellKVOContext];
+		}
+	}
+	for (UIImageView *view in self.photoImageViews) {
+    view.image = nil;
+	}
+
+}
 
 @end

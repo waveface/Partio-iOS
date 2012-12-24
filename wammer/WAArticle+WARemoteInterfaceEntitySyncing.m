@@ -129,137 +129,136 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 }
 
 + (NSDictionary *) transformedRepresentationForRemoteRepresentation:(NSDictionary *)incomingRepresentation {
-  
-  NSMutableDictionary *returnedDictionary = [incomingRepresentation mutableCopy];
-  
-  NSString *creatorID = incomingRepresentation[@"creator_id"];
-  NSString *articleID = incomingRepresentation[@"post_id"];
-  NSString *groupID = incomingRepresentation[@"group_id"];
-  NSString *representingFileID = incomingRepresentation[@"cover_attach"];
-  NSString *type = incomingRepresentation[@"type"];
-  
-  NSMutableArray *fullAttachmentList = [incomingRepresentation[@"attachment_id_array"] mutableCopy];
-  NSArray *incomingAttachmentList = [incomingRepresentation[@"attachments"] copy];
-  NSMutableArray *returnedAttachmentList = [incomingAttachmentList mutableCopy];
-  if (!returnedAttachmentList) {
-    returnedAttachmentList = [[NSMutableArray alloc] init];
-  }
-  
-  if ([fullAttachmentList count] > [incomingAttachmentList count]) {
-    
-    // dedup
-    for (NSDictionary *attachment in incomingAttachmentList) {
-      [fullAttachmentList removeObject:attachment[@"object_id"]];
-    }
-    
-    for (NSString *objectID in fullAttachmentList) {
-      NSMutableDictionary *attach = [@{
-			       @"object_id": objectID,
-			       @"creator_id": creatorID,
-			       @"post_id": articleID,
-			       @"timestamp": incomingRepresentation[@"event_time"],
-			       @"outdated": @YES,
-			       } mutableCopy];
-      if ([type isEqualToString:@"image"]) {
-        attach[@"type"] = @"image";
-      } else if ([type isEqualToString:@"doc"]) {
-        attach[@"type"] = @"doc";
-      }
-      [returnedAttachmentList addObject:attach];
-    }
-    
-    returnedDictionary[@"attachments"] = returnedAttachmentList;
-    
-  }
-  
-  if ([creatorID length])
-    returnedDictionary[@"owner"] = @{@"user_id": creatorID};
-  
-  if ([groupID length])
-    returnedDictionary[@"group"] = @{@"group_id": groupID};
-  
-  if ([representingFileID length])
-    returnedDictionary[@"representingFile"] = @{@"object_id": representingFileID};
-  
-  NSArray *comments = incomingRepresentation[@"comments"];
-  if ([comments count] && articleID) {
-    
-    NSMutableArray *transformedComments = [comments mutableCopy];
-    
-    [comments enumerateObjectsUsingBlock: ^ (NSDictionary *aCommentRep, NSUInteger idx, BOOL *stop) {
-      
-      NSMutableDictionary *transformedComment = [aCommentRep mutableCopy];
-      NSString *commentID = transformedComment[@"comment_id"];
-      id aTimestamp = aCommentRep[@"timestamp"];
-      if (!aTimestamp)
-        aTimestamp = IRWebAPIKitNonce();
-      
-      if (!commentID) {
-        commentID = [NSString stringWithFormat:@"Synthesized_Article_%@_Timestamp_%@", articleID, aTimestamp];
-        transformedComment[@"comment_id"] = commentID;
-      }
-      
-      transformedComments[idx] = transformedComment;
-      
-    }];
-    
-    returnedDictionary[@"comments"] = transformedComments;
-    
-  }
-  
-  NSArray *people = incomingRepresentation[@"people"];
-  if (!people || people.count == 0) {
-    [returnedDictionary removeObjectForKey:@"people"];
-  }
-  
-  NSArray *tags = incomingRepresentation[@"tags"];
-  if ([tags count]) {
-    
-    NSMutableArray *transformedTags = [NSMutableArray arrayWithCapacity:[tags count]];
-    [tags enumerateObjectsUsingBlock:^(NSString *aTagRep, NSUInteger idx, BOOL *stop) {
-      [transformedTags addObject:@{@"tagValue": aTagRep}];
-    }];
-    
-    returnedDictionary[@"tags"] = transformedTags;
-  }
-  
-  NSDictionary *preview = incomingRepresentation[@"preview"];
-  
-  if ([preview count]) {
-    
-    returnedDictionary[@"previews"] = @[@{@"og": preview,
-    @"id": [preview valueForKeyPath:@"url"]}];
-    
-  }
-  
-  
-  if ([incomingRepresentation[@"import"] isEqualToString:@"true"]) {
-    NSString *deviceID = incomingRepresentation[@"device_id"];
-    if ([deviceID isEqualToString:WADeviceIdentifier()]) {
-      [returnedDictionary setValue:@(WAImportTypeFromLocal) forKey:@"import"];
-    } else {
-      [returnedDictionary setValue:@(WAImportTypeFromOthers) forKey:@"import"];
-    }
-  } else {
-    [returnedDictionary setValue:@(WAImportTypeNone) forKey:@"import"];
-  }
-  
-  if ([incomingRepresentation[@"event_tag"] isEqualToString:@"true"]) {
-    [returnedDictionary setValue:@YES forKey:@"event_tag"];
-  } else {
-    [returnedDictionary setValue:@NO forKey:@"event_tag"];
-  }
-  
-  NSString *timestamp = incomingRepresentation[@"timestamp"];
-  if (timestamp && [returnedDictionary[@"event_tag"] isEqual:@YES]) {					// It is an event, we record its event day
-    
-    [returnedDictionary setValue:@{@"day" : [[NSDate dateFromISO8601String:timestamp] dayBegin]}
-		      forKey:@"eventDay"];
-    
-  }
-  
-  return returnedDictionary;
-  
+
+	NSMutableDictionary *returnedDictionary = [incomingRepresentation mutableCopy];
+
+	NSString *creatorID = incomingRepresentation[@"creator_id"];
+	NSString *articleID = incomingRepresentation[@"post_id"];
+	NSString *groupID = incomingRepresentation[@"group_id"];
+	NSString *representingFileID = incomingRepresentation[@"cover_attach"];
+	NSString *type = incomingRepresentation[@"type"];
+
+	NSMutableArray *fullAttachmentList = [incomingRepresentation[@"attachment_id_array"] mutableCopy];
+	NSArray *incomingAttachmentList = [incomingRepresentation[@"attachments"] copy];
+	NSMutableArray *returnedAttachmentList = [incomingAttachmentList mutableCopy];
+	if (!returnedAttachmentList) {
+		returnedAttachmentList = [[NSMutableArray alloc] init];
+	}
+
+	if ([fullAttachmentList count] > [incomingAttachmentList count]) {
+
+		// dedup
+		for (NSDictionary *attachment in incomingAttachmentList) {
+			[fullAttachmentList removeObject:attachment[@"object_id"]];
+		}
+
+		for (NSString *objectID in fullAttachmentList) {
+			NSMutableDictionary *attach = [@{
+				@"object_id": objectID,
+				@"creator_id": creatorID,
+				@"post_id": articleID,
+				@"outdated": @YES,
+			} mutableCopy];
+			if ([type isEqualToString:@"image"]) {
+				attach[@"type"] = @"image";
+			} else if ([type isEqualToString:@"doc"]) {
+				attach[@"type"] = @"doc";
+			}
+			[returnedAttachmentList addObject:attach];
+		}
+
+		returnedDictionary[@"attachments"] = returnedAttachmentList;
+
+	}
+
+	if ([creatorID length])
+		returnedDictionary[@"owner"] = @{@"user_id": creatorID};
+
+	if ([groupID length])
+		returnedDictionary[@"group"] = @{@"group_id": groupID};
+	
+	if ([representingFileID length])
+		returnedDictionary[@"representingFile"] = @{@"object_id": representingFileID};
+	
+	NSArray *comments = incomingRepresentation[@"comments"];
+	if ([comments count] && articleID) {
+	
+		NSMutableArray *transformedComments = [comments mutableCopy];
+		
+		[comments enumerateObjectsUsingBlock: ^ (NSDictionary *aCommentRep, NSUInteger idx, BOOL *stop) {
+		
+			NSMutableDictionary *transformedComment = [aCommentRep mutableCopy];
+			NSString *commentID = transformedComment[@"comment_id"];
+			id aTimestamp = aCommentRep[@"timestamp"];
+			if (!aTimestamp)
+				aTimestamp = IRWebAPIKitNonce();
+			
+			if (!commentID) {
+				commentID = [NSString stringWithFormat:@"Synthesized_Article_%@_Timestamp_%@", articleID, aTimestamp];
+				transformedComment[@"comment_id"] = commentID;
+			}
+			
+			transformedComments[idx] = transformedComment;
+			
+		}];
+		
+		returnedDictionary[@"comments"] = transformedComments;
+	
+	}
+	
+	NSArray *people = incomingRepresentation[@"people"];
+	if (!people || people.count == 0) {
+		[returnedDictionary removeObjectForKey:@"people"];
+	}
+	
+	NSArray *tags = incomingRepresentation[@"tags"];
+	if ([tags count]) {
+		
+		NSMutableArray *transformedTags = [NSMutableArray arrayWithCapacity:[tags count]];
+		[tags enumerateObjectsUsingBlock:^(NSString *aTagRep, NSUInteger idx, BOOL *stop) {
+			[transformedTags addObject:@{@"tagValue": aTagRep}];
+		}];
+		
+		returnedDictionary[@"tags"] = transformedTags;
+	}
+		
+	NSDictionary *preview = incomingRepresentation[@"preview"];
+	
+	if ([preview count]) {
+	
+		returnedDictionary[@"previews"] = @[@{@"og": preview,
+				@"id": [preview valueForKeyPath:@"url"]}];
+	
+	}
+		
+	
+	if ([incomingRepresentation[@"import"] isEqualToString:@"true"]) {
+		NSString *deviceID = incomingRepresentation[@"device_id"];
+		if ([deviceID isEqualToString:WADeviceIdentifier()]) {
+			[returnedDictionary setValue:@(WAImportTypeFromLocal) forKey:@"import"];
+		} else {
+			[returnedDictionary setValue:@(WAImportTypeFromOthers) forKey:@"import"];
+		}
+	} else {
+		[returnedDictionary setValue:@(WAImportTypeNone) forKey:@"import"];
+	}
+
+	if ([incomingRepresentation[@"event_tag"] isEqualToString:@"true"]) {
+		[returnedDictionary setValue:@YES forKey:@"event_tag"];
+	} else {
+		[returnedDictionary setValue:@NO forKey:@"event_tag"];
+	}
+
+	NSString *timestamp = incomingRepresentation[@"timestamp"];
+	if (timestamp && [returnedDictionary[@"event_tag"] isEqual:@YES]) {					// It is an event, we record its event day
+
+		[returnedDictionary setValue:@{@"day" : [[NSDate dateFromISO8601String:timestamp] dayBegin]}
+													forKey:@"eventDay"];
+
+	}
+	
+	return returnedDictionary;
+
 }
 
 + (void) synchronizeWithCompletion:(void (^)(BOOL, NSError *))completionBlock {
@@ -715,8 +714,6 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
       callback();
       
     }]];
-    
-    [(WAAppDelegate_iOS *)AppDelegate() syncManager].needingSyncFilesCount += 1;
     
   }];
   

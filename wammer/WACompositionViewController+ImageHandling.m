@@ -16,7 +16,6 @@
 #import "WACompositionViewController+SubclassEyesOnly.h"
 #import "IRAQPhotoPickerController.h"
 #import "WAAssetsLibraryManager.h"
-#import "WAFile+ThumbnailMaker.h"
 #import "WAFileExif.h"
 #import "WAFileExif+WAAdditions.h"
 
@@ -141,14 +140,7 @@ NSString * const kDismissesSelfIfCameraCancelled = @"-[WACompositionViewControll
 		
 		[wSelf.managedObjectContext save:nil];
 
-		WAThumbnailMakeOptions options = WAThumbnailMakeOptionExtraSmall;
-		if ([wSelf.article.files count] < 4) {
-			options |= WAThumbnailMakeOptionMedium;
-		}
-		if ([wSelf.article.files count] < 3) {
-			options |= WAThumbnailMakeOptionSmall;
-		}
-		[wSelf handleIncomingSelectedAsset:representedAsset options:options];
+		[wSelf handleIncomingSelectedAsset:representedAsset type:WAThumbnailTypeExtraSmall];
 
 		[wSelf dismissCameraCapturePickerController:nrPickerController animated:YES];
 		
@@ -187,19 +179,12 @@ NSString * const kDismissesSelfIfCameraCancelled = @"-[WACompositionViewControll
 	
 	[selectedAssets enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
 		ALAsset *asset = obj;
-		WAThumbnailMakeOptions options = WAThumbnailMakeOptionExtraSmall;
-		if (idx < 4) {
-			options |= WAThumbnailMakeOptionMedium;
-		}
-		if (idx < 3) {
-			options |= WAThumbnailMakeOptionSmall;
-		}
-		[self handleIncomingSelectedAsset:asset options:options];
+		[self handleIncomingSelectedAsset:asset type:WAThumbnailTypeExtraSmall];
 	}];
 		
 }
 
-- (void) makeAssociatedImagesOfFile:(WAFile *)file withRepresentedAsset:(ALAsset *)representedAsset options:(WAThumbnailMakeOptions)options {
+- (void) makeAssociatedImagesOfFile:(WAFile *)file withRepresentedAsset:(ALAsset *)representedAsset type:(WAThumbnailType)type {
 
 	NSParameterAssert(representedAsset);
 
@@ -209,14 +194,7 @@ NSString * const kDismissesSelfIfCameraCancelled = @"-[WACompositionViewControll
 		
 		WADataStore *ds = [WADataStore defaultStore];
 
-		if (options & (WAThumbnailMakeOptionSmall|WAThumbnailMakeOptionMedium)) {
-
-			UIImage *image = [[representedAsset defaultRepresentation] irImage];
-			[file makeThumbnailsWithImage:image options:(options & (WAThumbnailMakeOptionSmall|WAThumbnailMakeOptionMedium))];
-			
-		}
-		
-		if (options & WAThumbnailMakeOptionExtraSmall) {
+		if (type == WAThumbnailTypeExtraSmall) {
 			
 			UIImage *extraSmallThumbnailImage = [UIImage imageWithCGImage:[representedAsset thumbnail]];
 			file.extraSmallThumbnailFilePath = [[ds persistentFileURLForData:UIImageJPEGRepresentation(extraSmallThumbnailImage, 0.85f) extension:@"jpeg"] path];
@@ -231,7 +209,7 @@ NSString * const kDismissesSelfIfCameraCancelled = @"-[WACompositionViewControll
 
 }
 
-- (void) handleIncomingSelectedAsset:(ALAsset *)representedAsset options:(WAThumbnailMakeOptions)options {
+- (void) handleIncomingSelectedAsset:(ALAsset *)representedAsset type:(WAThumbnailType)type {
 
 	if (representedAsset) {
 		
@@ -257,7 +235,7 @@ NSString * const kDismissesSelfIfCameraCancelled = @"-[WACompositionViewControll
 			[[article mutableOrderedSetValueForKey:@"files"] addObject:file];
 			[article didChangeValueForKey:@"files"];
 						
-			[wSelf makeAssociatedImagesOfFile:file withRepresentedAsset:representedAsset options:options];
+			[wSelf makeAssociatedImagesOfFile:file withRepresentedAsset:representedAsset type:type];
 
 			file.assetURL = [[[representedAsset defaultRepresentation] url] absoluteString];
 			file.resourceType = (NSString *)kUTTypeImage;

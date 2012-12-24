@@ -22,6 +22,7 @@
 @implementation WAArticle
 
 @dynamic creationDate;
+@dynamic dayOnCreation;
 @dynamic creationDeviceName;
 @dynamic dirty;
 @dynamic draft;
