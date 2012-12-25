@@ -2,13 +2,13 @@
 //  WACollection.h
 //  wammer
 //
-//  Created by jamie on 12/21/12.
+//  Created by Shen Steven on 12/25/12.
 //  Copyright (c) 2012 Waveface. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
-#import "CoreData+IRAdditions.h"
+#import <CoreData+IRAdditions.h>
 
 @class WAFile, WAUser;
 
@@ -21,9 +21,9 @@
 @property (nonatomic, retain) NSDate * modificationDate;
 @property (nonatomic, retain) NSNumber * sequenceNumber;
 @property (nonatomic, retain) NSString * title;
+@property (nonatomic, retain) WAFile *cover;
 @property (nonatomic, retain) WAUser *creator;
 @property (nonatomic, retain) NSOrderedSet *files;
-@property (nonatomic, retain) WAFile *cover;
 @end
 
 @interface WACollection (CoreDataGeneratedAccessors)
