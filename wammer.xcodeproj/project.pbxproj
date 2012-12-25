@@ -1189,8 +1189,6 @@
 		4B52733F15624E1800C6F55D /* WFPreviewTemplate-Discrete_Web_ImageWithDescription_Horizontal_for_6.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = "WFPreviewTemplate-Discrete_Web_ImageWithDescription_Horizontal_for_6.html"; path = "external/WFPresentation/Source/WFPreviewTemplate-Discrete_Web_ImageWithDescription_Horizontal_for_6.html"; sourceTree = "<group>"; };
 		4B52734315625B3500C6F55D /* ProviderIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ProviderIcon.png; path = external/WFPresentation/Source/ProviderIcon.png; sourceTree = "<group>"; };
 		4B57F2F8157F5D4300467AD4 /* WFPreviewTemplate-Discrete_Web_Image_Vertical.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = "WFPreviewTemplate-Discrete_Web_Image_Vertical.html"; path = "external/WFPresentation/Source/WFPreviewTemplate-Discrete_Web_Image_Vertical.html"; sourceTree = "<group>"; };
-		4B65E1B1168441710044E6AB /* WACollection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WACollection.h; sourceTree = "<group>"; };
-		4B65E1B2168441710044E6AB /* WACollection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WACollection.m; sourceTree = "<group>"; };
 		4B8581AB15F798F900EE11AC /* Icon_beta.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Icon_beta.png; path = resources/Icon_beta.png; sourceTree = "<group>"; };
 		4B8581AC15F798F900EE11AC /* Icon_beta@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon_beta@2x.png"; path = "resources/Icon_beta@2x.png"; sourceTree = "<group>"; };
 		4B8581B315F7993100EE11AC /* Icon-72_beta.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon-72_beta.png"; path = "resources/Icon-72_beta.png"; sourceTree = "<group>"; };
@@ -2503,8 +2501,6 @@
 		7DB81F181637E91B009A3645 /* Collection */ = {
 			isa = PBXGroup;
 			children = (
-				4B65E1B1168441710044E6AB /* WACollection.h */,
-				4B65E1B2168441710044E6AB /* WACollection.m */,
 				7DA78783163912C600BEFC6E /* LightTablePhone.storyboard */,
 				7DA880FF1639449000DC20E4 /* WALightTableViewCell.h */,
 				7DA881001639449000DC20E4 /* WALightTableViewCell.m */,
