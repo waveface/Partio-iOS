@@ -49,18 +49,23 @@ static NSString *kWADDViewCellIdentifier = @"DripdownMenuItem";
 		
 	if(isPhone()) {
 		
-		CGRect fullScreenFrame = CGRectMake(0, 0, 320, 640);
+		CGRect fullScreenFrame = CGRectMake(0, 0, CGRectGetWidth([[UIScreen mainScreen] bounds]), CGRectGetHeight([[UIScreen mainScreen] bounds]));
+		
+		self.view.frame = fullScreenFrame;
+		
 		self.translucentOverlay = [[UIView alloc] initWithFrame:fullScreenFrame];
 		self.translucentOverlay.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
-		self.translucentOverlay.backgroundColor = [UIColor colorWithWhite:0.9f alpha:0.3f];
+		self.translucentOverlay.backgroundColor = [UIColor colorWithWhite:0.2f alpha:0.3f];
 		[self.view addSubview:self.translucentOverlay];
 		
 		self.tapper = [UIButton buttonWithType:UIButtonTypeCustom];
 		self.tapper.frame = fullScreenFrame;
 		[self.tapper setBackgroundColor:[UIColor clearColor]];
+		self.tapper.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+		[self.tapper addTarget:self action:@selector(tapperTapped:) forControlEvents:UIControlEventTouchUpInside];
 		[self.translucentOverlay addSubview:self.tapper];
 		
-		self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, 220, 200)];
+		self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(fullScreenFrame.size.width/2 - 110, 0, 220, 200)];
 		self.tableView.delegate = self;
 		self.tableView.dataSource = self;
 		[self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:kWADDViewCellIdentifier];
@@ -79,7 +84,6 @@ static NSString *kWADDViewCellIdentifier = @"DripdownMenuItem";
 		
 	}
 	
-
 }
 
 - (void)prepareMenuItems {
@@ -165,8 +169,48 @@ static NSString *kWADDViewCellIdentifier = @"DripdownMenuItem";
 													 animated:YES];
 		
 	}
-	
 
+}
+
+- (void) dismissDDMenu {
+	
+	if (isPhone()) {
+		CGRect tableViewFromRect = self.tableView.frame;
+		CGRect tableViewToRect = CGRectOffset(tableViewFromRect, 0, -1 * CGRectGetHeight(tableViewFromRect));
+		
+		__weak WADripdownMenuViewController *wSelf = self;
+		self.translucentOverlay.alpha = 1;
+		self.tableView.frame = tableViewFromRect;
+		
+		[UIView animateWithDuration:0.3 animations:^{
+			
+			wSelf.translucentOverlay.alpha = 0;
+			wSelf.tableView.frame = tableViewToRect;
+			
+		} completion:^(BOOL finished) {
+
+			[wSelf willMoveToParentViewController:nil];
+			[wSelf removeFromParentViewController];
+			[wSelf.view removeFromSuperview];
+			[wSelf didMoveToParentViewController:nil];
+			
+			if (wSelf.completionBlock)
+				wSelf.completionBlock();
+			
+		}];
+		
+	} else {
+		
+		if (self.popover) {
+			if([self.popover isPopoverVisible])
+				[self.popover dismissPopoverAnimated:YES];
+		}
+
+		if (self.completionBlock) {
+			self.completionBlock();
+		}
+	}
+	
 }
 
 - (void)viewDidLoad
@@ -191,36 +235,9 @@ static NSString *kWADDViewCellIdentifier = @"DripdownMenuItem";
 	
 }
 
-- (void) runDismissingAnimationWithCompletion:(void(^)(void))block {
+- (void) tapperTapped:(id)sender {
 	
-	CGRect tableViewFromRect = self.tableView.frame;
-	CGRect tableViewToRect = CGRectOffset(tableViewFromRect, 0, -1 * CGRectGetHeight(tableViewFromRect));
-	
-	__weak WADripdownMenuViewController *wSelf = self;
-	self.translucentOverlay.alpha = 1;
-	self.tableView.frame = tableViewFromRect;
-	
-	[UIView animateWithDuration:0.3 animations:^{
-		
-		wSelf.translucentOverlay.alpha = 0;
-		wSelf.tableView.frame = tableViewToRect;
-		
-	} completion:^(BOOL finished) {
-		
-		if (block)
-			block();
-		
-	}];
-	
-}
-
-- (IBAction) tapperTapped:(id)sender {
-	
-	__weak WADripdownMenuViewController *wSelf = self;
-	[self runDismissingAnimationWithCompletion:^ {
-		if (wSelf.completionBlock)
-			wSelf.completionBlock();
-	}];
+	[self dismissDDMenu];
 	
 }
 
@@ -252,11 +269,13 @@ static NSString *kWADDViewCellIdentifier = @"DripdownMenuItem";
 
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 
-	__weak WADripdownMenuViewController *wSelf = self;
-	[self runDismissingAnimationWithCompletion:^{
-		if (wSelf.completionBlock)
-			wSelf.completionBlock();
-	}];
+	NSDictionary *item = self.menuItems[indexPath.row];
+	if (self.delegate)
+		if ([self.delegate respondsToSelector:@selector(dripdownMenuItemDidSelect:)])
+			[self.delegate dripdownMenuItemDidSelect:[item[@"style"] unsignedIntegerValue]];
+			//[self.delegate performSelector:@selector(dripdownMenuItemDidSelect:) withObject:item[@"style"]];
+
+	[self dismissDDMenu];
 	
 }
 

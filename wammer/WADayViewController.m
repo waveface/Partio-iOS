@@ -33,7 +33,7 @@
 
 static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPostsViewControllerPhone_RepresentedObjectURI";
 
-@interface WADayViewController () <WAArticleDraftsViewControllerDelegate, NSFetchedResultsControllerDelegate> {
+@interface WADayViewController () <WAArticleDraftsViewControllerDelegate, NSFetchedResultsControllerDelegate, WADripdownMenuDelegate> {
 	Class containedClass;
 }
 
@@ -476,20 +476,6 @@ BOOL dripdownMenuOpened = NO;
 	} else if ([containedClass isSubclassOfClass:[WAWebStreamViewController class]]) {
 		style = WAWebpagesViewStyle;
 	}
-
-	void (^dismissDDMenu)(WADripdownMenuViewController *menu) = ^(WADripdownMenuViewController *menu) {
-		
-		[menu willMoveToParentViewController:nil];
-		[menu removeFromParentViewController];
-		[menu.view removeFromSuperview];
-		[menu didMoveToParentViewController:nil];
-		
-		[wSelf.navigationItem.leftBarButtonItem setEnabled:YES];
-		[wSelf.navigationItem.rightBarButtonItem setEnabled:YES];
-		
-		dripdownMenuOpened = NO;
-		
-	};
 	
 	if (dripdownMenuOpened) {
 		[self.childViewControllers enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
@@ -497,7 +483,7 @@ BOOL dripdownMenuOpened = NO;
 				
 				*stop = YES;
 				WADripdownMenuViewController *ddMenu = (WADripdownMenuViewController*)obj;
-				dismissDDMenu(ddMenu);
+				[ddMenu dismissDDMenu];
 				
 			}
 		}];
@@ -505,21 +491,28 @@ BOOL dripdownMenuOpened = NO;
 	}
 	
 	__block WADripdownMenuViewController *ddMenu = [[WADripdownMenuViewController alloc] initForViewStyle:style completion:^{
+
+		[wSelf.navigationItem.leftBarButtonItem setEnabled:YES];
+		[wSelf.navigationItem.rightBarButtonItem setEnabled:YES];
 		
-		dismissDDMenu(ddMenu);
-		ddMenu = nil;
+		dripdownMenuOpened = NO;
 		
 	}];
 	
+	ddMenu.delegate = self;
+	
 	[ddMenu presentDDMenuInViewController:self];
-/*
-	[self addChildViewController:ddMenu];
-	[self.view addSubview:ddMenu.view];
-	[ddMenu didMoveToParentViewController:self];
- */
 	[self.navigationItem.leftBarButtonItem setEnabled:NO];
 	[self.navigationItem.rightBarButtonItem setEnabled:NO];
 	dripdownMenuOpened = YES;
+	
+}
+
+- (void) dripdownMenuItemDidSelect:(WADayViewSupportedStyle)itemStyle {
+	
+	WASlidingMenuViewController *slidingMenu = (WASlidingMenuViewController*) self.viewDeckController.leftController;
+	NSDate *theDate = [self dayAtPageIndex:self.paginatedView.currentPage];
+	[slidingMenu switchToViewStyle:itemStyle onDate:theDate];
 	
 }
 
