@@ -296,26 +296,8 @@ CGFloat (^rowSpacingWeb) (UICollectionView *) = ^ (UICollectionView *collectionV
 	WAWebStreamViewCell *cell = (WAWebStreamViewCell*)[collectionView cellForItemAtIndexPath:indexPath];
 	UIColor *origColor = cell.backgroundColor;
 	cell.backgroundColor = [UIColor lightGrayColor];
-	
-	if (isPad()) {
-		
-		WANavigationController *navVC = [[WANavigationController alloc] initWithRootViewController:webVC];
-		
-		navVC.modalPresentationStyle = UIModalPresentationFormSheet;
-
-		[self presentViewController:navVC animated:YES completion:^{
-			cell.backgroundColor = origColor;
-			webVC.navigationItem.leftBarButtonItem = (UIBarButtonItem*)WABarButtonItem([UIImage imageNamed:@"back"], @"", ^{
-				[webVC dismissViewControllerAnimated:YES completion:nil];
-			});
-
-		}];
-	} else {
-		
-		[self.navigationController pushViewController:webVC animated:YES];
-		cell.backgroundColor = origColor;
-		
-	}
+	[self.navigationController pushViewController:webVC animated:YES];
+	cell.backgroundColor = origColor;
 	
 }
 
