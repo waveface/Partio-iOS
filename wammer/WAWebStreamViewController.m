@@ -78,9 +78,6 @@
 	
 	UICollectionViewFlowLayout *flowlayout = [[UICollectionViewFlowLayout alloc] init];
 	flowlayout.itemSize = (CGSize) {320, 270};
-	flowlayout.sectionInset = UIEdgeInsetsMake(0, 0, 2, 0);
-	flowlayout.minimumLineSpacing = 0;
-	flowlayout.minimumInteritemSpacing = 0;
 	flowlayout.scrollDirection = UICollectionViewScrollDirectionVertical;
 
 	CGRect rect = (CGRect) { CGPointZero, self.view.frame.size };
@@ -123,6 +120,12 @@
 - (BOOL) shouldAutorotate {
 	
 	return YES;
+	
+}
+
+- (void) willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
+	
+	[self.collectionView.collectionViewLayout invalidateLayout];
 	
 }
 
@@ -218,7 +221,6 @@ CGFloat (^rowSpacingWeb) (UICollectionView *) = ^ (UICollectionView *collectionV
 	int numCell = (int)(width / itemWidth);
 	
 	CGFloat w = ((int)((int)(width) % (int)(itemWidth))) / (numCell + 1);
-	
 	return w;
 };
 
@@ -253,6 +255,33 @@ CGFloat (^rowSpacingWeb) (UICollectionView *) = ^ (UICollectionView *collectionV
 	
 }
 
+- (CGFloat) collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout minimumInteritemSpacingForSectionAtIndex:(NSInteger)section {
+	
+	if (isPad())
+		return rowSpacingWeb(collectionView);
+	else
+		return 0;
+	
+}
+
+- (CGFloat) collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout minimumLineSpacingForSectionAtIndex:(NSInteger)section {
+	
+	if (isPad())
+		return 10.0f;
+	else
+		return 5.0f;
+	
+}
+
+- (UIEdgeInsets) collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout insetForSectionAtIndex:(NSInteger)section {
+	
+	if (isPad()) {
+		CGFloat spacing = rowSpacingWeb(collectionView);
+		return UIEdgeInsetsMake(5, spacing, 0, spacing);
+	} else {
+		return UIEdgeInsetsMake(0, 0, 5, 0);
+	}
+}
 
 #pragma mark - UICollectionView Delegate
 -(void) collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
