@@ -77,10 +77,7 @@
 	[super viewDidLoad];
 	
 	UICollectionViewFlowLayout *flowlayout = [[UICollectionViewFlowLayout alloc] init];
-	flowlayout.itemSize = (CGSize) {320, 250};
-	flowlayout.sectionInset = UIEdgeInsetsMake(0, 0, 2, 0);
-	flowlayout.minimumLineSpacing = 0;
-	flowlayout.minimumInteritemSpacing = 0;
+	flowlayout.itemSize = (CGSize) {320, 270};
 	flowlayout.scrollDirection = UICollectionViewScrollDirectionVertical;
 
 	CGRect rect = (CGRect) { CGPointZero, self.view.frame.size };
@@ -126,18 +123,12 @@
 	
 }
 
-+ (UIImage *) cardBackgroundImage {
+- (void) willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
 	
-	static UIImage *image = nil;
-	
-	static dispatch_once_t onceToken;
-	dispatch_once(&onceToken, ^{
-    image = [[UIImage imageNamed:@"EventCardBG"] resizableImageWithCapInsets:UIEdgeInsetsMake(15, 15, 15, 15) resizingMode:UIImageResizingModeTile];
-	});
-	
-	return image;
+	[self.collectionView.collectionViewLayout invalidateLayout];
 	
 }
+
 
 #pragma mark - UICollectionView DataSource
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
@@ -153,7 +144,9 @@
 }
 
 - (UICollectionViewCell*) collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
-	WAFile *file = ((WAFileAccessLog*)self.webPages[indexPath.row]).file;
+	WAFileAccessLog *accessLog = self.webPages[indexPath.row];
+	NSAssert(accessLog, @"There should be one access log");
+	WAFile *file = accessLog.file;
 	NSAssert(file!=nil, @"Web page access log should refer to one WAFile");
 	
 	WAWebStreamViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"WAWebStreamViewCell" forIndexPath:indexPath];
@@ -166,20 +159,17 @@
 
 	cell.dateTimeLabel.text = [formatter stringFromDate:((WAFileAccessLog*)self.webPages[indexPath.row]).accessTime];
 
-
-	[file irObserve:@"thumbnailImage"
-					options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew
-					context:nil
+	[file irObserve:@"thumbnailImage" options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew
+					context:&kWAWebStreamViewCellKVOContext
 				withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
-					
-					dispatch_async(dispatch_get_main_queue(), ^{
 						
-						cell.imageView.image = (UIImage*)toValue;
-						
-					});
+						dispatch_async(dispatch_get_main_queue(), ^{
+							cell.imageView.image = (UIImage*)toValue;
+						});
 					
-				}];
-
+					}];
+	
+	cell.file = file;
 	
 	if (file.webFaviconURL) {
 		[cell.faviconImageView setPathToNetworkImage:file.webFaviconURL];
@@ -199,8 +189,27 @@
 		cell.webURLLabel.frame = newFrame;
 
 	}
+
+	if ([accessLog.accessSource isEqualToString:@"twitter"]) {
+
+		cell.sourceImageView.image = [UIImage imageNamed:@"twitter"];
+		
+	} else if([accessLog.accessSource isEqualToString:@"facebook"]) {
+		
+		cell.sourceImageView.image = [UIImage imageNamed:@"facebook"];
+		
+	} else if([accessLog.accessSource isEqualToString:@"GoogleReader"]) {
+		
+		cell.sourceImageView.image = [UIImage imageNamed:@"googlereader"];
+		
+	} else if([accessLog.accessSource isEqualToString:@"Chrome Extension"]) {
+		
+		cell.sourceImageView.image = [UIImage imageNamed:@"chrome"];
+		
+	}
 	
-	cell.cardBGImageView.image = [[self class] cardBackgroundImage];
+	cell.sourceLabel.text = accessLog.accessSource;
+	
 	return cell;
 	
 }
@@ -212,7 +221,6 @@ CGFloat (^rowSpacingWeb) (UICollectionView *) = ^ (UICollectionView *collectionV
 	int numCell = (int)(width / itemWidth);
 	
 	CGFloat w = ((int)((int)(width) % (int)(itemWidth))) / (numCell + 1);
-	
 	return w;
 };
 
@@ -247,6 +255,33 @@ CGFloat (^rowSpacingWeb) (UICollectionView *) = ^ (UICollectionView *collectionV
 	
 }
 
+- (CGFloat) collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout minimumInteritemSpacingForSectionAtIndex:(NSInteger)section {
+	
+	if (isPad())
+		return rowSpacingWeb(collectionView);
+	else
+		return 0;
+	
+}
+
+- (CGFloat) collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout minimumLineSpacingForSectionAtIndex:(NSInteger)section {
+	
+	if (isPad())
+		return 10.0f;
+	else
+		return 5.0f;
+	
+}
+
+- (UIEdgeInsets) collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout insetForSectionAtIndex:(NSInteger)section {
+	
+	if (isPad()) {
+		CGFloat spacing = rowSpacingWeb(collectionView);
+		return UIEdgeInsetsMake(5, spacing, 0, spacing);
+	} else {
+		return UIEdgeInsetsMake(0, 0, 5, 0);
+	}
+}
 
 #pragma mark - UICollectionView Delegate
 -(void) collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {

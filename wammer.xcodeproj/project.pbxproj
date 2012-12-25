@@ -22,7 +22,6 @@
 		132824C2167B196700B2FB67 /* DocumentsIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 132824C0167B196700B2FB67 /* DocumentsIcon@2x.png */; };
 		132D60331622B66500148829 /* WACache.m in Sources */ = {isa = PBXBuildFile; fileRef = 132D60321622B66500148829 /* WACache.m */; };
 		133058DE1650ABE300C0283F /* WASyncManager+FileMetadataSync.m in Sources */ = {isa = PBXBuildFile; fileRef = 133058DD1650ABE300C0283F /* WASyncManager+FileMetadataSync.m */; };
-		1336742316789D490010F6C8 /* WAFileAccessLog.m in Sources */ = {isa = PBXBuildFile; fileRef = 1336742216789D490010F6C8 /* WAFileAccessLog.m */; };
 		1336742C1678A0E70010F6C8 /* WAFileAccessLog+WARemoteInterfaceEntitySyncing.m in Sources */ = {isa = PBXBuildFile; fileRef = 1336742B1678A0E70010F6C8 /* WAFileAccessLog+WARemoteInterfaceEntitySyncing.m */; };
 		133E8AF516798DD20075843C /* WADocumentPreviewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 133E8AF316798DD20075843C /* WADocumentPreviewController.m */; };
 		1349AAEE163E9C4600D87A85 /* WAFirstUseIntroViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1349AAEC163E9C4600D87A85 /* WAFirstUseIntroViewController.m */; };
@@ -207,6 +206,15 @@
 		80316A0F15C0EC20009D43F0 /* IRAQPhotoPickerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 80316A0515C0EC20009D43F0 /* IRAQPhotoPickerController.m */; };
 		80316A1015C0EC20009D43F0 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 80316A0715C0EC20009D43F0 /* README.md */; };
 		80316A1115C0EC20009D43F0 /* UIViewController+IRAQAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 80316A0915C0EC20009D43F0 /* UIViewController+IRAQAdditions.m */; };
+		803302421688521C00004891 /* WAFileAccessLog.m in Sources */ = {isa = PBXBuildFile; fileRef = 803302411688521C00004891 /* WAFileAccessLog.m */; };
+		803302451688536C00004891 /* chrome.png in Resources */ = {isa = PBXBuildFile; fileRef = 803302431688536C00004891 /* chrome.png */; };
+		803302461688536C00004891 /* chrome@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 803302441688536C00004891 /* chrome@2x.png */; };
+		803302491688539200004891 /* facebook.png in Resources */ = {isa = PBXBuildFile; fileRef = 803302471688539200004891 /* facebook.png */; };
+		8033024A1688539200004891 /* facebook@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 803302481688539200004891 /* facebook@2x.png */; };
+		8033024D168853B200004891 /* googlereader.png in Resources */ = {isa = PBXBuildFile; fileRef = 8033024B168853B200004891 /* googlereader.png */; };
+		8033024E168853B200004891 /* googlereader@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8033024C168853B200004891 /* googlereader@2x.png */; };
+		80330251168853D500004891 /* twitter.png in Resources */ = {isa = PBXBuildFile; fileRef = 8033024F168853D500004891 /* twitter.png */; };
+		80330252168853D500004891 /* twitter@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 80330250168853D500004891 /* twitter@2x.png */; };
 		80499B1116718F0400842788 /* WAEventHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 80499B1016718F0400842788 /* WAEventHeaderView.xib */; };
 		80557BA915FDE38000336F3C /* WARemoteInterface+RemoteNotifications.m in Sources */ = {isa = PBXBuildFile; fileRef = 80557BA815FDE38000336F3C /* WARemoteInterface+RemoteNotifications.m */; };
 		8056C9861682C4B2001C9199 /* WAWebPreviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8056C9851682C4B2001C9199 /* WAWebPreviewViewController.m */; };
@@ -1079,8 +1087,6 @@
 		133058DC1650ABE300C0283F /* WASyncManager+FileMetadataSync.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WASyncManager+FileMetadataSync.h"; sourceTree = "<group>"; };
 		133058DD1650ABE300C0283F /* WASyncManager+FileMetadataSync.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WASyncManager+FileMetadataSync.m"; sourceTree = "<group>"; };
 		1332417716156AB0005E31EA /* WAModel 36.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WAModel 36.xcdatamodel"; sourceTree = "<group>"; };
-		1336742116789D490010F6C8 /* WAFileAccessLog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAFileAccessLog.h; sourceTree = "<group>"; };
-		1336742216789D490010F6C8 /* WAFileAccessLog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAFileAccessLog.m; sourceTree = "<group>"; };
 		1336742A1678A0E70010F6C8 /* WAFileAccessLog+WARemoteInterfaceEntitySyncing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WAFileAccessLog+WARemoteInterfaceEntitySyncing.h"; sourceTree = "<group>"; };
 		1336742B1678A0E70010F6C8 /* WAFileAccessLog+WARemoteInterfaceEntitySyncing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WAFileAccessLog+WARemoteInterfaceEntitySyncing.m"; sourceTree = "<group>"; };
 		133E8AF216798DD20075843C /* WADocumentPreviewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WADocumentPreviewController.h; sourceTree = "<group>"; };
@@ -1309,6 +1315,16 @@
 		80316A0715C0EC20009D43F0 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
 		80316A0815C0EC20009D43F0 /* UIViewController+IRAQAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+IRAQAdditions.h"; sourceTree = "<group>"; };
 		80316A0915C0EC20009D43F0 /* UIViewController+IRAQAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+IRAQAdditions.m"; sourceTree = "<group>"; };
+		803302401688521C00004891 /* WAFileAccessLog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAFileAccessLog.h; sourceTree = "<group>"; };
+		803302411688521C00004891 /* WAFileAccessLog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAFileAccessLog.m; sourceTree = "<group>"; };
+		803302431688536C00004891 /* chrome.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = chrome.png; path = Resources/chrome.png; sourceTree = "<group>"; };
+		803302441688536C00004891 /* chrome@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "chrome@2x.png"; path = "Resources/chrome@2x.png"; sourceTree = "<group>"; };
+		803302471688539200004891 /* facebook.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = facebook.png; path = Resources/facebook.png; sourceTree = "<group>"; };
+		803302481688539200004891 /* facebook@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "facebook@2x.png"; path = "Resources/facebook@2x.png"; sourceTree = "<group>"; };
+		8033024B168853B200004891 /* googlereader.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = googlereader.png; path = Resources/googlereader.png; sourceTree = "<group>"; };
+		8033024C168853B200004891 /* googlereader@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "googlereader@2x.png"; path = "Resources/googlereader@2x.png"; sourceTree = "<group>"; };
+		8033024F168853D500004891 /* twitter.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = twitter.png; path = Resources/twitter.png; sourceTree = "<group>"; };
+		80330250168853D500004891 /* twitter@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "twitter@2x.png"; path = "Resources/twitter@2x.png"; sourceTree = "<group>"; };
 		80499B1016718F0400842788 /* WAEventHeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = WAEventHeaderView.xib; path = wammer/WAEventHeaderView.xib; sourceTree = "<group>"; };
 		80557BA715FDE38000336F3C /* WARemoteInterface+RemoteNotifications.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WARemoteInterface+RemoteNotifications.h"; sourceTree = "<group>"; };
 		80557BA815FDE38000336F3C /* WARemoteInterface+RemoteNotifications.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WARemoteInterface+RemoteNotifications.m"; sourceTree = "<group>"; };
@@ -2838,8 +2854,8 @@
 			children = (
 				80074F8A167EBFAB00A23EED /* WAFile.h */,
 				80074F8B167EBFAB00A23EED /* WAFile.m */,
-				1336742116789D490010F6C8 /* WAFileAccessLog.h */,
-				1336742216789D490010F6C8 /* WAFileAccessLog.m */,
+				803302401688521C00004891 /* WAFileAccessLog.h */,
+				803302411688521C00004891 /* WAFileAccessLog.m */,
 				FFCD325014B9EA4D0035C4F5 /* WAFile+WAAdditions.h */,
 				FFCD325114B9EA4D0035C4F5 /* WAFile+WAAdditions.m */,
 				FF485CC9156A4DC700A6175E /* WAFile+CoreDataGeneratedPrimitiveAccessors.h */,
@@ -3369,8 +3385,16 @@
 				806A5C8B16241E2800867E56 /* Cal@2x.png */,
 				806A5C8C16241E2800867E56 /* CalHL.png */,
 				806A5C8D16241E2800867E56 /* CalHL@2x.png */,
+				803302431688536C00004891 /* chrome.png */,
+				803302441688536C00004891 /* chrome@2x.png */,
 				DEBED816166C8643001A2B24 /* forward.png */,
 				DEBED817166C8643001A2B24 /* forward@2x.png */,
+				803302471688539200004891 /* facebook.png */,
+				803302481688539200004891 /* facebook@2x.png */,
+				8033024B168853B200004891 /* googlereader.png */,
+				8033024C168853B200004891 /* googlereader@2x.png */,
+				8033024F168853D500004891 /* twitter.png */,
+				80330250168853D500004891 /* twitter@2x.png */,
 				806A5C8E16241E2800867E56 /* Left.png */,
 				806A5C8F16241E2800867E56 /* Left@2x.png */,
 				806A5C9016241E2800867E56 /* LeftHL.png */,
@@ -4607,6 +4631,14 @@
 				80074F9A167F34C600A23EED /* Webicon.png in Resources */,
 				80074F9B167F34C600A23EED /* Webicon@2X.png in Resources */,
 				8056C9881682C4CC001C9199 /* WAWebPreviewViewController.xib in Resources */,
+				803302451688536C00004891 /* chrome.png in Resources */,
+				803302461688536C00004891 /* chrome@2x.png in Resources */,
+				803302491688539200004891 /* facebook.png in Resources */,
+				8033024A1688539200004891 /* facebook@2x.png in Resources */,
+				8033024D168853B200004891 /* googlereader.png in Resources */,
+				8033024E168853B200004891 /* googlereader@2x.png in Resources */,
+				80330251168853D500004891 /* twitter.png in Resources */,
+				80330252168853D500004891 /* twitter@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5092,7 +5124,6 @@
 				4BF8353F167727630031A363 /* WACollectionViewController.m in Sources */,
 				130AB55B1678480900CFFA5A /* WADocumentDay.m in Sources */,
 				130AB55E16785B2300CFFA5A /* WADocumentDay+WARemoteInterfaceEntitySyncing.m in Sources */,
-				1336742316789D490010F6C8 /* WAFileAccessLog.m in Sources */,
 				1336742C1678A0E70010F6C8 /* WAFileAccessLog+WARemoteInterfaceEntitySyncing.m in Sources */,
 				133E8AF516798DD20075843C /* WADocumentPreviewController.m in Sources */,
 				131560431679CCC500C29BFA /* WADocumentDownloadingView.m in Sources */,
@@ -5111,6 +5142,7 @@
 				13F472DE1682C11D002BDCC9 /* UIImage+WAAdditions.m in Sources */,
 				13F472E11682C5FD002BDCC9 /* ALAsset+WAAdditions.m in Sources */,
 				13F472E41682C811002BDCC9 /* NSString+WAAdditions.m in Sources */,
+				803302421688521C00004891 /* WAFileAccessLog.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
