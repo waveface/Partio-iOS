@@ -70,6 +70,7 @@ NSString * kWAWebStreamViewCellKVOContext = @"DocuementStreamViewCellKVOContext"
 	}
 	
 	self.imageView.image = nil;
+	self.sourceImageView.image = nil;
 	
 }
 
