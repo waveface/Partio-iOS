@@ -77,7 +77,7 @@
 	self.view.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
 	self.longPressGR = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleMenu:)];
 	[self.collectionView addGestureRecognizer:self.longPressGR];
-
+	
 	return self;
 }
 

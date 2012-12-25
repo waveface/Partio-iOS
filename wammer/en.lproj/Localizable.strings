@@ -527,15 +527,6 @@
 /* Title of Canlendar */
 "TITLE_CALENDAR" = "Calendar";
 
-/* Title for menu item Document Stream */
-"TITLE_DOCUMENT_STREAM" = "Document Stream";
-
-/* Title for menu item Photo Stream */
-"TITLE_PHOTO_STREAM" = "Photo Stream";
-
-/* Title for menu item Reading Stream */
-"TITLE_READING_STREAM" = "Reading Stream";
-
 /* Alert on no location service enabled when open photo library */
 "TURN_ON_LOCATION_SERVICE" = "Turn on Location Services to allow Stream to access your Photo Library";
 

@@ -104,6 +104,18 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 	self.paginatedView.delegate = self;
 	self.paginatedView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
 	
+	NSString *barTitle = nil;
+	if ([containedClass isSubclassOfClass:[WATimelineViewController class]]) {
+		barTitle = NSLocalizedString(@"EVENTS_CONTROLLER_TITLE", @"Title for Events view");
+	} else if ([containedClass isSubclassOfClass:[WAPhotoStreamViewController class]]) {
+		barTitle = NSLocalizedString(@"PHOTOS_TITLE", @"in day view");
+	} else if ([containedClass isSubclassOfClass:[WADocumentStreamViewController class]]) {
+		barTitle = NSLocalizedString(@"DOCUMENTS_CONTROLLER_TITLE", @"Title for document view controller");
+	} else if ([containedClass isSubclassOfClass:[WAWebStreamViewController class]]) {
+		barTitle = NSLocalizedString(@"WEBPAGES_CONTROLLER_TITLE", @"Title for web pages view controller");
+	}
+
+	self.navigationItem.titleView = WATitleViewForDripdownMenu(barTitle, self, @selector(dripdownMenuTapped));
 	[self.view addSubview: self.paginatedView];
 	
 }
@@ -112,17 +124,6 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 	[super viewWillAppear:animated];
 
 	self.navigationItem.titleView.alpha = 1;
-	
-	if ([containedClass isSubclassOfClass:[WATimelineViewController class]]) {
-		self.title = NSLocalizedString(@"EVENTS_CONTROLLER_TITLE", @"Title for Events view");
-	} else if ([containedClass isSubclassOfClass:[WAPhotoStreamViewController class]]) {
-		self.title = NSLocalizedString(@"PHOTOS_TITLE", @"in day view");
-	} else if ([containedClass isSubclassOfClass:[WADocumentStreamViewController class]]) {
-		self.title = NSLocalizedString(@"DOCUMENTS_CONTROLLER_TITLE", @"Title for document view controller");
-	} else if ([containedClass isSubclassOfClass:[WAWebStreamViewController class]]) {
-		self.title = NSLocalizedString(@"WEBPAGES_CONTROLLER_TITLE", @"Title for web pages view controller");
-	}
-	
 
 }
 
@@ -465,6 +466,17 @@ BOOL dripdownMenuOpened = NO;
 	
 	__weak WADayViewController *wSelf = self;
 	
+	WADayViewSupportedStyle style = WAEventsViewStyle;
+	if ([containedClass isSubclassOfClass:[WATimelineViewController class]]) {
+		style = WAEventsViewStyle;
+	} else if ([containedClass isSubclassOfClass:[WAPhotoStreamViewController class]]) {
+		style = WAPhotosViewStyle;
+	} else if ([containedClass isSubclassOfClass:[WADocumentStreamViewController class]]) {
+		style = WADocumentsViewStyle;
+	} else if ([containedClass isSubclassOfClass:[WAWebStreamViewController class]]) {
+		style = WAWebpagesViewStyle;
+	}
+
 	void (^dismissDDMenu)(WADripdownMenuViewController *menu) = ^(WADripdownMenuViewController *menu) {
 		
 		[menu willMoveToParentViewController:nil];
@@ -492,16 +504,19 @@ BOOL dripdownMenuOpened = NO;
 		return;
 	}
 	
-	__block WADripdownMenuViewController *ddMenu = [[WADripdownMenuViewController alloc] initWithCompletion:^{
+	__block WADripdownMenuViewController *ddMenu = [[WADripdownMenuViewController alloc] initForViewStyle:style completion:^{
 		
 		dismissDDMenu(ddMenu);
 		ddMenu = nil;
 		
 	}];
 	
+	[ddMenu presentDDMenuInViewController:self];
+/*
 	[self addChildViewController:ddMenu];
 	[self.view addSubview:ddMenu.view];
 	[ddMenu didMoveToParentViewController:self];
+ */
 	[self.navigationItem.leftBarButtonItem setEnabled:NO];
 	[self.navigationItem.rightBarButtonItem setEnabled:NO];
 	dripdownMenuOpened = YES;

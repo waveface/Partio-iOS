@@ -527,15 +527,6 @@
 /* Title of Canlendar */
 "TITLE_CALENDAR" = "月曆";
 
-/* Title for menu item Document Stream */
-"TITLE_DOCUMENT_STREAM" = "TITLE_DOCUMENT_STREAM";
-
-/* Title for menu item Photo Stream */
-"TITLE_PHOTO_STREAM" = "TITLE_PHOTO_STREAM";
-
-/* Title for menu item Reading Stream */
-"TITLE_READING_STREAM" = "TITLE_READING_STREAM";
-
 /* Alert on no location service enabled when open photo library */
 "TURN_ON_LOCATION_SERVICE" = "Stream 須開啟定位服務才能存取相簿的內容";
 

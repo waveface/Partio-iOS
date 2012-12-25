@@ -10,10 +10,11 @@
 typedef void (^WADripdownMenuCompletionBlock)(void);
 
 #import <UIKit/UIKit.h>
+#import "WASlidingMenuViewController.h"
 
-@interface WADripdownMenuViewController : UIViewController <UITableViewDataSource, UITableViewDelegate>
+@interface WADripdownMenuViewController : UIViewController 
 
-- (id) initWithCompletion:(WADripdownMenuCompletionBlock)completion;
-- (IBAction) tapperTapped:(id)sender;
+- (void) presentDDMenuInViewController:(UIViewController*)viewController;
+- (id) initForViewStyle:(WADayViewSupportedStyle)style completion:(WADripdownMenuCompletionBlock)completion;
 
 @end
