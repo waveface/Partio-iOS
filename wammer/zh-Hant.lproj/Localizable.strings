@@ -419,9 +419,6 @@
 "PHOTO_UPLOAD_STATUS_NOT_UPLOADING" = "尚未開啓";
 
 /* Subtitle of photo upload status */
-"PHOTO_UPLOAD_STATUS_PREPROCESSING" = "處理中...";
-
-/* Subtitle of photo upload status */
 "PHOTO_UPLOAD_STATUS_UPLOADING" = "照片匯入中...";
 
 /* In iPad overview */

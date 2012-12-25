@@ -167,11 +167,6 @@
     return NO;
   }
   
-  WAPhotoImportManager *photoImportManager = [(WAAppDelegate_iOS *)AppDelegate() photoImportManager];
-  if (photoImportManager.preprocessing || photoImportManager.operationQueue.operationCount > 0) {
-    return NO;
-  }
-
   WARemoteInterface * const ri = [WARemoteInterface sharedInterface];
   if (!ri.userToken) {
     return NO;

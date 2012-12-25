@@ -49,11 +49,10 @@
 #import "WADayViewController.h"
 
 #if ENABLE_PONYDEBUG
-	#import "PonyDebugger/PDDebugger.h"
+#import "PonyDebugger/PDDebugger.h"
 #endif
 
 #import "WAFilterPickerViewController.h"
-#import "WAPhotoImportManager.h"
 #import "WAFirstUseViewController.h"
 
 #import "TestFlight.h"
@@ -70,27 +69,27 @@ static NSString *const kTrackingId = @"UA-27817516-7";
 @implementation WALoginBackgroundViewController
 
 - (UIColor *)decoratedBackgroundColor: (UIInterfaceOrientation) currentInterfaceOrientation {
-	if (UIInterfaceOrientationIsPortrait(currentInterfaceOrientation) ||
-			currentInterfaceOrientation == 0)
-		return [UIColor colorWithPatternImage:[UIImage imageNamed:@"LoginBackground-Portrait"]];
-	else
-		return [UIColor colorWithPatternImage:[UIImage imageNamed:@"LoginBackground-Landscape"]];
-
+  if (UIInterfaceOrientationIsPortrait(currentInterfaceOrientation) ||
+      currentInterfaceOrientation == 0)
+    return [UIColor colorWithPatternImage:[UIImage imageNamed:@"LoginBackground-Portrait"]];
+  else
+    return [UIColor colorWithPatternImage:[UIImage imageNamed:@"LoginBackground-Landscape"]];
+  
 }
 
 - (void)viewDidLoad {
-	self.view.backgroundColor = [self decoratedBackgroundColor:[[UIDevice currentDevice] orientation]];
+  self.view.backgroundColor = [self decoratedBackgroundColor:[[UIDevice currentDevice] orientation]];
 }
 
 - (BOOL) shouldAutorotate {
-
-	return YES;
-
+  
+  return YES;
+  
 }
 
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
-	
-	self.view.backgroundColor = [self decoratedBackgroundColor:toInterfaceOrientation];
+  
+  self.view.backgroundColor = [self decoratedBackgroundColor:toInterfaceOrientation];
 }
 
 @end
@@ -104,7 +103,6 @@ static NSString *const kTrackingId = @"UA-27817516-7";
 
 @property (nonatomic, readwrite, assign) BOOL alreadyRequestingAuthentication;
 @property (nonatomic, readwrite) UIBackgroundTaskIdentifier bgTask;
-@property (nonatomic, strong) WAPhotoImportManager *photoImportManager;
 @property (nonatomic, strong) WACacheManager *cacheManager;
 @property (nonatomic, strong) WASyncManager *syncManager;
 @property (nonatomic, strong) WASlidingMenuViewController *slidingMenu;
@@ -123,753 +121,730 @@ static NSString *const kTrackingId = @"UA-27817516-7";
 @synthesize alreadyRequestingAuthentication;
 
 - (void) bootstrap {
-	
-	[super bootstrap];
-
+  
+  [super bootstrap];
+  
   [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleObservedAuthenticationFailure:) name:kWARemoteInterfaceDidObserveAuthenticationFailureNotification object:nil];
   [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleObservedRemoteURLNotification:) name:kWAApplicationDidReceiveRemoteURLNotification object:nil];
   [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleIASKSettingsChanged:) name:kIASKAppSettingChanged object:nil];
   [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleIASKSettingsDidRequestAction:) name:kWASettingsDidRequestActionNotification object:nil];
-	
-	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-		[WARemoteInterface sharedInterface].apiKey = kWARemoteEndpointApplicationKeyPad;
-	else {
-		[WARemoteInterface sharedInterface].apiKey = kWARemoteEndpointApplicationKeyPhone;
-	}
-
-	if (!WAApplicationHasDebuggerAttached()) {
-		
-		WF_TESTFLIGHT(^ {
-			
-			[TestFlight setOptions:[NSDictionary dictionaryWithObjectsAndKeys:
-				(id)kCFBooleanFalse, @"sendLogOnlyOnCrash",
+  
+  if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+    [WARemoteInterface sharedInterface].apiKey = kWARemoteEndpointApplicationKeyPad;
+  else {
+    [WARemoteInterface sharedInterface].apiKey = kWARemoteEndpointApplicationKeyPhone;
+  }
+  
+  if (!WAApplicationHasDebuggerAttached()) {
+    
+    WF_TESTFLIGHT(^ {
+      
+      [TestFlight setOptions:[NSDictionary dictionaryWithObjectsAndKeys:
+			(id)kCFBooleanFalse, @"sendLogOnlyOnCrash",
 			nil]];
-			
-			[TestFlight takeOff:@"fc829e58-110d-4cc7-9ee0-39a3dd54e6c9"];
-			
-			id observer = [[NSNotificationCenter defaultCenter] addObserverForName:kWAAppEventNotification object:nil queue:nil usingBlock:^(NSNotification *note) {
-				
-				NSString *eventTitle = [note userInfo][kWAAppEventTitle];
-				[TestFlight passCheckpoint:eventTitle];
-				
-			}];
-			
-			objc_setAssociatedObject([TestFlight class], &kWAAppEventNotification, observer, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-			
-		});
-		
-		WF_CRASHLYTICS(^ {
-			
-			[Crashlytics startWithAPIKey:kWACrashlyticsAPIKey];
-			[Crashlytics sharedInstance].debugMode = YES;
-			
-		});
-		
-	}
-	
-	AVAudioSession * const audioSession = [AVAudioSession sharedInstance];
-	[audioSession setCategory:AVAudioSessionCategoryAmbient error:nil];
-	[audioSession setActive:YES error:nil];
-	
-	WADefaultBarButtonInitialize();
-	
+      
+      [TestFlight takeOff:@"fc829e58-110d-4cc7-9ee0-39a3dd54e6c9"];
+      
+      id observer = [[NSNotificationCenter defaultCenter] addObserverForName:kWAAppEventNotification object:nil queue:nil usingBlock:^(NSNotification *note) {
+        
+        NSString *eventTitle = [note userInfo][kWAAppEventTitle];
+        [TestFlight passCheckpoint:eventTitle];
+        
+      }];
+      
+      objc_setAssociatedObject([TestFlight class], &kWAAppEventNotification, observer, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+      
+    });
+    
+    WF_CRASHLYTICS(^ {
+      
+      [Crashlytics startWithAPIKey:kWACrashlyticsAPIKey];
+      [Crashlytics sharedInstance].debugMode = YES;
+      
+    });
+    
+  }
+  
+  AVAudioSession * const audioSession = [AVAudioSession sharedInstance];
+  [audioSession setCategory:AVAudioSessionCategoryAmbient error:nil];
+  [audioSession setActive:YES error:nil];
+  
+  WADefaultBarButtonInitialize();
+  
 }
 
 
 extern CFAbsoluteTime StartTime;
 
 - (BOOL) application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-
-	[self bootstrap];
-	
-	WADefaultAppearance();
-	
-	self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-	self.window.backgroundColor = [UIColor colorWithRed:0.87 green:0.87 blue:0.84 alpha:1.0];
-	
-	[self.window makeKeyAndVisible];
-	
-	if ([[NSUserDefaults standardUserDefaults] stringForKey:kWADebugPersistentStoreName]) {
-	
-		NSString *identifier = [[NSUserDefaults standardUserDefaults] stringForKey:kWADebugPersistentStoreName];
-		[self bootstrapPersistentStoreWithUserIdentifier:identifier];
-		
-		[self recreateViewHierarchy];
-	
-	} else if (![self hasAuthenticationData]) {
-	
-		[self applicationRootViewControllerDidRequestReauthentication:nil];
-					
-	} else {
-	
-		NSString *lastAuthenticatedUserIdentifier = [[NSUserDefaults standardUserDefaults] stringForKey:kWALastAuthenticatedUserIdentifier];
-		
-		if (lastAuthenticatedUserIdentifier)
-			[self bootstrapPersistentStoreWithUserIdentifier:lastAuthenticatedUserIdentifier];
-		
-		[self recreateViewHierarchy];
-		
-	}
-
-//	[GAI sharedInstance].debug = YES;
-	[GAI sharedInstance].dispatchInterval = 120;
-	[GAI sharedInstance].trackUncaughtExceptions = YES;
-	self.tracker = [[GAI sharedInstance] trackerWithTrackingId:kTrackingId];
-	
-	[self.tracker trackEventWithCategory:@"Application:didFinishLaunchingWithOptions:"
-														withAction:@"App Launched"
-														 withLabel:nil
-														 withValue:@-1];
-
-	[[WARemoteInterface sharedInterface] enableAutomaticRemoteUpdatesTimer];
-	[[WARemoteInterface sharedInterface] performAutomaticRemoteUpdatesNow];
-	[[NSUserDefaults standardUserDefaults] removeObjectForKey:kWAFilterPickerViewSelectedRowIndex];
-	
+  
+  [self bootstrap];
+  
+  WADefaultAppearance();
+  
+  self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+  self.window.backgroundColor = [UIColor colorWithRed:0.87 green:0.87 blue:0.84 alpha:1.0];
+  
+  [self.window makeKeyAndVisible];
+  
+  if ([[NSUserDefaults standardUserDefaults] stringForKey:kWADebugPersistentStoreName]) {
+    
+    NSString *identifier = [[NSUserDefaults standardUserDefaults] stringForKey:kWADebugPersistentStoreName];
+    [self bootstrapPersistentStoreWithUserIdentifier:identifier];
+    
+    [self recreateViewHierarchy];
+    
+  } else if (![self hasAuthenticationData]) {
+    
+    [self applicationRootViewControllerDidRequestReauthentication:nil];
+    
+  } else {
+    
+    NSString *lastAuthenticatedUserIdentifier = [[NSUserDefaults standardUserDefaults] stringForKey:kWALastAuthenticatedUserIdentifier];
+    
+    if (lastAuthenticatedUserIdentifier)
+      [self bootstrapPersistentStoreWithUserIdentifier:lastAuthenticatedUserIdentifier];
+    
+    [self recreateViewHierarchy];
+    
+  }
+  
+  //	[GAI sharedInstance].debug = YES;
+  [GAI sharedInstance].dispatchInterval = 120;
+  [GAI sharedInstance].trackUncaughtExceptions = YES;
+  self.tracker = [[GAI sharedInstance] trackerWithTrackingId:kTrackingId];
+  
+  [self.tracker trackEventWithCategory:@"Application:didFinishLaunchingWithOptions:"
+		        withAction:@"App Launched"
+		         withLabel:nil
+		         withValue:@-1];
+  
+  [[WARemoteInterface sharedInterface] enableAutomaticRemoteUpdatesTimer];
+  [[WARemoteInterface sharedInterface] performAutomaticRemoteUpdatesNow];
+  [[NSUserDefaults standardUserDefaults] removeObjectForKey:kWAFilterPickerViewSelectedRowIndex];
+  
 #if ENABLE_PONYDEBUG
-	PDDebugger *debugger = [PDDebugger defaultInstance];
-	[debugger connectToURL:[NSURL URLWithString:@"ws://localhost:9000/device"]];
-	[debugger enableNetworkTrafficDebugging];
-	[debugger forwardAllNetworkTraffic];
-	
-	WADataStore * const ds = [WADataStore defaultStore];
-	NSManagedObjectContext *context = [ds disposableMOC];
-	[debugger enableCoreDataDebugging];
-	[debugger addManagedObjectContext:context withName:@"My MOC"];
+  PDDebugger *debugger = [PDDebugger defaultInstance];
+  [debugger connectToURL:[NSURL URLWithString:@"ws://localhost:9000/device"]];
+  [debugger enableNetworkTrafficDebugging];
+  [debugger forwardAllNetworkTraffic];
+  
+  WADataStore * const ds = [WADataStore defaultStore];
+  NSManagedObjectContext *context = [ds disposableMOC];
+  [debugger enableCoreDataDebugging];
+  [debugger addManagedObjectContext:context withName:@"My MOC"];
 #endif
-
+  
 #if ENABLE_DCINTROSPECT
-	[[DCIntrospect sharedIntrospector] start];
+  [[DCIntrospect sharedIntrospector] start];
 #endif
-
+  
 #if DEBUG
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
-	[TestFlight setDeviceIdentifier:[[UIDevice currentDevice] uniqueIdentifier]];
+  [TestFlight setDeviceIdentifier:[[UIDevice currentDevice] uniqueIdentifier]];
 #pragma clang pop
 #endif
-
-	dispatch_async(dispatch_get_main_queue(), ^{
-	  NSLog(@"Stream Launched in %0.2f seconds on %@.", CFAbsoluteTimeGetCurrent() - StartTime, [UIDevice currentDevice].model);
-	});
   
-	return YES;
+  dispatch_async(dispatch_get_main_queue(), ^{
+    NSLog(@"Stream Launched in %0.2f seconds on %@.", CFAbsoluteTimeGetCurrent() - StartTime, [UIDevice currentDevice].model);
+  });
+  
+  return YES;
 }
 
 - (void) application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
-	NSString * kMSG_NOTIFICATION_PHOTOS_IMPORTED = NSLocalizedString(@"NOTIFY_PHOTOS_IMPORTED", @"Notification messages for photos auto-imported");
-	NSString * kMSG_NOTIFICATION_TESTING = NSLocalizedString(@"NOTIFY_TESTING", @"For remote notification testing");
+  NSString * kMSG_NOTIFICATION_PHOTOS_IMPORTED = NSLocalizedString(@"NOTIFY_PHOTOS_IMPORTED", @"Notification messages for photos auto-imported");
+  NSString * kMSG_NOTIFICATION_TESTING = NSLocalizedString(@"NOTIFY_TESTING", @"For remote notification testing");
 #pragma unused(kMSG_NOTIFICATION_PHOTOS_IMPORTED)
 #pragma unused(kMSG_NOTIFICATION_TESTING)
-	
-	NSString* deviceTokenString = [[[[deviceToken description]
-																	 stringByReplacingOccurrencesOfString: @"<" withString: @""]
-																	stringByReplacingOccurrencesOfString: @">" withString: @""]
-																 stringByReplacingOccurrencesOfString: @" " withString: @""];
-
-	NSLog(@"device token in data: %@", deviceToken);
-	NSLog(@"device token : %@", deviceTokenString);
-
-	[[WARemoteInterface sharedInterface] subscribeRemoteNotificationForDevtoken:deviceTokenString onSuccess:nil onFailure:nil];
-
+  
+  NSString* deviceTokenString = [[[[deviceToken description]
+			     stringByReplacingOccurrencesOfString: @"<" withString: @""]
+			    stringByReplacingOccurrencesOfString: @">" withString: @""]
+			   stringByReplacingOccurrencesOfString: @" " withString: @""];
+  
+  NSLog(@"device token in data: %@", deviceToken);
+  NSLog(@"device token : %@", deviceTokenString);
+  
+  [[WARemoteInterface sharedInterface] subscribeRemoteNotificationForDevtoken:deviceTokenString onSuccess:nil onFailure:nil];
+  
 }
 
 - (void) application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error {
-
-	NSLog(@"Fail to register for remote notification with error: %@", error);
-
+  
+  NSLog(@"Fail to register for remote notification with error: %@", error);
+  
 }
 
 - (void) application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
-	
-	
+  
+  
 }
 
 - (void)applicationDidEnterBackground:(UIApplication *)application {
-
-	__weak WAAppDelegate_iOS *wSelf = self;
-	self.bgTask = [application beginBackgroundTaskWithExpirationHandler:^{
-
-		NSLog(@"Background photo import expired");
-		[application endBackgroundTask:wSelf.bgTask];
-		wSelf.bgTask = UIBackgroundTaskInvalid;
-
-	}];
-
-	dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-
-		NSLog(@"Enter background, wait until photo import operations finished");
-		[wSelf.photoImportManager waitUntilFinished];
-		NSLog(@"All photo import operations are finished");
-		[application endBackgroundTask:wSelf.bgTask];
-		wSelf.bgTask = UIBackgroundTaskInvalid;
-
-	});
-
+  
+  __weak WAAppDelegate_iOS *wSelf = self;
+  self.bgTask = [application beginBackgroundTaskWithExpirationHandler:^{
+    
+    NSLog(@"Background photo import expired");
+    [application endBackgroundTask:wSelf.bgTask];
+    wSelf.bgTask = UIBackgroundTaskInvalid;
+    
+  }];
+  
+  dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+    
+    NSLog(@"Enter background, wait until sync operations finished");
+    [wSelf.syncManager waitUntilFinished];
+    NSLog(@"All sync operations are finished");
+    [application endBackgroundTask:wSelf.bgTask];
+    wSelf.bgTask = UIBackgroundTaskInvalid;
+    
+  });
+  
 }
 
 - (void) subscribeRemoteNotification {
-	
-	[[UIApplication sharedApplication] registerForRemoteNotificationTypes:UIRemoteNotificationTypeAlert];
-	
+  
+  [[UIApplication sharedApplication] registerForRemoteNotificationTypes:UIRemoteNotificationTypeAlert];
+  
 }
 
 - (void) unsubscribeRemoteNotification {
-	
-	[[UIApplication sharedApplication] unregisterForRemoteNotifications];
-
+  
+  [[UIApplication sharedApplication] unregisterForRemoteNotifications];
+  
 }
 
 - (void) clearViewHierarchy {
-	
-	self.slidingMenu = nil;
-
-	UIViewController *rootVC = self.window.rootViewController;
-	
-	__block void (^zapModal)(UIViewController *) = [^ (UIViewController *aVC) {
-		
-		if (aVC.presentedViewController)
-			zapModal(aVC.presentedViewController);
-		
-		[aVC dismissViewControllerAnimated:NO completion:nil];
-		// WASlidingSplitViewController
-		
-	} copy];
-	
-	zapModal(rootVC);
-
-	self.window.rootViewController = [[WALoginBackgroundViewController alloc] init];
-	
+  
+  self.slidingMenu = nil;
+  
+  UIViewController *rootVC = self.window.rootViewController;
+  
+  __block void (^zapModal)(UIViewController *) = [^ (UIViewController *aVC) {
+    
+    if (aVC.presentedViewController)
+      zapModal(aVC.presentedViewController);
+    
+    [aVC dismissViewControllerAnimated:NO completion:nil];
+    // WASlidingSplitViewController
+    
+  } copy];
+  
+  zapModal(rootVC);
+  
+  self.window.rootViewController = [[WALoginBackgroundViewController alloc] init];
+  
 }
 
 - (void) recreateViewHierarchy {
-
-	[[IRRemoteResourcesManager sharedManager].queue cancelAllOperations];
-	
-	self.slidingMenu = [[WASlidingMenuViewController alloc] init];
-	self.slidingMenu.delegate = self;
-			
-	IIViewDeckController *viewDeckController = [[IIViewDeckController alloc] initWithCenterViewController:[WASlidingMenuViewController viewControllerForViewStyle:WAEventsViewStyle]
-																																												 leftViewController:self.slidingMenu];
-	viewDeckController.view.backgroundColor = [UIColor blackColor];
-	viewDeckController.leftLedge = self.window.frame.size.width - 200.0f;
-	viewDeckController.rotationBehavior = IIViewDeckRotationKeepsLedgeSizes;
-	//			viewDeckController.animationBehavior = IIViewDeckAnimationPullIn;
-	viewDeckController.panningMode = IIViewDeckNoPanning;
-	[viewDeckController setWantsFullScreenLayout:YES];
-	viewDeckController.delegate = self.slidingMenu;
-	viewDeckController.centerhiddenInteractivity = IIViewDeckCenterHiddenNotUserInteractiveWithTapToClose;
-			
-	self.window.rootViewController = viewDeckController;
-
-	
-	UIViewController *vc = self.window.rootViewController;
-	
-	[vc willRotateToInterfaceOrientation:vc.interfaceOrientation duration:0];
-	[vc willAnimateRotationToInterfaceOrientation:vc.interfaceOrientation duration:0];
-	[vc didRotateFromInterfaceOrientation:vc.interfaceOrientation];
-
-			
+  
+  [[IRRemoteResourcesManager sharedManager].queue cancelAllOperations];
+  
+  self.slidingMenu = [[WASlidingMenuViewController alloc] init];
+  self.slidingMenu.delegate = self;
+  
+  IIViewDeckController *viewDeckController = [[IIViewDeckController alloc] initWithCenterViewController:[WASlidingMenuViewController viewControllerForViewStyle:WAEventsViewStyle]
+								     leftViewController:self.slidingMenu];
+  viewDeckController.view.backgroundColor = [UIColor blackColor];
+  viewDeckController.leftLedge = self.window.frame.size.width - 200.0f;
+  viewDeckController.rotationBehavior = IIViewDeckRotationKeepsLedgeSizes;
+  //			viewDeckController.animationBehavior = IIViewDeckAnimationPullIn;
+  viewDeckController.panningMode = IIViewDeckNoPanning;
+  [viewDeckController setWantsFullScreenLayout:YES];
+  viewDeckController.delegate = self.slidingMenu;
+  viewDeckController.centerhiddenInteractivity = IIViewDeckCenterHiddenNotUserInteractiveWithTapToClose;
+  
+  self.window.rootViewController = viewDeckController;
+  
+  
+  UIViewController *vc = self.window.rootViewController;
+  
+  [vc willRotateToInterfaceOrientation:vc.interfaceOrientation duration:0];
+  [vc willAnimateRotationToInterfaceOrientation:vc.interfaceOrientation duration:0];
+  [vc didRotateFromInterfaceOrientation:vc.interfaceOrientation];
+  
+  
 }
 
 - (void) logout {
-
-	self.photoImportManager = nil;
-	self.cacheManager = nil;
-	self.syncManager = nil;
-
-	BOOL const WAPhotoImportEnabledDefault = NO;
-
-	[[NSUserDefaults standardUserDefaults] setBool:WAPhotoImportEnabledDefault forKey:kWAPhotoImportEnabled];
-	[[NSUserDefaults standardUserDefaults] synchronize];
-
-	[self unsubscribeRemoteNotification];
-
+  
+  self.cacheManager = nil;
+  self.syncManager = nil;
+  
+  BOOL const WAPhotoImportEnabledDefault = NO;
+  
+  [[NSUserDefaults standardUserDefaults] setBool:WAPhotoImportEnabledDefault forKey:kWAPhotoImportEnabled];
+  [[NSUserDefaults standardUserDefaults] synchronize];
+  
+  [self unsubscribeRemoteNotification];
+  
 }
 
 - (void) applicationRootViewControllerDidRequestReauthentication:(id<WAApplicationRootViewController>)controller {
-
-	__weak WAAppDelegate_iOS *wSelf = self;
-	dispatch_async(dispatch_get_main_queue(), ^ {
-
-		[wSelf presentAuthenticationRequestWithReason:nil
-														allowingCancellation:NO
-															 removingPriorData:YES
-										 clearingNavigationHierarchy:YES
-																	 onAuthSuccess:
-		 ^(NSString *userIdentifier, NSString *userToken, NSString *primaryGroupIdentifier) {
-			 [wSelf updateCurrentCredentialsWithUserIdentifier:userIdentifier
-																								 token:userToken
-																					primaryGroup:primaryGroupIdentifier];
-			 // bind to user's persistent store
-			 [wSelf bootstrapPersistentStoreWithUserIdentifier:userIdentifier];
-
-			 [wSelf photoImportManager];
-			 [wSelf cacheManager];
-
-			 // reset monitored hosts
-			 WARemoteInterface *ri = [WARemoteInterface sharedInterface];
-
-			 // close websocket if needed
-			 [ri closeWebSocketConnection];
-
-			 ri.monitoredHosts = nil;
-			 [ri performAutomaticRemoteUpdatesNow];
-
-			 [wSelf syncManager];
-
-		 }
-												runningOnboardingProcess:YES];
-		
-	});
-
+  
+  __weak WAAppDelegate_iOS *wSelf = self;
+  dispatch_async(dispatch_get_main_queue(), ^ {
+    
+    [wSelf presentAuthenticationRequestWithReason:nil
+		         allowingCancellation:NO
+			  removingPriorData:YES
+		  clearingNavigationHierarchy:YES
+			      onAuthSuccess:
+     ^(NSString *userIdentifier, NSString *userToken, NSString *primaryGroupIdentifier) {
+       [wSelf updateCurrentCredentialsWithUserIdentifier:userIdentifier
+					 token:userToken
+				    primaryGroup:primaryGroupIdentifier];
+       // bind to user's persistent store
+       [wSelf bootstrapPersistentStoreWithUserIdentifier:userIdentifier];
+       
+       [wSelf.cacheManager clearPurgeableFilesIfNeeded];
+       
+       // reset monitored hosts
+       WARemoteInterface *ri = [WARemoteInterface sharedInterface];
+       
+       // close websocket if needed
+       [ri closeWebSocketConnection];
+       
+       ri.monitoredHosts = nil;
+       [ri performAutomaticRemoteUpdatesNow];
+       
+       [wSelf.syncManager reload];
+       
+     }
+		     runningOnboardingProcess:YES];
+    
+  });
+  
 }
 
 - (void) handleObservedAuthenticationFailure:(NSNotification *)aNotification {
-
-	NSError *error = [aNotification userInfo][@"error"];
-	
-	[self unsubscribeRemoteNotification];
-
+  
+  NSError *error = [aNotification userInfo][@"error"];
+  
+  [self unsubscribeRemoteNotification];
+  
   dispatch_async(dispatch_get_main_queue(), ^{
-
-		[self presentAuthenticationRequestWithReason:[error localizedDescription] allowingCancellation:YES removingPriorData:NO clearingNavigationHierarchy:NO onAuthSuccess:^(NSString *userIdentifier, NSString *userToken, NSString *primaryGroupIdentifier) {
-			
-			[self updateCurrentCredentialsWithUserIdentifier:userIdentifier token:userToken primaryGroup:primaryGroupIdentifier];
-			[self bootstrapPersistentStoreWithUserIdentifier:userIdentifier];
-			
-		} runningOnboardingProcess:NO];
-
+    
+    [self presentAuthenticationRequestWithReason:[error localizedDescription] allowingCancellation:YES removingPriorData:NO clearingNavigationHierarchy:NO onAuthSuccess:^(NSString *userIdentifier, NSString *userToken, NSString *primaryGroupIdentifier) {
+      
+      [self updateCurrentCredentialsWithUserIdentifier:userIdentifier token:userToken primaryGroup:primaryGroupIdentifier];
+      [self bootstrapPersistentStoreWithUserIdentifier:userIdentifier];
+      
+    } runningOnboardingProcess:NO];
+    
   });
   
 }
 
 - (void) handleObservedRemoteURLNotification:(NSNotification *)aNotification {
-	
-	NSString *command = nil;
-	NSDictionary *params = nil;
-	
-	if (!WAIsXCallbackURL([aNotification userInfo][@"url"], &command, &params))
-		return;
-	
-	if ([command isEqualToString:kWACallbackActionSetAdvancedFeaturesEnabled]) {
-		
-		NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-		if ([defaults boolForKey:kWAAdvancedFeaturesEnabled])
-			return;
-		
-		[defaults setBool:YES forKey:kWAAdvancedFeaturesEnabled];
-		
-		if (![defaults synchronize])
-			return;
-		
-		[self handleDebugModeToggled];
-		
-		return;
-		
-	}
-	
-	if ([command isEqualToString:kWACallbackActionSetRemoteEndpointURL]) {
-		
-		__block __typeof__(self) nrSelf = self;
-		void (^zapAndRequestReauthentication)() = ^ {
-
-			[[NSUserDefaults standardUserDefaults] setObject:params[@"url"] forKey:kWARemoteEndpointURL];
-			[[NSUserDefaults standardUserDefaults] setObject:params[@"RegistrationUrl"] forKey:kWAUserRegistrationEndpointURL];
-			[[NSUserDefaults standardUserDefaults] setObject:params[@"PasswordResetUrl"] forKey:kWAUserPasswordResetEndpointURL];
-			[[NSUserDefaults standardUserDefaults] setObject:params[@"FacebookAuthUrl"] forKey:kWAUserFacebookAuthenticationEndpointURL];
-			[[NSUserDefaults standardUserDefaults] setObject:params[@"FacebookAppID"] forKey:kWAFacebookAppID];
-			[[NSUserDefaults standardUserDefaults] synchronize];
-
-			if (nrSelf.alreadyRequestingAuthentication) {
-				nrSelf.alreadyRequestingAuthentication = NO;
-				[nrSelf clearViewHierarchy];
-			}
-			
-			[nrSelf applicationRootViewControllerDidRequestReauthentication:nil];
-			
-		};
-		
-		NSString *alertTitle = @"Switch endpoint to";
-		NSString *alertText = params[@"url"];
-		
-		IRAction *cancelAction = [IRAction actionWithTitle:@"Cancel" block:nil];
-		IRAction *confirmAction = [IRAction actionWithTitle:@"Yes, Switch" block:zapAndRequestReauthentication];
-		
-		[[IRAlertView alertViewWithTitle:alertTitle message:alertText cancelAction:cancelAction otherActions:@[confirmAction]] show];
-	}
-	
+  
+  NSString *command = nil;
+  NSDictionary *params = nil;
+  
+  if (!WAIsXCallbackURL([aNotification userInfo][@"url"], &command, &params))
+    return;
+  
+  if ([command isEqualToString:kWACallbackActionSetAdvancedFeaturesEnabled]) {
+    
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    if ([defaults boolForKey:kWAAdvancedFeaturesEnabled])
+      return;
+    
+    [defaults setBool:YES forKey:kWAAdvancedFeaturesEnabled];
+    
+    if (![defaults synchronize])
+      return;
+    
+    [self handleDebugModeToggled];
+    
+    return;
+    
+  }
+  
+  if ([command isEqualToString:kWACallbackActionSetRemoteEndpointURL]) {
+    
+    __block __typeof__(self) nrSelf = self;
+    void (^zapAndRequestReauthentication)() = ^ {
+      
+      [[NSUserDefaults standardUserDefaults] setObject:params[@"url"] forKey:kWARemoteEndpointURL];
+      [[NSUserDefaults standardUserDefaults] setObject:params[@"RegistrationUrl"] forKey:kWAUserRegistrationEndpointURL];
+      [[NSUserDefaults standardUserDefaults] setObject:params[@"PasswordResetUrl"] forKey:kWAUserPasswordResetEndpointURL];
+      [[NSUserDefaults standardUserDefaults] setObject:params[@"FacebookAuthUrl"] forKey:kWAUserFacebookAuthenticationEndpointURL];
+      [[NSUserDefaults standardUserDefaults] setObject:params[@"FacebookAppID"] forKey:kWAFacebookAppID];
+      [[NSUserDefaults standardUserDefaults] synchronize];
+      
+      if (nrSelf.alreadyRequestingAuthentication) {
+        nrSelf.alreadyRequestingAuthentication = NO;
+        [nrSelf clearViewHierarchy];
+      }
+      
+      [nrSelf applicationRootViewControllerDidRequestReauthentication:nil];
+      
+    };
+    
+    NSString *alertTitle = @"Switch endpoint to";
+    NSString *alertText = params[@"url"];
+    
+    IRAction *cancelAction = [IRAction actionWithTitle:@"Cancel" block:nil];
+    IRAction *confirmAction = [IRAction actionWithTitle:@"Yes, Switch" block:zapAndRequestReauthentication];
+    
+    [[IRAlertView alertViewWithTitle:alertTitle message:alertText cancelAction:cancelAction otherActions:@[confirmAction]] show];
+  }
+  
 }
 
 - (void) handleIASKSettingsChanged:(NSNotification *)aNotification {
-
-	if ([[[aNotification userInfo] allKeys] containsObject:kWAAdvancedFeaturesEnabled])
-		[self handleDebugModeToggled];
-
+  
+  if ([[[aNotification userInfo] allKeys] containsObject:kWAAdvancedFeaturesEnabled])
+    [self handleDebugModeToggled];
+  
 }
 
 - (void) handleIASKSettingsDidRequestAction:(NSNotification *)aNotification {
-
-	NSString *action = [aNotification userInfo][@"key"];
-	
-	if ([action isEqualToString:@"WASettingsActionResetDefaults"]) {
-	
-		__weak WAAppDelegate_iOS *wSelf = self;
-		
-		NSString *alertTitle = NSLocalizedString(@"RESET_SETTINGS_CONFIRMATION_TITLE", nil);
-		NSString *alertText = NSLocalizedString(@"RESET_SETTINGS_CONFIRMATION_DESCRIPTION", nil);
-	
-		IRAction *cancelAction = [IRAction actionWithTitle:NSLocalizedString(@"ACTION_CANCEL", nil) block:nil];
-		IRAction *resetAction = [IRAction actionWithTitle:NSLocalizedString(@"ACTION_RESET", nil) block: ^ {
-		
-			NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-		
-			for (NSString *key in [[defaults dictionaryRepresentation] allKeys])
-				[defaults removeObjectForKey:key];
-				
-			[defaults synchronize];
-			
-			[wSelf clearViewHierarchy];
-			[wSelf recreateViewHierarchy];
-		
-		}];
-		
-		IRAlertView *alertView = [IRAlertView alertViewWithTitle:alertTitle message:alertText cancelAction:cancelAction otherActions:@[resetAction]];
-		
-		[alertView show];
-	
-	}
-
+  
+  NSString *action = [aNotification userInfo][@"key"];
+  
+  if ([action isEqualToString:@"WASettingsActionResetDefaults"]) {
+    
+    __weak WAAppDelegate_iOS *wSelf = self;
+    
+    NSString *alertTitle = NSLocalizedString(@"RESET_SETTINGS_CONFIRMATION_TITLE", nil);
+    NSString *alertText = NSLocalizedString(@"RESET_SETTINGS_CONFIRMATION_DESCRIPTION", nil);
+    
+    IRAction *cancelAction = [IRAction actionWithTitle:NSLocalizedString(@"ACTION_CANCEL", nil) block:nil];
+    IRAction *resetAction = [IRAction actionWithTitle:NSLocalizedString(@"ACTION_RESET", nil) block: ^ {
+      
+      NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+      
+      for (NSString *key in [[defaults dictionaryRepresentation] allKeys])
+        [defaults removeObjectForKey:key];
+      
+      [defaults synchronize];
+      
+      [wSelf clearViewHierarchy];
+      [wSelf recreateViewHierarchy];
+      
+    }];
+    
+    IRAlertView *alertView = [IRAlertView alertViewWithTitle:alertTitle message:alertText cancelAction:cancelAction otherActions:@[resetAction]];
+    
+    [alertView show];
+    
+  }
+  
 }
 
 - (void) handleDebugModeToggled {
-
-	__weak WAAppDelegate_iOS *wSelf = self;
-	
-	BOOL isNowEnabled = [[NSUserDefaults standardUserDefaults] boolForKey:kWAAdvancedFeaturesEnabled];
-	
-	NSString *alertTitle;
-	NSString *alertText;
-	IRAlertView *alertView = nil;
-	
-	void (^zapAndRequestReauthentication)() = ^ {
-	
-		if (self.alreadyRequestingAuthentication) {
-			wSelf.alreadyRequestingAuthentication = NO;
-			[wSelf clearViewHierarchy];
-		}
-		
-		[wSelf applicationRootViewControllerDidRequestReauthentication:nil];
-		
-	};
-	
-	if (isNowEnabled) {
-		alertTitle = NSLocalizedString(@"ADVANCED_FEATURES_ENABLED_TITLE", nil);
-		alertText = NSLocalizedString(@"ADVANCED_FEATURES_ENABLED_DESCRIPTION", nil);
-	} else {
-		alertTitle = NSLocalizedString(@"ADVANCED_FEATURES_DISABLED_TITLE", nil);
-		alertText = NSLocalizedString(@"ADVANCED_FEATURES_DISABLED_DESCRIPTION", nil);
-	}
-
-	IRAction *okayAction = [IRAction actionWithTitle:NSLocalizedString(@"ACTION_OKAY", nil) block:nil];
-	IRAction *okayAndZapAction = [IRAction actionWithTitle:NSLocalizedString(@"ACTION_OKAY", nil) block:zapAndRequestReauthentication];
-	IRAction *laterAction = [IRAction actionWithTitle:NSLocalizedString(@"ACTION_LATER", nil) block:nil];
-	IRAction *signOutAction = [IRAction actionWithTitle:NSLocalizedString(@"ACTION_SIGN_OUT", nil) block:zapAndRequestReauthentication];
-	
-	if (self.alreadyRequestingAuthentication) {
-		
-		//	User is not authenticated, and also we’re already at the auth view
-		//	Can zap
-		
-		alertView = [IRAlertView alertViewWithTitle:alertTitle message:alertText cancelAction:nil otherActions:@[okayAndZapAction]];
-	
-	} else if (![self hasAuthenticationData]) {
-	
-		//	In the middle of an active auth session, not safe to zap
-		
-		alertView = [IRAlertView alertViewWithTitle:alertTitle message:alertText cancelAction:okayAction otherActions:nil];
-	
-	} else {
-	
-		//	Can zap
-	
-		alertView = [IRAlertView alertViewWithTitle:alertTitle message:alertText cancelAction:laterAction otherActions:@[signOutAction]];
-	
-	}
-	
-	[alertView show];
-
+  
+  __weak WAAppDelegate_iOS *wSelf = self;
+  
+  BOOL isNowEnabled = [[NSUserDefaults standardUserDefaults] boolForKey:kWAAdvancedFeaturesEnabled];
+  
+  NSString *alertTitle;
+  NSString *alertText;
+  IRAlertView *alertView = nil;
+  
+  void (^zapAndRequestReauthentication)() = ^ {
+    
+    if (self.alreadyRequestingAuthentication) {
+      wSelf.alreadyRequestingAuthentication = NO;
+      [wSelf clearViewHierarchy];
+    }
+    
+    [wSelf applicationRootViewControllerDidRequestReauthentication:nil];
+    
+  };
+  
+  if (isNowEnabled) {
+    alertTitle = NSLocalizedString(@"ADVANCED_FEATURES_ENABLED_TITLE", nil);
+    alertText = NSLocalizedString(@"ADVANCED_FEATURES_ENABLED_DESCRIPTION", nil);
+  } else {
+    alertTitle = NSLocalizedString(@"ADVANCED_FEATURES_DISABLED_TITLE", nil);
+    alertText = NSLocalizedString(@"ADVANCED_FEATURES_DISABLED_DESCRIPTION", nil);
+  }
+  
+  IRAction *okayAction = [IRAction actionWithTitle:NSLocalizedString(@"ACTION_OKAY", nil) block:nil];
+  IRAction *okayAndZapAction = [IRAction actionWithTitle:NSLocalizedString(@"ACTION_OKAY", nil) block:zapAndRequestReauthentication];
+  IRAction *laterAction = [IRAction actionWithTitle:NSLocalizedString(@"ACTION_LATER", nil) block:nil];
+  IRAction *signOutAction = [IRAction actionWithTitle:NSLocalizedString(@"ACTION_SIGN_OUT", nil) block:zapAndRequestReauthentication];
+  
+  if (self.alreadyRequestingAuthentication) {
+    
+    //	User is not authenticated, and also we’re already at the auth view
+    //	Can zap
+    
+    alertView = [IRAlertView alertViewWithTitle:alertTitle message:alertText cancelAction:nil otherActions:@[okayAndZapAction]];
+    
+  } else if (![self hasAuthenticationData]) {
+    
+    //	In the middle of an active auth session, not safe to zap
+    
+    alertView = [IRAlertView alertViewWithTitle:alertTitle message:alertText cancelAction:okayAction otherActions:nil];
+    
+  } else {
+    
+    //	Can zap
+    
+    alertView = [IRAlertView alertViewWithTitle:alertTitle message:alertText cancelAction:laterAction otherActions:@[signOutAction]];
+    
+  }
+  
+  [alertView show];
+  
 }
 
 - (BOOL) presentAuthenticationRequestWithReason:(NSString *)aReason
-													 allowingCancellation:(BOOL)allowsCancellation
-															removingPriorData:(BOOL)eraseAuthInfo
-										clearingNavigationHierarchy:(BOOL)zapEverything
-																	onAuthSuccess:(void (^)(NSString *userIdentifier,
-																													NSString *userToken,
-																													NSString *primaryGroupIdentifier))successBlock
-											 runningOnboardingProcess:(BOOL)shouldRunOnboardingChecksIfUserUnchanged {
-
-	if ([self isRunningAuthRequest])
-		return NO;
-	
+		       allowingCancellation:(BOOL)allowsCancellation
+			removingPriorData:(BOOL)eraseAuthInfo
+		clearingNavigationHierarchy:(BOOL)zapEverything
+			    onAuthSuccess:(void (^)(NSString *userIdentifier,
+					        NSString *userToken,
+					        NSString *primaryGroupIdentifier))successBlock
+		   runningOnboardingProcess:(BOOL)shouldRunOnboardingChecksIfUserUnchanged {
+  
+  if ([self isRunningAuthRequest])
+    return NO;
+  
   if (allowsCancellation)
     NSParameterAssert(!eraseAuthInfo);
-
-	if (zapEverything)
-		[self clearViewHierarchy];
-
-	if (eraseAuthInfo) {
-		[self logout];
-		[self removeAuthenticationData];
-	}
-	
-	[self handleAuthRequest:aReason
-							withOptions:nil
-							 completion:^(BOOL didFinish, NSError *error)
-	 {
-	 WARemoteInterface * const ri = [WARemoteInterface sharedInterface];
-	 
-	 if (didFinish)
-		 if (successBlock)
-			 successBlock(ri.userIdentifier, ri.userToken, ri.primaryGroupIdentifier);
-	 
-	 }];
-	
-	return YES;
-
+  
+  if (zapEverything)
+    [self clearViewHierarchy];
+  
+  if (eraseAuthInfo) {
+    [self logout];
+    [self removeAuthenticationData];
+  }
+  
+  [self handleAuthRequest:aReason
+	    withOptions:nil
+	     completion:^(BOOL didFinish, NSError *error)
+   {
+   WARemoteInterface * const ri = [WARemoteInterface sharedInterface];
+   
+   if (didFinish)
+     if (successBlock)
+       successBlock(ri.userIdentifier, ri.userToken, ri.primaryGroupIdentifier);
+   
+   }];
+  
+  return YES;
+  
 }
 
 - (void) handleAuthRequest:(NSString *)reason withOptions:(NSDictionary *)options completion:(void(^)(BOOL didFinish, NSError *error))block {
-
-	WARemoteInterface * const ri = [WARemoteInterface sharedInterface];
-	__weak WAAppDelegate_iOS *wAppDelegate = self;
-	
-	[ri.engine.queue cancelAllOperations];
-	
-	NSParameterAssert(!self.alreadyRequestingAuthentication);
-	self.alreadyRequestingAuthentication = YES;
-
-	void (^handleAuthSuccess)(void) = ^ {
-	
-		if (block)
-			block(YES, nil);
-			
-		wAppDelegate.alreadyRequestingAuthentication = NO;
-		[wAppDelegate subscribeRemoteNotification];
-		
-	};
-	
-	if (reason) {
-		
-		WAOverlayBezel *errorBezel = [[WAOverlayBezel alloc] initWithStyle:WAErrorBezelStyle];
-		[errorBezel setCaption:reason];
-		[errorBezel show];
-		dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 2.0 * NSEC_PER_SEC), dispatch_get_main_queue(), ^ {
-								[errorBezel dismiss];
-							});
-	
-	}
-	
-	WAFirstUseViewController *firstUseVC = [WAFirstUseViewController initWithAuthSuccessBlock:^(NSString *token, NSDictionary *userRep, NSArray *groupReps){
-
-		NSString *userID = [userRep valueForKeyPath:@"user_id"];
-
-		NSString *primaryGroupID = [[[groupReps filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary *bindings) {
-
-			return [[evaluatedObject valueForKeyPath:@"creator_id"] isEqual:userID];
-
-		}]] lastObject] valueForKeyPath:@"group_id"];
-
-		WARemoteInterface * const ri = [WARemoteInterface sharedInterface];
-
-		ri.userIdentifier = userID;
-		ri.userToken = token;
-		ri.primaryGroupIdentifier = primaryGroupID;
-
-		handleAuthSuccess();
-
-	} authFailBlock:^(NSError *error) {
-
-		NSParameterAssert(error);
-
-		NSString *message = nil;
-		if ([error code] == 0x9) {
-			message = NSLocalizedString(@"AUTH_ERROR_INVALID_EMAIL_FORMAT", @"Authentication Error Description");
-		} else if ([error code] == 0xb) {
-			message = NSLocalizedString(@"AUTH_ERROR_INVALID_PWD_FORMAT", @"Authentication Error Description");
-		} else if ([error code] == 0x1001) {
-			message = NSLocalizedString(@"AUTH_ERROR_INVALID_EMAIL_PWD", @"Authentication Error Description");
-		} else if ([error code] == 0x1002) {
-			message = NSLocalizedString(@"AUTH_ERROR_ALREADY_REGISTERED", @"Authentication Error Description");
-		} else {
-			message = NSLocalizedString(@"AUTH_UNKNOWN_ERROR", @"Unknown Error");
-		}
-		IRAction *okAction = [IRAction actionWithTitle:NSLocalizedString(@"ACTION_OKAY", @"Alert Dismissal Action") block:nil];
-
-		IRAlertView *alertView = [IRAlertView alertViewWithTitle:nil message:message cancelAction:okAction otherActions:nil];
-		[alertView show];
-
-	} finishBlock:^{
-
-		[wAppDelegate clearViewHierarchy];
-		[wAppDelegate recreateViewHierarchy];
-
-	}];
-
-	switch ([UIDevice currentDevice].userInterfaceIdiom) {
-			
-		case UIUserInterfaceIdiomPad:
-			firstUseVC.modalPresentationStyle = UIModalPresentationFormSheet;
-			break;
-			
-		case UIUserInterfaceIdiomPhone:
-			firstUseVC.modalPresentationStyle = UIModalPresentationCurrentContext;
-			
-	}
-
-	[self.window.rootViewController presentViewController:firstUseVC animated:NO completion:nil];
+  
+  WARemoteInterface * const ri = [WARemoteInterface sharedInterface];
+  __weak WAAppDelegate_iOS *wAppDelegate = self;
+  
+  [ri.engine.queue cancelAllOperations];
+  
+  NSParameterAssert(!self.alreadyRequestingAuthentication);
+  self.alreadyRequestingAuthentication = YES;
+  
+  void (^handleAuthSuccess)(void) = ^ {
+    
+    if (block)
+      block(YES, nil);
+    
+    wAppDelegate.alreadyRequestingAuthentication = NO;
+    [wAppDelegate subscribeRemoteNotification];
+    
+  };
+  
+  if (reason) {
+    
+    WAOverlayBezel *errorBezel = [[WAOverlayBezel alloc] initWithStyle:WAErrorBezelStyle];
+    [errorBezel setCaption:reason];
+    [errorBezel show];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 2.0 * NSEC_PER_SEC), dispatch_get_main_queue(), ^ {
+      [errorBezel dismiss];
+    });
+    
+  }
+  
+  WAFirstUseViewController *firstUseVC = [WAFirstUseViewController initWithAuthSuccessBlock:^(NSString *token, NSDictionary *userRep, NSArray *groupReps){
+    
+    NSString *userID = [userRep valueForKeyPath:@"user_id"];
+    
+    NSString *primaryGroupID = [[[groupReps filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary *bindings) {
+      
+      return [[evaluatedObject valueForKeyPath:@"creator_id"] isEqual:userID];
+      
+    }]] lastObject] valueForKeyPath:@"group_id"];
+    
+    WARemoteInterface * const ri = [WARemoteInterface sharedInterface];
+    
+    ri.userIdentifier = userID;
+    ri.userToken = token;
+    ri.primaryGroupIdentifier = primaryGroupID;
+    
+    handleAuthSuccess();
+    
+  } authFailBlock:^(NSError *error) {
+    
+    NSParameterAssert(error);
+    
+    NSString *message = nil;
+    if ([error code] == 0x9) {
+      message = NSLocalizedString(@"AUTH_ERROR_INVALID_EMAIL_FORMAT", @"Authentication Error Description");
+    } else if ([error code] == 0xb) {
+      message = NSLocalizedString(@"AUTH_ERROR_INVALID_PWD_FORMAT", @"Authentication Error Description");
+    } else if ([error code] == 0x1001) {
+      message = NSLocalizedString(@"AUTH_ERROR_INVALID_EMAIL_PWD", @"Authentication Error Description");
+    } else if ([error code] == 0x1002) {
+      message = NSLocalizedString(@"AUTH_ERROR_ALREADY_REGISTERED", @"Authentication Error Description");
+    } else {
+      message = NSLocalizedString(@"AUTH_UNKNOWN_ERROR", @"Unknown Error");
+    }
+    IRAction *okAction = [IRAction actionWithTitle:NSLocalizedString(@"ACTION_OKAY", @"Alert Dismissal Action") block:nil];
+    
+    IRAlertView *alertView = [IRAlertView alertViewWithTitle:nil message:message cancelAction:okAction otherActions:nil];
+    [alertView show];
+    
+  } finishBlock:^{
+    
+    [wAppDelegate clearViewHierarchy];
+    [wAppDelegate recreateViewHierarchy];
+    
+  }];
+  
+  switch ([UIDevice currentDevice].userInterfaceIdiom) {
+      
+    case UIUserInterfaceIdiomPad:
+      firstUseVC.modalPresentationStyle = UIModalPresentationFormSheet;
+      break;
+      
+    case UIUserInterfaceIdiomPhone:
+      firstUseVC.modalPresentationStyle = UIModalPresentationCurrentContext;
+      
+  }
+  
+  [self.window.rootViewController presentViewController:firstUseVC animated:NO completion:nil];
 }
 
 - (BOOL) isRunningAuthRequest {
-
-	return self.alreadyRequestingAuthentication;
-
+  
+  return self.alreadyRequestingAuthentication;
+  
 }
 
 static NSInteger networkActivityStackingCount = 0;
 
 - (void) beginNetworkActivity {
-
-	if (![NSThread isMainThread]) {
-		dispatch_async(dispatch_get_main_queue(), ^ {
-			[self beginNetworkActivity];
-		});
-		return;
-	}
-	
-	networkActivityStackingCount++;
-	
-	if (networkActivityStackingCount > 0)
-		[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-
+  
+  if (![NSThread isMainThread]) {
+    dispatch_async(dispatch_get_main_queue(), ^ {
+      [self beginNetworkActivity];
+    });
+    return;
+  }
+  
+  networkActivityStackingCount++;
+  
+  if (networkActivityStackingCount > 0)
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+  
 }
 
 - (void) endNetworkActivity {
-
-	if (![NSThread isMainThread]) {
-		dispatch_async(dispatch_get_main_queue(), ^ {
-			[self endNetworkActivity];
-		});
-		return;
-	}
-
-	networkActivityStackingCount--;
-	
-	if (networkActivityStackingCount <= 0) {
-		[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-		networkActivityStackingCount = 0;
-	}
-
+  
+  if (![NSThread isMainThread]) {
+    dispatch_async(dispatch_get_main_queue(), ^ {
+      [self endNetworkActivity];
+    });
+    return;
+  }
+  
+  networkActivityStackingCount--;
+  
+  if (networkActivityStackingCount <= 0) {
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+    networkActivityStackingCount = 0;
+  }
+  
 }
 
 - (BOOL) application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
-
-	if ([[url scheme] hasPrefix:@"fb"]) {
-		[FBSession.activeSession handleOpenURL:url];
-	} else {
-		NSDictionary *userInfo = @{@"url": url,
-			@"sourceApplication": sourceApplication,
-			@"annotation": annotation};
-
-		[[NSNotificationCenter defaultCenter] postNotificationName:kWAApplicationDidReceiveRemoteURLNotification object:url userInfo:userInfo];
-	}
-	
+  
+  if ([[url scheme] hasPrefix:@"fb"]) {
+    [FBSession.activeSession handleOpenURL:url];
+  } else {
+    NSDictionary *userInfo = @{@"url": url,
+    @"sourceApplication": sourceApplication,
+    @"annotation": annotation};
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:kWAApplicationDidReceiveRemoteURLNotification object:url userInfo:userInfo];
+  }
+  
   return YES;
-
+  
 }
 
 #pragma mark UIApplication delegates
 
 - (void) applicationDidReceiveMemoryWarning:(UIApplication *)application {
-
-	WAPostAppEvent(@"did-receive-memory-warning", @{});
-
+  
+  WAPostAppEvent(@"did-receive-memory-warning", @{});
+  
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application {
-	[FBSession.activeSession close];
-	[MagicalRecord cleanUp];
+  [FBSession.activeSession close];
+  [MagicalRecord cleanUp];
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
-	[FBSession.activeSession handleDidBecomeActive];
-
-	if ([self hasAuthenticationData]) {
-
-		[self photoImportManager];
-		[self cacheManager];
-		[self syncManager];
-
-	}
-
-}
-
-- (WAPhotoImportManager *)photoImportManager {
-
-	@synchronized(self) {
-
-		if (!_photoImportManager) {
-			_photoImportManager = [[WAPhotoImportManager alloc] init];
-			if (_photoImportManager.enabled) {
-				[_photoImportManager createPhotoImportArticlesWithCompletionBlock:^{
-					NSLog(@"All photo import operations are enqueued");
-				}];
-			}
-		}
-
-	};
-
-	return _photoImportManager;
-
+  [FBSession.activeSession handleDidBecomeActive];
+  
+  if ([self hasAuthenticationData]) {
+    
+    [self.cacheManager clearPurgeableFilesIfNeeded];
+    [self.syncManager reload];
+    
+  }
+  
 }
 
 - (WACacheManager *)cacheManager {
-
-	@synchronized(self) {
-
-		if (!_cacheManager) {
-			_cacheManager = [[WACacheManager alloc] init];
-			_cacheManager.delegate = self;
-			[_cacheManager clearPurgeableFilesIfNeeded];
-		}
-
-	};
-
-	return _cacheManager;
-
+  
+  @synchronized(self) {
+    
+    if (!_cacheManager) {
+      _cacheManager = [[WACacheManager alloc] init];
+      _cacheManager.delegate = self;
+      [_cacheManager clearPurgeableFilesIfNeeded];
+    }
+    
+  };
+  
+  return _cacheManager;
+  
 }
 
 -(WASyncManager *)syncManager {
-
-	@synchronized(self) {
-
-		if (!_syncManager) {
-			_syncManager = [[WASyncManager alloc] init];
-			[_syncManager reload];
-		}
-
-	};
-
-	return _syncManager;
-
+  
+  @synchronized(self) {
+    
+    if (!_syncManager) {
+      _syncManager = [[WASyncManager alloc] init];
+    }
+    
+  };
+  
+  return _syncManager;
+  
 }
 
 #pragma mark WACacheManager delegates
 
 - (BOOL)shouldPurgeCachedFile:(WACache *)cache {
-
-	return YES;
-
+  
+  return YES;
+  
 }
 
 @end
@@ -881,7 +856,7 @@ static NSInteger networkActivityStackingCount = 0;
 // ref: http://stackoverflow.com/questions/3372333/ipad-keyboard-will-not-dismiss-if-modal-view-controller-presentation-style-is-ui
 - (BOOL)disablesAutomaticKeyboardDismissal
 {
-	return NO;
+  return NO;
 }
 
 @end

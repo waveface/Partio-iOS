@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		13089D2516885FB70086BEEB /* WASyncManager+PhotoImport.m in Sources */ = {isa = PBXBuildFile; fileRef = 13089D2416885FB70086BEEB /* WASyncManager+PhotoImport.m */; };
 		130AB55B1678480900CFFA5A /* WADocumentDay.m in Sources */ = {isa = PBXBuildFile; fileRef = 130AB55A1678480900CFFA5A /* WADocumentDay.m */; };
 		130AB55E16785B2300CFFA5A /* WADocumentDay+WARemoteInterfaceEntitySyncing.m in Sources */ = {isa = PBXBuildFile; fileRef = 130AB55D16785B2300CFFA5A /* WADocumentDay+WARemoteInterfaceEntitySyncing.m */; };
 		130F09F0159C3C74001796D0 /* WABackoffHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 130F09EF159C3C74001796D0 /* WABackoffHandler.m */; };
@@ -53,7 +54,6 @@
 		13DE12FA1638140A00757F7C /* WAFirstUseBuildCloudViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 13DE12F91638140A00757F7C /* WAFirstUseBuildCloudViewController.m */; };
 		13DE12FD1638142300757F7C /* WAFirstUsePhotoImportViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 13DE12FC1638142300757F7C /* WAFirstUsePhotoImportViewController.m */; };
 		13DE13001638143A00757F7C /* WAFirstUseConnectServicesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 13DE12FF1638143A00757F7C /* WAFirstUseConnectServicesViewController.m */; };
-		13EFF4BF15FEC1B3007430EC /* WAPhotoImportManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 13EFF4BE15FEC1B3007430EC /* WAPhotoImportManager.m */; };
 		13F472DE1682C11D002BDCC9 /* UIImage+WAAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 13F472DD1682C11D002BDCC9 /* UIImage+WAAdditions.m */; };
 		13F472E11682C5FD002BDCC9 /* ALAsset+WAAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 13F472E01682C5FD002BDCC9 /* ALAsset+WAAdditions.m */; };
 		13F472E41682C811002BDCC9 /* NSString+WAAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 13F472E31682C811002BDCC9 /* NSString+WAAdditions.m */; };
@@ -1051,6 +1051,8 @@
 
 /* Begin PBXFileReference section */
 		01BDA1BD7BB746E8B2A7004D /* Pods-UnitTests.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UnitTests.xcconfig"; path = "Pods/Pods-UnitTests.xcconfig"; sourceTree = SOURCE_ROOT; };
+		13089D2316885FB70086BEEB /* WASyncManager+PhotoImport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WASyncManager+PhotoImport.h"; sourceTree = "<group>"; };
+		13089D2416885FB70086BEEB /* WASyncManager+PhotoImport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WASyncManager+PhotoImport.m"; sourceTree = "<group>"; };
 		130AB5571678433E00CFFA5A /* WAModel 41.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WAModel 41.xcdatamodel"; sourceTree = "<group>"; };
 		130AB5591678480900CFFA5A /* WADocumentDay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WADocumentDay.h; sourceTree = "<group>"; };
 		130AB55A1678480900CFFA5A /* WADocumentDay.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WADocumentDay.m; sourceTree = "<group>"; };
@@ -1135,8 +1137,6 @@
 		13DE12FC1638142300757F7C /* WAFirstUsePhotoImportViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WAFirstUsePhotoImportViewController.m; path = wammer/WAFirstUsePhotoImportViewController.m; sourceTree = "<group>"; };
 		13DE12FE1638143A00757F7C /* WAFirstUseConnectServicesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WAFirstUseConnectServicesViewController.h; path = wammer/WAFirstUseConnectServicesViewController.h; sourceTree = "<group>"; };
 		13DE12FF1638143A00757F7C /* WAFirstUseConnectServicesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WAFirstUseConnectServicesViewController.m; path = wammer/WAFirstUseConnectServicesViewController.m; sourceTree = "<group>"; };
-		13EFF4BD15FEC1B3007430EC /* WAPhotoImportManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WAPhotoImportManager.h; path = wammer/WAPhotoImportManager.h; sourceTree = "<group>"; };
-		13EFF4BE15FEC1B3007430EC /* WAPhotoImportManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WAPhotoImportManager.m; path = wammer/WAPhotoImportManager.m; sourceTree = "<group>"; };
 		13EFF4C015FEC2E7007430EC /* WAModel 35.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WAModel 35.xcdatamodel"; sourceTree = "<group>"; };
 		13F472DC1682C11D002BDCC9 /* UIImage+WAAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIImage+WAAdditions.h"; path = "wammer/UIImage+WAAdditions.h"; sourceTree = "<group>"; };
 		13F472DD1682C11D002BDCC9 /* UIImage+WAAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIImage+WAAdditions.m"; path = "wammer/UIImage+WAAdditions.m"; sourceTree = "<group>"; };
@@ -2308,15 +2308,6 @@
 			name = "First Use";
 			sourceTree = "<group>";
 		};
-		13EFF4B915FEBFF1007430EC /* Photo Import */ = {
-			isa = PBXGroup;
-			children = (
-				13EFF4BD15FEC1B3007430EC /* WAPhotoImportManager.h */,
-				13EFF4BE15FEC1B3007430EC /* WAPhotoImportManager.m */,
-			);
-			name = "Photo Import";
-			sourceTree = "<group>";
-		};
 		13F472DB1682C024002BDCC9 /* WAToolkit */ = {
 			isa = PBXGroup;
 			children = (
@@ -2699,6 +2690,8 @@
 				FF9809301592E4F700462FCD /* WADataStore+WASyncManagerAdditions.m */,
 				133058DC1650ABE300C0283F /* WASyncManager+FileMetadataSync.h */,
 				133058DD1650ABE300C0283F /* WASyncManager+FileMetadataSync.m */,
+				13089D2316885FB70086BEEB /* WASyncManager+PhotoImport.h */,
+				13089D2416885FB70086BEEB /* WASyncManager+PhotoImport.m */,
 			);
 			name = "Blob Syncing";
 			path = wammer;
@@ -3030,7 +3023,6 @@
 				13F472DB1682C024002BDCC9 /* WAToolkit */,
 				FF97384613D82771003D1722 /* Remote Interface */,
 				FF0024F914B44CC500F54AAF /* Blob Syncing */,
-				13EFF4B915FEBFF1007430EC /* Photo Import */,
 				132D60351622B8AA00148829 /* File Cache */,
 				FF73A54913D6C2CD00D54EC6 /* iOS Supporting Files */,
 				FFA59491152DC947003A9689 /* iOS External Resources */,
@@ -5028,7 +5020,6 @@
 				809D429015F5CE4300CB4F89 /* WAWebSocket.m in Sources */,
 				136C170315F48E8E0066B289 /* WAAssetsLibraryManager.m in Sources */,
 				80557BA915FDE38000336F3C /* WARemoteInterface+RemoteNotifications.m in Sources */,
-				13EFF4BF15FEC1B3007430EC /* WAPhotoImportManager.m in Sources */,
 				809C6D26160583A00016E196 /* IIViewDeckController.m in Sources */,
 				809C6D27160583A00016E196 /* WrapController.m in Sources */,
 				809C6D2B1605845A0016E196 /* WASlidingMenuViewController.m in Sources */,
@@ -5113,6 +5104,7 @@
 				13F472DE1682C11D002BDCC9 /* UIImage+WAAdditions.m in Sources */,
 				13F472E11682C5FD002BDCC9 /* ALAsset+WAAdditions.m in Sources */,
 				13F472E41682C811002BDCC9 /* NSString+WAAdditions.m in Sources */,
+				13089D2516885FB70086BEEB /* WASyncManager+PhotoImport.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

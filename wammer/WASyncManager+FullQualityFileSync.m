@@ -108,11 +108,6 @@
     return NO;
   }
   
-  WAPhotoImportManager *photoImportManager = [(WAAppDelegate_iOS *)AppDelegate() photoImportManager];
-  if (photoImportManager.preprocessing || photoImportManager.operationQueue.operationCount > 0) {
-    return NO;
-  }
-  
   BOOL const hasReachableCloud = [ri hasReachableCloud];
   BOOL const hasReachableStation = [ri hasReachableStation];
   

@@ -419,9 +419,6 @@
 "PHOTO_UPLOAD_STATUS_NOT_UPLOADING" = "Not enabled";
 
 /* Subtitle of photo upload status */
-"PHOTO_UPLOAD_STATUS_PREPROCESSING" = "Preprocessing...";
-
-/* Subtitle of photo upload status */
 "PHOTO_UPLOAD_STATUS_UPLOADING" = "Importing photos...";
 
 /* In iPad overview */

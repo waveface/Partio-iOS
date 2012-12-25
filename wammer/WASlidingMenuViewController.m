@@ -18,7 +18,6 @@
 #import "WACalendarPickerViewController.h"
 #import "WAUserInfoViewController.h"
 #import "WAOverlayBezel.h"
-#import "WAPhotoImportManager.h"
 #import "WADataStore.h"
 #import <Foundation/Foundation.h>
 #import "WAPhotoStreamViewController.h"
@@ -36,7 +35,6 @@
 @property (nonatomic, strong) UITableViewCell *userCell;
 
 @property (nonatomic, strong) WAStatusBar *statusBar;
-@property (nonatomic, strong) WAPhotoImportManager *photoImportManager;
 @property (nonatomic, strong) WASyncManager *syncManager;
 
 @end
@@ -114,12 +112,12 @@
 {
   [super viewDidLoad];
   
-  self.photoImportManager = [(WAAppDelegate_iOS *)AppDelegate() photoImportManager];
-  [self.photoImportManager addObserver:self forKeyPath:@"importedFilesCount" options:NSKeyValueObservingOptionNew context:nil];
-  
   self.syncManager = [(WAAppDelegate_iOS *)AppDelegate() syncManager];
-  [self.syncManager addObserver:self forKeyPath:@"syncedFilesCount" options:NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew context:nil];
+
+  [self.syncManager addObserver:self forKeyPath:@"needingImportFilesCount" options:NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew context:nil];
+  [self.syncManager addObserver:self forKeyPath:@"importedFilesCount" options:NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew context:nil];
   [self.syncManager addObserver:self forKeyPath:@"needingSyncFilesCount" options:NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew context:nil];
+  [self.syncManager addObserver:self forKeyPath:@"syncedFilesCount" options:NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew context:nil];
 
   [self.tableView setBackgroundColor:[UIColor colorWithWhite:0.3f alpha:1.0f]];
   self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
@@ -130,10 +128,10 @@
   [self.user removeObserver:self forKeyPath:@"avatar"];
   [self.user removeObserver:self forKeyPath:@"nickname"];
   
-  [self.photoImportManager removeObserver:self forKeyPath:@"importedFilesCount"];
-  
-  [self.syncManager removeObserver:self forKeyPath:@"syncedFilesCount"];
+  [self.syncManager removeObserver:self forKeyPath:@"needingImportFilesCount"];
+  [self.syncManager removeObserver:self forKeyPath:@"importedFilesCount"];
   [self.syncManager removeObserver:self forKeyPath:@"needingSyncFilesCount"];
+  [self.syncManager removeObserver:self forKeyPath:@"syncedFilesCount"];
   
 }
 
@@ -239,19 +237,34 @@
   }
   
   __weak WASlidingMenuViewController *wSelf = self;
+
+  if ([keyPath isEqualToString:@"needingImportFilesCount"]) {
+    NSUInteger currentCount = [change[NSKeyValueChangeNewKey] unsignedIntegerValue];
+    if (currentCount != 0) {
+      [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+        WASyncManager *syncManager = [(WAAppDelegate_iOS *)AppDelegate() syncManager];
+        if (!wSelf.statusBar) {
+	wSelf.statusBar = [[WAStatusBar alloc] initWithFrame:CGRectZero];
+        }
+        wSelf.statusBar.statusLabel.text = NSLocalizedString(@"PHOTO_UPLOAD_STATUS_BAR_IMPORTING", @"String on customized status bar");
+        wSelf.statusBar.progressView.progress = syncManager.importedFilesCount * 1.0 / syncManager.needingImportFilesCount;
+      }];
+    }
+  }
+
   if ([keyPath isEqualToString:@"importedFilesCount"]) {
+    NSUInteger currentCount = [change[NSKeyValueChangeNewKey] unsignedIntegerValue];
     [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-      WAPhotoImportManager *photoImportManager = [(WAAppDelegate_iOS *)AppDelegate() photoImportManager];
-      if (!photoImportManager.preprocessing) {
-        NSUInteger currentCount = [change[NSKeyValueChangeNewKey] unsignedIntegerValue];
-        if (currentCount == photoImportManager.totalFilesCount) {
+      WASyncManager *syncManager = [(WAAppDelegate_iOS *)AppDelegate() syncManager];
+      if (syncManager.needingImportFilesCount != 0) {
+        if (currentCount == syncManager.needingImportFilesCount) {
 	wSelf.statusBar = nil;
         } else {
 	if (!wSelf.statusBar) {
 	  wSelf.statusBar = [[WAStatusBar alloc] initWithFrame:CGRectZero];
 	}
 	wSelf.statusBar.statusLabel.text = NSLocalizedString(@"PHOTO_UPLOAD_STATUS_BAR_IMPORTING", @"String on customized status bar");
-	wSelf.statusBar.progressView.progress = currentCount * 1.0 / photoImportManager.totalFilesCount;
+	wSelf.statusBar.progressView.progress = currentCount * 1.0 / syncManager.needingImportFilesCount;
         }
       }
     }];
