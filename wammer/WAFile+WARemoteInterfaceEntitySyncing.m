@@ -185,8 +185,10 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
 			NSMutableArray *accessLogArray = [NSMutableArray array];
 			for (NSDictionary *access in [incomingRepresentation valueForKeyPath:@"web_meta.accesses"]) {
 				NSDate *date = [NSDate dateFromISO8601String:access[@"time"]];
+				NSString *source = access[@"from"];
 				NSDictionary *accessLog = @{
 					@"accessTime" : date,
+					@"accessSource": source,
 					@"dayWebpages": @{@"day": [date dayBegin]}
 				};
 				[accessLogArray addObject:accessLog];
@@ -203,9 +205,9 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
       for (NSString *accessTime in [incomingRepresentation valueForKeyPath:@"doc_meta.access_time"]) {
         NSDate *date = [NSDate dateFromISO8601String:accessTime];
         NSDictionary *accessLog = @{
-        @"accessTime": date,
-        @"filePath": [incomingRepresentation valueForKeyPath:@"file_path"],
-        @"day": @{@"day" : [date dayBegin]}
+					@"accessTime": date,
+					@"filePath": [incomingRepresentation valueForKeyPath:@"file_path"],
+					@"day": @{@"day" : [date dayBegin]}
         };
         [accessLogArray addObject:accessLog];
       };
@@ -221,13 +223,13 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
         NSString *ownObjectID = [incomingRepresentation valueForKeyPath:@"object_id"];
         
         for (NSUInteger i = 0; i < numberOfPages; i++) {
-	NSURL *previewURL = [[NSURL URLWithString:@"http://invalid.local"] URLByAppendingPathComponent:@"v2/attachments/view"];
-	NSDictionary *parameters = @{@"object_id": ownObjectID, @"target": @"preview", @"page": @(i + 1)};
-	NSDictionary *pageElement = @{
-	@"thumbnailURL": [IRWebAPIRequestURLWithQueryParameters(previewURL, parameters) absoluteString],
-	@"page": @(i + 1)
-	};
-	[returnedArray addObject:pageElement];
+					NSURL *previewURL = [[NSURL URLWithString:@"http://invalid.local"] URLByAppendingPathComponent:@"v2/attachments/view"];
+					NSDictionary *parameters = @{@"object_id": ownObjectID, @"target": @"preview", @"page": @(i + 1)};
+					NSDictionary *pageElement = @{
+						@"thumbnailURL": [IRWebAPIRequestURLWithQueryParameters(previewURL, parameters) absoluteString],
+						@"page": @(i + 1)
+					};
+					[returnedArray addObject:pageElement];
         }
         
         returnedDictionary[@"pageElements"] = returnedArray;

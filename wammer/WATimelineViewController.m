@@ -30,7 +30,7 @@
 #import "WACalendarPickerViewController.h"
 #import "Kal.h"
 
-@interface WATimelineViewController () <NSFetchedResultsControllerDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout>
+@interface WATimelineViewController () <NSFetchedResultsControllerDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UIPopoverControllerDelegate>
 
 @property (nonatomic, strong) UICollectionView *collectionView;
 @property (nonatomic, strong) UICollectionViewFlowLayout *flowlayout;

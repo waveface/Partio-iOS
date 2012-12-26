@@ -2,8 +2,8 @@
 //  WACollection.m
 //  wammer
 //
-//  Created by jamie on 12/11/28.
-//  Copyright (c) 2012年 Waveface. All rights reserved.
+//  Created by Shen Steven on 12/25/12.
+//  Copyright (c) 2012 Waveface. All rights reserved.
 //
 
 #import "WACollection.h"
@@ -18,8 +18,9 @@
 @dynamic isHidden;
 @dynamic isSmart;
 @dynamic modificationDate;
-@dynamic title;
 @dynamic sequenceNumber;
+@dynamic title;
+@dynamic cover;
 @dynamic creator;
 @dynamic files;
 

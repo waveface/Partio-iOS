@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model name="" userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="1811" systemVersion="12C60" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
+<model name="" userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="2057" systemVersion="12C60" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="WAArticle" representedClassName="WAArticle">
         <attribute name="creationDate" optional="YES" attributeType="Date" indexed="YES" elementID="timestamp">
             <userInfo/>
@@ -67,6 +67,7 @@
         <attribute name="modificationDate" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="sequenceNumber" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="cover" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="WAFile" inverseName="coverOfCollection" inverseEntity="WAFile" syncable="YES"/>
         <relationship name="creator" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="WAUser" inverseName="collections" inverseEntity="WAUser" syncable="YES"/>
         <relationship name="files" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="WAFile" inverseName="collections" inverseEntity="WAFile" syncable="YES"/>
     </entity>
@@ -163,6 +164,7 @@
         </relationship>
         <relationship name="caches" optional="YES" toMany="YES" maxCount="5" deletionRule="Nullify" destinationEntity="WACache" inverseName="file" inverseEntity="WACache" syncable="YES"/>
         <relationship name="collections" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="WACollection" inverseName="files" inverseEntity="WACollection" syncable="YES"/>
+        <relationship name="coverOfCollection" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="WACollection" inverseName="cover" inverseEntity="WACollection" syncable="YES"/>
         <relationship name="exif" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="WAFileExif" inverseName="file" inverseEntity="WAFileExif" syncable="YES"/>
         <relationship name="owner" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="WAUser" inverseName="files" inverseEntity="WAUser">
             <userInfo/>
@@ -178,6 +180,7 @@
         <userInfo/>
     </entity>
     <entity name="WAFileAccessLog" representedClassName="WAFileAccessLog" syncable="YES">
+        <attribute name="accessSource" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="accessTime" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="filePath" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="day" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="WADocumentDay" inverseName="accessLogs" inverseEntity="WADocumentDay" syncable="YES"/>
@@ -353,11 +356,11 @@
     <elements>
         <element name="WAArticle" positionX="0" positionY="0" width="128" height="435"/>
         <element name="WACache" positionX="0" positionY="0" width="128" height="150"/>
-        <element name="WACollection" positionX="0" positionY="0" width="128" height="180"/>
+        <element name="WACollection" positionX="0" positionY="0" width="128" height="195"/>
         <element name="WAComment" positionX="0" positionY="0" width="128" height="135"/>
         <element name="WADocumentDay" positionX="0" positionY="0" width="128" height="75"/>
         <element name="WAEventDay" positionX="160" positionY="192" width="128" height="75"/>
-        <element name="WAFile" positionX="0" positionY="0" width="128" height="630"/>
+        <element name="WAFile" positionX="0" positionY="0" width="128" height="645"/>
         <element name="WAFileAccessLog" positionX="160" positionY="192" width="128" height="120"/>
         <element name="WAFileExif" positionX="0" positionY="0" width="128" height="315"/>
         <element name="WAFilePageElement" positionX="0" positionY="0" width="128" height="135"/>

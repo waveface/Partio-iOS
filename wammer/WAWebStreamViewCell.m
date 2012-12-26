@@ -8,9 +8,13 @@
 
 #import "WAWebStreamViewCell.h"
 #import <QuartzCore/QuartzCore.h>
+#import "IRObservings.h"
+
+NSString * kWAWebStreamViewCellKVOContext = @"DocuementStreamViewCellKVOContext";
 
 @interface WAWebStreamViewCell ()
 
+@property (nonatomic, readwrite, weak) IBOutlet UIImageView *cardBGImageView;
 
 @end
 
@@ -26,6 +30,19 @@
     return self;
 }
 
++ (UIImage *) cardBackgroundImage {
+	
+	static UIImage *image = nil;
+	
+	static dispatch_once_t onceToken;
+	dispatch_once(&onceToken, ^{
+    image = [[UIImage imageNamed:@"EventCardBG"] resizableImageWithCapInsets:UIEdgeInsetsMake(15, 15, 15, 15) resizingMode:UIImageResizingModeTile];
+	});
+	
+	return image;
+	
+}
+
 - (void) awakeFromNib {
 	
 	CAGradientLayer *gradient = [CAGradientLayer layer];
@@ -39,7 +56,22 @@
 	
 	self.imageView.layer.cornerRadius = 5.0f;
   self.imageView.layer.masksToBounds = YES;
+	self.imageView.layer.borderColor = [[UIColor colorWithWhite:0.9 alpha:0.3f] CGColor];
+	self.imageView.layer.borderWidth = 1.0f;
 
+	self.cardBGImageView.image = [[self class] cardBackgroundImage];
+
+}
+
+- (void) prepareForReuse {
+	
+	if (self.file) {
+		[self.file irRemoveObserverBlocksForKeyPath:@"thumbnailImage" context:&kWAWebStreamViewCellKVOContext];
+	}
+	
+	self.imageView.image = nil;
+	self.sourceImageView.image = nil;
+	
 }
 
 @end

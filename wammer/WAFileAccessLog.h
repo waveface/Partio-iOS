@@ -1,9 +1,9 @@
 //
 //  WAFileAccessLog.h
-//  IRTextAttributor
+//  wammer
 //
-//  Created by Shen Steven on 12/14/12.
-//  Copyright (c) 2012 Iridia Productions. All rights reserved.
+//  Created by Shen Steven on 12/24/12.
+//  Copyright (c) 2012 Waveface. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
@@ -16,8 +16,9 @@
 
 @property (nonatomic, retain) NSDate * accessTime;
 @property (nonatomic, retain) NSString * filePath;
+@property (nonatomic, retain) NSString * accessSource;
 @property (nonatomic, retain) WADocumentDay *day;
-@property (nonatomic, retain) WAFile *file;
 @property (nonatomic, retain) WAWebpageDay *dayWebpages;
+@property (nonatomic, retain) WAFile *file;
 
 @end
