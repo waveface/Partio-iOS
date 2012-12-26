@@ -217,7 +217,7 @@
 			[self.popover dismissPopoverAnimated:YES];
 			
 		} else {
-			WACalendarPickerViewController *dpVC = [[WACalendarPickerViewController alloc] initWithFrame:frame style:WACalendarPickerStyleInPopover];
+			WACalendarPickerViewController *dpVC = [[WACalendarPickerViewController alloc] initWithFrame:frame style:WACalendarPickerStyleInPopover selectedDate:onDate];
 			dpVC.delegate = self;
 			
 			self.popover = [[UIPopoverController alloc] initWithContentViewController:dpVC];
@@ -226,7 +226,7 @@
 		}
 		
 	} else {
-		WACalendarPickerViewController *dpVC = [[WACalendarPickerViewController alloc] initWithFrame:frame style:WACalendarPickerStyleTodayCancel];
+		WACalendarPickerViewController *dpVC = [[WACalendarPickerViewController alloc] initWithFrame:frame style:WACalendarPickerStyleTodayCancel selectedDate:onDate];
 		dpVC.delegate = self;
 		
 		[self presentViewController:dpVC animated:YES completion:nil];

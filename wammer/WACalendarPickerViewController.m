@@ -30,10 +30,10 @@
 
 @implementation WACalendarPickerViewController
 
-- (WACalendarPickerViewController *)initWithFrame:(CGRect)frame style:(WACalendarPickerStyle)style
+- (WACalendarPickerViewController *)initWithFrame:(CGRect)frame style:(WACalendarPickerStyle)style selectedDate:(NSDate *)date
 {
 	
-	calPicker = [[KalViewController alloc] init];
+	calPicker = [[KalViewController alloc] initWithSelectedDate:date];
 	calPicker.title = NSLocalizedString(@"TITLE_CALENDAR", @"Title of Canlendar");
 	calPicker.delegate = self;
 	dataSource = [[WACalendarPickerDataSource alloc] init];
