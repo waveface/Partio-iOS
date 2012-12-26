@@ -498,7 +498,7 @@
     case 6: {
       [self.viewDeckController closeLeftView];
       
-      WACalendarPickerViewController *dpVC = [[WACalendarPickerViewController alloc] initWithFrame:self.view.frame style:WACalendarPickerStyleMenuToday];
+      WACalendarPickerViewController *dpVC = [[WACalendarPickerViewController alloc] initWithFrame:self.view.frame style:WACalendarPickerStyleMenuToday selectedDate:[NSDate date]];
       [dpVC setModalPresentationStyle:UIModalPresentationFullScreen];
       [self.viewDeckController setCenterController:dpVC];
       break;
