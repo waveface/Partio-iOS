@@ -19,7 +19,7 @@
 
 @implementation WASyncManager (FileMetadataSync)
 
-- (IRAsyncOperation *)fileMetadataSyncOperation {
+- (IRAsyncOperation *)fileMetadataSyncOperationPrototype {
   
   __weak WASyncManager *wSelf = self;
   

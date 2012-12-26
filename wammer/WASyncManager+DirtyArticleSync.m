@@ -88,6 +88,7 @@
     
     NSBlockOperation *tailOp = [NSBlockOperation blockOperationWithBlock:^{
       [[wSelf recurrenceMachine] endPostponingOperations];
+      callback(nil);
     }];
     
     for (NSOperation *operation in wSelf.articleSyncOperationQueue.operations) {
@@ -96,8 +97,6 @@
     
     [wSelf.articleSyncOperationQueue addOperation:tailOp];
 
-    callback((id)kCFBooleanTrue);
-    
   } trampoline:^(IRAsyncOperationInvoker block) {
     
     NSCAssert(![NSThread isMainThread], @"should run in background");

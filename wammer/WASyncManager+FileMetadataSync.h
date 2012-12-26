@@ -10,6 +10,6 @@
 
 @interface WASyncManager (FileMetadataSync)
 
-- (IRAsyncOperation *) fileMetadataSyncOperation;
+- (IRAsyncOperation *) fileMetadataSyncOperationPrototype;
 
 @end
