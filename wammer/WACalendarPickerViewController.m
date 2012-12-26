@@ -21,7 +21,6 @@
 {
 	KalViewController *calPicker;
 	id dataSource;
-	UITableView *tableView;
 	WAArticle *selectedEvent;
 	WACalendarPickerStyle calStyle;
 }
@@ -103,7 +102,8 @@
 	[cancelButton setTitle:NSLocalizedString(@"CALENDAR_CANCEL_BUTTON", "Cancel button in calendar picker") forState:UIControlStateNormal];
 	cancelButton.titleLabel.font = [UIFont boldSystemFontOfSize:12.f];
 	[cancelButton setTitleColor:[UIColor colorWithRed:0.757f green:0.757f blue:0.757f alpha:1.f] forState:UIControlStateNormal];
-  cancelButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
+  [cancelButton setTitleColor:[UIColor whiteColor] forState:UIControlStateHighlighted];
+	cancelButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
   cancelButton.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
 	
 	return cancelButton;

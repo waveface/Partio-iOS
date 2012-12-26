@@ -7,6 +7,7 @@
 //
 
 #import "WACalendarPickerDataSource.h"
+#import "WACalendarPickerPanelViewCell.h"
 #import "NSDate+WAAdditions.h"
 #import "WADataStore.h"
 #import "WADataStore+WARemoteInterfaceAdditions.h"
@@ -20,7 +21,7 @@ NSString *const kMarkedDocuments = @"markedOrange";
 NSString *const kMarkedWebpages = @"markedGreen";
 NSString *const kMarkedCollections = @"markedDarkBlue";
 
-@interface WACalendarPickerDataSource	() <NSFetchedResultsControllerDelegate>
+@interface WACalendarPickerDataSource () <NSFetchedResultsControllerDelegate>
 
 typedef void (^completionBlock) (NSArray *days);
 @property (nonatomic, readwrite, copy) completionBlock callback;
@@ -216,19 +217,7 @@ typedef void (^completionBlock) (NSArray *days);
 - (void)loadItemsFromDate:(NSDate *)fromDate toDate:(NSDate *)toDate
 {
 	[_items addObjectsFromArray:[self fetchObject:WACalendarLoadObjectEvent from:fromDate to:toDate]];
-	
-	NSArray *photo = [self fetchObject:WACalendarLoadObjectPhoto from:fromDate to:toDate];
-	if ([photo count]) {
-		[_items addObject:[photo lastObject]];
-		
-	}
-	
-	NSArray *doc = [self fetchObject:WACalendarLoadObjectDoc from:fromDate to:toDate];
-	if ([doc count]) {
-		[_items addObject:[doc lastObject]];
-		
-	}
-	
+
 }
 
 - (void)removeAllItems
@@ -254,76 +243,43 @@ typedef void (^completionBlock) (NSArray *days);
 	for (UIView *subview in cell.contentView.subviews)
 		[subview removeFromSuperview];
 	
-	if (![_items count]) {
+	if (!_items.count) {
 		UILabel *title = [[UILabel alloc] initWithFrame:CGRectMake(54, 0, 200 , 54)];
 		[title setText:NSLocalizedString(@"CALENDAR_NO_EVENT", "Description for no event day in calendar")];
 		[title setTextAlignment:NSTextAlignmentCenter];
 		[title setFont:[UIFont boldSystemFontOfSize:16.f]];
 		[title setTextColor:[UIColor grayColor]];
-		[title setBackgroundColor:[UIColor colorWithRed:0.89f green:0.89f blue:0.89f alpha:1.f]];
+		[title setBackgroundColor:[UIColor clearColor]];
 		[cell.contentView addSubview:title];
 		
 		[cell setAccessoryView:nil];
 		[cell setSelectionStyle:UITableViewCellSelectionStyleNone];
-	}
-	else {
+	
+	} else if (indexPath.row == (_items.count - 1)) {
+		cell = [[WACalendarPickerPanelViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+		
+	} else {
 		id item = [self eventAtIndexPath:indexPath];
 		
-		if ([item isKindOfClass:[WAArticle class]]) {
-			WAArticle *event = item;
-			UIImage *xsThumbnail = event.representingFile.extraSmallThumbnailImage;
-			
-			UIImageView *thumbnail = [[UIImageView alloc] initWithImage:xsThumbnail?xsThumbnail:nil];
-			[thumbnail setBackgroundColor:[UIColor grayColor]];
-			[thumbnail setFrame:CGRectMake(4, 4, 45, 45)];
-			[thumbnail setClipsToBounds:YES];
-			[cell.contentView addSubview:thumbnail];
-			
-			UILabel *title = [[UILabel alloc] init];
-			title.attributedText = [[WAEventViewController class] attributedDescriptionStringForEvent:event styleWithColor:NO styleWithFontForTableView:YES];
-			[title setBackgroundColor:[UIColor colorWithRed:0.89f green:0.89f blue:0.89f alpha:1.f]];
-			title.numberOfLines = 0;
-			[title setFrame:CGRectMake(60, 0, 220, 54)];
-			[cell.contentView addSubview:title];
-			[cell setAccessoryView:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"EventCameraIcon"]]];
-			
-		} else if ([item isKindOfClass:[WAFile class]]) {
-			
-			WAFile *file = item;
-			
-			if (file.created) {
-				UIImageView *thumbnail = [[UIImageView alloc] initWithImage:file.extraSmallThumbnailImage?file.extraSmallThumbnailImage:nil];
-				[thumbnail setBackgroundColor:[UIColor grayColor]];
-				[thumbnail setFrame:CGRectMake(4, 4, 45, 45)];
-				[thumbnail setClipsToBounds:YES];
-				[cell.contentView addSubview:thumbnail];
-				
-				UILabel *title = [[UILabel alloc] init];
-				[title setText:NSLocalizedString(@"SLIDING_MENU_TITLE_PHOTOS", @"Title for Photos in the sliding menu")];
-				[title setBackgroundColor:[UIColor colorWithRed:0.89f green:0.89f blue:0.89f alpha:1.f]];
-				title.numberOfLines = 0;
-				[title setFrame:CGRectMake(60, 0, 220, 54)];
-				[cell.contentView addSubview:title];
-				
-				[cell setAccessoryView:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"PhotosIcon"]]];
-				
-			}
-			
-		} else if ([item isKindOfClass:[WAFileAccessLog class]]) {
-			WAFileAccessLog *file = item;
-			
-			UILabel *title = [[UILabel alloc] init];
-			[title setText:[NSString stringWithFormat:@"Opened %@", [[file.filePath componentsSeparatedByString:@"\\"] lastObject]]];
-			[title setBackgroundColor:[UIColor colorWithRed:0.89f green:0.89f blue:0.89f alpha:1.f]];
-			title.numberOfLines = 0;
-			[title setFrame:CGRectMake(10, 0, 220, 54)];
-			[cell.contentView addSubview:title];
-			
-			[cell setAccessoryView:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"DocumentsIcon"]]];
-			
-		}
+		WAArticle *event = item;
+		UIImage *xsThumbnail = event.representingFile.extraSmallThumbnailImage;
+		
+		UIImageView *thumbnail = [[UIImageView alloc] initWithImage:xsThumbnail?xsThumbnail:nil];
+		[thumbnail setBackgroundColor:[UIColor grayColor]];
+		[thumbnail setFrame:CGRectMake(4, 4, 45, 45)];
+		[thumbnail setClipsToBounds:YES];
+		[cell.contentView addSubview:thumbnail];
+		
+		UILabel *title = [[UILabel alloc] init];
+		title.attributedText = [[WAEventViewController class] attributedDescriptionStringForEvent:event styleWithColor:NO styleWithFontForTableView:YES];
+		[title setBackgroundColor:[UIColor clearColor]];
+		title.numberOfLines = 0;
+		[title setFrame:CGRectMake(60, 0, 220, 54)];
+		[cell.contentView addSubview:title];
+		[cell setAccessoryView:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"EventCameraIcon"]]];
 		
 		[cell setSelectionStyle:UITableViewCellSelectionStyleGray];
+		
 	}
 	
 	return cell;
@@ -332,9 +288,8 @@ typedef void (^completionBlock) (NSArray *days);
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
 	NSInteger count = [_items count];
-	
-	if (!count)
-		return 1;
+		if (!count)
+			count = 1;
 	
 	return count;
 }
