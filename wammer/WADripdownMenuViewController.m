@@ -289,7 +289,11 @@ static NSString *kWADDViewCellIdentifier = @"DripdownMenuItem";
 		if ([self.delegate respondsToSelector:@selector(dripdownMenuItemDidSelect:)])
 			[self.delegate dripdownMenuItemDidSelect:[item[@"style"] unsignedIntegerValue]];
 			//[self.delegate performSelector:@selector(dripdownMenuItemDidSelect:) withObject:item[@"style"]];
-	
+
+	if (isPad()) {
+		if ([self.popover isPopoverVisible])
+			[self.popover dismissPopoverAnimated:NO];
+	}
 }
 
 - (void)didReceiveMemoryWarning
