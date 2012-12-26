@@ -65,18 +65,20 @@ static NSString *kWADDViewCellIdentifier = @"DripdownMenuItem";
 		[self.tapper addTarget:self action:@selector(tapperTapped:) forControlEvents:UIControlEventTouchUpInside];
 		[self.translucentOverlay addSubview:self.tapper];
 		
-		self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(fullScreenFrame.size.width/2 - 110, 0, 220, 200)];
+		self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(fullScreenFrame.size.width/2 - 80, 0, 160, 150)];
 		self.tableView.delegate = self;
 		self.tableView.dataSource = self;
+		self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 		[self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:kWADDViewCellIdentifier];
 
 		[self.tapper addSubview:self.tableView];
 		
 	} else {
 		
-		self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, 220, 200)];
+		self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, 160, 150)];
 		self.tableView.delegate = self;
 		self.tableView.dataSource = self;
+		self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 		[self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:kWADDViewCellIdentifier];
 		self.view.frame = self.tableView.frame;
 
@@ -254,16 +256,29 @@ static NSString *kWADDViewCellIdentifier = @"DripdownMenuItem";
 
 }
 
+- (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+	
+	return 50.0f;
+	
+}
+
 - (UITableViewCell*) tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
 
 	UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kWADDViewCellIdentifier forIndexPath:indexPath];
 		
 	NSDictionary *item = self.menuItems[indexPath.row];
-	cell.textLabel.font = [UIFont fontWithName:@"HelveticaNeue" size:12.0];
+	cell.textLabel.font = [UIFont fontWithName:@"HelveticaNeue" size:14.0];
 	cell.textLabel.text = item[@"title"];
 	cell.imageView.image = item[@"icon"];
 	
 	return cell;
+	
+}
+
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
+	
+	cell.textLabel.textColor = [UIColor whiteColor];
+	cell.backgroundColor = self.menuItems[indexPath.row][@"color"];
 	
 }
 
@@ -274,8 +289,6 @@ static NSString *kWADDViewCellIdentifier = @"DripdownMenuItem";
 		if ([self.delegate respondsToSelector:@selector(dripdownMenuItemDidSelect:)])
 			[self.delegate dripdownMenuItemDidSelect:[item[@"style"] unsignedIntegerValue]];
 			//[self.delegate performSelector:@selector(dripdownMenuItemDidSelect:) withObject:item[@"style"]];
-
-	[self dismissDDMenu];
 	
 }
 
