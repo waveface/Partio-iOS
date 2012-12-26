@@ -696,7 +696,7 @@ extern CFAbsoluteTime StartTime;
     
   } authFailBlock:^(NSError *error) {
     
-    NSParameterAssert(error);
+    NSCParameterAssert(error);
     
     NSString *message = nil;
     if ([error code] == 0x9) {

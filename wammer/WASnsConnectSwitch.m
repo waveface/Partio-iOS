@@ -133,7 +133,7 @@
 	
 	__weak WASnsConnectSwitch *wSelf = self;
 	[self.delegate openOAuthWebViewWithRequest:request completeBlock:^(NSURL *resultURL) {
-		NSParameterAssert([NSThread isMainThread]);
+		NSCParameterAssert([NSThread isMainThread]);
 		if ([wSelf isSuccessURL:resultURL]) {
 			[wSelf setOn:YES animated:YES];
 			
@@ -180,7 +180,7 @@
 	
 	__weak WASnsConnectSwitch *wSelf = self;
 	[self.delegate openOAuthWebViewWithRequest:request completeBlock:^(NSURL *resultURL) {
-		NSParameterAssert([NSThread isMainThread]);
+		NSCParameterAssert([NSThread isMainThread]);
 		if ([wSelf isSuccessURL:resultURL]) {
 			[wSelf setOn:NO animated:YES];
 			[[GAI sharedInstance].defaultTracker trackEventWithCategory:@"Events"

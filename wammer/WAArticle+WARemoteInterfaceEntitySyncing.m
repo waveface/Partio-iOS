@@ -701,7 +701,7 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
         context[kPostAttachmentIDs] = attachmentIDs;
       }
       
-      NSParameterAssert([attachmentIDs isKindOfClass:[NSMutableArray class]]);
+      NSCParameterAssert([attachmentIDs isKindOfClass:[NSMutableArray class]]);
       [attachmentIDs addObject:results];
       
     } callbackTrampoline:^(IRAsyncOperationInvoker callback) {
