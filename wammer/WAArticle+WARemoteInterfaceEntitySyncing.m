@@ -683,6 +683,9 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
         NSCParameterAssert(savedFile.identifier);
         callback(savedFile.identifier);
         
+        WASyncManager *syncManager = [(WAAppDelegate_iOS *)AppDelegate() syncManager];
+        syncManager.syncedFilesCount += 1;
+
       }];
       
     } trampoline:^(IRAsyncOperationInvoker callback) {
@@ -702,8 +705,6 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
       
       NSParameterAssert([attachmentIDs isKindOfClass:[NSMutableArray class]]);
       [attachmentIDs addObject:results];
-      
-      [(WAAppDelegate_iOS *)AppDelegate() syncManager].syncedFilesCount += 1;
       
     } callbackTrampoline:^(IRAsyncOperationInvoker callback) {
       
@@ -851,31 +852,6 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
     
     NSCParameterAssert(results);
     
-    
-    void (^dismissSyncStatusBarIfNeeded)(BOOL forced) = ^(BOOL forced) {
-      
-      WASyncManager *syncManager = [(WAAppDelegate_iOS *)AppDelegate() syncManager];
-      
-      if (forced) {
-        
-        if (!syncManager.syncStopped) {
-	
-	[syncManager resetSyncFilesCount];
-	
-        }
-        
-      } else {
-        
-        if (syncManager.syncCompleted) {
-	
-	[syncManager resetSyncFilesCount];
-	
-        }
-        
-      }
-      
-    };
-    
     if ([results isKindOfClass:[NSDictionary class]]) {
       
       WADataStore *ds = [WADataStore defaultStore];
@@ -917,8 +893,6 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
         
         completionBlock(didSave, savingError);
         
-        dismissSyncStatusBarIfNeeded(NO);
-        
       } waitUntilDone:NO];
       
     } else {
@@ -939,8 +913,9 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
       }
       
       completionBlock(NO, error);
-      
-      dismissSyncStatusBarIfNeeded(YES);
+
+      WASyncManager *syncManager = [(WAAppDelegate_iOS *)AppDelegate() syncManager];
+      syncManager.isSyncFail = YES;
       
     }
     

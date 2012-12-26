@@ -39,7 +39,7 @@
     [files enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
       
       WAFile *file = obj;
-      NSAssert(file.assetURL, @"Imported file should have its asset URL");
+      NSCAssert(file.assetURL, @"Imported file should have its asset URL");
 
       NSURL *fileAssetURL = [NSURL URLWithString:file.assetURL];
       NSURL *ownURL = [[file objectID] URIRepresentation];
@@ -113,7 +113,7 @@
 
       } trampoline:^(IRAsyncOperationInvoker callback) {
         
-        NSParameterAssert(![NSThread isMainThread]);
+        NSCAssert(![NSThread isMainThread], @"should run in background");
         callback();
         
       } callback:^(id results) {
@@ -122,7 +122,7 @@
         
       } callbackTrampoline:^(IRAsyncOperationInvoker callback) {
         
-        NSParameterAssert(![NSThread isMainThread]);
+        NSCAssert(![NSThread isMainThread], @"should run in background");
         callback();
         
       }];
@@ -145,7 +145,7 @@
     
   } trampoline:^(IRAsyncOperationInvoker callback) {
     
-    NSParameterAssert(![NSThread isMainThread]);
+    NSCAssert(![NSThread isMainThread], @"should run in background");
     callback();
     
   } callback:^(id results) {
@@ -154,7 +154,7 @@
 
   } callbackTrampoline:^(IRAsyncOperationInvoker callback) {
     
-    NSParameterAssert(![NSThread isMainThread]);
+    NSCAssert(![NSThread isMainThread], @"should run in background");
     callback();
     
   }];

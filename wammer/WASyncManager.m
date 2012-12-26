@@ -33,7 +33,6 @@
 
 
 @implementation WASyncManager
-@dynamic syncCompleted, syncStopped;
 
 - (id) init {
   
@@ -56,14 +55,21 @@
     self.recurrenceMachine = [[IRRecurrenceMachine alloc] init];
     self.recurrenceMachine.queue.maxConcurrentOperationCount = 1;
     self.recurrenceMachine.recurrenceInterval = 5;
+    
+    __weak WASyncManager *wSelf = self;
+    [self.recurrenceMachine addRecurringOperation:[NSBlockOperation blockOperationWithBlock:^{
+      wSelf.isSyncFail = NO;
+      wSelf.needingImportFilesCount = 0;
+      wSelf.importedFilesCount = 0;
+      wSelf.needingSyncFilesCount = 0;
+      wSelf.syncedFilesCount = 0;
+    }]];
     [self.recurrenceMachine addRecurringOperation:[self photoImportOperation]];
     [self.recurrenceMachine addRecurringOperation:[self dirtyArticleSyncOperationPrototype]];
     [self.recurrenceMachine addRecurringOperation:[self fullQualityFileSyncOperationPrototype]];
     [self.recurrenceMachine addRecurringOperation:[self fileMetadataSyncOperation]];
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleUserDefaultsChanged:) name:NSUserDefaultsDidChangeNotification object:nil];
-
-    [self reload];
     
   }
   
@@ -73,12 +79,6 @@
 
 - (void) dealloc {
   
-  [self.recurrenceMachine.queue cancelAllOperations];
-  [self.photoImportOperationQueue cancelAllOperations];
-  [self.articleSyncOperationQueue cancelAllOperations];
-  [self.fileSyncOperationQueue cancelAllOperations];
-  [self.fileMetadataSyncOperationQueue cancelAllOperations];
-
   [[NSNotificationCenter defaultCenter] removeObserver:self];
  
 }
@@ -86,7 +86,7 @@
 - (void)reload {
   
   [[self recurrenceMachine] scheduleOperationsNow];
-  
+
 }
 
 - (void) beginPostponingSync {
@@ -103,52 +103,9 @@
   
 }
 
-- (void) performSyncNow {
-  
-  [[self recurrenceMachine] scheduleOperationsNow];
-  
-}
-
-- (BOOL)syncCompleted {
-  
-  return (self.needingSyncFilesCount == self.syncedFilesCount && self.needingSyncFilesCount != 0);
-  
-}
-
-- (BOOL)syncStopped {
-  
-  return (self.needingSyncFilesCount == self.syncedFilesCount && self.needingSyncFilesCount == 0);
-  
-}
-
-- (void)resetSyncFilesCount {
-  
-  self.syncedFilesCount = 0;
-  self.needingSyncFilesCount = 0;
-  
-}
-
-- (BOOL)importCompleted {
-  
-  return (self.needingImportFilesCount == self.importedFilesCount && self.needingImportFilesCount != 0);
-  
-}
-
-- (BOOL)importStopped {
-  
-  return (self.needingSyncFilesCount == self.syncedFilesCount && self.needingSyncFilesCount == 0);
-  
-}
-
-- (void)resetImportedFilesCount {
-  
-  self.needingImportFilesCount = 0;
-  self.importedFilesCount = 0;
-  
-}
-
 - (void)waitUntilFinished {
 
+  [self.recurrenceMachine.queue waitUntilAllOperationsAreFinished];
   [self.photoImportOperationQueue waitUntilAllOperationsAreFinished];
   [self.articleSyncOperationQueue waitUntilAllOperationsAreFinished];
   [self.fileSyncOperationQueue waitUntilAllOperationsAreFinished];
@@ -156,9 +113,66 @@
 
 }
 
+- (void)cancelAllOperations {
+
+  if ([NSThread isMainThread]) {
+    __weak WASyncManager *wSelf = self;
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+      [wSelf cancelAllOperations];
+    });
+    return;
+  }
+
+  // it possibly takes long time to wait until all operations finished
+  [self.recurrenceMachine.queue cancelAllOperations];
+  [self.photoImportOperationQueue cancelAllOperations];
+  [self.articleSyncOperationQueue cancelAllOperations];
+  [self.fileSyncOperationQueue cancelAllOperations];
+  [self.fileMetadataSyncOperationQueue cancelAllOperations];
+
+  [self waitUntilFinished];
+  
+  // reset postponing counter because the operations decreasing the postponing count
+  // might be canceled by the method
+  __weak WASyncManager *wSelf = self;  
+  dispatch_sync(dispatch_get_main_queue(), ^{
+    while ([wSelf.recurrenceMachine isPostponingOperations]) {
+      [wSelf.recurrenceMachine endPostponingOperations];
+    }
+  });
+
+}
+
++ (NSSet *)keyPathsForValuesAffectingIsSyncing {
+
+  return [NSSet setWithArray:@[
+	@"importedFilesCount",
+	@"syncedFilesCount",
+	@"photoImportOperationQueue.operationCount",
+	@"articleSyncOperationQueue.operationCount",
+	@"fileSyncOperationQueue.operationCount",
+	@"fileMetadataSyncOperationQueue.operationCount"
+	]];
+}
+
+- (BOOL)isSyncing {
+
+  if (![[NSUserDefaults standardUserDefaults] boolForKey:kWAPhotoImportEnabled]) {
+    return NO;
+  }
+  
+  return ([self.photoImportOperationQueue operationCount] ||
+	[self.articleSyncOperationQueue operationCount] ||
+	[self.fileSyncOperationQueue operationCount] ||
+	[self.fileMetadataSyncOperationQueue operationCount]);
+
+}
+
 #pragma mark - Target actions
 
 - (void)handleUserDefaultsChanged:(NSNotification *)notification {
+  
+  NSParameterAssert([NSThread isMainThread]);
   
   NSUserDefaults *defaults = [notification object];
   if (self.photoImportEnabled != [defaults boolForKey:kWAPhotoImportEnabled]) {
@@ -166,8 +180,7 @@
     if (self.photoImportEnabled) {
       [self reload];
     } else {
-      [self.photoImportOperationQueue cancelAllOperations];
-      [self.photoImportOperationQueue waitUntilAllOperationsAreFinished];
+      [self cancelAllOperations];
     }
   }
 

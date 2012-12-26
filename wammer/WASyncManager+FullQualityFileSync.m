@@ -48,7 +48,7 @@
         
       } trampoline:^(IRAsyncOperationInvoker callback) {
 
-        NSParameterAssert(![NSThread isMainThread]);
+        NSCAssert(![NSThread isMainThread], @"should run in background");
         callback();
 
       } callback:^(id results) {
@@ -57,7 +57,7 @@
 
       } callbackTrampoline:^(IRAsyncOperationInvoker callback) {
 
-        NSParameterAssert(![NSThread isMainThread]);
+        NSCAssert(![NSThread isMainThread], @"should run in background");
         callback();
 
       }];
@@ -80,7 +80,7 @@
     
   } trampoline:^(IRAsyncOperationInvoker block) {
     
-    NSParameterAssert(![NSThread isMainThread]);
+    NSCAssert(![NSThread isMainThread], @"should run in background");
     block();
     
   } callback:^(id results) {
@@ -89,7 +89,7 @@
     
   } callbackTrampoline:^(IRAsyncOperationInvoker block) {
     
-    NSParameterAssert(![NSThread isMainThread]);
+    NSCAssert(![NSThread isMainThread], @"should run in background");
     block();
     
   }];

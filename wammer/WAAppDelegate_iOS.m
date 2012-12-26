@@ -205,6 +205,8 @@ extern CFAbsoluteTime StartTime;
     if (lastAuthenticatedUserIdentifier)
       [self bootstrapPersistentStoreWithUserIdentifier:lastAuthenticatedUserIdentifier];
     
+    self.syncManager = [[WASyncManager alloc] init];
+    
     [self recreateViewHierarchy];
     
   }
@@ -319,6 +321,10 @@ extern CFAbsoluteTime StartTime;
 
 - (void) clearViewHierarchy {
   
+  if (self.syncManager && self.slidingMenu) {
+    [self.syncManager removeObserver:self.slidingMenu forKeyPath:@"isSyncing"];
+  }
+
   self.slidingMenu = nil;
   
   UIViewController *rootVC = self.window.rootViewController;
@@ -345,7 +351,10 @@ extern CFAbsoluteTime StartTime;
   
   self.slidingMenu = [[WASlidingMenuViewController alloc] init];
   self.slidingMenu.delegate = self;
-  
+
+  NSParameterAssert(self.syncManager);
+  [self.syncManager addObserver:self.slidingMenu forKeyPath:@"isSyncing" options:NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew context:nil];
+
   IIViewDeckController *viewDeckController = [[IIViewDeckController alloc] initWithCenterViewController:[WASlidingMenuViewController viewControllerForViewStyle:WAEventsViewStyle]
 								     leftViewController:self.slidingMenu];
   viewDeckController.view.backgroundColor = [UIColor blackColor];
@@ -411,6 +420,7 @@ extern CFAbsoluteTime StartTime;
        ri.monitoredHosts = nil;
        [ri performAutomaticRemoteUpdatesNow];
        
+       wSelf.syncManager = [[WASyncManager alloc] init];
        [wSelf.syncManager reload];
        
      }
@@ -822,20 +832,6 @@ static NSInteger networkActivityStackingCount = 0;
   };
   
   return _cacheManager;
-  
-}
-
--(WASyncManager *)syncManager {
-  
-  @synchronized(self) {
-    
-    if (!_syncManager) {
-      _syncManager = [[WASyncManager alloc] init];
-    }
-    
-  };
-  
-  return _syncManager;
   
 }
 

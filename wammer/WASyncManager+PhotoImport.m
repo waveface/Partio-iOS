@@ -123,11 +123,10 @@
       
     } onComplete:^{
       
-      NSAssert(wSelf.needingImportFilesCount == 0, @"file import count should be reset before starting photo import");
+      NSCAssert(wSelf.needingImportFilesCount == 0, @"file import count should be reset before starting photo import");
       wSelf.needingImportFilesCount = filesCount; // display status bar via KVO
 
       NSBlockOperation *tailOp = [NSBlockOperation blockOperationWithBlock:^{
-        [wSelf resetImportedFilesCount];
         [[wSelf recurrenceMachine] endPostponingOperations];
         callback(nil);
       }];
@@ -138,11 +137,10 @@
 
     } onFailure:^(NSError *error) {
       
-      NSAssert(wSelf.needingImportFilesCount == 0, @"file import count should be reset before starting photo import");
+      NSCAssert(wSelf.needingImportFilesCount == 0, @"file import count should be reset before starting photo import");
       wSelf.needingImportFilesCount = filesCount; // display status bar via KVO
 
       NSBlockOperation *tailOp = [NSBlockOperation blockOperationWithBlock:^{
-        [wSelf resetImportedFilesCount];
         [[wSelf recurrenceMachine] endPostponingOperations];
         callback(error);
       }];
@@ -157,7 +155,7 @@
 
   } trampoline:^(IRAsyncOperationInvoker callback) {
 
-    NSParameterAssert(![NSThread isMainThread]);
+    NSCAssert(![NSThread isMainThread], @"should run in background");
     callback();
 
   } callback:^(id results) {
@@ -166,7 +164,7 @@
 
   } callbackTrampoline:^(IRAsyncOperationInvoker callback) {
 
-    NSParameterAssert(![NSThread isMainThread]);
+    NSCAssert(![NSThread isMainThread], @"should run in background");
     callback();
 
   }];

@@ -35,7 +35,6 @@
 @property (nonatomic, strong) UITableViewCell *userCell;
 
 @property (nonatomic, strong) WAStatusBar *statusBar;
-@property (nonatomic, strong) WASyncManager *syncManager;
 
 @end
 
@@ -112,13 +111,6 @@
 {
   [super viewDidLoad];
   
-  self.syncManager = [(WAAppDelegate_iOS *)AppDelegate() syncManager];
-
-  [self.syncManager addObserver:self forKeyPath:@"needingImportFilesCount" options:NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew context:nil];
-  [self.syncManager addObserver:self forKeyPath:@"importedFilesCount" options:NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew context:nil];
-  [self.syncManager addObserver:self forKeyPath:@"needingSyncFilesCount" options:NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew context:nil];
-  [self.syncManager addObserver:self forKeyPath:@"syncedFilesCount" options:NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew context:nil];
-
   [self.tableView setBackgroundColor:[UIColor colorWithWhite:0.3f alpha:1.0f]];
   self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 }
@@ -127,12 +119,6 @@
 {
   [self.user removeObserver:self forKeyPath:@"avatar"];
   [self.user removeObserver:self forKeyPath:@"nickname"];
-  
-  [self.syncManager removeObserver:self forKeyPath:@"needingImportFilesCount"];
-  [self.syncManager removeObserver:self forKeyPath:@"importedFilesCount"];
-  [self.syncManager removeObserver:self forKeyPath:@"needingSyncFilesCount"];
-  [self.syncManager removeObserver:self forKeyPath:@"syncedFilesCount"];
-  
 }
 
 - (void)didReceiveMemoryWarning
@@ -238,99 +224,27 @@
   
   __weak WASlidingMenuViewController *wSelf = self;
 
-  if ([keyPath isEqualToString:@"needingImportFilesCount"]) {
-    NSUInteger currentCount = [change[NSKeyValueChangeNewKey] unsignedIntegerValue];
-    if (currentCount != 0) {
-      [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-        WASyncManager *syncManager = [(WAAppDelegate_iOS *)AppDelegate() syncManager];
-        if (!wSelf.statusBar) {
-	wSelf.statusBar = [[WAStatusBar alloc] initWithFrame:CGRectZero];
-        }
-        wSelf.statusBar.statusLabel.text = NSLocalizedString(@"PHOTO_UPLOAD_STATUS_BAR_IMPORTING", @"String on customized status bar");
-        wSelf.statusBar.progressView.progress = syncManager.importedFilesCount * 1.0 / syncManager.needingImportFilesCount;
-      }];
-    }
-  }
-
-  if ([keyPath isEqualToString:@"importedFilesCount"]) {
-    NSUInteger currentCount = [change[NSKeyValueChangeNewKey] unsignedIntegerValue];
+  if ([keyPath isEqualToString:@"isSyncing"]) {
+    BOOL isSyncing = [change[NSKeyValueChangeNewKey] boolValue];
     [[NSOperationQueue mainQueue] addOperationWithBlock:^{
       WASyncManager *syncManager = [(WAAppDelegate_iOS *)AppDelegate() syncManager];
-      if (syncManager.needingImportFilesCount != 0) {
-        if (currentCount == syncManager.needingImportFilesCount) {
-	wSelf.statusBar = nil;
-        } else {
-	if (!wSelf.statusBar) {
-	  wSelf.statusBar = [[WAStatusBar alloc] initWithFrame:CGRectZero];
-	}
-	wSelf.statusBar.statusLabel.text = NSLocalizedString(@"PHOTO_UPLOAD_STATUS_BAR_IMPORTING", @"String on customized status bar");
-	wSelf.statusBar.progressView.progress = currentCount * 1.0 / syncManager.needingImportFilesCount;
+      if (isSyncing) {
+        if (!wSelf.statusBar) {
+	wSelf.statusBar = [[WAStatusBar alloc] initWithFrame:CGRectZero];
         }
+        if (syncManager.isSyncFail) {
+	wSelf.statusBar.statusLabel.text = NSLocalizedString(@"PHOTO_UPLOAD_STATUS_BAR_FAIL", @"String on customized status bar");
+        } else if (syncManager.needingSyncFilesCount > 0) {
+	wSelf.statusBar.statusLabel.text = [NSString stringWithFormat:NSLocalizedString(@"PHOTO_UPLOAD_STATUS_BAR_UPLOADING", @"String on customized status bar"), syncManager.syncedFilesCount, syncManager.needingSyncFilesCount];
+	wSelf.statusBar.progressView.progress = syncManager.syncedFilesCount * 1.0 / syncManager.needingSyncFilesCount;
+        } else if (syncManager.needingImportFilesCount > 0) {
+	wSelf.statusBar.statusLabel.text = NSLocalizedString(@"PHOTO_UPLOAD_STATUS_BAR_IMPORTING", @"String on customized status bar");
+	wSelf.statusBar.progressView.progress = syncManager.importedFilesCount * 1.0 / syncManager.needingImportFilesCount;
+        }
+      } else {
+        wSelf.statusBar = nil;
       }
     }];
-  }
-  
-  if ([keyPath isEqualToString:@"needingSyncFilesCount"]) {
-    NSUInteger currentCount = [change[NSKeyValueChangeNewKey] unsignedIntegerValue];
-    if (currentCount != 0) {
-      [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-        WASyncManager *syncManager = [(WAAppDelegate_iOS *)AppDelegate() syncManager];
-        if (!wSelf.statusBar) {
-	wSelf.statusBar = [[WAStatusBar alloc] initWithFrame:CGRectZero];
-        }
-        wSelf.statusBar.statusLabel.text = [NSString stringWithFormat:NSLocalizedString(@"PHOTO_UPLOAD_STATUS_BAR_UPLOADING", @"String on customized status bar"), syncManager.syncedFilesCount, syncManager.needingSyncFilesCount];
-        wSelf.statusBar.progressView.progress = syncManager.syncedFilesCount * 1.0 / syncManager.needingSyncFilesCount;
-      }];
-    }
-  }
-  
-  if ([keyPath isEqualToString:@"syncedFilesCount"]) {
-    
-    NSUInteger oldCount = [change[NSKeyValueChangeOldKey] unsignedIntegerValue];
-    NSUInteger currentCount = [change[NSKeyValueChangeNewKey] unsignedIntegerValue];
-    WASyncManager *syncManager = [(WAAppDelegate_iOS *)AppDelegate() syncManager];
-    if (currentCount == 0) {
-      
-      if (syncManager.needingSyncFilesCount == oldCount) {
-        // sync complete
-        [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-	if (!wSelf.statusBar) {
-	  wSelf.statusBar = [[WAStatusBar alloc] initWithFrame:CGRectZero];
-	}
-	wSelf.statusBar.statusLabel.text = NSLocalizedString(@"PHOTO_UPLOAD_STATUS_BAR_COMPLETE", @"String on customized status bar");
-	int64_t delayInSeconds = 2.0;
-	dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
-	dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-	  wSelf.statusBar = nil;
-	});
-        }];
-      } else {
-        // sync fail
-        [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-	if (!wSelf.statusBar) {
-	  wSelf.statusBar = [[WAStatusBar alloc] initWithFrame:CGRectZero];
-	}
-	wSelf.statusBar.statusLabel.text = NSLocalizedString(@"PHOTO_UPLOAD_STATUS_BAR_FAIL", @"String on customized status bar");
-	int64_t delayInSeconds = 2.0;
-	dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
-	dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-	  wSelf.statusBar = nil;
-	});
-        }];
-      }
-      
-    } else {
-      
-      [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-        if (!wSelf.statusBar) {
-	wSelf.statusBar = [[WAStatusBar alloc] initWithFrame:CGRectZero];
-        }
-        wSelf.statusBar.statusLabel.text = [NSString stringWithFormat:NSLocalizedString(@"PHOTO_UPLOAD_STATUS_BAR_UPLOADING", @"String on customized status bar"), currentCount, syncManager.needingSyncFilesCount];
-        wSelf.statusBar.progressView.progress = currentCount * 1.0 / syncManager.needingSyncFilesCount;
-      }];
-      
-    }
-    
   }
   
 }

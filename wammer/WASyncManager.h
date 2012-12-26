@@ -15,11 +15,7 @@
 - (void) beginPostponingSync;
 - (void) endPostponingSync;
 
-- (void) performSyncNow;
 - (void) reload;
-
-- (void) resetSyncFilesCount;
-- (void) resetImportedFilesCount;
 
 - (void) waitUntilFinished;
 
@@ -29,12 +25,12 @@
 @property (nonatomic, readonly, strong) NSOperationQueue *fileMetadataSyncOperationQueue;
 @property (nonatomic, readonly, strong) NSOperationQueue *photoImportOperationQueue;
 
-@property (nonatomic, readwrite) NSUInteger needingSyncFilesCount;
-@property (nonatomic, readwrite) NSUInteger syncedFilesCount;
-@property (nonatomic, readwrite) NSUInteger needingImportFilesCount;
-@property (nonatomic, readwrite) NSUInteger importedFilesCount;
+@property (nonatomic) NSUInteger needingSyncFilesCount;
+@property (nonatomic) NSUInteger syncedFilesCount;
+@property (nonatomic) NSUInteger needingImportFilesCount;
+@property (nonatomic) NSUInteger importedFilesCount;
 
-@property (nonatomic, readonly) BOOL syncCompleted;
-@property (nonatomic, readonly) BOOL syncStopped;
+@property (nonatomic, readonly) BOOL isSyncing;
+@property (nonatomic) BOOL isSyncFail;
 
 @end
