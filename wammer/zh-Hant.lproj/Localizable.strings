@@ -401,9 +401,6 @@
 "PHOTO_UPLOAD_CONTROLLER_TITLE" = "照片自動上傳";
 
 /* String on customized status bar */
-"PHOTO_UPLOAD_STATUS_BAR_COMPLETE" = "上傳完成";
-
-/* String on customized status bar */
 "PHOTO_UPLOAD_STATUS_BAR_FAIL" = "上傳失敗";
 
 /* String on customized status bar */
@@ -417,9 +414,6 @@
 
 /* Subtitle of photo upload status */
 "PHOTO_UPLOAD_STATUS_NOT_UPLOADING" = "尚未開啓";
-
-/* Subtitle of photo upload status */
-"PHOTO_UPLOAD_STATUS_PREPROCESSING" = "處理中...";
 
 /* Subtitle of photo upload status */
 "PHOTO_UPLOAD_STATUS_UPLOADING" = "照片匯入中...";

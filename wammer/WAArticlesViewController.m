@@ -38,7 +38,6 @@
 #import <AssetsLibrary/AssetsLibrary.h>
 
 #import "WAFilterPickerViewController.h"
-#import "WAPhotoImportManager.h"
 
 @interface WAArticlesViewController () <NSFetchedResultsControllerDelegate, WAArticleDraftsViewControllerDelegate>
 

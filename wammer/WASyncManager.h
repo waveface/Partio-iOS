@@ -15,19 +15,22 @@
 - (void) beginPostponingSync;
 - (void) endPostponingSync;
 
-- (void) performSyncNow;
 - (void) reload;
 
-- (void) resetSyncFilesCount;
+- (void) waitUntilFinished;
 
 @property (nonatomic, readonly, strong) IRRecurrenceMachine *recurrenceMachine;
 @property (nonatomic, readonly, strong) NSOperationQueue *articleSyncOperationQueue;
 @property (nonatomic, readonly, strong) NSOperationQueue *fileSyncOperationQueue;
 @property (nonatomic, readonly, strong) NSOperationQueue *fileMetadataSyncOperationQueue;
+@property (nonatomic, readonly, strong) NSOperationQueue *photoImportOperationQueue;
 
-@property (nonatomic, readwrite) NSUInteger needingSyncFilesCount;
-@property (nonatomic, readwrite) NSUInteger syncedFilesCount;
-@property (nonatomic, readonly) BOOL syncCompleted;
-@property (nonatomic, readonly) BOOL syncStopped;
+@property (nonatomic) NSUInteger needingSyncFilesCount;
+@property (nonatomic) NSUInteger syncedFilesCount;
+@property (nonatomic) NSUInteger needingImportFilesCount;
+@property (nonatomic) NSUInteger importedFilesCount;
+
+@property (nonatomic, readonly) BOOL isSyncing;
+@property (nonatomic) BOOL isSyncFail;
 
 @end

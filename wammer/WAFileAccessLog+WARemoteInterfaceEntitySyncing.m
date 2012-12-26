@@ -33,6 +33,7 @@
     
 		mapping = @{
 			@"accessTime": @"accessTime",
+			@"accessSource": @"accessSource",
 			@"filePath": @"filePath",
 			@"day": @"day",
 			@"dayWebpages": @"dayWebpages"

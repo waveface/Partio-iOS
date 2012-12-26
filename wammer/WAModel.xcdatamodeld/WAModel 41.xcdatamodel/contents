@@ -180,6 +180,7 @@
         <userInfo/>
     </entity>
     <entity name="WAFileAccessLog" representedClassName="WAFileAccessLog" syncable="YES">
+        <attribute name="accessSource" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="accessTime" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="filePath" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="day" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="WADocumentDay" inverseName="accessLogs" inverseEntity="WADocumentDay" syncable="YES"/>
