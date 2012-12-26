@@ -18,6 +18,8 @@
 #import "WASyncManager+DirtyArticleSync.h"
 #import "WASyncManager+FileMetadataSync.h"
 #import "WADefines.h"
+#import "WAArticle+WARemoteInterfaceEntitySyncing.h"
+#import "WAFile+WARemoteInterfaceEntitySyncing.h"
 
 
 @interface WASyncManager ()
@@ -79,6 +81,13 @@
 
 - (void) dealloc {
   
+  // other queues will be automatically released (and operations are canceled),
+  // so we only need to cancel operations in the two share sync queues
+  dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+    [[WAArticle sharedSyncQueue] cancelAllOperations];
+    [[WAFile sharedSyncQueue] cancelAllOperations];
+  });
+  
   [[NSNotificationCenter defaultCenter] removeObserver:self];
  
 }
@@ -110,37 +119,21 @@
   [self.articleSyncOperationQueue waitUntilAllOperationsAreFinished];
   [self.fileSyncOperationQueue waitUntilAllOperationsAreFinished];
   [self.fileMetadataSyncOperationQueue waitUntilAllOperationsAreFinished];
+  [[WAArticle sharedSyncQueue] waitUntilAllOperationsAreFinished];
+  [[WAFile sharedSyncQueue] waitUntilAllOperationsAreFinished];
 
 }
 
 - (void)cancelAllOperations {
 
-  if ([NSThread isMainThread]) {
-    __weak WASyncManager *wSelf = self;
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-      [wSelf cancelAllOperations];
-    });
-    return;
-  }
-
-  // it possibly takes long time to wait until all operations finished
   [self.recurrenceMachine.queue cancelAllOperations];
   [self.photoImportOperationQueue cancelAllOperations];
   [self.articleSyncOperationQueue cancelAllOperations];
   [self.fileSyncOperationQueue cancelAllOperations];
   [self.fileMetadataSyncOperationQueue cancelAllOperations];
-
-  [self waitUntilFinished];
+  [[WAArticle sharedSyncQueue] cancelAllOperations];
+  [[WAFile sharedSyncQueue] cancelAllOperations];
   
-  // reset postponing counter because the operations decreasing the postponing count
-  // might be canceled by the method
-  __weak WASyncManager *wSelf = self;  
-  dispatch_sync(dispatch_get_main_queue(), ^{
-    while ([wSelf.recurrenceMachine isPostponingOperations]) {
-      [wSelf.recurrenceMachine endPostponingOperations];
-    }
-  });
-
 }
 
 + (NSSet *)keyPathsForValuesAffectingIsSyncing {
@@ -153,6 +146,15 @@
 	@"fileSyncOperationQueue.operationCount",
 	@"fileMetadataSyncOperationQueue.operationCount"
 	]];
+}
+
+- (void)setIsSyncFail:(BOOL)isSyncFail {
+
+  if (_isSyncFail != isSyncFail) {
+    _isSyncFail = isSyncFail;
+    [self cancelWithRecovery];
+  }
+
 }
 
 - (BOOL)isSyncing {
@@ -168,11 +170,29 @@
 
 }
 
+- (void)cancelWithRecovery {
+
+  __weak WASyncManager *wSelf = self;
+  dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+    
+    [wSelf cancelAllOperations];
+    [wSelf waitUntilFinished];
+    
+    // reset postponing counter because the operations decreasing the postponing count
+    // might be canceled by the method
+    dispatch_sync(dispatch_get_main_queue(), ^{
+      while ([wSelf.recurrenceMachine isPostponingOperations]) {
+        [wSelf.recurrenceMachine endPostponingOperations];
+      }
+    });
+    
+  });
+
+}
+
 #pragma mark - Target actions
 
 - (void)handleUserDefaultsChanged:(NSNotification *)notification {
-  
-  NSParameterAssert([NSThread isMainThread]);
   
   NSUserDefaults *defaults = [notification object];
   if (self.photoImportEnabled != [defaults boolForKey:kWAPhotoImportEnabled]) {
@@ -180,7 +200,7 @@
     if (self.photoImportEnabled) {
       [self reload];
     } else {
-      [self cancelAllOperations];
+      [self cancelWithRecovery];
     }
   }
 

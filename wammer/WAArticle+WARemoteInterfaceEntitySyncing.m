@@ -619,8 +619,6 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
     
   } callback:^(id results) {
     
-    NSCParameterAssert(results);
-    
     if ([results isKindOfClass:[NSError class]]) {
       
       if ([[(NSError*)results domain] isEqualToString:kWAArticleEntitySyncingErrorDomain] &&
@@ -739,8 +737,6 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
       
     } callback:^(id results) {
       
-      NSCParameterAssert(results);
-      
       if (![results isKindOfClass:[NSDictionary class]])
         return;
       
@@ -849,8 +845,6 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
     callback();
     
   } callback:^(id results) {
-    
-    NSCParameterAssert(results);
     
     if ([results isKindOfClass:[NSDictionary class]]) {
       
