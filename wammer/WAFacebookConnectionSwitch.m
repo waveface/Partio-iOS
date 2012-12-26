@@ -17,7 +17,6 @@ NSString * const kWAFacebookUserDataImport = @"WAFacebookImportTimeLine";
 @interface WAFacebookConnectionSwitch ()
 
 - (void) commonInit;
-- (void) reloadStatus;
 
 @end
 
@@ -52,57 +51,9 @@ NSString * const kWAFacebookUserDataImport = @"WAFacebookImportTimeLine";
 - (void) commonInit {
 
 	[self addTarget:self action:@selector(handleValueChanged:) forControlEvents:UIControlEventValueChanged];
-	
-	self.enabled = NO;
-	
-	[self reloadStatus];
-	
+		
 }
 
-- (void) reloadStatus {
-
-	self.enabled = NO;
-	self.on = [[NSUserDefaults standardUserDefaults] boolForKey:kWAFacebookUserDataImport];
-
-	__weak WAFacebookConnectionSwitch *wSelf = self;
-	
-	WARemoteInterface * const ri = [WARemoteInterface sharedInterface];
-	[ri retrieveConnectedSocialNetworksOnSuccess:^(NSArray *snsReps) {
-	
-		if (!wSelf)
-			return;
-	
-		NSArray *facebookReps = [snsReps filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^ (id evaluatedObject, NSDictionary *bindings) {
-			
-			return [[evaluatedObject valueForKeyPath:@"type"] isEqual:@"facebook"];
-			
-		}]];
-		
-		NSCParameterAssert([facebookReps count] <= 1);
-		NSDictionary *fbRep = [facebookReps lastObject];
-		//	NSString *fbStatus = [fbRep valueForKeyPath:@"status"];
-		NSNumber *fbImportingEnabled = [fbRep valueForKeyPath:@"enabled"];
-		
-		BOOL importing = [fbImportingEnabled isEqual:(id)kCFBooleanTrue];
-		
-		dispatch_async(dispatch_get_main_queue(), ^{
-			
-			if (wSelf) {
-				
-				wSelf.enabled = YES;
-				wSelf.on = importing;
-				[wSelf setOn:importing animated:NO];
-
-			}
-			
-		});
-		
-	} onFailure:^(NSError *error) {
-	
-		NSLog(@"error %@", error);
-		
-	}];
-}
 
 - (void) handleValueChanged:(id)sender {
 
