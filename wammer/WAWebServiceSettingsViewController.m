@@ -10,6 +10,7 @@
 #import "WAFacebookConnectionSwitch.h"
 #import "WAOAuthViewController.h"
 #import "WASnsConnectSwitch.h"
+#import "WARemoteInterface.h"
 
 static NSString * const kWASegueSettingsToOAuth = @"WASegueSettingsToOAuth";
 
@@ -17,6 +18,7 @@ static NSString * const kWASegueSettingsToOAuth = @"WASegueSettingsToOAuth";
 
 @property (nonatomic, strong) NSURLRequest *sentRequest;
 @property (nonatomic, strong) WAOAuthDidComplete didCompleteBlock;
+@property (nonatomic, strong) WAFacebookConnectionSwitch *facebookConnectSwitch;
 @property (nonatomic, strong) WASnsConnectSwitch *googleConnectSwitch;
 @property (nonatomic, strong) WASnsConnectSwitch *twitterConnectSwitch;
 @property (nonatomic, strong) WASnsConnectSwitch *foursquareConnectSwitch;
@@ -31,7 +33,8 @@ static NSString * const kWASegueSettingsToOAuth = @"WASegueSettingsToOAuth";
 
 	self.title = NSLocalizedString(@"WEB_SERVICES_TITLE", @"Title of web service settings view controller");
 
-	self.facebookConnectCell.accessoryView = [[WAFacebookConnectionSwitch alloc] init];
+	self.facebookConnectSwitch = [[WAFacebookConnectionSwitch alloc] init];
+	self.facebookConnectCell.accessoryView = self.facebookConnectSwitch;
 
 	UISwitch *flickrSwitch = [[UISwitch alloc] init];
 	flickrSwitch.enabled = NO;
@@ -51,7 +54,75 @@ static NSString * const kWASegueSettingsToOAuth = @"WASegueSettingsToOAuth";
 	self.foursquareConnectSwitch = [[WASnsConnectSwitch alloc] initForStyle:WASnsConnectFoursquareStyle];
 	self.foursquareConnectSwitch.delegate = self;
 	self.foursquareConnectCell.accessoryView = self.foursquareConnectSwitch;
+	
+	[self reloadStatus];
+	
 }
+
+- (void) reloadStatus {
+	
+	self.facebookConnectSwitch.enabled = NO;
+	self.googleConnectSwitch.enabled = NO;
+	self.twitterConnectSwitch.enabled = NO;
+	self.foursquareConnectSwitch.enabled = NO;
+	
+	__weak WAWebServiceSettingsViewController *wSelf = self;
+	
+	BOOL (^snsEnabled)(NSArray*, NSString *) = ^(NSArray *reps, NSString *snsType) {
+		NSArray *snsReps = [reps filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^ (id evaluatedObject, NSDictionary *bindings) {
+			
+			return [[evaluatedObject valueForKeyPath:@"type"] isEqual:snsType];
+			
+		}]];
+		
+		NSDictionary *snsRep = [snsReps lastObject];
+		NSNumber *enabled = [snsRep valueForKeyPath:@"enabled"];
+		
+		if ([enabled isEqual:(id)kCFBooleanTrue])
+			return YES;
+		else
+			return NO;
+	};
+	
+	WARemoteInterface * const ri = [WARemoteInterface sharedInterface];
+	[ri retrieveConnectedSocialNetworksOnSuccess:^(NSArray *snsReps) {
+		
+		if (!wSelf)
+			return;
+		
+		BOOL fbImported = snsEnabled(snsReps, @"facebook");
+		BOOL twitterImported = snsEnabled(snsReps, @"twitter");
+		BOOL foursquareImported = snsEnabled(snsReps, @"foursquare");
+		BOOL googleImported = snsEnabled(snsReps, @"google");
+		
+		dispatch_async(dispatch_get_main_queue(), ^{
+			
+			if (wSelf) {
+				
+				[wSelf.facebookConnectSwitch setOn:fbImported animated:YES];
+				wSelf.facebookConnectSwitch.enabled = YES;
+				
+				[wSelf.twitterConnectSwitch setOn:twitterImported animated:YES];
+				wSelf.twitterConnectSwitch.enabled = YES;
+								
+				[wSelf.googleConnectSwitch setOn:googleImported animated:YES];
+				wSelf.googleConnectSwitch.enabled = YES;
+
+				[wSelf.foursquareConnectSwitch setOn:foursquareImported animated:YES];
+				wSelf.foursquareConnectSwitch.enabled = YES;
+				
+			}
+			
+		});
+		
+	} onFailure:^(NSError *error) {
+		
+		NSLog(@"error %@", error);
+		
+	}];
+}
+
+
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
 

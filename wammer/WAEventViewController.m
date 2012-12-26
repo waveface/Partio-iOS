@@ -45,9 +45,7 @@
 
 @end
 
-@implementation WAEventViewController {
-	UITapGestureRecognizer *tapGR;
-}
+@implementation WAEventViewController
 
 + (WAEventViewController *) controllerForArticle:(WAArticle *)article {
 	
@@ -105,7 +103,7 @@
 	self.navigationItem.leftBarButtonItem = WABackBarButtonItem([UIImage imageNamed:@"back"], @"", ^{
 		
 		if (isPad() && wSelf.parentViewController.modalPresentationStyle == UIModalPresentationFormSheet) {
-			[wSelf.view.window removeGestureRecognizer:tapGR];
+
 			[wSelf.navigationController dismissViewControllerAnimated:YES completion:nil];
 			
 		} else {
@@ -149,14 +147,6 @@
 		[_headerView.mapView setHidden:NO];
 		
 	}
-	
-	if (isPad()) {
-		tapGR = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapOutsideHandler:)];
-		tapGR.numberOfTapsRequired = 1;
-		tapGR.cancelsTouchesInView = NO;
-		[self.view.window addGestureRecognizer:tapGR];
-	}
-
 	
 	if (self.completion)
 		self.completion();
