@@ -10,8 +10,10 @@
 #import "IRRecurrenceMachine.h"
 #import "WAAssetsLibraryManager.h"
 #import "WAFileExif+WAAdditions.h"
+#import "WAPhotoDay.h"
 #import "WADefines.h"
 #import "GAI.h"
+#import "NSDate+WAAdditions.h"
 
 @implementation WASyncManager (PhotoImport)
 
@@ -79,7 +81,11 @@
 	  [exif initWithExif:metadata[@"{Exif}"] tiff:metadata[@"{TIFF}"] gps:metadata[@"{GPS}"]];
 	  
 	  file.exif = exif;
-	  
+
+	  WAPhotoDay *day = (WAPhotoDay *)[WAPhotoDay objectInsertingIntoContext:context withRemoteDictionary:@{}];
+	  day.day = [file.created dayBegin];
+	  file.photoDay = day;
+
 	  if (!article.creationDate) {
 	    article.creationDate = file.timestamp;
 	  } else {
