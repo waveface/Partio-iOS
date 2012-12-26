@@ -46,7 +46,7 @@
       return;
     }
 
-    NSAssert(wSelf.needingSyncFilesCount == 0, @"file sync count should be reset before starting article sync");
+    NSCAssert(wSelf.needingSyncFilesCount == 0, @"file sync count should be reset before starting article sync");
     wSelf.needingSyncFilesCount = filesCount; // display status bar via KVO
 
     [[wSelf recurrenceMachine] beginPostponingOperations];
@@ -66,7 +66,7 @@
 
         } trampoline:^(IRAsyncOperationInvoker callback) {
 
-	NSParameterAssert(![NSThread isMainThread]);
+	NSCAssert(![NSThread isMainThread], @"should run in background");
 	callback();
 
         } callback:^(id results) {
@@ -75,7 +75,7 @@
 
         } callbackTrampoline:^(IRAsyncOperationInvoker callback) {
 
-	NSParameterAssert(![NSThread isMainThread]);
+	NSCAssert(![NSThread isMainThread], @"should run in background");
 	callback();
 
         }];
@@ -100,7 +100,7 @@
     
   } trampoline:^(IRAsyncOperationInvoker block) {
     
-    NSParameterAssert(![NSThread isMainThread]);
+    NSCAssert(![NSThread isMainThread], @"should run in background");
     block();
     
   } callback:^(id results) {
@@ -109,7 +109,7 @@
     
   } callbackTrampoline:^(IRAsyncOperationInvoker block) {
     
-    NSParameterAssert(![NSThread isMainThread]);
+    NSCAssert(![NSThread isMainThread], @"should run in background");
     block();
     
   }];
@@ -119,11 +119,6 @@
 - (BOOL)canPerformArticleSync {
 
   if (![[NSUserDefaults standardUserDefaults] boolForKey:kWAPhotoImportEnabled]) {
-    return NO;
-  }
-  
-  WAPhotoImportManager *photoImportManager = [(WAAppDelegate_iOS *)AppDelegate() photoImportManager];
-  if (photoImportManager.preprocessing || photoImportManager.operationQueue.operationCount > 0) {
     return NO;
   }
   

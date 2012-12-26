@@ -140,7 +140,9 @@ NSString * const kWADataStoreArticleUpdateShowsBezels = @"WADataStoreArticleUpda
   NSManagedObjectContext *context = [self disposableMOC];
   WAArticle *article = (WAArticle *)[context irManagedObjectForURI:anArticleURI];
   
-  [[self articlesCurrentlyBeingUpdated] addObject:anArticleURI];
+  dispatch_sync(dispatch_get_main_queue(), ^{
+    [[self articlesCurrentlyBeingUpdated] addObject:anArticleURI];
+  });
   
   __weak WADataStore *wSelf = self;
   
@@ -158,7 +160,9 @@ NSString * const kWADataStoreArticleUpdateShowsBezels = @"WADataStoreArticleUpda
       
     }
     
-    [[wSelf articlesCurrentlyBeingUpdated] removeObject:anArticleURI];
+    dispatch_sync(dispatch_get_main_queue(), ^{
+      [[wSelf articlesCurrentlyBeingUpdated] removeObject:anArticleURI];
+    });
     
   };
   
@@ -178,8 +182,13 @@ NSString * const kWADataStoreArticleUpdateShowsBezels = @"WADataStoreArticleUpda
 
 - (BOOL) isUpdatingArticle:(NSURL *)anObjectURI {
   
-  return [[self articlesCurrentlyBeingUpdated] containsObject:anObjectURI];
-  
+  __block BOOL returnedValue = NO;
+  dispatch_sync(dispatch_get_main_queue(), ^{
+    returnedValue = [[self articlesCurrentlyBeingUpdated] containsObject:anObjectURI];
+  });
+
+  return returnedValue;
+
 }
 
 - (void) addComment:(NSString *)commentText onArticle:(NSURL *)anArticleURI onSuccess:(void(^)(void))successBlock onFailure:(void(^)(void))failureBlock {
