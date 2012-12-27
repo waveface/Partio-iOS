@@ -40,8 +40,6 @@
 @property (nonatomic, strong) NSFetchedResultsController *fetchedResultsController;
 
 @property (nonatomic, readwrite, retain) UILongPressGestureRecognizer *longPressGR;
-@property (nonatomic, strong) UIPopoverController *popover;
-@property (nonatomic, strong) UIButton *calendarButton;
 
 @end
 
@@ -256,8 +254,6 @@ CGFloat (^rowSpacing) (UICollectionView *) = ^ (UICollectionView *collectionView
 	headerView.wdayLabel.text = [[self.currentDisplayedDate localizedWeekDayFullString] uppercaseString];
 	headerView.backgroundColor = [UIColor colorWithRed:0.95f green:0.95f blue:0.95f alpha:1];
 
-	[headerView.centerButton addTarget:self action:@selector(handleDateSelect:) forControlEvents:UIControlEventTouchUpInside];
-	self.calendarButton = headerView.centerButton;
 	[headerView setNeedsLayout];
 	return headerView;
 
@@ -289,41 +285,6 @@ CGFloat (^rowSpacing) (UICollectionView *) = ^ (UICollectionView *collectionView
 	} else {
 		return UIEdgeInsetsMake(0, 0, 5, 0);
 	}
-}
-
-#pragma mark - Calendar
-
-- (void) handleDateSelect:(UIBarButtonItem *)sender {
-	
-	CGRect calFrame = isPad()? CGRectMake(0.f, 0.f, 320.f, 568.f) : CGRectMake(0.f, 0.f, 320.f, [UIScreen mainScreen].bounds.size.height);
-	
-	if (isPad()) {
-		
-		if ([self.popover isPopoverVisible]) {
-				[self.popover dismissPopoverAnimated:YES];
-		
-		} else {
-			WACalendarPickerViewController *dpVC = [[WACalendarPickerViewController alloc] initWithFrame:calFrame style:WACalendarPickerStyleInPopover selectedDate:self.currentDisplayedDate];
-			dpVC.delegate = self;
-
-			self.popover = [[UIPopoverController alloc] initWithContentViewController:dpVC];
-			[self.popover setDelegate:self];
-			[self.popover setPopoverContentSize:CGSizeMake(320.f, 568.f)];
-			[self.popover presentPopoverFromRect:self.calendarButton.frame inView:self.view permittedArrowDirections:UIPopoverArrowDirectionUp animated:YES];
-		}
-		
-	} else {
-		WACalendarPickerViewController *dpVC = [[WACalendarPickerViewController alloc] initWithFrame:calFrame style:WACalendarPickerStyleTodayCancel selectedDate:self.currentDisplayedDate];
-		dpVC.delegate = self;
-		
-		[self presentViewController:dpVC animated:YES completion:nil];
-	
-	}
-}
-
-- (void)dismissPopoverAnimated:(BOOL)animated {
-	[self.popover dismissPopoverAnimated:animated];
-	
 }
 
 #pragma mark - UICollectionView delegate

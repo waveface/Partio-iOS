@@ -30,4 +30,13 @@ NSString * const kWACalendarPickerPanelViewCell = @"WACalendarPickerPanelViewCel
     // Configure the view for the selected state
 }
 
+- (void)setHighlighted:(BOOL)highlighted
+{
+	if (highlighted) {
+		[self setBackgroundColor:[UIColor lightGrayColor]];
+	}
+	
+	[super setHighlighted:highlighted];
+}
+
 @end

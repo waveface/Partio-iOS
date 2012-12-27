@@ -267,7 +267,7 @@
 
 }
 
-#pragma mark - icon bar actions
+#pragma mark - icon buttons
 
 - (IBAction)handleEvents:(UIButton *)sender
 {
