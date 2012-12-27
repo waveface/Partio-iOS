@@ -199,7 +199,7 @@ UIImage * WABarButtonImageWithOptions (NSString *aName, UIColor *fillColor, IRSh
 
 };
 
-UIView * WATitleViewForDripdownMenu (NSString *titleString, id target, SEL action) {
+UIView * WATitleViewForContextMenu (NSString *titleString, id target, SEL action) {
 	
 	UIButton *logoButton = [UIButton buttonWithType:UIButtonTypeCustom];
 	logoButton.frame = (CGRect) {CGPointZero, (CGSize){150, 44}};

@@ -12,7 +12,7 @@
 #import "NSDate+WAAdditions.h"
 
 #import "IRBarButtonItem.h"
-#import "WADripdownMenuViewController.h"
+#import "WAContextMenuViewController.h"
 #import "WANavigationController.h"
 #import "WASlidingMenuViewController.h"
 
@@ -24,10 +24,10 @@
 static const NSUInteger kWAAppendingBatchSize = 30;
 static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPostsViewControllerPhone_RepresentedObjectURI";
 
-@interface WADayViewController () <NSFetchedResultsControllerDelegate, WADripdownMenuDelegate> {
+@interface WADayViewController () <NSFetchedResultsControllerDelegate, WAContextMenuDelegate> {
 	Class containedClass;
 	WADayViewSupportedStyle presentingStyle;
-	BOOL dripdownMenuOpened;
+	BOOL contextMenuOpened;
 }
 
 @property (nonatomic, readonly) NSUInteger currentTotalPageSize;
@@ -119,10 +119,10 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 		barTitle = NSLocalizedString(@"WEBPAGES_CONTROLLER_TITLE", @"Title for web pages view controller");
 	}
 
-	self.navigationItem.titleView = WATitleViewForDripdownMenu(barTitle, self, @selector(dripdownMenuTapped));
+	self.navigationItem.titleView = WATitleViewForContextMenu(barTitle, self, @selector(contextMenuTapped));
 	[self.view addSubview: self.paginatedView];
 
-	dripdownMenuOpened = NO;
+	contextMenuOpened = NO;
 }
 
 - (void) viewWillAppear:(BOOL)animated {
@@ -275,43 +275,43 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 }
 
 
-#pragma mark - Dripdown menu
-- (void) dripdownMenuTapped {
+#pragma mark - Context menu
+- (void) contextMenuTapped {
 	
 	__weak WADayViewController *wSelf = self;
 	
-	if (dripdownMenuOpened) {
+	if (contextMenuOpened) {
 		[self.childViewControllers enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-			if ([obj isKindOfClass:[WADripdownMenuViewController class]]) {
+			if ([obj isKindOfClass:[WAContextMenuViewController class]]) {
 				
 				*stop = YES;
-				WADripdownMenuViewController *ddMenu = (WADripdownMenuViewController*)obj;
-				[ddMenu dismissDDMenu];
+				WAContextMenuViewController *ddMenu = (WAContextMenuViewController*)obj;
+				[ddMenu dismissContextMenu];
 				
 			}
 		}];
 		return;
 	}
 	
-	__block WADripdownMenuViewController *ddMenu = [[WADripdownMenuViewController alloc] initForViewStyle:presentingStyle completion:^{
+	__block WAContextMenuViewController *ddMenu = [[WAContextMenuViewController alloc] initForViewStyle:presentingStyle completion:^{
 
 		[wSelf.navigationItem.leftBarButtonItem setEnabled:YES];
 		[wSelf.navigationItem.rightBarButtonItem setEnabled:YES];
 		
-		dripdownMenuOpened = NO;
+		contextMenuOpened = NO;
 		
 	}];
 	
 	ddMenu.delegate = self;
 	
-	[ddMenu presentDDMenuInViewController:self];
+	[ddMenu presentContextMenuInViewController:self];
 	[self.navigationItem.leftBarButtonItem setEnabled:NO];
 	[self.navigationItem.rightBarButtonItem setEnabled:NO];
-	dripdownMenuOpened = YES;
+	contextMenuOpened = YES;
 	
 }
 
-- (void) dripdownMenuItemDidSelect:(WADayViewSupportedStyle)itemStyle {
+- (void) contextMenuItemDidSelect:(WADayViewSupportedStyle)itemStyle {
 	
 	WASlidingMenuViewController *slidingMenu = (WASlidingMenuViewController*) self.viewDeckController.leftController;
 	NSDate *theDate = [self dayAtPageIndex:self.paginatedView.currentPage];

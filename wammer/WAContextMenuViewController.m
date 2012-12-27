@@ -6,11 +6,11 @@
 //  Copyright (c) 2012 Waveface. All rights reserved.
 //
 
-#import "WADripdownMenuViewController.h"
+#import "WAContextMenuViewController.h"
 
-@interface WADripdownMenuViewController () <UITableViewDataSource, UITableViewDelegate>
+@interface WAContextMenuViewController () <UITableViewDataSource, UITableViewDelegate>
 
-@property (nonatomic, readwrite, strong) WADripdownMenuCompletionBlock completionBlock;
+@property (nonatomic, readwrite, strong) WAContextMenuCompletionBlock completionBlock;
 @property (nonatomic, readwrite, strong) UITableView *tableView;
 
 @property (nonatomic, readwrite, strong) UIView *translucentOverlay;
@@ -23,14 +23,14 @@
 
 @end
 
-static NSString *kWADDViewCellIdentifier = @"DripdownMenuItem";
+static NSString *kWAContextViewCellIdentifier = @"ContextMenuItem";
 
-@implementation WADripdownMenuViewController {
+@implementation WAContextMenuViewController {
 	WADayViewSupportedStyle currentViewStyle;
 }
 
 
-- (id) initForViewStyle:(WADayViewSupportedStyle)style completion:(WADripdownMenuCompletionBlock)completion {
+- (id) initForViewStyle:(WADayViewSupportedStyle)style completion:(WAContextMenuCompletionBlock)completion {
 	
 	self = [super initWithNibName:nil bundle:nil];
 
@@ -69,7 +69,7 @@ static NSString *kWADDViewCellIdentifier = @"DripdownMenuItem";
 		self.tableView.delegate = self;
 		self.tableView.dataSource = self;
 		self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-		[self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:kWADDViewCellIdentifier];
+		[self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:kWAContextViewCellIdentifier];
 
 		[self.tapper addSubview:self.tableView];
 		
@@ -79,7 +79,7 @@ static NSString *kWADDViewCellIdentifier = @"DripdownMenuItem";
 		self.tableView.delegate = self;
 		self.tableView.dataSource = self;
 		self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-		[self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:kWADDViewCellIdentifier];
+		[self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:kWAContextViewCellIdentifier];
 		self.view.frame = self.tableView.frame;
 
 		[self.view addSubview:self.tableView];
@@ -132,7 +132,7 @@ static NSString *kWADDViewCellIdentifier = @"DripdownMenuItem";
 	}
 }
 
-- (void) presentDDMenuInViewController:(UIViewController*)viewController {
+- (void) presentContextMenuInViewController:(UIViewController*)viewController {
 
 	if (isPhone()) {
 		
@@ -143,7 +143,7 @@ static NSString *kWADDViewCellIdentifier = @"DripdownMenuItem";
 		CGRect menuToRect = self.tableView.frame;
 		CGRect menuFromRect = CGRectOffset(menuToRect, 0, -1 * CGRectGetHeight(menuToRect));
 		
-		__weak WADripdownMenuViewController *wSelf = self;
+		__weak WAContextMenuViewController *wSelf = self;
 		self.tableView.frame = menuFromRect;
 		self.translucentOverlay.alpha = 0;
 		
@@ -179,13 +179,13 @@ static NSString *kWADDViewCellIdentifier = @"DripdownMenuItem";
 
 }
 
-- (void) dismissDDMenu {
+- (void) dismissContextMenu {
 	
 	if (isPhone()) {
 		CGRect tableViewFromRect = self.tableView.frame;
 		CGRect tableViewToRect = CGRectOffset(tableViewFromRect, 0, -1 * CGRectGetHeight(tableViewFromRect));
 		
-		__weak WADripdownMenuViewController *wSelf = self;
+		__weak WAContextMenuViewController *wSelf = self;
 		self.translucentOverlay.alpha = 1;
 		self.tableView.frame = tableViewFromRect;
 		
@@ -244,7 +244,7 @@ static NSString *kWADDViewCellIdentifier = @"DripdownMenuItem";
 
 - (void) tapperTapped:(id)sender {
 	
-	[self dismissDDMenu];
+	[self dismissContextMenu];
 	
 }
 
@@ -269,7 +269,7 @@ static NSString *kWADDViewCellIdentifier = @"DripdownMenuItem";
 
 - (UITableViewCell*) tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
 
-	UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kWADDViewCellIdentifier forIndexPath:indexPath];
+	UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kWAContextViewCellIdentifier forIndexPath:indexPath];
 		
 	NSDictionary *item = self.menuItems[indexPath.row];
 	cell.textLabel.font = [UIFont fontWithName:@"HelveticaNeue" size:14.0];
@@ -291,9 +291,8 @@ static NSString *kWADDViewCellIdentifier = @"DripdownMenuItem";
 
 	NSDictionary *item = self.menuItems[indexPath.row];
 	if (self.delegate)
-		if ([self.delegate respondsToSelector:@selector(dripdownMenuItemDidSelect:)])
-			[self.delegate dripdownMenuItemDidSelect:[item[@"style"] unsignedIntegerValue]];
-			//[self.delegate performSelector:@selector(dripdownMenuItemDidSelect:) withObject:item[@"style"]];
+		if ([self.delegate respondsToSelector:@selector(contextMenuItemDidSelect:)])
+			[self.delegate contextMenuItemDidSelect:[item[@"style"] unsignedIntegerValue]];
 
 	if (isPad()) {
 		if ([self.popover isPopoverVisible])
