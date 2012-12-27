@@ -86,6 +86,11 @@ static NSString *kWADDViewCellIdentifier = @"DripdownMenuItem";
 		
 	}
 	
+	self.tableView.bounces = NO;
+	self.tableView.allowsMultipleSelection = NO;
+	self.tableView.alwaysBounceHorizontal = NO;
+	self.tableView.alwaysBounceVertical = NO;
+	
 }
 
 - (void)prepareMenuItems {
