@@ -8,22 +8,16 @@
 
 #import <UIKit/UIKit.h>
 #import "IIViewDeckController.h"
+#import "WADayViewController.h"
 #import "WAStatusBar.h"
 
-typedef NS_ENUM(NSUInteger, WADayViewSupportedStyle) {
-	WAEventsViewStyle,
-	WAPhotosViewStyle,
-	WAWebpagesViewStyle,
-	WADocumentsViewStyle,
-	WACollectionsViewStyle,
-};
 
 @interface WASlidingMenuViewController : UITableViewController <IIViewDeckControllerDelegate>
 
 @property (nonatomic, weak) id delegate;
 @property (nonatomic, readonly, strong) WAStatusBar *statusBar;
 
-+ (UIViewController *)viewControllerForViewStyle:(WADayViewSupportedStyle)viewStyle ;
++ (UIViewController *)dayViewControllerForViewStyle:(WADayViewSupportedStyle)viewStyle ;
 
 - (void) switchToViewStyle:(WADayViewSupportedStyle)viewStyle;
 - (void) switchToViewStyle:(WADayViewSupportedStyle)viewStyle onDate:(NSDate*)date;

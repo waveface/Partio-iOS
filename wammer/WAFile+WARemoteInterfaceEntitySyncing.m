@@ -401,7 +401,7 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
   
   void (^uploadAttachment)(NSURL *, NSMutableDictionary *, IRAsyncOperationCallback) = ^ (NSURL *fileURL, NSMutableDictionary *options, IRAsyncOperationCallback callback) {
     
-    NSParameterAssert(fileURL);
+    NSCParameterAssert(fileURL);
     
     if (![[NSUserDefaults standardUserDefaults] boolForKey:kWAPhotoImportEnabled]) {
       callback(WAFileEntitySyncingError(0, @"Photo import is disabled, stop sync files", nil));
@@ -501,7 +501,7 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
         options[kWARemoteAttachmentUpdatedObjectIdentifier] = file.identifier;
       }
       
-      NSAssert1(file.articles.count>0, @"WAFile entity %@ must have already been associated with an article", file);
+      NSCAssert1(file.articles.count>0, @"WAFile entity %@ must have already been associated with an article", file);
       WAArticle *article = [file.articles allObjects][0];  // if the post is from device itself, there should be only one article in db, this should be right, but careful
       if (article.identifier) {
         options[kWARemoteArticleIdentifier] = article.identifier;

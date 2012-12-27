@@ -199,16 +199,26 @@ UIImage * WABarButtonImageWithOptions (NSString *aName, UIColor *fillColor, IRSh
 
 };
 
-UIView * WATitleViewForDripdownMenu (id target, SEL action) {
-
-	UIImage *logo = [UIImage imageNamed:@"LogoDD"];
+UIView * WATitleViewForContextMenu (NSString *titleString, id target, SEL action) {
+	
 	UIButton *logoButton = [UIButton buttonWithType:UIButtonTypeCustom];
-	logoButton.frame = (CGRect) {CGPointZero, logo.size};
-	[logoButton setBackgroundImage:logo forState:UIControlStateNormal];
+	logoButton.frame = (CGRect) {CGPointZero, (CGSize){150, 44}};
+	[logoButton setBackgroundColor:[UIColor clearColor]];
+	
+	[logoButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+	[logoButton setTitle:titleString forState:UIControlStateNormal];
+
+	UIImage *arrow = [UIImage imageNamed:@"WATinyArrowDown"];
+	[logoButton setImage:[UIImage imageNamed:@"WATinyArrowDown"] forState:UIControlStateNormal];
+	CGSize labelSize = [titleString sizeWithFont:logoButton.titleLabel.font];
+	logoButton.imageEdgeInsets = UIEdgeInsetsMake(0, labelSize.width + arrow.size.width, 0, -labelSize.width);
+	logoButton.contentEdgeInsets = UIEdgeInsetsMake(5, 10, 5, 20);
+	
 	[logoButton setShowsTouchWhenHighlighted:YES];
 	[logoButton addTarget:target action:action forControlEvents:UIControlEventTouchUpInside];
 	logoButton.contentMode = UIViewContentModeScaleAspectFit;
 	logoButton.autoresizingMask = UIViewAutoresizingNone;
+		
 	[logoButton sizeToFit];
 	return logoButton;
 

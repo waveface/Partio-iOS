@@ -65,6 +65,7 @@
 		4B274E511675BFCC007406D3 /* WACollectionViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4B274E4E1675BFCC007406D3 /* WACollectionViewController.xib */; };
 		4B274E521675BFCC007406D3 /* WACollectionViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4B274E4E1675BFCC007406D3 /* WACollectionViewController.xib */; };
 		4B274E6B1675E104007406D3 /* WACollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4B274E6A1675E104007406D3 /* WACollectionViewCell.xib */; };
+		4B307DCF168C3A6300DD4A34 /* WACollection.m in Sources */ = {isa = PBXBuildFile; fileRef = 802427081689E1AF002454A7 /* WACollection.m */; };
 		4B31BA9F1591A74C00DC1A70 /* AGImagePickerController+Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B31BA881591A74C00DC1A70 /* AGImagePickerController+Constants.m */; };
 		4B31BAA01591A74C00DC1A70 /* AGImagePickerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B31BA8A1591A74C00DC1A70 /* AGImagePickerController.m */; };
 		4B31BAA11591A74C00DC1A70 /* AGIPC-Checkmark-iPad.png in Resources */ = {isa = PBXBuildFile; fileRef = 4B31BA8B1591A74C00DC1A70 /* AGIPC-Checkmark-iPad.png */; };
@@ -221,8 +222,7 @@
 		80638BF2164CA663005695E3 /* WATag.m in Sources */ = {isa = PBXBuildFile; fileRef = 80638BF1164CA663005695E3 /* WATag.m */; };
 		80638BFC164CA7DA005695E3 /* WATagGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = 80638BFB164CA7DA005695E3 /* WATagGroup.m */; };
 		80638BFD164CA852005695E3 /* WAPeople.m in Sources */ = {isa = PBXBuildFile; fileRef = 80638BF7164CA6A8005695E3 /* WAPeople.m */; };
-		806A5C851623C6C500867E56 /* WADripdownMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 806A5C841623C6C500867E56 /* WADripdownMenuViewController.m */; };
-		806A5C891623CDDE00867E56 /* WADripdownMenuViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 806A5C881623CDDE00867E56 /* WADripdownMenuViewController.xib */; };
+		806A5C851623C6C500867E56 /* WAContextMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 806A5C841623C6C500867E56 /* WAContextMenuViewController.m */; };
 		806A5C9C16241E2800867E56 /* Cal.png in Resources */ = {isa = PBXBuildFile; fileRef = 806A5C8A16241E2800867E56 /* Cal.png */; };
 		806A5C9D16241E2800867E56 /* Cal@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 806A5C8B16241E2800867E56 /* Cal@2x.png */; };
 		806A5C9E16241E2800867E56 /* CalHL.png in Resources */ = {isa = PBXBuildFile; fileRef = 806A5C8C16241E2800867E56 /* CalHL.png */; };
@@ -1338,9 +1338,8 @@
 		80638BF7164CA6A8005695E3 /* WAPeople.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WAPeople.m; sourceTree = "<group>"; };
 		80638BFA164CA7DA005695E3 /* WATagGroup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WATagGroup.h; sourceTree = "<group>"; };
 		80638BFB164CA7DA005695E3 /* WATagGroup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WATagGroup.m; sourceTree = "<group>"; };
-		806A5C831623C6C500867E56 /* WADripdownMenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WADripdownMenuViewController.h; sourceTree = "<group>"; };
-		806A5C841623C6C500867E56 /* WADripdownMenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WADripdownMenuViewController.m; sourceTree = "<group>"; };
-		806A5C881623CDDE00867E56 /* WADripdownMenuViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WADripdownMenuViewController.xib; sourceTree = "<group>"; };
+		806A5C831623C6C500867E56 /* WAContextMenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAContextMenuViewController.h; sourceTree = "<group>"; };
+		806A5C841623C6C500867E56 /* WAContextMenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAContextMenuViewController.m; sourceTree = "<group>"; };
 		806A5C8A16241E2800867E56 /* Cal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Cal.png; path = Resources/Cal.png; sourceTree = "<group>"; };
 		806A5C8B16241E2800867E56 /* Cal@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Cal@2x.png"; path = "Resources/Cal@2x.png"; sourceTree = "<group>"; };
 		806A5C8C16241E2800867E56 /* CalHL.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = CalHL.png; path = Resources/CalHL.png; sourceTree = "<group>"; };
@@ -2988,9 +2987,8 @@
 				80C129B816398933001DDFE2 /* WADayHeaderView.xib */,
 				80BE6859161DC13800A37CEB /* WADayViewController.h */,
 				80BE685A161DC13800A37CEB /* WADayViewController.m */,
-				806A5C831623C6C500867E56 /* WADripdownMenuViewController.h */,
-				806A5C841623C6C500867E56 /* WADripdownMenuViewController.m */,
-				806A5C881623CDDE00867E56 /* WADripdownMenuViewController.xib */,
+				806A5C831623C6C500867E56 /* WAContextMenuViewController.h */,
+				806A5C841623C6C500867E56 /* WAContextMenuViewController.m */,
 				809C6D281605845A0016E196 /* WASlidingMenuViewController.h */,
 				809C6D291605845A0016E196 /* WASlidingMenuViewController.m */,
 			);
@@ -4522,7 +4520,6 @@
 				138CCA381609D23C00B477CE /* TutorialPhotoImport@2x~iphone.png in Resources */,
 				138D31B31609D8F800ECA892 /* TutorialPhotoImport@2x~ipad.png in Resources */,
 				138D31B81609D92400ECA892 /* TutorialPhotoImport~ipad.png in Resources */,
-				806A5C891623CDDE00867E56 /* WADripdownMenuViewController.xib in Resources */,
 				806A5C9C16241E2800867E56 /* Cal.png in Resources */,
 				806A5C9D16241E2800867E56 /* Cal@2x.png in Resources */,
 				806A5C9E16241E2800867E56 /* CalHL.png in Resources */,
@@ -4876,6 +4873,7 @@
 				4B4AA30C16564BEE00A04DDE /* NSDate+WAAdditions.m in Sources */,
 				7DBE8DF6165B383C005C2347 /* WADayHeaderView.m in Sources */,
 				4BB0400916804C68009C3D08 /* WACollection+WARemoteInterfaceEntitySyncing.m in Sources */,
+				4B307DCF168C3A6300DD4A34 /* WACollection.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5063,7 +5061,7 @@
 				13B6DB9D161573FF00B9CC35 /* WAFileExif.m in Sources */,
 				80BE685B161DC13800A37CEB /* WADayViewController.m in Sources */,
 				80A13C74162071C4002880A9 /* NSDate+WAAdditions.m in Sources */,
-				806A5C851623C6C500867E56 /* WADripdownMenuViewController.m in Sources */,
+				806A5C851623C6C500867E56 /* WAContextMenuViewController.m in Sources */,
 				13793344162C0EA000FA9E8F /* WAFileExif+WAAdditions.m in Sources */,
 				132D60331622B66500148829 /* WACache.m in Sources */,
 				1360BC0F1623FA3200AF4EAA /* WACacheManager.m in Sources */,

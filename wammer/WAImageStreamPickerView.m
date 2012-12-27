@@ -264,7 +264,7 @@ static NSString * kWAImageStreamPickerComponentThumbnail = @"WAImageStreamPicker
 	[thumbnailedItemIndices enumerateIndexesUsingBlock: ^ (NSUInteger idx, BOOL *stop) {
 	
 		UIView *thumbnailView = [currentImageThumbnailViews objectAtIndex:idx];
-		NSParameterAssert(thumbnailView);
+		NSCParameterAssert(thumbnailView);
 		
 		CGSize thumbnailSize = sizeForComponent(thumbnailView);
 		CGRect thumbnailRect = (CGRect){
@@ -288,7 +288,7 @@ static NSString * kWAImageStreamPickerComponentThumbnail = @"WAImageStreamPicker
   [thumbnailedItemIndices enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop) {
 	
 		UIView *thumbnailView = [currentImageThumbnailViews objectAtIndex:idx];
-		NSParameterAssert(![removedThumbnailViews containsObject:thumbnailView]);
+		NSCParameterAssert(![removedThumbnailViews containsObject:thumbnailView]);
 		
 		thumbnailView.frame = CGRectOffset(thumbnailView.frame, leftPadding, 0);
 		leftPadding += CGRectGetWidth(thumbnailView.frame);
