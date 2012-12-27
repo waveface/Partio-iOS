@@ -8,6 +8,7 @@
 
 #import "WACalendarPickerViewController.h"
 #import "WACalendarPickerDataSource.h"
+#import "WACalendarPickerPanelViewCell.h"
 #import "WAEventViewController.h"
 #import "WAAppearance.h"
 #import "WASlidingMenuViewController.h"
@@ -225,6 +226,10 @@
 
 	}
 	
+	if (([[dataSource items] count] && indexPath.row == [[dataSource items] count]) || (![[dataSource items] count] && indexPath.row == 1)) {
+		
+	}
+	
 }
 
 #pragma mark - Orientation
@@ -259,6 +264,59 @@
   else if (UIInterfaceOrientationIsLandscape(toInterfaceOrientation)) {
     calPicker.view.frame = CGRectMake(0, 0, kFrameHeight, kFrameWidth);
   }
+
+}
+
+#pragma mark - icon bar actions
+
+- (IBAction)handleEvents:(UIButton *)sender
+{
+	WASlidingMenuViewController *smVC;
+	
+	if (self.viewDeckController) {
+		
+		smVC = (WASlidingMenuViewController *)[self.viewDeckController leftController];
+		[smVC switchToViewStyle:WAEventsViewStyle onDate:[calPicker selectedNSDate] animated:YES];
+		
+	}
+}
+
+- (IBAction)handlePhotos:(UIButton *)sender
+{
+	WASlidingMenuViewController *smVC;
+	
+	if (self.viewDeckController) {
+		
+		smVC = (WASlidingMenuViewController *)[self.viewDeckController leftController];
+		[smVC switchToViewStyle:WAPhotosViewStyle onDate:[calPicker selectedNSDate] animated:YES];
+		
+	}
+	
+}
+
+- (IBAction)handleDocs:(UIButton *)sender
+{
+	WASlidingMenuViewController *smVC;
+	
+	if (self.viewDeckController) {
+		
+		smVC = (WASlidingMenuViewController *)[self.viewDeckController leftController];
+		[smVC switchToViewStyle:WADocumentsViewStyle onDate:[calPicker selectedNSDate] animated:YES];
+		
+	}
+
+}
+
+- (IBAction)handleWebpages:(UIButton *)sender
+{
+	WASlidingMenuViewController *smVC;
+	
+	if (self.viewDeckController) {
+		
+		smVC = (WASlidingMenuViewController *)[self.viewDeckController leftController];
+		[smVC switchToViewStyle:WAWebpagesViewStyle onDate:[calPicker selectedNSDate] animated:YES];
+		
+	}
 
 }
 

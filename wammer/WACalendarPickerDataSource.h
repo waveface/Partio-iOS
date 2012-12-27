@@ -20,6 +20,7 @@ typedef NS_ENUM(NSInteger, WACalendarLoadObject) {
 
 @property (nonatomic, strong) NSMutableArray *daysWithAttributes;
 @property (nonatomic, strong)	NSMutableArray *items;
+@property (nonatomic, weak) NSDate *selectedNSDate;
 
 - (WAArticle *)eventAtIndexPath:(NSIndexPath *)indexPath;
 

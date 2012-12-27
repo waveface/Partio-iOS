@@ -217,7 +217,8 @@ typedef void (^completionBlock) (NSArray *days);
 - (void)loadItemsFromDate:(NSDate *)fromDate toDate:(NSDate *)toDate
 {
 	[_items addObjectsFromArray:[self fetchObject:WACalendarLoadObjectEvent from:fromDate to:toDate]];
-
+	_selectedNSDate = fromDate;
+	
 }
 
 - (void)removeAllItems
@@ -238,12 +239,15 @@ typedef void (^completionBlock) (NSArray *days);
   UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
   if (!cell) {
     cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
-	}
+	} 
 	
 	for (UIView *subview in cell.contentView.subviews)
 		[subview removeFromSuperview];
 	
-	if (!_items.count) {
+	for (UIView *subview in cell.accessoryView.subviews)
+		[subview removeFromSuperview];
+	
+	if (!_items.count && indexPath.row == 0) {
 		UILabel *title = [[UILabel alloc] initWithFrame:CGRectMake(54, 0, 200 , 54)];
 		[title setText:NSLocalizedString(@"CALENDAR_NO_EVENT", "Description for no event day in calendar")];
 		[title setTextAlignment:NSTextAlignmentCenter];
@@ -255,8 +259,8 @@ typedef void (^completionBlock) (NSArray *days);
 		[cell setAccessoryView:nil];
 		[cell setSelectionStyle:UITableViewCellSelectionStyleNone];
 	
-	} else if (indexPath.row == (_items.count - 1)) {
-		cell = [[WACalendarPickerPanelViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+	} else if ((_items.count && indexPath.row == _items.count) || (!_items.count && indexPath.row == 1)) {
+		cell = [[WACalendarPickerPanelViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"IconsCell"];
 		
 	} else {
 		id item = [self eventAtIndexPath:indexPath];
@@ -287,9 +291,9 @@ typedef void (^completionBlock) (NSArray *days);
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-	NSInteger count = [_items count];
-		if (!count)
-			count = 1;
+	NSInteger count = _items.count + 1;
+	if (!_items.count)
+		count = 2;
 	
 	return count;
 }

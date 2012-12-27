@@ -15,4 +15,9 @@
 @property (nonatomic, weak) IBOutlet UIButton *docsButton;
 @property (nonatomic, weak) IBOutlet UIButton *webpagesButton;
 
+- (IBAction)handleEvents:(id)sender;
+- (IBAction)handlePhotos:(id)sender;
+- (IBAction)handleDocs:(id)sender;
+- (IBAction)handleWebpages:(id)sender;
+
 @end
