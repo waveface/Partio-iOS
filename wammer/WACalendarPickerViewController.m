@@ -156,7 +156,17 @@
 	selectedEvent = [[dataSource items] objectAtIndex:indexPath.row];
 		
 	if ([selectedEvent isKindOfClass:[WAArticle class]]) {
-
+		CGSize shadowSize = CGSizeMake(15.0, 1.0);
+		UIGraphicsBeginImageContext(shadowSize);
+		CGContextRef shadowContext = UIGraphicsGetCurrentContext();
+		CGContextSetFillColorWithColor(shadowContext, [UIColor colorWithRed:193/255.0 green:193/255.0 blue:193/255.0 alpha:1].CGColor);
+		CGContextAddRect(shadowContext, CGRectMake(7.0, 0, 1.0, shadowSize.height));
+		CGContextFillPath(shadowContext);
+		UIImage *naviShadow = UIGraphicsGetImageFromCurrentImageContext();
+		UIImage *naviShadowWithInsets = [naviShadow resizableImageWithCapInsets:UIEdgeInsetsMake(0, 7, 0, 7)];
+		UIGraphicsEndImageContext();
+		[[UINavigationBar appearance] setShadowImage:naviShadowWithInsets];
+		
 		WAEventViewController *eventVC = [WAEventViewController controllerForArticle:selectedEvent];
 		
 		if (isPad()) {
@@ -169,65 +179,6 @@
 			
 		}
 
-	}
-	else if ([selectedEvent isKindOfClass:[WAFile class]]) {
-
-		WAFile *file = (WAFile *)selectedEvent;
-		WASlidingMenuViewController *smVC;
-		
-		if (file.created) {
-			if (self.viewDeckController) {
-				
-				smVC = (WASlidingMenuViewController *)[self.viewDeckController leftController];
-				[smVC switchToViewStyle:WAPhotosViewStyle onDate:file.created animated:YES];
-				
-			}
-			else {
-				
-				smVC = (WASlidingMenuViewController *)[[[self delegate] viewDeckController] leftController];
-				[smVC switchToViewStyle:WAPhotosViewStyle onDate:file.created animated:NO];
-				
-				if (isPhone()) {
-					[self dismissViewControllerAnimated:YES completion:nil];
-								
-				} else {
-					[self.delegate dismissPopoverAnimated:YES];
-					
-				}
-				
-			}
-		}
-		
-	} else if ([selectedEvent isKindOfClass:[WAFileAccessLog class]]) {
-
-		WAFileAccessLog *file = (WAFileAccessLog *)selectedEvent;
-		WASlidingMenuViewController *smVC;
-
-		if (self.viewDeckController) {
-			
-			smVC = (WASlidingMenuViewController *)[self.viewDeckController leftController];
-			[smVC switchToViewStyle:WADocumentsViewStyle onDate:file.accessTime animated:YES];
-			
-		}
-		else {
-			
-			smVC = (WASlidingMenuViewController *)[[[self delegate] viewDeckController] leftController];
-			[smVC switchToViewStyle:WADocumentsViewStyle onDate:file.accessTime animated:NO];
-			
-			if (isPhone()) {
-				[self dismissViewControllerAnimated:YES completion:nil];
-			
-			} else {
-				[self.delegate dismissPopoverAnimated:YES];
-				
-			}
-			
-		}
-
-	}
-	
-	if (([[dataSource items] count] && indexPath.row == [[dataSource items] count]) || (![[dataSource items] count] && indexPath.row == 1)) {
-		
 	}
 	
 }

@@ -14,29 +14,23 @@ NSString * const kWACalendarPickerPanelViewCell = @"WACalendarPickerPanelViewCel
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
-	//self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
-  self = [[NSBundle mainBundle] loadNibNamed:kWACalendarPickerPanelViewCell owner:self options:nil][0];
+	self = [[NSBundle mainBundle] loadNibNamed:kWACalendarPickerPanelViewCell owner:self options:nil][0];
 	
 	if (self) {
         // Initialization code
     }
-    return self;
+	return self;
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
 {
-    [super setSelected:selected animated:animated];
+	[super setSelected:selected animated:animated];
 
     // Configure the view for the selected state
-}
-
-- (void)setHighlighted:(BOOL)highlighted
-{
-	if (highlighted) {
+	if (selected) {
 		[self setBackgroundColor:[UIColor lightGrayColor]];
 	}
-	
-	[super setHighlighted:highlighted];
+
 }
 
 @end

@@ -217,7 +217,6 @@ typedef void (^completionBlock) (NSArray *days);
 - (void)loadItemsFromDate:(NSDate *)fromDate toDate:(NSDate *)toDate
 {
 	[_items addObjectsFromArray:[self fetchObject:WACalendarLoadObjectEvent from:fromDate to:toDate]];
-	_selectedNSDate = fromDate;
 	
 }
 
