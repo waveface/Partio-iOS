@@ -26,175 +26,175 @@
 static NSString *kWAContextViewCellIdentifier = @"ContextMenuItem";
 
 @implementation WAContextMenuViewController {
-	WADayViewSupportedStyle currentViewStyle;
+  WADayViewSupportedStyle currentViewStyle;
 }
 
 
 - (id) initForViewStyle:(WADayViewSupportedStyle)style completion:(WAContextMenuCompletionBlock)completion {
 	
-	self = [super initWithNibName:nil bundle:nil];
+  self = [super initWithNibName:nil bundle:nil];
 
-	if (self) {
+  if (self) {
 
-		currentViewStyle = style;
-		self.completionBlock = completion;
+	currentViewStyle = style;
+	self.completionBlock = completion;
 
-	}
+  }
 	
-	return self;
+  return self;
 }
 
 - (void)loadView {
-	[super loadView];
+  [super loadView];
 		
-	if(isPhone()) {
+  if(isPhone()) {
 		
-		CGRect fullScreenFrame = CGRectMake(0, 0, CGRectGetWidth([[UIScreen mainScreen] bounds]), CGRectGetHeight([[UIScreen mainScreen] bounds]));
+	CGRect fullScreenFrame = CGRectMake(0, 0, CGRectGetWidth([[UIScreen mainScreen] bounds]), CGRectGetHeight([[UIScreen mainScreen] bounds]));
 		
-		self.view.frame = fullScreenFrame;
+	self.view.frame = fullScreenFrame;
 		
-		self.translucentOverlay = [[UIView alloc] initWithFrame:fullScreenFrame];
-		self.translucentOverlay.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
-		self.translucentOverlay.backgroundColor = [UIColor colorWithWhite:0.2f alpha:0.3f];
-		[self.view addSubview:self.translucentOverlay];
+	self.translucentOverlay = [[UIView alloc] initWithFrame:fullScreenFrame];
+	self.translucentOverlay.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+	self.translucentOverlay.backgroundColor = [UIColor colorWithWhite:0.2f alpha:0.3f];
+	[self.view addSubview:self.translucentOverlay];
 		
-		self.tapper = [UIButton buttonWithType:UIButtonTypeCustom];
-		self.tapper.frame = fullScreenFrame;
-		[self.tapper setBackgroundColor:[UIColor clearColor]];
-		self.tapper.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
-		[self.tapper addTarget:self action:@selector(tapperTapped:) forControlEvents:UIControlEventTouchUpInside];
-		[self.translucentOverlay addSubview:self.tapper];
+	self.tapper = [UIButton buttonWithType:UIButtonTypeCustom];
+	self.tapper.frame = fullScreenFrame;
+	[self.tapper setBackgroundColor:[UIColor clearColor]];
+	self.tapper.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+	[self.tapper addTarget:self action:@selector(tapperTapped:) forControlEvents:UIControlEventTouchUpInside];
+	[self.translucentOverlay addSubview:self.tapper];
 		
-		self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(fullScreenFrame.size.width/2 - 80, 0, 160, 150)];
-		self.tableView.delegate = self;
-		self.tableView.dataSource = self;
-		self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-		[self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:kWAContextViewCellIdentifier];
+	self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(fullScreenFrame.size.width/2 - 80, 0, 160, 150)];
+	self.tableView.delegate = self;
+	self.tableView.dataSource = self;
+	self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+	[self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:kWAContextViewCellIdentifier];
 
-		[self.tapper addSubview:self.tableView];
+	[self.tapper addSubview:self.tableView];
 		
-	} else {
+  } else {
 		
-		self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, 160, 150)];
-		self.tableView.delegate = self;
-		self.tableView.dataSource = self;
-		self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-		[self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:kWAContextViewCellIdentifier];
-		self.view.frame = self.tableView.frame;
+	self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, 160, 150)];
+	self.tableView.delegate = self;
+	self.tableView.dataSource = self;
+	self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+	[self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:kWAContextViewCellIdentifier];
+	self.view.frame = self.tableView.frame;
 
-		[self.view addSubview:self.tableView];
+	[self.view addSubview:self.tableView];
 		
-	}
+  }
 	
-	self.tableView.bounces = NO;
-	self.tableView.allowsMultipleSelection = NO;
-	self.tableView.alwaysBounceHorizontal = NO;
-	self.tableView.alwaysBounceVertical = NO;
+  self.tableView.bounces = NO;
+  self.tableView.allowsMultipleSelection = NO;
+  self.tableView.alwaysBounceHorizontal = NO;
+  self.tableView.alwaysBounceVertical = NO;
 	
 }
 
 - (void)prepareMenuItems {
 	
-	static NSArray *origMenuItems;
-	origMenuItems = @[
-		@{@"style": [NSNumber numberWithUnsignedInteger:WAEventsViewStyle],
-			@"title": NSLocalizedString(@"SLIDING_MENU_TITLE_EVENTS", @"Title for Events in the sliding menu"),
-			@"icon": [UIImage imageNamed:@"EventsIcon"],
-			@"color": [UIColor colorWithRed:0.957 green:0.376 blue:0.298 alpha:1.0]
-		},
+  static NSArray *origMenuItems;
+  origMenuItems = @[
+	  @{@"style": [NSNumber numberWithUnsignedInteger:WAEventsViewStyle],
+		@"title": NSLocalizedString(@"SLIDING_MENU_TITLE_EVENTS", @"Title for Events in the sliding menu"),
+		@"icon": [UIImage imageNamed:@"EventsIcon"],
+		@"color": [UIColor colorWithRed:0.957 green:0.376 blue:0.298 alpha:1.0]
+	  },
 	
-		@{@"style": [NSNumber numberWithUnsignedInteger:WAPhotosViewStyle],
-			@"title": NSLocalizedString(@"SLIDING_MENU_TITLE_PHOTOS", @"Title for Photos in the sliding menu"),
-			@"icon": [UIImage imageNamed:@"PhotosIcon"],
-			@"color": [UIColor colorWithRed:0.96f green:0.647f blue:0.011f alpha:1.0]
-		},
+	  @{@"style": [NSNumber numberWithUnsignedInteger:WAPhotosViewStyle],
+		@"title": NSLocalizedString(@"SLIDING_MENU_TITLE_PHOTOS", @"Title for Photos in the sliding menu"),
+		@"icon": [UIImage imageNamed:@"PhotosIcon"],
+		@"color": [UIColor colorWithRed:0.96f green:0.647f blue:0.011f alpha:1.0]
+	  },
 	
-		@{@"style": [NSNumber numberWithUnsignedInteger:WADocumentsViewStyle],
-			@"title": NSLocalizedString(@"SLIDING_MENU_TITLE_DOCS", @"Title for Documents in the sliding menu"),
-			@"icon": [UIImage imageNamed:@"DocumentsIcon"],
-			@"color": [UIColor colorWithRed:0.572f green:0.8f blue:0.647f alpha:1.0f]
-		},
+	  @{@"style": [NSNumber numberWithUnsignedInteger:WADocumentsViewStyle],
+		@"title": NSLocalizedString(@"SLIDING_MENU_TITLE_DOCS", @"Title for Documents in the sliding menu"),
+		@"icon": [UIImage imageNamed:@"DocumentsIcon"],
+		@"color": [UIColor colorWithRed:0.572f green:0.8f blue:0.647f alpha:1.0f]
+	  },
 	
-		@{@"style": [NSNumber numberWithUnsignedInteger:WAWebpagesViewStyle],
-			@"title": NSLocalizedString(@"SLIDING_MENU_TITLE_WEBS", @"Title for Web pages in the sliding menu"),
-			@"icon": [UIImage imageNamed:@"Webicon"],
-			@"color": [UIColor colorWithRed:0.211f green:0.694f blue:0.749f alpha:1.0f]
-		}
-	];
+      @{@"style": [NSNumber numberWithUnsignedInteger:WAWebpagesViewStyle],
+		@"title": NSLocalizedString(@"SLIDING_MENU_TITLE_WEBS", @"Title for Web pages in the sliding menu"),
+		@"icon": [UIImage imageNamed:@"Webicon"],
+		@"color": [UIColor colorWithRed:0.211f green:0.694f blue:0.749f alpha:1.0f]
+	  }
+  ];
 	
-	self.menuItems = [NSMutableArray array];
+  self.menuItems = [NSMutableArray array];
 	
-	for (int i = 0; i < origMenuItems.count; i++) {
-		if ([origMenuItems[i][@"style"] isEqual:[NSNumber numberWithUnsignedInteger:currentViewStyle]])
-			continue;
+  for (int i = 0; i < origMenuItems.count; i++) {
+	if ([origMenuItems[i][@"style"] isEqual:[NSNumber numberWithUnsignedInteger:currentViewStyle]])
+	  continue;
 		
-		[self.menuItems addObject:origMenuItems[i]];
-	}
+	[self.menuItems addObject:origMenuItems[i]];
+  }
 }
 
 - (void) presentContextMenuInViewController:(UIViewController*)viewController {
 
-	if (isPhone()) {
+  if (isPhone()) {
 		
-		[viewController addChildViewController:self];
-		[viewController.view addSubview:self.view];
-		[self didMoveToParentViewController:viewController];
+	[viewController addChildViewController:self];
+	[viewController.view addSubview:self.view];
+	[self didMoveToParentViewController:viewController];
 		
-		CGRect menuToRect = self.tableView.frame;
-		CGRect menuFromRect = CGRectOffset(menuToRect, 0, -1 * CGRectGetHeight(menuToRect));
+	CGRect menuToRect = self.tableView.frame;
+	CGRect menuFromRect = CGRectOffset(menuToRect, 0, -1 * CGRectGetHeight(menuToRect));
 		
-		__weak WAContextMenuViewController *wSelf = self;
-		self.tableView.frame = menuFromRect;
-		self.translucentOverlay.alpha = 0;
+	__weak WAContextMenuViewController *wSelf = self;
+	self.tableView.frame = menuFromRect;
+	self.translucentOverlay.alpha = 0;
 		
-		[UIView animateWithDuration:0.3f
-													delay:0
-												options:UIViewAnimationOptionCurveEaseInOut
-										 animations:^{
+	[UIView animateWithDuration:0.3f
+						  delay:0
+						options:UIViewAnimationOptionCurveEaseInOut | UIViewAnimationOptionLayoutSubviews
+					 animations:^{
 											 
-											 wSelf.tableView.frame = menuToRect;
-											 wSelf.translucentOverlay.alpha = 1;
+					  wSelf.tableView.frame = menuToRect;
+					  wSelf.translucentOverlay.alpha = 1;
 											 
-										 }
-										 completion:^(BOOL finished) {
-											 
-											 
-											 
-										 }];
+					 }
+					 completion:^(BOOL finished) {
+					 }];
 		
-	} else {
+  } else {
 		
-		CGRect newFrame = self.view.frame;
-		newFrame.size = self.tableView.frame.size;
-		self.view.frame = newFrame;
-		self.contentSizeForViewInPopover = self.view.frame.size;
+	CGRect newFrame = self.view.frame;
+	newFrame.size = self.tableView.frame.size;
+	self.view.frame = newFrame;
+	self.contentSizeForViewInPopover = self.view.frame.size;
 		
-		self.popover = [[UIPopoverController alloc] initWithContentViewController:self];
-		[self.popover presentPopoverFromRect:CGRectMake(viewController.navigationController.navigationBar.frame.size.width/2, 0, 1, 1)
-														 inView:viewController.view
-					 permittedArrowDirections:UIPopoverArrowDirectionUp
-													 animated:YES];
+	self.popover = [[UIPopoverController alloc] initWithContentViewController:self];
+	[self.popover presentPopoverFromRect:CGRectMake(viewController.navigationController.navigationBar.frame.size.width/2, 0, 1, 1)
+								  inView:viewController.view
+				permittedArrowDirections:UIPopoverArrowDirectionUp
+								animated:YES];
 		
-	}
+  }
 
 }
 
 - (void) dismissContextMenu {
 	
-	if (isPhone()) {
-		CGRect tableViewFromRect = self.tableView.frame;
-		CGRect tableViewToRect = CGRectOffset(tableViewFromRect, 0, -1 * CGRectGetHeight(tableViewFromRect));
+  if (isPhone()) {
+	CGRect tableViewFromRect = self.tableView.frame;
+	CGRect tableViewToRect = CGRectOffset(tableViewFromRect, 0, -1 * CGRectGetHeight(tableViewFromRect));
 		
-		__weak WAContextMenuViewController *wSelf = self;
-		self.translucentOverlay.alpha = 1;
-		self.tableView.frame = tableViewFromRect;
+	__weak WAContextMenuViewController *wSelf = self;
+	self.translucentOverlay.alpha = 1;
+	self.tableView.frame = tableViewFromRect;
 		
-		[UIView animateWithDuration:0.3 animations:^{
-			
+	[UIView animateWithDuration:0.3f
+						  delay:0.0f
+						options:UIViewAnimationOptionCurveEaseInOut | UIViewAnimationOptionLayoutSubviews
+					 animations:^{
+
 			wSelf.translucentOverlay.alpha = 0;
 			wSelf.tableView.frame = tableViewToRect;
 			
-		} completion:^(BOOL finished) {
+					 } completion:^(BOOL finished) {
 
 			[wSelf willMoveToParentViewController:nil];
 			[wSelf removeFromParentViewController];
@@ -202,108 +202,109 @@ static NSString *kWAContextViewCellIdentifier = @"ContextMenuItem";
 			[wSelf didMoveToParentViewController:nil];
 			
 			if (wSelf.completionBlock)
-				wSelf.completionBlock();
+			  wSelf.completionBlock();
 			
-		}];
+					 }];
 		
-	} else {
+  } else {
 		
-		if (self.popover) {
-			if([self.popover isPopoverVisible])
-				[self.popover dismissPopoverAnimated:YES];
-		}
-
-		if (self.completionBlock) {
-			self.completionBlock();
-		}
+	if (self.popover) {
+	  if([self.popover isPopoverVisible])
+		[self.popover dismissPopoverAnimated:YES];
 	}
+
+	if (self.completionBlock) {
+	  self.completionBlock();
+	}
+  }
 	
 }
 
 - (void)viewDidLoad
 {
-	[super viewDidLoad];
+  [super viewDidLoad];
 
-	[self prepareMenuItems];
-	[self.tableView reloadData];
-	
-	
+  [self prepareMenuItems];
+  [self.tableView reloadData];
+		
 }
 
 - (void) viewWillDisappear:(BOOL)animated {
 	
-	[super viewWillDisappear:animated];
-	if (self.popover) {
-		if ([self.popover isPopoverVisible]) {
-			[self.popover dismissPopoverAnimated:animated];
-			self.popover = nil;
-		}
+  [super viewWillDisappear:animated];
+  if (self.popover) {
+	if ([self.popover isPopoverVisible]) {
+	  [self.popover dismissPopoverAnimated:animated];
+	  self.popover = nil;
 	}
+  }
 	
 }
 
 - (void) tapperTapped:(id)sender {
 	
-	[self dismissContextMenu];
+  [self dismissContextMenu];
 	
 }
 
 #pragma mark - UITableView delegate and datasorurce methods
 - (NSInteger) numberOfSectionsInTableView:(UITableView *)tableView {
 
-	return 1;
+  return 1;
 
 }
 
 - (NSInteger) tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
 
-	return self.menuItems.count;
+  return self.menuItems.count;
 
 }
 
 - (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
 	
-	return 50.0f;
+  return 50.0f;
 	
 }
 
 - (UITableViewCell*) tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
 
-	UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kWAContextViewCellIdentifier forIndexPath:indexPath];
+  UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kWAContextViewCellIdentifier forIndexPath:indexPath];
 		
-	NSDictionary *item = self.menuItems[indexPath.row];
-	cell.textLabel.font = [UIFont fontWithName:@"HelveticaNeue" size:14.0];
-	cell.textLabel.text = item[@"title"];
-	cell.imageView.image = item[@"icon"];
+  NSDictionary *item = self.menuItems[indexPath.row];
+  cell.textLabel.backgroundColor = [UIColor clearColor];
+  cell.textLabel.font = [UIFont fontWithName:@"HelveticaNeue" size:14.0];
+  cell.textLabel.text = item[@"title"];
+  cell.imageView.image = item[@"icon"];
 	
-	return cell;
+  return cell;
 	
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
 	
-	cell.textLabel.textColor = [UIColor whiteColor];
-	cell.backgroundColor = self.menuItems[indexPath.row][@"color"];
+  cell.textLabel.textColor = [UIColor whiteColor];
+  cell.backgroundColor = self.menuItems[indexPath.row][@"color"];
 	
 }
 
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 
-	NSDictionary *item = self.menuItems[indexPath.row];
-	if (self.delegate)
-		if ([self.delegate respondsToSelector:@selector(contextMenuItemDidSelect:)])
-			[self.delegate contextMenuItemDidSelect:[item[@"style"] unsignedIntegerValue]];
+  NSDictionary *item = self.menuItems[indexPath.row];
+  if (self.delegate)
+	if ([self.delegate respondsToSelector:@selector(contextMenuItemDidSelect:)])
+	  [self.delegate contextMenuItemDidSelect:[item[@"style"] unsignedIntegerValue]];
 
-	if (isPad()) {
-		if ([self.popover isPopoverVisible])
-			[self.popover dismissPopoverAnimated:NO];
-	}
+  if (isPad()) {
+	if ([self.popover isPopoverVisible])
+	  [self.popover dismissPopoverAnimated:NO];
+  }
+  
 }
 
 - (void)didReceiveMemoryWarning
 {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+  [super didReceiveMemoryWarning];
+  // Dispose of any resources that can be recreated.
 }
 
 @end
