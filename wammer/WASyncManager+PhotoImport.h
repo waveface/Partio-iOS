@@ -11,6 +11,6 @@
 @class IRAsyncOperation;
 @interface WASyncManager (PhotoImport)
 
-- (IRAsyncOperation *) photoImportOperation;
+- (IRAsyncOperation *) photoImportOperationPrototype;
 
 @end

@@ -33,4 +33,6 @@ typedef void (^WAArticleSyncProgressCallback)(BOOL hasDoneWork, NSManagedObjectC
 
 @interface WAArticle (WARemoteInterfaceEntitySyncing) <WARemoteInterfaceEntitySyncing>
 
++ (NSOperationQueue *)sharedSyncQueue;
+
 @end

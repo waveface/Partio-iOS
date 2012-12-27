@@ -112,7 +112,7 @@ NSUInteger const DEFAULT_CACHE_SIZE = 600*1024*1024; //600MB
 	__weak WACacheManager *wSelf = self;
 	[self.queue addOperationWithBlock:^{
 
-		NSAssert(wSelf.size != 0, @"Cache entities should be initialized");
+		NSCAssert(wSelf.size != 0, @"Cache entities should be initialized");
 
 		NSManagedObjectContext *context = [[WADataStore defaultStore] disposableMOC];
 
