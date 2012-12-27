@@ -77,7 +77,7 @@
 	self.view.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
 	self.longPressGR = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleMenu:)];
 	[self.collectionView addGestureRecognizer:self.longPressGR];
-
+	
 	return self;
 }
 
@@ -150,6 +150,7 @@
 	
 	NSString *cacheName = [NSString stringWithFormat:@"fetchedTableCache-%@", [formatter stringFromDate:self.currentDisplayedDate]];
 	_fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fr managedObjectContext:self.managedObjectContext sectionNameKeyPath:nil cacheName:cacheName];
+	_fetchedResultsController.delegate = self;
 	
   NSError *fetchingError;
 	if (![_fetchedResultsController performFetch:&fetchingError])
@@ -157,6 +158,21 @@
 	
 	return _fetchedResultsController;
 	
+}
+
+#pragma mark - NSFetchedResultsControllerDelegate 
+- (void) controller:(NSFetchedResultsController *)controller didChangeObject:(id)anObject atIndexPath:(NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type newIndexPath:(NSIndexPath *)newIndexPath {
+	
+	switch (type) {
+		case NSFetchedResultsChangeInsert: {
+			[self.collectionView insertItemsAtIndexPaths:@[newIndexPath]];
+			break;
+		}
+		case NSFetchedResultsChangeDelete:
+		case NSFetchedResultsChangeMove:
+		default:
+			break;
+	}
 }
 
 #pragma mark - UICollectionView datasource

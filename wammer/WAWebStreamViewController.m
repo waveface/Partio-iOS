@@ -22,7 +22,7 @@
 @property (nonatomic, readwrite, strong) NSDate *currentDate;
 @property (nonatomic, readwrite, strong) NSFetchedResultsController *fetchedResultsController;
 @property (nonatomic, readwrite, strong) UICollectionView *collectionView;
-@property (nonatomic, readwrite, strong) NSArray *webPages;
+@property (nonatomic, readwrite, strong) NSMutableArray *webPages;
 
 @end
 
@@ -48,6 +48,7 @@
 		[fr setRelationshipKeyPathsForPrefetching:@[@"dayWebpages"]];
 
 		self.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fr managedObjectContext:context sectionNameKeyPath:nil cacheName:nil];
+		self.fetchedResultsController.delegate = self;
 		
 		NSError *fetchingError;
 		if (![self.fetchedResultsController performFetch:&fetchingError]) {
@@ -62,7 +63,7 @@
 					
 				}
 			}
-			self.webPages = [[dict allValues] copy];
+			self.webPages = [[dict allValues] mutableCopy];
 			
 		}
 
@@ -129,6 +130,50 @@
 	
 }
 
+#pragma mark - NSFetchedResultsControllerDelegate
+- (void) controller:(NSFetchedResultsController *)controller didChangeObject:(id)anObject atIndexPath:(NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type newIndexPath:(NSIndexPath *)newIndexPath {
+	
+	switch (type) {
+		case NSFetchedResultsChangeInsert: {
+			NSUInteger oldIndex = [self.webPages indexOfObject:[anObject file]];
+			
+			NSMutableDictionary *filePathAccessLogs = [NSMutableDictionary dictionary];
+			[self.fetchedResultsController.fetchedObjects enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+				if ([anObject isEqual:obj]) {
+					*stop = YES;
+					return;
+				}
+				if ([[anObject accessTime] compare:[obj accessTime]] == NSOrderedDescending) {
+					*stop = YES;
+					return;
+				}
+				WAFileAccessLog *log = (WAFileAccessLog*)obj;
+				if (![filePathAccessLogs objectForKey:log.file.identifier]) {
+					
+					filePathAccessLogs[log.file.identifier] = log;
+					
+				}
+
+			}];
+			
+			NSUInteger newIndex = [filePathAccessLogs count];
+			
+			if (oldIndex == NSNotFound) {
+				[self.webPages insertObject:anObject atIndex:newIndex];
+				[self.collectionView insertItemsAtIndexPaths:@[[NSIndexPath indexPathForRow:newIndex inSection:0]]];
+			} else {
+				[self.webPages removeObject:anObject];
+				[self.webPages insertObject:anObject atIndex:newIndex];
+				[self.collectionView moveItemAtIndexPath:[NSIndexPath indexPathForRow:oldIndex inSection:0] toIndexPath:[NSIndexPath indexPathForRow:newIndex inSection:0]];
+			}
+			break;
+		}
+		case NSFetchedResultsChangeDelete:
+		case NSFetchedResultsChangeMove:
+		default:
+			break;
+	}
+}
 
 #pragma mark - UICollectionView DataSource
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
