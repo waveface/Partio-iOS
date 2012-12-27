@@ -26,6 +26,7 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 
 @interface WADayViewController () <NSFetchedResultsControllerDelegate, WADripdownMenuDelegate> {
 	Class containedClass;
+	WADayViewSupportedStyle presentingStyle;
 	BOOL dripdownMenuOpened;
 }
 
@@ -45,6 +46,29 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 - (id) initWithClassNamed:(Class)aClass {
 	self = [self initWithNibName:nil bundle:nil];
 	containedClass = aClass;
+	return self;
+}
+
+- (id) initWithStyle:(WADayViewSupportedStyle)style {
+	self = [self initWithNibName:nil bundle:nil];
+	presentingStyle = style;
+	switch (style) {
+		case WAEventsViewStyle:
+			containedClass = [WATimelineViewController class];
+			break;
+		case WAPhotosViewStyle:
+			containedClass = [WAPhotoStreamViewController class];
+			break;
+		case WADocumentsViewStyle:
+			containedClass = [WADocumentStreamViewController class];
+			break;
+		case WAWebpagesViewStyle:
+			containedClass = [WAWebStreamViewController class];
+			break;
+		default:
+			NSAssert(FALSE, @"Not a valid Day View style inited");
+			break;
+	}
 	return self;
 }
 
@@ -91,13 +115,13 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 	self.paginatedView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
 	
 	NSString *barTitle = nil;
-	if ([containedClass isSubclassOfClass:[WATimelineViewController class]]) {
+	if (presentingStyle == WAEventsViewStyle) {
 		barTitle = NSLocalizedString(@"EVENTS_CONTROLLER_TITLE", @"Title for Events view");
-	} else if ([containedClass isSubclassOfClass:[WAPhotoStreamViewController class]]) {
+	} else if (presentingStyle == WAPhotosViewStyle) {
 		barTitle = NSLocalizedString(@"PHOTOS_TITLE", @"in day view");
-	} else if ([containedClass isSubclassOfClass:[WADocumentStreamViewController class]]) {
+	} else if (presentingStyle == WADocumentsViewStyle) {
 		barTitle = NSLocalizedString(@"DOCUMENTS_CONTROLLER_TITLE", @"Title for document view controller");
-	} else if ([containedClass isSubclassOfClass:[WAWebStreamViewController class]]) {
+	} else if (presentingStyle == WAWebpagesViewStyle) {
 		barTitle = NSLocalizedString(@"WEBPAGES_CONTROLLER_TITLE", @"Title for web pages view controller");
 	}
 
@@ -207,7 +231,7 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 	
 	NSTimeInterval diff = [self.beginningDate timeIntervalSinceDate:[date dayBegin]];
 	
-	NSAssert(diff>=0, @"Should not scroll to the future");
+	NSAssert1(diff>=0, @"Should not scroll to the future: %@", date);
 	
 	return (NSUInteger)(diff / (3600 * 24));
 	
@@ -262,17 +286,6 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 	
 	__weak WADayViewController *wSelf = self;
 	
-	WADayViewSupportedStyle style = WAEventsViewStyle;
-	if ([containedClass isSubclassOfClass:[WATimelineViewController class]]) {
-		style = WAEventsViewStyle;
-	} else if ([containedClass isSubclassOfClass:[WAPhotoStreamViewController class]]) {
-		style = WAPhotosViewStyle;
-	} else if ([containedClass isSubclassOfClass:[WADocumentStreamViewController class]]) {
-		style = WADocumentsViewStyle;
-	} else if ([containedClass isSubclassOfClass:[WAWebStreamViewController class]]) {
-		style = WAWebpagesViewStyle;
-	}
-	
 	if (dripdownMenuOpened) {
 		[self.childViewControllers enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
 			if ([obj isKindOfClass:[WADripdownMenuViewController class]]) {
@@ -286,7 +299,7 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 		return;
 	}
 	
-	__block WADripdownMenuViewController *ddMenu = [[WADripdownMenuViewController alloc] initForViewStyle:style completion:^{
+	__block WADripdownMenuViewController *ddMenu = [[WADripdownMenuViewController alloc] initForViewStyle:presentingStyle completion:^{
 
 		[wSelf.navigationItem.leftBarButtonItem setEnabled:YES];
 		[wSelf.navigationItem.rightBarButtonItem setEnabled:YES];

@@ -107,7 +107,7 @@ static NSString *kWADDViewCellIdentifier = @"DripdownMenuItem";
 		@{@"style": [NSNumber numberWithUnsignedInteger:WADocumentsViewStyle],
 			@"title": NSLocalizedString(@"SLIDING_MENU_TITLE_DOCS", @"Title for Documents in the sliding menu"),
 			@"icon": [UIImage imageNamed:@"DocumentsIcon"],
-			@"color": [UIColor colorWithRed:0.72f green:0.701f blue:0.69f alpha:1.0]
+			@"color": [UIColor colorWithRed:0.572f green:0.8f blue:0.647f alpha:1.0f]
 		},
 	
 		@{@"style": [NSNumber numberWithUnsignedInteger:WAWebpagesViewStyle],

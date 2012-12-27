@@ -355,7 +355,7 @@ extern CFAbsoluteTime StartTime;
   NSParameterAssert(self.syncManager);
   [self.syncManager addObserver:self.slidingMenu forKeyPath:@"isSyncing" options:NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew context:nil];
 
-  IIViewDeckController *viewDeckController = [[IIViewDeckController alloc] initWithCenterViewController:[WASlidingMenuViewController viewControllerForViewStyle:WAEventsViewStyle]
+  IIViewDeckController *viewDeckController = [[IIViewDeckController alloc] initWithCenterViewController:[WASlidingMenuViewController dayViewControllerForViewStyle:WAEventsViewStyle]
 								     leftViewController:self.slidingMenu];
   viewDeckController.view.backgroundColor = [UIColor blackColor];
   viewDeckController.leftLedge = self.window.frame.size.width - 200.0f;
