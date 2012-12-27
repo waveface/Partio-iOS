@@ -38,62 +38,34 @@
 
 @end
 
-@implementation WASlidingMenuViewController {
-  WADayViewSupportedStyle currentViewStyle;
-}
+@implementation WASlidingMenuViewController
 
 + (UIViewController *)dayViewControllerForViewStyle:(WADayViewSupportedStyle)viewStyle {
-  
-  switch (viewStyle) {
-    case WAEventsViewStyle: {
-      WADayViewController *swVC = [[WADayViewController alloc] initWithClassNamed:[WATimelineViewController class]];
-      WANavigationController *navVC = [[WANavigationController alloc] initWithRootViewController:swVC];
-      swVC.view.backgroundColor = [UIColor colorWithRed:0.95f green:0.95f blue:0.95f alpha:1];
-      
-      return navVC;
-    }
-      
-    case WAPhotosViewStyle: {
-      WADayViewController *swVC = [[WADayViewController alloc] initWithClassNamed:[WAPhotoStreamViewController class]];
-      WANavigationController *navVC = [[WANavigationController alloc] initWithRootViewController:swVC];
-      
-      swVC.navigationController.navigationBar.tintColor = [UIColor colorWithWhite:0.157 alpha:1.000];
-      swVC.navigationController.navigationBar.titleTextAttributes = @{UITextAttributeTextColor: [UIColor whiteColor]};
-      [swVC.navigationController.navigationBar setBackgroundImage:nil forBarMetrics:UIBarMetricsDefault];
-      swVC.view.backgroundColor = [UIColor colorWithWhite:0.16f alpha:1.0f];
-      
-      return navVC;
-    }
-      
-    case WAWebpagesViewStyle: {
-      WADayViewController *swVC = [[WADayViewController alloc] initWithClassNamed:[WAWebStreamViewController class]];
-      WANavigationController *navVC = [[WANavigationController alloc] initWithRootViewController:swVC];
-      swVC.view.backgroundColor = [UIColor colorWithRed:0.95f green:0.95f blue:0.95f alpha:1];
-      return navVC;
-    }
-      
-    case WADocumentsViewStyle: {
-      WADayViewController *swVC = [[WADayViewController alloc] initWithClassNamed:[WADocumentStreamViewController class]];
-      WANavigationController *navVC = [[WANavigationController alloc] initWithRootViewController:swVC];
-      swVC.view.backgroundColor = [UIColor colorWithRed:0.95f green:0.95f blue:0.95f alpha:1];
-      
-      return navVC;
-    }
-      
-    default:
-			NSAssert1(FALSE, @"Unsupported view style is assigned: %d", viewStyle);
-      return nil;
-  }
+	
+	NSAssert1(((viewStyle==WAEventsViewStyle) || (viewStyle == WAPhotosViewStyle) || (viewStyle == WADocumentsViewStyle) || (viewStyle == WAWebpagesViewStyle)), @"Unsupported view style: %d", viewStyle);
+	
+	WADayViewController *swVC = [[WADayViewController alloc] initWithStyle:viewStyle];
+	WANavigationController *navVC = [[WANavigationController alloc] initWithRootViewController:swVC];
+
+  if (viewStyle == WAPhotosViewStyle) {
+
+		swVC.navigationController.navigationBar.tintColor = [UIColor colorWithWhite:0.157 alpha:1.000];
+		swVC.navigationController.navigationBar.titleTextAttributes = @{UITextAttributeTextColor: [UIColor whiteColor]};
+		[swVC.navigationController.navigationBar setBackgroundImage:nil forBarMetrics:UIBarMetricsDefault];
+		swVC.view.backgroundColor = [UIColor colorWithWhite:0.16f alpha:1.0f];
+		
+	} else {
+		
+		swVC.view.backgroundColor = [UIColor colorWithRed:0.95f green:0.95f blue:0.95f alpha:1];
+ 		
+	}
+	
+	return navVC;
 }
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
   self = [super initWithStyle:style];
-  if (self) {
-    // Custom initialization
-    
-    currentViewStyle = WAEventsViewStyle;
-  }
   return self;
 }
 
@@ -480,26 +452,6 @@
     
   }
   
-  currentViewStyle = viewStyle;
 }
 
-- (void) switchNextAvailableViewOnDate:(NSDate*)date {
-  
-  if (currentViewStyle == WAEventsViewStyle) {
-    
-    [self switchToViewStyle:WAPhotosViewStyle onDate:date animated:YES];
-    
-  } else if (currentViewStyle == WAPhotosViewStyle) {
-    
-    [self switchToViewStyle:WAEventsViewStyle onDate:date animated:YES];
-    
-  }
-  
-}
-
-- (void) switchPrevAvailableViewOnDate:(NSDate*)date {
-  
-  [self switchNextAvailableViewOnDate:date];
-  
-}
 @end

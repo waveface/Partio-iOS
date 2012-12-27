@@ -19,7 +19,6 @@ typedef NS_ENUM(NSUInteger, WADayViewSupportedStyle) {
 
 @interface WADayViewController : UIViewController <IRPaginatedViewDelegate, IIViewDeckControllerDelegate>
 
-- (id)initWithClassNamed: (Class)containerClass;
 - (id)initWithStyle: (WADayViewSupportedStyle)style;
 - (void)jumpToRecentDay;
 - (BOOL)jumpToDate:(NSDate*)date animated:(BOOL)animated;

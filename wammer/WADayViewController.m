@@ -43,12 +43,6 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 
 @implementation WADayViewController
 
-- (id) initWithClassNamed:(Class)aClass {
-	self = [self initWithNibName:nil bundle:nil];
-	containedClass = aClass;
-	return self;
-}
-
 - (id) initWithStyle:(WADayViewSupportedStyle)style {
 	self = [self initWithNibName:nil bundle:nil];
 	presentingStyle = style;
