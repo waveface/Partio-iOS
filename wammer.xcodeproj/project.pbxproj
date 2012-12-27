@@ -65,6 +65,7 @@
 		4B274E511675BFCC007406D3 /* WACollectionViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4B274E4E1675BFCC007406D3 /* WACollectionViewController.xib */; };
 		4B274E521675BFCC007406D3 /* WACollectionViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4B274E4E1675BFCC007406D3 /* WACollectionViewController.xib */; };
 		4B274E6B1675E104007406D3 /* WACollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4B274E6A1675E104007406D3 /* WACollectionViewCell.xib */; };
+		4B2FC232168BF5AB00CCEE67 /* WACollection.m in Sources */ = {isa = PBXBuildFile; fileRef = 802427081689E1AF002454A7 /* WACollection.m */; };
 		4B31BA9F1591A74C00DC1A70 /* AGImagePickerController+Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B31BA881591A74C00DC1A70 /* AGImagePickerController+Constants.m */; };
 		4B31BAA01591A74C00DC1A70 /* AGImagePickerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B31BA8A1591A74C00DC1A70 /* AGImagePickerController.m */; };
 		4B31BAA11591A74C00DC1A70 /* AGIPC-Checkmark-iPad.png in Resources */ = {isa = PBXBuildFile; fileRef = 4B31BA8B1591A74C00DC1A70 /* AGIPC-Checkmark-iPad.png */; };
@@ -4863,6 +4864,7 @@
 				4B4AA30C16564BEE00A04DDE /* NSDate+WAAdditions.m in Sources */,
 				7DBE8DF6165B383C005C2347 /* WADayHeaderView.m in Sources */,
 				4BB0400916804C68009C3D08 /* WACollection+WARemoteInterfaceEntitySyncing.m in Sources */,
+				4B2FC232168BF5AB00CCEE67 /* WACollection.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
