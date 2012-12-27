@@ -33,4 +33,6 @@ extern NSString * const kWAFileSyncFullQualityStrategy;
 
 @interface WAFile (WARemoteInterfaceEntitySyncing) <WARemoteInterfaceEntitySyncing>
 
++ (NSOperationQueue *)sharedSyncQueue;
+
 @end

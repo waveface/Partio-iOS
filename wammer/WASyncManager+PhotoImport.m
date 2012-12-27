@@ -17,7 +17,7 @@
 
 @implementation WASyncManager (PhotoImport)
 
-- (IRAsyncOperation *)photoImportOperation {
+- (IRAsyncOperation *)photoImportOperationPrototype {
 
   __weak WASyncManager *wSelf = self;
 

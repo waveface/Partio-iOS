@@ -72,13 +72,13 @@
 	
 		[[WADataStore defaultStore] updateArticle:[[article objectID] URIRepresentation] withOptions:nil onSuccess:^{
 		
-			NSParameterAssert([NSThread isMainThread]);
+			NSCParameterAssert([NSThread isMainThread]);
 			
 			[[WARemoteInterface sharedInterface] endPostponingDataRetrievalTimerFiring];
 			
 		} onFailure:^(NSError *error) {
 			
-			NSParameterAssert([NSThread isMainThread]);
+			NSCParameterAssert([NSThread isMainThread]);
 
 			[[WARemoteInterface sharedInterface] endPostponingDataRetrievalTimerFiring];
 			
