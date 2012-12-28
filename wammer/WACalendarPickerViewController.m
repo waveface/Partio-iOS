@@ -8,6 +8,7 @@
 
 #import "WACalendarPickerViewController.h"
 #import "WACalendarPickerDataSource.h"
+#import "WACalendarPickerPanelViewCell.h"
 #import "WAEventViewController.h"
 #import "WAAppearance.h"
 #import "WASlidingMenuViewController.h"
@@ -21,7 +22,6 @@
 {
 	KalViewController *calPicker;
 	id dataSource;
-	UITableView *tableView;
 	WAArticle *selectedEvent;
 	WACalendarPickerStyle calStyle;
 }
@@ -30,10 +30,10 @@
 
 @implementation WACalendarPickerViewController
 
-- (WACalendarPickerViewController *)initWithFrame:(CGRect)frame style:(WACalendarPickerStyle)style
+- (WACalendarPickerViewController *)initWithFrame:(CGRect)frame style:(WACalendarPickerStyle)style selectedDate:(NSDate *)date
 {
 	
-	calPicker = [[KalViewController alloc] init];
+	calPicker = [[KalViewController alloc] initWithSelectedDate:date];
 	calPicker.title = NSLocalizedString(@"TITLE_CALENDAR", @"Title of Canlendar");
 	calPicker.delegate = self;
 	dataSource = [[WACalendarPickerDataSource alloc] init];
@@ -103,7 +103,8 @@
 	[cancelButton setTitle:NSLocalizedString(@"CALENDAR_CANCEL_BUTTON", "Cancel button in calendar picker") forState:UIControlStateNormal];
 	cancelButton.titleLabel.font = [UIFont boldSystemFontOfSize:12.f];
 	[cancelButton setTitleColor:[UIColor colorWithRed:0.757f green:0.757f blue:0.757f alpha:1.f] forState:UIControlStateNormal];
-  cancelButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
+  [cancelButton setTitleColor:[UIColor whiteColor] forState:UIControlStateHighlighted];
+	cancelButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
   cancelButton.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
 	
 	return cancelButton;
@@ -127,10 +128,8 @@
 	[calPicker showAndSelectDate:[NSDate date]];
 }
 
-- (void)viewDidLoad
+- (void)viewWillAppear:(BOOL)animated
 {
-	[super viewDidLoad];
-  
 	self.view.backgroundColor = [UIColor whiteColor];
 	self.view.layer.cornerRadius = 3.f;
 	self.view.clipsToBounds = YES;
@@ -154,8 +153,7 @@
 {
 	selectedEvent = [[dataSource items] objectAtIndex:indexPath.row];
 		
-	if ([selectedEvent isKindOfClass:[WAArticle class]]) {
-
+	if ([selectedEvent isKindOfClass:[WAArticle class]]) {		
 		WAEventViewController *eventVC = [WAEventViewController controllerForArticle:selectedEvent];
 		
 		if (isPad()) {
@@ -165,61 +163,6 @@
 			
 		} else {
 			[self pushViewController:eventVC animated:YES];
-			
-		}
-
-	}
-	else if ([selectedEvent isKindOfClass:[WAFile class]]) {
-
-		WAFile *file = (WAFile *)selectedEvent;
-		WASlidingMenuViewController *smVC;
-		
-		if (file.created) {
-			if (self.viewDeckController) {
-				
-				smVC = (WASlidingMenuViewController *)[self.viewDeckController leftController];
-				[smVC switchToViewStyle:WAPhotosViewStyle onDate:file.created animated:YES];
-				
-			}
-			else {
-				
-				smVC = (WASlidingMenuViewController *)[[[self delegate] viewDeckController] leftController];
-				[smVC switchToViewStyle:WAPhotosViewStyle onDate:file.created animated:NO];
-				
-				if (isPhone()) {
-					[self dismissViewControllerAnimated:YES completion:nil];
-								
-				} else {
-					[self.delegate dismissPopoverAnimated:YES];
-					
-				}
-				
-			}
-		}
-		
-	} else if ([selectedEvent isKindOfClass:[WAFileAccessLog class]]) {
-
-		WAFileAccessLog *file = (WAFileAccessLog *)selectedEvent;
-		WASlidingMenuViewController *smVC;
-
-		if (self.viewDeckController) {
-			
-			smVC = (WASlidingMenuViewController *)[self.viewDeckController leftController];
-			[smVC switchToViewStyle:WADocumentsViewStyle onDate:file.accessTime animated:YES];
-			
-		}
-		else {
-			
-			smVC = (WASlidingMenuViewController *)[[[self delegate] viewDeckController] leftController];
-			[smVC switchToViewStyle:WADocumentsViewStyle onDate:file.accessTime animated:NO];
-			
-			if (isPhone()) {
-				[self dismissViewControllerAnimated:YES completion:nil];
-			
-			} else {
-				[self.delegate dismissPopoverAnimated:YES];
-				
-			}
 			
 		}
 
@@ -260,6 +203,50 @@
     calPicker.view.frame = CGRectMake(0, 0, kFrameHeight, kFrameWidth);
   }
 
+}
+
+#pragma mark - icon buttons
+
+- (IBAction)handleEvents:(UIButton *)sender
+{
+	WASlidingMenuViewController *smVC;
+	
+	if (self.viewDeckController) {
+		
+		smVC = (WASlidingMenuViewController *)[self.viewDeckController leftController];
+		[smVC switchToViewStyle:WAEventsViewStyle onDate:[calPicker selectedNSDate] animated:YES];
+		
+	}
+}
+
+- (IBAction)handlePhotos:(UIButton *)sender
+{
+	NSParameterAssert(self.viewDeckController);
+	
+	WASlidingMenuViewController *smVC;
+	smVC = (WASlidingMenuViewController *)[self.viewDeckController leftController];
+	[smVC switchToViewStyle:WAPhotosViewStyle onDate:[calPicker selectedNSDate] animated:YES];
+	
+}
+
+- (IBAction)handleDocs:(UIButton *)sender
+{
+	NSParameterAssert(self.viewDeckController);
+	
+	WASlidingMenuViewController *smVC;
+	smVC = (WASlidingMenuViewController *)[self.viewDeckController leftController];
+	[smVC switchToViewStyle:WADocumentsViewStyle onDate:[calPicker selectedNSDate] animated:YES];
+
+}
+
+- (IBAction)handleWebpages:(UIButton *)sender
+{
+	NSParameterAssert(self.viewDeckController);
+	
+	WASlidingMenuViewController *smVC;
+	smVC = (WASlidingMenuViewController *)[self.viewDeckController leftController];
+	[smVC switchToViewStyle:WAWebpagesViewStyle onDate:[calPicker selectedNSDate] animated:YES];
+	
 }
 
 @end

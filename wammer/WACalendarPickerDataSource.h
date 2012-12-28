@@ -13,7 +13,8 @@
 typedef NS_ENUM(NSInteger, WACalendarLoadObject) {
 	WACalendarLoadObjectEvent,
 	WACalendarLoadObjectPhoto,
-	WACalendarLoadObjectDoc
+	WACalendarLoadObjectDoc,
+	WACalendarLoadObjectWebpage
 };
 
 @interface WACalendarPickerDataSource : NSObject <UITableViewDataSource, KalDataSource>
