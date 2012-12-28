@@ -297,6 +297,8 @@ static NSString *kWAContextViewCellIdentifier = @"ContextMenuItem";
   if (isPad()) {
 	if ([self.popover isPopoverVisible])
 	  [self.popover dismissPopoverAnimated:NO];
+  } else {
+	[self dismissContextMenu];
   }
   
 }
