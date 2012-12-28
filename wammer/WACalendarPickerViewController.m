@@ -128,10 +128,10 @@
 	[calPicker showAndSelectDate:[NSDate date]];
 }
 
-- (void)viewDidLoad
+- (void)viewWillAppear:(BOOL)animated
 {
-	[super viewDidLoad];
-  
+//  [super viewWillAppear:animated];
+	
 	self.view.backgroundColor = [UIColor whiteColor];
 	self.view.layer.cornerRadius = 3.f;
 	self.view.clipsToBounds = YES;

@@ -16,9 +16,9 @@
 #import "WAFileAccessLog.h"
 
 NSString *const kMarkedEvents = @"markedRed";
-NSString *const kMarkedPhotos = @"markedLightBlue";
-NSString *const kMarkedDocuments = @"markedOrange";
-NSString *const kMarkedWebpages = @"markedGreen";
+NSString *const kMarkedPhotos = @"markedOrange";
+NSString *const kMarkedDocuments = @"markedGreen";
+NSString *const kMarkedWebpages = @"markedLightBlue";
 NSString *const kMarkedCollections = @"markedDarkBlue";
 
 @interface WACalendarPickerDataSource () <NSFetchedResultsControllerDelegate>
@@ -58,6 +58,9 @@ typedef void (^completionBlock) (NSArray *days);
 		
 		entityName = @"WADocumentDay";
 		
+	} else if (style == WACalendarLoadObjectWebpage) {
+	
+		entityName = @"WAWebpageDay";
 	}
 	
 	NSManagedObjectContext *context = [[WADataStore defaultStore] disposableMOC];
@@ -148,6 +151,29 @@ typedef void (^completionBlock) (NSArray *days);
 		
 	}];
 	
+	[self loadDayswithStyle:WACalendarLoadObjectWebpage from:fromDate to:toDate completionBlock:^(NSArray *days) {
+		
+		for (NSDate *day in days) {
+			NSPredicate *finder = [NSPredicate predicateWithFormat:@"date == %@", day];
+			NSMutableDictionary *dayWithEventPhotoDoc = [[_daysWithAttributes filteredArrayUsingPredicate:finder] lastObject];
+			
+			if (!dayWithEventPhotoDoc) {
+				[_daysWithAttributes addObject:[@{@"date": day,
+																				kMarkedEvents: @NO,
+																				kMarkedPhotos: @NO,
+																				kMarkedDocuments: @NO,
+																				kMarkedWebpages: @YES,
+																				kMarkedCollections: @NO} mutableCopy]];
+			} else {
+				NSMutableDictionary *modifiedObject = [dayWithEventPhotoDoc mutableCopy];
+				modifiedObject[kMarkedWebpages] = @YES;
+				
+				[_daysWithAttributes replaceObjectAtIndex:[_daysWithAttributes indexOfObject:dayWithEventPhotoDoc] withObject:modifiedObject];
+			}
+		
+		}
+		
+	}];
 }
 
 - (NSArray *)fetchObject:(WACalendarLoadObject)object from:(NSDate *)fromDate to:(NSDate *)toDate
