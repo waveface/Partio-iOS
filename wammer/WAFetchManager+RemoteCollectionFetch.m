@@ -31,16 +31,20 @@
     WARemoteInterface *ri = [WARemoteInterface sharedInterface];
     [ri.engine fireAPIRequestNamed:@"collections/getAll" withArguments:nil options:nil validator:WARemoteInterfaceGenericNoErrorValidator() successHandler:^(NSDictionary *response, IRWebAPIRequestContext *context) {
 
-      NSManagedObjectContext *moc = [[WADataStore defaultStore] autoUpdatingMOC];
-      moc.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
-      [WACollection insertOrUpdateObjectsUsingContext:moc
-			     withRemoteResponse:[response objectForKey:@"collections"]
-				 usingMapping:nil
-				      options:IRManagedObjectOptionIndividualOperations];
+      WADataStore *ds = [WADataStore defaultStore];
+      [ds performBlock:^{
 
-      NSError *error = nil;
-      if (![moc save:&error])
-        NSLog(@"Error on saving collection: %@", error);
+        NSManagedObjectContext *moc = [ds autoUpdatingMOC];
+        [WACollection insertOrUpdateObjectsUsingContext:moc
+			       withRemoteResponse:[response objectForKey:@"collections"]
+				   usingMapping:nil
+				        options:IRManagedObjectOptionIndividualOperations];
+        
+        NSError *error = nil;
+        if (![moc save:&error])
+	NSLog(@"Error on saving collection: %@", error);
+
+      } waitUntilDone:YES];
 
       [wSelf endPostponingFetch];
 

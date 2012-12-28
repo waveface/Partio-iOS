@@ -81,7 +81,6 @@ extern NSString * const kWASNSGoogleConnectEnabled;
 extern NSString * const kWASNSTwitterConnectEnabled;
 extern NSString * const kWASNSFoursquareConnectEnabled;
 
-extern NSString * const kWAPastArticlesFetchOnce;
 extern NSString * const kWAAllCollectionsFetchOnce;
 
 extern NSString * const WAFeedbackRecipient;

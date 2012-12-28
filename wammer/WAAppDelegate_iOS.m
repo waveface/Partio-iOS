@@ -388,7 +388,6 @@ extern CFAbsoluteTime StartTime;
   self.fetchManager = nil;
   
   [[NSUserDefaults standardUserDefaults] setBool:NO forKey:kWAPhotoImportEnabled];
-  [[NSUserDefaults standardUserDefaults] setBool:YES forKey:kWAPastArticlesFetchOnce];
   [[NSUserDefaults standardUserDefaults] setBool:YES forKey:kWAAllCollectionsFetchOnce];
   [[NSUserDefaults standardUserDefaults] synchronize];
   

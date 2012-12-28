@@ -107,13 +107,6 @@
     return NO;
   }
 
-  if (![[NSUserDefaults standardUserDefaults] boolForKey:kWAPastArticlesFetchOnce]) {
-    return NO;
-  }
-  
-  [[NSUserDefaults standardUserDefaults] setBool:NO forKey:kWAPastArticlesFetchOnce];
-  [[NSUserDefaults standardUserDefaults] synchronize];
-  
   return YES;
 
 }

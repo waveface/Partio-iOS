@@ -437,14 +437,7 @@
   
   NSFetchRequest *request = [[NSFetchRequest alloc] init];
   request.entity = [NSEntityDescription entityForName:@"WAFile" inManagedObjectContext:aContext];
-  request.predicate = [NSPredicate predicateWithFormat:@"outdated == TRUE AND articles.@count != 0"];
-  NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"articles" ascending:NO comparator:^NSComparisonResult(NSOrderedSet *articles1, NSOrderedSet *articles2) {
-    // mostly, the first article of a WAFile's articles is the latest one
-    WAArticle *article1 = articles1[0];
-    WAArticle *article2 = articles2[0];
-    return [article1.creationDate compare:article2.creationDate];
-  }];
-  request.sortDescriptors = @[sortDescriptor];
+  request.predicate = [NSPredicate predicateWithFormat:@"outdated == TRUE"];
   
   NSError *fetchingError = nil;
   NSArray *fetchedFiles = [aContext executeFetchRequest:request error:&fetchingError];

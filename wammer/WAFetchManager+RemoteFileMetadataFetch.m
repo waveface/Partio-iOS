@@ -44,7 +44,6 @@
 	  [ds performBlock:^{
 
 	    NSManagedObjectContext *context = [ds autoUpdatingMOC];
-	    context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
 	    [WAFile insertOrUpdateObjectsUsingContext:context
 			       withRemoteResponse:attachmentReps
 				   usingMapping:nil
