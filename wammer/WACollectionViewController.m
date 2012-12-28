@@ -23,7 +23,7 @@ typedef NS_ENUM(NSUInteger, WACollectionSortMode){
 }
 
 @property (nonatomic, strong) NSFetchedResultsController *fetchedResultsController;
-
+@property (nonatomic, strong) UIRefreshControl *refreshControl;
 @end
 
 @implementation WACollectionViewController
@@ -68,6 +68,10 @@ typedef NS_ENUM(NSUInteger, WACollectionSortMode){
   
   [self.collectionView registerClass:[WACollectionViewCell class] forCellWithReuseIdentifier:kCollectionViewCellID];
   
+  _refreshControl = [[UIRefreshControl alloc] initWithFrame:CGRectMake(0, -44, 320, 44)];
+  [_refreshControl addTarget:self action:@selector(refresh) forControlEvents:UIControlEventValueChanged];
+  [self.collectionView addSubview:_refreshControl];
+  
   [self reloadCollection];
 }
 
@@ -105,13 +109,13 @@ typedef NS_ENUM(NSUInteger, WACollectionSortMode){
     coverFile = coverFile.pageElements[0];
   }
   [coverFile irObserve:@"thumbnailImage"
-	 options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew
-	 context:nil
-         withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
-	 dispatch_async(dispatch_get_main_queue(), ^{
-	   ((WACollectionViewCell *)[aCollectionView cellForItemAtIndexPath:indexPath]).coverImage.image = (UIImage*)toValue;
-	 });
-         }];
+	     options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew
+	     context:nil
+	   withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
+	     dispatch_async(dispatch_get_main_queue(), ^{
+	       ((WACollectionViewCell *)[aCollectionView cellForItemAtIndexPath:indexPath]).coverImage.image = (UIImage*)toValue;
+	     });
+	   }];
   
   
   return (UICollectionViewCell *)cell;
@@ -126,4 +130,14 @@ typedef NS_ENUM(NSUInteger, WACollectionSortMode){
   [self.navigationController pushViewController:galleryVC animated:YES];
 }
 
+#pragma mark Private Methods
+
+- (void)refresh {
+  NSLog(@"Reload Collection Meta");
+  double delayInSeconds = 2.0;
+  dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+  dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+    [_refreshControl endRefreshing];
+  });
+}
 @end
