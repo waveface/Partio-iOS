@@ -12,6 +12,9 @@
 #import "WAFile.h"
 #import <CoreData+MagicalRecord.h>
 #import "WAGalleryViewController.h"
+#import <MKNetworkKit/MKNetworkKit.h>
+#import "WARemoteInterface+Authentication.h"
+#import <WADataStore+WARemoteInterfaceAdditions.h>
 
 typedef NS_ENUM(NSUInteger, WACollectionSortMode){
   WACollectionSortByName = 0,
@@ -71,13 +74,13 @@ typedef NS_ENUM(NSUInteger, WACollectionSortMode){
   _refreshControl = [[UIRefreshControl alloc] initWithFrame:CGRectMake(0, -44, 320, 44)];
   [_refreshControl addTarget:self action:@selector(refresh) forControlEvents:UIControlEventValueChanged];
   [self.collectionView addSubview:_refreshControl];
-  
-  [self reloadCollection];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
   [super viewWillAppear:animated];
-  
+  if ([WACollection MR_countOfEntities]==0) {
+    [self refresh];
+  }
   self.title = NSLocalizedString(@"COLLECTIONS", @"In navigation bar");
 }
 
@@ -108,6 +111,7 @@ typedef NS_ENUM(NSUInteger, WACollectionSortMode){
   if ([coverFile.pageElements count]) {
     coverFile = coverFile.pageElements[0];
   }
+  
   [coverFile irObserve:@"thumbnailImage"
 	     options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew
 	     context:nil
@@ -133,11 +137,42 @@ typedef NS_ENUM(NSUInteger, WACollectionSortMode){
 #pragma mark Private Methods
 
 - (void)refresh {
-  NSLog(@"Reload Collection Meta");
-  double delayInSeconds = 2.0;
-  dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-  dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-    [_refreshControl endRefreshing];
-  });
+  WARemoteInterface *interface = [WARemoteInterface sharedInterface];
+  MKNetworkEngine *engine = [[MKNetworkEngine alloc] initWithHostName:@"develop.waveface.com"];
+  MKNetworkOperation *op = [engine operationWithPath:@"v2/collections/getAll"
+                                              params:@{
+		        @"session_token":interface.userToken,
+		        @"api_key":interface.apiKey}
+                                          httpMethod:@"GET"];
+  op.freezable = YES;
+  [op addCompletionHandler:^(MKNetworkOperation *completedOperation)
+   {
+   [_refreshControl endRefreshing];
+   NSError *error;
+   NSDictionary *response = [NSJSONSerialization JSONObjectWithData:[completedOperation responseData]
+						options:NSJSONReadingAllowFragments
+						  error:&error];
+   
+   NSManagedObjectContext *moc = [NSManagedObjectContext MR_context];
+   moc.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
+   
+   NSArray *collections = [WACollection
+		       insertOrUpdateObjectsUsingContext:moc
+		       withRemoteResponse:[response objectForKey:@"collections"]
+		       usingMapping:nil
+		       options:IRManagedObjectOptionIndividualOperations
+		       ];
+   [moc save:nil];
+   [self reloadCollection];
+   [self.collectionView reloadData];
+   }
+	    errorHandler:^(MKNetworkOperation *completedOperation, NSError *error)
+   {
+   NSLog(@"Failed %@", completedOperation);
+   [_refreshControl endRefreshing];
+   }];
+  
+  //  MKNetworkOperation *op = [engine operationWithPath:@"https://develop.waveface.com/v2/attachments/multiple_get?session_token=b31tbLA0SYCwHXDZR9qf7A2n.fIn9nQMUri8c5J%2Fgi3stz0w5CgE7i5E6PNGSDz9QLM8&apikey=ca5c3c5c-287d-5805-93c1-a6c2cbf9977c"];
+  [engine enqueueOperation:op];
 }
 @end
