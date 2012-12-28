@@ -19,6 +19,7 @@
 #import "WARemoteInterface+WebSocket.h"
 #import "WARemoteInterface+RemoteNotifications.h"
 #import "WASyncManager.h"
+#import "WAFetchManager.h"
 
 #import "WADataStore.h"
 #import "WADataStore+WARemoteInterfaceAdditions.h"
@@ -105,6 +106,7 @@ static NSString *const kTrackingId = @"UA-27817516-7";
 @property (nonatomic, readwrite) UIBackgroundTaskIdentifier bgTask;
 @property (nonatomic, strong) WACacheManager *cacheManager;
 @property (nonatomic, strong) WASyncManager *syncManager;
+@property (nonatomic, strong) WAFetchManager *fetchManager;
 @property (nonatomic, strong) WASlidingMenuViewController *slidingMenu;
 
 - (void) clearViewHierarchy;
@@ -205,6 +207,7 @@ extern CFAbsoluteTime StartTime;
     if (lastAuthenticatedUserIdentifier)
       [self bootstrapPersistentStoreWithUserIdentifier:lastAuthenticatedUserIdentifier];
     
+    self.fetchManager = [[WAFetchManager alloc] init];
     self.syncManager = [[WASyncManager alloc] init];
     
     [self recreateViewHierarchy];
@@ -382,10 +385,11 @@ extern CFAbsoluteTime StartTime;
   
   self.cacheManager = nil;
   self.syncManager = nil;
+  self.fetchManager = nil;
   
-  BOOL const WAPhotoImportEnabledDefault = NO;
-  
-  [[NSUserDefaults standardUserDefaults] setBool:WAPhotoImportEnabledDefault forKey:kWAPhotoImportEnabled];
+  [[NSUserDefaults standardUserDefaults] setBool:NO forKey:kWAPhotoImportEnabled];
+  [[NSUserDefaults standardUserDefaults] setBool:YES forKey:kWAPastArticlesFetchOnce];
+  [[NSUserDefaults standardUserDefaults] setBool:YES forKey:kWAAllCollectionsFetchOnce];
   [[NSUserDefaults standardUserDefaults] synchronize];
   
   [self unsubscribeRemoteNotification];
@@ -420,6 +424,8 @@ extern CFAbsoluteTime StartTime;
        ri.monitoredHosts = nil;
        [ri performAutomaticRemoteUpdatesNow];
        
+       wSelf.fetchManager = [[WAFetchManager alloc] init];
+       [wSelf.fetchManager reload];
        wSelf.syncManager = [[WASyncManager alloc] init];
        [wSelf.syncManager reload];
        
@@ -813,6 +819,7 @@ static NSInteger networkActivityStackingCount = 0;
   if ([self hasAuthenticationData]) {
     
     [self.cacheManager clearPurgeableFilesIfNeeded];
+    [self.fetchManager reload];
     [self.syncManager reload];
     
   }

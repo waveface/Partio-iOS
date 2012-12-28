@@ -399,7 +399,7 @@
 			return;
 	
 		// FIXME: find the correct post to remove from
-		WAArticle *article = [[representedFile.articles allObjects] objectAtIndex:0];
+		WAArticle *article = representedFile.articles[0];
 		
 		[[UIApplication sharedApplication] beginIgnoringInteractionEvents];
 		[[UIApplication sharedApplication] performSelector:@selector(endIgnoringInteractionEvents) withObject:nil afterDelay:0.5f];

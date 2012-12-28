@@ -502,7 +502,7 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
       }
       
       NSCAssert1(file.articles.count>0, @"WAFile entity %@ must have already been associated with an article", file);
-      WAArticle *article = [file.articles allObjects][0];  // if the post is from device itself, there should be only one article in db, this should be right, but careful
+      WAArticle *article = file.articles[0];  // if the post is from device itself, there should be only one article in db, this should be right, but careful
       if (article.identifier) {
         options[kWARemoteArticleIdentifier] = article.identifier;
       }
@@ -594,7 +594,7 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
       if (file.identifier)
         options[kWARemoteAttachmentUpdatedObjectIdentifier] = file.identifier;
       
-      WAArticle *article = [file.articles allObjects][0];
+      WAArticle *article = file.articles[0];
       if (article.identifier) {
         options[kWARemoteArticleIdentifier] = article.identifier;
       }
