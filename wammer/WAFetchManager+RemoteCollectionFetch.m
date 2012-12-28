@@ -46,6 +46,9 @@
 
       } waitUntilDone:YES];
 
+      [[NSUserDefaults standardUserDefaults] setBool:NO forKey:kWAAllCollectionsFetchOnce];
+      [[NSUserDefaults standardUserDefaults] synchronize];
+
       [wSelf endPostponingFetch];
 
     } failureHandler:WARemoteInterfaceGenericFailureHandler(^(NSError *error) {
@@ -86,9 +89,6 @@
   if (![[NSUserDefaults standardUserDefaults] boolForKey:kWAAllCollectionsFetchOnce]) {
     return NO;
   }
-  
-  [[NSUserDefaults standardUserDefaults] setBool:NO forKey:kWAAllCollectionsFetchOnce];
-  [[NSUserDefaults standardUserDefaults] synchronize];
   
   return YES;
 

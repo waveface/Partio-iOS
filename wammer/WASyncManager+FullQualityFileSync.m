@@ -29,7 +29,7 @@
       return;
     }
     
-    [[wSelf recurrenceMachine] beginPostponingOperations];
+    [wSelf beginPostponingSync];
 
     [[WADataStore defaultStore] enumerateFilesWithSyncableBlobsInContext:nil usingBlock:^(WAFile *aFile, NSUInteger index, BOOL *stop) {
       
@@ -67,7 +67,7 @@
     }];
 
     NSBlockOperation *tailOp = [NSBlockOperation blockOperationWithBlock:^{
-      [[wSelf recurrenceMachine] endPostponingOperations];
+      [wSelf endPostponingSync];
     }];
     
     for (NSOperation *operation in wSelf.fileSyncOperationQueue.operations) {

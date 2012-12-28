@@ -16,7 +16,6 @@
 
 - (void) reload;
 
-@property (nonatomic, readonly, strong) IRRecurrenceMachine *recurrenceMachine;
 @property (nonatomic, readonly, strong) NSOperationQueue *articleFetchOperationQueue;
 @property (nonatomic, readonly, strong) NSOperationQueue *fileMetadataFetchOperationQueue;
 
