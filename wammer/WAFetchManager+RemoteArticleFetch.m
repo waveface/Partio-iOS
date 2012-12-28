@@ -68,7 +68,7 @@
       if (earliestTimestamp) {
         // already sync to the first article
         if ([earliestTimestamp isEqualToDate:usedDate]) {
-	[[NSUserDefaults standardUserDefaults] setBool:YES forKey:kWAFirstArticleSynced];
+	[[NSUserDefaults standardUserDefaults] setBool:YES forKey:kWAFirstArticleFetched];
 	[[NSUserDefaults standardUserDefaults] synchronize];
         }
         [ds setLastNewPostsUpdateDate:earliestTimestamp];
@@ -112,7 +112,7 @@
     return NO;
   }
 
-  if ([[NSUserDefaults standardUserDefaults] boolForKey:kWAFirstArticleSynced]) {
+  if ([[NSUserDefaults standardUserDefaults] boolForKey:kWAFirstArticleFetched]) {
     return NO;
   }
 
