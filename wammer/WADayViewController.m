@@ -5,37 +5,33 @@
 //  Created by Shen Steven on 10/4/12.
 //  Copyright (c) 2012 Waveface. All rights reserved.
 //
+#import <CoreData+MagicalRecord.h>
 
 #import "WADayViewController.h"
 #import "WADefines.h"
-#import "WATimelineViewController.h"
-#import "WADataStore.h"
 #import "NSDate+WAAdditions.h"
-#import "WADataStore+WARemoteInterfaceAdditions.h"
 
-#import "WADataStore+FetchingConveniences.h"
 #import "IRBarButtonItem.h"
-#import "WADripdownMenuViewController.h"
-#import "WAArticleDraftsViewController.h"
+#import "WAContextMenuViewController.h"
 #import "WANavigationController.h"
-#import "WACompositionViewController.h"
 #import "WASlidingMenuViewController.h"
 
-#import "WARemoteInterface.h"
+#import "WATimelineViewController.h"
 #import "WAPhotoStreamViewController.h"
-#import <CoreData+MagicalRecord.h>
 #import "WADocumentStreamViewController.h"
 #import "WAWebStreamViewController.h"
-#import "WADocumentDay.h"
-#import "WAEventDay.h"
-#import "WAPhotoDay.h"
-#import "WAWebpageDay.h"
 
+static const NSUInteger kWAAppendingBatchSize = 30;
 static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPostsViewControllerPhone_RepresentedObjectURI";
 
-@interface WADayViewController () <WAArticleDraftsViewControllerDelegate, NSFetchedResultsControllerDelegate> {
+@interface WADayViewController () <NSFetchedResultsControllerDelegate, WAContextMenuDelegate> {
 	Class containedClass;
+	WADayViewSupportedStyle presentingStyle;
+	BOOL contextMenuOpened;
 }
+
+@property (nonatomic, readonly) NSUInteger currentTotalPageSize;
+@property (nonatomic, readonly) NSDate *beginningDate;
 
 @property (nonatomic, readwrite, strong) IRPaginatedView *paginatedView;
 @property (nonatomic, readwrite, strong) NSMutableDictionary *daysControllers;
@@ -47,9 +43,26 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 
 @implementation WADayViewController
 
-- (id) initWithClassNamed:(Class)aClass {
+- (id) initWithStyle:(WADayViewSupportedStyle)style {
 	self = [self initWithNibName:nil bundle:nil];
-	containedClass = aClass;
+	presentingStyle = style;
+	switch (style) {
+		case WAEventsViewStyle:
+			containedClass = [WATimelineViewController class];
+			break;
+		case WAPhotosViewStyle:
+			containedClass = [WAPhotoStreamViewController class];
+			break;
+		case WADocumentsViewStyle:
+			containedClass = [WADocumentStreamViewController class];
+			break;
+		case WAWebpagesViewStyle:
+			containedClass = [WAWebStreamViewController class];
+			break;
+		default:
+			NSAssert(FALSE, @"Not a valid Day View style inited");
+			break;
+	}
 	return self;
 }
 
@@ -59,22 +72,13 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
     if (!self)
 			return nil;
 		
-	self.daysControllers = [[NSMutableDictionary alloc] init];
+	_currentTotalPageSize = kWAAppendingBatchSize;
+	_beginningDate = [NSDate date]; // init with today
 	
-	[[NSNotificationCenter defaultCenter]
-	 addObserver:self
-	 selector:@selector(handleCompositionSessionRequest:)
-	 name:kWACompositionSessionRequestedNotification
-	 object:nil];
-			
+	self.daysControllers = [[NSMutableDictionary alloc] init];
+		
 	__weak WADayViewController *wSelf = self;
 
-	/*
-	self.navigationItem.rightBarButtonItem  = WABarButtonItem([UIImage imageNamed:@"Create"], @"", ^{
-		[wSelf handleCompose:wSelf.navigationItem.rightBarButtonItem];
-	});
-	 */
-	
 	self.navigationItem.leftBarButtonItem = WABarButtonItem([UIImage imageNamed:@"menu"], @"", ^{
 		[wSelf.viewDeckController toggleLeftView];
 	});
@@ -104,33 +108,35 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 	self.paginatedView.delegate = self;
 	self.paginatedView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
 	
+	NSString *barTitle = nil;
+	if (presentingStyle == WAEventsViewStyle) {
+		barTitle = NSLocalizedString(@"EVENTS_CONTROLLER_TITLE", @"Title for Events view");
+	} else if (presentingStyle == WAPhotosViewStyle) {
+		barTitle = NSLocalizedString(@"PHOTOS_TITLE", @"in day view");
+	} else if (presentingStyle == WADocumentsViewStyle) {
+		barTitle = NSLocalizedString(@"DOCUMENTS_CONTROLLER_TITLE", @"Title for document view controller");
+	} else if (presentingStyle == WAWebpagesViewStyle) {
+		barTitle = NSLocalizedString(@"WEBPAGES_CONTROLLER_TITLE", @"Title for web pages view controller");
+	}
+
+	self.navigationItem.titleView = WATitleViewForContextMenu(barTitle, self, @selector(contextMenuTapped));
 	[self.view addSubview: self.paginatedView];
-	
+
+	contextMenuOpened = NO;
 }
 
 - (void) viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
 
 	self.navigationItem.titleView.alpha = 1;
-	
-	if ([containedClass isSubclassOfClass:[WATimelineViewController class]]) {
-		self.title = NSLocalizedString(@"EVENTS_CONTROLLER_TITLE", @"Title for Events view");
-	} else if ([containedClass isSubclassOfClass:[WAPhotoStreamViewController class]]) {
-		self.title = NSLocalizedString(@"PHOTOS_TITLE", @"in day view");
-	} else if ([containedClass isSubclassOfClass:[WADocumentStreamViewController class]]) {
-		self.title = NSLocalizedString(@"DOCUMENTS_CONTROLLER_TITLE", @"Title for document view controller");
-	} else if ([containedClass isSubclassOfClass:[WAWebStreamViewController class]]) {
-		self.title = NSLocalizedString(@"WEBPAGES_CONTROLLER_TITLE", @"Title for web pages view controller");
-	}
-	
 
 }
 
-- (void) viewDidAppear:(BOOL)animated {
-	[super viewDidAppear:animated];
+- (void) viewDidLoad {
+	
+	[super viewDidLoad];
 	
 	[self.paginatedView reloadViews];
-
 }
 
 - (void)didReceiveMemoryWarning
@@ -179,53 +185,9 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 
 #pragma mark - delegate methods for IRPaginatedView
 
--(void) viewDidLoad {
-	
-	self.daysControllers = [NSMutableDictionary dictionary];
-	
-	NSString *entityName = nil;
-	
-	if ([containedClass isSubclassOfClass:[WATimelineViewController class]]) {
-		
-		entityName = @"WAEventDay";
-		
-	} else if ([containedClass isSubclassOfClass:[WAPhotoStreamViewController class]]) {
-		
-		entityName = @"WAPhotoDay";
-		
-	} else if ([containedClass isSubclassOfClass:[WADocumentStreamViewController class]]) {
-		
-		entityName = @"WADocumentDay";
-
-	} else if ([containedClass isSubclassOfClass:[WAWebStreamViewController class]]) {
-
-		entityName = @"WAWebpageDay";
-		
-	}
-	
-	NSManagedObjectContext *context = [[WADataStore defaultStore] defaultAutoUpdatedMOC];
-	NSFetchRequest *request = [[NSFetchRequest alloc] init];
-	NSEntityDescription *entity = [NSEntityDescription entityForName:entityName inManagedObjectContext:context];
-	[request setEntity:entity];
-	NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"day" ascending:NO];
-	[request setSortDescriptors:@[sortDescriptor]];
-		
-	self.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:request managedObjectContext:context sectionNameKeyPath:nil cacheName:nil];
-
-	self.fetchedResultsController.delegate = self;
-
-	NSError *error = nil;
-		
-	if(![self.fetchedResultsController performFetch:&error]) {
-		NSLog(@"%@: failed to fetch files for documents", __FUNCTION__);
-	}
-
-
-}
-
 - (NSUInteger)numberOfViewsInPaginatedView:(IRPaginatedView *)paginatedView {
 	
-	return [self.fetchedResultsController.fetchedObjects count];
+	return self.currentTotalPageSize;
 	
 }
 
@@ -252,17 +214,20 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 
 - (NSDate *) dayAtPageIndex:(NSInteger)idx {
 	
-	NSDate *theDay = nil;
-	if ([containedClass isSubclassOfClass:[WATimelineViewController class]])
-		theDay = [(WAEventDay*)self.fetchedResultsController.fetchedObjects[idx] day];
-	else if ([containedClass isSubclassOfClass:[WAPhotoStreamViewController class]])
-		theDay = [(WAPhotoDay*)self.fetchedResultsController.fetchedObjects[idx] day];
-	else if ([containedClass isSubclassOfClass:[WADocumentStreamViewController class]])
-		theDay = [(WADocumentDay*)self.fetchedResultsController.fetchedObjects[idx] day];
-	else if ([containedClass isSubclassOfClass:[WAWebStreamViewController class]])
-		theDay = [(WAWebpageDay*)self.fetchedResultsController.fetchedObjects[idx] day];
+	NSCalendar *calendar = [NSCalendar currentCalendar];
+  NSDateComponents *dateComponents = [calendar components:(NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit|NSTimeZoneCalendarUnit) fromDate:self.beginningDate];
+  dateComponents.day -= idx;
+  return [calendar dateFromComponents:dateComponents];
 
-	return theDay;
+}
+
+- (NSUInteger) pageIndexOnDate:(NSDate*)date {
+	
+	NSTimeInterval diff = [self.beginningDate timeIntervalSinceDate:[date dayBegin]];
+	
+	NSAssert1(diff>=0, @"Should not scroll to the future: %@", date);
+	
+	return (NSUInteger)(diff / (3600 * 24));
 	
 }
 
@@ -293,6 +258,13 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 }
 
 - (void)paginatedView:(IRPaginatedView *)paginatedView didShowView:(UIView *)aView atIndex:(NSUInteger)index {
+
+	if ((self.paginatedView.currentPage + 2) >= self.currentTotalPageSize) {
+		
+		_currentTotalPageSize += kWAAppendingBatchSize;
+		[self.paginatedView reloadViews];
+
+	}
 	
 }
 
@@ -302,209 +274,48 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 	
 }
 
-- (void)controller:(NSFetchedResultsController *)controller didChangeObject:(id)anObject atIndexPath:(NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type newIndexPath:(NSIndexPath *)newIndexPath {
 
-	switch (type) {
-		case NSFetchedResultsChangeInsert:
-		case NSFetchedResultsChangeDelete:
-			if ([self isViewLoaded])
-				[self.paginatedView reloadViews];
-			break;
-			
-		default:
-			break;
-	}	
-
-}
-
-
-#pragma mark - delegate methods for WAArticleDraftsViewControllerDelegate
-- (BOOL) articleDraftsViewController:(WAArticleDraftsViewController *)aController shouldEnableArticle:(NSURL *)anObjectURIOrNil {
-	
-	return ![[WADataStore defaultStore] isUpdatingArticle:anObjectURIOrNil];
-	
-}
-
-- (void) articleDraftsViewController:(WAArticleDraftsViewController *)aController didSelectArticle:(NSURL *)anObjectURIOrNil {
-	
-  [aController dismissViewControllerAnimated:YES completion:^{
-		
-		[self beginCompositionSessionWithURL:anObjectURIOrNil animated:YES onCompositionViewDidAppear:nil];
-		
-	}];
-	
-}
-
-- (void) beginCompositionSessionWithURL:(NSURL *)anURL animated:(BOOL)animate onCompositionViewDidAppear:(void (^)(WACompositionViewController *))callback {
-	
-	__block WACompositionViewController *compositionVC = [WACompositionViewController defaultAutoSubmittingCompositionViewControllerForArticle:anURL completion:^(NSURL *anURI) {
-		
-		if (![compositionVC.article hasMeaningfulContent] && [compositionVC shouldDismissSelfOnCameraCancellation]) {
-			
-			__block void (^dismissModal)(UIViewController *) = [^ (UIViewController *aVC) {
-				
-				if (aVC.presentedViewController) {
-					dismissModal(aVC.presentedViewController);
-					return;
-				}
-				
-				[aVC dismissViewControllerAnimated:NO completion:nil];
-				
-			} copy];
-			
-			UIWindow *usedWindow = [[UIApplication sharedApplication] keyWindow];
-			
-			if ([compositionVC isViewLoaded] && compositionVC.view.window)
-				usedWindow = compositionVC.view.window;
-			
-			NSCParameterAssert(usedWindow);
-			
-			[CATransaction begin];
-			
-			dismissModal(compositionVC);
-			dismissModal = nil;
-			
-			[compositionVC dismissViewControllerAnimated:NO completion:nil];
-			
-			CATransition *fadeTransition = [CATransition animation];
-			fadeTransition.duration = 0.3f;
-			fadeTransition.type = kCATransitionFade;
-			fadeTransition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
-			fadeTransition.removedOnCompletion = YES;
-			fadeTransition.fillMode = kCAFillModeForwards;
-			
-			[usedWindow.layer addAnimation:fadeTransition forKey:kCATransition];
-			
-			[CATransaction commit];
-			
-		} else {
-			
-			[compositionVC dismissViewControllerAnimated:YES completion:nil];
-			
-			if (!anURL && [compositionVC.article hasMeaningfulContent]) {
-//				[self setScrollToTopmostPost:YES];
-			}
-			
-		}
-		
-		compositionVC = nil;
-		
-	}];
-	
-	[self presentViewController:[compositionVC wrappingNavigationController] animated:animate completion:^{
-		
-		if (callback)
-			callback(compositionVC);
-		
-	}];
-	
-}
-
-- (void) handleCompositionSessionRequest:(NSNotification *)incomingNotification {
-	
-	if (![self isViewLoaded])
-		return;
-	
-	NSURL *contentURL = [incomingNotification userInfo][@"foundURL"];
-	[self beginCompositionSessionWithURL:contentURL animated:YES onCompositionViewDidAppear:nil];
-	
-}
-
-
-- (void) handleCompose:(UIBarButtonItem *)sender {
-	
-	if ([[WADataStore defaultStore] hasDraftArticles]) {
-		
-		WAArticleDraftsViewController *draftsVC = [[WAArticleDraftsViewController alloc] init];
-		draftsVC.delegate = self;
-		
-		WANavigationController *navC = [[WANavigationController alloc] initWithRootViewController:draftsVC];
-		
-		__weak WADayViewController *wSelf = self;
-		
-		draftsVC.navigationItem.leftBarButtonItem = [IRBarButtonItem itemWithSystemItem:UIBarButtonSystemItemCancel wiredAction:^(IRBarButtonItem *senderItem) {
-			
-			[wSelf dismissViewControllerAnimated:YES completion:nil];
-			
-		}];
-		
-		[self presentViewController:navC animated:YES completion:nil];
-		
-	} else {
-		
-		[self beginCompositionSessionWithURL:nil animated:YES onCompositionViewDidAppear:nil];
-		
-	}
-  
-}
-
-- (void) handleCameraCapture:(UIBarButtonItem *)sender  {
-	
-	[self beginCompositionSessionWithURL:nil animated:NO onCompositionViewDidAppear:^(WACompositionViewController *compositionVC) {
-		
-		[compositionVC handleImageAttachmentInsertionRequestWithOptions:@{WACompositionImageInsertionUsesCamera: (id)kCFBooleanTrue, WACompositionImageInsertionAnimatePresentation: (id)kCFBooleanFalse, WACompositionImageInsertionCancellationTriggersSessionTermination: (id)kCFBooleanTrue} sender:compositionVC.view];
-		
-		[[UIApplication sharedApplication].keyWindow.layer addAnimation:((^ {
-			
-			CATransition *transition = [CATransition animation];
-			transition.duration = 0.3f;
-			transition.type = kCATransitionFade;
-			
-			return transition;
-			
-		})()) forKey:kCATransition];
-		
-	}];
-	
-}
-
-
-#pragma mark - Dripdown menu
-BOOL dripdownMenuOpened = NO;
-- (void) dripdownMenuTapped {
+#pragma mark - Context menu
+- (void) contextMenuTapped {
 	
 	__weak WADayViewController *wSelf = self;
 	
-	void (^dismissDDMenu)(WADripdownMenuViewController *menu) = ^(WADripdownMenuViewController *menu) {
-		
-		[menu willMoveToParentViewController:nil];
-		[menu removeFromParentViewController];
-		[menu.view removeFromSuperview];
-		[menu didMoveToParentViewController:nil];
-		
-		[wSelf.navigationItem.leftBarButtonItem setEnabled:YES];
-		[wSelf.navigationItem.rightBarButtonItem setEnabled:YES];
-		
-		dripdownMenuOpened = NO;
-		
-	};
-	
-	if (dripdownMenuOpened) {
+	if (contextMenuOpened) {
 		[self.childViewControllers enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-			if ([obj isKindOfClass:[WADripdownMenuViewController class]]) {
+			if ([obj isKindOfClass:[WAContextMenuViewController class]]) {
 				
 				*stop = YES;
-				WADripdownMenuViewController *ddMenu = (WADripdownMenuViewController*)obj;
-				dismissDDMenu(ddMenu);
+				WAContextMenuViewController *ddMenu = (WAContextMenuViewController*)obj;
+				[ddMenu dismissContextMenu];
 				
 			}
 		}];
 		return;
 	}
 	
-	__block WADripdownMenuViewController *ddMenu = [[WADripdownMenuViewController alloc] initWithCompletion:^{
+	__block WAContextMenuViewController *ddMenu = [[WAContextMenuViewController alloc] initForViewStyle:presentingStyle completion:^{
+
+		[wSelf.navigationItem.leftBarButtonItem setEnabled:YES];
+		[wSelf.navigationItem.rightBarButtonItem setEnabled:YES];
 		
-		dismissDDMenu(ddMenu);
-		ddMenu = nil;
+		contextMenuOpened = NO;
 		
 	}];
 	
-	[self addChildViewController:ddMenu];
-	[self.view addSubview:ddMenu.view];
-	[ddMenu didMoveToParentViewController:self];
+	ddMenu.delegate = self;
+	
+	[ddMenu presentContextMenuInViewController:self];
 	[self.navigationItem.leftBarButtonItem setEnabled:NO];
 	[self.navigationItem.rightBarButtonItem setEnabled:NO];
-	dripdownMenuOpened = YES;
+	contextMenuOpened = YES;
+	
+}
+
+- (void) contextMenuItemDidSelect:(WADayViewSupportedStyle)itemStyle {
+	
+	WASlidingMenuViewController *slidingMenu = (WASlidingMenuViewController*) self.viewDeckController.leftController;
+	NSDate *theDate = [self dayAtPageIndex:self.paginatedView.currentPage];
+	[slidingMenu switchToViewStyle:itemStyle onDate:theDate];
 	
 }
 
@@ -518,32 +329,16 @@ BOOL dripdownMenuOpened = NO;
 
 - (BOOL)jumpToDate:(NSDate*)date animated:(BOOL)animated{
 	
-	__block BOOL found = NO;
-	__block NSUInteger foundIndex = 0;
-		
-	NSUInteger numOfObjects = [self.fetchedResultsController.fetchedObjects count];
-	for (int idx = 0; idx < numOfObjects; idx++ ) {
-
-		NSDate *theDay = [self dayAtPageIndex:idx];
-		if (!theDay)
-			return NO;
-		
-		if (isSameDay(theDay, date)) {
-			foundIndex = idx;
-			found = YES;
-			break;
-		}
-		
+	NSUInteger page = [self pageIndexOnDate:date];
+	
+	if (page > self.currentTotalPageSize) {
+		_currentTotalPageSize = (page + kWAAppendingBatchSize);
+		[self.paginatedView reloadViews];
 	}
 	
-	if (found) {
-		
-		[self.paginatedView scrollToPageAtIndex:foundIndex animated:animated];
-		return YES;
-		
-	}
+	[self.paginatedView scrollToPageAtIndex:page animated:animated];
 	
-	return NO;
+	return YES;
 }
 
 

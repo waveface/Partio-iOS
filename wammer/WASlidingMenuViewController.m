@@ -38,72 +38,34 @@
 
 @end
 
-@implementation WASlidingMenuViewController {
-  WADayViewSupportedStyle currentViewStyle;
-}
+@implementation WASlidingMenuViewController
 
-+ (UIViewController *)viewControllerForViewStyle:(WADayViewSupportedStyle)viewStyle {
-  
-  switch (viewStyle) {
-    case WAEventsViewStyle: {
-      WADayViewController *swVC = [[WADayViewController alloc] initWithClassNamed:[WATimelineViewController class]];
-      WANavigationController *navVC = [[WANavigationController alloc] initWithRootViewController:swVC];
-      swVC.view.backgroundColor = [UIColor colorWithRed:0.95f green:0.95f blue:0.95f alpha:1];
-      
-      return navVC;
-    }
-      
-    case WAPhotosViewStyle: {
-      WADayViewController *swVC = [[WADayViewController alloc] initWithClassNamed:[WAPhotoStreamViewController class]];
-      WANavigationController *navVC = [[WANavigationController alloc] initWithRootViewController:swVC];
-      
-      swVC.navigationController.navigationBar.tintColor = [UIColor colorWithWhite:0.157 alpha:1.000];
-      swVC.navigationController.navigationBar.titleTextAttributes = @{UITextAttributeTextColor: [UIColor whiteColor]};
-      [swVC.navigationController.navigationBar setBackgroundImage:nil forBarMetrics:UIBarMetricsDefault];
-      swVC.view.backgroundColor = [UIColor colorWithWhite:0.16f alpha:1.0f];
-      
-      return navVC;
-    }
-      
-    case WAWebpagesViewStyle: {
-      WADayViewController *swVC = [[WADayViewController alloc] initWithClassNamed:[WAWebStreamViewController class]];
-      WANavigationController *navVC = [[WANavigationController alloc] initWithRootViewController:swVC];
-      swVC.view.backgroundColor = [UIColor colorWithRed:0.95f green:0.95f blue:0.95f alpha:1];
-      return navVC;
-    }
-      
-    case WADocumentsViewStyle: {
-      WADayViewController *swVC = [[WADayViewController alloc] initWithClassNamed:[WADocumentStreamViewController class]];
-      WANavigationController *navVC = [[WANavigationController alloc] initWithRootViewController:swVC];
-      swVC.view.backgroundColor = [UIColor colorWithRed:0.95f green:0.95f blue:0.95f alpha:1];
-      
-      return navVC;
-    }
-      
-    case WACollectionsViewStyle: {
-      WACollectionViewController *collectionViewController = [[WACollectionViewController alloc] init];
-      WANavigationController *navController = [[WANavigationController alloc] initWithRootViewController:collectionViewController];
-      collectionViewController.view.backgroundColor = [UIColor colorWithRed:0.95f green:0.95f blue:0.95f alpha:1];
-      
-      collectionViewController.navigationItem.leftBarButtonItem = WABarButtonItem([UIImage imageNamed:@"menu"], @"", ^{
-        [collectionViewController.viewDeckController toggleLeftView];
-      });
-      
-      return navController;
-    }
-    default:
-      return nil;
-  }
++ (UIViewController *)dayViewControllerForViewStyle:(WADayViewSupportedStyle)viewStyle {
+	
+	NSAssert1(((viewStyle==WAEventsViewStyle) || (viewStyle == WAPhotosViewStyle) || (viewStyle == WADocumentsViewStyle) || (viewStyle == WAWebpagesViewStyle)), @"Unsupported view style: %d", viewStyle);
+	
+	WADayViewController *swVC = [[WADayViewController alloc] initWithStyle:viewStyle];
+	WANavigationController *navVC = [[WANavigationController alloc] initWithRootViewController:swVC];
+
+  if (viewStyle == WAPhotosViewStyle) {
+
+		swVC.navigationController.navigationBar.tintColor = [UIColor colorWithWhite:0.157 alpha:1.000];
+		swVC.navigationController.navigationBar.titleTextAttributes = @{UITextAttributeTextColor: [UIColor whiteColor]};
+		[swVC.navigationController.navigationBar setBackgroundImage:nil forBarMetrics:UIBarMetricsDefault];
+		swVC.view.backgroundColor = [UIColor colorWithWhite:0.16f alpha:1.0f];
+		
+	} else {
+		
+		swVC.view.backgroundColor = [UIColor colorWithRed:0.95f green:0.95f blue:0.95f alpha:1];
+ 		
+	}
+	
+	return navVC;
 }
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
   self = [super initWithStyle:style];
-  if (self) {
-    // Custom initialization
-    
-    currentViewStyle = WAEventsViewStyle;
-  }
   return self;
 }
 
@@ -230,16 +192,16 @@
       WASyncManager *syncManager = [(WAAppDelegate_iOS *)AppDelegate() syncManager];
       if (isSyncing) {
         if (!wSelf.statusBar) {
-	wSelf.statusBar = [[WAStatusBar alloc] initWithFrame:CGRectZero];
+					wSelf.statusBar = [[WAStatusBar alloc] initWithFrame:CGRectZero];
         }
         if (syncManager.isSyncFail) {
-	wSelf.statusBar.statusLabel.text = NSLocalizedString(@"PHOTO_UPLOAD_STATUS_BAR_FAIL", @"String on customized status bar");
+					wSelf.statusBar.statusLabel.text = NSLocalizedString(@"PHOTO_UPLOAD_STATUS_BAR_FAIL", @"String on customized status bar");
         } else if (syncManager.needingSyncFilesCount > 0) {
-	wSelf.statusBar.statusLabel.text = [NSString stringWithFormat:NSLocalizedString(@"PHOTO_UPLOAD_STATUS_BAR_UPLOADING", @"String on customized status bar"), syncManager.syncedFilesCount, syncManager.needingSyncFilesCount];
-	wSelf.statusBar.progressView.progress = syncManager.syncedFilesCount * 1.0 / syncManager.needingSyncFilesCount;
+					wSelf.statusBar.statusLabel.text = [NSString stringWithFormat:NSLocalizedString(@"PHOTO_UPLOAD_STATUS_BAR_UPLOADING", @"String on customized status bar"), syncManager.syncedFilesCount, syncManager.needingSyncFilesCount];
+					wSelf.statusBar.progressView.progress = syncManager.syncedFilesCount * 1.0 / syncManager.needingSyncFilesCount;
         } else if (syncManager.needingImportFilesCount > 0) {
-	wSelf.statusBar.statusLabel.text = NSLocalizedString(@"PHOTO_UPLOAD_STATUS_BAR_IMPORTING", @"String on customized status bar");
-	wSelf.statusBar.progressView.progress = syncManager.importedFilesCount * 1.0 / syncManager.needingImportFilesCount;
+					wSelf.statusBar.statusLabel.text = NSLocalizedString(@"PHOTO_UPLOAD_STATUS_BAR_IMPORTING", @"String on customized status bar");
+					wSelf.statusBar.progressView.progress = syncManager.importedFilesCount * 1.0 / syncManager.needingImportFilesCount;
         }
       } else {
         wSelf.statusBar = nil;
@@ -341,43 +303,38 @@
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
-  static NSString *CellIdentifier = @"Cell";
-  
-  if (cell == nil) {
-    cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
-  }
-  
+	
   cell.textLabel.textColor = [UIColor whiteColor];
   cell.textLabel.font = [UIFont fontWithName:NSLocalizedString(@"SLIDING_MENU_FONTNAME", @"Font name of the sliding menu") size:18.0];
   
   switch(indexPath.row) {
       
-    case 1:
+    case 1: // Events
       cell.backgroundColor = [UIColor colorWithRed:0.957 green:0.376 blue:0.298 alpha:1.0];
       break;
       
-    case 2:
+    case 2: // Photos
       cell.backgroundColor = [UIColor colorWithRed:0.96f green:0.647f blue:0.011f alpha:1.0];
       break;
       
-    case 3:
-      cell.backgroundColor = [UIColor colorWithRed:0.72f green:0.701f blue:0.69f alpha:1.0];
+    case 3: // Documents
+      cell.backgroundColor = [UIColor colorWithRed:0.572f green:0.8f blue:0.647f alpha:1.0f];
       break;
       
-    case 4:
+    case 4: // Web Pages
       cell.backgroundColor = [UIColor colorWithRed:0.211f green:0.694f blue:0.749f alpha:1.0f];
       break;
       
-    case 5:
+    case 5: // Collection
       cell.backgroundColor = [UIColor colorWithRed:0.039f green:0.423f blue:0.529f alpha:1.0];
       break;
       
-    case 6:
+    case 6: // Calendar
       cell.backgroundColor = [UIColor colorWithRed:0.949f green:0.49f blue:0.305f alpha:1.0];
       break;
       
-    case 7:
-      cell.backgroundColor = [UIColor colorWithRed:0.572f green:0.8f blue:0.647f alpha:1.0f];
+    case 7: // Settings
+			cell.backgroundColor = [UIColor colorWithRed:0.72f green:0.701f blue:0.69f alpha:1.0];
       break;
   }
   
@@ -418,7 +375,15 @@
       
     case 5: {
       [self.viewDeckController closeLeftView];
-      [self switchToViewStyle:WACollectionsViewStyle];
+
+			WACollectionViewController *collectionViewController = [[WACollectionViewController alloc] init];
+      WANavigationController *navController = [[WANavigationController alloc] initWithRootViewController:collectionViewController];
+      collectionViewController.view.backgroundColor = [UIColor colorWithRed:0.95f green:0.95f blue:0.95f alpha:1];
+      
+      collectionViewController.navigationItem.leftBarButtonItem = WABarButtonItem([UIImage imageNamed:@"menu"], @"", ^{
+        [collectionViewController.viewDeckController toggleLeftView];
+      });
+			[self.viewDeckController setCenterController:navController];
       break;
     }
       
@@ -463,7 +428,7 @@
   CGFloat animationDuration = 0.3f;
   __weak WASlidingMenuViewController *wSelf = self;
   
-  UINavigationController *navVC = (UINavigationController *)[[self class] viewControllerForViewStyle:viewStyle];
+  UINavigationController *navVC = (UINavigationController *)[[self class] dayViewControllerForViewStyle:viewStyle];
   WADayViewController *swVC = (WADayViewController*)navVC.topViewController;
   
   if (animated) {
@@ -487,26 +452,6 @@
     
   }
   
-  currentViewStyle = viewStyle;
 }
 
-- (void) switchNextAvailableViewOnDate:(NSDate*)date {
-  
-  if (currentViewStyle == WAEventsViewStyle) {
-    
-    [self switchToViewStyle:WAPhotosViewStyle onDate:date animated:YES];
-    
-  } else if (currentViewStyle == WAPhotosViewStyle) {
-    
-    [self switchToViewStyle:WAEventsViewStyle onDate:date animated:YES];
-    
-  }
-  
-}
-
-- (void) switchPrevAvailableViewOnDate:(NSDate*)date {
-  
-  [self switchNextAvailableViewOnDate:date];
-  
-}
 @end
