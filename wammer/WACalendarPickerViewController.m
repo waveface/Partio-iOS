@@ -130,8 +130,6 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
-//  [super viewWillAppear:animated];
-	
 	self.view.backgroundColor = [UIColor whiteColor];
 	self.view.layer.cornerRadius = 3.f;
 	self.view.clipsToBounds = YES;
@@ -155,18 +153,7 @@
 {
 	selectedEvent = [[dataSource items] objectAtIndex:indexPath.row];
 		
-	if ([selectedEvent isKindOfClass:[WAArticle class]]) {
-		CGSize shadowSize = CGSizeMake(15.0, 1.0);
-		UIGraphicsBeginImageContext(shadowSize);
-		CGContextRef shadowContext = UIGraphicsGetCurrentContext();
-		CGContextSetFillColorWithColor(shadowContext, [UIColor colorWithRed:193/255.0 green:193/255.0 blue:193/255.0 alpha:1].CGColor);
-		CGContextAddRect(shadowContext, CGRectMake(7.0, 0, 1.0, shadowSize.height));
-		CGContextFillPath(shadowContext);
-		UIImage *naviShadow = UIGraphicsGetImageFromCurrentImageContext();
-		UIImage *naviShadowWithInsets = [naviShadow resizableImageWithCapInsets:UIEdgeInsetsMake(0, 7, 0, 7)];
-		UIGraphicsEndImageContext();
-		[[UINavigationBar appearance] setShadowImage:naviShadowWithInsets];
-		
+	if ([selectedEvent isKindOfClass:[WAArticle class]]) {		
 		WAEventViewController *eventVC = [WAEventViewController controllerForArticle:selectedEvent];
 		
 		if (isPad()) {
@@ -234,41 +221,32 @@
 
 - (IBAction)handlePhotos:(UIButton *)sender
 {
-	WASlidingMenuViewController *smVC;
+	NSParameterAssert(self.viewDeckController);
 	
-	if (self.viewDeckController) {
-		
-		smVC = (WASlidingMenuViewController *)[self.viewDeckController leftController];
-		[smVC switchToViewStyle:WAPhotosViewStyle onDate:[calPicker selectedNSDate] animated:YES];
-		
-	}
+	WASlidingMenuViewController *smVC;
+	smVC = (WASlidingMenuViewController *)[self.viewDeckController leftController];
+	[smVC switchToViewStyle:WAPhotosViewStyle onDate:[calPicker selectedNSDate] animated:YES];
 	
 }
 
 - (IBAction)handleDocs:(UIButton *)sender
 {
-	WASlidingMenuViewController *smVC;
+	NSParameterAssert(self.viewDeckController);
 	
-	if (self.viewDeckController) {
-		
-		smVC = (WASlidingMenuViewController *)[self.viewDeckController leftController];
-		[smVC switchToViewStyle:WADocumentsViewStyle onDate:[calPicker selectedNSDate] animated:YES];
-		
-	}
+	WASlidingMenuViewController *smVC;
+	smVC = (WASlidingMenuViewController *)[self.viewDeckController leftController];
+	[smVC switchToViewStyle:WADocumentsViewStyle onDate:[calPicker selectedNSDate] animated:YES];
 
 }
 
 - (IBAction)handleWebpages:(UIButton *)sender
 {
-	WASlidingMenuViewController *smVC;
+	NSParameterAssert(self.viewDeckController);
 	
-	if (self.viewDeckController) {
-		
-		smVC = (WASlidingMenuViewController *)[self.viewDeckController leftController];
-		[smVC switchToViewStyle:WAWebpagesViewStyle onDate:[calPicker selectedNSDate] animated:YES];
-		
-	}
-
+	WASlidingMenuViewController *smVC;
+	smVC = (WASlidingMenuViewController *)[self.viewDeckController leftController];
+	[smVC switchToViewStyle:WAWebpagesViewStyle onDate:[calPicker selectedNSDate] animated:YES];
+	
 }
 
 @end

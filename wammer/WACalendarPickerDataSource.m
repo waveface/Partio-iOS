@@ -262,9 +262,6 @@ typedef void (^completionBlock) (NSArray *days);
 {
 	static NSString *identifier = @"Cell";
   UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
-  if (!cell) {
-    cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
-	} 
 	
 	for (UIView *subview in cell.contentView.subviews)
 		[subview removeFromSuperview];
@@ -273,6 +270,8 @@ typedef void (^completionBlock) (NSArray *days);
 		[subview removeFromSuperview];
 	
 	if (!_items.count && indexPath.row == 0) {
+		cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"NoEventCell"];
+
 		UILabel *title = [[UILabel alloc] initWithFrame:CGRectMake(54, 0, 200 , 54)];
 		[title setText:NSLocalizedString(@"CALENDAR_NO_EVENT", "Description for no event day in calendar")];
 		[title setTextAlignment:NSTextAlignmentCenter];
@@ -288,24 +287,35 @@ typedef void (^completionBlock) (NSArray *days);
 		cell = [[WACalendarPickerPanelViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"IconsCell"];
 		
 	} else {
+		cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+		
 		id item = [self eventAtIndexPath:indexPath];
 		
 		WAArticle *event = item;
-		UIImage *xsThumbnail = event.representingFile.extraSmallThumbnailImage;
 		
-		UIImageView *thumbnail = [[UIImageView alloc] initWithImage:xsThumbnail?xsThumbnail:nil];
-		[thumbnail setBackgroundColor:[UIColor grayColor]];
-		[thumbnail setFrame:CGRectMake(4, 4, 45, 45)];
-		[thumbnail setClipsToBounds:YES];
-		[cell.contentView addSubview:thumbnail];
+		[event irObserve:@"representingFile.extraSmallThumbnailImage"
+						 options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionNew
+						 context:nil
+					 withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
+
+						 UIImageView *thumbnail = [[UIImageView alloc] initWithImage:(UIImage *)toValue];
+						 [thumbnail setBackgroundColor:[UIColor grayColor]];
+						 [thumbnail setFrame:CGRectMake(4, 4, 45, 45)];
+						 [thumbnail setClipsToBounds:YES];
+						 [cell.contentView addSubview:thumbnail];
+
+		}];
+
 		
+		static UIImage *eventCameraIcon;
+		eventCameraIcon = [UIImage imageNamed:@"EventCameraIcon"];
 		UILabel *title = [[UILabel alloc] init];
 		title.attributedText = [[WAEventViewController class] attributedDescriptionStringForEvent:event styleWithColor:NO styleWithFontForTableView:YES];
 		[title setBackgroundColor:[UIColor clearColor]];
 		title.numberOfLines = 0;
 		[title setFrame:CGRectMake(60, 0, 220, 54)];
 		[cell.contentView addSubview:title];
-		[cell setAccessoryView:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"EventCameraIcon"]]];
+		[cell setAccessoryView:[[UIImageView alloc] initWithImage:eventCameraIcon]];
 		
 		[cell setSelectionStyle:UITableViewCellSelectionStyleGray];
 		
