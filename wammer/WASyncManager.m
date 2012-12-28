@@ -6,13 +6,10 @@
 //  Copyright (c) 2012 Waveface. All rights reserved.
 //
 
+#import "WASyncManager.h"
 #import "IRRecurrenceMachine.h"
 #import "Foundation+IRAdditions.h"
-
-#import "WASyncManager.h"
 #import "WARemoteInterface.h"
-#import "WAReachabilityDetector.h"
-
 #import "WASyncManager+PhotoImport.h"
 #import "WASyncManager+FullQualityFileSync.h"
 #import "WASyncManager+DirtyArticleSync.h"

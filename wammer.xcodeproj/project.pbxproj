@@ -41,11 +41,17 @@
 		138D31B81609D92400ECA892 /* TutorialPhotoImport~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 138D31B61609D92400ECA892 /* TutorialPhotoImport~ipad.png */; };
 		139E28FE15C2926700C8521A /* WALocalizedTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 139E28FD15C2926700C8521A /* WALocalizedTextView.m */; };
 		13A15F3E163FABD100F3FF30 /* WAFirstUseLogInViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 13A15F3D163FABD100F3FF30 /* WAFirstUseLogInViewController.m */; };
+		13A318CD168CBD0100017E68 /* WAFetchManager+RemoteChangeFetch.m in Sources */ = {isa = PBXBuildFile; fileRef = 13A318CC168CBD0000017E68 /* WAFetchManager+RemoteChangeFetch.m */; };
 		13A9B111163F8A4D00537835 /* WAFirstUseWelcomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 13A9B110163F8A4D00537835 /* WAFirstUseWelcomeViewController.m */; };
 		13B6DB9D161573FF00B9CC35 /* WAFileExif.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B6DB9C161573FF00B9CC35 /* WAFileExif.m */; };
 		13BFC39B164A40DE00FC39A4 /* WAFirstUseEmailLoginFooterView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 13BFC39A164A40DE00FC39A4 /* WAFirstUseEmailLoginFooterView.xib */; };
 		13BFC39D164A40E600FC39A4 /* WAFirstUseFacebookLoginView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 13BFC39C164A40E600FC39A4 /* WAFirstUseFacebookLoginView.xib */; };
 		13C30CDD1640DCB0000A8414 /* WAFirstUseChoosePlanViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 13C30CDC1640DCB0000A8414 /* WAFirstUseChoosePlanViewController.m */; };
+		13CCDE65168C308A00962625 /* WAFetchManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 13CCDE64168C308A00962625 /* WAFetchManager.m */; };
+		13CCDE68168C33A400962625 /* WAFetchManager+RemoteArticleFetch.m in Sources */ = {isa = PBXBuildFile; fileRef = 13CCDE67168C33A400962625 /* WAFetchManager+RemoteArticleFetch.m */; };
+		13CCDE6B168C384300962625 /* WAFetchManager+RemoteCollectionFetch.m in Sources */ = {isa = PBXBuildFile; fileRef = 13CCDE6A168C384200962625 /* WAFetchManager+RemoteCollectionFetch.m */; };
+		13CCDE6E168C3C9300962625 /* WAFetchManager+RemoteFileMetadataFetch.m in Sources */ = {isa = PBXBuildFile; fileRef = 13CCDE6D168C3C9300962625 /* WAFetchManager+RemoteFileMetadataFetch.m */; };
+		13CCDE71168C466100962625 /* WAFile.m in Sources */ = {isa = PBXBuildFile; fileRef = 13CCDE70168C466100962625 /* WAFile.m */; };
 		13DAAD7C166FB100002900D7 /* WADocumentStreamViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 13DAAD7B166FB100002900D7 /* WADocumentStreamViewCell.xib */; };
 		13DE12EB1637F30A00757F7C /* WAFirstUseDoneViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 13DE12E71637F30A00757F7C /* WAFirstUseDoneViewController.m */; };
 		13DE12EC1637F30A00757F7C /* WAFirstUseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 13DE12E91637F30A00757F7C /* WAFirstUseViewController.m */; };
@@ -185,7 +191,6 @@
 		8002CDE615E5E85600D7BFF0 /* libicucore.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 8002CDE515E5E85600D7BFF0 /* libicucore.dylib */; };
 		8002CDE915E5E92100D7BFF0 /* WARemoteInterface+Notification.m in Sources */ = {isa = PBXBuildFile; fileRef = 8002CDE815E5E92100D7BFF0 /* WARemoteInterface+Notification.m */; };
 		8002CDEC15E5F6F300D7BFF0 /* WARemoteInterface+WebSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 8002CDEB15E5F6F300D7BFF0 /* WARemoteInterface+WebSocket.m */; };
-		80074F8C167EBFAB00A23EED /* WAFile.m in Sources */ = {isa = PBXBuildFile; fileRef = 80074F8B167EBFAB00A23EED /* WAFile.m */; };
 		80074F90167ED50600A23EED /* WAWebStreamViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 80074F8F167ED50600A23EED /* WAWebStreamViewController.m */; };
 		80074F93167ED52900A23EED /* WAWebStreamViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 80074F92167ED52800A23EED /* WAWebStreamViewCell.m */; };
 		80074F97167F204400A23EED /* WAWebStreamViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 80074F96167F204400A23EED /* WAWebStreamViewCell.xib */; };
@@ -299,7 +304,6 @@
 		80B9E50E16719B1200222F57 /* P3@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 80B9E50416719B1100222F57 /* P3@2x.png */; };
 		80BC54D51680740D005D1967 /* WAWebpageDay+WARemoteInterfaceEntitySyncing.m in Sources */ = {isa = PBXBuildFile; fileRef = 80BC54D41680740D005D1967 /* WAWebpageDay+WARemoteInterfaceEntitySyncing.m */; };
 		80BC54D816816231005D1967 /* WAArticle.m in Sources */ = {isa = PBXBuildFile; fileRef = 80719CF2167AFE3A00E9729F /* WAArticle.m */; };
-		80BC54D916816277005D1967 /* WAFile.m in Sources */ = {isa = PBXBuildFile; fileRef = 80074F8B167EBFAB00A23EED /* WAFile.m */; };
 		80BE685B161DC13800A37CEB /* WADayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 80BE685A161DC13800A37CEB /* WADayViewController.m */; };
 		80C058431682FB4900BC46A7 /* libPods-UnitTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 80C058421682FB4900BC46A7 /* libPods-UnitTests.a */; };
 		80C058441682FBAE00BC46A7 /* libIRWebAPIKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FF73A5A713D6DC6A00D54EC6 /* libIRWebAPIKit.a */; };
@@ -1123,6 +1127,8 @@
 		13A15F3C163FABD100F3FF30 /* WAFirstUseLogInViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WAFirstUseLogInViewController.h; path = wammer/WAFirstUseLogInViewController.h; sourceTree = "<group>"; };
 		13A15F3D163FABD100F3FF30 /* WAFirstUseLogInViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WAFirstUseLogInViewController.m; path = wammer/WAFirstUseLogInViewController.m; sourceTree = "<group>"; };
 		13A1BFB115A5728500526F39 /* WAModel 33.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WAModel 33.xcdatamodel"; sourceTree = "<group>"; };
+		13A318CB168CBD0000017E68 /* WAFetchManager+RemoteChangeFetch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "WAFetchManager+RemoteChangeFetch.h"; path = "wammer/WAFetchManager+RemoteChangeFetch.h"; sourceTree = "<group>"; };
+		13A318CC168CBD0000017E68 /* WAFetchManager+RemoteChangeFetch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "WAFetchManager+RemoteChangeFetch.m"; path = "wammer/WAFetchManager+RemoteChangeFetch.m"; sourceTree = "<group>"; };
 		13A9B10F163F8A4D00537835 /* WAFirstUseWelcomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WAFirstUseWelcomeViewController.h; path = wammer/WAFirstUseWelcomeViewController.h; sourceTree = "<group>"; };
 		13A9B110163F8A4D00537835 /* WAFirstUseWelcomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WAFirstUseWelcomeViewController.m; path = wammer/WAFirstUseWelcomeViewController.m; sourceTree = "<group>"; };
 		13B6DB9B161573FF00B9CC35 /* WAFileExif.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAFileExif.h; sourceTree = "<group>"; };
@@ -1131,6 +1137,16 @@
 		13BFC39C164A40E600FC39A4 /* WAFirstUseFacebookLoginView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = WAFirstUseFacebookLoginView.xib; path = wammer/WAFirstUseFacebookLoginView.xib; sourceTree = "<group>"; };
 		13C30CDB1640DCB0000A8414 /* WAFirstUseChoosePlanViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WAFirstUseChoosePlanViewController.h; path = wammer/WAFirstUseChoosePlanViewController.h; sourceTree = "<group>"; };
 		13C30CDC1640DCB0000A8414 /* WAFirstUseChoosePlanViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WAFirstUseChoosePlanViewController.m; path = wammer/WAFirstUseChoosePlanViewController.m; sourceTree = "<group>"; };
+		13CCDE63168C308A00962625 /* WAFetchManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WAFetchManager.h; path = wammer/WAFetchManager.h; sourceTree = "<group>"; };
+		13CCDE64168C308A00962625 /* WAFetchManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WAFetchManager.m; path = wammer/WAFetchManager.m; sourceTree = "<group>"; };
+		13CCDE66168C33A300962625 /* WAFetchManager+RemoteArticleFetch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "WAFetchManager+RemoteArticleFetch.h"; path = "wammer/WAFetchManager+RemoteArticleFetch.h"; sourceTree = "<group>"; };
+		13CCDE67168C33A400962625 /* WAFetchManager+RemoteArticleFetch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "WAFetchManager+RemoteArticleFetch.m"; path = "wammer/WAFetchManager+RemoteArticleFetch.m"; sourceTree = "<group>"; };
+		13CCDE69168C384200962625 /* WAFetchManager+RemoteCollectionFetch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "WAFetchManager+RemoteCollectionFetch.h"; path = "wammer/WAFetchManager+RemoteCollectionFetch.h"; sourceTree = "<group>"; };
+		13CCDE6A168C384200962625 /* WAFetchManager+RemoteCollectionFetch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "WAFetchManager+RemoteCollectionFetch.m"; path = "wammer/WAFetchManager+RemoteCollectionFetch.m"; sourceTree = "<group>"; };
+		13CCDE6C168C3C9300962625 /* WAFetchManager+RemoteFileMetadataFetch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "WAFetchManager+RemoteFileMetadataFetch.h"; path = "wammer/WAFetchManager+RemoteFileMetadataFetch.h"; sourceTree = "<group>"; };
+		13CCDE6D168C3C9300962625 /* WAFetchManager+RemoteFileMetadataFetch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "WAFetchManager+RemoteFileMetadataFetch.m"; path = "wammer/WAFetchManager+RemoteFileMetadataFetch.m"; sourceTree = "<group>"; };
+		13CCDE6F168C466100962625 /* WAFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAFile.h; sourceTree = "<group>"; };
+		13CCDE70168C466100962625 /* WAFile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAFile.m; sourceTree = "<group>"; };
 		13DAAD7B166FB100002900D7 /* WADocumentStreamViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WADocumentStreamViewCell.xib; sourceTree = "<group>"; };
 		13DE12E61637F30A00757F7C /* WAFirstUseDoneViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WAFirstUseDoneViewController.h; path = wammer/WAFirstUseDoneViewController.h; sourceTree = "<group>"; };
 		13DE12E71637F30A00757F7C /* WAFirstUseDoneViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WAFirstUseDoneViewController.m; path = wammer/WAFirstUseDoneViewController.m; sourceTree = "<group>"; };
@@ -1280,8 +1296,6 @@
 		8002CDE815E5E92100D7BFF0 /* WARemoteInterface+Notification.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WARemoteInterface+Notification.m"; sourceTree = "<group>"; };
 		8002CDEA15E5F6F300D7BFF0 /* WARemoteInterface+WebSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WARemoteInterface+WebSocket.h"; sourceTree = "<group>"; };
 		8002CDEB15E5F6F300D7BFF0 /* WARemoteInterface+WebSocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WARemoteInterface+WebSocket.m"; sourceTree = "<group>"; };
-		80074F8A167EBFAB00A23EED /* WAFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAFile.h; sourceTree = "<group>"; };
-		80074F8B167EBFAB00A23EED /* WAFile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAFile.m; sourceTree = "<group>"; };
 		80074F8E167ED50600A23EED /* WAWebStreamViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAWebStreamViewController.h; sourceTree = "<group>"; };
 		80074F8F167ED50600A23EED /* WAWebStreamViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAWebStreamViewController.m; sourceTree = "<group>"; };
 		80074F91167ED52800A23EED /* WAWebStreamViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAWebStreamViewCell.h; sourceTree = "<group>"; };
@@ -2291,6 +2305,23 @@
 			name = FileExif;
 			sourceTree = "<group>";
 		};
+		13CCDE62168C304300962625 /* Data Fetching */ = {
+			isa = PBXGroup;
+			children = (
+				13CCDE63168C308A00962625 /* WAFetchManager.h */,
+				13CCDE64168C308A00962625 /* WAFetchManager.m */,
+				13CCDE66168C33A300962625 /* WAFetchManager+RemoteArticleFetch.h */,
+				13CCDE67168C33A400962625 /* WAFetchManager+RemoteArticleFetch.m */,
+				13CCDE69168C384200962625 /* WAFetchManager+RemoteCollectionFetch.h */,
+				13CCDE6A168C384200962625 /* WAFetchManager+RemoteCollectionFetch.m */,
+				13CCDE6C168C3C9300962625 /* WAFetchManager+RemoteFileMetadataFetch.h */,
+				13CCDE6D168C3C9300962625 /* WAFetchManager+RemoteFileMetadataFetch.m */,
+				13A318CB168CBD0000017E68 /* WAFetchManager+RemoteChangeFetch.h */,
+				13A318CC168CBD0000017E68 /* WAFetchManager+RemoteChangeFetch.m */,
+			);
+			name = "Data Fetching";
+			sourceTree = "<group>";
+		};
 		13DE12E41637F2D100757F7C /* First Use */ = {
 			isa = PBXGroup;
 			children = (
@@ -2851,8 +2882,8 @@
 		FF4BDEAD156A53AD00C105D5 /* File */ = {
 			isa = PBXGroup;
 			children = (
-				80074F8A167EBFAB00A23EED /* WAFile.h */,
-				80074F8B167EBFAB00A23EED /* WAFile.m */,
+				13CCDE6F168C466100962625 /* WAFile.h */,
+				13CCDE70168C466100962625 /* WAFile.m */,
 				803302401688521C00004891 /* WAFileAccessLog.h */,
 				803302411688521C00004891 /* WAFileAccessLog.m */,
 				FFCD325014B9EA4D0035C4F5 /* WAFile+WAAdditions.h */,
@@ -3042,6 +3073,7 @@
 				13222F4A168069F4000C57A7 /* Image Processing */,
 				13F472DB1682C024002BDCC9 /* WAToolkit */,
 				FF97384613D82771003D1722 /* Remote Interface */,
+				13CCDE62168C304300962625 /* Data Fetching */,
 				FF0024F914B44CC500F54AAF /* Blob Syncing */,
 				132D60351622B8AA00148829 /* File Cache */,
 				FF73A54913D6C2CD00D54EC6 /* iOS Supporting Files */,
@@ -4800,7 +4832,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				80BC54D916816277005D1967 /* WAFile.m in Sources */,
 				80BC54D816816231005D1967 /* WAArticle.m in Sources */,
 				137E28A51682BE9000FE39EA /* WAImageProcessing.m in Sources */,
 				80F42C0215F70EDF00C8A72B /* WAWebSocket.m in Sources */,
@@ -5128,7 +5159,6 @@
 				80719CF3167AFE3A00E9729F /* WAArticle.m in Sources */,
 				80719CF9167AFF8000E9729F /* WAEventDay+WARemoteInterfaceEntitySyncing.m in Sources */,
 				80719CFC167B03B900E9729F /* WAPhotoDay+WARemoteInterfaceEntitySyncing.m in Sources */,
-				80074F8C167EBFAB00A23EED /* WAFile.m in Sources */,
 				80074F90167ED50600A23EED /* WAWebStreamViewController.m in Sources */,
 				80074F93167ED52900A23EED /* WAWebStreamViewCell.m in Sources */,
 				80BC54D51680740D005D1967 /* WAWebpageDay+WARemoteInterfaceEntitySyncing.m in Sources */,
@@ -5141,6 +5171,12 @@
 				803302421688521C00004891 /* WAFileAccessLog.m in Sources */,
 				DE2C7DD7168B2CAC0058A7D8 /* WACalendarPickerPanelViewCell.m in Sources */,
 				802427091689E1AF002454A7 /* WACollection.m in Sources */,
+				13CCDE65168C308A00962625 /* WAFetchManager.m in Sources */,
+				13CCDE68168C33A400962625 /* WAFetchManager+RemoteArticleFetch.m in Sources */,
+				13CCDE6B168C384300962625 /* WAFetchManager+RemoteCollectionFetch.m in Sources */,
+				13CCDE6E168C3C9300962625 /* WAFetchManager+RemoteFileMetadataFetch.m in Sources */,
+				13CCDE71168C466100962625 /* WAFile.m in Sources */,
+				13A318CD168CBD0100017E68 /* WAFetchManager+RemoteChangeFetch.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

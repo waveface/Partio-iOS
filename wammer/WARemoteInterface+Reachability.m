@@ -220,38 +220,37 @@ NSURL *refiningStationLocation(NSString *stationUrlString, NSURL *baseUrl) {
 	// cloud says we have at least one station supports websocket
 	
 	// then we try to connect to one of available
-	[[WARemoteInterface sharedInterface] connectAvaliableWSStation:wsStations
-						    onSucces:^(NSURL *wsURL, NSURL *stURL, NSString *computerName){
-						      
-						      // any success connect to websocket goes to this block
-						      
-						      [[WARemoteInterface sharedInterface] stopAutomaticRemoteUpdates];
-						      
-						      [[WARemoteInterface sharedInterface] subscribeNotification];
-						      
-						      // We only scan the reachability detector for cloud and the first available station that supports websocket
-						      wSelf.monitoredHostNames = @[NSLocalizedString(@"Stream Cloud", @"Cloud Name"), computerName];
-						      wSelf.monitoredHosts = @[wSelf.engine.context.baseURL, stURL];
-						      
-						    } onFailure:^(NSError *error) {
-						      
-						      // no websocket station available or any failure during connection goes to this block
-						      
-						      //							wSelf.monitoredHosts = [[NSArray arrayWithObject:wSelf.engine.context.baseURL] arrayByAddingObjectsFromArray:[stationReps irMap: ^ (NSDictionary *aStationRep, NSUInteger index, BOOL *stop) {
-						      //
-						      //								NSString *stationURLString = [aStationRep valueForKeyPath:@"location"];
-						      //								if (!stationURLString)
-						      //									return (id)nil;
-						      //
-						      //								return (id)refiningStationLocation(stationURLString, wSelf.engine.context.baseURL);
-						      //							}]];
-						      
-						      wSelf.monitoredHostNames = @[NSLocalizedString(@"Stream Cloud", @"Cloud Name")];
-						      wSelf.monitoredHosts = @[wSelf.engine.context.baseURL];
-						      
-						      [[WARemoteInterface sharedInterface] enableAutomaticRemoteUpdatesTimer];
-						      
-						    }];
+	[[WARemoteInterface sharedInterface] connectAvaliableWSStation:wsStations onSucces:^(NSURL *wsURL, NSURL *stURL, NSString *computerName){
+	  
+	  // any success connect to websocket goes to this block
+	  
+	  [[WARemoteInterface sharedInterface] stopAutomaticRemoteUpdates];
+	  
+	  [[WARemoteInterface sharedInterface] subscribeNotification];
+	  
+	  // We only scan the reachability detector for cloud and the first available station that supports websocket
+	  wSelf.monitoredHostNames = @[NSLocalizedString(@"Stream Cloud", @"Cloud Name"), computerName];
+	  wSelf.monitoredHosts = @[wSelf.engine.context.baseURL, stURL];
+	  
+	} onFailure:^(NSError *error) {
+	  
+	  // no websocket station available or any failure during connection goes to this block
+	  
+	  //							wSelf.monitoredHosts = [[NSArray arrayWithObject:wSelf.engine.context.baseURL] arrayByAddingObjectsFromArray:[stationReps irMap: ^ (NSDictionary *aStationRep, NSUInteger index, BOOL *stop) {
+	  //
+	  //								NSString *stationURLString = [aStationRep valueForKeyPath:@"location"];
+	  //								if (!stationURLString)
+	  //									return (id)nil;
+	  //
+	  //								return (id)refiningStationLocation(stationURLString, wSelf.engine.context.baseURL);
+	  //							}]];
+	  
+	  wSelf.monitoredHostNames = @[NSLocalizedString(@"Stream Cloud", @"Cloud Name")];
+	  wSelf.monitoredHosts = @[wSelf.engine.context.baseURL];
+	  
+	  [[WARemoteInterface sharedInterface] enableAutomaticRemoteUpdatesTimer];
+	  
+	}];
 	
         } else {
 	

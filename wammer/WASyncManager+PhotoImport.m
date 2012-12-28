@@ -28,7 +28,7 @@
       return;
     }
 
-    [[wSelf recurrenceMachine] beginPostponingOperations];
+    [wSelf beginPostponingSync];
 
     NSDate *importTime = [NSDate date];
     WADataStore *ds = [WADataStore defaultStore];
@@ -133,7 +133,7 @@
       wSelf.needingImportFilesCount = filesCount; // display status bar via KVO
 
       NSBlockOperation *tailOp = [NSBlockOperation blockOperationWithBlock:^{
-        [[wSelf recurrenceMachine] endPostponingOperations];
+        [wSelf endPostponingSync];
         callback(nil);
       }];
       for (NSOperation *operation in wSelf.photoImportOperationQueue.operations) {
@@ -147,7 +147,7 @@
       wSelf.needingImportFilesCount = filesCount; // display status bar via KVO
 
       NSBlockOperation *tailOp = [NSBlockOperation blockOperationWithBlock:^{
-        [[wSelf recurrenceMachine] endPostponingOperations];
+        [wSelf endPostponingSync];
         callback(error);
       }];
       for (NSOperation *operation in wSelf.photoImportOperationQueue.operations) {

@@ -29,9 +29,9 @@
 		if (updated) {
 			if ([updated isEqualToNumber:[NSNumber numberWithBool:YES]]) {
 				
-				[[WADataStore defaultStore] updateArticlesOnSuccess:nil onFailure:nil];
-				
-				[[WADataStore defaultStore] updateCurrentUserOnSuccess:nil onFailure:nil];
+//				[[WADataStore defaultStore] updateArticlesOnSuccess:nil onFailure:nil];
+//				
+//				[[WADataStore defaultStore] updateCurrentUserOnSuccess:nil onFailure:nil];
 				
 			}
 		}

@@ -24,6 +24,7 @@
 #import "SSToolkit/NSDate+SSToolkitAdditions.h"
 #import "ALAsset+WAAdditions.h"
 #import "NSDate+WAAdditions.h"
+#import <NSString+SSToolkitAdditions.h>
 
 
 NSString * kWAFileEntitySyncingErrorDomain = @"com.waveface.wammer.file.entitySyncing";
@@ -146,10 +147,10 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
   NSString *largeImageRepURLString = [returnedDictionary valueForKeyPath:@"image_meta.large.url"];
   if ([largeImageRepURLString isKindOfClass:[NSString class]])
     returnedDictionary[@"large_thumbnail_url"] = largeImageRepURLString;
-		
-	NSString *incomingFileType = incomingRepresentation[@"type"];	
+  
+  NSString *incomingFileType = incomingRepresentation[@"type"];
   if ([incomingFileType isEqualToString:@"image"]) {
-
+    
     NSString *eventDateTime = incomingRepresentation[@"event_time"];
     if (eventDateTime) {
       NSDate *day = [[NSDate dateFromISO8601String:eventDateTime] dayBegin];
@@ -160,54 +161,60 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
         NSLog(@"Unable to convert event time on attachment: %@", incomingRepresentation);
       }
     }
-
-		
-	} else if ([incomingFileType isEqualToString:@"webthumb"]) {
-		
-		if (incomingRepresentation[@"web_meta"]) {
-		
-			NSString *resourceURLString = [returnedDictionary valueForKeyPath:@"url"];
-			if ([resourceURLString isKindOfClass:[NSString class]])
-				returnedDictionary[@"thumbnail_url"] = [NSString stringWithFormat:@"%@&image_meta=medium", resourceURLString];
-			
-			NSString *webURLString = [incomingRepresentation valueForKeyPath:@"web_meta.url"];
-			if ([webURLString isKindOfClass:[NSString class]])
-				returnedDictionary[@"web_url"] = webURLString;
-		
-			NSString *webFaviconURLString = [incomingRepresentation valueForKeyPath:@"web_meta.favicon"];
-			if ([webFaviconURLString isKindOfClass:[NSString class]])
-				returnedDictionary[@"web_favicon"] = webFaviconURLString;
-		
-			NSString *webTitleString = [incomingRepresentation valueForKeyPath:@"web_meta.title"];
-			if ([webTitleString isKindOfClass:[NSString class]])
-				returnedDictionary[@"web_title"] = webTitleString;
-		
-			NSMutableArray *accessLogArray = [NSMutableArray array];
-			for (NSDictionary *access in [incomingRepresentation valueForKeyPath:@"web_meta.accesses"]) {
-				NSDate *date = [NSDate dateFromISO8601String:access[@"time"]];
-				NSString *source = access[@"from"];
-				NSDictionary *accessLog = @{
-					@"accessTime" : date,
-					@"accessSource": source,
-					@"dayWebpages": @{@"day": [date dayBegin]}
-				};
-				[accessLogArray addObject:accessLog];
-			}
-			if (accessLogArray.count)
-				returnedDictionary[@"accessLogs"] = accessLogArray;
-		}
-		
+    
+    
+  } else if ([incomingFileType isEqualToString:@"webthumb"]) {
+    
+    if (incomingRepresentation[@"web_meta"]) {
+      
+      NSString *resourceURLString = [returnedDictionary valueForKeyPath:@"url"];
+      if ([resourceURLString isKindOfClass:[NSString class]])
+        returnedDictionary[@"thumbnail_url"] = [NSString stringWithFormat:@"%@&image_meta=medium", resourceURLString];
+      
+      NSString *webURLString = [incomingRepresentation valueForKeyPath:@"web_meta.url"];
+      if ([webURLString isKindOfClass:[NSString class]])
+        returnedDictionary[@"web_url"] = webURLString;
+      
+      NSString *webFaviconURLString = [incomingRepresentation valueForKeyPath:@"web_meta.favicon"];
+      if ([webFaviconURLString isKindOfClass:[NSString class]])
+        returnedDictionary[@"web_favicon"] = webFaviconURLString;
+      
+      NSString *webTitleString = [incomingRepresentation valueForKeyPath:@"web_meta.title"];
+      if ([webTitleString isKindOfClass:[NSString class]])
+        returnedDictionary[@"web_title"] = webTitleString;
+      
+      NSMutableArray *accessLogArray = [NSMutableArray array];
+      for (NSDictionary *access in [incomingRepresentation valueForKeyPath:@"web_meta.accesses"]) {
+        NSString *identifier = [access[@"time"] stringByAppendingString:[incomingRepresentation valueForKeyPath:@"object_id"]];
+        NSString *hashedIdentifier = [identifier MD5Sum];
+        NSDate *date = [NSDate dateFromISO8601String:access[@"time"]];
+        NSString *source = access[@"from"];
+        NSDictionary *accessLog = @{
+        @"identifier": hashedIdentifier,
+        @"accessTime": date,
+        @"accessSource": source,
+        @"dayWebpages": @{@"day": [date dayBegin]}
+        };
+        [accessLogArray addObject:accessLog];
+      }
+      if (accessLogArray.count)
+        returnedDictionary[@"accessLogs"] = accessLogArray;
+    }
+    
   } else if ([incomingFileType isEqualToString:@"doc"]) {
     
     if (incomingRepresentation[@"doc_meta"]) {
       
       NSMutableArray *accessLogArray = [NSMutableArray array];
       for (NSString *accessTime in [incomingRepresentation valueForKeyPath:@"doc_meta.access_time"]) {
+        NSString *identifier = [accessTime stringByAppendingString:[incomingRepresentation valueForKeyPath:@"object_id"]];
+        NSString *hashedIdentifier = [identifier MD5Sum];
         NSDate *date = [NSDate dateFromISO8601String:accessTime];
         NSDictionary *accessLog = @{
-					@"accessTime": date,
-					@"filePath": [incomingRepresentation valueForKeyPath:@"file_path"],
-					@"day": @{@"day" : [date dayBegin]}
+        @"identifier": hashedIdentifier,
+        @"accessTime": date,
+        @"filePath": [incomingRepresentation valueForKeyPath:@"file_path"],
+        @"day": @{@"day" : [date dayBegin]}
         };
         [accessLogArray addObject:accessLog];
       };
@@ -223,13 +230,13 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
         NSString *ownObjectID = [incomingRepresentation valueForKeyPath:@"object_id"];
         
         for (NSUInteger i = 0; i < numberOfPages; i++) {
-					NSURL *previewURL = [[NSURL URLWithString:@"http://invalid.local"] URLByAppendingPathComponent:@"v2/attachments/view"];
-					NSDictionary *parameters = @{@"object_id": ownObjectID, @"target": @"preview", @"page": @(i + 1)};
-					NSDictionary *pageElement = @{
-						@"thumbnailURL": [IRWebAPIRequestURLWithQueryParameters(previewURL, parameters) absoluteString],
-						@"page": @(i + 1)
-					};
-					[returnedArray addObject:pageElement];
+	NSURL *previewURL = [[NSURL URLWithString:@"http://invalid.local"] URLByAppendingPathComponent:@"v2/attachments/view"];
+	NSDictionary *parameters = @{@"object_id": ownObjectID, @"target": @"preview", @"page": @(i + 1)};
+	NSDictionary *pageElement = @{
+	@"thumbnailURL": [IRWebAPIRequestURLWithQueryParameters(previewURL, parameters) absoluteString],
+	@"page": @(i + 1)
+	};
+	[returnedArray addObject:pageElement];
         }
         
         returnedDictionary[@"pageElements"] = returnedArray;
@@ -243,8 +250,8 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
     
   }
   
-  // only attachments/multiple_get returns attachment meta with event_time
-  if (incomingRepresentation[@"event_time"]) {
+  // only attachments/multiple_get returns attachment meta with md5 or event_time
+  if (incomingRepresentation[@"md5"] || incomingRepresentation[@"event_time"]) {
     returnedDictionary[@"outdated"] = @NO;
   }
   
@@ -502,7 +509,7 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
       }
       
       NSCAssert1(file.articles.count>0, @"WAFile entity %@ must have already been associated with an article", file);
-      WAArticle *article = [file.articles allObjects][0];  // if the post is from device itself, there should be only one article in db, this should be right, but careful
+      WAArticle *article = file.articles[0];  // if the post is from device itself, there should be only one article in db, this should be right, but careful
       if (article.identifier) {
         options[kWARemoteArticleIdentifier] = article.identifier;
       }
@@ -522,7 +529,7 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
 	[[WAAssetsLibraryManager defaultManager] assetForURL:[NSURL URLWithString:file.assetURL] resultBlock:^(ALAsset *asset) {
 	  
 	  [asset makeThumbnailWithOptions:WAThumbnailTypeMedium completeBlock:^(UIImage *image) {
-
+	    
 	    NSManagedObjectContext *context = [ds autoUpdatingMOC];
 	    context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
 	    
@@ -535,7 +542,7 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
 	    NSCAssert1(didSave, @"Generated thumbnail could not be saved: %@", error);
 	    
 	    uploadAttachment([NSURL fileURLWithPath:file.thumbnailFilePath], options, callback);
-
+	    
 	  }];
 	  
 	} failureBlock:^(NSError *error) {
@@ -594,7 +601,7 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
       if (file.identifier)
         options[kWARemoteAttachmentUpdatedObjectIdentifier] = file.identifier;
       
-      WAArticle *article = [file.articles allObjects][0];
+      WAArticle *article = file.articles[0];
       if (article.identifier) {
         options[kWARemoteArticleIdentifier] = article.identifier;
       }
