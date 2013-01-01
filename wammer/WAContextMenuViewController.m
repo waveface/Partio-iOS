@@ -8,7 +8,7 @@
 
 #import "WAContextMenuViewController.h"
 
-@interface WAContextMenuViewController () <UITableViewDataSource, UITableViewDelegate>
+@interface WAContextMenuViewController () <UITableViewDataSource, UITableViewDelegate, UIPopoverControllerDelegate>
 
 @property (nonatomic, readwrite, strong) WAContextMenuCompletionBlock completionBlock;
 @property (nonatomic, readwrite, strong) UITableView *tableView;
@@ -167,6 +167,7 @@ static NSString *kWAContextViewCellIdentifier = @"ContextMenuItem";
 	self.contentSizeForViewInPopover = self.view.frame.size;
 		
 	self.popover = [[UIPopoverController alloc] initWithContentViewController:self];
+	self.popover.delegate = self;
 	[self.popover presentPopoverFromRect:CGRectMake(viewController.navigationController.navigationBar.frame.size.width/2, 0, 1, 1)
 								  inView:viewController.view
 				permittedArrowDirections:UIPopoverArrowDirectionUp
@@ -245,6 +246,14 @@ static NSString *kWAContextViewCellIdentifier = @"ContextMenuItem";
 	
   [self dismissContextMenu];
 	
+}
+
+#pragma mark - UIPopoverController Delegate
+- (void) popoverControllerDidDismissPopover:(UIPopoverController *)popoverController {
+  
+  if (self.completionBlock)
+	self.completionBlock();
+  
 }
 
 #pragma mark - UITableView delegate and datasorurce methods
