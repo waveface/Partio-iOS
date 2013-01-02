@@ -113,39 +113,28 @@
   
 }
 
-- (void) scheduleRetrievalForBlobURL:(NSURL *)blobURL blobKeyPath:(NSString *)blobURLKeyPath filePathKeyPath:(NSString *)filePathKeyPath usingPriority:(NSOperationQueuePriority)priority {
-  
-  if (![self canRetrieveBlobForFilePathKeyPath:filePathKeyPath])
-    return;
-  
-  NSURL *ownURL = [[self objectID] URIRepresentation];
-  Class class = [self class];
++ (void) retrieveResourceForBlobURL:(NSURL *)blobURL blobKeyPath:(NSString *)blobURLKeyPath fileURL:(NSURL *)ownURL filePathKeyPath:(NSString *)filePathKeyPath usingPriority:(NSOperationQueuePriority)priority {
+
   WADataStore *ds = [WADataStore defaultStore];
 
-  // NSManagedObject cannot be weak referenced because it overwrites -retain
-  __unsafe_unretained WAFile *wSelf = self;
-  
   [[IRRemoteResourcesManager sharedManager] retrieveResourceAtURL:blobURL usingPriority:priority forced:NO withCompletionBlock:^(NSURL *tempFileURLOrNil) {
     
     if (!tempFileURLOrNil) {
       return;
     }
     
-    if (!class)
-      return;
-    
     // corrupted file
     if (![UIImage imageWithContentsOfFile:[tempFileURLOrNil path]]) {
       int64_t delayInSeconds = 3.0;
       dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
       dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-        [wSelf scheduleRetrievalForBlobURL:blobURL blobKeyPath:blobURLKeyPath filePathKeyPath:filePathKeyPath usingPriority:priority];
+        [WAFile retrieveResourceForBlobURL:blobURL blobKeyPath:blobURLKeyPath fileURL:ownURL filePathKeyPath:filePathKeyPath usingPriority:priority];
       });
       return;
     }
-
+    
     [ds performBlock:^{
-
+      
       // move downloaded file to target file path
       NSManagedObjectContext *context = [ds autoUpdatingMOC];
       WAFile *file = (WAFile *)[context irManagedObjectForURI:ownURL];
@@ -154,7 +143,7 @@
         NSError *savingError = nil;
         if (![context save:&savingError])
 	NSLog(@"Error saving: %@", savingError);
-
+        
         if (!file.extraSmallThumbnailFilePath) {
 	
 	// make extra small thumbnails if neccessary
@@ -178,12 +167,24 @@
 	}];
 	
         }
-
+        
       }
-
+      
     } waitUntilDone:NO];
     
   }];
+  
+ 
+}
+
+- (void) scheduleRetrievalForBlobURL:(NSURL *)blobURL blobKeyPath:(NSString *)blobURLKeyPath filePathKeyPath:(NSString *)filePathKeyPath usingPriority:(NSOperationQueuePriority)priority {
+  
+  if (![self canRetrieveBlobForFilePathKeyPath:filePathKeyPath])
+    return;
+  
+  NSURL *ownURL = [[self objectID] URIRepresentation];
+
+  [WAFile retrieveResourceForBlobURL:blobURL blobKeyPath:blobURLKeyPath fileURL:ownURL filePathKeyPath:filePathKeyPath usingPriority:priority];
   
 }
 

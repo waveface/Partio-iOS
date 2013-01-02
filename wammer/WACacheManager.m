@@ -18,7 +18,6 @@ NSUInteger const DEFAULT_CACHE_SIZE = 600*1024*1024; //600MB
 @interface WACacheManager ()
 
 @property (nonatomic, readwrite) NSUInteger size;
-@property (nonatomic, readwrite, strong) NSOperationQueue *queue;
 
 - (void)initCacheEntities;
 
@@ -31,21 +30,12 @@ NSUInteger const DEFAULT_CACHE_SIZE = 600*1024*1024; //600MB
   
   self = [super init];
   if (self) {
-    self.queue = [[NSOperationQueue alloc] init];
-    self.queue.maxConcurrentOperationCount = 1;
     self.size = [[NSUserDefaults standardUserDefaults] integerForKey:kWACacheSize];
     if (self.size == 0) {
       [self initCacheEntities];
     }
   }
   return self;
-  
-}
-
-- (void)dealloc {
-  
-  // try to flush all cache updates to Core Data
-  [self.queue waitUntilAllOperationsAreFinished];
   
 }
 
@@ -86,8 +76,9 @@ NSUInteger const DEFAULT_CACHE_SIZE = 600*1024*1024; //600MB
   }
   
   __weak WACacheManager *wSelf = self;
-  [self.queue addOperationWithBlock:^{
-    
+  WADataStore *ds = [WADataStore defaultStore];
+  [ds performBlock:^{
+
     // set cache size in the last step of initialization
     wSelf.size = DEFAULT_CACHE_SIZE;
     
@@ -95,11 +86,10 @@ NSUInteger const DEFAULT_CACHE_SIZE = 600*1024*1024; //600MB
     [[NSUserDefaults standardUserDefaults] setInteger:DEFAULT_CACHE_SIZE forKey:kWACacheSize];
     [[NSUserDefaults standardUserDefaults] synchronize];
     
-    WADataStore *ds = [WADataStore defaultStore];
     NSUInteger totalSize = [[ds fetchTotalCacheSizeUsingContext:[ds disposableMOC]] unsignedIntegerValue];
     NSLog(@"Cache entries are successfully initialized, total size is %d", totalSize);
-    
-  }];
+
+  } waitUntilDone:YES];
   
 }
 
@@ -109,54 +99,47 @@ NSUInteger const DEFAULT_CACHE_SIZE = 600*1024*1024; //600MB
     NSLog(@"File does not exist: %@", filePath);
   }
   
-  __weak WACacheManager *wSelf = self;
-  [self.queue addOperationWithBlock:^{
+  WADataStore *ds = [WADataStore defaultStore];
+  [ds performBlock:^{
     
-    NSCAssert(wSelf.size != 0, @"Cache entities should be initialized");
+    NSManagedObjectContext *context = [ds disposableMOC];
     
-    WADataStore *ds = [WADataStore defaultStore];
-    [ds performBlock:^{
-
-      NSManagedObjectContext *context = [ds disposableMOC];
+    id relatedObject = [context irManagedObjectForURI:relationshipURL];
+    
+    BOOL isWAFile = [relatedObject isKindOfClass:[WAFile class]];
+    BOOL isWAOpenGraphElementImage = [relatedObject isKindOfClass:[WAOpenGraphElementImage class]];
+    BOOL isWAFilePageElement = [relatedObject isKindOfClass:[WAFilePageElement class]];
+    
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K == %@ && %K == %@", kWACacheFilePathKey, filePathKey, kWACacheFilePath, filePath];
+    WACache *currentCache = [[WADataStore defaultStore] fetchCacheWithPredicate:predicate usingContext:context];
+    WACache *savedCache = nil;
+    
+    if (currentCache) {
       
-      id relatedObject = [context irManagedObjectForURI:relationshipURL];
+      currentCache.lastAccessTime = [NSDate date];
       
-      BOOL isWAFile = [relatedObject isKindOfClass:[WAFile class]];
-      BOOL isWAOpenGraphElementImage = [relatedObject isKindOfClass:[WAOpenGraphElementImage class]];
-      BOOL isWAFilePageElement = [relatedObject isKindOfClass:[WAFilePageElement class]];
+    } else {
       
-      NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K == %@ && %K == %@", kWACacheFilePathKey, filePathKey, kWACacheFilePath, filePath];
-      WACache *currentCache = [[WADataStore defaultStore] fetchCacheWithPredicate:predicate usingContext:context];
-      WACache *savedCache = nil;
+      savedCache = [WACache objectInsertingIntoContext:context withRemoteDictionary:@{}];
+      savedCache.lastAccessTime = [NSDate date];
+      savedCache.filePath = filePath;
+      savedCache.filePathKey = filePathKey;
+      NSDictionary *attributes = [[NSFileManager defaultManager] attributesOfItemAtPath:filePath error:nil];
+      savedCache.fileSize = [attributes objectForKey:NSFileSize];
       
-      if (currentCache) {
-        
-        currentCache.lastAccessTime = [NSDate date];
-        
-      } else {
-        
-        savedCache = [WACache objectInsertingIntoContext:context withRemoteDictionary:@{}];
-        savedCache.lastAccessTime = [NSDate date];
-        savedCache.filePath = filePath;
-        savedCache.filePathKey = filePathKey;
-        NSDictionary *attributes = [[NSFileManager defaultManager] attributesOfItemAtPath:filePath error:nil];
-        savedCache.fileSize = [attributes objectForKey:NSFileSize];
-        
-        if (isWAFile) {
-	savedCache.file = (WAFile *)relatedObject;
-        } else if (isWAOpenGraphElementImage) {
-	savedCache.ogimage = (WAOpenGraphElementImage *)relatedObject;
-        } else if (isWAFilePageElement) {
-	savedCache.pageElement = (WAFilePageElement *)relatedObject;
-        }
-        
+      if (isWAFile) {
+        savedCache.file = (WAFile *)relatedObject;
+      } else if (isWAOpenGraphElementImage) {
+        savedCache.ogimage = (WAOpenGraphElementImage *)relatedObject;
+      } else if (isWAFilePageElement) {
+        savedCache.pageElement = (WAFilePageElement *)relatedObject;
       }
       
-      [context save:nil];
-
-    } waitUntilDone:YES];
+    }
     
-  }];
+    [context save:nil];
+    
+  } waitUntilDone:NO];
   
 }
 
@@ -187,7 +170,7 @@ NSUInteger const DEFAULT_CACHE_SIZE = 600*1024*1024; //600MB
     
     for (WACache *cache in caches) {
       
-      [self.queue addOperationWithBlock:^{
+      [ds performBlock:^{
         
         if (totalSize <= wSelf.size) {
 	return;
@@ -219,15 +202,13 @@ NSUInteger const DEFAULT_CACHE_SIZE = 600*1024*1024; //600MB
 	}
         }
         
-      }];
+      } waitUntilDone:NO];
       
     }
     
-    [self.queue addOperationWithBlock:^{
-      
+    [ds performBlock:^{
       NSLog(@"Purging finished, current total size is %d", totalSize);
-      
-    }];
+    } waitUntilDone:NO];
     
   } else {
     
