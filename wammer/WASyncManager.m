@@ -160,10 +160,11 @@
     return NO;
   }
   
-  return ([self.photoImportOperationQueue operationCount] ||
-	[self.articleSyncOperationQueue operationCount] ||
-	[self.fileSyncOperationQueue operationCount] ||
-	[self.fileMetadataSyncOperationQueue operationCount]);
+  // there will be at least one tail op if any sync operation exists in these op queue
+  return (([self.photoImportOperationQueue operationCount] > 1) ||
+	([self.articleSyncOperationQueue operationCount] > 1) ||
+	([self.fileSyncOperationQueue operationCount] > 1) ||
+	([self.fileMetadataSyncOperationQueue operationCount] > 1));
 
 }
 
