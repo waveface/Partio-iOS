@@ -39,38 +39,42 @@ static CGFloat const kWAFileLargeImageSideLength = 2048;
   CGFloat imageWidth = CGImageGetWidth(image);
   CGFloat imageHeight = CGImageGetHeight(image);
   
-  if (imageWidth <= sideLength && imageHeight <= sideLength) {
-    return [UIImage imageWithCGImage:image];
-  }
-  
   CIImage *outputImage = nil;
   CIContext *context = [WAImageProcessing sharedCIContext];
-  CGSize maxSize = [context inputImageMaximumSize];
   
-  if (imageWidth > maxSize.width || imageHeight > maxSize.height) {
-    // scale down by core graphics
-    CGFloat xscale = sideLength / imageWidth;
-    CGFloat yscale = sideLength / imageHeight;
-    CGFloat scale = xscale < yscale ? xscale : yscale;
-    CGRect drawnRect = CGRectMake(0, 0, imageWidth*scale, imageHeight*scale);
-    CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
-    CGContextRef cgContext = CGBitmapContextCreate(NULL, drawnRect.size.width, drawnRect.size.height, 8, 0, colorSpace, kCGImageAlphaPremultipliedLast);
-    CGContextSetInterpolationQuality(cgContext, kCGInterpolationHigh);
-    CGContextClearRect(cgContext, drawnRect);
-    CGContextDrawImage(cgContext, drawnRect, image);
-    CGImageRef scaledCGImage = CGBitmapContextCreateImage(cgContext);
-    outputImage = [CIImage imageWithCGImage:scaledCGImage];
-    CGImageRelease(scaledCGImage);
-    CGColorSpaceRelease(colorSpace);
-    CGContextRelease(cgContext);
+  if (imageWidth > sideLength || imageHeight > sideLength) {
+
+    CGSize maxSize = [context inputImageMaximumSize];
+    if (imageWidth > maxSize.width || imageHeight > maxSize.height) {
+      // scale down by core graphics
+      CGFloat xscale = sideLength / imageWidth;
+      CGFloat yscale = sideLength / imageHeight;
+      CGFloat scale = xscale < yscale ? xscale : yscale;
+      CGRect drawnRect = CGRectMake(0, 0, imageWidth*scale, imageHeight*scale);
+      CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
+      CGContextRef cgContext = CGBitmapContextCreate(NULL, drawnRect.size.width, drawnRect.size.height, 8, 0, colorSpace, kCGImageAlphaPremultipliedLast);
+      CGContextSetInterpolationQuality(cgContext, kCGInterpolationHigh);
+      CGContextClearRect(cgContext, drawnRect);
+      CGContextDrawImage(cgContext, drawnRect, image);
+      CGImageRef scaledCGImage = CGBitmapContextCreateImage(cgContext);
+      outputImage = [CIImage imageWithCGImage:scaledCGImage];
+      CGImageRelease(scaledCGImage);
+      CGColorSpaceRelease(colorSpace);
+      CGContextRelease(cgContext);
+    } else {
+      // scale down by core image
+      CIImage *inputImage = [CIImage imageWithCGImage:image];
+      CIFilter *filter = [CIFilter filterWithName:@"CILanczosScaleTransform"];
+      [filter setValue:inputImage forKey:@"inputImage"];
+      CGFloat scale = (imageWidth > imageHeight) ? sideLength/imageWidth : sideLength/imageHeight;
+      [filter setValue:@(scale) forKey:@"inputScale"];
+      outputImage = [filter outputImage];
+    }
+
   } else {
-    // scale down by core image
-    CIImage *inputImage = [CIImage imageWithCGImage:image];
-    CIFilter *filter = [CIFilter filterWithName:@"CILanczosScaleTransform"];
-    [filter setValue:inputImage forKey:@"inputImage"];
-    CGFloat scale = (imageWidth > imageHeight) ? sideLength/imageWidth : sideLength/imageHeight;
-    [filter setValue:@(scale) forKey:@"inputScale"];
-    outputImage = [filter outputImage];
+
+    outputImage = [CIImage imageWithCGImage:image];
+
   }
   
   // rotate
