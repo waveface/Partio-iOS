@@ -160,11 +160,11 @@
     return NO;
   }
   
-  // there will be at least one tail op if any sync operation exists in these op queue
+  // there will be at least one tail op if any sync operation exists in these op queue,
+  // and metadata sync will not show on status bar
   return (([self.photoImportOperationQueue operationCount] > 1) ||
 	([self.articleSyncOperationQueue operationCount] > 1) ||
-	([self.fileSyncOperationQueue operationCount] > 1) ||
-	([self.fileMetadataSyncOperationQueue operationCount] > 1));
+	([self.fileSyncOperationQueue operationCount] > 1));
 
 }
 

@@ -13,13 +13,13 @@
 #import "WAFetchManager+RemoteCollectionFetch.h"
 #import "WAFetchManager+RemoteChangeFetch.h"
 #import "WAFetchManager+RemoteFileMetadataFetch.h"
+#import "WADefines.h"
 
 @interface WAFetchManager ()
 
 @property (nonatomic, strong) IRRecurrenceMachine *recurrenceMachine;
 @property (nonatomic, strong) NSOperationQueue *articleFetchOperationQueue;
 @property (nonatomic, strong) NSOperationQueue *fileMetadataFetchOperationQueue;
-
 @property (nonatomic, strong) NSDate *currentDate;
 
 @end
@@ -72,6 +72,27 @@
 
   NSParameterAssert(self.recurrenceMachine);
   [self.recurrenceMachine endPostponingOperations];
+
+}
+
++ (NSSet *)keyPathsForValuesAffectingIsFetching {
+
+  return [NSSet setWithArray:@[
+	@"articleFetchOperationQueue.operationCount",
+	@"fileMetadataFetchOperationQueue.operationCount"
+	]];
+
+}
+
+- (BOOL)isFetching {
+
+  if (![[NSUserDefaults standardUserDefaults] boolForKey:kWAFirstArticleFetched]) {
+    return YES;
+  }
+  
+  // there will be at least one tail op if any fetch operation exists in these op queue
+  return ([self.articleFetchOperationQueue operationCount] > 1 ||
+	[self.fileMetadataFetchOperationQueue operationCount] > 1);
 
 }
 

@@ -12,6 +12,7 @@
 #import "WADefines.h"
 #import "WADefines+iOS.h"
 #import "WAAppDelegate_iOS.h"
+#import "WASyncManager.h"
 
 @interface WAFirstUseDoneViewController ()
 
