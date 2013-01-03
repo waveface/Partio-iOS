@@ -11,38 +11,39 @@
 @implementation WAFileAccessLog (WARemoteInterfaceEntitySyncing)
 
 + (NSString *) keyPathHoldingUniqueValue {
-	
-	return @"accessTime";
-
+  
+  return @"identifier";
+  
 }
 
 + (NSDictionary *) defaultHierarchicalEntityMapping {
-	
-	return @{
-		@"day": @"WADocumentDay",
-		@"dayWebpages": @"WAWebpageDay",
-	};
-	
+  
+  return @{
+  @"day": @"WADocumentDay",
+  @"dayWebpages": @"WAWebpageDay",
+  };
+  
 }
 
 + (NSDictionary *) remoteDictionaryConfigurationMapping {
-	
-	static NSDictionary *mapping = nil;
-	static dispatch_once_t onceToken;
-	dispatch_once(&onceToken, ^{
+  
+  static NSDictionary *mapping = nil;
+  static dispatch_once_t onceToken;
+  dispatch_once(&onceToken, ^{
     
-		mapping = @{
-			@"accessTime": @"accessTime",
-			@"accessSource": @"accessSource",
-			@"filePath": @"filePath",
-			@"day": @"day",
-			@"dayWebpages": @"dayWebpages"
-		};
-
-	});
-	
-	return mapping;
-	
+    mapping = @{
+    @"accessTime": @"accessTime",
+    @"accessSource": @"accessSource",
+    @"filePath": @"filePath",
+    @"identifier": @"identifier",
+    @"day": @"day",
+    @"dayWebpages": @"dayWebpages"
+    };
+    
+  });
+  
+  return mapping;
+  
 }
 
 @end

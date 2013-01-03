@@ -30,7 +30,7 @@
       return;
     }
 
-    [[wSelf recurrenceMachine] beginPostponingOperations];
+    [wSelf beginPostponingSync];
 
     __block NSMutableArray *fileMetas = [@[] mutableCopy];
     const NSUInteger MAX_FILEMETAS_COUNT = 20;
@@ -132,7 +132,7 @@
     }];
 
     NSBlockOperation *tailOp = [NSBlockOperation blockOperationWithBlock:^{
-      [[wSelf recurrenceMachine] endPostponingOperations];
+      [wSelf endPostponingSync];
     }];
 
     for (NSOperation *operation in wSelf.fileMetadataSyncOperationQueue.operations) {

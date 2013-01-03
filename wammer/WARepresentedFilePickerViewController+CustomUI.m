@@ -43,7 +43,7 @@
 		NSAssert1(pickedFile, @"WAFile entity referneced by URL %@ must exist", selectedFileURI);
 		
 		NSAssert1(pickedFile.articles.count>0, @"WAFile entity %@ must have already been associated with an article", pickedFile);
-		WAArticle *article = [[pickedFile.articles allObjects] objectAtIndex:0];
+		WAArticle *article = pickedFile.articles[0];
 		
 		article.representingFile = pickedFile;
 		article.dirty = (id)kCFBooleanTrue;

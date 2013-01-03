@@ -113,63 +113,78 @@
   
 }
 
-- (void) scheduleRetrievalForBlobURL:(NSURL *)blobURL blobKeyPath:(NSString *)blobURLKeyPath filePathKeyPath:(NSString *)filePathKeyPath usingPriority:(NSOperationQueuePriority)priority {
-  
-  if (![self canRetrieveBlobForFilePathKeyPath:filePathKeyPath])
-    return;
-  
-  NSURL *ownURL = [[self objectID] URIRepresentation];
-  Class class = [self class];
-  
++ (void) retrieveResourceForBlobURL:(NSURL *)blobURL blobKeyPath:(NSString *)blobURLKeyPath fileURL:(NSURL *)ownURL filePathKeyPath:(NSString *)filePathKeyPath usingPriority:(NSOperationQueuePriority)priority {
+
+  WADataStore *ds = [WADataStore defaultStore];
+
   [[IRRemoteResourcesManager sharedManager] retrieveResourceAtURL:blobURL usingPriority:priority forced:NO withCompletionBlock:^(NSURL *tempFileURLOrNil) {
     
     if (!tempFileURLOrNil) {
       return;
     }
     
-    if (!class)
-      return;
-    
+    // corrupted file
     if (![UIImage imageWithContentsOfFile:[tempFileURLOrNil path]]) {
-      __weak WAFile *wSelf = self;
       int64_t delayInSeconds = 3.0;
       dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
       dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-        [wSelf scheduleRetrievalForBlobURL:blobURL blobKeyPath:blobURLKeyPath filePathKeyPath:filePathKeyPath usingPriority:priority];
+        [WAFile retrieveResourceForBlobURL:blobURL blobKeyPath:blobURLKeyPath fileURL:ownURL filePathKeyPath:filePathKeyPath usingPriority:priority];
       });
       return;
     }
     
-    [[tempFileURLOrNil path] makeThumbnailWithOptions:WAThumbnailTypeExtraSmall completeBlock:^(UIImage *image) {
-
-      NSManagedObjectContext *context = [[WADataStore defaultStore] autoUpdatingMOC];
-      context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
-      WAFile *file = (WAFile *)[context irManagedObjectForURI:ownURL];
-      if (!file.extraSmallThumbnailFilePath) {
-        file.extraSmallThumbnailFilePath = [[[WADataStore defaultStore] persistentFileURLForData:UIImageJPEGRepresentation(image, 0.85f) extension:@"jpeg"] path];
-        [context save:nil];
-      }
-
-    }];
-    
-    dispatch_async([class sharedResourceHandlingQueue], ^ {
+    [ds performBlock:^{
       
-      NSManagedObjectContext *context = [[WADataStore defaultStore] autoUpdatingMOC];
+      // move downloaded file to target file path
+      NSManagedObjectContext *context = [ds autoUpdatingMOC];
       WAFile *file = (WAFile *)[context irManagedObjectForURI:ownURL];
-      
       if ([file takeBlobFromTemporaryFile:[tempFileURLOrNil path] forKeyPath:filePathKeyPath matchingURL:blobURL forKeyPath:blobURLKeyPath]) {
-        
-        context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
         
         NSError *savingError = nil;
         if (![context save:&savingError])
 	NSLog(@"Error saving: %@", savingError);
         
+        if (!file.extraSmallThumbnailFilePath) {
+	
+	// make extra small thumbnails if neccessary
+	NSString *filePath = [file valueForKeyPath:filePathKeyPath];
+	[filePath makeThumbnailWithOptions:WAThumbnailTypeExtraSmall completeBlock:^(UIImage *image) {
+	  
+	  NSString *filePath = [[[WADataStore defaultStore] persistentFileURLForData:UIImageJPEGRepresentation(image, 0.85f) extension:@"jpeg"] path];
+	  
+	  [ds performBlock:^{
+	    
+	    NSManagedObjectContext *context = [ds autoUpdatingMOC];
+	    context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
+	    WAFile *file = (WAFile *)[context irManagedObjectForURI:ownURL];
+	    if (!file.extraSmallThumbnailFilePath) {
+	      file.extraSmallThumbnailFilePath = filePath;
+	      [context save:nil];
+	    }
+	    
+	  } waitUntilDone:NO];
+	  
+	}];
+	
+        }
+        
       }
       
-    });
+    } waitUntilDone:NO];
     
   }];
+  
+ 
+}
+
+- (void) scheduleRetrievalForBlobURL:(NSURL *)blobURL blobKeyPath:(NSString *)blobURLKeyPath filePathKeyPath:(NSString *)filePathKeyPath usingPriority:(NSOperationQueuePriority)priority {
+  
+  if (![self canRetrieveBlobForFilePathKeyPath:filePathKeyPath])
+    return;
+  
+  NSURL *ownURL = [[self objectID] URIRepresentation];
+
+  [WAFile retrieveResourceForBlobURL:blobURL blobKeyPath:blobURLKeyPath fileURL:ownURL filePathKeyPath:filePathKeyPath usingPriority:priority];
   
 }
 

@@ -9,6 +9,7 @@
 
 #import "WADayViewController.h"
 #import "WADefines.h"
+#import "WAAppDelegate_iOS.h"
 #import "NSDate+WAAdditions.h"
 
 #import "IRBarButtonItem.h"
@@ -85,15 +86,6 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 
 	return self;
 
-}
-
-- (void) dealloc {
-
-	[[NSNotificationCenter defaultCenter]
-	 removeObserver:self
-	 name:kWACompositionSessionRequestedNotification
-	 object:nil];
-	
 }
 
 - (void)loadView
@@ -313,10 +305,11 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 
 - (void) contextMenuItemDidSelect:(WADayViewSupportedStyle)itemStyle {
 	
-	WASlidingMenuViewController *slidingMenu = (WASlidingMenuViewController*) self.viewDeckController.leftController;
-	NSDate *theDate = [self dayAtPageIndex:self.paginatedView.currentPage];
-	[slidingMenu switchToViewStyle:itemStyle onDate:theDate];
-	
+  NSDate *theDate = [self dayAtPageIndex:self.paginatedView.currentPage];
+
+  WAAppDelegate_iOS *appDelegate = (WAAppDelegate_iOS*)AppDelegate();
+  [appDelegate.slidingMenu switchToViewStyle:itemStyle onDate:theDate];
+
 }
 
 #pragma mark - Jump to specific date

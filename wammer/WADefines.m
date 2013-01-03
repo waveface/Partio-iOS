@@ -79,6 +79,9 @@ NSString * const kWASNSGoogleConnectEnabled = @"WAGoogleConnectEnabled";
 NSString * const kWASNSTwitterConnectEnabled = @"WATwitterConnectEnabled";
 NSString * const kWASNSFoursquareConnectEnabled = @"WAFoursquareConnectEnabled";
 
+NSString * const kWAFirstArticleFetched = @"WAFirstArticleSynced";
+NSString * const kWAAllCollectionsFetchOnce = @"WAAllCollectionsFetchOnce";
+
 void WARegisterUserDefaults () {
 
 	[[NSUserDefaults standardUserDefaults] registerDefaults:WAPresetDefaults()];

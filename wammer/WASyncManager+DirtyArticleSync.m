@@ -49,7 +49,7 @@
     NSCAssert(wSelf.needingSyncFilesCount == 0, @"file sync count should be reset before starting article sync");
     wSelf.needingSyncFilesCount = filesCount; // display status bar via KVO
 
-    [[wSelf recurrenceMachine] beginPostponingOperations];
+    [wSelf beginPostponingSync];
 
     for (NSURL *articleURL in articleURIs) {
 
@@ -87,7 +87,7 @@
     }
     
     NSBlockOperation *tailOp = [NSBlockOperation blockOperationWithBlock:^{
-      [[wSelf recurrenceMachine] endPostponingOperations];
+      [wSelf endPostponingSync];
       callback(nil);
     }];
     
