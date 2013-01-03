@@ -230,7 +230,7 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
         NSString *ownObjectID = [incomingRepresentation valueForKeyPath:@"object_id"];
         
         for (NSUInteger i = 0; i < numberOfPages; i++) {
-	NSURL *previewURL = [[NSURL URLWithString:@"http://invalid.local"] URLByAppendingPathComponent:@"v2/attachments/view"];
+	NSURL *previewURL = [[NSURL URLWithString:@"http://invalid.local"] URLByAppendingPathComponent:@"v3/attachments/view"];
 	NSDictionary *parameters = @{@"object_id": ownObjectID, @"target": @"preview", @"page": @(i + 1)};
 	NSDictionary *pageElement = @{
 	@"thumbnailURL": [IRWebAPIRequestURLWithQueryParameters(previewURL, parameters) absoluteString],
@@ -427,11 +427,11 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
       
       if ([[options valueForKey:kWARemoteAttachmentSubtype] isEqualToString:WARemoteAttachmentMediumSubtype]) {
         
-        file.thumbnailURL = [[file class] transformedValue:[@"/v2/attachments/view?object_id=" stringByAppendingFormat:@"%@&image_meta=medium", file.identifier] fromRemoteKeyPath:nil toLocalKeyPath:@"thumbnailURL"];
+        file.thumbnailURL = [[file class] transformedValue:[@"/v3/attachments/view?object_id=" stringByAppendingFormat:@"%@&image_meta=medium", file.identifier] fromRemoteKeyPath:nil toLocalKeyPath:@"thumbnailURL"];
         
       } else if ([[options valueForKey:kWARemoteAttachmentSubtype] isEqualToString:WARemoteAttachmentOriginalSubtype]) {
         
-        file.resourceURL = [[file class] transformedValue:[@"/v2/attachments/view?object_id=" stringByAppendingFormat:@"%@", file.identifier] fromRemoteKeyPath:nil toLocalKeyPath:@"resourceURL"];
+        file.resourceURL = [[file class] transformedValue:[@"/v3/attachments/view?object_id=" stringByAppendingFormat:@"%@", file.identifier] fromRemoteKeyPath:nil toLocalKeyPath:@"resourceURL"];
         
         [[WADataStore defaultStore] setLastSyncSuccessDate:[NSDate date]];
         
@@ -455,11 +455,11 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
         
         if ([[options valueForKey:kWARemoteAttachmentSubtype] isEqualToString:WARemoteAttachmentMediumSubtype]) {
 	
-	file.thumbnailURL = [[file class] transformedValue:[@"/v2/attachments/view?object_id=" stringByAppendingFormat:@"%@&image_meta=medium", file.identifier] fromRemoteKeyPath:nil toLocalKeyPath:@"thumbnailURL"];
+	file.thumbnailURL = [[file class] transformedValue:[@"/v3/attachments/view?object_id=" stringByAppendingFormat:@"%@&image_meta=medium", file.identifier] fromRemoteKeyPath:nil toLocalKeyPath:@"thumbnailURL"];
 	
         } else if ([[options valueForKey:kWARemoteAttachmentSubtype] isEqualToString:WARemoteAttachmentOriginalSubtype]) {
 	
-	file.resourceURL = [[file class] transformedValue:[@"/v2/attachments/view?object_id=" stringByAppendingFormat:@"%@", file.identifier] fromRemoteKeyPath:nil toLocalKeyPath:@"resourceURL"];
+	file.resourceURL = [[file class] transformedValue:[@"/v3/attachments/view?object_id=" stringByAppendingFormat:@"%@", file.identifier] fromRemoteKeyPath:nil toLocalKeyPath:@"resourceURL"];
 	
 	[[WADataStore defaultStore] setLastSyncSuccessDate:[NSDate date]];
 	
