@@ -23,6 +23,7 @@
 @property (nonatomic, readwrite, strong) NSFetchedResultsController *fetchedResultsController;
 @property (nonatomic, readwrite, strong) UICollectionView *collectionView;
 @property (nonatomic, readwrite, strong) NSMutableArray *webPages;
+@property (nonatomic, strong) NSOperationQueue *imageDisplayQueue;
 
 @end
 
@@ -68,6 +69,9 @@
     }
 
   }
+  
+  self.imageDisplayQueue = [[NSOperationQueue alloc] init];
+  self.imageDisplayQueue.maxConcurrentOperationCount = 1;
 	
   return self;
 	
@@ -102,6 +106,12 @@
 {
   [super didReceiveMemoryWarning];
   // Dispose of any resources that can be recreated.
+}
+
+- (void) dealloc {
+
+  [self.imageDisplayQueue cancelAllOperations];
+ 
 }
 
 - (NSUInteger) supportedInterfaceOrientations {
@@ -209,17 +219,27 @@
 
   cell.dateTimeLabel.text = [formatter stringFromDate:((WAFileAccessLog*)self.webPages[indexPath.row]).accessTime];
 
-  [file irObserve:@"thumbnailImage"
-		  options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew
-		  context:&kWAWebStreamViewCellKVOContext
-		withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
-						
-		  dispatch_async(dispatch_get_main_queue(), ^{
-			cell.imageView.image = (UIImage*)toValue;
-		  });
-					
-		}];
+  __block NSBlockOperation *blockOp = [NSBlockOperation blockOperationWithBlock:^{
 	
+	[file irObserve:@"thumbnailImage"
+			options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew
+			context:&kWAWebStreamViewCellKVOContext
+		  withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
+
+			if (![blockOp isCancelled]) {
+			  
+			  dispatch_async(dispatch_get_main_queue(), ^{
+				cell.imageView.image = (UIImage*)toValue;
+			  });
+			  
+			}
+					
+		  }];
+  	
+	}];
+
+  [self.imageDisplayQueue addOperation:blockOp];
+
   cell.file = file;
 	
   if (file.webFaviconURL) {

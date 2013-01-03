@@ -22,7 +22,7 @@
 #import "WADocumentStreamViewController.h"
 #import "WAWebStreamViewController.h"
 
-static const NSUInteger kWAAppendingBatchSize = 30;
+static const NSUInteger kWAAppendingBatchSize = 20;
 static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPostsViewControllerPhone_RepresentedObjectURI";
 
 @interface WADayViewController () <NSFetchedResultsControllerDelegate, WAContextMenuDelegate> {

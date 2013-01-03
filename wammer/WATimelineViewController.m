@@ -38,12 +38,63 @@
 @property (nonatomic, strong) NSDate *currentDisplayedDate;
 @property (nonatomic, readwrite, retain) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, strong) NSFetchedResultsController *fetchedResultsController;
+@property (nonatomic, strong) NSOperationQueue *imageDisplayQueue;
 
 @property (nonatomic, readwrite, retain) UILongPressGestureRecognizer *longPressGR;
 
 @end
 
 @implementation WATimelineViewController
+
++ (UINib *) nibForImageStack1 {
+  static UINib *nib;
+  
+  static dispatch_once_t onceToken;
+  dispatch_once(&onceToken, ^{
+	nib = [UINib nibWithNibName:@"WATimelineViewCell-ImageStack-1" bundle:nil];
+  });
+  
+  return nib;
+}
+
++ (UINib *) nibForImageStack2 {
+  static UINib *nib;
+  
+  static dispatch_once_t onceToken;
+  dispatch_once(&onceToken, ^{
+	WATimelineViewCell *cell = [[WATimelineViewCell alloc] init];
+	nib = [UINib nibWithNibName:@"WATimelineViewCell-ImageStack-2" bundle:nil];
+	[nib instantiateWithOwner:cell options:nil];
+  });
+  
+  return nib;
+}
+
++ (UINib *) nibForImageStack3 {
+  static UINib *nib;
+  
+  static dispatch_once_t onceToken;
+  dispatch_once(&onceToken, ^{
+	WATimelineViewCell *cell = [[WATimelineViewCell alloc] init];
+	nib = [UINib nibWithNibName:@"WATimelineViewCell-ImageStack-3" bundle:nil];
+	[nib instantiateWithOwner:cell options:nil];
+  });
+  
+  return nib;
+}
+
++ (UINib *) nibForCheckinOnly {
+  static UINib *nib;
+  
+  static dispatch_once_t onceToken;
+  dispatch_once(&onceToken, ^{
+	WATimelineViewCell *cell = [[WATimelineViewCell alloc] init];
+	nib = [UINib nibWithNibName:@"WATimelineViewCell-Checkin" bundle:nil];
+	[nib instantiateWithOwner:cell options:nil];
+  });
+  
+  return nib;
+}
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -65,10 +116,10 @@
 	self.collectionView.backgroundColor = [UIColor colorWithRed:0.95f green:0.95f blue:0.95f alpha:1];
 
 	[self.collectionView registerNib:[UINib nibWithNibName:@"WADayHeaderView" bundle:nil] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"WADayHeaderView"];
-	[self.collectionView registerNib:[UINib nibWithNibName:@"WATimelineViewCell-ImageStack-1" bundle:nil] forCellWithReuseIdentifier:@"PostCell-Photo-1"];
-	[self.collectionView registerNib:[UINib nibWithNibName:@"WATimelineViewCell-ImageStack-2" bundle:nil] forCellWithReuseIdentifier:@"PostCell-Photo-2"];
-	[self.collectionView registerNib:[UINib nibWithNibName:@"WATimelineViewCell-ImageStack-3" bundle:nil] forCellWithReuseIdentifier:@"PostCell-Photo-3"];
-	[self.collectionView registerNib:[UINib nibWithNibName:@"WATimelineViewCell-Checkin" bundle:nil] forCellWithReuseIdentifier:@"PostCell-Checkin"];
+	[self.collectionView registerNib:[[self class] nibForImageStack1] forCellWithReuseIdentifier:@"PostCell-Photo-1"];
+	[self.collectionView registerNib:[[self class] nibForImageStack2] forCellWithReuseIdentifier:@"PostCell-Photo-2"];
+	[self.collectionView registerNib:[[self class] nibForImageStack3] forCellWithReuseIdentifier:@"PostCell-Photo-3"];
+	[self.collectionView registerNib:[[self class] nibForCheckinOnly] forCellWithReuseIdentifier:@"PostCell-Checkin"];
 
 	self.collectionView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
 	[self.view addSubview:self.collectionView];
@@ -82,6 +133,10 @@
 - (id) initWithDate:(NSDate*)date {
 	
 	self.currentDisplayedDate = [date copy];
+  
+  self.imageDisplayQueue = [[NSOperationQueue alloc] init];
+  self.imageDisplayQueue.maxConcurrentOperationCount = 1;
+  
 	[self fetchedResultsController];
 	
 	return [self initWithNibName:nil bundle:nil];
@@ -90,14 +145,21 @@
 
 - (void) viewWillAppear:(BOOL)animated {
 	
+  [super viewWillAppear:animated];
 	[self.collectionView.collectionViewLayout invalidateLayout];
 	
+}
+
+- (void) dealloc {
+
+  [self.imageDisplayQueue cancelAllOperations];
+  
 }
 
 - (void)didReceiveMemoryWarning
 {
 	
-    [super didReceiveMemoryWarning];
+  [super didReceiveMemoryWarning];
 	
 }
 
@@ -209,7 +271,7 @@
 		
 	WATimelineViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:identifier forIndexPath:indexPath];
 	
-	[cell setRepresentedArticle:post];
+	[cell setRepresentedArticle:post onQueue:self.imageDisplayQueue];
 	
 	return cell;
 	

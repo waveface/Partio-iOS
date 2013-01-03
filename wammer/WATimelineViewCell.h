@@ -14,5 +14,5 @@
 
 @property (nonatomic, strong) WAArticle *representedArticle;
 @property (nonatomic, readwrite, strong) IBOutlet IRLabel *commentLabel;
-
+- (void) setRepresentedArticle:(WAArticle *)representedArticle onQueue:(NSOperationQueue*)displayQueue;
 @end
