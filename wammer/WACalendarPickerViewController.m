@@ -209,14 +209,12 @@
 
 - (IBAction)handleEvents:(UIButton *)sender
 {
+	NSParameterAssert(self.viewDeckController);
+
 	WASlidingMenuViewController *smVC;
+	smVC = (WASlidingMenuViewController *)[self.viewDeckController leftController];
+	[smVC switchToViewStyle:WAEventsViewStyle onDate:[calPicker selectedNSDate] animated:YES];
 	
-	if (self.viewDeckController) {
-		
-		smVC = (WASlidingMenuViewController *)[self.viewDeckController leftController];
-		[smVC switchToViewStyle:WAEventsViewStyle onDate:[calPicker selectedNSDate] animated:YES];
-		
-	}
 }
 
 - (IBAction)handlePhotos:(UIButton *)sender
