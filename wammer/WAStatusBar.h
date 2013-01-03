@@ -13,4 +13,7 @@
 @property UILabel *statusLabel;
 @property UIProgressView *progressView;
 
+- (void)showStatusOnly;
+- (void)showStatusAndProgress;
+
 @end

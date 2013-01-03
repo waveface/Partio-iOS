@@ -276,6 +276,9 @@
 /* Display title for a fetch request working against the latest article on a particular date */
 "FETCH_REQUEST_NEWEST_ARTICLE_OF_PARTICULAR_DATE_DISPLAY_TITLE" = "某日貼文";
 
+/* String on customized status bar */
+"FETCHING_DATA" = "下載資料中...";
+
 /* Title for an alert view to show foursquare connection failure */
 "FOURSQUARE_CONNECT_FAIL_TITLE" = "無法同步Foursquare";
 

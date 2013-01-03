@@ -11,14 +11,13 @@
 @class IRRecurrenceMachine;
 @interface WAFetchManager : NSObject
 
-- (void) beginPostponingFetch;
-- (void) endPostponingFetch;
-
-- (void) reload;
-
 @property (nonatomic, readonly, strong) NSOperationQueue *articleFetchOperationQueue;
 @property (nonatomic, readonly, strong) NSOperationQueue *fileMetadataFetchOperationQueue;
-
 @property (nonatomic, readonly, strong) NSDate *currentDate;
+@property (nonatomic, readonly) BOOL isFetching;
+
+- (void) beginPostponingFetch;
+- (void) endPostponingFetch;
+- (void) reload;
 
 @end
