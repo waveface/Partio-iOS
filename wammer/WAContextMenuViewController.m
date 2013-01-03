@@ -65,7 +65,7 @@ static NSString *kWAContextViewCellIdentifier = @"ContextMenuItem";
 	[self.tapper addTarget:self action:@selector(tapperTapped:) forControlEvents:UIControlEventTouchUpInside];
 	[self.translucentOverlay addSubview:self.tapper];
 		
-	self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(fullScreenFrame.size.width/2 - 80, 0, 160, 150)];
+	self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(fullScreenFrame.size.width/2 - 80, 0, 160, 200)];
 	self.tableView.delegate = self;
 	self.tableView.dataSource = self;
 	self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
@@ -75,7 +75,7 @@ static NSString *kWAContextViewCellIdentifier = @"ContextMenuItem";
 		
   } else {
 		
-	self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, 160, 150)];
+	self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, 160, 200)];
 	self.tableView.delegate = self;
 	self.tableView.dataSource = self;
 	self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
@@ -125,10 +125,9 @@ static NSString *kWAContextViewCellIdentifier = @"ContextMenuItem";
   self.menuItems = [NSMutableArray array];
 	
   for (int i = 0; i < origMenuItems.count; i++) {
-	if ([origMenuItems[i][@"style"] isEqual:[NSNumber numberWithUnsignedInteger:currentViewStyle]])
-	  continue;
 		
 	[self.menuItems addObject:origMenuItems[i]];
+
   }
 }
 
@@ -284,6 +283,15 @@ static NSString *kWAContextViewCellIdentifier = @"ContextMenuItem";
   cell.textLabel.font = [UIFont fontWithName:@"HelveticaNeue" size:14.0];
   cell.textLabel.text = item[@"title"];
   cell.imageView.image = item[@"icon"];
+  if ([item[@"style"] isEqual:[NSNumber numberWithUnsignedInteger:currentViewStyle]]) {
+	UIView *marker = [[UIView alloc] initWithFrame:(CGRect)CGRectMake(0, 0, 8, 8)];
+	marker.backgroundColor = [UIColor whiteColor];
+	cell.accessoryView = marker;
+	cell.selectionStyle = UITableViewCellSelectionStyleNone;
+  } else {
+	cell.accessoryView = nil;
+	cell.selectionStyle = UITableViewCellSelectionStyleGray;
+  }
 	
   return cell;
 	
@@ -299,6 +307,8 @@ static NSString *kWAContextViewCellIdentifier = @"ContextMenuItem";
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 
   NSDictionary *item = self.menuItems[indexPath.row];
+  if ([item[@"style"] isEqual:[NSNumber numberWithUnsignedInteger:currentViewStyle]])
+	return;
   if (self.delegate)
 	if ([self.delegate respondsToSelector:@selector(contextMenuItemDidSelect:)])
 	  [self.delegate contextMenuItemDidSelect:[item[@"style"] unsignedIntegerValue]];
