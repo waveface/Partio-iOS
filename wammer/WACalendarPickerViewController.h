@@ -21,6 +21,6 @@ typedef NS_ENUM(NSInteger, WACalendarPickerStyle) {
 
 @property (nonatomic, strong) id delegate;
 
-- (WACalendarPickerViewController *)initWithFrame:(CGRect)frame style:(WACalendarPickerStyle)style;
+- (WACalendarPickerViewController *)initWithFrame:(CGRect)frame style:(WACalendarPickerStyle)style selectedDate:(NSDate *)date;
 
 @end

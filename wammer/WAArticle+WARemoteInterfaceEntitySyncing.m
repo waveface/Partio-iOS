@@ -17,6 +17,7 @@
 #import "WAAppDelegate_iOS.h"
 #import "NSDate+WAAdditions.h"
 #import <NSDate+SSToolkitAdditions.h>
+#import "WASyncManager.h"
 
 
 NSString * const kWAArticleEntitySyncingErrorDomain = @"com.waveface.wammer.WAArticle.entitySyncing.error";

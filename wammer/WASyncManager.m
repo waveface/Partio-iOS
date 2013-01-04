@@ -6,13 +6,10 @@
 //  Copyright (c) 2012 Waveface. All rights reserved.
 //
 
+#import "WASyncManager.h"
 #import "IRRecurrenceMachine.h"
 #import "Foundation+IRAdditions.h"
-
-#import "WASyncManager.h"
 #import "WARemoteInterface.h"
-#import "WAReachabilityDetector.h"
-
 #import "WASyncManager+PhotoImport.h"
 #import "WASyncManager+FullQualityFileSync.h"
 #import "WASyncManager+DirtyArticleSync.h"
@@ -163,10 +160,11 @@
     return NO;
   }
   
-  return ([self.photoImportOperationQueue operationCount] ||
-	[self.articleSyncOperationQueue operationCount] ||
-	[self.fileSyncOperationQueue operationCount] ||
-	[self.fileMetadataSyncOperationQueue operationCount]);
+  // there will be at least one tail op if any sync operation exists in these op queue,
+  // and metadata sync will not show on status bar
+  return (([self.photoImportOperationQueue operationCount] > 1) ||
+	([self.articleSyncOperationQueue operationCount] > 1) ||
+	([self.fileSyncOperationQueue operationCount] > 1));
 
 }
 

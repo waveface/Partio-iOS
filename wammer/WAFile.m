@@ -2,8 +2,8 @@
 //  WAFile.m
 //  wammer
 //
-//  Created by Shen Steven on 12/17/12.
-//  Copyright (c) 2012 Waveface. All rights reserved.
+//  Created by kchiu on 12/12/27.
+//  Copyright (c) 2012年 Waveface. All rights reserved.
 //
 
 #import "WAFile.h"
@@ -29,6 +29,7 @@
 @dynamic importTime;
 @dynamic largeThumbnailFilePath;
 @dynamic largeThumbnailURL;
+@dynamic outdated;
 @dynamic remoteFileName;
 @dynamic remoteFileSize;
 @dynamic remoteRepresentedImage;
@@ -48,11 +49,11 @@
 @dynamic webFaviconURL;
 @dynamic webTitle;
 @dynamic webURL;
-@dynamic outdated;
 @dynamic accessLogs;
 @dynamic articles;
 @dynamic caches;
 @dynamic collections;
+@dynamic coverOfCollection;
 @dynamic exif;
 @dynamic owner;
 @dynamic pageElements;

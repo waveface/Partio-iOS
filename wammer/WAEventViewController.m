@@ -48,7 +48,6 @@
 @implementation WAEventViewController
 
 + (WAEventViewController *) controllerForArticle:(WAArticle *)article {
-	
 	NSMutableString *literal = [[NSMutableString alloc] initWithString:@"WAEventViewController"];
 	
 	[literal appendString:@"_Photo"];
@@ -67,6 +66,7 @@
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
+
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
@@ -151,6 +151,22 @@
 	if (self.completion)
 		self.completion();
 	
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+	CGSize shadowSize = CGSizeMake(15.0, 1.0);
+	UIGraphicsBeginImageContext(shadowSize);
+	CGContextRef shadowContext = UIGraphicsGetCurrentContext();
+	CGContextSetFillColorWithColor(shadowContext, [UIColor colorWithRed:193/255.0 green:193/255.0 blue:193/255.0 alpha:1].CGColor);
+	CGContextAddRect(shadowContext, CGRectMake(7.0, 0, 1.0, shadowSize.height));
+	CGContextFillPath(shadowContext);
+	UIImage *naviShadow = UIGraphicsGetImageFromCurrentImageContext();
+	static UIImage *naviShadowWithInsets;
+	naviShadowWithInsets = [naviShadow resizableImageWithCapInsets:UIEdgeInsetsMake(0, 7, 0, 7)];
+	UIGraphicsEndImageContext();
+	[self.navigationController.navigationBar setShadowImage:naviShadowWithInsets];
+
 }
 
 - (void)didReceiveMemoryWarning

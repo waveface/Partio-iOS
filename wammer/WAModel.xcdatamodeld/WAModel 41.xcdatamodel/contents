@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model name="" userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="2057" systemVersion="12C60" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
+<model name="" userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="1811" systemVersion="12C60" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="WAArticle" representedClassName="WAArticle">
         <attribute name="creationDate" optional="YES" attributeType="Date" indexed="YES" elementID="timestamp">
             <userInfo/>
@@ -159,7 +159,7 @@
         <attribute name="webTitle" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="webURL" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="accessLogs" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="WAFileAccessLog" inverseName="file" inverseEntity="WAFileAccessLog" syncable="YES"/>
-        <relationship name="articles" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="WAArticle" inverseName="files" inverseEntity="WAArticle">
+        <relationship name="articles" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="WAArticle" inverseName="files" inverseEntity="WAArticle">
             <userInfo/>
         </relationship>
         <relationship name="caches" optional="YES" toMany="YES" maxCount="5" deletionRule="Nullify" destinationEntity="WACache" inverseName="file" inverseEntity="WACache" syncable="YES"/>
@@ -183,6 +183,7 @@
         <attribute name="accessSource" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="accessTime" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="filePath" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="identifier" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="day" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="WADocumentDay" inverseName="accessLogs" inverseEntity="WADocumentDay" syncable="YES"/>
         <relationship name="dayWebpages" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="WAWebpageDay" inverseName="accessLogs" inverseEntity="WAWebpageDay" syncable="YES"/>
         <relationship name="file" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="WAFile" inverseName="accessLogs" inverseEntity="WAFile" syncable="YES"/>
@@ -361,7 +362,7 @@
         <element name="WADocumentDay" positionX="0" positionY="0" width="128" height="75"/>
         <element name="WAEventDay" positionX="160" positionY="192" width="128" height="75"/>
         <element name="WAFile" positionX="0" positionY="0" width="128" height="645"/>
-        <element name="WAFileAccessLog" positionX="160" positionY="192" width="128" height="120"/>
+        <element name="WAFileAccessLog" positionX="160" positionY="192" width="128" height="150"/>
         <element name="WAFileExif" positionX="0" positionY="0" width="128" height="315"/>
         <element name="WAFilePageElement" positionX="0" positionY="0" width="128" height="135"/>
         <element name="WAGroup" positionX="0" positionY="0" width="128" height="120"/>

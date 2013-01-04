@@ -19,7 +19,6 @@
 
 - (void) waitUntilFinished;
 
-@property (nonatomic, readonly, strong) IRRecurrenceMachine *recurrenceMachine;
 @property (nonatomic, readonly, strong) NSOperationQueue *articleSyncOperationQueue;
 @property (nonatomic, readonly, strong) NSOperationQueue *fileSyncOperationQueue;
 @property (nonatomic, readonly, strong) NSOperationQueue *fileMetadataSyncOperationQueue;

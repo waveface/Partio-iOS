@@ -27,6 +27,8 @@
 #import "WADocumentStreamViewController.h"
 #import "WAWebStreamViewController.h"
 #import "WACollectionViewController.h"
+#import "WASyncManager.h"
+#import "WAFetchManager.h"
 
 @interface WASlidingMenuViewController ()
 
@@ -41,26 +43,26 @@
 @implementation WASlidingMenuViewController
 
 + (UIViewController *)dayViewControllerForViewStyle:(WADayViewSupportedStyle)viewStyle {
-	
-	NSAssert1(((viewStyle==WAEventsViewStyle) || (viewStyle == WAPhotosViewStyle) || (viewStyle == WADocumentsViewStyle) || (viewStyle == WAWebpagesViewStyle)), @"Unsupported view style: %d", viewStyle);
-	
-	WADayViewController *swVC = [[WADayViewController alloc] initWithStyle:viewStyle];
-	WANavigationController *navVC = [[WANavigationController alloc] initWithRootViewController:swVC];
-
+  
+  NSAssert1(((viewStyle==WAEventsViewStyle) || (viewStyle == WAPhotosViewStyle) || (viewStyle == WADocumentsViewStyle) || (viewStyle == WAWebpagesViewStyle)), @"Unsupported view style: %d", viewStyle);
+  
+  WADayViewController *swVC = [[WADayViewController alloc] initWithStyle:viewStyle];
+  WANavigationController *navVC = [[WANavigationController alloc] initWithRootViewController:swVC];
+  
   if (viewStyle == WAPhotosViewStyle) {
-
-		swVC.navigationController.navigationBar.tintColor = [UIColor colorWithWhite:0.157 alpha:1.000];
-		swVC.navigationController.navigationBar.titleTextAttributes = @{UITextAttributeTextColor: [UIColor whiteColor]};
-		[swVC.navigationController.navigationBar setBackgroundImage:nil forBarMetrics:UIBarMetricsDefault];
-		swVC.view.backgroundColor = [UIColor colorWithWhite:0.16f alpha:1.0f];
-		
-	} else {
-		
-		swVC.view.backgroundColor = [UIColor colorWithRed:0.95f green:0.95f blue:0.95f alpha:1];
- 		
-	}
-	
-	return navVC;
+    
+    swVC.navigationController.navigationBar.tintColor = [UIColor colorWithWhite:0.157 alpha:1.000];
+    swVC.navigationController.navigationBar.titleTextAttributes = @{UITextAttributeTextColor: [UIColor whiteColor]};
+    [swVC.navigationController.navigationBar setBackgroundImage:nil forBarMetrics:UIBarMetricsDefault];
+    swVC.view.backgroundColor = [UIColor colorWithWhite:0.16f alpha:1.0f];
+    
+  } else {
+    
+    swVC.view.backgroundColor = [UIColor colorWithRed:0.95f green:0.95f blue:0.95f alpha:1];
+    
+  }
+  
+  return navVC;
 }
 
 - (id)initWithStyle:(UITableViewStyle)style
@@ -185,26 +187,48 @@
   }
   
   __weak WASlidingMenuViewController *wSelf = self;
-
+  
+  if ([keyPath isEqualToString:@"isFetching"]) {
+    BOOL isFetching = [change[NSKeyValueChangeNewKey] boolValue];
+    [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+      if (isFetching) {
+        if (!wSelf.statusBar) {
+	wSelf.statusBar = [[WAStatusBar alloc] initWithFrame:CGRectZero];
+        }
+        wSelf.statusBar.fetchingLabel.text = NSLocalizedString(@"FETCHING_DATA", @"String on customized status bar");
+      } else {
+        WASyncManager *syncManager = [(WAAppDelegate_iOS *)AppDelegate() syncManager];
+        if (syncManager.isSyncing) {
+	wSelf.statusBar.fetchingLabel.text = @"";
+        } else {
+	wSelf.statusBar = nil;
+        }
+      }
+    }];
+  }
+  
   if ([keyPath isEqualToString:@"isSyncing"]) {
     BOOL isSyncing = [change[NSKeyValueChangeNewKey] boolValue];
     [[NSOperationQueue mainQueue] addOperationWithBlock:^{
       WASyncManager *syncManager = [(WAAppDelegate_iOS *)AppDelegate() syncManager];
       if (isSyncing) {
         if (!wSelf.statusBar) {
-					wSelf.statusBar = [[WAStatusBar alloc] initWithFrame:CGRectZero];
+	wSelf.statusBar = [[WAStatusBar alloc] initWithFrame:CGRectZero];
         }
         if (syncManager.isSyncFail) {
-					wSelf.statusBar.statusLabel.text = NSLocalizedString(@"PHOTO_UPLOAD_STATUS_BAR_FAIL", @"String on customized status bar");
+	wSelf.statusBar.syncingLabel.text = NSLocalizedString(@"PHOTO_UPLOAD_STATUS_BAR_FAIL", @"String on customized status bar");
         } else if (syncManager.needingSyncFilesCount > 0) {
-					wSelf.statusBar.statusLabel.text = [NSString stringWithFormat:NSLocalizedString(@"PHOTO_UPLOAD_STATUS_BAR_UPLOADING", @"String on customized status bar"), syncManager.syncedFilesCount, syncManager.needingSyncFilesCount];
-					wSelf.statusBar.progressView.progress = syncManager.syncedFilesCount * 1.0 / syncManager.needingSyncFilesCount;
+	wSelf.statusBar.syncingLabel.text = [NSString stringWithFormat:NSLocalizedString(@"PHOTO_UPLOAD_STATUS_BAR_UPLOADING", @"String on customized status bar"), syncManager.syncedFilesCount, syncManager.needingSyncFilesCount];
         } else if (syncManager.needingImportFilesCount > 0) {
-					wSelf.statusBar.statusLabel.text = NSLocalizedString(@"PHOTO_UPLOAD_STATUS_BAR_IMPORTING", @"String on customized status bar");
-					wSelf.statusBar.progressView.progress = syncManager.importedFilesCount * 1.0 / syncManager.needingImportFilesCount;
+	wSelf.statusBar.syncingLabel.text = [NSString stringWithFormat:NSLocalizedString(@"PHOTO_UPLOAD_STATUS_BAR_IMPORTING", @"String on customized status bar"), syncManager.importedFilesCount, syncManager.needingImportFilesCount];
         }
       } else {
-        wSelf.statusBar = nil;
+        WAFetchManager *fetchManager = [(WAAppDelegate_iOS *)AppDelegate() fetchManager];
+        if (fetchManager.isFetching) {
+	wSelf.statusBar.syncingLabel.text = @"";
+        } else {
+	wSelf.statusBar = nil;
+        }
       }
     }];
   }
@@ -303,7 +327,7 @@
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	
+  
   cell.textLabel.textColor = [UIColor whiteColor];
   cell.textLabel.font = [UIFont fontWithName:NSLocalizedString(@"SLIDING_MENU_FONTNAME", @"Font name of the sliding menu") size:18.0];
   
@@ -334,7 +358,7 @@
       break;
       
     case 7: // Settings
-			cell.backgroundColor = [UIColor colorWithRed:0.72f green:0.701f blue:0.69f alpha:1.0];
+      cell.backgroundColor = [UIColor colorWithRed:0.72f green:0.701f blue:0.69f alpha:1.0];
       break;
   }
   
@@ -375,22 +399,22 @@
       
     case 5: {
       [self.viewDeckController closeLeftView];
-
-			WACollectionViewController *collectionViewController = [[WACollectionViewController alloc] init];
+      
+      WACollectionViewController *collectionViewController = [[WACollectionViewController alloc] init];
       WANavigationController *navController = [[WANavigationController alloc] initWithRootViewController:collectionViewController];
       collectionViewController.view.backgroundColor = [UIColor colorWithRed:0.95f green:0.95f blue:0.95f alpha:1];
       
       collectionViewController.navigationItem.leftBarButtonItem = WABarButtonItem([UIImage imageNamed:@"menu"], @"", ^{
         [collectionViewController.viewDeckController toggleLeftView];
       });
-			[self.viewDeckController setCenterController:navController];
+      [self.viewDeckController setCenterController:navController];
       break;
     }
       
     case 6: {
       [self.viewDeckController closeLeftView];
       
-      WACalendarPickerViewController *dpVC = [[WACalendarPickerViewController alloc] initWithFrame:self.view.frame style:WACalendarPickerStyleMenuToday];
+      WACalendarPickerViewController *dpVC = [[WACalendarPickerViewController alloc] initWithFrame:self.view.frame style:WACalendarPickerStyleMenuToday selectedDate:[NSDate date]];
       [dpVC setModalPresentationStyle:UIModalPresentationFullScreen];
       [self.viewDeckController setCenterController:dpVC];
       break;
@@ -401,7 +425,7 @@
       break;
     }
   }
-
+  
 }
 
 #pragma mark - IIViewDeckDelegate protocol

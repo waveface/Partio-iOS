@@ -2,8 +2,8 @@
 //  WAFile.h
 //  wammer
 //
-//  Created by Shen Steven on 12/17/12.
-//  Copyright (c) 2012 Waveface. All rights reserved.
+//  Created by kchiu on 12/12/27.
+//  Copyright (c) 2012年 Waveface. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
@@ -18,13 +18,13 @@
 @property (nonatomic, retain) NSString * codeName;
 @property (nonatomic, retain) NSDate * created;
 @property (nonatomic, retain) NSString * creationDeviceIdentifier;
-@property (nonatomic, retain) NSDate * dayOnCreation;
 @property (nonatomic, retain) NSNumber * dirty;
 @property (nonatomic, retain) NSString * extraSmallThumbnailFilePath;
 @property (nonatomic, retain) NSString * identifier;
 @property (nonatomic, retain) NSDate * importTime;
 @property (nonatomic, retain) NSString * largeThumbnailFilePath;
 @property (nonatomic, retain) NSString * largeThumbnailURL;
+@property (nonatomic, retain) NSNumber * outdated;
 @property (nonatomic, retain) NSString * remoteFileName;
 @property (nonatomic, retain) NSNumber * remoteFileSize;
 @property (nonatomic, retain) NSString * remoteRepresentedImage;
@@ -44,11 +44,11 @@
 @property (nonatomic, retain) NSString * webFaviconURL;
 @property (nonatomic, retain) NSString * webTitle;
 @property (nonatomic, retain) NSString * webURL;
-@property (nonatomic, retain) NSNumber * outdated;
 @property (nonatomic, retain) NSOrderedSet *accessLogs;
-@property (nonatomic, retain) NSSet *articles;
+@property (nonatomic, retain) NSOrderedSet *articles;
 @property (nonatomic, retain) NSSet *caches;
 @property (nonatomic, retain) NSSet *collections;
+@property (nonatomic, retain) WACollection *coverOfCollection;
 @property (nonatomic, retain) WAFileExif *exif;
 @property (nonatomic, retain) WAUser *owner;
 @property (nonatomic, retain) NSOrderedSet *pageElements;
@@ -68,11 +68,16 @@
 - (void)removeAccessLogsObject:(WAFileAccessLog *)value;
 - (void)addAccessLogs:(NSOrderedSet *)values;
 - (void)removeAccessLogs:(NSOrderedSet *)values;
+- (void)insertObject:(WAArticle *)value inArticlesAtIndex:(NSUInteger)idx;
+- (void)removeObjectFromArticlesAtIndex:(NSUInteger)idx;
+- (void)insertArticles:(NSArray *)value atIndexes:(NSIndexSet *)indexes;
+- (void)removeArticlesAtIndexes:(NSIndexSet *)indexes;
+- (void)replaceObjectInArticlesAtIndex:(NSUInteger)idx withObject:(WAArticle *)value;
+- (void)replaceArticlesAtIndexes:(NSIndexSet *)indexes withArticles:(NSArray *)values;
 - (void)addArticlesObject:(WAArticle *)value;
 - (void)removeArticlesObject:(WAArticle *)value;
-- (void)addArticles:(NSSet *)values;
-- (void)removeArticles:(NSSet *)values;
-
+- (void)addArticles:(NSOrderedSet *)values;
+- (void)removeArticles:(NSOrderedSet *)values;
 - (void)addCachesObject:(WACache *)value;
 - (void)removeCachesObject:(WACache *)value;
 - (void)addCaches:(NSSet *)values;

@@ -18,8 +18,8 @@
 #import "WACompositionViewController.h"
 #import "WAAppDelegate_iOS.h"
 #import "WADefines.h"
-
 #import "GAI.h"
+#import "WASlidingMenuViewController.h"
 
 NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGalleryViewControllerContextPreferredFileObjectURI";
 static NSString * kWAGalleryViewControllerKVOContext = @"WAGalleryViewControllerKVOContext";
