@@ -94,6 +94,7 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
     @"event_time": @"created",
     @"photoDay": @"photoDay",
     @"outdated": @"outdated",
+    @"hidden": @"hidden",
     
     @"image": @"remoteRepresentedImage",
     @"md5": @"remoteResourceHash",
@@ -314,7 +315,10 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
     return [[NSURL URLWithString:usedPath relativeToURL:[NSURL URLWithString:@"http://invalid.local"]] absoluteString];
     
   }
-  
+
+  if ([aLocalKeyPath isEqualToString:@"hidden"])
+    return (![aValue isEqual:@"false"] && ![aValue isEqual:@"0"] && ![aValue isEqual:@0]) ? (id)kCFBooleanTrue : (id)kCFBooleanFalse;
+
   return [super transformedValue:aValue fromRemoteKeyPath:aRemoteKeyPath toLocalKeyPath:aLocalKeyPath];
   
 }
@@ -528,8 +532,11 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
 	
 	[[WAAssetsLibraryManager defaultManager] assetForURL:[NSURL URLWithString:file.assetURL] resultBlock:^(ALAsset *asset) {
 	  
-	  // TODO: hide attachments if user has delete them from camera roll
 	  if (!asset) {
+	    NSLog(@"Asset does not exist for WAFile %@, hide it.", file);
+	    file.hidden = @YES;
+	    file.dirty = @YES;
+	    [context save:nil];
 	    callback(nil);
 	    return;
 	  }

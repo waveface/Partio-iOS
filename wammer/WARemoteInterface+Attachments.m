@@ -225,7 +225,7 @@ NSString * const WARemoteAttachmentSmallSubtype = @"small";
   
 }
 
-- (void)createAttachmentMetas:(NSArray *)metas onSuccess:(void (^)(void))successBlock onFailure:(void (^)(NSError *))failureBlock {
+- (void)createAttachmentMetas:(NSArray *)metas onSuccess:(void (^)(NSArray *successIDs))successBlock onFailure:(void (^)(NSError *))failureBlock {
   
   if ([NSJSONSerialization isValidJSONObject:metas]) {
     
@@ -250,7 +250,7 @@ NSString * const WARemoteAttachmentSmallSubtype = @"small";
 		         validator:WARemoteInterfaceGenericNoErrorValidator()
 		    successHandler: ^ (NSDictionary *inResponseOrNil, IRWebAPIRequestContext *inResponseContext) {
 		      if (successBlock)
-		        successBlock();}
+		        successBlock(inResponseOrNil[@"success_ids"]);}
 		    failureHandler:WARemoteInterfaceGenericFailureHandler(^ (NSError *anError){
         if (failureBlock)
 	failureBlock(anError);})];
@@ -290,4 +290,31 @@ NSString * const WARemoteAttachmentSmallSubtype = @"small";
   
 }
 
+- (void)hideAttachments:(NSArray *)identifiers onSuccess:(void (^)(NSArray *successIDs))successBlock onFailure:(void (^)(NSError *))failureBlock {
+  
+  if ([NSJSONSerialization isValidJSONObject:identifiers]) {
+    NSError *error = nil;
+    NSData *sentIdentifiers = [NSJSONSerialization dataWithJSONObject:identifiers options:0 error:&error];
+    NSString *sentIdentifiersString = [[NSString alloc] initWithData:sentIdentifiers encoding:NSUTF8StringEncoding];
+    if (error) {
+      NSLog(@"Unable to convert JSON from attachment identifiers: %@", identifiers);
+    } else {
+      NSDictionary *apiOptions = @{
+    kIRWebAPIEngineRequestContextFormURLEncodingFieldsKey:@{@"object_ids":sentIdentifiersString},
+    kIRWebAPIEngineRequestHTTPMethod:@"POST"
+      };
+      
+      [self.engine fireAPIRequestNamed:@"attachments/hide"
+		     withArguments:nil
+			 options:apiOptions
+		         validator:WARemoteInterfaceGenericNoErrorValidator()
+		    successHandler: ^ (NSDictionary *inResponseOrNil, IRWebAPIRequestContext *inResponseContext) {
+		      if (successBlock)
+		        successBlock(inResponseOrNil[@"success_ids"]);}
+		    failureHandler:WARemoteInterfaceGenericFailureHandler(^ (NSError *anError){
+        if (failureBlock)
+	failureBlock(anError);})];
+    }
+  }
+}
 @end
