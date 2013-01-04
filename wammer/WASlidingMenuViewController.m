@@ -92,11 +92,6 @@
   [self.tableView setBackgroundColor:[UIColor colorWithWhite:0.3f alpha:1.0f]];
   self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
   
-  if (self.navigationController && isPad()) {
-	CGRect newFrame = self.navigationController.view.frame;
-	newFrame.size.width = [WACalendarPickerViewController minimalCalendarWidth]; // adjust navigation bar and toolbar width to fit in sliding menu
-	self.navigationController.view.frame = newFrame;
-  }
 }
 
 - (void)dealloc
@@ -455,6 +450,17 @@
 }
 
 #pragma mark - IIViewDeckDelegate protocol
+- (BOOL)viewDeckControllerWillOpenLeftView:(IIViewDeckController *)viewDeckController animated:(BOOL)animated {
+  
+  if (self.navigationController && isPad()) {
+	CGRect newFrame = self.navigationController.view.frame;
+	newFrame.size.width = [WACalendarPickerViewController minimalCalendarWidth]; // adjust navigation bar and toolbar width to fit in sliding menu
+	self.navigationController.view.frame = newFrame;
+  }
+
+  return YES;
+  
+}
 - (void)viewDeckControllerDidCloseLeftView:(IIViewDeckController *)viewDeckController animated:(BOOL)animated {
   [self.navigationController popToRootViewControllerAnimated:NO];
 }
