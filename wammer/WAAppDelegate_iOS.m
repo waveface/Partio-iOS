@@ -48,6 +48,7 @@
 #import "IIViewDeckController.h"
 #import "WASlidingMenuViewController.h"
 #import "WADayViewController.h"
+#import "WACacheManager.h"
 
 #if ENABLE_PONYDEBUG
 #import "PonyDebugger/PDDebugger.h"
@@ -327,6 +328,10 @@ extern CFAbsoluteTime StartTime;
   if (self.syncManager && self.slidingMenu) {
     [self.syncManager removeObserver:self.slidingMenu forKeyPath:@"isSyncing"];
   }
+  
+  if (self.fetchManager && self.slidingMenu) {
+    [self.fetchManager removeObserver:self.slidingMenu forKeyPath:@"isFetching"];
+  }
 
   self.slidingMenu = nil;
   
@@ -357,6 +362,7 @@ extern CFAbsoluteTime StartTime;
 
   NSParameterAssert(self.syncManager);
   [self.syncManager addObserver:self.slidingMenu forKeyPath:@"isSyncing" options:NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew context:nil];
+  [self.fetchManager addObserver:self.slidingMenu forKeyPath:@"isFetching" options:NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew context:nil];
 
   IIViewDeckController *viewDeckController = [[IIViewDeckController alloc] initWithCenterViewController:[WASlidingMenuViewController dayViewControllerForViewStyle:WAEventsViewStyle]
 								     leftViewController:self.slidingMenu];

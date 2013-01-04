@@ -10,7 +10,7 @@
 
 @interface WAStatusBar : UIWindow
 
-@property UILabel *statusLabel;
-@property UIProgressView *progressView;
+@property UILabel *syncingLabel;
+@property UILabel *fetchingLabel;
 
 @end

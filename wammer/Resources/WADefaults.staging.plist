@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>WARemoteEndpointURL</key>
-	<string>https://staging.waveface.com/v2/</string>
+	<string>https://staging.waveface.com/v3/</string>
 	<key>WARemoteEndpointCurrentVersion</key>
 	<integer>2</integer>
 	<key>WARemoteEndpointWebURL</key>

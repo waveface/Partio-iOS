@@ -7,17 +7,16 @@
 //
 
 #import "WAAppDelegate.h"
-#import "WACacheManager.h"
-#import "WASyncManager.h"
-#import "WASlidingMenuViewController.h"
 #import "GAI.h"
 
+@class WACacheManager, WASyncManager, WAFetchManager, WASlidingMenuViewController;
 @interface WAAppDelegate_iOS : WAAppDelegate <UIApplicationDelegate, UIAlertViewDelegate>
 
 @property (nonatomic, readwrite, retain) UIWindow *window;
 @property (nonatomic, retain) id<GAITracker> tracker;
 @property (nonatomic, readonly, strong) WACacheManager *cacheManager;
 @property (nonatomic, readonly, strong) WASyncManager *syncManager;
+@property (nonatomic, readonly, strong) WAFetchManager *fetchManager;
 @property (nonatomic, readonly, strong) WASlidingMenuViewController *slidingMenu;
 
 - (void) recreateViewHierarchy;
