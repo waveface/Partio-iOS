@@ -48,6 +48,12 @@
         
         [[WAAssetsLibraryManager defaultManager] assetForURL:fileAssetURL resultBlock:^(ALAsset *asset) {
 	
+	// TODO: hide attachments if user has delete them from camera roll
+	if (!asset) {
+	  callback(nil);
+	  return;
+	}
+
 	WAFile *file = (WAFile *)[[[WADataStore defaultStore] disposableMOC] irManagedObjectForURI:ownURL];
 
 	if ([file.dirty isEqualToNumber:(id)kCFBooleanTrue]) {

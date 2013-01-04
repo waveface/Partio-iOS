@@ -528,6 +528,12 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
 	
 	[[WAAssetsLibraryManager defaultManager] assetForURL:[NSURL URLWithString:file.assetURL] resultBlock:^(ALAsset *asset) {
 	  
+	  // TODO: hide attachments if user has delete them from camera roll
+	  if (!asset) {
+	    callback(nil);
+	    return;
+	  }
+
 	  [asset makeThumbnailWithOptions:WAThumbnailTypeMedium completeBlock:^(UIImage *image) {
 	    
 	    NSManagedObjectContext *context = [ds autoUpdatingMOC];
