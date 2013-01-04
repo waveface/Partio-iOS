@@ -7,6 +7,7 @@
 //
 
 #import <SenTestingKit/SenTestingKit.h>
+#import <MKNetworkKit/MKNetworkKit.h>
 
 @interface WACollectionTests : SenTestCase
 

@@ -90,7 +90,7 @@ typedef NS_ENUM(NSUInteger, WACollectionSortMode){
   // Dispose of any resources that can be recreated.
 }
 
-#pragma mark Collection delegate
+#pragma mark - Collection delegate
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
   
@@ -134,12 +134,12 @@ typedef NS_ENUM(NSUInteger, WACollectionSortMode){
   [self.navigationController pushViewController:galleryVC animated:YES];
 }
 
-#pragma mark Private Methods
+#pragma mark - Private Methods
 
 - (void)refresh {
   WARemoteInterface *interface = [WARemoteInterface sharedInterface];
   MKNetworkEngine *engine = [[MKNetworkEngine alloc] initWithHostName:@"develop.waveface.com"];
-  MKNetworkOperation *op = [engine operationWithPath:@"v2/collections/getAll"
+  MKNetworkOperation *op = [engine operationWithPath:@"v3/collections/getAll"
                                               params:@{
 		        @"session_token":interface.userToken,
 		        @"api_key":interface.apiKey}
