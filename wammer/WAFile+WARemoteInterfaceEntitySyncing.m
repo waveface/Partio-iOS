@@ -28,7 +28,7 @@
 
 
 NSString * kWAFileEntitySyncingErrorDomain = @"com.waveface.wammer.file.entitySyncing";
-NSError * WAFileEntitySyncingError (NSUInteger code, NSString *descriptionKey, NSString *reasonKey) {
+NSError * WAFileEntitySyncingError (WAFileSyncingErrorCode code, NSString *descriptionKey, NSString *reasonKey) {
   return [NSError irErrorWithDomain:kWAFileEntitySyncingErrorDomain code:code descriptionLocalizationKey:descriptionKey reasonLocalizationKey:reasonKey userInfo:nil];
 }
 
@@ -415,7 +415,7 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
     NSCParameterAssert(fileURL);
     
     if (![[NSUserDefaults standardUserDefaults] boolForKey:kWAPhotoImportEnabled]) {
-      callback(WAFileEntitySyncingError(0, @"Photo import is disabled, stop sync files", nil));
+      callback(WAFileEntitySyncingError(WAFileSyncingErrorCodePhotoImportDisabled, @"Photo import is disabled, stop sync files", nil));
       return;
     }
     
@@ -475,6 +475,33 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
         
         callback(error);
         
+      } else if ([[error domain] isEqualToString:kWAFileEntitySyncingErrorDomain] && [error code] == WAFileSyncingErrorCodeAssetDeleted) {
+        
+        NSManagedObjectContext *context = [ds autoUpdatingMOC];
+        context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
+
+        WAFile *file = (WAFile *)[context irManagedObjectForURI:ownURL];
+
+        if (file.thumbnailURL) {
+
+	// The WAFile never needs sync because its asset has been deleted, but we don't have to hide it.
+	// Just keep a hint in its resource URL (all-zero object id)
+	file.resourceURL = [[file class] transformedValue:@"/v3/attachments/view?object_id=00000000000000000000000000000000" fromRemoteKeyPath:nil toLocalKeyPath:@"resourceURL"];
+
+	[[WADataStore defaultStore] setLastSyncSuccessDate:[NSDate date]];
+
+        } else {
+
+	// Hide the attachment if its thumbnails has not been created.
+	file.hidden = @YES;
+	file.dirty = @YES;
+
+        }
+
+        NSError *error = nil;
+        [context save:&error];
+        callback(error);
+
       } else {
         
         callback(error);

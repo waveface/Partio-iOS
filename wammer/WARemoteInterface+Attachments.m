@@ -13,8 +13,8 @@
 #import "WAAssetsLibraryManager.h"
 #import <AssetsLibrary+IRAdditions.h>
 #import <Foundation/Foundation.h>
-
 #import "WAFileExif+WAAdditions.h"
+#import "WAFile+WARemoteInterfaceEntitySyncing.h"
 
 NSString * const kWARemoteAttachmentType = @"WARemoteAttachmentType";
 NSString * const kWARemoteAttachmentTitle = @"WARemoteAttachmentTitle";
@@ -45,6 +45,11 @@ NSString * const WARemoteAttachmentSmallSubtype = @"small";
     
     [[WAAssetsLibraryManager defaultManager] assetForURL:aFileURL resultBlock:^(ALAsset *asset) {
       
+      if (!asset) {
+        failureBlock(WAFileEntitySyncingError(WAFileSyncingErrorCodeAssetDeleted, @"asset is deleted", nil));
+        return;
+      }
+
       long long fileSize = [[asset defaultRepresentation] size];
       Byte *byteData = (Byte *)malloc(fileSize);
       [[asset defaultRepresentation] getBytes:byteData fromOffset:0 length:fileSize error:nil];

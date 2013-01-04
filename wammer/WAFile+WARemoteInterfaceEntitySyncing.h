@@ -30,6 +30,12 @@ extern NSString * const kWAFileSyncFullQualityStrategy;
 //	This is best used with a background worker since it takes up most time and bandwidth.
 //	Not recommended to be used on a carrier-provided connection (might be a capped 3G)
 
+typedef NS_ENUM(NSInteger, WAFileSyncingErrorCode) {
+  WAFileSyncingErrorCodePhotoImportDisabled,
+  WAFileSyncingErrorCodeAssetDeleted
+};
+
+NSError * WAFileEntitySyncingError (WAFileSyncingErrorCode code, NSString *descriptionKey, NSString *reasonKey);
 
 @interface WAFile (WARemoteInterfaceEntitySyncing) <WARemoteInterfaceEntitySyncing>
 
