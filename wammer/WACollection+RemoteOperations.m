@@ -7,7 +7,9 @@
 //
 
 #import "WACollection+RemoteOperations.h"
-#import "WARemoteInterface+Authentication.m"
+#import "WARemoteInterface+Authentication.h"
+#import "WARemoteInterface+Reachability.h"
+
 #import <MKNetworkKit/MKNetworkKit.h>
 #import <MagicalRecord/NSManagedObjectContext+MagicalRecord.h>
 
@@ -16,12 +18,14 @@
 + (void)refreshCollectionsWithCompletion:(void (^)(void))completionBlock
 {
   WARemoteInterface *interface = [WARemoteInterface sharedInterface];
-  MKNetworkEngine *engine = [[MKNetworkEngine alloc] initWithHostName:@"develop.waveface.com"];
-  MKNetworkOperation *op = [engine operationWithPath:@"v3/collections/getAll"
+  NSString *bestHost = [[interface bestHostForRequestNamed:@"collections/getAll"] host];
+  MKNetworkEngine *engine = [[MKNetworkEngine alloc] initWithHostName:bestHost apiPath:@"v3" customHeaderFields:nil];
+  MKNetworkOperation *op = [engine operationWithPath:@"collections/getAll"
                                               params:@{
 		        @"session_token":interface.userToken,
 		        @"api_key":interface.apiKey}
-                                          httpMethod:@"GET"];
+                                          httpMethod:@"GET"
+				         ssl:YES];
   op.freezable = YES;
   [op
    addCompletionHandler:^(MKNetworkOperation *completedOperation) {
