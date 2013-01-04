@@ -17,6 +17,7 @@
 @property (nonatomic, weak) id delegate;
 @property (nonatomic, readonly, strong) WAStatusBar *statusBar;
 
++ (CGFloat) ledgeSize;
 + (UIViewController *)dayViewControllerForViewStyle:(WADayViewSupportedStyle)viewStyle ;
 
 - (void) switchToViewStyle:(WADayViewSupportedStyle)viewStyle;

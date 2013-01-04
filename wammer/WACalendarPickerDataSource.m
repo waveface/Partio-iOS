@@ -7,7 +7,6 @@
 //
 
 #import "WACalendarPickerDataSource.h"
-#import "WACalendarPickerPanelViewCell.h"
 #import "NSDate+WAAdditions.h"
 #import "WADataStore.h"
 #import "WADataStore+WARemoteInterfaceAdditions.h"
@@ -283,9 +282,6 @@ typedef void (^completionBlock) (NSArray *days);
 		[cell setAccessoryView:nil];
 		[cell setSelectionStyle:UITableViewCellSelectionStyleNone];
 	
-	} else if ((_items.count && indexPath.row == _items.count) || (!_items.count && indexPath.row == 1)) {
-		cell = [[WACalendarPickerPanelViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"IconsCell"];
-		
 	} else {
 		cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
 		
@@ -326,9 +322,9 @@ typedef void (^completionBlock) (NSArray *days);
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-	NSInteger count = _items.count + 1;
+	NSInteger count = _items.count;
 	if (!_items.count)
-		count = 2;
+		count = 1;
 	
 	return count;
 }
