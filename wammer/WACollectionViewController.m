@@ -9,6 +9,7 @@
 #import "WACollectionViewController.h"
 #import "WACollectionViewCell.h"
 #import "WACollection.h"
+#import "WACollection+RemoteOperations.h"
 #import "WAFile.h"
 #import <CoreData+MagicalRecord.h>
 #import "WAGalleryViewController.h"
@@ -137,42 +138,12 @@ typedef NS_ENUM(NSUInteger, WACollectionSortMode){
 #pragma mark - Private Methods
 
 - (void)refresh {
-  WARemoteInterface *interface = [WARemoteInterface sharedInterface];
-  MKNetworkEngine *engine = [[MKNetworkEngine alloc] initWithHostName:@"develop.waveface.com"];
-  MKNetworkOperation *op = [engine operationWithPath:@"v3/collections/getAll"
-                                              params:@{
-		        @"session_token":interface.userToken,
-		        @"api_key":interface.apiKey}
-                                          httpMethod:@"GET"];
-  op.freezable = YES;
-  [op addCompletionHandler:^(MKNetworkOperation *completedOperation)
-   {
-   [_refreshControl endRefreshing];
-   NSError *error;
-   NSDictionary *response = [NSJSONSerialization JSONObjectWithData:[completedOperation responseData]
-						options:NSJSONReadingAllowFragments
-						  error:&error];
-   
-   NSManagedObjectContext *moc = [NSManagedObjectContext MR_context];
-   moc.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
-   
-   NSArray *collections = [WACollection
-		       insertOrUpdateObjectsUsingContext:moc
-		       withRemoteResponse:[response objectForKey:@"collections"]
-		       usingMapping:nil
-		       options:IRManagedObjectOptionIndividualOperations
-		       ];
-   [moc save:nil];
-   [self reloadCollection];
-   [self.collectionView reloadData];
-   }
-	    errorHandler:^(MKNetworkOperation *completedOperation, NSError *error)
-   {
-   NSLog(@"Failed %@", completedOperation);
-   [_refreshControl endRefreshing];
-   }];
+  WACollectionViewController __weak *weakSelf = self;
   
-  //  MKNetworkOperation *op = [engine operationWithPath:@"https://develop.waveface.com/v2/attachments/multiple_get?session_token=b31tbLA0SYCwHXDZR9qf7A2n.fIn9nQMUri8c5J%2Fgi3stz0w5CgE7i5E6PNGSDz9QLM8&apikey=ca5c3c5c-287d-5805-93c1-a6c2cbf9977c"];
-  [engine enqueueOperation:op];
+  [WACollection refreshCollectionsWithCompletion:^{
+    [weakSelf.refreshControl endRefreshing];
+    [weakSelf reloadCollection];
+    [weakSelf.collectionView reloadData];
+  }];
 }
 @end
