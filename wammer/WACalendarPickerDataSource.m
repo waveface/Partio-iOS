@@ -271,14 +271,11 @@ typedef void (^completionBlock) (NSArray *days);
 	if (!cell)
 	  cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:noCellIdentifier];
 
-	UILabel *title = [[UILabel alloc] initWithFrame:CGRectMake(54, 0, 200 , 54)];
-	[title setText:NSLocalizedString(@"CALENDAR_NO_EVENT", "Description for no event day in calendar")];
-	[title setTextAlignment:NSTextAlignmentCenter];
-	[title setFont:[UIFont boldSystemFontOfSize:16.f]];
-	[title setTextColor:[UIColor grayColor]];
-	[title setBackgroundColor:[UIColor clearColor]];
-	[cell.contentView addSubview:title];
-		
+	cell.textLabel.text = NSLocalizedString(@"CALENDAR_NO_EVENT", "Description for no event day in calendar");
+	cell.textLabel.font = [UIFont boldSystemFontOfSize:16.0f];
+	cell.textLabel.textAlignment = NSTextAlignmentCenter;
+	cell.textLabel.textColor = [UIColor grayColor];
+ 
 	[cell setAccessoryView:nil];
 	[cell setSelectionStyle:UITableViewCellSelectionStyleNone];
 	

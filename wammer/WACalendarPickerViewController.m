@@ -56,9 +56,12 @@
 	calPicker.delegate = self;
 	dataSource = [[WACalendarPickerDataSource alloc] init];
 	calPicker.dataSource = dataSource;
+
     calPicker.frame = frame;
 	
+	self.view.frame = frame;
 	[self.view addSubview:calPicker.view];
+	self.view.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
   }
   
   return self;
@@ -209,7 +212,7 @@
 {
 	
   if (isPad())
-	return UIInterfaceOrientationMaskAll;
+  	return UIInterfaceOrientationMaskAll;
   else
 	return UIInterfaceOrientationMaskPortrait;
 	
