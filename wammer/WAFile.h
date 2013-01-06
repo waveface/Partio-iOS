@@ -20,6 +20,7 @@
 @property (nonatomic, retain) NSString * creationDeviceIdentifier;
 @property (nonatomic, retain) NSNumber * dirty;
 @property (nonatomic, retain) NSString * extraSmallThumbnailFilePath;
+@property (nonatomic, retain) NSNumber * hidden;
 @property (nonatomic, retain) NSString * identifier;
 @property (nonatomic, retain) NSDate * importTime;
 @property (nonatomic, retain) NSString * largeThumbnailFilePath;

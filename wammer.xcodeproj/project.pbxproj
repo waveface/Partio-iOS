@@ -1098,6 +1098,7 @@
 		1336742B1678A0E70010F6C8 /* WAFileAccessLog+WARemoteInterfaceEntitySyncing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WAFileAccessLog+WARemoteInterfaceEntitySyncing.m"; sourceTree = "<group>"; };
 		133E8AF216798DD20075843C /* WADocumentPreviewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WADocumentPreviewController.h; sourceTree = "<group>"; };
 		133E8AF316798DD20075843C /* WADocumentPreviewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WADocumentPreviewController.m; sourceTree = "<group>"; };
+		1340DD171696BD36006DA543 /* WAModel 42.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WAModel 42.xcdatamodel"; sourceTree = "<group>"; };
 		1349AAEB163E9C4600D87A85 /* WAFirstUseIntroViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WAFirstUseIntroViewController.h; path = wammer/WAFirstUseIntroViewController.h; sourceTree = "<group>"; };
 		1349AAEC163E9C4600D87A85 /* WAFirstUseIntroViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WAFirstUseIntroViewController.m; path = wammer/WAFirstUseIntroViewController.m; sourceTree = "<group>"; };
 		13579F281575EB4000F09C04 /* WACompositionViewController+SubclassEyesOnly.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "WACompositionViewController+SubclassEyesOnly.h"; sourceTree = "<group>"; };
@@ -6283,6 +6284,7 @@
 		FFCD324114B997B70035C4F5 /* WAModel.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				1340DD171696BD36006DA543 /* WAModel 42.xcdatamodel */,
 				130AB5571678433E00CFFA5A /* WAModel 41.xcdatamodel */,
 				80B1CCE6164B6291009941E5 /* WAModel 40.xcdatamodel */,
 				80F0B23116422C2B00BD3F0D /* WAModel 39.xcdatamodel */,
@@ -6325,7 +6327,7 @@
 				FFCD324614B997B70035C4F5 /* WAModel 2.xcdatamodel */,
 				FFCD324E14B997B70035C4F5 /* WAModel.xcdatamodel */,
 			);
-			currentVersion = 130AB5571678433E00CFFA5A /* WAModel 41.xcdatamodel */;
+			currentVersion = 1340DD171696BD36006DA543 /* WAModel 42.xcdatamodel */;
 			path = WAModel.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;

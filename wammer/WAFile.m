@@ -25,6 +25,7 @@
 @dynamic creationDeviceIdentifier;
 @dynamic dirty;
 @dynamic extraSmallThumbnailFilePath;
+@dynamic hidden;
 @dynamic identifier;
 @dynamic importTime;
 @dynamic largeThumbnailFilePath;
