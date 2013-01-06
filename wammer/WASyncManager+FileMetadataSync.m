@@ -16,7 +16,6 @@
 #import "WAFileExif+WAAdditions.h"
 #import <NSDate+SSToolkitAdditions.h>
 #import "WADefines.h"
-#import <MagicalRecord.h>
 
 @implementation WASyncManager (FileMetadataSync)
 
