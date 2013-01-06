@@ -83,6 +83,8 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
+  [super viewWillAppear:animated];
+  
   self.view.backgroundColor = [UIColor whiteColor];
   self.view.layer.cornerRadius = 3.f;
   self.view.clipsToBounds = YES;
