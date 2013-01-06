@@ -142,7 +142,7 @@
 		
 		_headerView.mapView.delegate = self;
 		
-		[_headerView.mapView setCenterCoordinate:center zoomLevel:zoomLevel animated:YES];
+		[_headerView.mapView setCenterCoordinate:center zoomLevel:zoomLevel animated:NO];
 		[_headerView.mapView addAnnotations:checkins];
 		[_headerView.mapView setHidden:NO];
 		

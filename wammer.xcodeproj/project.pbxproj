@@ -333,7 +333,6 @@
 		80F800F615C2624C00132A96 /* IRAQ-Checkmark.png in Resources */ = {isa = PBXBuildFile; fileRef = 80F800F415C2624C00132A96 /* IRAQ-Checkmark.png */; };
 		80F800F715C2624C00132A96 /* IRAQ-Checkmark@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 80F800F515C2624C00132A96 /* IRAQ-Checkmark@2x.png */; };
 		94EB57761411451780C24560 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D215E734098A44479DEC4F88 /* libPods.a */; };
-		DE2C7DD7168B2CAC0058A7D8 /* WACalendarPickerPanelViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DE2C7DD6168B2CAB0058A7D8 /* WACalendarPickerPanelViewCell.m */; };
 		DE46FC17165E228300CC4FFF /* WACalendarPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DE46FC16165E228300CC4FFF /* WACalendarPickerViewController.m */; };
 		DE696E011675D020008DC3F6 /* WASnsConnectSwitch.m in Sources */ = {isa = PBXBuildFile; fileRef = DE696E001675D020008DC3F6 /* WASnsConnectSwitch.m */; };
 		DE696E051675D0AC008DC3F6 /* WATwitterConnectSwitch.m in Sources */ = {isa = PBXBuildFile; fileRef = DE696E041675D0AC008DC3F6 /* WATwitterConnectSwitch.m */; };
@@ -353,7 +352,6 @@
 		DEBED838166C8801001A2B24 /* WATimelineViewCell-ImageStack-2.xib in Resources */ = {isa = PBXBuildFile; fileRef = DEBED831166C8801001A2B24 /* WATimelineViewCell-ImageStack-2.xib */; };
 		DEBED839166C8801001A2B24 /* WATimelineViewCell-ImageStack-3.xib in Resources */ = {isa = PBXBuildFile; fileRef = DEBED832166C8801001A2B24 /* WATimelineViewCell-ImageStack-3.xib */; };
 		DEBED83B166C8801001A2B24 /* WATimelineViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DEBED836166C8801001A2B24 /* WATimelineViewController.m */; };
-		DEE25BC516956AC500EC56D3 /* WACalendarPickerPanelViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = DEE25BC416956AC400EC56D3 /* WACalendarPickerPanelViewCell.xib */; };
 		DEEBFE27167735780095D629 /* libKal.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DEEBFE26167734830095D629 /* libKal.a */; };
 		DEF13267164B83B50051284D /* CalIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = DEF13262164B83B50051284D /* CalIcon.png */; };
 		DEF13268164B83B50051284D /* CollectionIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = DEF13263164B83B50051284D /* CollectionIcon.png */; };
@@ -1484,8 +1482,6 @@
 		D215E734098A44479DEC4F88 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		D26DABE040324ABAAAC5058D /* Pods-StreamTests.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-StreamTests.xcconfig"; path = "Pods/Pods-StreamTests.xcconfig"; sourceTree = SOURCE_ROOT; };
 		DE2BBDD616761AC100EEF922 /* Kal.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Kal.xcodeproj; path = external/Kal/src/Kal.xcodeproj; sourceTree = SOURCE_ROOT; };
-		DE2C7DD5168B2CAB0058A7D8 /* WACalendarPickerPanelViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WACalendarPickerPanelViewCell.h; path = wammer/WACalendarPickerPanelViewCell.h; sourceTree = "<group>"; };
-		DE2C7DD6168B2CAB0058A7D8 /* WACalendarPickerPanelViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WACalendarPickerPanelViewCell.m; path = wammer/WACalendarPickerPanelViewCell.m; sourceTree = "<group>"; };
 		DE46FC15165E228300CC4FFF /* WACalendarPickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WACalendarPickerViewController.h; path = wammer/WACalendarPickerViewController.h; sourceTree = "<group>"; };
 		DE46FC16165E228300CC4FFF /* WACalendarPickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WACalendarPickerViewController.m; path = wammer/WACalendarPickerViewController.m; sourceTree = "<group>"; };
 		DE696DFF1675D020008DC3F6 /* WASnsConnectSwitch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WASnsConnectSwitch.h; path = wammer/WASnsConnectSwitch.h; sourceTree = "<group>"; };
@@ -1519,7 +1515,6 @@
 		DEBED834166C8801001A2B24 /* WATimelineViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WATimelineViewCell.m; sourceTree = "<group>"; };
 		DEBED835166C8801001A2B24 /* WATimelineViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WATimelineViewController.h; sourceTree = "<group>"; };
 		DEBED836166C8801001A2B24 /* WATimelineViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WATimelineViewController.m; sourceTree = "<group>"; };
-		DEE25BC416956AC400EC56D3 /* WACalendarPickerPanelViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = WACalendarPickerPanelViewCell.xib; path = wammer/WACalendarPickerPanelViewCell.xib; sourceTree = "<group>"; };
 		DEF13262164B83B50051284D /* CalIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = CalIcon.png; path = Resources/CalIcon.png; sourceTree = "<group>"; };
 		DEF13263164B83B50051284D /* CollectionIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = CollectionIcon.png; path = Resources/CollectionIcon.png; sourceTree = "<group>"; };
 		DEF13264164B83B50051284D /* EventsIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = EventsIcon.png; path = Resources/EventsIcon.png; sourceTree = "<group>"; };
@@ -2696,9 +2691,6 @@
 				DE46FC16165E228300CC4FFF /* WACalendarPickerViewController.m */,
 				DEF2886F165F6A0D0078B1D7 /* WACalendarPickerDataSource.h */,
 				DEF28870165F6A0D0078B1D7 /* WACalendarPickerDataSource.m */,
-				DE2C7DD5168B2CAB0058A7D8 /* WACalendarPickerPanelViewCell.h */,
-				DE2C7DD6168B2CAB0058A7D8 /* WACalendarPickerPanelViewCell.m */,
-				DEE25BC416956AC400EC56D3 /* WACalendarPickerPanelViewCell.xib */,
 			);
 			name = "Calendar Picker";
 			sourceTree = "<group>";
@@ -4668,7 +4660,6 @@
 				8033024E168853B200004891 /* googlereader@2x.png in Resources */,
 				80330251168853D500004891 /* twitter.png in Resources */,
 				80330252168853D500004891 /* twitter@2x.png in Resources */,
-				DEE25BC516956AC500EC56D3 /* WACalendarPickerPanelViewCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5170,7 +5161,6 @@
 				13F472E41682C811002BDCC9 /* NSString+WAAdditions.m in Sources */,
 				13089D2516885FB70086BEEB /* WASyncManager+PhotoImport.m in Sources */,
 				803302421688521C00004891 /* WAFileAccessLog.m in Sources */,
-				DE2C7DD7168B2CAC0058A7D8 /* WACalendarPickerPanelViewCell.m in Sources */,
 				802427091689E1AF002454A7 /* WACollection.m in Sources */,
 				13CCDE65168C308A00962625 /* WAFetchManager.m in Sources */,
 				13CCDE68168C33A400962625 /* WAFetchManager+RemoteArticleFetch.m in Sources */,
