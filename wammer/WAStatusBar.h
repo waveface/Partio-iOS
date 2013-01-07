@@ -8,9 +8,17 @@
 
 #import <UIKit/UIKit.h>
 
+typedef void(^WAStatusBarDidDismiss)(void);
+
 @interface WAStatusBar : UIWindow
 
-@property UILabel *syncingLabel;
-@property UILabel *fetchingLabel;
+@property (nonatomic, strong) UILabel *syncingLabel;
+
+- (void)showPhotoImportingWithImportedFilesCount:(NSUInteger)importedFilesCount needingImportFilesCount:(NSUInteger)needingImportFilesCount;
+- (void)showPhotoSyncingWithSyncedFilesCount:(NSUInteger)syncedFilesCount needingSyncFilesCount:(NSUInteger)needingSyncFilesCount;
+- (void)startFetchingAnimation;
+- (void)stopFetchingAnimation;
+- (void)showSyncCompleteWithDissmissBlock:(WAStatusBarDidDismiss)dismissBlock;
+- (void)showSyncFailWithDismissBlock:(WAStatusBarDidDismiss)dismissBlock;
 
 @end

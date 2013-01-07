@@ -29,6 +29,7 @@
 #import "WACollectionViewController.h"
 #import "WASyncManager.h"
 #import "WAFetchManager.h"
+#import <QuartzCore/QuartzCore.h>
 
 @interface WASlidingMenuViewController ()
 
@@ -210,13 +211,15 @@
         if (!wSelf.statusBar) {
 	wSelf.statusBar = [[WAStatusBar alloc] initWithFrame:CGRectZero];
         }
-        wSelf.statusBar.fetchingLabel.text = NSLocalizedString(@"FETCHING_DATA", @"String on customized status bar");
+        [wSelf.statusBar startFetchingAnimation];
       } else {
         WASyncManager *syncManager = [(WAAppDelegate_iOS *)AppDelegate() syncManager];
-        if (syncManager.isSyncing) {
-	wSelf.statusBar.fetchingLabel.text = @"";
+        if (!syncManager.isSyncing) {
+	[wSelf.statusBar showSyncCompleteWithDissmissBlock:^{
+	  wSelf.statusBar = nil;
+	}];
         } else {
-	wSelf.statusBar = nil;
+	[wSelf.statusBar stopFetchingAnimation];
         }
       }
     }];
@@ -231,18 +234,20 @@
 	wSelf.statusBar = [[WAStatusBar alloc] initWithFrame:CGRectZero];
         }
         if (syncManager.isSyncFail) {
-	wSelf.statusBar.syncingLabel.text = NSLocalizedString(@"PHOTO_UPLOAD_STATUS_BAR_FAIL", @"String on customized status bar");
+	[wSelf.statusBar showSyncFailWithDismissBlock:^{
+	  wSelf.statusBar = nil;
+	}];
         } else if (syncManager.needingSyncFilesCount > 0) {
-	wSelf.statusBar.syncingLabel.text = [NSString stringWithFormat:NSLocalizedString(@"PHOTO_UPLOAD_STATUS_BAR_UPLOADING", @"String on customized status bar"), syncManager.syncedFilesCount, syncManager.needingSyncFilesCount];
+	[wSelf.statusBar showPhotoSyncingWithSyncedFilesCount:syncManager.syncedFilesCount needingSyncFilesCount:syncManager.needingSyncFilesCount];
         } else if (syncManager.needingImportFilesCount > 0) {
-	wSelf.statusBar.syncingLabel.text = [NSString stringWithFormat:NSLocalizedString(@"PHOTO_UPLOAD_STATUS_BAR_IMPORTING", @"String on customized status bar"), syncManager.importedFilesCount, syncManager.needingImportFilesCount];
+	[wSelf.statusBar showPhotoImportingWithImportedFilesCount:syncManager.importedFilesCount needingImportFilesCount:syncManager.needingImportFilesCount];
         }
       } else {
         WAFetchManager *fetchManager = [(WAAppDelegate_iOS *)AppDelegate() fetchManager];
-        if (fetchManager.isFetching) {
-	wSelf.statusBar.syncingLabel.text = @"";
-        } else {
-	wSelf.statusBar = nil;
+        if (!fetchManager.isFetching) {
+	[wSelf.statusBar showSyncCompleteWithDissmissBlock:^{
+	  wSelf.statusBar = nil;
+	}];
         }
       }
     }];
