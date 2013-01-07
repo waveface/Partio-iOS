@@ -30,6 +30,9 @@
 //	POST posts/newComment
 - (void) createCommentForPost:(NSString *)aPostIdentifier inGroup:(NSString *)aGroupIdentifier withContentText:(NSString *)contentTextOrNil onSuccess:(void(^)(NSDictionary *updatedPostRep))successBlock onFailure:(void(^)(NSError *error))failureBlock;
 
+// GET posts/fetchBySequence
+- (void) retrievePostsInGroup:(NSString *)aGroupIdentifier usingSequenceNumber:(NSNumber *)aSequenceNumber withLimit:(NSNumber *)aLimit onSuccess:(void(^)(NSArray *postReps, NSNumber *remainingCount, NSNumber *nextSeq))successBlock onFailure:(void(^)(NSError *error))failureBlock;
+
 //  GET posts/fetchByFilter
 - (void) retrievePostsInGroup:(NSString *)aGroupIdentifier usingFilter:(id)aFilter onSuccess:(void(^)(NSArray *postReps))successBlock onFailure:(void(^)(NSError *error))failureBlock;
 
