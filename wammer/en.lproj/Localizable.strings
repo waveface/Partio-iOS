@@ -276,9 +276,6 @@
 /* Display title for a fetch request working against the latest article on a particular date */
 "FETCH_REQUEST_NEWEST_ARTICLE_OF_PARTICULAR_DATE_DISPLAY_TITLE" = "Post on a particular date";
 
-/* String on customized status bar */
-"FETCHING_DATA" = "Downloading data";
-
 /* Title for an alert view to show foursquare connection failure */
 "FOURSQUARE_CONNECT_FAIL_TITLE" = "Unable to import from Foursquare";
 

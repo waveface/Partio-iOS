@@ -10,7 +10,7 @@
 
 @interface WAStatusBar : UIWindow
 
-@property UILabel *syncingLabel;
-@property UILabel *fetchingLabel;
+@property (nonatomic, strong) UILabel *syncingLabel;
+@property (nonatomic) BOOL isFetching;
 
 @end

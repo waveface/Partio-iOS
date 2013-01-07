@@ -29,6 +29,7 @@
 #import "WACollectionViewController.h"
 #import "WASyncManager.h"
 #import "WAFetchManager.h"
+#import <QuartzCore/QuartzCore.h>
 
 @interface WASlidingMenuViewController ()
 
@@ -195,14 +196,21 @@
         if (!wSelf.statusBar) {
 	wSelf.statusBar = [[WAStatusBar alloc] initWithFrame:CGRectZero];
         }
-        wSelf.statusBar.fetchingLabel.text = NSLocalizedString(@"FETCHING_DATA", @"String on customized status bar");
+        wSelf.statusBar.isFetching = YES;
       } else {
-        WASyncManager *syncManager = [(WAAppDelegate_iOS *)AppDelegate() syncManager];
-        if (syncManager.isSyncing) {
-	wSelf.statusBar.fetchingLabel.text = @"";
-        } else {
-	wSelf.statusBar = nil;
-        }
+        int64_t delayInSeconds = 2.0;
+        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+        dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+	WAFetchManager *fetchManager = [(WAAppDelegate_iOS *)AppDelegate() fetchManager];
+	if (!fetchManager.isFetching) {
+	  WASyncManager *syncManager = [(WAAppDelegate_iOS *)AppDelegate() syncManager];
+	  if (syncManager.isSyncing) {
+	    wSelf.statusBar.isFetching = NO;
+	  } else {
+	    wSelf.statusBar = nil;
+	  }
+	}
+        });
       }
     }];
   }
