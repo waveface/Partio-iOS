@@ -262,7 +262,7 @@ static NSString * kWAGalleryViewControllerKVOContext = @"WAGalleryViewController
 		self.onViewWillDisappear = ^ (BOOL animated) {
 
 			UIApplication *app = [UIApplication sharedApplication];
-			[app setStatusBarStyle:UIStatusBarStyleDefault animated:animated];
+			[app setStatusBarStyle:UIStatusBarStyleBlackOpaque animated:animated];
 			[app setStatusBarHidden:NO withAnimation:(animated ? UIStatusBarAnimationFade : UIStatusBarAnimationNone)];
 
 			navC.navigationBar.barStyle = oldNavBarStyle;

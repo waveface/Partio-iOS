@@ -482,7 +482,8 @@
 /* Font name of the sliding menu */
 "SLIDING_MENU_FONTNAME" = "HelveticaNeue-Medium";
 
-/* Title for Calendar in the sliding menu */
+/* CALENDAR
+   Title for Calendar in the sliding menu */
 "SLIDING_MENU_TITLE_CALENDAR" = "CALENDAR";
 
 /* Title for Collections in the sliding menu */

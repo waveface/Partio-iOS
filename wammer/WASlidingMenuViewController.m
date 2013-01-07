@@ -43,6 +43,20 @@
 
 @implementation WASlidingMenuViewController
 
++ (CGFloat) ledgeSize {
+  
+  if (isPad()) {
+	
+	return [WACalendarPickerViewController minimalCalendarWidth];
+	
+  } else {
+	
+	return 200.0f;
+	
+  }
+  
+}
+
 + (UIViewController *)dayViewControllerForViewStyle:(WADayViewSupportedStyle)viewStyle {
   
   NSAssert1(((viewStyle==WAEventsViewStyle) || (viewStyle == WAPhotosViewStyle) || (viewStyle == WADocumentsViewStyle) || (viewStyle == WAWebpagesViewStyle)), @"Unsupported view style: %d", viewStyle);
@@ -78,6 +92,7 @@
   
   [self.tableView setBackgroundColor:[UIColor colorWithWhite:0.3f alpha:1.0f]];
   self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+  
 }
 
 - (void)dealloc
@@ -420,11 +435,17 @@
     }
       
     case 6: {
-      [self.viewDeckController closeLeftView];
+	  if (isPad()) {
+		
+		WACalendarPickerViewController *calVC = [[WACalendarPickerViewController alloc] initWithFrame:self.view.frame selectedDate:[NSDate date]];
+		[self.navigationController pushViewController:calVC animated:YES];
+		
+	  } else {
+		[self.viewDeckController closeLeftView];
       
-      WACalendarPickerViewController *dpVC = [[WACalendarPickerViewController alloc] initWithFrame:self.view.frame style:WACalendarPickerStyleMenuToday selectedDate:[NSDate date]];
-      [dpVC setModalPresentationStyle:UIModalPresentationFullScreen];
-      [self.viewDeckController setCenterController:dpVC];
+		WACalendarPickerViewController *dpVC = [[WACalendarPickerViewController alloc] initWithFrame:self.viewDeckController.centerController.view.frame selectedDate:[NSDate date]];
+		[self.viewDeckController setCenterController:[WACalendarPickerViewController wrappedNavigationControllerForViewController:dpVC forStyle:WACalendarPickerStyleWithMenu]];
+	  }
       break;
     }
       
@@ -437,9 +458,19 @@
 }
 
 #pragma mark - IIViewDeckDelegate protocol
+- (BOOL)viewDeckControllerWillOpenLeftView:(IIViewDeckController *)viewDeckController animated:(BOOL)animated {
+  
+  if (self.navigationController && isPad()) {
+	CGRect newFrame = self.navigationController.view.frame;
+	newFrame.size.width = [WACalendarPickerViewController minimalCalendarWidth]; // adjust navigation bar and toolbar width to fit in sliding menu
+	self.navigationController.view.frame = newFrame;
+  }
 
-- (void)viewDeckController:(IIViewDeckController *)viewDeckController applyShadow:(CALayer *)shadowLayer withBounds:(CGRect)rect {
-  // No shadow
+  return YES;
+  
+}
+- (void)viewDeckControllerDidCloseLeftView:(IIViewDeckController *)viewDeckController animated:(BOOL)animated {
+  [self.navigationController popToRootViewControllerAnimated:NO];
 }
 
 #pragma mark - switch methods
