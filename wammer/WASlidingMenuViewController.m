@@ -211,21 +211,16 @@
         if (!wSelf.statusBar) {
 	wSelf.statusBar = [[WAStatusBar alloc] initWithFrame:CGRectZero];
         }
-        wSelf.statusBar.isFetching = YES;
+        [wSelf.statusBar startFetchingAnimation];
       } else {
-        int64_t delayInSeconds = 2.0;
-        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
-        dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-	WAFetchManager *fetchManager = [(WAAppDelegate_iOS *)AppDelegate() fetchManager];
-	if (!fetchManager.isFetching) {
-	  WASyncManager *syncManager = [(WAAppDelegate_iOS *)AppDelegate() syncManager];
-	  if (syncManager.isSyncing) {
-	    wSelf.statusBar.isFetching = NO;
-	  } else {
-	    wSelf.statusBar = nil;
-	  }
-	}
-        });
+        WASyncManager *syncManager = [(WAAppDelegate_iOS *)AppDelegate() syncManager];
+        if (!syncManager.isSyncing) {
+	[wSelf.statusBar showSyncCompleteWithDissmissBlock:^{
+	  wSelf.statusBar = nil;
+	}];
+        } else {
+	[wSelf.statusBar stopFetchingAnimation];
+        }
       }
     }];
   }
@@ -239,18 +234,20 @@
 	wSelf.statusBar = [[WAStatusBar alloc] initWithFrame:CGRectZero];
         }
         if (syncManager.isSyncFail) {
-	wSelf.statusBar.syncingLabel.text = NSLocalizedString(@"PHOTO_UPLOAD_STATUS_BAR_FAIL", @"String on customized status bar");
+	[wSelf.statusBar showSyncFailWithDismissBlock:^{
+	  wSelf.statusBar = nil;
+	}];
         } else if (syncManager.needingSyncFilesCount > 0) {
-	wSelf.statusBar.syncingLabel.text = [NSString stringWithFormat:NSLocalizedString(@"PHOTO_UPLOAD_STATUS_BAR_UPLOADING", @"String on customized status bar"), syncManager.syncedFilesCount, syncManager.needingSyncFilesCount];
+	[wSelf.statusBar showPhotoSyncingWithSyncedFilesCount:syncManager.syncedFilesCount needingSyncFilesCount:syncManager.needingSyncFilesCount];
         } else if (syncManager.needingImportFilesCount > 0) {
-	wSelf.statusBar.syncingLabel.text = [NSString stringWithFormat:NSLocalizedString(@"PHOTO_UPLOAD_STATUS_BAR_IMPORTING", @"String on customized status bar"), syncManager.importedFilesCount, syncManager.needingImportFilesCount];
+	[wSelf.statusBar showPhotoImportingWithImportedFilesCount:syncManager.importedFilesCount needingImportFilesCount:syncManager.needingImportFilesCount];
         }
       } else {
         WAFetchManager *fetchManager = [(WAAppDelegate_iOS *)AppDelegate() fetchManager];
-        if (fetchManager.isFetching) {
-	wSelf.statusBar.syncingLabel.text = @"";
-        } else {
-	wSelf.statusBar = nil;
+        if (!fetchManager.isFetching) {
+	[wSelf.statusBar showSyncCompleteWithDissmissBlock:^{
+	  wSelf.statusBar = nil;
+	}];
         }
       }
     }];

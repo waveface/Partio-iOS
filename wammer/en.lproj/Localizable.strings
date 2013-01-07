@@ -276,6 +276,9 @@
 /* Display title for a fetch request working against the latest article on a particular date */
 "FETCH_REQUEST_NEWEST_ARTICLE_OF_PARTICULAR_DATE_DISPLAY_TITLE" = "Post on a particular date";
 
+/* String on customized status bar */
+"FETCHING_DATA" = "Downloading Data";
+
 /* Title for an alert view to show foursquare connection failure */
 "FOURSQUARE_CONNECT_FAIL_TITLE" = "Unable to import from Foursquare";
 
@@ -401,13 +404,16 @@
 "PHOTO_UPLOAD_CONTROLLER_TITLE" = "AUTO PHOTO UPLOAD";
 
 /* String on customized status bar */
-"PHOTO_UPLOAD_STATUS_BAR_FAIL" = "Upload fail";
+"PHOTO_UPLOAD_STATUS_BAR_COMPLETE" = "Sync Complete";
+
+/* String on customized status bar */
+"PHOTO_UPLOAD_STATUS_BAR_FAIL" = "Sync Fail";
 
 /* String on customized status bar */
 "PHOTO_UPLOAD_STATUS_BAR_IMPORTING" = "Scanning Camera Roll %d/%d";
 
 /* String on customized status bar */
-"PHOTO_UPLOAD_STATUS_BAR_UPLOADING" = "Importing photos %d/%d";
+"PHOTO_UPLOAD_STATUS_BAR_UPLOADING" = "Importing %d photos";
 
 /* Subtitle of photo upload status */
 "PHOTO_UPLOAD_STATUS_IMPORTING" = "Scanning %d/%d photos";
