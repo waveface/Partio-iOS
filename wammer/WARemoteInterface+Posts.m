@@ -206,6 +206,19 @@
   
 }
 
+- (void)retrievePostsInGroup:(NSString *)aGroupIdentifier usingSequenceNumber:(NSNumber *)aSequenceNumber withLimit:(NSNumber *)aLimit onSuccess:(void (^)(NSArray *, NSNumber *, NSNumber *))successBlock onFailure:(void (^)(NSError *))failureBlock {
+
+  [self.engine fireAPIRequestNamed:@"posts/fetchBySeq" withArguments:@{@"group_id":aGroupIdentifier, @"datum":aSequenceNumber, @"limit":aLimit} options:nil validator:WARemoteInterfaceGenericNoErrorValidator() successHandler:^(NSDictionary *response, IRWebAPIRequestContext *context) {
+
+    if (!successBlock)
+      return;
+    
+    successBlock(response[@"posts"], response[@"remaining_count"], response[@"next_datum"]);
+
+  } failureHandler:WARemoteInterfaceGenericFailureHandler(failureBlock)];
+
+}
+
 - (void) retrievePostsInGroup:(NSString *)aGroupIdentifier
 	        usingFilter:(id)aFilter
 		onSuccess:(void(^)(NSArray *postReps))successBlock

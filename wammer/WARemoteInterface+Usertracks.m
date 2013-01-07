@@ -11,6 +11,31 @@
 
 @implementation WARemoteInterface (Usertracks)
 
+- (void)retrieveChangesSince:(NSNumber *)aSeq inGroup:(NSString *)aGroupIdentifier onSuccess:(void (^)(NSArray *, NSArray *, NSNumber *))successBlock onFailure:(void (^)(NSError *))failureBlock {
+
+  NSParameterAssert(aGroupIdentifier);
+
+  NSDictionary *arguments = nil;
+  if (aSeq) {
+    arguments = @{@"group_id":aGroupIdentifier, @"since_seq_num":aSeq};
+  } else {
+    arguments = @{@"group_id":aGroupIdentifier};
+  }
+
+  [self.engine fireAPIRequestNamed:@"changelogs/get" withArguments:arguments options:nil validator:WARemoteInterfaceGenericNoErrorValidator() successHandler:^(NSDictionary *response, IRWebAPIRequestContext *context) {
+
+    NSArray *changedArticles = response[@"post_list"];
+    NSArray *changedFiles = response[@"attachment_list"];
+    NSNumber *nextSeq = response[@"next_seq_num"];
+    
+    if (successBlock) {
+      successBlock(changedArticles, changedFiles, nextSeq);
+    }
+
+  } failureHandler:WARemoteInterfaceGenericFailureHandler(failureBlock)];
+
+}
+
 - (void) retrieveChangesSince:(NSDate *)date inGroup:(NSString *)groupID withEntities:(BOOL)includesEntities onSuccess:(void(^)(NSArray *changedArticleIDs, NSArray *changedFileIDs, NSArray* changes, NSDate *continuation))successBlock onFailure:(void(^)(NSError *error))failureBlock {
   
   NSDate *usedSinceDate = date ? date : [NSDate dateWithTimeIntervalSince1970:0];

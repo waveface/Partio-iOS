@@ -28,37 +28,26 @@
     [wSelf beginPostponingFetch];
     
     WADataStore *ds = [WADataStore defaultStore];
-    NSDate *usedDate = [ds lastChangedPostsUpdateDate];
-    if (!usedDate) {
-      usedDate = wSelf.currentDate;
-    }
+    NSNumber *currentSeq = [ds maxSequenceNumber];
     
     WARemoteInterface *ri = [WARemoteInterface sharedInterface];
-    [ri retrieveChangesSince:usedDate inGroup:ri.primaryGroupIdentifier withEntities:NO onSuccess:^(NSArray *changedArticleIDs, NSArray *changedFileIDs, NSArray *changes, NSDate *continuation) {
-      
-      // no changed articles/files
-      if (!continuation) {
-        [ds setLastChangedPostsUpdateDate:usedDate];
-        [wSelf endPostponingFetch];
-        callback(nil);
-        return;
-      }
-      
-      // all articles/files changed at usedDate "should" be fully fetched, so we add one more second to avoid fetching duplicated data
-      if ([usedDate isEqualToDate:continuation]) {
-        [ds setLastChangedPostsUpdateDate:[usedDate dateByAddingTimeInterval:1]];
-        [wSelf endPostponingFetch];
-        callback(nil);
-        return;
-      }
+    
+    [ri retrieveChangesSince:currentSeq inGroup:ri.primaryGroupIdentifier onSuccess:^(NSArray *changedArticles, NSArray *changedFiles, NSNumber *nextSeq) {
 
+      // no changed articles/files
+      if (![changedArticles count] && ![changedFiles count]) {
+        [wSelf endPostponingFetch];
+        callback(nil);
+        return;
+      }
+      
       // enqueue operations to fetch changed articles from cloud
       NSMutableArray *sentChangedArticleIDs = [NSMutableArray array];
       const NSUInteger MAX_CHANGED_ARTICLES_COUNT = 100;
-      [changedArticleIDs enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+      [changedArticles enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
         
-        [sentChangedArticleIDs addObject:obj];
-        if ([sentChangedArticleIDs count] == MAX_CHANGED_ARTICLES_COUNT || idx == [changedArticleIDs count] - 1) {
+        [sentChangedArticleIDs addObject:obj[@"post_id"]];
+        if ([sentChangedArticleIDs count] == MAX_CHANGED_ARTICLES_COUNT || idx == [changedArticles count] - 1) {
 	
 	NSArray *sentChangedArticleIDsCopy = [NSArray arrayWithArray:sentChangedArticleIDs];
 	IRAsyncOperation *operation = [IRAsyncOperation operationWithWorker:^(IRAsyncOperationCallback callback) {
@@ -113,24 +102,25 @@
 	[sentChangedArticleIDs removeAllObjects];
 	
         }
-
+        
       }];
       
       // mark changed attachments as outdated, require fetch from cloud
-      NSMutableArray *changedFiles = [NSMutableArray array];
-      for (NSString *identifier in changedFileIDs) {
+      NSMutableArray *outdatedFiles = [NSMutableArray array];
+      for (NSDictionary *file in changedFiles) {
         NSMutableDictionary *attach = [@{
-			         @"object_id": identifier,
+			         @"object_id": file[@"attachment_id"],
 			         @"outdated": @YES,
 			         } mutableCopy];
         
-        [changedFiles addObject:attach];
+        [outdatedFiles addObject:attach];
       }
+
       [ds performBlock:^{
         
         NSManagedObjectContext *context = [[WADataStore defaultStore] disposableMOC];
         [WAFile insertOrUpdateObjectsUsingContext:context
-			 withRemoteResponse:changedFiles
+			 withRemoteResponse:outdatedFiles
 			       usingMapping:nil
 				  options:IRManagedObjectOptionIndividualOperations];
         [context save:nil];
@@ -139,7 +129,7 @@
       
       // add tail operation to article fetch operation queue
       NSOperation *tailOp = [NSBlockOperation blockOperationWithBlock:^{
-        [ds setLastChangedPostsUpdateDate:continuation];
+        [ds setMaxSequenceNumber:nextSeq];
         [wSelf endPostponingFetch];
         callback(nil);
       }];
@@ -149,10 +139,10 @@
       }
       
       [wSelf.articleFetchOperationQueue addOperation:tailOp];
-      
+
     } onFailure:^(NSError *error) {
-      
-      NSLog(@"Unable to fetch remote changes since %@, error: %@", usedDate, error);
+
+      NSLog(@"Unable to fetch remote changes since %@, error: %@", currentSeq, error);
       [wSelf endPostponingFetch];
       callback(error);
       

@@ -24,11 +24,11 @@
 - (NSDate *) lastSyncSuccessDate;
 - (void) setLastSyncSuccessDate:(NSDate *)date;
 
-- (NSDate *) lastNewPostsUpdateDate;
-- (void) setLastNewPostsUpdateDate:(NSDate *)date;
+- (NSNumber *) minSequenceNumber;
+- (void) setMinSequenceNumber:(NSNumber *)seq;
 
-- (NSDate *) lastChangedPostsUpdateDate;
-- (void) setLastChangedPostsUpdateDate:(NSDate *)date;
+- (NSNumber *) maxSequenceNumber;
+- (void) setMaxSequenceNumber:(NSNumber *)seq;
 
 @end
 
