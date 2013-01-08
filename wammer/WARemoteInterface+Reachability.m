@@ -20,6 +20,8 @@
 
 #import "WARemoteInterface+WebSocket.h"
 #import "WARemoteInterface+Notification.h"
+#import "WADataStore.h"
+#import "WAStation.h"
 
 
 @interface WARemoteInterface (Reachability_Private) <WAReachabilityDetectorDelegate>
@@ -188,86 +190,41 @@ NSURL *refiningStationLocation(NSString *stationUrlString, NSURL *baseUrl) {
   
   return [^ {
     
-    if (!wSelf.userToken)
-      return;
-    
     [wSelf beginPostponingDataRetrievalTimerFiring];
     
-    [wSelf retrieveAssociatedStationsOfCurrentUserOnSuccess:^(NSArray *stationReps) {
-      
-      dispatch_async(dispatch_get_main_queue(), ^ {
-        
-        NSArray *wsStations = [NSArray arrayWithArray:[stationReps irMap: ^(NSDictionary *aStationRep, NSUInteger index, BOOL *stop) {
-	NSString *wsStationURLString = aStationRep[@"ws_location"];
-	
-	if (!wsStationURLString)
-	  return (id)nil;
-	if ([wsStationURLString isEqualToString:@""])
-	  return (id)nil;
-	
-	NSURL *wsURL = [NSURL URLWithString:wsStationURLString];
-	
-	NSURL *stationURL = refiningStationLocation(aStationRep[@"location"], wSelf.engine.context.baseURL);
-	
-	NSString *computerName = aStationRep[@"computer_name"];
-	
-	return (id)@{@"location":stationURL, @"ws_location":wsURL, @"computer_name":computerName};
-	
-        }]];
-        
-        if ([wsStations count] > 0) {
-	// cloud says we have at least one station supports websocket
-	// then we try to connect to one of available
-	[[WARemoteInterface sharedInterface] connectAvaliableWSStation:wsStations onSucces:^(NSURL *wsURL, NSURL *stURL, NSString *computerName){
-	  
-	  // any success connect to websocket goes to this block
-	  
-	  [[WARemoteInterface sharedInterface] stopAutomaticRemoteUpdates];
-	  
-	  [[WARemoteInterface sharedInterface] subscribeNotification];
-	  
-	  // We only scan the reachability detector for cloud and the first available station that supports websocket
-	  wSelf.monitoredHostNames = @[NSLocalizedString(@"Stream Cloud", @"Cloud Name"), computerName];
-	  wSelf.monitoredHosts = @[wSelf.engine.context.baseURL, stURL];
-	  
-	} onFailure:^(NSError *error) {
-	  
-	  wSelf.monitoredHostNames = @[NSLocalizedString(@"Stream Cloud", @"Cloud Name")];
-	  wSelf.monitoredHosts = @[wSelf.engine.context.baseURL];
-	  
-	  [[WARemoteInterface sharedInterface] enableAutomaticRemoteUpdatesTimer];
-	  
-	}];
-	
-        } else {
-	
-	wSelf.monitoredHostNames = @[NSLocalizedString(@"Stream Cloud", @"Cloud Name")];
-	wSelf.monitoredHosts = @[wSelf.engine.context.baseURL];
-	
-        }
-        
-        [wSelf endPostponingDataRetrievalTimerFiring];
-        
-      });
+    NSManagedObjectContext *context = [[WADataStore defaultStore] disposableMOC];
+    NSFetchRequest *request = [[NSFetchRequest alloc] init];
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"WAStation" inManagedObjectContext:context];
+    [request setEntity:entity];
+    NSError *error = nil;
+    NSArray *stations = [context executeFetchRequest:request error:&error];
+    if (error) {
+      NSLog(@"Unable to fetch stations, error:%@", error);
+      return;
+    }
+    
+    [[WARemoteInterface sharedInterface] connectAvaliableWSStation:stations onSuccess:^(WAStation *station) {
+
+      // station is nil if the websocket connection has been constructed.
+      if (station) {
+        // We only scan the reachability detector for cloud and the first available station that supports websocket
+        wSelf.monitoredHostNames = @[NSLocalizedString(@"CLOUD_NAME", @"AOStream Cloud Name"), station.name];
+        wSelf.monitoredHosts = @[wSelf.engine.context.baseURL, [NSURL URLWithString:station.httpURL]];
+        [wSelf subscribeNotification];
+      }
+
+      [wSelf endPostponingDataRetrievalTimerFiring];
       
     } onFailure:^(NSError *error) {
-      
-      dispatch_async(dispatch_get_main_queue(), ^ {
-        
-        // for network unavailable case while entering app
-        if (!wSelf.monitoredHosts) {
-	wSelf.monitoredHostNames = @[NSLocalizedString(@"Stream Cloud", @"Cloud Name")];
-	wSelf.monitoredHosts = @[wSelf.engine.context.baseURL];
-        }
-        
-        [wSelf endPostponingDataRetrievalTimerFiring];
-        
-        //[AppDelegate() endNetworkActivity];
-        
-      });
+
+      // fall in this block if connection failure, disconnected from a station, or no stations
+      wSelf.monitoredHostNames = @[NSLocalizedString(@"CLOUD_NAME", @"AOStream Cloud Name")];
+      wSelf.monitoredHosts = @[wSelf.engine.context.baseURL];
+
+      [wSelf endPostponingDataRetrievalTimerFiring];
       
     }];
-    
+
   } copy];
   
 }

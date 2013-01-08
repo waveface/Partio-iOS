@@ -275,9 +275,10 @@
         <relationship name="owner" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="WAUser" inverseName="previews" inverseEntity="WAUser" syncable="YES"/>
     </entity>
     <entity name="WAStation" representedClassName="WAStation" syncable="YES">
+        <attribute name="httpURL" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="identifier" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="location" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="wsURL" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="user" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="WAUser" inverseName="stations" inverseEntity="WAUser" syncable="YES"/>
     </entity>
     <entity name="WAStorage" representedClassName="WAStorage" syncable="YES">
@@ -384,6 +385,6 @@
         <element name="WATagGroup" positionX="0" positionY="0" width="128" height="90"/>
         <element name="WAUser" positionX="0" positionY="0" width="128" height="240"/>
         <element name="WAWebpageDay" positionX="160" positionY="192" width="128" height="75"/>
-        <element name="WAStation" positionX="160" positionY="192" width="128" height="105"/>
+        <element name="WAStation" positionX="160" positionY="192" width="128" height="120"/>
     </elements>
 </model>

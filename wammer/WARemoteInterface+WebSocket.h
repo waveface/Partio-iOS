@@ -12,6 +12,7 @@
 /* This category is reserved to handle multiple websocket connections in the future
  */
 
+@class WAStation;
 @interface WARemoteInterface (WebSocket)
 
 /// A websocket instance
@@ -20,7 +21,7 @@
 /// @return YES if websocket is connected, NO if not.
 @property (nonatomic, readonly) BOOL webSocketConnected;
 
-- (void) connectAvaliableWSStation:(NSArray *)allStations onSucces:(void(^)(NSURL *wsURL, NSURL*stURL, NSString *computerName))successBlock onFailure:(WAWebSocketConnectFailure)failureBlock;
+- (void) connectAvaliableWSStation:(NSArray *)allStations onSuccess:(void(^)(WAStation *station))successBlock onFailure:(WAWebSocketConnectFailure)failureBlock;
 
 /**
  * Open a new websocket connection to a specified URL.

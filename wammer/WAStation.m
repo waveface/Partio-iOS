@@ -12,9 +12,10 @@
 
 @implementation WAStation
 
+@dynamic httpURL;
 @dynamic identifier;
-@dynamic location;
 @dynamic name;
+@dynamic wsURL;
 @dynamic user;
 
 @end

@@ -24,7 +24,8 @@
     
     mapping = @{
     @"station_id": @"identifier",
-    @"ws_location": @"location",
+    @"ws_location": @"wsURL",
+    @"location": @"httpURL",
     @"computer_name": @"name"
     };
     

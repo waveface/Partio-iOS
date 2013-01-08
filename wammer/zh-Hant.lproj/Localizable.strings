@@ -157,6 +157,9 @@
 /* Title for Cover Image picker */
 "CHANGE_REPRESENTING_FILE_TITLE" = "更換封面相片";
 
+/* AOStream Cloud Name */
+"CLOUD_NAME" = "AOStream 雲";
+
 /* In navigation bar */
 "COLLECTIONS" = "選集";
 
@@ -515,9 +518,6 @@
 
 /* Title of view controller setting personal cloud */
 "STORAGE_SETUP_CONTROLLER_TITLE" = "設定個人雲";
-
-/* Cloud Name */
-"Stream Cloud" = "Stream Cloud";
 
 /* Title on the text stack more / less toggle button for “Less” */
 "TEXT_ELEMENT_TOGGLE_LESS_TITLE" = "更少";

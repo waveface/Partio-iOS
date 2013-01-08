@@ -14,9 +14,10 @@
 
 @interface WAStation : IRManagedObject
 
+@property (nonatomic, retain) NSString * httpURL;
 @property (nonatomic, retain) NSString * identifier;
-@property (nonatomic, retain) NSString * location;
 @property (nonatomic, retain) NSString * name;
+@property (nonatomic, retain) NSString * wsURL;
 @property (nonatomic, retain) WAUser *user;
 
 @end
