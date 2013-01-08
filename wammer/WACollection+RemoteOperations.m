@@ -45,9 +45,11 @@
       ];
      [moc save:nil];
      completionBlock();
+     [[NSNotificationCenter defaultCenter] postNotificationName:kWACollectionUpdated object:self];
    }
    errorHandler:^(MKNetworkOperation *completedOperation, NSError *error) {
      completionBlock();
+     [[NSNotificationCenter defaultCenter] postNotificationName:kWACollectionUpdated object:self];
    }];
   
   //  MKNetworkOperation *op = [engine operationWithPath:@"https://develop.waveface.com/v2/attachments/multiple_get?session_token=b31tbLA0SYCwHXDZR9qf7A2n.fIn9nQMUri8c5J%2Fgi3stz0w5CgE7i5E6PNGSDz9QLM8&apikey=ca5c3c5c-287d-5805-93c1-a6c2cbf9977c"];
@@ -55,3 +57,5 @@
 }
 
 @end
+
+NSString *const kWACollectionUpdated = @"WACollectionUpdated";

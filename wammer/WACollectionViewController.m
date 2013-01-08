@@ -67,6 +67,10 @@ typedef NS_ENUM(NSUInteger, WACollectionSortMode){
   [self.collectionView reloadData];
 }
 
+- (BOOL)canBecomeFirstResponder {
+  return YES;
+}
+
 - (void)viewDidLoad{
   [super viewDidLoad];
   
@@ -75,6 +79,14 @@ typedef NS_ENUM(NSUInteger, WACollectionSortMode){
   _refreshControl = [[UIRefreshControl alloc] initWithFrame:CGRectMake(0, -44, 320, 44)];
   [_refreshControl addTarget:self action:@selector(refresh) forControlEvents:UIControlEventValueChanged];
   [self.collectionView addSubview:_refreshControl];
+  
+  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updated:) name:kWACollectionUpdated object:nil];
+  
+  [self becomeFirstResponder];
+}
+
+- (void)dealloc {
+  [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -146,4 +158,24 @@ typedef NS_ENUM(NSUInteger, WACollectionSortMode){
     [weakSelf.collectionView reloadData];
   }];
 }
+
+- (void)updated:(NSNotification *)notification {
+  [self.refreshControl endRefreshing];
+}
+
+#pragma mark - UIEvent Callbacks
+
+- (void)motionBegan:(UIEventSubtype)motion withEvent:(UIEvent *)event {
+  
+}
+
+- (void)motionEnded:(UIEventSubtype)motion withEvent:(UIEvent *)event {
+  // Shake to refresh collections (solicit)
+  if (event.subtype == UIEventSubtypeMotionShake) {
+    NSLog(@"Shaked");
+    // Generation an Event Here with Colors
+    [self refresh];
+  }
+}
+
 @end

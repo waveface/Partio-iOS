@@ -13,3 +13,5 @@
 + (void) refreshCollectionsWithCompletion:(void(^)(void))completionBlock;
 
 @end
+
+extern NSString *const kWACollectionUpdated;
