@@ -192,7 +192,6 @@ NSURL *refiningStationLocation(NSString *stationUrlString, NSURL *baseUrl) {
       return;
     
     [wSelf beginPostponingDataRetrievalTimerFiring];
-    //[((WAAppDelegate *)[UIApplication sharedApplication].delegate) beginNetworkActivity];
     
     [wSelf retrieveAssociatedStationsOfCurrentUserOnSuccess:^(NSArray *stationReps) {
       
@@ -218,7 +217,6 @@ NSURL *refiningStationLocation(NSString *stationUrlString, NSURL *baseUrl) {
         
         if ([wsStations count] > 0) {
 	// cloud says we have at least one station supports websocket
-	
 	// then we try to connect to one of available
 	[[WARemoteInterface sharedInterface] connectAvaliableWSStation:wsStations onSucces:^(NSURL *wsURL, NSURL *stURL, NSString *computerName){
 	  
@@ -234,17 +232,6 @@ NSURL *refiningStationLocation(NSString *stationUrlString, NSURL *baseUrl) {
 	  
 	} onFailure:^(NSError *error) {
 	  
-	  // no websocket station available or any failure during connection goes to this block
-	  
-	  //							wSelf.monitoredHosts = [[NSArray arrayWithObject:wSelf.engine.context.baseURL] arrayByAddingObjectsFromArray:[stationReps irMap: ^ (NSDictionary *aStationRep, NSUInteger index, BOOL *stop) {
-	  //
-	  //								NSString *stationURLString = [aStationRep valueForKeyPath:@"location"];
-	  //								if (!stationURLString)
-	  //									return (id)nil;
-	  //
-	  //								return (id)refiningStationLocation(stationURLString, wSelf.engine.context.baseURL);
-	  //							}]];
-	  
 	  wSelf.monitoredHostNames = @[NSLocalizedString(@"Stream Cloud", @"Cloud Name")];
 	  wSelf.monitoredHosts = @[wSelf.engine.context.baseURL];
 	  
@@ -254,22 +241,12 @@ NSURL *refiningStationLocation(NSString *stationUrlString, NSURL *baseUrl) {
 	
         } else {
 	
-	//					wSelf.monitoredHosts = [[NSArray arrayWithObject:wSelf.engine.context.baseURL] arrayByAddingObjectsFromArray:[stationReps irMap: ^ (NSDictionary *aStationRep, NSUInteger index, BOOL *stop) {
-	//
-	//						NSString *stationURLString = [aStationRep valueForKeyPath:@"location"];
-	//						if (!stationURLString)
-	//							return (id)nil;
-	//
-	//						return (id)refiningStationLocation(stationURLString, wSelf.engine.context.baseURL);
-	//					}]];
 	wSelf.monitoredHostNames = @[NSLocalizedString(@"Stream Cloud", @"Cloud Name")];
 	wSelf.monitoredHosts = @[wSelf.engine.context.baseURL];
 	
         }
         
         [wSelf endPostponingDataRetrievalTimerFiring];
-        
-        //[AppDelegate() endNetworkActivity];
         
       });
       

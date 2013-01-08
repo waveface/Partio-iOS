@@ -274,6 +274,12 @@
         <relationship name="graphElement" optional="YES" minCount="1" maxCount="1" deletionRule="Cascade" destinationEntity="WAOpenGraphElement" inverseName="preview" inverseEntity="WAOpenGraphElement" syncable="YES"/>
         <relationship name="owner" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="WAUser" inverseName="previews" inverseEntity="WAUser" syncable="YES"/>
     </entity>
+    <entity name="WAStation" representedClassName="WAStation" syncable="YES">
+        <attribute name="identifier" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="location" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="user" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="WAUser" inverseName="stations" inverseEntity="WAUser" syncable="YES"/>
+    </entity>
     <entity name="WAStorage" representedClassName="WAStorage" syncable="YES">
         <attribute name="displayName" optional="YES" attributeType="String" maxValueString="100" syncable="YES"/>
         <attribute name="intervalEndDate" optional="YES" attributeType="Date" syncable="YES"/>
@@ -328,6 +334,7 @@
         </relationship>
         <relationship name="groups" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="WAGroup" inverseName="users" inverseEntity="WAGroup" syncable="YES"/>
         <relationship name="previews" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="WAPreview" inverseName="owner" inverseEntity="WAPreview" syncable="YES"/>
+        <relationship name="stations" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="WAStation" inverseName="user" inverseEntity="WAStation" syncable="YES"/>
         <relationship name="storages" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="WAStorage" inverseName="owner" inverseEntity="WAStorage" syncable="YES"/>
         <compoundIndexes>
             <compoundIndex>
@@ -375,7 +382,8 @@
         <element name="WAStorage" positionX="0" positionY="0" width="128" height="240"/>
         <element name="WATag" positionX="0" positionY="0" width="128" height="105"/>
         <element name="WATagGroup" positionX="0" positionY="0" width="128" height="90"/>
-        <element name="WAUser" positionX="0" positionY="0" width="128" height="225"/>
+        <element name="WAUser" positionX="0" positionY="0" width="128" height="240"/>
         <element name="WAWebpageDay" positionX="160" positionY="192" width="128" height="75"/>
+        <element name="WAStation" positionX="160" positionY="192" width="128" height="105"/>
     </elements>
 </model>
