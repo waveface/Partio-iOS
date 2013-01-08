@@ -25,6 +25,7 @@
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 @property (strong, nonatomic) NSArray *photos;
 @property (strong, nonatomic) NSMutableArray *layout;
+@property (strong, nonatomic) UIPopoverController *calendarPopoverForIPad;
 
 @end
 
@@ -125,6 +126,43 @@
 	// Dispose of any resources that can be recreated.
 }
 
+- (void) calButtonPressed:(id)sender {
+  
+  if (isPad()) {
+	
+	CGRect frame = CGRectMake(0, 0, 320, 500);
+	
+	__weak WAPhotoStreamViewController *wSelf = self;
+	WACalendarPickerViewController *calVC = [[WACalendarPickerViewController alloc] initWithFrame:frame selectedDate:onDate];
+	calVC.currentViewStyle = WAPhotosViewStyle;
+	WANavigationController *wrappedNavVC = [WACalendarPickerViewController wrappedNavigationControllerForViewController:calVC forStyle:WACalendarPickerStyleWithCancel];
+	
+	UIPopoverController *popOver = [[UIPopoverController alloc] initWithContentViewController:wrappedNavVC];
+	[popOver presentPopoverFromRect:CGRectMake(self.collectionView.frame.size.width/2, 50, 1, 1) inView:self.collectionView permittedArrowDirections:UIPopoverArrowDirectionUp animated:YES];
+	self.calendarPopoverForIPad = popOver;
+	calVC.onDismissBlock = ^{
+	  [wSelf.calendarPopoverForIPad dismissPopoverAnimated:YES];
+	};
+	
+  } else {
+	
+	CGRect frame = self.view.frame;
+	frame.origin = CGPointMake(0, 0);
+	WACalendarPickerViewController *calVC = [[WACalendarPickerViewController alloc] initWithFrame:frame selectedDate:onDate];
+	calVC.currentViewStyle = WAPhotosViewStyle;
+	WANavigationController *wrappedNavVC = [WACalendarPickerViewController wrappedNavigationControllerForViewController:calVC forStyle:WACalendarPickerStyleWithCancel];
+	calVC.onDismissBlock = ^{
+	  [wrappedNavVC dismissViewControllerAnimated:YES completion:nil];
+	};
+	
+	wrappedNavVC.modalPresentationStyle = UIModalPresentationFullScreen;
+	wrappedNavVC.modalTransitionStyle =  UIModalTransitionStyleCoverVertical;
+	[self presentViewController:wrappedNavVC animated:YES completion:nil];
+	
+  }
+}
+
+
 #pragma mark Collection delegate
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
@@ -173,25 +211,19 @@
 }
 
 - (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath {
-	WADayHeaderView *headerView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"PhotoStreamHeaderView" forIndexPath:indexPath];
-	if (headerView == nil) {
-		headerView = [WADayHeaderView viewFromNib];
-		[headerView.leftButton addTarget:self.parentViewController action:@selector(handleSwipeRight:) forControlEvents:UIControlEventTouchUpInside];
-		[headerView.rightButton addTarget:self.parentViewController action:@selector(handleSwipeLeft:) forControlEvents:UIControlEventTouchUpInside];
-		[headerView.centerButton addTarget:self.parentViewController action:@selector(handleDateSelect:) forControlEvents:UIControlEventTouchUpInside];
-		
-	}
+  WADayHeaderView *headerView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"PhotoStreamHeaderView" forIndexPath:indexPath];
+  
+  headerView.dayLabel.text = [onDate dayString];
+  headerView.monthLabel.text = [[onDate localizedMonthShortString] uppercaseString];
+  headerView.wdayLabel.text = [[onDate localizedWeekDayFullString] uppercaseString];
+  headerView.backgroundColor = [UIColor colorWithWhite:0.16 alpha:1.000];
+  headerView.placeHolderView.backgroundColor = [UIColor colorWithWhite:0.260 alpha:1.000];
+  headerView.dayLabel.textColor = [UIColor colorWithWhite:0.53 alpha:1.0f];
+  headerView.monthLabel.textColor =[UIColor colorWithWhite:0.53 alpha:1.0f];
+  headerView.wdayLabel.textColor = [UIColor colorWithWhite:0.53 alpha:1.0f];
+  [headerView.centerButton addTarget:self action:@selector(calButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
 	
-	headerView.dayLabel.text = [onDate dayString];
-	headerView.monthLabel.text = [[onDate localizedMonthShortString] uppercaseString];
-	headerView.wdayLabel.text = [[onDate localizedWeekDayFullString] uppercaseString];
-	headerView.backgroundColor = [UIColor colorWithWhite:0.16 alpha:1.000];
-	headerView.placeHolderView.backgroundColor = [UIColor colorWithWhite:0.260 alpha:1.000];
-	headerView.dayLabel.textColor = [UIColor colorWithWhite:0.53 alpha:1.0f];
-	headerView.monthLabel.textColor =[UIColor colorWithWhite:0.53 alpha:1.0f];
-	headerView.wdayLabel.textColor = [UIColor colorWithWhite:0.53 alpha:1.0f];
-	
-	return headerView;
+  return headerView;
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {

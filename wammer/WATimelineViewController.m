@@ -36,8 +36,8 @@
 @property (nonatomic, strong) UICollectionViewFlowLayout *flowlayout;
 
 @property (nonatomic, strong) NSDate *currentDisplayedDate;
-@property (nonatomic, readwrite, retain) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, strong) NSFetchedResultsController *fetchedResultsController;
+@property (nonatomic, strong) UIPopoverController *calendarPopoverForIPad;
 
 @property (nonatomic, readwrite, retain) UILongPressGestureRecognizer *longPressGR;
 
@@ -45,52 +45,109 @@
 
 @implementation WATimelineViewController
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-	self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-	if (!self)
-			return nil;
-
-	self.flowlayout = [[UICollectionViewFlowLayout alloc] init];
-	self.flowlayout.itemSize = (CGSize) {320, 310};
-	self.flowlayout.scrollDirection = UICollectionViewScrollDirectionVertical;
-
-	CGRect rect = (CGRect) { CGPointZero, self.view.frame.size };
-	self.collectionView = [[UICollectionView alloc] initWithFrame:rect collectionViewLayout:self.flowlayout];
- 
-	self.collectionView.dataSource = self;
-	self.collectionView.delegate = self;
-	self.collectionView.autoresizesSubviews = YES;
- 
-	self.collectionView.backgroundColor = [UIColor colorWithRed:0.95f green:0.95f blue:0.95f alpha:1];
-
-	[self.collectionView registerNib:[UINib nibWithNibName:@"WADayHeaderView" bundle:nil] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"WADayHeaderView"];
-	[self.collectionView registerNib:[UINib nibWithNibName:@"WATimelineViewCell-ImageStack-1" bundle:nil] forCellWithReuseIdentifier:@"PostCell-Photo-1"];
-	[self.collectionView registerNib:[UINib nibWithNibName:@"WATimelineViewCell-ImageStack-2" bundle:nil] forCellWithReuseIdentifier:@"PostCell-Photo-2"];
-	[self.collectionView registerNib:[UINib nibWithNibName:@"WATimelineViewCell-ImageStack-3" bundle:nil] forCellWithReuseIdentifier:@"PostCell-Photo-3"];
-	[self.collectionView registerNib:[UINib nibWithNibName:@"WATimelineViewCell-Checkin" bundle:nil] forCellWithReuseIdentifier:@"PostCell-Checkin"];
-
-	self.collectionView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
-	[self.view addSubview:self.collectionView];
-	self.view.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
-	self.longPressGR = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleMenu:)];
-	[self.collectionView addGestureRecognizer:self.longPressGR];
-	
-	return self;
-}
-
 - (id) initWithDate:(NSDate*)date {
 	
-	self.currentDisplayedDate = [date copy];
-	[self fetchedResultsController];
+  self = [super initWithNibName:nil bundle:nil];
+  if (!self)
+	return nil;
+
+  self.currentDisplayedDate = [date copy];
 	
-	return [self initWithNibName:nil bundle:nil];
+  self.flowlayout = [[UICollectionViewFlowLayout alloc] init];
+  self.flowlayout.itemSize = (CGSize) {320, 310};
+  self.flowlayout.scrollDirection = UICollectionViewScrollDirectionVertical;
+  
+  CGRect rect = (CGRect) { CGPointZero, self.view.frame.size };
+  self.collectionView = [[UICollectionView alloc] initWithFrame:rect collectionViewLayout:self.flowlayout];
+  
+  self.collectionView.dataSource = self;
+  self.collectionView.delegate = self;
+  self.collectionView.autoresizesSubviews = YES;
+  
+  self.collectionView.backgroundColor = [UIColor colorWithRed:0.95f green:0.95f blue:0.95f alpha:1];
+  
+  [self.collectionView registerNib:[[self class] nibForDayHeader] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"WADayHeaderView"];
+  [self.collectionView registerNib:[[self class] nibForImageStack1] forCellWithReuseIdentifier:@"PostCell-Photo-1"];
+  [self.collectionView registerNib:[[self class] nibForImageStack2] forCellWithReuseIdentifier:@"PostCell-Photo-2"];
+  [self.collectionView registerNib:[[self class] nibForImageStack3] forCellWithReuseIdentifier:@"PostCell-Photo-3"];
+  [self.collectionView registerNib:[[self class] nibForCheckinOnly] forCellWithReuseIdentifier:@"PostCell-Checkin"];
+  
+  self.collectionView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+  [self.view addSubview:self.collectionView];
+  self.view.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+  self.longPressGR = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleMenu:)];
+  [self.collectionView addGestureRecognizer:self.longPressGR];
+
+  return self;
 	
 }
 
++ (UINib*) nibForDayHeader {
+  static UINib *nib = nil;
+  
+  static dispatch_once_t onceToken;
+  dispatch_once(&onceToken, ^{
+    nib = [UINib nibWithNibName:@"WADayHeaderView" bundle:nil];
+  });
+  
+  return nib;
+}
+
++ (UINib*) nibForImageStack1 {
+  static UINib *nib = nil;
+  
+  static dispatch_once_t onceToken;
+  dispatch_once(&onceToken, ^{
+    nib = [UINib nibWithNibName:@"WATimelineViewCell-ImageStack-1" bundle:nil];
+  });
+  
+  return nib;
+}
+
++ (UINib*) nibForImageStack2 {
+  static UINib *nib = nil;
+  
+  static dispatch_once_t onceToken;
+  dispatch_once(&onceToken, ^{
+    nib = [UINib nibWithNibName:@"WATimelineViewCell-ImageStack-2" bundle:nil];
+  });
+  
+  return nib;
+}
+
++ (UINib*) nibForImageStack3 {
+  static UINib *nib = nil;
+  
+  static dispatch_once_t onceToken;
+  dispatch_once(&onceToken, ^{
+    nib = [UINib nibWithNibName:@"WATimelineViewCell-ImageStack-3" bundle:nil];
+  });
+  
+  return nib;
+}
+
++ (UINib*) nibForCheckinOnly {
+  static UINib *nib = nil;
+  
+  static dispatch_once_t onceToken;
+  dispatch_once(&onceToken, ^{
+    nib = [UINib nibWithNibName:@"WATimelineViewCell-Checkin" bundle:nil];
+  });
+  
+  return nib;
+}
+
+
 - (void) viewWillAppear:(BOOL)animated {
+  [super viewWillAppear:animated];
+  [self.collectionView.collectionViewLayout invalidateLayout];
+}
+
+- (void) viewDidAppear:(BOOL)animated {
 	
-	[self.collectionView.collectionViewLayout invalidateLayout];
+  [super viewDidAppear:animated];
+  [self reloadArticles];
+  [self.collectionView.collectionViewLayout invalidateLayout];
 	
 }
 
@@ -120,42 +177,33 @@
 	
 }
 
-#pragma mark - MOC and NSFetchResultsController
-- (NSManagedObjectContext *) managedObjectContext {
-	
-	if (_managedObjectContext)
-		return _managedObjectContext;
-	
-	_managedObjectContext = [[WADataStore defaultStore] defaultAutoUpdatedMOC];
-	
-	return _managedObjectContext;
-	
+- (void) reloadArticles {
+
+  NSManagedObjectContext *moc = [[WADataStore defaultStore] defaultAutoUpdatedMOC];
+ 
+  if (!self.currentDisplayedDate)
+	self.currentDisplayedDate = [NSDate date];
+  
+  NSFetchRequest *fr = [[WADataStore defaultStore] newFetchRequestForArticlesOnDate:self.currentDisplayedDate];
+  
+  NSString *formatString = [NSDateFormatter dateFormatFromTemplate:@"yyyy-MM-dd" options:0 locale:[NSLocale currentLocale] ];
+  NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+  [formatter setDateFormat:formatString];
+  
+  NSString *cacheName = [NSString stringWithFormat:@"fetchedTableCache-%@", [formatter stringFromDate:self.currentDisplayedDate]];
+  _fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fr managedObjectContext:moc sectionNameKeyPath:nil cacheName:cacheName];
+  _fetchedResultsController.delegate = self;
+  
+  NSError *fetchingError;
+  if (![_fetchedResultsController performFetch:&fetchingError])
+	NSLog(@"error fetching: %@", fetchingError);
+
 }
 
-- (NSFetchedResultsController *) fetchedResultsController {
-	
-	if (_fetchedResultsController)
-		return _fetchedResultsController;
-	
-	if (!self.currentDisplayedDate)
-		self.currentDisplayedDate = [NSDate date];
-	
-	NSFetchRequest *fr = [[WADataStore defaultStore] newFetchRequestForArticlesOnDate:self.currentDisplayedDate];
-	
-	NSString *formatString = [NSDateFormatter dateFormatFromTemplate:@"yyyy-MM-dd" options:0 locale:[NSLocale currentLocale] ];
-	NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-	[formatter setDateFormat:formatString];
-	
-	NSString *cacheName = [NSString stringWithFormat:@"fetchedTableCache-%@", [formatter stringFromDate:self.currentDisplayedDate]];
-	_fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fr managedObjectContext:self.managedObjectContext sectionNameKeyPath:nil cacheName:cacheName];
-	_fetchedResultsController.delegate = self;
-	
-  NSError *fetchingError;
-	if (![_fetchedResultsController performFetch:&fetchingError])
-		NSLog(@"error fetching: %@", fetchingError);
-	
-	return _fetchedResultsController;
-	
+- (void) dealloc {
+  
+  [self.collectionView removeGestureRecognizer:self.longPressGR];
+  
 }
 
 #pragma mark - NSFetchedResultsControllerDelegate 
@@ -183,7 +231,7 @@
 
 - (NSInteger) collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
 
-	return [(id<NSFetchedResultsSectionInfo>)[[self.fetchedResultsController sections] objectAtIndex:section] numberOfObjects];
+  return [[self.fetchedResultsController fetchedObjects] count];
 	
 }
 
@@ -252,6 +300,7 @@ CGFloat (^rowSpacing) (UICollectionView *) = ^ (UICollectionView *collectionView
 	headerView.dayLabel.text = [self.currentDisplayedDate dayString];
 	headerView.monthLabel.text = [[self.currentDisplayedDate localizedMonthShortString] uppercaseString];
 	headerView.wdayLabel.text = [[self.currentDisplayedDate localizedWeekDayFullString] uppercaseString];
+  [headerView.centerButton addTarget:self action:@selector(calButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
 	headerView.backgroundColor = [UIColor colorWithRed:0.95f green:0.95f blue:0.95f alpha:1];
 
 	[headerView setNeedsLayout];
@@ -363,6 +412,42 @@ CGFloat (^rowSpacing) (UICollectionView *) = ^ (UICollectionView *collectionView
 	
 }
 
+- (void) calButtonPressed:(id)sender {
+ 
+  if (isPad()) {
+	
+	CGRect frame = CGRectMake(0, 0, 320, 500);
+	
+	__weak WATimelineViewController *wSelf = self;
+	WACalendarPickerViewController *calVC = [[WACalendarPickerViewController alloc] initWithFrame:frame selectedDate:self.currentDisplayedDate];
+	self.currentDisplayedDate = WAEventsViewStyle;
+	WANavigationController *wrappedNavVC = [WACalendarPickerViewController wrappedNavigationControllerForViewController:calVC forStyle:WACalendarPickerStyleWithCancel];
+	
+	UIPopoverController *popOver = [[UIPopoverController alloc] initWithContentViewController:wrappedNavVC];
+	[popOver presentPopoverFromRect:CGRectMake(self.collectionView.frame.size.width/2, 50, 1, 1) inView:self.collectionView permittedArrowDirections:UIPopoverArrowDirectionUp animated:YES];
+	self.calendarPopoverForIPad = popOver;
+	calVC.onDismissBlock = ^{
+	  [wSelf.calendarPopoverForIPad dismissPopoverAnimated:YES];
+	};
+
+  } else {
+	
+	CGRect frame = self.view.frame;
+	frame.origin = CGPointMake(0, 0);
+	WACalendarPickerViewController *calVC = [[WACalendarPickerViewController alloc] initWithFrame:frame selectedDate:self.currentDisplayedDate];
+	self.currentDisplayedDate = WAEventsViewStyle;
+	WANavigationController *wrappedNavVC = [WACalendarPickerViewController wrappedNavigationControllerForViewController:calVC forStyle:WACalendarPickerStyleWithCancel];
+	calVC.onDismissBlock = ^{
+	  [wrappedNavVC dismissViewControllerAnimated:YES completion:nil];
+	};
+	
+	wrappedNavVC.modalPresentationStyle = UIModalPresentationFullScreen;
+	wrappedNavVC.modalTransitionStyle =  UIModalTransitionStyleCoverVertical;
+	[self presentViewController:wrappedNavVC animated:YES completion:nil];
+	
+  }
+  
+}
 
 - (void) handleMenu:(UILongPressGestureRecognizer *)longPress {
 	
