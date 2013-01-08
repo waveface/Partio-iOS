@@ -250,7 +250,7 @@ NSString * const kWADataStoreArticleUpdateShowsBezels = @"WADataStoreArticleUpda
     
     [wSelf performBlock:^{
       
-      NSManagedObjectContext *context = [wSelf disposableMOC];
+      NSManagedObjectContext *context = [wSelf autoUpdatingMOC];
       context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
       
       WAUser *user = [wSelf mainUserInContext:context];
