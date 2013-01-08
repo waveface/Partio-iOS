@@ -44,7 +44,7 @@
     [fr setEntity:entity];
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"dayWebpages.day == %@", self.currentDate];
     [fr setPredicate:predicate];
-    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"accessTime" ascending:YES];
+    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"accessTime" ascending:NO];
     [fr setSortDescriptors:@[sortDescriptor]];
     [fr setRelationshipKeyPathsForPrefetching:@[@"file"]];
     [fr setRelationshipKeyPathsForPrefetching:@[@"dayWebpages"]];
@@ -58,14 +58,15 @@
     } else {
 			
       NSMutableDictionary *dict = [NSMutableDictionary dictionary];
+	  self.webPages = [NSMutableArray array];
       for (WAFileAccessLog *log in self.fetchedResultsController.fetchedObjects) {
         if (![dict objectForKey:log.file.identifier]) {
 					
 		  dict[log.file.identifier] = log;
+		  [self.webPages addObject:log];
 					
         }
       }
-      self.webPages = [[dict allValues] mutableCopy];
 			
     }
 
@@ -207,7 +208,7 @@
   cell.webURLLabel.text = file.webURL;
 
   NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-  [formatter setDateFormat:@"hh:mm"];
+  [formatter setDateFormat:@"hh:mm a"];
 
   cell.dateTimeLabel.text = [formatter stringFromDate:((WAFileAccessLog*)self.webPages[indexPath.row]).accessTime];
 
