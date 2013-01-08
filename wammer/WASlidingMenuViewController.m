@@ -325,13 +325,13 @@
       cell.imageView.image = [UIImage imageNamed:@"CollectionIcon"];
       cell.textLabel.text = NSLocalizedString(@"SLIDING_MENU_TITLE_COLLECTIONS", @"Title for Collections in the sliding menu");
       break;
-      
+      /*
     case 6:
       cell.imageView.image = [UIImage imageNamed:@"CalIcon"];
       cell.textLabel.text = NSLocalizedString(@"SLIDING_MENU_TITLE_CALENDAR", @"Title for Calendar in the sliding menu");
       break;
-      
-    case 7:
+      */
+    case 6:
       cell.imageView.image = [UIImage imageNamed:@"SettingsIcon"];
       cell.textLabel.text = NSLocalizedString(@"SLIDING_MENU_TITLE_SETTINGS", @"Title for Settings in the sliding menu");
       break;
@@ -367,12 +367,12 @@
     case 5: // Collection
       cell.backgroundColor = [UIColor colorWithRed:0.039f green:0.423f blue:0.529f alpha:1.0];
       break;
-      
+      /*
     case 6: // Calendar
       cell.backgroundColor = [UIColor colorWithRed:0.949f green:0.49f blue:0.305f alpha:1.0];
       break;
-      
-    case 7: // Settings
+      */
+    case 6: // Settings
       cell.backgroundColor = [UIColor colorWithRed:0.72f green:0.701f blue:0.69f alpha:1.0];
       break;
   }
@@ -426,7 +426,7 @@
       break;
     }
       
-    case 6: {
+/*    case 6: {
 	  if (isPad()) {
 		
 		WACalendarPickerViewController *calVC = [[WACalendarPickerViewController alloc] initWithFrame:self.view.frame selectedDate:[NSDate date]];
@@ -439,9 +439,9 @@
 		[self.viewDeckController setCenterController:[WACalendarPickerViewController wrappedNavigationControllerForViewController:dpVC forStyle:WACalendarPickerStyleWithMenu]];
 	  }
       break;
-    }
+    }*/
       
-    case 7: { // Settings
+    case 6: { // Settings
       [self handleUserInfo];
       break;
     }
