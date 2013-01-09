@@ -22,6 +22,7 @@
 #import "WARemoteInterface+Notification.h"
 #import "WADataStore.h"
 #import "WAStation.h"
+#import <Reachability/Reachability.h>
 
 
 @interface WARemoteInterface (Reachability_Private) <WAReachabilityDetectorDelegate>
@@ -96,25 +97,7 @@ static NSString * const kMonitoredHostNames = @"-[WARemoteInterface(Reachability
 
 - (void) setMonitoredHosts:(NSArray *)newAvailableHosts {
   
-  NSURL *cloudURL = self.engine.context.baseURL;
-  
   objc_setAssociatedObject(self, &kAvailableHosts, newAvailableHosts, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-  
-  if (!newAvailableHosts) {
-    
-    [self.monitoredHostsToReachabilityDetectors removeObjectForKey:cloudURL];
-    
-  } else {
-    
-    NSParameterAssert([newAvailableHosts[0] isEqual:cloudURL]);
-    
-    if (!self.monitoredHostsToReachabilityDetectors[cloudURL]) {
-      WAReachabilityDetector *detector = [WAReachabilityDetector detectorForURL:cloudURL];
-      detector.delegate = self;
-      self.monitoredHostsToReachabilityDetectors[cloudURL] = detector;
-    }
-    
-  }
   
 }
 
@@ -293,19 +276,14 @@ NSURL *refiningStationLocation(NSString *stationUrlString, NSURL *baseUrl) {
 
 + (NSSet *)keyPathsForValuesAffectingNetworkState {
   
-  return [NSSet setWithObject:@"monitoredHosts"];
+  return [NSSet setWithArray:@[@"webSocketConnected"]];
   
 }
 
 - (WANetworkState) networkState {
   
-  NSURL *cloudHost = self.engine.context.baseURL;
-  BOOL hasStationAvailable = self.webSocketConnected, hasCloudAvailable = NO;
-  
-  WAReachabilityState state = [self reachabilityStateForHost:cloudHost];
-  if (state == WAReachabilityStateAvailable || state == WAReachabilityStateUnknown) {
-    hasCloudAvailable = YES;
-  }
+  BOOL hasStationAvailable = self.webSocketConnected;
+  BOOL hasCloudAvailable = [self.reachability isReachable];
   
   WANetworkState answer = (hasCloudAvailable ? WACloudReachable : 0) | (hasStationAvailable ? WAStationReachable : 0);
   

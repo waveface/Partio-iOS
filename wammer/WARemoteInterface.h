@@ -12,6 +12,7 @@
 #import "JSONKit.h"
 
 
+@class Reachability;
 @interface WARemoteInterface : IRWebAPIInterface
 
 + (WARemoteInterface *) sharedInterface;
@@ -24,6 +25,7 @@
 @property (nonatomic, readwrite, retain) NSString *userIdentifier;
 @property (nonatomic, readwrite, retain) NSString *userToken;
 @property (nonatomic, readwrite, retain) NSString *primaryGroupIdentifier;
+@property (nonatomic, readonly, strong) Reachability *reachability;
 
 @end
 
