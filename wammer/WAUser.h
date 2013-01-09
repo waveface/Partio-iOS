@@ -2,15 +2,15 @@
 //  WAUser.h
 //  wammer
 //
-//  Created by Evadne Wu on 4/19/12.
-//  Copyright (c) 2012 Waveface. All rights reserved.
+//  Created by kchiu on 13/1/8.
+//  Copyright (c) 2013年 Waveface. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 #import "CoreData+IRAdditions.h"
 
-@class WAArticle, WAComment, WAFile, WAGroup, WAPreview;
+@class WAArticle, WACollection, WAComment, WAFile, WAGroup, WAPreview, WAStation, WAStorage;
 
 @interface WAUser : IRManagedObject
 
@@ -20,11 +20,13 @@
 @property (nonatomic, retain) NSString * identifier;
 @property (nonatomic, retain) NSString * nickname;
 @property (nonatomic, retain) NSSet *articles;
+@property (nonatomic, retain) NSSet *collections;
 @property (nonatomic, retain) NSSet *comments;
 @property (nonatomic, retain) NSSet *files;
 @property (nonatomic, retain) NSSet *groups;
 @property (nonatomic, retain) NSSet *previews;
 @property (nonatomic, retain) NSSet *storages;
+@property (nonatomic, retain) NSSet *stations;
 @end
 
 @interface WAUser (CoreDataGeneratedAccessors)
@@ -33,6 +35,11 @@
 - (void)removeArticlesObject:(WAArticle *)value;
 - (void)addArticles:(NSSet *)values;
 - (void)removeArticles:(NSSet *)values;
+
+- (void)addCollectionsObject:(WACollection *)value;
+- (void)removeCollectionsObject:(WACollection *)value;
+- (void)addCollections:(NSSet *)values;
+- (void)removeCollections:(NSSet *)values;
 
 - (void)addCommentsObject:(WAComment *)value;
 - (void)removeCommentsObject:(WAComment *)value;
@@ -54,9 +61,14 @@
 - (void)addPreviews:(NSSet *)values;
 - (void)removePreviews:(NSSet *)values;
 
-- (void)addStoragesObject:(NSManagedObject *)value;
-- (void)removeStoragesObject:(NSManagedObject *)value;
+- (void)addStoragesObject:(WAStorage *)value;
+- (void)removeStoragesObject:(WAStorage *)value;
 - (void)addStorages:(NSSet *)values;
 - (void)removeStorages:(NSSet *)values;
+
+- (void)addStationsObject:(WAStation *)value;
+- (void)removeStationsObject:(WAStation *)value;
+- (void)addStations:(NSSet *)values;
+- (void)removeStations:(NSSet *)values;
 
 @end

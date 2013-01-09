@@ -157,6 +157,9 @@
 /* Title for Cover Image picker */
 "CHANGE_REPRESENTING_FILE_TITLE" = "Pick Photo";
 
+/* AOStream Cloud Name */
+"CLOUD_NAME" = "AOStream Cloud";
+
 /* In navigation bar */
 "COLLECTIONS" = "COLLECTIONS";
 
@@ -357,6 +360,9 @@
 /* Nickname placeholder in signup page */
 "NICKNAME_PLACEHOLDER" = "John Appleseed";
 
+/* Cell title in connection status view controller */
+"NO_STATION_INSTALLED" = "NO_STATION_INSTALLED";
+
 /* Notification messages for photos auto-imported */
 "NOTIFY_PHOTOS_IMPORTED" = "%@ photo(s) have been imported into your Stream account.";
 
@@ -371,6 +377,9 @@
 
 /* Plural noun for draft objects */
 "NOUN_DRAFTS" = "Drafts";
+
+/* Section header in connection status view controller */
+"NOW_CONNECTING_HEADER" = "Now Connecting to";
 
 /* In iPad overview */
 "NUMBER_OF_PHOTOS_CREATE_TIME_FROM_DEVICE" = "%1$@ posted %2$@ from %3$@";
@@ -515,9 +524,6 @@
 
 /* Title of view controller setting personal cloud */
 "STORAGE_SETUP_CONTROLLER_TITLE" = "SETUP YOUR STORAGE";
-
-/* Cloud Name */
-"Stream Cloud" = "Stream Cloud";
 
 /* Title on the text stack more / less toggle button for “Less” */
 "TEXT_ELEMENT_TOGGLE_LESS_TITLE" = "Less";
@@ -742,11 +748,14 @@
 /* Class = "IBUIButton"; normalTitle = "ACTION_IMPORT_PHOTO"; ObjectID = "58"; */
 "ACTION_IMPORT_PHOTO" = "Yes!";
 
-/* Class = "IBUILabel"; text = "UPGRADE_ACCOUNT"; ObjectID = "0eH-Fu-1wD"; */
-"UPGRADE_ACCOUNT" = "Upgrade Account";
+/* Class = "IBUILabel"; text = "PC_SETUP_DESCRIPTION"; ObjectID = "1TK-Px-G5L"; */
+"PC_SETUP_DESCRIPTION" = "Connect to your personal cloud station and enable lightning speed.";
 
 /* Class = "IBUILabel"; text = "PHOTO_IMPORT_TITLE"; ObjectID = "2Vy-5o-43I"; */
 "PHOTO_IMPORT_TITLE" = "Photo Import";
+
+/* Class = "IBUILabel"; text = "PC_SETUP_INSTRUCTIONS"; ObjectID = "3ZQ-I2-m83"; */
+"PC_SETUP_INSTRUCTIONS" = "1. Install AOStream Windows\n2. Turn on WiFi and connect to the same network with your PC.";
 
 /* Class = "IBUILabel"; text = "IMPORT_CAMERA_ROLL"; ObjectID = "Ehm-FE-RdU"; */
 "IMPORT_CAMERA_ROLL" = "Import Camera Roll";
@@ -754,50 +763,65 @@
 /* Class = "IBUITableViewSection"; headerTitle = "WEB_SERVICES_HEADER"; ObjectID = "FEo-JU-xSP"; */
 "WEB_SERVICES_HEADER" = "Web Services";
 
+/* Class = "IBUILabel"; text = "PACKAGE"; ObjectID = "FjD-Cy-ggW"; */
+"PACKAGE" = "Package";
+
+/* Class = "IBUILabel"; text = "LOGOUT"; ObjectID = "GUv-Fm-Efw"; */
+"LOGOUT" = "Logout";
+
 /* Class = "IBUITableViewSection"; headerTitle = "ACCOUNT_INFO_HEADER"; ObjectID = "Gw1-xy-FWK"; */
 "ACCOUNT_INFO_HEADER" = "Account Info";
 
-/* Class = "IBUILabel"; text = "NON_BACKED_UP_FILES"; ObjectID = "Ldp-qK-xdo"; */
-"NON_BACKED_UP_FILES" = "Photos Not Backup";
+/* Class = "IBUILabel"; text = "FILES_TO_UPLOAD"; ObjectID = "Ldp-qK-xdo"; */
+"FILES_TO_UPLOAD" = "Photos to Upload";
 
-/* Class = "IBUILabel"; text = "AUTO_BACKUP_TO_CLOUD"; ObjectID = "T7w-pO-igg"; */
-"AUTO_BACKUP_TO_CLOUD" = "Auto Backup to Cloud";
+/* Class = "IBUILabel"; text = "USE_CELLULAR"; ObjectID = "Scf-t9-USz"; */
+"USE_CELLULAR" = "Use Cellular Plan";
+
+/* Class = "IBUILabel"; text = "PC_SETUP_TITLE"; ObjectID = "UKL-kB-sZd"; */
+"PC_SETUP_TITLE" = "Feel Slow?";
+
+/* Class = "IBUILabel"; text = "STORAGE_USAGE"; ObjectID = "aOf-bH-Me7"; */
+"STORAGE_USAGE" = "Cloud Space Used";
 
 /* Class = "IBUILabel"; text = "CONNECTION_STATUS_DETAIL"; ObjectID = "bJb-Bz-WkJ"; */
 "CONNECTION_STATUS_DETAIL" = "CONNECTION_STATUS_DETAIL";
 
-/* Class = "IBUILabel"; text = "NOUN_NICKNAME"; ObjectID = "btU-SG-jyB"; */
-"NOUN_NICKNAME" = "Name";
-
 /* Class = "IBUILabel"; text = "NOUN_USERNAME"; ObjectID = "drm-tH-4is"; */
 "NOUN_USERNAME" = "Email";
 
-/* Class = "IBUILabel"; text = "NOUN_CURRENT_DEVICE"; ObjectID = "fZ9-vs-r6f"; */
-"NOUN_CURRENT_DEVICE" = "Device";
+/* Class = "IBUITableViewSection"; footerTitle = "PHOTO_IMPORT_SETTINGS_FOOTER"; ObjectID = "gj0-e5-1Bs"; */
+"PHOTO_IMPORT_SETTINGS_FOOTER" = "Connect to the same WiFi network with your AOStream Windows Station to upload original files.";
 
-/* Class = "IBUITableViewSection"; footerTitle = "BACKUP_FOOTER"; ObjectID = "gj0-e5-1Bs"; */
-"BACKUP_FOOTER" = "Upgrade account or install Stream Windows so Stream can help you to backup all photos in this device.";
-
-/* Class = "IBUITableViewSection"; headerTitle = "BACKUP_HEADER"; ObjectID = "gj0-e5-1Bs"; */
-"BACKUP_HEADER" = "Photo Backup";
+/* Class = "IBUITableViewSection"; headerTitle = "PHOTO_IMPORT_SETTINGS_HEADER"; ObjectID = "gj0-e5-1Bs"; */
+"PHOTO_IMPORT_SETTINGS_HEADER" = "Settings";
 
 /* Class = "IBUILabel"; text = "WEB_SERVICES_TITLE"; ObjectID = "gjy-px-XbS"; */
 "WEB_SERVICES_TITLE" = "Web Services";
 
+/* Class = "IBUILabel"; text = "VERSION"; ObjectID = "gkC-aR-76h"; */
+"VERSION" = "Version";
+
 /* Class = "IBUILabel"; text = "NONE"; ObjectID = "gvB-Dr-HXB"; */
 "NONE" = "NONE";
 
-/* Class = "IBUILabel"; text = "AUTO_BACKUP_TO_PC"; ObjectID = "kVF-T3-Q5G"; */
-"AUTO_BACKUP_TO_PC" = "Auto Backup to PC";
+/* Class = "IBUITableViewSection"; headerTitle = "NETWORK_HEADER"; ObjectID = "iKO-vI-KPy"; */
+"NETWORK_HEADER" = "Network";
+
+/* Class = "IBUITableViewSection"; footerTitle = "PHOTO_IMPORT_SWITCH_FOOTER"; ObjectID = "jPT-4f-lnH"; */
+"PHOTO_IMPORT_SWITCH_FOOTER" = "Turn on to sync all your camera roll photos to AOStream.";
+
+/* Class = "IBUILabel"; text = "UPGRADE_ACCOUNT"; ObjectID = "n6T-1w-Odi"; */
+"UPGRADE_ACCOUNT" = "Upgrade Account";
 
 /* Class = "IBUILabel"; text = "CONNECTION_STATUS_TITLE"; ObjectID = "oOp-ya-swS"; */
 "CONNECTION_STATUS_TITLE" = "Connection Status";
 
-/* Class = "IBUITableViewSection"; footerTitle = "VERSION"; ObjectID = "rMk-eV-Pjl"; */
-"VERSION" = "Version";
+/* Class = "IBUITableViewSection"; headerTitle = "IMPORT_HEADER"; ObjectID = "qoR-fT-NMh"; */
+"IMPORT_HEADER" = "Import";
 
 /* Class = "IBUILabel"; text = "ACTION_CONTACT_DEVELOPER"; ObjectID = "yLg-eE-ehZ"; */
-"ACTION_CONTACT_DEVELOPER" = "Contact";
+"ACTION_CONTACT_DEVELOPER" = "Contact Us";
 
 /* Class = "IBUIButton"; normalTitle = "ACTION_CONNECT_FACEBOOK"; ObjectID = "4"; */
 "ACTION_CONNECT_FACEBOOK" = "Connect with Facebook";

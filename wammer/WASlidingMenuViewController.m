@@ -120,23 +120,6 @@
     [wSelf.viewDeckController toggleLeftView];
   });
   
-  IRAction *cancelAction = [IRAction actionWithTitle:NSLocalizedString(@"ACTION_CANCEL", nil) block:nil];
-  IRAction *signOutAction = [IRAction
-		         actionWithTitle:NSLocalizedString(@"ACTION_SIGN_OUT", nil)
-		         block: ^ {
-			 if ([wSelf.delegate respondsToSelector:@selector(applicationRootViewControllerDidRequestReauthentication:)])
-			   [wSelf.delegate performSelector:@selector( applicationRootViewControllerDidRequestReauthentication: ) withObject:nil];
-		         }];
-  
-  userInfoVC.navigationItem.rightBarButtonItem = [IRBarButtonItem itemWithTitle:NSLocalizedString(@"ACTION_SIGN_OUT", nil) action:^{
-    
-    [[IRAlertView alertViewWithTitle:NSLocalizedString(@"ACTION_SIGN_OUT", nil)
-		         message:NSLocalizedString(@"SIGN_OUT_CONFIRMATION", nil)
-		    cancelAction:cancelAction
-		    otherActions:@[signOutAction]] show];
-    
-  }];
-  
   [self.viewDeckController setCenterController:navC];
   
 }

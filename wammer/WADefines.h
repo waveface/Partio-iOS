@@ -60,6 +60,7 @@ extern NSString * const kWACallbackActionSetUserRegistrationEndpointURL;
 extern NSString * const kWACallbackActionSetUserPasswordResetEndpointURL;
 
 extern NSString * const kWAPhotoImportEnabled;
+extern NSString * const kWAUseCellularEnabled;
 extern NSString * const kWABackupFilesToCloudEnabled;
 
 extern NSString * const kWABusinessPlan;
