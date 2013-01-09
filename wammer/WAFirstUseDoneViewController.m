@@ -86,10 +86,10 @@
       WARemoteInterface *ri = [WARemoteInterface sharedInterface];
       if ([ri hasReachableStation]) {
         wSelf.connectionCell.accessoryView = nil;
-        wSelf.connectionCell.detailTextLabel.text = ri.monitoredHostNames[1];
-      } else if (ri.monitoredHosts && [ri hasReachableCloud]) {
+        wSelf.connectionCell.detailTextLabel.text = [ri.monitoredHosts[0] name];
+      } else if ([ri hasReachableCloud]) {
         wSelf.connectionCell.accessoryView = nil;
-        wSelf.connectionCell.detailTextLabel.text = ri.monitoredHostNames[0];
+        wSelf.connectionCell.detailTextLabel.text = NSLocalizedString(@"CLOUD_NAME", @"AOStream Cloud Name");
       } else {
         UIActivityIndicatorView *activity = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
         [activity startAnimating];

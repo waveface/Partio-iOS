@@ -42,7 +42,9 @@ static NSString * const kConnectionForWebSocket = @"kConnectionForWebSocket";
     [[WARemoteInterface sharedInterface]
      openWebSocketConnectionForUrl:[NSURL URLWithString:station.wsURL]
      onSucces:^{
-       NSManagedObjectContext *context = [[WADataStore defaultStore] disposableMOC];
+       // The WAStation instance's properties cannot be fetched via a released MOC,
+       // so we use defaultAutoUpdatedMOC here to ensure it can be read globally.
+       NSManagedObjectContext *context = [[WADataStore defaultStore] defaultAutoUpdatedMOC];
        WAStation *connectedStation = (WAStation *)[context irManagedObjectForURI:ownURL];
        successBlock(connectedStation);
      }

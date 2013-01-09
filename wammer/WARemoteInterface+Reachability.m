@@ -34,60 +34,9 @@ NSURL *refiningStationLocation(NSString *stationUrlString, NSURL *baseUrl) ;
 
 static NSString * const kAvailableHosts = @"-[WARemoteInterface(Reachability) availableHosts]";
 static NSString * const kNetworkState = @"-[WARemoteInterface(Reachability) networkState]";
-static NSString * const kMonitoredHostNames = @"-[WARemoteInterface(Reachability) monitoredHostNames]";
 
 
 @implementation WARemoteInterface (Reachability)
-@dynamic monitoredHostNames;
-
-+ (void) load {
-  
-  __weak NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
-  
-  __block id appLoaded = [center addObserverForName:WAApplicationDidFinishLaunchingNotification object:nil queue:nil usingBlock:^(NSNotification *note) {
-    
-    [center removeObserver:appLoaded];
-    objc_setAssociatedObject([WARemoteInterface class], &WAApplicationDidFinishLaunchingNotification, nil, OBJC_ASSOCIATION_ASSIGN);
-    
-    __block id baseURLChanged = [center addObserverForName:kWARemoteInterfaceContextDidChangeBaseURLNotification object:nil queue:nil usingBlock:^(NSNotification *note) {
-      
-      NSURL *oldURL = [[note userInfo] objectForKey:kWARemoteInterfaceContextOldBaseURL];
-      NSURL *newURL = [[note userInfo] objectForKey:kWARemoteInterfaceContextNewBaseURL];
-      
-      WARemoteInterface *ri = [WARemoteInterface sharedInterface];
-      
-      NSArray *monitoredHosts = ri.monitoredHosts;
-      NSMutableArray *updatedHosts = [monitoredHosts mutableCopy];
-      
-      for (NSURL *anURL in ri.monitoredHosts)
-        if ([anURL isEqual:oldURL] || [anURL isEqual:newURL])
-	[updatedHosts removeObject:anURL];
-      
-      [updatedHosts insertObject:newURL atIndex:0];
-      
-      ri.monitoredHosts = updatedHosts;
-      
-    }];
-    
-    objc_setAssociatedObject([WARemoteInterface class], &kWARemoteInterfaceContextDidChangeBaseURLNotification, baseURLChanged, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-    
-  }];
-  
-  objc_setAssociatedObject([WARemoteInterface class], &WAApplicationDidFinishLaunchingNotification, appLoaded, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-  
-}
-
-- (NSArray *)monitoredHostNames {
-  
-  return objc_getAssociatedObject(self, &kMonitoredHostNames);
-  
-}
-
-- (void)setMonitoredHostNames:(NSArray *)monitoredHostNames {
-  
-  objc_setAssociatedObject(self, &kMonitoredHostNames, monitoredHostNames, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-  
-}
 
 - (NSArray *) monitoredHosts {
   
@@ -128,8 +77,9 @@ static NSString * const kMonitoredHostNames = @"-[WARemoteInterface(Reachability
 - (NSURL *) bestHostForRequestNamed:(NSString *)aRequestName {
   
   for (int i = [self.monitoredHosts count]-1; i >= 0; i--) {
-    if ([self canHost:self.monitoredHosts[i] handleRequestNamed:aRequestName]) {
-      return self.monitoredHosts[i];
+    NSURL *hostURL = [NSURL URLWithString:[self.monitoredHosts[i] httpURL]];
+    if ([self canHost:hostURL handleRequestNamed:aRequestName]) {
+      return hostURL;
     }
   }
   
@@ -190,9 +140,7 @@ NSURL *refiningStationLocation(NSString *stationUrlString, NSURL *baseUrl) {
 
       // station is nil if the websocket connection has been constructed.
       if (station) {
-        // We only scan the reachability detector for cloud and the first available station that supports websocket
-        wSelf.monitoredHostNames = @[NSLocalizedString(@"CLOUD_NAME", @"AOStream Cloud Name"), station.name];
-        wSelf.monitoredHosts = @[wSelf.engine.context.baseURL, [NSURL URLWithString:station.httpURL]];
+        wSelf.monitoredHosts = @[station];
         [wSelf subscribeNotification];
       }
 
@@ -201,8 +149,7 @@ NSURL *refiningStationLocation(NSString *stationUrlString, NSURL *baseUrl) {
     } onFailure:^(NSError *error) {
 
       // fall in this block if connection failure, disconnected from a station, or no stations
-      wSelf.monitoredHostNames = @[NSLocalizedString(@"CLOUD_NAME", @"AOStream Cloud Name")];
-      wSelf.monitoredHosts = @[wSelf.engine.context.baseURL];
+      wSelf.monitoredHosts = nil;
 
       [wSelf endPostponingDataRetrievalTimerFiring];
       
@@ -276,7 +223,7 @@ NSURL *refiningStationLocation(NSString *stationUrlString, NSURL *baseUrl) {
 
 + (NSSet *)keyPathsForValuesAffectingNetworkState {
   
-  return [NSSet setWithArray:@[@"webSocketConnected"]];
+  return [NSSet setWithArray:@[@"monitoredHosts"]];
   
 }
 
