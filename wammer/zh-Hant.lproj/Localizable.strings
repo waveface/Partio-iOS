@@ -157,6 +157,9 @@
 /* Title for Cover Image picker */
 "CHANGE_REPRESENTING_FILE_TITLE" = "更換封面相片";
 
+/* AOStream Cloud Name */
+"CLOUD_NAME" = "AOStream Cloud";
+
 /* In navigation bar */
 "COLLECTIONS" = "選集";
 
@@ -357,6 +360,9 @@
 /* Nickname placeholder in signup page */
 "NICKNAME_PLACEHOLDER" = "John Appleseed";
 
+/* Cell title in connection status view controller */
+"NO_STATION_INSTALLED" = "NO_STATION_INSTALLED";
+
 /* Notification messages for photos auto-imported */
 "NOTIFY_PHOTOS_IMPORTED" = "%@ 張照片已經匯入到你的 Stream 帳號中。";
 
@@ -371,6 +377,9 @@
 
 /* Plural noun for draft objects */
 "NOUN_DRAFTS" = "草稿";
+
+/* Section header in connection status view controller */
+"NOW_CONNECTING_HEADER" = "連線至";
 
 /* In iPad overview */
 "NUMBER_OF_PHOTOS_CREATE_TIME_FROM_DEVICE" = "%1$@於%2$@來自 %3$@";
@@ -404,13 +413,16 @@
 "PHOTO_UPLOAD_CONTROLLER_TITLE" = "照片自動上傳";
 
 /* String on customized status bar */
-"PHOTO_UPLOAD_STATUS_BAR_FAIL" = "上傳失敗";
+"PHOTO_UPLOAD_STATUS_BAR_COMPLETE" = "同步成功";
+
+/* String on customized status bar */
+"PHOTO_UPLOAD_STATUS_BAR_FAIL" = "同步失敗";
 
 /* String on customized status bar */
 "PHOTO_UPLOAD_STATUS_BAR_IMPORTING" = "正在掃描相機膠卷 %d/%d";
 
 /* String on customized status bar */
-"PHOTO_UPLOAD_STATUS_BAR_UPLOADING" = "照片匯入中 %d/%d";
+"PHOTO_UPLOAD_STATUS_BAR_UPLOADING" = "正匯入 %d 張照片";
 
 /* Subtitle of photo upload status */
 "PHOTO_UPLOAD_STATUS_IMPORTING" = "正在掃瞄 %d/%d 張照片";
@@ -485,7 +497,8 @@
 /* Font name of the sliding menu */
 "SLIDING_MENU_FONTNAME" = "HelveticaNeue-Bold";
 
-/* Title for Calendar in the sliding menu */
+/* CALENDAR
+   Title for Calendar in the sliding menu */
 "SLIDING_MENU_TITLE_CALENDAR" = "月曆";
 
 /* Title for Collections in the sliding menu */
@@ -511,9 +524,6 @@
 
 /* Title of view controller setting personal cloud */
 "STORAGE_SETUP_CONTROLLER_TITLE" = "設定個人雲";
-
-/* Cloud Name */
-"Stream Cloud" = "Stream Cloud";
 
 /* Title on the text stack more / less toggle button for “Less” */
 "TEXT_ELEMENT_TOGGLE_LESS_TITLE" = "更少";
@@ -738,11 +748,14 @@
 /* Class = "IBUIButton"; normalTitle = "ACTION_IMPORT_PHOTO"; ObjectID = "58"; */
 "ACTION_IMPORT_PHOTO" = "確定匯入";
 
-/* Class = "IBUILabel"; text = "UPGRADE_ACCOUNT"; ObjectID = "0eH-Fu-1wD"; */
-"UPGRADE_ACCOUNT" = "升級帳號";
+/* Class = "IBUILabel"; text = "PC_SETUP_DESCRIPTION"; ObjectID = "1TK-Px-G5L"; */
+"PC_SETUP_DESCRIPTION" = "AOStream Windows 可以將你的 PC 升級成個人雲，透過它傳輸速度將會加快一百倍！";
 
 /* Class = "IBUILabel"; text = "PHOTO_IMPORT_TITLE"; ObjectID = "2Vy-5o-43I"; */
 "PHOTO_IMPORT_TITLE" = "照片匯入";
+
+/* Class = "IBUILabel"; text = "PC_SETUP_INSTRUCTIONS"; ObjectID = "3ZQ-I2-m83"; */
+"PC_SETUP_INSTRUCTIONS" = "1. 在 PC 上安裝 AOStream Windows\n2. 確認手機和 PC 位於同一個 WiFi";
 
 /* Class = "IBUILabel"; text = "IMPORT_CAMERA_ROLL"; ObjectID = "Ehm-FE-RdU"; */
 "IMPORT_CAMERA_ROLL" = "匯入相機膠卷";
@@ -750,47 +763,62 @@
 /* Class = "IBUITableViewSection"; headerTitle = "WEB_SERVICES_HEADER"; ObjectID = "FEo-JU-xSP"; */
 "WEB_SERVICES_HEADER" = "可連接的網路服務";
 
+/* Class = "IBUILabel"; text = "PACKAGE"; ObjectID = "FjD-Cy-ggW"; */
+"PACKAGE" = "方案";
+
+/* Class = "IBUILabel"; text = "LOGOUT"; ObjectID = "GUv-Fm-Efw"; */
+"LOGOUT" = "登出";
+
 /* Class = "IBUITableViewSection"; headerTitle = "ACCOUNT_INFO_HEADER"; ObjectID = "Gw1-xy-FWK"; */
 "ACCOUNT_INFO_HEADER" = "帳戶資訊";
 
-/* Class = "IBUILabel"; text = "NON_BACKED_UP_FILES"; ObjectID = "Ldp-qK-xdo"; */
-"NON_BACKED_UP_FILES" = "尚未備份的照片";
+/* Class = "IBUILabel"; text = "FILES_TO_UPLOAD"; ObjectID = "Ldp-qK-xdo"; */
+"FILES_TO_UPLOAD" = "待上傳照片";
 
-/* Class = "IBUILabel"; text = "AUTO_BACKUP_TO_CLOUD"; ObjectID = "T7w-pO-igg"; */
-"AUTO_BACKUP_TO_CLOUD" = "自動備份到 Cloud";
+/* Class = "IBUILabel"; text = "USE_CELLULAR"; ObjectID = "Scf-t9-USz"; */
+"USE_CELLULAR" = "使用 3G 上傳";
+
+/* Class = "IBUILabel"; text = "PC_SETUP_TITLE"; ObjectID = "UKL-kB-sZd"; */
+"PC_SETUP_TITLE" = "覺得很慢？";
+
+/* Class = "IBUILabel"; text = "STORAGE_USAGE"; ObjectID = "aOf-bH-Me7"; */
+"STORAGE_USAGE" = "已使用雲端空間";
 
 /* Class = "IBUILabel"; text = "CONNECTION_STATUS_DETAIL"; ObjectID = "bJb-Bz-WkJ"; */
 "CONNECTION_STATUS_DETAIL" = "CONNECTION_STATUS_DETAIL";
 
-/* Class = "IBUILabel"; text = "NOUN_NICKNAME"; ObjectID = "btU-SG-jyB"; */
-"NOUN_NICKNAME" = "使用者名稱";
-
 /* Class = "IBUILabel"; text = "NOUN_USERNAME"; ObjectID = "drm-tH-4is"; */
 "NOUN_USERNAME" = "電子郵件";
 
-/* Class = "IBUILabel"; text = "NOUN_CURRENT_DEVICE"; ObjectID = "fZ9-vs-r6f"; */
-"NOUN_CURRENT_DEVICE" = "裝置名稱";
+/* Class = "IBUITableViewSection"; footerTitle = "PHOTO_IMPORT_SETTINGS_FOOTER"; ObjectID = "gj0-e5-1Bs"; */
+"PHOTO_IMPORT_SETTINGS_FOOTER" = "手機上的原圖會自動傳回相同 WiFi 下的 AOStream Windows Station";
 
-/* Class = "IBUITableViewSection"; footerTitle = "BACKUP_FOOTER"; ObjectID = "gj0-e5-1Bs"; */
-"BACKUP_FOOTER" = "升級帳號或安裝 Stream Windows，讓 Stream 幫你備份這台裝置的所有照片。";
-
-/* Class = "IBUITableViewSection"; headerTitle = "BACKUP_HEADER"; ObjectID = "gj0-e5-1Bs"; */
-"BACKUP_HEADER" = "照片備份";
+/* Class = "IBUITableViewSection"; headerTitle = "PHOTO_IMPORT_SETTINGS_HEADER"; ObjectID = "gj0-e5-1Bs"; */
+"PHOTO_IMPORT_SETTINGS_HEADER" = "設定";
 
 /* Class = "IBUILabel"; text = "WEB_SERVICES_TITLE"; ObjectID = "gjy-px-XbS"; */
 "WEB_SERVICES_TITLE" = "網路服務";
 
+/* Class = "IBUILabel"; text = "VERSION"; ObjectID = "gkC-aR-76h"; */
+"VERSION" = "版本";
+
 /* Class = "IBUILabel"; text = "NONE"; ObjectID = "gvB-Dr-HXB"; */
 "NONE" = "NONE";
 
-/* Class = "IBUILabel"; text = "AUTO_BACKUP_TO_PC"; ObjectID = "kVF-T3-Q5G"; */
-"AUTO_BACKUP_TO_PC" = "自動備份到 PC";
+/* Class = "IBUITableViewSection"; headerTitle = "NETWORK_HEADER"; ObjectID = "iKO-vI-KPy"; */
+"NETWORK_HEADER" = "網路";
+
+/* Class = "IBUITableViewSection"; footerTitle = "PHOTO_IMPORT_SWITCH_FOOTER"; ObjectID = "jPT-4f-lnH"; */
+"PHOTO_IMPORT_SWITCH_FOOTER" = "開啟照片匯入將你相機膠卷中所有照片匯入 AOStream";
+
+/* Class = "IBUILabel"; text = "UPGRADE_ACCOUNT"; ObjectID = "n6T-1w-Odi"; */
+"UPGRADE_ACCOUNT" = "升級帳號";
 
 /* Class = "IBUILabel"; text = "CONNECTION_STATUS_TITLE"; ObjectID = "oOp-ya-swS"; */
 "CONNECTION_STATUS_TITLE" = "連線狀態";
 
-/* Class = "IBUITableViewSection"; footerTitle = "VERSION"; ObjectID = "rMk-eV-Pjl"; */
-"VERSION" = "版本";
+/* Class = "IBUITableViewSection"; headerTitle = "IMPORT_HEADER"; ObjectID = "qoR-fT-NMh"; */
+"IMPORT_HEADER" = "匯入";
 
 /* Class = "IBUILabel"; text = "ACTION_CONTACT_DEVELOPER"; ObjectID = "yLg-eE-ehZ"; */
 "ACTION_CONTACT_DEVELOPER" = "聯絡我們";

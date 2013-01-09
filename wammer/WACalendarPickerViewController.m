@@ -8,74 +8,125 @@
 
 #import "WACalendarPickerViewController.h"
 #import "WACalendarPickerDataSource.h"
-#import "WACalendarPickerPanelViewCell.h"
 #import "WAEventViewController.h"
 #import "WAAppearance.h"
 #import "WASlidingMenuViewController.h"
 #import "Kal.h"
 #import "WAFileAccessLog.h"
+#import "WAAppDelegate_iOS.h"
 
-#define kScreenWidth ((CGFloat)([UIScreen mainScreen].bounds.size.width))
-#define kScreenHeight ((CGFloat)([UIScreen mainScreen].bounds.size.height))
-
-@interface WACalendarPickerViewController ()
+@interface WACalendarPickerViewController () <KalDelegate>
 {
-	KalViewController *calPicker;
-	id dataSource;
-	WAArticle *selectedEvent;
-	WACalendarPickerStyle calStyle;
+  KalViewController *calPicker;
+  id dataSource;
+  WAArticle *selectedEvent;
+  BOOL origNavibarHidden;
 }
 
 @end
 
 @implementation WACalendarPickerViewController
 
-- (WACalendarPickerViewController *)initWithFrame:(CGRect)frame style:(WACalendarPickerStyle)style selectedDate:(NSDate *)date
++ (WANavigationController*) wrappedNavigationControllerForViewController:(WACalendarPickerViewController*)vc forStyle:(WACalendarPickerStyle) style{
+
+  WANavigationController *navVC = [[WANavigationController alloc]initWithRootViewController:vc];
+
+  if (style == WACalendarPickerStyleWithCancel) {
+	[vc.navigationItem setLeftBarButtonItem:[vc cancelBarButton] animated:YES];
+  } else if (style == WACalendarPickerStyleWithMenu) {
+	[vc.navigationItem setLeftBarButtonItem:[vc menuBarButton] animated:YES];
+  }
+  
+  return navVC;
+}
+
++ (CGFloat) minimalCalendarWidth {
+
+  return 320.0f;
+  
+}
+
+- (WACalendarPickerViewController *)initWithFrame:(CGRect)frame selectedDate:(NSDate *)date
 {
-	
+
+  self = [super initWithNibName:nil bundle:nil];
+  if (self) {
 	calPicker = [[KalViewController alloc] initWithSelectedDate:date];
 	calPicker.title = NSLocalizedString(@"TITLE_CALENDAR", @"Title of Canlendar");
 	calPicker.delegate = self;
 	dataSource = [[WACalendarPickerDataSource alloc] init];
 	calPicker.dataSource = dataSource;
-	calPicker.frame = frame;
-	calStyle = style;
+
+    calPicker.frame = frame;
 	
-	switch (style) {
-		case WACalendarPickerStyleInPopover: {
-			[calPicker.navigationItem setRightBarButtonItem:[self todayBarButton] animated:YES];
-			break;
-		}
-			
-		case WACalendarPickerStyleMenuToday:
-			[calPicker.navigationItem setLeftBarButtonItem:[self menuBarButton] animated:YES];
-			[calPicker.navigationItem setRightBarButtonItem:[self todayBarButton] animated:YES];
-			break;
-			
-		case WACalendarPickerStyleTodayCancel:
-			[calPicker.navigationItem setLeftBarButtonItem:[self cancelBarButton] animated:YES];
-			[calPicker.navigationItem setRightBarButtonItem:[self todayBarButton] animated:YES];
-			break;
-			
-		default:
-			break;
-	}
-		
-	return [super initWithRootViewController:calPicker];
+	self.view.frame = frame;
+	[self.view addSubview:calPicker.view];
+	self.view.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+  }
+  
+  return self;
+  
+}
+
+- (void) viewWillDisappear:(BOOL)animated {
+  
+  [super viewWillDisappear:animated];
+  
+  if (self.navigationController) {
+	
+	[self.navigationController setNavigationBarHidden:origNavibarHidden animated:animated];
+	[self.navigationController setToolbarHidden:YES animated:animated];
+	
+  }
+  
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+  
+  [super viewWillAppear:animated];
+  
+  self.view.backgroundColor = [UIColor whiteColor];
+  self.view.layer.cornerRadius = 3.f;
+  self.view.clipsToBounds = YES;
+
+  if (self.navigationController) {
+	origNavibarHidden = self.navigationController.navigationBarHidden;
+	
+	self.title = NSLocalizedString(@"SLIDING_MENU_TITLE_CALENDAR", @"CALENDAR");
+
+	[self.navigationController setNavigationBarHidden:NO animated:animated];
+	[self.navigationItem setRightBarButtonItem:[self todayBarButton] animated:YES];
+	
+	UIBarButtonItem *space = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+	self.toolbarItems = @[space, [self handleEventsButton], space, [self handlePhotosButton], space, [self handleDocsButton], space, [self handleWebpagesButton], space];
+	[self.navigationController.toolbar setTintColor:[UIColor lightGrayColor]];
+	
+	// Since toolbar is not useful in date picker mode, we hide it to prevent to be touched
+	[self.navigationController setToolbarHidden:YES animated:animated];
+	
+  }
+  
 }
 
 - (UIBarButtonItem *)dismissBarButton
 {
-	return (UIBarButtonItem *)WABarButtonItemWithButton([self cancelUIButton], ^{
-		[self.delegate dismissPopoverAnimated:YES];
-	});
+  
+  __weak WACalendarPickerViewController *wSelf = self;
+  return (UIBarButtonItem *)WABarButtonItemWithButton([self cancelUIButton], ^{
+	if (wSelf.onDismissBlock)
+	  wSelf.onDismissBlock();
+	  //		[wSelf.delegate dismissPopoverAnimated:YES];
+  });
+  
 }
 
 - (UIBarButtonItem *)menuBarButton
 {
-	return (UIBarButtonItem *)WABarButtonItem([UIImage imageNamed:@"menu"], @"", ^{
-		[self.viewDeckController toggleLeftView];
-	});
+  __weak WACalendarPickerViewController *wSelf = self;
+  return (UIBarButtonItem *)WABarButtonItem([UIImage imageNamed:@"menu"], @"", ^{
+	[wSelf.viewDeckController toggleLeftView];
+  });
 }
 
 - (UIBarButtonItem *)todayBarButton
@@ -120,21 +171,36 @@
 
 - (void)handleCancel:(UIButton *)sender
 {
-	[self dismissViewControllerAnimated:YES completion:nil];
+  
+  if (self.onDismissBlock)
+	self.onDismissBlock();
+  
+}
+
+- (void) kalDidSelectOnDate:(NSDate *)date {
+  
+  WAAppDelegate_iOS *appDelegate = (WAAppDelegate_iOS*)AppDelegate();
+  [appDelegate.slidingMenu.viewDeckController closeLeftView];
+  [appDelegate.slidingMenu switchToViewStyle:self.currentViewStyle onDate:date];
+  
+  if (self.onDismissBlock)
+	self.onDismissBlock();
+  
 }
 
 - (void) handleSelectToday
 {
-	[calPicker showAndSelectDate:[NSDate date]];
+  
+  WAAppDelegate_iOS *appDelegate = (WAAppDelegate_iOS*)AppDelegate();
+  [appDelegate.slidingMenu.viewDeckController closeLeftView];
+  [appDelegate.slidingMenu switchToViewStyle:self.currentViewStyle onDate:[NSDate date]];
+  
+  if (self.onDismissBlock)
+	self.onDismissBlock();
+
+  //	[calPicker showAndSelectDate:[NSDate date]];
 }
 
-- (void)viewWillAppear:(BOOL)animated
-{
-	self.view.backgroundColor = [UIColor whiteColor];
-	self.view.layer.cornerRadius = 3.f;
-	self.view.clipsToBounds = YES;
-	
-}
 
 - (void)didReceiveMemoryWarning
 {
@@ -162,7 +228,8 @@
 			[self presentViewController:navC animated:YES completion:nil];
 			
 		} else {
-			[self pushViewController:eventVC animated:YES];
+		  if (self.navigationController)
+			[self.navigationController pushViewController:eventVC animated:YES];
 			
 		}
 
@@ -175,10 +242,10 @@
 - (NSUInteger)supportedInterfaceOrientations
 {
 	
-	if (isPad()) {
-		return UIInterfaceOrientationMaskAll;
-	} else
-		return UIInterfaceOrientationMaskPortrait;
+  if (isPad())
+  	return UIInterfaceOrientationMaskAll;
+  else
+	return UIInterfaceOrientationMaskPortrait;
 	
 }
 
@@ -189,62 +256,63 @@
 	
 }
 
-- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
-{
-	[super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
-
-  CGFloat kFrameWidth = self.view.frame.size.width;
-  CGFloat kFrameHeight = self.view.frame.size.height;
-	
-  if (UIInterfaceOrientationIsPortrait(toInterfaceOrientation)) {
-    calPicker.view.frame = CGRectMake(0, 0, kFrameWidth, kFrameHeight);
-  }
-  else if (UIInterfaceOrientationIsLandscape(toInterfaceOrientation)) {
-    calPicker.view.frame = CGRectMake(0, 0, kFrameHeight, kFrameWidth);
-  }
-
-}
-
 #pragma mark - icon buttons
 
-- (IBAction)handleEvents:(UIButton *)sender
+- (UIBarButtonItem*)handleEventsButton
 {
-	NSParameterAssert(self.viewDeckController);
-
-	WASlidingMenuViewController *smVC;
-	smVC = (WASlidingMenuViewController *)[self.viewDeckController leftController];
-	[smVC switchToViewStyle:WAEventsViewStyle onDate:[calPicker selectedNSDate] animated:YES];
+  
+  __weak WACalendarPickerViewController *wSelf = self;
+  return (UIBarButtonItem *)WABarButtonItem([UIImage imageNamed:@"EventsIcon"], @"", ^{
+	WAAppDelegate_iOS *appDelegate = (WAAppDelegate_iOS*)AppDelegate();
+	[appDelegate.slidingMenu.viewDeckController closeLeftView];
+	[appDelegate.slidingMenu switchToViewStyle:WAEventsViewStyle onDate:[calPicker selectedNSDate]];
+	if (wSelf.onDismissBlock)
+	  wSelf.onDismissBlock();
+  });
 	
 }
 
-- (IBAction)handlePhotos:(UIButton *)sender
+- (UIBarButtonItem*)handlePhotosButton
 {
-	NSParameterAssert(self.viewDeckController);
-	
-	WASlidingMenuViewController *smVC;
-	smVC = (WASlidingMenuViewController *)[self.viewDeckController leftController];
-	[smVC switchToViewStyle:WAPhotosViewStyle onDate:[calPicker selectedNSDate] animated:YES];
+
+  __weak WACalendarPickerViewController *wSelf = self;
+  return (UIBarButtonItem *)WABarButtonItem([UIImage imageNamed:@"PhotosIcon"], @"", ^{
+	WAAppDelegate_iOS *appDelegate = (WAAppDelegate_iOS*)AppDelegate();
+	[appDelegate.slidingMenu.viewDeckController closeLeftView];
+	[appDelegate.slidingMenu switchToViewStyle:WAPhotosViewStyle onDate:[calPicker selectedNSDate]];
+	if (wSelf.onDismissBlock)
+	  wSelf.onDismissBlock();
+  });
 	
 }
 
-- (IBAction)handleDocs:(UIButton *)sender
+- (UIBarButtonItem*)handleDocsButton
 {
-	NSParameterAssert(self.viewDeckController);
-	
-	WASlidingMenuViewController *smVC;
-	smVC = (WASlidingMenuViewController *)[self.viewDeckController leftController];
-	[smVC switchToViewStyle:WADocumentsViewStyle onDate:[calPicker selectedNSDate] animated:YES];
+  
+  __weak WACalendarPickerViewController *wSelf = self;
+  return (UIBarButtonItem*)WABarButtonItem([UIImage imageNamed:@"DocumentsIcon"], @"", ^{
+	WAAppDelegate_iOS *appDelegate = (WAAppDelegate_iOS*)AppDelegate();
+	[appDelegate.slidingMenu.viewDeckController closeLeftView];
+	[appDelegate.slidingMenu switchToViewStyle:WADocumentsViewStyle onDate:[calPicker selectedNSDate]];
+	if (wSelf.onDismissBlock)
+	  wSelf.onDismissBlock();
+  });
 
 }
 
-- (IBAction)handleWebpages:(UIButton *)sender
+- (UIBarButtonItem*)handleWebpagesButton
 {
-	NSParameterAssert(self.viewDeckController);
-	
-	WASlidingMenuViewController *smVC;
-	smVC = (WASlidingMenuViewController *)[self.viewDeckController leftController];
-	[smVC switchToViewStyle:WAWebpagesViewStyle onDate:[calPicker selectedNSDate] animated:YES];
-	
+  
+  __weak WACalendarPickerViewController *wSelf = self;
+  return (UIBarButtonItem*)WABarButtonItem([UIImage imageNamed:@"Webicon"], @"", ^{
+	WAAppDelegate_iOS *appDelegate = (WAAppDelegate_iOS*)AppDelegate();
+	[appDelegate.slidingMenu.viewDeckController closeLeftView];
+	[appDelegate.slidingMenu switchToViewStyle:WAWebpagesViewStyle onDate:[calPicker selectedNSDate]];
+	if (wSelf.onDismissBlock)
+	  wSelf.onDismissBlock();
+
+  });
+  
 }
 
 @end

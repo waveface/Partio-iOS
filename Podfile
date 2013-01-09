@@ -10,6 +10,7 @@ pod 'Nimbus', '0.9.3'
 pod 'SSKeychain', '~> 0.1.4'
 pod 'SSToolkit', '1.0.2'
 pod 'TestFlightSDK', '~> 1.1'
+pod 'Reachability', '~> 3.1.0'
 
 target :UnitTests do
 	link_with 'UnitTests'

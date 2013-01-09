@@ -53,6 +53,9 @@
 }
 
 #pragma mark - UIWebView delegates
+- (void)webViewDidStartLoad:(UIWebView *)webView {
+  self.title = NSLocalizedString(@"NAVI_TITLE_WEB_LOADING", @"Navigation bar title for web preview while loading");
+}
 
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
 
@@ -65,6 +68,12 @@
 
 	return YES;
 
+}
+
+- (void)webViewDidFinishLoad:(UIWebView *)webView {
+  
+  self.title = @"";
+  
 }
 
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {

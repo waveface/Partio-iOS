@@ -31,17 +31,14 @@
     IRAsyncOperation *operation = [IRAsyncOperation operationWithWorker:^(IRAsyncOperationCallback callback) {
 
       WADataStore *ds = [WADataStore defaultStore];
-      NSDate *usedDate = [ds lastNewPostsUpdateDate];
-      if (!usedDate) {
-        usedDate = wSelf.currentDate;
+      NSNumber *currentSeq = [ds minSequenceNumber];
+      if (!currentSeq) {
+        currentSeq = @(INT_MAX);
       }
-      NSString *datum = [[WADataStore defaultStore] ISO8601StringFromDate:usedDate];
-      const NSInteger batchLimit = 100;
-      NSDictionary *filterEntity = @{@"limit":@(-batchLimit), @"timestamp":datum};
-      
+
       WARemoteInterface *ri = [WARemoteInterface sharedInterface];
-      [ri retrievePostsInGroup:ri.primaryGroupIdentifier usingFilter:filterEntity onSuccess:^(NSArray *postReps) {
-        
+      [ri retrievePostsInGroup:ri.primaryGroupIdentifier usingSequenceNumber:currentSeq withLimit:@(-100) onSuccess:^(NSArray *postReps, NSNumber *remainingCount, NSNumber*nextSeq) {
+
         [ds performBlock:^{
 	
 	NSManagedObjectContext *context = [ds autoUpdatingMOC];
@@ -59,29 +56,31 @@
 	
         } waitUntilDone:YES];
         
-        NSDate *earliestTimestamp = usedDate;
-        
-        for (NSDictionary *postRep in postReps) {
-	NSDate *timestamp = [[WADataStore defaultStore] dateFromISO8601String:postRep[@"timestamp"]];
-	earliestTimestamp = [earliestTimestamp earlierDate:timestamp];
-	NSCParameterAssert(earliestTimestamp);
+        if ([remainingCount integerValue] == 0) {
+	[[NSUserDefaults standardUserDefaults] setBool:YES forKey:kWAFirstArticleFetched];
+	[[NSUserDefaults standardUserDefaults] synchronize];
         }
         
-        if (earliestTimestamp) {
-	// already sync to the first article
-	if ([earliestTimestamp isEqualToDate:usedDate]) {
-	  [[NSUserDefaults standardUserDefaults] setBool:YES forKey:kWAFirstArticleFetched];
-	  [[NSUserDefaults standardUserDefaults] synchronize];
+        if (![ds maxSequenceNumber]) {
+	if ([postReps count]) {
+	  NSNumber *maxSeq = @0;
+	  for (NSDictionary *post in postReps) {
+	    if ([post[@"seq_num"] integerValue] > [maxSeq integerValue]) {
+	      maxSeq = post[@"seq_num"];
+	    }
+	  }
+	  [ds setMaxSequenceNumber:@([maxSeq integerValue]+1)];
 	}
-	[ds setLastNewPostsUpdateDate:earliestTimestamp];
         }
+        
+        [ds setMinSequenceNumber:nextSeq];
         
         callback(nil);
-        
+
       } onFailure:^(NSError *error) {
-        
+
         callback(error);
-        
+
       }];
 
     } trampoline:^(IRAsyncOperationInvoker callback) {

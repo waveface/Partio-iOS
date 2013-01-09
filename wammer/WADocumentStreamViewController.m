@@ -24,182 +24,226 @@
 @property (nonatomic, readwrite, strong) NSMutableArray *documents;
 @property (nonatomic, readwrite, strong) NSFetchedResultsController *fetchedResultsController;
 
+@property (nonatomic, strong) UIPopoverController *calendarPopoverForIPad;
 @end
 
 @implementation WADocumentStreamViewController
 
 - (id)initWithDate:(NSDate *)date {
-
-	self = [super init];
-	if (self) {
-
-		self.currentDate = date;
-
-		NSManagedObjectContext *context = [[WADataStore defaultStore] defaultAutoUpdatedMOC];
-		NSFetchRequest *request = [[NSFetchRequest alloc] init];
-		NSEntityDescription *entity = [NSEntityDescription entityForName:@"WAFileAccessLog" inManagedObjectContext:context];
-		[request setEntity:entity];
-		NSPredicate *predicate = [NSPredicate predicateWithFormat:@"day.day == %@", self.currentDate];
-		[request setPredicate:predicate];
-		NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"accessTime" ascending:NO];
-		[request setSortDescriptors:@[sortDescriptor]];
-		[request setRelationshipKeyPathsForPrefetching:@[@"file"]];
-		[request setRelationshipKeyPathsForPrefetching:@[@"day"]];
-
-		self.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:request managedObjectContext:context sectionNameKeyPath:nil cacheName:nil];
-
-		self.fetchedResultsController.delegate = self;
-
-		[self.fetchedResultsController performFetch:nil];
-
-		self.documents = [NSMutableArray array];
-		NSMutableDictionary *filePathAccessLogs = [NSMutableDictionary dictionary];
-		[self.fetchedResultsController.fetchedObjects enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-			WAFileAccessLog *accessLog = (WAFileAccessLog *)obj;
-			if (!filePathAccessLogs[accessLog.filePath]) {
-				filePathAccessLogs[accessLog.filePath] = accessLog;
-				[self.documents addObject:accessLog.file];
-			}
-		}];
-
-	}
-	return self;
-
+  
+  self = [super init];
+  if (self) {
+    
+    self.currentDate = date;
+    
+    NSManagedObjectContext *context = [[WADataStore defaultStore] defaultAutoUpdatedMOC];
+    NSFetchRequest *request = [[NSFetchRequest alloc] init];
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"WAFileAccessLog" inManagedObjectContext:context];
+    [request setEntity:entity];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"day.day == %@", self.currentDate];
+    [request setPredicate:predicate];
+    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"accessTime" ascending:NO];
+    [request setSortDescriptors:@[sortDescriptor]];
+    [request setRelationshipKeyPathsForPrefetching:@[@"file"]];
+    [request setRelationshipKeyPathsForPrefetching:@[@"day"]];
+    
+    self.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:request managedObjectContext:context sectionNameKeyPath:nil cacheName:nil];
+    
+    self.fetchedResultsController.delegate = self;
+    
+    [self.fetchedResultsController performFetch:nil];
+    
+    self.documents = [NSMutableArray array];
+    NSMutableDictionary *filePathAccessLogs = [NSMutableDictionary dictionary];
+    [self.fetchedResultsController.fetchedObjects enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+      WAFileAccessLog *accessLog = (WAFileAccessLog *)obj;
+      if (!filePathAccessLogs[accessLog.filePath]) {
+        filePathAccessLogs[accessLog.filePath] = accessLog;
+        [self.documents addObject:accessLog.file];
+      }
+    }];
+    
+  }
+  return self;
+  
 }
 
 - (void)viewDidLoad {
-
-	[super viewDidLoad];
-	
-	[self.collectionView registerClass:[WADocumentStreamViewCell class] forCellWithReuseIdentifier:kWADocumentStreamViewCellID];
-	[self.collectionView registerNib:[UINib nibWithNibName:@"WADayHeaderView" bundle:nil]
-				forSupplementaryViewOfKind:UICollectionElementKindSectionHeader
-							 withReuseIdentifier:kWADayHeaderViewID];
-
+  
+  [super viewDidLoad];
+  
+  [self.collectionView registerClass:[WADocumentStreamViewCell class] forCellWithReuseIdentifier:kWADocumentStreamViewCellID];
+  [self.collectionView registerNib:[UINib nibWithNibName:@"WADayHeaderView" bundle:nil]
+        forSupplementaryViewOfKind:UICollectionElementKindSectionHeader
+	     withReuseIdentifier:kWADayHeaderViewID];
+  
 }
 
 - (NSUInteger) supportedInterfaceOrientations {
-	
-	return [self.parentViewController supportedInterfaceOrientations];
-	
+  
+  return [self.parentViewController supportedInterfaceOrientations];
+  
 }
 
 - (BOOL)shouldAutorotate {
-
-	return YES;
-
+  
+  return YES;
+  
 }
 
 #pragma mark - NSFetchedResultsController delegates
 
 - (void)controller:(NSFetchedResultsController *)controller didChangeObject:(id)anObject atIndexPath:(NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type newIndexPath:(NSIndexPath *)newIndexPath {
-
-	switch (type) {
-		case NSFetchedResultsChangeInsert: {
-			NSUInteger oldIndex = [self.documents indexOfObject:[anObject file]];
-			
-			NSMutableDictionary *filePathAccessLogs = [NSMutableDictionary dictionary];
-			[self.fetchedResultsController.fetchedObjects enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-				if ([anObject isEqual:obj]) {
-					*stop = YES;
-					return;
-				}
-				if ([[anObject accessTime] compare:[obj accessTime]] == NSOrderedDescending) {
-					*stop = YES;
-					return;
-				}
-				if (!filePathAccessLogs[[obj filePath]]) {
-					filePathAccessLogs[[obj filePath]] = obj;
-				}
-			}];
-			
-			NSUInteger newIndex = [filePathAccessLogs count];
-
-			if (oldIndex == NSNotFound) {
-				[self.documents insertObject:[anObject file] atIndex:newIndex];
-				[self.collectionView insertItemsAtIndexPaths:@[[NSIndexPath indexPathForRow:newIndex inSection:0]]];
-			} else {
-				[self.documents removeObject:[anObject file]];
-				[self.documents insertObject:[anObject file] atIndex:newIndex];
-				[self.collectionView moveItemAtIndexPath:[NSIndexPath indexPathForRow:oldIndex inSection:0] toIndexPath:[NSIndexPath indexPathForRow:newIndex inSection:0]];
-			}
-		}
-		case NSFetchedResultsChangeUpdate:
-			// update shouldn't change the item sequence
-			break;
-		case NSFetchedResultsChangeMove:
-		case NSFetchedResultsChangeDelete:
-			NSAssert(NO, @"File access logs should never been changed or purged");
-			break;
-		default:
-			break;
-	}
-
+  
+  switch (type) {
+    case NSFetchedResultsChangeMove: // don't know why, but sometimes the type is NSFetchedResultsChangeMove
+    case NSFetchedResultsChangeInsert: {
+      NSUInteger oldIndex = [self.documents indexOfObject:[anObject file]];
+      
+      NSMutableDictionary *filePathAccessLogs = [NSMutableDictionary dictionary];
+      [self.fetchedResultsController.fetchedObjects enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        if ([anObject isEqual:obj]) {
+	*stop = YES;
+	return;
+        }
+        if ([[anObject accessTime] compare:[obj accessTime]] == NSOrderedDescending) {
+	*stop = YES;
+	return;
+        }
+        if (!filePathAccessLogs[[obj filePath]]) {
+	filePathAccessLogs[[obj filePath]] = obj;
+        }
+      }];
+      
+      NSUInteger newIndex = [filePathAccessLogs count];
+      
+      if (oldIndex == NSNotFound) {
+        [self.documents insertObject:[anObject file] atIndex:newIndex];
+        if ([self.documents count] == 1) {
+	// call reloadData for the first cell, ref: http://stackoverflow.com/questions/12611292/uicollectionview-assertion-failure
+	[self.collectionView reloadData];
+        } else {
+	[self.collectionView insertItemsAtIndexPaths:@[[NSIndexPath indexPathForRow:newIndex inSection:0]]];
+        }
+      } else {
+        [self.documents removeObject:[anObject file]];
+        [self.documents insertObject:[anObject file] atIndex:newIndex];
+        [self.collectionView moveItemAtIndexPath:[NSIndexPath indexPathForRow:oldIndex inSection:0] toIndexPath:[NSIndexPath indexPathForRow:newIndex inSection:0]];
+      }
+    }
+    case NSFetchedResultsChangeUpdate:
+      // update shouldn't change the item sequence
+      break;
+    case NSFetchedResultsChangeDelete:
+      NSAssert(NO, @"File access logs should never been purged");
+      break;
+    default:
+      break;
+  }
+  
 }
 
 #pragma mark - UICollectionView delegates
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-
-	return [self.documents count];
-
+  
+  return [self.documents count];
+  
 }
 
 - (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath {
-
-	WADayHeaderView *headerView = [self.collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:kWADayHeaderViewID forIndexPath:indexPath];
-
-	headerView.dayLabel.text = [self.currentDate dayString];
-	headerView.monthLabel.text = [[self.currentDate localizedMonthShortString] uppercaseString];
-	headerView.wdayLabel.text = [[self.currentDate localizedWeekDayFullString] uppercaseString];
-	headerView.backgroundColor = [UIColor colorWithRed:0.95f green:0.95f blue:0.95f alpha:1];
-
-	return headerView;
-
+  
+  WADayHeaderView *headerView = [self.collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:kWADayHeaderViewID forIndexPath:indexPath];
+  
+  headerView.dayLabel.text = [self.currentDate dayString];
+  headerView.monthLabel.text = [[self.currentDate localizedMonthShortString] uppercaseString];
+  headerView.wdayLabel.text = [[self.currentDate localizedWeekDayFullString] uppercaseString];
+  headerView.backgroundColor = [UIColor colorWithRed:0.95f green:0.95f blue:0.95f alpha:1];
+  [headerView.centerButton addTarget:self action:@selector(calButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+  
+  return headerView;
+  
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
-
-	WADocumentStreamViewCell *cell = [self.collectionView dequeueReusableCellWithReuseIdentifier:kWADocumentStreamViewCellID forIndexPath:indexPath];
-
-	WAFile *document = self.documents[[indexPath row]];
-	cell.fileNameLabel.text = document.remoteFileName;
-
-	if ([document.pageElements count]) {
-		WAFilePageElement *coverPage = document.pageElements[0];
-		cell.pageElement = coverPage;
-		[[[self class] sharedImageDisplayQueue] addOperationWithBlock:^{
-			[coverPage irObserve:@"thumbnailImage" options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:&kWADocumentStreamViewCellKVOContext withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
-				[[NSOperationQueue mainQueue] addOperationWithBlock:^{
-					cell.imageView.image = toValue;
-				}];
-			}];
-		}];
-	}
-
-	return cell;
-
+  
+  WADocumentStreamViewCell *cell = [self.collectionView dequeueReusableCellWithReuseIdentifier:kWADocumentStreamViewCellID forIndexPath:indexPath];
+  
+  WAFile *document = self.documents[[indexPath row]];
+  cell.fileNameLabel.text = document.remoteFileName;
+  
+  if ([document.pageElements count]) {
+    WAFilePageElement *coverPage = document.pageElements[0];
+    cell.pageElement = coverPage;
+    [[[self class] sharedImageDisplayQueue] addOperationWithBlock:^{
+      [coverPage irObserve:@"thumbnailImage" options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:&kWADocumentStreamViewCellKVOContext withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
+        [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+	cell.imageView.image = toValue;
+        }];
+      }];
+    }];
+  }
+  
+  return cell;
+  
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-
-	WAFile *document = self.documents[indexPath.row];
-	WADocumentPreviewController *previewController = [[WADocumentPreviewController alloc] initWithFile:document];
-	[self.navigationController pushViewController:previewController animated:YES];
-
+  
+  WAFile *document = self.documents[indexPath.row];
+  WADocumentPreviewController *previewController = [[WADocumentPreviewController alloc] initWithFile:document];
+  [self.navigationController pushViewController:previewController animated:YES];
+  
 }
 
 + (NSOperationQueue *)sharedImageDisplayQueue {
-
-	static NSOperationQueue *queue;
-	static dispatch_once_t onceToken;
-	dispatch_once(&onceToken, ^{
+  
+  static NSOperationQueue *queue;
+  static dispatch_once_t onceToken;
+  dispatch_once(&onceToken, ^{
     queue = [[NSOperationQueue alloc] init];
-		[queue setMaxConcurrentOperationCount:1];
-	});
-
-	return queue;
-
+    [queue setMaxConcurrentOperationCount:1];
+  });
+  
+  return queue;
+  
 }
+
+- (void) calButtonPressed:(id)sender {
+  
+  if (isPad()) {
+	
+	CGRect frame = CGRectMake(0, 0, 320, 500);
+	
+	__weak WADocumentStreamViewController *wSelf = self;
+	WACalendarPickerViewController *calVC = [[WACalendarPickerViewController alloc] initWithFrame:frame selectedDate:self.currentDate];
+	calVC.currentViewStyle = WADocumentsViewStyle;
+	WANavigationController *wrappedNavVC = [WACalendarPickerViewController wrappedNavigationControllerForViewController:calVC forStyle:WACalendarPickerStyleWithCancel];
+	
+	UIPopoverController *popOver = [[UIPopoverController alloc] initWithContentViewController:wrappedNavVC];
+	[popOver presentPopoverFromRect:CGRectMake(self.collectionView.frame.size.width/2, 50, 1, 1) inView:self.collectionView permittedArrowDirections:UIPopoverArrowDirectionUp animated:YES];
+	self.calendarPopoverForIPad = popOver;
+	calVC.onDismissBlock = ^{
+	  [wSelf.calendarPopoverForIPad dismissPopoverAnimated:YES];
+	};
+	
+  } else {
+	
+	CGRect frame = self.view.frame;
+	frame.origin = CGPointMake(0, 0);
+	WACalendarPickerViewController *calVC = [[WACalendarPickerViewController alloc] initWithFrame:frame selectedDate:self.currentDate];
+	calVC.currentViewStyle = WADocumentsViewStyle;
+	WANavigationController *wrappedNavVC = [WACalendarPickerViewController wrappedNavigationControllerForViewController:calVC forStyle:WACalendarPickerStyleWithCancel];
+	calVC.onDismissBlock = ^{
+	  [wrappedNavVC dismissViewControllerAnimated:YES completion:nil];
+	};
+	
+	wrappedNavVC.modalPresentationStyle = UIModalPresentationFullScreen;
+	wrappedNavVC.modalTransitionStyle =  UIModalTransitionStyleCoverVertical;
+	[self presentViewController:wrappedNavVC animated:YES completion:nil];
+	
+  }
+}
+
 
 @end

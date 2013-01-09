@@ -15,9 +15,8 @@ NSString * const kMainUserEntityURIString = @"kMainUserEntityURIString";
 NSString * const kLastContentSyncDateInTimeIntervalSince1970 = @"kLastContentSyncDateInTimeIntervalSince1970";
 
 NSString * const kLastSyncSuccessDate = @"WALastSyncSuccessDate";
-NSString * const kLastNewPostsUpdateDate = @"WALastNewPostsUpdateDate";
-NSString * const kLastChangedPostsUpdateDate = @"WALastChangedPostsUpdateDate";
-
+NSString * const kMinSequenceNumber = @"WAMinSequenceNumber";
+NSString * const kMaxSequenceNumber = @"WAMaxSequenceNumber";
 
 @interface WADataStore ()
 
@@ -28,168 +27,168 @@ NSString * const kLastChangedPostsUpdateDate = @"WALastChangedPostsUpdateDate";
 @implementation WADataStore
 
 + (WADataStore *) defaultStore {
-	
-	return (WADataStore *)[super defaultStore];
-	
+  
+  return (WADataStore *)[super defaultStore];
+  
 }
 
 - (WADataStore *) initWithManagedObjectModel:(NSManagedObjectModel *)model {
-	
-	return (WADataStore *)[super initWithManagedObjectModel:model];
-	
+  
+  return (WADataStore *)[super initWithManagedObjectModel:model];
+  
 }
 
 - (NSManagedObjectModel *) defaultManagedObjectModel {
-
-	return [[NSManagedObjectModel alloc] initWithContentsOfURL:[[NSBundle bundleForClass:[self class]] URLForResource:@"WAModel" withExtension:@"momd"]];
-
+  
+  return [[NSManagedObjectModel alloc] initWithContentsOfURL:[[NSBundle bundleForClass:[self class]] URLForResource:@"WAModel" withExtension:@"momd"]];
+  
 }
 
 + (NSDateFormatter *) threadLocalDateFormatter {
-
-	static NSString * const key = @"-[WADataStore threadLocalDateFormatter]";
-	NSMutableDictionary *dictionary = [[NSThread currentThread] threadDictionary];
-	
-	NSDateFormatter *df = dictionary[key];
-	if (!df) {
-		df = [[NSDateFormatter alloc] init];
-		df.dateFormat = @"yyyy-MM-dd'T'HH:mm:ss'Z'";
-		df.locale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"];
-		df.timeZone = [NSTimeZone timeZoneForSecondsFromGMT:0];
-		dictionary[key] = df;
-	}
-	
-	return df;
-
+  
+  static NSString * const key = @"-[WADataStore threadLocalDateFormatter]";
+  NSMutableDictionary *dictionary = [[NSThread currentThread] threadDictionary];
+  
+  NSDateFormatter *df = dictionary[key];
+  if (!df) {
+    df = [[NSDateFormatter alloc] init];
+    df.dateFormat = @"yyyy-MM-dd'T'HH:mm:ss'Z'";
+    df.locale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"];
+    df.timeZone = [NSTimeZone timeZoneForSecondsFromGMT:0];
+    dictionary[key] = df;
+  }
+  
+  return df;
+  
 }
 
 + (NSDateFormatter *) threadTZDateFormatter {
-	static NSString * const key = @"-[WADataStore threadTZDateFormatter]";
-	NSMutableDictionary *dictionary = [[NSThread currentThread] threadDictionary];
-	
-	NSDateFormatter *df = dictionary[key];
-	if (!df) {
-		df = [[NSDateFormatter alloc] init];
-		df.dateFormat = @"yyyy-MM-dd'T'HH:mm:ss.SSSSZ";
-		df.locale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"];
-		dictionary[key] = df;
-	}
-	
-	return df;
-
+  static NSString * const key = @"-[WADataStore threadTZDateFormatter]";
+  NSMutableDictionary *dictionary = [[NSThread currentThread] threadDictionary];
+  
+  NSDateFormatter *df = dictionary[key];
+  if (!df) {
+    df = [[NSDateFormatter alloc] init];
+    df.dateFormat = @"yyyy-MM-dd'T'HH:mm:ss.SSSSZ";
+    df.locale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"];
+    dictionary[key] = df;
+  }
+  
+  return df;
+  
 }
 
 - (NSDate *) dateFromISO8601String:(NSString *)aDateString {
-
-	if (![aDateString isKindOfClass:[NSString class]] || [aDateString length] == 0)
-		return nil;
-
-	NSDate *returned = nil;
-	NSError *error = nil;
-	
-	if (![[[self class] threadLocalDateFormatter] getObjectValue:&returned forString:aDateString range:NULL error:&error]){
-		if (![[[self class] threadTZDateFormatter] getObjectValue:&returned forString:aDateString range:NULL error:&error]) {
-			NSLog(@"%s: %@ -> %@", __PRETTY_FUNCTION__, aDateString, error);
-		}
-	}
-	
-	return returned;
-
+  
+  if (![aDateString isKindOfClass:[NSString class]] || [aDateString length] == 0)
+    return nil;
+  
+  NSDate *returned = nil;
+  NSError *error = nil;
+  
+  if (![[[self class] threadLocalDateFormatter] getObjectValue:&returned forString:aDateString range:NULL error:&error]){
+    if (![[[self class] threadTZDateFormatter] getObjectValue:&returned forString:aDateString range:NULL error:&error]) {
+      NSLog(@"%s: %@ -> %@", __PRETTY_FUNCTION__, aDateString, error);
+    }
+  }
+  
+  return returned;
+  
 }
 
 - (NSString *) ISO8601StringFromDate:(NSDate *)date {
-
-	return [[[self class] threadLocalDateFormatter] stringFromDate:date];
-
+  
+  return [[[self class] threadLocalDateFormatter] stringFromDate:date];
+  
 }
 
 - (WAUser *) mainUserInContext:(NSManagedObjectContext *)context {
-
-	NSDictionary *metadata = [self metadata];
-	NSString *userEntityURIString = metadata[kMainUserEntityURIString];
-	NSURL *userEntityURI = [NSURL URLWithString:userEntityURIString];
-	
-	if (!userEntityURI)
-		return nil;
-	
-	@try {
-	
-		WAUser *user = (WAUser *)[context irManagedObjectForURI:userEntityURI];
-		NSParameterAssert([user isKindOfClass:[WAUser class]]);
-	
-		return user;
-		
-	} @catch (NSException *e) {
+  
+  NSDictionary *metadata = [self metadata];
+  NSString *userEntityURIString = metadata[kMainUserEntityURIString];
+  NSURL *userEntityURI = [NSURL URLWithString:userEntityURIString];
+  
+  if (!userEntityURI)
+    return nil;
+  
+  @try {
     
-		if ([[e name] isEqual:NSObjectInaccessibleException]) {
-		
-			NSLog(@"%s: %@", __PRETTY_FUNCTION__, e);
-			[self setMainUser:nil inContext:context];
-			
-		}
-		
-		@throw e;
-		
-	}
-	
-	return nil;
-		
+    WAUser *user = (WAUser *)[context irManagedObjectForURI:userEntityURI];
+    NSParameterAssert([user isKindOfClass:[WAUser class]]);
+    
+    return user;
+    
+  } @catch (NSException *e) {
+    
+    if ([[e name] isEqual:NSObjectInaccessibleException]) {
+      
+      NSLog(@"%s: %@", __PRETTY_FUNCTION__, e);
+      [self setMainUser:nil inContext:context];
+      
+    }
+    
+    @throw e;
+    
+  }
+  
+  return nil;
+  
 }
 
 - (void) setMainUser:(WAUser *)user inContext:(NSManagedObjectContext *)context {
-
-	#pragma unused(context)
-	
-	if (user) {
-	
-		NSParameterAssert(![[user objectID] isTemporaryID]);
-
-		NSURL *userEntityURI = [[user objectID] URIRepresentation];
-		NSString *userEntityURIString = [userEntityURI absoluteString];
-		
-		[self setMetadata:userEntityURIString forKey:kMainUserEntityURIString];
-		
-	} else {
-	
-		[self setMetadata:nil forKey:kMainUserEntityURIString];
-		
-	}
-
+  
+#pragma unused(context)
+  
+  if (user) {
+    
+    NSParameterAssert(![[user objectID] isTemporaryID]);
+    
+    NSURL *userEntityURI = [[user objectID] URIRepresentation];
+    NSString *userEntityURIString = [userEntityURI absoluteString];
+    
+    [self setMetadata:userEntityURIString forKey:kMainUserEntityURIString];
+    
+  } else {
+    
+    [self setMetadata:nil forKey:kMainUserEntityURIString];
+    
+  }
+  
 }
 
 - (NSDate *) lastSyncSuccessDate {
-
-	return [self metadataForKey:kLastSyncSuccessDate];
-
+  
+  return [self metadataForKey:kLastSyncSuccessDate];
+  
 }
 
 - (void) setLastSyncSuccessDate:(NSDate *)date {
+  
+  [self setMetadata:date forKey:kLastSyncSuccessDate];
+  
+}
 
-	[self setMetadata:date forKey:kLastSyncSuccessDate];
+- (NSNumber *) minSequenceNumber {
+  
+  return [self metadataForKey:kMinSequenceNumber];
 
 }
 
-- (NSDate *) lastNewPostsUpdateDate {
+- (void)setMinSequenceNumber:(NSNumber *)seq {
 
-	return [self metadataForKey:kLastNewPostsUpdateDate];
-
-}
-
-- (void) setLastNewPostsUpdateDate:(NSDate *)date {
-
-	[self setMetadata:date forKey:kLastNewPostsUpdateDate];
+  [self setMetadata:seq forKey:kMinSequenceNumber];
 
 }
 
-- (NSDate *) lastChangedPostsUpdateDate {
+- (NSNumber *) maxSequenceNumber {
 
-	return [self metadataForKey:kLastChangedPostsUpdateDate];
+  return [self metadataForKey:kMaxSequenceNumber];
 
 }
 
-- (void) setLastChangedPostsUpdateDate:(NSDate *)date {
+- (void) setMaxSequenceNumber:(NSNumber *)seq {
 
-	[self setMetadata:date forKey:kLastChangedPostsUpdateDate];
+  [self setMetadata:seq forKey:kMaxSequenceNumber];
 
 }
 

@@ -78,7 +78,6 @@
 + (NSSet *)keyPathsForValuesAffectingIsFetching {
 
   return [NSSet setWithArray:@[
-	@"articleFetchOperationQueue.operationCount",
 	@"fileMetadataFetchOperationQueue.operationCount"
 	]];
 
@@ -91,8 +90,7 @@
   }
   
   // there will be at least one tail op if any fetch operation exists in these op queue
-  return ([self.articleFetchOperationQueue operationCount] > 1 ||
-	[self.fileMetadataFetchOperationQueue operationCount] > 1);
+  return ([self.fileMetadataFetchOperationQueue operationCount] > 1);
 
 }
 

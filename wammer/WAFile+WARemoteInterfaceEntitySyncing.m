@@ -28,7 +28,7 @@
 
 
 NSString * kWAFileEntitySyncingErrorDomain = @"com.waveface.wammer.file.entitySyncing";
-NSError * WAFileEntitySyncingError (NSUInteger code, NSString *descriptionKey, NSString *reasonKey) {
+NSError * WAFileEntitySyncingError (WAFileSyncingErrorCode code, NSString *descriptionKey, NSString *reasonKey) {
   return [NSError irErrorWithDomain:kWAFileEntitySyncingErrorDomain code:code descriptionLocalizationKey:descriptionKey reasonLocalizationKey:reasonKey userInfo:nil];
 }
 
@@ -94,6 +94,7 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
     @"event_time": @"created",
     @"photoDay": @"photoDay",
     @"outdated": @"outdated",
+    @"hidden": @"hidden",
     
     @"image": @"remoteRepresentedImage",
     @"md5": @"remoteResourceHash",
@@ -314,7 +315,10 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
     return [[NSURL URLWithString:usedPath relativeToURL:[NSURL URLWithString:@"http://invalid.local"]] absoluteString];
     
   }
-  
+
+  if ([aLocalKeyPath isEqualToString:@"hidden"])
+    return (![aValue isEqual:@"false"] && ![aValue isEqual:@"0"] && ![aValue isEqual:@0]) ? (id)kCFBooleanTrue : (id)kCFBooleanFalse;
+
   return [super transformedValue:aValue fromRemoteKeyPath:aRemoteKeyPath toLocalKeyPath:aLocalKeyPath];
   
 }
@@ -411,7 +415,7 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
     NSCParameterAssert(fileURL);
     
     if (![[NSUserDefaults standardUserDefaults] boolForKey:kWAPhotoImportEnabled]) {
-      callback(WAFileEntitySyncingError(0, @"Photo import is disabled, stop sync files", nil));
+      callback(WAFileEntitySyncingError(WAFileSyncingErrorCodePhotoImportDisabled, @"Photo import is disabled, stop sync files", nil));
       return;
     }
     
@@ -471,6 +475,33 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
         
         callback(error);
         
+      } else if ([[error domain] isEqualToString:kWAFileEntitySyncingErrorDomain] && [error code] == WAFileSyncingErrorCodeAssetDeleted) {
+        
+        NSManagedObjectContext *context = [ds autoUpdatingMOC];
+        context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
+
+        WAFile *file = (WAFile *)[context irManagedObjectForURI:ownURL];
+
+        if (file.thumbnailURL) {
+
+	// The WAFile never needs sync because its asset has been deleted, but we don't have to hide it.
+	// Just keep a hint in its resource URL (all-zero object id)
+	file.resourceURL = [[file class] transformedValue:@"/v3/attachments/view?object_id=00000000000000000000000000000000" fromRemoteKeyPath:nil toLocalKeyPath:@"resourceURL"];
+
+	[[WADataStore defaultStore] setLastSyncSuccessDate:[NSDate date]];
+
+        } else {
+
+	// Hide the attachment if its thumbnails has not been created.
+	file.hidden = @YES;
+	file.dirty = @YES;
+
+        }
+
+        NSError *error = nil;
+        [context save:&error];
+        callback(error);
+
       } else {
         
         callback(error);
@@ -528,6 +559,15 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
 	
 	[[WAAssetsLibraryManager defaultManager] assetForURL:[NSURL URLWithString:file.assetURL] resultBlock:^(ALAsset *asset) {
 	  
+	  if (!asset) {
+	    NSLog(@"Asset does not exist for WAFile %@, hide it.", file);
+	    file.hidden = @YES;
+	    file.dirty = @YES;
+	    [context save:nil];
+	    callback(nil);
+	    return;
+	  }
+
 	  [asset makeThumbnailWithOptions:WAThumbnailTypeMedium completeBlock:^(UIImage *image) {
 	    
 	    NSManagedObjectContext *context = [ds autoUpdatingMOC];

@@ -32,11 +32,83 @@
 
     [wSelf beginPostponingSync];
 
-    __block NSMutableArray *fileMetas = [@[] mutableCopy];
     const NSUInteger MAX_FILEMETAS_COUNT = 20;
     WADataStore *ds = [WADataStore defaultStore];
     NSArray *files = [ds fetchFilesNeedingMetadataSyncUsingContext:[ds disposableMOC]];
-    [files enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+
+    NSMutableArray *hiddenFiles = [NSMutableArray array];
+    NSMutableArray *uploadFiles = [NSMutableArray array];
+    for (WAFile *file in files) {
+      if ([file.hidden isEqualToNumber:@YES]) {
+        [hiddenFiles addObject:file];
+      } else {
+        [uploadFiles addObject:file];
+      }
+    }
+    
+    if ([hiddenFiles count]) {
+
+      NSMutableArray *hiddenFileIdentifiers = [NSMutableArray array];
+      for (WAFile *file in hiddenFiles) {
+        [hiddenFileIdentifiers addObject:file.identifier];
+      }
+
+      IRAsyncOperation *operation = [IRAsyncOperation operationWithWorker:^(IRAsyncOperationCallback callback) {
+
+        [[WARemoteInterface sharedInterface] hideAttachments:hiddenFileIdentifiers onSuccess:^(NSArray *successIDs){
+
+	NSManagedObjectContext *context = [[WADataStore defaultStore] disposableMOC];
+	context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
+	NSFetchRequest *request = [[NSFetchRequest alloc] init];
+	NSEntityDescription *entity = [NSEntityDescription entityForName:@"WAFile" inManagedObjectContext:context];
+	[request setEntity:entity];
+	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"identifier IN %@", successIDs];
+	[request setPredicate:predicate];
+	
+	NSError *error = nil;
+	NSArray *files = [context executeFetchRequest:request error:&error];
+	if (error) {
+	  NSLog(@"Unable to fetch WAFiles in %@, error: %@", successIDs, error);
+	} else {
+	  for (WAFile *file in files) {
+	    file.dirty = @NO;
+	  }
+	  if (![context save:&error]) {
+	    NSLog(@"Unable to save WAFiles %@, error: %@", files, error);
+	  }
+	}
+
+	callback(nil);
+
+        } onFailure:^(NSError *error) {
+
+	NSLog(@"Unable to hide attachments in %@, error: %@", hiddenFileIdentifiers, error);
+	callback(error);
+
+        }];
+
+      } trampoline:^(IRAsyncOperationInvoker callback) {
+
+        NSCParameterAssert(![NSThread isMainThread]);
+        callback();
+
+      } callback:^(id results) {
+
+        // NO OP
+
+      } callbackTrampoline:^(IRAsyncOperationInvoker callback) {
+
+        NSCParameterAssert(![NSThread isMainThread]);
+        callback();
+
+      }];
+
+      [wSelf.fileMetadataSyncOperationQueue addOperation:operation];
+
+    }
+    
+    NSMutableArray *fileMetas = [NSMutableArray array];
+    [uploadFiles enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
       
       WAFile *file = obj;
       NSCAssert(file.assetURL, @"Imported file should have its asset URL");
@@ -48,11 +120,21 @@
         
         [[WAAssetsLibraryManager defaultManager] assetForURL:fileAssetURL resultBlock:^(ALAsset *asset) {
 	
-	WAFile *file = (WAFile *)[[[WADataStore defaultStore] disposableMOC] irManagedObjectForURI:ownURL];
+	NSManagedObjectContext *context = [[WADataStore defaultStore] disposableMOC];
+	WAFile *file = (WAFile *)[context irManagedObjectForURI:ownURL];
+	
+	if (!asset) {
+	  NSLog(@"Asset does not exist for WAFile %@, hide it.", file);
+	  file.hidden = @YES;
+	  file.dirty = @YES;
+	  [context save:nil];
+	  callback(nil);
+	  return;
+	}
 
 	if ([file.dirty isEqualToNumber:(id)kCFBooleanTrue]) {
 	  
-	  NSMutableDictionary *meta = [@{} mutableCopy];
+	  NSMutableDictionary *meta = [NSMutableDictionary dictionary];
 	  meta[@"file_name"] = [[asset defaultRepresentation] filename];
 	  meta[@"type"] = @"image";
 	  meta[@"timezone"] = [NSString stringWithFormat:@"%d", [[NSTimeZone localTimeZone] secondsFromGMT]/60];
@@ -70,19 +152,29 @@
 
 	  if ([fileMetas count] == MAX_FILEMETAS_COUNT || idx == [files count]-1) {
 	    
-	    [[WARemoteInterface sharedInterface] createAttachmentMetas:fileMetas onSuccess:^{
+	    [[WARemoteInterface sharedInterface] createAttachmentMetas:fileMetas onSuccess:^(NSArray *successIDs){
 	      
 	      NSManagedObjectContext *context = [[WADataStore defaultStore] disposableMOC];
 	      context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
-	      WAFile *file = (WAFile *)[context irManagedObjectForURI:ownURL];
-	      file.dirty = (id)kCFBooleanFalse;
+	      NSFetchRequest *request = [[NSFetchRequest alloc] init];
+	      NSEntityDescription *entity = [NSEntityDescription entityForName:@"WAFile" inManagedObjectContext:context];
+	      [request setEntity:entity];
+	      NSPredicate *predicate = [NSPredicate predicateWithFormat:@"identifier IN %@", successIDs];
+	      [request setPredicate:predicate];
 	      
 	      NSError *error = nil;
-	      [context save:&error];
+	      NSArray *files = [context executeFetchRequest:request error:&error];
 	      if (error) {
-	        NSLog(@"Unable to save file: %@, error: %@", file, error);
+	        NSLog(@"Unable to fetch WAFiles in %@, error: %@", successIDs, error);
+	      } else {
+	        for (WAFile *file in files) {
+		file.dirty = @NO;
+	        }
+	        if (![context save:&error]) {
+		NSLog(@"Unable to save WAFiles %@, error: %@", files, error);
+	        }
 	      }
-	      
+
 	      callback(nil);
 	      
 	    } onFailure:^(NSError *error) {

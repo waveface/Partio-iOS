@@ -29,6 +29,7 @@
 #import "WACollectionViewController.h"
 #import "WASyncManager.h"
 #import "WAFetchManager.h"
+#import <QuartzCore/QuartzCore.h>
 
 @interface WASlidingMenuViewController ()
 
@@ -41,6 +42,20 @@
 @end
 
 @implementation WASlidingMenuViewController
+
++ (CGFloat) ledgeSize {
+  
+  if (isPad()) {
+	
+	return [WACalendarPickerViewController minimalCalendarWidth];
+	
+  } else {
+	
+	return 200.0f;
+	
+  }
+  
+}
 
 + (UIViewController *)dayViewControllerForViewStyle:(WADayViewSupportedStyle)viewStyle {
   
@@ -77,6 +92,7 @@
   
   [self.tableView setBackgroundColor:[UIColor colorWithWhite:0.3f alpha:1.0f]];
   self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+  
 }
 
 - (void)dealloc
@@ -103,23 +119,6 @@
   userInfoVC.navigationItem.leftBarButtonItem = WABarButtonItem([UIImage imageNamed:@"menu"], @"", ^{
     [wSelf.viewDeckController toggleLeftView];
   });
-  
-  IRAction *cancelAction = [IRAction actionWithTitle:NSLocalizedString(@"ACTION_CANCEL", nil) block:nil];
-  IRAction *signOutAction = [IRAction
-		         actionWithTitle:NSLocalizedString(@"ACTION_SIGN_OUT", nil)
-		         block: ^ {
-			 if ([wSelf.delegate respondsToSelector:@selector(applicationRootViewControllerDidRequestReauthentication:)])
-			   [wSelf.delegate performSelector:@selector( applicationRootViewControllerDidRequestReauthentication: ) withObject:nil];
-		         }];
-  
-  userInfoVC.navigationItem.rightBarButtonItem = [IRBarButtonItem itemWithTitle:NSLocalizedString(@"ACTION_SIGN_OUT", nil) action:^{
-    
-    [[IRAlertView alertViewWithTitle:NSLocalizedString(@"ACTION_SIGN_OUT", nil)
-		         message:NSLocalizedString(@"SIGN_OUT_CONFIRMATION", nil)
-		    cancelAction:cancelAction
-		    otherActions:@[signOutAction]] show];
-    
-  }];
   
   [self.viewDeckController setCenterController:navC];
   
@@ -195,13 +194,15 @@
         if (!wSelf.statusBar) {
 	wSelf.statusBar = [[WAStatusBar alloc] initWithFrame:CGRectZero];
         }
-        wSelf.statusBar.fetchingLabel.text = NSLocalizedString(@"FETCHING_DATA", @"String on customized status bar");
+        [wSelf.statusBar startFetchingAnimation];
       } else {
         WASyncManager *syncManager = [(WAAppDelegate_iOS *)AppDelegate() syncManager];
-        if (syncManager.isSyncing) {
-	wSelf.statusBar.fetchingLabel.text = @"";
+        if (!syncManager.isSyncing) {
+	[wSelf.statusBar showSyncCompleteWithDissmissBlock:^{
+	  wSelf.statusBar = nil;
+	}];
         } else {
-	wSelf.statusBar = nil;
+	[wSelf.statusBar stopFetchingAnimation];
         }
       }
     }];
@@ -216,18 +217,20 @@
 	wSelf.statusBar = [[WAStatusBar alloc] initWithFrame:CGRectZero];
         }
         if (syncManager.isSyncFail) {
-	wSelf.statusBar.syncingLabel.text = NSLocalizedString(@"PHOTO_UPLOAD_STATUS_BAR_FAIL", @"String on customized status bar");
+	[wSelf.statusBar showSyncFailWithDismissBlock:^{
+	  wSelf.statusBar = nil;
+	}];
         } else if (syncManager.needingSyncFilesCount > 0) {
-	wSelf.statusBar.syncingLabel.text = [NSString stringWithFormat:NSLocalizedString(@"PHOTO_UPLOAD_STATUS_BAR_UPLOADING", @"String on customized status bar"), syncManager.syncedFilesCount, syncManager.needingSyncFilesCount];
+	[wSelf.statusBar showPhotoSyncingWithSyncedFilesCount:syncManager.syncedFilesCount needingSyncFilesCount:syncManager.needingSyncFilesCount];
         } else if (syncManager.needingImportFilesCount > 0) {
-	wSelf.statusBar.syncingLabel.text = [NSString stringWithFormat:NSLocalizedString(@"PHOTO_UPLOAD_STATUS_BAR_IMPORTING", @"String on customized status bar"), syncManager.importedFilesCount, syncManager.needingImportFilesCount];
+	[wSelf.statusBar showPhotoImportingWithImportedFilesCount:syncManager.importedFilesCount needingImportFilesCount:syncManager.needingImportFilesCount];
         }
       } else {
         WAFetchManager *fetchManager = [(WAAppDelegate_iOS *)AppDelegate() fetchManager];
-        if (fetchManager.isFetching) {
-	wSelf.statusBar.syncingLabel.text = @"";
-        } else {
-	wSelf.statusBar = nil;
+        if (!fetchManager.isFetching) {
+	[wSelf.statusBar showSyncCompleteWithDissmissBlock:^{
+	  wSelf.statusBar = nil;
+	}];
         }
       }
     }];
@@ -310,13 +313,13 @@
       cell.imageView.image = [UIImage imageNamed:@"CollectionIcon"];
       cell.textLabel.text = NSLocalizedString(@"SLIDING_MENU_TITLE_COLLECTIONS", @"Title for Collections in the sliding menu");
       break;
-      
+      /*
     case 6:
       cell.imageView.image = [UIImage imageNamed:@"CalIcon"];
       cell.textLabel.text = NSLocalizedString(@"SLIDING_MENU_TITLE_CALENDAR", @"Title for Calendar in the sliding menu");
       break;
-      
-    case 7:
+      */
+    case 6:
       cell.imageView.image = [UIImage imageNamed:@"SettingsIcon"];
       cell.textLabel.text = NSLocalizedString(@"SLIDING_MENU_TITLE_SETTINGS", @"Title for Settings in the sliding menu");
       break;
@@ -352,12 +355,12 @@
     case 5: // Collection
       cell.backgroundColor = [UIColor colorWithRed:0.039f green:0.423f blue:0.529f alpha:1.0];
       break;
-      
+      /*
     case 6: // Calendar
       cell.backgroundColor = [UIColor colorWithRed:0.949f green:0.49f blue:0.305f alpha:1.0];
       break;
-      
-    case 7: // Settings
+      */
+    case 6: // Settings
       cell.backgroundColor = [UIColor colorWithRed:0.72f green:0.701f blue:0.69f alpha:1.0];
       break;
   }
@@ -411,16 +414,22 @@
       break;
     }
       
-    case 6: {
-      [self.viewDeckController closeLeftView];
+/*    case 6: {
+	  if (isPad()) {
+		
+		WACalendarPickerViewController *calVC = [[WACalendarPickerViewController alloc] initWithFrame:self.view.frame selectedDate:[NSDate date]];
+		[self.navigationController pushViewController:calVC animated:YES];
+		
+	  } else {
+		[self.viewDeckController closeLeftView];
       
-      WACalendarPickerViewController *dpVC = [[WACalendarPickerViewController alloc] initWithFrame:self.view.frame style:WACalendarPickerStyleMenuToday selectedDate:[NSDate date]];
-      [dpVC setModalPresentationStyle:UIModalPresentationFullScreen];
-      [self.viewDeckController setCenterController:dpVC];
+		WACalendarPickerViewController *dpVC = [[WACalendarPickerViewController alloc] initWithFrame:self.viewDeckController.centerController.view.frame selectedDate:[NSDate date]];
+		[self.viewDeckController setCenterController:[WACalendarPickerViewController wrappedNavigationControllerForViewController:dpVC forStyle:WACalendarPickerStyleWithMenu]];
+	  }
       break;
-    }
+    }*/
       
-    case 7: { // Settings
+    case 6: { // Settings
       [self handleUserInfo];
       break;
     }
@@ -429,9 +438,19 @@
 }
 
 #pragma mark - IIViewDeckDelegate protocol
+- (BOOL)viewDeckControllerWillOpenLeftView:(IIViewDeckController *)viewDeckController animated:(BOOL)animated {
+  
+  if (self.navigationController && isPad()) {
+	CGRect newFrame = self.navigationController.view.frame;
+	newFrame.size.width = [WACalendarPickerViewController minimalCalendarWidth]; // adjust navigation bar and toolbar width to fit in sliding menu
+	self.navigationController.view.frame = newFrame;
+  }
 
-- (void)viewDeckController:(IIViewDeckController *)viewDeckController applyShadow:(CALayer *)shadowLayer withBounds:(CGRect)rect {
-  // No shadow
+  return YES;
+  
+}
+- (void)viewDeckControllerDidCloseLeftView:(IIViewDeckController *)viewDeckController animated:(BOOL)animated {
+  [self.navigationController popToRootViewControllerAnimated:NO];
 }
 
 #pragma mark - switch methods

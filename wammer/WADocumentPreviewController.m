@@ -13,6 +13,7 @@
 #import "WAFile+WAConstants.h"
 #import "WADocumentDownloadingView.h"
 #import "WAGalleryViewController.h"
+#import "WAStation.h"
 
 static NSString * kWADocumentPreviewControllerKVOContext = @"WADocumentPreviewControllerKVOContext";
 
@@ -96,7 +97,7 @@ static NSString * kWADocumentPreviewControllerKVOContext = @"WADocumentPreviewCo
 	if (!self.file.resourceFilePath) {
 
 		WARemoteInterface *ri = [WARemoteInterface sharedInterface];
-		NSString *host = [ri hasReachableStation] ? [ri.monitoredHosts[1] absoluteString] : [ri.engine.context.baseURL absoluteString];
+		NSString *host = [ri hasReachableStation] ? [ri.monitoredHosts[0] httpURL] : [ri.engine.context.baseURL absoluteString];
 		NSString *url = [host stringByAppendingPathComponent:@"attachments/view"];
 		NSDictionary *parameters = @{
 			@"object_id": self.file.identifier,

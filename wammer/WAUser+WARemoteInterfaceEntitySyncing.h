@@ -8,6 +8,6 @@
 
 #import "WAUser.h"
 
-@interface WAUser (WARemoteEntitySyncing)
+@interface WAUser (WARemoteInterfaceEntitySyncing)
 
 @end
