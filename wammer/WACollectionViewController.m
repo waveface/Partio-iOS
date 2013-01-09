@@ -80,13 +80,9 @@ typedef NS_ENUM(NSUInteger, WACollectionSortMode){
   [_refreshControl addTarget:self action:@selector(refresh) forControlEvents:UIControlEventValueChanged];
   [self.collectionView addSubview:_refreshControl];
   
-  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updated:) name:kWACollectionUpdated object:nil];
-  
-  [self becomeFirstResponder];
 }
 
 - (void)dealloc {
-  [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -95,8 +91,19 @@ typedef NS_ENUM(NSUInteger, WACollectionSortMode){
     [self refresh];
   }
   self.title = NSLocalizedString(@"COLLECTIONS", @"In navigation bar");
+  
+  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updated:) name:kWACollectionUpdated object:nil];
+  
+  [self becomeFirstResponder];
+  
+  [self reloadCollection];
+  [self.collectionView reloadData];
 }
 
+- (void)viewWillDisappear:(BOOL)animated {
+  [super viewWillDisappear:animated];
+  [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
 - (void)didReceiveMemoryWarning
 {
   [super didReceiveMemoryWarning];
@@ -171,10 +178,9 @@ typedef NS_ENUM(NSUInteger, WACollectionSortMode){
 
 - (void)motionEnded:(UIEventSubtype)motion withEvent:(UIEvent *)event {
   // Shake to refresh collections (solicit)
-  if (event.subtype == UIEventSubtypeMotionShake) {
-    NSLog(@"Shaked");
-    // Generation an Event Here with Colors
+  if (motion == UIEventSubtypeMotionShake) {
     [self refresh];
+    [WACollection create];
   }
 }
 
