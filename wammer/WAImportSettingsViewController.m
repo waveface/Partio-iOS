@@ -34,13 +34,10 @@
   [self.photoImportSwitch addTarget:self action:@selector(handlePhotoImportSwitchChanged:) forControlEvents:UIControlEventValueChanged];
   self.photoImportCell.accessoryView = self.photoImportSwitch;
   
-  UISwitch *backupToCloudSwitch = [[UISwitch alloc] init];
-  [backupToCloudSwitch setOn:[[NSUserDefaults standardUserDefaults] boolForKey:kWABackupFilesToCloudEnabled]];
-  [backupToCloudSwitch addTarget:self action:@selector(handleBackupToCloudSwitchChanged:) forControlEvents:UIControlEventValueChanged];
-  if ([[NSUserDefaults standardUserDefaults] integerForKey:kWABusinessPlan] == WABusinessPlanFree) {
-    backupToCloudSwitch.enabled = NO;
-  }
-  self.backupToCloudCell.accessoryView = backupToCloudSwitch;
+  UISwitch *useCellularSwitch = [[UISwitch alloc] init];
+  [useCellularSwitch setOn:[[NSUserDefaults standardUserDefaults] boolForKey:kWAUseCellularEnabled]];
+  [useCellularSwitch addTarget:self action:@selector(handleUseCellularSwitchChanged:) forControlEvents:UIControlEventValueChanged];
+  self.useCellularCell.accessoryView = useCellularSwitch;
   
   NSManagedObjectContext *context = [[WADataStore defaultStore] defaultAutoUpdatedMOC];
   NSFetchRequest *request = [[NSFetchRequest alloc] init];
@@ -96,16 +93,16 @@
   
 }
 
-- (void)handleBackupToCloudSwitchChanged:(id)sender {
-  
-  UISwitch *backupToCloudSwitch = sender;
-  if ([backupToCloudSwitch isOn]) {
-    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:kWABackupFilesToCloudEnabled];
+- (void)handleUseCellularSwitchChanged:(id)sender {
+
+  UISwitch *useCellularSwitch = sender;
+  if ([useCellularSwitch isOn]) {
+    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:kWAUseCellularEnabled];
   } else {
-    [[NSUserDefaults standardUserDefaults] setBool:NO forKey:kWABackupFilesToCloudEnabled];
+    [[NSUserDefaults standardUserDefaults] setBool:NO forKey:kWAUseCellularEnabled];
   }
   [[NSUserDefaults standardUserDefaults] synchronize];
-  
+
 }
 
 #pragma mark - UITableView delegates
@@ -113,8 +110,8 @@
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
   
   if ([self.photoImportSwitch isOn]) {
-    // show backup and account upgrade sections
-    return 3;
+    // show settings section
+    return 2;
   }
   
   return 1;
@@ -125,27 +122,21 @@
   
   NSString *headerTitleID = [super tableView:tableView titleForHeaderInSection:section];
   
-  return NSLocalizedString(headerTitleID, @"Header title of file backup section in photo import settings view controller");
+  return NSLocalizedString(headerTitleID, @"Header title in photo import settings view controller");
   
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section {
   
   NSString *footerTitleID = [super tableView:tableView titleForFooterInSection:section];
-  
-  return NSLocalizedString(footerTitleID, @"Footer title of file backup section in photo import settings view controller");
-  
-  return nil;
-  
-}
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-  
-  UITableViewCell *hitCell = [tableView cellForRowAtIndexPath:indexPath];
-  
-  if (hitCell == self.upgradeAccountCell) {
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+  if ([footerTitleID isEqualToString:@"PHOTO_IMPORT_SWITCH_FOOTER"]) {
+    if ([self.photoImportSwitch isOn]) {
+      return nil;
+    }
   }
+
+  return NSLocalizedString(footerTitleID, @"Footer title in photo import settings view controller");
   
 }
 

@@ -34,7 +34,6 @@ static NSString * const kConnectionForWebSocket = @"kConnectionForWebSocket";
   }
   
   WAStation *station = allStations[0];
-  NSURL *ownURL = [[station objectID] URIRepresentation];
   
   if (self.connectionForWebSocket == nil || self.connectionForWebSocket.webSocketState == WAWebSocketClosed) {
     
@@ -42,13 +41,11 @@ static NSString * const kConnectionForWebSocket = @"kConnectionForWebSocket";
     [[WARemoteInterface sharedInterface]
      openWebSocketConnectionForUrl:[NSURL URLWithString:station.wsURL]
      onSucces:^{
-       // The WAStation instance's properties cannot be fetched via a released MOC,
-       // so we use defaultAutoUpdatedMOC here to ensure it can be read globally.
-       NSManagedObjectContext *context = [[WADataStore defaultStore] defaultAutoUpdatedMOC];
-       WAStation *connectedStation = (WAStation *)[context irManagedObjectForURI:ownURL];
-       successBlock(connectedStation);
+       successBlock(station);
      }
      onFailure:^(NSError *error) {
+       // TODO: We have to know the error is caused by server unavailable or disconnection,
+       // so that we can decide to try next station or restart the station discovery routine.
        [wSelf connectAvaliableWSStation:[allStations subarrayWithRange:NSMakeRange(1, [allStations count]-1)]
 			 onSuccess:successBlock
 			onFailure:failureBlock];

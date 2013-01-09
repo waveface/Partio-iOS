@@ -18,8 +18,8 @@
 @property (weak, nonatomic) IBOutlet UITableViewCell *contactTableViewCell;
 @property (weak, nonatomic) IBOutlet UITableViewCell *connectionTableViewCell;
 @property (weak, nonatomic) IBOutlet UILabel *userEmailLabel;
-@property (weak, nonatomic) IBOutlet UILabel *userNameLabel;
+@property (weak, nonatomic) IBOutlet UITableViewCell *versionCell;
 
-@property (weak, nonatomic) IBOutlet UILabel *deviceNameLabel;
+@property (weak, nonatomic) IBOutlet UITableViewCell *logoutCell;
 
 @end

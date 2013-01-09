@@ -24,6 +24,7 @@
 #import "WASyncManager.h"
 #import "IRMailComposeViewController.h"
 #import "IRRelativeDateFormatter+WAAdditions.h"
+#import "WAAppDelegate_iOS.h"
 
 @interface WAUserInfoViewController ()
 
@@ -96,16 +97,9 @@
   [self.tableView reloadData];
   
   __weak WAUserInfoViewController *wSelf = self;
-  __weak WAUser *wMainUser = wSelf.user;
   
   NSKeyValueObservingOptions options = NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew;
   WARemoteInterface * const ri = [WARemoteInterface sharedInterface];
-  
-  [self irObserveObject:wMainUser keyPath:@"nickname" options:options context:nil withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
-    
-    wSelf.userNameLabel.text = (NSString *)toValue;
-    
-  }];
   
   [self irObserveObject:self.user keyPath:@"email" options:options context:nil withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
     
@@ -132,9 +126,9 @@
     }];
     
   }];
-  
-  self.deviceNameLabel.text = WADeviceName();
-  
+
+  self.versionCell.textLabel.text = [[NSBundle mainBundle] displayVersionString];
+
 }
 
 - (void) irObserveObject:(id)target keyPath:(NSString *)keyPath options:(NSKeyValueObservingOptions)options context:(void *)context withBlock:(IRObservingsCallbackBlock)block {
@@ -230,7 +224,25 @@
     
   }
   
-  [aTV deselectRowAtIndexPath:indexPath animated:YES];
+  if (hitCell == self.logoutCell) {
+
+    WAAppDelegate_iOS *appDelegate = (WAAppDelegate_iOS *)AppDelegate();
+    IRAction *cancelAction = [IRAction actionWithTitle:NSLocalizedString(@"ACTION_CANCEL", nil) block:nil];
+    IRAction *signOutAction = [IRAction
+			 actionWithTitle:NSLocalizedString(@"ACTION_SIGN_OUT", nil)
+			 block: ^ {
+			   if ([appDelegate respondsToSelector:@selector(applicationRootViewControllerDidRequestReauthentication:)])
+			     [appDelegate performSelector:@selector( applicationRootViewControllerDidRequestReauthentication: ) withObject:nil];
+			 }];
+
+    [[IRAlertView alertViewWithTitle:NSLocalizedString(@"ACTION_SIGN_OUT", nil)
+		         message:NSLocalizedString(@"SIGN_OUT_CONFIRMATION", nil)
+		    cancelAction:cancelAction
+		    otherActions:@[signOutAction]] show];
+
+  }
+  
+  [aTV deselectRowAtIndexPath:indexPath animated:NO];
   
 }
 
@@ -255,9 +267,6 @@
 - (NSString *) tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section {
   
   NSString *superAnswer = [super tableView:tableView titleForFooterInSection:section];
-  
-  if ([superAnswer isEqualToString:@"VERSION"])
-    return [[NSBundle mainBundle] displayVersionString];
   
   return NSLocalizedString(superAnswer, nil);
   

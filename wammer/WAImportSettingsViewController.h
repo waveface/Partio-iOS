@@ -12,8 +12,6 @@
 
 @property (weak, nonatomic) IBOutlet UITableViewCell *photoImportCell;
 @property (weak, nonatomic) IBOutlet UITableViewCell *pendingFilesCell;
-@property (weak, nonatomic) IBOutlet UITableViewCell *backupToPCCell;
-@property (weak, nonatomic) IBOutlet UITableViewCell *backupToCloudCell;
-@property (weak, nonatomic) IBOutlet UITableViewCell *upgradeAccountCell;
+@property (weak, nonatomic) IBOutlet UITableViewCell *useCellularCell;
 
 @end

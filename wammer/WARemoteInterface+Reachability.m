@@ -125,7 +125,8 @@ NSURL *refiningStationLocation(NSString *stationUrlString, NSURL *baseUrl) {
     
     [wSelf beginPostponingDataRetrievalTimerFiring];
     
-    NSManagedObjectContext *context = [[WADataStore defaultStore] disposableMOC];
+    // We use defaultAutoUpdatedMOC here to ensure the results can be read globally.
+    NSManagedObjectContext *context = [[WADataStore defaultStore] defaultAutoUpdatedMOC];
     NSFetchRequest *request = [[NSFetchRequest alloc] init];
     NSEntityDescription *entity = [NSEntityDescription entityForName:@"WAStation" inManagedObjectContext:context];
     [request setEntity:entity];
@@ -143,17 +144,15 @@ NSURL *refiningStationLocation(NSString *stationUrlString, NSURL *baseUrl) {
         wSelf.monitoredHosts = @[station];
         [wSelf subscribeNotification];
       }
-
-      [wSelf endPostponingDataRetrievalTimerFiring];
-      
+     
     } onFailure:^(NSError *error) {
 
       // fall in this block if connection failure, disconnected from a station, or no stations
       wSelf.monitoredHosts = nil;
-
-      [wSelf endPostponingDataRetrievalTimerFiring];
       
     }];
+
+    [wSelf endPostponingDataRetrievalTimerFiring];
 
   } copy];
   
