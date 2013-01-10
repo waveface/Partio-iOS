@@ -413,7 +413,7 @@ CGFloat (^rowSpacing) (UICollectionView *) = ^ (UICollectionView *collectionView
 }
 
 - (void) calButtonPressed:(id)sender {
- 
+  
   if (isPad()) {
 	
 	CGRect frame = CGRectMake(0, 0, 320, 500);
@@ -431,7 +431,7 @@ CGFloat (^rowSpacing) (UICollectionView *) = ^ (UICollectionView *collectionView
 	  [wSelf.calendarPopoverForIPad dismissPopoverAnimated:YES];
 	  wSelf.calendarPopoverForIPad = nil;
 	};
-
+	
   } else {
 	
 	CGRect frame = self.view.frame;
@@ -451,6 +451,7 @@ CGFloat (^rowSpacing) (UICollectionView *) = ^ (UICollectionView *collectionView
   }
   
 }
+
 
 -(void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController {
 
