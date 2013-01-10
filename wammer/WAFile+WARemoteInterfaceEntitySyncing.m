@@ -441,6 +441,8 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
         
       }
       
+      file.dirty = @NO;
+      
       NSError *error = nil;
       BOOL didSave = [context save:&error];
       NSCAssert1(didSave, @"Generated thumbnail uploaded but metadata is not saved correctly: %@", error);
@@ -468,6 +470,8 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
 	[[WADataStore defaultStore] setLastSyncSuccessDate:[NSDate date]];
 	
         }
+        
+        file.dirty = @NO;
         
         NSError *error = nil;
         BOOL didSave = [context save:&error];
@@ -574,6 +578,11 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
 	    context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
 	    
 	    WAFile *file = (WAFile *)[context irManagedObjectForURI:ownURL];
+	    
+	    // Fill EXIF data again to ensure the WAFileExif instance is readable
+	    if (file.exif) {
+	      options[kWARemoteAttachmentExif] = file.exif;
+	    }
 	    
 	    file.thumbnailFilePath = [[[WADataStore defaultStore] persistentFileURLForData:UIImageJPEGRepresentation(image, 0.85f) extension:@"jpeg"] path];
 	    
