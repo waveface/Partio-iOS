@@ -361,7 +361,7 @@
 "NICKNAME_PLACEHOLDER" = "John Appleseed";
 
 /* Cell title in connection status view controller */
-"NO_STATION_INSTALLED" = "NO_STATION_INSTALLED";
+"NO_STATION_INSTALLED" = "Didn't install any AOStream Station";
 
 /* Notification messages for photos auto-imported */
 "NOTIFY_PHOTOS_IMPORTED" = "%@ photo(s) have been imported into your Stream account.";
