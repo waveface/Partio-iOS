@@ -209,6 +209,10 @@
 #pragma mark - NSFetchedResultsControllerDelegate 
 - (void) controller:(NSFetchedResultsController *)controller didChangeObject:(id)anObject atIndexPath:(NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type newIndexPath:(NSIndexPath *)newIndexPath {
 	
+  if (![self.collectionView numberOfItemsInSection:indexPath.section]) {
+	[self.collectionView reloadData];
+	return;
+  }
 	switch (type) {
 		case NSFetchedResultsChangeInsert: {
 			[self.collectionView insertItemsAtIndexPaths:@[newIndexPath]];
