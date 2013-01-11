@@ -51,7 +51,7 @@ NSString * const kWAFacebookUserDataImport = @"WAFacebookImportTimeLine";
 - (void) commonInit {
 
 	[self addTarget:self action:@selector(handleValueChanged:) forControlEvents:UIControlEventValueChanged];
-		
+	self.on = [[NSUserDefaults standardUserDefaults] boolForKey:kWAFacebookUserDataImport];
 }
 
 
