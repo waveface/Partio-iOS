@@ -7,6 +7,7 @@
 //
 
 #import "WAFetchManager+RemoteChangeFetch.h"
+#import "WADefines.h"
 #import "Foundation+IRAdditions.h"
 #import "WARemoteInterface.h"
 #import "WADataStore.h"
@@ -142,8 +143,18 @@
 
     } onFailure:^(NSError *error) {
 
-	  if (error.code != (0xB000 + 5))  // NO_USERTRACKS_TO_HANDLE is a normal return code when there is no more changelogs to fetch in the cloud
+	  if (error.code == (0xB000 + 5)) {
+		
+		NSLog(@"Reset the min seq number and re-fetch all posts: %@", error);
+		[[NSUserDefaults standardUserDefaults] setBool:YES forKey:kWAFirstArticleFetched];
+		[ds setMinSequenceNumber:@(INT_MAX)]; // restart fetching the articles from current sequential number
+
+	  } else {
+		
 		NSLog(@"Unable to fetch remote changes since %@, error: %@", currentSeq, error);
+		
+	  }
+	  
       [wSelf endPostponingFetch];
       callback(error);
       

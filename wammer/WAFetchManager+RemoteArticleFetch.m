@@ -41,36 +41,36 @@
 
         [ds performBlock:^{
 	
-	NSManagedObjectContext *context = [ds autoUpdatingMOC];
+		  NSManagedObjectContext *context = [ds autoUpdatingMOC];
 	
-	NSArray *touchedArticles = [WAArticle insertOrUpdateObjectsUsingContext:context withRemoteResponse:postReps usingMapping:nil options:IRManagedObjectOptionIndividualOperations];
+		  NSArray *touchedArticles = [WAArticle insertOrUpdateObjectsUsingContext:context withRemoteResponse:postReps usingMapping:nil options:IRManagedObjectOptionIndividualOperations];
 	
-	// restore articles in updating
-	for (WAArticle *article in touchedArticles) {
-	  if ([ds isUpdatingArticle:[[article objectID] URIRepresentation]]) {
-	    [context refreshObject:article mergeChanges:NO];
-	  }
-	}
+		  // restore articles in updating
+		  for (WAArticle *article in touchedArticles) {
+			if ([ds isUpdatingArticle:[[article objectID] URIRepresentation]]) {
+			  [context refreshObject:article mergeChanges:NO];
+			}
+		  }
 	
-	[context save:nil];
+		  [context save:nil];
 	
         } waitUntilDone:YES];
         
         if ([remainingCount integerValue] == 0) {
-	[[NSUserDefaults standardUserDefaults] setBool:YES forKey:kWAFirstArticleFetched];
-	[[NSUserDefaults standardUserDefaults] synchronize];
+		  [[NSUserDefaults standardUserDefaults] setBool:YES forKey:kWAFirstArticleFetched];
+		  [[NSUserDefaults standardUserDefaults] synchronize];
         }
         
         if (![ds maxSequenceNumber]) {
-	if ([postReps count]) {
-	  NSNumber *maxSeq = @0;
-	  for (NSDictionary *post in postReps) {
-	    if ([post[@"seq_num"] integerValue] > [maxSeq integerValue]) {
-	      maxSeq = post[@"seq_num"];
-	    }
-	  }
-	  [ds setMaxSequenceNumber:@([maxSeq integerValue]+1)];
-	}
+		  if ([postReps count]) {
+			NSNumber *maxSeq = @0;
+			for (NSDictionary *post in postReps) {
+			  if ([post[@"seq_num"] integerValue] > [maxSeq integerValue]) {
+				maxSeq = post[@"seq_num"];
+			  }
+			}
+			[ds setMaxSequenceNumber:@([maxSeq integerValue]+1)];
+		  }
         }
         
         [ds setMinSequenceNumber:nextSeq];
