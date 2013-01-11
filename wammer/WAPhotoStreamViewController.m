@@ -148,12 +148,13 @@
 	
 	CGRect frame = self.view.frame;
 	frame.origin = CGPointMake(0, 0);
-	WACalendarPickerViewController *calVC = [[WACalendarPickerViewController alloc] initWithFrame:frame selectedDate:onDate];
+	__block WACalendarPickerViewController *calVC = [[WACalendarPickerViewController alloc] initWithFrame:frame selectedDate:onDate];
 	calVC.currentViewStyle = WAPhotosViewStyle;
 	WANavigationController *wrappedNavVC = [WACalendarPickerViewController wrappedNavigationControllerForViewController:calVC forStyle:WACalendarPickerStyleWithCancel];
-	calVC.onDismissBlock = ^{
-	  [wrappedNavVC dismissViewControllerAnimated:YES completion:nil];
-	};
+	calVC.onDismissBlock = [^{
+	  [calVC.navigationController dismissViewControllerAnimated:YES completion:nil];
+	  calVC = nil;
+	} copy];
 	
 	wrappedNavVC.modalPresentationStyle = UIModalPresentationFullScreen;
 	wrappedNavVC.modalTransitionStyle =  UIModalTransitionStyleCoverVertical;
