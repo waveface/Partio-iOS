@@ -25,6 +25,9 @@
 #import "GAI.h"
 #import "WANavigationController.h"
 
+#import "WACompositionViewController.h"
+#import "WACompositionViewController+CustomUI.h"
+
 @interface WAAnnotation : NSObject <MKAnnotation>
 
 @property (nonatomic, strong) NSString *title;
@@ -454,6 +457,8 @@
 
 	_headerView.descriptiveTagsLabel.attributedText = [[self class] attributedDescriptionStringForEvent:self.article];
 	[_headerView.descriptiveTagsLabel invalidateIntrinsicContentSize];
+  
+  [_headerView.descriptionTapper addTarget:self action:@selector(handleChangeDescription:) forControlEvents:UIControlEventTouchUpInside];
 	
 	NSMutableArray *tags = [NSMutableArray array];
 	[[self.article.tags allObjects] enumerateObjectsUsingBlock:^(WATag  *aTagRep, NSUInteger idx, BOOL *stop) {
@@ -523,6 +528,22 @@
 
 - (void) addMorePeopleBtnPressed:(id)sender {
 	
+}
+
+- (void) handleChangeDescription:(id)sender {
+  
+  NSURL *anArticleURL = [[self.article objectID] URIRepresentation];
+  __block WACompositionViewController *compositionVC = [WACompositionViewController controllerWithArticle:anArticleURL completion:^(NSURL *anArticleURLOrNil) {
+	
+	[compositionVC dismissViewControllerAnimated:YES completion:nil];
+	
+  }];
+  
+  UINavigationController *wrapperNC = [compositionVC wrappingNavigationController];
+  wrapperNC.modalPresentationStyle = UIModalPresentationFormSheet;
+  
+  [(self.navigationController ? self.navigationController : self) presentViewController:wrapperNC animated:YES completion:nil];
+
 }
 
 
