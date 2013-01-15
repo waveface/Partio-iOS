@@ -358,7 +358,7 @@
     <fetchRequest name="WAFRCommentsForArticle" entity="WAComment" predicateString="article == $Article"/>
     <fetchRequest name="WAFRFilesForArticle" entity="WAFile" predicateString="ANY articles == $Article"/>
     <fetchRequest name="WAFRFilesNeedingMetaSync" entity="WAFile" predicateString="dirty == 1"/>
-    <fetchRequest name="WAFRFilesWithSyncableBlobs" entity="WAFile" predicateString="(hidden == 0 OR assetURL != &quot;&quot; OR resourceFilePath != nil) AND resourceURL == nil AND thumbnailURL != &quot;&quot; AND ANY articles.draft == 0"/>
+    <fetchRequest name="WAFRFilesWithSyncableBlobs" entity="WAFile" predicateString="hidden == 0 AND (assetURL != &quot;&quot; OR resourceFilePath != nil) AND resourceURL == nil AND thumbnailURL != &quot;&quot; AND ANY articles.draft == 0"/>
     <fetchRequest name="WAFRImagesForArticle" entity="WAFile" predicateString="article == $Article AND remoteResourceType == &quot;image&quot;"/>
     <fetchRequest name="WAFRLocalImportedArticles" entity="WAArticle" predicateString="import == 1"/>
     <fetchRequest name="WAFRUser" entity="WAUser" predicateString="identifier == $Identifier"/>
@@ -380,11 +380,11 @@
         <element name="WAPeople" positionX="0" positionY="0" width="128" height="90"/>
         <element name="WAPhotoDay" positionX="160" positionY="192" width="128" height="75"/>
         <element name="WAPreview" positionX="0" positionY="0" width="128" height="150"/>
+        <element name="WAStation" positionX="160" positionY="192" width="128" height="120"/>
         <element name="WAStorage" positionX="0" positionY="0" width="128" height="240"/>
         <element name="WATag" positionX="0" positionY="0" width="128" height="105"/>
         <element name="WATagGroup" positionX="0" positionY="0" width="128" height="90"/>
         <element name="WAUser" positionX="0" positionY="0" width="128" height="240"/>
         <element name="WAWebpageDay" positionX="160" positionY="192" width="128" height="75"/>
-        <element name="WAStation" positionX="160" positionY="192" width="128" height="120"/>
     </elements>
 </model>

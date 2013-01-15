@@ -87,7 +87,19 @@
     if (group) {
       
       [group setAssetsFilter:[ALAssetsFilter allPhotos]];
+
+      // sorting all photos in camera roll by photo creation date
+      NSMutableArray *allAssets = [NSMutableArray array];
       [group enumerateAssetsUsingBlock:^(ALAsset *result, NSUInteger index, BOOL *stop) {
+        if (result) {
+	NSUInteger insertIndex = [allAssets indexOfObject:result inSortedRange:NSMakeRange(0, [allAssets count]) options:NSBinarySearchingInsertionIndex usingComparator:^NSComparisonResult(ALAsset *asset1, ALAsset *asset2) {
+	  return [[asset1 valueForProperty:ALAssetPropertyDate] compare:[asset2 valueForProperty:ALAssetPropertyDate]];
+	}];
+	[allAssets insertObject:result atIndex:insertIndex];
+        }
+      }];
+
+      [allAssets enumerateObjectsUsingBlock:^(ALAsset *result, NSUInteger index, BOOL *stop) {
         
         if (result) {
 	

@@ -423,41 +423,12 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
     
     [ri createAttachmentWithFile:fileURL group:ri.primaryGroupIdentifier options:options onSuccess: ^ (NSString *attachmentIdentifier) {
       
-      NSManagedObjectContext *context = [ds autoUpdatingMOC];
-      context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
-      
-      WAFile *file = (WAFile *)[context irManagedObjectForURI:ownURL];
-      file.identifier = attachmentIdentifier;
-      
-      if ([[options valueForKey:kWARemoteAttachmentSubtype] isEqualToString:WARemoteAttachmentMediumSubtype]) {
-        
-        file.thumbnailURL = [[file class] transformedValue:[@"/v3/attachments/view?object_id=" stringByAppendingFormat:@"%@&image_meta=medium", file.identifier] fromRemoteKeyPath:nil toLocalKeyPath:@"thumbnailURL"];
-        
-      } else if ([[options valueForKey:kWARemoteAttachmentSubtype] isEqualToString:WARemoteAttachmentOriginalSubtype]) {
-        
-        file.resourceURL = [[file class] transformedValue:[@"/v3/attachments/view?object_id=" stringByAppendingFormat:@"%@", file.identifier] fromRemoteKeyPath:nil toLocalKeyPath:@"resourceURL"];
-        
-        [[WADataStore defaultStore] setLastSyncSuccessDate:[NSDate date]];
-        
-      }
-      
-      file.dirty = @NO;
-      
-      NSError *error = nil;
-      BOOL didSave = [context save:&error];
-      NSCAssert1(didSave, @"Generated thumbnail uploaded but metadata is not saved correctly: %@", error);
-      
-      callback(error);
-      
-    } onFailure: ^ (NSError *error) {
-      
-      // file is existed
-      if ([[error domain] isEqualToString:kWARemoteInterfaceDomain] && [error code] == 0x6000 + 14) {
-        
+      [ds performBlock:^{
+
         NSManagedObjectContext *context = [ds autoUpdatingMOC];
-        context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
         
         WAFile *file = (WAFile *)[context irManagedObjectForURI:ownURL];
+        file.identifier = attachmentIdentifier;
         
         if ([[options valueForKey:kWARemoteAttachmentSubtype] isEqualToString:WARemoteAttachmentMediumSubtype]) {
 	
@@ -479,32 +450,70 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
         
         callback(error);
         
+      } waitUntilDone:NO];
+      
+    } onFailure: ^ (NSError *error) {
+      
+      // file is existed
+      if ([[error domain] isEqualToString:kWARemoteInterfaceDomain] && [error code] == 0x6000 + 14) {
+
+        [ds performBlock:^{
+
+	NSManagedObjectContext *context = [ds autoUpdatingMOC];
+	
+	WAFile *file = (WAFile *)[context irManagedObjectForURI:ownURL];
+	
+	if ([[options valueForKey:kWARemoteAttachmentSubtype] isEqualToString:WARemoteAttachmentMediumSubtype]) {
+	  
+	  file.thumbnailURL = [[file class] transformedValue:[@"/v3/attachments/view?object_id=" stringByAppendingFormat:@"%@&image_meta=medium", file.identifier] fromRemoteKeyPath:nil toLocalKeyPath:@"thumbnailURL"];
+	  
+	} else if ([[options valueForKey:kWARemoteAttachmentSubtype] isEqualToString:WARemoteAttachmentOriginalSubtype]) {
+	  
+	  file.resourceURL = [[file class] transformedValue:[@"/v3/attachments/view?object_id=" stringByAppendingFormat:@"%@", file.identifier] fromRemoteKeyPath:nil toLocalKeyPath:@"resourceURL"];
+	  
+	  [[WADataStore defaultStore] setLastSyncSuccessDate:[NSDate date]];
+	  
+	}
+	
+	file.dirty = @NO;
+	
+	NSError *error = nil;
+	BOOL didSave = [context save:&error];
+	NSCAssert1(didSave, @"Generated thumbnail uploaded but metadata is not saved correctly: %@", error);
+	
+	callback(error);
+
+        } waitUntilDone:NO];
+        
       } else if ([[error domain] isEqualToString:kWAFileEntitySyncingErrorDomain] && [error code] == WAFileSyncingErrorCodeAssetDeleted) {
         
-        NSManagedObjectContext *context = [ds autoUpdatingMOC];
-        context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
+        [ds performBlock:^{
 
-        WAFile *file = (WAFile *)[context irManagedObjectForURI:ownURL];
+	NSManagedObjectContext *context = [ds autoUpdatingMOC];
+	
+	WAFile *file = (WAFile *)[context irManagedObjectForURI:ownURL];
+	
+	if (file.thumbnailURL) {
+	  
+	  // The WAFile never needs sync because its asset has been deleted, but we don't have to hide it.
+	  // Just keep a hint in its resource URL (all-zero object id)
+	  file.resourceURL = [[file class] transformedValue:@"/v3/attachments/view?object_id=00000000000000000000000000000000" fromRemoteKeyPath:nil toLocalKeyPath:@"resourceURL"];
+	  
+	  [[WADataStore defaultStore] setLastSyncSuccessDate:[NSDate date]];
+	  
+	} else {
+	  
+	  // Hide the attachment if its thumbnails has not been created.
+	  file.hidden = @YES;
+	  file.dirty = @YES;
+	  
+	}
+	
+	NSError *error = nil;
+	[context save:&error];
+	callback(error);
 
-        if (file.thumbnailURL) {
-
-	// The WAFile never needs sync because its asset has been deleted, but we don't have to hide it.
-	// Just keep a hint in its resource URL (all-zero object id)
-	file.resourceURL = [[file class] transformedValue:@"/v3/attachments/view?object_id=00000000000000000000000000000000" fromRemoteKeyPath:nil toLocalKeyPath:@"resourceURL"];
-
-	[[WADataStore defaultStore] setLastSyncSuccessDate:[NSDate date]];
-
-        } else {
-
-	// Hide the attachment if its thumbnails has not been created.
-	file.hidden = @YES;
-	file.dirty = @YES;
-
-        }
-
-        NSError *error = nil;
-        [context save:&error];
-        callback(error);
+        } waitUntilDone:NO];
 
       } else {
         

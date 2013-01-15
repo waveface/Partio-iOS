@@ -33,9 +33,14 @@
 
     [[WADataStore defaultStore] enumerateFilesWithSyncableBlobsInContext:nil usingBlock:^(WAFile *aFile, NSUInteger index, BOOL *stop) {
       
-      IRAsyncBarrierOperation *operation = [IRAsyncBarrierOperation operationWithWorker:^(IRAsyncOperationCallback callback) {
+      NSURL *ownURL = [[aFile objectID] URIRepresentation];
 
-        [aFile synchronizeWithOptions:@{kWAFileSyncStrategy: kWAFileSyncFullQualityStrategy}
+      IRAsyncOperation *operation = [IRAsyncOperation operationWithWorker:^(IRAsyncOperationCallback callback) {
+
+        NSManagedObjectContext *context = [[WADataStore defaultStore] disposableMOC];
+        WAFile *file = (WAFile *)[context irManagedObjectForURI:ownURL];
+        
+        [file synchronizeWithOptions:@{kWAFileSyncStrategy: kWAFileSyncFullQualityStrategy}
 		       completion:^(BOOL didFinish, NSError *error) {
 
 		         if (error) {
