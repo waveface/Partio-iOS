@@ -205,6 +205,7 @@
   WAWebStreamViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"WAWebStreamViewCell" forIndexPath:indexPath];
 	
   cell.webTitleLabel.text = file.webTitle;
+  [cell.webTitleLabel sizeToFit];
   cell.webURLLabel.text = file.webURL;
 
   NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
