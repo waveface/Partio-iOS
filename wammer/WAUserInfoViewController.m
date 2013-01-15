@@ -140,13 +140,6 @@
   
 }
 
-- (void) viewWillAppear:(BOOL)animated {
-  
-  [super viewWillAppear:animated];
-  
-  [self.tableView reloadData];
-  
-}
 
 - (NSManagedObjectContext *) managedObjectContext {
   
@@ -270,6 +263,28 @@
   
   return NSLocalizedString(superAnswer, nil);
   
+}
+
+#pragma mark - UIViewController
+- (void) viewWillAppear:(BOOL)animated {
+  [super viewWillAppear:animated];
+  [self.tableView reloadData];
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+  [super viewDidAppear:animated];
+  [self becomeFirstResponder];
+}
+
+#pragma mark - Motion Event
+- (BOOL)canBecomeFirstResponder {
+  return YES;
+}
+
+- (void)motionEnded:(UIEventSubtype)motion withEvent:(UIEvent *)event {
+  if (motion == UIEventSubtypeMotionShake) {
+	[[Crashlytics sharedInstance] crash];
+  }
 }
 
 @end
