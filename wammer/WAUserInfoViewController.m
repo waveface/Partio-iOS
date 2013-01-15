@@ -221,12 +221,11 @@
     
     WAAppDelegate_iOS *appDelegate = (WAAppDelegate_iOS *)AppDelegate();
     IRAction *cancelAction = [IRAction actionWithTitle:NSLocalizedString(@"ACTION_CANCEL", nil) block:nil];
-    IRAction *signOutAction = [IRAction
-                               actionWithTitle:NSLocalizedString(@"ACTION_SIGN_OUT", nil)
-                               block: ^ {
-                                 if ([appDelegate respondsToSelector:@selector(applicationRootViewControllerDidRequestReauthentication:)])
-                                   [appDelegate performSelector:@selector( applicationRootViewControllerDidRequestReauthentication: ) withObject:nil];
-                               }];
+    IRAction *signOutAction = [IRAction actionWithTitle:NSLocalizedString(@"ACTION_SIGN_OUT", nil)
+                                                  block: ^ {
+                                                    if ([appDelegate respondsToSelector:@selector(applicationRootViewControllerDidRequestReauthentication:)])
+                                                      [appDelegate performSelector:@selector( applicationRootViewControllerDidRequestReauthentication: ) withObject:nil];
+                                                  }];
     
     [[IRAlertView alertViewWithTitle:NSLocalizedString(@"ACTION_SIGN_OUT", nil)
                              message:NSLocalizedString(@"SIGN_OUT_CONFIRMATION", nil)
@@ -283,7 +282,11 @@
 
 - (void)motionEnded:(UIEventSubtype)motion withEvent:(UIEvent *)event {
   if (motion == UIEventSubtypeMotionShake) {
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Debug Mode" message:@"" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Crash", nil];
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Debug Mode"
+                                                        message:@""
+                                                       delegate:self
+                                              cancelButtonTitle:@"Cancel"
+                                              otherButtonTitles:@"Crash", nil];
     [alertView show];
   }
 }
