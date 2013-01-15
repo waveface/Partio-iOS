@@ -76,6 +76,7 @@
 		4B274E511675BFCC007406D3 /* WACollectionViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4B274E4E1675BFCC007406D3 /* WACollectionViewController.xib */; };
 		4B274E521675BFCC007406D3 /* WACollectionViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4B274E4E1675BFCC007406D3 /* WACollectionViewController.xib */; };
 		4B274E6B1675E104007406D3 /* WACollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4B274E6A1675E104007406D3 /* WACollectionViewCell.xib */; };
+		4B292C4816A50A8E008C2960 /* WAUser.m in Sources */ = {isa = PBXBuildFile; fileRef = 13C17D69169C0E8200F909E5 /* WAUser.m */; };
 		4B307DCF168C3A6300DD4A34 /* WACollection.m in Sources */ = {isa = PBXBuildFile; fileRef = 802427081689E1AF002454A7 /* WACollection.m */; };
 		4B31BA9F1591A74C00DC1A70 /* AGImagePickerController+Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B31BA881591A74C00DC1A70 /* AGImagePickerController+Constants.m */; };
 		4B31BAA01591A74C00DC1A70 /* AGImagePickerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B31BA8A1591A74C00DC1A70 /* AGImagePickerController.m */; };
@@ -4830,7 +4831,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if [ \"$WF_USES_CRASHLYTICS\" -eq \"1\" ]; then\n\necho \"Invoking Crashlytics SDK handler\"\n./external/CrashlyticsSDK/Crashlytics.framework/run d79b0f823e42fdf1cdeb7e988a8453032fd85169\n\nfi\n";
+			shellScript = "echo \"Invoking Crashlytics SDK handler\"\n./external/CrashlyticsSDK/Crashlytics.framework/run d79b0f823e42fdf1cdeb7e988a8453032fd85169\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -4912,6 +4913,7 @@
 				7DBE8DF6165B383C005C2347 /* WADayHeaderView.m in Sources */,
 				4BB0400916804C68009C3D08 /* WACollection+WARemoteInterfaceEntitySyncing.m in Sources */,
 				4B307DCF168C3A6300DD4A34 /* WACollection.m in Sources */,
+				4B292C4816A50A8E008C2960 /* WAUser.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5502,7 +5504,6 @@
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"WF_USES_TESTFLIGHT=$(WF_USES_TESTFLIGHT)",
-					"WF_USES_CRASHLYTICS=$(WF_USES_CRASHLYTICS)",
 					"WF_USES_GOOGLEANALYTICS=$(WF_USES_GOOGLEANALYTICS)",
 					"STREAM_BETA=1",
 					"$(inherited)",
@@ -5544,7 +5545,6 @@
 				VALIDATE_PRODUCT = YES;
 				VALID_ARCHS = "i386 armv7";
 				VERSIONING_SYSTEM = "apple-generic";
-				WF_USES_CRASHLYTICS = 1;
 				WF_USES_GOOGLEANALYTICS = 0;
 				WF_USES_TESTFLIGHT = 1;
 			};
@@ -5565,6 +5565,7 @@
 				);
 				GCC_OPTIMIZATION_LEVEL = s;
 				GCC_PREFIX_HEADER = "wammer/wammer-iOS-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = "$(inherited)";
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				HEADER_SEARCH_PATHS = "${PODS_HEADERS_SEARCH_PATHS}";
 				INFOPLIST_FILE = "wammer/wammer-iOS-Info.plist";
@@ -5638,6 +5639,7 @@
 				GCC_INSTRUMENT_PROGRAM_FLOW_ARCS = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "UnitTests/UnitTests-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = "$(inherited)";
 				GCC_WARN_ALLOW_INCOMPLETE_PROTOCOL = YES;
 				HEADER_SEARCH_PATHS = (
 					"${PODS_HEADERS_SEARCH_PATHS}",
@@ -5696,6 +5698,7 @@
 				GCC_INSTRUMENT_PROGRAM_FLOW_ARCS = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "UnitTests/UnitTests-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = "$(inherited)";
 				GCC_WARN_ALLOW_INCOMPLETE_PROTOCOL = YES;
 				HEADER_SEARCH_PATHS = (
 					"${PODS_HEADERS_SEARCH_PATHS}",
@@ -5758,6 +5761,7 @@
 				GCC_INSTRUMENT_PROGRAM_FLOW_ARCS = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "UnitTests/UnitTests-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = "$(inherited)";
 				GCC_WARN_ALLOW_INCOMPLETE_PROTOCOL = YES;
 				HEADER_SEARCH_PATHS = (
 					"${PODS_HEADERS_SEARCH_PATHS}",
@@ -5821,10 +5825,7 @@
 				GCC_GENERATE_TEST_COVERAGE_FILES = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "StreamTests/StreamTests-Prefix.pch";
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
-				);
+				GCC_PREPROCESSOR_DEFINITIONS = "$(inherited)";
 				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				HEADER_SEARCH_PATHS = (
@@ -5881,6 +5882,7 @@
 				GCC_GENERATE_TEST_COVERAGE_FILES = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "StreamTests/StreamTests-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = "$(inherited)";
 				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				HEADER_SEARCH_PATHS = (
@@ -5937,6 +5939,7 @@
 				GCC_GENERATE_TEST_COVERAGE_FILES = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "StreamTests/StreamTests-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = "$(inherited)";
 				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				HEADER_SEARCH_PATHS = (
@@ -5990,11 +5993,9 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"WF_USES_TESTFLIGHT=$(WF_USES_TESTFLIGHT)",
-					"WF_USES_CRASHLYTICS=$(WF_USES_CRASHLYTICS)",
 					"WF_USES_GOOGLEANALYTICS=$(WF_USES_GOOGLEANALYTICS)",
 					"DEBUG=1",
 					"$(inherited)",
-					"ENABLE_DCINTROSPECT=1",
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
@@ -6032,7 +6033,6 @@
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = "i386 armv7";
 				VERSIONING_SYSTEM = "apple-generic";
-				WF_USES_CRASHLYTICS = 1;
 				WF_USES_GOOGLEANALYTICS = 0;
 				WF_USES_TESTFLIGHT = 1;
 			};
@@ -6054,7 +6054,6 @@
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"WF_USES_TESTFLIGHT=$(WF_USES_TESTFLIGHT)",
-					"WF_USES_CRASHLYTICS=$(WF_USES_CRASHLYTICS)",
 					"WF_USES_GOOGLEANALYTICS=$(WF_USES_GOOGLEANALYTICS)",
 					"$(inherited)",
 				);
@@ -6095,7 +6094,6 @@
 				VALIDATE_PRODUCT = YES;
 				VALID_ARCHS = "i386 armv7";
 				VERSIONING_SYSTEM = "apple-generic";
-				WF_USES_CRASHLYTICS = 1;
 				WF_USES_GOOGLEANALYTICS = 0;
 				WF_USES_TESTFLIGHT = 1;
 			};
@@ -6116,14 +6114,7 @@
 				);
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREFIX_HEADER = "wammer/wammer-iOS-Prefix.pch";
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"WF_USES_TESTFLIGHT=$(WF_USES_TESTFLIGHT)",
-					"WF_USES_CRASHLYTICS=$(WF_USES_CRASHLYTICS)",
-					"WF_USES_GOOGLEANALYTICS=$(WF_USES_GOOGLEANALYTICS)",
-					"DEBUG=1",
-					"$(inherited)",
-					"ENABLE_DCINTROSPECT=0",
-				);
+				GCC_PREPROCESSOR_DEFINITIONS = "$(inherited)";
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				HEADER_SEARCH_PATHS = "${PODS_HEADERS_SEARCH_PATHS}";
 				INFOPLIST_FILE = "wammer/wammer-iOS-Info.plist";
@@ -6191,6 +6182,7 @@
 				);
 				GCC_OPTIMIZATION_LEVEL = s;
 				GCC_PREFIX_HEADER = "wammer/wammer-iOS-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = "$(inherited)";
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				HEADER_SEARCH_PATHS = "${PODS_HEADERS_SEARCH_PATHS}";
 				INFOPLIST_FILE = "wammer/wammer-iOS-Info.plist";
