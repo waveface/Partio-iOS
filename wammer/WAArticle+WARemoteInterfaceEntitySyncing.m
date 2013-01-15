@@ -682,26 +682,29 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
       
     } else {
       
+      // results will be nil if this operation is canceled
       NSError *error = (NSError *)([results isKindOfClass:[NSError class]] ? results : nil);
-      
-      // post id already exists
-      if ([[error domain] isEqualToString:kWARemoteInterfaceDomain] && [error code] == 0x3000 + 25) {
-        NSManagedObjectContext *context = [[WADataStore defaultStore] disposableMOC];
-        context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
-        WAArticle *savedPost = (WAArticle *)[context irManagedObjectForURI:postEntityURL];
-        CFUUIDRef theUUID = CFUUIDCreate(kCFAllocatorDefault);
-        if (theUUID) {
-	savedPost.identifier = [((__bridge_transfer NSString *)CFUUIDCreateString(kCFAllocatorDefault, theUUID)) lowercaseString];
+
+      if (!error) {
+        // post id already exists
+        if ([[error domain] isEqualToString:kWARemoteInterfaceDomain] && [error code] == 0x3000 + 25) {
+	NSManagedObjectContext *context = [[WADataStore defaultStore] disposableMOC];
+	context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
+	WAArticle *savedPost = (WAArticle *)[context irManagedObjectForURI:postEntityURL];
+	CFUUIDRef theUUID = CFUUIDCreate(kCFAllocatorDefault);
+	if (theUUID) {
+	  savedPost.identifier = [((__bridge_transfer NSString *)CFUUIDCreateString(kCFAllocatorDefault, theUUID)) lowercaseString];
+	}
+	CFRelease(theUUID);
+	[context save:nil];
         }
-        CFRelease(theUUID);
-        [context save:nil];
+        
+        WASyncManager *syncManager = [(WAAppDelegate_iOS *)AppDelegate() syncManager];
+        syncManager.isSyncFail = YES;
       }
-      
+
       completionBlock(NO, error);
 
-      WASyncManager *syncManager = [(WAAppDelegate_iOS *)AppDelegate() syncManager];
-      syncManager.isSyncFail = YES;
-      
     }
     
   } callbackTrampoline:^(IRAsyncOperationInvoker callback) {
