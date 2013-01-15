@@ -26,7 +26,7 @@
 #import "IRRelativeDateFormatter+WAAdditions.h"
 #import "WAAppDelegate_iOS.h"
 
-@interface WAUserInfoViewController ()
+@interface WAUserInfoViewController () <UIAlertViewDelegate>
 
 @property (nonatomic, readwrite, retain) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, retain) WAUser *user;
@@ -283,8 +283,15 @@
 
 - (void)motionEnded:(UIEventSubtype)motion withEvent:(UIEvent *)event {
   if (motion == UIEventSubtypeMotionShake) {
-	[[Crashlytics sharedInstance] crash];
+	UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Debug Mode" message:@"" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Crash", nil];
+	[alertView show];
   }
 }
 
+#pragma mark - UIAlertView Delegate
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+  if (buttonIndex == 1) {
+	[[Crashlytics sharedInstance] crash];
+  }
+}
 @end
