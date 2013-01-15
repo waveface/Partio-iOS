@@ -379,12 +379,13 @@ CGFloat (^rowSpacingWeb) (UICollectionView *) = ^ (UICollectionView *collectionV
 	
 	CGRect frame = self.view.frame;
 	frame.origin = CGPointMake(0, 0);
-	WACalendarPickerViewController *calVC = [[WACalendarPickerViewController alloc] initWithFrame:frame selectedDate:self.currentDate];
+	__block WACalendarPickerViewController *calVC = [[WACalendarPickerViewController alloc] initWithFrame:frame selectedDate:self.currentDate];
 	calVC.currentViewStyle = WAWebpagesViewStyle;
 	WANavigationController *wrappedNavVC = [WACalendarPickerViewController wrappedNavigationControllerForViewController:calVC forStyle:WACalendarPickerStyleWithCancel];
-	calVC.onDismissBlock = ^{
-	  [wrappedNavVC dismissViewControllerAnimated:YES completion:nil];
-	};
+	calVC.onDismissBlock = [^{
+	  [calVC.navigationController dismissViewControllerAnimated:YES completion:nil];
+	  calVC = nil;
+	} copy];
 	
 	wrappedNavVC.modalPresentationStyle = UIModalPresentationFullScreen;
 	wrappedNavVC.modalTransitionStyle =  UIModalTransitionStyleCoverVertical;

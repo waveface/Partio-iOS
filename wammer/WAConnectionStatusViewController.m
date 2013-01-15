@@ -50,6 +50,17 @@
   // self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }
 
+- (BOOL) shouldAutorotate {
+  return YES;
+}
+
+- (NSUInteger) supportedInterfaceOrientations {
+  if (isPad())
+	return UIInterfaceOrientationMaskAll;
+  else
+	return UIInterfaceOrientationMaskPortrait;
+}
+
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {

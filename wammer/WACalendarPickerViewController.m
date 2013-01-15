@@ -68,18 +68,6 @@
   
 }
 
-- (void) viewWillDisappear:(BOOL)animated {
-  
-  [super viewWillDisappear:animated];
-  
-  if (self.navigationController) {
-	
-	[self.navigationController setNavigationBarHidden:origNavibarHidden animated:animated];
-	[self.navigationController setToolbarHidden:YES animated:animated];
-	
-  }
-  
-}
 
 - (void)viewWillAppear:(BOOL)animated
 {
@@ -109,6 +97,28 @@
   
 }
 
+- (void) viewWillDisappear:(BOOL)animated {
+  
+  [super viewWillDisappear:animated];
+  
+  if (self.navigationController) {
+	
+	[self.navigationController setNavigationBarHidden:origNavibarHidden animated:animated];
+	[self.navigationController setToolbarHidden:YES animated:animated];
+	
+  }
+  
+}
+
+
+- (void)viewDidDisappear:(BOOL)animated {
+
+  [super viewDidDisappear:animated];
+  dataSource = nil;
+  calPicker = nil;
+
+}
+
 - (UIBarButtonItem *)dismissBarButton
 {
   
@@ -116,7 +126,6 @@
   return (UIBarButtonItem *)WABarButtonItemWithButton([self cancelUIButton], ^{
 	if (wSelf.onDismissBlock)
 	  wSelf.onDismissBlock();
-	  //		[wSelf.delegate dismissPopoverAnimated:YES];
   });
   
 }
@@ -131,42 +140,42 @@
 
 - (UIBarButtonItem *)todayBarButton
 {
-	UIButton *todayButton = [UIButton buttonWithType:UIButtonTypeCustom];
-	[todayButton setFrame:CGRectMake(0.f, 0.f, 57.f, 26.f)];
-	[todayButton setBackgroundImage:[UIImage imageNamed:@"Kal.bundle/CalBtn"] forState:UIControlStateNormal];
-	[todayButton setBackgroundImage:[UIImage imageNamed:@"Kal.bundle/CalBtnPress"] forState:UIControlStateHighlighted];
-	[todayButton setTitle:NSLocalizedString(@"CALENDAR_TODAY_BUTTON", "Today button in calendar picker") forState:UIControlStateNormal];
-	todayButton.titleLabel.font = [UIFont boldSystemFontOfSize:12.f];
-	[todayButton setTitleColor:[UIColor colorWithRed:0.894f green:0.435f blue:0.353f alpha:1.f] forState:UIControlStateNormal];
+  UIButton *todayButton = [UIButton buttonWithType:UIButtonTypeCustom];
+  [todayButton setFrame:CGRectMake(0.f, 0.f, 57.f, 26.f)];
+  [todayButton setBackgroundImage:[UIImage imageNamed:@"Kal.bundle/CalBtn"] forState:UIControlStateNormal];
+  [todayButton setBackgroundImage:[UIImage imageNamed:@"Kal.bundle/CalBtnPress"] forState:UIControlStateHighlighted];
+  [todayButton setTitle:NSLocalizedString(@"CALENDAR_TODAY_BUTTON", "Today button in calendar picker") forState:UIControlStateNormal];
+  todayButton.titleLabel.font = [UIFont boldSystemFontOfSize:12.f];
+  [todayButton setTitleColor:[UIColor colorWithRed:0.894f green:0.435f blue:0.353f alpha:1.f] forState:UIControlStateNormal];
   todayButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
   todayButton.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
-	[todayButton addTarget:self action:@selector(handleSelectToday) forControlEvents:UIControlEventTouchUpInside];
+  [todayButton addTarget:self action:@selector(handleSelectToday) forControlEvents:UIControlEventTouchUpInside];
 
-	return [[UIBarButtonItem alloc] initWithCustomView:todayButton];
+  return [[UIBarButtonItem alloc] initWithCustomView:todayButton];
 }
 
 - (UIButton *)cancelUIButton
 {
-	UIButton *cancelButton = [UIButton buttonWithType:UIButtonTypeCustom];
-	[cancelButton setFrame:CGRectMake(0, 0, 57, 26)];
-	[cancelButton setBackgroundImage:[UIImage imageNamed:@"Kal.bundle/CalBtn"] forState:UIControlStateNormal];
-	[cancelButton setBackgroundImage:[UIImage imageNamed:@"Kal.bundle/CalBtnPress"] forState:UIControlStateHighlighted];
-	[cancelButton setTitle:NSLocalizedString(@"CALENDAR_CANCEL_BUTTON", "Cancel button in calendar picker") forState:UIControlStateNormal];
-	cancelButton.titleLabel.font = [UIFont boldSystemFontOfSize:12.f];
-	[cancelButton setTitleColor:[UIColor colorWithRed:0.757f green:0.757f blue:0.757f alpha:1.f] forState:UIControlStateNormal];
+  UIButton *cancelButton = [UIButton buttonWithType:UIButtonTypeCustom];
+  [cancelButton setFrame:CGRectMake(0, 0, 57, 26)];
+  [cancelButton setBackgroundImage:[UIImage imageNamed:@"Kal.bundle/CalBtn"] forState:UIControlStateNormal];
+  [cancelButton setBackgroundImage:[UIImage imageNamed:@"Kal.bundle/CalBtnPress"] forState:UIControlStateHighlighted];
+  [cancelButton setTitle:NSLocalizedString(@"CALENDAR_CANCEL_BUTTON", "Cancel button in calendar picker") forState:UIControlStateNormal];
+  cancelButton.titleLabel.font = [UIFont boldSystemFontOfSize:12.f];
+  [cancelButton setTitleColor:[UIColor colorWithRed:0.757f green:0.757f blue:0.757f alpha:1.f] forState:UIControlStateNormal];
   [cancelButton setTitleColor:[UIColor whiteColor] forState:UIControlStateHighlighted];
-	cancelButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
+  cancelButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
   cancelButton.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
 	
-	return cancelButton;
+  return cancelButton;
 }
 
 - (UIBarButtonItem *)cancelBarButton
 {
-	UIButton *cancelButton = [self cancelUIButton];
-	[cancelButton addTarget:self action:@selector(handleCancel:) forControlEvents:UIControlEventTouchUpInside];
-
-	return [[UIBarButtonItem alloc] initWithCustomView:cancelButton];
+  UIButton *cancelButton = [self cancelUIButton];
+  [cancelButton addTarget:self action:@selector(handleCancel:) forControlEvents:UIControlEventTouchUpInside];
+  
+  return [[UIBarButtonItem alloc] initWithCustomView:cancelButton];
 }
 
 - (void)handleCancel:(UIButton *)sender
@@ -204,36 +213,37 @@
 
 - (void)didReceiveMemoryWarning
 {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+  [super didReceiveMemoryWarning];
+  // Dispose of any resources that can be recreated.
 }
 
 #pragma mark - UITableViewDelegate protocol conformance
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	return 54;
+  return 54;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	selectedEvent = [[dataSource items] objectAtIndex:indexPath.row];
-		
-	if ([selectedEvent isKindOfClass:[WAArticle class]]) {		
-		WAEventViewController *eventVC = [WAEventViewController controllerForArticle:selectedEvent];
-		
-		if (isPad()) {
-			UINavigationController *navC = [[WANavigationController alloc] initWithRootViewController:eventVC];
-			navC.modalPresentationStyle = UIModalPresentationFormSheet;
-			[self presentViewController:navC animated:YES completion:nil];
-			
-		} else {
-		  if (self.navigationController)
-			[self.navigationController pushViewController:eventVC animated:YES];
-			
-		}
-
+  selectedEvent = [[dataSource items] objectAtIndex:indexPath.row];
+  
+  if ([selectedEvent isKindOfClass:[WAArticle class]]) {
+	WAEventViewController *eventVC = [WAEventViewController controllerForArticle:selectedEvent];
+	
+	if (isPad()) {
+	  UINavigationController *navC = [[WANavigationController alloc] initWithRootViewController:eventVC];
+	  navC.modalPresentationStyle = UIModalPresentationFormSheet;
+	  [self presentViewController:navC animated:YES completion:nil];
+	  
+	} else {
+	  
+	  if (self.navigationController)
+		[self.navigationController pushViewController:eventVC animated:YES];
+	  
 	}
+
+  }
 	
 }
 
@@ -252,7 +262,7 @@
 - (BOOL)shouldAutorotate
 {
 	
-	return YES;
+  return YES;
 	
 }
 
@@ -262,10 +272,11 @@
 {
   
   __weak WACalendarPickerViewController *wSelf = self;
+  NSDate *pickedDate = [[calPicker selectedNSDate] copy];
   return (UIBarButtonItem *)WABarButtonItem([UIImage imageNamed:@"EventsIcon"], @"", ^{
 	WAAppDelegate_iOS *appDelegate = (WAAppDelegate_iOS*)AppDelegate();
 	[appDelegate.slidingMenu.viewDeckController closeLeftView];
-	[appDelegate.slidingMenu switchToViewStyle:WAEventsViewStyle onDate:[calPicker selectedNSDate]];
+	[appDelegate.slidingMenu switchToViewStyle:WAEventsViewStyle onDate:pickedDate];
 	if (wSelf.onDismissBlock)
 	  wSelf.onDismissBlock();
   });
@@ -276,10 +287,11 @@
 {
 
   __weak WACalendarPickerViewController *wSelf = self;
+  NSDate *pickedDate = [[calPicker selectedNSDate] copy];
   return (UIBarButtonItem *)WABarButtonItem([UIImage imageNamed:@"PhotosIcon"], @"", ^{
 	WAAppDelegate_iOS *appDelegate = (WAAppDelegate_iOS*)AppDelegate();
 	[appDelegate.slidingMenu.viewDeckController closeLeftView];
-	[appDelegate.slidingMenu switchToViewStyle:WAPhotosViewStyle onDate:[calPicker selectedNSDate]];
+	[appDelegate.slidingMenu switchToViewStyle:WAPhotosViewStyle onDate:pickedDate];
 	if (wSelf.onDismissBlock)
 	  wSelf.onDismissBlock();
   });
@@ -290,10 +302,11 @@
 {
   
   __weak WACalendarPickerViewController *wSelf = self;
+  NSDate *pickedDate = [[calPicker selectedNSDate] copy];
   return (UIBarButtonItem*)WABarButtonItem([UIImage imageNamed:@"DocumentsIcon"], @"", ^{
 	WAAppDelegate_iOS *appDelegate = (WAAppDelegate_iOS*)AppDelegate();
 	[appDelegate.slidingMenu.viewDeckController closeLeftView];
-	[appDelegate.slidingMenu switchToViewStyle:WADocumentsViewStyle onDate:[calPicker selectedNSDate]];
+	[appDelegate.slidingMenu switchToViewStyle:WADocumentsViewStyle onDate:pickedDate];
 	if (wSelf.onDismissBlock)
 	  wSelf.onDismissBlock();
   });
@@ -304,10 +317,11 @@
 {
   
   __weak WACalendarPickerViewController *wSelf = self;
+  NSDate *pickedDate = [[calPicker selectedNSDate] copy];
   return (UIBarButtonItem*)WABarButtonItem([UIImage imageNamed:@"Webicon"], @"", ^{
 	WAAppDelegate_iOS *appDelegate = (WAAppDelegate_iOS*)AppDelegate();
 	[appDelegate.slidingMenu.viewDeckController closeLeftView];
-	[appDelegate.slidingMenu switchToViewStyle:WAWebpagesViewStyle onDate:[calPicker selectedNSDate]];
+	[appDelegate.slidingMenu switchToViewStyle:WAWebpagesViewStyle onDate:pickedDate];
 	if (wSelf.onDismissBlock)
 	  wSelf.onDismissBlock();
 

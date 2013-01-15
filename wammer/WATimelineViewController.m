@@ -209,6 +209,10 @@
 #pragma mark - NSFetchedResultsControllerDelegate 
 - (void) controller:(NSFetchedResultsController *)controller didChangeObject:(id)anObject atIndexPath:(NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type newIndexPath:(NSIndexPath *)newIndexPath {
 	
+  if (![self.collectionView numberOfItemsInSection:indexPath.section]) {
+	[self.collectionView reloadData];
+	return;
+  }
 	switch (type) {
 		case NSFetchedResultsChangeInsert: {
 			[self.collectionView insertItemsAtIndexPaths:@[newIndexPath]];
@@ -413,39 +417,49 @@ CGFloat (^rowSpacing) (UICollectionView *) = ^ (UICollectionView *collectionView
 }
 
 - (void) calButtonPressed:(id)sender {
- 
+  
   if (isPad()) {
 	
 	CGRect frame = CGRectMake(0, 0, 320, 500);
 	
 	__weak WATimelineViewController *wSelf = self;
 	WACalendarPickerViewController *calVC = [[WACalendarPickerViewController alloc] initWithFrame:frame selectedDate:self.currentDisplayedDate];
-	self.currentDisplayedDate = WAEventsViewStyle;
+	calVC.currentViewStyle = WAEventsViewStyle;
 	WANavigationController *wrappedNavVC = [WACalendarPickerViewController wrappedNavigationControllerForViewController:calVC forStyle:WACalendarPickerStyleWithCancel];
 	
 	UIPopoverController *popOver = [[UIPopoverController alloc] initWithContentViewController:wrappedNavVC];
 	[popOver presentPopoverFromRect:CGRectMake(self.collectionView.frame.size.width/2, 50, 1, 1) inView:self.collectionView permittedArrowDirections:UIPopoverArrowDirectionUp animated:YES];
 	self.calendarPopoverForIPad = popOver;
+	self.calendarPopoverForIPad.delegate = self;
 	calVC.onDismissBlock = ^{
 	  [wSelf.calendarPopoverForIPad dismissPopoverAnimated:YES];
+	  wSelf.calendarPopoverForIPad = nil;
 	};
-
+	
   } else {
 	
 	CGRect frame = self.view.frame;
 	frame.origin = CGPointMake(0, 0);
-	WACalendarPickerViewController *calVC = [[WACalendarPickerViewController alloc] initWithFrame:frame selectedDate:self.currentDisplayedDate];
-	self.currentDisplayedDate = WAEventsViewStyle;
+	__block WACalendarPickerViewController *calVC = [[WACalendarPickerViewController alloc] initWithFrame:frame selectedDate:self.currentDisplayedDate];
+	calVC.currentViewStyle = WAEventsViewStyle;
+	calVC.onDismissBlock = [^{
+	  [calVC.navigationController dismissViewControllerAnimated:YES completion:nil];
+	  calVC = nil;
+	} copy];
 	WANavigationController *wrappedNavVC = [WACalendarPickerViewController wrappedNavigationControllerForViewController:calVC forStyle:WACalendarPickerStyleWithCancel];
-	calVC.onDismissBlock = ^{
-	  [wrappedNavVC dismissViewControllerAnimated:YES completion:nil];
-	};
 	
 	wrappedNavVC.modalPresentationStyle = UIModalPresentationFullScreen;
 	wrappedNavVC.modalTransitionStyle =  UIModalTransitionStyleCoverVertical;
 	[self presentViewController:wrappedNavVC animated:YES completion:nil];
 	
   }
+  
+}
+
+
+-(void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController {
+
+  self.calendarPopoverForIPad = nil;
   
 }
 

@@ -254,8 +254,16 @@ NSString * const WARemoteAttachmentSmallSubtype = @"small";
 			 options:apiOptions
 		         validator:WARemoteInterfaceGenericNoErrorValidator()
 		    successHandler: ^ (NSDictionary *inResponseOrNil, IRWebAPIRequestContext *inResponseContext) {
+		      NSMutableArray *successIDs = [NSMutableArray arrayWithArray:inResponseOrNil[@"success_ids"]];
+		      NSArray *failureIDs = inResponseOrNil[@"failure_ids"];
+		      for (NSArray *failureID in failureIDs) {
+		        // Duplicated object_id
+		        if ([failureID[1] isEqualToNumber:@(0x6000+70)]) {
+			[successIDs addObject:failureID[0]];
+		        }
+		      }
 		      if (successBlock)
-		        successBlock(inResponseOrNil[@"success_ids"]);}
+		        successBlock(successIDs);}
 		    failureHandler:WARemoteInterfaceGenericFailureHandler(^ (NSError *anError){
         if (failureBlock)
 	failureBlock(anError);})];
