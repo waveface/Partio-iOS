@@ -23,6 +23,7 @@ static NSString * const kWASegueSettingsToOAuth = @"WASegueSettingsToOAuth";
 @property (nonatomic, strong) WASnsConnectSwitch *googleConnectSwitch;
 @property (nonatomic, strong) WASnsConnectSwitch *twitterConnectSwitch;
 @property (nonatomic, strong) WASnsConnectSwitch *foursquareConnectSwitch;
+@property (nonatomic, strong) WAOverlayBezel *busyBezel;
 
 @end
 
@@ -61,6 +62,8 @@ static NSString * const kWASegueSettingsToOAuth = @"WASegueSettingsToOAuth";
   self.twitterConnectSwitch.enabled = NO;
   self.foursquareConnectSwitch.enabled = NO;
 
+  self.busyBezel = [WAOverlayBezel bezelWithStyle:WAActivityIndicatorBezelStyle];
+
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -71,10 +74,17 @@ static NSString * const kWASegueSettingsToOAuth = @"WASegueSettingsToOAuth";
 
 }
 
+- (void)viewWillDisappear:(BOOL)animated {
+
+  [super viewWillDisappear:animated];
+  
+  [self.busyBezel dismiss];
+
+}
+
 - (void) reloadStatus {
   
-  WAOverlayBezel *busyBezel = [WAOverlayBezel bezelWithStyle:WAActivityIndicatorBezelStyle];
-  [busyBezel showWithAnimation:WAOverlayBezelAnimationFade];
+  [self.busyBezel showWithAnimation:WAOverlayBezelAnimationFade];
   
   __weak WAWebServiceSettingsViewController *wSelf = self;
   
@@ -123,7 +133,7 @@ static NSString * const kWASegueSettingsToOAuth = @"WASegueSettingsToOAuth";
         
       }
 
-      [busyBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
+      [wSelf.busyBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
 
     });
     
@@ -133,7 +143,7 @@ static NSString * const kWASegueSettingsToOAuth = @"WASegueSettingsToOAuth";
     
     dispatch_async(dispatch_get_main_queue(), ^{
 
-      [busyBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
+      [wSelf.busyBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
       
     });
     
