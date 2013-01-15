@@ -5612,7 +5612,6 @@
 				TARGETED_DEVICE_FAMILY = "1,2";
 				USER_HEADER_SEARCH_PATHS = "\"$(PROJECT_DIR)/external/IRFoundations\"/** \"$(SDKROOT)/usr/include/libxml2\"/** \"$(PROJECT_DIR)/external/IRWebAPIKit\"/** \"$(PROJECT_DIR)/external/IRDiscreteLayoutManager\"/** \"$(PROJECT_DIR)/external/IRTextAttributor\"/** \"$(PROJECT_DIR)/external/IRSlidingSplitViewController\"/** \"$(PROJECT_DIR)/external/IRRecurrenceMachine\"/** \"$(PROJECT_DIR)/external/IRObjectQueue\"/** \"$(PROJECT_DIR)/external/WFPresentation/Bindings/Objective-C\"/** $(CONFIGURATION_BUILD_DIR)/usr/local/include/** \"$(PROJECT_DIR)/external/SocketRocket\"/** \"$(PROJECT_DIR)/external/AQGridView/Classes\"/** \"$(PROJECT_DIR)/external/Kal/src\"/**";
 				VALID_ARCHS = "i386 armv7";
-				WF_USES_CRASHLYTICS = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Beta;
@@ -6170,7 +6169,6 @@
 				TARGETED_DEVICE_FAMILY = "1,2";
 				USER_HEADER_SEARCH_PATHS = "\"$(PROJECT_DIR)/external/IRFoundations\"/** \"$(SDKROOT)/usr/include/libxml2\"/** \"$(PROJECT_DIR)/external/IRWebAPIKit\"/** \"$(PROJECT_DIR)/external/IRDiscreteLayoutManager\"/** \"$(PROJECT_DIR)/external/IRTextAttributor\"/** \"$(PROJECT_DIR)/external/IRSlidingSplitViewController\"/** \"$(PROJECT_DIR)/external/IRRecurrenceMachine\"/** \"$(PROJECT_DIR)/external/IRObjectQueue\"/** \"$(PROJECT_DIR)/external/WFPresentation/Bindings/Objective-C\"/** $(CONFIGURATION_BUILD_DIR)/usr/local/include/** \"$(PROJECT_DIR)/external/SocketRocket\"/** \"$(PROJECT_DIR)/external/AQGridView/Classes\"/** \"$(PROJECT_DIR)/external/Kal/src\"/**";
 				VALID_ARCHS = "i386 armv7";
-				WF_USES_CRASHLYTICS = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -6238,7 +6236,6 @@
 				TARGETED_DEVICE_FAMILY = "1,2";
 				USER_HEADER_SEARCH_PATHS = "\"$(PROJECT_DIR)/external/IRFoundations\"/** \"$(SDKROOT)/usr/include/libxml2\"/** \"$(PROJECT_DIR)/external/IRWebAPIKit\"/** \"$(PROJECT_DIR)/external/IRDiscreteLayoutManager\"/** \"$(PROJECT_DIR)/external/IRTextAttributor\"/** \"$(PROJECT_DIR)/external/IRSlidingSplitViewController\"/** \"$(PROJECT_DIR)/external/IRRecurrenceMachine\"/** \"$(PROJECT_DIR)/external/IRObjectQueue\"/** \"$(PROJECT_DIR)/external/WFPresentation/Bindings/Objective-C\"/** $(CONFIGURATION_BUILD_DIR)/usr/local/include/** \"$(PROJECT_DIR)/external/SocketRocket\"/** \"$(PROJECT_DIR)/external/AQGridView/Classes\"/** \"$(PROJECT_DIR)/external/Kal/src\"/**";
 				VALID_ARCHS = "i386 armv7";
-				WF_USES_CRASHLYTICS = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
