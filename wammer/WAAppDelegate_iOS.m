@@ -160,13 +160,6 @@ static NSString *const kTrackingId = @"UA-27817516-7";
       
     });
     
-    WF_CRASHLYTICS(^ {
-      
-      [Crashlytics startWithAPIKey:kWACrashlyticsAPIKey];
-      [Crashlytics sharedInstance].debugMode = YES;
-      
-    });
-    
   }
   
   AVAudioSession * const audioSession = [AVAudioSession sharedInstance];
@@ -253,10 +246,19 @@ extern CFAbsoluteTime StartTime;
 #pragma clang pop
 #endif
   
+  
+  dispatch_async(dispatch_get_main_queue(), ^{
+	[Crashlytics startWithAPIKey:kWACrashlyticsAPIKey];
+	WAUser *user = [[WADataStore defaultStore] mainUserInContext:[[WADataStore defaultStore] defaultAutoUpdatedMOC]];
+	[Crashlytics setUserIdentifier:user.identifier];
+	[Crashlytics setUserEmail:user.email];
+	[Crashlytics setUserName:user.nickname];
+  });
+  
   dispatch_async(dispatch_get_main_queue(), ^{
     NSLog(@"Stream Launched in %0.2f seconds on %@.", CFAbsoluteTimeGetCurrent() - StartTime, [UIDevice currentDevice].model);
   });
-  
+ 
   return YES;
 }
 
