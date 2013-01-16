@@ -50,16 +50,18 @@
 		WAArticle *article = (WAArticle *)[moc irManagedObjectForURI:anArticleURLOrNil];
 		if (article) {
 			article.draft = (id)kCFBooleanFalse;
-			CFUUIDRef theUUID = CFUUIDCreate(kCFAllocatorDefault);
-			if (theUUID)
-				article.identifier = [((__bridge_transfer NSString *)CFUUIDCreateString(kCFAllocatorDefault, theUUID)) lowercaseString];
-			CFRelease(theUUID);
+		  
+//			CFUUIDRef theUUID = CFUUIDCreate(kCFAllocatorDefault);
+//			if (theUUID)
+//				article.identifier = [((__bridge_transfer NSString *)CFUUIDCreateString(kCFAllocatorDefault, theUUID)) lowercaseString];
+//			CFRelease(theUUID);
+		   
 			article.dirty = (id)kCFBooleanTrue;
 			article.creationDeviceName = [UIDevice currentDevice].name;
 			[moc save:nil];
 		}
 		
-		[ds updateArticle:anArticleURLOrNil onSuccess: ^ {
+	  //[ds updateArticle:anArticleURLOrNil onSuccess: ^ {
 		
 //			dispatch_async(dispatch_get_main_queue(), ^ {
 //			
@@ -73,7 +75,7 @@
 //				
 //			});		
 		
-		} onFailure: ^ (NSError *error) {
+	  //	} onFailure: ^ (NSError *error) {
 		
 //			dispatch_async(dispatch_get_main_queue(), ^ {
 //			
@@ -112,7 +114,7 @@
 //			
 //			});
 					
-		}];
+	  //	}];
 	
 	}];
 
