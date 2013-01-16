@@ -369,7 +369,7 @@
                             </tableViewSection>
                             <tableViewSection headerTitle="PHOTO_IMPORT_SETTINGS_HEADER" footerTitle="PHOTO_IMPORT_SETTINGS_FOOTER" id="gj0-e5-1Bs">
                                 <cells>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" indentationWidth="10" textLabel="Scf-t9-USz" style="IBUITableViewCellStyleDefault" id="ens-rf-kIW" customClass="WALocalizedTableViewCell">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" textLabel="Scf-t9-USz" style="IBUITableViewCellStyleDefault" id="ens-rf-kIW" customClass="WALocalizedTableViewCell">
                                         <rect key="frame" x="0.0" y="154" width="320" height="45"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
