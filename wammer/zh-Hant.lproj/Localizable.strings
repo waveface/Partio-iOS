@@ -413,7 +413,7 @@
 "PHOTO_UPLOAD_CONTROLLER_TITLE" = "照片自動上傳";
 
 /* String on customized status bar */
-"PHOTO_UPLOAD_STATUS_BAR_COMPLETE" = "同步成功";
+"PHOTO_UPLOAD_STATUS_BAR_COMPLETE" = "同步完成";
 
 /* String on customized status bar */
 "PHOTO_UPLOAD_STATUS_BAR_FAIL" = "同步失敗";

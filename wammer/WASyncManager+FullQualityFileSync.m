@@ -103,16 +103,19 @@
 
 - (BOOL) canPerformBlobSync {
   
-  WARemoteInterface * const ri = [WARemoteInterface sharedInterface];
-  
-  if (!ri.userToken) {
-    return NO;
-  }
-  
   if (![[NSUserDefaults standardUserDefaults] boolForKey:kWAPhotoImportEnabled]) {
     return NO;
   }
   
+  WARemoteInterface * const ri = [WARemoteInterface sharedInterface];
+  if (!ri.userToken) {
+    return NO;
+  }
+  
+  if (![[NSUserDefaults standardUserDefaults] boolForKey:kWAUseCellularEnabled] && ![ri hasWiFiConnection]) {
+    return NO;
+  }
+
   BOOL const hasReachableCloud = [ri hasReachableCloud];
   BOOL const hasReachableStation = [ri hasReachableStation];
   

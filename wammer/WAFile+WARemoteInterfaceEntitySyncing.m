@@ -418,7 +418,12 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
       callback(WAFileEntitySyncingError(WAFileSyncingErrorCodePhotoImportDisabled, @"Photo import is disabled, stop sync files", nil));
       return;
     }
-    
+
+    if (![[NSUserDefaults standardUserDefaults] boolForKey:kWAUseCellularEnabled] && ![[WARemoteInterface sharedInterface] hasWiFiConnection]) {
+      callback(WAFileEntitySyncingError(WAFileSyncingErrorCodeSyncNotAllowed, @"Syncing is not allowed, stop sync files", nil));
+      return;
+    }
+
     WARemoteInterface *ri = [WARemoteInterface sharedInterface];
     
     [ri createAttachmentWithFile:fileURL group:ri.primaryGroupIdentifier options:options onSuccess: ^ (NSString *attachmentIdentifier) {
