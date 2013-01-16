@@ -208,6 +208,11 @@ static NSString * const kWAFetchingAnimation = @"WAFetchingAnimation";
     return;
   }
 
+  // do not dismiss status bar if imported photos haven't sync to cloud yet
+  if (self.isImportingPhotos && !self.isSyncingPhotos) {
+    return;
+  }
+  
   self.isSyncingComplete = YES;
 
   if (self.isFetchingData) {

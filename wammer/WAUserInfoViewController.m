@@ -26,7 +26,7 @@
 #import "IRRelativeDateFormatter+WAAdditions.h"
 #import "WAAppDelegate_iOS.h"
 
-@interface WAUserInfoViewController ()
+@interface WAUserInfoViewController () <UIAlertViewDelegate>
 
 @property (nonatomic, readwrite, retain) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, retain) WAUser *user;
@@ -71,11 +71,11 @@
 + (NSSet *) keyPathsForValuesAffectingContentSizeForViewInPopover {
   
   return [NSSet setWithObjects:
-	
-	@"tableView.contentInset",
-	@"tableView.contentSize",
-	
-	nil];
+          
+          @"tableView.contentInset",
+          @"tableView.contentSize",
+          
+          nil];
   
 }
 
@@ -126,9 +126,9 @@
     }];
     
   }];
-
+  
   self.versionCell.textLabel.text = [[NSBundle mainBundle] displayVersionString];
-
+  
 }
 
 - (void) irObserveObject:(id)target keyPath:(NSString *)keyPath options:(NSKeyValueObservingOptions)options context:(void *)context withBlock:(IRObservingsCallbackBlock)block {
@@ -140,13 +140,6 @@
   
 }
 
-- (void) viewWillAppear:(BOOL)animated {
-  
-  [super viewWillAppear:animated];
-  
-  [self.tableView reloadData];
-  
-}
 
 - (NSManagedObjectContext *) managedObjectContext {
   
@@ -225,21 +218,21 @@
   }
   
   if (hitCell == self.logoutCell) {
-
+    
     WAAppDelegate_iOS *appDelegate = (WAAppDelegate_iOS *)AppDelegate();
     IRAction *cancelAction = [IRAction actionWithTitle:NSLocalizedString(@"ACTION_CANCEL", nil) block:nil];
     IRAction *signOutAction = [IRAction
-			 actionWithTitle:NSLocalizedString(@"ACTION_SIGN_OUT", nil)
-			 block: ^ {
-			   if ([appDelegate respondsToSelector:@selector(applicationRootViewControllerDidRequestReauthentication:)])
-			     [appDelegate performSelector:@selector( applicationRootViewControllerDidRequestReauthentication: ) withObject:nil];
-			 }];
-
+                               actionWithTitle:NSLocalizedString(@"ACTION_SIGN_OUT", nil)
+                               block: ^ {
+                                 if ([appDelegate respondsToSelector:@selector(applicationRootViewControllerDidRequestReauthentication:)])
+                                   [appDelegate performSelector:@selector( applicationRootViewControllerDidRequestReauthentication: ) withObject:nil];
+                               }];
+    
     [[IRAlertView alertViewWithTitle:NSLocalizedString(@"ACTION_SIGN_OUT", nil)
-		         message:NSLocalizedString(@"SIGN_OUT_CONFIRMATION", nil)
-		    cancelAction:cancelAction
-		    otherActions:@[signOutAction]] show];
-
+                             message:NSLocalizedString(@"SIGN_OUT_CONFIRMATION", nil)
+                        cancelAction:cancelAction
+                        otherActions:@[signOutAction]] show];
+    
   }
   
   [aTV deselectRowAtIndexPath:indexPath animated:NO];
@@ -272,4 +265,33 @@
   
 }
 
+#pragma mark - UIViewController
+- (void) viewWillAppear:(BOOL)animated {
+  [super viewWillAppear:animated];
+  [self.tableView reloadData];
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+  [super viewDidAppear:animated];
+  [self becomeFirstResponder];
+}
+
+#pragma mark - Motion Event
+- (BOOL)canBecomeFirstResponder {
+  return YES;
+}
+
+- (void)motionEnded:(UIEventSubtype)motion withEvent:(UIEvent *)event {
+  if (motion == UIEventSubtypeMotionShake) {
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Debug Mode" message:@"" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Crash", nil];
+    [alertView show];
+  }
+}
+
+#pragma mark - UIAlertView Delegate
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+  if (buttonIndex == 1) {
+    [[Crashlytics sharedInstance] crash];
+  }
+}
 @end

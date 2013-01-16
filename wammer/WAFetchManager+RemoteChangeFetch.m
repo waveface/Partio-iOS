@@ -7,6 +7,7 @@
 //
 
 #import "WAFetchManager+RemoteChangeFetch.h"
+#import "WADefines.h"
 #import "Foundation+IRAdditions.h"
 #import "WARemoteInterface.h"
 #import "WADataStore.h"
@@ -33,7 +34,7 @@
     WARemoteInterface *ri = [WARemoteInterface sharedInterface];
     
     [ri retrieveChangesSince:currentSeq inGroup:ri.primaryGroupIdentifier onSuccess:^(NSArray *changedArticles, NSArray *changedFiles, NSNumber *nextSeq) {
-
+      
       // no changed articles/files
       if (![changedArticles count] && ![changedFiles count]) {
         [wSelf endPostponingFetch];
@@ -115,7 +116,7 @@
         
         [outdatedFiles addObject:attach];
       }
-
+      
       [ds performBlock:^{
         
         NSManagedObjectContext *context = [[WADataStore defaultStore] disposableMOC];
@@ -139,10 +140,26 @@
       }
       
       [wSelf.articleFetchOperationQueue addOperation:tailOp];
-
+      
     } onFailure:^(NSError *error) {
+      
+      if (error.code == (0xB000 + 5)) {
 
-      NSLog(@"Unable to fetch remote changes since %@, error: %@", currentSeq, error);
+        // No OP for USERTRACK.NO_USERTRACKS_TO_HANDLE
+
+      } else if (error.code == (0xB000 + 4) || error.code == (0xB000 + 7)) {
+
+        // Refetch all posts for USERTRACK.TOO_OLD_SEQ_NUM & USERTRACK.TOO_MANY_TO_HANDLE
+        NSLog(@"Reset the min seq number and re-fetch all posts: %@", error);
+        [[NSUserDefaults standardUserDefaults] setBool:NO forKey:kWAFirstArticleFetched];
+        [ds setMinSequenceNumber:@(INT_MAX)]; // restart fetching the articles from current sequential number
+        
+      } else {
+        
+        NSLog(@"Unable to fetch remote changes since %@, error: %@", currentSeq, error);
+        
+      }
+      
       [wSelf endPostponingFetch];
       callback(error);
       

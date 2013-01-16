@@ -139,9 +139,7 @@
 	@"importedFilesCount",
 	@"syncedFilesCount",
 	@"photoImportOperationQueue.operationCount",
-	@"articleSyncOperationQueue.operationCount",
-	@"fileSyncOperationQueue.operationCount",
-	@"fileMetadataSyncOperationQueue.operationCount"
+	@"articleSyncOperationQueue.operationCount"
 	]];
 }
 
@@ -163,8 +161,7 @@
   // there will be at least one tail op if any sync operation exists in these op queue,
   // and metadata sync will not show on status bar
   return (([self.photoImportOperationQueue operationCount] > 1) ||
-	([self.articleSyncOperationQueue operationCount] > 1) ||
-	([self.fileSyncOperationQueue operationCount] > 1));
+	([self.articleSyncOperationQueue operationCount] > 1));
 
 }
 
