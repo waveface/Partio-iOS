@@ -11,6 +11,8 @@
 #import "WARemoteInterface.h"
 #import "WAStation.h"
 
+static NSString * const kWAHostCellReuseIdentifier = @"WAHostCellReuseIdentifier";
+
 @interface WAConnectionStatusViewController ()
 
 @property (nonatomic, strong) NSFetchedResultsController *fetchedResultsController;
@@ -87,12 +89,7 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
 
-  static NSString *cellIdentifier = @"hostCell";
-  UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:cellIdentifier];
-  if (!cell) {
-    cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:cellIdentifier];
-    cell.selectionStyle = UITableViewCellSelectionStyleNone;
-  }
+  UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:kWAHostCellReuseIdentifier];
   
   cell.textLabel.text = @"";
   cell.accessoryType = UITableViewCellAccessoryNone;

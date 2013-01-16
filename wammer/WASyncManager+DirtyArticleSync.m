@@ -126,6 +126,10 @@
     return NO;
   }
 
+  if (![[NSUserDefaults standardUserDefaults] boolForKey:kWAUseCellularEnabled] && ![ri hasWiFiConnection]) {
+    return NO;
+  }
+
   return YES;
 
 }

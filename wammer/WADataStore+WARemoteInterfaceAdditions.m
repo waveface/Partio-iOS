@@ -274,7 +274,14 @@ NSString * const kWADataStoreArticleUpdateShowsBezels = @"WADataStoreArticleUpda
       if (![context save:&savingError])
         NSLog(@"%@: %@", NSStringFromSelector(_cmd), savingError);
       
-      
+      [wSelf setStorageQuota:userRep[@"quota"][@"doc"][@"origin_size"]];
+      [wSelf setStorageUsage:userRep[@"usage"][@"doc"][@"origin_size"]];
+      if ([userRep[@"billing"][@"type"] isEqualToString:@"free"]) {
+        [[NSUserDefaults standardUserDefaults] setInteger:WABusinessPlanFree forKey:kWABusinessPlan];
+      } else {
+        [[NSUserDefaults standardUserDefaults] setInteger:WABusinessPlanUltimate forKey:kWABusinessPlan];
+      }
+
       if (snsReps) {
         NSArray *facebookReps = [snsReps filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^ (id evaluatedObject, NSDictionary *bindings) {
 	

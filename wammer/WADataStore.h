@@ -21,14 +21,17 @@
 - (WAUser *) mainUserInContext:(NSManagedObjectContext *)context;
 - (void) setMainUser:(WAUser *)user inContext:(NSManagedObjectContext *)context;
 
-- (NSDate *) lastSyncSuccessDate;
-- (void) setLastSyncSuccessDate:(NSDate *)date;
-
 - (NSNumber *) minSequenceNumber;
 - (void) setMinSequenceNumber:(NSNumber *)seq;
 
 - (NSNumber *) maxSequenceNumber;
 - (void) setMaxSequenceNumber:(NSNumber *)seq;
+
+- (NSNumber *) storageQuota;
+- (void) setStorageQuota:(NSNumber *)quota;
+
+- (NSNumber *) storageUsage;
+- (void) setStorageUsage:(NSNumber *)usage;
 
 @end
 

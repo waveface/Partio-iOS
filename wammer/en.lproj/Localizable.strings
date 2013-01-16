@@ -439,6 +439,15 @@
 /* in day view */
 "PHOTOS_TITLE" = "PHOTOS";
 
+/* business plan in settings page */
+"PLAN_FREE" = "Free";
+
+/* business plan in settings page */
+"PLAN_PREMIUM" = "Paid";
+
+/* business plan in settings page */
+"PLAN_ULTIMATE" = "Paid";
+
 /* Title of view controller choosing plans */
 "PLANS_CONTROLLER_TITLE" = "PLANS";
 
@@ -469,7 +478,8 @@
 /* No comment provided by engineer. */
 "RESET_SETTINGS_CONFIRMATION_TITLE" = "Reset Settings?";
 
-/* Subtitle of searching network in setup done page. */
+/* Subtitle of searching network in settings page.
+   Subtitle of searching network in setup done page. */
 "SEARCHING_NETWORK_SUBTITLE" = "Searching AOStream network...";
 
 /* No comment provided by engineer. */
@@ -524,6 +534,9 @@
 
 /* Title of view controller setting personal cloud */
 "STORAGE_SETUP_CONTROLLER_TITLE" = "SETUP YOUR STORAGE";
+
+/* storage usage detail in settings page */
+"STORAGE_USAGE_DETAIL" = "%.1f%% of %@";
 
 /* Title on the text stack more / less toggle button for “Less” */
 "TEXT_ELEMENT_TOGGLE_LESS_TITLE" = "Less";

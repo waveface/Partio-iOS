@@ -406,6 +406,7 @@ extern CFAbsoluteTime StartTime;
   [[NSUserDefaults standardUserDefaults] setBool:NO forKey:kWAPhotoImportEnabled];
   [[NSUserDefaults standardUserDefaults] setBool:YES forKey:kWAAllCollectionsFetchOnce];
   [[NSUserDefaults standardUserDefaults] setBool:NO forKey:kWAFirstArticleFetched];
+  [[NSUserDefaults standardUserDefaults] setInteger:WABusinessPlanFree forKey:kWABusinessPlan];
   [[NSUserDefaults standardUserDefaults] synchronize];
   
   [self unsubscribeRemoteNotification];

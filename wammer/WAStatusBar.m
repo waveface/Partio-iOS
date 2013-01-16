@@ -10,6 +10,8 @@
 #import "UIImage+IRAdditions.h"
 #import "WAAppDelegate_iOS.h"
 #import "WASyncManager.h"
+#import "WADefines.h"
+#import "WARemoteInterface.h"
 
 #define kStatusBarHeight 20.0f
 #define kScreenWidth ((CGFloat)([UIScreen mainScreen].bounds.size.width))
@@ -208,9 +210,11 @@ static NSString * const kWAFetchingAnimation = @"WAFetchingAnimation";
     return;
   }
 
-  // do not dismiss status bar if imported photos haven't sync to cloud yet
-  if (self.isImportingPhotos && !self.isSyncingPhotos) {
-    return;
+  // do not dismiss status bar if imported photos are able to be synced to cloud
+  if ([[NSUserDefaults standardUserDefaults] boolForKey:kWAUseCellularEnabled] || [[WARemoteInterface sharedInterface] hasWiFiConnection]) {
+    if (self.isImportingPhotos && !self.isSyncingPhotos) {
+      return;
+    }
   }
   
   self.isSyncingComplete = YES;
