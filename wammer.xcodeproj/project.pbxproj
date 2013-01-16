@@ -103,7 +103,6 @@
 		4B57F2F9157F5D4300467AD4 /* WFPreviewTemplate-Discrete_Web_Image_Vertical.html in Resources */ = {isa = PBXBuildFile; fileRef = 4B57F2F8157F5D4300467AD4 /* WFPreviewTemplate-Discrete_Web_Image_Vertical.html */; };
 		4B6C222215F6020C00C19A7B /* WAAssetsLibraryManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 136C170215F48E8E0066B289 /* WAAssetsLibraryManager.m */; };
 		4B7FF980167994D700CC46BF /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FFB67956141E345C006F84E3 /* CoreText.framework */; };
-		4B83D88D169A811F0047350E /* WAFile.m in Sources */ = {isa = PBXBuildFile; fileRef = 13CCDE70168C466100962625 /* WAFile.m */; };
 		4B8581AF15F798F900EE11AC /* Icon_beta.png in Resources */ = {isa = PBXBuildFile; fileRef = 4B8581AB15F798F900EE11AC /* Icon_beta.png */; };
 		4B8581B015F798F900EE11AC /* Icon_beta@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4B8581AC15F798F900EE11AC /* Icon_beta@2x.png */; };
 		4B8581B515F7993100EE11AC /* Icon-72_beta.png in Resources */ = {isa = PBXBuildFile; fileRef = 4B8581B315F7993100EE11AC /* Icon-72_beta.png */; };
@@ -2102,7 +2101,7 @@
 		FFCD324E14B997B70035C4F5 /* WAModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = WAModel.xcdatamodel; sourceTree = "<group>"; };
 		FFCD325014B9EA4D0035C4F5 /* WAFile+WAAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WAFile+WAAdditions.h"; sourceTree = "<group>"; };
 		FFCD325114B9EA4D0035C4F5 /* WAFile+WAAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WAFile+WAAdditions.m"; sourceTree = "<group>"; };
-		FFCFE0FB142111E100B9E6AF /* wammer-iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "wammer-iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		FFCFE0FB142111E100B9E6AF /* AOStream.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AOStream.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FFD06A41156E206800021C55 /* WAModel 31.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WAModel 31.xcdatamodel"; sourceTree = "<group>"; };
 		FFD14F0514C5E24C0053116F /* Crashlytics.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = Crashlytics.framework; path = external/CrashlyticsSDK/Crashlytics.framework; sourceTree = "<group>"; };
 		FFD2D913141F4D3600F21D22 /* WAPreviewBadge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAPreviewBadge.h; sourceTree = "<group>"; };
@@ -3104,7 +3103,7 @@
 		FF73A53F13D6C2CC00D54EC6 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				FFCFE0FB142111E100B9E6AF /* wammer-iOS.app */,
+				FFCFE0FB142111E100B9E6AF /* AOStream.app */,
 				4B8CA96814BBE7BA006E06BB /* UnitTests.octest */,
 				7D0CDD00162E5A080027D35F /* StreamTests.octest */,
 			);
@@ -4029,7 +4028,7 @@
 			);
 			name = "wammer-iOS";
 			productName = "wammer-iOS";
-			productReference = FFCFE0FB142111E100B9E6AF /* wammer-iOS.app */;
+			productReference = FFCFE0FB142111E100B9E6AF /* AOStream.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -4920,7 +4919,6 @@
 				7DBE8DF6165B383C005C2347 /* WADayHeaderView.m in Sources */,
 				4BB0400916804C68009C3D08 /* WACollection+WARemoteInterfaceEntitySyncing.m in Sources */,
 				4B307DCF168C3A6300DD4A34 /* WACollection.m in Sources */,
-				4B83D88D169A811F0047350E /* WAFile.m in Sources */,
 				4B3AC462169C065700490DF7 /* WACollection+RemoteOperations.m in Sources */,
 				4B292C4816A50A8E008C2960 /* WAUser.m in Sources */,
 			);
@@ -5615,7 +5613,7 @@
 					"-weak_framework",
 					Social,
 				);
-				PRODUCT_NAME = "wammer-iOS";
+				PRODUCT_NAME = AOStream;
 				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos;
 				STREAM_BUNDLE_ID_SUFFIX = .beta;
@@ -6164,7 +6162,7 @@
 					"-weak_framework",
 					Social,
 				);
-				PRODUCT_NAME = "wammer-iOS";
+				PRODUCT_NAME = AOStream;
 				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos;
 				STREAM_BUNDLE_ID_SUFFIX = .develop;
@@ -6232,7 +6230,7 @@
 					"-weak_framework",
 					Social,
 				);
-				PRODUCT_NAME = "wammer-iOS";
+				PRODUCT_NAME = AOStream;
 				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos;
 				STREAM_BUNDLE_ID_SUFFIX = "";
