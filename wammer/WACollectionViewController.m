@@ -66,6 +66,7 @@ typedef NS_ENUM(NSUInteger, WACollectionSortMode){
 }
 
 - (void)viewDidAppear:(BOOL)animated {
+  [super viewDidAppear:animated];
   [self becomeFirstResponder];
 }
 
