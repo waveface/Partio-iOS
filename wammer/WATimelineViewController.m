@@ -41,9 +41,13 @@
 
 @property (nonatomic, readwrite, retain) UILongPressGestureRecognizer *longPressGR;
 
+@property (nonatomic, strong) NSMutableArray *objectsChanged;
+
 @end
 
-@implementation WATimelineViewController
+@implementation WATimelineViewController {
+  CGFloat (^rowSpacing) (UICollectionView *);
+}
 
 - (id) initWithDate:(NSDate*)date {
 	
@@ -77,7 +81,20 @@
   self.view.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
   self.longPressGR = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleMenu:)];
   [self.collectionView addGestureRecognizer:self.longPressGR];
-
+  
+  self.objectsChanged = [NSMutableArray array];
+  
+  rowSpacing = ^ (UICollectionView *collectionView) {
+	
+	CGFloat width = CGRectGetWidth(collectionView.frame);
+	CGFloat itemWidth = ((UICollectionViewFlowLayout*)collectionView.collectionViewLayout).itemSize.width;
+	int numCell = (int)(width / itemWidth);
+	
+	CGFloat w = ((int)((int)(width) % (int)(itemWidth))) / (numCell + 1);
+	
+	return w;
+  };
+  
   return self;
 	
 }
@@ -151,6 +168,11 @@
 	
 }
 
+- (void) viewWillDisappear:(BOOL)animated {
+  [super viewWillDisappear:animated];
+  self.fetchedResultsController = nil;
+}
+
 - (void)didReceiveMemoryWarning
 {
 	
@@ -208,21 +230,72 @@
 
 #pragma mark - NSFetchedResultsControllerDelegate 
 - (void) controller:(NSFetchedResultsController *)controller didChangeObject:(id)anObject atIndexPath:(NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type newIndexPath:(NSIndexPath *)newIndexPath {
-	
-  if (![self.collectionView numberOfItemsInSection:indexPath.section]) {
-	[self.collectionView reloadData];
-	return;
-  }
-	switch (type) {
-		case NSFetchedResultsChangeInsert: {
-			[self.collectionView insertItemsAtIndexPaths:@[newIndexPath]];
-			break;
-		}
-		case NSFetchedResultsChangeDelete:
-		case NSFetchedResultsChangeMove:
-		default:
-			break;
+  
+  NSMutableDictionary *change = [NSMutableDictionary dictionary];
+  
+  switch (type) {
+	case NSFetchedResultsChangeInsert: {
+	  change[@(type)] = [newIndexPath copy];
+	  break;
 	}
+	case NSFetchedResultsChangeUpdate: {
+	  change[@(type)] = [indexPath copy];
+	  break;
+	}
+	case NSFetchedResultsChangeDelete: {
+	  change[@(type)] = [indexPath copy];
+	  break;
+	}
+	case NSFetchedResultsChangeMove:
+	default:
+	  break;
+  }
+  
+  [self.objectsChanged addObject:change];
+  
+}
+
+- (void) controllerDidChangeContent:(NSFetchedResultsController *)controller {
+  
+  if (self.objectsChanged.count) {
+	
+	__weak WATimelineViewController *wSelf = self;
+	[self.collectionView performBatchUpdates:^{
+	  
+	  for (NSMutableDictionary *change in wSelf.objectsChanged) {
+		
+		[change enumerateKeysAndObjectsUsingBlock:^(NSNumber *key, NSIndexPath *idxPath, BOOL *stop) {
+		  
+		  NSFetchedResultsChangeType type = [key unsignedIntegerValue];
+		  switch (type) {
+			case NSFetchedResultsChangeInsert:
+			  [wSelf.collectionView insertItemsAtIndexPaths:@[idxPath]];
+			  break;
+			  
+			case NSFetchedResultsChangeDelete:
+			  [wSelf.collectionView deleteItemsAtIndexPaths:@[idxPath]];
+			  break;
+			  
+			case NSFetchedResultsChangeUpdate:
+			  [wSelf.collectionView reloadItemsAtIndexPaths:@[idxPath]];
+			  break;
+			  
+			default:
+			  break;
+		  }
+		  
+		}];
+		
+	  }
+	  
+	} completion:^(BOOL finished) {
+	  
+	
+	}];
+	
+	[self.objectsChanged removeAllObjects];
+	
+  }
 }
 
 #pragma mark - UICollectionView datasource
@@ -235,7 +308,8 @@
 
 - (NSInteger) collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
 
-  return [[self.fetchedResultsController fetchedObjects] count];
+  id <NSFetchedResultsSectionInfo> sectioInfo = [[self.fetchedResultsController sections] objectAtIndex:section];
+  return [sectioInfo numberOfObjects];
 	
 }
 
@@ -270,16 +344,6 @@
 
 #pragma mark - UICollectionViewFlowLayout datasource
 
-CGFloat (^rowSpacing) (UICollectionView *) = ^ (UICollectionView *collectionView) {
-	
-	CGFloat width = CGRectGetWidth(collectionView.frame);
-	CGFloat itemWidth = ((UICollectionViewFlowLayout*)collectionView.collectionViewLayout).itemSize.width;
-	int numCell = (int)(width / itemWidth);
-	
-	CGFloat w = ((int)((int)(width) % (int)(itemWidth))) / (numCell + 1);
-
-	return w;
-};
 
 - (CGSize) collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section {
 

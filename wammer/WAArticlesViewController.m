@@ -384,18 +384,8 @@
       
         ((char *)NULL)[1] = 0;
       
-      }],
-			
-			[IRAction actionWithTitle:@"Simulate Crashlytics Crash" block: ^ {
-      
-        WF_CRASHLYTICS(^ {
-				
-					[[Crashlytics sharedInstance] crash];
-				
-				});
-      
-      }],
-			
+      }],	
+					
 			[IRAction actionWithTitle:@"Trigger Token Expiry" block:^{
 			
 				[[NSNotificationCenter defaultCenter] postNotificationName:kWARemoteInterfaceDidObserveAuthenticationFailureNotification object:nil];
