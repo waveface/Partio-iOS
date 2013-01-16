@@ -21,6 +21,5 @@
 @property (nonatomic, readwrite, retain) IBOutletCollection(id) NSArray *noPhotoReminderViewElements;
 
 - (IBAction) handleCameraItemTap:(UIButton *)sender;
-- (IBAction) handlePreviewBadgeTap:(id)sender;
 
 @end

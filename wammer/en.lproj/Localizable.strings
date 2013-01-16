@@ -1,9 +1,6 @@
 /* accessibility label for adding photos in composition view */
 "ACCESS_ADD_PHOTO" = "Add Photo";
 
-/* accessibility label for webpage preview in composition view */
-"ACCESS_PREVIEW" = "Preview";
-
 /* add photo button in composition view */
 "ACTION_ADD" = "Add Photo";
 
@@ -169,8 +166,7 @@
 /* add photo button in composition view */
 "COMPOSITION_ONE_PHOTO_BUTTON_CAPTION_FORMAT" = "%i Photo";
 
-/* remove preview in iPad composition view
-   remove preview in iPhone composition view */
+/* remove preview in iPhone composition view */
 "COMPOSITION_REMOVE_CURRENT_PREVIEW" = "Remove Preview";
 
 /* Title for the composition view */
@@ -230,6 +226,12 @@
 
 /* Failed, underlying error description %@ */
 "ERROR_ARTICLE_ENTITY_SYNC_FAILURE_WITH_UNDERLYING_ERROR_DESCRIPTION_FORMAT" = "A necessary task failed: %@ — Your post has been saved as a draft.";
+
+/* The conjunction between description and location. */
+"EVENT_DESC_LOCATION_CONJUNCTION" = "EVENT_DESC_LOCATION_CONJUNCTION";
+
+/* The conjunction between description and people's names */
+"EVENT_DESC_PEOPLE_CONJUNCTION" = "EVENT_DESC_PEOPLE_CONJUNCTION";
 
 /* EVENT_PHOTO_NUMBER_LABEL */
 "EVENT_PHOTO_NUMBER_LABEL" = "%d PHOTOS";
@@ -564,9 +566,6 @@
 /* Email placeholder in login page
    Email placeholder in signup page */
 "USERNAME_PLACEHOLDER" = "me@example.com";
-
-/* preview button in composition view */
-"WEB_PREVIEW" = "Web Preview";
 
 /* Title of web service settings view controller */
 "WEB_SERVICES_TITLE" = "Web Services";

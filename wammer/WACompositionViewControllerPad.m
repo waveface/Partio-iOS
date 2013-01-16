@@ -8,7 +8,6 @@
 
 #import "WACompositionViewControllerPad.h"
 #import "UIKit+IRAdditions.h"
-#import "WAPreviewBadge.h"
 #import "WADataStore.h"
 #import "WACompositionViewPhotoCell.h"
 
@@ -17,8 +16,6 @@
 @property (nonatomic, readwrite, retain) UIPopoverController *imagePickerPopover;
 @property (nonatomic, readwrite, retain) UIButton *imagePickerPopoverPresentingSender;
 
-@property (nonatomic, readwrite, retain) WAPreviewBadge *previewBadge;
-@property (nonatomic, readwrite, retain) UIButton *previewBadgeButton;
 
 - (void) adjustPhotos;
 
@@ -26,7 +23,7 @@
 
 
 @implementation WACompositionViewControllerPad
-@synthesize photosView, noPhotoReminderView, toolbar, noPhotoReminderViewElements, previewBadge, previewBadgeButton;
+@synthesize photosView, noPhotoReminderView, toolbar, noPhotoReminderViewElements;
 @synthesize imagePickerPopover, imagePickerPopoverPresentingSender;
 
 - (id) init {
@@ -43,22 +40,6 @@
 
 }
 
-- (IBAction) handlePreviewBadgeTap:(id)sender {
-
-	if (!self.previewBadge.preview)
-		return;
-		
-	WAPreview *removedPreview = self.previewBadge.preview;
-	
-	[[[IRActionSheetController actionSheetControllerWithTitle:nil cancelAction:nil destructiveAction:[IRAction actionWithTitle:NSLocalizedString(@"COMPOSITION_REMOVE_CURRENT_PREVIEW", @"remove preview in iPad composition view") block: ^ {
-	
-		self.article.previews = [self.article.previews objectsPassingTest: ^ (id obj, BOOL *stop) {
-			return (BOOL)![obj isEqual:removedPreview];
-		}];
-		
-	}] otherActions:nil] singleUseActionSheet] showFromRect:self.previewBadge.bounds inView:self.previewBadge animated:NO];
-
-}
 
 - (IBAction) handleCameraItemTap:(UIButton *)sender {
 
@@ -123,8 +104,8 @@
 		})[[UIApplication sharedApplication].statusBarOrientation];
 					
     [[UIApplication sharedApplication] irBeginIgnoringStatusBarAppearanceRequests];
-          
-		[nrSelf presentModalViewController:controller animated:NO];
+      
+	  [nrSelf presentViewController:controller animated:NO completion:nil];
 		
 		[[UIApplication sharedApplication].keyWindow.layer addAnimation:pushTransition forKey:kCATransition];
 		
@@ -162,7 +143,7 @@
 		[UIInterfaceOrientationLandscapeRight] = kCATransitionFromRight,
 	})[[UIApplication sharedApplication].statusBarOrientation];
 	
-	[controller dismissModalViewControllerAnimated:NO];
+  [controller dismissViewControllerAnimated:NO completion:nil];
 	
   [[UIApplication sharedApplication] irEndIgnoringStatusBarAppearanceRequests];
 
@@ -279,23 +260,7 @@
 	contentTextBackgroundView.layer.cornerRadius = 4;
 	contentTextBackgroundView.layer.masksToBounds = YES;
 	[self.contentTextView.superview insertSubview:contentTextBackgroundView belowSubview:self.contentTextView];
-	
-	self.previewBadge = [[WAPreviewBadge alloc] initWithFrame:photosViewWrapper.frame];
-	self.previewBadge.autoresizingMask = photosViewWrapper.autoresizingMask;
-	self.previewBadge.frame = UIEdgeInsetsInsetRect(self.previewBadge.frame, (UIEdgeInsets){ 0, 8, 8, -48 });
-	self.previewBadge.alpha = 0;
-	self.previewBadge.userInteractionEnabled = NO;
-	[photosViewWrapper.superview addSubview:self.previewBadge];
-	
-	//	Makeshift implementation for preview removal
-	
-	self.previewBadgeButton = [UIButton buttonWithType:UIButtonTypeCustom];
-	self.previewBadgeButton.frame = self.previewBadge.frame;
-	self.previewBadgeButton.autoresizingMask = self.previewBadge.autoresizingMask;
-	self.previewBadgeButton.hidden = YES;
-	[self.previewBadgeButton addTarget:self action:@selector(handlePreviewBadgeTap:) forControlEvents:UIControlEventTouchUpInside];
-	[self.previewBadge.superview addSubview:self.previewBadgeButton];
-  
+	 
   [self.noPhotoReminderViewElements enumerateObjectsUsingBlock: ^ (UILabel *aLabel, NSUInteger idx, BOOL *stop) {
   
     aLabel.text = NSLocalizedString(aLabel.text, nil);
@@ -303,7 +268,6 @@
   }];
 	
 	[self handleFilesChangeKind:NSKeyValueChangeSetting oldValue:nil newValue:self.article.files indices:nil isPrior:YES];
-	[self handlePreviewsChangeKind:NSKeyValueChangeSetting oldValue:nil newValue:self.article.previews indices:nil isPrior:YES];
 	
 }
 
@@ -316,9 +280,6 @@
 	self.toolbar = nil;
 	self.noPhotoReminderViewElements = nil;
 	
-	self.previewBadge = nil;
-	self.previewBadgeButton = nil;
-
 	[super viewDidUnload];
 
 }
@@ -471,30 +432,6 @@
 		}
 
 	}
-
-}
-
-- (void) handlePreviewsChangeKind:(NSKeyValueChange)kind oldValue:(id)oldValue newValue:(id)newValue indices:(NSIndexSet *)indices isPrior:(BOOL)isPrior {
-
-	WAPreview *usedPreview = [self.article.previews anyObject];
-	
-	BOOL badgeShown = (BOOL)!!usedPreview;	
-
-	if (usedPreview)
-		self.previewBadge.preview = usedPreview;
-	
-	[UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionBeginFromCurrentState|UIViewAnimationOptionAllowAnimatedContent|UIViewAnimationOptionAllowUserInteraction animations:^{
-
-		self.previewBadge.alpha = badgeShown ? 1 : 0;
-		self.previewBadgeButton.hidden = badgeShown ? NO : YES;
-		
-		self.photosView.alpha = badgeShown ? 0 : 1;
-		
-	} completion: ^ (BOOL finished) {
-	
-		self.previewBadge.preview = usedPreview;
-		
-	}];
 
 }
 

@@ -20,7 +20,6 @@
 
 #import "WACompositionViewPhotoCell.h"
 #import "WANavigationController.h"
-#import "WAPreviewBadge.h"
 #import "WAOverlayBezel.h"
 #import "WACompositionViewController+ImageHandling.h"
 #import "WAAssetsLibraryManager.h"
@@ -124,7 +123,6 @@
 	__weak WACompositionViewController *wSelf = self;
 	
 	[_article irRemoveObserverBlocksForKeyPath:@"files"];
-	[_article irRemoveObserverBlocksForKeyPath:@"previews"];
 	
 	_article = newArticle;
 	
@@ -138,52 +136,6 @@
 	
 	}];
 	
-	[_article irObserve:@"previews" options:NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew context:nil withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
-	
-		CFRunLoopPerformBlock(CFRunLoopGetMain(), kCFRunLoopDefaultMode, ^{
-
-			[wSelf handlePreviewsChangeKind:kind oldValue:fromValue newValue:toValue indices:indices isPrior:isPrior];
-			
-		});
-		
-	}];
-
-	// for crash recovery
-	// however, if user tap done button before all blocks pushed into managedObjectContext,
-	// the application will crash again.
-	[self.article.files enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-
-		WAFile *file = obj;
-    if (![wSelf associatedImagesMadeForFile:file]) {
-
-			if (file.assetURL) {
-
-				[[WAAssetsLibraryManager defaultManager] assetForURL:[NSURL URLWithString:file.assetURL] resultBlock:^(ALAsset *asset) {
-					
-					[wSelf.managedObjectContext performBlock:^{
-						
-						[wSelf makeAssociatedImagesOfFile:file withRepresentedAsset:asset type:WAThumbnailTypeExtraSmall];
-						
-					}];
-					
-				} failureBlock:^(NSError *error) {
-					
-					NSLog(@"Unable to retrieve assets for URL %@", file.assetURL);
-					NSAssert(NO, @"Unable to recover thumbnail making process for file:%@", file);
-					
-				}];
-
-			} else {
-				
-				NSLog(@"File asset URL is empty");
-				NSAssert(NO, @"Unable to recover thumbnail making process for file:%@", file);
-
-			}
-			
-		}
-
-	}];
-	
 }
 
 - (void) dealloc {
@@ -191,7 +143,6 @@
 	_textAttributor.delegate = nil;
 
 	[_article irRemoveObserverBlocksForKeyPath:@"files"];
-	[_article irRemoveObserverBlocksForKeyPath:@"previews"];
 	
 	[self.navigationItem.rightBarButtonItem irUnbind:@"enabled"];
 	
@@ -351,51 +302,14 @@ static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandl
 	if (_textAttributor)
 		return _textAttributor;
 	
-	__weak WACompositionViewController *wSelf = self;
-	
 	_textAttributor = [[IRTextAttributor alloc] init];
 	_textAttributor.delegate = self;
 	_textAttributor.discoveryBlock = IRTextAttributorDiscoveryBlockMakeWithRegularExpression([NSDataDetector dataDetectorWithTypes:NSTextCheckingTypeLink error:nil]);
 	
-	_textAttributor.attributionBlock = ^ (NSString *attributedString, IRTextAttributorAttributionCallback callback) {
-	
-		if (!attributedString) {
-			callback(nil);
-			return;
-		}
-	
-		NSURL *url = [NSURL URLWithString:attributedString];
-		if (!url) {
-			callback(nil);
-			return;
-		}
-		
-		if ([[wSelf.article.previews objectsPassingTest: ^ (WAPreview *aPreview, BOOL *stop) {
-			
-			return [aPreview.url isEqualToString:attributedString];
-			
-		}] count]) {
-		
-			//	Already got something and attached, skip
-			
-			callback(nil);
-			return;
-		
-		}
-		
-		[[WARemoteInterface sharedInterface] retrievePreviewForURL:url onSuccess:^(NSDictionary *aPreviewRep) {
-		
-			callback(aPreviewRep);
-			
-		} onFailure: ^ (NSError *error) {
-			
-			callback(nil);			
-			
-		}];
-	
-	};
-	
-	return _textAttributor;
+  _textAttributor.attributionBlock = ^(NSString *attributedString, IRTextAttributorAttributionCallback callback) {
+	callback (nil);
+  };
+  return _textAttributor;
 
 }
 
@@ -423,52 +337,8 @@ static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandl
 
 - (void) textAttributor:(IRTextAttributor *)attributor didUpdateAttributedString:(NSAttributedString *)attributedString withToken:(NSString *)aToken range:(NSRange)tokenRange attribute:(id)newAttribute {
 
-	NSMutableArray *potentialLinkAttributes = [NSMutableArray array];
-
-	[attributedString enumerateAttribute:IRTextAttributorTagAttributeName inRange:(NSRange){ 0, [attributedString length] } options:0 usingBlock: ^ (id value, NSRange range, BOOL *stop) {
-		
-		if (value)
-			[potentialLinkAttributes addObject:value];
-		
-	}];
-	
-	NSArray *mappedPreviewEntities = [potentialLinkAttributes irMap: ^ (id anAttribute, NSUInteger index, BOOL *stop) {
-	
-		if (![anAttribute isKindOfClass:[NSDictionary class]])
-			return (id)nil;
-		
-		return (id)[NSDictionary dictionaryWithObjectsAndKeys:
-			anAttribute, @"og",
-			[anAttribute valueForKeyPath:@"url"], @"id",
-		nil];
-		
-	}];
-
-	NSArray *allMatchingPreviews = [WAPreview insertOrUpdateObjectsUsingContext:self.managedObjectContext withRemoteResponse:mappedPreviewEntities usingMapping:nil options:IRManagedObjectOptionIndividualOperations];
-	if (![allMatchingPreviews count])
-		return;
-	
-	WAPreview *stitchedPreview = [allMatchingPreviews objectAtIndex:0];
-	NSError *error = nil;
-	NSAssert1([self.managedObjectContext save:&error], @"Error Saving: %@", error);
-	
-	//	If there’s already an attachment, do nothing
-	
-	if ([self.article.files count])
-		stitchedPreview = nil;
-	
-	//	If the article holds a preview already, don’t change it
-
-	if ([self.article.previews count])
-		return;
-
-	//	Don’t delete them, just leave them for later to cleanup
-	//	for (WAPreview *aPreview in allMatchingPreviews)
-	//		if (stitchedPreview ? (aPreview != stitchedPreview) : YES)
-	//			[aPreview.managedObjectContext deleteObject:aPreview];
-	
-	self.article.previews = stitchedPreview ? [NSSet setWithObject:stitchedPreview] : [NSSet set];
-
+  // No op
+  
 }
 
 - (void) handleFilesChangeKind:(NSKeyValueChange)kind oldValue:(id)oldValue newValue:(id)newValue indices:(NSIndexSet *)indices isPrior:(BOOL)isPrior {
@@ -530,14 +400,7 @@ static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandl
 		});
 		
 	}];
-	
-	if ([self.article.previews count])
-		WAPostAppEvent(@"Create Preview", [NSDictionary dictionaryWithObjectsAndKeys:@"link",@"category",@"create", @"action", nil]);
-	else if ([self.article.files count])
-		WAPostAppEvent(@"Create Photo", [NSDictionary dictionaryWithObjectsAndKeys:@"photo",@"category",@"create", @"action", nil]);
-	else 
-		WAPostAppEvent(@"Create Text", [NSDictionary dictionaryWithObjectsAndKeys:@"text",@"category",@"create", @"action", nil]);
-		
+			
 }	
 
 - (void) handleCancel:(UIBarButtonItem *)sender {

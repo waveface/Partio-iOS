@@ -9,7 +9,6 @@
 #import "WACompositionViewControllerPhone.h"
 #import "UIKit+IRAdditions.h"
 
-#import "WAPreviewInspectionViewController.h"
 #import "WADataStore.h"
 
 #import "WAArticleAttachmentActivityView.h"
@@ -32,7 +31,7 @@
 @end
 
 
-@interface WACompositionViewControllerPhone () <WAPreviewInspectionViewControllerDelegate>
+@interface WACompositionViewControllerPhone () 
 
 @property (nonatomic, readwrite, retain) IRActionSheetController *actionSheetController;
 @property (nonatomic, readwrite, retain) WAArticleAttachmentActivityView *articleAttachmentActivityView;
@@ -154,12 +153,6 @@
 		
 		activityView.style = WAArticleAttachmentActivityViewSpinnerStyle;
 		
-	} else if ([self.article.previews count]) {
-		
-		activityView.style = WAArticleAttachmentActivityViewLinkStyle;
-		[activityView setTitle:NSLocalizedString(@"WEB_PREVIEW", @"preview button in composition view") forStyle:WAArticleAttachmentActivityViewLinkStyle];
-		[activityView setAccessibilityLabel:NSLocalizedString(@"ACCESS_PREVIEW", @"accessibility label for webpage preview in composition view")];
-		
 	} else if ([self.article.files count] == 1) {
 		
 		activityView.style = WAArticleAttachmentActivityViewAttachmentsStyle;
@@ -255,18 +248,6 @@
 	
 }
 
-- (void) handlePreviewsChangeKind:(NSKeyValueChange)kind oldValue:(id)oldValue newValue:(id)newValue indices:(NSIndexSet *)indices isPrior:(BOOL)isPrior {
-
-	[super handlePreviewsChangeKind:kind oldValue:oldValue newValue:newValue indices:indices isPrior:isPrior];
-
-	dispatch_async(dispatch_get_main_queue(), ^{
-		
-		[self updateArticleAttachmentActivityView];
-
-	});
-
-}
-
 - (void) handleArticleAttachmentActivityViewTap:(WAArticleAttachmentActivityView *)view {
 
 	switch (view.style) {
@@ -345,19 +326,6 @@
 			
 		}
 	
-		case WAArticleAttachmentActivityViewLinkStyle: {
-			
-			NSParameterAssert([self.article.previews count]);
-			
-			WAPreview *inspectedPreview = [self.article.previews anyObject];
-			
-			TFLog(@"Inspecting preview %@", inspectedPreview);
-			[self inspectPreview:inspectedPreview];			
-			
-			break;
-			
-		}
-
 		case WAArticleAttachmentActivityViewSpinnerStyle: {
 			break;
 		}
@@ -433,67 +401,6 @@
 
 }
 
-- (void) inspectPreview:(WAPreview *)aPreview {
-	
-	NSCParameterAssert(aPreview.managedObjectContext == self.managedObjectContext);
-	
-	self.actionSheetController = nil;
-	
-	WAPreviewInspectionViewController *previewVC = [WAPreviewInspectionViewController controllerWithPreview:aPreview];
-	previewVC.delegate = self;
-	
-	UINavigationController *navC = [previewVC wrappingNavController];
-	[self presentViewController:navC animated:YES completion:nil];
 
-}
-
-- (void) previewInspectionViewControllerDidFinish:(WAPreviewInspectionViewController *)inspector {
-
-	[inspector dismissViewControllerAnimated:YES completion:nil];
-
-}
-
-- (void) previewInspectionViewControllerDidRemove:(WAPreviewInspectionViewController *)inspector {
-
-	BOOL const showsDeleteConfirmation = NO;
-	
-	if (showsDeleteConfirmation) {
-
-		__weak WACompositionViewControllerPhone *wSelf = self;
-		
-		if (self.actionSheetController.managedActionSheet.visible)
-			return;
-		
-		if (!self.actionSheetController) {
-		
-			WAPreview *removedPreview = [self.article.previews anyObject];
-			NSParameterAssert([[inspector.preview objectID] isEqual:[removedPreview objectID]]);
-				
-			IRAction *discardAction = [IRAction actionWithTitle:NSLocalizedString(@"ACTION_DISCARD", nil) block:^{
-			
-				[removedPreview.article removePreviewsObject:removedPreview];
-				[inspector dismissViewControllerAnimated:YES completion:nil];
-
-				wSelf.actionSheetController = nil;
-				
-			}];
-			
-			self.actionSheetController = [IRActionSheetController actionSheetControllerWithTitle:nil cancelAction:nil destructiveAction:discardAction otherActions:nil];
-			
-		}
-
-		[self.actionSheetController.managedActionSheet showInView:inspector.view];
-	
-	} else {
-	
-		WAPreview *removedPreview = [self.article.previews anyObject];
-		NSParameterAssert([[inspector.preview objectID] isEqual:[removedPreview objectID]]);
-		
-		[removedPreview.article removePreviewsObject:removedPreview];
-		[inspector dismissViewControllerAnimated:YES completion:nil];
-	
-	}
-	
-}
 
 @end
