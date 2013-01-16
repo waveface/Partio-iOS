@@ -32,7 +32,7 @@ static NSString * const kWAFilePageElementExtraSmallThumbnailImage = @"extraSmal
   if (primitivePath && [[NSFileManager defaultManager] fileExistsAtPath:primitivePath]) {
     WACacheManager *cacheManager = [(WAAppDelegate_iOS *)AppDelegate() cacheManager];
     [cacheManager insertOrUpdateCacheWithRelationship:[[self objectID] URIRepresentation]
-				     filePath:primitivePath
+				     filePath:[primitivePath copy]
 				  filePathKey:kWAFilePageElementThumbnailFilePath];
     return primitivePath;
   }
@@ -120,7 +120,7 @@ static NSString * const kWAFilePageElementExtraSmallThumbnailImage = @"extraSmal
   [self setPrimitiveValue:thumbnailFilePath forKey:kWAFilePageElementThumbnailFilePath];
   WACacheManager *cacheManager = [(WAAppDelegate_iOS *)AppDelegate() cacheManager];
   [cacheManager insertOrUpdateCacheWithRelationship:[[self objectID] URIRepresentation]
-				   filePath:thumbnailFilePath
+				   filePath:[thumbnailFilePath copy]
 				filePathKey:kWAFilePageElementThumbnailFilePath];
   
   [self didChangeValueForKey:kWAFilePageElementThumbnailFilePath];
@@ -151,7 +151,7 @@ static NSString * const kWAFilePageElementExtraSmallThumbnailImage = @"extraSmal
   if (primitivePath && [[NSFileManager defaultManager] fileExistsAtPath:primitivePath]) {
     WACacheManager *cacheManager = [(WAAppDelegate_iOS *)AppDelegate() cacheManager];
     [cacheManager insertOrUpdateCacheWithRelationship:[[self objectID] URIRepresentation]
-				     filePath:primitivePath
+				     filePath:[primitivePath copy]
 				  filePathKey:kWAFilePageElementExtraSmallThumbnailFilePath];
     return primitivePath;
   }
@@ -167,7 +167,7 @@ static NSString * const kWAFilePageElementExtraSmallThumbnailImage = @"extraSmal
   [self setPrimitiveValue:extraSmallThumbnailFilePath forKey:kWAFilePageElementExtraSmallThumbnailFilePath];
   WACacheManager *cacheManager = [(WAAppDelegate_iOS *)AppDelegate() cacheManager];
   [cacheManager insertOrUpdateCacheWithRelationship:[[self objectID] URIRepresentation]
-				   filePath:extraSmallThumbnailFilePath
+				   filePath:[extraSmallThumbnailFilePath copy]
 				filePathKey:kWAFilePageElementExtraSmallThumbnailFilePath];
   
   [self didChangeValueForKey:kWAFilePageElementExtraSmallThumbnailFilePath];
