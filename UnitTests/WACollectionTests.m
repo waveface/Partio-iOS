@@ -16,14 +16,14 @@
 
 - (id)loadDataFile: (NSString *)fileString {
   NSString *filePath = [[NSBundle bundleForClass:[self class]]
-		    pathForResource:fileString
-		    ofType:@"json"];
+                        pathForResource:fileString
+                        ofType:@"json"];
   
   NSData *inputData = [NSData dataWithContentsOfFile:filePath];
   return [NSJSONSerialization
-	JSONObjectWithData:inputData
-	options:(NSJSONReadingOptions)0
-	error:nil];
+          JSONObjectWithData:inputData
+          options:(NSJSONReadingOptions)0
+          error:nil];
 }
 
 - (void)setUp {
@@ -45,7 +45,7 @@
   collection.creator = [WAUser MR_createEntity];
   NSArray *collections = [WACollection MR_findAll];
   STAssertEquals(collection.title, ((WACollection *) collections[0]).title,
-	       @"Should be the same.");
+                 @"Should be the same.");
   
   WAFile *photo1 = [WAFile MR_createEntity];
   photo1.thumbnailURL = @"URL1";
@@ -54,7 +54,7 @@
   collection.files = [NSOrderedSet orderedSetWithArray:@[photo1, photo2]];
   NSOrderedSet *photos = ((WACollection *) collections[0]).files;
   STAssertEqualObjects(@"URL1", ((WAFile*)photos[0]).thumbnailURL,
-		   @"Thumbnail URL persistent");
+                       @"Thumbnail URL persistent");
 }
 
 - (void)testGetSingleCollection {
@@ -64,10 +64,10 @@
   NSArray *transformed;
   @autoreleasepool {
     transformed = [WACollection
-	         insertOrUpdateObjectsUsingContext:[NSManagedObjectContext MR_context]
-	         withRemoteResponse:[collectionsResponse objectForKey:@"collections"]
-	         usingMapping:nil
-	         options:IRManagedObjectOptionIndividualOperations];
+                   insertOrUpdateObjectsUsingContext:[NSManagedObjectContext MR_context]
+                   withRemoteResponse:[collectionsResponse objectForKey:@"collections"]
+                   usingMapping:nil
+                   options:IRManagedObjectOptionIndividualOperations];
   }
   
   NSUInteger touches = 0;

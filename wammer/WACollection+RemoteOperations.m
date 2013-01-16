@@ -18,23 +18,27 @@
 + (void)refreshCollectionsWithCompletion:(void (^)(void))completionBlock
 {
   WARemoteInterface *interface = [WARemoteInterface sharedInterface];
-  NSString *bestHost = [[interface bestHostForRequestNamed:@"collections/getAll"] host];
-  MKNetworkEngine *engine = [[MKNetworkEngine alloc] initWithHostName:bestHost apiPath:@"v3" customHeaderFields:nil];
+  NSURL *bestURL = [interface bestHostForRequestNamed:@"collections/getAll"];
+  MKNetworkEngine *engine = [[MKNetworkEngine alloc] initWithHostName:[bestURL host] apiPath:@"v3" customHeaderFields:nil];
+  
   NSDictionary *payload = @{
   @"session_token":interface.userToken,
   @"api_key":interface.apiKey,
   @"no_hidden":@YES,
   };
   
-  MKNetworkOperation *op = [engine operationWithPath:@"collections/getAll" params:payload httpMethod:@"GET" ssl:YES];
+  MKNetworkOperation *op = [engine operationWithPath:@"collections/getAll"
+                                              params:payload
+                                          httpMethod:@"GET"
+                                                 ssl:[[bestURL scheme] isEqualToString:@"https"]];
   
   op.freezable = YES;
   [op
    addCompletionHandler:^(MKNetworkOperation *completedOperation) {
      NSError *error;
      NSDictionary *response = [NSJSONSerialization JSONObjectWithData:[completedOperation responseData]
-															  options:NSJSONReadingAllowFragments
-																error:&error];
+                                                              options:NSJSONReadingAllowFragments
+                                                                error:&error];
      
      NSManagedObjectContext *moc = [NSManagedObjectContext MR_context];
      moc.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
@@ -72,9 +76,9 @@
   };
   
   MKNetworkOperation *op = [engine operationWithPath:@"collections/create"
-											                          params:payload
+                                              params:payload
                                           httpMethod:@"POST"
-                                                 ssl:YES];
+                                                 ssl:[[bestURL scheme] isEqualToString:@"https"]];
   [engine enqueueOperation:op];
   
   return nil;

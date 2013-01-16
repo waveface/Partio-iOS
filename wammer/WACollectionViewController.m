@@ -118,10 +118,10 @@ typedef NS_ENUM(NSUInteger, WACollectionSortMode){
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)aCollectionView
-	        cellForItemAtIndexPath:(NSIndexPath *)indexPath {
+                  cellForItemAtIndexPath:(NSIndexPath *)indexPath {
   
   WACollectionViewCell *cell = [aCollectionView dequeueReusableCellWithReuseIdentifier:kCollectionViewCellID
-							    forIndexPath:indexPath];
+                                                                          forIndexPath:indexPath];
   WACollection *aCollection = [_fetchedResultsController objectAtIndexPath:indexPath];
   
   cell.title.text = [aCollection.title stringByAppendingFormat:@" (%d)", [aCollection.files count]];
@@ -133,13 +133,13 @@ typedef NS_ENUM(NSUInteger, WACollectionSortMode){
   }
   
   [coverFile irObserve:@"thumbnailImage"
-	     options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew
-	     context:nil
-	   withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
-	     dispatch_async(dispatch_get_main_queue(), ^{
-	       ((WACollectionViewCell *)[aCollectionView cellForItemAtIndexPath:indexPath]).coverImage.image = (UIImage*)toValue;
-	     });
-	   }];
+               options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew
+               context:nil
+             withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
+               dispatch_async(dispatch_get_main_queue(), ^{
+                 ((WACollectionViewCell *)[aCollectionView cellForItemAtIndexPath:indexPath]).coverImage.image = (UIImage*)toValue;
+               });
+             }];
   
   
   return (UICollectionViewCell *)cell;
