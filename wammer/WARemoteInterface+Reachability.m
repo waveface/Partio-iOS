@@ -70,6 +70,9 @@ static NSString * const kNetworkState = @"-[WARemoteInterface(Reachability) netw
   if ([aRequestName hasPrefix:@"groups/"])
     return incomingURLIsCloud;
   
+  if ([aRequestName hasPrefix:@"collections"])
+    return incomingURLIsCloud;
+  
   return YES;
   
 }

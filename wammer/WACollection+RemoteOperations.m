@@ -64,9 +64,10 @@
 
 + (WACollection *)create {
   WARemoteInterface *interface = [WARemoteInterface sharedInterface];
-  NSString *bestHost = [[interface bestHostForRequestNamed:@"collections/create"] host];
-  MKNetworkEngine *engine = [[MKNetworkEngine alloc] initWithHostName:bestHost apiPath:@"v3" customHeaderFields:nil];
-  
+  NSURL *bestURL = [interface bestHostForRequestNamed:@"collections/create"];
+  MKNetworkEngine *engine = [[MKNetworkEngine alloc] initWithHostName:[bestURL host]
+                                                              apiPath:@"v3"
+                                                   customHeaderFields:nil];
   NSDictionary *payload = @{
   @"session_token":interface.userToken,
   @"api_key":interface.apiKey,
@@ -91,9 +92,10 @@
   [[self managedObjectContext] save:nil];
   
   WARemoteInterface *interface = [WARemoteInterface sharedInterface];
-  NSString *bestHost = [[interface bestHostForRequestNamed:@"collections/update"] host];
-  MKNetworkEngine *engine = [[MKNetworkEngine alloc] initWithHostName:bestHost apiPath:@"v3" customHeaderFields:nil];
-  
+  NSURL *bestURL = [interface bestHostForRequestNamed:@"collections/update"];
+  MKNetworkEngine *engine = [[MKNetworkEngine alloc] initWithHostName:[bestURL host]
+                                                              apiPath:@"v3"
+                                                   customHeaderFields:nil];
   NSDictionary *payload = @{
   @"session_token":interface.userToken,
   @"api_key":interface.apiKey,
@@ -102,9 +104,7 @@
   MKNetworkOperation *op = [engine operationWithPath:@"collections/update"
                                               params:payload
                                           httpMethod:@"POST"
-                                                 ssl:YES];
-  
-  
+                                                 ssl:[[bestURL scheme] isEqualToString:@"https"]];
   [engine enqueueOperation:op];
 }
 

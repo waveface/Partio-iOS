@@ -41,35 +41,7 @@ typedef NS_ENUM(NSUInteger, WACollectionSortMode){
   return self;
 }
 
-- (void)reloadCollection {
-  NSPredicate *allCollections = [NSPredicate predicateWithFormat:@"isHidden == FALSE"];
-  _fetchedResultsController = [WACollection MR_fetchAllSortedBy:(mode == WACollectionSortByName)? @"title": @"modificationDate"
-					    ascending:(mode == WACollectionSortByName)? YES: NO
-					withPredicate:allCollections
-					      groupBy:nil
-					     delegate:self];
-  
-  NSString *title = (mode == WACollectionSortByName)?
-  NSLocalizedString(@"By Name", @"Collection View Navigation Bar"):
-  NSLocalizedString(@"By Date", @"Collection View Navigation Bar");
-  
-  self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:title style:UIBarButtonItemStylePlain target:self action:@selector(toggleMode)];
-  
-}
-
-- (void)toggleMode {
-  if (mode == WACollectionSortByName) {
-    mode = WACollectionSortByDate;
-  } else
-    mode = WACollectionSortByName;
-  
-  [self reloadCollection];
-  [self.collectionView reloadData];
-}
-
-- (BOOL)canBecomeFirstResponder {
-  return YES;
-}
+#pragma mark - UIViewController delegate
 
 - (void)viewDidLoad{
   [super viewDidLoad];
@@ -82,28 +54,31 @@ typedef NS_ENUM(NSUInteger, WACollectionSortMode){
   
 }
 
-- (void)dealloc {
-}
-
 - (void)viewWillAppear:(BOOL)animated {
   [super viewWillAppear:animated];
-  if ([WACollection MR_countOfEntities]==0) {
-    [self refresh];
-  }
+  
   self.title = NSLocalizedString(@"COLLECTIONS", @"In navigation bar");
   
   [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updated:) name:kWACollectionUpdated object:nil];
   
-  [self becomeFirstResponder];
-  
-  [self reloadCollection];
+  [self refresh];
   [self.collectionView reloadData];
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+  [self becomeFirstResponder];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
   [super viewWillDisappear:animated];
   [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
+
+- (void)viewDidDisappear:(BOOL)animated {
+  [super viewDidDisappear:animated];
+  [self resignFirstResponder];
+}
+
 - (void)didReceiveMemoryWarning
 {
   [super didReceiveMemoryWarning];
@@ -170,6 +145,32 @@ typedef NS_ENUM(NSUInteger, WACollectionSortMode){
   [self.refreshControl endRefreshing];
 }
 
+- (void)reloadCollection {
+  NSPredicate *allCollections = [NSPredicate predicateWithFormat:@"isHidden == FALSE"];
+  _fetchedResultsController = [WACollection MR_fetchAllSortedBy:(mode == WACollectionSortByName)? @"title": @"modificationDate"
+                                                      ascending:(mode == WACollectionSortByName)? YES: NO
+                                                  withPredicate:allCollections
+                                                        groupBy:nil
+                                                       delegate:self];
+  
+  NSString *title = (mode == WACollectionSortByName)?
+  NSLocalizedString(@"By Name", @"Collection View Navigation Bar"):
+  NSLocalizedString(@"By Date", @"Collection View Navigation Bar");
+  
+  self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:title style:UIBarButtonItemStylePlain target:self action:@selector(toggleMode)];
+  
+}
+
+- (void)toggleMode {
+  if (mode == WACollectionSortByName) {
+    mode = WACollectionSortByDate;
+  } else
+    mode = WACollectionSortByName;
+  
+  [self reloadCollection];
+  [self.collectionView reloadData];
+}
+
 #pragma mark - UIEvent Callbacks
 
 - (void)motionBegan:(UIEventSubtype)motion withEvent:(UIEvent *)event {
@@ -182,6 +183,10 @@ typedef NS_ENUM(NSUInteger, WACollectionSortMode){
     [self refresh];
     [WACollection create];
   }
+}
+
+- (BOOL)canBecomeFirstResponder {
+  return YES;
 }
 
 @end
