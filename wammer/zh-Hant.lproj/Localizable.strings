@@ -439,6 +439,15 @@
 /* in day view */
 "PHOTOS_TITLE" = "照片";
 
+/* business plan in settings page */
+"PLAN_FREE" = "免費";
+
+/* business plan in settings page */
+"PLAN_PREMIUM" = "付費";
+
+/* business plan in settings page */
+"PLAN_ULTIMATE" = "付費";
+
 /* Title of view controller choosing plans */
 "PLANS_CONTROLLER_TITLE" = "資費方案";
 
@@ -469,7 +478,8 @@
 /* No comment provided by engineer. */
 "RESET_SETTINGS_CONFIRMATION_TITLE" = "清除設定";
 
-/* Subtitle of searching network in setup done page. */
+/* Subtitle of searching network in settings page.
+   Subtitle of searching network in setup done page. */
 "SEARCHING_NETWORK_SUBTITLE" = "正在尋找 AOStream 網路...";
 
 /* No comment provided by engineer. */
@@ -524,6 +534,9 @@
 
 /* Title of view controller setting personal cloud */
 "STORAGE_SETUP_CONTROLLER_TITLE" = "設定個人雲";
+
+/* storage usage detail in settings page */
+"STORAGE_USAGE_DETAIL" = "%.1f%% of %@";
 
 /* Title on the text stack more / less toggle button for “Less” */
 "TEXT_ELEMENT_TOGGLE_LESS_TITLE" = "更少";

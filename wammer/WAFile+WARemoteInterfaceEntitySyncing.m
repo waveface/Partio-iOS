@@ -438,8 +438,6 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
 	
 	file.resourceURL = [[file class] transformedValue:[@"/v3/attachments/view?object_id=" stringByAppendingFormat:@"%@", file.identifier] fromRemoteKeyPath:nil toLocalKeyPath:@"resourceURL"];
 	
-	[[WADataStore defaultStore] setLastSyncSuccessDate:[NSDate date]];
-	
         }
         
         file.dirty = @NO;
@@ -471,8 +469,6 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
 	  
 	  file.resourceURL = [[file class] transformedValue:[@"/v3/attachments/view?object_id=" stringByAppendingFormat:@"%@", file.identifier] fromRemoteKeyPath:nil toLocalKeyPath:@"resourceURL"];
 	  
-	  [[WADataStore defaultStore] setLastSyncSuccessDate:[NSDate date]];
-	  
 	}
 	
 	file.dirty = @NO;
@@ -498,8 +494,6 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
 	  // The WAFile never needs sync because its asset has been deleted, but we don't have to hide it.
 	  // Just keep a hint in its resource URL (all-zero object id)
 	  file.resourceURL = [[file class] transformedValue:@"/v3/attachments/view?object_id=00000000000000000000000000000000" fromRemoteKeyPath:nil toLocalKeyPath:@"resourceURL"];
-	  
-	  [[WADataStore defaultStore] setLastSyncSuccessDate:[NSDate date]];
 	  
 	} else {
 	  

@@ -262,6 +262,8 @@
                         <outlet property="connectionTableViewCell" destination="7nY-bQ-nM7" id="eDC-R9-M58"/>
                         <outlet property="contactTableViewCell" destination="3s0-3c-xph" id="iaH-xj-cpe"/>
                         <outlet property="logoutCell" destination="EGb-xf-mZU" id="LBq-sz-VUe"/>
+                        <outlet property="packageCell" destination="L9t-HV-8FJ" id="lDG-V7-DaW"/>
+                        <outlet property="storageUsageCell" destination="lM3-Uk-aL8" id="cSv-T3-EfV"/>
                         <outlet property="userEmailLabel" destination="GO0-S9-Ov0" id="P8S-0e-QfO"/>
                         <outlet property="versionCell" destination="YNa-S2-7WT" id="HZQ-au-XEz"/>
                     </connections>

@@ -121,14 +121,33 @@
         UIActivityIndicatorView *activity = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
         [activity startAnimating];
         wSelf.connectionTableViewCell.accessoryView = activity;
-        wSelf.connectionTableViewCell.detailTextLabel.text = NSLocalizedString(@"SEARCHING_NETWORK_SUBTITLE", @"Subtitle of searching network in setup done page.");
+        wSelf.connectionTableViewCell.detailTextLabel.text = NSLocalizedString(@"SEARCHING_NETWORK_SUBTITLE", @"Subtitle of searching network in settings page.");
       }
     }];
     
   }];
   
   self.versionCell.textLabel.text = [[NSBundle mainBundle] displayVersionString];
-  
+
+  switch ([[NSUserDefaults standardUserDefaults] integerForKey:kWABusinessPlan]) {
+    case WABusinessPlanFree:
+      self.packageCell.detailTextLabel.text = NSLocalizedString(@"PLAN_FREE", @"business plan in settings page");
+      break;
+    case WABusinessPlanPremium:
+      self.packageCell.detailTextLabel.text = NSLocalizedString(@"PLAN_PREMIUM", @"business plan in settings page");
+      break;
+    case WABusinessPlanUltimate:
+      self.packageCell.detailTextLabel.text = NSLocalizedString(@"PLAN_ULTIMATE", @"business plan in settings page");
+      break;
+    default:
+      break;
+  }
+
+  NSUInteger quota = [[[WADataStore defaultStore] storageQuota] unsignedIntegerValue];
+  NSUInteger usage = [[[WADataStore defaultStore] storageUsage] unsignedIntegerValue];
+  NSString *quotaString = [NSByteCountFormatter stringFromByteCount:quota countStyle:NSByteCountFormatterCountStyleBinary];
+  self.storageUsageCell.detailTextLabel.text = [NSString stringWithFormat:NSLocalizedString(@"STORAGE_USAGE_DETAIL", @"storage usage detail in settings page"), usage * 100.0 / quota, quotaString];
+
 }
 
 - (void) irObserveObject:(id)target keyPath:(NSString *)keyPath options:(NSKeyValueObservingOptions)options context:(void *)context withBlock:(IRObservingsCallbackBlock)block {
