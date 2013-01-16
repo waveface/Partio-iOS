@@ -98,7 +98,7 @@ static NSString * kWADocumentPreviewControllerKVOContext = @"WADocumentPreviewCo
 
 		WARemoteInterface *ri = [WARemoteInterface sharedInterface];
 		NSString *host = [ri hasReachableStation] ? [ri.monitoredHosts[0] httpURL] : [ri.engine.context.baseURL absoluteString];
-		NSString *url = [host stringByAppendingPathComponent:@"attachments/view"];
+		NSString *url = [host stringByAppendingPathComponent:@"v3/attachments/view"];
 		NSDictionary *parameters = @{
 			@"object_id": self.file.identifier,
 			@"apikey": ri.apiKey,
