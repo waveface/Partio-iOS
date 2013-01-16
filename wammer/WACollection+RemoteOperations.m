@@ -39,8 +39,7 @@
      NSDictionary *response = [NSJSONSerialization JSONObjectWithData:[completedOperation responseData]
                                                               options:NSJSONReadingAllowFragments
                                                                 error:&error];
-     
-     NSManagedObjectContext *moc = [NSManagedObjectContext MR_context];
+	 NSManagedObjectContext *moc = [NSManagedObjectContext MR_context];
      moc.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
      
      [WACollection
@@ -49,13 +48,18 @@
       usingMapping:nil
       options:IRManagedObjectOptionIndividualOperations
       ];
-     [moc save:nil];
-     completionBlock();
-     [[NSNotificationCenter defaultCenter] postNotificationName:kWACollectionUpdated object:self];
+	 NSError *saveError;
+     if( [moc save:&saveError] ) {
+	   completionBlock();
+	   [[NSNotificationCenter defaultCenter] postNotificationName:kWACollectionUpdated object:completedOperation];
+	 }else {
+	   CLSNSLog(@"Upsert Collection error: %@", saveError);
+	 }
    }
    errorHandler:^(MKNetworkOperation *completedOperation, NSError *error) {
      completionBlock();
-     [[NSNotificationCenter defaultCenter] postNotificationName:kWACollectionUpdated object:self];
+     [[NSNotificationCenter defaultCenter] postNotificationName:kWACollectionUpdated object:completedOperation];
+     CLSNSLog(@"GET collection/get failed");
    }];
   
   //  MKNetworkOperation *op = [engine operationWithPath:@"https://develop.waveface.com/v2/attachments/multiple_get?session_token=b31tbLA0SYCwHXDZR9qf7A2n.fIn9nQMUri8c5J%2Fgi3stz0w5CgE7i5E6PNGSDz9QLM8&apikey=ca5c3c5c-287d-5805-93c1-a6c2cbf9977c"];
@@ -89,7 +93,11 @@
   NSMutableOrderedSet *items = [self.files mutableCopy];
   [items addObjectsFromArray:objects];
   self.files = items;
-  [[self managedObjectContext] save:nil];
+  NSError *error;
+  [[self managedObjectContext] save:&error];
+  if (error) {
+	CLSNSLog(@"Add object to Collect error: %@", error);
+  }
   
   WARemoteInterface *interface = [WARemoteInterface sharedInterface];
   NSURL *bestURL = [interface bestHostForRequestNamed:@"collections/update"];
