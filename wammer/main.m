@@ -15,6 +15,6 @@ CFAbsoluteTime StartTime;
 int main(int argc, char *argv[]) {
   StartTime = CFAbsoluteTimeGetCurrent();
   @autoreleasepool {
-	return UIApplicationMain(argc, argv, nil, NSStringFromClass([WAAppDelegate class]));
+    return UIApplicationMain(argc, argv, nil, NSStringFromClass([WAAppDelegate class]));
   }
 }

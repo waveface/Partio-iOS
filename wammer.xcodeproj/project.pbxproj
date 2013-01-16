@@ -95,6 +95,7 @@
 		4B31BAAD1591A74C00DC1A70 /* ALAsset+AGIPC.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B31BA9D1591A74C00DC1A70 /* ALAsset+AGIPC.m */; };
 		4B31BAAE1591A74C00DC1A70 /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = 4B31BA9E1591A74C00DC1A70 /* LICENSE */; };
 		4B362548156630D400F07032 /* IRRelativeDateFormatter+WAAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B362547156630D400F07032 /* IRRelativeDateFormatter+WAAdditions.m */; };
+		4B3AC462169C065700490DF7 /* WACollection+RemoteOperations.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BB6A9041696BBA300AB5F14 /* WACollection+RemoteOperations.m */; };
 		4B4AA30C16564BEE00A04DDE /* NSDate+WAAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 80A13C73162071C4002880A9 /* NSDate+WAAdditions.m */; };
 		4B4AA30D16564BF000A04DDE /* NSDate+WAAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 80A13C73162071C4002880A9 /* NSDate+WAAdditions.m */; };
 		4B52734015624E1800C6F55D /* WFPreviewTemplate-Discrete_Web_ImageWithDescription_Horizontal_for_6.html in Resources */ = {isa = PBXBuildFile; fileRef = 4B52733F15624E1800C6F55D /* WFPreviewTemplate-Discrete_Web_ImageWithDescription_Horizontal_for_6.html */; };
@@ -137,6 +138,7 @@
 		4BB0400A16804E1B009C3D08 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF154657148E06D600352428 /* SystemConfiguration.framework */; };
 		4BB1B6B115C14648002A4BE2 /* Fav~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BB1B6AD15C14648002A4BE2 /* Fav~iphone.png */; };
 		4BB1B6B315C14648002A4BE2 /* Unfav~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BB1B6AF15C14648002A4BE2 /* Unfav~iphone.png */; };
+		4BB6A9051696BBA300AB5F14 /* WACollection+RemoteOperations.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BB6A9041696BBA300AB5F14 /* WACollection+RemoteOperations.m */; };
 		4BBEE91C164F5FC300D33EDB /* WADayViewTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BBEE919164F5FC300D33EDB /* WADayViewTests.m */; };
 		4BBEE91D164F5FC300D33EDB /* WAFacebookConnectionSwitchTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BBEE91B164F5FC300D33EDB /* WAFacebookConnectionSwitchTest.m */; };
 		4BBEEA06164F6A6E00D33EDB /* PhotoPostWithURLHistoryStyle.json in Resources */ = {isa = PBXBuildFile; fileRef = 4BBEEA03164F6A6E00D33EDB /* PhotoPostWithURLHistoryStyle.json */; };
@@ -1239,6 +1241,8 @@
 		4BAE345115DCA30200A9109D /* LoginBackground-Portrait@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "LoginBackground-Portrait@2x.png"; path = "Resources/LoginBackground-Portrait@2x.png"; sourceTree = "<group>"; };
 		4BB1B6AD15C14648002A4BE2 /* Fav~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Fav~iphone.png"; path = "Resources/Fav~iphone.png"; sourceTree = "<group>"; };
 		4BB1B6AF15C14648002A4BE2 /* Unfav~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Unfav~iphone.png"; path = "Resources/Unfav~iphone.png"; sourceTree = "<group>"; };
+		4BB6A9031696BBA300AB5F14 /* WACollection+RemoteOperations.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WACollection+RemoteOperations.h"; sourceTree = "<group>"; };
+		4BB6A9041696BBA300AB5F14 /* WACollection+RemoteOperations.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WACollection+RemoteOperations.m"; sourceTree = "<group>"; };
 		4BBEE912164F5F8C00D33EDB /* StreamTests-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "StreamTests-Info.plist"; path = "StreamTests/StreamTests-Info.plist"; sourceTree = SOURCE_ROOT; };
 		4BBEE913164F5F8C00D33EDB /* StreamTests-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "StreamTests-Prefix.pch"; path = "StreamTests/StreamTests-Prefix.pch"; sourceTree = SOURCE_ROOT; };
 		4BBEE916164F5FB800D33EDB /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = StreamTests/en.lproj/InfoPlist.strings; sourceTree = SOURCE_ROOT; };
@@ -2097,7 +2101,7 @@
 		FFCD324E14B997B70035C4F5 /* WAModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = WAModel.xcdatamodel; sourceTree = "<group>"; };
 		FFCD325014B9EA4D0035C4F5 /* WAFile+WAAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WAFile+WAAdditions.h"; sourceTree = "<group>"; };
 		FFCD325114B9EA4D0035C4F5 /* WAFile+WAAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WAFile+WAAdditions.m"; sourceTree = "<group>"; };
-		FFCFE0FB142111E100B9E6AF /* wammer-iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "wammer-iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		FFCFE0FB142111E100B9E6AF /* AOStream.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AOStream.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FFD06A41156E206800021C55 /* WAModel 31.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WAModel 31.xcdatamodel"; sourceTree = "<group>"; };
 		FFD14F0514C5E24C0053116F /* Crashlytics.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = Crashlytics.framework; path = external/CrashlyticsSDK/Crashlytics.framework; sourceTree = "<group>"; };
 		FFD2D913141F4D3600F21D22 /* WAPreviewBadge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAPreviewBadge.h; sourceTree = "<group>"; };
@@ -3099,7 +3103,7 @@
 		FF73A53F13D6C2CC00D54EC6 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				FFCFE0FB142111E100B9E6AF /* wammer-iOS.app */,
+				FFCFE0FB142111E100B9E6AF /* AOStream.app */,
 				4B8CA96814BBE7BA006E06BB /* UnitTests.octest */,
 				7D0CDD00162E5A080027D35F /* StreamTests.octest */,
 			);
@@ -3325,6 +3329,8 @@
 				80719CF8167AFF8000E9729F /* WAEventDay+WARemoteInterfaceEntitySyncing.m */,
 				80719CFA167B03B900E9729F /* WAPhotoDay+WARemoteInterfaceEntitySyncing.h */,
 				80719CFB167B03B900E9729F /* WAPhotoDay+WARemoteInterfaceEntitySyncing.m */,
+				4BB6A9031696BBA300AB5F14 /* WACollection+RemoteOperations.h */,
+				4BB6A9041696BBA300AB5F14 /* WACollection+RemoteOperations.m */,
 				13C17D6E169C142F00F909E5 /* WAStation+WARemoteInterfaceEntitySyncing.h */,
 				13C17D6F169C142F00F909E5 /* WAStation+WARemoteInterfaceEntitySyncing.m */,
 			);
@@ -4022,7 +4028,7 @@
 			);
 			name = "wammer-iOS";
 			productName = "wammer-iOS";
-			productReference = FFCFE0FB142111E100B9E6AF /* wammer-iOS.app */;
+			productReference = FFCFE0FB142111E100B9E6AF /* AOStream.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -4913,6 +4919,7 @@
 				7DBE8DF6165B383C005C2347 /* WADayHeaderView.m in Sources */,
 				4BB0400916804C68009C3D08 /* WACollection+WARemoteInterfaceEntitySyncing.m in Sources */,
 				4B307DCF168C3A6300DD4A34 /* WACollection.m in Sources */,
+				4B3AC462169C065700490DF7 /* WACollection+RemoteOperations.m in Sources */,
 				4B292C4816A50A8E008C2960 /* WAUser.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -5184,6 +5191,7 @@
 				13CCDE6E168C3C9300962625 /* WAFetchManager+RemoteFileMetadataFetch.m in Sources */,
 				13CCDE71168C466100962625 /* WAFile.m in Sources */,
 				13A318CD168CBD0100017E68 /* WAFetchManager+RemoteChangeFetch.m in Sources */,
+				4BB6A9051696BBA300AB5F14 /* WACollection+RemoteOperations.m in Sources */,
 				13C17D67169C0E3F00F909E5 /* WAStation.m in Sources */,
 				13C17D6A169C0E8200F909E5 /* WAUser.m in Sources */,
 				13C17D70169C143000F909E5 /* WAStation+WARemoteInterfaceEntitySyncing.m in Sources */,
@@ -5605,7 +5613,7 @@
 					"-weak_framework",
 					Social,
 				);
-				PRODUCT_NAME = "wammer-iOS";
+				PRODUCT_NAME = AOStream;
 				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos;
 				STREAM_BUNDLE_ID_SUFFIX = .beta;
@@ -6154,7 +6162,7 @@
 					"-weak_framework",
 					Social,
 				);
-				PRODUCT_NAME = "wammer-iOS";
+				PRODUCT_NAME = AOStream;
 				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos;
 				STREAM_BUNDLE_ID_SUFFIX = .develop;
@@ -6222,7 +6230,7 @@
 					"-weak_framework",
 					Social,
 				);
-				PRODUCT_NAME = "wammer-iOS";
+				PRODUCT_NAME = AOStream;
 				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos;
 				STREAM_BUNDLE_ID_SUFFIX = "";
