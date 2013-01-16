@@ -31,7 +31,7 @@
   NSString *filePath = [self absolutePathFromPath:primitivePath];
   if (primitivePath && [[NSFileManager defaultManager] fileExistsAtPath:filePath]) {
     WACacheManager *cacheManager = [(WAAppDelegate_iOS *)AppDelegate() cacheManager];
-    [cacheManager insertOrUpdateCacheWithRelationship:[[self objectID] URIRepresentation] filePath:filePath filePathKey:filePathKey];
+    [cacheManager insertOrUpdateCacheWithRelationship:[[self objectID] URIRepresentation] filePath:[filePath copy] filePathKey:[filePathKey copy]];
     return filePath;
   }
   
@@ -74,7 +74,7 @@
   [self setPrimitiveValue:filePath forKey:filePathKey];
   [self irAssociateObject:nil usingKey:&imageKey policy:OBJC_ASSOCIATION_ASSIGN changingObservedKey:imageKey];
   WACacheManager *cacheManager = [(WAAppDelegate_iOS *)AppDelegate() cacheManager];
-  [cacheManager insertOrUpdateCacheWithRelationship:[[self objectID] URIRepresentation] filePath:[self absolutePathFromPath:filePath] filePathKey:filePathKey];
+  [cacheManager insertOrUpdateCacheWithRelationship:[[self objectID] URIRepresentation] filePath:[self absolutePathFromPath:filePath] filePathKey:[filePathKey copy]];
   
   [self didChangeValueForKey:filePathKey];
   

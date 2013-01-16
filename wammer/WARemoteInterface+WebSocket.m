@@ -37,6 +37,15 @@ static NSString * const kConnectionForWebSocket = @"kConnectionForWebSocket";
   
   if (self.connectionForWebSocket == nil || self.connectionForWebSocket.webSocketState == WAWebSocketClosed) {
     
+    // Station will clean its ws_location field when it is suspended,
+    // so we don't have to connect to the suspended station.
+    if (!station.wsURL) {
+      [self connectAvaliableWSStation:[allStations subarrayWithRange:NSMakeRange(1, [allStations count]-1)]
+		         onSuccess:successBlock
+		         onFailure:failureBlock];
+      return;
+    }
+
     __weak WARemoteInterface *wSelf = self;
     [[WARemoteInterface sharedInterface]
      openWebSocketConnectionForUrl:[NSURL URLWithString:station.wsURL]

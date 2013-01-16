@@ -129,12 +129,14 @@
 	
 	[insertedAssets addObject:result];
 	
-        } else {
-	
+        }
+        
+        if (index == [allAssets count] - 1) {
+
 	NSArray *assets = [insertedAssets copy];
 	onProgressBlock(assets);
 	[insertedAssets removeAllObjects];
-	
+
         }
         
       }];
