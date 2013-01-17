@@ -69,7 +69,7 @@
 		
 	WARemoteInterface * const ri = [WARemoteInterface sharedInterface];
 	NSMutableArray *attachments = [NSMutableArray array];
-	for (WAFile *file in attachments) {
+	for (WAFile *file in anArticleOrNil.files) {
 	  [attachments addObject:file.identifier];
 	}
 	
