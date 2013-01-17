@@ -957,17 +957,18 @@
 	
 		[[WARemoteInterface sharedInterface] beginPostponingDataRetrievalTimerFiring];
 		
-		WACompositionViewController *compositionVC = [WACompositionViewController controllerWithArticle:[[self.article objectID] URIRepresentation] completion:^(NSURL *anArticleURLOrNil) {
+		WACompositionViewController *compositionVC = [WACompositionViewController controllerWithArticle:[[self.article objectID] URIRepresentation] completion:^(WAArticle *anArticleOrNil, NSManagedObjectContext *moc) {
 			
 			if (dismissBlock) {
 				dismissBlock();
 				dismissBlock = nil;
 			}
 			
-			if (!anArticleURLOrNil)
+			if (!anArticleOrNil)
 				return;
-				
-			[[WADataStore defaultStore] updateArticle:anArticleURLOrNil withOptions:nil onSuccess:^{
+
+		  NSURL *anArticleURL = [[anArticleOrNil objectID] URIRepresentation];
+			[[WADataStore defaultStore] updateArticle:anArticleURL withOptions:nil onSuccess:^{
 				
 				[[WARemoteInterface sharedInterface] endPostponingDataRetrievalTimerFiring];
 				

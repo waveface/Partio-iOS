@@ -26,7 +26,7 @@
 
 @interface WACompositionViewController () <UITextViewDelegate, IRTextAttributorDelegate>
 
-@property (nonatomic, readwrite, copy) void (^completionBlock)(NSURL *returnedURI);
+@property (nonatomic, readwrite, copy) void (^completionBlock)(WAArticle *returnedArticle, NSManagedObjectContext *moc);
 @property (nonatomic, readwrite, retain) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, readwrite, retain) WAArticle *article;
 
@@ -72,7 +72,7 @@
 
 }
 
-+ (WACompositionViewController *) controllerWithArticle:(NSURL *)anArticleURLOrNil completion:(void(^)(NSURL *anArticleURLOrNil))aBlock {
++ (WACompositionViewController *) controllerWithArticle:(NSURL *)anArticleURLOrNil completion:(void(^)(WAArticle *anArticleOrNil, NSManagedObjectContext *moc))aBlock {
 
 	WACompositionViewController *returnedController = [[self alloc] init];
 	returnedController.managedObjectContext = [[WADataStore defaultStore] autoUpdatingMOC];
@@ -372,35 +372,17 @@ static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandl
 		// set modification date only when updating articles
 		self.article.modificationDate = [NSDate date];
 	}
+  
+  [self.contentTextView resignFirstResponder];
+
+  dispatch_async(dispatch_get_main_queue(), ^ {
+
+	if (self.completionBlock)
+	  self.completionBlock(self.article, self.managedObjectContext);
 	
-	NSError *savingError = nil;
-	if (![self.managedObjectContext save:&savingError])
-		NSLog(@"Error saving: %@", savingError);
-	
-	[self.contentTextView resignFirstResponder];
-	
-	WAOverlayBezel *busyBezel = [WAOverlayBezel bezelWithStyle:WAActivityIndicatorBezelStyle];
-	[busyBezel show];
-
-	__weak WACompositionViewController *wSelf = self;
-	[self.managedObjectContext performBlock:^{
-
-		for (WAFile *file in wSelf.article.files) {
-			NSParameterAssert([self associatedImagesMadeForFile:file]);
-		}
-
-		dispatch_async(dispatch_get_main_queue(), ^ {
-
-			if (self.completionBlock)
-				self.completionBlock([[self.article objectID] URIRepresentation]);
-
-			[busyBezel dismiss];
-
-			[[UIApplication sharedApplication] endIgnoringInteractionEvents];
-		});
+	[[UIApplication sharedApplication] endIgnoringInteractionEvents];
+  });
 		
-	}];
-			
 }	
 
 - (void) handleCancel:(UIBarButtonItem *)sender {
@@ -408,7 +390,7 @@ static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandl
 	if (!([self.article hasChanges] && [[self.article changedValues] count]) || ![self.article hasMeaningfulContent]) {
 	
 		if (self.completionBlock)
-			self.completionBlock(nil);
+			self.completionBlock(nil, self.managedObjectContext);
 		
 		//	Delete things that are not meaningful if it’s a draft
 		
@@ -439,7 +421,7 @@ static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandl
 		IRAction *discardAction = [IRAction actionWithTitle:NSLocalizedString(@"ACTION_DISCARD", @"Action title for discarding a draft") block:^{
 			
 			if (wSelf.completionBlock)
-				wSelf.completionBlock(nil);
+				wSelf.completionBlock(nil, self.managedObjectContext);
 			
 		}];
 		
@@ -453,7 +435,7 @@ static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandl
 				NSLog(@"Error saving: %@", savingError);
 			
 			if (wSelf.completionBlock)
-				wSelf.completionBlock(nil);
+				wSelf.completionBlock(nil, self.managedObjectContext);
 		
 		}];
 			

@@ -219,10 +219,10 @@
 "ERROR_ARTICLE_ENTITY_SYNC_FAILURE_TITLE" = "Unable to upload";
 
 /* Failed, underlying error %@ with reason %@ */
-"ERROR_ARTICLE_ENTITY_SYNC_FAILURE_WITH_UNDERLYING_ERROR_DESCRIPTION_AND_REASON_FORMAT" = "A necessary task failed: %@ (%@) — Your post has been saved as a draft.";
+"ERROR_ARTICLE_ENTITY_SYNC_FAILURE_WITH_UNDERLYING_ERROR_DESCRIPTION_AND_REASON_FORMAT" = "A necessary task failed: %@ (%@).";
 
 /* Failed, underlying error description %@ */
-"ERROR_ARTICLE_ENTITY_SYNC_FAILURE_WITH_UNDERLYING_ERROR_DESCRIPTION_FORMAT" = "A necessary task failed: %@ — Your post has been saved as a draft.";
+"ERROR_ARTICLE_ENTITY_SYNC_FAILURE_WITH_UNDERLYING_ERROR_DESCRIPTION_FORMAT" = "A necessary task failed: %@.";
 
 /* The conjunction between description and location. */
 "EVENT_DESC_LOCATION_CONJUNCTION" = "EVENT_DESC_LOCATION_CONJUNCTION";
