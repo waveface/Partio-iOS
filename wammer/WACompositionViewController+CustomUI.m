@@ -60,7 +60,6 @@
 	};
 
 	if (!anArticleOrNil) {
-	  showErrorBezel();
 	  return;
 	}
 	
