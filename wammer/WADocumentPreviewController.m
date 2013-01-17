@@ -78,7 +78,7 @@ static NSString * kWADocumentPreviewControllerKVOContext = @"WADocumentPreviewCo
 	[self.view bringSubviewToFront:self.downloadingView];
 
 	NSString *fileExtension = [self.file.remoteFileName pathExtension];
-	if ([fileExtension isEqualToString:@"ppt"] || [fileExtension isEqualToString:@"pptx"]) {
+	if (([fileExtension isEqualToString:@"ppt"] || [fileExtension isEqualToString:@"pptx"]) && [self.file.pageElements count] > 0) {
 		// insert slide show button for powerpoint files
 		// however, we cannot insert to right buttons because QLPreviewController will overwrite them with an action button
 		if (!self.slideShowButton) {
