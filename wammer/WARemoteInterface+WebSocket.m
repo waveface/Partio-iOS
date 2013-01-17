@@ -39,7 +39,7 @@ static NSString * const kConnectionForWebSocket = @"kConnectionForWebSocket";
     
     // Station will clean its ws_location field when it is suspended,
     // so we don't have to connect to the suspended station.
-    if (!station.wsURL) {
+    if ([station.wsURL length] == 0) {
       [self connectAvaliableWSStation:[allStations subarrayWithRange:NSMakeRange(1, [allStations count]-1)]
 		         onSuccess:successBlock
 		         onFailure:failureBlock];
