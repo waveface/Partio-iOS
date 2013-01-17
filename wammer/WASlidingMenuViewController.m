@@ -64,17 +64,10 @@
   WADayViewController *swVC = [[WADayViewController alloc] initWithStyle:viewStyle];
   WANavigationController *navVC = [[WANavigationController alloc] initWithRootViewController:swVC];
   
+  swVC.view.backgroundColor = [UIColor colorWithRed:0.95f green:0.95f blue:0.95f alpha:1];
   if (viewStyle == WAPhotosViewStyle) {
-    
-    swVC.navigationController.navigationBar.tintColor = [UIColor colorWithWhite:0.157 alpha:1.000];
-    swVC.navigationController.navigationBar.titleTextAttributes = @{UITextAttributeTextColor: [UIColor whiteColor]};
-    [swVC.navigationController.navigationBar setBackgroundImage:nil forBarMetrics:UIBarMetricsDefault];
+    [swVC.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"photoStreamNavigationBar"] forBarMetrics:UIBarMetricsDefault];
     swVC.view.backgroundColor = [UIColor colorWithWhite:0.16f alpha:1.0f];
-    
-  } else {
-    
-    swVC.view.backgroundColor = [UIColor colorWithRed:0.95f green:0.95f blue:0.95f alpha:1];
-    
   }
   
   return navVC;
