@@ -479,6 +479,13 @@ static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandl
 	
 }
 
+
+- (BOOL) shouldAutorotate {
+
+  return YES;
+
+}
+
 - (BOOL) shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
   
 	return YES;

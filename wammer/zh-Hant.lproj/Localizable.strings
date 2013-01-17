@@ -166,9 +166,6 @@
 /* add photo button in composition view */
 "COMPOSITION_ONE_PHOTO_BUTTON_CAPTION_FORMAT" = "%i 張照片";
 
-/* remove preview in iPhone composition view */
-"COMPOSITION_REMOVE_CURRENT_PREVIEW" = "移除網頁預覽";
-
 /* Title for the composition view */
 "COMPOSITION_TITLE" = "編輯";
 
