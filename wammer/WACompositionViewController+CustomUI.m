@@ -60,7 +60,15 @@
 	};
 
 	if (!anArticleOrNil) {
-	  showErrorBezel();
+	  if (aBlock)
+		aBlock(nil);
+	  return;
+	}
+	
+	if (!([anArticleOrNil hasChanges] && [[anArticleOrNil changedValues] count])) {
+	  // Nothing change
+	  if (aBlock)
+		aBlock(nil);
 	  return;
 	}
 	

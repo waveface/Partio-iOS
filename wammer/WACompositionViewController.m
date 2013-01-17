@@ -368,11 +368,12 @@ static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandl
 	[[UIApplication sharedApplication] beginIgnoringInteractionEvents];
 	
 	self.article.text = self.contentTextView.text;
-	if (self.article.modificationDate) {
-		// set modification date only when updating articles
-		self.article.modificationDate = [NSDate date];
-	}
   
+//	if (self.article.modificationDate) {
+//		// set modification date only when updating articles
+//		self.article.modificationDate = [NSDate date];
+//	}
+//  
   [self.contentTextView resignFirstResponder];
 
   dispatch_async(dispatch_get_main_queue(), ^ {
@@ -387,29 +388,9 @@ static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandl
 
 - (void) handleCancel:(UIBarButtonItem *)sender {
 
-	if (!([self.article hasChanges] && [[self.article changedValues] count]) || ![self.article hasMeaningfulContent]) {
-	
-		if (self.completionBlock)
-			self.completionBlock(nil, self.managedObjectContext);
+  if (self.completionBlock)
+	self.completionBlock(nil, self.managedObjectContext);
 		
-		//	Delete things that are not meaningful if it’s a draft
-		
-		if (![self.article hasMeaningfulContent])
-		if ([self.article.draft isEqualToNumber:(NSNumber *)kCFBooleanTrue])
-			[self.article.managedObjectContext deleteObject:self.article];
-		
-		return;
-	
-	}
-	
-	IRActionSheetController *actionSheetController = self.cancellationActionSheetController;
-	if ([[actionSheetController managedActionSheet] isVisible])
-		return;
-	
-	NSParameterAssert(actionSheetController && ![actionSheetController.managedActionSheet isVisible]);
-	
-	[[actionSheetController managedActionSheet] showFromBarButtonItem:sender animated:YES];
-	
 }
 
 - (IRActionSheetController *) cancellationActionSheetController {
