@@ -46,13 +46,13 @@
 + (CGFloat) ledgeSize {
   
   if (isPad()) {
-	
-	return [WACalendarPickerViewController minimalCalendarWidth];
-	
+    
+    return [WACalendarPickerViewController minimalCalendarWidth];
+    
   } else {
-	
-	return 200.0f;
-	
+    
+    return 200.0f;
+    
   }
   
 }
@@ -68,6 +68,7 @@
   if (viewStyle == WAPhotosViewStyle) {
     [swVC.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"photoStreamNavigationBar"] forBarMetrics:UIBarMetricsDefault];
     swVC.view.backgroundColor = [UIColor colorWithWhite:0.16f alpha:1.0f];
+    [swVC.navigationController.navigationBar setShadowImage:nil];
   }
   
   return navVC;
@@ -185,17 +186,17 @@
     [[NSOperationQueue mainQueue] addOperationWithBlock:^{
       if (isFetching) {
         if (!wSelf.statusBar) {
-	wSelf.statusBar = [[WAStatusBar alloc] initWithFrame:CGRectZero];
+          wSelf.statusBar = [[WAStatusBar alloc] initWithFrame:CGRectZero];
         }
         [wSelf.statusBar startFetchingAnimation];
       } else {
         WASyncManager *syncManager = [(WAAppDelegate_iOS *)AppDelegate() syncManager];
         if (!syncManager.isSyncing) {
-	[wSelf.statusBar showSyncCompleteWithDissmissBlock:^{
-	  wSelf.statusBar = nil;
-	}];
+          [wSelf.statusBar showSyncCompleteWithDissmissBlock:^{
+            wSelf.statusBar = nil;
+          }];
         } else {
-	[wSelf.statusBar stopFetchingAnimation];
+          [wSelf.statusBar stopFetchingAnimation];
         }
       }
     }];
@@ -207,23 +208,23 @@
       WASyncManager *syncManager = [(WAAppDelegate_iOS *)AppDelegate() syncManager];
       if (isSyncing) {
         if (!wSelf.statusBar) {
-	wSelf.statusBar = [[WAStatusBar alloc] initWithFrame:CGRectZero];
+          wSelf.statusBar = [[WAStatusBar alloc] initWithFrame:CGRectZero];
         }
         if (syncManager.isSyncFail) {
-	[wSelf.statusBar showSyncFailWithDismissBlock:^{
-	  wSelf.statusBar = nil;
-	}];
+          [wSelf.statusBar showSyncFailWithDismissBlock:^{
+            wSelf.statusBar = nil;
+          }];
         } else if (syncManager.needingSyncFilesCount > 0) {
-	[wSelf.statusBar showPhotoSyncingWithSyncedFilesCount:syncManager.syncedFilesCount needingSyncFilesCount:syncManager.needingSyncFilesCount];
+          [wSelf.statusBar showPhotoSyncingWithSyncedFilesCount:syncManager.syncedFilesCount needingSyncFilesCount:syncManager.needingSyncFilesCount];
         } else if (syncManager.needingImportFilesCount > 0) {
-	[wSelf.statusBar showPhotoImportingWithImportedFilesCount:syncManager.importedFilesCount needingImportFilesCount:syncManager.needingImportFilesCount];
+          [wSelf.statusBar showPhotoImportingWithImportedFilesCount:syncManager.importedFilesCount needingImportFilesCount:syncManager.needingImportFilesCount];
         }
       } else {
         WAFetchManager *fetchManager = [(WAAppDelegate_iOS *)AppDelegate() fetchManager];
         if (!fetchManager.isFetching) {
-	[wSelf.statusBar showSyncCompleteWithDissmissBlock:^{
-	  wSelf.statusBar = nil;
-	}];
+          [wSelf.statusBar showSyncCompleteWithDissmissBlock:^{
+            wSelf.statusBar = nil;
+          }];
         }
       }
     }];
@@ -307,11 +308,11 @@
       cell.textLabel.text = NSLocalizedString(@"SLIDING_MENU_TITLE_COLLECTIONS", @"Title for Collections in the sliding menu");
       break;
       /*
-    case 6:
-      cell.imageView.image = [UIImage imageNamed:@"CalIcon"];
-      cell.textLabel.text = NSLocalizedString(@"SLIDING_MENU_TITLE_CALENDAR", @"Title for Calendar in the sliding menu");
-      break;
-      */
+       case 6:
+       cell.imageView.image = [UIImage imageNamed:@"CalIcon"];
+       cell.textLabel.text = NSLocalizedString(@"SLIDING_MENU_TITLE_CALENDAR", @"Title for Calendar in the sliding menu");
+       break;
+       */
     case 6:
       cell.imageView.image = [UIImage imageNamed:@"SettingsIcon"];
       cell.textLabel.text = NSLocalizedString(@"SLIDING_MENU_TITLE_SETTINGS", @"Title for Settings in the sliding menu");
@@ -349,10 +350,10 @@
       cell.backgroundColor = [UIColor colorWithRed:0.039f green:0.423f blue:0.529f alpha:1.0];
       break;
       /*
-    case 6: // Calendar
-      cell.backgroundColor = [UIColor colorWithRed:0.949f green:0.49f blue:0.305f alpha:1.0];
-      break;
-      */
+       case 6: // Calendar
+       cell.backgroundColor = [UIColor colorWithRed:0.949f green:0.49f blue:0.305f alpha:1.0];
+       break;
+       */
     case 6: // Settings
       cell.backgroundColor = [UIColor colorWithRed:0.72f green:0.701f blue:0.69f alpha:1.0];
       break;
@@ -407,20 +408,20 @@
       break;
     }
       
-/*    case 6: {
-	  if (isPad()) {
-		
-		WACalendarPickerViewController *calVC = [[WACalendarPickerViewController alloc] initWithFrame:self.view.frame selectedDate:[NSDate date]];
-		[self.navigationController pushViewController:calVC animated:YES];
-		
-	  } else {
-		[self.viewDeckController closeLeftView];
-      
-		WACalendarPickerViewController *dpVC = [[WACalendarPickerViewController alloc] initWithFrame:self.viewDeckController.centerController.view.frame selectedDate:[NSDate date]];
-		[self.viewDeckController setCenterController:[WACalendarPickerViewController wrappedNavigationControllerForViewController:dpVC forStyle:WACalendarPickerStyleWithMenu]];
-	  }
-      break;
-    }*/
+      /*    case 6: {
+       if (isPad()) {
+       
+       WACalendarPickerViewController *calVC = [[WACalendarPickerViewController alloc] initWithFrame:self.view.frame selectedDate:[NSDate date]];
+       [self.navigationController pushViewController:calVC animated:YES];
+       
+       } else {
+       [self.viewDeckController closeLeftView];
+       
+       WACalendarPickerViewController *dpVC = [[WACalendarPickerViewController alloc] initWithFrame:self.viewDeckController.centerController.view.frame selectedDate:[NSDate date]];
+       [self.viewDeckController setCenterController:[WACalendarPickerViewController wrappedNavigationControllerForViewController:dpVC forStyle:WACalendarPickerStyleWithMenu]];
+       }
+       break;
+       }*/
       
     case 6: { // Settings
       [self handleUserInfo];
@@ -434,11 +435,11 @@
 - (BOOL)viewDeckControllerWillOpenLeftView:(IIViewDeckController *)viewDeckController animated:(BOOL)animated {
   
   if (self.navigationController && isPad()) {
-	CGRect newFrame = self.navigationController.view.frame;
-	newFrame.size.width = [WACalendarPickerViewController minimalCalendarWidth]; // adjust navigation bar and toolbar width to fit in sliding menu
-	self.navigationController.view.frame = newFrame;
+    CGRect newFrame = self.navigationController.view.frame;
+    newFrame.size.width = [WACalendarPickerViewController minimalCalendarWidth]; // adjust navigation bar and toolbar width to fit in sliding menu
+    self.navigationController.view.frame = newFrame;
   }
-
+  
   return YES;
   
 }
@@ -470,15 +471,15 @@
   if (animated) {
     
     [UIView animateWithDuration:animationDuration
-		      delay:0.0f
-		    options:UIViewAnimationOptionCurveEaseInOut | UIViewAnimationOptionTransitionFlipFromBottom
-		 animations: ^{
-		   wSelf.viewDeckController.centerController = navVC;
-		 }
-		 completion: ^(BOOL complete) {
-		   if (date)
-		     [swVC jumpToDate:date animated:NO];
-		 }];
+                          delay:0.0f
+                        options:UIViewAnimationOptionCurveEaseInOut | UIViewAnimationOptionTransitionFlipFromBottom
+                     animations: ^{
+                       wSelf.viewDeckController.centerController = navVC;
+                     }
+                     completion: ^(BOOL complete) {
+                       if (date)
+                         [swVC jumpToDate:date animated:NO];
+                     }];
     
   } else {
     
