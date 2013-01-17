@@ -274,12 +274,20 @@ NSString * const kWADataStoreArticleUpdateShowsBezels = @"WADataStoreArticleUpda
       if (![context save:&savingError])
         NSLog(@"%@: %@", NSStringFromSelector(_cmd), savingError);
       
-      [wSelf setStorageQuota:userRep[@"quota"][@"doc"][@"origin_size"]];
-      [wSelf setStorageUsage:userRep[@"usage"][@"doc"][@"origin_size"]];
       if ([userRep[@"billing"][@"type"] isEqualToString:@"free"]) {
         [[NSUserDefaults standardUserDefaults] setInteger:WABusinessPlanFree forKey:kWABusinessPlan];
+        NSNumber *docQuota = userRep[@"quota"][@"doc"][@"origin_size"];
+        NSNumber *imageQuota = userRep[@"quota"][@"image"][@"origin_size"];
+        [wSelf setStorageQuota:@([docQuota unsignedIntegerValue] + [imageQuota unsignedIntegerValue])];
+        NSNumber *docUsage = userRep[@"usage"][@"doc"][@"origin_size"];
+        NSNumber *imageUsage = userRep[@"usage"][@"image"][@"origin_size"];
+        [wSelf setStorageUsage:@([docUsage unsignedIntegerValue] + [imageUsage unsignedIntegerValue])];
       } else {
         [[NSUserDefaults standardUserDefaults] setInteger:WABusinessPlanUltimate forKey:kWABusinessPlan];
+        NSNumber *totalQuota = userRep[@"quota"][@"total"][@"origin_size"];
+        NSNumber *totalUsage = userRep[@"usage"][@"total"][@"origin_size"];
+        [wSelf setStorageQuota:totalQuota];
+        [wSelf setStorageUsage:totalUsage];
       }
 
       if (snsReps) {
