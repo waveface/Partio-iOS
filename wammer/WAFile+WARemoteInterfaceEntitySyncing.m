@@ -709,6 +709,11 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
       [op addDependency:(IRAsyncBarrierOperation *)operations[(idx - 1)]];
   }];
   
+  IRAsyncOperation *lastOperation = [[[[self class] sharedSyncQueue] operations] lastObject];
+  if (lastOperation) {
+    [operations[0] addDependency:lastOperation];
+  }
+
   [[[self class] sharedSyncQueue] addOperations:operations waitUntilFinished:NO];
   
 }
