@@ -143,8 +143,8 @@
       break;
   }
 
-  NSUInteger quota = [[[WADataStore defaultStore] storageQuota] unsignedIntegerValue];
-  NSUInteger usage = [[[WADataStore defaultStore] storageUsage] unsignedIntegerValue];
+  long long quota = [[[WADataStore defaultStore] storageQuota] longLongValue];
+  long long usage = [[[WADataStore defaultStore] storageUsage] longLongValue];
   NSString *quotaString = [NSByteCountFormatter stringFromByteCount:quota countStyle:NSByteCountFormatterCountStyleBinary];
   self.storageUsageCell.detailTextLabel.text = [NSString stringWithFormat:NSLocalizedString(@"STORAGE_USAGE_DETAIL", @"storage usage detail in settings page"), usage * 100.0 / quota, quotaString];
 
