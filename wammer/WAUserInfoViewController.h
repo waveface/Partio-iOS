@@ -19,6 +19,8 @@
 @property (weak, nonatomic) IBOutlet UITableViewCell *connectionTableViewCell;
 @property (weak, nonatomic) IBOutlet UILabel *userEmailLabel;
 @property (weak, nonatomic) IBOutlet UITableViewCell *versionCell;
+@property (weak, nonatomic) IBOutlet UITableViewCell *packageCell;
+@property (weak, nonatomic) IBOutlet UITableViewCell *storageUsageCell;
 
 @property (weak, nonatomic) IBOutlet UITableViewCell *logoutCell;
 

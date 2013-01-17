@@ -24,6 +24,7 @@ static NSString * const kWASegueSettingsToOAuth = @"WASegueSettingsToOAuth";
 @property (nonatomic, strong) WASnsConnectSwitch *twitterConnectSwitch;
 @property (nonatomic, strong) WASnsConnectSwitch *foursquareConnectSwitch;
 @property (nonatomic, strong) WAOverlayBezel *busyBezel;
+@property (nonatomic) BOOL statusLoaded;
 
 @end
 
@@ -70,7 +71,10 @@ static NSString * const kWASegueSettingsToOAuth = @"WASegueSettingsToOAuth";
 
   [super viewDidAppear:animated];
 
-  [self reloadStatus];
+  if (!self.statusLoaded) {
+    [self reloadStatus];
+    self.statusLoaded = YES;
+  }
 
 }
 

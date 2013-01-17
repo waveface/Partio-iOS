@@ -26,13 +26,9 @@
 
 #import "WANavigationController.h"
 #import "WAApplicationRootViewControllerDelegate.h"
-#import "WAOverviewController.h"
 #import "WATimelineViewController.h"
 #import "WAUserInfoViewController.h"
 #import "WAOverlayBezel.h"
-
-#import "IRSlidingSplitViewController.h"
-#import "WASlidingSplitViewController.h"
 
 #import "Foundation+IRAdditions.h"
 #import "UIKit+IRAdditions.h"
@@ -43,7 +39,6 @@
 #import <FacebookSDK/FacebookSDK.h>
 
 #import "WAWelcomeViewController.h"
-#import "WATutorialViewController.h"
 
 #import "IIViewDeckController.h"
 #import "WASlidingMenuViewController.h"
@@ -346,7 +341,6 @@ extern CFAbsoluteTime StartTime;
       zapModal(aVC.presentedViewController);
     
     [aVC dismissViewControllerAnimated:NO completion:nil];
-    // WASlidingSplitViewController
     
   } copy];
   
@@ -406,6 +400,7 @@ extern CFAbsoluteTime StartTime;
   [[NSUserDefaults standardUserDefaults] setBool:NO forKey:kWAPhotoImportEnabled];
   [[NSUserDefaults standardUserDefaults] setBool:YES forKey:kWAAllCollectionsFetchOnce];
   [[NSUserDefaults standardUserDefaults] setBool:NO forKey:kWAFirstArticleFetched];
+  [[NSUserDefaults standardUserDefaults] setInteger:WABusinessPlanFree forKey:kWABusinessPlan];
   [[NSUserDefaults standardUserDefaults] synchronize];
   
   [self unsubscribeRemoteNotification];

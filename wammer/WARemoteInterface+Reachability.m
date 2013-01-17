@@ -70,6 +70,9 @@ static NSString * const kNetworkState = @"-[WARemoteInterface(Reachability) netw
   if ([aRequestName hasPrefix:@"groups/"])
     return incomingURLIsCloud;
   
+  if ([aRequestName hasPrefix:@"collections"])
+    return incomingURLIsCloud;
+  
   return YES;
   
 }
@@ -96,19 +99,19 @@ NSURL *refiningStationLocation(NSString *stationUrlString, NSURL *baseUrl) {
     return (id)nil;
   
   NSString *baseURLString = [[NSArray arrayWithObjects:
-			
-			[givenURL scheme] ? [[givenURL scheme] stringByAppendingString:@"://"] :
-			[baseUrl scheme] ? [[baseUrl scheme] stringByAppendingString:@"://"] : @"",
-			[baseUrl host] ? [givenURL host] : @"",
-			[givenURL port] ? [@":" stringByAppendingString:[[givenURL port] stringValue]] :
-			[baseUrl port] ? [@":" stringByAppendingString:[[baseUrl port] stringValue]] : @"",
-			[baseUrl path] ? [baseUrl path] : @"",
-			@"/", //  path needs trailing slash
-			
-			//	[givenURL query] ? [@"?" stringByAppendingString:[givenURL query]] : @"",
-			//	[givenURL fragment] ? [@"#" stringByAppendingString:[givenURL fragment]] : @"",
-			
-			nil] componentsJoinedByString:@""];
+                              
+                              [givenURL scheme] ? [[givenURL scheme] stringByAppendingString:@"://"] :
+                              [baseUrl scheme] ? [[baseUrl scheme] stringByAppendingString:@"://"] : @"",
+                              [baseUrl host] ? [givenURL host] : @"",
+                              [givenURL port] ? [@":" stringByAppendingString:[[givenURL port] stringValue]] :
+                              [baseUrl port] ? [@":" stringByAppendingString:[[baseUrl port] stringValue]] : @"",
+                              [baseUrl path] ? [baseUrl path] : @"",
+                              @"/", //  path needs trailing slash
+                              
+                              //	[givenURL query] ? [@"?" stringByAppendingString:[givenURL query]] : @"",
+                              //	[givenURL fragment] ? [@"#" stringByAppendingString:[givenURL fragment]] : @"",
+                              
+                              nil] componentsJoinedByString:@""];
   
   //  only take the location (host) + port, nothing else
   
@@ -138,22 +141,22 @@ NSURL *refiningStationLocation(NSString *stationUrlString, NSURL *baseUrl) {
     }
     
     [[WARemoteInterface sharedInterface] connectAvaliableWSStation:stations onSuccess:^(WAStation *station) {
-
+      
       // station is nil if the websocket connection has been constructed.
       if (station) {
         wSelf.monitoredHosts = @[station];
         [wSelf subscribeNotification];
       }
-     
+      
     } onFailure:^(NSError *error) {
-
+      
       // fall in this block if connection failure, disconnected from a station, or no stations
       wSelf.monitoredHosts = nil;
       
     }];
-
+    
     [wSelf endPostponingDataRetrievalTimerFiring];
-
+    
   } copy];
   
 }
@@ -183,20 +186,20 @@ NSURL *refiningStationLocation(NSString *stationUrlString, NSURL *baseUrl) {
     NSURL *bestHostURL = [wSelf bestHostForRequestNamed:originalMethodName];
     
     NSURL *swizzledURL = [NSURL URLWithString:[[NSArray arrayWithObjects:
-				        
-				        [bestHostURL scheme] ? [[bestHostURL scheme] stringByAppendingString:@"://"] :
-				        [originalURL scheme] ? [[originalURL scheme] stringByAppendingString:@"://"] : @"",
-				        
-				        [originalURL host] ? [bestHostURL host] : @"",
-				        
-				        [bestHostURL port] ? [@":" stringByAppendingString:[[bestHostURL port] stringValue]] :
-				        [originalURL port] ? [@":" stringByAppendingString:[[originalURL port] stringValue]] : @"",
-				        
-				        [originalURL path] ? [originalURL path] : @"/",
-				        [originalURL query] ? [@"?" stringByAppendingString:[originalURL query]] : @"",
-				        [originalURL fragment] ? [@"#" stringByAppendingString:[originalURL fragment]] : @"",
-				        
-				        nil] componentsJoinedByString:@""]];
+                                                
+                                                [bestHostURL scheme] ? [[bestHostURL scheme] stringByAppendingString:@"://"] :
+                                                [originalURL scheme] ? [[originalURL scheme] stringByAppendingString:@"://"] : @"",
+                                                
+                                                [originalURL host] ? [bestHostURL host] : @"",
+                                                
+                                                [bestHostURL port] ? [@":" stringByAppendingString:[[bestHostURL port] stringValue]] :
+                                                [originalURL port] ? [@":" stringByAppendingString:[[originalURL port] stringValue]] : @"",
+                                                
+                                                [originalURL path] ? [originalURL path] : @"/",
+                                                [originalURL query] ? [@"?" stringByAppendingString:[originalURL query]] : @"",
+                                                [originalURL fragment] ? [@"#" stringByAppendingString:[originalURL fragment]] : @"",
+                                                
+                                                nil] componentsJoinedByString:@""]];
     
     context.baseURL = swizzledURL;
     

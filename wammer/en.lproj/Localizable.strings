@@ -4,14 +4,11 @@
 /* add photo button in composition view */
 "ACTION_ADD" = "Add Photo";
 
-/* Action title for Cancelling
-   Action title for cancelling stuff
-   Cancel.
+/* Action title for cancelling stuff
    Title for cancelling an action */
 "ACTION_CANCEL" = "Cancel";
 
-/* Action changing representing file of an article
-   Title for the action responsible for presenting a controller changing the representing file of an article */
+/* Action changing representing file of an article */
 "ACTION_CHANGE_REPRESENTING_FILE" = "Change Cover";
 
 /* Place photos in collections */
@@ -30,7 +27,6 @@
 "ACTION_CONNECT_TWITTER_SHORT" = "Start Importing";
 
 /* Action deleting an article
-   Title for deleting an article from the Overview
    Title for deleting an article from the Timeline */
 "ACTION_DELETE" = "Delete";
 
@@ -58,9 +54,6 @@
 /* Share to Facebook action */
 "ACTION_FACEBOOK" = "Facebook";
 
-/* Action title for feedback composition */
-"ACTION_FEEDBACK" = "Feedback";
-
 /* Button title for showing an image picker */
 "ACTION_INSERT_PHOTO_FROM_LIBRARY" = "Photo Library";
 
@@ -70,17 +63,8 @@
 /* Action marking article as favorite */
 "ACTION_MARK_FAVORITE" = "Favorite";
 
-/* Action title for creating a new post */
-"ACTION_NEW_POST" = "New Post";
-
 /* Alert Dismissal Action */
 "ACTION_OKAY" = "OK";
-
-/* No comment provided by engineer. */
-"ACTION_OPEN_IN_SAFARI" = "Open in Safari";
-
-/* No comment provided by engineer. */
-"ACTION_PRINT" = "Print";
 
 /* No comment provided by engineer. */
 "ACTION_RESET" = "Reset";
@@ -88,7 +72,7 @@
 /* Action title for saving a draft */
 "ACTION_SAVE_DRAFT" = "Save Draft";
 
-/* Action title for Signing Out */
+/* No comment provided by engineer. */
 "ACTION_SIGN_OUT" = "Log Out";
 
 /* Email sign up button */
@@ -172,9 +156,6 @@
 /* Title of view controller connecting services */
 "CONNECT_SERVICES_CONTROLLER_TITLE" = "GETTING STARTED";
 
-/* In iPad overview, (time, device) */
-"CREATE_TIME_FROM_DEVICE" = "Posted at %1$@ from %2$@";
-
 /* in relative date format */
 "DATE_AFTER" = "%@ after";
 
@@ -187,24 +168,14 @@
 /* No comment provided by engineer. */
 "DAY_SINGULAR" = "%d day";
 
-/* Description for confirming a post deletion
-   Title for confirming a post deletion */
-"DELETE_POST_CONFIRMATION_DESCRIPTION" = "Note: Deleted posts can always be recovered from our web version.";
-
 /* Title for confirming a post deletion */
-"DELETE_POST_CONFIRMATION_TITLE" = "Delete Now?";
+"DELETE_POST_CONFIRMATION_DESCRIPTION" = "Note: Deleted posts can always be recovered from our web version.";
 
 /* Title of document download */
 "DOC_DOWNLOAD_FAIL_TITLE" = "Unable to download file.";
 
 /* Title for document view controller */
 "DOCUMENTS_CONTROLLER_TITLE" = "DOCUMENTS";
-
-/* State for drafts without content text */
-"DRAFT_STATE_NO_CONTENT" = "(No Content)";
-
-/* State for drafts without a timestamp */
-"DRAFT_STATE_NO_TIMESTAMP" = "(No Timestamp)";
 
 /* No comment provided by engineer. */
 "ERA_PLURAL" = "%d eras";
@@ -368,20 +339,8 @@
 /* For remote notification testing */
 "NOTIFY_TESTING" = "Hello, Stream!";
 
-/* Singluar noun for action objects */
-"NOUN_ACTIONS_OBJECT" = "Action";
-
-/* Title for Waveface Feedback */
-"NOUN_CURRENT_DEVICE" = "Device";
-
-/* Plural noun for draft objects */
-"NOUN_DRAFTS" = "Drafts";
-
 /* Section header in connection status view controller */
 "NOW_CONNECTING_HEADER" = "Now Connecting to";
-
-/* In iPad overview */
-"NUMBER_OF_PHOTOS_CREATE_TIME_FROM_DEVICE" = "%1$@ posted %2$@ from %3$@";
 
 /* Free plan option in plans page */
 "OPTION_FREE_PLAN" = "Free";
@@ -398,9 +357,6 @@
 
 /* Title of photo import settings view controller */
 "PHOTO_IMPORT_TITLE" = "Photo Import";
-
-/* In iPad overview */
-"PHOTO_NOUN" = "1 photo";
 
 /* in iPhone timeline */
 "PHOTO_PLURAL" = "%d photos";
@@ -432,26 +388,23 @@
 /* Subtitle of photo upload status */
 "PHOTO_UPLOAD_STATUS_UPLOADING" = "Importing photos...";
 
-/* In iPad overview */
-"PHOTOS_PLURAL" = "%d photos";
-
 /* in day view */
 "PHOTOS_TITLE" = "PHOTOS";
+
+/* business plan in settings page */
+"PLAN_FREE" = "Free";
+
+/* business plan in settings page */
+"PLAN_PREMIUM" = "Paid";
+
+/* business plan in settings page */
+"PLAN_ULTIMATE" = "Paid";
 
 /* Title of view controller choosing plans */
 "PLANS_CONTROLLER_TITLE" = "PLANS";
 
 /* Premium plan details in plans page */
 "PREMIUM_PLAN_DESCRIPTION" = "250GB cloud storage, unlimited PC storage";
-
-/* Text to show for previews without a provider name */
-"PREVIEW_BADGE_PROVIDER_NAME_PLACEHOLDER" = "(No Provider)";
-
-/* Text to show for previews without body text */
-"PREVIEW_BADGE_TEXT_PLACEHOLDER" = "(No Content)";
-
-/* Text to show for previews without a title */
-"PREVIEW_BADGE_TITLE_PLACEHOLDER" = "(No Title)";
 
 /* REACHABILITY_STATE_AVAILABLE */
 "REACHABILITY_STATE_AVAILABLE" = "Available";
@@ -468,7 +421,8 @@
 /* No comment provided by engineer. */
 "RESET_SETTINGS_CONFIRMATION_TITLE" = "Reset Settings?";
 
-/* Subtitle of searching network in setup done page. */
+/* Subtitle of searching network in settings page.
+   Subtitle of searching network in setup done page. */
 "SEARCHING_NETWORK_SUBTITLE" = "Searching AOStream network...";
 
 /* No comment provided by engineer. */
@@ -483,7 +437,7 @@
 /* Title for view controller signing the user in */
 "SIGN_IN_CONTROLLER_TITLE" = "LOG IN";
 
-/* Confirmation text for Signing Out */
+/* No comment provided by engineer. */
 "SIGN_OUT_CONFIRMATION" = "Are you sure?";
 
 /* Title of bar button going sign up page */
@@ -524,11 +478,8 @@
 /* Title of view controller setting personal cloud */
 "STORAGE_SETUP_CONTROLLER_TITLE" = "SETUP YOUR STORAGE";
 
-/* Title on the text stack more / less toggle button for “Less” */
-"TEXT_ELEMENT_TOGGLE_LESS_TITLE" = "Less";
-
-/* Title on the text stack more / less toggle button for “More” */
-"TEXT_ELEMENT_TOGGLE_MORE_TITLE" = "More";
+/* storage usage detail in settings page */
+"STORAGE_USAGE_DETAIL" = "%.1f%% of %@";
 
 /* Title of Canlendar */
 "TITLE_CALENDAR" = "Calendar";
@@ -581,12 +532,6 @@
 
 /* No comment provided by engineer. */
 "YEAR_SINGULAR" = "%d year";
-
-/* Class = "IBUIButton"; normalTitle = "ACTION_SEND"; ObjectID = "29"; */
-"ACTION_SEND" = "Stream!";
-
-/* Class = "IBUILabel"; text = "COMMENTS_VIEW_CONTROLLER_NO_COMMENTS_TITLE"; ObjectID = "35"; */
-"COMMENTS_VIEW_CONTROLLER_NO_COMMENTS_TITLE" = "No Notes";
 
 /* Class = "IBUILabel"; text = "COMPOSITION_NO_PHOTO_REMINDER_TITLE"; ObjectID = "25"; */
 "COMPOSITION_NO_PHOTO_REMINDER_TITLE" = "To add a photo, press the camera icon.";
@@ -713,36 +658,6 @@
 
 /* Class = "IBUILabel"; text = "STATE_LOADING_SINGLE_DOCUMENT_PROGRESS"; ObjectID = "10"; */
 "STATE_LOADING_SINGLE_DOCUMENT_PROGRESS" = "%1 of %2";
-
-/* Class = "IBUIButton"; normalTitle = "ACTION_DISMISS_TUTORIAL"; ObjectID = "43"; */
-"ACTION_DISMISS_TUTORIAL" = "Maybe later";
-
-/* Class = "IBUILabel"; text = "FACEBOOK_IMPORT_TUTORIAL_SWITCH"; ObjectID = "55"; */
-"FACEBOOK_IMPORT_TUTORIAL_SWITCH" = "Facebook Import";
-
-/* Class = "IBUITextView"; text = "FACEBOOK_IMPORT_TUTORIAL"; ObjectID = "56"; */
-"FACEBOOK_IMPORT_TUTORIAL" = "Start importing your Facebook posts into Stream! Future Facebook posts will then be imported automatically.\n\nTo turn this feature on or off, just go to the Account Info page of your Stream account.";
-
-/* Class = "IBUITextView"; text = "PHOTO_IMPORT_TUTORIAL"; ObjectID = "62"; */
-"PHOTO_IMPORT_TUTORIAL" = "Use the auto-import function to import all your Camera Roll photos into Stream to access them on all your devices and PCs anytime, anywhere.";
-
-/* Class = "IBUIButton"; normalTitle = "ACTION_IMPORT_PHOTO"; ObjectID = "63"; */
-"ACTION_IMPORT_PHOTO" = "Yes!";
-
-/* Class = "IBUIButton"; normalTitle = "ACTION_DISMISS_TUTORIAL"; ObjectID = "43"; */
-"ACTION_DISMISS_TUTORIAL" = "Maybe later";
-
-/* Class = "IBUITextView"; text = "FACEBOOK_IMPORT_TUTORIAL_IPAD"; ObjectID = "46"; */
-"FACEBOOK_IMPORT_TUTORIAL_IPAD" = "Start importing your Facebook posts into Stream! Future Facebook posts will then be imported automatically.\n\nTo turn this feature on or off, just go to the Account Info page of your Stream account.";
-
-/* Class = "IBUILabel"; text = "FACEBOOK_IMPORT_TUTORIAL_SWITCH_IPAD"; ObjectID = "49"; */
-"FACEBOOK_IMPORT_TUTORIAL_SWITCH_IPAD" = "Facebook Import";
-
-/* Class = "IBUITextView"; text = "PHOTO_IMPORT_TUTORIAL_IPAD"; ObjectID = "55"; */
-"PHOTO_IMPORT_TUTORIAL_IPAD" = "Use the auto-import function to import all your Camera Roll photos into Stream to access them on all your devices and PCs anytime, anywhere.";
-
-/* Class = "IBUIButton"; normalTitle = "ACTION_IMPORT_PHOTO"; ObjectID = "58"; */
-"ACTION_IMPORT_PHOTO" = "Yes!";
 
 /* Class = "IBUILabel"; text = "PC_SETUP_DESCRIPTION"; ObjectID = "1TK-Px-G5L"; */
 "PC_SETUP_DESCRIPTION" = "Connect to your personal cloud station and enable lightning speed.";
