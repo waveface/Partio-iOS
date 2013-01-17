@@ -67,9 +67,9 @@
 	self.contentTextView.contentInset = (UIEdgeInsets){ 4, 0, 64, 0 };
 	self.contentTextView.font = [UIFont systemFontOfSize:18.0f];
 		
-	self.toolbar.items = [NSArray arrayWithObjects:
-		[IRBarButtonItem itemWithCustomView:self.articleAttachmentActivityView],
-	nil];
+//	self.toolbar.items = [NSArray arrayWithObjects:
+//		[IRBarButtonItem itemWithCustomView:self.articleAttachmentActivityView],
+//	nil];
 	
 	self.toolbar.backgroundColor = nil;
 	self.toolbar.opaque = NO;
