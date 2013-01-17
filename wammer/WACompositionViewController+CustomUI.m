@@ -37,7 +37,7 @@
 				
 	  if (!anArticleURLOrNil) {
 		if (aBlock)
-		  aBlock(anArticleURLOrNil);
+		  aBlock(nil);
 
 			return;
 	  }
