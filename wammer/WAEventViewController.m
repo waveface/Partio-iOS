@@ -301,6 +301,7 @@
 	}
 	
 	UIFont *hlFont = [UIFont fontWithName:@"Georgia-BoldItalic" size:17.0f];
+  UIFont *descFont = [UIFont fontWithName:@"Georgia-Bold" size:17.0f];
 	UIFont *calFont = [UIFont fontWithName:@"Georgia-Italic" size:14.0f];
 	UIFont *calBFont = [UIFont boldSystemFontOfSize:14.f];
 	UIColor *calTextColor = [UIColor colorWithRed:0.353f green:0.361f blue:0.361f alpha:1.f];
@@ -345,7 +346,7 @@
 	UIColor *peopleColor = [UIColor colorWithRed:0.68f green:0.78f blue:0.26f alpha:1];
 
   NSDictionary *generatedDescAttr = @{NSForegroundColorAttributeName: colonOn? generatedDescColor : calTextColor, NSFontAttributeName: fontForTableViewOn? calFont : hlFont};
-	NSDictionary *actionAttr = @{NSForegroundColorAttributeName: colonOn? actionColor : calTextColor, NSFontAttributeName: fontForTableViewOn? calFont : hlFont};
+	NSDictionary *actionAttr = @{NSForegroundColorAttributeName: colonOn? actionColor : calTextColor, NSFontAttributeName: fontForTableViewOn? calFont : descFont};
 	NSDictionary *locationAttr = @{NSForegroundColorAttributeName: colonOn? locationColor : calTextColor, NSFontAttributeName: fontForTableViewOn? calFont : hlFont};
 	NSDictionary *peopleAttr = @{NSForegroundColorAttributeName: colonOn? peopleColor : calTextColor, NSFontAttributeName: fontForTableViewOn? calFont : hlFont};
 	NSDictionary *othersAttr = @{NSForegroundColorAttributeName: colonOn? othersColor : calTextColor, NSFontAttributeName: fontForTableViewOn? calBFont : hlFont};

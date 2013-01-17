@@ -193,6 +193,10 @@
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="475727658"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
+						<object class="NSColor" key="IBUIBackgroundColor" id="438629939">
+							<int key="NSColorSpace">3</int>
+							<bytes key="NSWhite">MQA</bytes>
+						</object>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClipsSubviews">YES</bool>
 						<int key="IBUIContentMode">7</int>
@@ -290,7 +294,7 @@
 								<string key="NSFrame">{{51, 0}, {255, 36}}</string>
 								<reference key="NSSuperview" ref="972824848"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView" ref="618304355"/>
+								<reference key="NSNextKeyView" ref="99387174"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
@@ -350,6 +354,7 @@
 								<string key="NSFrame">{{118, -10}, {70, 21}}</string>
 								<reference key="NSSuperview" ref="1012119292"/>
 								<reference key="NSWindow"/>
+								<reference key="NSNextKeyView"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<object class="NSColor" key="IBUIBackgroundColor">
 									<int key="NSColorSpace">1</int>
@@ -389,15 +394,18 @@
 						<string key="NSFrame">{{7, 190}, {306, 36}}</string>
 						<reference key="NSSuperview" ref="425760057"/>
 						<reference key="NSWindow"/>
+						<reference key="NSNextKeyView" ref="618304355"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIOpaque">NO</bool>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 						<int key="IBUIContentHorizontalAlignment">0</int>
 						<int key="IBUIContentVerticalAlignment">0</int>
-						<object class="NSColor" key="IBUIHighlightedTitleColor">
+						<bool key="IBUIShowsTouchWhenHighlighted">YES</bool>
+						<object class="NSColor" key="IBUITintColor">
 							<int key="NSColorSpace">3</int>
-							<bytes key="NSWhite">MQA</bytes>
+							<bytes key="NSWhite">MC45NDc1OTM1MjE5AA</bytes>
 						</object>
+						<reference key="IBUIHighlightedTitleColor" ref="438629939"/>
 						<object class="NSColor" key="IBUINormalTitleColor">
 							<int key="NSColorSpace">1</int>
 							<bytes key="NSRGB">MC4xOTYwNzg0MzQ2IDAuMzA5ODAzOTMyOSAwLjUyMTU2ODY1NgA</bytes>
@@ -2206,6 +2214,7 @@
 							</object>
 						</array>
 						<reference key="parent" ref="425760057"/>
+						<string key="objectName">descriptionTapper</string>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">770</int>
