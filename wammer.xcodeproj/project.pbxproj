@@ -320,6 +320,7 @@
 		80C129C2163989C6001DDFE2 /* cloudy@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 80C129C0163989C6001DDFE2 /* cloudy@2x.png */; };
 		80C129C516398A0D001DDFE2 /* Create.png in Resources */ = {isa = PBXBuildFile; fileRef = 80C129C316398A0D001DDFE2 /* Create.png */; };
 		80C129C616398A0D001DDFE2 /* Create@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 80C129C416398A0D001DDFE2 /* Create@2x.png */; };
+		80C61CAB16A7F1050028356F /* WAAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 80C61CAA16A7F1050028356F /* WAAnnotation.m */; };
 		80C65D02167B0BAE000E61DB /* WAPhotoDay.m in Sources */ = {isa = PBXBuildFile; fileRef = 80719CE5167AFD4600E9729F /* WAPhotoDay.m */; };
 		80C65D03167B0BB9000E61DB /* WAEventDay.m in Sources */ = {isa = PBXBuildFile; fileRef = 80719CE7167AFD4600E9729F /* WAEventDay.m */; };
 		80C979F71649796A004F0CF4 /* EventCardBG.png in Resources */ = {isa = PBXBuildFile; fileRef = 80C979F61649796A004F0CF4 /* EventCardBG.png */; };
@@ -1464,6 +1465,8 @@
 		80C129C0163989C6001DDFE2 /* cloudy@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "cloudy@2x.png"; path = "Resources/cloudy@2x.png"; sourceTree = "<group>"; };
 		80C129C316398A0D001DDFE2 /* Create.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Create.png; path = Resources/Create.png; sourceTree = "<group>"; };
 		80C129C416398A0D001DDFE2 /* Create@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Create@2x.png"; path = "Resources/Create@2x.png"; sourceTree = "<group>"; };
+		80C61CA916A7F1050028356F /* WAAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAAnnotation.h; sourceTree = "<group>"; };
+		80C61CAA16A7F1050028356F /* WAAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAAnnotation.m; sourceTree = "<group>"; };
 		80C979F61649796A004F0CF4 /* EventCardBG.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = EventCardBG.png; path = Resources/EventCardBG.png; sourceTree = "<group>"; };
 		80C979F816497EF1004F0CF4 /* LightDateBG.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = LightDateBG.png; path = Resources/LightDateBG.png; sourceTree = "<group>"; };
 		80C979F916497EF1004F0CF4 /* LightDateBG@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "LightDateBG@2x.png"; path = "Resources/LightDateBG@2x.png"; sourceTree = "<group>"; };
@@ -2807,6 +2810,8 @@
 				13217E3C164A0D3A0030C4A6 /* WALocalizedTableViewCell.m */,
 				131AEC2D1654DF0D000F9E74 /* WAStatusBar.h */,
 				131AEC2E1654DF0D000F9E74 /* WAStatusBar.m */,
+				80C61CA916A7F1050028356F /* WAAnnotation.h */,
+				80C61CAA16A7F1050028356F /* WAAnnotation.m */,
 			);
 			name = Views;
 			path = wammer;
@@ -5178,6 +5183,7 @@
 				13C17D6A169C0E8200F909E5 /* WAUser.m in Sources */,
 				13C17D70169C143000F909E5 /* WAStation+WARemoteInterfaceEntitySyncing.m in Sources */,
 				1348F3EF169D49240078412B /* WAConnectionStatusViewController.m in Sources */,
+				80C61CAB16A7F1050028356F /* WAAnnotation.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

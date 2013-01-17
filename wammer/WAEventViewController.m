@@ -15,6 +15,7 @@
 #import "WALocation.h"
 #import "WAPeople.h"
 
+#import "WAAnnotation.h"
 #import "WAEventPhotoViewCell.h"
 #import "WAEventPeopleListViewController.h"
 #import "WAAppearance.h"
@@ -27,18 +28,6 @@
 
 #import "WACompositionViewController.h"
 #import "WACompositionViewController+CustomUI.h"
-
-@interface WAAnnotation : NSObject <MKAnnotation>
-
-@property (nonatomic, strong) NSString *title;
-@property (nonatomic, strong) NSString *subtitle;
-@property (nonatomic, assign) CLLocationCoordinate2D coordinate;
-
-@end
-@implementation WAAnnotation
-
-
-@end
 
 @interface WAEventViewController () <MKMapViewDelegate>
 
@@ -152,7 +141,8 @@
 	if (self.article.location.latitude && self.article.location.longitude) {
 		
 		CLLocationCoordinate2D center = { self.article.location.latitude.floatValue, self.article.location.longitude.floatValue };
-		NSUInteger zoomLevel = [self.article.location.zoomLevel unsignedIntegerValue];
+//		NSUInteger zoomLevel = [self.article.location.zoomLevel unsignedIntegerValue];
+	  NSUInteger zoomLevel = 14; // hardcoded, but we may tune this in the future
 		
 		NSMutableArray *checkins = [NSMutableArray array];
 		for (WALocation *loc in self.article.checkins) {

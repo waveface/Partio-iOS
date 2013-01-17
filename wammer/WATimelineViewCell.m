@@ -14,10 +14,11 @@
 #import "WAEventViewController.h"
 #import "WALocation.h"
 #import "MKMapView+ZoomLevel.h"
+#import "WAAnnotation.h"
 
 NSString * kWAEventTimelineViewCellKVOContext = @"EventTimelineViewCellKVOContext";
 
-@interface WATimelineViewCell ()
+@interface WATimelineViewCell () <MKMapViewDelegate>
 
 @property (nonatomic, strong) IBOutletCollection(UIImageView) NSArray *photoImageViews;
 @property (nonatomic, readwrite, weak) IBOutlet UILabel *timeLabel;
@@ -132,9 +133,25 @@ NSString * kWAEventTimelineViewCellKVOContext = @"EventTimelineViewCellKVOContex
 		if (post.location) {
 
 			CLLocationCoordinate2D center = { post.location.latitude.floatValue, post.location.longitude.floatValue };
-			NSUInteger zoomLevel = [post.location.zoomLevel unsignedIntegerValue];
-			[self.mapView setCenterCoordinate:center zoomLevel:zoomLevel animated:NO];
+//			NSUInteger zoomLevel = [post.location.zoomLevel unsignedIntegerValue];
+		  NSUInteger zoomLevel = 14;
+
+		  NSMutableArray *checkins = [NSMutableArray array];
+		  for (WALocation *loc in post.checkins) {
+			WAAnnotation *pin = [[WAAnnotation alloc] init];
 			
+			CLLocationCoordinate2D checkinCenter = { loc.latitude.floatValue, loc.longitude.floatValue };
+			pin.coordinate = checkinCenter;
+			if (loc.name)
+			  pin.title = loc.name;
+			
+			[checkins addObject:pin];
+		  }
+
+		  self.mapView.delegate = self;
+		  [self.mapView setCenterCoordinate:center zoomLevel:zoomLevel animated:NO];
+		  [self.mapView addAnnotations:checkins];
+		  
 		}
 		
 	}
@@ -185,6 +202,21 @@ NSString * kWAEventTimelineViewCellKVOContext = @"EventTimelineViewCellKVOContex
 	self.backgroundColor = [UIColor colorWithRed:0.95f green:0.95f blue:0.95f alpha:1];
 	[self setNeedsLayout];
 
+}
+
+- (MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id<MKAnnotation>)annotation {
+  
+  static NSString *annotationIdentifier = @"EventMapView-Annotation";
+  MKAnnotationView *annView = (MKAnnotationView*)[mapView dequeueReusableAnnotationViewWithIdentifier:annotationIdentifier];
+  if (annView == nil) {
+	annView = [[MKAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:annotationIdentifier];
+  }
+  
+  annView.canShowCallout = NO;
+  annView.draggable = NO;
+  annView.image = [UIImage imageNamed:@"pindrop"];
+  return annView;
+  
 }
 
 + (UIImage *) eventCardBackgroundImage {
