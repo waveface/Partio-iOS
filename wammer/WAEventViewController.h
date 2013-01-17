@@ -17,11 +17,13 @@ typedef void (^completionHandler) (void);
 
 @property (nonatomic, strong, readonly) WAEventHeaderView *headerView;
 
+@property (nonatomic, strong) NSURL *articleURL;
 @property (nonatomic, strong) WAArticle *article;
+
 @property (nonatomic, copy) completionHandler completion;
 @property (nonatomic, strong, readonly) UICollectionView *itemsView;
 
-+ (WAEventViewController *) controllerForArticle:(WAArticle *)article;
++ (WAEventViewController *) controllerForArticleURL:(NSURL*)anArticleURL;
 + (NSAttributedString *) attributedDescriptionStringForEvent:(WAArticle*)event;
 + (NSAttributedString *) attributedDescriptionStringForEvent:(WAArticle*)event styleWithColor:(BOOL)colonOn styleWithFontForTableView:(BOOL)fontForTableViewOn;
 + (NSAttributedString *) attributedStringForTags:(NSArray*)tags;

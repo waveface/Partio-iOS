@@ -409,7 +409,8 @@
 - (void) collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
 	
 	WAArticle *post = [self.fetchedResultsController objectAtIndexPath:indexPath];
-	WAEventViewController *eVC = [WAEventViewController controllerForArticle:post];
+  NSURL *aPostURL = [[post objectID] URIRepresentation];
+	WAEventViewController *eVC = [WAEventViewController controllerForArticleURL:aPostURL];
 		
 	WATimelineViewCell *cell = (WATimelineViewCell*)[collectionView cellForItemAtIndexPath:indexPath];
 	UIColor *origColor = cell.backgroundColor;

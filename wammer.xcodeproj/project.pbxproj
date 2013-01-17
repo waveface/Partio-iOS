@@ -152,8 +152,6 @@
 		4BBEEA1F164F6ABE00D33EDB /* WATests_iOS.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BBEEA1E164F6ABE00D33EDB /* WATests_iOS.m */; };
 		4BD77BB915A2C10500CA8486 /* WABackoffHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 130F09EF159C3C74001796D0 /* WABackoffHandler.m */; };
 		4BD77BBA15A2C8B300CA8486 /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = FF0CC558158A41150034BD1B /* libxml2.dylib */; };
-		4BE6910D14EB8159002B9790 /* WAPreviewInspectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BE6910B14EB8159002B9790 /* WAPreviewInspectionViewController.m */; };
-		4BE6910E14EB8159002B9790 /* WAPreviewInspectionViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4BE6910C14EB8159002B9790 /* WAPreviewInspectionViewController.xib */; };
 		4BF243E014F23B7C00F4636C /* IRActionSheetController+WAAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BF243DF14F23B7C00F4636C /* IRActionSheetController+WAAdditions.m */; };
 		4BF3656615A5914000E40E42 /* WARemoteInterface+Facebook.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BF3656515A5914000E40E42 /* WARemoteInterface+Facebook.m */; };
 		4BF8353D1677275F0031A363 /* WACollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B274E681675E0E9007406D3 /* WACollectionViewCell.m */; };
@@ -1267,9 +1265,6 @@
 		4BBEEA1A164F6AB300D33EDB /* WAWebSocketTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WAWebSocketTests.m; path = UnitTests/WAWebSocketTests.m; sourceTree = SOURCE_ROOT; };
 		4BBEEA1D164F6ABE00D33EDB /* WATests_iOS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WATests_iOS.h; path = UnitTests/WATests_iOS.h; sourceTree = SOURCE_ROOT; };
 		4BBEEA1E164F6ABE00D33EDB /* WATests_iOS.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WATests_iOS.m; path = UnitTests/WATests_iOS.m; sourceTree = SOURCE_ROOT; };
-		4BE6910A14EB8159002B9790 /* WAPreviewInspectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAPreviewInspectionViewController.h; sourceTree = "<group>"; };
-		4BE6910B14EB8159002B9790 /* WAPreviewInspectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAPreviewInspectionViewController.m; sourceTree = "<group>"; };
-		4BE6910C14EB8159002B9790 /* WAPreviewInspectionViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WAPreviewInspectionViewController.xib; sourceTree = "<group>"; };
 		4BF243DE14F23B7C00F4636C /* IRActionSheetController+WAAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "IRActionSheetController+WAAdditions.h"; path = "wammer/IRActionSheetController+WAAdditions.h"; sourceTree = "<group>"; };
 		4BF243DF14F23B7C00F4636C /* IRActionSheetController+WAAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "IRActionSheetController+WAAdditions.m"; path = "wammer/IRActionSheetController+WAAdditions.m"; sourceTree = "<group>"; };
 		4BF3656415A5914000E40E42 /* WARemoteInterface+Facebook.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WARemoteInterface+Facebook.h"; sourceTree = "<group>"; };
@@ -3876,9 +3871,6 @@
 				FF0527EA14F3AA9B0030D099 /* WACompositionViewControllerPhone.xib */,
 				FF8CDE8313F3DAB700E08F28 /* WACompositionViewPhotoCell.h */,
 				FF8CDE8413F3DAB700E08F28 /* WACompositionViewPhotoCell.m */,
-				4BE6910A14EB8159002B9790 /* WAPreviewInspectionViewController.h */,
-				4BE6910B14EB8159002B9790 /* WAPreviewInspectionViewController.m */,
-				4BE6910C14EB8159002B9790 /* WAPreviewInspectionViewController.xib */,
 				FF0527F414F3BF860030D099 /* WAArticleAttachmentActivityView.h */,
 				FF0527F514F3BF860030D099 /* WAArticleAttachmentActivityView.m */,
 			);
@@ -4329,7 +4321,6 @@
 				FF0AC0CD149F7A8C00AA5611 /* WAArticleViewController_Cell_Preview.xib in Resources */,
 				FF0AC0CE149F7A8C00AA5611 /* WAArticleViewController_FullScreen_Preview.xib in Resources */,
 				FF0AC0D3149F865E00AA5611 /* WAArticleTextStackCell.xib in Resources */,
-				4BE6910E14EB8159002B9790 /* WAPreviewInspectionViewController.xib in Resources */,
 				FF0527EB14F3AA9B0030D099 /* WACompositionViewControllerPhone.xib in Resources */,
 				FF945EE9152D72510034D540 /* UIKit+IRAdditions.bundle in Resources */,
 				FFA2585D15408D6D00FE661C /* WAFilterPickerViewController.xib in Resources */,
@@ -5022,7 +5013,6 @@
 				FF0505EF14C08900002EA455 /* WAButton.m in Sources */,
 				FFB44D5A14D692AA00080F07 /* WAArticleViewController_FullScreen_Preview.m in Sources */,
 				FF88E14514E8D7DC00B347A8 /* WAArticle+WAAdditions.m in Sources */,
-				4BE6910D14EB8159002B9790 /* WAPreviewInspectionViewController.m in Sources */,
 				FF2E82FC14EE48FB000C6044 /* WAPreview+WAAdditions.m in Sources */,
 				FF2E82FF14EE4921000C6044 /* WAPreview+WARemoteInterfaceEntitySyncing.m in Sources */,
 				FF3588F714EE7207005B452C /* WAOpenGraphElement+WAAdditions.m in Sources */,

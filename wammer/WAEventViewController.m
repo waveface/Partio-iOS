@@ -25,6 +25,9 @@
 #import "GAI.h"
 #import "WANavigationController.h"
 
+#import "WACompositionViewController.h"
+#import "WACompositionViewController+CustomUI.h"
+
 @interface WAAnnotation : NSObject <MKAnnotation>
 
 @property (nonatomic, strong) NSString *title;
@@ -42,12 +45,13 @@
 @property (nonatomic, strong, readwrite) UICollectionView *itemsView;
 @property (nonatomic, strong) WAEventHeaderView *headerView;
 @property (nonatomic, strong) UIPopoverController *popover;
+@property (nonatomic, strong) NSManagedObjectContext *managedObjectContext;
 
 @end
 
 @implementation WAEventViewController
 
-+ (WAEventViewController *) controllerForArticle:(WAArticle *)article {
++ (WAEventViewController *) controllerForArticleURL:(NSURL*)anArticleURL {
 	NSMutableString *literal = [[NSMutableString alloc] initWithString:@"WAEventViewController"];
 	
 	[literal appendString:@"_Photo"];
@@ -58,7 +62,7 @@
 		class = [self class];
 
 	WAEventViewController *eventVC = [[class alloc] init];
-	eventVC.article = article;
+	eventVC.articleURL = anArticleURL;
 	
 	return eventVC;
 	
@@ -74,10 +78,21 @@
     return self;
 }
 
+- (void) loadArticle {
+  
+  if (!self.managedObjectContext)
+	self.managedObjectContext = [[WADataStore defaultStore] defaultAutoUpdatedMOC];
+  
+  self.article = (WAArticle*)[self.managedObjectContext irManagedObjectForURI:self.articleURL];
+  
+}
+
 - (void)viewDidLoad
 {
 	
 	[super viewDidLoad];
+  
+  [self loadArticle];
 		
 	CGRect rect = (CGRect){ CGPointZero, self.view.frame.size };
 	
@@ -286,6 +301,7 @@
 	}
 	
 	UIFont *hlFont = [UIFont fontWithName:@"Georgia-BoldItalic" size:17.0f];
+  UIFont *descFont = [UIFont fontWithName:@"Georgia-Bold" size:17.0f];
 	UIFont *calFont = [UIFont fontWithName:@"Georgia-Italic" size:14.0f];
 	UIFont *calBFont = [UIFont boldSystemFontOfSize:14.f];
 	UIColor *calTextColor = [UIColor colorWithRed:0.353f green:0.361f blue:0.361f alpha:1.f];
@@ -295,18 +311,26 @@
 	NSString *otherString = [otherDesc componentsJoinedByString:@", "];
 	NSMutableString *rawString = nil;
 	
-	if (event.eventDescription && event.eventDescription.length) {
-		rawString = [NSMutableString stringWithFormat:@"%@", event.eventDescription];
-	} else {
-		rawString = [NSMutableString string];
-	}
+  if (event.text.length) {
+	
+	rawString = [NSMutableString stringWithFormat:@"%@", event.text];
+	
+  } else if (event.eventDescription && event.eventDescription.length) {
+	
+	rawString = [NSMutableString stringWithFormat:@"%@", event.eventDescription];
+	
+  } else {
+	rawString = [NSMutableString string];
+  }
 	
 	if (locations && locations.count) {
-		[rawString appendFormat:@" at %@", locString];
+	  NSString *locConjunction = NSLocalizedString(@"EVENT_DESC_LOCATION_CONJUNCTION", @"The conjunction between description and location.");
+		[rawString appendFormat:@" %@ %@", locConjunction, locString];
 	}
 	
 	if (people && people.count) {
-		[rawString appendFormat:@" with %@", peoString];
+	  NSString *peopleConjunction = NSLocalizedString(@"EVENT_DESC_PEOPLE_CONJUNCTION", @"The conjunction between description and people's names");
+	  [rawString appendFormat:@" %@ %@", peopleConjunction, peoString];
 	}
 	
 	if (otherDesc && otherDesc.count) {
@@ -315,24 +339,30 @@
 		
 	NSMutableAttributedString *attrString = [[NSMutableAttributedString alloc] initWithString:rawString];
 
+  UIColor *generatedDescColor = [UIColor colorWithWhite:0.8f alpha:1.0f];
 	UIColor *actionColor = [UIColor colorWithRed:0.96f green:0.64f blue:0.12f alpha:1];
 	UIColor *othersColor = [UIColor colorWithRed:0.5f green:0.85 blue:0.96 alpha:1];
 	UIColor *locationColor = [UIColor colorWithRed:0.5f green:0.85 blue:0.96 alpha:1];
 	UIColor *peopleColor = [UIColor colorWithRed:0.68f green:0.78f blue:0.26f alpha:1];
 
-	NSDictionary *actionAttr = @{NSForegroundColorAttributeName: colonOn? actionColor : calTextColor, NSFontAttributeName: fontForTableViewOn? calFont : hlFont};
+  NSDictionary *generatedDescAttr = @{NSForegroundColorAttributeName: colonOn? generatedDescColor : calTextColor, NSFontAttributeName: fontForTableViewOn? calFont : hlFont};
+	NSDictionary *actionAttr = @{NSForegroundColorAttributeName: colonOn? actionColor : calTextColor, NSFontAttributeName: fontForTableViewOn? calFont : descFont};
 	NSDictionary *locationAttr = @{NSForegroundColorAttributeName: colonOn? locationColor : calTextColor, NSFontAttributeName: fontForTableViewOn? calFont : hlFont};
 	NSDictionary *peopleAttr = @{NSForegroundColorAttributeName: colonOn? peopleColor : calTextColor, NSFontAttributeName: fontForTableViewOn? calFont : hlFont};
 	NSDictionary *othersAttr = @{NSForegroundColorAttributeName: colonOn? othersColor : calTextColor, NSFontAttributeName: fontForTableViewOn? calBFont : hlFont};
 	
 	if (attrString.length > 0)
 		[attrString setAttributes:othersAttr range:(NSRange)[rawString rangeOfString:rawString]];
-	if (event.eventDescription && event.eventDescription.length > 0)
-		[attrString setAttributes:actionAttr range:(NSRange){0, event.eventDescription.length}];
-	if (locString && locString.length > 0 )
-		[attrString setAttributes:locationAttr range:(NSRange)[rawString rangeOfString:locString]];
-	if (peoString && peoString.length > 0 )
-		[attrString setAttributes:peopleAttr range:(NSRange)[rawString rangeOfString:peoString]];
+  
+  if (event.text.length)
+	[attrString setAttributes:actionAttr range:(NSRange){0, event.text.length}];
+  else if (event.eventDescription && event.eventDescription.length > 0)
+	[attrString setAttributes:generatedDescAttr range:(NSRange){0, event.eventDescription.length}];
+
+  if (locString && locString.length > 0 )
+	[attrString setAttributes:locationAttr range:(NSRange)[rawString rangeOfString:locString]];
+  if (peoString && peoString.length > 0 )
+	[attrString setAttributes:peopleAttr range:(NSRange)[rawString rangeOfString:peoString]];
 
 	
 	return attrString;
@@ -454,6 +484,8 @@
 
 	_headerView.descriptiveTagsLabel.attributedText = [[self class] attributedDescriptionStringForEvent:self.article];
 	[_headerView.descriptiveTagsLabel invalidateIntrinsicContentSize];
+  
+  [_headerView.descriptionTapper addTarget:self action:@selector(handleChangeDescription:) forControlEvents:UIControlEventTouchUpInside];
 	
 	NSMutableArray *tags = [NSMutableArray array];
 	[[self.article.tags allObjects] enumerateObjectsUsingBlock:^(WATag  *aTagRep, NSUInteger idx, BOOL *stop) {
@@ -523,6 +555,21 @@
 
 - (void) addMorePeopleBtnPressed:(id)sender {
 	
+}
+
+- (void) handleChangeDescription:(id)sender {
+  
+  __weak WAEventViewController *wSelf = self;
+  __block WACompositionViewController *compositionVC = [WACompositionViewController defaultAutoSubmittingCompositionViewControllerForArticle:self.articleURL completion:^(NSURL *anArticleURLOrNil) {
+	[compositionVC dismissViewControllerAnimated:YES completion:nil];
+	compositionVC = nil;
+  }];
+  
+  UINavigationController *wrapperNC = [compositionVC wrappingNavigationController];
+  wrapperNC.modalPresentationStyle = UIModalPresentationFormSheet;
+  
+  [(self.navigationController ? self.navigationController : self) presentViewController:wrapperNC animated:YES completion:nil];
+
 }
 
 

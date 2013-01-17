@@ -229,7 +229,8 @@
   selectedEvent = [[dataSource items] objectAtIndex:indexPath.row];
   
   if ([selectedEvent isKindOfClass:[WAArticle class]]) {
-	WAEventViewController *eventVC = [WAEventViewController controllerForArticle:selectedEvent];
+	NSURL *articleURL = [[selectedEvent objectID] URIRepresentation];
+	WAEventViewController *eventVC = [WAEventViewController controllerForArticleURL:articleURL];
 	
 	if (isPad()) {
 	  UINavigationController *navC = [[WANavigationController alloc] initWithRootViewController:eventVC];

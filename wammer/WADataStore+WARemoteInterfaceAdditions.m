@@ -139,13 +139,16 @@ NSString * const kWADataStoreArticleUpdateShowsBezels = @"WADataStoreArticleUpda
   
   NSManagedObjectContext *context = [self disposableMOC];
   WAArticle *article = (WAArticle *)[context irManagedObjectForURI:anArticleURI];
-  
-  dispatch_sync(dispatch_get_main_queue(), ^{
-    [[self articlesCurrentlyBeingUpdated] addObject:anArticleURI];
-  });
-  
   __weak WADataStore *wSelf = self;
-  
+
+  if ([NSThread isMainThread]) {
+	[[self articlesCurrentlyBeingUpdated] addObject:anArticleURI];
+  } else {
+	dispatch_sync(dispatch_get_main_queue(), ^{
+	  [[wSelf articlesCurrentlyBeingUpdated] addObject:anArticleURI];
+	});
+  }
+
   void (^fireCallback)(BOOL, NSError *) = ^ (BOOL didFinish, NSError *error) {
     
     if (didFinish) {
@@ -159,10 +162,14 @@ NSString * const kWADataStoreArticleUpdateShowsBezels = @"WADataStoreArticleUpda
         failureBlock(error);
       
     }
-    
-    dispatch_sync(dispatch_get_main_queue(), ^{
-      [[wSelf articlesCurrentlyBeingUpdated] removeObject:anArticleURI];
-    });
+   
+	if ([NSThread isMainThread]) {
+	  [[wSelf articlesCurrentlyBeingUpdated] addObject:anArticleURI];
+	} else {
+	  dispatch_sync(dispatch_get_main_queue(), ^{
+		[[wSelf articlesCurrentlyBeingUpdated] removeObject:anArticleURI];
+	  });
+	}
     
   };
   

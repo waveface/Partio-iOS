@@ -1,9 +1,6 @@
 /* accessibility label for adding photos in composition view */
 "ACCESS_ADD_PHOTO" = "加照片";
 
-/* accessibility label for webpage preview in composition view */
-"ACCESS_PREVIEW" = "預覽";
-
 /* add photo button in composition view */
 "ACTION_ADD" = "加照片";
 
@@ -169,10 +166,6 @@
 /* add photo button in composition view */
 "COMPOSITION_ONE_PHOTO_BUTTON_CAPTION_FORMAT" = "%i 張照片";
 
-/* remove preview in iPad composition view
-   remove preview in iPhone composition view */
-"COMPOSITION_REMOVE_CURRENT_PREVIEW" = "移除網頁預覽";
-
 /* Title for the composition view */
 "COMPOSITION_TITLE" = "編輯";
 
@@ -230,6 +223,12 @@
 
 /* Failed, underlying error description %@ */
 "ERROR_ARTICLE_ENTITY_SYNC_FAILURE_WITH_UNDERLYING_ERROR_DESCRIPTION_FORMAT" = "上傳時發生錯誤：%@。本文已存成草稿。";
+
+/* The conjunction between description and location. */
+"EVENT_DESC_LOCATION_CONJUNCTION" = "在";
+
+/* The conjunction between description and people's names */
+"EVENT_DESC_PEOPLE_CONJUNCTION" = "與";
 
 /* EVENT_PHOTO_NUMBER_LABEL */
 "EVENT_PHOTO_NUMBER_LABEL" = "%d 張照片";
@@ -577,9 +576,6 @@
 /* Email placeholder in login page
    Email placeholder in signup page */
 "USERNAME_PLACEHOLDER" = "me@example.com";
-
-/* preview button in composition view */
-"WEB_PREVIEW" = "預覽";
 
 /* Title of web service settings view controller */
 "WEB_SERVICES_TITLE" = "網路服務";
