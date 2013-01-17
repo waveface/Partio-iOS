@@ -17,9 +17,9 @@
 #import "WACalendarPickerViewController.h"
 
 @interface WAPhotoStreamViewController (){
-	NSArray *colorPalette;
-	NSArray *daysOfPhotos;
-	NSDate *onDate;
+  NSArray *colorPalette;
+  NSArray *daysOfPhotos;
+  NSDate *onDate;
 }
 
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
@@ -32,22 +32,25 @@
 @implementation WAPhotoStreamViewController
 
 - (id)initWithDate:(NSDate *)aDate {
-	self = [super init];
-	if (self) {
-		onDate = aDate;
-		NSPredicate *allFromToday = [NSPredicate predicateWithFormat:@"created BETWEEN {%@, %@}", [aDate dayBegin], [aDate dayEnd]];
-		_photos = [WAFile MR_findAllWithPredicate:allFromToday inContext:[[WADataStore defaultStore] defaultAutoUpdatedMOC]];
-	}
-	return self;
+  self = [super init];
+  if (self) {
+    onDate = aDate;
+    NSPredicate *allFromToday = [NSPredicate predicateWithFormat:@"created BETWEEN {%@, %@}", [aDate dayBegin], [aDate dayEnd]];
+    NSMutableArray *unsortedPhotos = [[WAFile MR_findAllWithPredicate:allFromToday inContext:[[WADataStore defaultStore] defaultAutoUpdatedMOC]] mutableCopy];
+    NSSortDescriptor *sortByTime = [[NSSortDescriptor alloc] initWithKey:@"timestamp" ascending:NO];
+    [unsortedPhotos sortUsingDescriptors:@[sortByTime]];
+    _photos = unsortedPhotos;
+  }
+  return self;
 }
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
-	self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-	if (self) {
-		// Custom initialization
-	}
-	return self;
+  self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+  if (self) {
+    // Custom initialization
+  }
+  return self;
 }
 
 /* Reflow Layout engine base on Partition (Number Theory)
@@ -55,111 +58,111 @@
  */
 - (void)reloadLayout:(NSArray *)partition
 {
-	NSInteger MAX = [[partition[0] valueForKeyPath:@"@sum.intValue"] integerValue];
-	_layout = [@[]mutableCopy];
-	NSArray *aLayout;
-	int previousLayout=[_photos count]+1;
-	for (int i=0; i<[_photos count]; i+=[aLayout count]) {
-		int candidateLayout = arc4random_uniform([partition count]);
-		if (candidateLayout == previousLayout)
-			candidateLayout = (candidateLayout+1) % MAX;
-		previousLayout = candidateLayout;
-		aLayout=partition[candidateLayout];
-		[_layout addObjectsFromArray:aLayout];
-	}
+  NSInteger MAX = [[partition[0] valueForKeyPath:@"@sum.intValue"] integerValue];
+  _layout = [@[]mutableCopy];
+  NSArray *aLayout;
+  int previousLayout=[_photos count]+1;
+  for (int i=0; i<[_photos count]; i+=[aLayout count]) {
+    int candidateLayout = arc4random_uniform([partition count]);
+    if (candidateLayout == previousLayout)
+      candidateLayout = (candidateLayout+1) % MAX;
+    previousLayout = candidateLayout;
+    aLayout=partition[candidateLayout];
+    [_layout addObjectsFromArray:aLayout];
+  }
 }
 
 - (void)viewDidLoad
 {
-	[super viewDidLoad];
-	// Do any additional setup after loading the view from its nib.
-	
-	[self.collectionView registerClass:[WAPhotoStreamViewCell class]
-					forCellWithReuseIdentifier:kPhotoStreamCellID];
-	[self.collectionView registerNib:[UINib nibWithNibName:@"WADayHeaderView" bundle:nil]
-				forSupplementaryViewOfKind:UICollectionElementKindSectionHeader
-							 withReuseIdentifier:@"PhotoStreamHeaderView"];
-	
-	colorPalette = @[
-		[UIColor colorWithRed:224/255.0 green:96/255.0 blue:76/255.0 alpha:1.0],
-		[UIColor colorWithRed:118/255.0 green:170/255.0 blue:204/255.0 alpha:1.0],
-		[UIColor colorWithRed:1.000 green:0.651 blue:0.000 alpha:1.000],
-		[UIColor colorWithRed:0.486 green:0.612 blue:0.208 alpha:1.000],
-		[UIColor colorWithRed:0.176 green:0.278 blue:0.475 alpha:1.000]
-	];
-	
-	self.collectionView.backgroundColor = [UIColor colorWithWhite:0.16f alpha:1.0f];
-	
-	NSArray *partitionOfThree = @[
-	@[@1,@1,@1],@[@1,@2],
-	@[@2,@1],
-	@[@3]
-	];
-	
-	NSArray *partitionOfFour = @[
-	@[@1,@1,@1,@1],
-	@[@1,@2,@1],
-	@[@1,@1,@2],
-	@[@1,@3],
-	@[@3,@1]
-	];
-
-	if (isPad()) 
-		[self reloadLayout:partitionOfFour];
-	else
-		[self reloadLayout:partitionOfThree];
+  [super viewDidLoad];
+  // Do any additional setup after loading the view from its nib.
+  
+  [self.collectionView registerClass:[WAPhotoStreamViewCell class]
+          forCellWithReuseIdentifier:kPhotoStreamCellID];
+  [self.collectionView registerNib:[UINib nibWithNibName:@"WADayHeaderView" bundle:nil]
+        forSupplementaryViewOfKind:UICollectionElementKindSectionHeader
+               withReuseIdentifier:@"PhotoStreamHeaderView"];
+  
+  colorPalette = @[
+                   [UIColor colorWithRed:224/255.0 green:96/255.0 blue:76/255.0 alpha:1.0],
+                   [UIColor colorWithRed:118/255.0 green:170/255.0 blue:204/255.0 alpha:1.0],
+                   [UIColor colorWithRed:1.000 green:0.651 blue:0.000 alpha:1.000],
+                   [UIColor colorWithRed:0.486 green:0.612 blue:0.208 alpha:1.000],
+                   [UIColor colorWithRed:0.176 green:0.278 blue:0.475 alpha:1.000]
+                   ];
+  
+  self.collectionView.backgroundColor = [UIColor colorWithWhite:0.16f alpha:1.0f];
+  
+  NSArray *partitionOfThree = @[
+                                @[@1,@1,@1],@[@1,@2],
+                                @[@2,@1],
+                                @[@3]
+                                ];
+  
+  NSArray *partitionOfFour = @[
+                               @[@1,@1,@1,@1],
+                               @[@1,@2,@1],
+                               @[@1,@1,@2],
+                               @[@1,@3],
+                               @[@3,@1]
+                               ];
+  
+  if (isPad())
+    [self reloadLayout:partitionOfFour];
+  else
+    [self reloadLayout:partitionOfThree];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
-
-	[super viewWillAppear:animated];
-	
+  
+  [super viewWillAppear:animated];
+  
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
-	[super viewWillDisappear:animated];
-	
+  [super viewWillDisappear:animated];
+  
 }
 
 - (void)didReceiveMemoryWarning {
-	[super didReceiveMemoryWarning];
-	// Dispose of any resources that can be recreated.
+  [super didReceiveMemoryWarning];
+  // Dispose of any resources that can be recreated.
 }
 
 - (void) calButtonPressed:(id)sender {
   
   if (isPad()) {
-	
-	CGRect frame = CGRectMake(0, 0, 320, 500);
-	
-	__weak WAPhotoStreamViewController *wSelf = self;
-	WACalendarPickerViewController *calVC = [[WACalendarPickerViewController alloc] initWithFrame:frame selectedDate:onDate];
-	calVC.currentViewStyle = WAPhotosViewStyle;
-	WANavigationController *wrappedNavVC = [WACalendarPickerViewController wrappedNavigationControllerForViewController:calVC forStyle:WACalendarPickerStyleWithCancel];
-	
-	UIPopoverController *popOver = [[UIPopoverController alloc] initWithContentViewController:wrappedNavVC];
-	[popOver presentPopoverFromRect:CGRectMake(self.collectionView.frame.size.width/2, 50, 1, 1) inView:self.collectionView permittedArrowDirections:UIPopoverArrowDirectionUp animated:YES];
-	self.calendarPopoverForIPad = popOver;
-	calVC.onDismissBlock = ^{
-	  [wSelf.calendarPopoverForIPad dismissPopoverAnimated:YES];
-	};
-	
+    
+    CGRect frame = CGRectMake(0, 0, 320, 500);
+    
+    __weak WAPhotoStreamViewController *wSelf = self;
+    WACalendarPickerViewController *calVC = [[WACalendarPickerViewController alloc] initWithFrame:frame selectedDate:onDate];
+    calVC.currentViewStyle = WAPhotosViewStyle;
+    WANavigationController *wrappedNavVC = [WACalendarPickerViewController wrappedNavigationControllerForViewController:calVC forStyle:WACalendarPickerStyleWithCancel];
+    
+    UIPopoverController *popOver = [[UIPopoverController alloc] initWithContentViewController:wrappedNavVC];
+    [popOver presentPopoverFromRect:CGRectMake(self.collectionView.frame.size.width/2, 50, 1, 1) inView:self.collectionView permittedArrowDirections:UIPopoverArrowDirectionUp animated:YES];
+    self.calendarPopoverForIPad = popOver;
+    calVC.onDismissBlock = ^{
+      [wSelf.calendarPopoverForIPad dismissPopoverAnimated:YES];
+    };
+    
   } else {
-	
-	CGRect frame = self.view.frame;
-	frame.origin = CGPointMake(0, 0);
-	__block WACalendarPickerViewController *calVC = [[WACalendarPickerViewController alloc] initWithFrame:frame selectedDate:onDate];
-	calVC.currentViewStyle = WAPhotosViewStyle;
-	WANavigationController *wrappedNavVC = [WACalendarPickerViewController wrappedNavigationControllerForViewController:calVC forStyle:WACalendarPickerStyleWithCancel];
-	calVC.onDismissBlock = [^{
-	  [calVC.navigationController dismissViewControllerAnimated:YES completion:nil];
-	  calVC = nil;
-	} copy];
-	
-	wrappedNavVC.modalPresentationStyle = UIModalPresentationFullScreen;
-	wrappedNavVC.modalTransitionStyle =  UIModalTransitionStyleCoverVertical;
-	[self presentViewController:wrappedNavVC animated:YES completion:nil];
-	
+    
+    CGRect frame = self.view.frame;
+    frame.origin = CGPointMake(0, 0);
+    __block WACalendarPickerViewController *calVC = [[WACalendarPickerViewController alloc] initWithFrame:frame selectedDate:onDate];
+    calVC.currentViewStyle = WAPhotosViewStyle;
+    WANavigationController *wrappedNavVC = [WACalendarPickerViewController wrappedNavigationControllerForViewController:calVC forStyle:WACalendarPickerStyleWithCancel];
+    calVC.onDismissBlock = [^{
+      [calVC.navigationController dismissViewControllerAnimated:YES completion:nil];
+      calVC = nil;
+    } copy];
+    
+    wrappedNavVC.modalPresentationStyle = UIModalPresentationFullScreen;
+    wrappedNavVC.modalTransitionStyle =  UIModalTransitionStyleCoverVertical;
+    [self presentViewController:wrappedNavVC animated:YES completion:nil];
+    
   }
 }
 
@@ -167,48 +170,48 @@
 #pragma mark Collection delegate
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-	return [_photos count];
+  return [_photos count];
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
-	
-	WAPhotoStreamViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:kPhotoStreamCellID forIndexPath:indexPath];
-	
-	if (cell) {
-		cell.backgroundColor = colorPalette[rand()%[colorPalette count]];
-		cell.layer.borderWidth = 1.0f;
-		cell.layer.borderColor = [UIColor colorWithWhite:100/255.0 alpha:1.0f].CGColor;
-		cell.backgroundView.layer.cornerRadius = 1.0f;
-		cell.backgroundView.layer.masksToBounds = YES;
-	}
-	
-	WAFile *photo = (WAFile *)_photos[indexPath.row];
-	
-	[photo irObserve:@"smallThumbnailImage"
-					 options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew
-					 context:nil
-				 withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
-					 
-					 dispatch_async(dispatch_get_main_queue(), ^{
-						 
-						 ((WAPhotoStreamViewCell *)[collectionView cellForItemAtIndexPath:indexPath]).imageView.image = (UIImage*)toValue;
-						 
-					 });
-					 
-				 }];
-	
-	return cell;
+  
+  WAPhotoStreamViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:kPhotoStreamCellID forIndexPath:indexPath];
+  
+  if (cell) {
+    cell.backgroundColor = colorPalette[rand()%[colorPalette count]];
+    cell.layer.borderWidth = 1.0f;
+    cell.layer.borderColor = [UIColor colorWithWhite:100/255.0 alpha:1.0f].CGColor;
+    cell.backgroundView.layer.cornerRadius = 1.0f;
+    cell.backgroundView.layer.masksToBounds = YES;
+  }
+  
+  WAFile *photo = (WAFile *)_photos[indexPath.row];
+  
+  [photo irObserve:@"smallThumbnailImage"
+           options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew
+           context:nil
+         withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
+           
+           dispatch_async(dispatch_get_main_queue(), ^{
+             
+             ((WAPhotoStreamViewCell *)[collectionView cellForItemAtIndexPath:indexPath]).imageView.image = (UIImage*)toValue;
+             
+           });
+           
+         }];
+  
+  return cell;
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
-	
-	NSInteger width_unit = [_layout[indexPath.row] integerValue];
-	
-	if (isPad())
-		return (CGSize){182*width_unit + 8*(width_unit-1), 192};
-	else
-		return (CGSize){96*width_unit + 8*(width_unit-1), 96};
-	
+  
+  NSInteger width_unit = [_layout[indexPath.row] integerValue];
+  
+  if (isPad())
+    return (CGSize){182*width_unit + 8*(width_unit-1), 192};
+  else
+    return (CGSize){96*width_unit + 8*(width_unit-1), 96};
+  
 }
 
 - (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath {
@@ -223,16 +226,16 @@
   headerView.monthLabel.textColor =[UIColor colorWithWhite:0.53 alpha:1.0f];
   headerView.wdayLabel.textColor = [UIColor colorWithWhite:0.53 alpha:1.0f];
   [headerView.centerButton addTarget:self action:@selector(calButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
-	
+  
   return headerView;
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-	
-	WAGalleryViewController *galleryVC = [[WAGalleryViewController alloc] initWithImageFiles:self.photos atIndex:[indexPath row]];
-	
-	[self.navigationController pushViewController:galleryVC animated:YES];
-
+  
+  WAGalleryViewController *galleryVC = [[WAGalleryViewController alloc] initWithImageFiles:self.photos atIndex:[indexPath row]];
+  
+  [self.navigationController pushViewController:galleryVC animated:YES];
+  
 }
 
 @end
