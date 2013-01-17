@@ -18,7 +18,7 @@
 #import "WAOverlayBezel.h"
 #import "WADataStore.h"
 #import "WADataStore+WARemoteInterfaceAdditions.h"
-
+#import "WARemoteInterface.h"
 
 @implementation WACompositionViewController (CustomUI)
 
@@ -31,101 +31,122 @@
 }
 
 + (WACompositionViewController *) defaultAutoSubmittingCompositionViewControllerForArticle:(NSURL *)anArticleURI completion:(void(^)(NSURL *))aBlock {
+  
+  return [WACompositionViewController controllerWithArticle:anArticleURI completion:^(WAArticle *anArticleOrNil, NSManagedObjectContext *moc) {
 
-	return [WACompositionViewController controllerWithArticle:anArticleURI completion:^(NSURL *anArticleURLOrNil) {
-	
-				
-	  if (!anArticleURLOrNil) {
+	void (^showSuccessBezel) () = ^() {
+	  WAOverlayBezel *doneBezel = [WAOverlayBezel bezelWithStyle:WACheckmarkBezelStyle];
+	  [doneBezel show];
+	  dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 2.0 * NSEC_PER_SEC), dispatch_get_main_queue(), ^ {
+		[doneBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
+		
 		if (aBlock)
-		  aBlock(nil);
-
-			return;
-	  }
+		  aBlock([[anArticleOrNil objectID] URIRepresentation]);
+		
+	  });
+	};
 	
-		WAOverlayBezel *busyBezel = [WAOverlayBezel bezelWithStyle:WAActivityIndicatorBezelStyle];
-		[busyBezel show];
+	void (^showErrorBezel) () = ^() {
+	  WAOverlayBezel *errorBezel = [WAOverlayBezel bezelWithStyle:WAErrorBezelStyle];
+	  [errorBezel  show];
+	  int64_t delayInSeconds = 2.0;
+	  dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+	  dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+		[errorBezel dismiss];
+		if (aBlock)
+		  aBlock([[anArticleOrNil objectID] URIRepresentation]);
+	  });
+	  
+	};
+
+	if (!anArticleOrNil) {
+	  showErrorBezel();
+	  return;
+	}
+	
+	WAOverlayBezel *busyBezel = [WAOverlayBezel bezelWithStyle:WAActivityIndicatorBezelStyle];
+	[busyBezel show];
 		
-		//	POINT OF NO RETURN
-		
-		WADataStore *ds = [WADataStore defaultStore];
-		NSManagedObjectContext *moc = [ds defaultAutoUpdatedMOC];
-		WAArticle *article = (WAArticle *)[moc irManagedObjectForURI:anArticleURLOrNil];
-		if (article) {
-			article.draft = (id)kCFBooleanFalse;
+	WARemoteInterface * const ri = [WARemoteInterface sharedInterface];
+	NSMutableArray *attachments = [NSMutableArray array];
+	for (WAFile *file in anArticleOrNil.files) {
+	  [attachments addObject:file.identifier];
+	}
+	
+	NSString *postCoverPhotoId = nil;
+	if (attachments.count)
+	  postCoverPhotoId = attachments[0];
+	  
+	[ri updatePost:anArticleOrNil.identifier
+		   inGroup:ri.primaryGroupIdentifier
+		  withText:anArticleOrNil.text
+	   attachments:attachments
+	mainAttachment:postCoverPhotoId
+		   preview:nil
+		  favorite:NO
+			hidden:NO
+replacingDataWithDate:anArticleOrNil.modificationDate
+		updateTime:nil
+		 onSuccess:^(NSDictionary *postRep) {
+
+		   NSError *savingError = nil;
+		   if (![moc save:&savingError]) {
+			 
+			 NSLog(@"Error saving: %@", savingError);
+			 dispatch_async(dispatch_get_main_queue(), ^{
+			   [busyBezel dismiss];
+			   showErrorBezel();
+			 });
+			 
+		   } else {
+	  	  
+			 dispatch_async(dispatch_get_main_queue(), ^ {
 		  
-//			CFUUIDRef theUUID = CFUUIDCreate(kCFAllocatorDefault);
-//			if (theUUID)
-//				article.identifier = [((__bridge_transfer NSString *)CFUUIDCreateString(kCFAllocatorDefault, theUUID)) lowercaseString];
-//			CFRelease(theUUID);
-		   
-			article.dirty = (id)kCFBooleanTrue;
-			article.creationDeviceName = [UIDevice currentDevice].name;
-			[moc save:nil];
-		}
-		
-	  [ds updateArticle:anArticleURLOrNil onSuccess: ^ {
-		
-			dispatch_async(dispatch_get_main_queue(), ^ {
-			
-				[busyBezel dismiss];
+			   [busyBezel dismiss];
+			   showSuccessBezel();
+		  
+			 });
+			 
+		   }
 
-				WAOverlayBezel *doneBezel = [WAOverlayBezel bezelWithStyle:WACheckmarkBezelStyle];
-				[doneBezel show];
-				dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 2.0 * NSEC_PER_SEC), dispatch_get_main_queue(), ^ {
-					[doneBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
-				  
-				  if (aBlock)
-					aBlock(anArticleURLOrNil);
-
-				});
-				
-			});		
+		 } onFailure:^(NSError *error) {
 		
-	  } onFailure: ^ (NSError *error) {
+		   dispatch_async(dispatch_get_main_queue(), ^ {
 		
-			dispatch_async(dispatch_get_main_queue(), ^ {
-			
-				[busyBezel dismissWithAnimation:WAOverlayBezelAnimationFade|WAOverlayBezelAnimationZoom];
+			 [busyBezel dismissWithAnimation:WAOverlayBezelAnimationFade|WAOverlayBezelAnimationZoom];
+		  
+			 showErrorBezel();
+		
+			 if (error) {
 				
-				WAOverlayBezel *errorBezel = [WAOverlayBezel bezelWithStyle:WAErrorBezelStyle];
-				[errorBezel show];
-				dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 2.0 * NSEC_PER_SEC), dispatch_get_main_queue(), ^ {
-					[errorBezel dismiss];
-				  if (aBlock)
-					aBlock(anArticleURLOrNil);
-
-				});
-				
-				if (error) {
-				
-					NSString *title = NSLocalizedString(@"ERROR_ARTICLE_ENTITY_SYNC_FAILURE_TITLE", @"Article entity sync failure alert title");
-					NSString *errorDescription = [error localizedDescription];
-					NSString *errorReason = [error localizedFailureReason];
-					NSString *message = nil;
-					
-					if (errorDescription && errorReason) {
+			   NSString *title = NSLocalizedString(@"ERROR_ARTICLE_ENTITY_SYNC_FAILURE_TITLE", @"Article entity sync failure alert title");
+			   NSString *errorDescription = [error localizedDescription];
+			   NSString *errorReason = [error localizedFailureReason];
+			   NSString *message = nil;
+		  
+			   if (errorDescription && errorReason) {
+			  
+				 message = [NSString stringWithFormat:NSLocalizedString(@"ERROR_ARTICLE_ENTITY_SYNC_FAILURE_WITH_UNDERLYING_ERROR_DESCRIPTION_AND_REASON_FORMAT", @"Failed, underlying error %@ with reason %@"), errorDescription, errorReason];
 						
-						message = [NSString stringWithFormat:NSLocalizedString(@"ERROR_ARTICLE_ENTITY_SYNC_FAILURE_WITH_UNDERLYING_ERROR_DESCRIPTION_AND_REASON_FORMAT", @"Failed, underlying error %@ with reason %@"), errorDescription, errorReason];
-						
-					} else if (errorDescription) {
+			   } else if (errorDescription) {
 
-						message =  [NSString stringWithFormat:NSLocalizedString(@"ERROR_ARTICLE_ENTITY_SYNC_FAILURE_WITH_UNDERLYING_ERROR_DESCRIPTION_FORMAT", @"Failed, underlying error description %@"), errorDescription]; 
+				 message =  [NSString stringWithFormat:NSLocalizedString(@"ERROR_ARTICLE_ENTITY_SYNC_FAILURE_WITH_UNDERLYING_ERROR_DESCRIPTION_FORMAT", @"Failed, underlying error description %@"), errorDescription];
 					
-					} else {
+			   } else {
 					
-						message = NSLocalizedString(@"ERROR_ARTICLE_ENTITY_SYNC_FAILURE_DESCRIPTION", @"Article entity sync failure alert message for no underlying error");
+				 message = NSLocalizedString(@"ERROR_ARTICLE_ENTITY_SYNC_FAILURE_DESCRIPTION", @"Article entity sync failure alert message for no underlying error");
+				 
+			   }
 					
-					}
-					
-					[[[IRAlertView alloc] initWithTitle:title message:message delegate:nil cancelButtonTitle:nil otherButtonTitles:NSLocalizedString(@"ACTION_OKAY", nil), nil] show];
+			   [[[IRAlertView alloc] initWithTitle:title message:message delegate:nil cancelButtonTitle:nil otherButtonTitles:NSLocalizedString(@"ACTION_OKAY", nil), nil] show];
 				
-				}
+			 }
 			
-			});
+		   });
 					
-	  	}];
+		 }];
 	
-	}];
+  }];
 
 }
 

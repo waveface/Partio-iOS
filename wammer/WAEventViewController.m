@@ -15,6 +15,7 @@
 #import "WALocation.h"
 #import "WAPeople.h"
 
+#import "WAAnnotation.h"
 #import "WAEventPhotoViewCell.h"
 #import "WAEventPeopleListViewController.h"
 #import "WAAppearance.h"
@@ -27,18 +28,6 @@
 
 #import "WACompositionViewController.h"
 #import "WACompositionViewController+CustomUI.h"
-
-@interface WAAnnotation : NSObject <MKAnnotation>
-
-@property (nonatomic, strong) NSString *title;
-@property (nonatomic, strong) NSString *subtitle;
-@property (nonatomic, assign) CLLocationCoordinate2D coordinate;
-
-@end
-@implementation WAAnnotation
-
-
-@end
 
 @interface WAEventViewController () <MKMapViewDelegate>
 
@@ -78,12 +67,25 @@
     return self;
 }
 
-- (void) loadArticle {
+- (NSManagedObjectContext *) managedObjectContext {
   
-  if (!self.managedObjectContext)
-	self.managedObjectContext = [[WADataStore defaultStore] defaultAutoUpdatedMOC];
+  if (_managedObjectContext)
+	return _managedObjectContext;
   
-  self.article = (WAArticle*)[self.managedObjectContext irManagedObjectForURI:self.articleURL];
+  _managedObjectContext = [[WADataStore defaultStore] defaultAutoUpdatedMOC];
+  return _managedObjectContext;
+}
+
+- (WAArticle *) article {
+  
+  if (_article)
+	return _article;
+  
+  NSAssert(self.articleURL != nil, @"Must specify an article URL for Event view");
+  
+  _article = (WAArticle*)[self.managedObjectContext irManagedObjectForURI:self.articleURL];
+  [_article addObserver:self forKeyPath:@"text" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:nil];
+  return _article;
   
 }
 
@@ -91,9 +93,7 @@
 {
 	
 	[super viewDidLoad];
-  
-  [self loadArticle];
-		
+  		
 	CGRect rect = (CGRect){ CGPointZero, self.view.frame.size };
 	
 	UICollectionViewFlowLayout *flowlayout = [[UICollectionViewFlowLayout alloc] init];
@@ -129,9 +129,9 @@
 	
 	
 	[[GAI sharedInstance].defaultTracker trackEventWithCategory:@"Events"
-																									 withAction:@"Enter single event"
-																										withLabel:nil
-																										withValue:nil];
+													 withAction:@"Enter single event"
+													  withLabel:nil
+													  withValue:nil];
 	
 }
 
@@ -141,7 +141,8 @@
 	if (self.article.location.latitude && self.article.location.longitude) {
 		
 		CLLocationCoordinate2D center = { self.article.location.latitude.floatValue, self.article.location.longitude.floatValue };
-		NSUInteger zoomLevel = [self.article.location.zoomLevel unsignedIntegerValue];
+//		NSUInteger zoomLevel = [self.article.location.zoomLevel unsignedIntegerValue];
+	  NSUInteger zoomLevel = 14; // hardcoded, but we may tune this in the future
 		
 		NSMutableArray *checkins = [NSMutableArray array];
 		for (WALocation *loc in self.article.checkins) {
@@ -188,6 +189,13 @@
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void) dealloc {
+  
+  if (_article)
+	[_article removeObserver:self forKeyPath:@"text"];
+  
 }
 
 - (BOOL) shouldAutorotate {
@@ -521,6 +529,20 @@
 
 }
 
+- (void) observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+  
+  if ([keyPath isEqualToString:@"text"]) {
+	
+	NSString *newText = [change valueForKey:NSKeyValueChangeNewKey];
+	NSString *oldText = [change valueForKey:NSKeyValueChangeOldKey];
+	
+	if (![newText isEqualToString:oldText]) {
+	  _headerView.descriptiveTagsLabel.attributedText = [[self class] attributedDescriptionStringForEvent:self.article];
+	}
+  }
+  
+}
+
 #pragma mark - Handle Actions
 
 - (void) showPeopleBtnPressed:(id)sender {
@@ -559,7 +581,6 @@
 
 - (void) handleChangeDescription:(id)sender {
   
-  __weak WAEventViewController *wSelf = self;
   __block WACompositionViewController *compositionVC = [WACompositionViewController defaultAutoSubmittingCompositionViewControllerForArticle:self.articleURL completion:^(NSURL *anArticleURLOrNil) {
 	[compositionVC dismissViewControllerAnimated:YES completion:nil];
 	compositionVC = nil;
