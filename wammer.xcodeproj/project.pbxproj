@@ -134,6 +134,7 @@
 		4BAE345315DCA30200A9109D /* LoginBackground-Landscape@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BAE344F15DCA30200A9109D /* LoginBackground-Landscape@2x.png */; };
 		4BAE345415DCA30200A9109D /* LoginBackground-Portrait.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BAE345015DCA30200A9109D /* LoginBackground-Portrait.png */; };
 		4BAE345515DCA30200A9109D /* LoginBackground-Portrait@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BAE345115DCA30200A9109D /* LoginBackground-Portrait@2x.png */; };
+		4BB006BA16A7AADC00A9B32C /* photoStreamNavigationBar.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BB006B916A7AADC00A9B32C /* photoStreamNavigationBar.png */; };
 		4BB0400916804C68009C3D08 /* WACollection+WARemoteInterfaceEntitySyncing.m in Sources */ = {isa = PBXBuildFile; fileRef = DEBED81B166C8689001A2B24 /* WACollection+WARemoteInterfaceEntitySyncing.m */; };
 		4BB0400A16804E1B009C3D08 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF154657148E06D600352428 /* SystemConfiguration.framework */; };
 		4BB1B6B115C14648002A4BE2 /* Fav~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BB1B6AD15C14648002A4BE2 /* Fav~iphone.png */; };
@@ -1239,6 +1240,7 @@
 		4BAE344F15DCA30200A9109D /* LoginBackground-Landscape@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "LoginBackground-Landscape@2x.png"; path = "Resources/LoginBackground-Landscape@2x.png"; sourceTree = "<group>"; };
 		4BAE345015DCA30200A9109D /* LoginBackground-Portrait.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "LoginBackground-Portrait.png"; path = "Resources/LoginBackground-Portrait.png"; sourceTree = "<group>"; };
 		4BAE345115DCA30200A9109D /* LoginBackground-Portrait@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "LoginBackground-Portrait@2x.png"; path = "Resources/LoginBackground-Portrait@2x.png"; sourceTree = "<group>"; };
+		4BB006B916A7AADC00A9B32C /* photoStreamNavigationBar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = photoStreamNavigationBar.png; path = Resources/photoStreamNavigationBar.png; sourceTree = "<group>"; };
 		4BB1B6AD15C14648002A4BE2 /* Fav~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Fav~iphone.png"; path = "Resources/Fav~iphone.png"; sourceTree = "<group>"; };
 		4BB1B6AF15C14648002A4BE2 /* Unfav~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Unfav~iphone.png"; path = "Resources/Unfav~iphone.png"; sourceTree = "<group>"; };
 		4BB6A9031696BBA300AB5F14 /* WACollection+RemoteOperations.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WACollection+RemoteOperations.h"; sourceTree = "<group>"; };
@@ -3413,6 +3415,7 @@
 				808DAA161675DE36003652BB /* add-G@2x.png */,
 				808DAA171675DE36003652BB /* add-Gray.png */,
 				808DAA181675DE36003652BB /* add-Gray@2x.png */,
+				4BB006B916A7AADC00A9B32C /* photoStreamNavigationBar.png */,
 				808DAA191675DE36003652BB /* add-LB.png */,
 				808DAA1A1675DE36003652BB /* add-LB@2x.png */,
 				808DAA1B1675DE36003652BB /* add-O.png */,
@@ -4682,6 +4685,7 @@
 				8033024E168853B200004891 /* googlereader@2x.png in Resources */,
 				80330251168853D500004891 /* twitter.png in Resources */,
 				80330252168853D500004891 /* twitter@2x.png in Resources */,
+				4BB006BA16A7AADC00A9B32C /* photoStreamNavigationBar.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
