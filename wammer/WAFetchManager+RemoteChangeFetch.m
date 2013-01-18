@@ -129,13 +129,22 @@
       } waitUntilDone:YES];
       
       // add tail operation to article fetch operation queue
-      NSOperation *tailOp = [NSBlockOperation blockOperationWithBlock:^{
+      IRAsyncBarrierOperation *tailOp = [IRAsyncBarrierOperation operationWithWorker:^(IRAsyncOperationCallback callback) {
         [ds setMaxSequenceNumber:nextSeq];
-        [wSelf endPostponingFetch];
         callback(nil);
+      } trampoline:^(IRAsyncOperationInvoker callback) {
+        NSCParameterAssert(![NSThread isMainThread]);
+        callback();
+      } callback:^(id results) {
+        // -[WASyncManager endPostponingSync] must be called no matter the operations are succeed or not
+        [wSelf endPostponingFetch];
+        callback(results);
+      } callbackTrampoline:^(IRAsyncOperationInvoker callback) {
+        NSCParameterAssert(![NSThread isMainThread]);
+        callback();
       }];
       
-      for (NSOperation *operation in [wSelf.articleFetchOperationQueue operations]) {
+      for (IRAsyncOperation *operation in [wSelf.articleFetchOperationQueue operations]) {
         [tailOp addDependency:operation];
       }
       

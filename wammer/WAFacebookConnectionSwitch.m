@@ -11,8 +11,7 @@
 #import "WARemoteInterface.h"
 #import "UIKit+IRAdditions.h"
 #import "WAOverlayBezel.h"
-
-NSString * const kWAFacebookUserDataImport = @"WAFacebookImportTimeLine";
+#import "WADefines.h"
 
 @interface WAFacebookConnectionSwitch ()
 
@@ -46,7 +45,7 @@ NSString * const kWAFacebookUserDataImport = @"WAFacebookImportTimeLine";
 - (void) commonInit {
   
   [self addTarget:self action:@selector(handleValueChanged:) forControlEvents:UIControlEventValueChanged];
-  self.on = [[NSUserDefaults standardUserDefaults] boolForKey:kWAFacebookUserDataImport];
+  self.on = [[NSUserDefaults standardUserDefaults] boolForKey:kWASNSFacebookConnectEnabled];
 }
 
 
@@ -126,7 +125,7 @@ NSString * const kWAFacebookUserDataImport = @"WAFacebookImportTimeLine";
          [doneBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
        });
        
-       [[NSUserDefaults standardUserDefaults] setBool:YES forKey:kWAFacebookUserDataImport];
+       [[NSUserDefaults standardUserDefaults] setBool:YES forKey:kWASNSFacebookConnectEnabled];
        [wSelf setEnabled:YES];
        
      }
@@ -147,7 +146,7 @@ NSString * const kWAFacebookUserDataImport = @"WAFacebookImportTimeLine";
 	    
 	    [busyBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
 	    
-	    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:kWAFacebookUserDataImport];
+	    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:kWASNSFacebookConnectEnabled];
 	    [wSelf setEnabled:YES];
 	    
 	  }
@@ -193,7 +192,7 @@ NSString * const kWAFacebookUserDataImport = @"WAFacebookImportTimeLine";
 	 
 	 [busyBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
 	 
-	 [[NSUserDefaults standardUserDefaults] setBool:YES forKey:kWAFacebookUserDataImport];
+	 [[NSUserDefaults standardUserDefaults] setBool:YES forKey:kWASNSFacebookConnectEnabled];
 	 [wSelf setEnabled:YES];
 	 
          }
@@ -271,7 +270,7 @@ NSString * const kWAFacebookUserDataImport = @"WAFacebookImportTimeLine";
         return;
       
       [wSelf setEnabled:YES];
-      [[NSUserDefaults standardUserDefaults] setBool:NO forKey:kWAFacebookUserDataImport];
+      [[NSUserDefaults standardUserDefaults] setBool:NO forKey:kWASNSFacebookConnectEnabled];
       
     });
     

@@ -8,8 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-extern NSString * const kWAFacebookUserDataImport;
-
 @interface WAFacebookConnectionSwitch : UISwitch
 
 @end

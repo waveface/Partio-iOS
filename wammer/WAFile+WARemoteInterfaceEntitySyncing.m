@@ -645,7 +645,7 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
       
       WAFile *file = (WAFile *)[context irManagedObjectForURI:ownURL];
       
-      if (file.resourceURL || ![[WARemoteInterface sharedInterface] hasReachableStation]) {
+      if (file.resourceURL || (![[NSUserDefaults standardUserDefaults] boolForKey:kWABackupFilesToCloudEnabled] && ![[WARemoteInterface sharedInterface] hasReachableStation])) {
         callback(nil);
         return;
       }
@@ -709,6 +709,11 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
       [op addDependency:(IRAsyncBarrierOperation *)operations[(idx - 1)]];
   }];
   
+  IRAsyncOperation *lastOperation = [[[[self class] sharedSyncQueue] operations] lastObject];
+  if (lastOperation) {
+    [operations[0] addDependency:lastOperation];
+  }
+
   [[[self class] sharedSyncQueue] addOperations:operations waitUntilFinished:NO];
   
 }

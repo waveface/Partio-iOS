@@ -13,6 +13,7 @@
 #import "WAOverlayBezel.h"
 
 #import "WAFacebookConnectionSwitch.h"
+#import "WAStation.h"
 
 NSString * const kWADataStoreArticleUpdateShowsBezels = @"WADataStoreArticleUpdateShowsBezels";
 
@@ -272,6 +273,20 @@ NSString * const kWADataStoreArticleUpdateShowsBezels = @"WADataStoreArticleUpda
         
       }
       
+      // delete uninstalled stations
+      for (WAStation *station in user.stations) {
+        BOOL found = NO;
+        for (NSDictionary *stationRep in userRep[@"stations"]) {
+	if ([station.identifier isEqualToString:stationRep[@"station_id"]]) {
+	  found = YES;
+	  break;
+	}
+        }
+        if (!found) {
+	[context deleteObject:station];
+        }
+      }
+
       NSArray *touchedUsers = [WAUser insertOrUpdateObjectsUsingContext:context withRemoteResponse:@[userRep] usingMapping:nil options:0];
       
       NSCParameterAssert([touchedUsers count] == 1);
@@ -283,6 +298,7 @@ NSString * const kWADataStoreArticleUpdateShowsBezels = @"WADataStoreArticleUpda
       
       if ([userRep[@"billing"][@"type"] isEqualToString:@"free"]) {
         [[NSUserDefaults standardUserDefaults] setInteger:WABusinessPlanFree forKey:kWABusinessPlan];
+        [[NSUserDefaults standardUserDefaults] setBool:NO forKey:kWABackupFilesToCloudEnabled];
         NSNumber *docQuota = userRep[@"quota"][@"doc"][@"origin_size"];
         NSNumber *imageQuota = userRep[@"quota"][@"image"][@"origin_size"];
         [wSelf setStorageQuota:@([docQuota unsignedIntegerValue] + [imageQuota unsignedIntegerValue])];
@@ -291,6 +307,7 @@ NSString * const kWADataStoreArticleUpdateShowsBezels = @"WADataStoreArticleUpda
         [wSelf setStorageUsage:@([docUsage unsignedIntegerValue] + [imageUsage unsignedIntegerValue])];
       } else {
         [[NSUserDefaults standardUserDefaults] setInteger:WABusinessPlanUltimate forKey:kWABusinessPlan];
+        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:kWABackupFilesToCloudEnabled];
         NSNumber *totalQuota = userRep[@"quota"][@"total"][@"origin_size"];
         NSNumber *totalUsage = userRep[@"usage"][@"total"][@"origin_size"];
         [wSelf setStorageQuota:totalQuota];
@@ -315,7 +332,7 @@ NSString * const kWADataStoreArticleUpdateShowsBezels = @"WADataStoreArticleUpda
         }
         
         dispatch_async(dispatch_get_main_queue(), ^{
-	[[NSUserDefaults standardUserDefaults] setBool:importing forKey:kWAFacebookUserDataImport];
+	[[NSUserDefaults standardUserDefaults] setBool:importing forKey:kWASNSFacebookConnectEnabled];
         });
         
       }

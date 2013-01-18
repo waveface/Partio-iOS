@@ -76,6 +76,7 @@ NSString * const kWAUseCellularEnabled = @"WAUseCellularEnabled";
 NSString * const kWABackupFilesToCloudEnabled = @"WABackupFilesToCloudEnabled";
 NSString * const kWABusinessPlan = @"WABusinessPlan";
 
+NSString * const kWASNSFacebookConnectEnabled = @"WAFacebookConnectEnabled";
 NSString * const kWASNSGoogleConnectEnabled = @"WAGoogleConnectEnabled";
 NSString * const kWASNSTwitterConnectEnabled = @"WATwitterConnectEnabled";
 NSString * const kWASNSFoursquareConnectEnabled = @"WAFoursquareConnectEnabled";

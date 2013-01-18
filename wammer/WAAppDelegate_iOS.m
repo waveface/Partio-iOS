@@ -400,6 +400,10 @@ extern CFAbsoluteTime StartTime;
   [[NSUserDefaults standardUserDefaults] setBool:NO forKey:kWAPhotoImportEnabled];
   [[NSUserDefaults standardUserDefaults] setBool:YES forKey:kWAAllCollectionsFetchOnce];
   [[NSUserDefaults standardUserDefaults] setBool:NO forKey:kWAFirstArticleFetched];
+  [[NSUserDefaults standardUserDefaults] setBool:NO forKey:kWASNSFacebookConnectEnabled];
+  [[NSUserDefaults standardUserDefaults] setBool:NO forKey:kWASNSGoogleConnectEnabled];
+  [[NSUserDefaults standardUserDefaults] setBool:NO forKey:kWASNSTwitterConnectEnabled];
+  [[NSUserDefaults standardUserDefaults] setBool:NO forKey:kWASNSFoursquareConnectEnabled];
   [[NSUserDefaults standardUserDefaults] setInteger:WABusinessPlanFree forKey:kWABusinessPlan];
   [[NSUserDefaults standardUserDefaults] synchronize];
   
