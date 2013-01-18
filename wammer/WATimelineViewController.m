@@ -36,6 +36,7 @@
 @property (nonatomic, strong) UICollectionViewFlowLayout *flowlayout;
 
 @property (nonatomic, strong) NSDate *currentDisplayedDate;
+@property (nonatomic, strong) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, strong) NSFetchedResultsController *fetchedResultsController;
 @property (nonatomic, strong) UIPopoverController *calendarPopoverForIPad;
 
@@ -155,22 +156,19 @@
 }
 
 
-- (void) viewWillAppear:(BOOL)animated {
-  [super viewWillAppear:animated];
-  [self.collectionView.collectionViewLayout invalidateLayout];
-}
-
 - (void) viewDidAppear:(BOOL)animated {
 	
   [super viewDidAppear:animated];
-  [self reloadArticles];
-  [self.collectionView.collectionViewLayout invalidateLayout];
-	
+  self.fetchedResultsController.delegate = self;
+  [self.collectionView reloadData];
+  
 }
 
 - (void) viewWillDisappear:(BOOL)animated {
+  
   [super viewWillDisappear:animated];
-  self.fetchedResultsController = nil;
+  self.fetchedResultsController.delegate = nil;
+  
 }
 
 - (void)didReceiveMemoryWarning
@@ -199,10 +197,22 @@
 	
 }
 
-- (void) reloadArticles {
+- (NSManagedObjectContext*) managedObjectContext {
+  
+  if (_managedObjectContext)
+	return _managedObjectContext;
+  
+  _managedObjectContext = [[WADataStore defaultStore] defaultAutoUpdatedMOC];
+  
+  return  _managedObjectContext;
+  
+}
 
-  NSManagedObjectContext *moc = [[WADataStore defaultStore] defaultAutoUpdatedMOC];
- 
+- (NSFetchedResultsController*) fetchedResultsController {
+  
+  if (_fetchedResultsController)
+	return _fetchedResultsController;
+
   if (!self.currentDisplayedDate)
 	self.currentDisplayedDate = [NSDate date];
   
@@ -213,18 +223,22 @@
   [formatter setDateFormat:formatString];
   
   NSString *cacheName = [NSString stringWithFormat:@"fetchedTableCache-%@", [formatter stringFromDate:self.currentDisplayedDate]];
-  _fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fr managedObjectContext:moc sectionNameKeyPath:nil cacheName:cacheName];
+  _fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fr managedObjectContext:self.managedObjectContext sectionNameKeyPath:nil cacheName:cacheName];
   _fetchedResultsController.delegate = self;
   
   NSError *fetchingError;
   if (![_fetchedResultsController performFetch:&fetchingError])
 	NSLog(@"error fetching: %@", fetchingError);
+  
+  return _fetchedResultsController;
 
 }
 
 - (void) dealloc {
   
   [self.collectionView removeGestureRecognizer:self.longPressGR];
+  self.fetchedResultsController.delegate = nil;
+  self.fetchedResultsController = nil;
   
 }
 
@@ -256,8 +270,18 @@
 }
 
 - (void) controllerDidChangeContent:(NSFetchedResultsController *)controller {
+
+  if (! (self.isViewLoaded && self.view.window) ) {// view is not appear, stop updating collection view
+	[self.objectsChanged removeAllObjects];
+	return;
+  }
   
   if (self.objectsChanged.count) {
+	if ([self.collectionView numberOfItemsInSection:0] <= 1) {
+	  [self.collectionView reloadData];
+	  [self.objectsChanged removeAllObjects];
+	  return;
+	}
 	
 	__weak WATimelineViewController *wSelf = self;
 	[self.collectionView performBatchUpdates:^{

@@ -31,9 +31,6 @@ NSString * kWAEventTimelineViewCellKVOContext = @"EventTimelineViewCellKVOContex
 
 @property (nonatomic, strong) WAArticle *article;
 
-@property (nonatomic, readonly) CGFloat origCommentHeight;
-@property (nonatomic, readonly) CGFloat origCardBGHeight;
-
 @end
 
 @implementation WATimelineViewCell
@@ -48,10 +45,7 @@ NSString * kWAEventTimelineViewCellKVOContext = @"EventTimelineViewCellKVOContex
 }
 
 - (void) awakeFromNib {
-	
-	_origCommentHeight = CGRectGetHeight(self.commentLabel.frame);
-	_origCardBGHeight = CGRectGetHeight(self.eventCardBGImageView.frame);
-	
+  // NO op
 }
 
 - (void) setRepresentedArticle:(WAArticle *)representedArticle {
@@ -157,8 +151,6 @@ NSString * kWAEventTimelineViewCellKVOContext = @"EventTimelineViewCellKVOContex
 	}
 	
 	self.commentLabel.attributedText = [WAEventViewController attributedDescriptionStringForEvent:self.article];
-	[self.commentLabel sizeToFit];
-	CGFloat newCommentHeight = CGRectGetHeight(self.commentLabel.frame);
 
 	self.timeLabel.text = [[[self class] timeFormatter] stringFromDate:postDate];
 	
@@ -185,17 +177,6 @@ NSString * kWAEventTimelineViewCellKVOContext = @"EventTimelineViewCellKVOContex
 	
 	[self.containerView addSubview:self.typeImageView];
 	[self.containerView addSubview:self.fileNoLabel];
-
-	CGFloat delta = newCommentHeight - self.origCommentHeight;
-	if (delta < 0) delta = 0;
-
-	self.eventCardBGImageView.frame = (CGRect){
-		self.eventCardBGImageView.frame.origin,
-		(CGSize) {
-			self.eventCardBGImageView.frame.size.width,
-			self.origCardBGHeight + delta
-		}
-	};
 	
 	self.eventCardBGImageView.image = [[self class] eventCardBackgroundImage];
 	
@@ -315,15 +296,16 @@ NSString * kWAEventTimelineViewCellKVOContext = @"EventTimelineViewCellKVOContex
 
 - (void)prepareForReuse {
 	
-	if (self.representedArticle) {
-		for (WAFile *file in self.representedArticle.files) {
-			[file irRemoveObserverBlocksForKeyPath:@"smallThumbnailImage" context:&kWAEventTimelineViewCellKVOContext];
-		}
+  if (self.representedArticle) {
+	for (WAFile *file in self.representedArticle.files) {
+	  [file irRemoveObserverBlocksForKeyPath:@"smallThumbnailImage" context:&kWAEventTimelineViewCellKVOContext];
 	}
-	for (UIImageView *view in self.photoImageViews) {
+  }
+  
+  for (UIImageView *view in self.photoImageViews) {
     view.image = nil;
-	}
-
+  }
+  
 }
 
 @end
