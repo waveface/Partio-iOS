@@ -279,6 +279,7 @@ NSString * const kWADataStoreArticleUpdateShowsBezels = @"WADataStoreArticleUpda
         for (NSDictionary *stationRep in userRep[@"stations"]) {
 	if ([station.identifier isEqualToString:stationRep[@"station_id"]]) {
 	  found = YES;
+	  break;
 	}
         }
         if (!found) {
