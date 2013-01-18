@@ -331,7 +331,7 @@ NSString * const kWADataStoreArticleUpdateShowsBezels = @"WADataStoreArticleUpda
         }
         
         dispatch_async(dispatch_get_main_queue(), ^{
-	[[NSUserDefaults standardUserDefaults] setBool:importing forKey:kWAFacebookUserDataImport];
+	[[NSUserDefaults standardUserDefaults] setBool:importing forKey:kWASNSFacebookConnectEnabled];
         });
         
       }
