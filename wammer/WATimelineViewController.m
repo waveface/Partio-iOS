@@ -230,7 +230,7 @@
   if (![_fetchedResultsController performFetch:&fetchingError])
 	NSLog(@"error fetching: %@", fetchingError);
   
-  return self.fetchedResultsController;
+  return _fetchedResultsController;
 
 }
 
@@ -271,8 +271,10 @@
 
 - (void) controllerDidChangeContent:(NSFetchedResultsController *)controller {
 
-  if (! (self.isViewLoaded && self.view.window) )// view is not appear, stop updating collection view
+  if (! (self.isViewLoaded && self.view.window) ) {// view is not appear, stop updating collection view
+	[self.objectsChanged removeAllObjects];
 	return;
+  }
   
   if (self.objectsChanged.count) {
 	
