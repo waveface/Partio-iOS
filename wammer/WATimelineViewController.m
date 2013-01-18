@@ -277,6 +277,11 @@
   }
   
   if (self.objectsChanged.count) {
+	if ([self.collectionView numberOfItemsInSection:0] <= 1) {
+	  [self.collectionView reloadData];
+	  [self.objectsChanged removeAllObjects];
+	  return;
+	}
 	
 	__weak WATimelineViewController *wSelf = self;
 	[self.collectionView performBatchUpdates:^{
