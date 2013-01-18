@@ -136,6 +136,7 @@
         NSCParameterAssert(![NSThread isMainThread]);
         callback();
       } callback:^(id results) {
+        // -[WASyncManager endPostponingSync] must be called no matter the operations are succeed or not
         [wSelf endPostponingFetch];
         callback(results);
       } callbackTrampoline:^(IRAsyncOperationInvoker callback) {
