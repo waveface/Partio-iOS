@@ -199,11 +199,11 @@
 	hitCell.accessoryType = UITableViewCellAccessoryCheckmark;
 	
 	if (hitCell == self.freePlanCell) {
-		[[NSUserDefaults standardUserDefaults] setInteger:WABusinessPlanFree forKey:kWABusinessPlan];
+//		[[NSUserDefaults standardUserDefaults] setInteger:WABusinessPlanFree forKey:kWABusinessPlan];
 	} else if (hitCell == self.premiumPlanCell) {
-		[[NSUserDefaults standardUserDefaults] setInteger:WABusinessPlanPremium forKey:kWABusinessPlan];
+//		[[NSUserDefaults standardUserDefaults] setInteger:WABusinessPlanPremium forKey:kWABusinessPlan];
 	} else if (hitCell == self.ultimatePlanCell) {
-		[[NSUserDefaults standardUserDefaults] setInteger:WABusinessPlanUltimate forKey:kWABusinessPlan];
+//		[[NSUserDefaults standardUserDefaults] setInteger:WABusinessPlanUltimate forKey:kWABusinessPlan];
 	}
 	[[NSUserDefaults standardUserDefaults] synchronize];
 	

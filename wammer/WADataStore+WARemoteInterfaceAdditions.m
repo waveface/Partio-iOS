@@ -297,6 +297,7 @@ NSString * const kWADataStoreArticleUpdateShowsBezels = @"WADataStoreArticleUpda
       
       if ([userRep[@"billing"][@"type"] isEqualToString:@"free"]) {
         [[NSUserDefaults standardUserDefaults] setInteger:WABusinessPlanFree forKey:kWABusinessPlan];
+        [[NSUserDefaults standardUserDefaults] setBool:NO forKey:kWABackupFilesToCloudEnabled];
         NSNumber *docQuota = userRep[@"quota"][@"doc"][@"origin_size"];
         NSNumber *imageQuota = userRep[@"quota"][@"image"][@"origin_size"];
         [wSelf setStorageQuota:@([docQuota unsignedIntegerValue] + [imageQuota unsignedIntegerValue])];
@@ -305,6 +306,7 @@ NSString * const kWADataStoreArticleUpdateShowsBezels = @"WADataStoreArticleUpda
         [wSelf setStorageUsage:@([docUsage unsignedIntegerValue] + [imageUsage unsignedIntegerValue])];
       } else {
         [[NSUserDefaults standardUserDefaults] setInteger:WABusinessPlanUltimate forKey:kWABusinessPlan];
+        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:kWABackupFilesToCloudEnabled];
         NSNumber *totalQuota = userRep[@"quota"][@"total"][@"origin_size"];
         NSNumber *totalUsage = userRep[@"usage"][@"total"][@"origin_size"];
         [wSelf setStorageQuota:totalQuota];

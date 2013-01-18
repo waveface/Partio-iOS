@@ -645,7 +645,7 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
       
       WAFile *file = (WAFile *)[context irManagedObjectForURI:ownURL];
       
-      if (file.resourceURL || ![[WARemoteInterface sharedInterface] hasReachableStation]) {
+      if (file.resourceURL || (![[NSUserDefaults standardUserDefaults] boolForKey:kWABackupFilesToCloudEnabled] && ![[WARemoteInterface sharedInterface] hasReachableStation])) {
         callback(nil);
         return;
       }
