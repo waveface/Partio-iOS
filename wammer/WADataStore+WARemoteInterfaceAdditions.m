@@ -13,6 +13,7 @@
 #import "WAOverlayBezel.h"
 
 #import "WAFacebookConnectionSwitch.h"
+#import "WAStation.h"
 
 NSString * const kWADataStoreArticleUpdateShowsBezels = @"WADataStoreArticleUpdateShowsBezels";
 
@@ -272,6 +273,19 @@ NSString * const kWADataStoreArticleUpdateShowsBezels = @"WADataStoreArticleUpda
         
       }
       
+      // delete uninstalled stations
+      for (WAStation *station in user.stations) {
+        BOOL found = NO;
+        for (NSDictionary *stationRep in userRep[@"stations"]) {
+	if ([station.identifier isEqualToString:stationRep[@"station_id"]]) {
+	  found = YES;
+	}
+        }
+        if (!found) {
+	[context deleteObject:station];
+        }
+      }
+
       NSArray *touchedUsers = [WAUser insertOrUpdateObjectsUsingContext:context withRemoteResponse:@[userRep] usingMapping:nil options:0];
       
       NSCParameterAssert([touchedUsers count] == 1);
