@@ -101,10 +101,10 @@
       [group enumerateAssetsUsingBlock:^(ALAsset *result, NSUInteger index, BOOL *stop) {
         if (result) {
 	if (![importedFileAssetURLs containsObject:[[[result defaultRepresentation] url] absoluteString]]) {
-	  NSUInteger insertIndex = [allAssets indexOfObject:result inSortedRange:NSMakeRange(0, [allAssets count]) options:NSBinarySearchingInsertionIndex usingComparator:^NSComparisonResult(ALAsset *asset1, ALAsset *asset2) {
+	  NSUInteger indexToInsert = [allAssets indexOfObject:result inSortedRange:NSMakeRange(0, [allAssets count]) options:NSBinarySearchingInsertionIndex usingComparator:^NSComparisonResult(ALAsset *asset1, ALAsset *asset2) {
 	    return [[asset1 valueForProperty:ALAssetPropertyDate] compare:[asset2 valueForProperty:ALAssetPropertyDate]];
 	  }];
-	  [allAssets insertObject:result atIndex:insertIndex];
+	  [allAssets insertObject:result atIndex:indexToInsert];
 	}
         }
       }];

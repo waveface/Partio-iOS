@@ -420,7 +420,8 @@
 
 - (NSArray *)fetchImportedFiles:(NSManagedObjectContext *)aContext {
 
-  NSFetchRequest *request = [self.persistentStoreCoordinator.managedObjectModel fetchRequestFromTemplateWithName:@"WAFRImportedFiles" substitutionVariables:@{}];
+  NSManagedObjectModel *mom = [self.persistentStoreCoordinator managedObjectModel];
+  NSFetchRequest *request = [mom fetchRequestFromTemplateWithName:@"WAFRImportedFiles" substitutionVariables:@{}];
   NSError *error = nil;
   NSArray *importedFiles = [aContext executeFetchRequest:request error:&error];
   if (error) {
