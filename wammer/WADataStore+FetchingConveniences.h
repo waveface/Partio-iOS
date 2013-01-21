@@ -34,13 +34,12 @@
 
 - (void) fetchArticleWithIdentifier:(NSString *)anArticleIdentifier usingContext:(NSManagedObjectContext *)aContext onSuccess:(void(^)(NSString *identifier, WAArticle *article))callback;
 
-- (WAArticle *) fetchLatestLocalImportedArticleUsingContext:(NSManagedObjectContext *)aContext;
-
 - (NSArray *) fetchAllFilesUsingContext:(NSManagedObjectContext *)aContext;
 - (NSArray *) fetchAllOGImagesUsingContext:(NSManagedObjectContext *)aContext;
 - (NSArray *) fetchAllCachesUsingContext:(NSManagedObjectContext *)aContext;
 - (NSNumber *) fetchTotalCacheSizeUsingContext:(NSManagedObjectContext *)aContext;
 - (WACache *) fetchCacheWithPredicate:(NSPredicate *)aPredicate usingContext:(NSManagedObjectContext *)aContext;
 - (NSArray *) fetchFilesRequireMetaUpdateUsingContext:(NSManagedObjectContext *)aContext;
+- (NSArray *) fetchImportedFiles:(NSManagedObjectContext *)aContext;
 
 @end

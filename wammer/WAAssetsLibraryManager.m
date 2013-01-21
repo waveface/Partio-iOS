@@ -7,6 +7,7 @@
 //
 
 #import "WAAssetsLibraryManager.h"
+#import "WADataStore.h"
 
 @interface NSDate (WAAssetsLibraryManager)
 
@@ -86,16 +87,25 @@
     
     if (group) {
       
+      NSManagedObjectContext *context = [[WADataStore defaultStore] disposableMOC];
+      NSArray *importedFiles = [[WADataStore defaultStore] fetchImportedFiles:context];
+      NSMutableSet *importedFileAssetURLs = [NSMutableSet set];
+      for (WAFile *file in importedFiles) {
+        [importedFileAssetURLs addObject:file.assetURL];
+      }
+
       [group setAssetsFilter:[ALAssetsFilter allPhotos]];
 
       // sorting all photos in camera roll by photo creation date
       NSMutableArray *allAssets = [NSMutableArray array];
       [group enumerateAssetsUsingBlock:^(ALAsset *result, NSUInteger index, BOOL *stop) {
         if (result) {
-	NSUInteger insertIndex = [allAssets indexOfObject:result inSortedRange:NSMakeRange(0, [allAssets count]) options:NSBinarySearchingInsertionIndex usingComparator:^NSComparisonResult(ALAsset *asset1, ALAsset *asset2) {
-	  return [[asset1 valueForProperty:ALAssetPropertyDate] compare:[asset2 valueForProperty:ALAssetPropertyDate]];
-	}];
-	[allAssets insertObject:result atIndex:insertIndex];
+	if (![importedFileAssetURLs containsObject:[[[result defaultRepresentation] url] absoluteString]]) {
+	  NSUInteger insertIndex = [allAssets indexOfObject:result inSortedRange:NSMakeRange(0, [allAssets count]) options:NSBinarySearchingInsertionIndex usingComparator:^NSComparisonResult(ALAsset *asset1, ALAsset *asset2) {
+	    return [[asset1 valueForProperty:ALAssetPropertyDate] compare:[asset2 valueForProperty:ALAssetPropertyDate]];
+	  }];
+	  [allAssets insertObject:result atIndex:insertIndex];
+	}
         }
       }];
 

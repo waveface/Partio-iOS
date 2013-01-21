@@ -185,7 +185,7 @@
     BOOL isFetching = [change[NSKeyValueChangeNewKey] boolValue];
     [[NSOperationQueue mainQueue] addOperationWithBlock:^{
       if (isFetching) {
-        if (!wSelf.statusBar) {
+        if (!wSelf.statusBar && [[UIApplication sharedApplication] applicationState] != UIApplicationStateBackground) {
           wSelf.statusBar = [[WAStatusBar alloc] initWithFrame:CGRectZero];
         }
         [wSelf.statusBar startFetchingAnimation];
@@ -207,7 +207,7 @@
     [[NSOperationQueue mainQueue] addOperationWithBlock:^{
       WASyncManager *syncManager = [(WAAppDelegate_iOS *)AppDelegate() syncManager];
       if (isSyncing) {
-        if (!wSelf.statusBar) {
+        if (!wSelf.statusBar && [[UIApplication sharedApplication] applicationState] != UIApplicationStateBackground) {
           wSelf.statusBar = [[WAStatusBar alloc] initWithFrame:CGRectZero];
         }
         if (syncManager.isSyncFail) {
