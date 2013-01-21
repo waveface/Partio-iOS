@@ -17,7 +17,7 @@ void WADefaultAppearance(void) {
 		[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackOpaque];
 		
 		// set the appearance for all major UINavigationBar and toolbar
-		UIColor *naviBgColor = [UIColor colorWithRed:0.95f green:0.95f blue:0.95f alpha:1];
+		UIColor *naviBgColor = [UIColor colorWithRed:0.95f green:0.95f blue:0.95f alpha:0];
 
 		CGSize barSize = CGSizeMake(1.0, 44.0);
 		UIGraphicsBeginImageContext(barSize);

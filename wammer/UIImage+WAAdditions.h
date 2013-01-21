@@ -12,5 +12,6 @@
 @interface UIImage (WAAdditions)
 
 - (void)makeThumbnailWithOptions:(WAThumbnailType)type completeBlock:(WAImageProcessComplete)didCompleteBlock;
+- (void)makeBlurredImageWithCompleteBlock:(WAImageProcessComplete)didCompleteBlock;
 
 @end

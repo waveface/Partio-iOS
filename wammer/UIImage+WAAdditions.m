@@ -12,9 +12,20 @@
 
 - (void)makeThumbnailWithOptions:(WAThumbnailType)type completeBlock:(WAImageProcessComplete)didCompleteBlock {
 
+  __weak UIImage *wSelf = self;
   [[WAImageProcessing sharedImageProcessQueue] addOperationWithBlock:^{
-    UIImage *scaledImage = [WAImageProcessing scaledImageWithCGImage:self.CGImage type:type orientation:self.imageOrientation];
+    UIImage *scaledImage = [WAImageProcessing scaledImageWithCGImage:wSelf.CGImage type:type orientation:wSelf.imageOrientation];
     didCompleteBlock(scaledImage);
+  }];
+
+}
+
+- (void)makeBlurredImageWithCompleteBlock:(WAImageProcessComplete)didCompleteBlock {
+
+  __weak UIImage *wSelf = self;
+  [[WAImageProcessing sharedImageProcessQueue] addOperationWithBlock:^{
+    UIImage *blurredImage = [WAImageProcessing blurredImageWithCGImage:wSelf.CGImage orientation:wSelf.imageOrientation];
+    didCompleteBlock(blurredImage);
   }];
 
 }

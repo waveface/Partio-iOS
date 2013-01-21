@@ -40,6 +40,8 @@
 		138CCA381609D23C00B477CE /* TutorialPhotoImport@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 138CCA361609D23C00B477CE /* TutorialPhotoImport@2x~iphone.png */; };
 		138D31B31609D8F800ECA892 /* TutorialPhotoImport@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 138D31B11609D8F800ECA892 /* TutorialPhotoImport@2x~ipad.png */; };
 		138D31B81609D92400ECA892 /* TutorialPhotoImport~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 138D31B61609D92400ECA892 /* TutorialPhotoImport~ipad.png */; };
+		139DC23416AD262500147F4D /* WASummaryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 139DC23316AD262500147F4D /* WASummaryViewController.m */; };
+		139DC23616AD269B00147F4D /* WASummaryViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 139DC23516AD269B00147F4D /* WASummaryViewController.xib */; };
 		139E28FE15C2926700C8521A /* WALocalizedTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 139E28FD15C2926700C8521A /* WALocalizedTextView.m */; };
 		13A15F3E163FABD100F3FF30 /* WAFirstUseLogInViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 13A15F3D163FABD100F3FF30 /* WAFirstUseLogInViewController.m */; };
 		13A318CD168CBD0100017E68 /* WAFetchManager+RemoteChangeFetch.m in Sources */ = {isa = PBXBuildFile; fileRef = 13A318CC168CBD0000017E68 /* WAFetchManager+RemoteChangeFetch.m */; };
@@ -1031,6 +1033,9 @@
 		138D31B41609D91200ECA892 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "zh-Hant"; path = "zh-Hant.lproj/TutorialPhotoImport@2x~ipad.png"; sourceTree = "<group>"; };
 		138D31B71609D92400ECA892 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "zh-Hant"; path = "zh-Hant.lproj/TutorialPhotoImport~ipad.png"; sourceTree = "<group>"; };
 		138D31B91609DADB00ECA892 /* en */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = en; path = "en.lproj/TutorialPhotoImport~ipad.png"; sourceTree = "<group>"; };
+		139DC23216AD262500147F4D /* WASummaryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WASummaryViewController.h; sourceTree = "<group>"; };
+		139DC23316AD262500147F4D /* WASummaryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WASummaryViewController.m; sourceTree = "<group>"; };
+		139DC23516AD269B00147F4D /* WASummaryViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WASummaryViewController.xib; sourceTree = "<group>"; };
 		139E28FC15C2926700C8521A /* WALocalizedTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WALocalizedTextView.h; sourceTree = "<group>"; };
 		139E28FD15C2926700C8521A /* WALocalizedTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WALocalizedTextView.m; sourceTree = "<group>"; };
 		13A15F3C163FABD100F3FF30 /* WAFirstUseLogInViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WAFirstUseLogInViewController.h; path = wammer/WAFirstUseLogInViewController.h; sourceTree = "<group>"; };
@@ -2113,6 +2118,16 @@
 			name = "File Cache";
 			sourceTree = "<group>";
 		};
+		139DC23116AD25EE00147F4D /* Summary */ = {
+			isa = PBXGroup;
+			children = (
+				139DC23216AD262500147F4D /* WASummaryViewController.h */,
+				139DC23316AD262500147F4D /* WASummaryViewController.m */,
+				139DC23516AD269B00147F4D /* WASummaryViewController.xib */,
+			);
+			name = Summary;
+			sourceTree = "<group>";
+		};
 		13B6DB9E1615740C00B9CC35 /* FileExif */ = {
 			isa = PBXGroup;
 			children = (
@@ -2781,6 +2796,7 @@
 		FF6E168314F2EB6500AE1C05 /* Timeline */ = {
 			isa = PBXGroup;
 			children = (
+				139DC23116AD25EE00147F4D /* Summary */,
 				80074F8D167ED4A200A23EED /* Web Pages */,
 				8007709516789A540085E525 /* Collection */,
 				8007709416789A150085E525 /* Documents */,
@@ -4268,6 +4284,7 @@
 				80330251168853D500004891 /* twitter.png in Resources */,
 				80330252168853D500004891 /* twitter@2x.png in Resources */,
 				4BB006BA16A7AADC00A9B32C /* photoStreamNavigationBar.png in Resources */,
+				139DC23616AD269B00147F4D /* WASummaryViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4753,6 +4770,7 @@
 				1348F3EF169D49240078412B /* WAConnectionStatusViewController.m in Sources */,
 				80C61CAB16A7F1050028356F /* WAAnnotation.m in Sources */,
 				8074EF8816AD0ABA0033E99A /* WACalendarPopupViewController_phone.m in Sources */,
+				139DC23416AD262500147F4D /* WASummaryViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

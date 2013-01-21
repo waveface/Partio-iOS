@@ -58,6 +58,7 @@
 	[super viewDidLoad];
 
 	self.navigationBar.clipsToBounds = NO;
+  self.navigationBar.translucent = YES;
 
 	if (self.onViewDidLoad)
 		self.onViewDidLoad(self);

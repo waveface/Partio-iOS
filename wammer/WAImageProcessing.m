@@ -143,6 +143,25 @@ static CGFloat const kWAFileLargeImageSideLength = 2048;
   
 }
 
++ (UIImage *)blurredImageWithCGImage:(CGImageRef)image orientation:(UIImageOrientation)orientation {
+
+  CIImage *inputImage = [CIImage imageWithCGImage:image];;
+  CIContext *context = [WAImageProcessing sharedCIContext];
+  
+  CIFilter *filter = [CIFilter filterWithName:@"CIGaussianBlur"];
+  [filter setValue:inputImage forKey:@"inputImage"];
+  [filter setValue:@5.0f forKey:@"inputRadius"];
+
+  CIImage *outputImage = [filter outputImage];
+
+  CGImageRef outputCGImage = [context createCGImage:outputImage fromRect:[outputImage extent]];
+  
+  UIImage *returnedImage = [UIImage imageWithCGImage:outputCGImage scale:1.0 orientation:orientation];
+
+  return returnedImage;
+
+}
+
 + (CIContext *)sharedCIContext {
   
   static CIContext *context;

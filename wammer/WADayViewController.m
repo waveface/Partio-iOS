@@ -21,6 +21,7 @@
 #import "WAPhotoStreamViewController.h"
 #import "WADocumentStreamViewController.h"
 #import "WAWebStreamViewController.h"
+#import "WASummaryViewController.h"
 
 static const NSUInteger kWAAppendingBatchSize = 30;
 static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPostsViewControllerPhone_RepresentedObjectURI";
@@ -49,7 +50,7 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 	presentingStyle = style;
 	switch (style) {
 		case WAEventsViewStyle:
-			containedClass = [WATimelineViewController class];
+			containedClass = [WASummaryViewController class];
 			break;
 		case WAPhotosViewStyle:
 			containedClass = [WAPhotoStreamViewController class];
