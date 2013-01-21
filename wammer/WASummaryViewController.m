@@ -10,6 +10,7 @@
 #import "WADataStore.h"
 #import "WAArticle.h"
 #import "UIImage+WAAdditions.h"
+#import <StackBluriOS/UIImage+StackBlur.h>
 
 @interface WASummaryViewController ()
 
@@ -43,15 +44,7 @@
     __weak WASummaryViewController *wSelf = self;
     [self.article.representingFile irObserve:@"smallThumbnailImage" options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew context:nil withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
       if (toValue) {
-//        CIFilter *blurFilter = [CIFilter filterWithName:@"CIGaussianBlur"];
-//        [blurFilter setValue:@5.0f forKey:@"inputRadius"];
-//        wSelf.backgroundImageView.layer.backgroundFilters = @[blurFilter];
-//        wSelf.backgroundImageView.image = toValue;
-        [toValue makeBlurredImageWithCompleteBlock:^(UIImage *image) {
-	[[NSOperationQueue mainQueue] addOperationWithBlock:^{
-	  wSelf.backgroundImageView.image = image;
-	}];
-        }];
+        wSelf.backgroundImageView.image = [toValue stackBlur:5.0];
       }
     }];
   }

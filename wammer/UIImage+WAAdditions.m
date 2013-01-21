@@ -20,14 +20,4 @@
 
 }
 
-- (void)makeBlurredImageWithCompleteBlock:(WAImageProcessComplete)didCompleteBlock {
-
-  __weak UIImage *wSelf = self;
-  [[WAImageProcessing sharedImageProcessQueue] addOperationWithBlock:^{
-    UIImage *blurredImage = [WAImageProcessing blurredImageWithCGImage:wSelf.CGImage orientation:wSelf.imageOrientation];
-    didCompleteBlock(blurredImage);
-  }];
-
-}
-
 @end

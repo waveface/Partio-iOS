@@ -11,6 +11,7 @@ pod 'SSKeychain', '~> 0.1.4'
 pod 'SSToolkit', '1.0.2'
 pod 'TestFlightSDK', '~> 1.1'
 pod 'Reachability', '~> 3.1.0'
+pod 'StackBluriOS', '~> 0.0.1'
 
 target :UnitTests do
 	link_with 'UnitTests'
