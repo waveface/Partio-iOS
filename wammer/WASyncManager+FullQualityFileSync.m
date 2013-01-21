@@ -73,7 +73,7 @@
     }];
 
     IRAsyncBarrierOperation *tailOp = [IRAsyncBarrierOperation operationWithWorker:^(IRAsyncOperationCallback callback) {
-      // NO OP
+      callback(nil);
     } trampoline:^(IRAsyncOperationInvoker callback) {
       NSCAssert(![NSThread isMainThread], @"should run in background");
       callback();

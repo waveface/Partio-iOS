@@ -360,6 +360,7 @@
     <fetchRequest name="WAFRFilesNeedingMetaSync" entity="WAFile" predicateString="dirty == 1"/>
     <fetchRequest name="WAFRFilesWithSyncableBlobs" entity="WAFile" predicateString="hidden == 0 AND (assetURL != &quot;&quot; OR resourceFilePath != nil) AND resourceURL == nil AND thumbnailURL != &quot;&quot; AND ANY articles.draft == 0"/>
     <fetchRequest name="WAFRImagesForArticle" entity="WAFile" predicateString="article == $Article AND remoteResourceType == &quot;image&quot;"/>
+    <fetchRequest name="WAFRImportedFiles" entity="WAFile" predicateString="assetURL != &quot;&quot;"/>
     <fetchRequest name="WAFRLocalImportedArticles" entity="WAArticle" predicateString="import == 1"/>
     <fetchRequest name="WAFRUser" entity="WAUser" predicateString="identifier == $Identifier"/>
     <elements>

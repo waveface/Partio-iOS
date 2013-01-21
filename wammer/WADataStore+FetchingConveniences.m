@@ -304,23 +304,6 @@
   
 }
 
-- (WAArticle *)fetchLatestLocalImportedArticleUsingContext:(NSManagedObjectContext *)aContext {
-  
-  NSFetchRequest *fetchRequest = [self.persistentStoreCoordinator.managedObjectModel fetchRequestFromTemplateWithName:@"WAFRLocalImportedArticles" substitutionVariables:@{}];
-  fetchRequest.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:NO]];
-  fetchRequest.fetchLimit = 1;
-  
-  NSError *fetchingError = nil;
-  NSArray *fetchedArticles = [aContext executeFetchRequest:fetchRequest error:&fetchingError];
-  if (fetchingError) {
-    NSLog(@"%@", fetchingError);
-    return nil;
-  }
-  
-  return [fetchedArticles lastObject];
-  
-}
-
 - (NSArray *)fetchAllFilesUsingContext:(NSManagedObjectContext *)aContext {
   
   NSFetchRequest *fetchRequest = [self.persistentStoreCoordinator.managedObjectModel fetchRequestFromTemplateWithName:@"WAFRAllFiles" substitutionVariables:@{}];
@@ -433,6 +416,21 @@
   
   return [fetchedFiles count] > 0 ? fetchedFiles : nil;
   
+}
+
+- (NSArray *)fetchImportedFiles:(NSManagedObjectContext *)aContext {
+
+  NSManagedObjectModel *mom = [self.persistentStoreCoordinator managedObjectModel];
+  NSFetchRequest *request = [mom fetchRequestFromTemplateWithName:@"WAFRImportedFiles" substitutionVariables:@{}];
+  NSError *error = nil;
+  NSArray *importedFiles = [aContext executeFetchRequest:request error:&error];
+  if (error) {
+    NSLog(@"%@", error);
+    return nil;
+  }
+
+  return [importedFiles count] > 0 ? importedFiles : nil;
+
 }
 
 @end

@@ -44,8 +44,7 @@
     [request setPredicate:predicate];
     NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"accessTime" ascending:NO];
     [request setSortDescriptors:@[sortDescriptor]];
-    [request setRelationshipKeyPathsForPrefetching:@[@"file"]];
-    [request setRelationshipKeyPathsForPrefetching:@[@"day"]];
+    [request setRelationshipKeyPathsForPrefetching:@[@"day", @"file", @"file.pageElements"]];
     
     self.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:request managedObjectContext:context sectionNameKeyPath:nil cacheName:nil];
     
