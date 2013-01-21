@@ -16,6 +16,7 @@
 #import "WANavigationController.h"
 #import "WATimelineViewController.h"
 #import "WACalendarPickerViewController.h"
+#import "WACalendarPopupViewController_phone.h"
 #import "WAUserInfoViewController.h"
 #import "WAOverlayBezel.h"
 #import "WADataStore.h"
@@ -280,13 +281,29 @@
     cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     cell.selectionStyle = UITableViewCellSelectionStyleGray;
   }
+ 
+  for (UIView *aView in cell.subviews) {
+	if ([aView isKindOfClass:[UIButton class]]) {// calendar button
+	  [aView removeFromSuperview];
+	  break;
+	}
+  }
   
   switch(indexPath.row) {
       
-    case 1:
+    case 1: {
       cell.imageView.image = [UIImage imageNamed:@"EventsIcon"];
       cell.textLabel.text = NSLocalizedString(@"SLIDING_MENU_TITLE_EVENTS", @"Title for Events in the sliding menu");
-      break;
+	  
+	  UIImage *calIcon = [UIImage imageNamed:@"Cal"];
+	  UIButton *calButton = [UIButton buttonWithType:UIButtonTypeCustom];
+	  calButton.frame = (CGRect){150, 27-calIcon.size.height/2, calIcon.size.width, calIcon.size.height};
+	  [calButton setBackgroundImage:calIcon forState:UIControlStateNormal];
+	  [calButton addTarget:self action:@selector(calButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+	  [cell addSubview:calButton]; // cannot use accessory view since it will be hidden behind center view
+	  
+	  break;
+	}
       
     case 2:
       cell.imageView.image = [UIImage imageNamed:@"PhotosIcon"];
@@ -489,6 +506,23 @@
     
   }
   
+}
+
+- (void) calButtonTapped:(id)sender {
+ 
+  __block WACalendarPopupViewController_phone *calendarPopup = [[WACalendarPopupViewController_phone alloc] initWithCompletion:^{
+	
+	[calendarPopup willMoveToParentViewController:nil];
+	[calendarPopup removeFromParentViewController];
+	[calendarPopup.view removeFromSuperview];
+	[calendarPopup didMoveToParentViewController:nil];
+	calendarPopup = nil;
+	
+  }];
+
+  [self.viewDeckController addChildViewController:calendarPopup];
+  [self.viewDeckController.view addSubview:calendarPopup.view];
+
 }
 
 @end
