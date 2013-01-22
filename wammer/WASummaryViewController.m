@@ -9,8 +9,8 @@
 #import "WASummaryViewController.h"
 #import "WADataStore.h"
 #import "WAArticle.h"
-#import "UIImage+WAAdditions.h"
 #import <StackBluriOS/UIImage+StackBlur.h>
+#import "NSDate+WAAdditions.h"
 
 @interface WASummaryViewController ()
 
@@ -35,6 +35,18 @@
 - (void)viewDidLoad {
 
   self.backgroundImageView.clipsToBounds = YES;
+  self.photosButton.layer.borderColor = [UIColor whiteColor].CGColor;
+  self.photosButton.layer.borderWidth = 1.0;
+  self.photosButton.backgroundColor = [[UIColor whiteColor] colorWithAlphaComponent:0.3];
+  self.documentsButton.layer.borderColor = [UIColor whiteColor].CGColor;
+  self.documentsButton.layer.borderWidth = 1.0;
+  self.documentsButton.backgroundColor = [[UIColor whiteColor] colorWithAlphaComponent:0.3];
+  self.webpagesButton.layer.borderColor = [UIColor whiteColor].CGColor;
+  self.webpagesButton.layer.borderWidth = 1.0;
+  self.webpagesButton.backgroundColor = [[UIColor whiteColor] colorWithAlphaComponent:0.3];
+  self.dayLabel.text = [self.date dayString];
+  self.weekDayLabel.text = [self.date localizedWeekDayFullString];
+  self.monthLabel.text = [self.date localizedMonthFullString];
 
   NSFetchRequest *request = [[WADataStore defaultStore] newFetchRequestForArticlesOnDate:self.date];
   NSManagedObjectContext *context = [[WADataStore defaultStore] defaultAutoUpdatedMOC];

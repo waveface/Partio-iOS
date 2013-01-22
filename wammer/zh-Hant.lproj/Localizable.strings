@@ -208,7 +208,7 @@
 "EVENT_SEPERATION_LABEL_WITHOUT_PHOTOS" = "加些照片吧";
 
 /* Title for Events view */
-"EVENTS_CONTROLLER_TITLE" = "動態";
+"EVENTS_CONTROLLER_TITLE" = "我的天";
 
 /* Message for an alert view to show user his FB account has been connected to another Stream user */
 "FACEBOOK_CONNECT_ACCOUNT_OCCUPIED_MESSAGE" = "這個 Facebook 帳號已經被使用，請您再試試看其他的Facebook帳號。";
@@ -658,6 +658,15 @@
 
 /* Class = "IBUILabel"; text = "STATE_LOADING_SINGLE_DOCUMENT_PROGRESS"; ObjectID = "10"; */
 "STATE_LOADING_SINGLE_DOCUMENT_PROGRESS" = "%1 / %2";
+
+/* Class = "IBUILabel"; text = "DAY"; ObjectID = "57"; */
+"DAY" = "DAY";
+
+/* Class = "IBUILabel"; text = "WEEKDAY"; ObjectID = "73"; */
+"WEEKDAY" = "WEEKDAY";
+
+/* Class = "IBUILabel"; text = "MONTH"; ObjectID = "83"; */
+"MONTH" = "MONTH";
 
 /* Class = "IBUILabel"; text = "PC_SETUP_DESCRIPTION"; ObjectID = "1TK-Px-G5L"; */
 "PC_SETUP_DESCRIPTION" = "AOStream Windows 可以將你的 PC 升級成個人雲，透過它傳輸速度將會加快一百倍！";

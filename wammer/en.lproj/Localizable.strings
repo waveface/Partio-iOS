@@ -208,7 +208,7 @@
 "EVENT_SEPERATION_LABEL_WITHOUT_PHOTOS" = "ADD SOME PHOTOS HERE";
 
 /* Title for Events view */
-"EVENTS_CONTROLLER_TITLE" = "EVENTS";
+"EVENTS_CONTROLLER_TITLE" = "MY DAYS";
 
 /* Message for an alert view to show user his FB account has been connected to another Stream user */
 "FACEBOOK_CONNECT_ACCOUNT_OCCUPIED_MESSAGE" = "The Facebook account you’re using has already been registered. Please use another Facebook account.";
@@ -658,6 +658,15 @@
 
 /* Class = "IBUILabel"; text = "STATE_LOADING_SINGLE_DOCUMENT_PROGRESS"; ObjectID = "10"; */
 "STATE_LOADING_SINGLE_DOCUMENT_PROGRESS" = "%1 of %2";
+
+/* Class = "IBUILabel"; text = "DAY"; ObjectID = "57"; */
+"DAY" = "DAY";
+
+/* Class = "IBUILabel"; text = "WEEKDAY"; ObjectID = "73"; */
+"WEEKDAY" = "WEEKDAY";
+
+/* Class = "IBUILabel"; text = "MONTH"; ObjectID = "83"; */
+"MONTH" = "MONTH";
 
 /* Class = "IBUILabel"; text = "PC_SETUP_DESCRIPTION"; ObjectID = "1TK-Px-G5L"; */
 "PC_SETUP_DESCRIPTION" = "Connect to your personal cloud station and enable lightning speed.";

@@ -330,7 +330,7 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
                             withObject:(id) target
 {
   NSString *barTitle = nil;
-  UIColor *logoColor = [UIColor blackColor];
+  UIColor *logoColor = [UIColor whiteColor];
   if (style == WAEventsViewStyle) {
     barTitle = NSLocalizedString(@"EVENTS_CONTROLLER_TITLE", @"Title for Events view");
   } else if (style == WAPhotosViewStyle) {
@@ -347,6 +347,7 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
   [logoButton setBackgroundColor:[UIColor clearColor]];
   [logoButton setTitleColor:logoColor forState:UIControlStateNormal];
   [logoButton setTitle:barTitle forState:UIControlStateNormal];
+  logoButton.titleLabel.font = [UIFont boldSystemFontOfSize:17];
   
   UIImage *arrow = [UIImage imageNamed:@"WATinyArrowDown"];
   [logoButton setImage:[UIImage imageNamed:@"WATinyArrowDown"] forState:UIControlStateNormal];
