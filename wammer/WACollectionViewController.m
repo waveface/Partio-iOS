@@ -102,8 +102,9 @@ typedef NS_ENUM(NSUInteger, WACollectionSortMode){
   
   cell.title.text = [aCollection.title stringByAppendingFormat:@" (%d)", [aCollection.files count]];
   
+  WAFile *coverFile = (aCollection.cover)?aCollection.cover:aCollection.files[0];
+  
   //Document
-  WAFile *coverFile = aCollection.cover;
   if ([coverFile.pageElements count]) {
     coverFile = coverFile.pageElements[0];
   }
