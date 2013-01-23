@@ -16,8 +16,8 @@ typedef void(^WAStatusBarDidDismiss)(void);
 
 - (void)showPhotoImportingWithImportedFilesCount:(NSUInteger)importedFilesCount needingImportFilesCount:(NSUInteger)needingImportFilesCount;
 - (void)showPhotoSyncingWithSyncedFilesCount:(NSUInteger)syncedFilesCount needingSyncFilesCount:(NSUInteger)needingSyncFilesCount;
-- (void)startFetchingAnimation;
-- (void)stopFetchingAnimation;
+- (void)startDataExchangeAnimation;
+- (void)stopDataExchangeAnimation;
 - (void)showSyncCompleteWithDissmissBlock:(WAStatusBarDidDismiss)dismissBlock;
 - (void)showSyncFailWithDismissBlock:(WAStatusBarDidDismiss)dismissBlock;
 

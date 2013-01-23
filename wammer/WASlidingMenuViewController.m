@@ -184,55 +184,51 @@
   
   __weak WASlidingMenuViewController *wSelf = self;
   
-  if ([keyPath isEqualToString:@"isFetching"]) {
-    BOOL isFetching = [change[NSKeyValueChangeNewKey] boolValue];
+  if ([keyPath isEqualToString:@"isFetching"] || [keyPath isEqualToString:@"isSyncing"]) {
+    BOOL isFetching = NO;
+	BOOL isSyncing = NO;
+	
+	if ([keyPath isEqualToString:@"isFetching"])
+	  isFetching = [change[NSKeyValueChangeNewKey] boolValue];
+	if ([keyPath isEqualToString:@"isSyncing"])
+	  isSyncing = [change[NSKeyValueChangeNewKey] boolValue];
+	
     [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-      if (isFetching) {
-        if (!wSelf.statusBar && [[UIApplication sharedApplication] applicationState] != UIApplicationStateBackground) {
-          wSelf.statusBar = [[WAStatusBar alloc] initWithFrame:CGRectZero];
-        }
-        [wSelf.statusBar startFetchingAnimation];
-      } else {
-        WASyncManager *syncManager = [(WAAppDelegate_iOS *)AppDelegate() syncManager];
-        if (!syncManager.isSyncing) {
-          [wSelf.statusBar showSyncCompleteWithDissmissBlock:^{
-            wSelf.statusBar = nil;
-          }];
-        } else {
-          [wSelf.statusBar stopFetchingAnimation];
-        }
+
+	  if (!wSelf.statusBar && [[UIApplication sharedApplication] applicationState] != UIApplicationStateBackground) {
+		wSelf.statusBar = [[WAStatusBar alloc] initWithFrame:CGRectZero];
+	  }
+	  WASyncManager *syncManager = [(WAAppDelegate_iOS *)AppDelegate() syncManager];
+	  WAFetchManager *fetchManager = [(WAAppDelegate_iOS *)AppDelegate() fetchManager];
+
+	  if (isSyncing) {
+		if (syncManager.isSyncFail) {
+		  [wSelf.statusBar showSyncFailWithDismissBlock:^{
+			wSelf.statusBar = nil;
+		  }];
+		} else if (syncManager.needingSyncFilesCount > 0) {
+		  [wSelf.statusBar showPhotoSyncingWithSyncedFilesCount:syncManager.syncedFilesCount needingSyncFilesCount:syncManager.needingSyncFilesCount];
+		} else if (syncManager.needingImportFilesCount > 0) {
+		  [wSelf.statusBar showPhotoImportingWithImportedFilesCount:syncManager.importedFilesCount needingImportFilesCount:syncManager.needingImportFilesCount];
+		}
+	  }
+	  
+      if (isFetching || isSyncing) {
+        [wSelf.statusBar startDataExchangeAnimation];
       }
+	  
+	  if (!syncManager.isSyncing && !fetchManager.isFetching) { // no more sync, neither fetch
+		if (wSelf.statusBar)
+		  [wSelf.statusBar stopDataExchangeAnimation];
+
+		[wSelf.statusBar showSyncCompleteWithDissmissBlock:^{
+		  wSelf.statusBar = nil;
+		}];
+      }
+	  
     }];
   }
-  
-  if ([keyPath isEqualToString:@"isSyncing"]) {
-    BOOL isSyncing = [change[NSKeyValueChangeNewKey] boolValue];
-    [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-      WASyncManager *syncManager = [(WAAppDelegate_iOS *)AppDelegate() syncManager];
-      if (isSyncing) {
-        if (!wSelf.statusBar && [[UIApplication sharedApplication] applicationState] != UIApplicationStateBackground) {
-          wSelf.statusBar = [[WAStatusBar alloc] initWithFrame:CGRectZero];
-        }
-        if (syncManager.isSyncFail) {
-          [wSelf.statusBar showSyncFailWithDismissBlock:^{
-            wSelf.statusBar = nil;
-          }];
-        } else if (syncManager.needingSyncFilesCount > 0) {
-          [wSelf.statusBar showPhotoSyncingWithSyncedFilesCount:syncManager.syncedFilesCount needingSyncFilesCount:syncManager.needingSyncFilesCount];
-        } else if (syncManager.needingImportFilesCount > 0) {
-          [wSelf.statusBar showPhotoImportingWithImportedFilesCount:syncManager.importedFilesCount needingImportFilesCount:syncManager.needingImportFilesCount];
-        }
-      } else {
-        WAFetchManager *fetchManager = [(WAAppDelegate_iOS *)AppDelegate() fetchManager];
-        if (!fetchManager.isFetching) {
-          [wSelf.statusBar showSyncCompleteWithDissmissBlock:^{
-            wSelf.statusBar = nil;
-          }];
-        }
-      }
-    }];
-  }
-  
+    
 }
 
 #pragma mark - Table view data source
