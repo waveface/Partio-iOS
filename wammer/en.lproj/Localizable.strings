@@ -103,16 +103,16 @@
 "ATTACHMENTS_VIEW_TITLE" = "Attachments";
 
 /* Authentication Error Description */
-"AUTH_ERROR_ALREADY_REGISTERED" = "This email has already been registered. Please enter a new email.";
+"AUTH_ERROR_ALREADY_REGISTERED" = "This email address is already registered. Please try another one.";
 
 /* Authentication Error Description */
-"AUTH_ERROR_INVALID_EMAIL_FORMAT" = "Email format is invalid.";
+"AUTH_ERROR_INVALID_EMAIL_FORMAT" = "Email address is invalid.";
 
 /* Authentication Error Description */
 "AUTH_ERROR_INVALID_EMAIL_PWD" = "Email or password is invalid.";
 
 /* Authentication Error Description */
-"AUTH_ERROR_INVALID_PWD_FORMAT" = "Password format is invalid.";
+"AUTH_ERROR_INVALID_PWD_FORMAT" = "Password is invalid.";
 
 /* Unknown Error */
 "AUTH_UNKNOWN_ERROR" = "Unknown error";
@@ -127,13 +127,13 @@
 "CALENDAR_CANCEL_BUTTON" = "CANCEL";
 
 /* Description for no event day in calendar */
-"CALENDAR_NO_EVENT" = "NO EVENT";
+"CALENDAR_NO_EVENT" = "NO EVENTS";
 
 /* Today button in calendar picker */
 "CALENDAR_TODAY_BUTTON" = "TODAY";
 
 /* Prompt for Cover Image picker */
-"CHANGE_REPRESENTING_FILE_PROMPT" = "Select a new Cover Photo for this post.";
+"CHANGE_REPRESENTING_FILE_PROMPT" = "Change Cover Photo";
 
 /* Title for Cover Image picker */
 "CHANGE_REPRESENTING_FILE_TITLE" = "Pick Photo";
@@ -196,7 +196,7 @@
 "ERROR_ARTICLE_ENTITY_SYNC_FAILURE_WITH_UNDERLYING_ERROR_DESCRIPTION_FORMAT" = "A necessary task failed: %@.";
 
 /* Title of event actions modal */
-"EVENT_ACTION_MODAL_TITLE" = "Select Photos To Share";
+"EVENT_ACTION_MODAL_TITLE" = "Select photos to share";
 
 /* The conjunction between description and location. */
 "EVENT_DESC_LOCATION_CONJUNCTION" = "at";
@@ -208,31 +208,31 @@
 "EVENT_PHOTO_NUMBER_LABEL" = "%d PHOTOS";
 
 /* The text of label on separation line in the event view when there is no photo presented. */
-"EVENT_SEPERATION_LABEL_WITHOUT_PHOTOS" = "ADD SOME PHOTOS HERE";
+"EVENT_SEPERATION_LABEL_WITHOUT_PHOTOS" = "Add some photos";
 
 /* Title for Events view */
 "EVENTS_CONTROLLER_TITLE" = "EVENTS";
 
 /* Message for an alert view to show user his FB account has been connected to another Stream user */
-"FACEBOOK_CONNECT_ACCOUNT_OCCUPIED_MESSAGE" = "The Facebook account you’re using has already been registered. Please use another Facebook account.";
+"FACEBOOK_CONNECT_ACCOUNT_OCCUPIED_MESSAGE" = "This Facebook account is already linked to an AOStream account. Remove AOStream in Facebook\'s App Settings and try again.";
 
 /* Message for an alert view to show user he already connects to another FB account. */
-"FACEBOOK_CONNECT_FAIL_MESSAGE" = "Your Stream account is already connected to one Facebook account.";
+"FACEBOOK_CONNECT_FAIL_MESSAGE" = "Your AOStream account is already connected to a Facebook account.";
 
 /* Title for an alert view to show facebook connection failure */
-"FACEBOOK_CONNECT_FAIL_TITLE" = "Can't import from Facebook";
+"FACEBOOK_CONNECT_FAIL_TITLE" = "Can't import from Facebook.";
 
 /* Message for alert view asking if user wants to connect her Facebook account */
-"FACEBOOK_CONNECT_REQUEST_MESSAGE" = "Stream will start importing ports from your Facebook account";
+"FACEBOOK_CONNECT_REQUEST_MESSAGE" = "AOStream will start importing ports from your Facebook account.";
 
 /* Title for alert view asking if user wants to connect her Facebook account */
-"FACEBOOK_CONNECT_REQUEST_TITLE" = "Confirm to import from Facebook";
+"FACEBOOK_CONNECT_REQUEST_TITLE" = "Confirm to start importing from Facebook.";
 
 /* Message for alert view asking if user wants to disconnect her Facebook account */
-"FACEBOOK_DISCONNECT_REQUEST_MESSAGE" = "Stream will stop importing posts from your Facebook account";
+"FACEBOOK_DISCONNECT_REQUEST_MESSAGE" = "Stream will stop importing posts from your Facebook account.";
 
 /* Title for alert view asking if user wants to disconnect her Facebook account */
-"FACEBOOK_DISCONNECT_REQUEST_TITLE" = "Confirm to stop importing from Facebook";
+"FACEBOOK_DISCONNECT_REQUEST_TITLE" = "Confirm to stop importing from Facebook.";
 
 /* Display title for a fetch request working against all the articles */
 "FETCH_REQUEST_ALL_ARTICLES_DISPLAY_TITLE" = "All (My Days)";
@@ -253,46 +253,46 @@
 "FETCH_REQUEST_NEWEST_ARTICLE_OF_PARTICULAR_DATE_DISPLAY_TITLE" = "Post on a particular date";
 
 /* String on customized status bar */
-"FETCHING_DATA" = "Downloading Data";
+"FETCHING_DATA" = "Downloading data...";
 
 /* Title for an alert view to show foursquare connection failure */
-"FOURSQUARE_CONNECT_FAIL_TITLE" = "Unable to import from Foursquare";
+"FOURSQUARE_CONNECT_FAIL_TITLE" = "Unable to import from Foursquare.";
 
 /* Message for alert view asking if user wants to connect her Foursquare account */
-"FOURSQUARE_CONNECT_REQUEST_MESSAGE" = "Stream will start importing posts from your Foursquare account";
+"FOURSQUARE_CONNECT_REQUEST_MESSAGE" = "Stream will start importing posts from your Foursquare account.";
 
 /* Title for alert view asking if user wants to connect her Foursquare account */
-"FOURSQUARE_CONNECT_REQUEST_TITLE" = "Confirm to import from Foursquare";
+"FOURSQUARE_CONNECT_REQUEST_TITLE" = "Confirm to import from Foursquare.";
 
 /* Title for an alert view to show foursquare disconnection failure */
-"FOURSQUARE_DISCONNECT_FAIL_TITLE" = "Unable to stop importing";
+"FOURSQUARE_DISCONNECT_FAIL_TITLE" = "Unable to stop importing!";
 
 /* Message for alert view asking if user wants to disconnect her Foursquare account */
-"FOURSQUARE_DISCONNECT_REQUEST_MESSAGE" = "Stream will stop importing posts from your Foursquare account";
+"FOURSQUARE_DISCONNECT_REQUEST_MESSAGE" = "Stream will stop importing posts from your Foursquare account.";
 
 /* Title for alert view asking if user wants to disconnect her Foursquare account */
-"FOURSQUARE_DISCONNECT_REQUEST_TITLE" = "Confirm to stop importing from Foursquare";
+"FOURSQUARE_DISCONNECT_REQUEST_TITLE" = "Confirm to stop importing from Foursquare.";
 
 /* Free plan details in plans page */
-"FREE_PLAN_DESCRIPTION" = "Save all original files to one PC";
+"FREE_PLAN_DESCRIPTION" = "Save all original files to your PC";
 
 /* Title for an alert view to show Google connection failure */
-"GOOGLE_CONNECT_FAIL_TITLE" = "Unable to import from Google";
+"GOOGLE_CONNECT_FAIL_TITLE" = "Unable to import from Google.";
 
 /* Message for alert view asking if user wants to connect her Google account */
-"GOOGLE_CONNECT_REQUEST_MESSAGE" = "Stream will start importing posts from your Google account";
+"GOOGLE_CONNECT_REQUEST_MESSAGE" = "Stream will start importing posts from your Google account.";
 
 /* Title for alert view asking if user wants to connect her Google account */
-"GOOGLE_CONNECT_REQUEST_TITLE" = "Confirm to import from Google";
+"GOOGLE_CONNECT_REQUEST_TITLE" = "Confirm to import from Google.";
 
 /* Title for an alert view to show Google disconnection failure */
-"GOOGLE_DISCONNECT_FAIL_TITLE" = "Unable to stop importing";
+"GOOGLE_DISCONNECT_FAIL_TITLE" = "Unable to stop importing from Google.";
 
 /* Message for alert view asking if user wants to disconnect her Google account */
-"GOOGLE_DISCONNECT_REQUEST_MESSAGE" = "Stream will stop importing posts from your Google account";
+"GOOGLE_DISCONNECT_REQUEST_MESSAGE" = "Stream will stop importing posts from your Google account.";
 
 /* Title for alert view asking if user wants to disconnect her Google account */
-"GOOGLE_DISCONNECT_REQUEST_TITLE" = "Confirm to stop importing from Google";
+"GOOGLE_DISCONNECT_REQUEST_TITLE" = "Confirm to stop importing from Google.";
 
 /* No comment provided by engineer. */
 "HOUR_PLURAL" = "%d hours";
@@ -301,7 +301,7 @@
 "HOUR_SINGULAR" = "%d hour";
 
 /* Title on introduction pages */
-"INTRODUCTION_TITLE" = "What is Stream?";
+"INTRODUCTION_TITLE" = "What's Stream?";
 
 /* Text for modal popup close button */
 "LABEL_MODAL_POPUP_CLOSE_BUTTON" = "Close";
@@ -310,7 +310,7 @@
 "LABEL_WITHOUT_GPS_DATA" = "Where were you?";
 
 /* The email subject users will share photos thru. The nickname of user will be appended to this subject. */
-"MAIL_ACTION_SUBJECT" = "%@ wants to share photo(s) with you thru Stream App.";
+"MAIL_ACTION_SUBJECT" = "%@ wants to share photos with you from their AOStream app.";
 
 /* No comment provided by engineer. */
 "MINUTE_PLURAL" = "%d minutes";
@@ -325,19 +325,19 @@
 "MONTH_SINGULAR" = "%d month";
 
 /* Navigation bar title while loading web page failed */
-"NAVI_TITLE_WEB_FAILED" = "Page Loaded Failed";
+"NAVI_TITLE_WEB_FAILED" = "Page loading failed.";
 
 /* Navigation bar title for web preview while loading */
 "NAVI_TITLE_WEB_LOADING" = "Loading..";
 
 /* Nickname placeholder in signup page */
-"NICKNAME_PLACEHOLDER" = "John Appleseed";
+"NICKNAME_PLACEHOLDER" = "Johnny Appleseed";
 
 /* Cell title in connection status view controller */
-"NO_STATION_INSTALLED" = "Didn't install any AOStream Station";
+"NO_STATION_INSTALLED" = "AOStream Station not yet installed.";
 
 /* Notification messages for photos auto-imported */
-"NOTIFY_PHOTOS_IMPORTED" = "%@ photo(s) have been imported into your Stream account.";
+"NOTIFY_PHOTOS_IMPORTED" = "%@ photo(s) have been imported into your AOStream account.";
 
 /* For remote notification testing */
 "NOTIFY_TESTING" = "Hello, Stream!";
@@ -359,7 +359,7 @@
 "PASSWORD_PLACEHOLDER" = "••••••••";
 
 /* Title of photo import settings view controller */
-"PHOTO_IMPORT_TITLE" = "Photo Import";
+"PHOTO_IMPORT_TITLE" = "Photo Uploader";
 
 /* in iPhone timeline */
 "PHOTO_PLURAL" = "%d photos";
@@ -368,16 +368,16 @@
 "PHOTO_SINGULAR" = "%d photo";
 
 /* Title of view controller setting photo upload */
-"PHOTO_UPLOAD_CONTROLLER_TITLE" = "AUTO PHOTO UPLOAD";
+"PHOTO_UPLOAD_CONTROLLER_TITLE" = "AUTO PHOTO UPLOADER";
 
 /* String on customized status bar */
-"PHOTO_UPLOAD_STATUS_BAR_COMPLETE" = "Sync Complete";
+"PHOTO_UPLOAD_STATUS_BAR_COMPLETE" = "Sync completed";
 
 /* String on customized status bar */
-"PHOTO_UPLOAD_STATUS_BAR_FAIL" = "Sync Fail";
+"PHOTO_UPLOAD_STATUS_BAR_FAIL" = "Sync failure";
 
 /* String on customized status bar */
-"PHOTO_UPLOAD_STATUS_BAR_IMPORTING" = "Scanning Camera Roll %d/%d";
+"PHOTO_UPLOAD_STATUS_BAR_IMPORTING" = "Scanning Camera Roll... %d/%d";
 
 /* String on customized status bar */
 "PHOTO_UPLOAD_STATUS_BAR_UPLOADING" = "Importing %d photos";
@@ -407,7 +407,7 @@
 "PLANS_CONTROLLER_TITLE" = "PLANS";
 
 /* Premium plan details in plans page */
-"PREMIUM_PLAN_DESCRIPTION" = "250GB cloud storage, unlimited PC storage";
+"PREMIUM_PLAN_DESCRIPTION" = "250GB cloud storage, unlimited PC storage.";
 
 /* REACHABILITY_STATE_AVAILABLE */
 "REACHABILITY_STATE_AVAILABLE" = "Available";
@@ -435,7 +435,7 @@
 "SECOND_SINGULAR" = "%d second";
 
 /* Title of view controller finishing first setup */
-"SETUP_DONE_CONTROLLER_TITLE" = "ALMOST DONE";
+"SETUP_DONE_CONTROLLER_TITLE" = "Getting Started";
 
 /* Title for view controller signing the user in */
 "SIGN_IN_CONTROLLER_TITLE" = "LOG IN";
@@ -473,7 +473,7 @@
 "SLIDING_MENU_TITLE_SETTINGS" = "SETTINGS";
 
 /* Title for Web pages in the sliding menu */
-"SLIDING_MENU_TITLE_WEBS" = "WEB PAGES";
+"SLIDING_MENU_TITLE_WEBS" = "WEBPAGES";
 
 /* No comment provided by engineer. */
 "STATE_LOADING_SINGLE_DOCUMENT" = "Loading Document…";
@@ -488,28 +488,28 @@
 "TITLE_CALENDAR" = "Calendar";
 
 /* Alert on no location service enabled when open photo library */
-"TURN_ON_LOCATION_SERVICE" = "Turn on Location Services to allow Stream to access your Photo Library";
+"TURN_ON_LOCATION_SERVICE" = "Turn on Location Services to allow Stream to access your Photo Library.";
 
 /* Title for an alert view to show Twitter connection failure */
-"TWITTER_CONNECT_FAIL_TITLE" = "Unable to import from Twitter";
+"TWITTER_CONNECT_FAIL_TITLE" = "Unable to import from Twitter.";
 
 /* Message for alert view asking if user wants to connect her Twitter account */
-"TWITTER_CONNECT_REQUEST_MESSAGE" = "Stream will start importing posts from your Twitter account";
+"TWITTER_CONNECT_REQUEST_MESSAGE" = "Stream will start importing tweets from your Twitter account.";
 
 /* Title for alert view asking if user wants to connect her Twitter account */
-"TWITTER_CONNECT_REQUEST_TITLE" = "Confirm to import from Twitter";
+"TWITTER_CONNECT_REQUEST_TITLE" = "Confirm to import from Twitter.";
 
 /* Title for an alert view to show Twitter disconnection failure */
-"TWITTER_DISCONNECT_FAIL_TITLE" = "Unable to stop importing";
+"TWITTER_DISCONNECT_FAIL_TITLE" = "Unable to stop importing!";
 
 /* Message for alert view asking if user wants to disconnect her Twitter account */
-"TWITTER_DISCONNECT_REQUEST_MESSAGE" = "Stream will stop importing posts from your Twitter account";
+"TWITTER_DISCONNECT_REQUEST_MESSAGE" = "Stream will stop importing posts from your Twitter account.";
 
 /* Title for alert view asking if user wants to disconnect her Twitter account */
-"TWITTER_DISCONNECT_REQUEST_TITLE" = "Confirm to stop importing from Twitter";
+"TWITTER_DISCONNECT_REQUEST_TITLE" = "Confirm to stop importing from Twitter.";
 
 /* Ultimate plan details in plans page */
-"ULTIMATE_PLAN_DESCRIPTION" = "500GB cloud storage, unlimited PC storage";
+"ULTIMATE_PLAN_DESCRIPTION" = "500GB cloud storage, unlimited PC storage.";
 
 /* Settings for User popover */
 "USER_INFO_CONTROLLER_TITLE" = "User";
@@ -522,7 +522,7 @@
 "WEB_SERVICES_TITLE" = "Web Services";
 
 /* Title for web pages view controller */
-"WEBPAGES_CONTROLLER_TITLE" = "WEB PAGES";
+"WEBPAGES_CONTROLLER_TITLE" = "WEBPAGES";
 
 /* No comment provided by engineer. */
 "WEEK_PLURAL" = "%d weeks";
@@ -561,7 +561,7 @@
 "CONNECTION_STATUS_TITLE" = "Connection Status";
 
 /* Class = "IBUILabel"; text = "PC_SETUP_INSTRUCTIONS"; ObjectID = "6Ib-wQ-B01"; */
-"PC_SETUP_INSTRUCTIONS" = "1. Install AOStream Windows\n2. Turn on WiFi and connect to the same network with your PC.";
+"PC_SETUP_INSTRUCTIONS" = "1. Install AOStream for Windows on your PC.\n2. Connect your mobile device or tablet to the same WiFi network as your PC.";
 
 /* Class = "IBUILabel"; text = "PHOTO_UPLOAD_SWITCH_TITLE"; ObjectID = "749-zj-beb"; */
 "PHOTO_UPLOAD_SWITCH_TITLE" = "Upload Camera Roll";
@@ -570,22 +570,22 @@
 "NOUN_USERNAME" = "Email";
 
 /* Class = "IBUILabel"; text = "CONNECT_SERVICES_DESCRIPTION"; ObjectID = "GEd-xe-bMT"; */
-"CONNECT_SERVICES_DESCRIPTION" = "You can also change these settings whatever you want.";
+"CONNECT_SERVICES_DESCRIPTION" = "You can change these settings at any time.";
 
 /* Class = "IBUIButton"; normalTitle = "LOGIN_LINK_DEVICE"; ObjectID = "Gch-g1-VSP"; */
-"LOGIN_LINK_DEVICE" = "Login & link this device";
+"LOGIN_LINK_DEVICE" = "Log in & link this device";
 
 /* Class = "IBUILabel"; text = "PC_SETUP_DESCRIPTION"; ObjectID = "Jfg-PE-RoZ"; */
-"PC_SETUP_DESCRIPTION" = "Connect to your personal cloud station and enable lightning speed.";
+"PC_SETUP_DESCRIPTION" = "Link your mobile devices to our PC-based AOStream Station to enable lightning-fast WiFi transfer speeds:";
 
 /* Class = "IBUIButton"; normalTitle = "I_AM_NEW_HERE"; ObjectID = "KXA-OG-bKa"; */
-"I_AM_NEW_HERE" = "I am new here!";
+"I_AM_NEW_HERE" = "Sign me up!";
 
 /* Class = "IBUILabel"; text = "NOUN_PASSWORD"; ObjectID = "OIv-A5-N1k"; */
 "NOUN_PASSWORD" = "Password";
 
 /* Class = "IBUILabel"; text = "PHOTO_UPLOAD_DESCRIPTION"; ObjectID = "Phx-kE-dRu"; */
-"PHOTO_UPLOAD_DESCRIPTION" = "Stream automatically sync all your photos from your devices to your personal cloud. We create real life events for you, and they are right there anytime, anywhere.";
+"PHOTO_UPLOAD_DESCRIPTION" = "AOStream automatically syncs all the photos from your devices to your personal cloud, and creates real-life events for you to relive anytime, anywhere.";
 
 /* Class = "IBUILabel"; text = "NOUN_USERNAME"; ObjectID = "WAR-06-Bm8"; */
 "NOUN_USERNAME" = "Email";
@@ -606,7 +606,7 @@
 "CONNECTION_STATUS_SUBTITLE" = "CONNECTION_STATUS_SUBTITLE";
 
 /* Class = "IBUILabel"; text = "PC_SETUP_TITLE"; ObjectID = "w7L-CQ-FdG"; */
-"PC_SETUP_TITLE" = "Feel Slow?";
+"PC_SETUP_TITLE" = "What's the next step?";
 
 /* Class = "IBUIButton"; normalTitle = "ACTION_SIGN_IN"; ObjectID = "6"; */
 "ACTION_SIGN_IN" = "Log In";
@@ -615,7 +615,7 @@
 "ACTION_CONNECT_FACEBOOK" = "Connect with Facebook";
 
 /* Class = "IBUILabel"; text = "ACTION_GOTO_WEBSITE"; ObjectID = "189"; */
-"ACTION_GOTO_WEBSITE" = "Learn more on our website";
+"ACTION_GOTO_WEBSITE" = "Learn more on our website.";
 
 /* Class = "IBUILabel"; text = "PLANS_DESCRIPTION"; ObjectID = "202"; */
 "PLANS_DESCRIPTION" = "Stream send all your presure moments back to your PC. You can also upgrade to a cloud storage plan and enjoy the benefit of cloud computing.";
@@ -642,7 +642,7 @@
 "NOUN_NICKNAME" = "Name";
 
 /* Class = "IBUITextField"; placeholder = "NICKNAME_PLACEHOLDER"; ObjectID = "YnT-se-P50"; */
-"NICKNAME_PLACEHOLDER" = "John Appleseed";
+"NICKNAME_PLACEHOLDER" = "Johnny Appleseed";
 
 /* Class = "IBUILabel"; text = "NOUN_USERNAME"; ObjectID = "afM-HJ-Q3v"; */
 "NOUN_USERNAME" = "Email";
@@ -663,16 +663,16 @@
 "STATE_LOADING_SINGLE_DOCUMENT_PROGRESS" = "%1 of %2";
 
 /* Class = "IBUILabel"; text = "ACTION_GOTO_WEBSITE"; ObjectID = "0UL-JF-5TW"; */
-"ACTION_GOTO_WEBSITE" = "Learn more on our website";
+"ACTION_GOTO_WEBSITE" = "Learn more on our website.";
 
 /* Class = "IBUILabel"; text = "PC_SETUP_DESCRIPTION"; ObjectID = "1TK-Px-G5L"; */
-"PC_SETUP_DESCRIPTION" = "Connect to your personal cloud station and enable lightning speed.";
+"PC_SETUP_DESCRIPTION" = "Link your mobile devices to our PC-based AOStream Station to enable lightning-fast WiFi transfer speeds:";
 
 /* Class = "IBUILabel"; text = "PHOTO_IMPORT_TITLE"; ObjectID = "2Vy-5o-43I"; */
 "PHOTO_IMPORT_TITLE" = "Photo Import";
 
 /* Class = "IBUILabel"; text = "PC_SETUP_INSTRUCTIONS"; ObjectID = "3ZQ-I2-m83"; */
-"PC_SETUP_INSTRUCTIONS" = "1. Install AOStream Windows\n2. Turn on WiFi and connect to the same network with your PC.";
+"PC_SETUP_INSTRUCTIONS" = "1. Install AOStream for Windows on your PC.\n2. Connect your mobile device or tablet to the same WiFi network as your PC.";
 
 /* Class = "IBUILabel"; text = "IMPORT_CAMERA_ROLL"; ObjectID = "Ehm-FE-RdU"; */
 "IMPORT_CAMERA_ROLL" = "Import Camera Roll";
@@ -684,7 +684,7 @@
 "PACKAGE" = "Package";
 
 /* Class = "IBUILabel"; text = "LOGOUT"; ObjectID = "GUv-Fm-Efw"; */
-"LOGOUT" = "Logout";
+"LOGOUT" = "Log Out";
 
 /* Class = "IBUITableViewSection"; headerTitle = "ACCOUNT_INFO_HEADER"; ObjectID = "Gw1-xy-FWK"; */
 "ACCOUNT_INFO_HEADER" = "Account Info";
@@ -693,7 +693,7 @@
 "FILES_TO_UPLOAD" = "Photos to Upload";
 
 /* Class = "IBUILabel"; text = "PLANS_DESCRIPTION"; ObjectID = "MRD-E4-twD"; */
-"PLANS_DESCRIPTION" = "Stream send all your presure moments back to your PC. You can also upgrade to a cloud storage plan and enjoy the benefit of cloud computing.";
+"PLANS_DESCRIPTION" = "AOStream sends all your digital memories back to your PC. You can also upgrade to a cloud storage plan and enjoy all the benefits of a personal cloud.";
 
 /* Class = "IBUILabel"; text = "USE_CELLULAR"; ObjectID = "Scf-t9-USz"; */
 "USE_CELLULAR" = "Use Cellular Plan";
