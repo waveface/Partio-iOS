@@ -659,6 +659,9 @@
 /* Class = "IBUILabel"; text = "STATE_LOADING_SINGLE_DOCUMENT_PROGRESS"; ObjectID = "10"; */
 "STATE_LOADING_SINGLE_DOCUMENT_PROGRESS" = "%1 of %2";
 
+/* Class = "IBUILabel"; text = "ACTION_GOTO_WEBSITE"; ObjectID = "0UL-JF-5TW"; */
+"ACTION_GOTO_WEBSITE" = "Learn more on our website";
+
 /* Class = "IBUILabel"; text = "PC_SETUP_DESCRIPTION"; ObjectID = "1TK-Px-G5L"; */
 "PC_SETUP_DESCRIPTION" = "Connect to your personal cloud station and enable lightning speed.";
 
@@ -685,6 +688,9 @@
 
 /* Class = "IBUILabel"; text = "FILES_TO_UPLOAD"; ObjectID = "Ldp-qK-xdo"; */
 "FILES_TO_UPLOAD" = "Photos to Upload";
+
+/* Class = "IBUILabel"; text = "PLANS_DESCRIPTION"; ObjectID = "MRD-E4-twD"; */
+"PLANS_DESCRIPTION" = "Stream send all your presure moments back to your PC. You can also upgrade to a cloud storage plan and enjoy the benefit of cloud computing.";
 
 /* Class = "IBUILabel"; text = "USE_CELLULAR"; ObjectID = "Scf-t9-USz"; */
 "USE_CELLULAR" = "Use Cellular Plan";
