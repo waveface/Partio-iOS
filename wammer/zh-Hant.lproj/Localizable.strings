@@ -207,6 +207,9 @@
 /* The text of label on separation line in the event view when there is no photo presented. */
 "EVENT_SEPERATION_LABEL_WITHOUT_PHOTOS" = "加些照片吧";
 
+/* Event summary text in summary view */
+"EVENT_SUMMARY_TEXT" = "你今天有 %d 個動態";
+
 /* Title for Events view */
 "EVENTS_CONTROLLER_TITLE" = "我的天";
 
@@ -290,6 +293,9 @@
 
 /* Title for alert view asking if user wants to disconnect her Google account */
 "GOOGLE_DISCONNECT_REQUEST_TITLE" = "確認取消Google同步";
+
+/* Hello text in summary view */
+"HELLO_NAME_TEXT" = "哈囉, %@";
 
 /* No comment provided by engineer. */
 "HOUR_PLURAL" = "%d小時";
@@ -667,6 +673,12 @@
 
 /* Class = "IBUILabel"; text = "MONTH"; ObjectID = "83"; */
 "MONTH" = "MONTH";
+
+/* Class = "IBUILabel"; text = "HELLO_TEXT"; ObjectID = "696"; */
+"HELLO_TEXT" = "HELLO_TEXT";
+
+/* Class = "IBUILabel"; text = "EVENT_TEXT"; ObjectID = "710"; */
+"EVENT_TEXT" = "EVENT_TEXT";
 
 /* Class = "IBUILabel"; text = "PC_SETUP_DESCRIPTION"; ObjectID = "1TK-Px-G5L"; */
 "PC_SETUP_DESCRIPTION" = "AOStream Windows 可以將你的 PC 升級成個人雲，透過它傳輸速度將會加快一百倍！";

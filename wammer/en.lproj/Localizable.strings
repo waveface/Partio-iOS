@@ -207,6 +207,9 @@
 /* The text of label on separation line in the event view when there is no photo presented. */
 "EVENT_SEPERATION_LABEL_WITHOUT_PHOTOS" = "ADD SOME PHOTOS HERE";
 
+/* Event summary text in summary view */
+"EVENT_SUMMARY_TEXT" = "You have %d events today.";
+
 /* Title for Events view */
 "EVENTS_CONTROLLER_TITLE" = "MY DAYS";
 
@@ -290,6 +293,9 @@
 
 /* Title for alert view asking if user wants to disconnect her Google account */
 "GOOGLE_DISCONNECT_REQUEST_TITLE" = "Confirm to stop importing from Google";
+
+/* Hello text in summary view */
+"HELLO_NAME_TEXT" = "Hi, %@";
 
 /* No comment provided by engineer. */
 "HOUR_PLURAL" = "%d hours";
@@ -667,6 +673,12 @@
 
 /* Class = "IBUILabel"; text = "MONTH"; ObjectID = "83"; */
 "MONTH" = "MONTH";
+
+/* Class = "IBUILabel"; text = "HELLO_TEXT"; ObjectID = "696"; */
+"HELLO_TEXT" = "HELLO_TEXT";
+
+/* Class = "IBUILabel"; text = "EVENT_TEXT"; ObjectID = "710"; */
+"EVENT_TEXT" = "EVENT_TEXT";
 
 /* Class = "IBUILabel"; text = "PC_SETUP_DESCRIPTION"; ObjectID = "1TK-Px-G5L"; */
 "PC_SETUP_DESCRIPTION" = "Connect to your personal cloud station and enable lightning speed.";
