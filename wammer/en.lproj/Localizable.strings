@@ -711,7 +711,7 @@
 "NOUN_USERNAME" = "Email";
 
 /* Class = "IBUITableViewSection"; footerTitle = "PHOTO_IMPORT_SETTINGS_FOOTER"; ObjectID = "gj0-e5-1Bs"; */
-"PHOTO_IMPORT_SETTINGS_FOOTER" = "Connect to the same WiFi network with your AOStream Windows Station to upload original files.";
+"PHOTO_IMPORT_SETTINGS_FOOTER" = "Connecting to the same WiFi network as your AOStream Windows Station is the fastest way to upload high-resolution photos.";
 
 /* Class = "IBUITableViewSection"; headerTitle = "PHOTO_IMPORT_SETTINGS_HEADER"; ObjectID = "gj0-e5-1Bs"; */
 "PHOTO_IMPORT_SETTINGS_HEADER" = "Settings";
@@ -738,7 +738,7 @@
 "CONNECTION_STATUS_TITLE" = "Connection Status";
 
 /* Class = "IBUITableViewSection"; headerTitle = "IMPORT_HEADER"; ObjectID = "qoR-fT-NMh"; */
-"IMPORT_HEADER" = "Import";
+"IMPORT_HEADER" = "Upload";
 
 /* Class = "IBUILabel"; text = "ACTION_CONTACT_DEVELOPER"; ObjectID = "yLg-eE-ehZ"; */
 "ACTION_CONTACT_DEVELOPER" = "Contact Us";
