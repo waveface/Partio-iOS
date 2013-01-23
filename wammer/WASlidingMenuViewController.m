@@ -32,11 +32,13 @@
 #import "WAFetchManager.h"
 #import <QuartzCore/QuartzCore.h>
 
-@interface WASlidingMenuViewController ()
+@interface WASlidingMenuViewController () <UIPopoverControllerDelegate>
 
 @property (nonatomic, strong) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, strong) WAUser *user;
 @property (nonatomic, strong) UITableViewCell *userCell;
+@property (nonatomic, strong) UIButton *calendarButton;
+@property (nonatomic, strong) UIPopoverController *calendarPopoverForIPad;
 
 @property (nonatomic, strong) WAStatusBar *statusBar;
 
@@ -182,55 +184,51 @@
   
   __weak WASlidingMenuViewController *wSelf = self;
   
-  if ([keyPath isEqualToString:@"isFetching"]) {
-    BOOL isFetching = [change[NSKeyValueChangeNewKey] boolValue];
+  if ([keyPath isEqualToString:@"isFetching"] || [keyPath isEqualToString:@"isSyncing"]) {
+    BOOL isFetching = NO;
+	BOOL isSyncing = NO;
+	
+	if ([keyPath isEqualToString:@"isFetching"])
+	  isFetching = [change[NSKeyValueChangeNewKey] boolValue];
+	if ([keyPath isEqualToString:@"isSyncing"])
+	  isSyncing = [change[NSKeyValueChangeNewKey] boolValue];
+	
     [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-      if (isFetching) {
-        if (!wSelf.statusBar && [[UIApplication sharedApplication] applicationState] != UIApplicationStateBackground) {
-          wSelf.statusBar = [[WAStatusBar alloc] initWithFrame:CGRectZero];
-        }
-        [wSelf.statusBar startFetchingAnimation];
-      } else {
-        WASyncManager *syncManager = [(WAAppDelegate_iOS *)AppDelegate() syncManager];
-        if (!syncManager.isSyncing) {
-          [wSelf.statusBar showSyncCompleteWithDissmissBlock:^{
-            wSelf.statusBar = nil;
-          }];
-        } else {
-          [wSelf.statusBar stopFetchingAnimation];
-        }
+
+	  if (!wSelf.statusBar && [[UIApplication sharedApplication] applicationState] != UIApplicationStateBackground) {
+		wSelf.statusBar = [[WAStatusBar alloc] initWithFrame:CGRectZero];
+	  }
+	  WASyncManager *syncManager = [(WAAppDelegate_iOS *)AppDelegate() syncManager];
+	  WAFetchManager *fetchManager = [(WAAppDelegate_iOS *)AppDelegate() fetchManager];
+
+	  if (isSyncing) {
+		if (syncManager.isSyncFail) {
+		  [wSelf.statusBar showSyncFailWithDismissBlock:^{
+			wSelf.statusBar = nil;
+		  }];
+		} else if (syncManager.needingSyncFilesCount > 0) {
+		  [wSelf.statusBar showPhotoSyncingWithSyncedFilesCount:syncManager.syncedFilesCount needingSyncFilesCount:syncManager.needingSyncFilesCount];
+		} else if (syncManager.needingImportFilesCount > 0) {
+		  [wSelf.statusBar showPhotoImportingWithImportedFilesCount:syncManager.importedFilesCount needingImportFilesCount:syncManager.needingImportFilesCount];
+		}
+	  }
+	  
+      if (isFetching || isSyncing) {
+        [wSelf.statusBar startDataExchangeAnimation];
       }
+	  
+	  if (!syncManager.isSyncing && !fetchManager.isFetching) { // no more sync, neither fetch
+		if (wSelf.statusBar)
+		  [wSelf.statusBar stopDataExchangeAnimation];
+
+		[wSelf.statusBar showSyncCompleteWithDissmissBlock:^{
+		  wSelf.statusBar = nil;
+		}];
+      }
+	  
     }];
   }
-  
-  if ([keyPath isEqualToString:@"isSyncing"]) {
-    BOOL isSyncing = [change[NSKeyValueChangeNewKey] boolValue];
-    [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-      WASyncManager *syncManager = [(WAAppDelegate_iOS *)AppDelegate() syncManager];
-      if (isSyncing) {
-        if (!wSelf.statusBar && [[UIApplication sharedApplication] applicationState] != UIApplicationStateBackground) {
-          wSelf.statusBar = [[WAStatusBar alloc] initWithFrame:CGRectZero];
-        }
-        if (syncManager.isSyncFail) {
-          [wSelf.statusBar showSyncFailWithDismissBlock:^{
-            wSelf.statusBar = nil;
-          }];
-        } else if (syncManager.needingSyncFilesCount > 0) {
-          [wSelf.statusBar showPhotoSyncingWithSyncedFilesCount:syncManager.syncedFilesCount needingSyncFilesCount:syncManager.needingSyncFilesCount];
-        } else if (syncManager.needingImportFilesCount > 0) {
-          [wSelf.statusBar showPhotoImportingWithImportedFilesCount:syncManager.importedFilesCount needingImportFilesCount:syncManager.needingImportFilesCount];
-        }
-      } else {
-        WAFetchManager *fetchManager = [(WAAppDelegate_iOS *)AppDelegate() fetchManager];
-        if (!fetchManager.isFetching) {
-          [wSelf.statusBar showSyncCompleteWithDissmissBlock:^{
-            wSelf.statusBar = nil;
-          }];
-        }
-      }
-    }];
-  }
-  
+    
 }
 
 #pragma mark - Table view data source
@@ -295,12 +293,17 @@
       cell.imageView.image = [UIImage imageNamed:@"EventsIcon"];
       cell.textLabel.text = NSLocalizedString(@"SLIDING_MENU_TITLE_EVENTS", @"Title for Events in the sliding menu");
 	  
-	  UIImage *calIcon = [UIImage imageNamed:@"Cal"];
-	  UIButton *calButton = [UIButton buttonWithType:UIButtonTypeCustom];
-	  calButton.frame = (CGRect){150, 27-calIcon.size.height/2, calIcon.size.width, calIcon.size.height};
-	  [calButton setBackgroundImage:calIcon forState:UIControlStateNormal];
-	  [calButton addTarget:self action:@selector(calButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
-	  [cell addSubview:calButton]; // cannot use accessory view since it will be hidden behind center view
+	  if (!self.calendarButton) {
+		UIImage *calIcon = [UIImage imageNamed:@"Cal"];
+		UIButton *calButton = [UIButton buttonWithType:UIButtonTypeCustom];
+		calButton.frame = (CGRect){150, 27-calIcon.size.height/2, calIcon.size.width, calIcon.size.height};
+		[calButton setBackgroundImage:calIcon forState:UIControlStateNormal];
+		[calButton addTarget:self action:@selector(calButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+		[cell addSubview:calButton]; // cannot use accessory view since it will be hidden behind center view
+		self.calendarButton = calButton;
+	  } else {
+		[cell addSubview:self.calendarButton];
+	  }
 	  
 	  break;
 	}
@@ -509,20 +512,47 @@
 }
 
 - (void) calButtonTapped:(id)sender {
- 
-  __block WACalendarPopupViewController_phone *calendarPopup = [[WACalendarPopupViewController_phone alloc] initWithCompletion:^{
+  
+  if (isPad()) {
 	
-	[calendarPopup willMoveToParentViewController:nil];
-	[calendarPopup removeFromParentViewController];
-	[calendarPopup.view removeFromSuperview];
-	[calendarPopup didMoveToParentViewController:nil];
-	calendarPopup = nil;
+	CGRect frame = CGRectMake(0, 0, 320, 370);
 	
-  }];
+	__weak WASlidingMenuViewController *wSelf = self;
+	WACalendarPickerViewController *calVC = [[WACalendarPickerViewController alloc] initWithFrame:frame selectedDate:[NSDate date]];
+	calVC.currentViewStyle = WAEventsViewStyle;
+	WANavigationController *wrappedNavVC = [WACalendarPickerViewController wrappedNavigationControllerForViewController:calVC forStyle:WACalendarPickerStyleWithCancel];
+	
+	UIPopoverController *popOver = [[UIPopoverController alloc] initWithContentViewController:wrappedNavVC];
+	popOver.popoverContentSize = frame.size;
+	[popOver presentPopoverFromRect:CGRectMake(self.calendarButton.frame.size.width/2, self.calendarButton.frame.size.height, 1, 1) inView:self.calendarButton permittedArrowDirections:UIPopoverArrowDirectionUp animated:YES];
+	self.calendarPopoverForIPad = popOver;
+	self.calendarPopoverForIPad.delegate = self;
+	calVC.onDismissBlock = ^{
+	  [wSelf.calendarPopoverForIPad dismissPopoverAnimated:YES];
+	  wSelf.calendarPopoverForIPad = nil;
+	};
+	
+  } else {
 
-  [self.viewDeckController addChildViewController:calendarPopup];
-  [self.viewDeckController.view addSubview:calendarPopup.view];
+	__block WACalendarPopupViewController_phone *calendarPopup = [[WACalendarPopupViewController_phone alloc] initWithCompletion:^{
+	
+	  [calendarPopup willMoveToParentViewController:nil];
+	  [calendarPopup removeFromParentViewController];
+	  [calendarPopup.view removeFromSuperview];
+	  [calendarPopup didMoveToParentViewController:nil];
+	  calendarPopup = nil;
+	
+	}];
 
+	[self.viewDeckController addChildViewController:calendarPopup];
+	[self.viewDeckController.view addSubview:calendarPopup.view];
+  }
+}
+
+-(void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController {
+  
+  self.calendarPopoverForIPad = nil;
+  
 }
 
 @end

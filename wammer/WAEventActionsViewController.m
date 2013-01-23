@@ -35,7 +35,13 @@
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-			self.selectedPhotos = [NSMutableIndexSet new];
+			self.selectedPhotos = [NSMutableIndexSet indexSet];
+
+	  [self.selectedPhotos addObserver:self
+							forKeyPath:@"count"
+							   options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld
+							   context:nil];
+
     }
     return self;
 }
@@ -108,18 +114,21 @@ void (^displayAlert)(NSString *, NSString *) = ^(NSString *title, NSString *msg)
 	});
 	[fbButton setTintColor:[UIColor clearColor]];
 	[fbButton setTitleTextAttributes:@{UITextAttributeTextColor: [UIColor whiteColor]} forState:UIControlStateNormal];
+  [fbButton setEnabled:NO];
 	
 	IRBarButtonItem *twButton = WABarButtonItem(nil, NSLocalizedString(@"ACTION_TWITTER", @"Share to Twitter action"), ^{
 		composeForSL(SLServiceTypeTwitter);
 	});
 	[twButton setTintColor:[UIColor clearColor]];
 	[twButton setTitleTextAttributes:@{UITextAttributeTextColor: [UIColor whiteColor]} forState:UIControlStateNormal];
+  [twButton setEnabled:NO];
 
 	IRBarButtonItem *clButton = WABarButtonItem(nil, NSLocalizedString(@"ACTION_COLLECTION", @"Place photos in collections"), ^{
 		displayAlert(@"Sorry", @"Collection editiing will be available soon.");
 	});
 	[clButton setTintColor:[UIColor clearColor]];
 	[clButton setTitleTextAttributes:@{UITextAttributeTextColor: [UIColor whiteColor]} forState:UIControlStateNormal];
+  [clButton setEnabled:NO];
 
 	IRBarButtonItem *mlButton = WABarButtonItem(nil, NSLocalizedString(@"ACTION_EMAIL", @"Share thru Email"), ^{
 		
@@ -151,8 +160,11 @@ void (^displayAlert)(NSString *, NSString *) = ^(NSString *title, NSString *msg)
 	});
 	[mlButton setTintColor:[UIColor clearColor]];
 	[mlButton setTitleTextAttributes:@{UITextAttributeTextColor: [UIColor whiteColor]} forState:UIControlStateNormal];
+  [mlButton setEnabled:NO];
 
-	self.toolbarItems = @[fbButton, twButton, clButton, mlButton];
+  UIBarButtonItem *space = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+
+	self.toolbarItems = @[fbButton, space, twButton, space, clButton, space, mlButton];
 	
 	self.navigationController.navigationBar.barStyle = UIBarStyleBlackTranslucent;
 	self.navigationController.navigationBar.tintColor = [UIColor clearColor];
@@ -168,6 +180,8 @@ void (^displayAlert)(NSString *, NSString *) = ^(NSString *title, NSString *msg)
 	});
 	[self.navigationItem.leftBarButtonItem setTintColor:[UIColor clearColor]];
 	[self.navigationItem.leftBarButtonItem setTitleTextAttributes:@{UITextAttributeTextColor: [UIColor whiteColor]} forState:UIControlStateNormal];
+  
+  self.title = NSLocalizedString(@"EVENT_ACTION_MODAL_TITLE", @"Title of event actions modal");
 
 	[[GAI sharedInstance].defaultTracker trackEventWithCategory:@"Events"
 																									 withAction:@"Enter event actions"
@@ -176,10 +190,36 @@ void (^displayAlert)(NSString *, NSString *) = ^(NSString *title, NSString *msg)
 
 }
 
+- (void) observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+  
+  if ([keyPath isEqualToString:@"count"]) {
+	NSInteger newNum = [change[NSKeyValueChangeNewKey] integerValue];
+	NSInteger oldNum = [change[NSKeyValueChangeOldKey] integerValue];
+	if (!oldNum && newNum) {
+	  
+	  for(UIBarButtonItem *barButton in self.toolbarItems) {
+		barButton.enabled = YES;
+	  }
+	  
+	} else if (!newNum && oldNum) {
+	  
+	  for(UIBarButtonItem *barButton in self.toolbarItems) {
+		barButton.enabled = NO;
+	  }
+	  
+	}
+  }
+  
+}
+
 - (void) viewWillAppear:(BOOL)animated {
 	
 	[self.navigationController setToolbarHidden:NO animated:animated];
 	
+}
+
+- (void) dealloc {
+  [self.selectedPhotos removeObserver:self forKeyPath:@"count" context:nil];
 }
 
 - (void)didReceiveMemoryWarning
@@ -271,8 +311,10 @@ void (^displayAlert)(NSString *, NSString *) = ^(NSString *title, NSString *msg)
 	cell.checkMarkView.hidden = NO;
 	cell.checkMarkView.image = [UIImage imageNamed:@"IRAQ-Checkmark"];
 
+  [self.selectedPhotos willChangeValueForKey:@"count"];
 	[self.selectedPhotos addIndex:indexPath.row];
-	
+  [self.selectedPhotos didChangeValueForKey:@"count"];
+
 }
 
 - (void) collectionView:(UICollectionView *)collectionView didDeselectItemAtIndexPath:(NSIndexPath *)indexPath {
@@ -282,7 +324,9 @@ void (^displayAlert)(NSString *, NSString *) = ^(NSString *title, NSString *msg)
 	cell.checkMarkView.hidden = YES;
 	cell.checkMarkView.image = nil;
 	
+  [self.selectedPhotos willChangeValueForKey:@"count"];
 	[self.selectedPhotos removeIndex:indexPath.row];
+  [self.selectedPhotos didChangeValueForKey:@"count"];
 	
 }
 

@@ -195,11 +195,14 @@
 /* Failed, underlying error description %@ */
 "ERROR_ARTICLE_ENTITY_SYNC_FAILURE_WITH_UNDERLYING_ERROR_DESCRIPTION_FORMAT" = "A necessary task failed: %@.";
 
+/* Title of event actions modal */
+"EVENT_ACTION_MODAL_TITLE" = "Select Photos To Share";
+
 /* The conjunction between description and location. */
-"EVENT_DESC_LOCATION_CONJUNCTION" = "EVENT_DESC_LOCATION_CONJUNCTION";
+"EVENT_DESC_LOCATION_CONJUNCTION" = "at";
 
 /* The conjunction between description and people's names */
-"EVENT_DESC_PEOPLE_CONJUNCTION" = "EVENT_DESC_PEOPLE_CONJUNCTION";
+"EVENT_DESC_PEOPLE_CONJUNCTION" = "with";
 
 /* EVENT_PHOTO_NUMBER_LABEL */
 "EVENT_PHOTO_NUMBER_LABEL" = "%d PHOTOS";
