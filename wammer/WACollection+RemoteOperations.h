@@ -13,8 +13,9 @@
 
 + (void) refreshCollectionsWithCompletion:(void(^)(void))completionBlock;
 
-/* Add photos to Collection. */
 - (WACollection *) initWithName:(NSString*) name withFiles:(NSArray*) objectIDs inManagedObjectContext:(NSManagedObjectContext*) context;
+- (void) addObjects:(NSArray *)objects;
+
 @end
 
 extern NSString *const kWACollectionUpdated;

@@ -109,14 +109,24 @@
                                                               apiPath:@"v3"
                                                    customHeaderFields:nil];
   NSDictionary *payload = @{
-  @"session_token":interface.userToken,
-  @"api_key":interface.apiKey,
-  @"object_id_list":[self.files valueForKeyPath:@"identifier"],
+  @"collection_id":   self.identifier,
+  @"modify_time":     [[NSDate date] ISO8601String],
+  @"object_id_list":  [[[self.files valueForKeyPath:@"identifier"] array] JSONString],
+  @"session_token":   interface.userToken,
+  @"api_key":         interface.apiKey,
   };
   MKNetworkOperation *op = [engine operationWithPath:@"collections/update"
                                               params:payload
                                           httpMethod:@"POST"
                                                  ssl:[[bestURL scheme] isEqualToString:@"https"]];
+  op.freezable = YES;
+  [op
+   addCompletionHandler:^(MKNetworkOperation *completedOperation) {
+     NSLog(@"%@", completedOperation);
+   }
+   errorHandler:^(MKNetworkOperation *completedOperation, NSError *error) {
+     NSLog(@"Update collection API error: %@", error);
+   }];
   [engine enqueueOperation:op];
 }
 
@@ -152,20 +162,20 @@
                                                               apiPath:@"v3"
                                                    customHeaderFields:nil];
   NSDictionary *payload = @{
-    @"name":            self.title,
-    @"object_id_list":  [[[self.files valueForKeyPath:@"identifier"] array] JSONString],
-    @"create_time":     [self.creationDate ISO8601String],
-    @"collection_id":   self.identifier,
-    @"manual":          @"true",
-    @"session_token":   interface.userToken,
-    @"api_key":         interface.apiKey,
+  @"name":            self.title,
+  @"object_id_list":  [[[self.files valueForKeyPath:@"identifier"] array] JSONString],
+  @"create_time":     [self.creationDate ISO8601String],
+  @"collection_id":   self.identifier,
+  @"manual":          @"true",
+  @"session_token":   interface.userToken,
+  @"api_key":         interface.apiKey,
   };
   MKNetworkOperation *op = [engine operationWithPath:@"collections/create"
                                               params:payload
                                           httpMethod:@"POST"
                                                  ssl:[[bestURL scheme] isEqualToString:@"https"]];
   [engine enqueueOperation:op];
-
+  
 }
 @end
 

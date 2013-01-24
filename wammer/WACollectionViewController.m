@@ -61,7 +61,9 @@ typedef NS_ENUM(NSUInteger, WACollectionSortMode){
   
   [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updated:) name:kWACollectionUpdated object:nil];
   
-  [self refresh];
+  //  if ([WACollection MR_countOfEntities] == 0) {
+  [self refreshAllCollectionMetas];
+  //  }
   [self.collectionView reloadData];
 }
 
@@ -133,14 +135,15 @@ typedef NS_ENUM(NSUInteger, WACollectionSortMode){
 
 #pragma mark - Private Methods
 
-- (void)refresh {
+/* Update all collections. Very slow, use with caution. */
+- (void)refreshAllCollectionMetas {
   WACollectionViewController __weak *weakSelf = self;
   
-  [WACollection refreshCollectionsWithCompletion:^{
-    [weakSelf.refreshControl endRefreshing];
-    [weakSelf reloadCollection];
-    [weakSelf.collectionView reloadData];
-  }];
+  //  [WACollection refreshCollectionsWithCompletion:^{
+  [weakSelf.refreshControl endRefreshing];
+  [weakSelf reloadCollection];
+  //    [weakSelf.collectionView reloadData];
+  //  }];
 }
 
 - (void)updated:(NSNotification *)notification {
@@ -160,7 +163,6 @@ typedef NS_ENUM(NSUInteger, WACollectionSortMode){
   NSLocalizedString(@"By Date", @"Collection View Navigation Bar");
   
   self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:title style:UIBarButtonItemStylePlain target:self action:@selector(toggleMode)];
-  
 }
 
 - (void)toggleMode {
@@ -182,8 +184,7 @@ typedef NS_ENUM(NSUInteger, WACollectionSortMode){
 - (void)motionEnded:(UIEventSubtype)motion withEvent:(UIEvent *)event {
   // Shake to refresh collections (solicit)
   if (motion == UIEventSubtypeMotionShake) {
-    [self refresh];
-    [WACollection create];
+    [self refreshAllCollectionMetas];
   }
 }
 

@@ -256,10 +256,7 @@ void (^displayAlert)(NSString *, NSString *) = ^(NSString *title, NSString *msg)
   } else { // Add to Collection
     WACollection *selectedCollection = [_fetchedResultsController objectAtIndexPath:[NSIndexPath indexPathForItem:row-1 inSection:0]];
     
-    NSMutableOrderedSet *orderedSet = [selectedCollection.files mutableCopy];
-    [orderedSet addObjectsFromArray:[_article.files objectsAtIndexes:self.selectedPhotos]];
-    
-    selectedCollection.files = orderedSet;
+    [selectedCollection addObjects:[_article.files objectsAtIndexes:self.selectedPhotos]];
     
     NSError *error;
     if(![[selectedCollection managedObjectContext] save:&error]){
@@ -375,6 +372,7 @@ void (^displayAlert)(NSString *, NSString *) = ^(NSString *title, NSString *msg)
 - (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
   NSString *collectionName = [alertView textFieldAtIndex:0].text;
   NSManagedObjectContext *context = [_article managedObjectContext];
+  context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
   WACollection *collection = [[WACollection alloc] initWithName:collectionName
                                                       withFiles:[_article.files objectsAtIndexes:self.selectedPhotos]
                                          inManagedObjectContext:context];
