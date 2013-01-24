@@ -367,7 +367,9 @@ void (^displayAlert)(NSString *, NSString *) = ^(NSString *title, NSString *msg)
   cell.checkMarkView.hidden = NO;
   cell.checkMarkView.image = [UIImage imageNamed:@"IRAQ-Checkmark"];
   
+  [self.selectedPhotos willChangeValueForKey:@"count"];
   [self.selectedPhotos addIndex:indexPath.row];
+  [self.selectedPhotos didChangeValueForKey:@"count"];
   
 }
 
@@ -378,7 +380,9 @@ void (^displayAlert)(NSString *, NSString *) = ^(NSString *title, NSString *msg)
   cell.checkMarkView.hidden = YES;
   cell.checkMarkView.image = nil;
   
+  [self.selectedPhotos willChangeValueForKey:@"count"];
   [self.selectedPhotos removeIndex:indexPath.row];
+  [self.selectedPhotos didChangeValueForKey:@"count"];
   
 }
 
