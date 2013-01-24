@@ -9,17 +9,12 @@
 #import "WACollection.h"
 
 @interface WACollection (RemoteOperations)
+// https://github.com/waveface/Wammer-Cloud/wiki/Collections-API
 
 + (void) refreshCollectionsWithCompletion:(void(^)(void))completionBlock;
 
-// https://github.com/waveface/Wammer-Cloud/wiki/Collections-API
-
-+ (WACollection *) create;
-/* Create a Collection */
-
-- (void) addObjects:(NSArray*)objects;
 /* Add photos to Collection. */
-
+- (WACollection *) initWithName:(NSString*) name withFiles:(NSArray*) objectIDs inManagedObjectContext:(NSManagedObjectContext*) context;
 @end
 
 extern NSString *const kWACollectionUpdated;

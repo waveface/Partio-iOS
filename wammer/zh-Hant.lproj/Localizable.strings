@@ -7,6 +7,9 @@
 /* add photo button in composition view */
 "ACTION_ADD" = "加照片";
 
+/* In event view */
+"ACTION_ADD_TO_COLLECTION" = "完成";
+
 /* Action title for Cancelling
    Action title for cancelling stuff
    Cancel.
@@ -356,6 +359,9 @@
 
 /* Navigation bar title for web preview while loading */
 "NAVI_TITLE_WEB_LOADING" = "載入中..";
+
+/* In collection picker view */
+"NEW_COLLECTION" = "新選集…";
 
 /* Nickname placeholder in signup page */
 "NICKNAME_PLACEHOLDER" = "John Appleseed";
