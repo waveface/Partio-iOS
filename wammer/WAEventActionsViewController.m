@@ -80,7 +80,7 @@ void (^displayAlert)(NSString *, NSString *) = ^(NSString *title, NSString *msg)
   
   // Set up collection picker
   CGSize size = self.view.frame.size;
-  _collectionPicker.frame = CGRectMake( 0.0, size.height-_collectionPicker.frame.size.height-44.0, size.width, 216.0 );
+  _collectionPicker.frame = CGRectMake( 0.0, size.height-_collectionPicker.frame.size.height, size.width, 216.0 );
   _collectionPicker.hidden = YES;
   _collectionPicker.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
   _collectionPicker.showsSelectionIndicator = YES;
