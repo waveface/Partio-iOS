@@ -4,6 +4,9 @@
 /* add photo button in composition view */
 "ACTION_ADD" = "加照片";
 
+/* In event view */
+"ACTION_ADD_TO_COLLECTION" = "完成";
+
 /* Action title for cancelling stuff
    Title for cancelling an action */
 "ACTION_CANCEL" = "取消";
@@ -195,9 +198,6 @@
 /* Failed, underlying error description %@ */
 "ERROR_ARTICLE_ENTITY_SYNC_FAILURE_WITH_UNDERLYING_ERROR_DESCRIPTION_FORMAT" = "上傳時發生錯誤：%@。";
 
-/* Title of event actions modal */
-"EVENT_ACTION_MODAL_TITLE" = "挑選照片分享";
-
 /* The conjunction between description and location. */
 "EVENT_DESC_LOCATION_CONJUNCTION" = "在";
 
@@ -329,6 +329,9 @@
 
 /* Navigation bar title for web preview while loading */
 "NAVI_TITLE_WEB_LOADING" = "載入中..";
+
+/* In collection picker view */
+"NEW_COLLECTION" = "新選集…";
 
 /* Nickname placeholder in signup page */
 "NICKNAME_PLACEHOLDER" = "John Appleseed";
