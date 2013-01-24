@@ -86,7 +86,7 @@
   	
 	WAPeople *aPerson = (WAPeople*)self.peopleList[indexPath.row];
 
-	cell.imageView.image = [UIImage imageNamed:@"TempAvatar"];
+	cell.imageView.image = [UIImage imageNamed:@"WAUserGlyph"];
 	[cell.imageView setPathToNetworkImage:aPerson.avatarURL forDisplaySize:CGSizeMake(56, 56)];
 	cell.nameLabel.text = aPerson.name;
 	

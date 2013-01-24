@@ -14,9 +14,10 @@ NSString * const kMainUserEntityURIString = @"kMainUserEntityURIString";
 //	Deprecated, do not use
 NSString * const kLastContentSyncDateInTimeIntervalSince1970 = @"kLastContentSyncDateInTimeIntervalSince1970";
 
-NSString * const kLastSyncSuccessDate = @"WALastSyncSuccessDate";
 NSString * const kMinSequenceNumber = @"WAMinSequenceNumber";
 NSString * const kMaxSequenceNumber = @"WAMaxSequenceNumber";
+NSString * const kStorageQuota = @"WAStorageQuota";
+NSString * const kStorageUsage = @"WAStorageUsage";
 
 @interface WADataStore ()
 
@@ -156,18 +157,6 @@ NSString * const kMaxSequenceNumber = @"WAMaxSequenceNumber";
   
 }
 
-- (NSDate *) lastSyncSuccessDate {
-  
-  return [self metadataForKey:kLastSyncSuccessDate];
-  
-}
-
-- (void) setLastSyncSuccessDate:(NSDate *)date {
-  
-  [self setMetadata:date forKey:kLastSyncSuccessDate];
-  
-}
-
 - (NSNumber *) minSequenceNumber {
   
   return [self metadataForKey:kMinSequenceNumber];
@@ -189,6 +178,30 @@ NSString * const kMaxSequenceNumber = @"WAMaxSequenceNumber";
 - (void) setMaxSequenceNumber:(NSNumber *)seq {
 
   [self setMetadata:seq forKey:kMaxSequenceNumber];
+
+}
+
+- (NSNumber *) storageQuota {
+
+  return [self metadataForKey:kStorageQuota];
+
+}
+
+- (void)setStorageQuota:(NSNumber *)quota {
+
+  [self setMetadata:quota forKey:kStorageQuota];
+
+}
+
+- (NSNumber *)storageUsage {
+
+  return [self metadataForKey:kStorageUsage];
+
+}
+
+- (void)setStorageUsage:(NSNumber *)usage {
+
+  [self setMetadata:usage forKey:kStorageUsage];
 
 }
 

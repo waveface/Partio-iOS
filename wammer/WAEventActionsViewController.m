@@ -39,8 +39,14 @@
 {
   self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
   if (self) {
-    self.selectedPhotos = [NSMutableIndexSet new];
     self.collectionPicker = [[UIPickerView alloc] init];
+    self.selectedPhotos = [NSMutableIndexSet indexSet];
+    
+    [self.selectedPhotos addObserver:self
+                          forKeyPath:@"count"
+                             options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld
+                             context:nil];
+    
   }
   return self;
 }
@@ -209,10 +215,36 @@ void (^displayAlert)(NSString *, NSString *) = ^(NSString *title, NSString *msg)
   
 }
 
+- (void) observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+  
+  if ([keyPath isEqualToString:@"count"]) {
+    NSInteger newNum = [change[NSKeyValueChangeNewKey] integerValue];
+    NSInteger oldNum = [change[NSKeyValueChangeOldKey] integerValue];
+    if (!oldNum && newNum) {
+      
+      for(UIBarButtonItem *barButton in self.toolbarItems) {
+        barButton.enabled = YES;
+      }
+      
+    } else if (!newNum && oldNum) {
+      
+      for(UIBarButtonItem *barButton in self.toolbarItems) {
+        barButton.enabled = NO;
+      }
+      
+    }
+  }
+  
+}
+
 - (void) viewWillAppear:(BOOL)animated {
   
   [self.navigationController setToolbarHidden:NO animated:animated];
   
+}
+
+- (void) dealloc {
+  [self.selectedPhotos removeObserver:self forKeyPath:@"count" context:nil];
 }
 
 - (void)didReceiveMemoryWarning
@@ -262,13 +294,13 @@ void (^displayAlert)(NSString *, NSString *) = ^(NSString *title, NSString *msg)
     if(![[selectedCollection managedObjectContext] save:&error]){
       NSLog(@"Add to Collection failed: %@", error);
     }
-  
+    
     [_collectionPicker setHidden:YES];
     self.navigationController.toolbarHidden = NO;
     self.navigationItem.rightBarButtonItem = nil;
     [self.navigationController dismissViewControllerAnimated:YES completion:nil];
   }
-
+  
 }
 
 #pragma mark - CollectionView datasource

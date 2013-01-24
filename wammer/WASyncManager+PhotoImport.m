@@ -32,10 +32,9 @@
 
     NSDate *importTime = [NSDate date];
     WADataStore *ds = [WADataStore defaultStore];
-    NSDate *sinceDate = [[ds fetchLatestLocalImportedArticleUsingContext:[ds disposableMOC]] creationDate];
     
     __block NSUInteger filesCount = 0;
-    [[WAAssetsLibraryManager defaultManager] enumerateSavedPhotosSince:sinceDate onProgess:^(NSArray *assets) {
+    [[WAAssetsLibraryManager defaultManager] enumerateSavedPhotosSince:nil onProgess:^(NSArray *assets) {
       
       if (![assets count]) {
         return;

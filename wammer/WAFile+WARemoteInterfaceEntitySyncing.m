@@ -418,7 +418,12 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
       callback(WAFileEntitySyncingError(WAFileSyncingErrorCodePhotoImportDisabled, @"Photo import is disabled, stop sync files", nil));
       return;
     }
-    
+
+    if (![[NSUserDefaults standardUserDefaults] boolForKey:kWAUseCellularEnabled] && ![[WARemoteInterface sharedInterface] hasWiFiConnection]) {
+      callback(WAFileEntitySyncingError(WAFileSyncingErrorCodeSyncNotAllowed, @"Syncing is not allowed, stop sync files", nil));
+      return;
+    }
+
     WARemoteInterface *ri = [WARemoteInterface sharedInterface];
     
     [ri createAttachmentWithFile:fileURL group:ri.primaryGroupIdentifier options:options onSuccess: ^ (NSString *attachmentIdentifier) {
@@ -437,8 +442,6 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
         } else if ([[options valueForKey:kWARemoteAttachmentSubtype] isEqualToString:WARemoteAttachmentOriginalSubtype]) {
 	
 	file.resourceURL = [[file class] transformedValue:[@"/v3/attachments/view?object_id=" stringByAppendingFormat:@"%@", file.identifier] fromRemoteKeyPath:nil toLocalKeyPath:@"resourceURL"];
-	
-	[[WADataStore defaultStore] setLastSyncSuccessDate:[NSDate date]];
 	
         }
         
@@ -471,8 +474,6 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
 	  
 	  file.resourceURL = [[file class] transformedValue:[@"/v3/attachments/view?object_id=" stringByAppendingFormat:@"%@", file.identifier] fromRemoteKeyPath:nil toLocalKeyPath:@"resourceURL"];
 	  
-	  [[WADataStore defaultStore] setLastSyncSuccessDate:[NSDate date]];
-	  
 	}
 	
 	file.dirty = @NO;
@@ -498,8 +499,6 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
 	  // The WAFile never needs sync because its asset has been deleted, but we don't have to hide it.
 	  // Just keep a hint in its resource URL (all-zero object id)
 	  file.resourceURL = [[file class] transformedValue:@"/v3/attachments/view?object_id=00000000000000000000000000000000" fromRemoteKeyPath:nil toLocalKeyPath:@"resourceURL"];
-	  
-	  [[WADataStore defaultStore] setLastSyncSuccessDate:[NSDate date]];
 	  
 	} else {
 	  
@@ -646,7 +645,7 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
       
       WAFile *file = (WAFile *)[context irManagedObjectForURI:ownURL];
       
-      if (file.resourceURL || ![[WARemoteInterface sharedInterface] hasReachableStation]) {
+      if (file.resourceURL || (![[NSUserDefaults standardUserDefaults] boolForKey:kWABackupFilesToCloudEnabled] && ![[WARemoteInterface sharedInterface] hasReachableStation])) {
         callback(nil);
         return;
       }
@@ -710,6 +709,11 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
       [op addDependency:(IRAsyncBarrierOperation *)operations[(idx - 1)]];
   }];
   
+  IRAsyncOperation *lastOperation = [[[[self class] sharedSyncQueue] operations] lastObject];
+  if (lastOperation) {
+    [operations[0] addDependency:lastOperation];
+  }
+
   [[[self class] sharedSyncQueue] addOperations:operations waitUntilFinished:NO];
   
 }

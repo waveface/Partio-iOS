@@ -504,65 +504,6 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
   }];
   
   
-  WAPreview * const anyPreview = [self.previews anyObject];
-  NSString * const previewURLString = (anyPreview.graphElement.url ? anyPreview.graphElement.url : anyPreview.url);
-  NSURL * const previewURL = previewURLString ? [NSURL URLWithString:previewURLString] : nil;
-  
-  if (previewURL) {
-    
-    [operations addObject:[IRAsyncBarrierOperation operationWithWorker:^(IRAsyncOperationCallback callback) {
-      
-      [ri retrievePreviewForURL:previewURL onSuccess:^(NSDictionary *aPreviewRep) {
-        
-        callback(aPreviewRep);
-        
-      } onFailure:^(NSError *error) {
-        
-        callback(error);
-        
-      }];
-      
-    } trampoline:^(IRAsyncOperationInvoker callback) {
-      
-      callback();
-      
-    } callback:^(id results) {
-      
-      if (![results isKindOfClass:[NSDictionary class]])
-        return;
-      
-      WAArticle *savedPost = (WAArticle *)[[[WADataStore defaultStore] disposableMOC] irManagedObjectForURI:postEntityURL];
-      WAPreview *savedPreview = [savedPost.previews anyObject];
-      
-      if ([savedPreview.graphElement.images count]) {
-        
-        NSMutableDictionary *previewEntity = [(NSDictionary *)results mutableCopy];
-        
-        // use the first preview image for thumbnail_url while creating posts
-        if (isDraft) {
-	previewEntity[@"thumbnail_url"] = [[savedPreview.graphElement.images array][0] imageRemoteURL];
-        } else {
-	NSString *thumbnailURL = savedPreview.graphElement.representingImage.imageRemoteURL;
-	previewEntity[@"thumbnail_url"] = (thumbnailURL ? thumbnailURL : @"");
-        }
-        
-        context[kPostWebPreview] = previewEntity;
-        
-      } else {
-        
-        context[kPostWebPreview] = results;
-        
-      }
-      
-    } callbackTrampoline:^(IRAsyncOperationInvoker callback) {
-      
-      callback();
-      
-    }]];
-    
-  }
-  
-  
   [operations addObject:[IRAsyncBarrierOperation operationWithWorker:^(IRAsyncOperationCallback callback) {
     
     NSArray *attachments = context[kPostAttachmentIDs];
@@ -685,25 +626,33 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
       // results will be nil if this operation is canceled
       NSError *error = (NSError *)([results isKindOfClass:[NSError class]] ? results : nil);
 
-      if (!error) {
-        // post id already exists
+      if (error) {
+
+        // post id already exists. Mostly the post has successfully been created but local DB has not been updated (ex. crash)
         if ([[error domain] isEqualToString:kWARemoteInterfaceDomain] && [error code] == 0x3000 + 25) {
+
 	NSManagedObjectContext *context = [[WADataStore defaultStore] disposableMOC];
 	context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
 	WAArticle *savedPost = (WAArticle *)[context irManagedObjectForURI:postEntityURL];
-	CFUUIDRef theUUID = CFUUIDCreate(kCFAllocatorDefault);
-	if (theUUID) {
-	  savedPost.identifier = [((__bridge_transfer NSString *)CFUUIDCreateString(kCFAllocatorDefault, theUUID)) lowercaseString];
-	}
-	CFRelease(theUUID);
-	[context save:nil];
+	savedPost.draft = @NO;
+	savedPost.dirty = @NO;
+	
+	completionBlock([context save:nil], nil);
+ 
+        } else {
+	
+	WASyncManager *syncManager = [(WAAppDelegate_iOS *)AppDelegate() syncManager];
+	syncManager.isSyncFail = YES;
+
+	completionBlock(NO, error);
+
         }
         
-        WASyncManager *syncManager = [(WAAppDelegate_iOS *)AppDelegate() syncManager];
-        syncManager.isSyncFail = YES;
-      }
+      } else {
 
-      completionBlock(NO, error);
+        completionBlock(YES, nil);
+
+      }
 
     }
     

@@ -32,7 +32,8 @@ extern NSString * const kWAFileSyncFullQualityStrategy;
 
 typedef NS_ENUM(NSInteger, WAFileSyncingErrorCode) {
   WAFileSyncingErrorCodePhotoImportDisabled,
-  WAFileSyncingErrorCodeAssetDeleted
+  WAFileSyncingErrorCodeAssetDeleted,
+  WAFileSyncingErrorCodeSyncNotAllowed
 };
 
 NSError * WAFileEntitySyncingError (WAFileSyncingErrorCode code, NSString *descriptionKey, NSString *reasonKey);

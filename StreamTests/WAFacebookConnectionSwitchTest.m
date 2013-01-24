@@ -10,6 +10,7 @@
 #import "OCMock/OCMock.h"
 #import <FacebookSDK/FacebookSDK.h>
 #import "WARemoteInterface.h"
+#import "WADefines.h"
 
 @interface WAFacebookConnectionSwitch (UnitTest)
 - (void) handleFacebookConnect:(id)sender;
@@ -54,7 +55,7 @@ static id mockRemoteInterface = nil;
 
 - (void)testChangeStatusPersistence {
 	_theSwitch.on = YES;
-	STAssertTrue([[NSUserDefaults standardUserDefaults] boolForKey:kWAFacebookUserDataImport],
+	STAssertTrue([[NSUserDefaults standardUserDefaults] boolForKey:kWASNSFacebookConnectEnabled],
 							 @"This should be true");
 }
 

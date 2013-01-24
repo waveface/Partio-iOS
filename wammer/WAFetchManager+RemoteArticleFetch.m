@@ -99,18 +99,18 @@
 
     }];
 
-    [self.articleFetchOperationQueue addOperation:operation];
+    [wSelf.articleFetchOperationQueue addOperation:operation];
 
     NSOperation *tailOp = [NSBlockOperation blockOperationWithBlock:^{
       [wSelf endPostponingFetch];
       callback(nil);
     }];
 
-    for (NSOperation *operation in [self.articleFetchOperationQueue operations]) {
+    for (NSOperation *operation in [wSelf.articleFetchOperationQueue operations]) {
       [tailOp addDependency:operation];
     }
     
-    [self.articleFetchOperationQueue addOperation:tailOp];
+    [wSelf.articleFetchOperationQueue addOperation:tailOp];
 
   } trampoline:^(IRAsyncOperationInvoker callback) {
 
