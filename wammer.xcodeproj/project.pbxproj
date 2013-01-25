@@ -93,6 +93,9 @@
 		4B31BAAC1591A74C00DC1A70 /* AGIPCToolbarItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B31BA9B1591A74C00DC1A70 /* AGIPCToolbarItem.m */; };
 		4B31BAAD1591A74C00DC1A70 /* ALAsset+AGIPC.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B31BA9D1591A74C00DC1A70 /* ALAsset+AGIPC.m */; };
 		4B31BAAE1591A74C00DC1A70 /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = 4B31BA9E1591A74C00DC1A70 /* LICENSE */; };
+		4B353DEE16B23355002A675F /* Icon_develop@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4B353DEB16B23355002A675F /* Icon_develop@2x.png */; };
+		4B353DEF16B23355002A675F /* Icon-72_develop.png in Resources */ = {isa = PBXBuildFile; fileRef = 4B353DEC16B23355002A675F /* Icon-72_develop.png */; };
+		4B353DF016B23355002A675F /* Icon-72_develop@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4B353DED16B23355002A675F /* Icon-72_develop@2x.png */; };
 		4B362548156630D400F07032 /* IRRelativeDateFormatter+WAAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B362547156630D400F07032 /* IRRelativeDateFormatter+WAAdditions.m */; };
 		4B3AC462169C065700490DF7 /* WACollection+RemoteOperations.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BB6A9041696BBA300AB5F14 /* WACollection+RemoteOperations.m */; };
 		4B4AA30C16564BEE00A04DDE /* NSDate+WAAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 80A13C73162071C4002880A9 /* NSDate+WAAdditions.m */; };
@@ -105,9 +108,6 @@
 		4B8581B515F7993100EE11AC /* Icon-72_beta.png in Resources */ = {isa = PBXBuildFile; fileRef = 4B8581B315F7993100EE11AC /* Icon-72_beta.png */; };
 		4B8581B615F7993100EE11AC /* Icon-72_beta@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4B8581B415F7993100EE11AC /* Icon-72_beta@2x.png */; };
 		4B8581BC15F79EEF00EE11AC /* Icon_develop.png in Resources */ = {isa = PBXBuildFile; fileRef = 4B8581B815F79EEF00EE11AC /* Icon_develop.png */; };
-		4B8581BD15F79EEF00EE11AC /* Icon_develop@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4B8581B915F79EEF00EE11AC /* Icon_develop@2x.png */; };
-		4B8581BE15F79EEF00EE11AC /* Icon-72_develop.png in Resources */ = {isa = PBXBuildFile; fileRef = 4B8581BA15F79EEF00EE11AC /* Icon-72_develop.png */; };
-		4B8581BF15F79EEF00EE11AC /* Icon-72_develop@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4B8581BB15F79EEF00EE11AC /* Icon-72_develop@2x.png */; };
 		4B85823B15F7ABCF00EE11AC /* WADefaults.develop.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4B85823A15F7ABCF00EE11AC /* WADefaults.develop.plist */; };
 		4B87177815C7D4A200C9612D /* Unfav@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 4B87177715C7D4A200C9612D /* Unfav@2x~iphone.png */; };
 		4B87177A15C7D4AF00C9612D /* Fav@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 4B87177915C7D4AF00C9612D /* Fav@2x~iphone.png */; };
@@ -1115,6 +1115,9 @@
 		4B31BA9C1591A74C00DC1A70 /* ALAsset+AGIPC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ALAsset+AGIPC.h"; sourceTree = "<group>"; };
 		4B31BA9D1591A74C00DC1A70 /* ALAsset+AGIPC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ALAsset+AGIPC.m"; sourceTree = "<group>"; };
 		4B31BA9E1591A74C00DC1A70 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
+		4B353DEB16B23355002A675F /* Icon_develop@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon_develop@2x.png"; path = "Resources/Icon_develop@2x.png"; sourceTree = "<group>"; };
+		4B353DEC16B23355002A675F /* Icon-72_develop.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon-72_develop.png"; path = "Resources/Icon-72_develop.png"; sourceTree = "<group>"; };
+		4B353DED16B23355002A675F /* Icon-72_develop@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon-72_develop@2x.png"; path = "Resources/Icon-72_develop@2x.png"; sourceTree = "<group>"; };
 		4B362546156630D400F07032 /* IRRelativeDateFormatter+WAAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "IRRelativeDateFormatter+WAAdditions.h"; path = "wammer/IRRelativeDateFormatter+WAAdditions.h"; sourceTree = "<group>"; };
 		4B362547156630D400F07032 /* IRRelativeDateFormatter+WAAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "IRRelativeDateFormatter+WAAdditions.m"; path = "wammer/IRRelativeDateFormatter+WAAdditions.m"; sourceTree = "<group>"; };
 		4B52734315625B3500C6F55D /* ProviderIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ProviderIcon.png; path = external/WFPresentation/Source/ProviderIcon.png; sourceTree = "<group>"; };
@@ -1123,9 +1126,6 @@
 		4B8581B315F7993100EE11AC /* Icon-72_beta.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon-72_beta.png"; path = "resources/Icon-72_beta.png"; sourceTree = "<group>"; };
 		4B8581B415F7993100EE11AC /* Icon-72_beta@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon-72_beta@2x.png"; path = "resources/Icon-72_beta@2x.png"; sourceTree = "<group>"; };
 		4B8581B815F79EEF00EE11AC /* Icon_develop.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Icon_develop.png; path = resources/Icon_develop.png; sourceTree = "<group>"; };
-		4B8581B915F79EEF00EE11AC /* Icon_develop@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon_develop@2x.png"; path = "resources/Icon_develop@2x.png"; sourceTree = "<group>"; };
-		4B8581BA15F79EEF00EE11AC /* Icon-72_develop.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon-72_develop.png"; path = "resources/Icon-72_develop.png"; sourceTree = "<group>"; };
-		4B8581BB15F79EEF00EE11AC /* Icon-72_develop@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon-72_develop@2x.png"; path = "resources/Icon-72_develop@2x.png"; sourceTree = "<group>"; };
 		4B85823A15F7ABCF00EE11AC /* WADefaults.develop.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = WADefaults.develop.plist; path = resources/WADefaults.develop.plist; sourceTree = "<group>"; };
 		4B87177715C7D4A200C9612D /* Unfav@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Unfav@2x~iphone.png"; path = "resources/Unfav@2x~iphone.png"; sourceTree = "<group>"; };
 		4B87177915C7D4AF00C9612D /* Fav@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Fav@2x~iphone.png"; path = "resources/Fav@2x~iphone.png"; sourceTree = "<group>"; };
@@ -2243,14 +2243,14 @@
 				FFCCDE6215B41B0000AEBB85 /* Icon-72@2x.png */,
 				4B8581B315F7993100EE11AC /* Icon-72_beta.png */,
 				4B8581B415F7993100EE11AC /* Icon-72_beta@2x.png */,
-				4B8581BA15F79EEF00EE11AC /* Icon-72_develop.png */,
-				4B8581BB15F79EEF00EE11AC /* Icon-72_develop@2x.png */,
+				4B353DEC16B23355002A675F /* Icon-72_develop.png */,
+				4B353DED16B23355002A675F /* Icon-72_develop@2x.png */,
 				FFCCDE6315B41B0000AEBB85 /* Icon.png */,
 				FFCCDE6415B41B0000AEBB85 /* Icon@2x.png */,
 				4B8581AB15F798F900EE11AC /* Icon_beta.png */,
 				4B8581AC15F798F900EE11AC /* Icon_beta@2x.png */,
 				4B8581B815F79EEF00EE11AC /* Icon_develop.png */,
-				4B8581B915F79EEF00EE11AC /* Icon_develop@2x.png */,
+				4B353DEB16B23355002A675F /* Icon_develop@2x.png */,
 			);
 			name = Icons;
 			sourceTree = "<group>";
@@ -4153,9 +4153,6 @@
 				4B8581B515F7993100EE11AC /* Icon-72_beta.png in Resources */,
 				4B8581B615F7993100EE11AC /* Icon-72_beta@2x.png in Resources */,
 				4B8581BC15F79EEF00EE11AC /* Icon_develop.png in Resources */,
-				4B8581BD15F79EEF00EE11AC /* Icon_develop@2x.png in Resources */,
-				4B8581BE15F79EEF00EE11AC /* Icon-72_develop.png in Resources */,
-				4B8581BF15F79EEF00EE11AC /* Icon-72_develop@2x.png in Resources */,
 				4B85823B15F7ABCF00EE11AC /* WADefaults.develop.plist in Resources */,
 				4B16701215FDCE9900990F4B /* WADefaults.staging.plist in Resources */,
 				138CCA351609D22700B477CE /* TutorialPhotoImport~iphone.png in Resources */,
@@ -4277,6 +4274,9 @@
 				80330251168853D500004891 /* twitter.png in Resources */,
 				80330252168853D500004891 /* twitter@2x.png in Resources */,
 				4BB006BA16A7AADC00A9B32C /* photoStreamNavigationBar.png in Resources */,
+				4B353DEE16B23355002A675F /* Icon_develop@2x.png in Resources */,
+				4B353DEF16B23355002A675F /* Icon-72_develop.png in Resources */,
+				4B353DF016B23355002A675F /* Icon-72_develop@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
