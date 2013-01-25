@@ -10,18 +10,14 @@
 
 @interface WASummaryViewController : UIViewController <UIScrollViewDelegate>
 
-@property (weak, nonatomic) IBOutlet UIButton *photosButton;
-@property (weak, nonatomic) IBOutlet UIButton *documentsButton;
-@property (weak, nonatomic) IBOutlet UIButton *webpagesButton;
-@property (weak, nonatomic) IBOutlet UILabel *dayLabel;
-@property (weak, nonatomic) IBOutlet UILabel *weekDayLabel;
-@property (weak, nonatomic) IBOutlet UILabel *monthLabel;
-@property (weak, nonatomic) IBOutlet UILabel *helloLabel;
-@property (weak, nonatomic) IBOutlet UILabel *eventSummaryLabel;
+@property (weak, nonatomic) IBOutlet UIView *upperMaskView;
+@property (weak, nonatomic) IBOutlet UIView *lowerMaskView;
 @property (weak, nonatomic) IBOutlet UIScrollView *eventScrollView;
+@property (weak, nonatomic) IBOutlet UIScrollView *summaryScrollView;
 @property (weak, nonatomic) IBOutlet UIPageControl *eventPageControll;
 @property (weak, nonatomic) IBOutlet UIImageView *backgroundImageView;
 
 - (id)initWithDate:(NSDate *)date;
++ (UIImage *)sharedBackgroundImage;
 
 @end

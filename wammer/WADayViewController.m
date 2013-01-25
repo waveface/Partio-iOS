@@ -50,7 +50,7 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 	presentingStyle = style;
 	switch (style) {
 		case WAEventsViewStyle:
-			containedClass = [WASummaryViewController class];
+			containedClass = [WATimelineViewController class];
 			break;
 		case WAPhotosViewStyle:
 			containedClass = [WAPhotoStreamViewController class];

@@ -8,6 +8,7 @@
 
 #import "WAEventPageView.h"
 #import "WAArticle.h"
+#import "WASummaryViewController.h"
 
 @interface WAEventPageView ()
 
@@ -57,6 +58,8 @@
       [representingArticle.files[idx] irObserve:@"smallThumbnailImage" options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew context:nil withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
         imageView.image = toValue;
       }];
+    } else {
+      imageView.image = [WASummaryViewController sharedBackgroundImage];
     }
   }];
   

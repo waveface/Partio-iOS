@@ -31,6 +31,7 @@
 #import "WASyncManager.h"
 #import "WAFetchManager.h"
 #import <QuartzCore/QuartzCore.h>
+#import "WASummaryViewController.h"
 
 @interface WASlidingMenuViewController ()
 
@@ -62,7 +63,12 @@
   
   NSAssert1(((viewStyle==WAEventsViewStyle) || (viewStyle == WAPhotosViewStyle) || (viewStyle == WADocumentsViewStyle) || (viewStyle == WAWebpagesViewStyle)), @"Unsupported view style: %d", viewStyle);
   
-  WADayViewController *swVC = [[WADayViewController alloc] initWithStyle:viewStyle];
+  UIViewController *swVC = nil;
+  if (viewStyle == WAEventsViewStyle) {
+    swVC = [[WASummaryViewController alloc] initWithDate:nil];
+  } else {
+    swVC = [[WADayViewController alloc] initWithStyle:viewStyle];
+  }
   WANavigationController *navVC = [[WANavigationController alloc] initWithRootViewController:swVC];
   
   swVC.view.backgroundColor = [UIColor colorWithRed:0.95f green:0.95f blue:0.95f alpha:1];
