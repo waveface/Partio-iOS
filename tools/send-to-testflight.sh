@@ -28,7 +28,7 @@ TF_DIST_LISTS="Developer"
 
 if [ -z "$1" ]; then TAG_PREFIX="dev"; else TAG_PREFIX=$1; fi
 
-if [[ `git tag -l $TAG_PREFIX-$VERSION_BUILD` == "" ]]; then
+if [ -z `git tag -l $TAG_PREFIX-$VERSION_BUILD` ] && [ -n "$2" ]; then
     `git tag $TAG_PREFIX-$VERSION_BUILD`
     `git push origin $TAG_PREFIX-$VERSION_BUILD`
 
