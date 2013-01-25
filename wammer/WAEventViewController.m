@@ -323,9 +323,9 @@
 	
 	rawString = [NSMutableString stringWithFormat:@"%@", event.text];
 	
-  } else if (event.eventDescription && event.eventDescription.length) {
+  } else if (event.textAuto && event.textAuto.length) {
 	
-	rawString = [NSMutableString stringWithFormat:@"%@", event.eventDescription];
+	rawString = [NSMutableString stringWithFormat:@"%@", event.textAuto];
 	
   } else {
 	rawString = [NSMutableString string];
@@ -364,8 +364,8 @@
   
   if (event.text.length)
 	[attrString setAttributes:actionAttr range:(NSRange){0, event.text.length}];
-  else if (event.eventDescription && event.eventDescription.length > 0)
-	[attrString setAttributes:generatedDescAttr range:(NSRange){0, event.eventDescription.length}];
+  else if (event.textAuto && event.textAuto.length > 0)
+	[attrString setAttributes:generatedDescAttr range:(NSRange){0, event.textAuto.length}];
 
   if (locString && locString.length > 0 )
 	[attrString setAttributes:locationAttr range:(NSRange)[rawString rangeOfString:locString]];
@@ -411,9 +411,9 @@
 
 	_headerView = [WAEventHeaderView viewFromNib];
 
-	_headerView.dateLabel.text = [[[self class] dateFormatter] stringFromDate:self.article.creationDate];
+	_headerView.dateLabel.text = [[[self class] dateFormatter] stringFromDate:self.article.eventStartDate];
 	
-	_headerView.timeLabel.text = [[[self class] timeFormatter] stringFromDate:self.article.creationDate];
+	_headerView.timeLabel.text = [[[self class] timeFormatter] stringFromDate:self.article.eventStartDate];
 	
 	_headerView.numberLabel.text = [NSString stringWithFormat:NSLocalizedString(@"EVENT_PHOTO_NUMBER_LABEL", @"EVENT_PHOTO_NUMBER_LABEL"), self.article.files.count];
 	

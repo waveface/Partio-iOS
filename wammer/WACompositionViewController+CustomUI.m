@@ -90,7 +90,7 @@
 		  withText:anArticleOrNil.text
 	   attachments:attachments
 	mainAttachment:postCoverPhotoId
-		   preview:nil
+		   type:WAArticleTypeEvent
 		  favorite:NO
 			hidden:NO
 replacingDataWithDate:anArticleOrNil.modificationDate

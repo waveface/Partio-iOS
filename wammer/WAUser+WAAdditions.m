@@ -8,6 +8,7 @@
 
 #import "WAUser+WAAdditions.h"
 #import "WADataStore.h"
+#import "IRRemoteResourcesManager.h"
 
 @implementation WAUser (WAAdditions)
 
