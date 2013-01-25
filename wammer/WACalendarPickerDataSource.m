@@ -187,8 +187,8 @@ typedef void (^completionBlock) (NSArray *days);
   if (object == WACalendarLoadObjectEvent) {
 	entityName = @"WAArticle";
 	relationshipKeyPath = @[@"files"];
-	predicateStr = @"event == TRUE AND creationDate >= %@ AND creationDate <= %@ AND hidden = 0";
-	sortKey = @"creationDate";
+	predicateStr = @"event == TRUE AND eventStartDate >= %@ AND eventStartDate <= %@ AND hidden = 0";
+	sortKey = @"eventStartDate";
 		
   } else if (object == WACalendarLoadObjectPhoto ) {
 	entityName = @"WAFile";

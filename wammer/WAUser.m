@@ -9,10 +9,8 @@
 #import "WAUser.h"
 #import "WAArticle.h"
 #import "WACollection.h"
-#import "WAComment.h"
 #import "WAFile.h"
 #import "WAGroup.h"
-#import "WAPreview.h"
 #import "WAStation.h"
 #import "WAStorage.h"
 
@@ -26,10 +24,8 @@
 @dynamic nickname;
 @dynamic articles;
 @dynamic collections;
-@dynamic comments;
 @dynamic files;
 @dynamic groups;
-@dynamic previews;
 @dynamic storages;
 @dynamic stations;
 

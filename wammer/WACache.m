@@ -8,7 +8,6 @@
 
 #import "WACache.h"
 #import "WAFile.h"
-#import "WAOpenGraphElementImage.h"
 
 
 @implementation WACache
@@ -18,7 +17,6 @@
 @dynamic filePathKey;
 @dynamic lastAccessTime;
 @dynamic file;
-@dynamic ogimage;
 @dynamic pageElement;
 
 @end

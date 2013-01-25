@@ -282,7 +282,10 @@ void (^displayAlert)(NSString *, NSString *) = ^(NSString *title, NSString *msg)
                                                  cancelButtonTitle:@"Cancel"
                                                  otherButtonTitles:@"Create", nil];
     alertForName.alertViewStyle = UIAlertViewStylePlainTextInput;
-    [alertForName textFieldAtIndex:0].text = _article.eventDescription;
+	if (_article.text)
+	  [alertForName textFieldAtIndex:0].text = _article.text;
+	else
+	  [alertForName textFieldAtIndex:0].text = _article.textAuto;
     [alertForName show];
     
   } else { // Add to Collection

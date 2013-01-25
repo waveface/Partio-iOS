@@ -15,6 +15,8 @@
 #import "GAI.h"
 #import "NSDate+WAAdditions.h"
 
+#import <MobileCoreServices/MobileCoreServices.h>
+
 @implementation WASyncManager (PhotoImport)
 
 - (IRAsyncOperation *)photoImportOperationPrototype {
@@ -99,7 +101,7 @@
 	
         }];
         
-        article.import = [NSNumber numberWithInt:WAImportTypeFromLocal];
+		article.event = @NO;
         article.draft = (id)kCFBooleanFalse;
         CFUUIDRef theUUID = CFUUIDCreate(kCFAllocatorDefault);
         if (theUUID)
