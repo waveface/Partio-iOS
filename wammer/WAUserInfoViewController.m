@@ -101,11 +101,32 @@
   NSKeyValueObservingOptions options = NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew;
   WARemoteInterface * const ri = [WARemoteInterface sharedInterface];
   
-  [self irObserveObject:self.user keyPath:@"email" options:options context:nil withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
+  
+  if ([[NSUserDefaults standardUserDefaults] boolForKey:kWAPhotoImportEnabled]) {
+	self.importTableViewCell.detailTextLabel.text = NSLocalizedString(@"LABEL_AUTO_IMPORT_VALUE_ON", @"Shows ON when auto import is turned on in the settings panel");
+  } else {
+	self.importTableViewCell.detailTextLabel.text = NSLocalizedString(@"LABEL_AUTO_IMPORT_VALUE_OFF", @"Shows OFF when auto import is turned off in the settings panel");
+  }
+  
+  [self irObserveObject:self.user
+				keyPath:@"email"
+				options:options
+				context:nil
+			  withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
     
-    wSelf.userEmailLabel.text = (NSString *)toValue;
+				wSelf.userEmailLabel.text = (NSString *)toValue;
     
-  }];
+			  }];
+  
+  [self irObserveObject:self.user
+				keyPath:@"nickname"
+				options:options
+				context:nil
+			  withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
+	
+				wSelf.userTableViewCell.textLabel.text = (NSString*)toValue;
+				
+			  }];
   
   [self irObserveObject:ri keyPath:@"networkState" options:options context:nil withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
     
@@ -127,8 +148,6 @@
     
   }];
   
-  self.versionCell.textLabel.text = [[NSBundle mainBundle] displayVersionString];
-
   switch ([[NSUserDefaults standardUserDefaults] integerForKey:kWABusinessPlan]) {
     case WABusinessPlanFree:
       self.packageCell.detailTextLabel.text = NSLocalizedString(@"PLAN_FREE", @"business plan in settings page");
@@ -278,9 +297,17 @@
 
 - (NSString *) tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section {
   
-  NSString *superAnswer = [super tableView:tableView titleForFooterInSection:section];
+  if (([tableView numberOfSections] - 1) == section) {// last section
+	
+	return [[NSBundle mainBundle] displayVersionString];
+
+  } else {
+	
+	NSString *superAnswer = [super tableView:tableView titleForFooterInSection:section];
   
-  return NSLocalizedString(superAnswer, nil);
+	return NSLocalizedString(superAnswer, nil);
+	
+  }
   
 }
 
