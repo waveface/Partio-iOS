@@ -20,7 +20,6 @@
 @property (nonatomic, retain) NSString * filePathKey;
 @property (nonatomic, retain) NSDate * lastAccessTime;
 @property (nonatomic, retain) WAFile * file;
-@property (nonatomic, retain) WAOpenGraphElementImage * ogimage;
 @property (nonatomic, retain) WAFilePageElement * pageElement;
 
 @end

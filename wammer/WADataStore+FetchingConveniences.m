@@ -164,10 +164,9 @@
 		        andPredicateWithSubpredicates:@[
 		        fetchRequest.predicate,
 		        [NSPredicate predicateWithFormat:@"event = TRUE"],
-		        [NSPredicate predicateWithFormat:@"import != %d AND import != %d", WAImportTypeFromOthers, WAImportTypeFromLocal],
-		        [NSPredicate predicateWithFormat:@"creationDate >= %@ && creationDate <= %@", earlymorning, midnight]]];
+		        [NSPredicate predicateWithFormat:@"eventStartDate >= %@ && eventStartDate <= %@", earlymorning, midnight]]];
   
-  fetchRequest.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:NO]];
+  fetchRequest.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"eventStartDate" ascending:NO]];
   
   fetchRequest.relationshipKeyPathsForPrefetching = @[@"files",
   @"files.pageElements",

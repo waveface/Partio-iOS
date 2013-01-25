@@ -10,7 +10,7 @@
 #import "OCMock/OCMock.h"
 #import "WAWebSocket.h"
 #import "WARemoteInterface+WebSocket.h"
-#import <objc/objc-class.h>
+#import <objc/runtime.h>
 
 @interface WAWebSocket (ForWebSocketTest)
 
