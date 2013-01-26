@@ -24,4 +24,31 @@
 
 }
 
+- (UIImage *)loadDecompressedImage {
+
+  NSAssert1([[NSFileManager defaultManager] fileExistsAtPath:self], @"%s only avaiable for existing file path", __FUNCTION__);
+
+  NSData *imageData = [NSData dataWithContentsOfFile:self options:NSDataReadingMappedIfSafe error:nil];
+  CGImageRef decompressedImage = NULL;
+  if (imageData) {
+    CGDataProviderRef imageDataProvider = CGDataProviderCreateWithCFData((__bridge CFDataRef)imageData);
+    CGImageRef image = CGImageCreateWithJPEGDataProvider(imageDataProvider, NULL, NO, kCGRenderingIntentDefault);
+    CGContextRef bitmapContext = CGBitmapContextCreate(NULL, CGImageGetWidth(image), CGImageGetHeight(image), CGImageGetBitsPerComponent(image), CGImageGetWidth(image) * 4, CGColorSpaceCreateDeviceRGB(), kCGImageAlphaPremultipliedFirst | kCGBitmapByteOrder32Little);
+    CGContextDrawImage(bitmapContext, CGRectMake(0, 0, CGImageGetWidth(image), CGImageGetHeight(image)), image);
+    decompressedImage = CGBitmapContextCreateImage(bitmapContext);
+    CGDataProviderRelease(imageDataProvider);
+    CGImageRelease(image);
+    CGContextRelease(bitmapContext);
+  }
+
+  UIImage *returnedImage = [UIImage imageWithCGImage:decompressedImage];
+
+  if (decompressedImage) {
+    CGImageRelease(decompressedImage);
+  }
+  
+  return returnedImage;
+
+}
+
 @end

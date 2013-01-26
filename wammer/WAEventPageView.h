@@ -14,6 +14,11 @@
 @property (strong, nonatomic) IBOutletCollection(UIImageView) NSArray *imageViews;
 @property (strong, nonatomic) IBOutletCollection(UIView) NSArray *containerViews;
 
+@property (nonatomic, strong) UIImage *blurredBackgroundImage;
+
 + (WAEventPageView *)viewWithRepresentingArticle:(WAArticle *)article;
+
+- (void)loadImages;
+- (void)unloadImages;
 
 @end
