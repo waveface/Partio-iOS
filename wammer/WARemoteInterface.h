@@ -36,7 +36,6 @@
 #import "WARemoteInterface+Groups.h"
 #import "WARemoteInterface+Attachments.h"
 #import "WARemoteInterface+Usertracks.h"
-#import "WARemoteInterface+Previews.h"
 #import "WARemoteInterface+Footprints.h"
 #import "WARemoteInterface+Storages.h"
 #import "WARemoteInterface+ScheduledDataRetrieval.h"

@@ -11,6 +11,9 @@
 #import "WACollection+WARemoteInterfaceEntitySyncing.h"
 #import "WAUser.h"
 #import "WAFile.h"
+#import "WACollection+RemoteOperations.h"
+#import <OCMock/OCMock.h>
+#import "WARemoteInterface.h"
 
 @implementation WACollectionTests
 
@@ -91,6 +94,28 @@
   
   STAssertTrue(touches == 2, @"These two instances must be touched");
   
+}
+
+- (void)testCreateAnEmptyCollection {
+  WACollection *newCollection = [[WACollection alloc] initWithName: @"Empty"
+                                                        withFiles: @[]
+                                            inManagedObjectContext:[NSManagedObjectContext MR_context]];
+  STAssertNil(newCollection, @"Should fail.");
+}
+
+- (void)testCreateACollectionWith2Files {
+  NSManagedObjectContext *context = [NSManagedObjectContext MR_defaultContext];
+  NSArray *objectIDs = @[[WAFile MR_createInContext:context],[WAFile MR_createInContext:context]];
+  
+  
+  WACollection *collection = [[WACollection alloc] initWithName:@"Memories"
+                                                     withFiles:objectIDs
+                                         inManagedObjectContext:context];
+  
+  assertThat(collection.title, equalTo(@"Memories"));
+  STAssertEquals([collection.files count], (NSUInteger)2, @"There should be two objcets");
+  STAssertNotNil(collection.identifier, @"UUID generated");
+  assertThat(collection.isHidden, equalTo(@0));
 }
 
 @end

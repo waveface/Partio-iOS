@@ -21,10 +21,8 @@
 @property (nonatomic, retain) NSString * nickname;
 @property (nonatomic, retain) NSSet *articles;
 @property (nonatomic, retain) NSSet *collections;
-@property (nonatomic, retain) NSSet *comments;
 @property (nonatomic, retain) NSSet *files;
 @property (nonatomic, retain) NSSet *groups;
-@property (nonatomic, retain) NSSet *previews;
 @property (nonatomic, retain) NSSet *storages;
 @property (nonatomic, retain) NSSet *stations;
 @end
@@ -41,11 +39,6 @@
 - (void)addCollections:(NSSet *)values;
 - (void)removeCollections:(NSSet *)values;
 
-- (void)addCommentsObject:(WAComment *)value;
-- (void)removeCommentsObject:(WAComment *)value;
-- (void)addComments:(NSSet *)values;
-- (void)removeComments:(NSSet *)values;
-
 - (void)addFilesObject:(WAFile *)value;
 - (void)removeFilesObject:(WAFile *)value;
 - (void)addFiles:(NSSet *)values;
@@ -55,11 +48,6 @@
 - (void)removeGroupsObject:(WAGroup *)value;
 - (void)addGroups:(NSSet *)values;
 - (void)removeGroups:(NSSet *)values;
-
-- (void)addPreviewsObject:(WAPreview *)value;
-- (void)removePreviewsObject:(WAPreview *)value;
-- (void)addPreviews:(NSSet *)values;
-- (void)removePreviews:(NSSet *)values;
 
 - (void)addStoragesObject:(WAStorage *)value;
 - (void)removeStoragesObject:(WAStorage *)value;

@@ -21,7 +21,7 @@ static NSString * const kWAFetchingAnimation = @"WAFetchingAnimation";
 
 @interface WAStatusBar ()
 
-@property (nonatomic) BOOL isFetchingData;
+@property (nonatomic) BOOL isExchangingData;
 @property (nonatomic) BOOL isImportingPhotos;
 @property (nonatomic) BOOL isSyncingPhotos;
 @property (nonatomic) BOOL isSyncingComplete;
@@ -144,7 +144,7 @@ static NSString * const kWAFetchingAnimation = @"WAFetchingAnimation";
 
 }
 
-- (void)startFetchingAnimation {
+- (void)startDataExchangeAnimation {
 
   NSParameterAssert([NSThread isMainThread]);
 
@@ -152,7 +152,7 @@ static NSString * const kWAFetchingAnimation = @"WAFetchingAnimation";
     return;
   }
 
-  self.isFetchingData = YES;
+  self.isExchangingData = YES;
 
   if (![self.fetchingAnimation.layer animationForKey:kWAFetchingAnimation]) {
     CABasicAnimation *rotationAnimation = [CABasicAnimation animationWithKeyPath:@"transform.rotation.z"];
@@ -171,9 +171,9 @@ static NSString * const kWAFetchingAnimation = @"WAFetchingAnimation";
 
 }
 
-- (void)stopFetchingAnimation {
+- (void)stopDataExchangeAnimation {
 
-  self.isFetchingData = NO;
+  self.isExchangingData = NO;
 
 }
 
@@ -187,8 +187,8 @@ static NSString * const kWAFetchingAnimation = @"WAFetchingAnimation";
 
   self.isSyncingFail = YES;
 
-  if (self.isFetchingData) {
-    self.isFetchingData = NO;
+  if (self.isExchangingData) {
+    self.isExchangingData = NO;
     self.dismissBlock = dismissBlock;
   } else {
     self.syncingLabel.text = NSLocalizedString(@"PHOTO_UPLOAD_STATUS_BAR_FAIL", @"String on customized status bar");
@@ -219,8 +219,8 @@ static NSString * const kWAFetchingAnimation = @"WAFetchingAnimation";
   
   self.isSyncingComplete = YES;
 
-  if (self.isFetchingData) {
-    self.isFetchingData = NO;
+  if (self.isExchangingData) {
+    self.isExchangingData = NO;
     self.dismissBlock = dismissBlock;
   } else {
     self.syncingLabel.text = NSLocalizedString(@"PHOTO_UPLOAD_STATUS_BAR_COMPLETE", @"String on customized status bar");
@@ -268,8 +268,8 @@ static NSString * const kWAFetchingAnimation = @"WAFetchingAnimation";
     }];
   }
   
-  if (self.isFetchingData) {
-    [self startFetchingAnimation];
+  if (self.isExchangingData || self.isSyncingPhotos) {
+    [self startDataExchangeAnimation];
   }
 
 }

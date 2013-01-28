@@ -64,17 +64,6 @@ NSUInteger const DEFAULT_CACHE_SIZE = 600*1024*1024; //600MB
     }
   }
   
-  NSArray *ogImages = [[WADataStore defaultStore] fetchAllOGImagesUsingContext:context];
-  for (WAOpenGraphElementImage *ogImage in ogImages) {
-    if (!ogImage.cache) {
-      // create cache entity by touching file path
-      NSString *filePath = ogImage.imageFilePath;
-      if (filePath) {
-        NSLog(@"Init cache entity for ogimage file at: %@", filePath);
-      }
-    }
-  }
-  
   __weak WACacheManager *wSelf = self;
   WADataStore *ds = [WADataStore defaultStore];
   [ds performBlock:^{
@@ -107,7 +96,6 @@ NSUInteger const DEFAULT_CACHE_SIZE = 600*1024*1024; //600MB
     id relatedObject = [context irManagedObjectForURI:relationshipURL];
     
     BOOL isWAFile = [relatedObject isKindOfClass:[WAFile class]];
-    BOOL isWAOpenGraphElementImage = [relatedObject isKindOfClass:[WAOpenGraphElementImage class]];
     BOOL isWAFilePageElement = [relatedObject isKindOfClass:[WAFilePageElement class]];
     
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K == %@ && %K == %@", kWACacheFilePathKey, filePathKey, kWACacheFilePath, filePath];
@@ -129,8 +117,6 @@ NSUInteger const DEFAULT_CACHE_SIZE = 600*1024*1024; //600MB
       
       if (isWAFile) {
         savedCache.file = (WAFile *)relatedObject;
-      } else if (isWAOpenGraphElementImage) {
-        savedCache.ogimage = (WAOpenGraphElementImage *)relatedObject;
       } else if (isWAFilePageElement) {
         savedCache.pageElement = (WAFilePageElement *)relatedObject;
       }

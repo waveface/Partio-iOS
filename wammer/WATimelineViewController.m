@@ -392,7 +392,6 @@
 	headerView.dayLabel.text = [self.currentDisplayedDate dayString];
 	headerView.monthLabel.text = [[self.currentDisplayedDate localizedMonthShortString] uppercaseString];
 	headerView.wdayLabel.text = [[self.currentDisplayedDate localizedWeekDayFullString] uppercaseString];
-  [headerView.centerButton addTarget:self action:@selector(calButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
 	headerView.backgroundColor = [UIColor colorWithRed:0.95f green:0.95f blue:0.95f alpha:1];
 
 	[headerView setNeedsLayout];
@@ -503,53 +502,6 @@
 	
 	return NO;
 	
-}
-
-- (void) calButtonPressed:(id)sender {
-  
-  if (isPad()) {
-	
-	CGRect frame = CGRectMake(0, 0, 320, 500);
-	
-	__weak WATimelineViewController *wSelf = self;
-	WACalendarPickerViewController *calVC = [[WACalendarPickerViewController alloc] initWithFrame:frame selectedDate:self.currentDisplayedDate];
-	calVC.currentViewStyle = WAEventsViewStyle;
-	WANavigationController *wrappedNavVC = [WACalendarPickerViewController wrappedNavigationControllerForViewController:calVC forStyle:WACalendarPickerStyleWithCancel];
-	
-	UIPopoverController *popOver = [[UIPopoverController alloc] initWithContentViewController:wrappedNavVC];
-	[popOver presentPopoverFromRect:CGRectMake(self.collectionView.frame.size.width/2, 50, 1, 1) inView:self.collectionView permittedArrowDirections:UIPopoverArrowDirectionUp animated:YES];
-	self.calendarPopoverForIPad = popOver;
-	self.calendarPopoverForIPad.delegate = self;
-	calVC.onDismissBlock = ^{
-	  [wSelf.calendarPopoverForIPad dismissPopoverAnimated:YES];
-	  wSelf.calendarPopoverForIPad = nil;
-	};
-	
-  } else {
-	
-	CGRect frame = self.view.frame;
-	frame.origin = CGPointMake(0, 0);
-	__block WACalendarPickerViewController *calVC = [[WACalendarPickerViewController alloc] initWithFrame:frame selectedDate:self.currentDisplayedDate];
-	calVC.currentViewStyle = WAEventsViewStyle;
-	calVC.onDismissBlock = [^{
-	  [calVC.navigationController dismissViewControllerAnimated:YES completion:nil];
-	  calVC = nil;
-	} copy];
-	WANavigationController *wrappedNavVC = [WACalendarPickerViewController wrappedNavigationControllerForViewController:calVC forStyle:WACalendarPickerStyleWithCancel];
-	
-	wrappedNavVC.modalPresentationStyle = UIModalPresentationFullScreen;
-	wrappedNavVC.modalTransitionStyle =  UIModalTransitionStyleCoverVertical;
-	[self presentViewController:wrappedNavVC animated:YES completion:nil];
-	
-  }
-  
-}
-
-
--(void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController {
-
-  self.calendarPopoverForIPad = nil;
-  
 }
 
 - (void) handleMenu:(UILongPressGestureRecognizer *)longPress {

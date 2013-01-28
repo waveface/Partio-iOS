@@ -4,6 +4,9 @@
 /* add photo button in composition view */
 "ACTION_ADD" = "加照片";
 
+/* In event view */
+"ACTION_ADD_TO_COLLECTION" = "完成";
+
 /* Action title for cancelling stuff
    Title for cancelling an action */
 "ACTION_CANCEL" = "取消";
@@ -332,6 +335,9 @@
 
 /* Navigation bar title for web preview while loading */
 "NAVI_TITLE_WEB_LOADING" = "載入中..";
+
+/* In collection picker view */
+"NEW_COLLECTION" = "新選集…";
 
 /* Nickname placeholder in signup page */
 "NICKNAME_PLACEHOLDER" = "John Appleseed";
@@ -679,6 +685,8 @@
 
 /* Class = "IBUILabel"; text = "EVENT_TEXT"; ObjectID = "50"; */
 "EVENT_TEXT" = "EVENT_TEXT";
+/* Class = "IBUILabel"; text = "ACTION_GOTO_WEBSITE"; ObjectID = "0UL-JF-5TW"; */
+"ACTION_GOTO_WEBSITE" = "在網站上檢視詳細方案";
 
 /* Class = "IBUILabel"; text = "PC_SETUP_DESCRIPTION"; ObjectID = "1TK-Px-G5L"; */
 "PC_SETUP_DESCRIPTION" = "AOStream Windows 可以將你的 PC 升級成個人雲，透過它傳輸速度將會加快一百倍！";
@@ -706,6 +714,9 @@
 
 /* Class = "IBUILabel"; text = "FILES_TO_UPLOAD"; ObjectID = "Ldp-qK-xdo"; */
 "FILES_TO_UPLOAD" = "待上傳照片";
+
+/* Class = "IBUILabel"; text = "PLANS_DESCRIPTION"; ObjectID = "MRD-E4-twD"; */
+"PLANS_DESCRIPTION" = "Stream 會將你所有的寶貝檔案存放在指定的位置，你可以選擇存在家裡的 PC，或者付費獲得額外的雲端儲存空間，讓你可以隨時隨地取得原始檔案。";
 
 /* Class = "IBUILabel"; text = "USE_CELLULAR"; ObjectID = "Scf-t9-USz"; */
 "USE_CELLULAR" = "使用 3G 上傳";
