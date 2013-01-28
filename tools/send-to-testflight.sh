@@ -1,6 +1,16 @@
 #!/usr/local/bin/zsh
 #!/bin/zsh
 
+function usage() {
+    echo "Usage: [options]"
+    echo
+    echo "Options"
+    echo "  -f        Force Push"
+    echo "  -t [Tag]  Prefix (dev|rel), default (dev)"
+    exit 1
+}
+
+
 PROJECT_NAME="Wammer-iOS"
 
 VERSION_MARKETING="`agvtool mvers -terse1`"
@@ -26,12 +36,27 @@ TF_NOTES="$PROJECT_NAME $VERSION_MARKETING ($VERSION_BUILD) # $COMMIT_SHA\n$GIT_
 TF_NOTIFY="True"
 TF_DIST_LISTS="Developer"
 
-if [ -z "$1" ]; then TAG_PREFIX="dev"; else TAG_PREFIX=$1; fi
+FORCE_PUSH=
+TAG_PREFIX="dev"
 
-if [ -z `git tag -l $TAG_PREFIX-$VERSION_BUILD` ] && [ -n "$2" ]; then
+while getopts ":ft:" opt; do
+  case $opt in
+    f ) FORCE_PUSH=1 ;;
+    t ) TAG_PREFIX=$OPTARG ;;
+    \? ) echo "Invalid option: -$OPTARG" >&2
+        usage;;
+  esac
+done
+
+if [[ -z `git tag -l $TAG_PREFIX-$VERSION_BUILD` ]]; then
     `git tag $TAG_PREFIX-$VERSION_BUILD`
     `git push origin $TAG_PREFIX-$VERSION_BUILD`
+    FORCE_PUSH=1
+else
+    echo "tag '$TAG_PREFIX-$VERSION_BUILD' already exists";
+fi
 
+if [[ $FORCE_PUSH == 1 ]]; then
     curl  http://testflightapp.com/api/builds.json \
      -F file=@"$IPA_NAME" \
      -F dsym=@"$DSYM_ZIP_NAME" \
@@ -40,6 +65,4 @@ if [ -z `git tag -l $TAG_PREFIX-$VERSION_BUILD` ] && [ -n "$2" ]; then
      -F notes="$TF_NOTES" \
      -F notify="$TF_NOTIFY" \
      -F distribution_lists="$TF_DIST_LISTS"
-else
-    echo "tag '$TAG_PREFIX-$VERSION_BUILD' already exists";
 fi
