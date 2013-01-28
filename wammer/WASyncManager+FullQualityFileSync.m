@@ -31,11 +31,17 @@
     
     [wSelf beginPostponingSync];
 
+    NSMutableArray *operations = [NSMutableArray array];
     [[WADataStore defaultStore] enumerateFilesWithSyncableBlobsInContext:nil usingBlock:^(WAFile *aFile, NSUInteger index, BOOL *stop) {
       
+      NSURL *ownURL = [[aFile objectID] URIRepresentation];
+
       IRAsyncBarrierOperation *operation = [IRAsyncBarrierOperation operationWithWorker:^(IRAsyncOperationCallback callback) {
 
-        [aFile synchronizeWithOptions:@{kWAFileSyncStrategy: kWAFileSyncFullQualityStrategy}
+        NSManagedObjectContext *context = [[WADataStore defaultStore] disposableMOC];
+        WAFile *file = (WAFile *)[context irManagedObjectForURI:ownURL];
+        
+        [file synchronizeWithOptions:@{kWAFileSyncStrategy: kWAFileSyncFullQualityStrategy}
 		       completion:^(BOOL didFinish, NSError *error) {
 
 		         if (error) {
@@ -62,19 +68,36 @@
 
       }];
 
-      [wSelf.fileSyncOperationQueue addOperation:operation];
+      [operations addObject:operation];
 
     }];
 
-    NSBlockOperation *tailOp = [NSBlockOperation blockOperationWithBlock:^{
+    IRAsyncBarrierOperation *tailOp = [IRAsyncBarrierOperation operationWithWorker:^(IRAsyncOperationCallback callback) {
+      callback(nil);
+    } trampoline:^(IRAsyncOperationInvoker callback) {
+      NSCAssert(![NSThread isMainThread], @"should run in background");
+      callback();
+    } callback:^(id results) {
+      // -[WASyncManager endPostponingSync] must be called no matter the operations are succeed or not
       [wSelf endPostponingSync];
+    } callbackTrampoline:^(IRAsyncOperationInvoker callback) {
+      NSCAssert(![NSThread isMainThread], @"should run in background");
+      callback();
+    }];
+
+    [operations addObject:tailOp];
+
+    [operations enumerateObjectsUsingBlock:^(IRAsyncBarrierOperation *op, NSUInteger idx, BOOL *stop) {
+      if (idx > 0)
+        [op addDependency:(IRAsyncBarrierOperation *)operations[(idx - 1)]];
     }];
     
-    for (NSOperation *operation in wSelf.fileSyncOperationQueue.operations) {
-      [tailOp addDependency:operation];
+    IRAsyncOperation *lastOperation = [[wSelf.fileSyncOperationQueue operations] lastObject];
+    if (lastOperation) {
+      [operations[0] addDependency:lastOperation];
     }
     
-    [wSelf.fileSyncOperationQueue addOperation:tailOp];
+    [wSelf.fileSyncOperationQueue addOperations:operations waitUntilFinished:NO];
     
     callback(nil);
     
@@ -98,16 +121,19 @@
 
 - (BOOL) canPerformBlobSync {
   
-  WARemoteInterface * const ri = [WARemoteInterface sharedInterface];
-  
-  if (!ri.userToken) {
-    return NO;
-  }
-  
   if (![[NSUserDefaults standardUserDefaults] boolForKey:kWAPhotoImportEnabled]) {
     return NO;
   }
   
+  WARemoteInterface * const ri = [WARemoteInterface sharedInterface];
+  if (!ri.userToken) {
+    return NO;
+  }
+  
+  if (![[NSUserDefaults standardUserDefaults] boolForKey:kWAUseCellularEnabled] && ![ri hasWiFiConnection]) {
+    return NO;
+  }
+
   BOOL const hasReachableCloud = [ri hasReachableCloud];
   BOOL const hasReachableStation = [ri hasReachableStation];
   

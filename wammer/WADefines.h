@@ -78,6 +78,7 @@ typedef NS_ENUM(NSInteger, WAThumbnailType) {
   WAThumbnailTypeLarge
 };
 
+extern NSString * const kWASNSFacebookConnectEnabled;
 extern NSString * const kWASNSGoogleConnectEnabled;
 extern NSString * const kWASNSTwitterConnectEnabled;
 extern NSString * const kWASNSFoursquareConnectEnabled;

@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "FFCFE078142111E100B9E6AF"
-               BuildableName = "wammer-iOS.app"
+               BuildableName = "AOStream.app"
                BlueprintName = "wammer-iOS"
                ReferencedContainer = "container:wammer.xcodeproj">
             </BuildableReference>
@@ -53,7 +53,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "FFCFE078142111E100B9E6AF"
-            BuildableName = "wammer-iOS.app"
+            BuildableName = "AOStream.app"
             BlueprintName = "wammer-iOS"
             ReferencedContainer = "container:wammer.xcodeproj">
          </BuildableReference>
@@ -72,7 +72,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "FFCFE078142111E100B9E6AF"
-            BuildableName = "wammer-iOS.app"
+            BuildableName = "AOStream.app"
             BlueprintName = "wammer-iOS"
             ReferencedContainer = "container:wammer.xcodeproj">
          </BuildableReference>
@@ -108,7 +108,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "FFCFE078142111E100B9E6AF"
-            BuildableName = "wammer-iOS.app"
+            BuildableName = "AOStream.app"
             BlueprintName = "wammer-iOS"
             ReferencedContainer = "container:wammer.xcodeproj">
          </BuildableReference>

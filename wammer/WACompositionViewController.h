@@ -13,7 +13,7 @@
 
 @interface WACompositionViewController : UIViewController
 
-+ (WACompositionViewController *) controllerWithArticle:(NSURL *)anArticleURLOrNil completion:(void(^)(NSURL *anArticleURLOrNil))aBlock;
++ (WACompositionViewController *) controllerWithArticle:(NSURL *)anArticleURLOrNil completion:(void(^)(WAArticle *anArticleOrNil, NSManagedObjectContext *moc))aBlock;
 
 @property (nonatomic, readwrite, retain) IBOutlet UIView *containerView;
 @property (nonatomic, readwrite, retain) IBOutlet UITextView *contentTextView;

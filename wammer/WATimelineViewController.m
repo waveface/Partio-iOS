@@ -36,14 +36,19 @@
 @property (nonatomic, strong) UICollectionViewFlowLayout *flowlayout;
 
 @property (nonatomic, strong) NSDate *currentDisplayedDate;
+@property (nonatomic, strong) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, strong) NSFetchedResultsController *fetchedResultsController;
 @property (nonatomic, strong) UIPopoverController *calendarPopoverForIPad;
 
 @property (nonatomic, readwrite, retain) UILongPressGestureRecognizer *longPressGR;
 
+@property (nonatomic, strong) NSMutableArray *objectsChanged;
+
 @end
 
-@implementation WATimelineViewController
+@implementation WATimelineViewController {
+  CGFloat (^rowSpacing) (UICollectionView *);
+}
 
 - (id) initWithDate:(NSDate*)date {
 	
@@ -77,7 +82,20 @@
   self.view.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
   self.longPressGR = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleMenu:)];
   [self.collectionView addGestureRecognizer:self.longPressGR];
-
+  
+  self.objectsChanged = [NSMutableArray array];
+  
+  rowSpacing = ^ (UICollectionView *collectionView) {
+	
+	CGFloat width = CGRectGetWidth(collectionView.frame);
+	CGFloat itemWidth = ((UICollectionViewFlowLayout*)collectionView.collectionViewLayout).itemSize.width;
+	int numCell = (int)(width / itemWidth);
+	
+	CGFloat w = ((int)((int)(width) % (int)(itemWidth))) / (numCell + 1);
+	
+	return w;
+  };
+  
   return self;
 	
 }
@@ -138,17 +156,19 @@
 }
 
 
-- (void) viewWillAppear:(BOOL)animated {
-  [super viewWillAppear:animated];
-  [self.collectionView.collectionViewLayout invalidateLayout];
-}
-
 - (void) viewDidAppear:(BOOL)animated {
 	
   [super viewDidAppear:animated];
-  [self reloadArticles];
-  [self.collectionView.collectionViewLayout invalidateLayout];
-	
+  self.fetchedResultsController.delegate = self;
+  [self.collectionView reloadData];
+  
+}
+
+- (void) viewWillDisappear:(BOOL)animated {
+  
+  [super viewWillDisappear:animated];
+  self.fetchedResultsController.delegate = nil;
+  
 }
 
 - (void)didReceiveMemoryWarning
@@ -177,10 +197,22 @@
 	
 }
 
-- (void) reloadArticles {
+- (NSManagedObjectContext*) managedObjectContext {
+  
+  if (_managedObjectContext)
+	return _managedObjectContext;
+  
+  _managedObjectContext = [[WADataStore defaultStore] defaultAutoUpdatedMOC];
+  
+  return  _managedObjectContext;
+  
+}
 
-  NSManagedObjectContext *moc = [[WADataStore defaultStore] defaultAutoUpdatedMOC];
- 
+- (NSFetchedResultsController*) fetchedResultsController {
+  
+  if (_fetchedResultsController)
+	return _fetchedResultsController;
+
   if (!self.currentDisplayedDate)
 	self.currentDisplayedDate = [NSDate date];
   
@@ -191,38 +223,103 @@
   [formatter setDateFormat:formatString];
   
   NSString *cacheName = [NSString stringWithFormat:@"fetchedTableCache-%@", [formatter stringFromDate:self.currentDisplayedDate]];
-  _fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fr managedObjectContext:moc sectionNameKeyPath:nil cacheName:cacheName];
+  _fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fr managedObjectContext:self.managedObjectContext sectionNameKeyPath:nil cacheName:cacheName];
   _fetchedResultsController.delegate = self;
   
   NSError *fetchingError;
   if (![_fetchedResultsController performFetch:&fetchingError])
 	NSLog(@"error fetching: %@", fetchingError);
+  
+  return _fetchedResultsController;
 
 }
 
 - (void) dealloc {
   
   [self.collectionView removeGestureRecognizer:self.longPressGR];
+  self.fetchedResultsController.delegate = nil;
+  self.fetchedResultsController = nil;
   
 }
 
 #pragma mark - NSFetchedResultsControllerDelegate 
 - (void) controller:(NSFetchedResultsController *)controller didChangeObject:(id)anObject atIndexPath:(NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type newIndexPath:(NSIndexPath *)newIndexPath {
-	
-  if (![self.collectionView numberOfItemsInSection:indexPath.section]) {
-	[self.collectionView reloadData];
+  
+  NSMutableDictionary *change = [NSMutableDictionary dictionary];
+  
+  switch (type) {
+	case NSFetchedResultsChangeInsert: {
+	  change[@(type)] = [newIndexPath copy];
+	  break;
+	}
+	case NSFetchedResultsChangeUpdate: {
+	  change[@(type)] = [indexPath copy];
+	  break;
+	}
+	case NSFetchedResultsChangeDelete: {
+	  change[@(type)] = [indexPath copy];
+	  break;
+	}
+	case NSFetchedResultsChangeMove:
+	default:
+	  break;
+  }
+  
+  [self.objectsChanged addObject:change];
+  
+}
+
+- (void) controllerDidChangeContent:(NSFetchedResultsController *)controller {
+
+  if (! (self.isViewLoaded && self.view.window) ) {// view is not appear, stop updating collection view
+	[self.objectsChanged removeAllObjects];
 	return;
   }
-	switch (type) {
-		case NSFetchedResultsChangeInsert: {
-			[self.collectionView insertItemsAtIndexPaths:@[newIndexPath]];
-			break;
-		}
-		case NSFetchedResultsChangeDelete:
-		case NSFetchedResultsChangeMove:
-		default:
-			break;
+  
+  if (self.objectsChanged.count) {
+	if ([self.collectionView numberOfItemsInSection:0] <= 1) {
+	  [self.collectionView reloadData];
+	  [self.objectsChanged removeAllObjects];
+	  return;
 	}
+	
+	__weak WATimelineViewController *wSelf = self;
+	[self.collectionView performBatchUpdates:^{
+	  
+	  for (NSMutableDictionary *change in wSelf.objectsChanged) {
+		
+		[change enumerateKeysAndObjectsUsingBlock:^(NSNumber *key, NSIndexPath *idxPath, BOOL *stop) {
+		  
+		  NSFetchedResultsChangeType type = [key unsignedIntegerValue];
+		  switch (type) {
+			case NSFetchedResultsChangeInsert:
+			  [wSelf.collectionView insertItemsAtIndexPaths:@[idxPath]];
+			  break;
+			  
+			case NSFetchedResultsChangeDelete:
+			  [wSelf.collectionView deleteItemsAtIndexPaths:@[idxPath]];
+			  break;
+			  
+			case NSFetchedResultsChangeUpdate:
+			  [wSelf.collectionView reloadItemsAtIndexPaths:@[idxPath]];
+			  break;
+			  
+			default:
+			  break;
+		  }
+		  
+		}];
+		
+	  }
+	  
+	} completion:^(BOOL finished) {
+	  
+	
+	}];
+	
+	[self.objectsChanged removeAllObjects];
+	
+  }
 }
 
 #pragma mark - UICollectionView datasource
@@ -235,7 +332,8 @@
 
 - (NSInteger) collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
 
-  return [[self.fetchedResultsController fetchedObjects] count];
+  id <NSFetchedResultsSectionInfo> sectioInfo = [[self.fetchedResultsController sections] objectAtIndex:section];
+  return [sectioInfo numberOfObjects];
 	
 }
 
@@ -270,16 +368,6 @@
 
 #pragma mark - UICollectionViewFlowLayout datasource
 
-CGFloat (^rowSpacing) (UICollectionView *) = ^ (UICollectionView *collectionView) {
-	
-	CGFloat width = CGRectGetWidth(collectionView.frame);
-	CGFloat itemWidth = ((UICollectionViewFlowLayout*)collectionView.collectionViewLayout).itemSize.width;
-	int numCell = (int)(width / itemWidth);
-	
-	CGFloat w = ((int)((int)(width) % (int)(itemWidth))) / (numCell + 1);
-
-	return w;
-};
 
 - (CGSize) collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section {
 
@@ -304,7 +392,6 @@ CGFloat (^rowSpacing) (UICollectionView *) = ^ (UICollectionView *collectionView
 	headerView.dayLabel.text = [self.currentDisplayedDate dayString];
 	headerView.monthLabel.text = [[self.currentDisplayedDate localizedMonthShortString] uppercaseString];
 	headerView.wdayLabel.text = [[self.currentDisplayedDate localizedWeekDayFullString] uppercaseString];
-  [headerView.centerButton addTarget:self action:@selector(calButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
 	headerView.backgroundColor = [UIColor colorWithRed:0.95f green:0.95f blue:0.95f alpha:1];
 
 	[headerView setNeedsLayout];
@@ -345,7 +432,8 @@ CGFloat (^rowSpacing) (UICollectionView *) = ^ (UICollectionView *collectionView
 - (void) collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
 	
 	WAArticle *post = [self.fetchedResultsController objectAtIndexPath:indexPath];
-	WAEventViewController *eVC = [WAEventViewController controllerForArticle:post];
+  NSURL *aPostURL = [[post objectID] URIRepresentation];
+	WAEventViewController *eVC = [WAEventViewController controllerForArticleURL:aPostURL];
 		
 	WATimelineViewCell *cell = (WATimelineViewCell*)[collectionView cellForItemAtIndexPath:indexPath];
 	UIColor *origColor = cell.backgroundColor;
@@ -414,53 +502,6 @@ CGFloat (^rowSpacing) (UICollectionView *) = ^ (UICollectionView *collectionView
 	
 	return NO;
 	
-}
-
-- (void) calButtonPressed:(id)sender {
-  
-  if (isPad()) {
-	
-	CGRect frame = CGRectMake(0, 0, 320, 500);
-	
-	__weak WATimelineViewController *wSelf = self;
-	WACalendarPickerViewController *calVC = [[WACalendarPickerViewController alloc] initWithFrame:frame selectedDate:self.currentDisplayedDate];
-	calVC.currentViewStyle = WAEventsViewStyle;
-	WANavigationController *wrappedNavVC = [WACalendarPickerViewController wrappedNavigationControllerForViewController:calVC forStyle:WACalendarPickerStyleWithCancel];
-	
-	UIPopoverController *popOver = [[UIPopoverController alloc] initWithContentViewController:wrappedNavVC];
-	[popOver presentPopoverFromRect:CGRectMake(self.collectionView.frame.size.width/2, 50, 1, 1) inView:self.collectionView permittedArrowDirections:UIPopoverArrowDirectionUp animated:YES];
-	self.calendarPopoverForIPad = popOver;
-	self.calendarPopoverForIPad.delegate = self;
-	calVC.onDismissBlock = ^{
-	  [wSelf.calendarPopoverForIPad dismissPopoverAnimated:YES];
-	  wSelf.calendarPopoverForIPad = nil;
-	};
-	
-  } else {
-	
-	CGRect frame = self.view.frame;
-	frame.origin = CGPointMake(0, 0);
-	__block WACalendarPickerViewController *calVC = [[WACalendarPickerViewController alloc] initWithFrame:frame selectedDate:self.currentDisplayedDate];
-	calVC.currentViewStyle = WAEventsViewStyle;
-	calVC.onDismissBlock = [^{
-	  [calVC.navigationController dismissViewControllerAnimated:YES completion:nil];
-	  calVC = nil;
-	} copy];
-	WANavigationController *wrappedNavVC = [WACalendarPickerViewController wrappedNavigationControllerForViewController:calVC forStyle:WACalendarPickerStyleWithCancel];
-	
-	wrappedNavVC.modalPresentationStyle = UIModalPresentationFullScreen;
-	wrappedNavVC.modalTransitionStyle =  UIModalTransitionStyleCoverVertical;
-	[self presentViewController:wrappedNavVC animated:YES completion:nil];
-	
-  }
-  
-}
-
-
--(void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController {
-
-  self.calendarPopoverForIPad = nil;
-  
 }
 
 - (void) handleMenu:(UILongPressGestureRecognizer *)longPress {

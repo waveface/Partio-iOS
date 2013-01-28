@@ -57,6 +57,10 @@
 
 		[wSelf presentViewController:navVC animated:YES completion:nil];
 	});
+  
+  if (![self.article.files count]) { // No photo available
+	self.navigationItem.rightBarButtonItem.enabled = NO;
+  }
 	
 	[self.itemsView registerClass:[WAEventPhotoViewCell class] forCellWithReuseIdentifier:@"EventPhotoCell"];
 	

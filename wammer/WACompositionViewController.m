@@ -20,14 +20,13 @@
 
 #import "WACompositionViewPhotoCell.h"
 #import "WANavigationController.h"
-#import "WAPreviewBadge.h"
 #import "WAOverlayBezel.h"
 #import "WACompositionViewController+ImageHandling.h"
 #import "WAAssetsLibraryManager.h"
 
 @interface WACompositionViewController () <UITextViewDelegate, IRTextAttributorDelegate>
 
-@property (nonatomic, readwrite, copy) void (^completionBlock)(NSURL *returnedURI);
+@property (nonatomic, readwrite, copy) void (^completionBlock)(WAArticle *returnedArticle, NSManagedObjectContext *moc);
 @property (nonatomic, readwrite, retain) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, readwrite, retain) WAArticle *article;
 
@@ -73,7 +72,7 @@
 
 }
 
-+ (WACompositionViewController *) controllerWithArticle:(NSURL *)anArticleURLOrNil completion:(void(^)(NSURL *anArticleURLOrNil))aBlock {
++ (WACompositionViewController *) controllerWithArticle:(NSURL *)anArticleURLOrNil completion:(void(^)(WAArticle *anArticleOrNil, NSManagedObjectContext *moc))aBlock {
 
 	WACompositionViewController *returnedController = [[self alloc] init];
 	returnedController.managedObjectContext = [[WADataStore defaultStore] autoUpdatingMOC];
@@ -124,7 +123,6 @@
 	__weak WACompositionViewController *wSelf = self;
 	
 	[_article irRemoveObserverBlocksForKeyPath:@"files"];
-	[_article irRemoveObserverBlocksForKeyPath:@"previews"];
 	
 	_article = newArticle;
 	
@@ -138,52 +136,6 @@
 	
 	}];
 	
-	[_article irObserve:@"previews" options:NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew context:nil withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
-	
-		CFRunLoopPerformBlock(CFRunLoopGetMain(), kCFRunLoopDefaultMode, ^{
-
-			[wSelf handlePreviewsChangeKind:kind oldValue:fromValue newValue:toValue indices:indices isPrior:isPrior];
-			
-		});
-		
-	}];
-
-	// for crash recovery
-	// however, if user tap done button before all blocks pushed into managedObjectContext,
-	// the application will crash again.
-	[self.article.files enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-
-		WAFile *file = obj;
-    if (![wSelf associatedImagesMadeForFile:file]) {
-
-			if (file.assetURL) {
-
-				[[WAAssetsLibraryManager defaultManager] assetForURL:[NSURL URLWithString:file.assetURL] resultBlock:^(ALAsset *asset) {
-					
-					[wSelf.managedObjectContext performBlock:^{
-						
-						[wSelf makeAssociatedImagesOfFile:file withRepresentedAsset:asset type:WAThumbnailTypeExtraSmall];
-						
-					}];
-					
-				} failureBlock:^(NSError *error) {
-					
-					NSLog(@"Unable to retrieve assets for URL %@", file.assetURL);
-					NSAssert(NO, @"Unable to recover thumbnail making process for file:%@", file);
-					
-				}];
-
-			} else {
-				
-				NSLog(@"File asset URL is empty");
-				NSAssert(NO, @"Unable to recover thumbnail making process for file:%@", file);
-
-			}
-			
-		}
-
-	}];
-	
 }
 
 - (void) dealloc {
@@ -191,7 +143,6 @@
 	_textAttributor.delegate = nil;
 
 	[_article irRemoveObserverBlocksForKeyPath:@"files"];
-	[_article irRemoveObserverBlocksForKeyPath:@"previews"];
 	
 	[self.navigationItem.rightBarButtonItem irUnbind:@"enabled"];
 	
@@ -351,51 +302,14 @@ static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandl
 	if (_textAttributor)
 		return _textAttributor;
 	
-	__weak WACompositionViewController *wSelf = self;
-	
 	_textAttributor = [[IRTextAttributor alloc] init];
 	_textAttributor.delegate = self;
 	_textAttributor.discoveryBlock = IRTextAttributorDiscoveryBlockMakeWithRegularExpression([NSDataDetector dataDetectorWithTypes:NSTextCheckingTypeLink error:nil]);
 	
-	_textAttributor.attributionBlock = ^ (NSString *attributedString, IRTextAttributorAttributionCallback callback) {
-	
-		if (!attributedString) {
-			callback(nil);
-			return;
-		}
-	
-		NSURL *url = [NSURL URLWithString:attributedString];
-		if (!url) {
-			callback(nil);
-			return;
-		}
-		
-		if ([[wSelf.article.previews objectsPassingTest: ^ (WAPreview *aPreview, BOOL *stop) {
-			
-			return [aPreview.url isEqualToString:attributedString];
-			
-		}] count]) {
-		
-			//	Already got something and attached, skip
-			
-			callback(nil);
-			return;
-		
-		}
-		
-		[[WARemoteInterface sharedInterface] retrievePreviewForURL:url onSuccess:^(NSDictionary *aPreviewRep) {
-		
-			callback(aPreviewRep);
-			
-		} onFailure: ^ (NSError *error) {
-			
-			callback(nil);			
-			
-		}];
-	
-	};
-	
-	return _textAttributor;
+  _textAttributor.attributionBlock = ^(NSString *attributedString, IRTextAttributorAttributionCallback callback) {
+	callback (nil);
+  };
+  return _textAttributor;
 
 }
 
@@ -423,52 +337,8 @@ static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandl
 
 - (void) textAttributor:(IRTextAttributor *)attributor didUpdateAttributedString:(NSAttributedString *)attributedString withToken:(NSString *)aToken range:(NSRange)tokenRange attribute:(id)newAttribute {
 
-	NSMutableArray *potentialLinkAttributes = [NSMutableArray array];
-
-	[attributedString enumerateAttribute:IRTextAttributorTagAttributeName inRange:(NSRange){ 0, [attributedString length] } options:0 usingBlock: ^ (id value, NSRange range, BOOL *stop) {
-		
-		if (value)
-			[potentialLinkAttributes addObject:value];
-		
-	}];
-	
-	NSArray *mappedPreviewEntities = [potentialLinkAttributes irMap: ^ (id anAttribute, NSUInteger index, BOOL *stop) {
-	
-		if (![anAttribute isKindOfClass:[NSDictionary class]])
-			return (id)nil;
-		
-		return (id)[NSDictionary dictionaryWithObjectsAndKeys:
-			anAttribute, @"og",
-			[anAttribute valueForKeyPath:@"url"], @"id",
-		nil];
-		
-	}];
-
-	NSArray *allMatchingPreviews = [WAPreview insertOrUpdateObjectsUsingContext:self.managedObjectContext withRemoteResponse:mappedPreviewEntities usingMapping:nil options:IRManagedObjectOptionIndividualOperations];
-	if (![allMatchingPreviews count])
-		return;
-	
-	WAPreview *stitchedPreview = [allMatchingPreviews objectAtIndex:0];
-	NSError *error = nil;
-	NSAssert1([self.managedObjectContext save:&error], @"Error Saving: %@", error);
-	
-	//	If there’s already an attachment, do nothing
-	
-	if ([self.article.files count])
-		stitchedPreview = nil;
-	
-	//	If the article holds a preview already, don’t change it
-
-	if ([self.article.previews count])
-		return;
-
-	//	Don’t delete them, just leave them for later to cleanup
-	//	for (WAPreview *aPreview in allMatchingPreviews)
-	//		if (stitchedPreview ? (aPreview != stitchedPreview) : YES)
-	//			[aPreview.managedObjectContext deleteObject:aPreview];
-	
-	self.article.previews = stitchedPreview ? [NSSet setWithObject:stitchedPreview] : [NSSet set];
-
+  // No op
+  
 }
 
 - (void) handleFilesChangeKind:(NSKeyValueChange)kind oldValue:(id)oldValue newValue:(id)newValue indices:(NSIndexSet *)indices isPrior:(BOOL)isPrior {
@@ -498,73 +368,29 @@ static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandl
 	[[UIApplication sharedApplication] beginIgnoringInteractionEvents];
 	
 	self.article.text = self.contentTextView.text;
-	if (self.article.modificationDate) {
-		// set modification date only when updating articles
-		self.article.modificationDate = [NSDate date];
-	}
+  
+//	if (self.article.modificationDate) {
+//		// set modification date only when updating articles
+//		self.article.modificationDate = [NSDate date];
+//	}
+//  
+  [self.contentTextView resignFirstResponder];
+
+  dispatch_async(dispatch_get_main_queue(), ^ {
+
+	if (self.completionBlock)
+	  self.completionBlock(self.article, self.managedObjectContext);
 	
-	NSError *savingError = nil;
-	if (![self.managedObjectContext save:&savingError])
-		NSLog(@"Error saving: %@", savingError);
-	
-	[self.contentTextView resignFirstResponder];
-	
-	WAOverlayBezel *busyBezel = [WAOverlayBezel bezelWithStyle:WAActivityIndicatorBezelStyle];
-	[busyBezel show];
-
-	__weak WACompositionViewController *wSelf = self;
-	[self.managedObjectContext performBlock:^{
-
-		for (WAFile *file in wSelf.article.files) {
-			NSParameterAssert([self associatedImagesMadeForFile:file]);
-		}
-
-		dispatch_async(dispatch_get_main_queue(), ^ {
-
-			if (self.completionBlock)
-				self.completionBlock([[self.article objectID] URIRepresentation]);
-
-			[busyBezel dismiss];
-
-			[[UIApplication sharedApplication] endIgnoringInteractionEvents];
-		});
-		
-	}];
-	
-	if ([self.article.previews count])
-		WAPostAppEvent(@"Create Preview", [NSDictionary dictionaryWithObjectsAndKeys:@"link",@"category",@"create", @"action", nil]);
-	else if ([self.article.files count])
-		WAPostAppEvent(@"Create Photo", [NSDictionary dictionaryWithObjectsAndKeys:@"photo",@"category",@"create", @"action", nil]);
-	else 
-		WAPostAppEvent(@"Create Text", [NSDictionary dictionaryWithObjectsAndKeys:@"text",@"category",@"create", @"action", nil]);
+	[[UIApplication sharedApplication] endIgnoringInteractionEvents];
+  });
 		
 }	
 
 - (void) handleCancel:(UIBarButtonItem *)sender {
 
-	if (!([self.article hasChanges] && [[self.article changedValues] count]) || ![self.article hasMeaningfulContent]) {
-	
-		if (self.completionBlock)
-			self.completionBlock(nil);
+  if (self.completionBlock)
+	self.completionBlock(nil, self.managedObjectContext);
 		
-		//	Delete things that are not meaningful if it’s a draft
-		
-		if (![self.article hasMeaningfulContent])
-		if ([self.article.draft isEqualToNumber:(NSNumber *)kCFBooleanTrue])
-			[self.article.managedObjectContext deleteObject:self.article];
-		
-		return;
-	
-	}
-	
-	IRActionSheetController *actionSheetController = self.cancellationActionSheetController;
-	if ([[actionSheetController managedActionSheet] isVisible])
-		return;
-	
-	NSParameterAssert(actionSheetController && ![actionSheetController.managedActionSheet isVisible]);
-	
-	[[actionSheetController managedActionSheet] showFromBarButtonItem:sender animated:YES];
-	
 }
 
 - (IRActionSheetController *) cancellationActionSheetController {
@@ -576,7 +402,7 @@ static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandl
 		IRAction *discardAction = [IRAction actionWithTitle:NSLocalizedString(@"ACTION_DISCARD", @"Action title for discarding a draft") block:^{
 			
 			if (wSelf.completionBlock)
-				wSelf.completionBlock(nil);
+				wSelf.completionBlock(nil, self.managedObjectContext);
 			
 		}];
 		
@@ -590,7 +416,7 @@ static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandl
 				NSLog(@"Error saving: %@", savingError);
 			
 			if (wSelf.completionBlock)
-				wSelf.completionBlock(nil);
+				wSelf.completionBlock(nil, self.managedObjectContext);
 		
 		}];
 			
@@ -614,6 +440,13 @@ static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandl
 	
 	return _cancellationActionSheetController;
 	
+}
+
+
+- (BOOL) shouldAutorotate {
+
+  return YES;
+
 }
 
 - (BOOL) shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {

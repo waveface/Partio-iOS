@@ -34,8 +34,8 @@
 	self.titleForConnectionFailure = NSLocalizedString(@"FOURSQUARE_CONNECT_FAIL_TITLE", @"Title for an alert view to show foursquare connection failure");
 	self.titleForDisconnectionFailure = NSLocalizedString(@"FOURSQUARE_DISCONNECT_FAIL_TITLE", @"Title for an alert view to show foursquare disconnection failure");
 	
-	self.requestUriForConnect = @"sns/foursquare/connect";
-	self.requestUriForDisconnect = @"sns/foursquare/disconnect";
+	self.requestUriForConnect = @"client/v3/sns/foursquare/connect";
+	self.requestUriForDisconnect = @"client/v3/sns/foursquare/disconnect";
 	self.xurlForConnect = @"waveface://x-callback-url/didConnectFoursquare?api_ret_code=%(api_ret_code)d&api_ret_message=%(api_ret_message)s";
 	self.xurlForDisconnect = @"waveface://x-callback-url/didDisconnectFoursquare?api_ret_code=%(api_ret_code)d&api_ret_message=%(api_ret_message)s";
 	

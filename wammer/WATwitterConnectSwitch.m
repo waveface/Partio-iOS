@@ -34,8 +34,8 @@
 	self.titleForConnectionFailure = NSLocalizedString(@"TWITTER_CONNECT_FAIL_TITLE", @"Title for an alert view to show Twitter connection failure");
 	self.titleForDisconnectionFailure = NSLocalizedString(@"TWITTER_DISCONNECT_FAIL_TITLE", @"Title for an alert view to show Twitter disconnection failure");
 	
-	self.requestUriForConnect = @"sns/twitter/connect";
-	self.requestUriForDisconnect = @"sns/twitter/disconnect";
+	self.requestUriForConnect = @"client/v3/sns/twitter/connect";
+	self.requestUriForDisconnect = @"client/v3/sns/twitter/disconnect";
 	self.xurlForConnect = @"waveface://x-callback-url/didConnectTwitter?api_ret_code=%(api_ret_code)d&api_ret_message=%(api_ret_message)s";
 	self.xurlForDisconnect = @"waveface://x-callback-url/didDisconnectTwitter?api_ret_code=%(api_ret_code)d&api_ret_message=%(api_ret_message)s";
 

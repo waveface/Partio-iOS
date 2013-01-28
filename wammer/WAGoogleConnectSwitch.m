@@ -34,8 +34,8 @@
 	self.titleForConnectionFailure = NSLocalizedString(@"GOOGLE_CONNECT_FAIL_TITLE", @"Title for an alert view to show Google connection failure");
 	self.titleForDisconnectionFailure = NSLocalizedString(@"GOOGLE_DISCONNECT_FAIL_TITLE", @"Title for an alert view to show Google disconnection failure");
 	
-	self.requestUriForConnect = @"sns/google/connect";
-	self.requestUriForDisconnect = @"sns/google/disconnect";
+	self.requestUriForConnect = @"client/v3/sns/google/connect";
+	self.requestUriForDisconnect = @"client/v3/sns/google/disconnect";
 	self.xurlForConnect = @"waveface://x-callback-url/didConnectGoogle?api_ret_code=%(api_ret_code)d&api_ret_message=%(api_ret_message)s";
 	self.xurlForDisconnect = @"waveface://x-callback-url/didDisconnectGoogle?api_ret_code=%(api_ret_code)d&api_ret_message=%(api_ret_message)s";
 	

@@ -25,7 +25,6 @@
 @property (nonatomic, readwrite, strong) UICollectionView *collectionView;
 @property (nonatomic, readwrite, strong) NSMutableArray *webPages;
 
-@property (nonatomic, strong) UIPopoverController *calendarPopoverForIPad;
 @end
 
 @implementation WAWebStreamViewController
@@ -205,6 +204,7 @@
   WAWebStreamViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"WAWebStreamViewCell" forIndexPath:indexPath];
 	
   cell.webTitleLabel.text = file.webTitle;
+  [cell.webTitleLabel sizeToFit];
   cell.webURLLabel.text = file.webURL;
 
   NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
@@ -302,7 +302,6 @@ CGFloat (^rowSpacingWeb) (UICollectionView *) = ^ (UICollectionView *collectionV
   headerView.monthLabel.text = [[self.currentDate localizedMonthShortString] uppercaseString];
   headerView.wdayLabel.text = [[self.currentDate localizedWeekDayFullString] uppercaseString];
   headerView.backgroundColor = [UIColor colorWithRed:0.95f green:0.95f blue:0.95f alpha:1];
-  [headerView.centerButton addTarget:self action:@selector(calButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
 	
 //	[headerView.centerButton addTarget:self action:@selector(handleDateSelect:) forControlEvents:UIControlEventTouchUpInside];
   [headerView setNeedsLayout];
@@ -357,43 +356,6 @@ CGFloat (^rowSpacingWeb) (UICollectionView *) = ^ (UICollectionView *collectionV
 }
 
 
-- (void) calButtonPressed:(id)sender {
-  
-  if (isPad()) {
-	
-	CGRect frame = CGRectMake(0, 0, 320, 500);
-	
-	__weak WAWebStreamViewController *wSelf = self;
-	WACalendarPickerViewController *calVC = [[WACalendarPickerViewController alloc] initWithFrame:frame selectedDate:self.currentDate];
-	calVC.currentViewStyle = WAWebpagesViewStyle;
-	WANavigationController *wrappedNavVC = [WACalendarPickerViewController wrappedNavigationControllerForViewController:calVC forStyle:WACalendarPickerStyleWithCancel];
-	
-	UIPopoverController *popOver = [[UIPopoverController alloc] initWithContentViewController:wrappedNavVC];
-	[popOver presentPopoverFromRect:CGRectMake(self.collectionView.frame.size.width/2, 50, 1, 1) inView:self.collectionView permittedArrowDirections:UIPopoverArrowDirectionUp animated:YES];
-	self.calendarPopoverForIPad = popOver;
-	calVC.onDismissBlock = ^{
-	  [wSelf.calendarPopoverForIPad dismissPopoverAnimated:YES];
-	};
-	
-  } else {
-	
-	CGRect frame = self.view.frame;
-	frame.origin = CGPointMake(0, 0);
-	__block WACalendarPickerViewController *calVC = [[WACalendarPickerViewController alloc] initWithFrame:frame selectedDate:self.currentDate];
-	calVC.currentViewStyle = WAWebpagesViewStyle;
-	WANavigationController *wrappedNavVC = [WACalendarPickerViewController wrappedNavigationControllerForViewController:calVC forStyle:WACalendarPickerStyleWithCancel];
-	calVC.onDismissBlock = [^{
-	  [calVC.navigationController dismissViewControllerAnimated:YES completion:nil];
-	  calVC = nil;
-	} copy];
-	
-	wrappedNavVC.modalPresentationStyle = UIModalPresentationFullScreen;
-	wrappedNavVC.modalTransitionStyle =  UIModalTransitionStyleCoverVertical;
-	[self presentViewController:wrappedNavVC animated:YES completion:nil];
-	
-  }
-  
-}
 
 
 @end

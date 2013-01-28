@@ -30,4 +30,5 @@
 
 @property (nonatomic, weak) IBOutlet UILabel *labelOverSeparationLine;
 
+@property (nonatomic, weak) IBOutlet UIButton *descriptionTapper;
 @end

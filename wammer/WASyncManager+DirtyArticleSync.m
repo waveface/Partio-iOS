@@ -28,6 +28,7 @@
       callback(nil);
       return;
     }
+ 
 
     WADataStore *ds = [WADataStore defaultStore];
     NSMutableArray *articleURIs = [NSMutableArray array];
@@ -123,6 +124,10 @@
   
   WARemoteInterface * const ri = [WARemoteInterface sharedInterface];
   if (!ri.userToken) {
+    return NO;
+  }
+
+  if (![[NSUserDefaults standardUserDefaults] boolForKey:kWAUseCellularEnabled] && ![ri hasWiFiConnection]) {
     return NO;
   }
 

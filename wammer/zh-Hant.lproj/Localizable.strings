@@ -1,20 +1,17 @@
 /* accessibility label for adding photos in composition view */
 "ACCESS_ADD_PHOTO" = "加照片";
 
-/* accessibility label for webpage preview in composition view */
-"ACCESS_PREVIEW" = "預覽";
-
 /* add photo button in composition view */
 "ACTION_ADD" = "加照片";
 
-/* Action title for Cancelling
-   Action title for cancelling stuff
-   Cancel.
+/* In event view */
+"ACTION_ADD_TO_COLLECTION" = "完成";
+
+/* Action title for cancelling stuff
    Title for cancelling an action */
 "ACTION_CANCEL" = "取消";
 
-/* Action changing representing file of an article
-   Title for the action responsible for presenting a controller changing the representing file of an article */
+/* Action changing representing file of an article */
 "ACTION_CHANGE_REPRESENTING_FILE" = "更換封面";
 
 /* Place photos in collections */
@@ -33,7 +30,6 @@
 "ACTION_CONNECT_TWITTER_SHORT" = "同步";
 
 /* Action deleting an article
-   Title for deleting an article from the Overview
    Title for deleting an article from the Timeline */
 "ACTION_DELETE" = "丟棄";
 
@@ -61,9 +57,6 @@
 /* Share to Facebook action */
 "ACTION_FACEBOOK" = "臉書";
 
-/* Action title for feedback composition */
-"ACTION_FEEDBACK" = "回報";
-
 /* Button title for showing an image picker */
 "ACTION_INSERT_PHOTO_FROM_LIBRARY" = "相片庫";
 
@@ -73,17 +66,8 @@
 /* Action marking article as favorite */
 "ACTION_MARK_FAVORITE" = "設為最愛";
 
-/* Action title for creating a new post */
-"ACTION_NEW_POST" = "新文章";
-
 /* Alert Dismissal Action */
 "ACTION_OKAY" = "確定";
-
-/* No comment provided by engineer. */
-"ACTION_OPEN_IN_SAFARI" = "使用 Safari 打開";
-
-/* No comment provided by engineer. */
-"ACTION_PRINT" = "列印";
 
 /* No comment provided by engineer. */
 "ACTION_RESET" = "重設";
@@ -91,7 +75,7 @@
 /* Action title for saving a draft */
 "ACTION_SAVE_DRAFT" = "存成草稿";
 
-/* Action title for Signing Out */
+/* No comment provided by engineer. */
 "ACTION_SIGN_OUT" = "登出";
 
 /* Email sign up button */
@@ -169,18 +153,11 @@
 /* add photo button in composition view */
 "COMPOSITION_ONE_PHOTO_BUTTON_CAPTION_FORMAT" = "%i 張照片";
 
-/* remove preview in iPad composition view
-   remove preview in iPhone composition view */
-"COMPOSITION_REMOVE_CURRENT_PREVIEW" = "移除網頁預覽";
-
 /* Title for the composition view */
 "COMPOSITION_TITLE" = "編輯";
 
 /* Title of view controller connecting services */
 "CONNECT_SERVICES_CONTROLLER_TITLE" = "連接其他帳號";
-
-/* In iPad overview, (time, device) */
-"CREATE_TIME_FROM_DEVICE" = "%1$@來自 %2$@";
 
 /* in relative date format */
 "DATE_AFTER" = "%@後";
@@ -194,24 +171,14 @@
 /* No comment provided by engineer. */
 "DAY_SINGULAR" = "%d天";
 
-/* Description for confirming a post deletion
-   Title for confirming a post deletion */
-"DELETE_POST_CONFIRMATION_DESCRIPTION" = "註：刪除的貼文可以從Stream網頁版復原。";
-
 /* Title for confirming a post deletion */
-"DELETE_POST_CONFIRMATION_TITLE" = "是否要刪除貼文？";
+"DELETE_POST_CONFIRMATION_DESCRIPTION" = "註：刪除的貼文可以從Stream網頁版復原。";
 
 /* Title of document download */
 "DOC_DOWNLOAD_FAIL_TITLE" = "無法下載原始檔案";
 
 /* Title for document view controller */
 "DOCUMENTS_CONTROLLER_TITLE" = "文件";
-
-/* State for drafts without content text */
-"DRAFT_STATE_NO_CONTENT" = "（沒有內容）";
-
-/* State for drafts without a timestamp */
-"DRAFT_STATE_NO_TIMESTAMP" = "（未知時間）";
 
 /* No comment provided by engineer. */
 "ERA_PLURAL" = "%d紀";
@@ -226,10 +193,16 @@
 "ERROR_ARTICLE_ENTITY_SYNC_FAILURE_TITLE" = "無法上傳";
 
 /* Failed, underlying error %@ with reason %@ */
-"ERROR_ARTICLE_ENTITY_SYNC_FAILURE_WITH_UNDERLYING_ERROR_DESCRIPTION_AND_REASON_FORMAT" = "上傳時發生錯誤：%@ (%@)。本文已存成草稿。";
+"ERROR_ARTICLE_ENTITY_SYNC_FAILURE_WITH_UNDERLYING_ERROR_DESCRIPTION_AND_REASON_FORMAT" = "上傳時發生錯誤：%@ (%@)。";
 
 /* Failed, underlying error description %@ */
-"ERROR_ARTICLE_ENTITY_SYNC_FAILURE_WITH_UNDERLYING_ERROR_DESCRIPTION_FORMAT" = "上傳時發生錯誤：%@。本文已存成草稿。";
+"ERROR_ARTICLE_ENTITY_SYNC_FAILURE_WITH_UNDERLYING_ERROR_DESCRIPTION_FORMAT" = "上傳時發生錯誤：%@。";
+
+/* The conjunction between description and location. */
+"EVENT_DESC_LOCATION_CONJUNCTION" = "在";
+
+/* The conjunction between description and people's names */
+"EVENT_DESC_PEOPLE_CONJUNCTION" = "與";
 
 /* EVENT_PHOTO_NUMBER_LABEL */
 "EVENT_PHOTO_NUMBER_LABEL" = "%d 張照片";
@@ -357,6 +330,9 @@
 /* Navigation bar title for web preview while loading */
 "NAVI_TITLE_WEB_LOADING" = "載入中..";
 
+/* In collection picker view */
+"NEW_COLLECTION" = "新選集…";
+
 /* Nickname placeholder in signup page */
 "NICKNAME_PLACEHOLDER" = "John Appleseed";
 
@@ -369,20 +345,8 @@
 /* For remote notification testing */
 "NOTIFY_TESTING" = "Stream，你好！";
 
-/* Singluar noun for action objects */
-"NOUN_ACTIONS_OBJECT" = "動作";
-
-/* Title for Waveface Feedback */
-"NOUN_CURRENT_DEVICE" = "裝置名稱";
-
-/* Plural noun for draft objects */
-"NOUN_DRAFTS" = "草稿";
-
 /* Section header in connection status view controller */
 "NOW_CONNECTING_HEADER" = "連線至";
-
-/* In iPad overview */
-"NUMBER_OF_PHOTOS_CREATE_TIME_FROM_DEVICE" = "%1$@於%2$@來自 %3$@";
 
 /* Free plan option in plans page */
 "OPTION_FREE_PLAN" = "免費";
@@ -400,9 +364,6 @@
 /* Title of photo import settings view controller */
 "PHOTO_IMPORT_TITLE" = "照片匯入";
 
-/* In iPad overview */
-"PHOTO_NOUN" = "一張照片";
-
 /* in iPhone timeline */
 "PHOTO_PLURAL" = "%d 張照片";
 
@@ -413,7 +374,7 @@
 "PHOTO_UPLOAD_CONTROLLER_TITLE" = "照片自動上傳";
 
 /* String on customized status bar */
-"PHOTO_UPLOAD_STATUS_BAR_COMPLETE" = "同步成功";
+"PHOTO_UPLOAD_STATUS_BAR_COMPLETE" = "同步完成";
 
 /* String on customized status bar */
 "PHOTO_UPLOAD_STATUS_BAR_FAIL" = "同步失敗";
@@ -433,26 +394,23 @@
 /* Subtitle of photo upload status */
 "PHOTO_UPLOAD_STATUS_UPLOADING" = "照片匯入中...";
 
-/* In iPad overview */
-"PHOTOS_PLURAL" = "%d 張照片";
-
 /* in day view */
 "PHOTOS_TITLE" = "照片";
+
+/* business plan in settings page */
+"PLAN_FREE" = "免費";
+
+/* business plan in settings page */
+"PLAN_PREMIUM" = "付費";
+
+/* business plan in settings page */
+"PLAN_ULTIMATE" = "付費";
 
 /* Title of view controller choosing plans */
 "PLANS_CONTROLLER_TITLE" = "資費方案";
 
 /* Premium plan details in plans page */
 "PREMIUM_PLAN_DESCRIPTION" = "250GB 雲端儲存空間，PC 數量無限制。";
-
-/* Text to show for previews without a provider name */
-"PREVIEW_BADGE_PROVIDER_NAME_PLACEHOLDER" = "（網址未知）";
-
-/* Text to show for previews without body text */
-"PREVIEW_BADGE_TEXT_PLACEHOLDER" = "（無本文）";
-
-/* Text to show for previews without a title */
-"PREVIEW_BADGE_TITLE_PLACEHOLDER" = "（無標題）";
 
 /* REACHABILITY_STATE_AVAILABLE */
 "REACHABILITY_STATE_AVAILABLE" = "可用";
@@ -469,7 +427,8 @@
 /* No comment provided by engineer. */
 "RESET_SETTINGS_CONFIRMATION_TITLE" = "清除設定";
 
-/* Subtitle of searching network in setup done page. */
+/* Subtitle of searching network in settings page.
+   Subtitle of searching network in setup done page. */
 "SEARCHING_NETWORK_SUBTITLE" = "正在尋找 AOStream 網路...";
 
 /* No comment provided by engineer. */
@@ -484,7 +443,7 @@
 /* Title for view controller signing the user in */
 "SIGN_IN_CONTROLLER_TITLE" = "登入";
 
-/* Confirmation text for Signing Out */
+/* No comment provided by engineer. */
 "SIGN_OUT_CONFIRMATION" = "確定登出？";
 
 /* Title of bar button going sign up page */
@@ -525,11 +484,8 @@
 /* Title of view controller setting personal cloud */
 "STORAGE_SETUP_CONTROLLER_TITLE" = "設定個人雲";
 
-/* Title on the text stack more / less toggle button for “Less” */
-"TEXT_ELEMENT_TOGGLE_LESS_TITLE" = "更少";
-
-/* Title on the text stack more / less toggle button for “More” */
-"TEXT_ELEMENT_TOGGLE_MORE_TITLE" = "更多";
+/* storage usage detail in settings page */
+"STORAGE_USAGE_DETAIL" = "%.1f%% of %@";
 
 /* Title of Canlendar */
 "TITLE_CALENDAR" = "月曆";
@@ -565,9 +521,6 @@
    Email placeholder in signup page */
 "USERNAME_PLACEHOLDER" = "me@example.com";
 
-/* preview button in composition view */
-"WEB_PREVIEW" = "預覽";
-
 /* Title of web service settings view controller */
 "WEB_SERVICES_TITLE" = "網路服務";
 
@@ -585,12 +538,6 @@
 
 /* No comment provided by engineer. */
 "YEAR_SINGULAR" = "%d年";
-
-/* Class = "IBUIButton"; normalTitle = "ACTION_SEND"; ObjectID = "29"; */
-"ACTION_SEND" = "傳送";
-
-/* Class = "IBUILabel"; text = "COMMENTS_VIEW_CONTROLLER_NO_COMMENTS_TITLE"; ObjectID = "35"; */
-"COMMENTS_VIEW_CONTROLLER_NO_COMMENTS_TITLE" = "沒有筆記";
 
 /* Class = "IBUILabel"; text = "COMPOSITION_NO_PHOTO_REMINDER_TITLE"; ObjectID = "25"; */
 "COMPOSITION_NO_PHOTO_REMINDER_TITLE" = "沒有照片";
@@ -718,35 +665,8 @@
 /* Class = "IBUILabel"; text = "STATE_LOADING_SINGLE_DOCUMENT_PROGRESS"; ObjectID = "10"; */
 "STATE_LOADING_SINGLE_DOCUMENT_PROGRESS" = "%1 / %2";
 
-/* Class = "IBUIButton"; normalTitle = "ACTION_DISMISS_TUTORIAL"; ObjectID = "43"; */
-"ACTION_DISMISS_TUTORIAL" = "暫時不要";
-
-/* Class = "IBUILabel"; text = "FACEBOOK_IMPORT_TUTORIAL_SWITCH"; ObjectID = "55"; */
-"FACEBOOK_IMPORT_TUTORIAL_SWITCH" = "Facebook同步";
-
-/* Class = "IBUITextView"; text = "FACEBOOK_IMPORT_TUTORIAL"; ObjectID = "56"; */
-"FACEBOOK_IMPORT_TUTORIAL" = "Stream可以將您過去張貼在Facebook上面的資料下載並且存放到您個人的時間軸上。未來您在Facebook上面的新貼文，都會同步備份到您的Stream。\n\n您可以在主畫面中的帳戶資訊，啓動或者停止這項同步功能。";
-
-/* Class = "IBUITextView"; text = "PHOTO_IMPORT_TUTORIAL"; ObjectID = "62"; */
-"PHOTO_IMPORT_TUTORIAL" = "立即啟用自動匯入功能，往後您相機膠卷中的所有照片，將自動同步至您的PC及其他裝置中，隨時欣賞跟分享。";
-
-/* Class = "IBUIButton"; normalTitle = "ACTION_IMPORT_PHOTO"; ObjectID = "63"; */
-"ACTION_IMPORT_PHOTO" = "確定匯入";
-
-/* Class = "IBUIButton"; normalTitle = "ACTION_DISMISS_TUTORIAL"; ObjectID = "43"; */
-"ACTION_DISMISS_TUTORIAL" = "暫時不要";
-
-/* Class = "IBUITextView"; text = "FACEBOOK_IMPORT_TUTORIAL_IPAD"; ObjectID = "46"; */
-"FACEBOOK_IMPORT_TUTORIAL_IPAD" = "Stream可以將您過去張貼在Facebook上面的資料下載並且存放到您個人的時間軸上。未來您在Facebook上面的新貼文，都會同步備份到您的Stream。\n\n您可以在主畫面中的帳戶資訊，啓動或者停止這項同步功能。";
-
-/* Class = "IBUILabel"; text = "FACEBOOK_IMPORT_TUTORIAL_SWITCH_IPAD"; ObjectID = "49"; */
-"FACEBOOK_IMPORT_TUTORIAL_SWITCH_IPAD" = "Facebook同步";
-
-/* Class = "IBUITextView"; text = "PHOTO_IMPORT_TUTORIAL_IPAD"; ObjectID = "55"; */
-"PHOTO_IMPORT_TUTORIAL_IPAD" = "立即啟用自動匯入功能，往後您相機膠卷中的所有照片，將自動同步至您的PC及其他裝置中，隨時欣賞跟分享。";
-
-/* Class = "IBUIButton"; normalTitle = "ACTION_IMPORT_PHOTO"; ObjectID = "58"; */
-"ACTION_IMPORT_PHOTO" = "確定匯入";
+/* Class = "IBUILabel"; text = "ACTION_GOTO_WEBSITE"; ObjectID = "0UL-JF-5TW"; */
+"ACTION_GOTO_WEBSITE" = "在網站上檢視詳細方案";
 
 /* Class = "IBUILabel"; text = "PC_SETUP_DESCRIPTION"; ObjectID = "1TK-Px-G5L"; */
 "PC_SETUP_DESCRIPTION" = "AOStream Windows 可以將你的 PC 升級成個人雲，透過它傳輸速度將會加快一百倍！";
@@ -774,6 +694,9 @@
 
 /* Class = "IBUILabel"; text = "FILES_TO_UPLOAD"; ObjectID = "Ldp-qK-xdo"; */
 "FILES_TO_UPLOAD" = "待上傳照片";
+
+/* Class = "IBUILabel"; text = "PLANS_DESCRIPTION"; ObjectID = "MRD-E4-twD"; */
+"PLANS_DESCRIPTION" = "Stream 會將你所有的寶貝檔案存放在指定的位置，你可以選擇存在家裡的 PC，或者付費獲得額外的雲端儲存空間，讓你可以隨時隨地取得原始檔案。";
 
 /* Class = "IBUILabel"; text = "USE_CELLULAR"; ObjectID = "Scf-t9-USz"; */
 "USE_CELLULAR" = "使用 3G 上傳";

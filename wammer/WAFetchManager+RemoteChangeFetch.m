@@ -34,7 +34,7 @@
     WARemoteInterface *ri = [WARemoteInterface sharedInterface];
     
     [ri retrieveChangesSince:currentSeq inGroup:ri.primaryGroupIdentifier onSuccess:^(NSArray *changedArticles, NSArray *changedFiles, NSNumber *nextSeq) {
-
+      
       // no changed articles/files
       if (![changedArticles count] && ![changedFiles count]) {
         [wSelf endPostponingFetch];
@@ -50,57 +50,57 @@
         [sentChangedArticleIDs addObject:obj[@"post_id"]];
         if ([sentChangedArticleIDs count] == MAX_CHANGED_ARTICLES_COUNT || idx == [changedArticles count] - 1) {
 	
-		  NSArray *sentChangedArticleIDsCopy = [NSArray arrayWithArray:sentChangedArticleIDs];
-		  IRAsyncOperation *operation = [IRAsyncOperation operationWithWorker:^(IRAsyncOperationCallback callback) {
+	NSArray *sentChangedArticleIDsCopy = [NSArray arrayWithArray:sentChangedArticleIDs];
+	IRAsyncOperation *operation = [IRAsyncOperation operationWithWorker:^(IRAsyncOperationCallback callback) {
 	  
-			[ri retrievePostsInGroup:ri.primaryGroupIdentifier withIdentifiers:sentChangedArticleIDsCopy onSuccess:^(NSArray *postReps) {
+	  [ri retrievePostsInGroup:ri.primaryGroupIdentifier withIdentifiers:sentChangedArticleIDsCopy onSuccess:^(NSArray *postReps) {
 	    
-			  [ds performBlock:^{
+	    [ds performBlock:^{
 	      
-				NSManagedObjectContext *context = [ds autoUpdatingMOC];
-				NSArray *touchedArticles = [WAArticle insertOrUpdateObjectsUsingContext:context withRemoteResponse:postReps usingMapping:nil options:IRManagedObjectOptionIndividualOperations];
+	      NSManagedObjectContext *context = [ds autoUpdatingMOC];
+	      NSArray *touchedArticles = [WAArticle insertOrUpdateObjectsUsingContext:context withRemoteResponse:postReps usingMapping:nil options:IRManagedObjectOptionIndividualOperations];
 	      
-				[touchedArticles enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+	      [touchedArticles enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
 	        
-				  WAArticle *article = obj;
-				  if ([ds isUpdatingArticle:[[article objectID] URIRepresentation]]) {
-					[context refreshObject:article mergeChanges:NO];
-				  }
+	        WAArticle *article = obj;
+	        if ([ds isUpdatingArticle:[[article objectID] URIRepresentation]]) {
+		[context refreshObject:article mergeChanges:NO];
+	        }
 	        
-				}];
+	      }];
 	      
-				[context save:nil];
+	      [context save:nil];
 	      
-			  } waitUntilDone:YES];
+	    } waitUntilDone:YES];
 	    
-			  callback(nil);
+	    callback(nil);
 	    
-			} onFailure:^(NSError *error) {
+	  } onFailure:^(NSError *error) {
 	    
-			  NSLog(@"Unable to fetch posts in %@, error:%@", sentChangedArticleIDs, error);
-			  callback(error);
+	    NSLog(@"Unable to fetch posts in %@, error:%@", sentChangedArticleIDs, error);
+	    callback(error);
 	    
-			}];
+	  }];
 	  
-		  } trampoline:^(IRAsyncOperationInvoker callback) {
+	} trampoline:^(IRAsyncOperationInvoker callback) {
 	  
-			NSCParameterAssert(![NSThread isMainThread]);
-			callback();
+	  NSCParameterAssert(![NSThread isMainThread]);
+	  callback();
 	  
-		  } callback:^(id results) {
+	} callback:^(id results) {
 	  
-			// NO OP
+	  // NO OP
 	  
-		  } callbackTrampoline:^(IRAsyncOperationInvoker callback) {
+	} callbackTrampoline:^(IRAsyncOperationInvoker callback) {
 	  
-			NSCParameterAssert(![NSThread isMainThread]);
-			callback();
+	  NSCParameterAssert(![NSThread isMainThread]);
+	  callback();
 	  
-		  }];
+	}];
 	
-		  [wSelf.articleFetchOperationQueue addOperation:operation];
+	[wSelf.articleFetchOperationQueue addOperation:operation];
 	
-		  [sentChangedArticleIDs removeAllObjects];
+	[sentChangedArticleIDs removeAllObjects];
 	
         }
         
@@ -116,45 +116,59 @@
         
         [outdatedFiles addObject:attach];
       }
-
+      
       [ds performBlock:^{
         
         NSManagedObjectContext *context = [[WADataStore defaultStore] disposableMOC];
         [WAFile insertOrUpdateObjectsUsingContext:context
-							   withRemoteResponse:outdatedFiles
-									 usingMapping:nil
-										  options:IRManagedObjectOptionIndividualOperations];
+			 withRemoteResponse:outdatedFiles
+			       usingMapping:nil
+				  options:IRManagedObjectOptionIndividualOperations];
         [context save:nil];
         
       } waitUntilDone:YES];
       
       // add tail operation to article fetch operation queue
-      NSOperation *tailOp = [NSBlockOperation blockOperationWithBlock:^{
+      IRAsyncBarrierOperation *tailOp = [IRAsyncBarrierOperation operationWithWorker:^(IRAsyncOperationCallback callback) {
         [ds setMaxSequenceNumber:nextSeq];
-        [wSelf endPostponingFetch];
         callback(nil);
+      } trampoline:^(IRAsyncOperationInvoker callback) {
+        NSCParameterAssert(![NSThread isMainThread]);
+        callback();
+      } callback:^(id results) {
+        // -[WASyncManager endPostponingSync] must be called no matter the operations are succeed or not
+        [wSelf endPostponingFetch];
+        callback(results);
+      } callbackTrampoline:^(IRAsyncOperationInvoker callback) {
+        NSCParameterAssert(![NSThread isMainThread]);
+        callback();
       }];
       
-      for (NSOperation *operation in [wSelf.articleFetchOperationQueue operations]) {
+      for (IRAsyncOperation *operation in [wSelf.articleFetchOperationQueue operations]) {
         [tailOp addDependency:operation];
       }
       
       [wSelf.articleFetchOperationQueue addOperation:tailOp];
-
+      
     } onFailure:^(NSError *error) {
+      
+      if (error.code == (0xB000 + 5)) {
 
-	  if (error.code == (0xB000 + 5)) {
-		
-		NSLog(@"Reset the min seq number and re-fetch all posts: %@", error);
-		[[NSUserDefaults standardUserDefaults] setBool:YES forKey:kWAFirstArticleFetched];
-		[ds setMinSequenceNumber:@(INT_MAX)]; // restart fetching the articles from current sequential number
+        // No OP for USERTRACK.NO_USERTRACKS_TO_HANDLE
 
-	  } else {
-		
-		NSLog(@"Unable to fetch remote changes since %@, error: %@", currentSeq, error);
-		
-	  }
-	  
+      } else if (error.code == (0xB000 + 4) || error.code == (0xB000 + 7)) {
+
+        // Refetch all posts for USERTRACK.TOO_OLD_SEQ_NUM & USERTRACK.TOO_MANY_TO_HANDLE
+        NSLog(@"Reset the min seq number and re-fetch all posts: %@", error);
+        [[NSUserDefaults standardUserDefaults] setBool:NO forKey:kWAFirstArticleFetched];
+        [ds setMinSequenceNumber:@(INT_MAX)]; // restart fetching the articles from current sequential number
+        
+      } else {
+        
+        NSLog(@"Unable to fetch remote changes since %@, error: %@", currentSeq, error);
+        
+      }
+      
       [wSelf endPostponingFetch];
       callback(error);
       

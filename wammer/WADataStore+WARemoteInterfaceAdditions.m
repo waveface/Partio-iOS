@@ -13,6 +13,7 @@
 #import "WAOverlayBezel.h"
 
 #import "WAFacebookConnectionSwitch.h"
+#import "WAStation.h"
 
 NSString * const kWADataStoreArticleUpdateShowsBezels = @"WADataStoreArticleUpdateShowsBezels";
 
@@ -139,13 +140,16 @@ NSString * const kWADataStoreArticleUpdateShowsBezels = @"WADataStoreArticleUpda
   
   NSManagedObjectContext *context = [self disposableMOC];
   WAArticle *article = (WAArticle *)[context irManagedObjectForURI:anArticleURI];
-  
-  dispatch_sync(dispatch_get_main_queue(), ^{
-    [[self articlesCurrentlyBeingUpdated] addObject:anArticleURI];
-  });
-  
   __weak WADataStore *wSelf = self;
-  
+
+  if ([NSThread isMainThread]) {
+	[[self articlesCurrentlyBeingUpdated] addObject:anArticleURI];
+  } else {
+	dispatch_sync(dispatch_get_main_queue(), ^{
+	  [[wSelf articlesCurrentlyBeingUpdated] addObject:anArticleURI];
+	});
+  }
+
   void (^fireCallback)(BOOL, NSError *) = ^ (BOOL didFinish, NSError *error) {
     
     if (didFinish) {
@@ -159,10 +163,14 @@ NSString * const kWADataStoreArticleUpdateShowsBezels = @"WADataStoreArticleUpda
         failureBlock(error);
       
     }
-    
-    dispatch_sync(dispatch_get_main_queue(), ^{
-      [[wSelf articlesCurrentlyBeingUpdated] removeObject:anArticleURI];
-    });
+   
+	if ([NSThread isMainThread]) {
+	  [[wSelf articlesCurrentlyBeingUpdated] addObject:anArticleURI];
+	} else {
+	  dispatch_sync(dispatch_get_main_queue(), ^{
+		[[wSelf articlesCurrentlyBeingUpdated] removeObject:anArticleURI];
+	  });
+	}
     
   };
   
@@ -265,6 +273,20 @@ NSString * const kWADataStoreArticleUpdateShowsBezels = @"WADataStoreArticleUpda
         
       }
       
+      // delete uninstalled stations
+      for (WAStation *station in user.stations) {
+        BOOL found = NO;
+        for (NSDictionary *stationRep in userRep[@"stations"]) {
+	if ([station.identifier isEqualToString:stationRep[@"station_id"]]) {
+	  found = YES;
+	  break;
+	}
+        }
+        if (!found) {
+	[context deleteObject:station];
+        }
+      }
+
       NSArray *touchedUsers = [WAUser insertOrUpdateObjectsUsingContext:context withRemoteResponse:@[userRep] usingMapping:nil options:0];
       
       NSCParameterAssert([touchedUsers count] == 1);
@@ -274,7 +296,24 @@ NSString * const kWADataStoreArticleUpdateShowsBezels = @"WADataStoreArticleUpda
       if (![context save:&savingError])
         NSLog(@"%@: %@", NSStringFromSelector(_cmd), savingError);
       
-      
+      if ([userRep[@"billing"][@"type"] isEqualToString:@"free"]) {
+        [[NSUserDefaults standardUserDefaults] setInteger:WABusinessPlanFree forKey:kWABusinessPlan];
+        [[NSUserDefaults standardUserDefaults] setBool:NO forKey:kWABackupFilesToCloudEnabled];
+        NSNumber *docQuota = userRep[@"quota"][@"doc"][@"origin_size"];
+        NSNumber *imageQuota = userRep[@"quota"][@"image"][@"origin_size"];
+        [wSelf setStorageQuota:@([docQuota unsignedIntegerValue] + [imageQuota unsignedIntegerValue])];
+        NSNumber *docUsage = userRep[@"usage"][@"doc"][@"origin_size"];
+        NSNumber *imageUsage = userRep[@"usage"][@"image"][@"origin_size"];
+        [wSelf setStorageUsage:@([docUsage unsignedIntegerValue] + [imageUsage unsignedIntegerValue])];
+      } else {
+        [[NSUserDefaults standardUserDefaults] setInteger:WABusinessPlanUltimate forKey:kWABusinessPlan];
+        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:kWABackupFilesToCloudEnabled];
+        NSNumber *totalQuota = userRep[@"quota"][@"total"][@"origin_size"];
+        NSNumber *totalUsage = userRep[@"usage"][@"total"][@"origin_size"];
+        [wSelf setStorageQuota:totalQuota];
+        [wSelf setStorageUsage:totalUsage];
+      }
+
       if (snsReps) {
         NSArray *facebookReps = [snsReps filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^ (id evaluatedObject, NSDictionary *bindings) {
 	
@@ -293,7 +332,7 @@ NSString * const kWADataStoreArticleUpdateShowsBezels = @"WADataStoreArticleUpda
         }
         
         dispatch_async(dispatch_get_main_queue(), ^{
-	[[NSUserDefaults standardUserDefaults] setBool:importing forKey:kWAFacebookUserDataImport];
+	[[NSUserDefaults standardUserDefaults] setBool:importing forKey:kWASNSFacebookConnectEnabled];
         });
         
       }
