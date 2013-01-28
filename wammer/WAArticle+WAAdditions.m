@@ -63,10 +63,7 @@
 
 	if ([self.files count])
 		return YES;
-	
-	if ([self.previews count])
-		return YES;
-	
+		
 	if ([[self.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] length])
 		return YES;
 
@@ -91,7 +88,7 @@
 
 - (NSDate *) presentationDate {
 
-	return self.creationDate;
+	return self.eventStartDate;
 
 }
 

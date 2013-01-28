@@ -316,8 +316,8 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
     
   }
 
-  if ([aLocalKeyPath isEqualToString:@"hidden"])
-    return (![aValue isEqual:@"false"] && ![aValue isEqual:@"0"] && ![aValue isEqual:@0]) ? (id)kCFBooleanTrue : (id)kCFBooleanFalse;
+//  if ([aLocalKeyPath isEqualToString:@"hidden"])
+//    return (![aValue isEqual:@"false"] && ![aValue isEqual:@"0"] && ![aValue isEqual:@0]) ? (id)kCFBooleanTrue : (id)kCFBooleanFalse;
 
   return [super transformedValue:aValue fromRemoteKeyPath:aRemoteKeyPath toLocalKeyPath:aLocalKeyPath];
   

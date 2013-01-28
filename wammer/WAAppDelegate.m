@@ -247,10 +247,8 @@
 				return;
 				
 			[tentativeUser addArticles:otherUser.articles];
-			[tentativeUser addComments:otherUser.articles];
 			[tentativeUser addFiles:otherUser.articles];
 			[tentativeUser addGroups:otherUser.articles];
-			[tentativeUser addPreviews:otherUser.articles];
 			[tentativeUser addStorages:otherUser.articles];
 			
 			[otherUser.managedObjectContext deleteObject:otherUser];
