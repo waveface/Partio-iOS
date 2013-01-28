@@ -20,7 +20,7 @@ static NSString * kWAEventPageViewKVOContext = @"WAEventPageViewKVOContext";
 @interface WAEventPageView ()
 
 @property (nonatomic, strong) WAArticle *representingArticle;
-@property (nonatomic) BOOL shouldLoadImages;
+@property (nonatomic) BOOL shouldDisplayImages;
 
 @end
 
@@ -59,11 +59,12 @@ static NSString * kWAEventPageViewKVOContext = @"WAEventPageViewKVOContext";
 - (void)loadImages {
 
   NSParameterAssert([NSThread isMainThread]);
-  self.shouldLoadImages = YES;
+
+  self.shouldDisplayImages = YES;
 
   if ([self.representingArticle.files count] > 0) {
     __weak WAEventPageView *wSelf = self;
-    [self.imageViews enumerateObjectsUsingBlock:^(UIImageView *imageView, NSUInteger idx, BOOL *stop) {
+    [self.imageViews enumerateObjectsWithOptions:NSEnumerationReverse usingBlock:^(UIImageView *imageView, NSUInteger idx, BOOL *stop) {
       if (imageView.image) {
         return;
       }
@@ -74,21 +75,10 @@ static NSString * kWAEventPageViewKVOContext = @"WAEventPageViewKVOContext";
       [file irObserve:@"smallThumbnailFilePath" options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew context:&kWAEventPageViewKVOContext withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
         if (toValue) {
 	NSString *filePath = [toValue copy];
-	[[[wSelf class] sharedImageDisplayQueue] addOperationWithBlock:^{
-	  if (imageView.image || !wSelf.shouldLoadImages) {
-	    return;
-	  }
-	  UIImage *decompressedImage = [filePath loadDecompressedImage];
-	  UIImage *backgroundImage = [decompressedImage stackBlur:5];
-	  dispatch_sync(dispatch_get_main_queue(), ^{
-	    if (wSelf.shouldLoadImages) {
-	      if (idx == 0) {
-	        wSelf.blurredBackgroundImage = backgroundImage;
-	      }
-	      imageView.image = decompressedImage;
-	    }
-	  });
-	}];
+	[wSelf insertImageDisplayOperationWithFilePath:filePath imageView:imageView isBackgroundImage:(idx == 0)];
+	if (![[[wSelf class] sharedImageDisplayQueue] operationCount]) {
+	  [wSelf enqueueImageDisplayOperationIfNeeded];
+	}
         }
       }];
     }];
@@ -105,12 +95,63 @@ static NSString * kWAEventPageViewKVOContext = @"WAEventPageViewKVOContext";
 - (void)unloadImages {
 
   NSParameterAssert([NSThread isMainThread]);
-  self.shouldLoadImages = NO;
+  self.shouldDisplayImages = NO;
 
   for (UIImageView *imageView in self.imageViews) {
     imageView.image = nil;
   }
   self.blurredBackgroundImage = nil;
+
+}
+
+- (void)insertImageDisplayOperationWithFilePath:(NSString *)filePath imageView:(UIImageView *)imageView isBackgroundImage:(BOOL)isBackgroundImage {
+
+  NSMutableArray *enqueuedImageFilePaths = [[self class] sharedEnqueuedImageFilePaths];
+  NSMutableArray *enqueuedImageDisplayOperations = [[self class] sharedEnqueuedImageDisplayOperations];
+  NSUInteger index = [enqueuedImageFilePaths indexOfObject:filePath];
+  if (index == NSNotFound) {
+    __weak WAEventPageView *wSelf = self;
+    [enqueuedImageFilePaths insertObject:filePath atIndex:0];
+    NSBlockOperation *operation = [NSBlockOperation blockOperationWithBlock:^{
+      if (imageView.image || !wSelf.shouldDisplayImages) {
+        dispatch_sync(dispatch_get_main_queue(), ^{
+	[wSelf enqueueImageDisplayOperationIfNeeded];
+        });
+        return;
+      }
+      UIImage *decompressedImage = [filePath loadDecompressedImage];
+      UIImage *backgroundImage = [decompressedImage stackBlur:5];
+      dispatch_sync(dispatch_get_main_queue(), ^{
+        if (wSelf.shouldDisplayImages) {
+	if (isBackgroundImage) {
+	  wSelf.blurredBackgroundImage = backgroundImage;
+	}
+	imageView.image = decompressedImage;
+        }
+        [wSelf enqueueImageDisplayOperationIfNeeded];
+      });
+    }];
+    [enqueuedImageDisplayOperations insertObject:operation atIndex:0];
+  } else {
+    [enqueuedImageFilePaths removeObjectAtIndex:index];
+    [enqueuedImageFilePaths insertObject:filePath atIndex:0];
+    NSBlockOperation *operation = [enqueuedImageDisplayOperations objectAtIndex:index];
+    [enqueuedImageDisplayOperations removeObjectAtIndex:index];
+    [enqueuedImageDisplayOperations insertObject:operation atIndex:0];
+  }
+
+}
+
+- (void)enqueueImageDisplayOperationIfNeeded {
+
+  NSMutableArray *enqueuedImageFilePaths = [[self class] sharedEnqueuedImageFilePaths];
+  NSMutableArray *enqueuedImageDisplayOperations = [[self class] sharedEnqueuedImageDisplayOperations];
+  if ([enqueuedImageFilePaths count]) {
+    [enqueuedImageFilePaths removeObjectAtIndex:0];
+    NSBlockOperation *operation = enqueuedImageDisplayOperations[0];
+    [enqueuedImageDisplayOperations removeObjectAtIndex:0];
+    [[[self class] sharedImageDisplayQueue] addOperation:operation];
+  }
 
 }
 
@@ -122,6 +163,28 @@ static NSString * kWAEventPageViewKVOContext = @"WAEventPageViewKVOContext";
     }];
   }
   
+}
+
++ (NSMutableArray *)sharedEnqueuedImageFilePaths {
+
+  static NSMutableArray *enqueuedImageFilePaths;
+  static dispatch_once_t onceToken;
+  dispatch_once(&onceToken, ^{
+    enqueuedImageFilePaths = [NSMutableArray array];
+  });
+  return enqueuedImageFilePaths;
+
+}
+
++ (NSMutableArray *)sharedEnqueuedImageDisplayOperations {
+
+  static NSMutableArray *enqueuedImageLoadingOperations;
+  static dispatch_once_t onceToken;
+  dispatch_once(&onceToken, ^{
+    enqueuedImageLoadingOperations = [NSMutableArray array];
+  });
+  return enqueuedImageLoadingOperations;
+
 }
 
 + (NSOperationQueue *)sharedImageDisplayQueue {

@@ -15,26 +15,22 @@
 + (WASummaryPageView *)viewFromNib {
 
   WASummaryPageView *view = [[[UINib nibWithNibName:@"WASummaryPageView" bundle:[NSBundle mainBundle]] instantiateWithOwner:nil options:nil] lastObject];
-//  self.photosButton.layer.borderColor = [UIColor whiteColor].CGColor;
-//  self.photosButton.layer.borderWidth = 1.0;
-//  self.photosButton.backgroundColor = [[UIColor whiteColor] colorWithAlphaComponent:0.3];
-//  self.documentsButton.layer.borderColor = [UIColor whiteColor].CGColor;
-//  self.documentsButton.layer.borderWidth = 1.0;
-//  self.documentsButton.backgroundColor = [[UIColor whiteColor] colorWithAlphaComponent:0.3];
-//  self.webpagesButton.layer.borderColor = [UIColor whiteColor].CGColor;
-//  self.webpagesButton.layer.borderWidth = 1.0;
-//  self.webpagesButton.backgroundColor = [[UIColor whiteColor] colorWithAlphaComponent:0.3];
   
   return view;
 }
 
-- (id)initWithFrame:(CGRect)frame
-{
-    self = [super initWithFrame:frame];
-    if (self) {
-        // Initialization code
-    }
-    return self;
+- (void)awakeFromNib {
+
+  self.photosButton.layer.borderColor = [UIColor whiteColor].CGColor;
+  self.photosButton.layer.borderWidth = 1.0;
+  self.photosButton.backgroundColor = [[UIColor whiteColor] colorWithAlphaComponent:0.3];
+  self.documentsButton.layer.borderColor = [UIColor whiteColor].CGColor;
+  self.documentsButton.layer.borderWidth = 1.0;
+  self.documentsButton.backgroundColor = [[UIColor whiteColor] colorWithAlphaComponent:0.3];
+  self.webpagesButton.layer.borderColor = [UIColor whiteColor].CGColor;
+  self.webpagesButton.layer.borderWidth = 1.0;
+  self.webpagesButton.backgroundColor = [[UIColor whiteColor] colorWithAlphaComponent:0.3];
+
 }
 
 - (void)setDate:(NSDate *)date {
