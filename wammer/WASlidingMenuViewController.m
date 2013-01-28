@@ -33,6 +33,8 @@
 #import <QuartzCore/QuartzCore.h>
 #import "WASummaryViewController.h"
 
+static NSString * kWASlidingMenuViewControllerKVOContext = @"WASlidingMenuViewControllerKVOContext";
+
 @interface WASlidingMenuViewController () <UIPopoverControllerDelegate>
 
 @property (nonatomic, strong) NSManagedObjectContext *managedObjectContext;
@@ -74,6 +76,11 @@
   WANavigationController *navVC = [[WANavigationController alloc] initWithRootViewController:swVC];
   
   swVC.view.backgroundColor = [UIColor colorWithRed:0.95f green:0.95f blue:0.95f alpha:1];
+
+  if (viewStyle == WAEventsViewStyle) {
+    swVC.navigationController.navigationBar.titleTextAttributes = @{UITextAttributeTextColor: [UIColor whiteColor]};
+  }
+  
   if (viewStyle == WAPhotosViewStyle) {
     [swVC.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"photoStreamNavigationBar"] forBarMetrics:UIBarMetricsDefault];
     swVC.view.backgroundColor = [UIColor colorWithWhite:0.16f alpha:1.0f];
@@ -100,8 +107,8 @@
 
 - (void)dealloc
 {
-  [self.user removeObserver:self forKeyPath:@"avatar"];
-  [self.user removeObserver:self forKeyPath:@"nickname"];
+  [self.user removeObserver:self forKeyPath:@"avatar" context:&kWASlidingMenuViewControllerKVOContext];
+  [self.user removeObserver:self forKeyPath:@"nickname" context:&kWASlidingMenuViewControllerKVOContext];
 }
 
 - (void)didReceiveMemoryWarning
@@ -151,8 +158,8 @@
 {
   NSKeyValueObservingOptions options = NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew;
   
-  [self.user addObserver:self forKeyPath:@"avatar" options:options context:nil];
-  [self.user addObserver:self forKeyPath:@"nickname" options:options context:nil];
+  [self.user addObserver:self forKeyPath:@"avatar" options:options context:&kWASlidingMenuViewControllerKVOContext];
+  [self.user addObserver:self forKeyPath:@"nickname" options:options context:&kWASlidingMenuViewControllerKVOContext];
   
 }
 
@@ -270,9 +277,7 @@
     _userCell.selectionStyle = UITableViewCellSelectionStyleNone;
     
     
-    if ([[self.user observationInfo] count] == 0) {
-      [self registerObserver];
-    }
+    [self registerObserver];
     
     return _userCell;
     

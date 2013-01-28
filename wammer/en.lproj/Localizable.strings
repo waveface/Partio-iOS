@@ -685,6 +685,7 @@
 
 /* Class = "IBUILabel"; text = "EVENT_TEXT"; ObjectID = "50"; */
 "EVENT_TEXT" = "EVENT_TEXT";
+
 /* Class = "IBUILabel"; text = "ACTION_GOTO_WEBSITE"; ObjectID = "0UL-JF-5TW"; */
 "ACTION_GOTO_WEBSITE" = "Learn more on our website.";
 

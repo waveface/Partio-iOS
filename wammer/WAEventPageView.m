@@ -17,6 +17,13 @@
 
 static NSString * kWAEventPageViewKVOContext = @"WAEventPageViewKVOContext";
 
+typedef NS_ENUM(NSInteger, WACurrentlyDisplayingImage) {
+  WACurrentlyNotDisplayingImage,
+  WACurrentlyDisplayingExtraSmallThumbnailImage,
+  WACurrentlyDisplayingSmallThumbnailImage,
+  WACurrentlyDisplayingEmptyImage
+};
+
 @interface WAEventPageView ()
 
 @property (nonatomic, strong) WAArticle *representingArticle;
@@ -46,9 +53,8 @@ static NSString * kWAEventPageViewKVOContext = @"WAEventPageViewKVOContext";
       break;
   };
 
-  for (UIView *containerView in view.containerViews) {
-    containerView.layer.cornerRadius = 10.0;
-  }
+  NSParameterAssert([view.containerViews count] == 1);
+  [view.containerViews[0] layer].cornerRadius = 10.0;
 
   view.representingArticle = article;
 
@@ -65,7 +71,7 @@ static NSString * kWAEventPageViewKVOContext = @"WAEventPageViewKVOContext";
   if ([self.representingArticle.files count] > 0) {
     __weak WAEventPageView *wSelf = self;
     [self.imageViews enumerateObjectsWithOptions:NSEnumerationReverse usingBlock:^(UIImageView *imageView, NSUInteger idx, BOOL *stop) {
-      if (imageView.image) {
+      if (imageView.tag == WACurrentlyDisplayingSmallThumbnailImage) {
         return;
       }
       imageView.clipsToBounds = YES;
@@ -75,18 +81,29 @@ static NSString * kWAEventPageViewKVOContext = @"WAEventPageViewKVOContext";
       [file irObserve:@"smallThumbnailFilePath" options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew context:&kWAEventPageViewKVOContext withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
         if (toValue) {
 	NSString *filePath = [toValue copy];
-	[wSelf insertImageDisplayOperationWithFilePath:filePath imageView:imageView isBackgroundImage:(idx == 0)];
-	if (![[[wSelf class] sharedImageDisplayQueue] operationCount]) {
-	  [wSelf enqueueImageDisplayOperationIfNeeded];
-	}
+	[wSelf insertImageDisplayOperationWithFilePath:filePath
+				       imageType:WACurrentlyDisplayingSmallThumbnailImage
+				       imageView:imageView
+			         isBackgroundImage:(idx == 0)];
+        } else {
+	NSString *filePath = [file.extraSmallThumbnailFilePath copy];
+	[wSelf insertImageDisplayOperationWithFilePath:filePath
+				       imageType:WACurrentlyDisplayingExtraSmallThumbnailImage
+				       imageView:imageView
+			         isBackgroundImage:(idx == 0)];
+        }
+        if (![[[wSelf class] sharedImageDisplayQueue] operationCount]) {
+	[wSelf enqueueImageDisplayOperationIfNeeded];
         }
       }];
     }];
   } else {
     UIImageView *imageView = self.imageViews[0];
-    if (!imageView.image) {
-      imageView.image = [WASummaryViewController sharedBackgroundImage];
-      self.blurredBackgroundImage = [WASummaryViewController sharedBackgroundImage];
+    if (imageView.tag != WACurrentlyDisplayingEmptyImage) {
+      [self.containerViews[0] setBackgroundColor:[[UIColor clearColor] colorWithAlphaComponent:0.0]];
+      imageView.image = [[self class] sharedNoEventImage];
+      self.blurredBackgroundImage = [[self class] sharedNoEventBackgroundImage];
+      imageView.tag = WACurrentlyDisplayingEmptyImage;
     }
   }
 
@@ -99,13 +116,18 @@ static NSString * kWAEventPageViewKVOContext = @"WAEventPageViewKVOContext";
 
   for (UIImageView *imageView in self.imageViews) {
     imageView.image = nil;
+    imageView.tag = WACurrentlyNotDisplayingImage;
   }
   self.blurredBackgroundImage = nil;
 
 }
 
-- (void)insertImageDisplayOperationWithFilePath:(NSString *)filePath imageView:(UIImageView *)imageView isBackgroundImage:(BOOL)isBackgroundImage {
+- (void)insertImageDisplayOperationWithFilePath:(NSString *)filePath imageType:(NSInteger)displayingImageType imageView:(UIImageView *)imageView isBackgroundImage:(BOOL)isBackgroundImage {
 
+  if (![[NSFileManager defaultManager] fileExistsAtPath:filePath]) {
+    return;
+  }
+  
   NSMutableArray *enqueuedImageFilePaths = [[self class] sharedEnqueuedImageFilePaths];
   NSMutableArray *enqueuedImageDisplayOperations = [[self class] sharedEnqueuedImageDisplayOperations];
   NSUInteger index = [enqueuedImageFilePaths indexOfObject:filePath];
@@ -113,7 +135,7 @@ static NSString * kWAEventPageViewKVOContext = @"WAEventPageViewKVOContext";
     __weak WAEventPageView *wSelf = self;
     [enqueuedImageFilePaths insertObject:filePath atIndex:0];
     NSBlockOperation *operation = [NSBlockOperation blockOperationWithBlock:^{
-      if (imageView.image || !wSelf.shouldDisplayImages) {
+      if (imageView.tag == displayingImageType || imageView.tag == WACurrentlyDisplayingSmallThumbnailImage || !wSelf.shouldDisplayImages) {
         dispatch_sync(dispatch_get_main_queue(), ^{
 	[wSelf enqueueImageDisplayOperationIfNeeded];
         });
@@ -126,7 +148,8 @@ static NSString * kWAEventPageViewKVOContext = @"WAEventPageViewKVOContext";
 	if (isBackgroundImage) {
 	  wSelf.blurredBackgroundImage = backgroundImage;
 	}
-	imageView.image = decompressedImage;
+	[imageView addCrossFadeAnimationWithTargetImage:decompressedImage];
+	imageView.tag = displayingImageType;
         }
         [wSelf enqueueImageDisplayOperationIfNeeded];
       });
@@ -159,10 +182,36 @@ static NSString * kWAEventPageViewKVOContext = @"WAEventPageViewKVOContext";
 
   if ([self.representingArticle.files count] > 0) {
     [self.imageViews enumerateObjectsUsingBlock:^(UIImageView *imageView, NSUInteger idx, BOOL *stop) {
-      [self.representingArticle.files[idx] irRemoveObserverBlocksForKeyPath:@"smallThumbnailImage" context:&kWAEventPageViewKVOContext];
+      [self.representingArticle.files[idx] irRemoveObserverBlocksForKeyPath:@"smallThumbnailFilePath" context:&kWAEventPageViewKVOContext];
     }];
   }
   
+}
+
++ (UIImage *)sharedNoEventBackgroundImage {
+  
+  static UIImage *backgroundImage;
+  static dispatch_once_t onceToken;
+  dispatch_once(&onceToken, ^{
+    if ([UIScreen mainScreen].bounds.size.height == 568) {
+      backgroundImage = [[UIImage imageNamed:@"WASummaryNoEventBackground~568h"] stackBlur:5.0];
+    } else {
+      backgroundImage = [[UIImage imageNamed:@"WASummaryNoEventBackground"] stackBlur:5.0];      
+    }
+  });
+  return backgroundImage;
+  
+}
+
++ (UIImage *)sharedNoEventImage {
+
+  static UIImage *noEventImage;
+  static dispatch_once_t onceToken;
+  dispatch_once(&onceToken, ^{
+    noEventImage = [UIImage imageNamed:@"WASummaryNoEvent"];
+  });
+  return noEventImage;
+
 }
 
 + (NSMutableArray *)sharedEnqueuedImageFilePaths {

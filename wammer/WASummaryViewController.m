@@ -18,6 +18,10 @@
 #import "WAOverlayBezel.h"
 #import "UIImageView+WAAdditions.h"
 #import "WAFile+ImplicitBlobFulfillment.h"
+#import "IIViewDeckController.h"
+#import "IRBarButtonItem.h"
+#import "WADayViewController.h"
+#import "WAAppDelegate_iOS.h"
 
 static NSInteger const SUMMARY_PAGES_WINDOW_SIZE = 20;
 static NSInteger const SUMMARY_IMAGES_WINDOW_SIZE = 5;
@@ -35,6 +39,8 @@ static NSInteger const SUMMARY_IMAGES_WINDOW_SIZE = 5;
 @property (nonatomic) BOOL reloading;
 @property (nonatomic) NSInteger needingAllocatedSummaryPagesCount;
 @property (nonatomic) NSInteger needingAllocatedEventPagesCount;
+@property (nonatomic) WADayViewSupportedStyle presentingStyle;
+@property (nonatomic) BOOL contextMenuOpened;
 
 @end
 
@@ -56,8 +62,20 @@ static NSInteger const SUMMARY_IMAGES_WINDOW_SIZE = 5;
 
   [super viewDidLoad];
 
-  self.wantsFullScreenLayout = YES;
+  self.presentingStyle = WAEventsViewStyle;
+
   self.backgroundImageView.clipsToBounds = YES;
+  
+  __weak WASummaryViewController *wSelf = self;
+  self.navigationItem.leftBarButtonItem = WABarButtonItem([UIImage imageNamed:@"menu"], @"", ^{
+    [wSelf.viewDeckController toggleLeftView];
+  });
+  
+  self.navigationController.navigationBar.translucent = YES;
+  self.navigationItem.titleView = [WAContextMenuViewController titleViewForContextMenu:self.presentingStyle
+							 performSelector:@selector(contextMenuTapped)
+							      withObject:self];
+
   [self.upperMaskView setBackgroundColor:[[UIColor blackColor] colorWithAlphaComponent:0.3]];
   [self.lowerMaskView setBackgroundColor:[[UIColor blackColor] colorWithAlphaComponent:0.6]];
 
@@ -326,18 +344,55 @@ static NSInteger const SUMMARY_IMAGES_WINDOW_SIZE = 5;
 
 }
 
-+ (UIImage *)sharedBackgroundImage {
+#pragma mark - Target actions
 
-  static UIImage *backgroundImage;
-  static dispatch_once_t onceToken;
-  dispatch_once(&onceToken, ^{
-    backgroundImage = [[UIImage imageNamed:@"LoginBackground-Portrait"] stackBlur:5.0];
-  });
-  return backgroundImage;
+- (void)contextMenuTapped {
+
+  __weak WASummaryViewController *wSelf = self;
+  
+  if (self.contextMenuOpened) {
+    [self.childViewControllers enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+      if ([obj isKindOfClass:[WAContextMenuViewController class]]) {
+        
+        *stop = YES;
+        WAContextMenuViewController *ddMenu = (WAContextMenuViewController*)obj;
+        [ddMenu dismissContextMenu];
+        
+      }
+    }];
+    return;
+  }
+  
+  __block WAContextMenuViewController *ddMenu = [[WAContextMenuViewController alloc] initForViewStyle:self.presentingStyle completion:^{
+    
+    [wSelf.navigationItem.leftBarButtonItem setEnabled:YES];
+    [wSelf.navigationItem.rightBarButtonItem setEnabled:YES];
+    
+    wSelf.contextMenuOpened = NO;
+    
+  }];
+  
+  ddMenu.delegate = self;
+  
+  [ddMenu presentContextMenuInViewController:self];
+  [self.navigationItem.leftBarButtonItem setEnabled:NO];
+  [self.navigationItem.rightBarButtonItem setEnabled:NO];
+  self.contextMenuOpened = YES;
 
 }
 
-#pragma mark UIScrollView delegates
+#pragma mark - Context menu delegates
+
+- (void) contextMenuItemDidSelect:(WADayViewSupportedStyle)itemStyle {
+  
+  NSDate *theDate = [self dayAtIndex:self.currentDaySummary.summaryIndex];
+  
+  WAAppDelegate_iOS *appDelegate = (WAAppDelegate_iOS*)AppDelegate();
+  [appDelegate.slidingMenu switchToViewStyle:itemStyle onDate:theDate];
+  
+}
+
+#pragma mark - UIScrollView delegates
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
   

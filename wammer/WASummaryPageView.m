@@ -10,6 +10,8 @@
 #import "NSDate+WAAdditions.h"
 #import "WAUser.h"
 
+static NSString * kWASummaryPageViewKVOContext = @"WASummaryPageViewKVOContext";
+
 @implementation WASummaryPageView
 
 + (WASummaryPageView *)viewFromNib {
@@ -47,7 +49,14 @@
 
   _user = user;
 
-  self.helloLabel.text = [NSString stringWithFormat:NSLocalizedString(@"HELLO_NAME_TEXT", @"Hello text in summary view"), user.nickname];
+  __weak WASummaryPageView *wSelf = self;
+  [_user irObserve:@"nickname" options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew context:&kWASummaryPageViewKVOContext withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
+    if (toValue) {
+      wSelf.helloLabel.text = [NSString stringWithFormat:NSLocalizedString(@"HELLO_NAME_TEXT", @"Hello text in summary view"), toValue];
+    } else {
+      wSelf.helloLabel.text = [NSString stringWithFormat:NSLocalizedString(@"HELLO_NAME_TEXT", @"Hello text in summary view"), @""];
+    }
+  }];
 
 }
 
@@ -56,6 +65,12 @@
   _numberOfEvents = numberOfEvents;
   
   self.eventSummaryLabel.text = [NSString stringWithFormat:NSLocalizedString(@"EVENT_SUMMARY_TEXT", @"Event summary text in summary view"), numberOfEvents];
+
+}
+
+- (void)dealloc {
+
+  [_user irRemoveObserverBlocksForKeyPath:@"nickname" context:&kWASummaryPageViewKVOContext];
 
 }
 

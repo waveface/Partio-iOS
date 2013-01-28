@@ -7,8 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "WAContextMenuViewController.h"
 
-@interface WASummaryViewController : UIViewController <UIScrollViewDelegate>
+@interface WASummaryViewController : UIViewController <UIScrollViewDelegate, WAContextMenuDelegate>
 
 @property (weak, nonatomic) IBOutlet UIView *upperMaskView;
 @property (weak, nonatomic) IBOutlet UIView *lowerMaskView;
@@ -18,6 +19,5 @@
 @property (weak, nonatomic) IBOutlet UIImageView *backgroundImageView;
 
 - (id)initWithDate:(NSDate *)date;
-+ (UIImage *)sharedBackgroundImage;
 
 @end
