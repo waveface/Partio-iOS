@@ -75,6 +75,7 @@ typedef NS_ENUM(NSInteger, WACurrentlyDisplayingImage) {
         return;
       }
       imageView.clipsToBounds = YES;
+      imageView.contentMode = UIViewContentModeScaleAspectFill;
       WAFile *file = _representingArticle.files[idx];
       [file setDisplayingSmallThumbnail:YES];
       [file irRemoveObserverBlocksForKeyPath:@"smallThumbnailFilePath" context:&kWAEventPageViewKVOContext];
@@ -99,8 +100,9 @@ typedef NS_ENUM(NSInteger, WACurrentlyDisplayingImage) {
     }];
   } else {
     UIImageView *imageView = self.imageViews[0];
+    imageView.clipsToBounds = YES;
+    imageView.contentMode = UIViewContentModeCenter;
     if (imageView.tag != WACurrentlyDisplayingEmptyImage) {
-      [self.containerViews[0] setBackgroundColor:[[UIColor clearColor] colorWithAlphaComponent:0.0]];
       imageView.image = [[self class] sharedNoEventImage];
       self.blurredBackgroundImage = [[self class] sharedNoEventBackgroundImage];
       imageView.tag = WACurrentlyDisplayingEmptyImage;

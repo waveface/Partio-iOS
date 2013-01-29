@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "WAContextMenuViewController.h"
 
-@interface WASummaryViewController : UIViewController <UIScrollViewDelegate, WAContextMenuDelegate>
+@interface WASummaryViewController : UIViewController <UIScrollViewDelegate, WAContextMenuDelegate, WADayViewControllerDelegate>
 
 @property (weak, nonatomic) IBOutlet UIView *upperMaskView;
 @property (weak, nonatomic) IBOutlet UIView *lowerMaskView;

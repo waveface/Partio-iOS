@@ -23,22 +23,23 @@
 #import "WADayViewController.h"
 #import "WAAppDelegate_iOS.h"
 
-static NSInteger const SUMMARY_PAGES_WINDOW_SIZE = 20;
-static NSInteger const SUMMARY_IMAGES_WINDOW_SIZE = 5;
+static NSInteger const DEFAULT_SUMMARY_PAGING_SIZE = 20;
+static NSInteger const DEFAULT_EVENT_IMAGE_PAGING_SIZE = 5;
 
 @interface WASummaryViewController ()
 
 @property (nonatomic, strong) WAUser *user;
 @property (nonatomic, strong) NSDate *beginningDate;
 @property (nonatomic, strong) WADaySummary *currentDaySummary;
+@property (nonatomic, strong) WADaySummary *firstDaySummary;
+@property (nonatomic, strong) WADaySummary *lastDaySummary;
 @property (nonatomic, strong) WAEventPageView *currentEventPage;
 @property (nonatomic, strong) NSMutableDictionary *daySummaries;
 @property (nonatomic, strong) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic) BOOL scrollingSummaryPage;
 @property (nonatomic) BOOL scrollingEventPage;
 @property (nonatomic) BOOL reloading;
-@property (nonatomic) NSInteger needingAllocatedSummaryPagesCount;
-@property (nonatomic) NSInteger needingAllocatedEventPagesCount;
+
 @property (nonatomic) WADayViewSupportedStyle presentingStyle;
 @property (nonatomic) BOOL contextMenuOpened;
 
@@ -91,7 +92,7 @@ static NSInteger const SUMMARY_IMAGES_WINDOW_SIZE = 5;
   
   [super viewWillAppear:animated];
 
-  [self reloadDaySummaries];
+  [self reloadDaySummariesWithPagingSize:DEFAULT_SUMMARY_PAGING_SIZE];
 
 }
 
@@ -124,12 +125,71 @@ static NSInteger const SUMMARY_IMAGES_WINDOW_SIZE = 5;
 
   NSParameterAssert([NSThread isMainThread]);
 
+  __block NSUInteger totalSummaryPagesCount = 0;
   __block NSUInteger totalEventPagesCount = 0;
   [self.daySummaries enumerateKeysAndObjectsUsingBlock:^(id key, WADaySummary *daySummary, BOOL *stop) {
+    totalSummaryPagesCount += 1;
     totalEventPagesCount += [daySummary.eventPages count];
   }];
-  self.eventScrollView.contentSize = CGSizeMake(self.eventScrollView.frame.size.width * self.needingAllocatedEventPagesCount, self.eventScrollView.frame.size.height);
-  self.summaryScrollView.contentSize = CGSizeMake(self.summaryScrollView.frame.size.width * self.needingAllocatedSummaryPagesCount, self.summaryScrollView.frame.size.height);
+  self.summaryScrollView.contentSize = CGSizeMake(self.summaryScrollView.frame.size.width * totalSummaryPagesCount, self.summaryScrollView.frame.size.height);
+  self.eventScrollView.contentSize = CGSizeMake(self.eventScrollView.frame.size.width * totalEventPagesCount, self.eventScrollView.frame.size.height);
+
+}
+
+- (void)layoutSummaryAndEventPages {
+
+  NSParameterAssert([NSThread isMainThread]);
+  
+  __weak WASummaryViewController *wSelf = self;
+  [self.daySummaries enumerateKeysAndObjectsUsingBlock:^(id key, WADaySummary *daySummary, BOOL *stop) {
+    [daySummary.eventPages enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+      CGRect frame = wSelf.eventScrollView.frame;
+      frame.origin.x = frame.size.width * (daySummary.eventIndex + idx - wSelf.firstDaySummary.eventIndex);
+      frame.origin.y = 0;
+      WAEventPageView *view = obj;
+      view.frame = frame;
+    }];
+    CGRect frame = wSelf.summaryScrollView.frame;
+    frame.origin.x = frame.size.width * (daySummary.summaryIndex - wSelf.firstDaySummary.summaryIndex);
+    frame.origin.y = 0;
+    WASummaryPageView *view = daySummary.summaryPage;
+    view.frame = frame;
+  }];
+
+  [self scrollToCurrentSummaryPageAnimated:NO];
+  [self scrollToCurrentEventPageAnimated:NO];
+
+}
+
+- (void)scrollToCurrentSummaryPageAnimated:(BOOL)animated {
+
+  if (animated) {
+    self.scrollingSummaryPage = YES;    
+    __weak WASummaryViewController *wSelf = self;
+    [UIView animateWithDuration:0.3 animations:^{
+      [wSelf.summaryScrollView scrollRectToVisible:wSelf.currentDaySummary.summaryPage.frame animated:NO];
+    } completion:^(BOOL finished) {
+      wSelf.scrollingSummaryPage = NO;
+    }];
+  } else {
+    [self.summaryScrollView scrollRectToVisible:self.currentDaySummary.summaryPage.frame animated:NO];
+  }
+
+}
+
+- (void)scrollToCurrentEventPageAnimated:(BOOL)animated {
+
+  if (animated) {
+    self.scrollingEventPage = YES;
+    __weak WASummaryViewController *wSelf = self;
+    [UIView animateWithDuration:0.3 animations:^{
+      [wSelf.eventScrollView scrollRectToVisible:wSelf.currentEventPage.frame animated:NO];
+    } completion:^(BOOL finished) {
+      wSelf.scrollingEventPage = NO;
+    }];
+  } else {
+    [self.eventScrollView scrollRectToVisible:self.currentEventPage.frame animated:NO];
+  }
 
 }
 
@@ -159,39 +219,9 @@ static NSInteger const SUMMARY_IMAGES_WINDOW_SIZE = 5;
   NSParameterAssert([NSThread isMainThread]);
 
   if (currentDaySummary.summaryIndex >= _currentDaySummary.summaryIndex) {
-    for (NSInteger idx = currentDaySummary.summaryIndex; idx <= currentDaySummary.summaryIndex+SUMMARY_IMAGES_WINDOW_SIZE; idx++) {
-      WADaySummary *daySummary = self.daySummaries[@(idx)];
-      if (daySummary) {
-        for (WAEventPageView *eventPage in daySummary.eventPages) {
-	[eventPage loadImages];
-        }
-        [daySummary.eventPages[0] loadImages];
-      }
-    }
-    WADaySummary *daySummary = self.daySummaries[@(self.currentDaySummary.summaryIndex-3*SUMMARY_IMAGES_WINDOW_SIZE-1)];
-    if (daySummary) {
-      for (WAEventPageView *eventPage in daySummary.eventPages) {
-        [eventPage unloadImages];
-      }
-    }
+    [self reloadEventPageImagesWithPagingSize:DEFAULT_EVENT_IMAGE_PAGING_SIZE];
   } else {
-    for (NSInteger idx = currentDaySummary.summaryIndex; idx >= currentDaySummary.summaryIndex-SUMMARY_IMAGES_WINDOW_SIZE; idx--) {
-      WADaySummary *daySummary = self.daySummaries[@(idx)];
-      if (daySummary) {
-        [daySummary.eventPages enumerateObjectsWithOptions:NSEnumerationReverse usingBlock:^(WAEventPageView *eventPage, NSUInteger idx, BOOL *stop) {
-	[eventPage loadImages];
-        }];
-        if (self.scrollingSummaryPage) {
-	[daySummary.eventPages[0] loadImages];
-        }
-      }
-    }
-    WADaySummary *daySummary = self.daySummaries[@(currentDaySummary.summaryIndex+3*SUMMARY_IMAGES_WINDOW_SIZE+1)];
-    if (daySummary) {
-      for (WAEventPageView *eventPage in daySummary.eventPages) {
-        [eventPage unloadImages];
-      }
-    }
+    [self reloadEventPageImagesWithPagingSize:(-DEFAULT_EVENT_IMAGE_PAGING_SIZE)];
   }
 
   NSInteger oldEventIndex = _currentDaySummary.eventIndex;
@@ -236,7 +266,7 @@ static NSInteger const SUMMARY_IMAGES_WINDOW_SIZE = 5;
 
 }
 
-- (void)reloadDaySummaries {
+- (void)reloadDaySummariesWithPagingSize:(NSInteger)pagingSize {
   
   if (self.reloading) {
     return;
@@ -244,11 +274,12 @@ static NSInteger const SUMMARY_IMAGES_WINDOW_SIZE = 5;
 
   self.reloading = YES;
 
-  WADaySummary *currentDaySummary = self.currentDaySummary;
-  if (!currentDaySummary) {
-    currentDaySummary = [[WADaySummary alloc] initWithUser:self.user date:[self dayAtIndex:0] context:self.managedObjectContext];
+  if (!self.currentDaySummary) {
+    WADaySummary *currentDaySummary = [[WADaySummary alloc] initWithUser:self.user date:[self dayAtIndex:0] context:self.managedObjectContext];
     [self insertDaySummary:currentDaySummary atIndex:0];
-    self.currentEventPage = currentDaySummary.eventPages[0];
+    self.currentDaySummary = currentDaySummary;
+    self.firstDaySummary = currentDaySummary;
+    self.lastDaySummary = currentDaySummary;
   }
   WAOverlayBezel *bezel = [WAOverlayBezel bezelWithStyle:WAActivityIndicatorBezelStyle];
   [bezel show];
@@ -256,21 +287,79 @@ static NSInteger const SUMMARY_IMAGES_WINDOW_SIZE = 5;
   int64_t delayInSeconds = 1.0;
   dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
   dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-    for (NSInteger idx = currentDaySummary.summaryIndex; idx < currentDaySummary.summaryIndex+SUMMARY_PAGES_WINDOW_SIZE; idx++) {
-      if (idx >= 0) {
-        if (!wSelf.daySummaries[@(idx)]) {
-	WADaySummary *daySummary = [[WADaySummary alloc] initWithUser:self.user date:[self dayAtIndex:idx] context:self.managedObjectContext];
-	[wSelf insertDaySummary:daySummary atIndex:idx];
+    NSDate *recentDay = [[NSDate date] dayBegin];
+    for (NSInteger idx = wSelf.currentDaySummary.summaryIndex; idx != wSelf.currentDaySummary.summaryIndex+pagingSize; idx += pagingSize/abs(pagingSize)) {
+      BOOL isFutureDay = [[[wSelf dayAtIndex:idx] earlierDate:recentDay] isEqualToDate:recentDay];
+      if (!isFutureDay && !wSelf.daySummaries[@(idx)]) {
+        WADaySummary *daySummary = [[WADaySummary alloc] initWithUser:wSelf.user date:[wSelf dayAtIndex:idx] context:wSelf.managedObjectContext];
+        [wSelf insertDaySummary:daySummary atIndex:idx];
+        if (daySummary.summaryIndex > wSelf.lastDaySummary.summaryIndex) {
+	wSelf.lastDaySummary = daySummary;
+        }
+        if (daySummary.summaryIndex < wSelf.firstDaySummary.summaryIndex) {
+	wSelf.firstDaySummary = daySummary;
         }
       }
     }
-    // load images in event page
-    wSelf.currentDaySummary = currentDaySummary;
     [wSelf resetContentSize];
-    wSelf.reloading = NO;
+    [wSelf layoutSummaryAndEventPages];
+    [wSelf reloadEventPageImagesWithPagingSize:DEFAULT_EVENT_IMAGE_PAGING_SIZE];
     [bezel dismissWithAnimation:WAOverlayBezelAnimationFade];
+    wSelf.reloading = NO;
   });
   
+}
+
+- (void)reloadEventPageImagesWithPagingSize:(NSInteger)pagingSize {
+
+  if (pagingSize > 0) {
+    for (NSInteger idx = self.currentDaySummary.summaryIndex; idx <= self.currentDaySummary.summaryIndex+pagingSize; idx++) {
+      WADaySummary *daySummary = self.daySummaries[@(idx)];
+      if (daySummary) {
+        [daySummary.eventPages enumerateObjectsWithOptions:NSEnumerationReverse usingBlock:^(WAEventPageView *eventPage, NSUInteger idx, BOOL *stop) {
+	[eventPage loadImages];
+        }];
+      }
+    }
+    WADaySummary *daySummary = self.daySummaries[@(self.currentDaySummary.summaryIndex-3*pagingSize-1)];
+    if (daySummary) {
+      for (WAEventPageView *eventPage in daySummary.eventPages) {
+        [eventPage unloadImages];
+      }
+    }
+  } else {
+    for (NSInteger idx = self.currentDaySummary.summaryIndex; idx >= self.currentDaySummary.summaryIndex+pagingSize; idx--) {
+      WADaySummary *daySummary = self.daySummaries[@(idx)];
+      if (daySummary) {
+        if (self.scrollingSummaryPage) {
+	[daySummary.eventPages enumerateObjectsWithOptions:NSEnumerationReverse usingBlock:^(WAEventPageView *eventPage, NSUInteger idx, BOOL *stop) {
+	  [eventPage loadImages];
+	}];
+        } else {
+	for (WAEventPageView *eventPage in daySummary.eventPages) {
+	  [eventPage loadImages];
+	}
+        }
+      }
+    }
+    WADaySummary *daySummary = self.daySummaries[@(self.currentDaySummary.summaryIndex-3*pagingSize+1)];
+    if (daySummary) {
+      for (WAEventPageView *eventPage in daySummary.eventPages) {
+        [eventPage unloadImages];
+      }
+    }
+  }
+
+}
+
+- (NSInteger)indexOfDay:(NSDate *)day {
+
+  NSCalendar *calendar = [NSCalendar currentCalendar];
+  NSUInteger flags = NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit|NSTimeZoneCalendarUnit;
+  NSDateComponents *beginningDateComponents = [calendar components:flags fromDate:self.beginningDate];
+  NSDateComponents *dateComponents = [calendar components:flags fromDate:day];
+  return dateComponents.day - beginningDateComponents.day;
+
 }
 
 - (NSDate *)dayAtIndex:(NSInteger)idx {
@@ -287,38 +376,23 @@ static NSInteger const SUMMARY_IMAGES_WINDOW_SIZE = 5;
   
   daySummary.summaryIndex = idx;
   if (idx > 0) {
-    if (idx > self.currentDaySummary.summaryIndex) {
-      NSAssert(self.daySummaries[@(idx-1)], @"previous day summary should exist");
-      daySummary.eventIndex = [self.daySummaries[@(idx-1)] eventIndex] + [[self.daySummaries[@(idx-1)] eventPages] count];
-    } else {
-      NSAssert(self.daySummaries[@(idx+1)], @"previous day summary should exist");
-      daySummary.eventIndex = [self.daySummaries[@(idx+1)] eventIndex] - [daySummary.eventPages count];
-    }
+    NSAssert(self.daySummaries[@(idx-1)], @"previous day summary should exist");
+    daySummary.eventIndex = [self.daySummaries[@(idx-1)] eventIndex] + [[self.daySummaries[@(idx-1)] eventPages] count];
+  } else if (idx < 0) {
+    NSAssert(self.daySummaries[@(idx+1)], @"previous day summary should exist");
+    daySummary.eventIndex = [self.daySummaries[@(idx+1)] eventIndex] - [daySummary.eventPages count];
   } else {
     daySummary.eventIndex = 0;
   }
+
   self.daySummaries[@(idx)] = daySummary;
-  self.needingAllocatedSummaryPagesCount += 1;
-  self.needingAllocatedEventPagesCount += [daySummary.eventPages count];
-  for (UIView *page in daySummary.eventPages) {
-    [self.eventScrollView addSubview:page];
-  }
-  [self.summaryScrollView addSubview:daySummary.summaryPage];
-  
+
   __weak WASummaryViewController *wSelf = self;
-  [daySummary.eventPages enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-    CGRect frame = wSelf.eventScrollView.frame;
-    frame.origin.x = frame.size.width * (daySummary.eventIndex + idx);
-    frame.origin.y = 0;
-    WAEventPageView *view = obj;
-    view.frame = frame;
+  [daySummary.eventPages enumerateObjectsWithOptions:NSEnumerationReverse usingBlock:^(WAEventPageView *eventPage, NSUInteger idx, BOOL *stop) {
+    [wSelf.eventScrollView addSubview:eventPage];
   }];
-  CGRect frame = self.summaryScrollView.frame;
-  frame.origin.x = frame.size.width * (daySummary.summaryIndex);
-  frame.origin.y = 0;
-  WASummaryPageView *view = daySummary.summaryPage;
-  view.frame = frame;
-  
+  [self.summaryScrollView addSubview:daySummary.summaryPage];
+
 }
 
 - (void)removeDaySummaryAtIndex:(NSInteger)idx {
@@ -392,67 +466,78 @@ static NSInteger const SUMMARY_IMAGES_WINDOW_SIZE = 5;
   
 }
 
+#pragma mark - WADayViewController delegates
+
+- (BOOL)jumpToDate:(NSDate *)date animated:(BOOL)animated {
+
+  NSInteger idx = [self indexOfDay:date];
+  if (!self.daySummaries[@(idx)]) {
+    self.beginningDate = date;
+    [self reloadDaySummariesWithPagingSize:DEFAULT_SUMMARY_PAGING_SIZE];
+  } else {
+    NSAssert(NO, @"WASummaryViewController should be recreated");
+  }
+
+  return YES;
+
+}
+
+- (void)jumpToRecentDay {
+
+  self.beginningDate = [[NSDate date] dayBegin];
+  self.currentDaySummary = nil;
+  [self reloadDaySummariesWithPagingSize:DEFAULT_SUMMARY_PAGING_SIZE];
+
+}
+
 #pragma mark - UIScrollView delegates
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
   
   CGFloat pageWidth = scrollView.frame.size.width;
   if (scrollView.contentOffset.x > scrollView.contentSize.width - pageWidth) {
-    [self reloadDaySummaries];
+    [self reloadDaySummariesWithPagingSize:DEFAULT_SUMMARY_PAGING_SIZE];
+    return;
+  }
+  if (scrollView.contentOffset.x < 0) {
+    [self reloadDaySummariesWithPagingSize:(-DEFAULT_SUMMARY_PAGING_SIZE)];
     return;
   }
 
   NSInteger pageIndex = floor((scrollView.contentOffset.x - pageWidth / 2) / pageWidth) + 1;
 
-  __weak WASummaryViewController *wSelf = self;
-
   if (scrollView == self.summaryScrollView) {
 
-    if (self.scrollingEventPage) {
+    if (self.reloading || self.scrollingEventPage) {
       return;
     }
 
-    if (self.currentDaySummary.summaryIndex != pageIndex) {
+    if (self.currentDaySummary.summaryIndex != pageIndex + self.firstDaySummary.summaryIndex) {
 
-      self.currentDaySummary = self.daySummaries[@(pageIndex)];
-      self.scrollingEventPage = YES;
-      [UIView animateWithDuration:0.3 animations:^{
-        [wSelf.eventScrollView setContentOffset:CGPointMake(wSelf.eventScrollView.frame.size.width*wSelf.currentDaySummary.eventIndex, 0)];
-      } completion:^(BOOL finished) {
-        wSelf.scrollingEventPage = NO;
-      }];
+      self.currentDaySummary = self.daySummaries[@(pageIndex + self.firstDaySummary.summaryIndex)];
+      [self scrollToCurrentEventPageAnimated:YES];
 
     }
     
   } else {
 
-    if (self.scrollingSummaryPage) {
+    if (self.reloading || self.scrollingSummaryPage) {
       return;
     }
 
-    if (self.currentDaySummary.eventIndex > pageIndex) {
+    if (self.currentDaySummary.eventIndex > pageIndex + self.firstDaySummary.eventIndex) {
 
       self.currentDaySummary = self.daySummaries[@(self.currentDaySummary.summaryIndex-1)];
-      self.scrollingSummaryPage = YES;
-      [UIView animateWithDuration:0.3 animations:^{
-        [wSelf.summaryScrollView setContentOffset:CGPointMake(wSelf.summaryScrollView.frame.size.width*wSelf.currentDaySummary.summaryIndex, 0)];
-      } completion:^(BOOL finished) {
-        wSelf.scrollingSummaryPage = NO;
-      }];
+      [self scrollToCurrentSummaryPageAnimated:YES];
 
-    } else if (self.currentDaySummary.eventIndex + [self.currentDaySummary.eventPages count] <= pageIndex) {
+    } else if (self.currentDaySummary.eventIndex + (NSInteger)[self.currentDaySummary.eventPages count] <= pageIndex + self.firstDaySummary.eventIndex) {
 
       self.currentDaySummary = self.daySummaries[@(self.currentDaySummary.summaryIndex+1)];
-      self.scrollingSummaryPage = YES;
-      [UIView animateWithDuration:0.3 animations:^{
-        [wSelf.summaryScrollView setContentOffset:CGPointMake(wSelf.summaryScrollView.frame.size.width*wSelf.currentDaySummary.summaryIndex, 0)];
-      } completion:^(BOOL finished) {
-        wSelf.scrollingSummaryPage = NO;
-      }];
+      [self scrollToCurrentSummaryPageAnimated:YES];
 
-    } else if (self.eventPageControll.currentPage != pageIndex - self.currentDaySummary.eventIndex){
+    } else if (self.eventPageControll.currentPage != pageIndex + self.firstDaySummary.eventIndex - self.currentDaySummary.eventIndex){
       
-      self.eventPageControll.currentPage = pageIndex - self.currentDaySummary.eventIndex;
+      self.eventPageControll.currentPage = pageIndex + self.firstDaySummary.eventIndex - self.currentDaySummary.eventIndex;
       self.currentEventPage = self.currentDaySummary.eventPages[self.eventPageControll.currentPage];
 
     }
