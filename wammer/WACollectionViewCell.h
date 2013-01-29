@@ -15,6 +15,8 @@
 @property (weak, nonatomic) IBOutlet UILabel *title;
 @property (weak, nonatomic) IBOutlet UILabel *count;
 
+- (void) setImage: (UIImage*)image;
+
 @end
 
 extern NSString * const kCollectionViewCellID;
