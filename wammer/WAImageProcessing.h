@@ -12,6 +12,7 @@
 typedef void(^WAImageProcessComplete)(UIImage *image);
 
 @interface WAImageProcessing : NSObject
++ (UIImage *)scaledImageWithUIImage:(UIImage*)image type:(WAThumbnailType)type;
 
 + (UIImage *)scaledImageWithCGImage:(CGImageRef)image type:(WAThumbnailType)type orientation:(UIImageOrientation)orientation;
 

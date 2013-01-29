@@ -15,10 +15,11 @@
 
 + (id) controllerWithWrappingNavController:(WANavigationController **)navController;
 
+@property (weak, nonatomic) IBOutlet UITableViewCell *importTableViewCell;
 @property (weak, nonatomic) IBOutlet UITableViewCell *contactTableViewCell;
 @property (weak, nonatomic) IBOutlet UITableViewCell *connectionTableViewCell;
+@property (weak, nonatomic) IBOutlet UITableViewCell *userTableViewCell;
 @property (weak, nonatomic) IBOutlet UILabel *userEmailLabel;
-@property (weak, nonatomic) IBOutlet UITableViewCell *versionCell;
 @property (weak, nonatomic) IBOutlet UITableViewCell *packageCell;
 @property (weak, nonatomic) IBOutlet UITableViewCell *storageUsageCell;
 

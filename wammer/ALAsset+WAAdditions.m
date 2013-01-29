@@ -16,8 +16,19 @@
   ALAssetRepresentation *representation = [self defaultRepresentation];
 
   [[WAImageProcessing sharedImageProcessQueue] addOperationWithBlock:^{
-    UIImage *scaledImage = [WAImageProcessing scaledImageWithCGImage:[representation fullResolutionImage] type:type orientation:irUIImageOrientationFromAssetOrientation([representation orientation])];
-    didCompleteBlock(scaledImage);
+	
+	if ([UIApplication sharedApplication].applicationState == UIApplicationStateBackground) {
+	  UIImage *scaledImage = [WAImageProcessing scaledImageWithUIImage:[UIImage imageWithCGImage:[representation fullResolutionImage]
+																						   scale:1.0f
+																					 orientation:irUIImageOrientationFromAssetOrientation([representation orientation])]
+																  type:type];
+	  didCompleteBlock(scaledImage);
+	} else {
+	  UIImage *scaledImage = [WAImageProcessing scaledImageWithCGImage:[representation fullResolutionImage]
+																  type:type
+														   orientation:irUIImageOrientationFromAssetOrientation([representation orientation])];
+	  didCompleteBlock(scaledImage);
+	}
   }];
 
 }

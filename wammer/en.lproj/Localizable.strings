@@ -309,6 +309,12 @@
 /* Title on introduction pages */
 "INTRODUCTION_TITLE" = "What's Stream?";
 
+/* Shows OFF when auto import is turned off in the settings panel */
+"LABEL_AUTO_IMPORT_VALUE_OFF" = "OFF";
+
+/* Shows ON when auto import is turned on in the settings panel */
+"LABEL_AUTO_IMPORT_VALUE_ON" = "ON";
+
 /* Text for modal popup close button */
 "LABEL_MODAL_POPUP_CLOSE_BUTTON" = "Close";
 
@@ -710,9 +716,6 @@
 /* Class = "IBUILabel"; text = "LOGOUT"; ObjectID = "GUv-Fm-Efw"; */
 "LOGOUT" = "Log Out";
 
-/* Class = "IBUITableViewSection"; headerTitle = "ACCOUNT_INFO_HEADER"; ObjectID = "Gw1-xy-FWK"; */
-"ACCOUNT_INFO_HEADER" = "Account Info";
-
 /* Class = "IBUILabel"; text = "FILES_TO_UPLOAD"; ObjectID = "Ldp-qK-xdo"; */
 "FILES_TO_UPLOAD" = "Photos to Upload";
 
@@ -728,11 +731,11 @@
 /* Class = "IBUILabel"; text = "STORAGE_USAGE"; ObjectID = "aOf-bH-Me7"; */
 "STORAGE_USAGE" = "Cloud Space Used";
 
-/* Class = "IBUILabel"; text = "CONNECTION_STATUS_DETAIL"; ObjectID = "bJb-Bz-WkJ"; */
-"CONNECTION_STATUS_DETAIL" = "CONNECTION_STATUS_DETAIL";
-
 /* Class = "IBUILabel"; text = "NOUN_USERNAME"; ObjectID = "drm-tH-4is"; */
 "NOUN_USERNAME" = "Email";
+
+/* Class = "IBUILabel"; text = "DELETE_ACCOUNT"; ObjectID = "gZ1-RR-4LO"; */
+"DELETE_ACCOUNT" = "Remove Account";
 
 /* Class = "IBUITableViewSection"; footerTitle = "PHOTO_IMPORT_SETTINGS_FOOTER"; ObjectID = "gj0-e5-1Bs"; */
 "PHOTO_IMPORT_SETTINGS_FOOTER" = "Connecting to the same WiFi network as your AOStream Windows Station is the fastest way to upload high-resolution photos.";
@@ -743,26 +746,14 @@
 /* Class = "IBUILabel"; text = "WEB_SERVICES_TITLE"; ObjectID = "gjy-px-XbS"; */
 "WEB_SERVICES_TITLE" = "Web Services";
 
-/* Class = "IBUILabel"; text = "VERSION"; ObjectID = "gkC-aR-76h"; */
-"VERSION" = "Version";
-
 /* Class = "IBUILabel"; text = "NONE"; ObjectID = "gvB-Dr-HXB"; */
 "NONE" = "NONE";
-
-/* Class = "IBUITableViewSection"; headerTitle = "NETWORK_HEADER"; ObjectID = "iKO-vI-KPy"; */
-"NETWORK_HEADER" = "Network";
 
 /* Class = "IBUITableViewSection"; footerTitle = "PHOTO_IMPORT_SWITCH_FOOTER"; ObjectID = "jPT-4f-lnH"; */
 "PHOTO_IMPORT_SWITCH_FOOTER" = "Turn on to sync all your camera roll photos to AOStream.";
 
 /* Class = "IBUILabel"; text = "UPGRADE_ACCOUNT"; ObjectID = "n6T-1w-Odi"; */
 "UPGRADE_ACCOUNT" = "Upgrade Account";
-
-/* Class = "IBUILabel"; text = "CONNECTION_STATUS_TITLE"; ObjectID = "oOp-ya-swS"; */
-"CONNECTION_STATUS_TITLE" = "Connection Status";
-
-/* Class = "IBUITableViewSection"; headerTitle = "IMPORT_HEADER"; ObjectID = "qoR-fT-NMh"; */
-"IMPORT_HEADER" = "Upload";
 
 /* Class = "IBUILabel"; text = "ACTION_CONTACT_DEVELOPER"; ObjectID = "yLg-eE-ehZ"; */
 "ACTION_CONTACT_DEVELOPER" = "Contact Us";
