@@ -28,4 +28,7 @@
 //	POST users/passwd
 - (void) resetPasswordOfCurrentUserFrom:(NSString *)anOldPassword To:(NSString *)aNewPassword onSuccess:(void(^)(void))successBlock onFailure:(void(^)(NSError *error))failureBlock;
 
+// POST users/deleteWithEmail
+- (void) deleteUserWithEmailSentOnSuccess:(void(^)(void))successBlock onFailure:(void(^)(NSError *error))failureBlock;
+
 @end
