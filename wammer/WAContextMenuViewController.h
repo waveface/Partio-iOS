@@ -28,4 +28,6 @@ typedef void (^WAContextMenuCompletionBlock)(void);
 - (void) dismissContextMenu;
 - (id) initForViewStyle:(WADayViewSupportedStyle)style completion:(WAContextMenuCompletionBlock)completion;
 
++ (UIView *) titleViewForContextMenu:(WADayViewSupportedStyle)style performSelector:(SEL)action withObject:(id)target;
+
 @end

@@ -210,8 +210,11 @@
 /* The text of label on separation line in the event view when there is no photo presented. */
 "EVENT_SEPERATION_LABEL_WITHOUT_PHOTOS" = "Add some photos";
 
+/* Event summary text in summary view */
+"EVENT_SUMMARY_TEXT" = "You have %d events today.";
+
 /* Title for Events view */
-"EVENTS_CONTROLLER_TITLE" = "EVENTS";
+"EVENTS_CONTROLLER_TITLE" = "MY DAYS";
 
 /* Message for an alert view to show user his FB account has been connected to another Stream user */
 "FACEBOOK_CONNECT_ACCOUNT_OCCUPIED_MESSAGE" = "This Facebook account is already linked to an AOStream account. Remove AOStream in Facebook\'s App Settings and try again.";
@@ -293,6 +296,9 @@
 
 /* Title for alert view asking if user wants to disconnect her Google account */
 "GOOGLE_DISCONNECT_REQUEST_TITLE" = "Confirm to stop importing from Google.";
+
+/* Hello text in summary view */
+"HELLO_NAME_TEXT" = "Hi, %@";
 
 /* No comment provided by engineer. */
 "HOUR_PLURAL" = "%d hours";
@@ -670,6 +676,21 @@
 
 /* Class = "IBUILabel"; text = "STATE_LOADING_SINGLE_DOCUMENT_PROGRESS"; ObjectID = "10"; */
 "STATE_LOADING_SINGLE_DOCUMENT_PROGRESS" = "%1 of %2";
+
+/* Class = "IBUILabel"; text = "MONTH"; ObjectID = "5"; */
+"MONTH" = "MONTH";
+
+/* Class = "IBUILabel"; text = "DAY"; ObjectID = "9"; */
+"DAY" = "DAY";
+
+/* Class = "IBUILabel"; text = "WEEKDAY"; ObjectID = "10"; */
+"WEEKDAY" = "WEEKDAY";
+
+/* Class = "IBUILabel"; text = "HELLO_TEXT"; ObjectID = "49"; */
+"HELLO_TEXT" = "HELLO_TEXT";
+
+/* Class = "IBUILabel"; text = "EVENT_TEXT"; ObjectID = "50"; */
+"EVENT_TEXT" = "EVENT_TEXT";
 
 /* Class = "IBUILabel"; text = "ACTION_GOTO_WEBSITE"; ObjectID = "0UL-JF-5TW"; */
 "ACTION_GOTO_WEBSITE" = "Learn more on our website.";

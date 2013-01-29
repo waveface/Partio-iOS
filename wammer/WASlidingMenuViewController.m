@@ -31,6 +31,9 @@
 #import "WASyncManager.h"
 #import "WAFetchManager.h"
 #import <QuartzCore/QuartzCore.h>
+#import "WASummaryViewController.h"
+
+static NSString * kWASlidingMenuViewControllerKVOContext = @"WASlidingMenuViewControllerKVOContext";
 
 @interface WASlidingMenuViewController () <UIPopoverControllerDelegate>
 
@@ -64,10 +67,16 @@
   
   NSAssert1(((viewStyle==WAEventsViewStyle) || (viewStyle == WAPhotosViewStyle) || (viewStyle == WADocumentsViewStyle) || (viewStyle == WAWebpagesViewStyle)), @"Unsupported view style: %d", viewStyle);
   
-  WADayViewController *swVC = [[WADayViewController alloc] initWithStyle:viewStyle];
+  UIViewController *swVC = nil;
+  if (viewStyle == WAEventsViewStyle) {
+    swVC = [[WASummaryViewController alloc] initWithDate:nil];
+  } else {
+    swVC = [[WADayViewController alloc] initWithStyle:viewStyle];
+  }
   WANavigationController *navVC = [[WANavigationController alloc] initWithRootViewController:swVC];
   
   swVC.view.backgroundColor = [UIColor colorWithRed:0.95f green:0.95f blue:0.95f alpha:1];
+
   if (viewStyle == WAPhotosViewStyle) {
     [swVC.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"photoStreamNavigationBar"] forBarMetrics:UIBarMetricsDefault];
     swVC.view.backgroundColor = [UIColor colorWithWhite:0.16f alpha:1.0f];
@@ -94,8 +103,8 @@
 
 - (void)dealloc
 {
-  [self.user removeObserver:self forKeyPath:@"avatar"];
-  [self.user removeObserver:self forKeyPath:@"nickname"];
+  [self.user removeObserver:self forKeyPath:@"avatar" context:&kWASlidingMenuViewControllerKVOContext];
+  [self.user removeObserver:self forKeyPath:@"nickname" context:&kWASlidingMenuViewControllerKVOContext];
 }
 
 - (void)didReceiveMemoryWarning
@@ -145,8 +154,8 @@
 {
   NSKeyValueObservingOptions options = NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew;
   
-  [self.user addObserver:self forKeyPath:@"avatar" options:options context:nil];
-  [self.user addObserver:self forKeyPath:@"nickname" options:options context:nil];
+  [self.user addObserver:self forKeyPath:@"avatar" options:options context:&kWASlidingMenuViewControllerKVOContext];
+  [self.user addObserver:self forKeyPath:@"nickname" options:options context:&kWASlidingMenuViewControllerKVOContext];
   
 }
 
@@ -264,9 +273,7 @@
     _userCell.selectionStyle = UITableViewCellSelectionStyleNone;
     
     
-    if ([[self.user observationInfo] count] == 0) {
-      [self registerObserver];
-    }
+    [self registerObserver];
     
     return _userCell;
     
@@ -298,6 +305,7 @@
 		UIButton *calButton = [UIButton buttonWithType:UIButtonTypeCustom];
 		calButton.frame = (CGRect){150, 27-calIcon.size.height/2, calIcon.size.width, calIcon.size.height};
 		[calButton setBackgroundImage:calIcon forState:UIControlStateNormal];
+	    [calButton setBackgroundImage:[UIImage imageNamed:@"CalHL"] forState:UIControlStateHighlighted];
 		[calButton addTarget:self action:@selector(calButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
 		[cell addSubview:calButton]; // cannot use accessory view since it will be hidden behind center view
 		self.calendarButton = calButton;
