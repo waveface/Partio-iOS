@@ -309,6 +309,7 @@ static NSString * kWASlidingMenuViewControllerKVOContext = @"WASlidingMenuViewCo
 		UIButton *calButton = [UIButton buttonWithType:UIButtonTypeCustom];
 		calButton.frame = (CGRect){150, 27-calIcon.size.height/2, calIcon.size.width, calIcon.size.height};
 		[calButton setBackgroundImage:calIcon forState:UIControlStateNormal];
+	    [calButton setBackgroundImage:[UIImage imageNamed:@"CalHL"] forState:UIControlStateHighlighted];
 		[calButton addTarget:self action:@selector(calButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
 		[cell addSubview:calButton]; // cannot use accessory view since it will be hidden behind center view
 		self.calendarButton = calButton;
