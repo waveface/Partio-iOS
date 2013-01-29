@@ -80,6 +80,7 @@ typedef NS_ENUM(NSInteger, WACurrentlyDisplayingImage) {
       [file setDisplayingSmallThumbnail:YES];
       [file irRemoveObserverBlocksForKeyPath:@"smallThumbnailFilePath" context:&kWAEventPageViewKVOContext];
       [file irObserve:@"smallThumbnailFilePath" options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew context:&kWAEventPageViewKVOContext withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
+        // the image displaying operation will be put in a LIFO queue to make UI more responsible to user
         if (toValue) {
 	NSString *filePath = [toValue copy];
 	[wSelf insertImageDisplayOperationWithFilePath:filePath
@@ -87,6 +88,7 @@ typedef NS_ENUM(NSInteger, WACurrentlyDisplayingImage) {
 				       imageView:imageView
 			         isBackgroundImage:(idx == 0)];
         } else {
+	// show xs thumbnail if small thumbnail does not exist
 	NSString *filePath = [file.extraSmallThumbnailFilePath copy];
 	[wSelf insertImageDisplayOperationWithFilePath:filePath
 				       imageType:WACurrentlyDisplayingExtraSmallThumbnailImage
@@ -101,6 +103,7 @@ typedef NS_ENUM(NSInteger, WACurrentlyDisplayingImage) {
   } else {
     UIImageView *imageView = self.imageViews[0];
     imageView.clipsToBounds = YES;
+    // the resource image has round corners and is hard to fill in the container view, so we apply center mode here
     imageView.contentMode = UIViewContentModeCenter;
     if (imageView.tag != WACurrentlyDisplayingEmptyImage) {
       imageView.image = [[self class] sharedNoEventImage];

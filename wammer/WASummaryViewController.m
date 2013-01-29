@@ -72,6 +72,15 @@ static NSInteger const DEFAULT_EVENT_IMAGE_PAGING_SIZE = 5;
     [wSelf.viewDeckController toggleLeftView];
   });
   
+  UIColor *naviBgColor = [[UIColor clearColor] colorWithAlphaComponent:0];
+  UIGraphicsBeginImageContext(self.navigationController.navigationBar.frame.size);
+  CGContextRef context = UIGraphicsGetCurrentContext();
+  CGContextSetFillColorWithColor(context, naviBgColor.CGColor);
+  CGContextAddRect(context, self.navigationController.navigationBar.frame);
+  CGContextFillPath(context);
+  UIImage *naviBg = UIGraphicsGetImageFromCurrentImageContext();
+  UIGraphicsEndImageContext();
+  [self.navigationController.navigationBar setBackgroundImage:naviBg forBarMetrics:UIBarMetricsDefault];
   self.navigationController.navigationBar.translucent = YES;
   self.navigationItem.titleView = [WAContextMenuViewController titleViewForContextMenu:self.presentingStyle
 							 performSelector:@selector(contextMenuTapped)
@@ -140,6 +149,7 @@ static NSInteger const DEFAULT_EVENT_IMAGE_PAGING_SIZE = 5;
 
   NSParameterAssert([NSThread isMainThread]);
   
+  // adjust frames of all summary and event pages
   __weak WASummaryViewController *wSelf = self;
   [self.daySummaries enumerateKeysAndObjectsUsingBlock:^(id key, WADaySummary *daySummary, BOOL *stop) {
     [daySummary.eventPages enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
@@ -156,6 +166,7 @@ static NSInteger const DEFAULT_EVENT_IMAGE_PAGING_SIZE = 5;
     view.frame = frame;
   }];
 
+  // scroll to current summary page without animation
   [self scrollToCurrentSummaryPageAnimated:NO];
   [self scrollToCurrentEventPageAnimated:NO];
 
@@ -229,7 +240,8 @@ static NSInteger const DEFAULT_EVENT_IMAGE_PAGING_SIZE = 5;
   _currentDaySummary = currentDaySummary;
   
   NSInteger pageControllIndex = 0;
-  
+
+  // if user scrolls events to right, he will see the last event page
   if (self.scrollingEventPage && oldEventIndex > _currentDaySummary.eventIndex) {
     pageControllIndex = [_currentDaySummary.eventPages count] - 1;
   }
@@ -274,6 +286,7 @@ static NSInteger const DEFAULT_EVENT_IMAGE_PAGING_SIZE = 5;
 
   self.reloading = YES;
 
+  // init and display the first day summary while loading following day summaries
   if (!self.currentDaySummary) {
     WADaySummary *currentDaySummary = [[WADaySummary alloc] initWithUser:self.user date:[self dayAtIndex:0] context:self.managedObjectContext];
     [self insertDaySummary:currentDaySummary atIndex:0];
@@ -281,14 +294,19 @@ static NSInteger const DEFAULT_EVENT_IMAGE_PAGING_SIZE = 5;
     self.firstDaySummary = currentDaySummary;
     self.lastDaySummary = currentDaySummary;
   }
+
   WAOverlayBezel *bezel = [WAOverlayBezel bezelWithStyle:WAActivityIndicatorBezelStyle];
   [bezel show];
+
   __weak WASummaryViewController *wSelf = self;
+
+  // delay 1 sec to wait for bounce animation finished
   int64_t delayInSeconds = 1.0;
   dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
   dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
     NSDate *recentDay = [[NSDate date] dayBegin];
     for (NSInteger idx = wSelf.currentDaySummary.summaryIndex; idx != wSelf.currentDaySummary.summaryIndex+pagingSize; idx += pagingSize/abs(pagingSize)) {
+      // scrolling to the future is forbidden
       BOOL isFutureDay = [[[wSelf dayAtIndex:idx] earlierDate:recentDay] isEqualToDate:recentDay];
       if (!isFutureDay && !wSelf.daySummaries[@(idx)]) {
         WADaySummary *daySummary = [[WADaySummary alloc] initWithUser:wSelf.user date:[wSelf dayAtIndex:idx] context:wSelf.managedObjectContext];
@@ -303,7 +321,11 @@ static NSInteger const DEFAULT_EVENT_IMAGE_PAGING_SIZE = 5;
     }
     [wSelf resetContentSize];
     [wSelf layoutSummaryAndEventPages];
-    [wSelf reloadEventPageImagesWithPagingSize:DEFAULT_EVENT_IMAGE_PAGING_SIZE];
+    if (pagingSize > 0) {
+      [wSelf reloadEventPageImagesWithPagingSize:DEFAULT_EVENT_IMAGE_PAGING_SIZE];
+    } else {
+      [wSelf reloadEventPageImagesWithPagingSize:(-DEFAULT_EVENT_IMAGE_PAGING_SIZE)];
+    }
     [bezel dismissWithAnimation:WAOverlayBezelAnimationFade];
     wSelf.reloading = NO;
   });
@@ -312,6 +334,9 @@ static NSInteger const DEFAULT_EVENT_IMAGE_PAGING_SIZE = 5;
 
 - (void)reloadEventPageImagesWithPagingSize:(NSInteger)pagingSize {
 
+  // There is a sliding window for images displayed on event pages.
+  // In normal case, the size would be n leading days & 3n tailing days, depending on the scrolling direction.
+  // Note that we load images reversely because the image display queue of event pages is a LIFO queue.
   if (pagingSize > 0) {
     for (NSInteger idx = self.currentDaySummary.summaryIndex; idx <= self.currentDaySummary.summaryIndex+pagingSize; idx++) {
       WADaySummary *daySummary = self.daySummaries[@(idx)];
@@ -388,6 +413,7 @@ static NSInteger const DEFAULT_EVENT_IMAGE_PAGING_SIZE = 5;
   self.daySummaries[@(idx)] = daySummary;
 
   __weak WASummaryViewController *wSelf = self;
+  // we add the event page reversely to ensure the first event page will show on the topmost z-position initially
   [daySummary.eventPages enumerateObjectsWithOptions:NSEnumerationReverse usingBlock:^(WAEventPageView *eventPage, NSUInteger idx, BOOL *stop) {
     [wSelf.eventScrollView addSubview:eventPage];
   }];
@@ -508,6 +534,7 @@ static NSInteger const DEFAULT_EVENT_IMAGE_PAGING_SIZE = 5;
 
   if (scrollView == self.summaryScrollView) {
 
+    // scroll event scrollview only if user scrolls the summary scrollview manually
     if (self.reloading || self.scrollingEventPage) {
       return;
     }
@@ -521,6 +548,7 @@ static NSInteger const DEFAULT_EVENT_IMAGE_PAGING_SIZE = 5;
     
   } else {
 
+    // scroll summary scrollview only if user scrolls the event scrollview manually
     if (self.reloading || self.scrollingSummaryPage) {
       return;
     }

@@ -77,10 +77,6 @@ static NSString * kWASlidingMenuViewControllerKVOContext = @"WASlidingMenuViewCo
   
   swVC.view.backgroundColor = [UIColor colorWithRed:0.95f green:0.95f blue:0.95f alpha:1];
 
-  if (viewStyle == WAEventsViewStyle) {
-    swVC.navigationController.navigationBar.titleTextAttributes = @{UITextAttributeTextColor: [UIColor whiteColor]};
-  }
-  
   if (viewStyle == WAPhotosViewStyle) {
     [swVC.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"photoStreamNavigationBar"] forBarMetrics:UIBarMetricsDefault];
     swVC.view.backgroundColor = [UIColor colorWithWhite:0.16f alpha:1.0f];
