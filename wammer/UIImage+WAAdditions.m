@@ -13,8 +13,15 @@
 - (void)makeThumbnailWithOptions:(WAThumbnailType)type completeBlock:(WAImageProcessComplete)didCompleteBlock {
 
   [[WAImageProcessing sharedImageProcessQueue] addOperationWithBlock:^{
-    UIImage *scaledImage = [WAImageProcessing scaledImageWithCGImage:self.CGImage type:type orientation:self.imageOrientation];
-    didCompleteBlock(scaledImage);
+	
+	if ([UIApplication sharedApplication].applicationState == UIApplicationStateBackground) {
+	  UIImage *scaledImage = [WAImageProcessing scaledImageWithUIImage:self type:type];
+	  didCompleteBlock(scaledImage);
+	} else {
+	  UIImage *scaledImage = [WAImageProcessing scaledImageWithCGImage:self.CGImage type:type orientation:self.imageOrientation];
+	  didCompleteBlock(scaledImage);
+	}
+	
   }];
 
 }
