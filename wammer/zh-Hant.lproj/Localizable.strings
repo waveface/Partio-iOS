@@ -1,6 +1,18 @@
 /* accessibility label for adding photos in composition view */
 "ACCESS_ADD_PHOTO" = "加照片";
 
+/* The message in the dialog to confirm user want to delete account or not. */
+"ACCOUNT_DELETION_MSG" = "當你確認刪除帳號，AOStream 會寄送一封電子郵件到您的信箱，您可以按照信件中的指示完成帳號刪除的動作。";
+
+/* The title of dialog to confirm user want to delete account or not. */
+"ACCOUNT_DELETION_TITLE" = "確定要刪除你的帳號嗎？";
+
+/* Shows the final dialog to tell user to receive email to complete the account deletion process */
+"ACCOUNT_MSG_DELETION_MAIL_SENT" = "AOStream 已經寄送了一封電子郵件到您的信箱中，請按照信件中的指示完成帳號刪除的動作。如果您並不想移除帳號，只需要對該信件不予理會即可。";
+
+/* Shows the final dialog to tell user to receive email to complete the account deletion process. */
+"ACCOUNT_TITLE_DELETION_MAIL_SENT" = "帳號刪除郵件已被送出";
+
 /* add photo button in composition view */
 "ACTION_ADD" = "加照片";
 
@@ -30,6 +42,7 @@
 "ACTION_CONNECT_TWITTER_SHORT" = "同步";
 
 /* Action deleting an article
+   The label on the confirmation dialog to make sure user want to delete account or not
    Title for deleting an article from the Timeline */
 "ACTION_DELETE" = "丟棄";
 
@@ -65,6 +78,9 @@
 
 /* Action marking article as favorite */
 "ACTION_MARK_FAVORITE" = "設為最愛";
+
+/* No comment provided by engineer. */
+"ACTION_OK" = "確定";
 
 /* Alert Dismissal Action */
 "ACTION_OKAY" = "確定";

@@ -152,4 +152,13 @@
   
 }
 
+- (void) deleteUserWithEmailSentOnSuccess:(void(^)(void))successBlock onFailure:(void(^)(NSError *error))failureBlock {
+  
+  [self.engine fireAPIRequestNamed:@"users/deleteWithEmail" withArguments:nil options:nil validator:WARemoteInterfaceGenericNoErrorValidator()
+					successHandler:^(NSDictionary *response, IRWebAPIRequestContext *context) {
+					  successBlock();
+					} failureHandler:WARemoteInterfaceGenericFailureHandler(failureBlock)];
+  
+}
+
 @end

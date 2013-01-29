@@ -10,6 +10,9 @@
 #import "IRObservings.h"
 #import "WADataStore.h"
 #import "WAUser.h"
+#import "WARemoteInterface.h"
+#import "WAOverlayBezel.h"
+#import "UIKit+IRAdditions.h"
 
 @interface WAUserDetailViewController ()
 
@@ -84,7 +87,63 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (IRAlertView *)newSnsConnectAlertView {
+  
+  __weak WAUserDetailViewController *wSelf = self;
+  
+  NSString *cancelTitle = NSLocalizedString(@"ACTION_CANCEL", nil);
+  IRAction *cancelAction = [IRAction actionWithTitle:cancelTitle block:^{
+	
+  }];
+  
+  IRAction *deleteAction = [IRAction actionWithTitle:NSLocalizedString(@"ACTION_DELETE", @"The label on the confirmation dialog to make sure user want to delete account or not") block:^{
+
+	[wSelf accountDidDelete];
+	
+  }];
+  
+  IRAlertView *alertView = [IRAlertView alertViewWithTitle:NSLocalizedString(@"ACCOUNT_DELETION_TITLE", @"The title of dialog to confirm user want to delete account or not.")
+												   message:NSLocalizedString(@"ACCOUNT_DELETION_MSG", @"The message in the dialog to confirm user want to delete account or not.")
+											  cancelAction:cancelAction otherActions:[NSArray arrayWithObjects:deleteAction, nil]];
+  
+  return alertView;
+  
+}
+
+
+- (void) accountDidDelete {
+  
+  WAOverlayBezel *busyBezel = [WAOverlayBezel bezelWithStyle:WAActivityIndicatorBezelStyle];
+  [busyBezel showWithAnimation:WAOverlayBezelAnimationFade];
+
+  [[WARemoteInterface sharedInterface] deleteUserWithEmailSentOnSuccess:^{
+	
+	dispatch_async(dispatch_get_main_queue(), ^{
+
+	  [busyBezel dismiss];
+	  IRAlertView *alertView = [IRAlertView alertViewWithTitle:NSLocalizedString(@"ACCOUNT_TITLE_DELETION_MAIL_SENT", @"Shows the final dialog to tell user to receive email to complete the account deletion process.")
+													   message:NSLocalizedString(@"ACCOUNT_MSG_DELETION_MAIL_SENT", @"Shows the final dialog to tell user to receive email to complete the account deletion process")
+												  cancelAction:[IRAction actionWithTitle:NSLocalizedString(@"ACTION_OK", nil) block:nil]
+												  otherActions:nil];
+	  [alertView show];
+	});
+	
+  } onFailure:^(NSError *error) {
+	
+	dispatch_async(dispatch_get_main_queue(), ^{
+	  [busyBezel dismiss];
+	  WAOverlayBezel *errorBezel = [WAOverlayBezel bezelWithStyle:WAErrorBezelStyle];
+	  [errorBezel show];
+	});
+	
+  }];
+  
+}
+
 - (void) accountDeletionTapped {
+
+  [[self newSnsConnectAlertView] show];
+  [self.accountDeleteionTableCell setSelected:NO];
   
 }
 

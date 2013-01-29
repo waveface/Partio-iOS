@@ -1,6 +1,18 @@
 /* accessibility label for adding photos in composition view */
 "ACCESS_ADD_PHOTO" = "Add Photo";
 
+/* The message in the dialog to confirm user want to delete account or not. */
+"ACCOUNT_DELETION_MSG" = "Are you sure to leave AOStream? Once you confirm, AOStream will send you an email to your mail box, you need to follow the instructions in the mail to complete the process of account removal.";
+
+/* The title of dialog to confirm user want to delete account or not. */
+"ACCOUNT_DELETION_TITLE" = "Remove your account?";
+
+/* Shows the final dialog to tell user to receive email to complete the account deletion process */
+"ACCOUNT_MSG_DELETION_MAIL_SENT" = "An email with intrusctions to remove your account has been sent to your email address, you can follow the intrustions to complete the process. If you don't want to remove account, just ignore that email.";
+
+/* Shows the final dialog to tell user to receive email to complete the account deletion process. */
+"ACCOUNT_TITLE_DELETION_MAIL_SENT" = "Check your mailbox";
+
 /* add photo button in composition view */
 "ACTION_ADD" = "Add Photo";
 
@@ -30,6 +42,7 @@
 "ACTION_CONNECT_TWITTER_SHORT" = "Start Importing";
 
 /* Action deleting an article
+   The label on the confirmation dialog to make sure user want to delete account or not
    Title for deleting an article from the Timeline */
 "ACTION_DELETE" = "Delete";
 
@@ -65,6 +78,9 @@
 
 /* Action marking article as favorite */
 "ACTION_MARK_FAVORITE" = "Favorite";
+
+/* No comment provided by engineer. */
+"ACTION_OK" = "OK";
 
 /* Alert Dismissal Action */
 "ACTION_OKAY" = "OK";
