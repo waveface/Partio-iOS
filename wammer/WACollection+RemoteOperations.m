@@ -15,6 +15,40 @@
 #import <SSToolkit/NSString+SSToolkitAdditions.h>
 #import <SSToolkit/NSDate+SSToolkitAdditions.h>
 
+@implementation MKNetworkEngine (WACollection)
+
++ (void) createCollection: (WACollection *)collection {
+  WARemoteInterface *interface = [WARemoteInterface sharedInterface];
+  NSURL *bestURL = [interface bestHostForRequestNamed:@"collections/create"];
+  MKNetworkEngine *engine = [[MKNetworkEngine alloc] initWithHostName:[bestURL host]
+                                                              apiPath:@"v3"
+                                                   customHeaderFields:nil];
+  NSDictionary *payload = @{
+                            @"name":            collection.title,
+                            @"object_id_list":  [[[collection.files valueForKeyPath:@"identifier"] array] JSONString],
+                            @"create_time":     [collection.creationDate ISO8601String],
+                            @"collection_id":   collection.identifier,
+                            @"manual":          @"true",
+                            @"session_token":   interface.userToken,
+                            @"api_key":         interface.apiKey,
+                            };
+  MKNetworkOperation *op = [engine operationWithPath:@"collections/create"
+                                              params:payload
+                                          httpMethod:@"POST"
+                                                 ssl:[[bestURL scheme] isEqualToString:@"https"]];
+  op.freezable = YES;
+  [op
+   addCompletionHandler:^(MKNetworkOperation *completedOperation) {
+     NSLog(@"Collection Created in Remote.");
+   }
+   errorHandler:^(MKNetworkOperation *completedOperation, NSError *error) {
+     NSLog(@"Collection Creation failed: %@\n%@", completedOperation, error);
+   }];
+  [engine enqueueOperation:op];
+}
+
+@end
+
 @implementation WACollection (RemoteOperations)
 
 + (void)refreshCollectionsWithCompletion:(void (^)(void))completionBlock
@@ -24,10 +58,10 @@
   MKNetworkEngine *engine = [[MKNetworkEngine alloc] initWithHostName:[bestURL host] apiPath:@"v3" customHeaderFields:nil];
   
   NSDictionary *payload = @{
-  @"session_token":interface.userToken,
-  @"api_key":interface.apiKey,
-  @"no_hidden":@YES,
-  };
+                            @"session_token":interface.userToken,
+                            @"api_key":interface.apiKey,
+                            @"no_hidden":@YES,
+                            };
   
   MKNetworkOperation *op = [engine operationWithPath:@"collections/getAll"
                                               params:payload
@@ -78,12 +112,12 @@
                                                               apiPath:@"v3"
                                                    customHeaderFields:nil];
   NSDictionary *payload = @{
-  @"session_token":interface.userToken,
-  @"api_key":interface.apiKey,
-  @"manual":@"true",
-  @"name":@"Created by shake.",
-  @"object_id_list": [@[@"88704d05-88e7-4464-ac0a-e47081fb3185"] JSONString],
-  };
+                            @"session_token":interface.userToken,
+                            @"api_key":interface.apiKey,
+                            @"manual":@"true",
+                            @"name":@"Created by shake.",
+                            @"object_id_list": [@[@"88704d05-88e7-4464-ac0a-e47081fb3185"] JSONString],
+                            };
   
   MKNetworkOperation *op = [engine operationWithPath:@"collections/create"
                                               params:payload
@@ -110,12 +144,12 @@
                                                               apiPath:@"v3"
                                                    customHeaderFields:nil];
   NSDictionary *payload = @{
-  @"collection_id":   self.identifier,
-  @"modify_time":     [[NSDate date] ISO8601String],
-  @"object_id_list":  [[[self.files valueForKeyPath:@"identifier"] array] JSONString],
-  @"session_token":   interface.userToken,
-  @"api_key":         interface.apiKey,
-  };
+                            @"collection_id":   self.identifier,
+                            @"modify_time":     [[NSDate date] ISO8601String],
+                            @"object_id_list":  [[[self.files valueForKeyPath:@"identifier"] array] JSONString],
+                            @"session_token":   interface.userToken,
+                            @"api_key":         interface.apiKey,
+                            };
   MKNetworkOperation *op = [engine operationWithPath:@"collections/update"
                                               params:payload
                                           httpMethod:@"POST"
@@ -149,34 +183,9 @@
     self.creationDate = [NSDate date];
   }
   
-  // TODO: Use notification to decouple this part
-  [self remoteNewCollection];
+  [MKNetworkEngine createCollection:self];
   
   return self;
-}
-
-#pragma mark - private networking operation
-- (void) remoteNewCollection {
-  WARemoteInterface *interface = [WARemoteInterface sharedInterface];
-  NSURL *bestURL = [interface bestHostForRequestNamed:@"collections/create"];
-  MKNetworkEngine *engine = [[MKNetworkEngine alloc] initWithHostName:[bestURL host]
-                                                              apiPath:@"v3"
-                                                   customHeaderFields:nil];
-  NSDictionary *payload = @{
-  @"name":            self.title,
-  @"object_id_list":  [[[self.files valueForKeyPath:@"identifier"] array] JSONString],
-  @"create_time":     [self.creationDate ISO8601String],
-  @"collection_id":   self.identifier,
-  @"manual":          @"true",
-  @"session_token":   interface.userToken,
-  @"api_key":         interface.apiKey,
-  };
-  MKNetworkOperation *op = [engine operationWithPath:@"collections/create"
-                                              params:payload
-                                          httpMethod:@"POST"
-                                                 ssl:[[bestURL scheme] isEqualToString:@"https"]];
-  [engine enqueueOperation:op];
-  
 }
 @end
 

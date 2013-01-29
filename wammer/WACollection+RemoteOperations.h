@@ -8,8 +8,12 @@
 
 #import "WACollection.h"
 
+@class WARemoteInterface;
+
 @interface WACollection (RemoteOperations)
 // https://github.com/waveface/Wammer-Cloud/wiki/Collections-API
+
+@property (nonatomic, strong) WARemoteInterface *interface;
 
 + (void) refreshCollectionsWithCompletion:(void(^)(void))completionBlock;
 
