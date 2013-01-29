@@ -13,4 +13,6 @@
 
 - (void)makeThumbnailWithOptions:(WAThumbnailType)type completeBlock:(WAImageProcessComplete)didCompleteBlock;
 
+- (UIImage *)loadDecompressedImage;
+
 @end

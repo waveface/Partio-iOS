@@ -1,6 +1,18 @@
 /* accessibility label for adding photos in composition view */
 "ACCESS_ADD_PHOTO" = "加照片";
 
+/* The message in the dialog to confirm user want to delete account or not. */
+"ACCOUNT_DELETION_MSG" = "當你確認刪除帳號，AOStream 會寄送一封電子郵件到您的信箱，您可以按照信件中的指示完成帳號刪除的動作。";
+
+/* The title of dialog to confirm user want to delete account or not. */
+"ACCOUNT_DELETION_TITLE" = "確定要刪除你的帳號嗎？";
+
+/* Shows the final dialog to tell user to receive email to complete the account deletion process */
+"ACCOUNT_MSG_DELETION_MAIL_SENT" = "AOStream 已經寄送了一封電子郵件到您的信箱中，請按照信件中的指示完成帳號刪除的動作。如果您並不想移除帳號，只需要對該信件不予理會即可。";
+
+/* Shows the final dialog to tell user to receive email to complete the account deletion process. */
+"ACCOUNT_TITLE_DELETION_MAIL_SENT" = "帳號刪除郵件已被送出";
+
 /* add photo button in composition view */
 "ACTION_ADD" = "加照片";
 
@@ -30,6 +42,7 @@
 "ACTION_CONNECT_TWITTER_SHORT" = "同步";
 
 /* Action deleting an article
+   The label on the confirmation dialog to make sure user want to delete account or not
    Title for deleting an article from the Timeline */
 "ACTION_DELETE" = "丟棄";
 
@@ -65,6 +78,9 @@
 
 /* Action marking article as favorite */
 "ACTION_MARK_FAVORITE" = "設為最愛";
+
+/* No comment provided by engineer. */
+"ACTION_OK" = "確定";
 
 /* Alert Dismissal Action */
 "ACTION_OKAY" = "確定";
@@ -210,8 +226,11 @@
 /* The text of label on separation line in the event view when there is no photo presented. */
 "EVENT_SEPERATION_LABEL_WITHOUT_PHOTOS" = "加些照片吧";
 
+/* Event summary text in summary view */
+"EVENT_SUMMARY_TEXT" = "你今天有 %d 個動態";
+
 /* Title for Events view */
-"EVENTS_CONTROLLER_TITLE" = "動態";
+"EVENTS_CONTROLLER_TITLE" = "我的天";
 
 /* Message for an alert view to show user his FB account has been connected to another Stream user */
 "FACEBOOK_CONNECT_ACCOUNT_OCCUPIED_MESSAGE" = "這個 Facebook 帳號已經被使用，請您再試試看其他的Facebook帳號。";
@@ -294,6 +313,9 @@
 /* Title for alert view asking if user wants to disconnect her Google account */
 "GOOGLE_DISCONNECT_REQUEST_TITLE" = "確認取消Google同步";
 
+/* Hello text in summary view */
+"HELLO_NAME_TEXT" = "哈囉, %@";
+
 /* No comment provided by engineer. */
 "HOUR_PLURAL" = "%d小時";
 
@@ -302,6 +324,12 @@
 
 /* Title on introduction pages */
 "INTRODUCTION_TITLE" = "Stream 是什麼？";
+
+/* Shows OFF when auto import is turned off in the settings panel */
+"LABEL_AUTO_IMPORT_VALUE_OFF" = "關閉";
+
+/* Shows ON when auto import is turned on in the settings panel */
+"LABEL_AUTO_IMPORT_VALUE_ON" = "開啟";
 
 /* Text for modal popup close button */
 "LABEL_MODAL_POPUP_CLOSE_BUTTON" = "關閉";
@@ -665,6 +693,21 @@
 /* Class = "IBUILabel"; text = "STATE_LOADING_SINGLE_DOCUMENT_PROGRESS"; ObjectID = "10"; */
 "STATE_LOADING_SINGLE_DOCUMENT_PROGRESS" = "%1 / %2";
 
+/* Class = "IBUILabel"; text = "MONTH"; ObjectID = "5"; */
+"MONTH" = "MONTH";
+
+/* Class = "IBUILabel"; text = "DAY"; ObjectID = "9"; */
+"DAY" = "DAY";
+
+/* Class = "IBUILabel"; text = "WEEKDAY"; ObjectID = "10"; */
+"WEEKDAY" = "WEEKDAY";
+
+/* Class = "IBUILabel"; text = "HELLO_TEXT"; ObjectID = "49"; */
+"HELLO_TEXT" = "HELLO_TEXT";
+
+/* Class = "IBUILabel"; text = "EVENT_TEXT"; ObjectID = "50"; */
+"EVENT_TEXT" = "EVENT_TEXT";
+
 /* Class = "IBUILabel"; text = "ACTION_GOTO_WEBSITE"; ObjectID = "0UL-JF-5TW"; */
 "ACTION_GOTO_WEBSITE" = "在網站上檢視詳細方案";
 
@@ -689,9 +732,6 @@
 /* Class = "IBUILabel"; text = "LOGOUT"; ObjectID = "GUv-Fm-Efw"; */
 "LOGOUT" = "登出";
 
-/* Class = "IBUITableViewSection"; headerTitle = "ACCOUNT_INFO_HEADER"; ObjectID = "Gw1-xy-FWK"; */
-"ACCOUNT_INFO_HEADER" = "帳戶資訊";
-
 /* Class = "IBUILabel"; text = "FILES_TO_UPLOAD"; ObjectID = "Ldp-qK-xdo"; */
 "FILES_TO_UPLOAD" = "待上傳照片";
 
@@ -707,11 +747,11 @@
 /* Class = "IBUILabel"; text = "STORAGE_USAGE"; ObjectID = "aOf-bH-Me7"; */
 "STORAGE_USAGE" = "已使用雲端空間";
 
-/* Class = "IBUILabel"; text = "CONNECTION_STATUS_DETAIL"; ObjectID = "bJb-Bz-WkJ"; */
-"CONNECTION_STATUS_DETAIL" = "CONNECTION_STATUS_DETAIL";
-
 /* Class = "IBUILabel"; text = "NOUN_USERNAME"; ObjectID = "drm-tH-4is"; */
 "NOUN_USERNAME" = "電子郵件";
+
+/* Class = "IBUILabel"; text = "DELETE_ACCOUNT"; ObjectID = "gZ1-RR-4LO"; */
+"DELETE_ACCOUNT" = "刪除帳號";
 
 /* Class = "IBUITableViewSection"; footerTitle = "PHOTO_IMPORT_SETTINGS_FOOTER"; ObjectID = "gj0-e5-1Bs"; */
 "PHOTO_IMPORT_SETTINGS_FOOTER" = "手機上的原圖會自動傳回相同 WiFi 下的 AOStream Windows Station";
@@ -722,26 +762,14 @@
 /* Class = "IBUILabel"; text = "WEB_SERVICES_TITLE"; ObjectID = "gjy-px-XbS"; */
 "WEB_SERVICES_TITLE" = "網路服務";
 
-/* Class = "IBUILabel"; text = "VERSION"; ObjectID = "gkC-aR-76h"; */
-"VERSION" = "版本";
-
 /* Class = "IBUILabel"; text = "NONE"; ObjectID = "gvB-Dr-HXB"; */
 "NONE" = "NONE";
-
-/* Class = "IBUITableViewSection"; headerTitle = "NETWORK_HEADER"; ObjectID = "iKO-vI-KPy"; */
-"NETWORK_HEADER" = "網路";
 
 /* Class = "IBUITableViewSection"; footerTitle = "PHOTO_IMPORT_SWITCH_FOOTER"; ObjectID = "jPT-4f-lnH"; */
 "PHOTO_IMPORT_SWITCH_FOOTER" = "開啟照片匯入將你相機膠卷中所有照片匯入 AOStream";
 
 /* Class = "IBUILabel"; text = "UPGRADE_ACCOUNT"; ObjectID = "n6T-1w-Odi"; */
 "UPGRADE_ACCOUNT" = "升級帳號";
-
-/* Class = "IBUILabel"; text = "CONNECTION_STATUS_TITLE"; ObjectID = "oOp-ya-swS"; */
-"CONNECTION_STATUS_TITLE" = "連線狀態";
-
-/* Class = "IBUITableViewSection"; headerTitle = "IMPORT_HEADER"; ObjectID = "qoR-fT-NMh"; */
-"IMPORT_HEADER" = "匯入";
 
 /* Class = "IBUILabel"; text = "ACTION_CONTACT_DEVELOPER"; ObjectID = "yLg-eE-ehZ"; */
 "ACTION_CONTACT_DEVELOPER" = "聯絡我們";

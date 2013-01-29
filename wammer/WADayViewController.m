@@ -99,9 +99,9 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 	self.paginatedView = [[IRPaginatedView alloc] initWithFrame:rect];
 	self.paginatedView.delegate = self;
 	self.paginatedView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
-  self.navigationItem.titleView = [self titleViewForContextMenu:presentingStyle
-                                                performSelector:@selector(contextMenuTapped)
-                                                     withObject:self];
+  self.navigationItem.titleView = [WAContextMenuViewController titleViewForContextMenu:presentingStyle
+							 performSelector:@selector(contextMenuTapped)
+							      withObject:self];
 	[self.view addSubview: self.paginatedView];
 
 	contextMenuOpened = NO;
@@ -321,46 +321,6 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 	
 	[self.paginatedView scrollToPageAtIndex:page animated:animated];
 	return YES;
-}
-
-#pragma mark - View Helper
-- (UIView *) titleViewForContextMenu:(WADayViewSupportedStyle) style
-                       performSelector:(SEL) action
-                            withObject:(id) target
-{
-  NSString *barTitle = nil;
-  UIColor *logoColor = [UIColor blackColor];
-  if (style == WAEventsViewStyle) {
-    barTitle = NSLocalizedString(@"EVENTS_CONTROLLER_TITLE", @"Title for Events view");
-  } else if (style == WAPhotosViewStyle) {
-    barTitle = NSLocalizedString(@"PHOTOS_TITLE", @"in day view");
-    logoColor = [UIColor whiteColor];
-  } else if (style == WADocumentsViewStyle) {
-    barTitle = NSLocalizedString(@"DOCUMENTS_CONTROLLER_TITLE", @"Title for document view controller");
-  } else if (style == WAWebpagesViewStyle) {
-    barTitle = NSLocalizedString(@"WEBPAGES_CONTROLLER_TITLE", @"Title for web pages view controller");
-  }
-  
-  UIButton *logoButton = [UIButton buttonWithType:UIButtonTypeCustom];
-  logoButton.frame = (CGRect) {CGPointZero, (CGSize){150, 44}};
-  [logoButton setBackgroundColor:[UIColor clearColor]];
-  [logoButton setTitleColor:logoColor forState:UIControlStateNormal];
-  [logoButton setTitle:barTitle forState:UIControlStateNormal];
-  
-  UIImage *arrow = [UIImage imageNamed:@"WATinyArrowDown"];
-  [logoButton setImage:[UIImage imageNamed:@"WATinyArrowDown"] forState:UIControlStateNormal];
-  CGSize labelSize = [barTitle sizeWithFont:logoButton.titleLabel.font];
-  logoButton.imageEdgeInsets = UIEdgeInsetsMake(0, labelSize.width + arrow.size.width, 0, -labelSize.width);
-  logoButton.contentEdgeInsets = UIEdgeInsetsMake(5, 10, 5, 20);
-  
-  [logoButton setShowsTouchWhenHighlighted:YES];
-  [logoButton addTarget:target action:action forControlEvents:UIControlEventTouchUpInside];
-  logoButton.contentMode = UIViewContentModeScaleAspectFit;
-  logoButton.autoresizingMask = UIViewAutoresizingNone;
-  
-  [logoButton sizeToFit];
-  return logoButton;
-  
 }
 
 @end
