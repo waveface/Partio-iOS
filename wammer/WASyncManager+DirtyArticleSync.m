@@ -59,25 +59,25 @@
 
         IRAsyncOperation *operation = [IRAsyncOperation operationWithWorker:^(IRAsyncOperationCallback callback) {
 
-	[ds updateArticle:articleURL onSuccess:^{
-	  callback(nil);
-	} onFailure:^(NSError *error) {
-	  callback(error);
-	}];
+		  [ds updateArticle:articleURL onSuccess:^{
+			callback(nil);
+		  } onFailure:^(NSError *error) {
+			callback(error);
+		  }];
 
         } trampoline:^(IRAsyncOperationInvoker callback) {
 
-	NSCAssert(![NSThread isMainThread], @"should run in background");
-	callback();
+		  NSCAssert(![NSThread isMainThread], @"should run in background");
+		  callback();
 
         } callback:^(id results) {
 
-	// NO OP
+		  // NO OP
 
         } callbackTrampoline:^(IRAsyncOperationInvoker callback) {
 
-	NSCAssert(![NSThread isMainThread], @"should run in background");
-	callback();
+		  NSCAssert(![NSThread isMainThread], @"should run in background");
+		  callback();
 
         }];
         
