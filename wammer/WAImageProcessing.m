@@ -7,6 +7,8 @@
 //
 
 #import "WAImageProcessing.h"
+#import "UIImage+IRAdditions.h"
+#import "QuartzCore+IRAdditions.h"
 #import <CoreImage/CoreImage.h>
 
 static CGFloat const kWAFileExtraSmallImageSideLength = 150; // the side length of asset's square thumbnails in retina display
@@ -15,6 +17,39 @@ static CGFloat const kWAFileMediumImageSideLength = 1024;
 static CGFloat const kWAFileLargeImageSideLength = 2048;
 
 @implementation WAImageProcessing
+
++ (UIImage *)scaledImageWithUIImage:(UIImage*)image type:(WAThumbnailType)type {
+  
+  CGFloat sideLength = 0;
+  switch (type) {
+	case WAThumbnailTypeExtraSmall:
+	  sideLength = kWAFileExtraSmallImageSideLength;
+	  break;
+	  
+	case WAThumbnailTypeSmall:
+	  sideLength = kWAFileSmallImageSideLength;
+	  break;
+	  
+	case WAThumbnailTypeMedium:
+	  sideLength = kWAFileMediumImageSideLength;
+	  break;
+	  
+	case WAThumbnailTypeLarge:
+	  sideLength = kWAFileLargeImageSideLength;
+	  break;
+	default:
+	  break;
+  }
+    
+  if (image.size.width > sideLength || image.size.height > sideLength) {
+	UIImage *scaledImage = [image irScaledImageWithSize:IRGravitize((CGRect){CGPointZero, (CGSize){sideLength, sideLength}}, image.size, kCAGravityResizeAspect).size];
+	return scaledImage;
+  } else if (image.imageOrientation != UIImageOrientationUp) {
+	return [image irScaledImageWithSize:image.size];
+  }
+  
+  return image;
+}
 
 + (UIImage *)scaledImageWithCGImage:(CGImageRef)image type:(WAThumbnailType)type orientation:(UIImageOrientation)orientation {
   
