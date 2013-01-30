@@ -364,6 +364,9 @@
 /* Nickname placeholder in signup page */
 "NICKNAME_PLACEHOLDER" = "Johnny Appleseed";
 
+/* No internet connection */
+"NO_INTERNET_CONNECTION" = "No Connection";
+
 /* Cell title in connection status view controller */
 "NO_STATION_INSTALLED" = "AOStream Station not yet installed.";
 

@@ -10,4 +10,8 @@
 
 @interface WAConnectionStatusView : UIView
 
++ (id) viewFromNib;
+@property (nonatomic, weak) IBOutlet UIImageView *imageView;
+@property (nonatomic, weak) IBOutlet UILabel *textLabel;
+
 @end

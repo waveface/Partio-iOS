@@ -32,6 +32,7 @@
 #import "WAFetchManager.h"
 #import <QuartzCore/QuartzCore.h>
 #import "WASummaryViewController.h"
+#import "WAConnectionStatusView.h"
 
 static NSString * kWASlidingMenuViewControllerKVOContext = @"WASlidingMenuViewControllerKVOContext";
 
@@ -42,6 +43,7 @@ static NSString * kWASlidingMenuViewControllerKVOContext = @"WASlidingMenuViewCo
 @property (nonatomic, strong) UITableViewCell *userCell;
 @property (nonatomic, strong) UIButton *calendarButton;
 @property (nonatomic, strong) UIPopoverController *calendarPopoverForIPad;
+@property (nonatomic, strong) WAConnectionStatusView *connectionStatusView;
 
 @property (nonatomic, strong) WAStatusBar *statusBar;
 
@@ -98,7 +100,13 @@ static NSString * kWASlidingMenuViewControllerKVOContext = @"WASlidingMenuViewCo
   
   [self.tableView setBackgroundColor:[UIColor colorWithWhite:0.3f alpha:1.0f]];
   self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+
+  self.connectionStatusView = [[WAConnectionStatusView alloc] init];
+  CGRect newFrame = self.connectionStatusView.frame;
+  newFrame.origin = CGPointMake(0, self.tableView.frame.size.height - newFrame.size.height);
+  self.connectionStatusView.frame = newFrame;
   
+  [self.view addSubview:self.connectionStatusView];
 }
 
 - (void)dealloc

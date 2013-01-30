@@ -355,6 +355,14 @@
 		80F42C0215F70EDF00C8A72B /* WAWebSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 809D428F15F5CE4300CB4F89 /* WAWebSocket.m */; };
 		80F800F615C2624C00132A96 /* IRAQ-Checkmark.png in Resources */ = {isa = PBXBuildFile; fileRef = 80F800F415C2624C00132A96 /* IRAQ-Checkmark.png */; };
 		80F800F715C2624C00132A96 /* IRAQ-Checkmark@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 80F800F515C2624C00132A96 /* IRAQ-Checkmark@2x.png */; };
+		80F957A116B8D21F005121A1 /* nointernetaccess.png in Resources */ = {isa = PBXBuildFile; fileRef = 80F9579F16B8D21F005121A1 /* nointernetaccess.png */; };
+		80F957A216B8D21F005121A1 /* nointernetaccess@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 80F957A016B8D21F005121A1 /* nointernetaccess@2x.png */; };
+		80F957B316B8D22D005121A1 /* cloud.png in Resources */ = {isa = PBXBuildFile; fileRef = 80F957B116B8D22D005121A1 /* cloud.png */; };
+		80F957B416B8D22D005121A1 /* cloud@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 80F957B216B8D22D005121A1 /* cloud@2x.png */; };
+		80F957B716B8D23F005121A1 /* station.png in Resources */ = {isa = PBXBuildFile; fileRef = 80F957B516B8D23F005121A1 /* station.png */; };
+		80F957B816B8D23F005121A1 /* station@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 80F957B616B8D23F005121A1 /* station@2x.png */; };
+		80F957BC16B8D40A005121A1 /* WAConnectionStatusView.m in Sources */ = {isa = PBXBuildFile; fileRef = 80F957BB16B8D40A005121A1 /* WAConnectionStatusView.m */; };
+		80F957BE16B8D421005121A1 /* WAConnectionStatusView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 80F957BD16B8D421005121A1 /* WAConnectionStatusView.xib */; };
 		94EB57761411451780C24560 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D215E734098A44479DEC4F88 /* libPods.a */; };
 		DE46FC17165E228300CC4FFF /* WACalendarPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DE46FC16165E228300CC4FFF /* WACalendarPickerViewController.m */; };
 		DE696E011675D020008DC3F6 /* WASnsConnectSwitch.m in Sources */ = {isa = PBXBuildFile; fileRef = DE696E001675D020008DC3F6 /* WASnsConnectSwitch.m */; };
@@ -1407,6 +1415,15 @@
 		80F0B23116422C2B00BD3F0D /* WAModel 39.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WAModel 39.xcdatamodel"; sourceTree = "<group>"; };
 		80F800F415C2624C00132A96 /* IRAQ-Checkmark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "IRAQ-Checkmark.png"; sourceTree = "<group>"; };
 		80F800F515C2624C00132A96 /* IRAQ-Checkmark@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "IRAQ-Checkmark@2x.png"; sourceTree = "<group>"; };
+		80F9579F16B8D21F005121A1 /* nointernetaccess.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = nointernetaccess.png; path = Resources/nointernetaccess.png; sourceTree = "<group>"; };
+		80F957A016B8D21F005121A1 /* nointernetaccess@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "nointernetaccess@2x.png"; path = "Resources/nointernetaccess@2x.png"; sourceTree = "<group>"; };
+		80F957B116B8D22D005121A1 /* cloud.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = cloud.png; path = Resources/cloud.png; sourceTree = "<group>"; };
+		80F957B216B8D22D005121A1 /* cloud@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "cloud@2x.png"; path = "Resources/cloud@2x.png"; sourceTree = "<group>"; };
+		80F957B516B8D23F005121A1 /* station.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = station.png; path = Resources/station.png; sourceTree = "<group>"; };
+		80F957B616B8D23F005121A1 /* station@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "station@2x.png"; path = "Resources/station@2x.png"; sourceTree = "<group>"; };
+		80F957BA16B8D40A005121A1 /* WAConnectionStatusView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAConnectionStatusView.h; sourceTree = "<group>"; };
+		80F957BB16B8D40A005121A1 /* WAConnectionStatusView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAConnectionStatusView.m; sourceTree = "<group>"; };
+		80F957BD16B8D421005121A1 /* WAConnectionStatusView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WAConnectionStatusView.xib; sourceTree = "<group>"; };
 		9A79ED179A7140438E44ACD8 /* Pods-UnitTests.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UnitTests.xcconfig"; path = "Pods/Pods-UnitTests.xcconfig"; sourceTree = SOURCE_ROOT; };
 		D215E734098A44479DEC4F88 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		D26DABE040324ABAAAC5058D /* Pods-StreamTests.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-StreamTests.xcconfig"; path = "Pods/Pods-StreamTests.xcconfig"; sourceTree = SOURCE_ROOT; };
@@ -2514,6 +2531,18 @@
 			name = "Event View";
 			sourceTree = "<group>";
 		};
+		80F957B916B8D3DC005121A1 /* Sliding Menu */ = {
+			isa = PBXGroup;
+			children = (
+				809C6D281605845A0016E196 /* WASlidingMenuViewController.h */,
+				809C6D291605845A0016E196 /* WASlidingMenuViewController.m */,
+				80F957BA16B8D40A005121A1 /* WAConnectionStatusView.h */,
+				80F957BB16B8D40A005121A1 /* WAConnectionStatusView.m */,
+				80F957BD16B8D421005121A1 /* WAConnectionStatusView.xib */,
+			);
+			name = "Sliding Menu";
+			sourceTree = "<group>";
+		};
 		DE7B38A0165CBB9900718262 /* Calendar Picker */ = {
 			isa = PBXGroup;
 			children = (
@@ -2771,6 +2800,7 @@
 		FF6E168314F2EB6500AE1C05 /* Timeline */ = {
 			isa = PBXGroup;
 			children = (
+				80F957B916B8D3DC005121A1 /* Sliding Menu */,
 				139DC23116AD25EE00147F4D /* Summary */,
 				80074F8D167ED4A200A23EED /* Web Pages */,
 				8007709516789A540085E525 /* Collection */,
@@ -2784,8 +2814,6 @@
 				80BE685A161DC13800A37CEB /* WADayViewController.m */,
 				806A5C831623C6C500867E56 /* WAContextMenuViewController.h */,
 				806A5C841623C6C500867E56 /* WAContextMenuViewController.m */,
-				809C6D281605845A0016E196 /* WASlidingMenuViewController.h */,
-				809C6D291605845A0016E196 /* WASlidingMenuViewController.m */,
 			);
 			name = Timeline;
 			path = wammer;
@@ -3136,6 +3164,8 @@
 				806A5C8D16241E2800867E56 /* CalHL@2x.png */,
 				803302431688536C00004891 /* chrome.png */,
 				803302441688536C00004891 /* chrome@2x.png */,
+				80F9579F16B8D21F005121A1 /* nointernetaccess.png */,
+				80F957A016B8D21F005121A1 /* nointernetaccess@2x.png */,
 				DEBED816166C8643001A2B24 /* forward.png */,
 				DEBED817166C8643001A2B24 /* forward@2x.png */,
 				803302471688539200004891 /* facebook.png */,
@@ -3150,6 +3180,8 @@
 				806A5C9116241E2800867E56 /* LeftHL@2x.png */,
 				806A5C9216241E2800867E56 /* LogoDD.png */,
 				806A5C9316241E2800867E56 /* LogoDD@2x.png */,
+				80F957B116B8D22D005121A1 /* cloud.png */,
+				80F957B216B8D22D005121A1 /* cloud@2x.png */,
 				806A5C9416241E2800867E56 /* menu.png */,
 				806A5C9516241E2800867E56 /* menu@2x.png */,
 				806A5C9616241E2800867E56 /* menuHL.png */,
@@ -3164,6 +3196,8 @@
 				DEF13264164B83B50051284D /* EventsIcon.png */,
 				DEF13265164B83B50051284D /* PhotosIcon.png */,
 				DEF13266164B83B50051284D /* SettingsIcon.png */,
+				80F957B516B8D23F005121A1 /* station.png */,
+				80F957B616B8D23F005121A1 /* station@2x.png */,
 				DEF1326C164B83CE0051284D /* CalIcon@2x.png */,
 				DEF1326D164B83CE0051284D /* CollectionIcon@2x.png */,
 				DEF1326E164B83CE0051284D /* EventsIcon@2x.png */,
@@ -4266,6 +4300,13 @@
 				1376B65916B64F8000961ED2 /* WASummaryNoEventBackground.png in Resources */,
 				1376B65A16B64F8000961ED2 /* WASummaryNoEventBackground@2x.png in Resources */,
 				1376B65C16B661C200961ED2 /* WASummaryNoEventBackground~568h@2x.png in Resources */,
+				80F957A116B8D21F005121A1 /* nointernetaccess.png in Resources */,
+				80F957A216B8D21F005121A1 /* nointernetaccess@2x.png in Resources */,
+				80F957B316B8D22D005121A1 /* cloud.png in Resources */,
+				80F957B416B8D22D005121A1 /* cloud@2x.png in Resources */,
+				80F957B716B8D23F005121A1 /* station.png in Resources */,
+				80F957B816B8D23F005121A1 /* station@2x.png in Resources */,
+				80F957BE16B8D421005121A1 /* WAConnectionStatusView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4733,6 +4774,7 @@
 				80092D3916AFD5A000020F64 /* WADataPlanViewController.m in Sources */,
 				8020F1B516B23AF900E185EC /* WAUserDetailViewController.m in Sources */,
 				80BF4D6C16B28A7000501E69 /* WAArticle.m in Sources */,
+				80F957BC16B8D40A005121A1 /* WAConnectionStatusView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
