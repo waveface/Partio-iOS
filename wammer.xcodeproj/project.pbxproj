@@ -54,6 +54,8 @@
 		138CCA381609D23C00B477CE /* TutorialPhotoImport@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 138CCA361609D23C00B477CE /* TutorialPhotoImport@2x~iphone.png */; };
 		138D31B31609D8F800ECA892 /* TutorialPhotoImport@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 138D31B11609D8F800ECA892 /* TutorialPhotoImport@2x~ipad.png */; };
 		138D31B81609D92400ECA892 /* TutorialPhotoImport~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 138D31B61609D92400ECA892 /* TutorialPhotoImport~ipad.png */; };
+		139C070D16B8F5E900C0C5B9 /* WAEventDescriptionView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 139C070C16B8F5E900C0C5B9 /* WAEventDescriptionView.xib */; };
+		139C071016B8F88000C0C5B9 /* WAEventDescriptionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 139C070F16B8F88000C0C5B9 /* WAEventDescriptionView.m */; };
 		139DC23416AD262500147F4D /* WASummaryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 139DC23316AD262500147F4D /* WASummaryViewController.m */; };
 		139DC23616AD269B00147F4D /* WASummaryViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 139DC23516AD269B00147F4D /* WASummaryViewController.xib */; };
 		139E28FE15C2926700C8521A /* WALocalizedTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 139E28FD15C2926700C8521A /* WALocalizedTextView.m */; };
@@ -1049,6 +1051,9 @@
 		138D31B41609D91200ECA892 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "zh-Hant"; path = "zh-Hant.lproj/TutorialPhotoImport@2x~ipad.png"; sourceTree = "<group>"; };
 		138D31B71609D92400ECA892 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "zh-Hant"; path = "zh-Hant.lproj/TutorialPhotoImport~ipad.png"; sourceTree = "<group>"; };
 		138D31B91609DADB00ECA892 /* en */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = en; path = "en.lproj/TutorialPhotoImport~ipad.png"; sourceTree = "<group>"; };
+		139C070C16B8F5E900C0C5B9 /* WAEventDescriptionView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WAEventDescriptionView.xib; sourceTree = "<group>"; };
+		139C070E16B8F88000C0C5B9 /* WAEventDescriptionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAEventDescriptionView.h; sourceTree = "<group>"; };
+		139C070F16B8F88000C0C5B9 /* WAEventDescriptionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAEventDescriptionView.m; sourceTree = "<group>"; };
 		139DC23216AD262500147F4D /* WASummaryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WASummaryViewController.h; sourceTree = "<group>"; };
 		139DC23316AD262500147F4D /* WASummaryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WASummaryViewController.m; sourceTree = "<group>"; };
 		139DC23516AD269B00147F4D /* WASummaryViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WASummaryViewController.xib; sourceTree = "<group>"; };
@@ -2136,6 +2141,9 @@
 				13328C8116AFC4CC00798C8A /* WASummaryPageView.m */,
 				13328C8316AFCA0500798C8A /* WADaySummary.h */,
 				13328C8416AFCA0500798C8A /* WADaySummary.m */,
+				139C070C16B8F5E900C0C5B9 /* WAEventDescriptionView.xib */,
+				139C070E16B8F88000C0C5B9 /* WAEventDescriptionView.h */,
+				139C070F16B8F88000C0C5B9 /* WAEventDescriptionView.m */,
 			);
 			name = Summary;
 			sourceTree = "<group>";
@@ -4300,6 +4308,7 @@
 				1376B65916B64F8000961ED2 /* WASummaryNoEventBackground.png in Resources */,
 				1376B65A16B64F8000961ED2 /* WASummaryNoEventBackground@2x.png in Resources */,
 				1376B65C16B661C200961ED2 /* WASummaryNoEventBackground~568h@2x.png in Resources */,
+				139C070D16B8F5E900C0C5B9 /* WAEventDescriptionView.xib in Resources */,
 				80F957A116B8D21F005121A1 /* nointernetaccess.png in Resources */,
 				80F957A216B8D21F005121A1 /* nointernetaccess@2x.png in Resources */,
 				80F957B316B8D22D005121A1 /* cloud.png in Resources */,
@@ -4774,6 +4783,7 @@
 				80092D3916AFD5A000020F64 /* WADataPlanViewController.m in Sources */,
 				8020F1B516B23AF900E185EC /* WAUserDetailViewController.m in Sources */,
 				80BF4D6C16B28A7000501E69 /* WAArticle.m in Sources */,
+				139C071016B8F88000C0C5B9 /* WAEventDescriptionView.m in Sources */,
 				80F957BC16B8D40A005121A1 /* WAConnectionStatusView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

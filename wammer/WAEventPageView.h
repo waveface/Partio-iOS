@@ -8,13 +8,15 @@
 
 #import <UIKit/UIKit.h>
 
-@class WAArticle;
+@class WAArticle, WAEventDescriptionView;
 @interface WAEventPageView : UIView
 
 @property (strong, nonatomic) IBOutletCollection(UIImageView) NSArray *imageViews;
 @property (strong, nonatomic) IBOutletCollection(UIView) NSArray *containerViews;
 
 @property (nonatomic, strong) UIImage *blurredBackgroundImage;
+@property (nonatomic, strong) WAArticle *representingArticle;
+@property (nonatomic, strong) WAEventDescriptionView *descriptionView;
 
 + (WAEventPageView *)viewWithRepresentingArticle:(WAArticle *)article;
 
