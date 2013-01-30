@@ -115,9 +115,9 @@ typedef NS_ENUM(NSUInteger, WACollectionSortMode){
                options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew
                context:nil
              withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
-               dispatch_async(dispatch_get_main_queue(), ^{
-                 [((WACollectionViewCell *)[aCollectionView cellForItemAtIndexPath:indexPath]) setImage:(UIImage*)toValue];
-               });
+					dispatch_async(dispatch_get_main_queue(), ^{
+					  ((WACollectionViewCell *)[aCollectionView cellForItemAtIndexPath:indexPath]).coverImage.image = toValue;
+					});
              }];
   
   
@@ -129,7 +129,7 @@ typedef NS_ENUM(NSUInteger, WACollectionSortMode){
   WACollection *aCollection = [_fetchedResultsController objectAtIndexPath:indexPath];
   WAGalleryViewController *galleryVC = [[WAGalleryViewController alloc]
                                         initWithImageFiles:[aCollection.files array]
-                                        atIndex:[indexPath row]];
+                                        atIndex:0];
   [self.navigationController pushViewController:galleryVC animated:YES];
 }
 

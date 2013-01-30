@@ -34,15 +34,11 @@ NSString *const kCollectionViewCellID = @"WACollectionViewCell";
 }
 
 - (void)setImage:(UIImage *)image {
-  
-  dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+  if (image) {
 	 SLColorArt *colorArt = [[SLColorArt alloc] initWithImage:image scaledSize:_coverImage.frame.size];
-	 
-	 dispatch_async(dispatch_get_main_queue(), ^{
-		_coverImage.image = colorArt.scaledImage;
-		_title.textColor = colorArt.primaryColor;
-	 });
-  });
+	 _coverImage.image = colorArt.scaledImage;
+	 _title.textColor = colorArt.primaryColor;
+  }
 }
 
 /*
