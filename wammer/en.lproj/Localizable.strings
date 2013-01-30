@@ -497,6 +497,9 @@
 /* Title for Events in the sliding menu */
 "SLIDING_MENU_TITLE_EVENTS" = "EVENTS";
 
+/* Title for MyDays in the sliding menu */
+"SLIDING_MENU_TITLE_MYDAYS" = "My Days";
+
 /* Title for Photos in the sliding menu */
 "SLIDING_MENU_TITLE_PHOTOS" = "PHOTOS";
 

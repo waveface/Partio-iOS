@@ -497,6 +497,9 @@
 /* Title for Events in the sliding menu */
 "SLIDING_MENU_TITLE_EVENTS" = "動態";
 
+/* Title for MyDays in the sliding menu */
+"SLIDING_MENU_TITLE_MYDAYS" = "我的天s";
+
 /* Title for Photos in the sliding menu */
 "SLIDING_MENU_TITLE_PHOTOS" = "相片";
 

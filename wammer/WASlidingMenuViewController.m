@@ -298,7 +298,7 @@ static NSString * kWASlidingMenuViewControllerKVOContext = @"WASlidingMenuViewCo
       
     case 1: {
       cell.imageView.image = [UIImage imageNamed:@"EventsIcon"];
-      cell.textLabel.text = NSLocalizedString(@"SLIDING_MENU_TITLE_EVENTS", @"Title for Events in the sliding menu");
+      cell.textLabel.text = NSLocalizedString(@"SLIDING_MENU_TITLE_MYDAYS", @"Title for MyDays in the sliding menu");
 	  
 	  if (!self.calendarButton) {
 		UIImage *calIcon = [UIImage imageNamed:@"Cal"];
@@ -317,21 +317,6 @@ static NSString * kWASlidingMenuViewControllerKVOContext = @"WASlidingMenuViewCo
 	}
       
     case 2:
-      cell.imageView.image = [UIImage imageNamed:@"PhotosIcon"];
-      cell.textLabel.text = NSLocalizedString(@"SLIDING_MENU_TITLE_PHOTOS", @"Title for Photos in the sliding menu");
-      break;
-      
-    case 3:
-      cell.imageView.image = [UIImage imageNamed:@"DocumentsIcon"];
-      cell.textLabel.text = NSLocalizedString(@"SLIDING_MENU_TITLE_DOCS", @"Title for Documents in the sliding menu");
-      break;
-      
-    case 4:
-      cell.imageView.image = [UIImage imageNamed:@"Webicon"];
-      cell.textLabel.text = NSLocalizedString(@"SLIDING_MENU_TITLE_WEBS", @"Title for Web pages in the sliding menu");
-      break;
-      
-    case 5:
       cell.imageView.image = [UIImage imageNamed:@"CollectionIcon"];
       cell.textLabel.text = NSLocalizedString(@"SLIDING_MENU_TITLE_COLLECTIONS", @"Title for Collections in the sliding menu");
       break;
@@ -341,7 +326,7 @@ static NSString * kWASlidingMenuViewControllerKVOContext = @"WASlidingMenuViewCo
        cell.textLabel.text = NSLocalizedString(@"SLIDING_MENU_TITLE_CALENDAR", @"Title for Calendar in the sliding menu");
        break;
        */
-    case 6:
+    case 3:
       cell.imageView.image = [UIImage imageNamed:@"SettingsIcon"];
       cell.textLabel.text = NSLocalizedString(@"SLIDING_MENU_TITLE_SETTINGS", @"Title for Settings in the sliding menu");
       break;
@@ -362,19 +347,7 @@ static NSString * kWASlidingMenuViewControllerKVOContext = @"WASlidingMenuViewCo
       cell.backgroundColor = [UIColor colorWithRed:0.957 green:0.376 blue:0.298 alpha:1.0];
       break;
       
-    case 2: // Photos
-      cell.backgroundColor = [UIColor colorWithRed:0.96f green:0.647f blue:0.011f alpha:1.0];
-      break;
-      
-    case 3: // Documents
-      cell.backgroundColor = [UIColor colorWithRed:0.572f green:0.8f blue:0.647f alpha:1.0f];
-      break;
-      
-    case 4: // Web Pages
-      cell.backgroundColor = [UIColor colorWithRed:0.211f green:0.694f blue:0.749f alpha:1.0f];
-      break;
-      
-    case 5: // Collection
+    case 2: // Collection
       cell.backgroundColor = [UIColor colorWithRed:0.039f green:0.423f blue:0.529f alpha:1.0];
       break;
       /*
@@ -382,7 +355,7 @@ static NSString * kWASlidingMenuViewControllerKVOContext = @"WASlidingMenuViewCo
        cell.backgroundColor = [UIColor colorWithRed:0.949f green:0.49f blue:0.305f alpha:1.0];
        break;
        */
-    case 6: // Settings
+    case 3: // Settings
       cell.backgroundColor = [UIColor colorWithRed:0.72f green:0.701f blue:0.69f alpha:1.0];
       break;
   }
@@ -403,26 +376,8 @@ static NSString * kWASlidingMenuViewControllerKVOContext = @"WASlidingMenuViewCo
       
       break;
     }
+      
     case 2: {
-      [self.viewDeckController closeLeftView];
-      
-      [self switchToViewStyle:WAPhotosViewStyle];
-      
-      break;
-    }
-    case 3: {
-      [self.viewDeckController closeLeftView];
-      [self switchToViewStyle:WADocumentsViewStyle];
-      break;
-    }
-      
-    case 4: {
-      [self.viewDeckController closeLeftView];
-      [self switchToViewStyle:WAWebpagesViewStyle];
-      break;
-    }
-      
-    case 5: {
       [self.viewDeckController closeLeftView];
       
       WACollectionViewController *collectionViewController = [[WACollectionViewController alloc] init];
@@ -436,22 +391,7 @@ static NSString * kWASlidingMenuViewControllerKVOContext = @"WASlidingMenuViewCo
       break;
     }
       
-      /*    case 6: {
-       if (isPad()) {
-       
-       WACalendarPickerViewController *calVC = [[WACalendarPickerViewController alloc] initWithFrame:self.view.frame selectedDate:[NSDate date]];
-       [self.navigationController pushViewController:calVC animated:YES];
-       
-       } else {
-       [self.viewDeckController closeLeftView];
-       
-       WACalendarPickerViewController *dpVC = [[WACalendarPickerViewController alloc] initWithFrame:self.viewDeckController.centerController.view.frame selectedDate:[NSDate date]];
-       [self.viewDeckController setCenterController:[WACalendarPickerViewController wrappedNavigationControllerForViewController:dpVC forStyle:WACalendarPickerStyleWithMenu]];
-       }
-       break;
-       }*/
-      
-    case 6: { // Settings
+    case 3: { // Settings
       [self handleUserInfo];
       break;
     }
