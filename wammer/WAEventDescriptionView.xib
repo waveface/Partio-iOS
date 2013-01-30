@@ -42,6 +42,7 @@
 						<string key="NSFrame">{{5, 122}, {288, 21}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSWindow"/>
+						<reference key="NSNextKeyView"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClipsSubviews">YES</bool>
@@ -49,7 +50,7 @@
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 						<string key="IBUIText">Label</string>
-						<object class="NSColor" key="IBUITextColor" id="122787216">
+						<object class="NSColor" key="IBUITextColor" id="692646160">
 							<int key="NSColorSpace">3</int>
 							<bytes key="NSWhite">MQA</bytes>
 						</object>
@@ -82,7 +83,7 @@
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 						<string key="IBUIText">Label</string>
-						<reference key="IBUITextColor" ref="122787216"/>
+						<reference key="IBUITextColor" ref="692646160"/>
 						<nil key="IBUIHighlightedColor"/>
 						<int key="IBUIBaselineAdjustment">0</int>
 						<object class="IBUIFontDescription" key="IBUIFontDescription">
@@ -281,7 +282,7 @@
 								<object class="IBLayoutConstant" key="constant">
 									<double key="value">21</double>
 								</object>
-								<float key="priority">1000</float>
+								<float key="priority">500</float>
 								<reference key="containingView" ref="187418278"/>
 								<int key="scoringType">9</int>
 								<float key="scoringTypeFloat">40</float>
@@ -413,7 +414,7 @@
 				</object>
 				<object class="IBPartialClassDescription">
 					<string key="className">WAEventDescriptionView</string>
-					<string key="superclassName">UIControl</string>
+					<string key="superclassName">UIView</string>
 					<dictionary class="NSMutableDictionary" key="outlets">
 						<string key="descriptionLabel">UILabel</string>
 						<string key="timeLabel">UILabel</string>
