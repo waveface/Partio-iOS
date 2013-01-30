@@ -95,13 +95,7 @@ static NSInteger const DEFAULT_EVENT_IMAGE_PAGING_SIZE = 5;
   self.eventScrollView.delegate = self;
   self.summaryScrollView.delegate = self;
   
-}
-
-- (void)viewWillAppear:(BOOL)animated {
-  
-  [super viewWillAppear:animated];
-
-  [self reloadDaySummariesWithPagingSize:DEFAULT_SUMMARY_PAGING_SIZE];
+  [self reloadDaySummariesWithPagingSize:DEFAULT_SUMMARY_PAGING_SIZE];  
 
 }
 
@@ -289,6 +283,7 @@ static NSInteger const DEFAULT_EVENT_IMAGE_PAGING_SIZE = 5;
   // init and display the first day summary while loading following day summaries
   if (!self.currentDaySummary) {
     WADaySummary *currentDaySummary = [[WADaySummary alloc] initWithUser:self.user date:[self dayAtIndex:0] context:self.managedObjectContext];
+    currentDaySummary.delegate = self;
     [self insertDaySummary:currentDaySummary atIndex:0];
     self.currentDaySummary = currentDaySummary;
     self.firstDaySummary = currentDaySummary;
@@ -310,6 +305,7 @@ static NSInteger const DEFAULT_EVENT_IMAGE_PAGING_SIZE = 5;
       BOOL isFutureDay = [[[wSelf dayAtIndex:idx] earlierDate:recentDay] isEqualToDate:recentDay];
       if (!isFutureDay && !wSelf.daySummaries[@(idx)]) {
         WADaySummary *daySummary = [[WADaySummary alloc] initWithUser:wSelf.user date:[wSelf dayAtIndex:idx] context:wSelf.managedObjectContext];
+        daySummary.delegate = wSelf;
         [wSelf insertDaySummary:daySummary atIndex:idx];
         if (daySummary.summaryIndex > wSelf.lastDaySummary.summaryIndex) {
 	wSelf.lastDaySummary = daySummary;

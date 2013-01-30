@@ -122,7 +122,7 @@
 			[wSelf.navigationController dismissViewControllerAnimated:YES completion:nil];
 			
 		} else {
-			[wSelf.navigationController popViewControllerAnimated:YES];
+		  [wSelf.parentViewController dismissViewControllerAnimated:YES completion:nil];
 		}
 		
 	});

@@ -14,6 +14,8 @@
 #import "NSString+WAAdditions.h"
 #import <StackBluriOS/UIImage+StackBlur.h>
 #import "UIImageView+WAAdditions.h"
+#import "WAEventDescriptionView.h"
+#import "WAEventViewController.h"
 
 static NSString * kWAEventPageViewKVOContext = @"WAEventPageViewKVOContext";
 
@@ -26,12 +28,23 @@ typedef NS_ENUM(NSInteger, WACurrentlyDisplayingImage) {
 
 @interface WAEventPageView ()
 
-@property (nonatomic, strong) WAArticle *representingArticle;
 @property (nonatomic) BOOL shouldDisplayImages;
 
 @end
 
 @implementation WAEventPageView
+
++ (NSDateFormatter *)sharedDateFormatter {
+  
+  static NSDateFormatter *formatter;
+  static dispatch_once_t onceToken;
+  dispatch_once(&onceToken, ^{
+    formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateFormat:@"h:mm a"];
+  });
+  return formatter;
+  
+}
 
 + (WAEventPageView *)viewWithRepresentingArticle:(WAArticle *)article {
 
@@ -57,6 +70,14 @@ typedef NS_ENUM(NSInteger, WACurrentlyDisplayingImage) {
   [view.containerViews[0] layer].cornerRadius = 10.0;
 
   view.representingArticle = article;
+
+  if (article) {
+    WAEventDescriptionView *eventDescriptionView = [WAEventDescriptionView viewFromNib];
+    eventDescriptionView.timeLabel.text = [[[self class] sharedDateFormatter] stringFromDate:article.creationDate];
+    eventDescriptionView.descriptionLabel.text = [[WAEventViewController attributedDescriptionStringForEvent:article] string];
+    [view.containerViews[0] addSubview:eventDescriptionView];
+    view.descriptionView = eventDescriptionView;
+  }
 
   return view;
 

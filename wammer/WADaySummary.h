@@ -16,6 +16,7 @@
 @property (nonatomic, strong) NSArray *articles;
 @property (nonatomic, strong) WASummaryPageView *summaryPage;
 @property (nonatomic, strong) NSMutableArray *eventPages;
+@property (nonatomic, weak) UIViewController *delegate;
 
 - (id)initWithUser:(WAUser *)user date:(NSDate *)date context:(NSManagedObjectContext *)context;
 
