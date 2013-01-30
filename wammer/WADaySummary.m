@@ -13,6 +13,9 @@
 #import "WAEventViewController.h"
 #import "WANavigationController.h"
 #import "WAEventDescriptionView.h"
+#import "WAAppDelegate_iOS.h"
+#import "WADayViewController.h"
+#import "WASlidingMenuViewController.h"
 
 @implementation WADaySummary
 
@@ -39,6 +42,10 @@
     self.summaryPage.user = user;
     self.summaryPage.date = date;
     self.summaryPage.numberOfEvents = [self.articles count];
+    [self.summaryPage.photosButton addTarget:self action:@selector(handlePhotosButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+    [self.summaryPage.documentsButton addTarget:self action:@selector(handleDocumentsButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+    [self.summaryPage.webpagesButton addTarget:self action:@selector(handleWebpagesButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+
   }
   return self;
 
@@ -59,6 +66,36 @@
     };
     WANavigationController *navVC = [[WANavigationController alloc] initWithRootViewController:eventVC];
     [wSelf.delegate presentViewController:navVC animated:YES completion:nil];
+  }];
+
+}
+
+- (void)handlePhotosButtonPressed:(id)sender {
+
+  __weak WADaySummary *wSelf = self;
+  [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+    WAAppDelegate_iOS *appDelegate = (WAAppDelegate_iOS*)AppDelegate();
+    [appDelegate.slidingMenu switchToViewStyle:WAPhotosViewStyle onDate:wSelf.summaryPage.date];
+  }];
+
+}
+
+- (void)handleDocumentsButtonPressed:(id)sender {
+
+  __weak WADaySummary *wSelf = self;
+  [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+    WAAppDelegate_iOS *appDelegate = (WAAppDelegate_iOS*)AppDelegate();
+    [appDelegate.slidingMenu switchToViewStyle:WADocumentsViewStyle onDate:wSelf.summaryPage.date];
+  }];
+
+}
+
+- (void)handleWebpagesButtonPressed:(id)sender {
+
+  __weak WADaySummary *wSelf = self;
+  [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+    WAAppDelegate_iOS *appDelegate = (WAAppDelegate_iOS*)AppDelegate();
+    [appDelegate.slidingMenu switchToViewStyle:WAWebpagesViewStyle onDate:wSelf.summaryPage.date];
   }];
 
 }

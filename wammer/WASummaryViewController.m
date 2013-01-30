@@ -95,7 +95,15 @@ static NSInteger const DEFAULT_EVENT_IMAGE_PAGING_SIZE = 5;
   self.eventScrollView.delegate = self;
   self.summaryScrollView.delegate = self;
   
-  [self reloadDaySummariesWithPagingSize:DEFAULT_SUMMARY_PAGING_SIZE];  
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+
+  [super viewWillAppear:animated];
+
+  if ([[self daySummaries] count] == 0) {
+    [self reloadDaySummariesWithPagingSize:DEFAULT_SUMMARY_PAGING_SIZE];
+  }
 
 }
 
