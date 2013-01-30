@@ -14,14 +14,16 @@
 #import "WAOverlayBezel.h"
 #import "UIKit+IRAdditions.h"
 
-@interface WAUserDetailViewController ()
+@interface WAUserDetailViewController () <UITextFieldDelegate>
 
 @property (nonatomic, strong) WAUser *user;
 @property (nonatomic, strong) NSManagedObjectContext *managedObjectContext;
 
 @end
 
-@implementation WAUserDetailViewController
+@implementation WAUserDetailViewController {
+  NSUInteger observingContext;
+}
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -37,28 +39,36 @@
   [super viewDidLoad];
   __weak WAUserDetailViewController *wSelf = self;
   
+  self.userNameTextField.enabled = NO;
+  self.userNameTextField.delegate = self;
+  self.userEmailTextField.enabled = NO;
+  self.userEmailTextField.delegate = self;
   NSKeyValueObservingOptions options = NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew;
 
   [self irObserveObject:self.user
 				keyPath:@"email"
 				options:options
-				context:nil
+				context:&observingContext
 			  withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
 				
-				wSelf.userEmailTableCell.textLabel.text = (NSString *)toValue;
+				wSelf.userEmailTextField.text = (NSString*)toValue;
+				wSelf.userEmailTextField.enabled = YES;
 				
 			  }];
   
   [self irObserveObject:self.user
 				keyPath:@"nickname"
 				options:options
-				context:nil
+				context:&observingContext
 			  withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
-				
-				wSelf.userNameTableCell.textLabel.text = (NSString*)toValue;
+
+				wSelf.userNameTextField.text = (NSString*)toValue;
+				wSelf.userNameTextField.enabled = YES;
 				
 			  }];
 
+  [self.navigationItem.rightBarButtonItem setEnabled:NO];
+  
 }
 
 - (NSManagedObjectContext *) managedObjectContext {
@@ -147,6 +157,90 @@
   
 }
 
+- (IBAction)doneButtonTapped:(id)sender {
+  __weak WAUserDetailViewController *wSelf = self;
+  
+  if ([self.userEmailTextField isFirstResponder])
+	[self.userEmailTextField resignFirstResponder];
+  
+  if ([self.userNameTextField isFirstResponder])
+	[self.userNameTextField resignFirstResponder];
+  
+  WAOverlayBezel *busyBezel = [WAOverlayBezel bezelWithStyle:WAActivityIndicatorBezelStyle];
+  [busyBezel showWithAnimation:WAOverlayBezelAnimationFade];
+  
+  void (^showError)(NSError *error) = ^(NSError *error) {
+	
+	[busyBezel dismiss];
+	[wSelf.navigationItem.rightBarButtonItem setEnabled:NO];
+
+    IRAction *okAction = [IRAction actionWithTitle:NSLocalizedString(@"ACTION_OKAY", @"Alert Dismissal Action") block:nil];
+    
+    IRAlertView *alertView = [IRAlertView alertViewWithTitle:nil message:error.localizedDescription cancelAction:okAction otherActions:nil];
+    [alertView show];
+	
+  };
+  
+  WARemoteInterface *ri = [WARemoteInterface sharedInterface];
+  
+  if (![self.userNameTextField.text isEqualToString:self.user.nickname]) {
+	[ri updateUser:self.user.identifier
+	  withNickname:self.userNameTextField.text
+		 onSuccess:^(NSDictionary *userRep) {
+		 
+		   if (![self.userEmailTextField.text isEqualToString:self.user.email]) {
+			 [ri updateUser:self.user.identifier
+				  withEmail:self.userEmailTextField.text
+				  onSuccess:^(NSDictionary *userRep) {
+
+					dispatch_async(dispatch_get_main_queue(), ^{
+					  [busyBezel dismiss];
+					  [wSelf.navigationItem.rightBarButtonItem setEnabled:NO];
+					});
+
+				  }
+				  onFailure:^(NSError *error) {
+					dispatch_async(dispatch_get_main_queue(), ^{
+					  showError(error);
+					});
+				  }];
+		   } else {
+			 dispatch_async(dispatch_get_main_queue(), ^{
+			   [busyBezel dismiss];
+			   [wSelf.navigationItem.rightBarButtonItem setEnabled:NO];
+			 });
+		   }
+		   
+		 }
+		 onFailure:^(NSError *error) {
+
+		   dispatch_async(dispatch_get_main_queue(), ^{
+			 showError(error);
+		   });
+		   
+		 }];
+  } else if (![self.userEmailTextField.text isEqualToString:self.user.email]) {
+	[ri updateUser:self.user.identifier
+		 withEmail:self.userEmailTextField.text
+		 onSuccess:^(NSDictionary *userRep) {
+
+		   dispatch_async(dispatch_get_main_queue(), ^{
+			 [busyBezel dismiss];
+			 [wSelf.navigationItem.rightBarButtonItem setEnabled:NO];
+		   });
+		   
+		 }
+		 onFailure:^(NSError *error) {
+		   
+		   dispatch_async(dispatch_get_main_queue(), ^{
+			 showError(error);
+		   });
+		 }];
+  }
+
+}
+
+
 - (NSUInteger) supportedInterfaceOrientations {
   
   if (isPad())
@@ -161,6 +255,7 @@
   return YES;
   
 }
+
 
 #pragma mark - Table view data source
 
@@ -188,6 +283,48 @@
 	
   }
 
+}
+
+#pragma mark - UITextField delegate
+
+- (BOOL) textFieldShouldBeginEditing:(UITextField *)textField {
+  
+  if (textField == self.userEmailTextField)
+	[self.user irRemoveObserverBlocksForKeyPath:@"email" context:&observingContext];
+  else if (textField == self.userNameTextField)
+	[self.user irRemoveObserverBlocksForKeyPath:@"nickname" context:&observingContext];
+
+  return YES;
+}
+
+- (BOOL) textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
+  
+  if (textField == self.userEmailTextField) {
+	
+	if ((![textField.text isEqualToString:self.user.email]) && (textField.text.length != 0))
+	  [self.navigationItem.rightBarButtonItem setEnabled:YES];
+	
+  } else if (textField == self.userNameTextField) {
+
+	if ((![textField.text isEqualToString:self.user.nickname]) && (textField.text.length !=0))
+	  [self.navigationItem.rightBarButtonItem setEnabled:YES];
+
+  }
+  
+  return YES;
+  
+}
+
+- (BOOL) textFieldShouldClear:(UITextField *)textField {
+  [self.navigationItem.rightBarButtonItem setEnabled:NO];
+  return YES;
+}
+
+- (BOOL) textFieldShouldEndEditing:(UITextField *)textField {
+  if (textField.text.length == 0)
+	[self.navigationItem.rightBarButtonItem setEnabled:NO];
+  
+  return YES;
 }
 
 @end

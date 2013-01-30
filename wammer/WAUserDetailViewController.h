@@ -11,7 +11,9 @@
 @interface WAUserDetailViewController : UITableViewController
 
 @property (nonatomic, weak) IBOutlet UITableViewCell *userNameTableCell;
+@property (nonatomic, weak) IBOutlet UITextField *userNameTextField;
 @property (nonatomic, weak) IBOutlet UITableViewCell *userEmailTableCell;
+@property (nonatomic, weak) IBOutlet UITextField *userEmailTextField;
 @property (nonatomic, weak) IBOutlet UITableViewCell *accountDeleteionTableCell;
 
 @end

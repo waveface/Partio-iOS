@@ -364,6 +364,9 @@
 /* Nickname placeholder in signup page */
 "NICKNAME_PLACEHOLDER" = "Johnny Appleseed";
 
+/* No internet connection */
+"NO_INTERNET_CONNECTION" = "No Connection";
+
 /* Cell title in connection status view controller */
 "NO_STATION_INSTALLED" = "AOStream Station not yet installed.";
 
@@ -496,6 +499,9 @@
 
 /* Title for Events in the sliding menu */
 "SLIDING_MENU_TITLE_EVENTS" = "EVENTS";
+
+/* Title for MyDays in the sliding menu */
+"SLIDING_MENU_TITLE_MYDAYS" = "My Days";
 
 /* Title for Photos in the sliding menu */
 "SLIDING_MENU_TITLE_PHOTOS" = "PHOTOS";
@@ -745,7 +751,7 @@
 "PC_SETUP_TITLE" = "Feel Slow?";
 
 /* Class = "IBUILabel"; text = "STORAGE_USAGE"; ObjectID = "aOf-bH-Me7"; */
-"STORAGE_USAGE" = "Cloud Space Used";
+"STORAGE_USAGE" = "Cloud Usage";
 
 /* Class = "IBUILabel"; text = "NOUN_USERNAME"; ObjectID = "drm-tH-4is"; */
 "NOUN_USERNAME" = "Email";

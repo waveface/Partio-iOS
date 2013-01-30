@@ -245,43 +245,58 @@
                         <sections>
                             <tableViewSection id="d2Y-TL-Ulk">
                                 <cells>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" textLabel="Oe8-be-7gb" style="IBUITableViewCellStyleDefault" id="zyr-Lg-Z8y">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="zyr-Lg-Z8y">
                                         <rect key="frame" x="0.0" y="10" width="320" height="45"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                                             <rect key="frame" x="10" y="1" width="300" height="43"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="User Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Oe8-be-7gb">
-                                                    <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
-                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                                    <color key="highlightedColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                                </label>
+                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="User name" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="cS9-xd-Xmq">
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="38" id="b3c-xT-gV7"/>
+                                                    </constraints>
+                                                    <nil key="textColor"/>
+                                                    <fontDescription key="fontDescription" type="boldSystem" pointSize="16"/>
+                                                    <textInputTraits key="textInputTraits" autocapitalizationType="words" autocorrectionType="no" returnKeyType="done"/>
+                                                </textField>
                                             </subviews>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         </view>
+                                        <constraints>
+                                            <constraint firstItem="cS9-xd-Xmq" firstAttribute="centerX" secondItem="zyr-Lg-Z8y" secondAttribute="centerX" type="default" id="6hC-X8-qAg"/>
+                                            <constraint firstItem="cS9-xd-Xmq" firstAttribute="top" secondItem="zyr-Lg-Z8y" secondAttribute="top" constant="6" id="6v7-QP-lVc"/>
+                                            <constraint firstItem="cS9-xd-Xmq" firstAttribute="leading" secondItem="zyr-Lg-Z8y" secondAttribute="leading" constant="20" type="default" id="7yU-4K-PsP"/>
+                                        </constraints>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" textLabel="sLZ-Bl-SOQ" style="IBUITableViewCellStyleDefault" id="TfH-QN-MK4">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="TfH-QN-MK4">
                                         <rect key="frame" x="0.0" y="55" width="320" height="45"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                                             <rect key="frame" x="10" y="0.0" width="300" height="43"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Email" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sLZ-Bl-SOQ">
-                                                    <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
-                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                                    <color key="highlightedColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                                </label>
+                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="johndoe@yourmail.com" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="hCR-EN-exV">
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="30" id="Y7t-JK-iwt"/>
+                                                        <constraint firstAttribute="width" constant="280" id="fyN-kh-eLf"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" type="boldSystem" pointSize="16"/>
+                                                    <textInputTraits key="textInputTraits" autocorrectionType="no" keyboardType="emailAddress" returnKeyType="done"/>
+                                                </textField>
                                             </subviews>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         </view>
+                                        <constraints>
+                                            <constraint firstItem="hCR-EN-exV" firstAttribute="leading" secondItem="TfH-QN-MK4" secondAttribute="leading" constant="22" id="vCh-Jc-tNr"/>
+                                            <constraint firstItem="hCR-EN-exV" firstAttribute="centerY" secondItem="TfH-QN-MK4" secondAttribute="centerY" type="default" id="yd2-G8-s3J"/>
+                                        </constraints>
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
                             <tableViewSection id="e8c-Vs-sxv">
                                 <cells>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="ZQc-Tp-2RU">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="gray" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="ZQc-Tp-2RU">
                                         <rect key="frame" x="0.0" y="120" width="320" height="46"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
@@ -313,11 +328,19 @@
                             <outlet property="delegate" destination="BXE-uP-LJ2" id="Ype-Xy-71Q"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" id="6po-Bz-muj"/>
+                    <navigationItem key="navigationItem" id="6po-Bz-muj">
+                        <barButtonItem key="rightBarButtonItem" style="done" systemItem="done" id="yTO-qr-J2c">
+                            <connections>
+                                <action selector="doneButtonTapped:" destination="BXE-uP-LJ2" id="3Mp-YY-0Sq"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="accountDeleteionTableCell" destination="ZQc-Tp-2RU" id="92H-ka-lyV"/>
                         <outlet property="userEmailTableCell" destination="TfH-QN-MK4" id="ofh-oQ-4ds"/>
+                        <outlet property="userEmailTextField" destination="hCR-EN-exV" id="pMm-wW-fBt"/>
                         <outlet property="userNameTableCell" destination="zyr-Lg-Z8y" id="kLG-C5-fN2"/>
+                        <outlet property="userNameTextField" destination="cS9-xd-Xmq" id="9kH-bE-3We"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Z8b-IC-LUa" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -783,6 +806,78 @@
     <resources>
         <image name="FacebookLogo.png" width="33" height="33"/>
     </resources>
+    <classes>
+        <class className="IRTableViewController" superclassName="UITableViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/IRTableViewController.h"/>
+        </class>
+        <class className="NSLayoutConstraint" superclassName="NSObject">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/NSLayoutConstraint.h"/>
+        </class>
+        <class className="WAConnectionStatusViewController" superclassName="UITableViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/WAConnectionStatusViewController.h"/>
+        </class>
+        <class className="WADataPlanViewController" superclassName="UITableViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/WADataPlanViewController.h"/>
+        </class>
+        <class className="WAImportSettingsViewController" superclassName="UITableViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/WAImportSettingsViewController.h"/>
+            <relationships>
+                <relationship kind="outlet" name="pendingFilesCell" candidateClass="UITableViewCell"/>
+                <relationship kind="outlet" name="photoImportCell" candidateClass="UITableViewCell"/>
+                <relationship kind="outlet" name="useCellularCell" candidateClass="UITableViewCell"/>
+            </relationships>
+        </class>
+        <class className="WALocalizedLabel" superclassName="UILabel">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/WALocalizedLabel.h"/>
+        </class>
+        <class className="WALocalizedTableViewCell" superclassName="UITableViewCell">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/WALocalizedTableViewCell.h"/>
+        </class>
+        <class className="WANavigationController" superclassName="UINavigationController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/WANavigationController.h"/>
+        </class>
+        <class className="WAOAuthViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/WAOAuthViewController.h"/>
+            <relationships>
+                <relationship kind="outlet" name="webView" candidateClass="UIWebView"/>
+            </relationships>
+        </class>
+        <class className="WAUserDetailViewController" superclassName="UITableViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/WAUserDetailViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="doneButtonTapped:"/>
+                <relationship kind="outlet" name="accountDeleteionTableCell" candidateClass="UITableViewCell"/>
+                <relationship kind="outlet" name="userEmailTableCell" candidateClass="UITableViewCell"/>
+                <relationship kind="outlet" name="userEmailTextField" candidateClass="UITextField"/>
+                <relationship kind="outlet" name="userNameTableCell" candidateClass="UITableViewCell"/>
+                <relationship kind="outlet" name="userNameTextField" candidateClass="UITextField"/>
+            </relationships>
+        </class>
+        <class className="WAUserInfoViewController" superclassName="IRTableViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/WAUserInfoViewController.h"/>
+            <relationships>
+                <relationship kind="outlet" name="connectionTableViewCell" candidateClass="UITableViewCell"/>
+                <relationship kind="outlet" name="contactTableViewCell" candidateClass="UITableViewCell"/>
+                <relationship kind="outlet" name="importTableViewCell" candidateClass="UITableViewCell"/>
+                <relationship kind="outlet" name="logoutCell" candidateClass="UITableViewCell"/>
+                <relationship kind="outlet" name="packageCell" candidateClass="UITableViewCell"/>
+                <relationship kind="outlet" name="storageUsageCell" candidateClass="UITableViewCell"/>
+                <relationship kind="outlet" name="userEmailLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="userTableViewCell" candidateClass="UITableViewCell"/>
+            </relationships>
+        </class>
+        <class className="WAWebServiceSettingsViewController" superclassName="UITableViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/WAWebServiceSettingsViewController.h"/>
+            <relationships>
+                <relationship kind="outlet" name="facebookConnectCell" candidateClass="UITableViewCell"/>
+                <relationship kind="outlet" name="flickrConnectCell" candidateClass="UITableViewCell"/>
+                <relationship kind="outlet" name="foursquareConnectCell" candidateClass="UITableViewCell"/>
+                <relationship kind="outlet" name="googleConnectCell" candidateClass="UITableViewCell"/>
+                <relationship kind="outlet" name="picasaConnectCell" candidateClass="UITableViewCell"/>
+                <relationship kind="outlet" name="twitterConnectCell" candidateClass="UITableViewCell"/>
+            </relationships>
+        </class>
+    </classes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>

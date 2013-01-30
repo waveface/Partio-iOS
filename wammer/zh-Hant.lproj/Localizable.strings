@@ -364,6 +364,9 @@
 /* Nickname placeholder in signup page */
 "NICKNAME_PLACEHOLDER" = "John Appleseed";
 
+/* No internet connection */
+"NO_INTERNET_CONNECTION" = "沒有網路連線";
+
 /* Cell title in connection status view controller */
 "NO_STATION_INSTALLED" = "尚未安裝 AOStream Station";
 
@@ -496,6 +499,9 @@
 
 /* Title for Events in the sliding menu */
 "SLIDING_MENU_TITLE_EVENTS" = "動態";
+
+/* Title for MyDays in the sliding menu */
+"SLIDING_MENU_TITLE_MYDAYS" = "我的天s";
 
 /* Title for Photos in the sliding menu */
 "SLIDING_MENU_TITLE_PHOTOS" = "相片";
