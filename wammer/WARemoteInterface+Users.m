@@ -136,6 +136,22 @@
   
 }
 
+- (void) updateUser:(NSString *)anIdentifier withEmail:(NSString *)aNewEmail onSuccess:(void (^)(NSDictionary *))successBlock onFailure:(void (^)(NSError *))failureBlock {
+
+  [self.engine fireAPIRequestNamed:@"users/update"
+					 withArguments:nil
+						   options:WARemoteInterfaceEnginePostFormEncodedOptionsDictionary(@{@"user_id": anIdentifier, @"email": aNewEmail}, nil)
+						 validator:WARemoteInterfaceGenericNoErrorValidator()
+					successHandler:^(NSDictionary *inResponseOrNil, IRWebAPIRequestContext *context) {
+					  
+					  if (successBlock)
+						successBlock([[self class] userEntityFromRepresentation:inResponseOrNil]);
+					  
+					}
+					failureHandler:WARemoteInterfaceGenericFailureHandler(failureBlock)];
+  
+}
+
 - (void) resetPasswordOfCurrentUserFrom:(NSString *)anOldPassword To:(NSString *)aNewPassword onSuccess:(void (^)(void))successBlock onFailure:(void (^)(NSError *))failureBlock {
   
   [self.engine fireAPIRequestNamed:@"users/passwd" withArguments:nil options:WARemoteInterfaceEnginePostFormEncodedOptionsDictionary([NSDictionary dictionaryWithObjectsAndKeys:

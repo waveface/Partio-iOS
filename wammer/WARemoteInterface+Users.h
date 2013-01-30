@@ -25,6 +25,9 @@
 //	POST users/update
 - (void) updateUser:(NSString *)anIdentifier withNickname:(NSString *)aNewNickname onSuccess:(void(^)(NSDictionary *userRep))successBlock onFailure:(void(^)(NSError *error))failureBlock;
 
+// POST users/update
+- (void) updateUser:(NSString *)anIdentifier withEmail:(NSString *)aNewEmail onSuccess:(void (^)(NSDictionary *))successBlock onFailure:(void (^)(NSError *))failureBlock ;
+
 //	POST users/passwd
 - (void) resetPasswordOfCurrentUserFrom:(NSString *)anOldPassword To:(NSString *)aNewPassword onSuccess:(void(^)(void))successBlock onFailure:(void(^)(NSError *error))failureBlock;
 
