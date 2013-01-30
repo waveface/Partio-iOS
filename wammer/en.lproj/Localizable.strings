@@ -377,7 +377,7 @@
 "NOTIFY_TESTING" = "Hello, Stream!";
 
 /* Section header in connection status view controller */
-"NOW_CONNECTING_HEADER" = "Now Connecting to";
+"NOW_CONNECTING_HEADER" = "This device is connected to:";
 
 /* Free plan option in plans page */
 "OPTION_FREE_PLAN" = "Free";
@@ -402,7 +402,7 @@
 "PHOTO_SINGULAR" = "%d photo";
 
 /* Title of view controller setting photo upload */
-"PHOTO_UPLOAD_CONTROLLER_TITLE" = "AUTO PHOTO UPLOADER";
+"PHOTO_UPLOAD_CONTROLLER_TITLE" = "Start uploading your photos";
 
 /* String on customized status bar */
 "PHOTO_UPLOAD_STATUS_BAR_COMPLETE" = "Sync completed";
@@ -441,7 +441,7 @@
 "PLANS_CONTROLLER_TITLE" = "PLANS";
 
 /* Premium plan details in plans page */
-"PREMIUM_PLAN_DESCRIPTION" = "250GB cloud storage, unlimited PC storage.";
+"PREMIUM_PLAN_DESCRIPTION" = "250GB of cloud storage & unlimited PC storage.";
 
 /* REACHABILITY_STATE_AVAILABLE */
 "REACHABILITY_STATE_AVAILABLE" = "Available";
@@ -546,7 +546,7 @@
 "TWITTER_DISCONNECT_REQUEST_TITLE" = "Confirm to stop importing from Twitter.";
 
 /* Ultimate plan details in plans page */
-"ULTIMATE_PLAN_DESCRIPTION" = "500GB cloud storage, unlimited PC storage.";
+"ULTIMATE_PLAN_DESCRIPTION" = "500GB of cloud storage & unlimited PC storage.";
 
 /* Settings for User popover */
 "USER_INFO_CONTROLLER_TITLE" = "User";
@@ -622,7 +622,7 @@
 "NOUN_PASSWORD" = "Password";
 
 /* Class = "IBUILabel"; text = "PHOTO_UPLOAD_DESCRIPTION"; ObjectID = "Phx-kE-dRu"; */
-"PHOTO_UPLOAD_DESCRIPTION" = "AOStream automatically syncs all the photos from your devices to your personal cloud, and creates real-life events for you to relive anytime, anywhere.";
+"PHOTO_UPLOAD_DESCRIPTION" = "AOStream automatically syncs your Camera Roll photos to your personal cloud and creates real-life events for you to relive anytime, anywhere.";
 
 /* Class = "IBUILabel"; text = "NOUN_USERNAME"; ObjectID = "WAR-06-Bm8"; */
 "NOUN_USERNAME" = "Email";
@@ -643,7 +643,7 @@
 "CONNECTION_STATUS_SUBTITLE" = "CONNECTION_STATUS_SUBTITLE";
 
 /* Class = "IBUILabel"; text = "PC_SETUP_TITLE"; ObjectID = "w7L-CQ-FdG"; */
-"PC_SETUP_TITLE" = "Feel Slow?";
+"PC_SETUP_TITLE" = "Here's the next step:";
 
 /* Class = "IBUIButton"; normalTitle = "ACTION_SIGN_IN"; ObjectID = "6"; */
 "ACTION_SIGN_IN" = "Log In";
@@ -715,7 +715,7 @@
 "EVENT_TEXT" = "EVENT_TEXT";
 
 /* Class = "IBUILabel"; text = "ACTION_GOTO_WEBSITE"; ObjectID = "0UL-JF-5TW"; */
-"ACTION_GOTO_WEBSITE" = "Learn more on our website.";
+"ACTION_GOTO_WEBSITE" = "Learn more on our website: waveface.com.";
 
 /* Class = "IBUILabel"; text = "PC_SETUP_DESCRIPTION"; ObjectID = "1TK-Px-G5L"; */
 "PC_SETUP_DESCRIPTION" = "Link your mobile devices to our PC-based AOStream Station to enable lightning-fast WiFi transfer speeds:";
@@ -724,7 +724,7 @@
 "PHOTO_IMPORT_TITLE" = "Photo Import";
 
 /* Class = "IBUILabel"; text = "PC_SETUP_INSTRUCTIONS"; ObjectID = "3ZQ-I2-m83"; */
-"PC_SETUP_INSTRUCTIONS" = "1. Install AOStream for Windows on your PC.\n2. Connect your mobile device or tablet to the same WiFi network as your PC.";
+"PC_SETUP_INSTRUCTIONS" = "1. Install AOStream for Windows on your PC.\n2. Connect your mobile device to your PC's WiFi network.";
 
 /* Class = "IBUILabel"; text = "IMPORT_CAMERA_ROLL"; ObjectID = "Ehm-FE-RdU"; */
 "IMPORT_CAMERA_ROLL" = "Import Camera Roll";
@@ -739,16 +739,16 @@
 "LOGOUT" = "Log Out";
 
 /* Class = "IBUILabel"; text = "FILES_TO_UPLOAD"; ObjectID = "Ldp-qK-xdo"; */
-"FILES_TO_UPLOAD" = "Photos to Upload";
+"FILES_TO_UPLOAD" = "Photos Uploaded";
 
 /* Class = "IBUILabel"; text = "PLANS_DESCRIPTION"; ObjectID = "MRD-E4-twD"; */
-"PLANS_DESCRIPTION" = "AOStream sends all your digital memories back to your PC. You can also upgrade to a cloud storage plan and enjoy all the benefits of a personal cloud.";
+"PLANS_DESCRIPTION" = "Upgrade now for a cloud storage plan that lets you enjoy all the benefits of a personal cloud.";
 
 /* Class = "IBUILabel"; text = "USE_CELLULAR"; ObjectID = "Scf-t9-USz"; */
 "USE_CELLULAR" = "Use Cellular Plan";
 
 /* Class = "IBUILabel"; text = "PC_SETUP_TITLE"; ObjectID = "UKL-kB-sZd"; */
-"PC_SETUP_TITLE" = "Feel Slow?";
+"PC_SETUP_TITLE" = "Here's the next step:";
 
 /* Class = "IBUILabel"; text = "STORAGE_USAGE"; ObjectID = "aOf-bH-Me7"; */
 "STORAGE_USAGE" = "Cloud Usage";
@@ -760,7 +760,7 @@
 "DELETE_ACCOUNT" = "Remove Account";
 
 /* Class = "IBUITableViewSection"; footerTitle = "PHOTO_IMPORT_SETTINGS_FOOTER"; ObjectID = "gj0-e5-1Bs"; */
-"PHOTO_IMPORT_SETTINGS_FOOTER" = "Connecting to the same WiFi network as your AOStream Windows Station is the fastest way to upload high-resolution photos.";
+"PHOTO_IMPORT_SETTINGS_FOOTER" = "Connecting to the same WiFi network as your PC allows faster uploading of your high-resolution photos.";
 
 /* Class = "IBUITableViewSection"; headerTitle = "PHOTO_IMPORT_SETTINGS_HEADER"; ObjectID = "gj0-e5-1Bs"; */
 "PHOTO_IMPORT_SETTINGS_HEADER" = "Settings";
