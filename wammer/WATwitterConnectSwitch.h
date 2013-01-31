@@ -8,8 +8,7 @@
 
 #import "WASnsConnectSwitch.h"
 
-@interface WATwitterConnectSwitch : WASnsConnectSwitch
+@interface WATwitterConnectSwitch : UISwitch
 
-- (id) initForStyle:(WASnsConnectStyle)style;
 
 @end

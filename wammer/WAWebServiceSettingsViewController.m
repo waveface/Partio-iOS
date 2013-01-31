@@ -10,6 +10,7 @@
 #import "WAFacebookConnectionSwitch.h"
 #import "WAOAuthViewController.h"
 #import "WASnsConnectSwitch.h"
+#import "WATwitterConnectSwitch.h"
 #import "WARemoteInterface.h"
 #import "WAOverlayBezel.h"
 
@@ -21,7 +22,7 @@ static NSString * const kWASegueSettingsToOAuth = @"WASegueSettingsToOAuth";
 @property (nonatomic, strong) WAOAuthDidComplete didCompleteBlock;
 @property (nonatomic, strong) WAFacebookConnectionSwitch *facebookConnectSwitch;
 @property (nonatomic, strong) WASnsConnectSwitch *googleConnectSwitch;
-@property (nonatomic, strong) WASnsConnectSwitch *twitterConnectSwitch;
+@property (nonatomic, strong) WATwitterConnectSwitch *twitterConnectSwitch;
 @property (nonatomic, strong) WASnsConnectSwitch *foursquareConnectSwitch;
 @property (nonatomic, strong) WAOverlayBezel *busyBezel;
 @property (nonatomic) BOOL statusLoaded;
@@ -50,8 +51,7 @@ static NSString * const kWASegueSettingsToOAuth = @"WASegueSettingsToOAuth";
   self.googleConnectSwitch.delegate = self;
   self.googleConnectCell.accessoryView = self.googleConnectSwitch;
   
-  self.twitterConnectSwitch = [[WASnsConnectSwitch alloc] initForStyle:WASnsConnectTwitterStyle];
-  self.twitterConnectSwitch.delegate = self;
+  self.twitterConnectSwitch = [[WATwitterConnectSwitch alloc] init];
   self.twitterConnectCell.accessoryView = self.twitterConnectSwitch;
   
   self.foursquareConnectSwitch = [[WASnsConnectSwitch alloc] initForStyle:WASnsConnectFoursquareStyle];
@@ -167,7 +167,6 @@ static NSString * const kWASegueSettingsToOAuth = @"WASegueSettingsToOAuth";
 - (void)dealloc {
   
   self.googleConnectSwitch.delegate = nil;
-  self.twitterConnectSwitch.delegate = nil;
   self.foursquareConnectSwitch.delegate = nil;
   
 }

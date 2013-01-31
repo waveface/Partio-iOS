@@ -24,12 +24,7 @@
 			self = [[WAGoogleConnectSwitch alloc] initForStyle:style];
 			return self;
 		}
-			
-		case WASnsConnectTwitterStyle: {
-			self = [[WATwitterConnectSwitch alloc] initForStyle:style];
-			return self;
-		}
-			
+						
 		case WASnsConnectFoursquareStyle: {
 			self = [[WAFoursquareConnectSwitch alloc] initForStyle:style];
 			return self;

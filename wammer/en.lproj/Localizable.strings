@@ -38,7 +38,7 @@
 /* Short action title for connecting Google */
 "ACTION_CONNECT_GOOGLE_SHORT" = "Start Importing";
 
-/* Short action title for connecting Twitter */
+/* Short action title for connecting Twitter creds */
 "ACTION_CONNECT_TWITTER_SHORT" = "Start Importing";
 
 /* Action deleting an article
@@ -58,7 +58,7 @@
 /* Short action title for disconnecting Google */
 "ACTION_DISCONNECT_GOOGLE" = "Stop Importing";
 
-/* Short action title for disconnecting Twitter */
+/* Short action title for disconnecting Twitter creds */
 "ACTION_DISCONNECT_TWITTER" = "Stop Importing";
 
 /* In iPad composition view */
@@ -527,6 +527,12 @@
 /* Alert on no location service enabled when open photo library */
 "TURN_ON_LOCATION_SERVICE" = "Turn on Location Services to allow Stream to access your Photo Library.";
 
+/* Message for an alert view to show user his Twitter account has been connected to another Stream user */
+"TWITTER_CONNECT_ACCOUNT_OCCUPIED_MESSAGE" = "TWITTER_CONNECT_ACCOUNT_OCCUPIED_MESSAGE";
+
+/* Message for an alert view to show user he already connects to another Twitter account. */
+"TWITTER_CONNECT_FAIL_MESSAGE" = "TWITTER_CONNECT_FAIL_MESSAGE";
+
 /* Title for an alert view to show Twitter connection failure */
 "TWITTER_CONNECT_FAIL_TITLE" = "Unable to import from Twitter.";
 
@@ -535,9 +541,6 @@
 
 /* Title for alert view asking if user wants to connect her Twitter account */
 "TWITTER_CONNECT_REQUEST_TITLE" = "Confirm to import from Twitter.";
-
-/* Title for an alert view to show Twitter disconnection failure */
-"TWITTER_DISCONNECT_FAIL_TITLE" = "Unable to stop importing!";
 
 /* Message for alert view asking if user wants to disconnect her Twitter account */
 "TWITTER_DISCONNECT_REQUEST_MESSAGE" = "Stream will stop importing posts from your Twitter account.";
