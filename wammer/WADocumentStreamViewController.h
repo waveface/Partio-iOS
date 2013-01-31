@@ -13,6 +13,8 @@
 
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 
++ (NSFetchRequest *)fetchRequestForFileAccessLogsOnDate:(NSDate *)date;
+
 - (id)initWithDate:(NSDate *)date;
 
 @end

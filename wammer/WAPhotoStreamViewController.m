@@ -30,6 +30,17 @@
 
 @implementation WAPhotoStreamViewController
 
++ (NSFetchRequest *)fetchRequestForPhotosOnDate:(NSDate *)date {
+
+  NSFetchRequest *request = [[NSFetchRequest alloc] initWithEntityName:@"WAFile"];
+  [request setPredicate:[NSPredicate predicateWithFormat:@"photoDay.day == %@", date]];
+  [request setSortDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"timestamp" ascending:NO]]];
+  [request setRelationshipKeyPathsForPrefetching:@[@"photoDay"]];
+  
+  return request;
+
+}
+
 - (id)initWithDate:(NSDate *)aDate {
   self = [super init];
   if (self) {

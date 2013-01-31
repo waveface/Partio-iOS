@@ -16,6 +16,18 @@
 #import "WAAppDelegate_iOS.h"
 #import "WADayViewController.h"
 #import "WASlidingMenuViewController.h"
+#import "WAPhotoStreamViewController.h"
+#import "WADocumentStreamViewController.h"
+#import "WAWebStreamViewController.h"
+#import "WAFileAccessLog.h"
+
+@interface WADaySummary ()
+
+@property (nonatomic, strong) WAUser *user;
+@property (nonatomic, strong) NSDate *date;
+@property (nonatomic, strong) NSManagedObjectContext *managedObjectContext;
+
+@end
 
 @implementation WADaySummary
 
@@ -23,8 +35,12 @@
 
   self = [super init];
   if (self) {
+    self.user = user;
+    self.date = date;
+    self.managedObjectContext = context;
+
     NSFetchRequest *request = [[WADataStore defaultStore] newFetchRequestForArticlesOnDate:date];
-    self.articles = [context executeFetchRequest:request error:nil];
+    self.articles = [self.managedObjectContext executeFetchRequest:request error:nil];
     
     self.eventPages = [NSMutableArray array];
     if ([self.articles count] == 0) {
@@ -39,15 +55,40 @@
     }
     
     self.summaryPage = [WASummaryPageView viewFromNib];
-    self.summaryPage.user = user;
-    self.summaryPage.date = date;
-    self.summaryPage.numberOfEvents = [self.articles count];
-    [self.summaryPage.photosButton addTarget:self action:@selector(handlePhotosButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
-    [self.summaryPage.documentsButton addTarget:self action:@selector(handleDocumentsButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
-    [self.summaryPage.webpagesButton addTarget:self action:@selector(handleWebpagesButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
 
   }
   return self;
+
+}
+
+- (void)configureSummaryAndEventPages {
+
+  self.summaryPage.user = self.user;
+  self.summaryPage.date = self.date;
+  self.summaryPage.numberOfEvents = [self.articles count];
+  
+  NSFetchRequest *photosFetchRequest = [WAPhotoStreamViewController fetchRequestForPhotosOnDate:self.date];
+  NSArray *photos = [self.managedObjectContext executeFetchRequest:photosFetchRequest error:nil];
+  self.summaryPage.numberOfPhotos = [self.managedObjectContext countForFetchRequest:photosFetchRequest error:nil];
+  [self.summaryPage.photosButton addTarget:self action:@selector(handlePhotosButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+  
+  NSFetchRequest *documentAccessLogsFetchRequest = [WADocumentStreamViewController fetchRequestForFileAccessLogsOnDate:self.date];
+  NSArray *documentAccessLogs = [self.managedObjectContext executeFetchRequest:documentAccessLogsFetchRequest error:nil];
+  NSMutableSet *documentFilePathSet = [NSMutableSet set];
+  for (WAFileAccessLog *accessLog in documentAccessLogs) {
+    [documentFilePathSet addObject:accessLog.filePath];
+  }
+  self.summaryPage.numberOfDocuments = [documentFilePathSet count];
+  [self.summaryPage.documentsButton addTarget:self action:@selector(handleDocumentsButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+  
+  NSFetchRequest *webpageAccessLogsFetchRequest = [WAWebStreamViewController fetchRequestForWebpageAccessLogsOnDate:self.date];
+  NSArray *webpageAccessLogs = [self.managedObjectContext executeFetchRequest:webpageAccessLogsFetchRequest error:nil];
+  NSMutableSet *webpageFileIdentifierSet = [NSMutableSet set];
+  for (WAFileAccessLog *accessLog in webpageAccessLogs) {
+    [webpageFileIdentifierSet addObject:accessLog.file.identifier];
+  }
+  self.summaryPage.numberOfWebpages = [webpageFileIdentifierSet count];
+  [self.summaryPage.webpagesButton addTarget:self action:@selector(handleWebpagesButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
 
 }
 

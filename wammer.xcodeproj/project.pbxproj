@@ -21,6 +21,7 @@
 		13222F4F16806B22000C57A7 /* CoreImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 13222F4E16806B22000C57A7 /* CoreImage.framework */; };
 		132824C1167B196700B2FB67 /* DocumentsIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 132824BF167B196700B2FB67 /* DocumentsIcon.png */; };
 		132824C2167B196700B2FB67 /* DocumentsIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 132824C0167B196700B2FB67 /* DocumentsIcon@2x.png */; };
+		1329D5FB16BA54480095970E /* WAPhotoDay.m in Sources */ = {isa = PBXBuildFile; fileRef = 1329D5FA16BA54480095970E /* WAPhotoDay.m */; };
 		132D60331622B66500148829 /* WACache.m in Sources */ = {isa = PBXBuildFile; fileRef = 132D60321622B66500148829 /* WACache.m */; };
 		133058DE1650ABE300C0283F /* WASyncManager+FileMetadataSync.m in Sources */ = {isa = PBXBuildFile; fileRef = 133058DD1650ABE300C0283F /* WASyncManager+FileMetadataSync.m */; };
 		13328C7F16AFC22C00798C8A /* WASummaryPageView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 13328C7E16AFC22C00798C8A /* WASummaryPageView.xib */; };
@@ -271,8 +272,6 @@
 		806A5CAC16241E2800867E56 /* rightHL.png in Resources */ = {isa = PBXBuildFile; fileRef = 806A5C9A16241E2800867E56 /* rightHL.png */; };
 		806A5CAD16241E2800867E56 /* rightHL@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 806A5C9B16241E2800867E56 /* rightHL@2x.png */; };
 		80719CD4167AFC4600E9729F /* WAWebpageDay.m in Sources */ = {isa = PBXBuildFile; fileRef = 80719CD3167AFC4600E9729F /* WAWebpageDay.m */; };
-		80719CEA167AFD4600E9729F /* WAPhotoDay.h in Resources */ = {isa = PBXBuildFile; fileRef = 80719CE4167AFD4600E9729F /* WAPhotoDay.h */; };
-		80719CEB167AFD4600E9729F /* WAPhotoDay.m in Resources */ = {isa = PBXBuildFile; fileRef = 80719CE5167AFD4600E9729F /* WAPhotoDay.m */; };
 		80719CEC167AFD4600E9729F /* WAEventDay.h in Resources */ = {isa = PBXBuildFile; fileRef = 80719CE6167AFD4600E9729F /* WAEventDay.h */; };
 		80719CED167AFD4600E9729F /* WAEventDay.m in Resources */ = {isa = PBXBuildFile; fileRef = 80719CE7167AFD4600E9729F /* WAEventDay.m */; };
 		80719CF9167AFF8000E9729F /* WAEventDay+WARemoteInterfaceEntitySyncing.m in Sources */ = {isa = PBXBuildFile; fileRef = 80719CF8167AFF8000E9729F /* WAEventDay+WARemoteInterfaceEntitySyncing.m */; };
@@ -341,7 +340,6 @@
 		80C129C516398A0D001DDFE2 /* Create.png in Resources */ = {isa = PBXBuildFile; fileRef = 80C129C316398A0D001DDFE2 /* Create.png */; };
 		80C129C616398A0D001DDFE2 /* Create@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 80C129C416398A0D001DDFE2 /* Create@2x.png */; };
 		80C61CAB16A7F1050028356F /* WAAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 80C61CAA16A7F1050028356F /* WAAnnotation.m */; };
-		80C65D02167B0BAE000E61DB /* WAPhotoDay.m in Sources */ = {isa = PBXBuildFile; fileRef = 80719CE5167AFD4600E9729F /* WAPhotoDay.m */; };
 		80C65D03167B0BB9000E61DB /* WAEventDay.m in Sources */ = {isa = PBXBuildFile; fileRef = 80719CE7167AFD4600E9729F /* WAEventDay.m */; };
 		80C979F71649796A004F0CF4 /* EventCardBG.png in Resources */ = {isa = PBXBuildFile; fileRef = 80C979F61649796A004F0CF4 /* EventCardBG.png */; };
 		80C979FA16497EF1004F0CF4 /* LightDateBG.png in Resources */ = {isa = PBXBuildFile; fileRef = 80C979F816497EF1004F0CF4 /* LightDateBG.png */; };
@@ -997,6 +995,8 @@
 		13222F4E16806B22000C57A7 /* CoreImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreImage.framework; path = System/Library/Frameworks/CoreImage.framework; sourceTree = SDKROOT; };
 		132824BF167B196700B2FB67 /* DocumentsIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = DocumentsIcon.png; path = Resources/DocumentsIcon.png; sourceTree = "<group>"; };
 		132824C0167B196700B2FB67 /* DocumentsIcon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "DocumentsIcon@2x.png"; path = "Resources/DocumentsIcon@2x.png"; sourceTree = "<group>"; };
+		1329D5F916BA54480095970E /* WAPhotoDay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAPhotoDay.h; sourceTree = "<group>"; };
+		1329D5FA16BA54480095970E /* WAPhotoDay.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAPhotoDay.m; sourceTree = "<group>"; };
 		132D60311622B66500148829 /* WACache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WACache.h; sourceTree = "<group>"; };
 		132D60321622B66500148829 /* WACache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WACache.m; sourceTree = "<group>"; };
 		133058DC1650ABE300C0283F /* WASyncManager+FileMetadataSync.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WASyncManager+FileMetadataSync.h"; sourceTree = "<group>"; };
@@ -1310,8 +1310,6 @@
 		806A5C9B16241E2800867E56 /* rightHL@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "rightHL@2x.png"; path = "Resources/rightHL@2x.png"; sourceTree = "<group>"; };
 		80719CD2167AFC4600E9729F /* WAWebpageDay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAWebpageDay.h; sourceTree = "<group>"; };
 		80719CD3167AFC4600E9729F /* WAWebpageDay.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAWebpageDay.m; sourceTree = "<group>"; };
-		80719CE4167AFD4600E9729F /* WAPhotoDay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAPhotoDay.h; sourceTree = "<group>"; };
-		80719CE5167AFD4600E9729F /* WAPhotoDay.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAPhotoDay.m; sourceTree = "<group>"; };
 		80719CE6167AFD4600E9729F /* WAEventDay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAEventDay.h; sourceTree = "<group>"; };
 		80719CE7167AFD4600E9729F /* WAEventDay.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAEventDay.m; sourceTree = "<group>"; };
 		80719CF7167AFF8000E9729F /* WAEventDay+WARemoteInterfaceEntitySyncing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WAEventDay+WARemoteInterfaceEntitySyncing.h"; sourceTree = "<group>"; };
@@ -2085,10 +2083,10 @@
 		130AB5581678479600CFFA5A /* DayView */ = {
 			isa = PBXGroup;
 			children = (
+				1329D5F916BA54480095970E /* WAPhotoDay.h */,
+				1329D5FA16BA54480095970E /* WAPhotoDay.m */,
 				80719CD2167AFC4600E9729F /* WAWebpageDay.h */,
 				80719CD3167AFC4600E9729F /* WAWebpageDay.m */,
-				80719CE4167AFD4600E9729F /* WAPhotoDay.h */,
-				80719CE5167AFD4600E9729F /* WAPhotoDay.m */,
 				80719CE6167AFD4600E9729F /* WAEventDay.h */,
 				80719CE7167AFD4600E9729F /* WAEventDay.m */,
 				130AB5591678480900CFFA5A /* WADocumentDay.h */,
@@ -4275,8 +4273,6 @@
 				4B274E511675BFCC007406D3 /* WACollectionViewController.xib in Resources */,
 				4B274E6B1675E104007406D3 /* WACollectionViewCell.xib in Resources */,
 				131560451679CCE400C29BFA /* WADocumentDownloadingView.xib in Resources */,
-				80719CEA167AFD4600E9729F /* WAPhotoDay.h in Resources */,
-				80719CEB167AFD4600E9729F /* WAPhotoDay.m in Resources */,
 				80719CEC167AFD4600E9729F /* WAEventDay.h in Resources */,
 				80719CED167AFD4600E9729F /* WAEventDay.m in Resources */,
 				132824C1167B196700B2FB67 /* DocumentsIcon.png in Resources */,
@@ -4565,7 +4561,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				80C65D03167B0BB9000E61DB /* WAEventDay.m in Sources */,
-				80C65D02167B0BAE000E61DB /* WAPhotoDay.m in Sources */,
 				800770E016797AE70085E525 /* WATimelineViewCell.m in Sources */,
 				80638BFD164CA852005695E3 /* WAPeople.m in Sources */,
 				FFCFE086142111E100B9E6AF /* main.m in Sources */,
@@ -4785,6 +4780,7 @@
 				80BF4D6C16B28A7000501E69 /* WAArticle.m in Sources */,
 				139C071016B8F88000C0C5B9 /* WAEventDescriptionView.m in Sources */,
 				80F957BC16B8D40A005121A1 /* WAConnectionStatusView.m in Sources */,
+				1329D5FB16BA54480095970E /* WAPhotoDay.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

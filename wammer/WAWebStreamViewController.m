@@ -29,6 +29,19 @@
 
 @implementation WAWebStreamViewController
 
++ (NSFetchRequest *)fetchRequestForWebpageAccessLogsOnDate:(NSDate *)date {
+
+  NSFetchRequest *fr = [[NSFetchRequest alloc] initWithEntityName:@"WAFileAccessLog"];
+  NSPredicate *predicate = [NSPredicate predicateWithFormat:@"dayWebpages.day == %@", date];
+  [fr setPredicate:predicate];
+  NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"accessTime" ascending:NO];
+  [fr setSortDescriptors:@[sortDescriptor]];
+  [fr setRelationshipKeyPathsForPrefetching:@[@"file", @"dayWebpages"]];
+
+  return fr;
+
+}
+
 - (id)initWithDate:(NSDate *)date {
 	
   self = [super init];
@@ -37,16 +50,7 @@
     self.currentDate = [date dayBegin];
 		
     NSManagedObjectContext *context = [[WADataStore defaultStore] defaultAutoUpdatedMOC];
-		
-    NSFetchRequest *fr = [[NSFetchRequest alloc] init];
-    NSEntityDescription *entity = [NSEntityDescription entityForName:@"WAFileAccessLog" inManagedObjectContext:context];
-    [fr setEntity:entity];
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"dayWebpages.day == %@", self.currentDate];
-    [fr setPredicate:predicate];
-    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"accessTime" ascending:NO];
-    [fr setSortDescriptors:@[sortDescriptor]];
-    [fr setRelationshipKeyPathsForPrefetching:@[@"file"]];
-    [fr setRelationshipKeyPathsForPrefetching:@[@"dayWebpages"]];
+    NSFetchRequest *fr = [[self class] fetchRequestForWebpageAccessLogsOnDate:self.currentDate];
 
     self.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fr managedObjectContext:context sectionNameKeyPath:nil cacheName:nil];
     self.fetchedResultsController.delegate = self;

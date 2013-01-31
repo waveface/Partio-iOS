@@ -23,6 +23,9 @@
 @property (nonatomic, strong) NSDate *date;
 @property (nonatomic, strong) WAUser *user;
 @property (nonatomic) NSUInteger numberOfEvents;
+@property (nonatomic) NSUInteger numberOfPhotos;
+@property (nonatomic) NSUInteger numberOfDocuments;
+@property (nonatomic) NSUInteger numberOfWebpages;
 
 + (WASummaryPageView *)viewFromNib;
 

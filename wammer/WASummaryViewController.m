@@ -423,6 +423,8 @@ static NSInteger const DEFAULT_EVENT_IMAGE_PAGING_SIZE = 5;
   }];
   [self.summaryScrollView addSubview:daySummary.summaryPage];
 
+  [daySummary configureSummaryAndEventPages];
+
 }
 
 - (void)removeDaySummaryAtIndex:(NSInteger)idx {

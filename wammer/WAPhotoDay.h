@@ -1,9 +1,9 @@
 //
 //  WAPhotoDay.h
-//  IRTextAttributor
+//  wammer
 //
-//  Created by Shen Steven on 12/14/12.
-//  Copyright (c) 2012 Iridia Productions. All rights reserved.
+//  Created by kchiu on 13/1/31.
+//  Copyright (c) 2013年 Waveface. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
@@ -15,6 +15,14 @@
 @interface WAPhotoDay : IRManagedObject
 
 @property (nonatomic, retain) NSDate * day;
-@property (nonatomic, retain) WAFile *file;
+@property (nonatomic, retain) NSSet *files;
+@end
+
+@interface WAPhotoDay (CoreDataGeneratedAccessors)
+
+- (void)addFilesObject:(WAFile *)value;
+- (void)removeFilesObject:(WAFile *)value;
+- (void)addFiles:(NSSet *)values;
+- (void)removeFiles:(NSSet *)values;
 
 @end
