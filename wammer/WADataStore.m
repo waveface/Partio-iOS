@@ -79,30 +79,6 @@ NSString * const kStorageUsage = @"WAStorageUsage";
   
 }
 
-- (NSDate *) dateFromISO8601String:(NSString *)aDateString {
-  
-  if (![aDateString isKindOfClass:[NSString class]] || [aDateString length] == 0)
-    return nil;
-  
-  NSDate *returned = nil;
-  NSError *error = nil;
-  
-  if (![[[self class] threadLocalDateFormatter] getObjectValue:&returned forString:aDateString range:NULL error:&error]){
-    if (![[[self class] threadTZDateFormatter] getObjectValue:&returned forString:aDateString range:NULL error:&error]) {
-      NSLog(@"%s: %@ -> %@", __PRETTY_FUNCTION__, aDateString, error);
-    }
-  }
-  
-  return returned;
-  
-}
-
-- (NSString *) ISO8601StringFromDate:(NSDate *)date {
-  
-  return [[[self class] threadLocalDateFormatter] stringFromDate:date];
-  
-}
-
 - (WAUser *) mainUserInContext:(NSManagedObjectContext *)context {
   
   NSDictionary *metadata = [self metadata];
@@ -170,14 +146,16 @@ NSString * const kStorageUsage = @"WAStorageUsage";
 }
 
 - (NSNumber *) maxSequenceNumber {
-
+	
   return [self metadataForKey:kMaxSequenceNumber];
 
 }
 
 - (void) setMaxSequenceNumber:(NSNumber *)seq {
 
-  [self setMetadata:seq forKey:kMaxSequenceNumber];
+	if ([seq compare:[self metadataForKey:kMaxSequenceNumber]]==NSOrderedDescending) {
+		[self setMetadata:seq forKey:kMaxSequenceNumber];
+	}
 
 }
 

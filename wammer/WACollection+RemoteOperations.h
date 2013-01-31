@@ -13,12 +13,12 @@
 @interface WACollection (RemoteOperations)
 // https://github.com/waveface/Wammer-Cloud/wiki/Collections-API
 
-@property (nonatomic, strong) WARemoteInterface *interface;
-
 + (void) refreshCollectionsWithCompletion:(void(^)(void))completionBlock;
 
 - (WACollection *) initWithName:(NSString*) name withFiles:(NSArray*) objectIDs inManagedObjectContext:(NSManagedObjectContext*) context;
 - (void) addObjects:(NSArray *)objects;
+
++ (void) fetchByIdentifiers: (NSArray *) identifiers;
 
 @end
 

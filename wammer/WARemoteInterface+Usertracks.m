@@ -8,10 +8,11 @@
 
 #import "WARemoteInterface+Usertracks.h"
 #import "WADataStore.h"
+#import <SSToolkit/NSDate+SSToolkitAdditions.h>
 
 @implementation WARemoteInterface (Usertracks)
 
-- (void)retrieveChangesSince:(NSNumber *)aSeq inGroup:(NSString *)aGroupIdentifier onSuccess:(void (^)(NSArray *, NSArray *, NSNumber *))successBlock onFailure:(void (^)(NSError *))failureBlock {
+- (void)retrieveChangesSince:(NSNumber *)aSeq inGroup:(NSString *)aGroupIdentifier onSuccess:(void (^)(NSArray *, NSArray *, NSArray *, NSNumber *))successBlock onFailure:(void (^)(NSError *))failureBlock {
 
   NSParameterAssert(aGroupIdentifier);
 
@@ -29,7 +30,7 @@
     NSNumber *nextSeq = response[@"next_seq_num"];
     
     if (successBlock) {
-      successBlock(changedArticles, changedFiles, nextSeq);
+      successBlock(changedArticles, changedFiles, response[@"collection_list"], nextSeq);
     }
 
   } failureHandler:WARemoteInterfaceGenericFailureHandler(failureBlock)];
@@ -39,7 +40,7 @@
 - (void) retrieveChangesSince:(NSDate *)date inGroup:(NSString *)groupID withEntities:(BOOL)includesEntities onSuccess:(void(^)(NSArray *changedArticleIDs, NSArray *changedFileIDs, NSArray* changes, NSDate *continuation))successBlock onFailure:(void(^)(NSError *error))failureBlock {
   
   NSDate *usedSinceDate = date ? date : [NSDate dateWithTimeIntervalSince1970:0];
-  NSString *dateString = [[WADataStore defaultStore] ISO8601StringFromDate:usedSinceDate];
+  NSString *dateString = [usedSinceDate ISO8601String];
   
   [self.engine fireAPIRequestNamed:@"usertracks/get" withArguments:[NSDictionary dictionaryWithObjectsAndKeys:
 						        
@@ -57,7 +58,7 @@
     if (![continuationString length])
       continuationString = nil;
     
-    NSDate *continuation = [[WADataStore defaultStore] dateFromISO8601String:continuationString];
+    NSDate *continuation = [NSDate dateFromISO8601String:continuationString];
     
     if (successBlock)
       successBlock(changedArticleIDs, changedFileIDs, changeOperations, continuation);

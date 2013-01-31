@@ -7,7 +7,7 @@
 //
 
 #import "WACollectionViewCell.h"
-#import <SLColorArt.h>
+#import <ColorArt/SLColorArt.h>
 
 NSString *const kCollectionViewCellID = @"WACollectionViewCell";
 

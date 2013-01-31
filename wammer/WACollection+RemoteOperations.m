@@ -90,7 +90,7 @@
          completionBlock();
          [[NSNotificationCenter defaultCenter] postNotificationName:kWACollectionUpdated object:completedOperation];
        }else {
-		 [[NSNotificationCenter defaultCenter] postNotificationName:kWACollectionUpdated object:completedOperation];
+				 [[NSNotificationCenter defaultCenter] postNotificationName:kWACollectionUpdated object:completedOperation];
          NSLog(@"Upsert Collection error: %@", saveError);
        }
      });
@@ -186,6 +186,54 @@
   [MKNetworkEngine createCollection:self];
   
   return self;
+}
+
++ (void)fetchByIdentifiers:(NSArray *)identifiers {
+	WARemoteInterface *interface = [WARemoteInterface sharedInterface];
+  NSURL *bestURL = [interface bestHostForRequestNamed:@"collections/getByIds"];
+  MKNetworkEngine *engine = [[MKNetworkEngine alloc] initWithHostName:[bestURL host]
+                                                              apiPath:@"v3"
+                                                   customHeaderFields:nil];
+  NSDictionary *payload = @{
+                            @"collection_id_list":  [[identifiers valueForKeyPath:@"collection_id"] JSONString],
+                            @"session_token":   interface.userToken,
+                            @"api_key":         interface.apiKey,
+                            };
+	
+	MKNetworkOperation *op = [engine operationWithPath:@"collections/getByIds"
+                                              params:payload
+                                          httpMethod:@"GET"
+                                                 ssl:[[bestURL scheme] isEqualToString:@"https"]];
+  [op
+   addCompletionHandler:^(MKNetworkOperation *completedOperation) {
+     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+       NSError *error;
+       NSDictionary *response = [NSJSONSerialization JSONObjectWithData:[completedOperation responseData]
+                                                                options:NSJSONReadingAllowFragments
+                                                                  error:&error];
+       NSManagedObjectContext *moc = [NSManagedObjectContext MR_context];
+       moc.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
+       
+       [WACollection
+        insertOrUpdateObjectsUsingContext:moc
+        withRemoteResponse:[response objectForKey:@"collections"]
+        usingMapping:nil
+        options:IRManagedObjectOptionIndividualOperations
+        ];
+			 
+       NSError *saveError;
+       if( [moc save:&saveError] ) {
+         [[NSNotificationCenter defaultCenter] postNotificationName:kWACollectionUpdated object:completedOperation];
+       }else {
+         NSLog(@"Upsert Collection error: %@", saveError);
+       }
+     });
+
+   }
+   errorHandler:^(MKNetworkOperation *completedOperation, NSError *error) {
+     NSLog(@"Collection API error: %@", error);
+   }];
+  [engine enqueueOperation:op];
 }
 @end
 
