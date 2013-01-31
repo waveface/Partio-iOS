@@ -207,8 +207,7 @@
   op.freezable = YES;
   [op
    addCompletionHandler:^(MKNetworkOperation *completedOperation) {
-     NSLog(@"%@", completedOperation);
-		 dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
        NSError *error;
        NSDictionary *response = [NSJSONSerialization JSONObjectWithData:[completedOperation responseData]
                                                                 options:NSJSONReadingAllowFragments
@@ -222,6 +221,7 @@
         usingMapping:nil
         options:IRManagedObjectOptionIndividualOperations
         ];
+			 
        NSError *saveError;
        if( [moc save:&saveError] ) {
          [[NSNotificationCenter defaultCenter] postNotificationName:kWACollectionUpdated object:completedOperation];
