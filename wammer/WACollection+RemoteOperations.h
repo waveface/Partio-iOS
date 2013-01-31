@@ -20,6 +20,8 @@
 - (WACollection *) initWithName:(NSString*) name withFiles:(NSArray*) objectIDs inManagedObjectContext:(NSManagedObjectContext*) context;
 - (void) addObjects:(NSArray *)objects;
 
++ (void) fetchByIdentifiers: (NSArray *) identifiers;
+
 @end
 
 extern NSString *const kWACollectionUpdated;

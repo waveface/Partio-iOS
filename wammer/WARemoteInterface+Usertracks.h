@@ -10,7 +10,7 @@
 
 @interface WARemoteInterface (Usertracks)
 
-- (void) retrieveChangesSince:(NSNumber *)aSeq inGroup:(NSString *)aGroupIdentifier onSuccess:(void(^)(NSArray *changedArticles, NSArray *changedFiles, NSNumber *nextSeq))successBlock onFailure:(void(^)(NSError *error))failureBlock;
+- (void) retrieveChangesSince:(NSNumber *)aSeq inGroup:(NSString *)aGroupIdentifier onSuccess:(void(^)(NSArray *changedArticles, NSArray *changedFiles, NSArray *changedCollections, NSNumber *nextSeq))successBlock onFailure:(void(^)(NSError *error))failureBlock;
 
 - (void) retrieveChangesSince:(NSDate *)date inGroup:(NSString *)groupID withEntities:(BOOL)includesEntities onSuccess:(void(^)(NSArray *changedArticleIDs, NSArray *changedFileIDs, NSArray* changes, NSDate *continuation))successBlock onFailure:(void(^)(NSError *error))failureBlock;
 

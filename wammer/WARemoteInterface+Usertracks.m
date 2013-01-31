@@ -11,7 +11,7 @@
 
 @implementation WARemoteInterface (Usertracks)
 
-- (void)retrieveChangesSince:(NSNumber *)aSeq inGroup:(NSString *)aGroupIdentifier onSuccess:(void (^)(NSArray *, NSArray *, NSNumber *))successBlock onFailure:(void (^)(NSError *))failureBlock {
+- (void)retrieveChangesSince:(NSNumber *)aSeq inGroup:(NSString *)aGroupIdentifier onSuccess:(void (^)(NSArray *, NSArray *, NSArray *, NSNumber *))successBlock onFailure:(void (^)(NSError *))failureBlock {
 
   NSParameterAssert(aGroupIdentifier);
 
@@ -29,7 +29,7 @@
     NSNumber *nextSeq = response[@"next_seq_num"];
     
     if (successBlock) {
-      successBlock(changedArticles, changedFiles, nextSeq);
+      successBlock(changedArticles, changedFiles, response[@"collection_list"], nextSeq);
     }
 
   } failureHandler:WARemoteInterfaceGenericFailureHandler(failureBlock)];
