@@ -12,7 +12,6 @@
 
 - (void)makeThumbnailWithOptions:(WAThumbnailType)type completeBlock:(WAImageProcessComplete)didCompleteBlock {
 
-  __weak UIImage *wSelf = self;
   [[WAImageProcessing sharedImageProcessQueue] addOperationWithBlock:^{
 	
 	if ([UIApplication sharedApplication].applicationState == UIApplicationStateBackground) {

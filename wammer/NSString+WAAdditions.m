@@ -18,6 +18,10 @@
 
   [[WAImageProcessing sharedImageProcessQueue] addOperationWithBlock:^{
 	UIImage *image = [UIImage imageWithData:[NSData dataWithContentsOfFile:filePath options:NSDataReadingMappedIfSafe error:nil]];
+	if (!image) {
+	  didCompleteBlock(nil);
+	  return;
+	}
 	
 	if ([UIApplication sharedApplication].applicationState == UIApplicationStateBackground) {
 	  UIImage *scaledImage = [WAImageProcessing scaledImageWithUIImage:image type:type];
