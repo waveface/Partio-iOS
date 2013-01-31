@@ -204,7 +204,6 @@
                                               params:payload
                                           httpMethod:@"GET"
                                                  ssl:[[bestURL scheme] isEqualToString:@"https"]];
-  op.freezable = YES;
   [op
    addCompletionHandler:^(MKNetworkOperation *completedOperation) {
      dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
