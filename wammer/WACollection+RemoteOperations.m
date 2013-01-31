@@ -224,7 +224,6 @@
        NSError *saveError;
        if( [moc save:&saveError] ) {
          [[NSNotificationCenter defaultCenter] postNotificationName:kWACollectionUpdated object:completedOperation];
-				 [[WADataStore defaultStore] setMaxSequenceNumber:[response objectForKey:@"next_seq_num"]];
        }else {
          NSLog(@"Upsert Collection error: %@", saveError);
        }
