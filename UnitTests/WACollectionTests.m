@@ -103,19 +103,32 @@
   STAssertNil(newCollection, @"Should fail.");
 }
 
-- (void)testCreateACollectionWith2Files {
-  NSManagedObjectContext *context = [NSManagedObjectContext MR_defaultContext];
-  NSArray *objectIDs = @[[WAFile MR_createInContext:context],[WAFile MR_createInContext:context]];
-  
-  
-  WACollection *collection = [[WACollection alloc] initWithName:@"Memories"
-                                                     withFiles:objectIDs
-                                         inManagedObjectContext:context];
-  
-  assertThat(collection.title, equalTo(@"Memories"));
-  STAssertEquals([collection.files count], (NSUInteger)2, @"There should be two objcets");
-  STAssertNotNil(collection.identifier, @"UUID generated");
-  assertThat(collection.isHidden, equalTo(@0));
+- (void)testMaxSequenceNumber {
+  WADataStore *dataStore = [WADataStore defaultStore];
+  [dataStore setMaxSequenceNumber:@100];
+  [dataStore setMaxSequenceNumber:@50];
+  assertThat([dataStore maxSequenceNumber], equalTo(@100));
 }
+  
+- (void)testMaxSequenceNumberWithDefaultSetterAndGetter {
+  WADataStore *dataStore = [WADataStore defaultStore];
+  dataStore.maxSequenceNumber = @100;
+  dataStore.maxSequenceNumber = @50;
+  assertThat(dataStore.maxSequenceNumber, equalTo(@100));
+}
+
+//- (void)testCreateACollectionWith2Files {
+//  NSManagedObjectContext *context = [NSManagedObjectContext MR_defaultContext];
+//  NSArray *objectIDs = @[[WAFile MR_createInContext:context],[WAFile MR_createInContext:context]];
+//  
+//  WACollection *collection = [[WACollection alloc] initWithName:@"Memories"
+//                                                      withFiles:objectIDs
+//                                         inManagedObjectContext:context];
+//  
+//  assertThat(collection.title, equalTo(@"Memories"));
+//  STAssertEquals([collection.files count], (NSUInteger)2, @"There should be two objcets");
+//  STAssertNotNil(collection.identifier, @"UUID generated");
+//  assertThat(collection.isHidden, equalTo(@0));
+//}
 
 @end
