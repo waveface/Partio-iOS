@@ -17,6 +17,7 @@
 #import "WAAppDelegate_iOS.h"
 #import "NSDate+WAAdditions.h"
 #import <NSDate+SSToolkitAdditions.h>
+#import <SSToolkit/NSString+SSToolkitAdditions.h>
 #import "WASyncManager.h"
 
 
@@ -92,16 +93,16 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 + (id) transformedValue:(id)aValue fromRemoteKeyPath:(NSString *)aRemoteKeyPath toLocalKeyPath:(NSString *)aLocalKeyPath {
   
   if ([aLocalKeyPath isEqualToString:@"creationDate"])
-    return [[WADataStore defaultStore] dateFromISO8601String:aValue];
+    return [NSDate dateFromISO8601String:aValue ];
   
   if ([aLocalKeyPath isEqualToString:@"eventStartDate"])
-	return [[WADataStore defaultStore] dateFromISO8601String:aValue];
+	return [NSDate dateFromISO8601String:aValue];
   
   if ([aLocalKeyPath isEqualToString:@"eventEndDate"])
-	return [[WADataStore defaultStore] dateFromISO8601String:aValue];
+	return [NSDate dateFromISO8601String:aValue];
   
   if ([aLocalKeyPath isEqualToString:@"modificationDate"])
-    return [[WADataStore defaultStore] dateFromISO8601String:aValue];
+    return [NSDate dateFromISO8601String:aValue];
   
   if ([aLocalKeyPath isEqualToString:@"identifier"])
     return IRWebAPIKitStringValue(aValue);

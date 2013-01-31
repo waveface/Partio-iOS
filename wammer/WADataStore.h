@@ -15,9 +15,6 @@
 + (WADataStore *) defaultStore;
 - (WADataStore *) initWithManagedObjectModel:(NSManagedObjectModel *)model;
 
-- (NSDate *) dateFromISO8601String:(NSString *)aString;
-- (NSString *) ISO8601StringFromDate:(NSDate *)date;
-
 - (WAUser *) mainUserInContext:(NSManagedObjectContext *)context;
 - (void) setMainUser:(WAUser *)user inContext:(NSManagedObjectContext *)context;
 

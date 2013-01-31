@@ -15,6 +15,7 @@
 #import <Foundation/Foundation.h>
 #import "WAFileExif+WAAdditions.h"
 #import "WAFile+WARemoteInterfaceEntitySyncing.h"
+#import <SSToolkit/NSDate+SSToolkitAdditions.h>
 
 NSString * const kWARemoteAttachmentType = @"WARemoteAttachmentType";
 NSString * const kWARemoteAttachmentTitle = @"WARemoteAttachmentTitle";
@@ -85,8 +86,8 @@ NSString * const WARemoteAttachmentSmallSubtype = @"small";
   NSURL *proxyImage = [mergedOptions objectForKey:kWARemoteAttachmentRepresentingImageURL];
   NSString *updatedObjectID = [mergedOptions objectForKey:kWARemoteAttachmentUpdatedObjectIdentifier];
   NSString *articleIdentifier = [mergedOptions objectForKey:kWARemoteArticleIdentifier];
-  NSString *fileCreateTime = [[WADataStore defaultStore] ISO8601StringFromDate:[mergedOptions objectForKey:kWARemoteAttachmentCreateTime]];
-  NSString *fileImportTime = [[WADataStore defaultStore] ISO8601StringFromDate:[mergedOptions objectForKey:kWARemoteAttachmentImportTime]];
+  NSString *fileCreateTime = [[mergedOptions objectForKey:kWARemoteAttachmentCreateTime] ISO8601String];
+  NSString *fileImportTime = [[mergedOptions objectForKey:kWARemoteAttachmentImportTime] ISO8601String];
   NSString *timezone = [NSString stringWithFormat:@"%d", [[NSTimeZone localTimeZone] secondsFromGMT]/60];
   WAFileExif *exif = [mergedOptions objectForKey:kWARemoteAttachmentExif];
   NSString *exifJsonString = nil;
