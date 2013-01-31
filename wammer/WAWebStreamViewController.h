@@ -10,6 +10,8 @@
 
 @interface WAWebStreamViewController : UIViewController
 
++ (NSFetchRequest *)fetchRequestForWebpageAccessLogsOnDate:(NSDate *)date;
+
 - (id)initWithDate:(NSDate *)date;
 
 @end

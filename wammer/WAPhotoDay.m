@@ -1,9 +1,9 @@
 //
 //  WAPhotoDay.m
-//  IRTextAttributor
+//  wammer
 //
-//  Created by Shen Steven on 12/14/12.
-//  Copyright (c) 2012 Iridia Productions. All rights reserved.
+//  Created by kchiu on 13/1/31.
+//  Copyright (c) 2013年 Waveface. All rights reserved.
 //
 
 #import "WAPhotoDay.h"
@@ -13,6 +13,6 @@
 @implementation WAPhotoDay
 
 @dynamic day;
-@dynamic file;
+@dynamic files;
 
 @end

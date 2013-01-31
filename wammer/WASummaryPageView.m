@@ -37,6 +37,8 @@ static NSString * kWASummaryPageViewKVOContext = @"WASummaryPageViewKVOContext";
 
 - (void)setDate:(NSDate *)date {
 
+  NSParameterAssert([NSThread isMainThread]);
+
   _date = date;
   
   self.dayLabel.text = [date dayString];
@@ -46,6 +48,8 @@ static NSString * kWASummaryPageViewKVOContext = @"WASummaryPageViewKVOContext";
 }
 
 - (void)setUser:(WAUser *)user {
+
+  NSParameterAssert([NSThread isMainThread]);
 
   _user = user;
 
@@ -62,9 +66,50 @@ static NSString * kWASummaryPageViewKVOContext = @"WASummaryPageViewKVOContext";
 
 - (void)setNumberOfEvents:(NSUInteger)numberOfEvents {
 
+  NSParameterAssert([NSThread isMainThread]);
+
   _numberOfEvents = numberOfEvents;
   
   self.eventSummaryLabel.text = [NSString stringWithFormat:NSLocalizedString(@"EVENT_SUMMARY_TEXT", @"Event summary text in summary view"), numberOfEvents];
+
+}
+
+- (void)setNumberOfPhotos:(NSUInteger)numberOfPhotos {
+
+  NSParameterAssert([NSThread isMainThread]);
+
+  _numberOfPhotos = numberOfPhotos;
+  
+  [self.photosButton setTitle:[NSString stringWithFormat:@"%d", numberOfPhotos]
+		 forState:UIControlStateNormal];
+  [self.photosButton setTitle:[NSString stringWithFormat:@"%d", numberOfPhotos]
+		 forState:UIControlStateHighlighted];
+
+}
+
+- (void)setNumberOfDocuments:(NSUInteger)numberOfDocuments {
+
+  NSParameterAssert([NSThread isMainThread]);
+
+  _numberOfDocuments = numberOfDocuments;
+  
+  [self.documentsButton setTitle:[NSString stringWithFormat:@"%d", numberOfDocuments]
+		    forState:UIControlStateNormal];
+  [self.documentsButton setTitle:[NSString stringWithFormat:@"%d", numberOfDocuments]
+		    forState:UIControlStateHighlighted];
+
+}
+
+- (void)setNumberOfWebpages:(NSUInteger)numberOfWebpages {
+
+  NSParameterAssert([NSThread isMainThread]);
+
+  _numberOfWebpages = numberOfWebpages;
+  
+  [self.webpagesButton setTitle:[NSString stringWithFormat:@"%d", numberOfWebpages]
+		   forState:UIControlStateNormal];
+  [self.webpagesButton setTitle:[NSString stringWithFormat:@"%d", numberOfWebpages]
+		   forState:UIControlStateHighlighted];
 
 }
 

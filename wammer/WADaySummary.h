@@ -19,5 +19,6 @@
 @property (nonatomic, weak) UIViewController *delegate;
 
 - (id)initWithUser:(WAUser *)user date:(NSDate *)date context:(NSManagedObjectContext *)context;
+- (void)configureSummaryAndEventPages;
 
 @end

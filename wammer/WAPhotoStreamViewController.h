@@ -13,6 +13,8 @@
 
 @property (nonatomic, weak) id delegate;
 
++ (NSFetchRequest *)fetchRequestForPhotosOnDate:(NSDate *)date;
+
 - (id) initWithDate:(NSDate *) aDate;
 
 @end

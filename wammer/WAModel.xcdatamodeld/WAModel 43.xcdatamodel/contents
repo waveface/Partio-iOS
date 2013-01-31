@@ -140,7 +140,7 @@
             <userInfo/>
         </relationship>
         <relationship name="pageElements" optional="YES" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="WAFilePageElement" inverseName="file" inverseEntity="WAFilePageElement" syncable="YES"/>
-        <relationship name="photoDay" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="WAPhotoDay" inverseName="file" inverseEntity="WAPhotoDay" syncable="YES"/>
+        <relationship name="photoDay" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="WAPhotoDay" inverseName="files" inverseEntity="WAPhotoDay" syncable="YES"/>
         <relationship name="representedArticle" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="WAArticle" inverseName="representingFile" inverseEntity="WAArticle" syncable="YES"/>
         <compoundIndexes>
             <compoundIndex>
@@ -213,7 +213,7 @@
     </entity>
     <entity name="WAPhotoDay" representedClassName="WAPhotoDay" syncable="YES">
         <attribute name="day" optional="YES" attributeType="Date" syncable="YES"/>
-        <relationship name="file" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="WAFile" inverseName="photoDay" inverseEntity="WAFile" syncable="YES"/>
+        <relationship name="files" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="WAFile" inverseName="photoDay" inverseEntity="WAFile" syncable="YES"/>
     </entity>
     <entity name="WAStation" representedClassName="WAStation" syncable="YES">
         <attribute name="httpURL" optional="YES" attributeType="String" syncable="YES"/>
