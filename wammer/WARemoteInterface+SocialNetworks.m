@@ -11,14 +11,14 @@
 @implementation WARemoteInterface (SocialNetworks)
 
 - (void) connectSocialNetwork:(NSString *)network
-										withToken:(NSString *)token
+										withOptions:(NSDictionary *)values
 										onSuccess:(void(^)(void))successBlock
 										onFailure:(void(^)(NSError *))failureBlock {
 
-	NSDictionary *payload = [NSDictionary dictionaryWithObjectsAndKeys:
+	NSMutableDictionary *payload = [NSMutableDictionary dictionaryWithObjectsAndKeys:
 		network, @"sns",
-		token, @"auth_token",
 	nil];
+  [payload addEntriesFromDictionary:values];
 	
 	NSDictionary *options = WARemoteInterfaceEnginePostFormEncodedOptionsDictionary(payload, nil);
 	

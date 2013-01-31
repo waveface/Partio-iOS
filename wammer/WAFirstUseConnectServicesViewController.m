@@ -9,6 +9,7 @@
 #import "WAFirstUseConnectServicesViewController.h"
 #import "WAFirstUsePhotoImportViewController.h"
 #import "WAFacebookConnectionSwitch.h"
+#import "WATwitterConnectSwitch.h"
 #import "WAAppearance.h"
 #import "WASnsConnectSwitch.h"
 #import "WAOAuthViewController.h"
@@ -22,7 +23,7 @@ static NSString * const kWASegueConnectServicesToOAuth = @"WASegueConnectService
 @property (nonatomic, strong) WAOAuthDidComplete didCompleteBlock;
 
 @property (nonatomic, strong) WASnsConnectSwitch *googleConnectSwitch;
-@property (nonatomic, strong) WASnsConnectSwitch *twitterConnectSwitch;
+@property (nonatomic, strong) WATwitterConnectSwitch *twitterConnectSwitch;
 @property (nonatomic, strong) WASnsConnectSwitch *foursquareConnectSwitch;
 
 @end
@@ -49,8 +50,7 @@ static NSString * const kWASegueConnectServicesToOAuth = @"WASegueConnectService
 	self.googleConnectSwitch.delegate = self;
 	self.googleConnectCell.accessoryView = self.googleConnectSwitch;
 	
-	self.twitterConnectSwitch = [[WASnsConnectSwitch alloc] initForStyle:WASnsConnectTwitterStyle];
-	self.twitterConnectSwitch.delegate = self;
+	self.twitterConnectSwitch = [[WATwitterConnectSwitch alloc] init];
 	self.twitterConnectCell.accessoryView = self.twitterConnectSwitch;
 	
 	self.foursquareConnectSwitch = [[WASnsConnectSwitch alloc] initForStyle:WASnsConnectFoursquareStyle];
@@ -88,7 +88,6 @@ static NSString * const kWASegueConnectServicesToOAuth = @"WASegueConnectService
 - (void)dealloc {
 
 	self.googleConnectSwitch.delegate = nil;
-	self.twitterConnectSwitch.delegate = nil;
 	self.foursquareConnectSwitch.delegate = nil;
 
 }

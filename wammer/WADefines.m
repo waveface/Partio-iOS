@@ -54,6 +54,9 @@ NSString * const kWAFacebookAppID = @"WAFacebookAppID";
 NSString * const kWAFacebookTokenKey = @"FBAccessTokenKey";
 NSString * const kWAFacebookExpirationDateKey = @"FBExpirationDateKey";
 
+NSString * const kWATwitterConsumerKey = @"WATwitterConsumerKey";
+NSString * const kWATwitterConsumerSecret = @"WATwitterConsumerSecret";
+
 NSString * const kWACrashlyticsAPIKey = @"d79b0f823e42fdf1cdeb7e988a8453032fd85169";
 NSString * const kWAGoogleAnalyticsAccountID = @"UA-27817516-3";
 NSInteger  const kWAGoogleAnalyticsDispatchInterval = 10;

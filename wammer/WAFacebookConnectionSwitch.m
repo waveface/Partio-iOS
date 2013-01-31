@@ -309,7 +309,7 @@
   
   [ri
    connectSocialNetwork:@"facebook"
-   withToken:token
+   withOptions: @{@"auth_token": token}
    onSuccess:^{
      if (successBlock) {
        dispatch_async(dispatch_get_main_queue(), ^{successBlock();} );

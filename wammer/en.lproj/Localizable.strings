@@ -38,7 +38,7 @@
 /* Short action title for connecting Google */
 "ACTION_CONNECT_GOOGLE_SHORT" = "Start Importing";
 
-/* Short action title for connecting Twitter */
+/* Short action title for connecting Twitter creds */
 "ACTION_CONNECT_TWITTER_SHORT" = "Start Importing";
 
 /* Action deleting an article
@@ -58,7 +58,7 @@
 /* Short action title for disconnecting Google */
 "ACTION_DISCONNECT_GOOGLE" = "Stop Importing";
 
-/* Short action title for disconnecting Twitter */
+/* Short action title for disconnecting Twitter creds */
 "ACTION_DISCONNECT_TWITTER" = "Stop Importing";
 
 /* In iPad composition view */
@@ -527,6 +527,12 @@
 /* Alert on no location service enabled when open photo library */
 "TURN_ON_LOCATION_SERVICE" = "Turn on Location Services to allow Stream to access your Photo Library.";
 
+/* Message for an alert view to show user his Twitter account has been connected to another Stream user */
+"TWITTER_CONNECT_ACCOUNT_OCCUPIED_MESSAGE" = "TWITTER_CONNECT_ACCOUNT_OCCUPIED_MESSAGE";
+
+/* Message for an alert view to show user he already connects to another Twitter account. */
+"TWITTER_CONNECT_FAIL_MESSAGE" = "TWITTER_CONNECT_FAIL_MESSAGE";
+
 /* Title for an alert view to show Twitter connection failure */
 "TWITTER_CONNECT_FAIL_TITLE" = "Unable to import from Twitter.";
 
@@ -535,9 +541,6 @@
 
 /* Title for alert view asking if user wants to connect her Twitter account */
 "TWITTER_CONNECT_REQUEST_TITLE" = "Confirm to import from Twitter.";
-
-/* Title for an alert view to show Twitter disconnection failure */
-"TWITTER_DISCONNECT_FAIL_TITLE" = "Unable to stop importing!";
 
 /* Message for alert view asking if user wants to disconnect her Twitter account */
 "TWITTER_DISCONNECT_REQUEST_MESSAGE" = "Stream will stop importing posts from your Twitter account.";
@@ -598,7 +601,7 @@
 "CONNECTION_STATUS_TITLE" = "Connection Status";
 
 /* Class = "IBUILabel"; text = "PC_SETUP_INSTRUCTIONS"; ObjectID = "6Ib-wQ-B01"; */
-"PC_SETUP_INSTRUCTIONS" = "1. Install AOStream for Windows on your PC.\n2. Connect your mobile device or tablet to the same WiFi network as your PC.";
+"PC_SETUP_INSTRUCTIONS" = "1. Install AOStream for Windows on your PC.\n2. Connect your mobile device to your PC's WiFi network.";
 
 /* Class = "IBUILabel"; text = "PHOTO_UPLOAD_SWITCH_TITLE"; ObjectID = "749-zj-beb"; */
 "PHOTO_UPLOAD_SWITCH_TITLE" = "Upload Camera Roll";
@@ -652,10 +655,10 @@
 "ACTION_CONNECT_FACEBOOK" = "Connect with Facebook";
 
 /* Class = "IBUILabel"; text = "ACTION_GOTO_WEBSITE"; ObjectID = "189"; */
-"ACTION_GOTO_WEBSITE" = "Learn more on our website.";
+"ACTION_GOTO_WEBSITE" = "Learn more on our website: waveface.com.";
 
 /* Class = "IBUILabel"; text = "PLANS_DESCRIPTION"; ObjectID = "202"; */
-"PLANS_DESCRIPTION" = "AOStream sends all your digital memories back to your PC. You can also upgrade to a cloud storage plan and enjoy all the benefits of a personal cloud.";
+"PLANS_DESCRIPTION" = "Upgrade now for a cloud storage plan that lets you enjoy all the benefits of a personal cloud.";
 
 /* Class = "IBUITextField"; placeholder = "USERNAME_PLACEHOLDER"; ObjectID = "2Vk-4J-QH3"; */
 "USERNAME_PLACEHOLDER" = "me@example.com";

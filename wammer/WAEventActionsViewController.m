@@ -30,6 +30,7 @@
 @property (nonatomic, strong) NSMutableIndexSet *selectedPhotos;
 @property (nonatomic, strong) UIPickerView *collectionPicker;
 @property (nonatomic, strong) NSFetchedResultsController *fetchedResultsController;
+@property (nonatomic, strong) IRBarButtonItem *twitterSharingButton;
 
 @end
 
@@ -114,7 +115,7 @@ void (^displayAlert)(NSString *, NSString *) = ^(NSString *title, NSString *msg)
     }
     
     SLComposeViewController *composeVC = [SLComposeViewController composeViewControllerForServiceType:SLname];
-    [composeVC setInitialText:[WAEventViewController attributedDescriptionStringForEvent:wSelf.article].string];
+    [composeVC setInitialText:wSelf.article.text];
     NSArray *allImages = [wSelf imagesSelected];
     [allImages enumerateObjectsUsingBlock:^(UIImage *image, NSUInteger idx, BOOL *stop) {
       [composeVC addImage:image];
@@ -140,11 +141,11 @@ void (^displayAlert)(NSString *, NSString *) = ^(NSString *title, NSString *msg)
   [fbButton setTintColor:[UIColor clearColor]];
   [fbButton setTitleTextAttributes:@{UITextAttributeTextColor: [UIColor whiteColor]} forState:UIControlStateNormal];
   
-  IRBarButtonItem *twButton = WABarButtonItem(nil, NSLocalizedString(@"ACTION_TWITTER", @"Share to Twitter action"), ^{
+  self.twitterSharingButton = WABarButtonItem(nil, NSLocalizedString(@"ACTION_TWITTER", @"Share to Twitter action"), ^{
     composeForSL(SLServiceTypeTwitter);
   });
-  [twButton setTintColor:[UIColor clearColor]];
-  [twButton setTitleTextAttributes:@{UITextAttributeTextColor: [UIColor whiteColor]} forState:UIControlStateNormal];
+  [self.twitterSharingButton setTintColor:[UIColor clearColor]];
+  [self.twitterSharingButton setTitleTextAttributes:@{UITextAttributeTextColor: [UIColor whiteColor]} forState:UIControlStateNormal];
   
   IRBarButtonItem *clButton = WABarButtonItem(nil, NSLocalizedString(@"ACTION_COLLECTION", @"Place photos in collections"), ^{
     __strong WAEventActionsViewController *strongSelf = wSelf;
@@ -170,7 +171,7 @@ void (^displayAlert)(NSString *, NSString *) = ^(NSString *title, NSString *msg)
     WAUser *user = [[WADataStore defaultStore] mainUserInContext:[[WADataStore defaultStore] disposableMOC]];
     NSString *subject = [NSString stringWithFormat:NSLocalizedString(@"MAIL_ACTION_SUBJECT", @"The email subject users will share photos thru. The nickname of user will be appended to this subject."), user.nickname];
     [mailer setSubject:subject];
-    NSString *body = [WAEventViewController attributedDescriptionStringForEvent:wSelf.article].string;
+    NSString *body = wSelf.article.text;
     [mailer setMessageBody:body isHTML:NO];
     
     [wSelf.selectedPhotos enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop) {
@@ -191,7 +192,7 @@ void (^displayAlert)(NSString *, NSString *) = ^(NSString *title, NSString *msg)
   [mlButton setTintColor:[UIColor clearColor]];
   [mlButton setTitleTextAttributes:@{UITextAttributeTextColor: [UIColor whiteColor]} forState:UIControlStateNormal];
   
-  self.toolbarItems = @[fbButton, twButton, clButton, mlButton];
+  self.toolbarItems = @[fbButton, self.twitterSharingButton, clButton, mlButton];
   
   self.navigationController.navigationBar.barStyle = UIBarStyleBlackTranslucent;
   self.navigationController.navigationBar.tintColor = [UIColor clearColor];
@@ -233,6 +234,11 @@ void (^displayAlert)(NSString *, NSString *) = ^(NSString *title, NSString *msg)
       }
       
     }
+	
+	if (newNum > 1)
+	  self.twitterSharingButton.enabled = NO;
+	else if (newNum == 1)
+	  self.twitterSharingButton.enabled = YES;
   }
   
 }

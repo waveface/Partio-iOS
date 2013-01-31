@@ -10,7 +10,7 @@
 
 @interface WARemoteInterface (SocialNetworks)
 
-- (void) connectSocialNetwork:(NSString *)network withToken:(NSString *)token onSuccess:(void(^)(void))successBlock onFailure:(void(^)(NSError *))failureBlock;
+- (void) connectSocialNetwork:(NSString *)network withOptions:(NSDictionary *)values onSuccess:(void(^)(void))successBlock onFailure:(void(^)(NSError *))failureBlock;
 
 - (void) disconnectSocialNetwork:(NSString *)network purgeData:(BOOL)purge onSuccess:(void(^)(void))successBlock onFailure:(void(^)(NSError *))failureBlock;
 

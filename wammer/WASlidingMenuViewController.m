@@ -113,6 +113,7 @@ static NSString * kWASlidingMenuViewControllerKVOContext = @"WASlidingMenuViewCo
 {
   [self.user removeObserver:self forKeyPath:@"avatar" context:&kWASlidingMenuViewControllerKVOContext];
   [self.user removeObserver:self forKeyPath:@"nickname" context:&kWASlidingMenuViewControllerKVOContext];
+  self.statusBar = nil;// dismiss the status bar
 }
 
 - (void)didReceiveMemoryWarning
@@ -202,39 +203,38 @@ static NSString * kWASlidingMenuViewControllerKVOContext = @"WASlidingMenuViewCo
   __weak WASlidingMenuViewController *wSelf = self;
   
   if ([keyPath isEqualToString:@"isFetching"] || [keyPath isEqualToString:@"isSyncing"]) {
-    BOOL isFetching = NO;
-	BOOL isSyncing = NO;
-	
-	if ([keyPath isEqualToString:@"isFetching"])
-	  isFetching = [change[NSKeyValueChangeNewKey] boolValue];
-	if ([keyPath isEqualToString:@"isSyncing"])
-	  isSyncing = [change[NSKeyValueChangeNewKey] boolValue];
 	
     [[NSOperationQueue mainQueue] addOperationWithBlock:^{
 
-	  if (!wSelf.statusBar && [[UIApplication sharedApplication] applicationState] != UIApplicationStateBackground) {
-		wSelf.statusBar = [[WAStatusBar alloc] initWithFrame:CGRectZero];
-	  }
 	  WASyncManager *syncManager = [(WAAppDelegate_iOS *)AppDelegate() syncManager];
 	  WAFetchManager *fetchManager = [(WAAppDelegate_iOS *)AppDelegate() fetchManager];
 
-	  if (isSyncing) {
+	  if (syncManager.isSyncing) {
+		// Photo is importing, shows its status
+		if (!wSelf.statusBar && [[UIApplication sharedApplication] applicationState] != UIApplicationStateBackground) {
+		  wSelf.statusBar = [[WAStatusBar alloc] initWithFrame:CGRectZero];
+		}
+
 		if (syncManager.isSyncFail) {
 		  [wSelf.statusBar showSyncFailWithDismissBlock:^{
 			wSelf.statusBar = nil;
 		  }];
+		  return;
 		} else if (syncManager.needingSyncFilesCount > 0) {
 		  [wSelf.statusBar showPhotoSyncingWithSyncedFilesCount:syncManager.syncedFilesCount needingSyncFilesCount:syncManager.needingSyncFilesCount];
 		} else if (syncManager.needingImportFilesCount > 0) {
 		  [wSelf.statusBar showPhotoImportingWithImportedFilesCount:syncManager.importedFilesCount needingImportFilesCount:syncManager.needingImportFilesCount];
 		}
-	  }
-	  
-      if (isFetching || isSyncing) {
+		
+		[wSelf.statusBar startDataExchangeAnimation];
+
+	  } else if (fetchManager.isFetching) {
+		if (!wSelf.statusBar && [[UIApplication sharedApplication] applicationState] != UIApplicationStateBackground) {
+		  wSelf.statusBar = [[WAStatusBar alloc] initWithFrame:CGRectZero];
+		}
+
         [wSelf.statusBar startDataExchangeAnimation];
-      }
-	  
-	  if (!syncManager.isSyncing && !fetchManager.isFetching) { // no more sync, neither fetch
+      } else {
 		if (wSelf.statusBar)
 		  [wSelf.statusBar stopDataExchangeAnimation];
 

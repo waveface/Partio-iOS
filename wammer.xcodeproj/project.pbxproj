@@ -304,6 +304,10 @@
 		80A115681647CC0B005A4246 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 80A115671647CC0A005A4246 /* MapKit.framework */; };
 		80A13C74162071C4002880A9 /* NSDate+WAAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 80A13C73162071C4002880A9 /* NSDate+WAAdditions.m */; };
 		80A2217515ED1AFD006236AC /* WARemoteInterface+WebSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 8002CDEB15E5F6F300D7BFF0 /* WARemoteInterface+WebSocket.m */; };
+		80B143FD16BA7F6E009A5FA9 /* Twitter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 80B143FC16BA7F6E009A5FA9 /* Twitter.framework */; };
+		80B1440E16BA8157009A5FA9 /* OAuth+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 80B1440D16BA8156009A5FA9 /* OAuth+Additions.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		80B1441116BA8479009A5FA9 /* OAuthCore.m in Sources */ = {isa = PBXBuildFile; fileRef = 80B1441016BA8478009A5FA9 /* OAuthCore.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		80B1441416BA8494009A5FA9 /* NSData+Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = 80B1441316BA8494009A5FA9 /* NSData+Base64.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		80B1CCF5164B6ECF009941E5 /* WAPeople+WARemoteInterfaceEntitySyncing.m in Sources */ = {isa = PBXBuildFile; fileRef = 80B1CCF4164B6ECF009941E5 /* WAPeople+WARemoteInterfaceEntitySyncing.m */; };
 		80B1CCF8164B6EE9009941E5 /* WATag+WARemoteInterfaceEntitySyncing.m in Sources */ = {isa = PBXBuildFile; fileRef = 80B1CCF7164B6EE9009941E5 /* WATag+WARemoteInterfaceEntitySyncing.m */; };
 		80B1CCFB164B6F37009941E5 /* WATagGroup+WARemoteInterfaceEntitySyncing.m in Sources */ = {isa = PBXBuildFile; fileRef = 80B1CCFA164B6F37009941E5 /* WATagGroup+WARemoteInterfaceEntitySyncing.m */; };
@@ -353,6 +357,8 @@
 		80DA985416496FED0030CA21 /* WAEventViewController_Link.m in Sources */ = {isa = PBXBuildFile; fileRef = 80DA984A16496FED0030CA21 /* WAEventViewController_Link.m */; };
 		80DA985516496FED0030CA21 /* WAEventViewController_Photo.m in Sources */ = {isa = PBXBuildFile; fileRef = 80DA984C16496FED0030CA21 /* WAEventViewController_Photo.m */; };
 		80DA985616496FED0030CA21 /* WAEventViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 80DA984E16496FED0030CA21 /* WAEventViewController.m */; };
+		80DAA57D16BA7C2400A4E352 /* TWAPIManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 80DAA57A16BA7C2400A4E352 /* TWAPIManager.m */; };
+		80DAA57E16BA7C2400A4E352 /* TWSignedRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 80DAA57C16BA7C2400A4E352 /* TWSignedRequest.m */; };
 		80E5173C1670F3B200E1C3AD /* WALocation.m in Sources */ = {isa = PBXBuildFile; fileRef = 80E5173B1670F3B200E1C3AD /* WALocation.m */; };
 		80F42C0215F70EDF00C8A72B /* WAWebSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 809D428F15F5CE4300CB4F89 /* WAWebSocket.m */; };
 		80F800F615C2624C00132A96 /* IRAQ-Checkmark.png in Resources */ = {isa = PBXBuildFile; fileRef = 80F800F415C2624C00132A96 /* IRAQ-Checkmark.png */; };
@@ -1352,6 +1358,13 @@
 		80A115671647CC0A005A4246 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		80A13C72162071C4002880A9 /* NSDate+WAAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSDate+WAAdditions.h"; path = "wammer/NSDate+WAAdditions.h"; sourceTree = "<group>"; };
 		80A13C73162071C4002880A9 /* NSDate+WAAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSDate+WAAdditions.m"; path = "wammer/NSDate+WAAdditions.m"; sourceTree = "<group>"; };
+		80B143FC16BA7F6E009A5FA9 /* Twitter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Twitter.framework; path = System/Library/Frameworks/Twitter.framework; sourceTree = SDKROOT; };
+		80B1440C16BA8156009A5FA9 /* OAuth+Additions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "OAuth+Additions.h"; path = "external/TWReverseAuth/Source/Vendor/ABOAuthCore/OAuth+Additions.h"; sourceTree = "<group>"; };
+		80B1440D16BA8156009A5FA9 /* OAuth+Additions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "OAuth+Additions.m"; path = "external/TWReverseAuth/Source/Vendor/ABOAuthCore/OAuth+Additions.m"; sourceTree = "<group>"; };
+		80B1440F16BA8478009A5FA9 /* OAuthCore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = OAuthCore.h; path = external/TWReverseAuth/Source/Vendor/ABOAuthCore/OAuthCore.h; sourceTree = "<group>"; };
+		80B1441016BA8478009A5FA9 /* OAuthCore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = OAuthCore.m; path = external/TWReverseAuth/Source/Vendor/ABOAuthCore/OAuthCore.m; sourceTree = "<group>"; };
+		80B1441216BA8494009A5FA9 /* NSData+Base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSData+Base64.h"; path = "external/TWReverseAuth/Source/Vendor/ABOAuthCore/NSData+Base64.h"; sourceTree = "<group>"; };
+		80B1441316BA8494009A5FA9 /* NSData+Base64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSData+Base64.m"; path = "external/TWReverseAuth/Source/Vendor/ABOAuthCore/NSData+Base64.m"; sourceTree = "<group>"; };
 		80B1CCE6164B6291009941E5 /* WAModel 40.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WAModel 40.xcdatamodel"; sourceTree = "<group>"; };
 		80B1CCF3164B6ECF009941E5 /* WAPeople+WARemoteInterfaceEntitySyncing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WAPeople+WARemoteInterfaceEntitySyncing.h"; sourceTree = "<group>"; };
 		80B1CCF4164B6ECF009941E5 /* WAPeople+WARemoteInterfaceEntitySyncing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WAPeople+WARemoteInterfaceEntitySyncing.m"; sourceTree = "<group>"; };
@@ -1415,6 +1428,10 @@
 		80DA984C16496FED0030CA21 /* WAEventViewController_Photo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WAEventViewController_Photo.m; path = wammer/WAEventViewController_Photo.m; sourceTree = "<group>"; };
 		80DA984D16496FED0030CA21 /* WAEventViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WAEventViewController.h; path = wammer/WAEventViewController.h; sourceTree = "<group>"; };
 		80DA984E16496FED0030CA21 /* WAEventViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WAEventViewController.m; path = wammer/WAEventViewController.m; sourceTree = "<group>"; };
+		80DAA57916BA7C2400A4E352 /* TWAPIManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TWAPIManager.h; path = external/TWReverseAuth/Source/Classes/TWAPIManager.h; sourceTree = "<group>"; };
+		80DAA57A16BA7C2400A4E352 /* TWAPIManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TWAPIManager.m; path = external/TWReverseAuth/Source/Classes/TWAPIManager.m; sourceTree = "<group>"; };
+		80DAA57B16BA7C2400A4E352 /* TWSignedRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TWSignedRequest.h; path = external/TWReverseAuth/Source/Classes/TWSignedRequest.h; sourceTree = "<group>"; };
+		80DAA57C16BA7C2400A4E352 /* TWSignedRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TWSignedRequest.m; path = external/TWReverseAuth/Source/Classes/TWSignedRequest.m; sourceTree = "<group>"; };
 		80E5173A1670F3B200E1C3AD /* WALocation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WALocation.h; sourceTree = "<group>"; };
 		80E5173B1670F3B200E1C3AD /* WALocation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WALocation.m; sourceTree = "<group>"; };
 		80F0B23116422C2B00BD3F0D /* WAModel 39.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WAModel 39.xcdatamodel"; sourceTree = "<group>"; };
@@ -2036,6 +2053,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				80B143FD16BA7F6E009A5FA9 /* Twitter.framework in Frameworks */,
 				80B6323116817CCC00A9E2A5 /* libSocketRocket.a in Frameworks */,
 				13222F4F16806B22000C57A7 /* CoreImage.framework in Frameworks */,
 				FF4570E41488F362005B5905 /* QuickLook.framework in Frameworks */,
@@ -2539,6 +2557,23 @@
 			name = "Event View";
 			sourceTree = "<group>";
 		};
+		80DAA56A16BA7BD100A4E352 /* TwitterReverseAuth */ = {
+			isa = PBXGroup;
+			children = (
+				80B1441216BA8494009A5FA9 /* NSData+Base64.h */,
+				80B1441316BA8494009A5FA9 /* NSData+Base64.m */,
+				80B1440F16BA8478009A5FA9 /* OAuthCore.h */,
+				80B1441016BA8478009A5FA9 /* OAuthCore.m */,
+				80B1440C16BA8156009A5FA9 /* OAuth+Additions.h */,
+				80B1440D16BA8156009A5FA9 /* OAuth+Additions.m */,
+				80DAA57916BA7C2400A4E352 /* TWAPIManager.h */,
+				80DAA57A16BA7C2400A4E352 /* TWAPIManager.m */,
+				80DAA57B16BA7C2400A4E352 /* TWSignedRequest.h */,
+				80DAA57C16BA7C2400A4E352 /* TWSignedRequest.m */,
+			);
+			name = TwitterReverseAuth;
+			sourceTree = "<group>";
+		};
 		80F957B916B8D3DC005121A1 /* Sliding Menu */ = {
 			isa = PBXGroup;
 			children = (
@@ -2830,6 +2865,7 @@
 		FF73A53313D6C2CC00D54EC6 = {
 			isa = PBXGroup;
 			children = (
+				80B143FC16BA7F6E009A5FA9 /* Twitter.framework */,
 				DE7B38A0165CBB9900718262 /* Calendar Picker */,
 				7D0CDD04162E5A080027D35F /* StreamTests */,
 				4B8CA96F14BBE7BA006E06BB /* UnitTests */,
@@ -2881,6 +2917,7 @@
 		FF73A54113D6C2CC00D54EC6 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				80DAA56A16BA7BD100A4E352 /* TwitterReverseAuth */,
 				80B6323916817F9A00A9E2A5 /* libPods-StreamTests.a */,
 				80C058421682FB4900BC46A7 /* libPods-UnitTests.a */,
 				80B6323716817F8A00A9E2A5 /* libPods-UnitTests.a */,
@@ -4785,6 +4822,11 @@
 				80BF4D6C16B28A7000501E69 /* WAArticle.m in Sources */,
 				139C071016B8F88000C0C5B9 /* WAEventDescriptionView.m in Sources */,
 				80F957BC16B8D40A005121A1 /* WAConnectionStatusView.m in Sources */,
+				80DAA57D16BA7C2400A4E352 /* TWAPIManager.m in Sources */,
+				80DAA57E16BA7C2400A4E352 /* TWSignedRequest.m in Sources */,
+				80B1440E16BA8157009A5FA9 /* OAuth+Additions.m in Sources */,
+				80B1441116BA8479009A5FA9 /* OAuthCore.m in Sources */,
+				80B1441416BA8494009A5FA9 /* NSData+Base64.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

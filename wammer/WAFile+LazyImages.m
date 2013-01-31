@@ -15,6 +15,8 @@
 #import "WADataStore.h"
 #import "NSString+WAAdditions.h"
 
+#import "ALAsset+WAAdditions.h"
+
 static NSString * const kMemoryWarningObserver = @"-[WAFile(LazyImages) handleDidReceiveMemoryWarning:]";
 static NSString * const kMemoryWarningObserverCreationDisabled = @"-[WAFile(LazyImages) isMemoryWarningObserverCreationDisabled]";
 
@@ -145,59 +147,97 @@ static NSString * const kMemoryWarningObserverCreationDisabled = @"-[WAFile(Lazy
   
   if (self.extraSmallThumbnailFilePath) {
     
-    return [self imageAssociatedWithKey:&kWAFileExtraSmallThumbnailImage filePath:self.extraSmallThumbnailFilePath];
-    
-  } else {
-    
-    if (self.assetURL) {
-      
-      NSURL *ownURL = [[self objectID] URIRepresentation];
-      
-      [[WAAssetsLibraryManager defaultManager] assetForURL:[NSURL URLWithString:self.assetURL] resultBlock:^(ALAsset *asset) {
-        
-        NSManagedObjectContext *context = [[WADataStore defaultStore] autoUpdatingMOC];
-        context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
-        WAFile *file = (WAFile *)[context irManagedObjectForURI:ownURL];
-        if (!file.extraSmallThumbnailFilePath) {
-	UIImage *extraSmallThumbnailImage = [UIImage imageWithCGImage:[asset thumbnail]];
-	file.extraSmallThumbnailFilePath = [[[WADataStore defaultStore] persistentFileURLForData:UIImageJPEGRepresentation(extraSmallThumbnailImage, 0.85f) extension:@"jpeg"] path];
-	[context save:nil];
-        }
-        
-      } failureBlock:^(NSError *error) {
-        
-        NSLog(@"Unable to read asset: %s %@", __PRETTY_FUNCTION__, error);
-        
-      }];
-      
-    } else {
-      
-      // trigger downloading if small thumbnail does not exist
-      [self setDisplayingSmallThumbnail:YES];
-      
-      if (self.smallThumbnailFilePath) {
-        
-        NSURL *ownURL = [[self objectID] URIRepresentation];
-
-        [self.smallThumbnailFilePath makeThumbnailWithOptions:WAThumbnailTypeExtraSmall completeBlock:^(UIImage *image) {
-
-	NSManagedObjectContext *context = [[WADataStore defaultStore] autoUpdatingMOC];
-	context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
-	WAFile *file = (WAFile *)[context irManagedObjectForURI:ownURL];
-	if (!file.extraSmallThumbnailFilePath) {
-	  file.extraSmallThumbnailFilePath = [[[WADataStore defaultStore] persistentFileURLForData:UIImageJPEGRepresentation(image, 0.85f) extension:@"jpeg"] path];
-	  [context save:nil];
-	}
-
-        }];
-        
-      }
-      
-    }
-    
-    return nil;
+    UIImage *returnedImage = [self imageAssociatedWithKey:&kWAFileExtraSmallThumbnailImage filePath:self.extraSmallThumbnailFilePath];
+	if (returnedImage != nil)
+	  return returnedImage;
   }
   
+  if (self.assetURL) {
+      
+	NSURL *ownURL = [[self objectID] URIRepresentation];
+      
+	[[WAAssetsLibraryManager defaultManager] assetForURL:[NSURL URLWithString:self.assetURL] resultBlock:^(ALAsset *asset) {
+	  
+	  if (asset) {
+		
+		[asset makeThumbnailWithOptions:WAThumbnailTypeExtraSmall completeBlock:^(UIImage *image) {
+		  WADataStore *ds = [WADataStore defaultStore];
+		  NSString *filePath = [[[WADataStore defaultStore] persistentFileURLForData:UIImageJPEGRepresentation(image, 0.85f) extension:@"jpeg"] path];
+		  
+		  NSManagedObjectContext *context = [ds autoUpdatingMOC];
+		  context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
+		  WAFile *file = (WAFile *)[context irManagedObjectForURI:ownURL];
+		  file.extraSmallThumbnailFilePath = filePath;
+		  [context save:nil];
+			
+		}];
+		
+	  } else {
+		
+		// trigger downloading if small thumbnail does not exist
+		[self setDisplayingSmallThumbnail:YES];
+		
+		if (self.smallThumbnailFilePath) {
+		  
+		  NSURL *ownURL = [[self objectID] URIRepresentation];
+		  
+		  [self.smallThumbnailFilePath makeThumbnailWithOptions:WAThumbnailTypeExtraSmall completeBlock:^(UIImage *image) {
+			
+			NSManagedObjectContext *context = [[WADataStore defaultStore] autoUpdatingMOC];
+			context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
+			WAFile *file = (WAFile *)[context irManagedObjectForURI:ownURL];
+			file.assetURL = nil; // asset has already been deleted
+			if (image) {
+			  file.extraSmallThumbnailFilePath = [[[WADataStore defaultStore] persistentFileURLForData:UIImageJPEGRepresentation(image, 0.85f) extension:@"jpeg"] path];
+			} else {
+			  file.extraSmallThumbnailFilePath = nil;
+			}
+			[context save:nil];
+			
+		  }];
+		  
+		}
+
+		NSLog(@"Asset no longer exist: %s %@", __PRETTY_FUNCTION__, self.assetURL);
+		
+	  }
+      
+	} failureBlock:^(NSError *error) {
+	  
+	  NSLog(@"Unable to read asset: %s %@", __PRETTY_FUNCTION__, error);
+	  
+	}];
+	
+  } else {
+      
+	// trigger downloading if small thumbnail does not exist
+	[self setDisplayingSmallThumbnail:YES];
+	
+	if (self.smallThumbnailFilePath) {
+	  
+	  NSURL *ownURL = [[self objectID] URIRepresentation];
+	  
+	  [self.smallThumbnailFilePath makeThumbnailWithOptions:WAThumbnailTypeExtraSmall completeBlock:^(UIImage *image) {
+
+		NSManagedObjectContext *context = [[WADataStore defaultStore] autoUpdatingMOC];
+		context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
+		WAFile *file = (WAFile *)[context irManagedObjectForURI:ownURL];
+		
+		if (image) {
+		  file.extraSmallThumbnailFilePath = [[[WADataStore defaultStore] persistentFileURLForData:UIImageJPEGRepresentation(image, 0.85f) extension:@"jpeg"] path];
+		} else {
+		  file.extraSmallThumbnailFilePath = nil;
+		}
+		[context save:nil];
+		
+	  }];
+      
+	}
+    
+  }
+  
+  return nil;
+
 }
 
 - (void)setExtraSmallThumbnailImage:(UIImage *)extraSmallThumbnailImage {

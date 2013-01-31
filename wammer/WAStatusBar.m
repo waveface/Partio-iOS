@@ -44,6 +44,8 @@ static NSString * const kWAFetchingAnimation = @"WAFetchingAnimation";
     self.backgroundColor = [UIColor blackColor];
     self.hidden = NO;
     self.opaque = NO;
+	self.isSyncingComplete = NO;
+	self.isSyncingFail = NO;
     
     self.syncingLabel = [[UILabel alloc] init];
     [self.syncingLabel setTranslatesAutoresizingMaskIntoConstraints:NO];
@@ -148,12 +150,16 @@ static NSString * const kWAFetchingAnimation = @"WAFetchingAnimation";
 
   NSParameterAssert([NSThread isMainThread]);
 
-  if (self.isSyncingComplete || self.isSyncingFail) {
+  if (self.isSyncingComplete || self.isSyncingFail || self.isExchangingData) {
     return;
   }
 
   self.isExchangingData = YES;
+  
+  [self animateIndicator];
+}
 
+- (void) animateIndicator {
   if (![self.fetchingAnimation.layer animationForKey:kWAFetchingAnimation]) {
     CABasicAnimation *rotationAnimation = [CABasicAnimation animationWithKeyPath:@"transform.rotation.z"];
     rotationAnimation.toValue = @(-M_PI);
@@ -268,8 +274,10 @@ static NSString * const kWAFetchingAnimation = @"WAFetchingAnimation";
     }];
   }
   
-  if (self.isExchangingData || self.isSyncingPhotos) {
-    [self startDataExchangeAnimation];
+  if (!self.isSyncingComplete && !self.isSyncingFail) {
+	if (self.isExchangingData || self.isSyncingPhotos) {
+	  [self animateIndicator];
+	}
   }
 
 }
