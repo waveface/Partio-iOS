@@ -44,5 +44,7 @@
 	<string>234823683291756</string>
 	<key>WAStreamFeaturesURL</key>
 	<string>http://waveface.com/stream/features</string>
+	<key>WAUseCellularEnabled</key>
+	<true/>
 </dict>
 </plist>
