@@ -245,6 +245,7 @@
 		8042891B16B2C67F00796F09 /* WAArticle.m in Sources */ = {isa = PBXBuildFile; fileRef = 80BF4D6B16B28A7000501E69 /* WAArticle.m */; };
 		8042891C16B2C73100796F09 /* WACollection+RemoteOperations.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BB6A9041696BBA300AB5F14 /* WACollection+RemoteOperations.m */; };
 		8042891D16B2C77600796F09 /* WADefines.m in Sources */ = {isa = PBXBuildFile; fileRef = FF0B2A2C14388FF000309F0E /* WADefines.m */; };
+		8046F45016BB66DA00B0EEEB /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 8046F44F16BB66DA00B0EEEB /* Settings.bundle */; };
 		80499B1116718F0400842788 /* WAEventHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 80499B1016718F0400842788 /* WAEventHeaderView.xib */; };
 		80557BA915FDE38000336F3C /* WARemoteInterface+RemoteNotifications.m in Sources */ = {isa = PBXBuildFile; fileRef = 80557BA815FDE38000336F3C /* WARemoteInterface+RemoteNotifications.m */; };
 		8056C9861682C4B2001C9199 /* WAWebPreviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8056C9851682C4B2001C9199 /* WAWebPreviewViewController.m */; };
@@ -1282,6 +1283,7 @@
 		8033024C168853B200004891 /* googlereader@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "googlereader@2x.png"; path = "Resources/googlereader@2x.png"; sourceTree = "<group>"; };
 		8033024F168853D500004891 /* twitter.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = twitter.png; path = Resources/twitter.png; sourceTree = "<group>"; };
 		80330250168853D500004891 /* twitter@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "twitter@2x.png"; path = "Resources/twitter@2x.png"; sourceTree = "<group>"; };
+		8046F44F16BB66DA00B0EEEB /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		80499B1016718F0400842788 /* WAEventHeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = WAEventHeaderView.xib; path = wammer/WAEventHeaderView.xib; sourceTree = "<group>"; };
 		80557BA715FDE38000336F3C /* WARemoteInterface+RemoteNotifications.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WARemoteInterface+RemoteNotifications.h"; sourceTree = "<group>"; };
 		80557BA815FDE38000336F3C /* WARemoteInterface+RemoteNotifications.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WARemoteInterface+RemoteNotifications.m"; sourceTree = "<group>"; };
@@ -3506,6 +3508,7 @@
 				FFC6201E149CF35E0097C377 /* WAAppDelegate_Mac.m */,
 				FF460DB7149D15F100DB7F0B /* wammer-OSX-Entitlements.plist */,
 				FFA5CD67140CEB8400875256 /* WAApplicationRootViewControllerDelegate.h */,
+				8046F44F16BB66DA00B0EEEB /* Settings.bundle */,
 			);
 			name = Environment;
 			path = wammer;
@@ -4349,6 +4352,7 @@
 				80F957B716B8D23F005121A1 /* station.png in Resources */,
 				80F957B816B8D23F005121A1 /* station@2x.png in Resources */,
 				80F957BE16B8D421005121A1 /* WAConnectionStatusView.xib in Resources */,
+				8046F45016BB66DA00B0EEEB /* Settings.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
