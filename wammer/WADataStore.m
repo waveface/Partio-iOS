@@ -153,7 +153,8 @@ NSString * const kStorageUsage = @"WAStorageUsage";
 
 - (void) setMaxSequenceNumber:(NSNumber *)seq {
 
-	if ([seq compare:[self metadataForKey:kMaxSequenceNumber]]==NSOrderedDescending) {
+  NSNumber *current = [self metadataForKey:kMaxSequenceNumber];
+	if (!current || (current && [seq compare:current]==NSOrderedDescending)) {
 		[self setMetadata:seq forKey:kMaxSequenceNumber];
 	}
 
