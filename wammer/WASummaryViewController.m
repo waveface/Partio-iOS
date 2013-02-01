@@ -22,6 +22,10 @@
 #import "IRBarButtonItem.h"
 #import "WADayViewController.h"
 #import "WAAppDelegate_iOS.h"
+#import "WAPhotoDay.h"
+#import "WADocumentDay.h"
+#import "WAWebpageDay.h"
+#import "WAFileAccessLog.h"
 
 static NSInteger const DEFAULT_SUMMARY_PAGING_SIZE = 20;
 static NSInteger const DEFAULT_EVENT_IMAGE_PAGING_SIZE = 5;
@@ -39,6 +43,12 @@ static NSInteger const DEFAULT_EVENT_IMAGE_PAGING_SIZE = 5;
 @property (nonatomic) BOOL scrollingSummaryPage;
 @property (nonatomic) BOOL scrollingEventPage;
 @property (nonatomic) BOOL reloading;
+
+@property (nonatomic, strong) NSFetchedResultsController *articleFetchedResultsController;
+@property (nonatomic, strong) NSFetchedResultsController *photoFetchedResultsController;
+@property (nonatomic, strong) NSFetchedResultsController *documentFetchedResultsController;
+@property (nonatomic, strong) NSFetchedResultsController *webpageFetchedResultsController;
+@property (nonatomic, strong) NSMutableSet *changedDaySummaries;
 
 @property (nonatomic) WADayViewSupportedStyle presentingStyle;
 @property (nonatomic) BOOL contextMenuOpened;
@@ -168,10 +178,6 @@ static NSInteger const DEFAULT_EVENT_IMAGE_PAGING_SIZE = 5;
     view.frame = frame;
   }];
 
-  // scroll to current summary page without animation
-  [self scrollToCurrentSummaryPageAnimated:NO];
-  [self scrollToCurrentEventPageAnimated:NO];
-
 }
 
 - (void)scrollToCurrentSummaryPageAnimated:(BOOL)animated {
@@ -239,19 +245,35 @@ static NSInteger const DEFAULT_EVENT_IMAGE_PAGING_SIZE = 5;
 
   NSInteger oldEventIndex = _currentDaySummary.eventIndex;
 
-  _currentDaySummary = currentDaySummary;
-  
-  NSInteger pageControllIndex = 0;
+  if (_currentDaySummary == currentDaySummary) {
 
-  // if user scrolls events to right, he will see the last event page
-  if (self.scrollingEventPage && oldEventIndex > _currentDaySummary.eventIndex) {
-    pageControllIndex = [_currentDaySummary.eventPages count] - 1;
+    // TODO: bring user to the latest event if current summary is for today
+    self.eventPageControll.numberOfPages = [currentDaySummary.articles count];
+    NSUInteger index = [currentDaySummary.eventPages indexOfObject:self.currentEventPage];
+    if (index == NSNotFound) {
+      self.eventPageControll.currentPage = 0;
+      self.currentEventPage = currentDaySummary.eventPages[0];
+    } else {
+      self.eventPageControll.currentPage = index;
+    }
+
+  } else {
+
+    _currentDaySummary = currentDaySummary;
+    
+    NSInteger pageControllIndex = 0;
+    
+    // if user scrolls events to right, he will see the last event page
+    if (self.scrollingEventPage && oldEventIndex > _currentDaySummary.eventIndex) {
+      pageControllIndex = [_currentDaySummary.eventPages count] - 1;
+    }
+    
+    self.eventPageControll.numberOfPages = [currentDaySummary.articles count];
+    self.eventPageControll.currentPage = pageControllIndex;
+    
+    self.currentEventPage = currentDaySummary.eventPages[pageControllIndex];
+
   }
-  
-  self.eventPageControll.numberOfPages = [currentDaySummary.articles count];
-  self.eventPageControll.currentPage = pageControllIndex;
-
-  self.currentEventPage = currentDaySummary.eventPages[pageControllIndex];
 
 }
 
@@ -323,8 +345,14 @@ static NSInteger const DEFAULT_EVENT_IMAGE_PAGING_SIZE = 5;
         }
       }
     }
+    [wSelf resetFetchedResultsControllers];
     [wSelf resetContentSize];
     [wSelf layoutSummaryAndEventPages];
+
+    // scroll to current summary page without animation
+    [wSelf scrollToCurrentSummaryPageAnimated:NO];
+    [wSelf scrollToCurrentEventPageAnimated:NO];
+    
     if (pagingSize > 0) {
       [wSelf reloadEventPageImagesWithPagingSize:DEFAULT_EVENT_IMAGE_PAGING_SIZE];
     } else {
@@ -334,6 +362,46 @@ static NSInteger const DEFAULT_EVENT_IMAGE_PAGING_SIZE = 5;
     wSelf.reloading = NO;
   });
   
+}
+
+- (void)resetFetchedResultsControllers {
+
+  if (!self.articleFetchedResultsController) {
+    NSFetchRequest *articleFetchRequest = [[NSFetchRequest alloc] initWithEntityName:@"WAArticle"];
+    [articleFetchRequest setSortDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"eventStartDate" ascending:NO]]];
+    self.articleFetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:articleFetchRequest managedObjectContext:self.managedObjectContext sectionNameKeyPath:nil cacheName:nil];
+    self.articleFetchedResultsController.delegate = self;
+  }
+  [self.articleFetchedResultsController.fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"event = TRUE AND eventStartDate <= %@ AND eventEndDate >= %@", [self.firstDaySummary.date dayEnd], self.lastDaySummary.date]];
+  [self.articleFetchedResultsController performFetch:nil];
+
+  if (!self.photoFetchedResultsController) {
+    NSFetchRequest *photosFetchRequest = [[NSFetchRequest alloc] initWithEntityName:@"WAFile"];
+    [photosFetchRequest setSortDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"timestamp" ascending:NO]]];
+    self.photoFetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:photosFetchRequest managedObjectContext:self.managedObjectContext sectionNameKeyPath:nil cacheName:nil];
+    self.photoFetchedResultsController.delegate = self;
+  }
+  [self.photoFetchedResultsController.fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"photoDay.day <= %@ AND photoDay.day >= %@", self.firstDaySummary.date, self.lastDaySummary.date]];
+  [self.photoFetchedResultsController performFetch:nil];
+
+  if (!self.documentFetchedResultsController) {
+    NSFetchRequest *documentsFetchRequest = [[NSFetchRequest alloc] initWithEntityName:@"WAFileAccessLog"];
+    [documentsFetchRequest setSortDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"accessTime" ascending:NO]]];
+    self.documentFetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:documentsFetchRequest managedObjectContext:self.managedObjectContext sectionNameKeyPath:nil cacheName:nil];
+    self.documentFetchedResultsController.delegate = self;
+  }
+  [self.documentFetchedResultsController.fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"day.day <= %@ AND day.day >= %@", self.firstDaySummary.date, self.lastDaySummary.date]];
+  [self.documentFetchedResultsController performFetch:nil];
+
+  if (!self.webpageFetchedResultsController) {
+    NSFetchRequest *webpagesFetchRequest = [[NSFetchRequest alloc] initWithEntityName:@"WAFileAccessLog"];
+    [webpagesFetchRequest setSortDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"accessTime" ascending:NO]]];
+    self.webpageFetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:webpagesFetchRequest managedObjectContext:self.managedObjectContext sectionNameKeyPath:nil cacheName:nil];
+    self.webpageFetchedResultsController.delegate = self;
+  }
+  [self.webpageFetchedResultsController.fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"dayWebpages.day <= %@ AND dayWebpages.day >= %@", self.firstDaySummary.date, self.lastDaySummary.date]];
+  [self.webpageFetchedResultsController performFetch:nil];
+
 }
 
 - (void)reloadEventPageImagesWithPagingSize:(NSInteger)pagingSize {
@@ -417,13 +485,11 @@ static NSInteger const DEFAULT_EVENT_IMAGE_PAGING_SIZE = 5;
   self.daySummaries[@(idx)] = daySummary;
 
   __weak WASummaryViewController *wSelf = self;
-  // we add the event page reversely to ensure the first event page will show on the topmost z-position initially
+  // we add the event page reversely to ensure the first event page will show on the frontmost initially
   [daySummary.eventPages enumerateObjectsWithOptions:NSEnumerationReverse usingBlock:^(WAEventPageView *eventPage, NSUInteger idx, BOOL *stop) {
     [wSelf.eventScrollView addSubview:eventPage];
   }];
   [self.summaryScrollView addSubview:daySummary.summaryPage];
-
-  [daySummary configureSummaryAndEventPages];
 
 }
 
@@ -598,6 +664,74 @@ static NSInteger const DEFAULT_EVENT_IMAGE_PAGING_SIZE = 5;
     self.scrollingSummaryPage = NO;
   }
   
+}
+
+#pragma mark - NSFetchedResultsController delegates
+
+- (void)controllerWillChangeContent:(NSFetchedResultsController *)controller {
+
+  self.changedDaySummaries = [NSMutableSet set];
+
+}
+
+- (void)controller:(NSFetchedResultsController *)controller didChangeObject:(id)anObject atIndexPath:(NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type newIndexPath:(NSIndexPath *)newIndexPath {
+  
+  switch (type) {
+
+    case NSFetchedResultsChangeInsert:
+      if (controller == self.articleFetchedResultsController) {
+        WAArticle *article = anObject;
+        WADaySummary *daySummary = self.daySummaries[@([self indexOfDay:[article.eventStartDate dayBegin]])];
+        if (daySummary) {
+	[self.changedDaySummaries addObject:daySummary];
+//	NSLog(@"article on date %@ inserted", daySummary.date);
+        }
+      } else if (controller == self.photoFetchedResultsController) {
+        WAFile *file = anObject;
+        WADaySummary *daySummary = self.daySummaries[@([self indexOfDay:file.photoDay.day])];
+        if (daySummary) {
+	[self.changedDaySummaries addObject:daySummary];
+//	NSLog(@"photo on date %@ inserted", daySummary.date);
+        }
+      } else if (controller == self.documentFetchedResultsController) {
+        WAFileAccessLog *fileAccessLog = anObject;
+        WADaySummary *daySummary = self.daySummaries[@([self indexOfDay:fileAccessLog.day.day])];
+        if (daySummary) {
+	[self.changedDaySummaries addObject:daySummary];
+//	NSLog(@"document on date %@ inserted", daySummary.date);
+        }
+      } else if (controller == self.webpageFetchedResultsController) {
+        WAFileAccessLog *fileAccessLog = anObject;
+        WADaySummary *daySummary = self.daySummaries[@([self indexOfDay:fileAccessLog.dayWebpages.day])];
+        if (daySummary) {
+	[self.changedDaySummaries addObject:daySummary];
+//	NSLog(@"webpage on date %@ inserted", daySummary.date);
+        }
+      }
+      break;
+    
+    case NSFetchedResultsChangeUpdate:
+      // TODO: the updated articles might have more photos to display
+      break;
+
+    default:
+      break;
+
+  }
+
+}
+
+- (void)controllerDidChangeContent:(NSFetchedResultsController *)controller {
+  
+  for (WADaySummary *daySummary in self.changedDaySummaries) {
+    [daySummary configureSummaryAndEventPages];
+  }
+  [self resetContentSize];
+  [self layoutSummaryAndEventPages];
+  
+  // reload current summary
+  self.currentDaySummary = self.currentDaySummary;
+
 }
 
 @end
