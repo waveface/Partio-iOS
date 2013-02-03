@@ -121,6 +121,7 @@
 		4B4AA30D16564BF000A04DDE /* NSDate+WAAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 80A13C73162071C4002880A9 /* NSDate+WAAdditions.m */; };
 		4B52734415625B3500C6F55D /* ProviderIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 4B52734315625B3500C6F55D /* ProviderIcon.png */; };
 		4B6C222215F6020C00C19A7B /* WAAssetsLibraryManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 136C170215F48E8E0066B289 /* WAAssetsLibraryManager.m */; };
+		4B75D6C516BBE31D00D267C9 /* CollectionsMalformat.json in Resources */ = {isa = PBXBuildFile; fileRef = 4B75D6C416BBE31D00D267C9 /* CollectionsMalformat.json */; };
 		4B7FF980167994D700CC46BF /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FFB67956141E345C006F84E3 /* CoreText.framework */; };
 		4B8581AF15F798F900EE11AC /* Icon_beta.png in Resources */ = {isa = PBXBuildFile; fileRef = 4B8581AB15F798F900EE11AC /* Icon_beta.png */; };
 		4B8581B015F798F900EE11AC /* Icon_beta@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4B8581AC15F798F900EE11AC /* Icon_beta@2x.png */; };
@@ -1153,6 +1154,7 @@
 		4B362546156630D400F07032 /* IRRelativeDateFormatter+WAAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "IRRelativeDateFormatter+WAAdditions.h"; path = "wammer/IRRelativeDateFormatter+WAAdditions.h"; sourceTree = "<group>"; };
 		4B362547156630D400F07032 /* IRRelativeDateFormatter+WAAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "IRRelativeDateFormatter+WAAdditions.m"; path = "wammer/IRRelativeDateFormatter+WAAdditions.m"; sourceTree = "<group>"; };
 		4B52734315625B3500C6F55D /* ProviderIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ProviderIcon.png; path = external/WFPresentation/Source/ProviderIcon.png; sourceTree = "<group>"; };
+		4B75D6C416BBE31D00D267C9 /* CollectionsMalformat.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = CollectionsMalformat.json; path = UnitTests/CollectionsMalformat.json; sourceTree = SOURCE_ROOT; };
 		4B8581AB15F798F900EE11AC /* Icon_beta.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Icon_beta.png; path = resources/Icon_beta.png; sourceTree = "<group>"; };
 		4B8581AC15F798F900EE11AC /* Icon_beta@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon_beta@2x.png"; path = "resources/Icon_beta@2x.png"; sourceTree = "<group>"; };
 		4B8581B315F7993100EE11AC /* Icon-72_beta.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon-72_beta.png"; path = "resources/Icon-72_beta.png"; sourceTree = "<group>"; };
@@ -2326,6 +2328,7 @@
 				4BBEEA04164F6A6E00D33EDB /* PostWithCompleteAttachmentInformation.json */,
 				4BBEEA05164F6A6E00D33EDB /* PostWithIncompleteAttachmentInformation.json */,
 				4B8CA97014BBE7BA006E06BB /* Supporting Files */,
+				4B75D6C416BBE31D00D267C9 /* CollectionsMalformat.json */,
 			);
 			name = UnitTests;
 			path = "wammer-iOS-Tests";
@@ -3975,6 +3978,7 @@
 				4BBEEA08164F6A6E00D33EDB /* PostWithIncompleteAttachmentInformation.json in Resources */,
 				7D71DDE21653569500456B52 /* PostWithEventTime.json in Resources */,
 				4BAA582B168014EF006324CF /* GetCollections.json in Resources */,
+				4B75D6C516BBE31D00D267C9 /* CollectionsMalformat.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

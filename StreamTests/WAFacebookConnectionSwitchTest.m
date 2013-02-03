@@ -73,8 +73,6 @@ static id mockRemoteInterface = nil;
 	[[[mockRemoteInterface expect] andDo:nil]
 	 retrieveConnectedSocialNetworksOnSuccess:[OCMArg any]
 	 onFailure:[OCMArg any]];
-	[[[mockRemoteInterface expect] andDo:theBlock]
-	 connectSocialNetwork:@"facebook" withToken:[OCMArg any] onSuccess:[OCMArg any] onFailure:[OCMArg any]];
 	
 	@autoreleasepool {
 		[_theSwitch handleFacebookConnect:nil];

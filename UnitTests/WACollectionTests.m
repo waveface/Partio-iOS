@@ -117,18 +117,18 @@
   assertThat(dataStore.maxSequenceNumber, equalTo(@100));
 }
 
-//- (void)testCreateACollectionWith2Files {
-//  NSManagedObjectContext *context = [NSManagedObjectContext MR_defaultContext];
-//  NSArray *objectIDs = @[[WAFile MR_createInContext:context],[WAFile MR_createInContext:context]];
-//  
-//  WACollection *collection = [[WACollection alloc] initWithName:@"Memories"
-//                                                      withFiles:objectIDs
-//                                         inManagedObjectContext:context];
-//  
-//  assertThat(collection.title, equalTo(@"Memories"));
-//  STAssertEquals([collection.files count], (NSUInteger)2, @"There should be two objcets");
-//  STAssertNotNil(collection.identifier, @"UUID generated");
-//  assertThat(collection.isHidden, equalTo(@0));
-//}
+- (void)testMalformedEntityShouldFailGracefullyWithEnoughDebugInformation {
+  NSArray *collections = [self loadDataFile:@"CollectionsMalformat"];
+  STAssertNotNil(collections, @"Should be valid");
+  
+  @autoreleasepool {
+    [WACollection insertOrUpdateObjectsUsingContext:[NSManagedObjectContext MR_context]
+                                 withRemoteResponse:collections
+                                       usingMapping:nil
+                                            options:IRManagedObjectOptionIndividualOperations];
+  }
+  
+  //This test should not crash
+}
 
 @end
