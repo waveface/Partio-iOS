@@ -44,7 +44,7 @@
                 "default_post": false,
                 "modify_time": 1343180317,
                 "code_name": "Station",
-                "hidden": "false",
+                "hidden": false,
                 "type": "image",
                 "device_id": "7cc6ccbb-bf08-c9ed-7989-6bf3615e333e"
             },
@@ -91,7 +91,7 @@
                 "default_post": false,
                 "modify_time": 1343180320,
                 "code_name": "Station",
-                "hidden": "false",
+                "hidden": false,
                 "type": "image",
                 "device_id": "7cc6ccbb-bf08-c9ed-7989-6bf3615e333e"
             },
@@ -138,7 +138,7 @@
                 "default_post": false,
                 "modify_time": 1343180324,
                 "code_name": "Station",
-                "hidden": "false",
+                "hidden": false,
                 "type": "image",
                 "device_id": "7cc6ccbb-bf08-c9ed-7989-6bf3615e333e"
             },
@@ -185,7 +185,7 @@
                 "default_post": false,
                 "modify_time": 1343180324,
                 "code_name": "Station",
-                "hidden": "false",
+                "hidden": false,
                 "type": "image",
                 "device_id": "7cc6ccbb-bf08-c9ed-7989-6bf3615e333e"
             }
@@ -196,7 +196,7 @@
         "comments": [],
         "content": "",
         "comment_count": 0,
-        "hidden": "false",
+        "hidden": false,
         "preview": {},
         "type": "image",
         "update_time": "2012-07-25T01:38:33Z",

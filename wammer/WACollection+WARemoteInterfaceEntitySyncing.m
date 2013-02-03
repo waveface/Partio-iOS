@@ -71,8 +71,12 @@
   returnedDictionary[@"files"] = incomingDictionary[@"object_list"];
   
   NSString *collectionCover = incomingDictionary[@"cover"];
-  if ([collectionCover length])
+  if ([collectionCover length]){
     returnedDictionary[@"cover"] = @{@"object_id": collectionCover};
+	} else {
+		[returnedDictionary removeObjectForKey:@"cover"];
+		NSLog(@"Collection %@: cover is wrong.", incomingDictionary[@"collection_id"]);
+	}
   
   return returnedDictionary;
 }
@@ -106,6 +110,8 @@
 - (void)synchronizeWithOptions:(NSDictionary *)options completion:(WAEntitySyncCallback)completionBlock {
   
 }
+
+
 
 @end
 
