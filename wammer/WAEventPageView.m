@@ -74,7 +74,9 @@ typedef NS_ENUM(NSInteger, WACurrentlyDisplayingImage) {
   if (article) {
     WAEventDescriptionView *eventDescriptionView = [WAEventDescriptionView viewFromNib];
     eventDescriptionView.timeLabel.text = [[[self class] sharedDateFormatter] stringFromDate:article.creationDate];
-    eventDescriptionView.descriptionLabel.text = [[WAEventViewController attributedDescriptionStringForEvent:article] string];
+    [view.representingArticle irObserve:@"text" options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew context:nil withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
+      eventDescriptionView.descriptionLabel.text = [[WAEventViewController attributedDescriptionStringForEvent:article] string];
+    }];
     [view.containerViews[0] addSubview:eventDescriptionView];
     view.descriptionView = eventDescriptionView;
   }
@@ -210,6 +212,7 @@ typedef NS_ENUM(NSInteger, WACurrentlyDisplayingImage) {
     [self.imageViews enumerateObjectsUsingBlock:^(UIImageView *imageView, NSUInteger idx, BOOL *stop) {
       [self.representingArticle.files[idx] irRemoveObserverBlocksForKeyPath:@"smallThumbnailFilePath" context:&kWAEventPageViewKVOContext];
     }];
+    [self.representingArticle irRemoveObserverBlocksForKeyPath:@"text"];
   }
   
 }
