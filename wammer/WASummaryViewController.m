@@ -28,7 +28,7 @@
 #import "WAFileAccessLog.h"
 
 static NSInteger const DEFAULT_SUMMARY_PAGING_SIZE = 20;
-static NSInteger const DEFAULT_EVENT_IMAGE_PAGING_SIZE = 5;
+static NSInteger const DEFAULT_EVENT_IMAGE_PAGING_SIZE = 3;
 
 @interface WASummaryViewController ()
 
