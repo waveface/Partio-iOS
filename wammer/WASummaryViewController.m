@@ -372,7 +372,7 @@ static NSInteger const DEFAULT_EVENT_IMAGE_PAGING_SIZE = 5;
     self.articleFetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:articleFetchRequest managedObjectContext:self.managedObjectContext sectionNameKeyPath:nil cacheName:nil];
     self.articleFetchedResultsController.delegate = self;
   }
-  [self.articleFetchedResultsController.fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"event = TRUE AND eventStartDate <= %@ AND eventEndDate >= %@", [self.firstDaySummary.date dayEnd], self.lastDaySummary.date]];
+  [self.articleFetchedResultsController.fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"hidden = FALSE AND event = TRUE AND eventStartDate <= %@ AND eventEndDate >= %@", [self.firstDaySummary.date dayEnd], self.lastDaySummary.date]];
   [self.articleFetchedResultsController performFetch:nil];
 
   if (!self.photoFetchedResultsController) {
