@@ -16,6 +16,8 @@
 #import "UIImageView+WAAdditions.h"
 #import "WAEventDescriptionView.h"
 #import "WAEventViewController.h"
+#import "WAAnnotation.h"
+#import "MKMapView+ZoomLevel.h"
 
 static NSString * kWAEventPageViewKVOContext = @"WAEventPageViewKVOContext";
 
@@ -28,6 +30,7 @@ typedef NS_ENUM(NSInteger, WACurrentlyDisplayingImage) {
 
 @interface WAEventPageView ()
 
+@property (nonatomic, strong) MKMapView *mapView;
 @property (nonatomic) BOOL shouldDisplayImages;
 
 @end
@@ -50,21 +53,27 @@ typedef NS_ENUM(NSInteger, WACurrentlyDisplayingImage) {
 
   WAEventPageView *view = nil;
 
-  switch ([article.files count]) {
-    case 0:
-    case 1:
-      view = [[[UINib nibWithNibName:@"WAEventPageView-ImageStack-1" bundle:[NSBundle mainBundle]] instantiateWithOwner:nil options:nil] lastObject];
-      break;
-    case 2:
-      view = [[[UINib nibWithNibName:@"WAEventPageView-ImageStack-2" bundle:[NSBundle mainBundle]] instantiateWithOwner:nil options:nil] lastObject];
-      break;
-    case 3:
-      view = [[[UINib nibWithNibName:@"WAEventPageView-ImageStack-3" bundle:[NSBundle mainBundle]] instantiateWithOwner:nil options:nil] lastObject];
-      break;
-    default:
-      view = [[[UINib nibWithNibName:@"WAEventPageView-ImageStack-4" bundle:[NSBundle mainBundle]] instantiateWithOwner:nil options:nil] lastObject];
-      break;
-  };
+  if (article) {
+    switch ([article.files count]) {
+      case 0:
+        view = [[[UINib nibWithNibName:@"WAEventPageView-Checkin" bundle:[NSBundle mainBundle]] instantiateWithOwner:nil options:nil] lastObject];
+        break;
+      case 1:
+        view = [[[UINib nibWithNibName:@"WAEventPageView-ImageStack-1" bundle:[NSBundle mainBundle]] instantiateWithOwner:nil options:nil] lastObject];
+        break;
+      case 2:
+        view = [[[UINib nibWithNibName:@"WAEventPageView-ImageStack-2" bundle:[NSBundle mainBundle]] instantiateWithOwner:nil options:nil] lastObject];
+        break;
+      case 3:
+        view = [[[UINib nibWithNibName:@"WAEventPageView-ImageStack-3" bundle:[NSBundle mainBundle]] instantiateWithOwner:nil options:nil] lastObject];
+        break;
+      default:
+        view = [[[UINib nibWithNibName:@"WAEventPageView-ImageStack-4" bundle:[NSBundle mainBundle]] instantiateWithOwner:nil options:nil] lastObject];
+        break;
+    };
+  } else {
+    view = [[[UINib nibWithNibName:@"WAEventPageView-ImageStack-1" bundle:[NSBundle mainBundle]] instantiateWithOwner:nil options:nil] lastObject];
+  }
 
   NSParameterAssert([view.containerViews count] == 1);
   [view.containerViews[0] layer].cornerRadius = 10.0;
@@ -73,8 +82,10 @@ typedef NS_ENUM(NSInteger, WACurrentlyDisplayingImage) {
 
   if (article) {
     WAEventDescriptionView *eventDescriptionView = [WAEventDescriptionView viewFromNib];
-    eventDescriptionView.timeLabel.text = [[[self class] sharedDateFormatter] stringFromDate:article.creationDate];
-    eventDescriptionView.descriptionLabel.text = [[WAEventViewController attributedDescriptionStringForEvent:article] string];
+    eventDescriptionView.timeLabel.text = [[[self class] sharedDateFormatter] stringFromDate:article.eventStartDate];
+    [view.representingArticle irObserve:@"text" options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew context:nil withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
+      eventDescriptionView.descriptionLabel.text = [[WAEventViewController attributedDescriptionStringForEvent:article] string];
+    }];
     [view.containerViews[0] addSubview:eventDescriptionView];
     view.descriptionView = eventDescriptionView;
   }
@@ -89,38 +100,67 @@ typedef NS_ENUM(NSInteger, WACurrentlyDisplayingImage) {
 
   self.shouldDisplayImages = YES;
 
-  if ([self.representingArticle.files count] > 0) {
-    __weak WAEventPageView *wSelf = self;
-    [self.imageViews enumerateObjectsWithOptions:NSEnumerationReverse usingBlock:^(UIImageView *imageView, NSUInteger idx, BOOL *stop) {
-      if (imageView.tag == WACurrentlyDisplayingSmallThumbnailImage) {
-        return;
-      }
-      imageView.clipsToBounds = YES;
-      imageView.contentMode = UIViewContentModeScaleAspectFill;
-      WAFile *file = _representingArticle.files[idx];
-      [file setDisplayingSmallThumbnail:YES];
-      [file irRemoveObserverBlocksForKeyPath:@"smallThumbnailFilePath" context:&kWAEventPageViewKVOContext];
-      [file irObserve:@"smallThumbnailFilePath" options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew context:&kWAEventPageViewKVOContext withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
-        // the image displaying operation will be put in a LIFO queue to make UI more responsible to user
-        if (toValue) {
-	NSString *filePath = [toValue copy];
-	[wSelf insertImageDisplayOperationWithFilePath:filePath
-				       imageType:WACurrentlyDisplayingSmallThumbnailImage
-				       imageView:imageView
-			         isBackgroundImage:(idx == 0)];
-        } else {
-	// show xs thumbnail if small thumbnail does not exist
-	NSString *filePath = [file.extraSmallThumbnailFilePath copy];
-	[wSelf insertImageDisplayOperationWithFilePath:filePath
-				       imageType:WACurrentlyDisplayingExtraSmallThumbnailImage
-				       imageView:imageView
-			         isBackgroundImage:(idx == 0)];
+  if (self.representingArticle) {
+    if ([self.representingArticle.files count] > 0) {
+      __weak WAEventPageView *wSelf = self;
+      [self.imageViews enumerateObjectsWithOptions:NSEnumerationReverse usingBlock:^(UIImageView *imageView, NSUInteger idx, BOOL *stop) {
+        if (imageView.tag == WACurrentlyDisplayingSmallThumbnailImage) {
+	return;
         }
-        if (![[[wSelf class] sharedImageDisplayQueue] operationCount]) {
-	[wSelf enqueueImageDisplayOperationIfNeeded];
-        }
+        imageView.clipsToBounds = YES;
+        imageView.contentMode = UIViewContentModeScaleAspectFill;
+        WAFile *file = _representingArticle.files[idx];
+        [file setDisplayingSmallThumbnail:YES];
+        [file irRemoveObserverBlocksForKeyPath:@"smallThumbnailFilePath" context:&kWAEventPageViewKVOContext];
+        [file irObserve:@"smallThumbnailFilePath" options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew context:&kWAEventPageViewKVOContext withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
+	// the image displaying operation will be put in a LIFO queue to make UI more responsible to user
+	if (toValue) {
+	  NSString *filePath = [toValue copy];
+	  [wSelf insertImageDisplayOperationWithFilePath:filePath
+				         imageType:WACurrentlyDisplayingSmallThumbnailImage
+				         imageView:imageView
+				 isBackgroundImage:(idx == 0)];
+	} else {
+	  // show xs thumbnail if small thumbnail does not exist
+	  NSString *filePath = [file.extraSmallThumbnailFilePath copy];
+	  [wSelf insertImageDisplayOperationWithFilePath:filePath
+				         imageType:WACurrentlyDisplayingExtraSmallThumbnailImage
+				         imageView:imageView
+				 isBackgroundImage:(idx == 0)];
+	}
+	if (![[[wSelf class] sharedImageDisplayQueue] operationCount]) {
+	  [wSelf enqueueImageDisplayOperationIfNeeded];
+	}
+        }];
       }];
-    }];
+    } else {
+      if (self.representingArticle.location) {
+        if (!self.mapView) {
+	MKMapView *mapView = [[MKMapView alloc] initWithFrame:[self.containerViews[0] frame]];
+	[mapView setTranslatesAutoresizingMaskIntoConstraints:NO];
+	[self.containerViews[0] insertSubview:mapView belowSubview:self.descriptionView];
+	[self.containerViews[0] addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[mapView]|" options:NSLayoutFormatDirectionLeadingToTrailing metrics:nil views:NSDictionaryOfVariableBindings(mapView)]];
+	[self.containerViews[0] addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[mapView]|" options:NSLayoutFormatDirectionLeadingToTrailing metrics:nil views:NSDictionaryOfVariableBindings(mapView)]];
+	self.mapView = mapView;
+
+	CLLocationCoordinate2D center = {[self.representingArticle.location.latitude floatValue], [self.representingArticle.location.longitude floatValue]};
+	NSUInteger zoomLevel = 14;
+	NSMutableArray *checkins = [NSMutableArray array];
+	for (WALocation *loc in self.representingArticle.checkins) {
+	  WAAnnotation *pin = [[WAAnnotation alloc] init];
+	  CLLocationCoordinate2D checkinCenter = {[loc.latitude floatValue], [loc.longitude floatValue]};
+	  pin.coordinate = checkinCenter;
+	  if (loc.name) {
+	    pin.title = loc.name;
+	  }
+	  [checkins addObject:pin];
+	}
+	self.mapView.delegate = self;
+	[self.mapView setCenterCoordinate:center zoomLevel:zoomLevel animated:NO];
+	[self.mapView addAnnotations:checkins];
+        }
+      }
+    }
   } else {
     UIImageView *imageView = self.imageViews[0];
     imageView.clipsToBounds = YES;
@@ -144,7 +184,12 @@ typedef NS_ENUM(NSInteger, WACurrentlyDisplayingImage) {
     imageView.image = nil;
     imageView.tag = WACurrentlyNotDisplayingImage;
   }
+  
   self.blurredBackgroundImage = nil;
+  
+  [self.mapView removeFromSuperview];
+  self.mapView.delegate = nil;
+  self.mapView = nil;
 
 }
 
@@ -210,6 +255,7 @@ typedef NS_ENUM(NSInteger, WACurrentlyDisplayingImage) {
     [self.imageViews enumerateObjectsUsingBlock:^(UIImageView *imageView, NSUInteger idx, BOOL *stop) {
       [self.representingArticle.files[idx] irRemoveObserverBlocksForKeyPath:@"smallThumbnailFilePath" context:&kWAEventPageViewKVOContext];
     }];
+    [self.representingArticle irRemoveObserverBlocksForKeyPath:@"text"];
   }
   
 }
@@ -237,6 +283,17 @@ typedef NS_ENUM(NSInteger, WACurrentlyDisplayingImage) {
     noEventImage = [UIImage imageNamed:@"WASummaryNoEvent"];
   });
   return noEventImage;
+
+}
+
++ (UIImage *)sharedAnnotationImage {
+
+  static UIImage *annotationImage;
+  static dispatch_once_t onceToken;
+  dispatch_once(&onceToken, ^{
+    annotationImage = [UIImage imageNamed:@"pindrop"];
+  });
+  return annotationImage;
 
 }
 
@@ -272,6 +329,39 @@ typedef NS_ENUM(NSInteger, WACurrentlyDisplayingImage) {
   });
   return queue;
 
+}
+
+#pragma mark - MKMapView delegates
+
+- (MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id<MKAnnotation>)annotation {
+
+  static NSString *annotationIdentifier = @"EventMapView-Annotation";
+  MKAnnotationView *annView = (MKAnnotationView*)[mapView dequeueReusableAnnotationViewWithIdentifier:annotationIdentifier];
+  if (annView == nil) {
+    annView = [[MKAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:annotationIdentifier];
+  }
+  
+  annView.canShowCallout = NO;
+  annView.draggable = NO;
+  annView.image = [[self class] sharedAnnotationImage];
+  return annView;
+
+}
+
+- (void)mapViewDidFinishLoadingMap:(MKMapView *)mapView {
+  
+  __weak WAEventPageView *wSelf = self;
+
+  double delayInSeconds = 5.0;
+  dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+  dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+    UIGraphicsBeginImageContext(wSelf.mapView.frame.size);
+    [wSelf.mapView.layer renderInContext:UIGraphicsGetCurrentContext()];
+    UIImage *mapImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    wSelf.blurredBackgroundImage = mapImage;
+  });
+  
 }
 
 @end

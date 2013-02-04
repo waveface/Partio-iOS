@@ -7,9 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <MapKit/MapKit.h>
 
 @class WAArticle, WAEventDescriptionView;
-@interface WAEventPageView : UIView
+@interface WAEventPageView : UIView <MKMapViewDelegate>
 
 @property (strong, nonatomic) IBOutletCollection(UIImageView) NSArray *imageViews;
 @property (strong, nonatomic) IBOutletCollection(UIView) NSArray *containerViews;
