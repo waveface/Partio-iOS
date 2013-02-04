@@ -74,44 +74,111 @@
   
 }
 
++ (NSDateFormatter *) sharedDayStringFormatter {
+  
+  static NSDateFormatter *dateFormatter;
+  static dispatch_once_t onceToken;
+  dispatch_once(&onceToken, ^{
+    dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"dd"];
+  });
+  return dateFormatter;
+
+}
+
 - (NSString *) dayString {
   
-  NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-  [formatter setDateFormat:@"dd"];
-  return [formatter stringFromDate:self];
+  return [[[self class] sharedDayStringFormatter] stringFromDate:self];
+  
+}
+
++ (NSDateFormatter *) sharedYearStringFormatter {
+  
+  static NSDateFormatter *dateFormatter;
+  static dispatch_once_t onceToken;
+  dispatch_once(&onceToken, ^{
+    dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"yyyy"];
+  });
+  return dateFormatter;
+  
+}
+
+- (NSString *) yearString {
+
+  return [[[self class] sharedYearStringFormatter] stringFromDate:self];
+
+}
+
++ (NSDateFormatter *) sharedMonthShortStringFormatter {
+  
+  static NSDateFormatter *dateFormatter;
+  static dispatch_once_t onceToken;
+  dispatch_once(&onceToken, ^{
+    dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"MMM"];
+  });
+  return dateFormatter;
   
 }
 
 - (NSString *) localizedMonthShortString {
   
-  NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-  [formatter setDateFormat:@"MMM"];
-  return [formatter stringFromDate:self];
+  return [[[self class] sharedMonthShortStringFormatter] stringFromDate:self];
+  
+}
+
++ (NSDateFormatter *) sharedMonthFullStringFormatter {
+  
+  static NSDateFormatter *dateFormatter;
+  static dispatch_once_t onceToken;
+  dispatch_once(&onceToken, ^{
+    dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"MMMM"];
+  });
+  return dateFormatter;
   
 }
 
 - (NSString *) localizedMonthFullString {
   
-  NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-  [formatter setDateFormat:@"MMMM"];
-  return [formatter stringFromDate:self];
+  return [[[self class] sharedMonthFullStringFormatter] stringFromDate:self];
+  
+}
+
++ (NSDateFormatter *) sharedWeekDayShortStringFormatter {
+  
+  static NSDateFormatter *dateFormatter;
+  static dispatch_once_t onceToken;
+  dispatch_once(&onceToken, ^{
+    dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"EEE"];
+  });
+  return dateFormatter;
   
 }
 
 - (NSString *) localizedWeekDayShortString {
   
-  NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-  [formatter setDateFormat:@"EEE"];
-  return [formatter stringFromDate:self];
+  return [[[self class] sharedWeekDayShortStringFormatter] stringFromDate:self];
   
 }
 
++ (NSDateFormatter *) sharedWeekDayFullStringFormatter {
+  
+  static NSDateFormatter *dateFormatter;
+  static dispatch_once_t onceToken;
+  dispatch_once(&onceToken, ^{
+    dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"EEEE"];
+  });
+  return dateFormatter;
+  
+}
 
 - (NSString *) localizedWeekDayFullString {
   
-  NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-  [formatter setDateFormat:@"EEEE"];
-  return [formatter stringFromDate:self];
+  return [[[self class] sharedWeekDayFullStringFormatter] stringFromDate:self];
   
 }
 

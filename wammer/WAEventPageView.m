@@ -82,7 +82,7 @@ typedef NS_ENUM(NSInteger, WACurrentlyDisplayingImage) {
 
   if (article) {
     WAEventDescriptionView *eventDescriptionView = [WAEventDescriptionView viewFromNib];
-    eventDescriptionView.timeLabel.text = [[[self class] sharedDateFormatter] stringFromDate:article.creationDate];
+    eventDescriptionView.timeLabel.text = [[[self class] sharedDateFormatter] stringFromDate:article.eventStartDate];
     [view.representingArticle irObserve:@"text" options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew context:nil withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
       eventDescriptionView.descriptionLabel.text = [[WAEventViewController attributedDescriptionStringForEvent:article] string];
     }];
@@ -158,8 +158,6 @@ typedef NS_ENUM(NSInteger, WACurrentlyDisplayingImage) {
 	self.mapView.delegate = self;
 	[self.mapView setCenterCoordinate:center zoomLevel:zoomLevel animated:NO];
 	[self.mapView addAnnotations:checkins];
-
-	self.blurredBackgroundImage = [[self class] sharedNoEventBackgroundImage];
         }
       }
     }
@@ -348,6 +346,22 @@ typedef NS_ENUM(NSInteger, WACurrentlyDisplayingImage) {
   annView.image = [[self class] sharedAnnotationImage];
   return annView;
 
+}
+
+- (void)mapViewDidFinishLoadingMap:(MKMapView *)mapView {
+  
+  __weak WAEventPageView *wSelf = self;
+
+  double delayInSeconds = 5.0;
+  dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+  dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+    UIGraphicsBeginImageContext(wSelf.mapView.frame.size);
+    [wSelf.mapView.layer renderInContext:UIGraphicsGetCurrentContext()];
+    UIImage *mapImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    wSelf.blurredBackgroundImage = mapImage;
+  });
+  
 }
 
 @end

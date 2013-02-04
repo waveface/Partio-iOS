@@ -43,7 +43,8 @@ static NSString * kWASummaryPageViewKVOContext = @"WASummaryPageViewKVOContext";
   
   self.dayLabel.text = [date dayString];
   self.weekDayLabel.text = [date localizedWeekDayFullString];
-  self.monthLabel.text = [date localizedMonthFullString];
+  self.monthLabel.text = [date localizedMonthShortString];
+  self.yearLabel.text = [date yearString];
 
 }
 
