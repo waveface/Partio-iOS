@@ -411,7 +411,7 @@
 "PHOTO_UPLOAD_STATUS_BAR_FAIL" = "Sync failure";
 
 /* String on customized status bar */
-"PHOTO_UPLOAD_STATUS_BAR_IMPORTING" = "Scanning Camera Roll... %d/%d";
+"PHOTO_UPLOAD_STATUS_BAR_IMPORTING" = "Scanning Photos %d/%d";
 
 /* String on customized status bar */
 "PHOTO_UPLOAD_STATUS_BAR_UPLOADING" = "Importing %d photos";
