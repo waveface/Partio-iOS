@@ -170,6 +170,12 @@ extern CFAbsoluteTime StartTime;
 
 - (BOOL) application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
   
+  // Init the GAITracker first, ref: https://developers.google.com/analytics/devguides/collection/ios/v2/#initialize
+  // [GAI sharedInstance].debug = YES;
+  [GAI sharedInstance].dispatchInterval = 120;
+  [GAI sharedInstance].trackUncaughtExceptions = YES;
+  self.tracker = [[GAI sharedInstance] trackerWithTrackingId:kTrackingId];
+
   [self bootstrap];
   
   WADefaultAppearance();
@@ -203,11 +209,6 @@ extern CFAbsoluteTime StartTime;
     [self recreateViewHierarchy];
     
   }
-  
-  //	[GAI sharedInstance].debug = YES;
-  [GAI sharedInstance].dispatchInterval = 120;
-  [GAI sharedInstance].trackUncaughtExceptions = YES;
-  self.tracker = [[GAI sharedInstance] trackerWithTrackingId:kTrackingId];
   
   [self.tracker trackEventWithCategory:@"Application:didFinishLaunchingWithOptions:"
 		        withAction:@"App Launched"
