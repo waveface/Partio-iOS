@@ -527,7 +527,7 @@
         <scene sceneID="2Dn-Xn-fS8">
             <objects>
                 <tableViewController id="ygb-5O-Zgw" userLabel="Plan Choose View Controller" customClass="WADataPlanViewController" sceneMemberID="viewController">
-                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="singleLineEtched" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="2nW-3m-tAZ">
+                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="singleLineEtched" allowsSelection="NO" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="2nW-3m-tAZ">
                         <rect key="frame" x="0.0" y="64" width="320" height="416"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="0.95686274510000002" green="0.95686274510000002" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
@@ -845,7 +845,6 @@
         <class className="WAUserDetailViewController" superclassName="UITableViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/WAUserDetailViewController.h"/>
             <relationships>
-                <relationship kind="action" name="doneButtonTapped:"/>
                 <relationship kind="outlet" name="accountDeleteionTableCell" candidateClass="UITableViewCell"/>
                 <relationship kind="outlet" name="userEmailTableCell" candidateClass="UITableViewCell"/>
                 <relationship kind="outlet" name="userEmailTextField" candidateClass="UITextField"/>
