@@ -48,24 +48,6 @@
     
     self.currentDate = date;
     
-    NSManagedObjectContext *context = [[WADataStore defaultStore] defaultAutoUpdatedMOC];
-    NSFetchRequest *request = [[self class] fetchRequestForFileAccessLogsOnDate:self.currentDate];
-    
-    self.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:request managedObjectContext:context sectionNameKeyPath:nil cacheName:nil];
-    
-    self.fetchedResultsController.delegate = self;
-    
-    [self.fetchedResultsController performFetch:nil];
-    
-    self.documents = [NSMutableArray array];
-    NSMutableDictionary *filePathAccessLogs = [NSMutableDictionary dictionary];
-    [self.fetchedResultsController.fetchedObjects enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-      WAFileAccessLog *accessLog = (WAFileAccessLog *)obj;
-      if (!filePathAccessLogs[accessLog.filePath]) {
-        filePathAccessLogs[accessLog.filePath] = accessLog;
-        [self.documents addObject:accessLog.file];
-      }
-    }];
     
   }
   return self;
@@ -81,6 +63,44 @@
         forSupplementaryViewOfKind:UICollectionElementKindSectionHeader
 	     withReuseIdentifier:kWADayHeaderViewID];
   
+}
+
+- (void) viewControllerInitialAppeareadOnDayView {
+  
+  if (self.fetchedResultsController)
+	return; // data already fetched
+  
+  __weak WADocumentStreamViewController *wSelf = self;
+  dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+	NSManagedObjectContext *context = [[WADataStore defaultStore] defaultAutoUpdatedMOC];
+	NSFetchRequest *request = [[wSelf class] fetchRequestForFileAccessLogsOnDate:wSelf.currentDate];
+  
+	wSelf.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:request managedObjectContext:context sectionNameKeyPath:nil cacheName:nil];
+	
+	wSelf.fetchedResultsController.delegate = wSelf;
+	
+	[wSelf.fetchedResultsController performFetch:nil];
+  
+	wSelf.documents = [NSMutableArray array];
+	NSMutableDictionary *filePathAccessLogs = [NSMutableDictionary dictionary];
+	[wSelf.fetchedResultsController.fetchedObjects enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+	  WAFileAccessLog *accessLog = (WAFileAccessLog *)obj;
+	  if (!filePathAccessLogs[accessLog.filePath]) {
+		filePathAccessLogs[accessLog.filePath] = accessLog;
+		[wSelf.documents addObject:accessLog.file];
+	  }
+	}];
+	
+	double delayInSeconds = .2f;
+	dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+	dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+	
+	  [wSelf.collectionView reloadData];
+	  
+	});
+	
+  });
+
 }
 
 - (NSUInteger) supportedInterfaceOrientations {

@@ -37,14 +37,14 @@
 		}
 	};
 	
-	[self.connectionForWebSocket.commandHandlerMap setObject:notifyHandler forKey:@"notify"];
+	[[[self class] sharedWebSocket].commandHandlerMap setObject:notifyHandler forKey:@"notify"];
 	
 	NSDictionary *arguments = [[NSDictionary alloc]
 														 initWithObjectsAndKeys: @"value", @"key", nil];
 	
 	NSString *rawData = composeWSJSONCommand(@"subscribe", arguments);
 	if (rawData) {
-		[self.connectionForWebSocket send:rawData];
+		[[[self class] sharedWebSocket] send:rawData];
 	}
 }
 

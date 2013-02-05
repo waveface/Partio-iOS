@@ -20,6 +20,8 @@
   NSArray *colorPalette;
   NSArray *daysOfPhotos;
   NSDate *onDate;
+  NSArray * layoutPartitionsOfThreeRows;
+  NSArray * layoutPartitionsOfFourRows;
 }
 
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
@@ -45,13 +47,52 @@
   self = [super init];
   if (self) {
     onDate = aDate;
-    NSPredicate *allFromToday = [NSPredicate predicateWithFormat:@"created BETWEEN {%@, %@}", [aDate dayBegin], [aDate dayEnd]];
-    NSMutableArray *unsortedPhotos = [[WAFile MR_findAllWithPredicate:allFromToday inContext:[[WADataStore defaultStore] defaultAutoUpdatedMOC]] mutableCopy];
-    NSSortDescriptor *sortByTime = [[NSSortDescriptor alloc] initWithKey:@"timestamp" ascending:NO];
-    [unsortedPhotos sortUsingDescriptors:@[sortByTime]];
-    _photos = unsortedPhotos;
+	_photos = @[];
+	
+	layoutPartitionsOfThreeRows = @[
+								 @[@1,@1,@1],@[@1,@2],
+		 @[@2,@1],
+		 @[@3]
+		 ];
+	
+	layoutPartitionsOfFourRows = @[
+								@[@1,@1,@1,@1],
+		@[@1,@2,@1],
+		@[@1,@1,@2],
+		@[@1,@3],
+		@[@3,@1]
+		];
   }
   return self;
+}
+
+- (void)viewControllerInitialAppeareadOnDayView {
+  
+  __weak WAPhotoStreamViewController *wSelf = self;
+  
+  if (![_photos count]) {
+	dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+	
+	  NSPredicate *allFromToday = [NSPredicate predicateWithFormat:@"created BETWEEN {%@, %@}", [onDate dayBegin], [onDate dayEnd]];
+	  NSMutableArray *unsortedPhotos = [[WAFile MR_findAllWithPredicate:allFromToday inContext:[[WADataStore defaultStore] defaultAutoUpdatedMOC]] mutableCopy];
+	  NSSortDescriptor *sortByTime = [[NSSortDescriptor alloc] initWithKey:@"timestamp" ascending:NO];
+	  [unsortedPhotos sortUsingDescriptors:@[sortByTime]];
+	  _photos = unsortedPhotos;
+	  
+	  double delayInSeconds = .2f;
+	  dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+	  dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+				
+		if (isPad())
+		  [wSelf reloadLayout:layoutPartitionsOfFourRows];
+		else
+		  [wSelf reloadLayout:layoutPartitionsOfThreeRows];
+		[wSelf.collectionView reloadData];
+		
+	  });
+	});
+  }
+  
 }
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -102,25 +143,11 @@
                    ];
   
   self.collectionView.backgroundColor = [UIColor colorWithWhite:0.16f alpha:1.0f];
-  
-  NSArray *partitionOfThree = @[
-                                @[@1,@1,@1],@[@1,@2],
-                                @[@2,@1],
-                                @[@3]
-                                ];
-  
-  NSArray *partitionOfFour = @[
-                               @[@1,@1,@1,@1],
-                               @[@1,@2,@1],
-                               @[@1,@1,@2],
-                               @[@1,@3],
-                               @[@3,@1]
-                               ];
-  
+    
   if (isPad())
-    [self reloadLayout:partitionOfFour];
+    [self reloadLayout:layoutPartitionsOfFourRows];
   else
-    [self reloadLayout:partitionOfThree];
+    [self reloadLayout:layoutPartitionsOfThreeRows];
 }
 
 - (void)viewWillAppear:(BOOL)animated {

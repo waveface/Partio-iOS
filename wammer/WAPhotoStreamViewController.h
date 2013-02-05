@@ -7,14 +7,16 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "WADayViewController.h"
 #import "IIViewDeckController.h"
 
-@interface WAPhotoStreamViewController : UIViewController <UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UIGestureRecognizerDelegate>
+@interface WAPhotoStreamViewController : UIViewController <WADayViewController,UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UIGestureRecognizerDelegate>
 
 @property (nonatomic, weak) id delegate;
 
 + (NSFetchRequest *)fetchRequestForPhotosOnDate:(NSDate *)date;
 
+- (void)viewControllerInitialAppeareadOnDayView;
 - (id) initWithDate:(NSDate *) aDate;
 
 @end

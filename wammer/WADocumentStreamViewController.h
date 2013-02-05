@@ -1,3 +1,4 @@
+
 //
 //  WADocumentStreamViewController.h
 //  wammer
@@ -7,14 +8,15 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "WADayViewController.h"
 #import "WAFile.h"
 
-@interface WADocumentStreamViewController : UIViewController <UICollectionViewDelegate, UICollectionViewDataSource,  NSFetchedResultsControllerDelegate>
+@interface WADocumentStreamViewController : UIViewController <WADayViewController, UICollectionViewDelegate, UICollectionViewDataSource,  NSFetchedResultsControllerDelegate>
 
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 
 + (NSFetchRequest *)fetchRequestForFileAccessLogsOnDate:(NSDate *)date;
-
 - (id)initWithDate:(NSDate *)date;
+- (void)viewControllerInitialAppeareadOnDayView;
 
 @end

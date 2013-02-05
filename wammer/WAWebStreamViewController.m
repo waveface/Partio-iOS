@@ -49,30 +49,9 @@
 		
     self.currentDate = [date dayBegin];
 		
-    NSManagedObjectContext *context = [[WADataStore defaultStore] defaultAutoUpdatedMOC];
-    NSFetchRequest *fr = [[self class] fetchRequestForWebpageAccessLogsOnDate:self.currentDate];
 
-    self.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fr managedObjectContext:context sectionNameKeyPath:nil cacheName:nil];
-    self.fetchedResultsController.delegate = self;
 		
-    NSError *fetchingError;
-    if (![self.fetchedResultsController performFetch:&fetchingError]) {
-      NSLog(@"error fetching: %@", fetchingError);
-    } else {
-			
-      NSMutableDictionary *dict = [NSMutableDictionary dictionary];
-	  self.webPages = [NSMutableArray array];
-      for (WAFileAccessLog *log in self.fetchedResultsController.fetchedObjects) {
-        if (![dict objectForKey:log.file.identifier]) {
-					
-		  dict[log.file.identifier] = log;
-		  [self.webPages addObject:log];
-					
-        }
-      }
-			
-    }
-
+	self.webPages = [NSMutableArray array];
   }
 	
   return self;
@@ -101,6 +80,49 @@
 	
   [self.collectionView registerNib:[UINib nibWithNibName:@"WAWebStreamViewCell" bundle:nil] forCellWithReuseIdentifier:@"WAWebStreamViewCell"];
   [self.collectionView registerNib:[UINib nibWithNibName:@"WADayHeaderView" bundle:nil] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"WADayHeaderView"];
+  
+}
+
+- (void)viewControllerInitialAppeareadOnDayView {
+  __weak WAWebStreamViewController *wSelf = self;
+  
+  if (self.fetchedResultsController)
+	return;
+  
+  dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+
+	NSManagedObjectContext *context = [[WADataStore defaultStore] defaultAutoUpdatedMOC];
+    NSFetchRequest *fr = [[wSelf class] fetchRequestForWebpageAccessLogsOnDate:self.currentDate];
+
+	wSelf.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fr managedObjectContext:context sectionNameKeyPath:nil cacheName:nil];
+    wSelf.fetchedResultsController.delegate = wSelf;
+
+	NSError *fetchingError;
+    if (![wSelf.fetchedResultsController performFetch:&fetchingError]) {
+      NSLog(@"error fetching: %@", fetchingError);
+    } else {
+	  
+      NSMutableDictionary *dict = [NSMutableDictionary dictionary];
+	  wSelf.webPages = [NSMutableArray array];
+      for (WAFileAccessLog *log in wSelf.fetchedResultsController.fetchedObjects) {
+        if (![dict objectForKey:log.file.identifier]) {
+		  
+		  dict[log.file.identifier] = log;
+		  [wSelf.webPages addObject:log];
+		  
+        }
+      }
+
+	  double delayInSeconds = .2f;
+	  dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+	  dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+		
+		[wSelf.collectionView reloadData];
+		
+	  });
+    }
+	
+  });
 
 }
 

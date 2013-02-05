@@ -15,14 +15,29 @@
 static NSString * const kConnectionForWebSocket = @"kConnectionForWebSocket";
 
 @implementation WARemoteInterface (WebSocket)
-@dynamic connectionForWebSocket;
 
++ (WAWebSocket *)sharedWebSocket {
+  
+  static WAWebSocket *socket = nil;
+  static dispatch_once_t onceToken;
+  dispatch_once(&onceToken, ^{
+	socket = [[WAWebSocket alloc] init];
+  });
+  
+  WARemoteInterface *ri = [WARemoteInterface sharedInterface];
+  socket.apiKey = ri.apiKey;
+  socket.userIdentifier = ri.userIdentifier;
+  socket.userToken = ri.userToken;
+  
+  return socket;
+  
+}
 
 - (void) openWebSocketConnectionForUrl:(NSURL *)anURL onSucces:(WAWebSocketConnectCallback)successBlock onFailure:(WAWebSocketConnectFailure)failureBlock {
+
+  WAWebSocket *socket = [[self class] sharedWebSocket];
   
-  self.connectionForWebSocket = [[WAWebSocket alloc] initWithUrl:anURL apikey:self.apiKey usertoken:self.userToken userIdentifier:self.userIdentifier];
-  
-  [self.connectionForWebSocket openConnectionOnSucces:successBlock onFailure:failureBlock];
+  [socket openConnectionToUrl:anURL onSucces:successBlock onFailure:failureBlock];
   
 }
 
@@ -35,7 +50,8 @@ static NSString * const kConnectionForWebSocket = @"kConnectionForWebSocket";
   
   WAStation *station = allStations[0];
   
-  if (self.connectionForWebSocket == nil || self.connectionForWebSocket.webSocketState == WAWebSocketClosed) {
+  WAWebSocket *currentSocket = [[self class] sharedWebSocket];
+  if (currentSocket.webSocketState == WAWebSocketClosed) {
     
     // Station will clean its ws_location field when it is suspended,
     // so we don't have to connect to the suspended station.
@@ -69,28 +85,15 @@ static NSString * const kConnectionForWebSocket = @"kConnectionForWebSocket";
 }
 
 - (void) closeWebSocketConnection {
-  
-  [self.connectionForWebSocket closeConnectionWithCode:WAWebSocketNormal andReason:@""];
+
+  WAWebSocket *socket = [[self class] sharedWebSocket];
+  [socket closeConnectionWithCode:WAWebSocketNormal andReason:@""];
   
 }
 
 - (BOOL) webSocketConnected {
-  return self.connectionForWebSocket.webSocketConnected;
+  WAWebSocket *socket = [[self class] sharedWebSocket];
+  return socket.webSocketConnected;
 }
-
-
-#pragma mark - setters and getters for properties
-- (WAWebSocket *) connectionForWebSocket {
-  
-  return (WAWebSocket*)objc_getAssociatedObject(self, &kConnectionForWebSocket);
-  
-}
-
-- (void) setConnectionForWebSocket:(WAWebSocket *)connectionForWebSocket {
-  
-  objc_setAssociatedObject(self, &kConnectionForWebSocket, connectionForWebSocket, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-  
-}
-
 
 @end
