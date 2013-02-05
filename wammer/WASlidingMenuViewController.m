@@ -308,6 +308,7 @@ static NSString * kWASlidingMenuViewControllerKVOContext = @"WASlidingMenuViewCo
       cell.imageView.image = [UIImage imageNamed:@"EventsIcon"];
       cell.textLabel.text = NSLocalizedString(@"SLIDING_MENU_TITLE_MYDAYS", @"Title for MyDays in the sliding menu");
 	  
+      /*
 	  if (!self.calendarButton) {
 		UIImage *calIcon = [UIImage imageNamed:@"Cal"];
 		UIButton *calButton = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -320,6 +321,7 @@ static NSString * kWASlidingMenuViewControllerKVOContext = @"WASlidingMenuViewCo
 	  } else {
 		[cell addSubview:self.calendarButton];
 	  }
+       */
 	  
 	  break;
 	}
@@ -468,7 +470,7 @@ static NSString * kWASlidingMenuViewControllerKVOContext = @"WASlidingMenuViewCo
 }
 
 - (void) calButtonTapped:(id)sender {
-  
+  /*
   if (isPad()) {
 	
 	CGRect frame = CGRectMake(0, 0, 320, 370);
@@ -503,6 +505,7 @@ static NSString * kWASlidingMenuViewControllerKVOContext = @"WASlidingMenuViewCo
 	[self.viewDeckController addChildViewController:calendarPopup];
 	[self.viewDeckController.view addSubview:calendarPopup.view];
   }
+   */
 }
 
 -(void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController {

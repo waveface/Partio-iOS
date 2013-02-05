@@ -26,6 +26,7 @@
 #import "WADocumentDay.h"
 #import "WAWebpageDay.h"
 #import "WAFileAccessLog.h"
+#import "WACalendarPopupViewController_phone.h"
 
 static NSInteger const DEFAULT_SUMMARY_PAGING_SIZE = 20;
 static NSInteger const DEFAULT_EVENT_IMAGE_PAGING_SIZE = 3;
@@ -80,6 +81,9 @@ static NSInteger const DEFAULT_EVENT_IMAGE_PAGING_SIZE = 3;
   __weak WASummaryViewController *wSelf = self;
   self.navigationItem.leftBarButtonItem = WABarButtonItem([UIImage imageNamed:@"menu"], @"", ^{
     [wSelf.viewDeckController toggleLeftView];
+  });
+  self.navigationItem.rightBarButtonItem = WABarButtonItem([UIImage imageNamed:@"Cal"], @"", ^{
+    [wSelf calButtonPressed];
   });
   
   UIColor *naviBgColor = [[UIColor clearColor] colorWithAlphaComponent:0];
@@ -161,8 +165,31 @@ static NSInteger const DEFAULT_EVENT_IMAGE_PAGING_SIZE = 3;
 
   NSParameterAssert([NSThread isMainThread]);
   
-  // adjust frames of all summary and event pages
+  // reconstruct event indexes of all day summaries
   __weak WASummaryViewController *wSelf = self;
+  NSArray *sortedDaySummaries = [[self.daySummaries allValues] sortedArrayUsingComparator:^NSComparisonResult(WADaySummary *daySummary1, WADaySummary *daySummary2) {
+    return [@(daySummary1.summaryIndex) compare:@(daySummary2.summaryIndex)];
+  }];
+  __block NSInteger positiveIndexCount = 0;
+  [sortedDaySummaries enumerateObjectsUsingBlock:^(WADaySummary *daySummary, NSUInteger idx, BOOL *stop) {
+    if (daySummary.eventIndex >= 0) {
+      daySummary.eventIndex = positiveIndexCount;
+      for (WAEventPageView *eventPage in daySummary.eventPages) {
+        positiveIndexCount += 1;
+      }
+    }
+  }];
+  __block NSInteger negativeIndexCount = 0;
+  [sortedDaySummaries enumerateObjectsWithOptions:NSEnumerationReverse usingBlock:^(WADaySummary *daySummary, NSUInteger idx, BOOL *stop) {
+    if (daySummary.eventIndex < 0) {
+      for (WAEventPageView *eventPage in daySummary.eventPages) {
+        negativeIndexCount -= 1;
+      }
+      daySummary.eventIndex = negativeIndexCount;
+    }
+  }];
+
+  // adjust frames of all summary and event pages
   [self.daySummaries enumerateKeysAndObjectsUsingBlock:^(id key, WADaySummary *daySummary, BOOL *stop) {
     [daySummary.eventPages enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
       CGRect frame = wSelf.eventScrollView.frame;
@@ -472,15 +499,6 @@ static NSInteger const DEFAULT_EVENT_IMAGE_PAGING_SIZE = 3;
 - (void)insertDaySummary:(WADaySummary *)daySummary atIndex:(NSInteger)idx {
   
   daySummary.summaryIndex = idx;
-  if (idx > 0) {
-    NSAssert(self.daySummaries[@(idx-1)], @"previous day summary should exist");
-    daySummary.eventIndex = [self.daySummaries[@(idx-1)] eventIndex] + [[self.daySummaries[@(idx-1)] eventPages] count];
-  } else if (idx < 0) {
-    NSAssert(self.daySummaries[@(idx+1)], @"previous day summary should exist");
-    daySummary.eventIndex = [self.daySummaries[@(idx+1)] eventIndex] - [daySummary.eventPages count];
-  } else {
-    daySummary.eventIndex = 0;
-  }
 
   self.daySummaries[@(idx)] = daySummary;
 
@@ -517,6 +535,31 @@ static NSInteger const DEFAULT_EVENT_IMAGE_PAGING_SIZE = 3;
 }
 
 #pragma mark - Target actions
+
+- (void)calButtonPressed {
+
+  if (isPad()) {
+    
+    // NO OP
+
+  } else {
+    
+    __block WACalendarPopupViewController_phone *calendarPopup = [[WACalendarPopupViewController_phone alloc] initWithDate:self.currentDaySummary.date viewStyle:WAEventsViewStyle completion:^{
+      
+      [calendarPopup willMoveToParentViewController:nil];
+      [calendarPopup removeFromParentViewController];
+      [calendarPopup.view removeFromSuperview];
+      [calendarPopup didMoveToParentViewController:nil];
+      calendarPopup = nil;
+      
+    }];
+    
+    [self.viewDeckController addChildViewController:calendarPopup];
+    [self.viewDeckController.view addSubview:calendarPopup.view];
+
+  }
+
+}
 
 - (void)contextMenuTapped {
 

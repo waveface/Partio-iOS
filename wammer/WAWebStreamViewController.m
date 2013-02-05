@@ -16,7 +16,7 @@
 #import "WANavigationController.h"
 #import "WAWebPreviewViewController.h"
 #import "WAAppearance.h"
-#import "WACalendarPickerViewController.h"
+#import "WACalendarPopupViewController_phone.h"
 
 @interface WAWebStreamViewController () <NSFetchedResultsControllerDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout>
 
@@ -307,7 +307,7 @@ CGFloat (^rowSpacingWeb) (UICollectionView *) = ^ (UICollectionView *collectionV
   headerView.wdayLabel.text = [[self.currentDate localizedWeekDayFullString] uppercaseString];
   headerView.backgroundColor = [UIColor colorWithRed:0.95f green:0.95f blue:0.95f alpha:1];
 	
-//	[headerView.centerButton addTarget:self action:@selector(handleDateSelect:) forControlEvents:UIControlEventTouchUpInside];
+  [headerView.centerButton addTarget:self action:@selector(handleDateSelect:) forControlEvents:UIControlEventTouchUpInside];
   [headerView setNeedsLayout];
   return headerView;
 	
@@ -359,7 +359,32 @@ CGFloat (^rowSpacingWeb) (UICollectionView *) = ^ (UICollectionView *collectionV
 	
 }
 
+#pragma mark - Target actions
 
+- (void) handleDateSelect:(id)sender {
+
+  if (isPad()) {
+    
+    // NO OP
+    
+  } else {
+    
+    __block WACalendarPopupViewController_phone *calendarPopup = [[WACalendarPopupViewController_phone alloc] initWithDate:self.currentDate viewStyle:WAWebpagesViewStyle completion:^{
+      
+      [calendarPopup willMoveToParentViewController:nil];
+      [calendarPopup removeFromParentViewController];
+      [calendarPopup.view removeFromSuperview];
+      [calendarPopup didMoveToParentViewController:nil];
+      calendarPopup = nil;
+      
+    }];
+    
+    [self.viewDeckController addChildViewController:calendarPopup];
+    [self.viewDeckController.view addSubview:calendarPopup.view];
+    
+  }
+
+}
 
 
 @end
