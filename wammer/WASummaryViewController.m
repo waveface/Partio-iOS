@@ -79,7 +79,7 @@ static NSInteger const DEFAULT_EVENT_IMAGE_PAGING_SIZE = 3;
   self.backgroundImageView.clipsToBounds = YES;
   
   __weak WASummaryViewController *wSelf = self;
-  self.navigationItem.leftBarButtonItem = WABarButtonItem([UIImage imageNamed:@"menu"], @"", ^{
+  self.navigationItem.leftBarButtonItem = WABarButtonItem([UIImage imageNamed:@"menuWhite"], @"", ^{
     [wSelf.viewDeckController toggleLeftView];
   });
   self.navigationItem.rightBarButtonItem = WABarButtonItem([UIImage imageNamed:@"Cal"], @"", ^{
@@ -127,8 +127,10 @@ static NSInteger const DEFAULT_EVENT_IMAGE_PAGING_SIZE = 3;
   
   // Set scrollView's contentSize only works here if auto-layout is enabled
   // Ref: http://stackoverflow.com/questions/12619786/embed-imageview-in-scrollview-with-auto-layout-on-ios-6
-  [self resetContentSize];
-  
+  if (self.summaryScrollView.contentSize.width == 0) {
+    [self resetContentSize];
+  }
+
 }
 
 - (NSUInteger) supportedInterfaceOrientations {
@@ -760,7 +762,7 @@ static NSInteger const DEFAULT_EVENT_IMAGE_PAGING_SIZE = 3;
         WADaySummary *daySummary = self.daySummaries[@([self indexOfDay:[article.eventStartDate dayBegin]])];
         if (daySummary) {
 	[self.changedDaySummaries addObject:daySummary];
-	NSLog(@"article on date %@ updated", daySummary.date);
+//	NSLog(@"article on date %@ updated", daySummary.date);
         }
       }
       break;

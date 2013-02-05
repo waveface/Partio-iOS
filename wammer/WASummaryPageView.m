@@ -150,7 +150,7 @@ static NSString * kWASummaryPageViewKVOContext = @"WASummaryPageViewKVOContext";
   static UIImage *webIcon;
   static dispatch_once_t onceToken;
   dispatch_once(&onceToken, ^{
-    webIcon = [UIImage imageNamed:@"Webicon"];
+    webIcon = [UIImage imageNamed:@"WebIcon"];
   });
   return webIcon;
 
