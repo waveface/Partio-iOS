@@ -51,6 +51,8 @@ extern NSString * composeWSJSONCommand (NSString* command, NSDictionary* argumen
 
 @property (nonatomic, strong) SRWebSocket *connectionForWebSocket;
 
+- (id) init;
+
 /**
  * Init a WAWebSocket instance with specified parameters 
  * @param theApiKey Waveface Stream device APIKey

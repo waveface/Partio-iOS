@@ -21,9 +21,14 @@ static NSString * const kConnectionForWebSocket = @"kConnectionForWebSocket";
   static WAWebSocket *socket = nil;
   static dispatch_once_t onceToken;
   dispatch_once(&onceToken, ^{
-	WARemoteInterface *ri = [WARemoteInterface sharedInterface];
-	socket = [[WAWebSocket alloc] initWithApikey:ri.apiKey usertoken:ri.userToken userIdentifier:ri.userIdentifier];
+	socket = [[WAWebSocket alloc] init];
   });
+  
+  WARemoteInterface *ri = [WARemoteInterface sharedInterface];
+  socket.apiKey = ri.apiKey;
+  socket.userIdentifier = ri.userIdentifier;
+  socket.userToken = ri.userToken;
+  
   return socket;
   
 }

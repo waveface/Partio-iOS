@@ -42,6 +42,7 @@ NSError * WARemoteInterfaceWebSocketError (NSUInteger code, NSString *message);
 
 - (id) initWithApikey:(NSString*)theApiKey usertoken:(NSString*)theUserToken userIdentifier:(NSString*)theUserIdentifier {
   self = [super init];
+  
   self.userIdentifier = theUserIdentifier;
   self.userToken = theUserToken;
   self.apiKey = theApiKey;
@@ -52,10 +53,41 @@ NSError * WARemoteInterfaceWebSocketError (NSUInteger code, NSString *message);
   return self;
 }
 
+- (id) init {
+  self  = [super init];
+  
+  connectRetryCounting = kReconnectRetryMaxCounting;
+  stopped = NO;
+  
+  return self;
+}
+
+- (void) setApiKey:(NSString*)newApiKey {
+  if ([newApiKey isEqual:_apiKey])
+	return;
+  
+  _apiKey = newApiKey;
+}
+
+- (void) setUserToken:(NSString*)newUserToken {
+  if ([newUserToken isEqual: _userToken])
+	return;
+  
+  _userToken = newUserToken;
+}
+
+- (void) setUserIdentifier:(NSString*)newUserIdentifier {
+
+  if ([newUserIdentifier isEqual:_userIdentifier])
+	return;
+  _userIdentifier = newUserIdentifier;
+}
 
 - (void) openConnectionToUrl:(NSURL*)anURL onSucces:(WAWebSocketConnectCallback)successBlock onFailure:(WAWebSocketConnectFailure)failureBlock {
   self.successHandler = successBlock;
   self.failureHandler = failureBlock;
+  
+  NSParameterAssert(anURL);
   
   connectRetryCounting = kReconnectRetryMaxCounting;
   stopped = NO;
@@ -247,6 +279,11 @@ NSError * WARemoteInterfaceWebSocketError (NSUInteger code, NSString *message) {
 }
 
 - (void) webSocketDidOpen:(SRWebSocket *)webSocket {
+
+  NSParameterAssert([self.apiKey length] != 0);
+  NSParameterAssert([self.userToken length] != 0);
+  NSParameterAssert([self.userIdentifier length] != 0);
+  
   NSDictionary *arguments = [[NSDictionary alloc] initWithObjectsAndKeys: self.apiKey, @"apikey",
 							 self.userToken, @"session_token",
 							 self.userIdentifier, @"user_id", nil ];
