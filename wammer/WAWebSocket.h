@@ -52,21 +52,19 @@ extern NSString * composeWSJSONCommand (NSString* command, NSDictionary* argumen
 @property (nonatomic, strong) SRWebSocket *connectionForWebSocket;
 
 /**
- * Init a WAWebSocket instance with specified parameters
- 
- * @param anURL a ws URL to connect to 
+ * Init a WAWebSocket instance with specified parameters 
  * @param theApiKey Waveface Stream device APIKey
  * @param theUserToken Waveface Stream authentication session token
  * @param theUserIdentifier Waveface Stream user identity
  */
-- (id) initWithUrl:(NSURL*) anURL apikey:(NSString*)theApiKey usertoken:(NSString*)theUserToken userIdentifier:(NSString*)theUserIdentifier;
+- (id) initWithApikey:(NSString*)theApiKey usertoken:(NSString*)theUserToken userIdentifier:(NSString*)theUserIdentifier;
 
 /**
  * Open the websocket connection.
  * @param successBlock the completion block which will be executed while connection is setup.
  * @param failureBlock the completion block which will be executed if the connection is unable to be setup
  */
-- (void) openConnectionOnSucces:(WAWebSocketConnectCallback)successBlock onFailure:(WAWebSocketConnectFailure)failureBlock;
+- (void) openConnectionToUrl:(NSURL*)anURL onSucces:(WAWebSocketConnectCallback)successBlock onFailure:(WAWebSocketConnectFailure)failureBlock;
 
 /**
  * Close the connection with specified code and reason

@@ -49,9 +49,6 @@
 [submodule "external/ViewDeck"]
 	path = external/ViewDeck
 	url = git://github.com/syshen/ViewDeck.git
-[submodule "external/SocketRocket"]
-	path = external/SocketRocket
-	url = https://github.com/waveface/SocketRocket
 [submodule "external/AQGridView"]
 	path = external/AQGridView
 	url = https://github.com/waveface/AQGridView
@@ -61,3 +58,6 @@
 [submodule "external/TWReverseAuth"]
 	path = external/TWReverseAuth
 url=git@github.com:waveface/TWReverseAuthExample.git
+[submodule "external/SocketRocket"]
+	path = external/SocketRocket
+	url = git://github.com/square/SocketRocket.git

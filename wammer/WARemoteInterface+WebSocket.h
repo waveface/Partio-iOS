@@ -15,12 +15,11 @@
 @class WAStation;
 @interface WARemoteInterface (WebSocket)
 
-/// A websocket instance
-@property (nonatomic, strong) WAWebSocket *connectionForWebSocket;
-
 /// @return YES if websocket is connected, NO if not.
 @property (nonatomic, readonly) BOOL webSocketConnected;
 
+
++ (WAWebSocket*)sharedWebSocket;
 - (void) connectAvaliableWSStation:(NSArray *)allStations onSuccess:(void(^)(WAStation *station))successBlock onFailure:(WAWebSocketConnectFailure)failureBlock;
 
 /**
