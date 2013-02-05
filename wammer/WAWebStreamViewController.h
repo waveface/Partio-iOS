@@ -7,11 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "WADayViewController.h"
 
-@interface WAWebStreamViewController : UIViewController
+@interface WAWebStreamViewController : UIViewController <WADayViewController>
 
 + (NSFetchRequest *)fetchRequestForWebpageAccessLogsOnDate:(NSDate *)date;
 
 - (id)initWithDate:(NSDate *)date;
+- (void)viewControllerInitialAppeareadOnDayView;
 
 @end

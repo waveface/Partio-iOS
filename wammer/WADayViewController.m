@@ -97,6 +97,7 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 	[self.navigationController setToolbarHidden:YES];
 	self.view.backgroundColor = [UIColor whiteColor];
 	self.paginatedView = [[IRPaginatedView alloc] initWithFrame:rect];
+  self.paginatedView.numberOfEnsuringPages = 10;
 	self.paginatedView.delegate = self;
 	self.paginatedView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
   self.navigationItem.titleView = [WAContextMenuViewController titleViewForContextMenu:presentingStyle
@@ -247,6 +248,10 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 		[self.paginatedView reloadViews];
 
 	}
+  
+  UIViewController *viewController = [self controllerAtPageIndex:index];
+  if ([viewController respondsToSelector:@selector(viewControllerInitialAppeareadOnDayView)])
+	[viewController performSelector:@selector(viewControllerInitialAppeareadOnDayView)];
 	
 }
 

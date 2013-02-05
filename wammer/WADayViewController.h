@@ -17,14 +17,24 @@ typedef NS_ENUM(NSUInteger, WADayViewSupportedStyle) {
 	WADocumentsViewStyle,
 };
 
-@protocol WADayViewControllerDelegate <NSObject>
+@protocol WADaysControlling <NSObject>
 
 - (void)jumpToRecentDay;
 - (BOOL)jumpToDate:(NSDate*)date animated:(BOOL)animated;
 
 @end
 
-@interface WADayViewController : UIViewController <WADayViewControllerDelegate, IRPaginatedViewDelegate, IIViewDeckControllerDelegate>
+@protocol WADayViewController <NSObject>
+
+@required
+- (id) initWithDate:(NSDate *) aDate;
+
+@optional
+- (void)viewControllerInitialAppeareadOnDayView;
+
+@end
+
+@interface WADayViewController : UIViewController <WADaysControlling, IRPaginatedViewDelegate, IIViewDeckControllerDelegate>
 
 - (id)initWithStyle: (WADayViewSupportedStyle)style;
 
