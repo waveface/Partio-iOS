@@ -8,9 +8,10 @@
 
 #import <UIKit/UIKit.h>
 #import "WACalendarPickerViewController.h"
+#import "WADayViewController.h"
 
 @interface WACalendarPopupViewController_phone : UIViewController
 
-- (id) initWithCompletion:(void(^)(void))completion;
+- (id) initWithDate:(NSDate *)aDate viewStyle:(WADayViewSupportedStyle)viewStyle completion:(void(^)(void))completion;
 
 @end

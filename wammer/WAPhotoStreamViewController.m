@@ -14,7 +14,7 @@
 #import "NSDate+WAAdditions.h"
 #import "WADayHeaderView.h"
 #import "WAGalleryViewController.h"
-#import "WACalendarPickerViewController.h"
+#import "WACalendarPopupViewController_phone.h"
 
 @interface WAPhotoStreamViewController (){
   NSArray *colorPalette;
@@ -200,6 +200,8 @@
   headerView.monthLabel.textColor =[UIColor colorWithWhite:0.53 alpha:1.0f];
   headerView.wdayLabel.textColor = [UIColor colorWithWhite:0.53 alpha:1.0f];
   
+  [headerView.centerButton addTarget:self action:@selector(handleDateSelect:) forControlEvents:UIControlEventTouchUpInside];
+
   return headerView;
 }
 
@@ -208,6 +210,33 @@
   WAGalleryViewController *galleryVC = [[WAGalleryViewController alloc] initWithImageFiles:self.photos atIndex:[indexPath row]];
   
   [self.navigationController pushViewController:galleryVC animated:YES];
+  
+}
+
+#pragma mark - Target actions
+
+- (void) handleDateSelect:(id)sender {
+  
+  if (isPad()) {
+    
+    // NO OP
+    
+  } else {
+    
+    __block WACalendarPopupViewController_phone *calendarPopup = [[WACalendarPopupViewController_phone alloc] initWithDate:onDate viewStyle:WAPhotosViewStyle completion:^{
+      
+      [calendarPopup willMoveToParentViewController:nil];
+      [calendarPopup removeFromParentViewController];
+      [calendarPopup.view removeFromSuperview];
+      [calendarPopup didMoveToParentViewController:nil];
+      calendarPopup = nil;
+      
+    }];
+    
+    [self.viewDeckController addChildViewController:calendarPopup];
+    [self.viewDeckController.view addSubview:calendarPopup.view];
+    
+  }
   
 }
 

@@ -16,7 +16,7 @@
 #import "WAGalleryViewController.h"
 #import "WAFileAccessLog.h"
 #import "WADocumentPreviewController.h"
-#import "WACalendarPickerViewController.h"
+#import "WACalendarPopupViewController_phone.h"
 
 @interface WADocumentStreamViewController ()
 
@@ -95,6 +95,19 @@
   
 }
 
++ (NSOperationQueue *)sharedImageDisplayQueue {
+  
+  static NSOperationQueue *queue;
+  static dispatch_once_t onceToken;
+  dispatch_once(&onceToken, ^{
+    queue = [[NSOperationQueue alloc] init];
+    [queue setMaxConcurrentOperationCount:1];
+  });
+  
+  return queue;
+  
+}
+
 #pragma mark - NSFetchedResultsController delegates
 
 - (void)controller:(NSFetchedResultsController *)controller didChangeObject:(id)anObject atIndexPath:(NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type newIndexPath:(NSIndexPath *)newIndexPath {
@@ -164,6 +177,8 @@
   headerView.wdayLabel.text = [[self.currentDate localizedWeekDayFullString] uppercaseString];
   headerView.backgroundColor = [UIColor colorWithRed:0.95f green:0.95f blue:0.95f alpha:1];
   
+  [headerView.centerButton addTarget:self action:@selector(handleDateSelect:) forControlEvents:UIControlEventTouchUpInside];
+
   return headerView;
   
 }
@@ -199,18 +214,31 @@
   
 }
 
-+ (NSOperationQueue *)sharedImageDisplayQueue {
+#pragma mark - Target actions
+
+- (void) handleDateSelect:(id)sender {
   
-  static NSOperationQueue *queue;
-  static dispatch_once_t onceToken;
-  dispatch_once(&onceToken, ^{
-    queue = [[NSOperationQueue alloc] init];
-    [queue setMaxConcurrentOperationCount:1];
-  });
-  
-  return queue;
+  if (isPad()) {
+    
+    // NO OP
+    
+  } else {
+    
+    __block WACalendarPopupViewController_phone *calendarPopup = [[WACalendarPopupViewController_phone alloc] initWithDate:self.currentDate viewStyle:WADocumentsViewStyle completion:^{
+      
+      [calendarPopup willMoveToParentViewController:nil];
+      [calendarPopup removeFromParentViewController];
+      [calendarPopup.view removeFromSuperview];
+      [calendarPopup didMoveToParentViewController:nil];
+      calendarPopup = nil;
+      
+    }];
+    
+    [self.viewDeckController addChildViewController:calendarPopup];
+    [self.viewDeckController.view addSubview:calendarPopup.view];
+    
+  }
   
 }
-
 
 @end
