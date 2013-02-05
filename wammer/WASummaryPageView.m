@@ -26,12 +26,15 @@ static NSString * kWASummaryPageViewKVOContext = @"WASummaryPageViewKVOContext";
   self.photosButton.layer.borderColor = [UIColor whiteColor].CGColor;
   self.photosButton.layer.borderWidth = 1.0;
   self.photosButton.backgroundColor = [[UIColor whiteColor] colorWithAlphaComponent:0.3];
+  [self.photosButton setImage:[[self class] sharedPhotosIconImage] forState:UIControlStateNormal];
   self.documentsButton.layer.borderColor = [UIColor whiteColor].CGColor;
   self.documentsButton.layer.borderWidth = 1.0;
   self.documentsButton.backgroundColor = [[UIColor whiteColor] colorWithAlphaComponent:0.3];
+  [self.documentsButton setImage:[[self class] sharedDocumentsIconImage] forState:UIControlStateNormal];
   self.webpagesButton.layer.borderColor = [UIColor whiteColor].CGColor;
   self.webpagesButton.layer.borderWidth = 1.0;
   self.webpagesButton.backgroundColor = [[UIColor whiteColor] colorWithAlphaComponent:0.3];
+  [self.webpagesButton setImage:[[self class] sharedWebIconImage] forState:UIControlStateNormal];
 
 }
 
@@ -117,6 +120,39 @@ static NSString * kWASummaryPageViewKVOContext = @"WASummaryPageViewKVOContext";
 - (void)dealloc {
 
   [_user irRemoveObserverBlocksForKeyPath:@"nickname" context:&kWASummaryPageViewKVOContext];
+
+}
+
++ (UIImage *)sharedPhotosIconImage {
+
+  static UIImage *photosIcon;
+  static dispatch_once_t onceToken;
+  dispatch_once(&onceToken, ^{
+    photosIcon = [UIImage imageNamed:@"PhotosIcon"];
+  });
+  return photosIcon;
+
+}
+
++ (UIImage *)sharedDocumentsIconImage {
+  
+  static UIImage *documentsIcon;
+  static dispatch_once_t onceToken;
+  dispatch_once(&onceToken, ^{
+    documentsIcon = [UIImage imageNamed:@"DocumentsIcon"];
+  });
+  return documentsIcon;
+
+}
+
++ (UIImage *)sharedWebIconImage {
+
+  static UIImage *webIcon;
+  static dispatch_once_t onceToken;
+  dispatch_once(&onceToken, ^{
+    webIcon = [UIImage imageNamed:@"Webicon"];
+  });
+  return webIcon;
 
 }
 

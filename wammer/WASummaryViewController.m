@@ -270,11 +270,8 @@ static NSInteger const DEFAULT_EVENT_IMAGE_PAGING_SIZE = 3;
     [self reloadEventPageImagesWithPagingSize:(-DEFAULT_EVENT_IMAGE_PAGING_SIZE)];
   }
 
-  NSInteger oldEventIndex = _currentDaySummary.eventIndex;
-
   if (_currentDaySummary == currentDaySummary) {
 
-    // TODO: bring user to the latest event if current summary is for today
     self.eventPageControll.numberOfPages = [currentDaySummary.articles count];
     NSUInteger index = [currentDaySummary.eventPages indexOfObject:self.currentEventPage];
     if (index == NSNotFound) {
@@ -282,10 +279,14 @@ static NSInteger const DEFAULT_EVENT_IMAGE_PAGING_SIZE = 3;
       self.currentEventPage = currentDaySummary.eventPages[0];
     } else {
       self.eventPageControll.currentPage = index;
+      // reload current event page
+      self.currentEventPage = self.currentEventPage;
     }
 
   } else {
 
+    NSInteger oldEventIndex = _currentDaySummary.eventIndex;
+    
     _currentDaySummary = currentDaySummary;
     
     NSInteger pageControllIndex = 0;
@@ -754,7 +755,14 @@ static NSInteger const DEFAULT_EVENT_IMAGE_PAGING_SIZE = 3;
       break;
     
     case NSFetchedResultsChangeUpdate:
-      // TODO: the updated articles might have more photos to display
+      if (controller == self.articleFetchedResultsController) {
+        WAArticle *article = anObject;
+        WADaySummary *daySummary = self.daySummaries[@([self indexOfDay:[article.eventStartDate dayBegin]])];
+        if (daySummary) {
+	[self.changedDaySummaries addObject:daySummary];
+	NSLog(@"article on date %@ updated", daySummary.date);
+        }
+      }
       break;
 
     default:
@@ -774,6 +782,8 @@ static NSInteger const DEFAULT_EVENT_IMAGE_PAGING_SIZE = 3;
   
   // reload current summary
   self.currentDaySummary = self.currentDaySummary;
+
+  [self scrollToCurrentEventPageAnimated:NO];
 
 }
 
