@@ -44,6 +44,17 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (BOOL)shouldAutorotate {
+  return YES;
+}
+
+- (NSUInteger) supportedInterfaceOrientations {
+  if (isPad())
+	return UIInterfaceOrientationMaskAll;
+  else
+    return UIInterfaceOrientationMaskPortrait;
+}
+
 #pragma mark UITableView delegates
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
