@@ -80,7 +80,6 @@
         __block NSUInteger foundIndex = 0;
         [self.eventPages enumerateObjectsUsingBlock:^(WAEventPageView *eventPage, NSUInteger idx, BOOL *stop) {
 	if ([article.identifier isEqualToString:eventPage.representingArticle.identifier]) {
-	  // TODO: the article might have more photos to display and the event page should be updated
 	  found = YES;
 	  foundIndex = idx;
 	  *stop = YES;
@@ -89,7 +88,18 @@
 	  *stop = YES;
 	}
         }];
-        if (!found) {
+        if (found) {
+	NSUInteger imageViewsCount = [[self.eventPages[foundIndex] imageViews] count];
+	if ([article.files count] != imageViewsCount && imageViewsCount < 4) {
+	  // if articles has more or less photos to display, then replace the event page with a new one
+	  [self.eventPages[foundIndex] removeFromSuperview];
+	  [self.eventPages removeObjectAtIndex:foundIndex];
+	  WAEventPageView *eventPageView = [WAEventPageView viewWithRepresentingArticle:article];
+	  [eventPageView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleEventPagePressed:)]];
+	  [eventSuperView addSubview:eventPageView];
+	  [self.eventPages insertObject:eventPageView atIndex:foundIndex];
+	}
+        } else {
 	WAEventPageView *eventPageView = [WAEventPageView viewWithRepresentingArticle:article];
 	[eventPageView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleEventPagePressed:)]];
 	[eventSuperView addSubview:eventPageView];
