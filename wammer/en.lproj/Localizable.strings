@@ -702,8 +702,8 @@
 /* Class = "IBUILabel"; text = "STATE_LOADING_SINGLE_DOCUMENT_PROGRESS"; ObjectID = "10"; */
 "STATE_LOADING_SINGLE_DOCUMENT_PROGRESS" = "%1 of %2";
 
-/* Class = "IBUILabel"; text = "MONTH"; ObjectID = "5"; */
-"MONTH" = "MONTH";
+/* Class = "IBUILabel"; text = "OCT"; ObjectID = "5"; */
+"OCT" = "OCT";
 
 /* Class = "IBUILabel"; text = "DAY"; ObjectID = "9"; */
 "DAY" = "DAY";

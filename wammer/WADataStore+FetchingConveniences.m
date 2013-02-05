@@ -163,6 +163,7 @@
   fetchRequest.predicate = [NSCompoundPredicate
 		        andPredicateWithSubpredicates:@[
 		        fetchRequest.predicate,
+		        [NSPredicate predicateWithFormat:@"hidden = FALSE"],
 		        [NSPredicate predicateWithFormat:@"event = TRUE"],
 		        [NSPredicate predicateWithFormat:@"eventStartDate >= %@ && eventStartDate <= %@", earlymorning, midnight]]];
   

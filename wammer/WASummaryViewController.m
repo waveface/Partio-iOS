@@ -28,7 +28,7 @@
 #import "WAFileAccessLog.h"
 
 static NSInteger const DEFAULT_SUMMARY_PAGING_SIZE = 20;
-static NSInteger const DEFAULT_EVENT_IMAGE_PAGING_SIZE = 5;
+static NSInteger const DEFAULT_EVENT_IMAGE_PAGING_SIZE = 3;
 
 @interface WASummaryViewController ()
 
@@ -332,7 +332,7 @@ static NSInteger const DEFAULT_EVENT_IMAGE_PAGING_SIZE = 5;
     NSDate *recentDay = [[NSDate date] dayBegin];
     for (NSInteger idx = wSelf.currentDaySummary.summaryIndex; idx != wSelf.currentDaySummary.summaryIndex+pagingSize; idx += pagingSize/abs(pagingSize)) {
       // scrolling to the future is forbidden
-      BOOL isFutureDay = [[[wSelf dayAtIndex:idx] earlierDate:recentDay] isEqualToDate:recentDay];
+      BOOL isFutureDay = ([[wSelf dayAtIndex:idx] compare:recentDay] == NSOrderedDescending);
       if (!isFutureDay && !wSelf.daySummaries[@(idx)]) {
         WADaySummary *daySummary = [[WADaySummary alloc] initWithUser:wSelf.user date:[wSelf dayAtIndex:idx] context:wSelf.managedObjectContext];
         daySummary.delegate = wSelf;
@@ -372,7 +372,7 @@ static NSInteger const DEFAULT_EVENT_IMAGE_PAGING_SIZE = 5;
     self.articleFetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:articleFetchRequest managedObjectContext:self.managedObjectContext sectionNameKeyPath:nil cacheName:nil];
     self.articleFetchedResultsController.delegate = self;
   }
-  [self.articleFetchedResultsController.fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"event = TRUE AND eventStartDate <= %@ AND eventEndDate >= %@", [self.firstDaySummary.date dayEnd], self.lastDaySummary.date]];
+  [self.articleFetchedResultsController.fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"hidden = FALSE AND event = TRUE AND eventStartDate <= %@ AND eventEndDate >= %@", [self.firstDaySummary.date dayEnd], self.lastDaySummary.date]];
   [self.articleFetchedResultsController performFetch:nil];
 
   if (!self.photoFetchedResultsController) {

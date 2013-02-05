@@ -18,6 +18,7 @@
 - (NSDate *)dateOfFollowingWeek;
 
 - (NSString *) dayString;
+- (NSString *) yearString;
 - (NSString *) localizedMonthShortString;
 - (NSString *) localizedMonthFullString;
 - (NSString *) localizedWeekDayShortString;

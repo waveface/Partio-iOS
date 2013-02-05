@@ -19,6 +19,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *monthLabel;
 @property (weak, nonatomic) IBOutlet UILabel *helloLabel;
 @property (weak, nonatomic) IBOutlet UILabel *eventSummaryLabel;
+@property (weak, nonatomic) IBOutlet UILabel *yearLabel;
 
 @property (nonatomic, strong) NSDate *date;
 @property (nonatomic, strong) WAUser *user;
