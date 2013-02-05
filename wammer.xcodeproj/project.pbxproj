@@ -28,6 +28,8 @@
 		13328C8216AFC4CC00798C8A /* WASummaryPageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 13328C8116AFC4CC00798C8A /* WASummaryPageView.m */; };
 		13328C8516AFCA0500798C8A /* WADaySummary.m in Sources */ = {isa = PBXBuildFile; fileRef = 13328C8416AFCA0500798C8A /* WADaySummary.m */; };
 		1336742C1678A0E70010F6C8 /* WAFileAccessLog+WARemoteInterfaceEntitySyncing.m in Sources */ = {isa = PBXBuildFile; fileRef = 1336742B1678A0E70010F6C8 /* WAFileAccessLog+WARemoteInterfaceEntitySyncing.m */; };
+		133948C216C10F5C003D2616 /* WebIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 133948C016C10F5C003D2616 /* WebIcon.png */; };
+		133948C316C10F5C003D2616 /* WebIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 133948C116C10F5C003D2616 /* WebIcon@2x.png */; };
 		133E8AF516798DD20075843C /* WADocumentPreviewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 133E8AF316798DD20075843C /* WADocumentPreviewController.m */; };
 		1348F3EF169D49240078412B /* WAConnectionStatusViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1348F3EE169D49240078412B /* WAConnectionStatusViewController.m */; };
 		1349AAEE163E9C4600D87A85 /* WAFirstUseIntroViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1349AAEC163E9C4600D87A85 /* WAFirstUseIntroViewController.m */; };
@@ -1017,6 +1019,8 @@
 		13328C8416AFCA0500798C8A /* WADaySummary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WADaySummary.m; sourceTree = "<group>"; };
 		1336742A1678A0E70010F6C8 /* WAFileAccessLog+WARemoteInterfaceEntitySyncing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WAFileAccessLog+WARemoteInterfaceEntitySyncing.h"; sourceTree = "<group>"; };
 		1336742B1678A0E70010F6C8 /* WAFileAccessLog+WARemoteInterfaceEntitySyncing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WAFileAccessLog+WARemoteInterfaceEntitySyncing.m"; sourceTree = "<group>"; };
+		133948C016C10F5C003D2616 /* WebIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WebIcon.png; path = Resources/WebIcon.png; sourceTree = "<group>"; };
+		133948C116C10F5C003D2616 /* WebIcon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "WebIcon@2x.png"; path = "Resources/WebIcon@2x.png"; sourceTree = "<group>"; };
 		133E8AF216798DD20075843C /* WADocumentPreviewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WADocumentPreviewController.h; sourceTree = "<group>"; };
 		133E8AF316798DD20075843C /* WADocumentPreviewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WADocumentPreviewController.m; sourceTree = "<group>"; };
 		1340DD171696BD36006DA543 /* WAModel 42.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WAModel 42.xcdatamodel"; sourceTree = "<group>"; };
@@ -3256,6 +3260,8 @@
 				DEF1326D164B83CE0051284D /* CollectionIcon@2x.png */,
 				DEF1326E164B83CE0051284D /* EventsIcon@2x.png */,
 				DEF1326F164B83CE0051284D /* PhotosIcon@2x.png */,
+				133948C016C10F5C003D2616 /* WebIcon.png */,
+				133948C116C10F5C003D2616 /* WebIcon@2x.png */,
 				DEF13270164B83CE0051284D /* SettingsIcon@2x.png */,
 				80B9E4FB16719B1100222F57 /* Location@2x.png */,
 				80B9E4FC16719B1100222F57 /* Location.png */,
@@ -4363,6 +4369,8 @@
 				13856F1516C0FD5A00306B90 /* menuWhite@2x.png in Resources */,
 				13A2FB3216C1080F00A717C9 /* WATinyArrowDownWhite.png in Resources */,
 				13A2FB3316C1080F00A717C9 /* WATinyArrowDownWhite@2x.png in Resources */,
+				133948C216C10F5C003D2616 /* WebIcon.png in Resources */,
+				133948C316C10F5C003D2616 /* WebIcon@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
