@@ -207,7 +207,6 @@
 		7DB78A6E164900FA00E165E9 /* WAPhotoStreamViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7DB78A6B164900FA00E165E9 /* WAPhotoStreamViewCell.xib */; };
 		7DBE8DF5165B3818005C2347 /* WADayHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 80C129B716398933001DDFE2 /* WADayHeaderView.m */; };
 		7DBE8DF6165B383C005C2347 /* WADayHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 80C129B716398933001DDFE2 /* WADayHeaderView.m */; };
-		7DC3AC0E1642203C009A8EA7 /* SocketRocket.xcodeproj in Resources */ = {isa = PBXBuildFile; fileRef = 7DC3AC0D1642203C009A8EA7 /* SocketRocket.xcodeproj */; };
 		7DC3AC0F1642203C009A8EA7 /* SocketRocket.xcodeproj in Resources */ = {isa = PBXBuildFile; fileRef = 7DC3AC0D1642203C009A8EA7 /* SocketRocket.xcodeproj */; };
 		7DC3AC101642203C009A8EA7 /* SocketRocket.xcodeproj in Resources */ = {isa = PBXBuildFile; fileRef = 7DC3AC0D1642203C009A8EA7 /* SocketRocket.xcodeproj */; };
 		8002CDE615E5E85600D7BFF0 /* libicucore.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 8002CDE515E5E85600D7BFF0 /* libicucore.dylib */; };
@@ -275,8 +274,6 @@
 		806A5CAC16241E2800867E56 /* rightHL.png in Resources */ = {isa = PBXBuildFile; fileRef = 806A5C9A16241E2800867E56 /* rightHL.png */; };
 		806A5CAD16241E2800867E56 /* rightHL@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 806A5C9B16241E2800867E56 /* rightHL@2x.png */; };
 		80719CD4167AFC4600E9729F /* WAWebpageDay.m in Sources */ = {isa = PBXBuildFile; fileRef = 80719CD3167AFC4600E9729F /* WAWebpageDay.m */; };
-		80719CEC167AFD4600E9729F /* WAEventDay.h in Resources */ = {isa = PBXBuildFile; fileRef = 80719CE6167AFD4600E9729F /* WAEventDay.h */; };
-		80719CED167AFD4600E9729F /* WAEventDay.m in Resources */ = {isa = PBXBuildFile; fileRef = 80719CE7167AFD4600E9729F /* WAEventDay.m */; };
 		80719CF9167AFF8000E9729F /* WAEventDay+WARemoteInterfaceEntitySyncing.m in Sources */ = {isa = PBXBuildFile; fileRef = 80719CF8167AFF8000E9729F /* WAEventDay+WARemoteInterfaceEntitySyncing.m */; };
 		80719CFC167B03B900E9729F /* WAPhotoDay+WARemoteInterfaceEntitySyncing.m in Sources */ = {isa = PBXBuildFile; fileRef = 80719CFB167B03B900E9729F /* WAPhotoDay+WARemoteInterfaceEntitySyncing.m */; };
 		8074EF8816AD0ABA0033E99A /* WACalendarPopupViewController_phone.m in Sources */ = {isa = PBXBuildFile; fileRef = 8074EF8716AD0ABA0033E99A /* WACalendarPopupViewController_phone.m */; };
@@ -4252,7 +4249,6 @@
 				80C129C516398A0D001DDFE2 /* Create.png in Resources */,
 				80C129C616398A0D001DDFE2 /* Create@2x.png in Resources */,
 				13206265163F01D00064E770 /* WAFirstUseIntroView.xib in Resources */,
-				7DC3AC0E1642203C009A8EA7 /* SocketRocket.xcodeproj in Resources */,
 				7DA309301648BC6900B6FABD /* WAPhotoStreamViewController.xib in Resources */,
 				7DB78A6C164900FA00E165E9 /* WAPhotoStreamViewCell.xib in Resources */,
 				13BFC39B164A40DE00FC39A4 /* WAFirstUseEmailLoginFooterView.xib in Resources */,
@@ -4320,8 +4316,6 @@
 				4B274E511675BFCC007406D3 /* WACollectionViewController.xib in Resources */,
 				4B274E6B1675E104007406D3 /* WACollectionViewCell.xib in Resources */,
 				131560451679CCE400C29BFA /* WADocumentDownloadingView.xib in Resources */,
-				80719CEC167AFD4600E9729F /* WAEventDay.h in Resources */,
-				80719CED167AFD4600E9729F /* WAEventDay.m in Resources */,
 				132824C1167B196700B2FB67 /* DocumentsIcon.png in Resources */,
 				132824C2167B196700B2FB67 /* DocumentsIcon@2x.png in Resources */,
 				80074F97167F204400A23EED /* WAWebStreamViewCell.xib in Resources */,
@@ -5137,7 +5131,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 563;
+				CURRENT_PROJECT_VERSION = 564;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"WF_USES_TESTFLIGHT=$(WF_USES_TESTFLIGHT)",
@@ -5169,7 +5163,7 @@
 					"\"$(PROJECT_DIR)/external/SocketRocket\"/**",
 					"\"$(PROJECT_DIR)/external/Kal\"/**",
 				);
-				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
 				OTHER_CFLAGS = "-fno-objc-default-synthesize-properties";
 				OTHER_LDFLAGS = (
 					"-ObjC",
@@ -5180,7 +5174,7 @@
 				STRIP_INSTALLED_PRODUCT = NO;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
-				VALID_ARCHS = "i386 armv7";
+				VALID_ARCHS = "";
 				VERSIONING_SYSTEM = "apple-generic";
 				WF_USES_GOOGLEANALYTICS = 0;
 				WF_USES_TESTFLIGHT = 1;
@@ -5206,7 +5200,7 @@
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				HEADER_SEARCH_PATHS = "${PODS_HEADERS_SEARCH_PATHS}";
 				INFOPLIST_FILE = "wammer/wammer-iOS-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/wammer\"",
@@ -5297,7 +5291,6 @@
 					"\"$(PROJECT_DIR)/external/ocmock/Source/**",
 				);
 				INFOPLIST_FILE = "UnitTests/UnitTests-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/external/Facebook/lib/facebook-ios-sdk\"",
@@ -5356,7 +5349,6 @@
 					"\"$(PROJECT_DIR)/external/ocmock/Source/**",
 				);
 				INFOPLIST_FILE = "UnitTests/UnitTests-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/wammer\"",
@@ -5419,7 +5411,6 @@
 					"\"$(PROJECT_DIR)/external/ocmock/Source/**",
 				);
 				INFOPLIST_FILE = "UnitTests/UnitTests-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/external/ocmock/Examples/iOS5Example/usr/lib\"",
@@ -5447,7 +5438,7 @@
 			baseConfigurationReference = 49320A35B57B404A94A27775 /* Pods-StreamTests.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = YES;
-				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/wammer-iOS.app/wammer-iOS";
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/AOStream.app/AOStream";
 				CLANG_CXX_LANGUAGE_STANDARD = "compiler-default";
 				CLANG_CXX_LIBRARY = "compiler-default";
 				CLANG_WARN_EMPTY_BODY = YES;
@@ -5481,12 +5472,10 @@
 					"\"$(PROJECT_DIR)/external/SocketRocket\"/**",
 				);
 				INFOPLIST_FILE = "StreamTests/StreamTests-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/wammer/Libraries\"",
 				);
-				ONLY_ACTIVE_ARCH = NO;
 				OTHER_CFLAGS = "";
 				PODS_BUILD_HEADERS_SEARCH_PATHS = "\"${PODS_ROOT}/BuildHeaders\" \"${PODS_ROOT}/BuildHeaders/ColorArt\" \"${PODS_ROOT}/BuildHeaders/DCIntrospect\" \"${PODS_ROOT}/BuildHeaders/Facebook-iOS-SDK\" \"${PODS_ROOT}/BuildHeaders/Facebook-iOS-SDK/FacebookSDK\" \"${PODS_ROOT}/BuildHeaders/InAppSettingsKit\" \"${PODS_ROOT}/BuildHeaders/JSONKit\" \"${PODS_ROOT}/BuildHeaders/MKNetworkKit\" \"${PODS_ROOT}/BuildHeaders/MKNetworkKit/Categories\" \"${PODS_ROOT}/BuildHeaders/MagicalRecord\" \"${PODS_ROOT}/BuildHeaders/Nimbus\" \"${PODS_ROOT}/BuildHeaders/Reachability\" \"${PODS_ROOT}/BuildHeaders/SSKeychain\" \"${PODS_ROOT}/BuildHeaders/SSToolkit\" \"${PODS_ROOT}/BuildHeaders/StackBluriOS\" \"${PODS_ROOT}/BuildHeaders/TestFlightSDK\" \"${PODS_ROOT}/BuildHeaders/OCHamcrest\" \"${PODS_ROOT}/BuildHeaders/OCMock\"";
 				PODS_HEADERS_SEARCH_PATHS = "${PODS_PUBLIC_HEADERS_SEARCH_PATHS}";
@@ -5503,7 +5492,7 @@
 			baseConfigurationReference = 49320A35B57B404A94A27775 /* Pods-StreamTests.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = YES;
-				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/wammer-iOS.app/wammer-iOS";
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/AOStream.app/AOStream";
 				CLANG_CXX_LANGUAGE_STANDARD = "compiler-default";
 				CLANG_CXX_LIBRARY = "compiler-default";
 				CLANG_WARN_EMPTY_BODY = YES;
@@ -5538,12 +5527,10 @@
 					"\"$(PROJECT_DIR)/external/SocketRocket\"/**",
 				);
 				INFOPLIST_FILE = "StreamTests/StreamTests-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/wammer/Libraries\"",
 				);
-				ONLY_ACTIVE_ARCH = NO;
 				OTHER_CFLAGS = "";
 				PODS_BUILD_HEADERS_SEARCH_PATHS = "\"${PODS_ROOT}/BuildHeaders\" \"${PODS_ROOT}/BuildHeaders/ColorArt\" \"${PODS_ROOT}/BuildHeaders/DCIntrospect\" \"${PODS_ROOT}/BuildHeaders/Facebook-iOS-SDK\" \"${PODS_ROOT}/BuildHeaders/Facebook-iOS-SDK/FacebookSDK\" \"${PODS_ROOT}/BuildHeaders/InAppSettingsKit\" \"${PODS_ROOT}/BuildHeaders/JSONKit\" \"${PODS_ROOT}/BuildHeaders/MKNetworkKit\" \"${PODS_ROOT}/BuildHeaders/MKNetworkKit/Categories\" \"${PODS_ROOT}/BuildHeaders/MagicalRecord\" \"${PODS_ROOT}/BuildHeaders/Nimbus\" \"${PODS_ROOT}/BuildHeaders/Reachability\" \"${PODS_ROOT}/BuildHeaders/SSKeychain\" \"${PODS_ROOT}/BuildHeaders/SSToolkit\" \"${PODS_ROOT}/BuildHeaders/StackBluriOS\" \"${PODS_ROOT}/BuildHeaders/TestFlightSDK\" \"${PODS_ROOT}/BuildHeaders/OCHamcrest\" \"${PODS_ROOT}/BuildHeaders/OCMock\"";
 				PODS_HEADERS_SEARCH_PATHS = "${PODS_PUBLIC_HEADERS_SEARCH_PATHS}";
@@ -5560,7 +5547,7 @@
 			baseConfigurationReference = 49320A35B57B404A94A27775 /* Pods-StreamTests.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = YES;
-				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/wammer-iOS.app/wammer-iOS";
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/AOStream.app/AOStream";
 				CLANG_CXX_LANGUAGE_STANDARD = "compiler-default";
 				CLANG_CXX_LIBRARY = "compiler-default";
 				CLANG_WARN_EMPTY_BODY = YES;
@@ -5595,12 +5582,10 @@
 					"\"$(PROJECT_DIR)/external/SocketRocket\"/**",
 				);
 				INFOPLIST_FILE = "StreamTests/StreamTests-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/wammer/Libraries\"",
 				);
-				ONLY_ACTIVE_ARCH = NO;
 				OTHER_CFLAGS = "";
 				PODS_BUILD_HEADERS_SEARCH_PATHS = "\"${PODS_ROOT}/BuildHeaders\" \"${PODS_ROOT}/BuildHeaders/ColorArt\" \"${PODS_ROOT}/BuildHeaders/DCIntrospect\" \"${PODS_ROOT}/BuildHeaders/Facebook-iOS-SDK\" \"${PODS_ROOT}/BuildHeaders/Facebook-iOS-SDK/FacebookSDK\" \"${PODS_ROOT}/BuildHeaders/InAppSettingsKit\" \"${PODS_ROOT}/BuildHeaders/JSONKit\" \"${PODS_ROOT}/BuildHeaders/MKNetworkKit\" \"${PODS_ROOT}/BuildHeaders/MKNetworkKit/Categories\" \"${PODS_ROOT}/BuildHeaders/MagicalRecord\" \"${PODS_ROOT}/BuildHeaders/Nimbus\" \"${PODS_ROOT}/BuildHeaders/Reachability\" \"${PODS_ROOT}/BuildHeaders/SSKeychain\" \"${PODS_ROOT}/BuildHeaders/SSToolkit\" \"${PODS_ROOT}/BuildHeaders/StackBluriOS\" \"${PODS_ROOT}/BuildHeaders/TestFlightSDK\" \"${PODS_ROOT}/BuildHeaders/OCHamcrest\" \"${PODS_ROOT}/BuildHeaders/OCMock\"";
 				PODS_HEADERS_SEARCH_PATHS = "${PODS_PUBLIC_HEADERS_SEARCH_PATHS}";
@@ -5624,7 +5609,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 563;
+				CURRENT_PROJECT_VERSION = 564;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -5658,7 +5643,7 @@
 					"\"$(PROJECT_DIR)/external/SocketRocket\"/**",
 					"\"$(PROJECT_DIR)/external/Kal\"/**",
 				);
-				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
 				OTHER_CFLAGS = "-fno-objc-default-synthesize-properties";
 				OTHER_LDFLAGS = (
 					"-ObjC",
@@ -5668,7 +5653,7 @@
 				SDKROOT = iphoneos;
 				STRIP_INSTALLED_PRODUCT = NO;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				VALID_ARCHS = "i386 armv7";
+				VALID_ARCHS = "";
 				VERSIONING_SYSTEM = "apple-generic";
 				WF_USES_GOOGLEANALYTICS = 0;
 				WF_USES_TESTFLIGHT = 1;
@@ -5687,7 +5672,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 563;
+				CURRENT_PROJECT_VERSION = 564;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"WF_USES_TESTFLIGHT=$(WF_USES_TESTFLIGHT)",
@@ -5718,7 +5703,7 @@
 					"\"$(PROJECT_DIR)/external/SocketRocket\"/**",
 					"\"$(PROJECT_DIR)/external/Kal\"/**",
 				);
-				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
 				OTHER_CFLAGS = "-fno-objc-default-synthesize-properties";
 				OTHER_LDFLAGS = (
 					"-ObjC",
@@ -5729,7 +5714,7 @@
 				STRIP_INSTALLED_PRODUCT = NO;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
-				VALID_ARCHS = "i386 armv7";
+				VALID_ARCHS = "";
 				VERSIONING_SYSTEM = "apple-generic";
 				WF_USES_GOOGLEANALYTICS = 0;
 				WF_USES_TESTFLIGHT = 1;
@@ -5755,7 +5740,7 @@
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				HEADER_SEARCH_PATHS = "${PODS_HEADERS_SEARCH_PATHS}";
 				INFOPLIST_FILE = "wammer/wammer-iOS-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/wammer\"",
@@ -5823,7 +5808,7 @@
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				HEADER_SEARCH_PATHS = "${PODS_HEADERS_SEARCH_PATHS}";
 				INFOPLIST_FILE = "wammer/wammer-iOS-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/wammer\"",
