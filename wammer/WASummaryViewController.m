@@ -379,15 +379,31 @@ static NSInteger const DEFAULT_EVENT_IMAGE_PAGING_SIZE = 3;
     [wSelf resetContentSize];
     [wSelf layoutSummaryAndEventPages];
 
-    // scroll to current summary page without animation
-    [wSelf scrollToCurrentSummaryPageAnimated:NO];
-    [wSelf scrollToCurrentEventPageAnimated:NO];
-    
     if (pagingSize > 0) {
-      [wSelf reloadEventPageImagesWithPagingSize:DEFAULT_EVENT_IMAGE_PAGING_SIZE];
+      WADaySummary *nextDaySummary = wSelf.daySummaries[@(wSelf.currentDaySummary.summaryIndex+1)];
+      if (nextDaySummary && wSelf.currentDaySummary != wSelf.firstDaySummary) {
+        // go to previous day
+        wSelf.currentDaySummary = nextDaySummary;
+        [wSelf scrollToCurrentSummaryPageAnimated:YES];
+        [wSelf scrollToCurrentEventPageAnimated:YES];
+      } else {
+        // app just launched
+        [wSelf reloadEventPageImagesWithPagingSize:DEFAULT_EVENT_IMAGE_PAGING_SIZE];
+      }
     } else {
-      [wSelf reloadEventPageImagesWithPagingSize:(-DEFAULT_EVENT_IMAGE_PAGING_SIZE)];
+      // go to next day, note that we have to change the visible rect first to make a pretty animation
+      [wSelf scrollToCurrentSummaryPageAnimated:NO];
+      [wSelf scrollToCurrentEventPageAnimated:NO];
+      WADaySummary *nextDaySummary = wSelf.daySummaries[@(wSelf.currentDaySummary.summaryIndex-1)];
+      if (nextDaySummary) {
+        wSelf.currentDaySummary = wSelf.daySummaries[@(wSelf.currentDaySummary.summaryIndex-1)];
+        [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+	[wSelf scrollToCurrentSummaryPageAnimated:YES];
+	[wSelf scrollToCurrentEventPageAnimated:YES];
+        }];
+      }
     }
+    
     [bezel dismissWithAnimation:WAOverlayBezelAnimationFade];
     wSelf.reloading = NO;
   });
