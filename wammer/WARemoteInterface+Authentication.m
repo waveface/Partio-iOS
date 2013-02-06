@@ -57,6 +57,7 @@
 			
 		}
 		
+	  if (![context.method isEqualToString:@"POST"]) { // should not append secret in query string when it is a POST method
 		NSMutableDictionary *queryParams = [context.queryParams mutableCopy];
 		if (!queryParams)
 			queryParams = [NSMutableDictionary dictionary];
@@ -65,6 +66,7 @@
 		[queryParams enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
 			[context setValue:obj forQueryParam:key];
 		}];
+	  }
 		
 		return context;
 	

@@ -9,8 +9,8 @@
 #import "WAFetchManager.h"
 
 @class IRAsyncOperation;
-@interface WAFetchManager (RemoteArticleFetch)
+@interface WAFetchManager (RemoteIndexFetch)
 
-- (IRAsyncOperation *)remoteArticleFetchOperationPrototype;
+- (IRAsyncOperation *)remoteIndexFetchOperationPrototype;
 
 @end

@@ -23,7 +23,11 @@
     arguments = @{@"group_id":aGroupIdentifier};
   }
 
-  [self.engine fireAPIRequestNamed:@"changelogs/get" withArguments:arguments options:nil validator:WARemoteInterfaceGenericNoErrorValidator() successHandler:^(NSDictionary *response, IRWebAPIRequestContext *context) {
+  [self.engine fireAPIRequestNamed:@"changelogs/get"
+					 withArguments:nil
+						   options:@{kIRWebAPIEngineRequestContextFormURLEncodingFieldsKey:arguments ,kIRWebAPIEngineRequestHTTPMethod: @"POST"}
+						 validator:WARemoteInterfaceGenericNoErrorValidator()
+					successHandler:^(NSDictionary *response, IRWebAPIRequestContext *context) {
 
     NSArray *changedArticles = response[@"post_list"];
     NSArray *changedFiles = response[@"attachment_list"];
