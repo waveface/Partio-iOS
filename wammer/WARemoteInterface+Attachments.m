@@ -194,12 +194,12 @@ NSString * const WARemoteAttachmentSmallSubtype = @"small";
 
 - (void) retrieveThumbnailForAttachment:(NSString *)anIdentifier ofType:(WARemoteAttachmentType)aType onSuccess:(void(^)(NSURL *aThumbnailURL))successBlock onFailure:(void(^)(NSError *error))failureBlock {
   
-  [self.engine fireAPIRequestNamed:@"attachments/view" withArguments:[NSDictionary dictionaryWithObjectsAndKeys:
-							
-							anIdentifier, @"object_id",
-							@"large", @"image_meta",
-							
-							nil] options:nil validator:WARemoteInterfaceGenericNoErrorValidator() successHandler:^(NSDictionary *inResponseOrNil, IRWebAPIRequestContext *inResponseContext) {
+  NSDictionary *arguments = @{@"object_id": anIdentifier, @"image_meta":@"large"};
+  [self.engine fireAPIRequestNamed:@"attachments/view"
+					 withArguments:nil
+						   options:@{kIRWebAPIEngineRequestContextFormURLEncodingFieldsKey:arguments ,kIRWebAPIEngineRequestHTTPMethod: @"POST"}
+						 validator:WARemoteInterfaceGenericNoErrorValidator()
+					successHandler:^(NSDictionary *inResponseOrNil, IRWebAPIRequestContext *inResponseContext) {
     
     if (successBlock)
       successBlock([inResponseOrNil valueForKeyPath:@"redirect_to"]);

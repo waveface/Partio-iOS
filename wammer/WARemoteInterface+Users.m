@@ -74,12 +74,12 @@
 - (void) retrieveUserWithoutFurtherParsing:(NSString *)anIdentifier onSuccess:(void (^)(NSDictionary *))successBlock onFailure:(void (^)(NSError *))failureBlock {
   
   NSParameterAssert(anIdentifier);
-  
-  [self.engine fireAPIRequestNamed:@"users/get" withArguments:[NSDictionary dictionaryWithObjectsAndKeys:
-						   
-						   anIdentifier, @"user_id",
-						   
-						   nil] options:nil validator:WARemoteInterfaceGenericNoErrorValidator() successHandler: ^ (NSDictionary *inResponseOrNil, IRWebAPIRequestContext *inResponseContext) {
+  NSDictionary *arguments = @{@"user_id": anIdentifier};
+  [self.engine fireAPIRequestNamed:@"users/get"
+					 withArguments:nil
+						   options:@{kIRWebAPIEngineRequestContextFormURLEncodingFieldsKey:arguments ,kIRWebAPIEngineRequestHTTPMethod: @"POST"}
+						 validator:WARemoteInterfaceGenericNoErrorValidator()
+					successHandler: ^ (NSDictionary *inResponseOrNil, IRWebAPIRequestContext *inResponseContext) {
     
     if (successBlock)
       successBlock(inResponseOrNil);
