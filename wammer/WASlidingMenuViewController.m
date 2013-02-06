@@ -45,8 +45,6 @@ static NSString * kWASlidingMenuViewControllerKVOContext = @"WASlidingMenuViewCo
 @property (nonatomic, strong) UIPopoverController *calendarPopoverForIPad;
 @property (nonatomic, strong) WAConnectionStatusView *connectionStatusView;
 
-@property (nonatomic, strong) WAStatusBar *statusBar;
-
 @end
 
 @implementation WASlidingMenuViewController

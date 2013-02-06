@@ -290,6 +290,16 @@ extern CFAbsoluteTime StartTime;
 - (void)applicationDidEnterBackground:(UIApplication *)application {
   
   __weak WAAppDelegate_iOS *wSelf = self;
+
+  if (self.syncManager && self.slidingMenu) {
+    [self.syncManager removeObserver:self.slidingMenu forKeyPath:@"isSyncing"];
+  }
+  
+  if (self.fetchManager && self.slidingMenu) {
+    [self.fetchManager removeObserver:self.slidingMenu forKeyPath:@"isFetching"];
+  }
+  self.slidingMenu.statusBar = nil;
+  
   self.bgTask = [application beginBackgroundTaskWithExpirationHandler:^{
     
     NSLog(@"Background photo import expired");
@@ -837,7 +847,10 @@ static NSInteger networkActivityStackingCount = 0;
     [self.cacheManager clearPurgeableFilesIfNeeded];
     [self.fetchManager reload];
     [self.syncManager reload];
-    
+
+	[self.syncManager addObserver:self.slidingMenu forKeyPath:@"isSyncing" options:NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew context:nil];
+	[self.fetchManager addObserver:self.slidingMenu forKeyPath:@"isFetching" options:NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew context:nil];
+
   }
   
 }
