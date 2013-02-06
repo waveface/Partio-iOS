@@ -48,7 +48,7 @@
 	// TODO: create a mock server to handle the requests
 	mockWebSocketServer = [NSURL URLWithString:@"ws://ws.waveface.com:8889"];
 	
-	webSocket = [[WAWebSocket alloc] initWithUrl:mockWebSocketServer apikey:@"" usertoken:@"" userIdentifier:@""];
+	webSocket = [[WAWebSocket alloc] initWithApikey:@"" usertoken:@"" userIdentifier:@""];
 		
 	SRWebSocket *mock = [[SRWebSocket alloc] initWithURL:[NSURL URLWithString:@"ws://localhost"]];
 	mockSocket = [OCMockObject partialMockForObject:mock];
@@ -73,7 +73,7 @@
 	
 	[webSocket replaceWebSocketConnection:(SRWebSocket*)mockSocket];
 
-	[webSocket openConnectionOnSucces:^{
+  [webSocket openConnectionToUrl:mockWebSocketServer onSucces:^{
 		 // success
 		 complete = YES;
 	 }
@@ -106,7 +106,7 @@
 	
 	[webSocket replaceWebSocketConnection:(SRWebSocket*)mockSocket];
 
-	[webSocket openConnectionOnSucces:^{
+  [webSocket openConnectionToUrl:mockWebSocketServer onSucces:^{
 		complete = YES;
 		STFail(@"Websocket connection should fail to be opened.");
 	} onFailure:^(NSError *error) {
@@ -140,7 +140,7 @@
 
 	[webSocket replaceWebSocketConnection:(SRWebSocket*)mockSocket];
 	
-	[webSocket openConnectionOnSucces:^{
+  [webSocket openConnectionToUrl:mockWebSocketServer onSucces:^{
 		complete = YES;
 		// do nothing, socket will be opened successfully but fail with server's response
 	} onFailure:^(NSError *error) {
@@ -177,7 +177,7 @@
 	
 	[webSocket replaceWebSocketConnection:(SRWebSocket*)mockSocket];
 	
-	[webSocket openConnectionOnSucces:^{
+  [webSocket openConnectionToUrl:mockWebSocketServer onSucces:^{
 		complete = YES;
 		// do nothing, socket will be opened successfully but fail with server's response
 	} onFailure:^(NSError *error) {
