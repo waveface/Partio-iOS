@@ -167,6 +167,7 @@
 				NSLog(@"Reset the min seq number and re-fetch all posts: %@", error);
 				[[NSUserDefaults standardUserDefaults] setBool:NO forKey:kWAFirstArticleFetched];
 				[ds setMinSequenceNumber:@(INT_MAX)]; // restart fetching the articles from current sequential number
+			  [ds setEarliestDate:[NSDate date]];
 				
 			} else {
 				
