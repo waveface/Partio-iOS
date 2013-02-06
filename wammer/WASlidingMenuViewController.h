@@ -15,7 +15,7 @@
 @interface WASlidingMenuViewController : UITableViewController <IIViewDeckControllerDelegate>
 
 @property (nonatomic, weak) id delegate;
-@property (nonatomic, readonly, strong) WAStatusBar *statusBar;
+@property (nonatomic, strong) WAStatusBar *statusBar;
 
 + (CGFloat) ledgeSize;
 + (UIViewController *)dayViewControllerForViewStyle:(WADayViewSupportedStyle)viewStyle ;
