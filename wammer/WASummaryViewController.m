@@ -116,7 +116,7 @@ static NSInteger const DEFAULT_EVENT_IMAGE_PAGING_SIZE = 3;
   [super viewWillAppear:animated];
 
   if ([[self daySummaries] count] == 0) {
-    [self reloadDaySummariesWithPagingSize:DEFAULT_SUMMARY_PAGING_SIZE];
+    [self reloadDaySummariesFromIndex:0 toIndex:DEFAULT_SUMMARY_PAGING_SIZE];
   }
 
 }
@@ -332,8 +332,10 @@ static NSInteger const DEFAULT_EVENT_IMAGE_PAGING_SIZE = 3;
 
 }
 
-- (void)reloadDaySummariesWithPagingSize:(NSInteger)pagingSize {
+- (void)reloadDaySummariesFromIndex:(NSInteger)fromIndex toIndex:(NSInteger)toIndex {
   
+  NSParameterAssert(fromIndex < toIndex);
+
   if (self.reloading) {
     return;
   }
@@ -360,7 +362,7 @@ static NSInteger const DEFAULT_EVENT_IMAGE_PAGING_SIZE = 3;
   dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
   dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
     NSDate *recentDay = [[NSDate date] dayBegin];
-    for (NSInteger idx = wSelf.currentDaySummary.summaryIndex; idx != wSelf.currentDaySummary.summaryIndex+pagingSize; idx += pagingSize/abs(pagingSize)) {
+    for (NSInteger idx = wSelf.currentDaySummary.summaryIndex+fromIndex; idx <= wSelf.currentDaySummary.summaryIndex+toIndex; idx++) {
       // scrolling to the future is forbidden
       BOOL isFutureDay = ([[wSelf dayAtIndex:idx] compare:recentDay] == NSOrderedDescending);
       if (!isFutureDay && !wSelf.daySummaries[@(idx)]) {
@@ -379,7 +381,7 @@ static NSInteger const DEFAULT_EVENT_IMAGE_PAGING_SIZE = 3;
     [wSelf resetContentSize];
     [wSelf layoutSummaryAndEventPages];
 
-    if (pagingSize > 0) {
+    if (fromIndex == 0 && toIndex > 0) {
       WADaySummary *nextDaySummary = wSelf.daySummaries[@(wSelf.currentDaySummary.summaryIndex+1)];
       if (nextDaySummary && wSelf.currentDaySummary != wSelf.firstDaySummary) {
         // go to previous day
@@ -387,10 +389,10 @@ static NSInteger const DEFAULT_EVENT_IMAGE_PAGING_SIZE = 3;
         [wSelf scrollToCurrentSummaryPageAnimated:YES];
         [wSelf scrollToCurrentEventPageAnimated:YES];
       } else {
-        // app just launched
+        // app just launched, no need to move
         [wSelf reloadEventPageImagesWithPagingSize:DEFAULT_EVENT_IMAGE_PAGING_SIZE];
       }
-    } else {
+    } else if (fromIndex < 0 && toIndex == 0) {
       // go to next day, note that we have to change the visible rect first to make a pretty animation
       [wSelf scrollToCurrentSummaryPageAnimated:NO];
       [wSelf scrollToCurrentEventPageAnimated:NO];
@@ -402,10 +404,17 @@ static NSInteger const DEFAULT_EVENT_IMAGE_PAGING_SIZE = 3;
 	[wSelf scrollToCurrentEventPageAnimated:YES];
         }];
       }
+    } else if (fromIndex < 0 && toIndex > 0) {
+      // jumped to the specified day
+      [wSelf reloadEventPageImagesWithPagingSize:DEFAULT_EVENT_IMAGE_PAGING_SIZE];
+      [wSelf reloadEventPageImagesWithPagingSize:(-DEFAULT_EVENT_IMAGE_PAGING_SIZE)];
+      [wSelf scrollToCurrentSummaryPageAnimated:NO];
+      [wSelf scrollToCurrentEventPageAnimated:NO];
     }
     
     [bezel dismissWithAnimation:WAOverlayBezelAnimationFade];
     wSelf.reloading = NO;
+
   });
   
 }
@@ -633,7 +642,7 @@ static NSInteger const DEFAULT_EVENT_IMAGE_PAGING_SIZE = 3;
   NSInteger idx = [self indexOfDay:date];
   if (!self.daySummaries[@(idx)]) {
     self.beginningDate = date;
-    [self reloadDaySummariesWithPagingSize:DEFAULT_SUMMARY_PAGING_SIZE];
+    [self reloadDaySummariesFromIndex:(-DEFAULT_SUMMARY_PAGING_SIZE/2) toIndex:DEFAULT_SUMMARY_PAGING_SIZE/2];
   } else {
     NSAssert(NO, @"WASummaryViewController should be recreated");
   }
@@ -646,7 +655,7 @@ static NSInteger const DEFAULT_EVENT_IMAGE_PAGING_SIZE = 3;
 
   self.beginningDate = [[NSDate date] dayBegin];
   self.currentDaySummary = nil;
-  [self reloadDaySummariesWithPagingSize:DEFAULT_SUMMARY_PAGING_SIZE];
+  [self reloadDaySummariesFromIndex:0 toIndex:DEFAULT_SUMMARY_PAGING_SIZE];
 
 }
 
@@ -656,11 +665,11 @@ static NSInteger const DEFAULT_EVENT_IMAGE_PAGING_SIZE = 3;
   
   CGFloat pageWidth = scrollView.frame.size.width;
   if (scrollView.contentOffset.x > scrollView.contentSize.width - pageWidth) {
-    [self reloadDaySummariesWithPagingSize:DEFAULT_SUMMARY_PAGING_SIZE];
+    [self reloadDaySummariesFromIndex:0 toIndex:DEFAULT_SUMMARY_PAGING_SIZE];
     return;
   }
   if (scrollView.contentOffset.x < 0) {
-    [self reloadDaySummariesWithPagingSize:(-DEFAULT_SUMMARY_PAGING_SIZE)];
+    [self reloadDaySummariesFromIndex:-DEFAULT_SUMMARY_PAGING_SIZE toIndex:0];
     return;
   }
 
