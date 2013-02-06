@@ -202,7 +202,7 @@
 
 						 }
 						 
-						 NSOperation *tailOp = [NSBlockOperation blockOperationWithBlock:^{
+						 IRAsyncBarrierOperation *tailOp = [IRAsyncBarrierOperation operationWithWorker:^(IRAsyncOperationCallback callback) {
 						   
 						   NSDate *nextFetchedDate = [NSDate dateWithTimeInterval:offsetDays*24*60*60 sinceDate:currentFetchedDate];
 						   [ds setEarliestDate:nextFetchedDate];
@@ -212,11 +212,19 @@
 							 [[NSUserDefaults standardUserDefaults] synchronize];
 						   }
 
-						   [wSelf endPostponingFetch];
 						   callback(nil);
+						 } trampoline:^(IRAsyncOperationInvoker callback) {
+						   NSCParameterAssert(![NSThread isMainThread]);
+						   callback();
+						 } callback:^(id results) {
+						   [wSelf endPostponingFetch];
+						   callback(results);
+						 } callbackTrampoline:^(IRAsyncOperationInvoker callback) {
+						   NSCParameterAssert(![NSThread isMainThread]);
+						   callback();
 						 }];
 						 
-						 for (NSOperation *operation in [wSelf.articleFetchOperationQueue operations]) {
+						 for (IRAsyncOperation *operation in [wSelf.articleFetchOperationQueue operations]) {
 						   [tailOp addDependency:operation];
 						 }
 						 
