@@ -118,7 +118,7 @@ static NSString *kWAContextViewCellIdentifier = @"ContextMenuItem";
   
   @{@"style": [NSNumber numberWithUnsignedInteger:WAWebpagesViewStyle],
   @"title": NSLocalizedString(@"SLIDING_MENU_TITLE_WEBS", @"Title for Web pages in the sliding menu"),
-  @"icon": [UIImage imageNamed:@"Webicon"],
+  @"icon": [UIImage imageNamed:@"WebIcon"],
   @"color": [UIColor colorWithRed:0.211f green:0.694f blue:0.749f alpha:1.0f]
   }
   ];
