@@ -358,8 +358,10 @@ static NSString *kWAContextViewCellIdentifier = @"ContextMenuItem";
 {
   NSString *barTitle = nil;
   UIColor *logoColor = [UIColor whiteColor];
+  UIImage *arrow = [UIImage imageNamed:@"WATinyArrowDown"];
   if (style == WAEventsViewStyle) {
     barTitle = NSLocalizedString(@"EVENTS_CONTROLLER_TITLE", @"Title for Events view");
+    arrow = [UIImage imageNamed:@"WATinyArrowDownWhite"];
   } else if (style == WAPhotosViewStyle) {
     barTitle = NSLocalizedString(@"PHOTOS_TITLE", @"in day view");
   } else if (style == WADocumentsViewStyle) {
@@ -377,8 +379,7 @@ static NSString *kWAContextViewCellIdentifier = @"ContextMenuItem";
   [logoButton setTitle:barTitle forState:UIControlStateNormal];
   logoButton.titleLabel.font = [UIFont boldSystemFontOfSize:17];
   
-  UIImage *arrow = [UIImage imageNamed:@"WATinyArrowDown"];
-  [logoButton setImage:[UIImage imageNamed:@"WATinyArrowDown"] forState:UIControlStateNormal];
+  [logoButton setImage:arrow forState:UIControlStateNormal];
   CGSize labelSize = [barTitle sizeWithFont:logoButton.titleLabel.font];
   logoButton.imageEdgeInsets = UIEdgeInsetsMake(0, labelSize.width + arrow.size.width, 0, -labelSize.width);
   logoButton.contentEdgeInsets = UIEdgeInsetsMake(5, 10, 5, 20);

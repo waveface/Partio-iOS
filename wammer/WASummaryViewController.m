@@ -79,7 +79,7 @@ static NSInteger const DEFAULT_EVENT_IMAGE_PAGING_SIZE = 3;
   self.backgroundImageView.clipsToBounds = YES;
   
   __weak WASummaryViewController *wSelf = self;
-  self.navigationItem.leftBarButtonItem = WABarButtonItem([UIImage imageNamed:@"menu"], @"", ^{
+  self.navigationItem.leftBarButtonItem = WABarButtonItem([UIImage imageNamed:@"menuWhite"], @"", ^{
     [wSelf.viewDeckController toggleLeftView];
   });
   self.navigationItem.rightBarButtonItem = WABarButtonItem([UIImage imageNamed:@"Cal"], @"", ^{
@@ -127,8 +127,10 @@ static NSInteger const DEFAULT_EVENT_IMAGE_PAGING_SIZE = 3;
   
   // Set scrollView's contentSize only works here if auto-layout is enabled
   // Ref: http://stackoverflow.com/questions/12619786/embed-imageview-in-scrollview-with-auto-layout-on-ios-6
-  [self resetContentSize];
-  
+  if (self.summaryScrollView.contentSize.width == 0) {
+    [self resetContentSize];
+  }
+
 }
 
 - (NSUInteger) supportedInterfaceOrientations {
@@ -377,15 +379,31 @@ static NSInteger const DEFAULT_EVENT_IMAGE_PAGING_SIZE = 3;
     [wSelf resetContentSize];
     [wSelf layoutSummaryAndEventPages];
 
-    // scroll to current summary page without animation
-    [wSelf scrollToCurrentSummaryPageAnimated:NO];
-    [wSelf scrollToCurrentEventPageAnimated:NO];
-    
     if (pagingSize > 0) {
-      [wSelf reloadEventPageImagesWithPagingSize:DEFAULT_EVENT_IMAGE_PAGING_SIZE];
+      WADaySummary *nextDaySummary = wSelf.daySummaries[@(wSelf.currentDaySummary.summaryIndex+1)];
+      if (nextDaySummary && wSelf.currentDaySummary != wSelf.firstDaySummary) {
+        // go to previous day
+        wSelf.currentDaySummary = nextDaySummary;
+        [wSelf scrollToCurrentSummaryPageAnimated:YES];
+        [wSelf scrollToCurrentEventPageAnimated:YES];
+      } else {
+        // app just launched
+        [wSelf reloadEventPageImagesWithPagingSize:DEFAULT_EVENT_IMAGE_PAGING_SIZE];
+      }
     } else {
-      [wSelf reloadEventPageImagesWithPagingSize:(-DEFAULT_EVENT_IMAGE_PAGING_SIZE)];
+      // go to next day, note that we have to change the visible rect first to make a pretty animation
+      [wSelf scrollToCurrentSummaryPageAnimated:NO];
+      [wSelf scrollToCurrentEventPageAnimated:NO];
+      WADaySummary *nextDaySummary = wSelf.daySummaries[@(wSelf.currentDaySummary.summaryIndex-1)];
+      if (nextDaySummary) {
+        wSelf.currentDaySummary = wSelf.daySummaries[@(wSelf.currentDaySummary.summaryIndex-1)];
+        [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+	[wSelf scrollToCurrentSummaryPageAnimated:YES];
+	[wSelf scrollToCurrentEventPageAnimated:YES];
+        }];
+      }
     }
+    
     [bezel dismissWithAnimation:WAOverlayBezelAnimationFade];
     wSelf.reloading = NO;
   });
@@ -760,7 +778,7 @@ static NSInteger const DEFAULT_EVENT_IMAGE_PAGING_SIZE = 3;
         WADaySummary *daySummary = self.daySummaries[@([self indexOfDay:[article.eventStartDate dayBegin]])];
         if (daySummary) {
 	[self.changedDaySummaries addObject:daySummary];
-	NSLog(@"article on date %@ updated", daySummary.date);
+//	NSLog(@"article on date %@ updated", daySummary.date);
         }
       }
       break;
