@@ -18,6 +18,9 @@
 - (WAUser *) mainUserInContext:(NSManagedObjectContext *)context;
 - (void) setMainUser:(WAUser *)user inContext:(NSManagedObjectContext *)context;
 
+- (NSDate *) earliestDate;
+- (void) setEarliestDate:(NSDate *)anEarliestDate;
+
 - (NSNumber *) minSequenceNumber;
 - (void) setMinSequenceNumber:(NSNumber *)seq;
 

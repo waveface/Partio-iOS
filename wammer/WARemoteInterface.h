@@ -47,3 +47,4 @@
 #import "WARemoteInterface+RemoteNotifications.h"
 #import "WARemoteInterface+Users.h"
 #import "WARemoteInterface+WebSocket.h"
+#import "WARemoteInterface+Summary.h"

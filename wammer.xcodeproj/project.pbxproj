@@ -71,7 +71,7 @@
 		13C17D6A169C0E8200F909E5 /* WAUser.m in Sources */ = {isa = PBXBuildFile; fileRef = 13C17D69169C0E8200F909E5 /* WAUser.m */; };
 		13C17D70169C143000F909E5 /* WAStation+WARemoteInterfaceEntitySyncing.m in Sources */ = {isa = PBXBuildFile; fileRef = 13C17D6F169C142F00F909E5 /* WAStation+WARemoteInterfaceEntitySyncing.m */; };
 		13CCDE65168C308A00962625 /* WAFetchManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 13CCDE64168C308A00962625 /* WAFetchManager.m */; };
-		13CCDE68168C33A400962625 /* WAFetchManager+RemoteArticleFetch.m in Sources */ = {isa = PBXBuildFile; fileRef = 13CCDE67168C33A400962625 /* WAFetchManager+RemoteArticleFetch.m */; };
+		13CCDE68168C33A400962625 /* WAFetchManager+RemoteIndexFetch.m in Sources */ = {isa = PBXBuildFile; fileRef = 13CCDE67168C33A400962625 /* WAFetchManager+RemoteIndexFetch.m */; };
 		13CCDE6B168C384300962625 /* WAFetchManager+RemoteCollectionFetch.m in Sources */ = {isa = PBXBuildFile; fileRef = 13CCDE6A168C384200962625 /* WAFetchManager+RemoteCollectionFetch.m */; };
 		13CCDE6E168C3C9300962625 /* WAFetchManager+RemoteFileMetadataFetch.m in Sources */ = {isa = PBXBuildFile; fileRef = 13CCDE6D168C3C9300962625 /* WAFetchManager+RemoteFileMetadataFetch.m */; };
 		13CCDE71168C466100962625 /* WAFile.m in Sources */ = {isa = PBXBuildFile; fileRef = 13CCDE70168C466100962625 /* WAFile.m */; };
@@ -359,6 +359,7 @@
 		80DAA57E16BA7C2400A4E352 /* TWSignedRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 80DAA57C16BA7C2400A4E352 /* TWSignedRequest.m */; };
 		80E5173C1670F3B200E1C3AD /* WALocation.m in Sources */ = {isa = PBXBuildFile; fileRef = 80E5173B1670F3B200E1C3AD /* WALocation.m */; };
 		80F42C0215F70EDF00C8A72B /* WAWebSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 809D428F15F5CE4300CB4F89 /* WAWebSocket.m */; };
+		80F5223316C0FAD8003A06D5 /* WARemoteInterface+Summary.m in Sources */ = {isa = PBXBuildFile; fileRef = 80F5223216C0FAD8003A06D5 /* WARemoteInterface+Summary.m */; };
 		80F800F615C2624C00132A96 /* IRAQ-Checkmark.png in Resources */ = {isa = PBXBuildFile; fileRef = 80F800F415C2624C00132A96 /* IRAQ-Checkmark.png */; };
 		80F800F715C2624C00132A96 /* IRAQ-Checkmark@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 80F800F515C2624C00132A96 /* IRAQ-Checkmark@2x.png */; };
 		80F957A116B8D21F005121A1 /* nointernetaccess.png in Resources */ = {isa = PBXBuildFile; fileRef = 80F9579F16B8D21F005121A1 /* nointernetaccess.png */; };
@@ -1085,8 +1086,8 @@
 		13C17D6F169C142F00F909E5 /* WAStation+WARemoteInterfaceEntitySyncing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WAStation+WARemoteInterfaceEntitySyncing.m"; sourceTree = "<group>"; };
 		13CCDE63168C308A00962625 /* WAFetchManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WAFetchManager.h; path = wammer/WAFetchManager.h; sourceTree = "<group>"; };
 		13CCDE64168C308A00962625 /* WAFetchManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WAFetchManager.m; path = wammer/WAFetchManager.m; sourceTree = "<group>"; };
-		13CCDE66168C33A300962625 /* WAFetchManager+RemoteArticleFetch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "WAFetchManager+RemoteArticleFetch.h"; path = "wammer/WAFetchManager+RemoteArticleFetch.h"; sourceTree = "<group>"; };
-		13CCDE67168C33A400962625 /* WAFetchManager+RemoteArticleFetch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "WAFetchManager+RemoteArticleFetch.m"; path = "wammer/WAFetchManager+RemoteArticleFetch.m"; sourceTree = "<group>"; };
+		13CCDE66168C33A300962625 /* WAFetchManager+RemoteIndexFetch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "WAFetchManager+RemoteIndexFetch.h"; path = "wammer/WAFetchManager+RemoteIndexFetch.h"; sourceTree = "<group>"; };
+		13CCDE67168C33A400962625 /* WAFetchManager+RemoteIndexFetch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "WAFetchManager+RemoteIndexFetch.m"; path = "wammer/WAFetchManager+RemoteIndexFetch.m"; sourceTree = "<group>"; };
 		13CCDE69168C384200962625 /* WAFetchManager+RemoteCollectionFetch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "WAFetchManager+RemoteCollectionFetch.h"; path = "wammer/WAFetchManager+RemoteCollectionFetch.h"; sourceTree = "<group>"; };
 		13CCDE6A168C384200962625 /* WAFetchManager+RemoteCollectionFetch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "WAFetchManager+RemoteCollectionFetch.m"; path = "wammer/WAFetchManager+RemoteCollectionFetch.m"; sourceTree = "<group>"; };
 		13CCDE6C168C3C9300962625 /* WAFetchManager+RemoteFileMetadataFetch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "WAFetchManager+RemoteFileMetadataFetch.h"; path = "wammer/WAFetchManager+RemoteFileMetadataFetch.h"; sourceTree = "<group>"; };
@@ -1436,6 +1437,8 @@
 		80E5173A1670F3B200E1C3AD /* WALocation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WALocation.h; sourceTree = "<group>"; };
 		80E5173B1670F3B200E1C3AD /* WALocation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WALocation.m; sourceTree = "<group>"; };
 		80F0B23116422C2B00BD3F0D /* WAModel 39.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WAModel 39.xcdatamodel"; sourceTree = "<group>"; };
+		80F5223116C0FAD8003A06D5 /* WARemoteInterface+Summary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WARemoteInterface+Summary.h"; sourceTree = "<group>"; };
+		80F5223216C0FAD8003A06D5 /* WARemoteInterface+Summary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WARemoteInterface+Summary.m"; sourceTree = "<group>"; };
 		80F800F415C2624C00132A96 /* IRAQ-Checkmark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "IRAQ-Checkmark.png"; sourceTree = "<group>"; };
 		80F800F515C2624C00132A96 /* IRAQ-Checkmark@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "IRAQ-Checkmark@2x.png"; sourceTree = "<group>"; };
 		80F9579F16B8D21F005121A1 /* nointernetaccess.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = nointernetaccess.png; path = Resources/nointernetaccess.png; sourceTree = "<group>"; };
@@ -2184,8 +2187,8 @@
 			children = (
 				13CCDE63168C308A00962625 /* WAFetchManager.h */,
 				13CCDE64168C308A00962625 /* WAFetchManager.m */,
-				13CCDE66168C33A300962625 /* WAFetchManager+RemoteArticleFetch.h */,
-				13CCDE67168C33A400962625 /* WAFetchManager+RemoteArticleFetch.m */,
+				13CCDE66168C33A300962625 /* WAFetchManager+RemoteIndexFetch.h */,
+				13CCDE67168C33A400962625 /* WAFetchManager+RemoteIndexFetch.m */,
 				13CCDE69168C384200962625 /* WAFetchManager+RemoteCollectionFetch.h */,
 				13CCDE6A168C384200962625 /* WAFetchManager+RemoteCollectionFetch.m */,
 				13CCDE6C168C3C9300962625 /* WAFetchManager+RemoteFileMetadataFetch.h */,
@@ -3147,6 +3150,8 @@
 				8002CDE815E5E92100D7BFF0 /* WARemoteInterface+Notification.m */,
 				80557BA715FDE38000336F3C /* WARemoteInterface+RemoteNotifications.h */,
 				80557BA815FDE38000336F3C /* WARemoteInterface+RemoteNotifications.m */,
+				80F5223116C0FAD8003A06D5 /* WARemoteInterface+Summary.h */,
+				80F5223216C0FAD8003A06D5 /* WARemoteInterface+Summary.m */,
 			);
 			name = "Base API Endpoint Interfacing";
 			sourceTree = "<group>";
@@ -4801,7 +4806,7 @@
 				803302421688521C00004891 /* WAFileAccessLog.m in Sources */,
 				802427091689E1AF002454A7 /* WACollection.m in Sources */,
 				13CCDE65168C308A00962625 /* WAFetchManager.m in Sources */,
-				13CCDE68168C33A400962625 /* WAFetchManager+RemoteArticleFetch.m in Sources */,
+				13CCDE68168C33A400962625 /* WAFetchManager+RemoteIndexFetch.m in Sources */,
 				13CCDE6B168C384300962625 /* WAFetchManager+RemoteCollectionFetch.m in Sources */,
 				13CCDE6E168C3C9300962625 /* WAFetchManager+RemoteFileMetadataFetch.m in Sources */,
 				13CCDE71168C466100962625 /* WAFile.m in Sources */,
@@ -4829,6 +4834,7 @@
 				80B1441116BA8479009A5FA9 /* OAuthCore.m in Sources */,
 				80B1441416BA8494009A5FA9 /* NSData+Base64.m in Sources */,
 				1329D5FB16BA54480095970E /* WAPhotoDay.m in Sources */,
+				80F5223316C0FAD8003A06D5 /* WARemoteInterface+Summary.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

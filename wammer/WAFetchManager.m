@@ -9,7 +9,7 @@
 #import "WAFetchManager.h"
 #import "IRRecurrenceMachine.h"
 #import "Foundation+IRAdditions.h"
-#import "WAFetchManager+RemoteArticleFetch.h"
+#import "WAFetchManager+RemoteIndexFetch.h"
 #import "WAFetchManager+RemoteCollectionFetch.h"
 #import "WAFetchManager+RemoteChangeFetch.h"
 #import "WAFetchManager+RemoteFileMetadataFetch.h"
@@ -33,7 +33,7 @@
   if (self) {
 
     self.currentDate = [NSDate date];
-
+	
     self.articleFetchOperationQueue = [[NSOperationQueue alloc] init];
     [self.articleFetchOperationQueue setMaxConcurrentOperationCount:1];
     
@@ -45,7 +45,7 @@
     self.recurrenceMachine.recurrenceInterval = 10;
 
     [self.recurrenceMachine addRecurringOperation:[self remoteCollectionFetchOperationPrototype]];
-    [self.recurrenceMachine addRecurringOperation:[self remoteArticleFetchOperationPrototype]];
+    [self.recurrenceMachine addRecurringOperation:[self remoteIndexFetchOperationPrototype]];
     [self.recurrenceMachine addRecurringOperation:[self remoteChangeFetchOperationPrototype]];
     [self.recurrenceMachine addRecurringOperation:[self remoteFileMetadataFetchOperationPrototype]];
 

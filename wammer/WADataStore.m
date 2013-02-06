@@ -16,6 +16,7 @@ NSString * const kLastContentSyncDateInTimeIntervalSince1970 = @"kLastContentSyn
 
 NSString * const kMinSequenceNumber = @"WAMinSequenceNumber";
 NSString * const kMaxSequenceNumber = @"WAMaxSequenceNumber";
+NSString * const kEarliestDate = @"WAEarliestDate";
 NSString * const kStorageQuota = @"WAStorageQuota";
 NSString * const kStorageUsage = @"WAStorageUsage";
 
@@ -130,6 +131,18 @@ NSString * const kStorageUsage = @"WAStorageUsage";
     [self setMetadata:nil forKey:kMainUserEntityURIString];
     
   }
+  
+}
+
+- (NSDate *) earliestDate {
+  
+  return [self metadataForKey:kEarliestDate];
+  
+}
+
+- (void) setEarliestDate:(NSDate*)anEarliestDate {
+  
+  [self setMetadata:anEarliestDate forKey:kEarliestDate];
   
 }
 
