@@ -49,7 +49,7 @@ typedef NS_ENUM(NSUInteger, WACollectionSortMode){
   [self.collectionView registerClass:[WACollectionViewCell class] forCellWithReuseIdentifier:kCollectionViewCellID];
   
   _refreshControl = [[UIRefreshControl alloc] initWithFrame:CGRectMake(0, -44, 320, 44)];
-  [_refreshControl addTarget:self action:@selector(refresh) forControlEvents:UIControlEventValueChanged];
+  [_refreshControl addTarget:self action:@selector(refreshAllCollectionMetas) forControlEvents:UIControlEventValueChanged];
   [self.collectionView addSubview:_refreshControl];
   
 }
@@ -151,7 +151,7 @@ typedef NS_ENUM(NSUInteger, WACollectionSortMode){
 }
 
 - (void)reloadCollection {
-  NSPredicate *allCollections = [NSPredicate predicateWithFormat:@"isHidden == FALSE"];
+  NSPredicate *allCollections = [NSPredicate predicateWithFormat:@"isHidden == FALSE AND files.@count > 0"];
   _fetchedResultsController = [WACollection MR_fetchAllSortedBy:(mode == WACollectionSortByName)? @"title": @"modificationDate"
                                                       ascending:(mode == WACollectionSortByName)? YES: NO
                                                   withPredicate:allCollections
