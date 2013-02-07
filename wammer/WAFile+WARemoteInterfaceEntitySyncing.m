@@ -445,8 +445,6 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
 	
         }
         
-        file.dirty = @NO;
-        
         NSError *error = nil;
         BOOL didSave = [context save:&error];
         NSCAssert1(didSave, @"Generated thumbnail uploaded but metadata is not saved correctly: %@", error);
@@ -475,8 +473,6 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
 	  file.resourceURL = [[file class] transformedValue:[@"/v3/attachments/view?object_id=" stringByAppendingFormat:@"%@", file.identifier] fromRemoteKeyPath:nil toLocalKeyPath:@"resourceURL"];
 	  
 	}
-	
-	file.dirty = @NO;
 	
 	NSError *error = nil;
 	BOOL didSave = [context save:&error];
