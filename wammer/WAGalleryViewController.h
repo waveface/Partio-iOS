@@ -20,6 +20,7 @@ extern NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI;
 @property (nonatomic, readwrite, retain) IRView *view;
 @property (nonatomic, readonly, assign) BOOL contextControlsShown;
 @property (nonatomic, readwrite, copy) void (^onDismiss)();
+@property (nonatomic, readwrite, copy) void (^onComplete)();
 
 - (id) initWithImageFiles:(NSArray *)files atIndex:(NSUInteger)index;
 - (void) setContextControlsHidden:(BOOL)willHide animated:(BOOL)animate completion:(void(^)(void))callback;

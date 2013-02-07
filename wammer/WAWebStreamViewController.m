@@ -17,6 +17,9 @@
 #import "WAWebPreviewViewController.h"
 #import "WAAppearance.h"
 #import "WACalendarPopupViewController_phone.h"
+#import "WAGalleryViewController.h"
+#import "WAAppearance.h"
+#import "UIKit+IRAdditions.h"
 
 @interface WAWebStreamViewController () <NSFetchedResultsControllerDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout>
 
@@ -369,14 +372,21 @@ CGFloat (^rowSpacingWeb) (UICollectionView *) = ^ (UICollectionView *collectionV
   WAFile *file = ((WAFileAccessLog*)self.webPages[indexPath.row]).file;
   NSAssert(file!=nil, @"Web page access log should refer to one WAFile");
 
-  WAWebPreviewViewController *webVC = [[WAWebPreviewViewController alloc] init];
-
-  webVC.urlString = file.webURL;
+  WAGalleryViewController *gallery = [[WAGalleryViewController alloc] initWithImageFiles:[file.pageElements array] atIndex:0];
+  __block WAGalleryViewController *bg = gallery;
+  gallery.onComplete = ^ {
+	IRBarButtonItem *webButton = WABarButtonItem([UIImage imageNamed:@"action"], @"", ^{
+	  WAWebPreviewViewController *webVC = [[WAWebPreviewViewController alloc] init];
+	  webVC.urlString = file.webURL;
+	  [bg.navigationController pushViewController:webVC animated:YES];
+	});
+	bg.navigationItem.rightBarButtonItem = webButton;
+  };
 
   WAWebStreamViewCell *cell = (WAWebStreamViewCell*)[collectionView cellForItemAtIndexPath:indexPath];
   UIColor *origColor = cell.backgroundColor;
   cell.backgroundColor = [UIColor lightGrayColor];
-  [self.navigationController pushViewController:webVC animated:YES];
+  [self.navigationController pushViewController:gallery animated:YES];
   cell.backgroundColor = origColor;
 	
 }

@@ -318,6 +318,9 @@ static NSString * kWAGalleryViewControllerKVOContext = @"WAGalleryViewController
 	
 	if (self.onViewDidAppear)
 		self.onViewDidAppear(animated);
+  
+  if (self.onComplete)
+	self.onComplete();
 
 }
 

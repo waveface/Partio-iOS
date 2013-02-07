@@ -200,6 +200,20 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
       }
       if (accessLogArray.count)
         returnedDictionary[@"accessLogs"] = accessLogArray;
+	  
+	  NSString *previewURIString = [incomingRepresentation valueForKeyPath:@"web_meta.preview_url"];
+	  NSString *urlPrefix = @"http://invalid.local";
+	  NSMutableArray *returnedArray = [NSMutableArray array];
+	  NSArray *thumbs = [incomingRepresentation valueForKeyPath:@"web_meta.thumbs"];
+	  if ([thumbs count]) {
+		for (NSDictionary *thumb in thumbs) {
+		  NSString *thumbnailURLString = [urlPrefix stringByAppendingFormat:@"%@%@", previewURIString, thumb[@"id"]];
+		  NSDictionary *pageElement = @{@"thumbnailURL": thumbnailURLString, @"page": thumb[@"id"]};
+		  [returnedArray addObject:pageElement];
+		}
+	  }
+	  returnedDictionary[@"pageElements"] = returnedArray;
+
     }
     
   } else if ([incomingFileType isEqualToString:@"doc"]) {
@@ -231,13 +245,13 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
         NSString *ownObjectID = [incomingRepresentation valueForKeyPath:@"object_id"];
         
         for (NSUInteger i = 0; i < numberOfPages; i++) {
-	NSURL *previewURL = [[NSURL URLWithString:@"http://invalid.local"] URLByAppendingPathComponent:@"v3/attachments/view"];
-	NSDictionary *parameters = @{@"object_id": ownObjectID, @"target": @"preview", @"page": @(i + 1)};
-	NSDictionary *pageElement = @{
-	@"thumbnailURL": [IRWebAPIRequestURLWithQueryParameters(previewURL, parameters) absoluteString],
-	@"page": @(i + 1)
-	};
-	[returnedArray addObject:pageElement];
+		  NSURL *previewURL = [[NSURL URLWithString:@"http://invalid.local"] URLByAppendingPathComponent:@"v3/attachments/view"];
+		  NSDictionary *parameters = @{@"object_id": ownObjectID, @"target": @"preview", @"page": @(i + 1)};
+		  NSDictionary *pageElement = @{
+								  @"thumbnailURL": [IRWebAPIRequestURLWithQueryParameters(previewURL, parameters) absoluteString],
+		  @"page": @(i + 1)
+		  };
+		  [returnedArray addObject:pageElement];
         }
         
         returnedDictionary[@"pageElements"] = returnedArray;
