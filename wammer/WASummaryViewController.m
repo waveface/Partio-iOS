@@ -340,6 +340,11 @@ static NSInteger const DEFAULT_EVENT_IMAGE_PAGING_SIZE = 3;
     return;
   }
 
+  // already at today, no need to load next days
+  if ([self.currentDaySummary.date isEqualToDate:[[NSDate date] dayBegin]] && toIndex == 0) {
+    return;
+  }
+
   self.reloading = YES;
 
   // init and display the first day summary while loading following day summaries
