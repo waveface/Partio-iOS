@@ -115,15 +115,18 @@ typedef NS_ENUM(NSUInteger, WACollectionSortMode){
     coverFile = coverFile.pageElements[0];
   }
   
-  [coverFile irObserve:@"thumbnailImage"
-               options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew
-               context:nil
-             withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
-					dispatch_async(dispatch_get_main_queue(), ^{
-					  ((WACollectionViewCell *)[aCollectionView cellForItemAtIndexPath:indexPath]).coverImage.image = toValue;
-					});
-             }];
-  
+  if (coverFile.thumbnailImage) {
+    cell.coverImage.image = coverFile.thumbnailImage;
+  } else {
+    [coverFile irObserve:@"thumbnailImage"
+                 options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew
+                 context:nil
+               withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
+                 dispatch_async(dispatch_get_main_queue(), ^{
+                   ((WACollectionViewCell *)[aCollectionView cellForItemAtIndexPath:indexPath]).coverImage.image = toValue;
+                 });
+               }];
+  }
   
   return (UICollectionViewCell *)cell;
 }
@@ -161,7 +164,7 @@ typedef NS_ENUM(NSUInteger, WACollectionSortMode){
                                                   withPredicate:allCollections
                                                         groupBy:nil
                                                        delegate:self
-																		inContext:[[WADataStore defaultStore] autoUpdatingMOC]];
+                                                      inContext:[[WADataStore defaultStore] autoUpdatingMOC]];
   
   NSString *title = (mode == WACollectionSortByName)?
   NSLocalizedString(@"By Name", @"Collection View Navigation Bar"):
