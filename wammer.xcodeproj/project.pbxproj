@@ -2676,7 +2676,7 @@
 				49320A35B57B404A94A27775 /* Pods-StreamTests.xcconfig */,
 			);
 			sourceTree = "<group>";
-			usesTabs = 1;
+			usesTabs = 0;
 		};
 		FF73A53F13D6C2CC00D54EC6 /* Products */ = {
 			isa = PBXGroup;
