@@ -88,6 +88,10 @@ typedef NS_ENUM(NSUInteger, WACollectionSortMode){
   // Dispose of any resources that can be recreated.
 }
 
+- (BOOL)shouldAutorotate {
+  return NO;
+}
+
 #pragma mark - Collection delegate
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
