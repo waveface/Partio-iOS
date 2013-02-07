@@ -358,18 +358,19 @@ static NSString *kWAContextViewCellIdentifier = @"ContextMenuItem";
 {
   NSString *barTitle = nil;
   UIColor *logoColor = [UIColor whiteColor];
-  UIImage *arrow = [UIImage imageNamed:@"WATinyArrowDown"];
+  UIImage *arrow = [UIImage imageNamed:@"WATinyArrowDownWhite"];
   if (style == WAEventsViewStyle) {
     barTitle = NSLocalizedString(@"EVENTS_CONTROLLER_TITLE", @"Title for Events view");
-    arrow = [UIImage imageNamed:@"WATinyArrowDownWhite"];
   } else if (style == WAPhotosViewStyle) {
     barTitle = NSLocalizedString(@"PHOTOS_TITLE", @"in day view");
   } else if (style == WADocumentsViewStyle) {
     barTitle = NSLocalizedString(@"DOCUMENTS_CONTROLLER_TITLE", @"Title for document view controller");
     logoColor = [UIColor colorWithRed:0.30f green:0.30f blue:0.30f alpha:1];
+    arrow = [UIImage imageNamed:@"WATinyArrowDown"];
   } else if (style == WAWebpagesViewStyle) {
     barTitle = NSLocalizedString(@"WEBPAGES_CONTROLLER_TITLE", @"Title for web pages view controller");
     logoColor = [UIColor colorWithRed:0.30f green:0.30f blue:0.30f alpha:1];
+    arrow = [UIImage imageNamed:@"WATinyArrowDown"];
   }
   
   UIButton *logoButton = [UIButton buttonWithType:UIButtonTypeCustom];
