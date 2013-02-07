@@ -372,23 +372,40 @@ CGFloat (^rowSpacingWeb) (UICollectionView *) = ^ (UICollectionView *collectionV
   WAFile *file = ((WAFileAccessLog*)self.webPages[indexPath.row]).file;
   NSAssert(file!=nil, @"Web page access log should refer to one WAFile");
 
-  WAGalleryViewController *gallery = [[WAGalleryViewController alloc] initWithImageFiles:[file.pageElements array] atIndex:0];
-  __block WAGalleryViewController *bg = gallery;
-  gallery.onComplete = ^ {
-	IRBarButtonItem *webButton = WABarButtonItem([UIImage imageNamed:@"action"], @"", ^{
-	  WAWebPreviewViewController *webVC = [[WAWebPreviewViewController alloc] init];
-	  webVC.urlString = file.webURL;
-	  [bg.navigationController pushViewController:webVC animated:YES];
-	});
-	bg.navigationItem.rightBarButtonItem = webButton;
-  };
+  if (file.pageElements.count) {
 
-  WAWebStreamViewCell *cell = (WAWebStreamViewCell*)[collectionView cellForItemAtIndexPath:indexPath];
-  UIColor *origColor = cell.backgroundColor;
-  cell.backgroundColor = [UIColor lightGrayColor];
-  [self.navigationController pushViewController:gallery animated:YES];
-  cell.backgroundColor = origColor;
+	WAGalleryViewController *gallery = [[WAGalleryViewController alloc] initWithImageFiles:[file.pageElements array] atIndex:0];
+	__block WAGalleryViewController *bg = gallery;
+	gallery.onComplete = ^ {
+	  IRBarButtonItem *webButton = WABarButtonItem([UIImage imageNamed:@"action"], @"", ^{
+		WAWebPreviewViewController *webVC = [[WAWebPreviewViewController alloc] init];
+		webVC.urlString = file.webURL;
+		[bg.navigationController pushViewController:webVC animated:YES];
+	  });
+	  bg.navigationItem.rightBarButtonItem = webButton;
+	};
 	
+	WAWebStreamViewCell *cell = (WAWebStreamViewCell*)[collectionView cellForItemAtIndexPath:indexPath];
+	UIColor *origColor = cell.backgroundColor;
+	cell.backgroundColor = [UIColor lightGrayColor];
+	[self.navigationController pushViewController:gallery animated:YES];
+	cell.backgroundColor = origColor;
+
+  } else {
+	
+	// we shouldn't have this kind of case, there will be at least one record in thumbs
+	WAWebPreviewViewController *webVC = [[WAWebPreviewViewController alloc] init];
+	webVC.urlString = file.webURL;
+	
+	WAWebStreamViewCell *cell = (WAWebStreamViewCell*)[collectionView cellForItemAtIndexPath:indexPath];
+	UIColor *origColor = cell.backgroundColor;
+	cell.backgroundColor = [UIColor lightGrayColor];
+	[self.navigationController pushViewController:webVC animated:YES];
+	cell.backgroundColor = origColor;
+	
+	
+  }
+  
 }
 
 #pragma mark - Target actions

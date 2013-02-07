@@ -208,6 +208,10 @@ static NSString * kWAGalleryViewControllerKVOContext = @"WAGalleryViewController
 	
 	[self.paginatedView.scrollView.panGestureRecognizer addTarget:self action:@selector(handlePan:)];
 
+  if (self.onComplete)
+	self.onComplete();
+
+
 	[[GAI sharedInstance].defaultTracker trackEventWithCategory:@"Gallery"
 																									 withAction:@"Enter gallery"
 																										withLabel:nil
@@ -319,9 +323,6 @@ static NSString * kWAGalleryViewControllerKVOContext = @"WAGalleryViewController
 	if (self.onViewDidAppear)
 		self.onViewDidAppear(animated);
   
-  if (self.onComplete)
-	self.onComplete();
-
 }
 
 - (void) viewWillDisappear:(BOOL)animated {
