@@ -127,9 +127,7 @@ static NSInteger const DEFAULT_EVENT_IMAGE_PAGING_SIZE = 3;
   
   // Set scrollView's contentSize only works here if auto-layout is enabled
   // Ref: http://stackoverflow.com/questions/12619786/embed-imageview-in-scrollview-with-auto-layout-on-ios-6
-  if (self.summaryScrollView.contentSize.width == 0) {
-    [self resetContentSize];
-  }
+  [self resetContentSize];
 
 }
 
@@ -340,6 +338,11 @@ static NSInteger const DEFAULT_EVENT_IMAGE_PAGING_SIZE = 3;
     return;
   }
 
+  // already at today, no need to load next days
+  if ([self.currentDaySummary.date isEqualToDate:[[NSDate date] dayBegin]] && toIndex == 0) {
+    return;
+  }
+
   self.reloading = YES;
 
   // init and display the first day summary while loading following day summaries
@@ -357,8 +360,11 @@ static NSInteger const DEFAULT_EVENT_IMAGE_PAGING_SIZE = 3;
 
   __weak WASummaryViewController *wSelf = self;
 
-  // delay 1 sec to wait for bounce animation finished
-  int64_t delayInSeconds = 1.0;
+  int64_t delayInSeconds = 0;
+  if (self.scrollingEventPage || self.scrollingSummaryPage) {
+    // delay 1 sec to wait for bounce animation finished
+    delayInSeconds = 1;
+  }
   dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
   dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
     NSDate *recentDay = [[NSDate date] dayBegin];
@@ -465,7 +471,7 @@ static NSInteger const DEFAULT_EVENT_IMAGE_PAGING_SIZE = 3;
   // In normal case, the size would be n leading days & 3n tailing days, depending on the scrolling direction.
   // Note that we load images reversely because the image display queue of event pages is a LIFO queue.
   if (pagingSize > 0) {
-    for (NSInteger idx = self.currentDaySummary.summaryIndex; idx <= self.currentDaySummary.summaryIndex+pagingSize; idx++) {
+    for (NSInteger idx = self.currentDaySummary.summaryIndex+pagingSize; idx >= self.currentDaySummary.summaryIndex; idx--) {
       WADaySummary *daySummary = self.daySummaries[@(idx)];
       if (daySummary) {
         [daySummary.eventPages enumerateObjectsWithOptions:NSEnumerationReverse usingBlock:^(WAEventPageView *eventPage, NSUInteger idx, BOOL *stop) {
@@ -480,7 +486,7 @@ static NSInteger const DEFAULT_EVENT_IMAGE_PAGING_SIZE = 3;
       }
     }
   } else {
-    for (NSInteger idx = self.currentDaySummary.summaryIndex; idx >= self.currentDaySummary.summaryIndex+pagingSize; idx--) {
+    for (NSInteger idx = self.currentDaySummary.summaryIndex+pagingSize; idx <= self.currentDaySummary.summaryIndex; idx++) {
       WADaySummary *daySummary = self.daySummaries[@(idx)];
       if (daySummary) {
         if (self.scrollingSummaryPage) {
