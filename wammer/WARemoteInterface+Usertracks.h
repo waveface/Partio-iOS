@@ -17,13 +17,4 @@
 //	changes can be nil
 //	continuation points to another date, which can be passed back to the base method for the next batch of objects
 
-
-- (void) retrieveChangesSince:(NSDate *)date inGroup:(NSString *)groupID onProgress:(void(^)(NSArray *changedArticleReps, NSDate *continuation))progressBlock onSuccess:(void(^)(NSDate *continuation))successBlock onFailure:(void(^)(NSError *error))failureBlock;
-
-//	Repeatedly calls progressBlock for every single article that has been changed
-//	Entity matches those returned by the Posts API
-
-//	continuation is also provided to avoid cases where the operation is prematurely terminated
-//	in which, without a continuation, things need to go from the beginning again
-
 @end
