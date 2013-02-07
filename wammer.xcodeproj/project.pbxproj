@@ -126,6 +126,7 @@
 		4B603C4E16C37D6C003692CB /* WAModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 4B603C4C16C37D6C003692CB /* WAModel.xcdatamodeld */; };
 		4B6C222215F6020C00C19A7B /* WAAssetsLibraryManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 136C170215F48E8E0066B289 /* WAAssetsLibraryManager.m */; };
 		4B75D6C516BBE31D00D267C9 /* CollectionsMalformat.json in Resources */ = {isa = PBXBuildFile; fileRef = 4B75D6C416BBE31D00D267C9 /* CollectionsMalformat.json */; };
+		4B78D1FD16C38F0B004C2532 /* WATinyArrowDown@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4B78D1FC16C38F0B004C2532 /* WATinyArrowDown@2x.png */; };
 		4B7FF980167994D700CC46BF /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FFB67956141E345C006F84E3 /* CoreText.framework */; };
 		4B8581AF15F798F900EE11AC /* Icon_beta.png in Resources */ = {isa = PBXBuildFile; fileRef = 4B8581AB15F798F900EE11AC /* Icon_beta.png */; };
 		4B8581B015F798F900EE11AC /* Icon_beta@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4B8581AC15F798F900EE11AC /* Icon_beta@2x.png */; };
@@ -1062,6 +1063,7 @@
 		4B52734315625B3500C6F55D /* ProviderIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ProviderIcon.png; path = external/WFPresentation/Source/ProviderIcon.png; sourceTree = "<group>"; };
 		4B603C4D16C37D6C003692CB /* WAModel 43.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WAModel 43.xcdatamodel"; sourceTree = "<group>"; };
 		4B75D6C416BBE31D00D267C9 /* CollectionsMalformat.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = CollectionsMalformat.json; path = UnitTests/CollectionsMalformat.json; sourceTree = SOURCE_ROOT; };
+		4B78D1FC16C38F0B004C2532 /* WATinyArrowDown@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "WATinyArrowDown@2x.png"; path = "Resources/WATinyArrowDown@2x.png"; sourceTree = "<group>"; };
 		4B8581AB15F798F900EE11AC /* Icon_beta.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Icon_beta.png; path = resources/Icon_beta.png; sourceTree = "<group>"; };
 		4B8581AC15F798F900EE11AC /* Icon_beta@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon_beta@2x.png"; path = "resources/Icon_beta@2x.png"; sourceTree = "<group>"; };
 		4B8581B315F7993100EE11AC /* Icon-72_beta.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon-72_beta.png"; path = "resources/Icon-72_beta.png"; sourceTree = "<group>"; };
@@ -3154,6 +3156,7 @@
 				FFCCDF4115B41B0000AEBB85 /* WATinyArrowDown.png */,
 				13A2FB3016C1080F00A717C9 /* WATinyArrowDownWhite.png */,
 				13A2FB3116C1080F00A717C9 /* WATinyArrowDownWhite@2x.png */,
+				4B78D1FC16C38F0B004C2532 /* WATinyArrowDown@2x.png */,
 				FFCCDF4515B41B0000AEBB85 /* WAUserGlyph.png */,
 				FFCCDF4615B41B0000AEBB85 /* WAUserGlyph@2x.png */,
 				133948C016C10F5C003D2616 /* WebIcon.png */,
@@ -3952,6 +3955,7 @@
 				13A2FB3316C1080F00A717C9 /* WATinyArrowDownWhite@2x.png in Resources */,
 				133948C216C10F5C003D2616 /* WebIcon.png in Resources */,
 				133948C316C10F5C003D2616 /* WebIcon@2x.png in Resources */,
+				4B78D1FD16C38F0B004C2532 /* WATinyArrowDown@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
