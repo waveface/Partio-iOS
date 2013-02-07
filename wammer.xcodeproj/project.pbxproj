@@ -123,6 +123,7 @@
 		4B4AA30C16564BEE00A04DDE /* NSDate+WAAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 80A13C73162071C4002880A9 /* NSDate+WAAdditions.m */; };
 		4B4AA30D16564BF000A04DDE /* NSDate+WAAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 80A13C73162071C4002880A9 /* NSDate+WAAdditions.m */; };
 		4B52734415625B3500C6F55D /* ProviderIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 4B52734315625B3500C6F55D /* ProviderIcon.png */; };
+		4B603C4E16C37D6C003692CB /* WAModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 4B603C4C16C37D6C003692CB /* WAModel.xcdatamodeld */; };
 		4B6C222215F6020C00C19A7B /* WAAssetsLibraryManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 136C170215F48E8E0066B289 /* WAAssetsLibraryManager.m */; };
 		4B75D6C516BBE31D00D267C9 /* CollectionsMalformat.json in Resources */ = {isa = PBXBuildFile; fileRef = 4B75D6C416BBE31D00D267C9 /* CollectionsMalformat.json */; };
 		4B7FF980167994D700CC46BF /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FFB67956141E345C006F84E3 /* CoreText.framework */; };
@@ -176,7 +177,6 @@
 		4BF8353F167727630031A363 /* WACollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B274E4D1675BFCC007406D3 /* WACollectionViewController.m */; };
 		7D0CDD01162E5A080027D35F /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D0CDCE7162E59DD0027D35F /* SenTestingKit.framework */; };
 		7D296DAA1643818000870747 /* libSocketRocket.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D6470A71642218800DBDEA6 /* libSocketRocket.a */; };
-		7D29702B1643BC2F00870747 /* WAModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = FFCD324114B997B70035C4F5 /* WAModel.xcdatamodeld */; };
 		7D71DDE21653569500456B52 /* PostWithEventTime.json in Resources */ = {isa = PBXBuildFile; fileRef = 7D71DDE11653569500456B52 /* PostWithEventTime.json */; };
 		7D71DE171653805C00456B52 /* WAPhotoStreamViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DB78A67164900E400E165E9 /* WAPhotoStreamViewCell.m */; };
 		7D857D54164250B80092CF5F /* libAQGridView.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D857D53164249DA0092CF5F /* libAQGridView.a */; };
@@ -476,7 +476,6 @@
 		FF586BB21519B52A00F308E2 /* WADefines.m in Sources */ = {isa = PBXBuildFile; fileRef = FF0B2A2C14388FF000309F0E /* WADefines.m */; };
 		FF586BB31519B52A00F308E2 /* WADefines+iOS.m in Sources */ = {isa = PBXBuildFile; fileRef = FFC6200D149CF03A0097C377 /* WADefines+iOS.m */; };
 		FF586BBA1519B59E00F308E2 /* libIRRecurrenceMachine.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FFA69461147F800400F46347 /* libIRRecurrenceMachine.a */; };
-		FF586C741519BB2A00F308E2 /* WAModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = FFCD324114B997B70035C4F5 /* WAModel.xcdatamodeld */; };
 		FF5ACC22152D917E00F1DF3D /* WANavigationState.m in Sources */ = {isa = PBXBuildFile; fileRef = FF5ACC21152D917E00F1DF3D /* WANavigationState.m */; };
 		FF6BCFA115AF78C60046AAC8 /* WALogInViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FF6BCFA015AF78C60046AAC8 /* WALogInViewController.storyboard */; };
 		FF6BCFA415AF78D00046AAC8 /* WALogInViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FF6BCFA315AF78D00046AAC8 /* WALogInViewController.m */; };
@@ -636,7 +635,6 @@
 		FFCCE04E15B41B0000AEBB85 /* WATinyArrowDown.png in Resources */ = {isa = PBXBuildFile; fileRef = FFCCDF4115B41B0000AEBB85 /* WATinyArrowDown.png */; };
 		FFCCE05215B41B0000AEBB85 /* WAUserGlyph.png in Resources */ = {isa = PBXBuildFile; fileRef = FFCCDF4515B41B0000AEBB85 /* WAUserGlyph.png */; };
 		FFCCE05315B41B0000AEBB85 /* WAUserGlyph@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FFCCDF4615B41B0000AEBB85 /* WAUserGlyph@2x.png */; };
-		FFCD324F14B997B80035C4F5 /* WAModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = FFCD324114B997B70035C4F5 /* WAModel.xcdatamodeld */; };
 		FFCD325214B9EA4D0035C4F5 /* WAFile+WAAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = FFCD325114B9EA4D0035C4F5 /* WAFile+WAAdditions.m */; };
 		FFCEF41215199ED10021AECB /* libIRDiscreteLayoutManager.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FFBA66EB140E12AD00BE5A1D /* libIRDiscreteLayoutManager.a */; };
 		FFCEF41415199F000021AECB /* WAArticle+WAAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = FF88E14414E8D7DC00B347A8 /* WAArticle+WAAdditions.m */; };
@@ -894,14 +892,12 @@
 		01BDA1BD7BB746E8B2A7004D /* Pods-UnitTests.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UnitTests.xcconfig"; path = "Pods/Pods-UnitTests.xcconfig"; sourceTree = SOURCE_ROOT; };
 		13089D2316885FB70086BEEB /* WASyncManager+PhotoImport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WASyncManager+PhotoImport.h"; sourceTree = "<group>"; };
 		13089D2416885FB70086BEEB /* WASyncManager+PhotoImport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WASyncManager+PhotoImport.m"; sourceTree = "<group>"; };
-		130AB5571678433E00CFFA5A /* WAModel 41.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WAModel 41.xcdatamodel"; sourceTree = "<group>"; };
 		130AB5591678480900CFFA5A /* WADocumentDay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WADocumentDay.h; sourceTree = "<group>"; };
 		130AB55A1678480900CFFA5A /* WADocumentDay.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WADocumentDay.m; sourceTree = "<group>"; };
 		130AB55C16785B2300CFFA5A /* WADocumentDay+WARemoteInterfaceEntitySyncing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WADocumentDay+WARemoteInterfaceEntitySyncing.h"; sourceTree = "<group>"; };
 		130AB55D16785B2300CFFA5A /* WADocumentDay+WARemoteInterfaceEntitySyncing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WADocumentDay+WARemoteInterfaceEntitySyncing.m"; sourceTree = "<group>"; };
 		130F09EE159C3C74001796D0 /* WABackoffHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WABackoffHandler.h; sourceTree = "<group>"; };
 		130F09EF159C3C74001796D0 /* WABackoffHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WABackoffHandler.m; sourceTree = "<group>"; };
-		1312968A161EC0B200540A86 /* WAModel 37.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WAModel 37.xcdatamodel"; sourceTree = "<group>"; };
 		131560411679CCC500C29BFA /* WADocumentDownloadingView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WADocumentDownloadingView.h; sourceTree = "<group>"; };
 		131560421679CCC500C29BFA /* WADocumentDownloadingView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WADocumentDownloadingView.m; sourceTree = "<group>"; };
 		131560441679CCE400C29BFA /* WADocumentDownloadingView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WADocumentDownloadingView.xib; sourceTree = "<group>"; };
@@ -909,7 +905,6 @@
 		131AEC2E1654DF0D000F9E74 /* WAStatusBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAStatusBar.m; sourceTree = "<group>"; };
 		131FCC8B164BC8B3008F71A8 /* WAFirstUseSignUpViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WAFirstUseSignUpViewController.h; path = wammer/WAFirstUseSignUpViewController.h; sourceTree = "<group>"; };
 		131FCC8C164BC8B3008F71A8 /* WAFirstUseSignUpViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WAFirstUseSignUpViewController.m; path = wammer/WAFirstUseSignUpViewController.m; sourceTree = "<group>"; };
-		131FDE2015F5D3F90073A182 /* WAModel 34.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WAModel 34.xcdatamodel"; sourceTree = "<group>"; };
 		13206264163F01D00064E770 /* WAFirstUseIntroView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = WAFirstUseIntroView.xib; path = wammer/WAFirstUseIntroView.xib; sourceTree = "<group>"; };
 		13217E3B164A0D3A0030C4A6 /* WALocalizedTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WALocalizedTableViewCell.h; sourceTree = "<group>"; };
 		13217E3C164A0D3A0030C4A6 /* WALocalizedTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WALocalizedTableViewCell.m; sourceTree = "<group>"; };
@@ -924,7 +919,6 @@
 		132D60321622B66500148829 /* WACache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WACache.m; sourceTree = "<group>"; };
 		133058DC1650ABE300C0283F /* WASyncManager+FileMetadataSync.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WASyncManager+FileMetadataSync.h"; sourceTree = "<group>"; };
 		133058DD1650ABE300C0283F /* WASyncManager+FileMetadataSync.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WASyncManager+FileMetadataSync.m"; sourceTree = "<group>"; };
-		1332417716156AB0005E31EA /* WAModel 36.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WAModel 36.xcdatamodel"; sourceTree = "<group>"; };
 		13328C7E16AFC22C00798C8A /* WASummaryPageView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WASummaryPageView.xib; sourceTree = "<group>"; };
 		13328C8016AFC4CC00798C8A /* WASummaryPageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WASummaryPageView.h; sourceTree = "<group>"; };
 		13328C8116AFC4CC00798C8A /* WASummaryPageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WASummaryPageView.m; sourceTree = "<group>"; };
@@ -936,7 +930,6 @@
 		133948C116C10F5C003D2616 /* WebIcon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "WebIcon@2x.png"; path = "Resources/WebIcon@2x.png"; sourceTree = "<group>"; };
 		133E8AF216798DD20075843C /* WADocumentPreviewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WADocumentPreviewController.h; sourceTree = "<group>"; };
 		133E8AF316798DD20075843C /* WADocumentPreviewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WADocumentPreviewController.m; sourceTree = "<group>"; };
-		1340DD171696BD36006DA543 /* WAModel 42.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WAModel 42.xcdatamodel"; sourceTree = "<group>"; };
 		1348F3ED169D49240078412B /* WAConnectionStatusViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAConnectionStatusViewController.h; sourceTree = "<group>"; };
 		1348F3EE169D49240078412B /* WAConnectionStatusViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAConnectionStatusViewController.m; sourceTree = "<group>"; };
 		1349AAEB163E9C4600D87A85 /* WAFirstUseIntroViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WAFirstUseIntroViewController.h; path = wammer/WAFirstUseIntroViewController.h; sourceTree = "<group>"; };
@@ -981,7 +974,6 @@
 		139E28FD15C2926700C8521A /* WALocalizedTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WALocalizedTextView.m; sourceTree = "<group>"; };
 		13A15F3C163FABD100F3FF30 /* WAFirstUseLogInViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WAFirstUseLogInViewController.h; path = wammer/WAFirstUseLogInViewController.h; sourceTree = "<group>"; };
 		13A15F3D163FABD100F3FF30 /* WAFirstUseLogInViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WAFirstUseLogInViewController.m; path = wammer/WAFirstUseLogInViewController.m; sourceTree = "<group>"; };
-		13A1BFB115A5728500526F39 /* WAModel 33.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WAModel 33.xcdatamodel"; sourceTree = "<group>"; };
 		13A2FB3016C1080F00A717C9 /* WATinyArrowDownWhite.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WATinyArrowDownWhite.png; path = Resources/WATinyArrowDownWhite.png; sourceTree = "<group>"; };
 		13A2FB3116C1080F00A717C9 /* WATinyArrowDownWhite@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "WATinyArrowDownWhite@2x.png"; path = "Resources/WATinyArrowDownWhite@2x.png"; sourceTree = "<group>"; };
 		13A318CB168CBD0000017E68 /* WAFetchManager+RemoteChangeFetch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "WAFetchManager+RemoteChangeFetch.h"; path = "wammer/WAFetchManager+RemoteChangeFetch.h"; sourceTree = "<group>"; };
@@ -1020,7 +1012,6 @@
 		13DE12FC1638142300757F7C /* WAFirstUsePhotoImportViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WAFirstUsePhotoImportViewController.m; path = wammer/WAFirstUsePhotoImportViewController.m; sourceTree = "<group>"; };
 		13DE12FE1638143A00757F7C /* WAFirstUseConnectServicesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WAFirstUseConnectServicesViewController.h; path = wammer/WAFirstUseConnectServicesViewController.h; sourceTree = "<group>"; };
 		13DE12FF1638143A00757F7C /* WAFirstUseConnectServicesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WAFirstUseConnectServicesViewController.m; path = wammer/WAFirstUseConnectServicesViewController.m; sourceTree = "<group>"; };
-		13EFF4C015FEC2E7007430EC /* WAModel 35.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WAModel 35.xcdatamodel"; sourceTree = "<group>"; };
 		13F472DC1682C11D002BDCC9 /* UIImage+WAAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIImage+WAAdditions.h"; path = "wammer/UIImage+WAAdditions.h"; sourceTree = "<group>"; };
 		13F472DD1682C11D002BDCC9 /* UIImage+WAAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIImage+WAAdditions.m"; path = "wammer/UIImage+WAAdditions.m"; sourceTree = "<group>"; };
 		13F472DF1682C5FD002BDCC9 /* ALAsset+WAAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "ALAsset+WAAdditions.h"; path = "wammer/ALAsset+WAAdditions.h"; sourceTree = "<group>"; };
@@ -1069,6 +1060,7 @@
 		4B362546156630D400F07032 /* IRRelativeDateFormatter+WAAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "IRRelativeDateFormatter+WAAdditions.h"; path = "wammer/IRRelativeDateFormatter+WAAdditions.h"; sourceTree = "<group>"; };
 		4B362547156630D400F07032 /* IRRelativeDateFormatter+WAAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "IRRelativeDateFormatter+WAAdditions.m"; path = "wammer/IRRelativeDateFormatter+WAAdditions.m"; sourceTree = "<group>"; };
 		4B52734315625B3500C6F55D /* ProviderIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ProviderIcon.png; path = external/WFPresentation/Source/ProviderIcon.png; sourceTree = "<group>"; };
+		4B603C4D16C37D6C003692CB /* WAModel 43.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WAModel 43.xcdatamodel"; sourceTree = "<group>"; };
 		4B75D6C416BBE31D00D267C9 /* CollectionsMalformat.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = CollectionsMalformat.json; path = UnitTests/CollectionsMalformat.json; sourceTree = SOURCE_ROOT; };
 		4B8581AB15F798F900EE11AC /* Icon_beta.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Icon_beta.png; path = resources/Icon_beta.png; sourceTree = "<group>"; };
 		4B8581AC15F798F900EE11AC /* Icon_beta@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon_beta@2x.png"; path = "resources/Icon_beta@2x.png"; sourceTree = "<group>"; };
@@ -1137,7 +1129,6 @@
 		7DB78A67164900E400E165E9 /* WAPhotoStreamViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAPhotoStreamViewCell.m; sourceTree = "<group>"; };
 		7DB78A6B164900FA00E165E9 /* WAPhotoStreamViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WAPhotoStreamViewCell.xib; sourceTree = "<group>"; };
 		7DC3AC0D1642203C009A8EA7 /* SocketRocket.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SocketRocket.xcodeproj; path = "external/WFPresentation/Bindings/Objective-C/../../../SocketRocket/SocketRocket.xcodeproj"; sourceTree = "<group>"; };
-		7DED9203164103BE00B9D778 /* WAModel 38.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WAModel 38.xcdatamodel"; sourceTree = "<group>"; };
 		8002CDE515E5E85600D7BFF0 /* libicucore.dylib */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "compiled.mach-o.dylib"; name = libicucore.dylib; path = usr/lib/libicucore.dylib; sourceTree = SDKROOT; };
 		8002CDE715E5E92100D7BFF0 /* WARemoteInterface+Notification.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WARemoteInterface+Notification.h"; sourceTree = "<group>"; };
 		8002CDE815E5E92100D7BFF0 /* WARemoteInterface+Notification.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WARemoteInterface+Notification.m"; sourceTree = "<group>"; };
@@ -1261,7 +1252,6 @@
 		80B1441016BA8478009A5FA9 /* OAuthCore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = OAuthCore.m; path = external/TWReverseAuth/Source/Vendor/ABOAuthCore/OAuthCore.m; sourceTree = "<group>"; };
 		80B1441216BA8494009A5FA9 /* NSData+Base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSData+Base64.h"; path = "external/TWReverseAuth/Source/Vendor/ABOAuthCore/NSData+Base64.h"; sourceTree = "<group>"; };
 		80B1441316BA8494009A5FA9 /* NSData+Base64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSData+Base64.m"; path = "external/TWReverseAuth/Source/Vendor/ABOAuthCore/NSData+Base64.m"; sourceTree = "<group>"; };
-		80B1CCE6164B6291009941E5 /* WAModel 40.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WAModel 40.xcdatamodel"; sourceTree = "<group>"; };
 		80B1CCF3164B6ECF009941E5 /* WAPeople+WARemoteInterfaceEntitySyncing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WAPeople+WARemoteInterfaceEntitySyncing.h"; sourceTree = "<group>"; };
 		80B1CCF4164B6ECF009941E5 /* WAPeople+WARemoteInterfaceEntitySyncing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WAPeople+WARemoteInterfaceEntitySyncing.m"; sourceTree = "<group>"; };
 		80B1CCF6164B6EE8009941E5 /* WATag+WARemoteInterfaceEntitySyncing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WATag+WARemoteInterfaceEntitySyncing.h"; sourceTree = "<group>"; };
@@ -1293,7 +1283,6 @@
 		80BC54D41680740D005D1967 /* WAWebpageDay+WARemoteInterfaceEntitySyncing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WAWebpageDay+WARemoteInterfaceEntitySyncing.m"; sourceTree = "<group>"; };
 		80BE6859161DC13800A37CEB /* WADayViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WADayViewController.h; sourceTree = "<group>"; };
 		80BE685A161DC13800A37CEB /* WADayViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WADayViewController.m; sourceTree = "<group>"; };
-		80BF4D6616B2616D00501E69 /* WAModel 43.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WAModel 43.xcdatamodel"; sourceTree = "<group>"; };
 		80BF4D6A16B28A7000501E69 /* WAArticle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAArticle.h; sourceTree = "<group>"; };
 		80BF4D6B16B28A7000501E69 /* WAArticle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAArticle.m; sourceTree = "<group>"; };
 		80C058421682FB4900BC46A7 /* libPods-UnitTests.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-UnitTests.a"; path = "Pods/build/Release-iphoneos/libPods-UnitTests.a"; sourceTree = "<group>"; };
@@ -1326,7 +1315,6 @@
 		80DAA57C16BA7C2400A4E352 /* TWSignedRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TWSignedRequest.m; path = external/TWReverseAuth/Source/Classes/TWSignedRequest.m; sourceTree = "<group>"; };
 		80E5173A1670F3B200E1C3AD /* WALocation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WALocation.h; sourceTree = "<group>"; };
 		80E5173B1670F3B200E1C3AD /* WALocation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WALocation.m; sourceTree = "<group>"; };
-		80F0B23116422C2B00BD3F0D /* WAModel 39.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WAModel 39.xcdatamodel"; sourceTree = "<group>"; };
 		80F5223116C0FAD8003A06D5 /* WARemoteInterface+Summary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WARemoteInterface+Summary.h"; sourceTree = "<group>"; };
 		80F5223216C0FAD8003A06D5 /* WARemoteInterface+Summary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WARemoteInterface+Summary.m"; sourceTree = "<group>"; };
 		80F800F415C2624C00132A96 /* IRAQ-Checkmark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "IRAQ-Checkmark.png"; sourceTree = "<group>"; };
@@ -1412,13 +1400,11 @@
 		FF0C7AB814987FCA00632EF3 /* WADataStore+FetchingConveniences.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WADataStore+FetchingConveniences.h"; sourceTree = "<group>"; };
 		FF0C7AB914987FCA00632EF3 /* WADataStore+FetchingConveniences.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WADataStore+FetchingConveniences.m"; sourceTree = "<group>"; };
 		FF0CC558158A41150034BD1B /* libxml2.dylib */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.dylib; path = usr/lib/libxml2.dylib; sourceTree = SDKROOT; };
-		FF113EC7155B4CAF00D5636D /* WAModel 26.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WAModel 26.xcdatamodel"; sourceTree = "<group>"; };
 		FF14885E14977E4500D8B0AD /* WATiledImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WATiledImageView.h; sourceTree = "<group>"; };
 		FF14885F14977E4500D8B0AD /* WATiledImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WATiledImageView.m; sourceTree = "<group>"; };
 		FF14886514978C5800D8B0AD /* WAAsyncImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAAsyncImageView.h; sourceTree = "<group>"; };
 		FF14886614978C5800D8B0AD /* WAAsyncImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAAsyncImageView.m; sourceTree = "<group>"; };
 		FF149FD61533100A0025B397 /* WARepresentedFilePickerViewController+CustomUI.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WARepresentedFilePickerViewController+CustomUI.m"; sourceTree = "<group>"; };
-		FF14FD10153313450013410C /* WAModel 21.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WAModel 21.xcdatamodel"; sourceTree = "<group>"; };
 		FF154657148E06D600352428 /* SystemConfiguration.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		FF1A10561462AD54004FD00D /* AVFoundation.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		FF1A10591462B0F0004FD00D /* CoreAudio.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
@@ -1436,10 +1422,8 @@
 		FF24B3B61552AC7100DD9379 /* libstdc++.dylib */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "compiled.mach-o.dylib"; name = "libstdc++.dylib"; path = "usr/lib/libstdc++.dylib"; sourceTree = SDKROOT; };
 		FF269E5813D84A420085E20A /* WAPaginationSlider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAPaginationSlider.h; sourceTree = "<group>"; };
 		FF269E5913D84A420085E20A /* WAPaginationSlider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAPaginationSlider.m; sourceTree = "<group>"; };
-		FF2851F3156236B300D7F5A4 /* WAModel 27.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WAModel 27.xcdatamodel"; sourceTree = "<group>"; };
 		FF315A43146A8DDB004DCB96 /* WAGroup+WARemoteInterfaceEntitySyncing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WAGroup+WARemoteInterfaceEntitySyncing.h"; sourceTree = "<group>"; };
 		FF315A44146A8DDB004DCB96 /* WAGroup+WARemoteInterfaceEntitySyncing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WAGroup+WARemoteInterfaceEntitySyncing.m"; sourceTree = "<group>"; };
-		FF3588E814EE4FC4005B452C /* WAModel 15.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WAModel 15.xcdatamodel"; sourceTree = "<group>"; };
 		FF3B37AF15B690FF00AE357A /* WAFacebookConnectionSwitch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WAFacebookConnectionSwitch.h; path = wammer/WAFacebookConnectionSwitch.h; sourceTree = "<group>"; };
 		FF3B37B015B690FF00AE357A /* WAFacebookConnectionSwitch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WAFacebookConnectionSwitch.m; path = wammer/WAFacebookConnectionSwitch.m; sourceTree = "<group>"; };
 		FF4050731573817A001A14DA /* WAGalleryImageScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAGalleryImageScrollView.h; sourceTree = "<group>"; };
@@ -1452,7 +1436,6 @@
 		FF4570E71488F381005B5905 /* WAFile+QuickLook.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WAFile+QuickLook.m"; sourceTree = "<group>"; };
 		FF460D0D149CF86400DB7F0B /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.7.sdk/System/Library/Frameworks/SystemConfiguration.framework; sourceTree = DEVELOPER_DIR; };
 		FF460DB7149D15F100DB7F0B /* wammer-OSX-Entitlements.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "wammer-OSX-Entitlements.plist"; sourceTree = "<group>"; };
-		FF485CC0156A364C00A6175E /* WAModel 29.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WAModel 29.xcdatamodel"; sourceTree = "<group>"; };
 		FF485CC9156A4DC700A6175E /* WAFile+CoreDataGeneratedPrimitiveAccessors.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "WAFile+CoreDataGeneratedPrimitiveAccessors.h"; sourceTree = "<group>"; };
 		FF485CCA156A4F4300A6175E /* WAFile+ImplicitBlobFulfillment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WAFile+ImplicitBlobFulfillment.h"; sourceTree = "<group>"; };
 		FF485CCB156A4F4300A6175E /* WAFile+ImplicitBlobFulfillment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WAFile+ImplicitBlobFulfillment.m"; sourceTree = "<group>"; };
@@ -1465,8 +1448,6 @@
 		FF4BDEA7156A52A000C105D5 /* WAFile+FilePaths.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WAFile+FilePaths.h"; sourceTree = "<group>"; };
 		FF4BDEA8156A52A000C105D5 /* WAFile+FilePaths.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WAFile+FilePaths.m"; sourceTree = "<group>"; };
 		FF4CCE94149A07B30049B83C /* InAppSettings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = InAppSettings.bundle; sourceTree = "<group>"; };
-		FF4D102214F6BAC60047D666 /* WAModel 16.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WAModel 16.xcdatamodel"; sourceTree = "<group>"; };
-		FF50D683156B73B50021011D /* WAModel 30.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WAModel 30.xcdatamodel"; sourceTree = "<group>"; };
 		FF51509B14835A030073386D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		FF51509D14835A0D0073386D /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		FF5401581534125700FFF871 /* WARepresentedFilePickerViewController+CustomUI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WARepresentedFilePickerViewController+CustomUI.h"; sourceTree = "<group>"; };
@@ -1494,8 +1475,6 @@
 		FF6D75D6152DC89F00D3EDB4 /* WARepresentedFilePickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WARepresentedFilePickerViewController.m; sourceTree = "<group>"; };
 		FF6FFCC313F86445000C582D /* WAGalleryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAGalleryViewController.h; sourceTree = "<group>"; };
 		FF6FFCC413F86445000C582D /* WAGalleryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAGalleryViewController.m; sourceTree = "<group>"; };
-		FF712131154588A000F64AB7 /* WAModel 25.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WAModel 25.xcdatamodel"; sourceTree = "<group>"; };
-		FF71262214FAB82F00BC2571 /* WAModel 17.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WAModel 17.xcdatamodel"; sourceTree = "<group>"; };
 		FF73351014A23B9C00813750 /* WARemoteInterface+Storages.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WARemoteInterface+Storages.h"; sourceTree = "<group>"; };
 		FF73351114A23B9C00813750 /* WARemoteInterface+Storages.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WARemoteInterface+Storages.m"; sourceTree = "<group>"; };
 		FF73A54213D6C2CC00D54EC6 /* UIKit.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
@@ -1537,7 +1516,6 @@
 		FF87FA4D149CF46D00B8207A /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.7.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
 		FF88370415B7E90800E6CD92 /* WARemoteInterface+SocialNetworks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WARemoteInterface+SocialNetworks.h"; sourceTree = "<group>"; };
 		FF88370515B7E90800E6CD92 /* WARemoteInterface+SocialNetworks.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WARemoteInterface+SocialNetworks.m"; sourceTree = "<group>"; };
-		FF88E14214E8D7A500B347A8 /* WAModel 14.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WAModel 14.xcdatamodel"; sourceTree = "<group>"; };
 		FF88E14314E8D7DC00B347A8 /* WAArticle+WAAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WAArticle+WAAdditions.h"; sourceTree = "<group>"; };
 		FF88E14414E8D7DC00B347A8 /* WAArticle+WAAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WAArticle+WAAdditions.m"; sourceTree = "<group>"; };
 		FF897D2D146A515C00DA7199 /* WARemoteInterfaceEntitySyncing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WARemoteInterfaceEntitySyncing.h; sourceTree = "<group>"; };
@@ -1566,7 +1544,6 @@
 		FF8F463E14691A7D00D65864 /* WAGroup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAGroup.m; sourceTree = "<group>"; };
 		FF91960B14AB09C400352E4D /* WADimmingView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WADimmingView.h; sourceTree = "<group>"; };
 		FF91960C14AB09C400352E4D /* WADimmingView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WADimmingView.m; sourceTree = "<group>"; };
-		FF92CC4E1511C964001E0A4F /* WAModel 19.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WAModel 19.xcdatamodel"; sourceTree = "<group>"; };
 		FF945EE8152D72510034D540 /* UIKit+IRAdditions.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = "UIKit+IRAdditions.bundle"; path = "external/IRFoundations/IRFoundations/Resources/UIKit+IRAdditions.bundle"; sourceTree = "<group>"; };
 		FF946021152D7EEF0034D540 /* WAAppearance.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAAppearance.h; sourceTree = "<group>"; };
 		FF946022152D7EF00034D540 /* WAAppearance.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAAppearance.m; sourceTree = "<group>"; };
@@ -1574,7 +1551,6 @@
 		FF97382413D821DF003D1722 /* WADataStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WADataStore.m; sourceTree = "<group>"; };
 		FF97384713D8278E003D1722 /* WARemoteInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WARemoteInterface.h; sourceTree = "<group>"; };
 		FF97384813D8278E003D1722 /* WARemoteInterface.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WARemoteInterface.m; sourceTree = "<group>"; };
-		FF9808C81592E27000462FCD /* WAModel 32.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WAModel 32.xcdatamodel"; sourceTree = "<group>"; };
 		FF98092F1592E4F700462FCD /* WADataStore+WASyncManagerAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WADataStore+WASyncManagerAdditions.h"; sourceTree = "<group>"; };
 		FF9809301592E4F700462FCD /* WADataStore+WASyncManagerAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WADataStore+WASyncManagerAdditions.m"; sourceTree = "<group>"; };
 		FF9809321592E59800462FCD /* WASyncManager+FullQualityFileSync.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WASyncManager+FullQualityFileSync.h"; sourceTree = "<group>"; };
@@ -1609,16 +1585,12 @@
 		FFB81F41148C8AA000FB11B1 /* WASingleFileViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WASingleFileViewController.xib; sourceTree = "<group>"; };
 		FFB81F46148C8B0700FB11B1 /* WASingleFileViewController~iphone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "WASingleFileViewController~iphone.xib"; sourceTree = "<group>"; };
 		FFBA66E2140E12AD00BE5A1D /* IRDiscreteLayoutManager.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = IRDiscreteLayoutManager.xcodeproj; path = external/IRDiscreteLayoutManager/IRDiscreteLayoutManager.xcodeproj; sourceTree = "<group>"; };
-		FFBEF14E153F551A00CF2203 /* WAModel 24.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WAModel 24.xcdatamodel"; sourceTree = "<group>"; };
 		FFBEF14F153F622E00CF2203 /* WAUser+WARemoteInterfaceEntitySyncing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WAUser+WARemoteInterfaceEntitySyncing.h"; sourceTree = "<group>"; };
 		FFBEF150153F622E00CF2203 /* WAUser+WARemoteInterfaceEntitySyncing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WAUser+WARemoteInterfaceEntitySyncing.m"; sourceTree = "<group>"; };
 		FFBEF152153F624500CF2203 /* WAUser+WAAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WAUser+WAAdditions.h"; sourceTree = "<group>"; };
 		FFBEF153153F624500CF2203 /* WAUser+WAAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WAUser+WAAdditions.m"; sourceTree = "<group>"; };
 		FFBEF15F153F664100CF2203 /* WAStorage+WARemoteInterfaceEntitySyncing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WAStorage+WARemoteInterfaceEntitySyncing.h"; sourceTree = "<group>"; };
 		FFBEF160153F664100CF2203 /* WAStorage+WARemoteInterfaceEntitySyncing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WAStorage+WARemoteInterfaceEntitySyncing.m"; sourceTree = "<group>"; };
-		FFC08608153D661A00A42C3B /* WAModel 23.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WAModel 23.xcdatamodel"; sourceTree = "<group>"; };
-		FFC097F1152F0F3500228E20 /* WAModel 20.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WAModel 20.xcdatamodel"; sourceTree = "<group>"; };
-		FFC0FCE8153C4A240058DC5C /* WAModel 22.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WAModel 22.xcdatamodel"; sourceTree = "<group>"; };
 		FFC62009149CF0310097C377 /* WADefines+Mac.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WADefines+Mac.h"; sourceTree = "<group>"; };
 		FFC6200A149CF0310097C377 /* WADefines+Mac.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WADefines+Mac.m"; sourceTree = "<group>"; };
 		FFC6200C149CF03A0097C377 /* WADefines+iOS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WADefines+iOS.h"; sourceTree = "<group>"; };
@@ -1646,7 +1618,6 @@
 		FFC813C213EB8F7E007B0683 /* AssetsLibrary.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
 		FFC81D0E14277F0300B41DB9 /* WAFauxRootNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAFauxRootNavigationController.h; sourceTree = "<group>"; };
 		FFC81D0F14277F0300B41DB9 /* WAFauxRootNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAFauxRootNavigationController.m; sourceTree = "<group>"; };
-		FFC9DB1A14FF45BD004197EC /* WAModel 18.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WAModel 18.xcdatamodel"; sourceTree = "<group>"; };
 		FFCCDE3F15B41B0000AEBB85 /* Default-Landscape.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default-Landscape.png"; path = "Resources/Default-Landscape.png"; sourceTree = "<group>"; };
 		FFCCDE4015B41B0000AEBB85 /* Default-Landscape@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default-Landscape@2x.png"; path = "Resources/Default-Landscape@2x.png"; sourceTree = "<group>"; };
 		FFCCDE4115B41B0000AEBB85 /* Default-Portrait.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default-Portrait.png"; path = "Resources/Default-Portrait.png"; sourceTree = "<group>"; };
@@ -1755,23 +1726,9 @@
 		FFCCDF4115B41B0000AEBB85 /* WATinyArrowDown.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WATinyArrowDown.png; path = Resources/WATinyArrowDown.png; sourceTree = "<group>"; };
 		FFCCDF4515B41B0000AEBB85 /* WAUserGlyph.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WAUserGlyph.png; path = Resources/WAUserGlyph.png; sourceTree = "<group>"; };
 		FFCCDF4615B41B0000AEBB85 /* WAUserGlyph@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "WAUserGlyph@2x.png"; path = "Resources/WAUserGlyph@2x.png"; sourceTree = "<group>"; };
-		FFCD324214B997B70035C4F5 /* WAModel 10.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WAModel 10.xcdatamodel"; sourceTree = "<group>"; };
-		FFCD324314B997B70035C4F5 /* WAModel 11.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WAModel 11.xcdatamodel"; sourceTree = "<group>"; };
-		FFCD324414B997B70035C4F5 /* WAModel 12.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WAModel 12.xcdatamodel"; sourceTree = "<group>"; };
-		FFCD324514B997B70035C4F5 /* WAModel 13.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WAModel 13.xcdatamodel"; sourceTree = "<group>"; };
-		FFCD324614B997B70035C4F5 /* WAModel 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WAModel 2.xcdatamodel"; sourceTree = "<group>"; };
-		FFCD324714B997B70035C4F5 /* WAModel 3.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WAModel 3.xcdatamodel"; sourceTree = "<group>"; };
-		FFCD324814B997B70035C4F5 /* WAModel 4.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WAModel 4.xcdatamodel"; sourceTree = "<group>"; };
-		FFCD324914B997B70035C4F5 /* WAModel 5.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WAModel 5.xcdatamodel"; sourceTree = "<group>"; };
-		FFCD324A14B997B70035C4F5 /* WAModel 6.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WAModel 6.xcdatamodel"; sourceTree = "<group>"; };
-		FFCD324B14B997B70035C4F5 /* WAModel 7.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WAModel 7.xcdatamodel"; sourceTree = "<group>"; };
-		FFCD324C14B997B70035C4F5 /* WAModel 8.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WAModel 8.xcdatamodel"; sourceTree = "<group>"; };
-		FFCD324D14B997B70035C4F5 /* WAModel 9.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WAModel 9.xcdatamodel"; sourceTree = "<group>"; };
-		FFCD324E14B997B70035C4F5 /* WAModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = WAModel.xcdatamodel; sourceTree = "<group>"; };
 		FFCD325014B9EA4D0035C4F5 /* WAFile+WAAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WAFile+WAAdditions.h"; sourceTree = "<group>"; };
 		FFCD325114B9EA4D0035C4F5 /* WAFile+WAAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WAFile+WAAdditions.m"; sourceTree = "<group>"; };
 		FFCFE0FB142111E100B9E6AF /* AOStream.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AOStream.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		FFD06A41156E206800021C55 /* WAModel 31.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WAModel 31.xcdatamodel"; sourceTree = "<group>"; };
 		FFD14F0514C5E24C0053116F /* Crashlytics.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = Crashlytics.framework; path = external/CrashlyticsSDK/Crashlytics.framework; sourceTree = "<group>"; };
 		FFD4F92E157E07F90027BF3F /* IRObjectQueue.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = IRObjectQueue.xcodeproj; path = external/IRObjectQueue/IRObjectQueue.xcodeproj; sourceTree = "<group>"; };
 		FFD5295515B94DCA008DA71B /* WALocalizedTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WALocalizedTextField.h; sourceTree = "<group>"; };
@@ -1783,7 +1740,6 @@
 		FFE6E483149E794900D88D52 /* WAProgressIndicatorWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAProgressIndicatorWindow.h; sourceTree = "<group>"; };
 		FFE6E484149E794900D88D52 /* WAProgressIndicatorWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAProgressIndicatorWindow.m; sourceTree = "<group>"; };
 		FFF3615D1563AF44004A4D57 /* WAUserInfoViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = WAUserInfoViewController.storyboard; sourceTree = "<group>"; };
-		FFF361BD1563C9C5004A4D57 /* WAModel 28.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WAModel 28.xcdatamodel"; sourceTree = "<group>"; };
 		FFF361BE1563CA10004A4D57 /* WAStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAStorage.h; sourceTree = "<group>"; };
 		FFF361BF1563CA10004A4D57 /* WAStorage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAStorage.m; sourceTree = "<group>"; };
 		FFF4EAC71410EFE2007F444B /* WAOverlayBezel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAOverlayBezel.h; sourceTree = "<group>"; };
@@ -2827,7 +2783,7 @@
 		FF97382213D821C1003D1722 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				FFCD324114B997B70035C4F5 /* WAModel.xcdatamodeld */,
+				4B603C4C16C37D6C003692CB /* WAModel.xcdatamodeld */,
 				FF4BDEAA156A534500C105D5 /* Additions */,
 				FF4BDEAB156A535300C105D5 /* Article */,
 				132D60341622B66F00148829 /* Cache */,
@@ -4195,7 +4151,6 @@
 				FF586BB01519B4FF00F308E2 /* WARemoteInterface+Storages.m in Sources */,
 				FF586BB21519B52A00F308E2 /* WADefines.m in Sources */,
 				FF586BB31519B52A00F308E2 /* WADefines+iOS.m in Sources */,
-				FF586C741519BB2A00F308E2 /* WAModel.xcdatamodeld in Sources */,
 				FF2EA24115384CAB003B965A /* WAOverlayBezel.m in Sources */,
 				FFBEF162153F664100CF2203 /* WAStorage+WARemoteInterfaceEntitySyncing.m in Sources */,
 				FF485CCD156A4F4300A6175E /* WAFile+ImplicitBlobFulfillment.m in Sources */,
@@ -4229,7 +4184,6 @@
 			files = (
 				8042891D16B2C77600796F09 /* WADefines.m in Sources */,
 				8042891C16B2C73100796F09 /* WACollection+RemoteOperations.m in Sources */,
-				7D29702B1643BC2F00870747 /* WAModel.xcdatamodeld in Sources */,
 				4BBEE91C164F5FC300D33EDB /* WADayViewTests.m in Sources */,
 				4BBEE91D164F5FC300D33EDB /* WAFacebookConnectionSwitchTest.m in Sources */,
 				7D71DE171653805C00456B52 /* WAPhotoStreamViewCell.m in Sources */,
@@ -4299,7 +4253,6 @@
 				FF73351214A23B9C00813750 /* WARemoteInterface+Storages.m in Sources */,
 				FF91960D14AB09C400352E4D /* WADimmingView.m in Sources */,
 				FF0024FF14B44D5400F54AAF /* WASyncManager.m in Sources */,
-				FFCD324F14B997B80035C4F5 /* WAModel.xcdatamodeld in Sources */,
 				FFCD325214B9EA4D0035C4F5 /* WAFile+WAAdditions.m in Sources */,
 				FF0505EF14C08900002EA455 /* WAButton.m in Sources */,
 				FF88E14514E8D7DC00B347A8 /* WAArticle+WAAdditions.m in Sources */,
@@ -4471,6 +4424,7 @@
 				80B1441416BA8494009A5FA9 /* NSData+Base64.m in Sources */,
 				1329D5FB16BA54480095970E /* WAPhotoDay.m in Sources */,
 				80F5223316C0FAD8003A06D5 /* WARemoteInterface+Summary.m in Sources */,
+				4B603C4E16C37D6C003692CB /* WAModel.xcdatamodeld in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5365,54 +5319,12 @@
 /* End XCConfigurationList section */
 
 /* Begin XCVersionGroup section */
-		FFCD324114B997B70035C4F5 /* WAModel.xcdatamodeld */ = {
+		4B603C4C16C37D6C003692CB /* WAModel.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
-				80BF4D6616B2616D00501E69 /* WAModel 43.xcdatamodel */,
-				1340DD171696BD36006DA543 /* WAModel 42.xcdatamodel */,
-				130AB5571678433E00CFFA5A /* WAModel 41.xcdatamodel */,
-				80B1CCE6164B6291009941E5 /* WAModel 40.xcdatamodel */,
-				80F0B23116422C2B00BD3F0D /* WAModel 39.xcdatamodel */,
-				7DED9203164103BE00B9D778 /* WAModel 38.xcdatamodel */,
-				1312968A161EC0B200540A86 /* WAModel 37.xcdatamodel */,
-				1332417716156AB0005E31EA /* WAModel 36.xcdatamodel */,
-				13EFF4C015FEC2E7007430EC /* WAModel 35.xcdatamodel */,
-				131FDE2015F5D3F90073A182 /* WAModel 34.xcdatamodel */,
-				13A1BFB115A5728500526F39 /* WAModel 33.xcdatamodel */,
-				FF9808C81592E27000462FCD /* WAModel 32.xcdatamodel */,
-				FFD06A41156E206800021C55 /* WAModel 31.xcdatamodel */,
-				FF50D683156B73B50021011D /* WAModel 30.xcdatamodel */,
-				FF485CC0156A364C00A6175E /* WAModel 29.xcdatamodel */,
-				FFF361BD1563C9C5004A4D57 /* WAModel 28.xcdatamodel */,
-				FF2851F3156236B300D7F5A4 /* WAModel 27.xcdatamodel */,
-				FF113EC7155B4CAF00D5636D /* WAModel 26.xcdatamodel */,
-				FF712131154588A000F64AB7 /* WAModel 25.xcdatamodel */,
-				FFBEF14E153F551A00CF2203 /* WAModel 24.xcdatamodel */,
-				FFC08608153D661A00A42C3B /* WAModel 23.xcdatamodel */,
-				FFC0FCE8153C4A240058DC5C /* WAModel 22.xcdatamodel */,
-				FF14FD10153313450013410C /* WAModel 21.xcdatamodel */,
-				FFC097F1152F0F3500228E20 /* WAModel 20.xcdatamodel */,
-				FF92CC4E1511C964001E0A4F /* WAModel 19.xcdatamodel */,
-				FFC9DB1A14FF45BD004197EC /* WAModel 18.xcdatamodel */,
-				FF71262214FAB82F00BC2571 /* WAModel 17.xcdatamodel */,
-				FF4D102214F6BAC60047D666 /* WAModel 16.xcdatamodel */,
-				FF3588E814EE4FC4005B452C /* WAModel 15.xcdatamodel */,
-				FF88E14214E8D7A500B347A8 /* WAModel 14.xcdatamodel */,
-				FFCD324514B997B70035C4F5 /* WAModel 13.xcdatamodel */,
-				FFCD324414B997B70035C4F5 /* WAModel 12.xcdatamodel */,
-				FFCD324314B997B70035C4F5 /* WAModel 11.xcdatamodel */,
-				FFCD324214B997B70035C4F5 /* WAModel 10.xcdatamodel */,
-				FFCD324D14B997B70035C4F5 /* WAModel 9.xcdatamodel */,
-				FFCD324C14B997B70035C4F5 /* WAModel 8.xcdatamodel */,
-				FFCD324B14B997B70035C4F5 /* WAModel 7.xcdatamodel */,
-				FFCD324A14B997B70035C4F5 /* WAModel 6.xcdatamodel */,
-				FFCD324914B997B70035C4F5 /* WAModel 5.xcdatamodel */,
-				FFCD324814B997B70035C4F5 /* WAModel 4.xcdatamodel */,
-				FFCD324714B997B70035C4F5 /* WAModel 3.xcdatamodel */,
-				FFCD324614B997B70035C4F5 /* WAModel 2.xcdatamodel */,
-				FFCD324E14B997B70035C4F5 /* WAModel.xcdatamodel */,
+				4B603C4D16C37D6C003692CB /* WAModel 43.xcdatamodel */,
 			);
-			currentVersion = 80BF4D6616B2616D00501E69 /* WAModel 43.xcdatamodel */;
+			currentVersion = 4B603C4D16C37D6C003692CB /* WAModel 43.xcdatamodel */;
 			path = WAModel.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
