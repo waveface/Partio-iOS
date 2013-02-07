@@ -127,9 +127,7 @@ static NSInteger const DEFAULT_EVENT_IMAGE_PAGING_SIZE = 3;
   
   // Set scrollView's contentSize only works here if auto-layout is enabled
   // Ref: http://stackoverflow.com/questions/12619786/embed-imageview-in-scrollview-with-auto-layout-on-ios-6
-  if (self.summaryScrollView.contentSize.width == 0) {
-    [self resetContentSize];
-  }
+  [self resetContentSize];
 
 }
 
