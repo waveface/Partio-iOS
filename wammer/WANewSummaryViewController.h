@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface WANewSummaryViewController : UIViewController <UICollectionViewDelegate>
+@interface WANewSummaryViewController : UIViewController <UICollectionViewDelegate, UICollectionViewDelegateFlowLayout>
 
 @property (weak, nonatomic) IBOutlet UIImageView *backgroundImageView;
 @property (weak, nonatomic) IBOutlet UIPageControl *eventPageControl;

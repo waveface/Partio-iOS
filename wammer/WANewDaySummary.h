@@ -16,4 +16,6 @@
 @property (nonatomic) NSUInteger numOfWebpages;
 @property (nonatomic) NSUInteger numOfEvents;
 
+- (void)reloadData;
+
 @end

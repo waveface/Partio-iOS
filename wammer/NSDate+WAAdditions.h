@@ -16,6 +16,10 @@
 - (NSDate *)dateOfFollowingMonth;
 - (NSDate *)dateOfPreviousWeek;
 - (NSDate *)dateOfFollowingWeek;
+- (NSDate *)dateOfPreviousDay;
+- (NSDate *)dateOfFollowingDay;
+- (NSDate *)dateOfPreviousNumOfDays:(NSUInteger)numOfDays;
+- (NSDate *)dateOfNextNumOfDays:(NSUInteger)numOfDays;
 
 - (NSString *) dayString;
 - (NSString *) yearString;

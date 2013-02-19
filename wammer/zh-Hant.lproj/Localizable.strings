@@ -313,6 +313,9 @@
 /* Title for alert view asking if user wants to disconnect her Google account */
 "GOOGLE_DISCONNECT_REQUEST_TITLE" = "確認取消Google同步";
 
+/* greeting text of day summary view */
+"GREETING_TEXT" = "你今天有 %d 個動態";
+
 /* Hello text in summary view */
 "HELLO_NAME_TEXT" = "哈囉, %@";
 
@@ -671,6 +674,18 @@
 
 /* Class = "IBUITextField"; placeholder = "PASSWORD_PLACEHOLDER"; ObjectID = "g7o-DD-LvS"; */
 "PASSWORD_PLACEHOLDER" = "••••••••";
+
+/* Class = "IBUILabel"; text = "GREETING_TEXT"; ObjectID = "132"; */
+"GREETING_TEXT" = "你今天有 %d 個動態";
+
+/* Class = "IBUILabel"; text = "OCT"; ObjectID = "134"; */
+"OCT" = "OCT";
+
+/* Class = "IBUILabel"; text = "DAY"; ObjectID = "135"; */
+"DAY" = "DAY";
+
+/* Class = "IBUILabel"; text = "WEEKDAY"; ObjectID = "136"; */
+"WEEKDAY" = "WEEKDAY";
 
 /* Class = "IBUITextField"; placeholder = "USERNAME_PLACEHOLDER"; ObjectID = "2Vk-4J-QH3"; */
 "USERNAME_PLACEHOLDER" = "me@example.com";

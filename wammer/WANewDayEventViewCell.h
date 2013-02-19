@@ -8,6 +8,16 @@
 
 #import <UIKit/UIKit.h>
 
-@interface WANewDayEventViewCell : UICollectionViewCell
+extern NSString *kWANewDayEventViewCellID;
+
+@class WANewDayEvent;
+@interface WANewDayEventViewCell : UICollectionViewCell <UICollectionViewDelegate, UICollectionViewDataSource>
+
+@property (weak, nonatomic) IBOutlet UILabel *startTimeLabel;
+@property (weak, nonatomic) IBOutlet UILabel *descriptionLabel;
+@property (weak, nonatomic) IBOutlet UIView *descriptionView;
+@property (weak, nonatomic) IBOutlet UICollectionView *imageCollectionView;
+
+@property (nonatomic, strong) WANewDayEvent *representingDayEvent;
 
 @end
