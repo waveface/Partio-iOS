@@ -63,6 +63,8 @@
 		139DC23416AD262500147F4D /* WASummaryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 139DC23316AD262500147F4D /* WASummaryViewController.m */; };
 		139DC23616AD269B00147F4D /* WASummaryViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 139DC23516AD269B00147F4D /* WASummaryViewController.xib */; };
 		139E28FE15C2926700C8521A /* WALocalizedTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 139E28FD15C2926700C8521A /* WALocalizedTextView.m */; };
+		13A0C3D416D4D56400835687 /* WANewDayEventMapViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 13A0C3D316D4D56400835687 /* WANewDayEventMapViewCell.m */; };
+		13A0C3E416D4D57F00835687 /* WANewDayEventMapViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 13A0C3E316D4D57F00835687 /* WANewDayEventMapViewCell.xib */; };
 		13A15F3E163FABD100F3FF30 /* WAFirstUseLogInViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 13A15F3D163FABD100F3FF30 /* WAFirstUseLogInViewController.m */; };
 		13A2FB3216C1080F00A717C9 /* WATinyArrowDownWhite.png in Resources */ = {isa = PBXBuildFile; fileRef = 13A2FB3016C1080F00A717C9 /* WATinyArrowDownWhite.png */; };
 		13A2FB3316C1080F00A717C9 /* WATinyArrowDownWhite@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 13A2FB3116C1080F00A717C9 /* WATinyArrowDownWhite@2x.png */; };
@@ -988,6 +990,9 @@
 		139DC23516AD269B00147F4D /* WASummaryViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WASummaryViewController.xib; sourceTree = "<group>"; };
 		139E28FC15C2926700C8521A /* WALocalizedTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WALocalizedTextView.h; sourceTree = "<group>"; };
 		139E28FD15C2926700C8521A /* WALocalizedTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WALocalizedTextView.m; sourceTree = "<group>"; };
+		13A0C3D216D4D56400835687 /* WANewDayEventMapViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WANewDayEventMapViewCell.h; sourceTree = "<group>"; };
+		13A0C3D316D4D56400835687 /* WANewDayEventMapViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WANewDayEventMapViewCell.m; sourceTree = "<group>"; };
+		13A0C3E316D4D57F00835687 /* WANewDayEventMapViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WANewDayEventMapViewCell.xib; sourceTree = "<group>"; };
 		13A15F3C163FABD100F3FF30 /* WAFirstUseLogInViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WAFirstUseLogInViewController.h; path = wammer/WAFirstUseLogInViewController.h; sourceTree = "<group>"; };
 		13A15F3D163FABD100F3FF30 /* WAFirstUseLogInViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WAFirstUseLogInViewController.m; path = wammer/WAFirstUseLogInViewController.m; sourceTree = "<group>"; };
 		13A2FB3016C1080F00A717C9 /* WATinyArrowDownWhite.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WATinyArrowDownWhite.png; path = Resources/WATinyArrowDownWhite.png; sourceTree = "<group>"; };
@@ -2074,6 +2079,9 @@
 				139A0DA616CCAB76001D380B /* WANewDayEventImageViewCell.h */,
 				139A0DA716CCAB76001D380B /* WANewDayEventImageViewCell.m */,
 				139A0DA916CCABB8001D380B /* WANewDayEventImageViewCell.xib */,
+				13A0C3D216D4D56400835687 /* WANewDayEventMapViewCell.h */,
+				13A0C3D316D4D56400835687 /* WANewDayEventMapViewCell.m */,
+				13A0C3E316D4D57F00835687 /* WANewDayEventMapViewCell.xib */,
 			);
 			name = "New Summary";
 			sourceTree = "<group>";
@@ -4020,6 +4028,7 @@
 				13F51F4E16C7F40600735D00 /* WANewDaySummaryViewCell.xib in Resources */,
 				13F51F5016C7F41B00735D00 /* WANewDayEventViewCell.xib in Resources */,
 				139A0DAA16CCABB8001D380B /* WANewDayEventImageViewCell.xib in Resources */,
+				13A0C3E416D4D57F00835687 /* WANewDayEventMapViewCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4501,6 +4510,7 @@
 				13F51F4C16C7F3BF00735D00 /* WANewDayEventViewCell.m in Sources */,
 				13C9F59D16C8F14D00E62A2E /* WANewDayEventImageViewFlowLayout.m in Sources */,
 				139A0DA816CCAB76001D380B /* WANewDayEventImageViewCell.m in Sources */,
+				13A0C3D416D4D56400835687 /* WANewDayEventMapViewCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

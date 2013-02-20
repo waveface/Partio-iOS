@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <MapKit/MapKit.h>
 
 typedef NS_ENUM(NSInteger, WADayEventStyle) {
   WADayEventStyleNone,
@@ -27,6 +28,8 @@ typedef NS_ENUM(NSInteger, WADayEventStyle) {
 @property (nonatomic, strong) NSString *eventDescription;
 @property (nonatomic, strong) NSDate *startTime;
 @property (nonatomic, strong) NSMutableArray *imageLoadingOperations;
+@property (nonatomic) CLLocationCoordinate2D eventLocation;
+@property (nonatomic, strong) NSMutableArray *checkins;
 
 - (id)initWithArticle:(WAArticle *)anArticle date:(NSDate *)aDate;
 - (void)loadImages;

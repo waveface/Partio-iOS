@@ -13,6 +13,8 @@
 #import "NSString+WAAdditions.h"
 #import <StackBluriOS/UIImage+StackBlur.h>
 #import "WAFile+ImplicitBlobFulfillment.h"
+#import "WALocation.h"
+#import "WAAnnotation.h"
 
 @interface WANewDayEvent ()
 
@@ -55,6 +57,23 @@
       [anArticle irObserve:@"text" options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:nil withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
         NSCParameterAssert([NSThread isMainThread]);
         wSelf.eventDescription = [[WAEventViewController attributedDescriptionStringForEvent:anArticle] string];
+      }];
+      [anArticle irObserve:@"location" options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:nil withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
+        NSCParameterAssert([NSThread isMainThread]);
+        WALocation *location = (WALocation *)toValue;
+        wSelf.eventLocation = CLLocationCoordinate2DMake([location.latitude floatValue], [location.longitude floatValue]);
+      }];
+      [anArticle irObserve:@"checkins.@count" options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:nil withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
+        NSCParameterAssert([NSThread isMainThread]);
+        wSelf.checkins = [NSMutableArray array];
+        for (WALocation *loc in anArticle.checkins) {
+          WAAnnotation *pin = [[WAAnnotation alloc] init];
+          pin.coordinate = CLLocationCoordinate2DMake([loc.latitude floatValue], [loc.longitude floatValue]);;
+          if (loc.name) {
+            pin.title = loc.name;
+          }
+          [wSelf.checkins addObject:pin];
+        }
       }];
       self.representingArticle = anArticle;
     } else {
@@ -144,7 +163,6 @@
   }
   self.imageLoadingOperations = nil;
   self.images = nil;
-  self.backgroundImage = nil;
 
 }
 
