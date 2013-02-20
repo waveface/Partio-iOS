@@ -100,17 +100,19 @@
     return;
   }
 
+  // note that all keys of self.images need to be strings so that changes to self.images are observable
   self.images = [NSMutableDictionary dictionary];
   self.imageLoadingOperations = [NSMutableArray array];
 
   if (self.style == WADayEventStyleNone) {
-    self.images[@0] = [[self class] sharedNoEventImage];
+    self.images[[@0 description]] = [[self class] sharedNoEventImage];
     self.backgroundImage = [[self class] sharedNoEventBackgroundImage];
     return;
   }
 
   __weak WANewDayEvent *wSelf = self;
-  for (NSUInteger idx = 0; idx < self.numOfImages; idx++) {
+  // load images in reverse order for LIFO display queue
+  for (NSInteger idx = self.numOfImages-1; idx >= 0; idx--) {
     WAFile *file = self.representingArticle.files[idx];
     [file setDisplayingSmallThumbnail:YES];
     [file irRemoveObserverBlocksForKeyPath:@"smallThumbnailFilePath"];
@@ -123,7 +125,8 @@
         // show xs thumbnail if small thumbnail does not exist
         UIImage *extraSmallThumbnailImage = [UIImage imageWithContentsOfFile:file.extraSmallThumbnailFilePath];
         if (extraSmallThumbnailImage) {
-          wSelf.images[@(idx)] = extraSmallThumbnailImage;
+          wSelf.images[[@(idx) description]] = extraSmallThumbnailImage;
+          wSelf.backgroundImage = [extraSmallThumbnailImage stackBlur:5];
         }
       }
       if (![[[wSelf class] sharedImageDisplayQueue] operationCount]) {
@@ -165,7 +168,7 @@
         return;
       }
       UIImage *decompressedImage = [aFilePath loadDecompressedImage];
-      wSelf.images[@(anIndex)] = decompressedImage;
+      wSelf.images[[@(anIndex) description]] = decompressedImage;
       if (anIndex == 0) {
         wSelf.backgroundImage = [decompressedImage stackBlur:5];
       }

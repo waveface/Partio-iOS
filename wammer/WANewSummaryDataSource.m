@@ -48,7 +48,7 @@
 
 }
 
-- (void)loadMoreDays:(NSUInteger)numOfDays since:(NSDate *)aDate {
+- (BOOL)loadMoreDays:(NSUInteger)numOfDays since:(NSDate *)aDate {
   
   if (![self.daySummaries count]) {
     WANewDaySummary *daySummary = [[WANewDaySummary alloc] init];
@@ -73,9 +73,13 @@
       [self.daySummaries addObject:daySummary];
     }
     self.lastDate = [[self.daySummaries lastObject] date];
+  } else {
+    return NO;
   }
   
   [self resetFetchedResultsControllers];
+
+  return YES;
 
 }
 
@@ -227,7 +231,7 @@
 - (NSIndexPath *)indexPathOfDaySummaryOfDate:(NSDate *)aDate {
 
   NSCalendar *calendar = [NSCalendar currentCalendar];
-  NSUInteger flags = NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit|NSTimeZoneCalendarUnit;
+  NSUInteger flags = NSDayCalendarUnit|NSTimeZoneCalendarUnit;
   NSDateComponents *dateComponents = [calendar components:flags fromDate:self.firstDate toDate:aDate options:0];
   NSInteger itemIndex = dateComponents.day;
 
@@ -290,32 +294,6 @@
   NSUInteger itemIndex = ([self.dayEvents count]-anIndex-1);
   WANewDayEvent *dayEvent = self.dayEvents[itemIndex];
   return dayEvent;
-
-}
-
-- (NSArray *)indexesOfDaySummariesFromDate:(NSDate *)fromDate toDate:(NSDate *)toDate {
-  
-  NSIndexPath *firstIndexPath = [self indexPathOfDaySummaryOfDate:fromDate];
-  NSIndexPath *lastIndexPath = [self indexPathOfDaySummaryOfDate:toDate];
-  NSAssert(firstIndexPath.section == lastIndexPath.section, @"All index paths are refering to section 0");
-  NSMutableArray *indexes = [NSMutableArray array];
-  for (NSInteger i = firstIndexPath.item; i <= lastIndexPath.item; i++) {
-    [indexes addObject:[NSIndexPath indexPathForItem:i inSection:0]];
-  }
-  return indexes;
-
-}
-
-- (NSArray *)indexesOfDayEventsFromDate:(NSDate *)fromDate toDate:(NSDate *)toDate {
-
-  NSIndexPath *firstIndexPath = [self indexPathOfFirstDayEventOfDate:fromDate];
-  NSIndexPath *lastIndexPath = [self indexPathOfLastDayEventOfDate:toDate];
-  NSAssert(firstIndexPath.section == lastIndexPath.section, @"All index paths are refering to section 0");
-  NSMutableArray *indexes = [NSMutableArray array];
-  for (NSInteger i = firstIndexPath.item; i <= lastIndexPath.item; i++) {
-    [indexes addObject:[NSIndexPath indexPathForItem:i inSection:0]];
-  }
-  return indexes;
 
 }
 

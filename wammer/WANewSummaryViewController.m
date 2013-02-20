@@ -33,11 +33,8 @@
 @property (nonatomic, strong) WANewDaySummary *currentDaySummary;
 @property (nonatomic) NSUInteger summaryPageIndex;
 @property (nonatomic) NSUInteger eventPageIndex;
-@property (nonatomic) BOOL scrollingSummaryPage;
-@property (nonatomic) BOOL scrollingEventPage;
-@property (nonatomic) BOOL reloading;
 @property (nonatomic) BOOL contextMenuOpened;
-@property (nonatomic) BOOL initializing;
+@property (nonatomic) BOOL reloading;
 @property (nonatomic) WADayViewSupportedStyle presentingStyle;
 
 @end
@@ -49,7 +46,6 @@
   [super viewDidLoad];
 
   self.presentingStyle = WAEventsViewStyle;
-  self.initializing = YES;
   
   self.backgroundImageView.clipsToBounds = YES;
   
@@ -110,49 +106,25 @@
 - (void)viewDidAppear:(BOOL)animated {
 
   [super viewDidAppear:animated];
-
-  if (self.initializing) {
-    NSDate *date = self.currentDaySummary.date;
+  
+  // load 20 future days if possible
+  NSDate *date = self.currentDaySummary.date;
+  if ([self.dataSource loadMoreDays:20 since:date]) {
+    [self.summaryCollectionView reloadData];
+    [self.eventCollectionView reloadData];
     NSIndexPath *daySummaryIndex = [self.dataSource indexPathOfDaySummaryOfDate:date];
     NSIndexPath *dayEventIndex = [self.dataSource indexPathOfFirstDayEventOfDate:date];
     [self scrollToDaySummaryAtIndexPath:daySummaryIndex animated:NO];
     [self scrollToDayEventAtIndexPath:dayEventIndex animated:NO];
-    self.initializing = NO;
   }
-
-}
-
-- (void)scrollToDaySummaryAtIndexPath:(NSIndexPath *)indexPath animated:(BOOL)animated {
-  
-  if (animated) {
-    [self.summaryCollectionView scrollToItemAtIndexPath:indexPath atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally animated:YES];
-  } else {
-    [self.summaryCollectionView scrollToItemAtIndexPath:indexPath atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally animated:NO];
-  }
-
-  self.summaryPageIndex = indexPath.item;
-  self.currentDaySummary = [self.dataSource daySummaryAtIndex:self.summaryPageIndex];
-
-}
-
-- (void)scrollToDayEventAtIndexPath:(NSIndexPath *)indexPath animated:(BOOL)animated {
-
-  if (animated) {
-    [self.eventCollectionView scrollToItemAtIndexPath:indexPath atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally animated:YES];
-  } else {
-    [self.eventCollectionView scrollToItemAtIndexPath:indexPath atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally animated:NO];
-  }
-
-  self.eventPageIndex = indexPath.item;
-  self.currentDayEvent = [self.dataSource dayEventAtIndex:self.eventPageIndex];
 
 }
 
 - (void)dealloc {
-
+  
   [self.currentDaySummary irRemoveObserverBlocksForKeyPath:@"numOfEvents"];
   [self.currentDayEvent irRemoveObserverBlocksForKeyPath:@"backgroundImage"];
-
+  
 }
 
 - (NSUInteger) supportedInterfaceOrientations {
@@ -169,6 +141,65 @@
   return YES;
   
 }
+
+- (void)setCurrentDaySummary:(WANewDaySummary *)currentDaySummary {
+  
+  [_currentDaySummary irRemoveObserverBlocksForKeyPath:@"numOfEvents"];
+
+  _currentDaySummary = currentDaySummary;
+
+  self.eventPageControl.numberOfPages = _currentDaySummary.numOfEvents;
+  
+  __weak WANewSummaryViewController *wSelf = self;
+  [_currentDaySummary irObserve:@"numOfEvents" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:nil withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
+    [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+      wSelf.eventPageControl.numberOfPages = [toValue integerValue];
+    }];
+  }];
+
+}
+
+- (void)setCurrentDayEvent:(WANewDayEvent *)currentDayEvent {
+
+  [_currentDayEvent irRemoveObserverBlocksForKeyPath:@"backgroundImage"];
+
+  _currentDayEvent = currentDayEvent;
+
+  [self.backgroundImageView addCrossFadeAnimationWithTargetImage:_currentDayEvent.backgroundImage];
+
+  __weak WANewSummaryViewController *wSelf = self;
+  [_currentDayEvent irObserve:@"backgroundImage" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:nil withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
+    [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+      [wSelf.backgroundImageView addCrossFadeAnimationWithTargetImage:toValue];
+    }];
+  }];
+
+}
+
+- (void)scrollToDaySummaryAtIndexPath:(NSIndexPath *)indexPath animated:(BOOL)animated {
+  
+  if (animated) {
+    [self.summaryCollectionView scrollToItemAtIndexPath:indexPath atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally animated:YES];
+  } else {
+    [self.summaryCollectionView scrollToItemAtIndexPath:indexPath atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally animated:NO];
+  }
+
+  self.summaryPageIndex = indexPath.item;
+
+}
+
+- (void)scrollToDayEventAtIndexPath:(NSIndexPath *)indexPath animated:(BOOL)animated {
+
+  if (animated) {
+    [self.eventCollectionView scrollToItemAtIndexPath:indexPath atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally animated:YES];
+  } else {
+    [self.eventCollectionView scrollToItemAtIndexPath:indexPath atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally animated:NO];
+  }
+
+  self.eventPageIndex = indexPath.item;
+
+}
+
 
 #pragma mark - Target actions
 
@@ -204,11 +235,9 @@
   if (self.contextMenuOpened) {
     [self.childViewControllers enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
       if ([obj isKindOfClass:[WAContextMenuViewController class]]) {
-        
         *stop = YES;
         WAContextMenuViewController *ddMenu = (WAContextMenuViewController*)obj;
         [ddMenu dismissContextMenu];
-        
       }
     }];
     return;
@@ -218,7 +247,6 @@
     
     [wSelf.navigationItem.leftBarButtonItem setEnabled:YES];
     [wSelf.navigationItem.rightBarButtonItem setEnabled:YES];
-    
     wSelf.contextMenuOpened = NO;
     
   }];
@@ -252,18 +280,101 @@
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
 
-  CGFloat pageWidth = scrollView.frame.size.width;
-  if (scrollView.contentOffset.x > scrollView.contentSize.width - pageWidth) {
-    [self.dataSource loadMoreDays:20 since:self.currentDaySummary.date];
-    NSDate *fromDate = [self.currentDaySummary.date dateOfPreviousDay];
-    NSDate *toDate = [self.currentDaySummary.date dateOfPreviousNumOfDays:20];
-    NSArray *daySummaryIndexes = [self.dataSource indexesOfDaySummariesFromDate:fromDate toDate:toDate];
-    NSArray *dayEventIndexes = [self.dataSource indexesOfDayEventsFromDate:fromDate toDate:toDate];
-    [self.summaryCollectionView insertItemsAtIndexPaths:daySummaryIndexes];
-    [self.eventCollectionView insertItemsAtIndexPaths:dayEventIndexes];
+  if (!scrollView.dragging && !scrollView.decelerating && !scrollView.tracking) {
     return;
   }
+  
+  if (self.reloading) {
+    return;
+  }
+
+  CGFloat pageWidth = scrollView.frame.size.width;
+  if (scrollView.contentOffset.x > scrollView.contentSize.width - pageWidth) {
+
+    self.reloading = YES;
+
+    WAOverlayBezel *bezel = [[WAOverlayBezel alloc] initWithStyle:WAActivityIndicatorBezelStyle];
+    [bezel show];
+
+    __weak WANewSummaryViewController *wSelf = self;
+
+    double delayInSeconds = 1.0;
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+      
+      [wSelf.dataSource loadMoreDays:20 since:wSelf.currentDaySummary.date];
+
+      [wSelf.summaryCollectionView reloadData];
+      [wSelf.eventCollectionView reloadData];
+
+      NSDate *previousDay = [wSelf.currentDaySummary.date dateOfPreviousDay];
+
+      NSIndexPath *daySummaryIndexPath = [wSelf.dataSource indexPathOfDaySummaryOfDate:previousDay];
+      wSelf.currentDaySummary = [wSelf.dataSource daySummaryAtIndex:daySummaryIndexPath.item];
+      [wSelf scrollToDaySummaryAtIndexPath:daySummaryIndexPath animated:YES];
+
+      NSIndexPath *dayEventIndexPath = [wSelf.dataSource indexPathOfFirstDayEventOfDate:previousDay];
+      wSelf.currentDayEvent = [wSelf.dataSource dayEventAtIndex:dayEventIndexPath.item];
+      [wSelf scrollToDayEventAtIndexPath:dayEventIndexPath animated:YES];
+
+      [bezel dismissWithAnimation:WAOverlayBezelAnimationFade];
+      
+      wSelf.reloading = NO;
+
+    });
+    
+    return;
+  }
+
   if (scrollView.contentOffset.x < 0) {
+
+    self.reloading = YES;
+    
+    WAOverlayBezel *bezel = [[WAOverlayBezel alloc] initWithStyle:WAActivityIndicatorBezelStyle];
+    [bezel show];
+
+    __weak WANewSummaryViewController *wSelf = self;
+
+    double delayInSeconds = 1.0;
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+
+      [wSelf.dataSource loadMoreDays:20 since:wSelf.currentDaySummary.date];
+
+      [wSelf.summaryCollectionView reloadData];
+      [wSelf.eventCollectionView reloadData];
+
+      NSIndexPath *daySummaryIndexPath = [wSelf.dataSource indexPathOfDaySummaryOfDate:wSelf.currentDaySummary.date];
+      [wSelf scrollToDaySummaryAtIndexPath:daySummaryIndexPath animated:NO];
+      NSIndexPath *dayEventIndexPath = [wSelf.dataSource indexPathOfFirstDayEventOfDate:wSelf.currentDaySummary.date];
+      [wSelf scrollToDayEventAtIndexPath:dayEventIndexPath animated:NO];
+
+      [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+
+        NSDate *followingDay = [wSelf.currentDaySummary.date dateOfFollowingDay];
+
+        NSIndexPath *daySummaryIndexPath = [wSelf.dataSource indexPathOfDaySummaryOfDate:followingDay];
+        wSelf.currentDaySummary = [wSelf.dataSource daySummaryAtIndex:daySummaryIndexPath.item];
+        [wSelf scrollToDaySummaryAtIndexPath:daySummaryIndexPath animated:YES];
+
+        if (scrollView == wSelf.summaryCollectionView) {
+          NSIndexPath *dayEventIndexPath = [wSelf.dataSource indexPathOfFirstDayEventOfDate:followingDay];
+          wSelf.currentDayEvent = [wSelf.dataSource dayEventAtIndex:dayEventIndexPath.item];
+          [wSelf scrollToDayEventAtIndexPath:dayEventIndexPath animated:YES];
+        } else {
+          NSIndexPath *dayEventIndexPath = [wSelf.dataSource indexPathOfLastDayEventOfDate:followingDay];
+          wSelf.currentDayEvent = [wSelf.dataSource dayEventAtIndex:dayEventIndexPath.item];
+          [wSelf scrollToDayEventAtIndexPath:dayEventIndexPath animated:YES];
+        }
+
+        [bezel dismissWithAnimation:WAOverlayBezelAnimationFade];
+        
+        wSelf.reloading = NO;
+
+      }];
+
+    });
+    
     return;
   }
   
@@ -271,83 +382,42 @@
   
   if (scrollView == self.summaryCollectionView) {
 
-    // scroll event scrollview only if user scrolls the summary scrollview manually
-    if (self.reloading || self.scrollingEventPage) {
-      return;
-    }
-    
     if (self.summaryPageIndex != pageIndex) {
       
       self.summaryPageIndex = pageIndex;
 
-      __weak WANewSummaryViewController *wSelf = self;
-      
-      [self.currentDaySummary irRemoveObserverBlocksForKeyPath:@"numOfEvents"];
-      WANewDaySummary *daySummary = [self.dataSource daySummaryAtIndex:self.summaryPageIndex];
-      self.eventPageControl.numberOfPages = daySummary.numOfEvents;
-      self.eventPageControl.currentPage = 0;
-      [daySummary irObserve:@"numOfEvents" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:nil withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
-        [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-          wSelf.eventPageControl.numberOfPages = [toValue integerValue];
-        }];
-      }];
-      self.currentDaySummary = daySummary;
+      self.currentDaySummary = [self.dataSource daySummaryAtIndex:self.summaryPageIndex];
 
-      [self.currentDayEvent irRemoveObserverBlocksForKeyPath:@"backgroundImage"];
-      NSDate *date = [self.dataSource dateOfDaySummaryAtIndex:pageIndex];
-      NSIndexPath *eventIndexPath = [self.dataSource indexPathOfFirstDayEventOfDate:date];
+      NSIndexPath *eventIndexPath = [self.dataSource indexPathOfFirstDayEventOfDate:self.currentDaySummary.date];
+      self.currentDayEvent = [self.dataSource dayEventAtIndex:eventIndexPath.item];
+
       [self scrollToDayEventAtIndexPath:eventIndexPath animated:YES];
-      [self.backgroundImageView addCrossFadeAnimationWithTargetImage:self.currentDayEvent.backgroundImage];
-      [self.currentDayEvent irObserve:@"backgroundImage" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:nil withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
-        [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-          [wSelf.backgroundImageView addCrossFadeAnimationWithTargetImage:toValue];
-        }];
-      }];
 
     }
     
   } else {
-    
-    // scroll summary scrollview only if user scrolls the event scrollview manually
-    if (self.reloading || self.scrollingSummaryPage) {
-      return;
-    }
     
     if (self.eventPageIndex != pageIndex) {
       
       self.eventPageControl.currentPage += (pageIndex-self.eventPageIndex);
       self.eventPageIndex = pageIndex;
       
-      __weak WANewSummaryViewController *wSelf = self;
-
-      [self.currentDayEvent irRemoveObserverBlocksForKeyPath:@"backgroundImage"];
-      WANewDayEvent *dayEvent = [self.dataSource dayEventAtIndex:self.eventPageIndex];
-      [self.backgroundImageView addCrossFadeAnimationWithTargetImage:dayEvent.backgroundImage];
-      [dayEvent irObserve:@"backgroundImage" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:nil withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
-        [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-          [wSelf.backgroundImageView addCrossFadeAnimationWithTargetImage:toValue];
-        }];
-      }];
-      self.currentDayEvent = dayEvent;
+      self.currentDayEvent = [self.dataSource dayEventAtIndex:self.eventPageIndex];
 
       NSDate *eventDate = [self.dataSource dateOfDayEventAtIndex:pageIndex];
       NSDate *summaryDate = [self.dataSource dateOfDaySummaryAtIndex:self.summaryPageIndex];
+
       if ([eventDate compare:summaryDate] != NSOrderedSame) {
         
-        [self.currentDaySummary irRemoveObserverBlocksForKeyPath:@"numOfEvents"];
         NSIndexPath *summaryIndexPath = [self.dataSource indexPathOfDaySummaryOfDate:eventDate];
+        self.currentDaySummary = [self.dataSource daySummaryAtIndex:summaryIndexPath.item];
+
         [self scrollToDaySummaryAtIndexPath:summaryIndexPath animated:YES];
-        self.eventPageControl.numberOfPages = self.currentDaySummary.numOfEvents;
-        [self.currentDaySummary irObserve:@"numOfEvents" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:nil withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
-          [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-            wSelf.eventPageControl.numberOfPages = [toValue integerValue];
-          }];
-        }];
         
         if ([eventDate compare:summaryDate] == NSOrderedAscending) {
           self.eventPageControl.currentPage = 0;
         } else {
-          self.eventPageControl.currentPage = wSelf.eventPageControl.numberOfPages-1;
+          self.eventPageControl.currentPage = self.eventPageControl.numberOfPages-1;
         }
         
       }      
@@ -356,26 +426,6 @@
 
   }
 
-}
-
-- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
-  
-  if (scrollView == self.summaryCollectionView) {
-    self.scrollingSummaryPage = YES;
-  } else {
-    self.scrollingEventPage = YES;
-  }
-  
-}
-
-- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
-  
-  if (scrollView == self.summaryCollectionView) {
-    self.scrollingSummaryPage = NO;
-  } else {
-    self.scrollingEventPage = NO;
-  }
-  
 }
 
 #pragma mark - UICollectionView FlowLayout delegates
@@ -412,27 +462,8 @@
   self.summaryCollectionView.dataSource = self.dataSource;
   self.eventCollectionView.dataSource = self.dataSource;
 
-  __weak WANewSummaryViewController *wSelf = self;
-
-  [self.currentDaySummary irRemoveObserverBlocksForKeyPath:@"numOfEvents"];
   self.currentDaySummary = [self.dataSource daySummaryAtIndex:0];
-  self.eventPageControl.numberOfPages = self.currentDaySummary.numOfEvents;
-  [self.currentDaySummary irObserve:@"numOfEvents" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:nil withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
-    [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-      wSelf.eventPageControl.numberOfPages = [toValue integerValue];
-    }];
-  }];
-
-  [self.currentDayEvent irRemoveObserverBlocksForKeyPath:@"backgroundImage"];
   self.currentDayEvent = [self.dataSource dayEventAtIndex:0];
-  [self.backgroundImageView addCrossFadeAnimationWithTargetImage:self.currentDayEvent.backgroundImage];
-  [self.currentDayEvent irObserve:@"backgroundImage" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:nil withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
-    [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-      [wSelf.backgroundImageView addCrossFadeAnimationWithTargetImage:toValue];
-    }];
-  }];
-
-  [self.dataSource loadMoreDays:20 since:date];
 
   [self.summaryCollectionView reloadData];
   [self.eventCollectionView reloadData];

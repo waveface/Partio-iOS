@@ -15,7 +15,7 @@
 @property (nonatomic, weak) UICollectionView *eventCollectionView;
 
 - (id)initWithDate:(NSDate *)aDate;
-- (void)loadMoreDays:(NSUInteger)numOfDays since:(NSDate *)aDate;
+- (BOOL)loadMoreDays:(NSUInteger)numOfDays since:(NSDate *)aDate;
 - (NSIndexPath *)indexPathOfFirstDayEventOfDate:(NSDate *)aDate;
 - (NSIndexPath *)indexPathOfLastDayEventOfDate:(NSDate *)aDate;
 - (NSIndexPath *)indexPathOfDaySummaryOfDate:(NSDate *)aDate;
@@ -23,7 +23,5 @@
 - (NSDate *)dateOfDayEventAtIndex:(NSUInteger)anIndex;
 - (WANewDaySummary *)daySummaryAtIndex:(NSUInteger)anIndex;
 - (WANewDayEvent *)dayEventAtIndex:(NSUInteger)anIndex;
-- (NSArray *)indexesOfDaySummariesFromDate:(NSDate *)fromDate toDate:(NSDate *)toDate;
-- (NSArray *)indexesOfDayEventsFromDate:(NSDate *)fromDate toDate:(NSDate *)toDate;
 
 @end

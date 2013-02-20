@@ -48,15 +48,17 @@ NSString *kWANewDayEventViewCellID = @"NewDayEventViewCell";
   self.startTimeLabel.text = [[[self class] sharedDateFormatter] stringFromDate:representingDayEvent.startTime];
   self.descriptionLabel.text = representingDayEvent.eventDescription;
 
+  __weak WANewDayEventViewCell *wSelf = self;
+
   [_representingDayEvent irObserve:@"startTime" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:nil withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
     [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-      self.startTimeLabel.text = [[[self class] sharedDateFormatter] stringFromDate:toValue];
+      wSelf.startTimeLabel.text = [[[wSelf class] sharedDateFormatter] stringFromDate:toValue];
     }];
   }];
   
   [_representingDayEvent irObserve:@"eventDescription" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:nil withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
     [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-      self.descriptionLabel.text = toValue;
+      wSelf.descriptionLabel.text = toValue;
     }];
   }];
 
@@ -134,8 +136,8 @@ NSString *kWANewDayEventViewCellID = @"NewDayEventViewCell";
     } else {
       cell.imageView.contentMode = UIViewContentModeScaleAspectFill;
     }
-    cell.imageView.image = self.representingDayEvent.images[@(indexPath.row)];
-    [self.representingDayEvent.images irObserve:[@(indexPath.row) description] options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:nil withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
+    cell.imageView.image = self.representingDayEvent.images[[@(indexPath.item) description]];
+    [self.representingDayEvent.images irObserve:[@(indexPath.item) description] options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:nil withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
       [[NSOperationQueue mainQueue] addOperationWithBlock:^{
         cell.imageView.image = toValue;
       }];
