@@ -27,7 +27,7 @@ static NSString * const kWAFetchingAnimation = @"WAFetchingAnimation";
 @property (nonatomic) BOOL isSyncingComplete;
 @property (nonatomic) BOOL isSyncingFail;
 
-@property (nonatomic, strong) WAStatusBarDidDismiss dismissBlock;
+@property (nonatomic, copy) WAStatusBarDidDismiss dismissBlock;
 
 @property (nonatomic, strong) UIImageView *fetchingAnimation;
 
