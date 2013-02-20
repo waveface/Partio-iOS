@@ -93,6 +93,15 @@ NSString *kWANewDaySummaryViewCellID = @"NewDaySummaryViewCell";
 
 }
 
+- (void)dealloc {
+  
+  [self.representingDaySummary irRemoveObserverBlocksForKeyPath:@"numOfPhotos"];
+  [self.representingDaySummary irRemoveObserverBlocksForKeyPath:@"numOfDocuments"];
+  [self.representingDaySummary irRemoveObserverBlocksForKeyPath:@"numOfWebpages"];
+  [self.representingDaySummary irRemoveObserverBlocksForKeyPath:@"numOfEvents"];
+
+}
+
 + (UIImage *)sharedPhotosIconImage {
   
   static UIImage *photosIcon;

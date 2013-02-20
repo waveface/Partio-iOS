@@ -28,29 +28,29 @@
     }
     case 2: {
       UICollectionViewLayoutAttributes *attributes0 = [UICollectionViewLayoutAttributes layoutAttributesForCellWithIndexPath:[NSIndexPath indexPathForItem:0 inSection:0]];
-      attributes0.frame = CGRectMake(0, 0, rect.size.width/2, rect.size.height);
+      attributes0.frame = CGRectMake(0, 0, rect.size.width/2-1, rect.size.height);
       UICollectionViewLayoutAttributes *attributes1 = [UICollectionViewLayoutAttributes layoutAttributesForCellWithIndexPath:[NSIndexPath indexPathForItem:1 inSection:0]];
-      attributes1.frame = CGRectMake(rect.size.width/2, 0, rect.size.width/2, rect.size.height);
+      attributes1.frame = CGRectMake(rect.size.width/2+1, 0, rect.size.width/2, rect.size.height);
       return @[attributes0, attributes1];
     }
     case 3: {
       UICollectionViewLayoutAttributes *attributes0 = [UICollectionViewLayoutAttributes layoutAttributesForCellWithIndexPath:[NSIndexPath indexPathForItem:0 inSection:0]];
-      attributes0.frame = CGRectMake(0, 0, rect.size.width/2, rect.size.height);
+      attributes0.frame = CGRectMake(0, 0, rect.size.width/2-1, rect.size.height);
       UICollectionViewLayoutAttributes *attributes1 = [UICollectionViewLayoutAttributes layoutAttributesForCellWithIndexPath:[NSIndexPath indexPathForItem:1 inSection:0]];
-      attributes1.frame = CGRectMake(rect.size.width/2, 0, rect.size.width/2, rect.size.height/2);
+      attributes1.frame = CGRectMake(rect.size.width/2+1, 0, rect.size.width/2-1, rect.size.height/2-1);
       UICollectionViewLayoutAttributes *attributes2 = [UICollectionViewLayoutAttributes layoutAttributesForCellWithIndexPath:[NSIndexPath indexPathForItem:2 inSection:0]];
-      attributes2.frame = CGRectMake(rect.size.width/2, rect.size.height/2, rect.size.width/2, rect.size.height/2);
+      attributes2.frame = CGRectMake(rect.size.width/2+1, rect.size.height/2+1, rect.size.width/2-1, rect.size.height/2-1);
       return @[attributes0, attributes1, attributes2];
     }
     case 4: {
       UICollectionViewLayoutAttributes *attributes0 = [UICollectionViewLayoutAttributes layoutAttributesForCellWithIndexPath:[NSIndexPath indexPathForItem:0 inSection:0]];
-      attributes0.frame = CGRectMake(0, 0, rect.size.width/2, rect.size.height);
+      attributes0.frame = CGRectMake(0, 0, rect.size.width/2-1, rect.size.height);
       UICollectionViewLayoutAttributes *attributes1 = [UICollectionViewLayoutAttributes layoutAttributesForCellWithIndexPath:[NSIndexPath indexPathForItem:1 inSection:0]];
-      attributes1.frame = CGRectMake(rect.size.width/2, 0, rect.size.width/2, rect.size.height/2);
+      attributes1.frame = CGRectMake(rect.size.width/2+1, 0, rect.size.width/2-1, rect.size.height/2-1);
       UICollectionViewLayoutAttributes *attributes2 = [UICollectionViewLayoutAttributes layoutAttributesForCellWithIndexPath:[NSIndexPath indexPathForItem:2 inSection:0]];
-      attributes2.frame = CGRectMake(rect.size.width/2, rect.size.height/2, rect.size.width/4, rect.size.height/2);
+      attributes2.frame = CGRectMake(rect.size.width/2+1, rect.size.height/2+1, (rect.size.width/2-1)/2-1, rect.size.height/2-1);
       UICollectionViewLayoutAttributes *attributes3 = [UICollectionViewLayoutAttributes layoutAttributesForCellWithIndexPath:[NSIndexPath indexPathForItem:3 inSection:0]];
-      attributes3.frame = CGRectMake(rect.size.width*3/4, rect.size.height/2, rect.size.width/4, rect.size.height/2);
+      attributes3.frame = CGRectMake(rect.size.width/2+1+(rect.size.width/2-1)/2+1, rect.size.height/2+1, (rect.size.width/2-1)/2-1, rect.size.height/2-1);
       return @[attributes0, attributes1, attributes2, attributes3];
     }
     default:

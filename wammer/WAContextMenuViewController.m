@@ -7,7 +7,7 @@
 //
 
 #import "WAContextMenuViewController.h"
-#import "WASummaryViewController.h"
+#import "WANewSummaryViewController.h"
 
 @interface WAContextMenuViewController () <UITableViewDataSource, UITableViewDelegate, UIPopoverControllerDelegate>
 
@@ -141,7 +141,7 @@ static NSString *kWAContextViewCellIdentifier = @"ContextMenuItem";
     [self didMoveToParentViewController:viewController];
     
     CGRect menuToRect = self.tableView.frame;
-    if ([viewController isKindOfClass:[WASummaryViewController class]]) {
+    if ([viewController isKindOfClass:[WANewSummaryViewController class]]) {
       menuToRect = CGRectMake(menuToRect.origin.x, menuToRect.origin.y+viewController.navigationController.navigationBar.frame.size.height, menuToRect.size.width, menuToRect.size.height);
 
       __weak WAContextMenuViewController *wSelf = self;
@@ -213,7 +213,7 @@ static NSString *kWAContextViewCellIdentifier = @"ContextMenuItem";
 		 animations:^{
 		   
 		   wSelf.translucentOverlay.alpha = 0;
-		   if (![[wSelf parentViewController] isKindOfClass:[WASummaryViewController class]]) {
+		   if (![[wSelf parentViewController] isKindOfClass:[WANewSummaryViewController class]]) {
 		     wSelf.tableView.frame = tableViewToRect;
 		   }
 		   

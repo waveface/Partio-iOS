@@ -21,6 +21,9 @@
 #import "WAArticle.h"
 #import "WAEventViewController.h"
 #import "WANavigationController.h"
+#import "WAContextMenuViewController.h"
+#import "WACalendarPopupViewController_phone.h"
+#import "WAAppDelegate_iOS.h"
 
 @interface WANewSummaryViewController ()
 
@@ -33,7 +36,8 @@
 @property (nonatomic) BOOL scrollingSummaryPage;
 @property (nonatomic) BOOL scrollingEventPage;
 @property (nonatomic) BOOL reloading;
-
+@property (nonatomic) BOOL contextMenuOpened;
+@property (nonatomic) BOOL initializing;
 @property (nonatomic) WADayViewSupportedStyle presentingStyle;
 
 @end
@@ -45,6 +49,7 @@
   [super viewDidLoad];
 
   self.presentingStyle = WAEventsViewStyle;
+  self.initializing = YES;
   
   self.backgroundImageView.clipsToBounds = YES;
   
@@ -53,7 +58,7 @@
     [wSelf.viewDeckController toggleLeftView];
   });
   self.navigationItem.rightBarButtonItem = WABarButtonItem([UIImage imageNamed:@"Cal"], @"", ^{
-//    [wSelf calButtonPressed];
+    [wSelf calButtonPressed];
   });
   
   UIColor *naviBgColor = [[UIColor clearColor] colorWithAlphaComponent:0];
@@ -66,6 +71,10 @@
   UIGraphicsEndImageContext();
   [self.navigationController.navigationBar setBackgroundImage:naviBg forBarMetrics:UIBarMetricsDefault];
   self.navigationController.navigationBar.translucent = YES;
+
+  self.navigationItem.titleView = [WAContextMenuViewController titleViewForContextMenu:self.presentingStyle
+							 performSelector:@selector(contextMenuTapped)
+							      withObject:self];
 
   self.dataSource = [[WANewSummaryDataSource alloc] initWithDate:[[NSDate date] dayBegin]];
   self.dataSource.summaryCollectionView = self.summaryCollectionView;
@@ -98,6 +107,21 @@
 
 }
 
+- (void)viewDidAppear:(BOOL)animated {
+
+  [super viewDidAppear:animated];
+
+  if (self.initializing) {
+    NSDate *date = self.currentDaySummary.date;
+    NSIndexPath *daySummaryIndex = [self.dataSource indexPathOfDaySummaryOfDate:date];
+    NSIndexPath *dayEventIndex = [self.dataSource indexPathOfFirstDayEventOfDate:date];
+    [self scrollToDaySummaryAtIndexPath:daySummaryIndex animated:NO];
+    [self scrollToDayEventAtIndexPath:dayEventIndex animated:NO];
+    self.initializing = NO;
+  }
+
+}
+
 - (void)scrollToDaySummaryAtIndexPath:(NSIndexPath *)indexPath animated:(BOOL)animated {
   
   if (animated) {
@@ -124,6 +148,90 @@
 
 }
 
+- (void)dealloc {
+
+  [self.currentDaySummary irRemoveObserverBlocksForKeyPath:@"numOfEvents"];
+  [self.currentDayEvent irRemoveObserverBlocksForKeyPath:@"backgroundImage"];
+
+}
+
+- (NSUInteger) supportedInterfaceOrientations {
+  
+  if (isPad())
+    return UIInterfaceOrientationMaskAll;
+  else
+    return UIInterfaceOrientationMaskPortrait;
+  
+}
+
+- (BOOL) shouldAutorotate {
+  
+  return YES;
+  
+}
+
+#pragma mark - Target actions
+
+- (void)calButtonPressed {
+  
+  if (isPad()) {
+    
+    // NO OP
+    
+  } else {
+    
+    __block WACalendarPopupViewController_phone *calendarPopup = [[WACalendarPopupViewController_phone alloc] initWithDate:self.currentDaySummary.date viewStyle:WAEventsViewStyle completion:^{
+      
+      [calendarPopup willMoveToParentViewController:nil];
+      [calendarPopup removeFromParentViewController];
+      [calendarPopup.view removeFromSuperview];
+      [calendarPopup didMoveToParentViewController:nil];
+      calendarPopup = nil;
+      
+    }];
+    
+    [self.viewDeckController addChildViewController:calendarPopup];
+    [self.viewDeckController.view addSubview:calendarPopup.view];
+    
+  }
+  
+}
+
+- (void)contextMenuTapped {
+  
+  __weak WANewSummaryViewController *wSelf = self;
+  
+  if (self.contextMenuOpened) {
+    [self.childViewControllers enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+      if ([obj isKindOfClass:[WAContextMenuViewController class]]) {
+        
+        *stop = YES;
+        WAContextMenuViewController *ddMenu = (WAContextMenuViewController*)obj;
+        [ddMenu dismissContextMenu];
+        
+      }
+    }];
+    return;
+  }
+  
+  __block WAContextMenuViewController *ddMenu = [[WAContextMenuViewController alloc] initForViewStyle:self.presentingStyle completion:^{
+    
+    [wSelf.navigationItem.leftBarButtonItem setEnabled:YES];
+    [wSelf.navigationItem.rightBarButtonItem setEnabled:YES];
+    
+    wSelf.contextMenuOpened = NO;
+    
+  }];
+  
+  ddMenu.delegate = self;
+  
+  [ddMenu presentContextMenuInViewController:self];
+  [self.navigationItem.leftBarButtonItem setEnabled:NO];
+  [self.navigationItem.rightBarButtonItem setEnabled:NO];
+  self.contextMenuOpened = YES;
+  
+}
+
 #pragma mark - UICollectionView delegates
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
@@ -146,28 +254,13 @@
 
   CGFloat pageWidth = scrollView.frame.size.width;
   if (scrollView.contentOffset.x > scrollView.contentSize.width - pageWidth) {
-    if (self.reloading) {
-      return;
-    }
-    self.reloading = YES;
-    WAOverlayBezel *bezel = [[WAOverlayBezel alloc] initWithStyle:WAActivityIndicatorBezelStyle];
-    [bezel show];
-    __weak WANewSummaryViewController *wSelf = self;
-    double delayInSeconds = 1.0;
-    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-      [wSelf.dataSource loadMoreDays:20 since:wSelf.currentDaySummary.date];
-      NSDate *fromDate = [wSelf.currentDaySummary.date dateOfPreviousDay];
-      NSDate *toDate = [wSelf.currentDaySummary.date dateOfPreviousNumOfDays:20];
-      NSArray *daySummaryIndexes = [wSelf.dataSource indexesOfDaySummariesFromDate:fromDate toDate:toDate];
-      NSArray *dayEventIndexes = [wSelf.dataSource indexesOfDayEventsFromDate:fromDate toDate:toDate];
-      [wSelf.summaryCollectionView insertItemsAtIndexPaths:daySummaryIndexes];
-      [wSelf.eventCollectionView insertItemsAtIndexPaths:dayEventIndexes];
-      [wSelf scrollToDaySummaryAtIndexPath:daySummaryIndexes[0] animated:YES];
-      [wSelf scrollToDayEventAtIndexPath:dayEventIndexes[0] animated:YES];
-      [bezel dismissWithAnimation:WAOverlayBezelAnimationFade];
-      wSelf.reloading = NO;
-    });
+    [self.dataSource loadMoreDays:20 since:self.currentDaySummary.date];
+    NSDate *fromDate = [self.currentDaySummary.date dateOfPreviousDay];
+    NSDate *toDate = [self.currentDaySummary.date dateOfPreviousNumOfDays:20];
+    NSArray *daySummaryIndexes = [self.dataSource indexesOfDaySummariesFromDate:fromDate toDate:toDate];
+    NSArray *dayEventIndexes = [self.dataSource indexesOfDayEventsFromDate:fromDate toDate:toDate];
+    [self.summaryCollectionView insertItemsAtIndexPaths:daySummaryIndexes];
+    [self.eventCollectionView insertItemsAtIndexPaths:dayEventIndexes];
     return;
   }
   if (scrollView.contentOffset.x < 0) {
@@ -297,6 +390,60 @@
     NSAssert(NO, @"unexpected collection view %@", collectionView);
     return CGSizeZero;
   }
+
+}
+
+#pragma mark - Context menu delegates
+
+- (void) contextMenuItemDidSelect:(WADayViewSupportedStyle)itemStyle {
+  
+  WAAppDelegate_iOS *appDelegate = (WAAppDelegate_iOS*)AppDelegate();
+  [appDelegate.slidingMenu switchToViewStyle:itemStyle onDate:self.currentDaySummary.date];
+  
+}
+
+#pragma mark - WADaysControlling delegates
+
+- (BOOL)jumpToDate:(NSDate *)date animated:(BOOL)animated {
+  
+  self.dataSource = [[WANewSummaryDataSource alloc] initWithDate:date];
+  self.dataSource.summaryCollectionView = self.summaryCollectionView;
+  self.dataSource.eventCollectionView = self.eventCollectionView;
+  self.summaryCollectionView.dataSource = self.dataSource;
+  self.eventCollectionView.dataSource = self.dataSource;
+
+  __weak WANewSummaryViewController *wSelf = self;
+
+  [self.currentDaySummary irRemoveObserverBlocksForKeyPath:@"numOfEvents"];
+  self.currentDaySummary = [self.dataSource daySummaryAtIndex:0];
+  self.eventPageControl.numberOfPages = self.currentDaySummary.numOfEvents;
+  [self.currentDaySummary irObserve:@"numOfEvents" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:nil withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
+    [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+      wSelf.eventPageControl.numberOfPages = [toValue integerValue];
+    }];
+  }];
+
+  [self.currentDayEvent irRemoveObserverBlocksForKeyPath:@"backgroundImage"];
+  self.currentDayEvent = [self.dataSource dayEventAtIndex:0];
+  [self.backgroundImageView addCrossFadeAnimationWithTargetImage:self.currentDayEvent.backgroundImage];
+  [self.currentDayEvent irObserve:@"backgroundImage" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:nil withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
+    [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+      [wSelf.backgroundImageView addCrossFadeAnimationWithTargetImage:toValue];
+    }];
+  }];
+
+  [self.dataSource loadMoreDays:20 since:date];
+
+  [self.summaryCollectionView reloadData];
+  [self.eventCollectionView reloadData];
+
+  return YES;
+  
+}
+
+- (void)jumpToRecentDay {
+
+  [self jumpToDate:[[NSDate date] dayBegin] animated:NO];
 
 }
 

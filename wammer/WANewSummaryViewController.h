@@ -7,8 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "WAContextMenuViewController.h"
+#import "WADayViewController.h"
 
-@interface WANewSummaryViewController : UIViewController <UICollectionViewDelegate, UICollectionViewDelegateFlowLayout>
+@interface WANewSummaryViewController : UIViewController <UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, WAContextMenuDelegate, WADaysControlling>
 
 @property (weak, nonatomic) IBOutlet UIImageView *backgroundImageView;
 @property (weak, nonatomic) IBOutlet UIPageControl *eventPageControl;

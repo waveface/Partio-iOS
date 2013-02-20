@@ -13,11 +13,23 @@
 
 NSString *kWANewDayEventViewCellID = @"NewDayEventViewCell";
 
+@interface WANewDayEventViewCell ()
+
+@property (nonatomic, strong) CAGradientLayer *gradientLayer;
+
+@end
+
 @implementation WANewDayEventViewCell
 
 - (void)awakeFromNib {
 
   [self.imageCollectionView registerNib:[UINib nibWithNibName:@"WANewDayEventImageViewCell" bundle:nil] forCellWithReuseIdentifier:kWANewDayEventImageViewCellID];
+  self.imageCollectionView.layer.cornerRadius = 10.0;
+
+  self.gradientLayer = [CAGradientLayer layer];
+  self.gradientLayer.frame = (CGRect) {CGPointZero, self.descriptionView.frame.size};
+  self.gradientLayer.colors = @[(id)[[UIColor colorWithWhite:0.0 alpha:0.0] CGColor], (id)[[UIColor colorWithWhite:0.0 alpha:0.8] CGColor]];
+  self.gradientLayer.cornerRadius = 10.0;
 
 }
 
@@ -30,6 +42,8 @@ NSString *kWANewDayEventViewCellID = @"NewDayEventViewCell";
   if (_representingDayEvent.style == WADayEventStyleNone) {
     return;
   }
+
+  [self.descriptionView.layer insertSublayer:self.gradientLayer atIndex:0];
 
   self.startTimeLabel.text = [[[self class] sharedDateFormatter] stringFromDate:representingDayEvent.startTime];
   self.descriptionLabel.text = representingDayEvent.eventDescription;
@@ -57,6 +71,8 @@ NSString *kWANewDayEventViewCellID = @"NewDayEventViewCell";
 }
 
 - (void)prepareForReuse {
+
+  [self.gradientLayer removeFromSuperlayer];
 
   [self.representingDayEvent irRemoveObserverBlocksForKeyPath:@"startTime"];
   [self.representingDayEvent irRemoveObserverBlocksForKeyPath:@"eventDescription"];
@@ -113,6 +129,11 @@ NSString *kWANewDayEventViewCellID = @"NewDayEventViewCell";
     return nil;
   } else {
     WANewDayEventImageViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:kWANewDayEventImageViewCellID forIndexPath:indexPath];
+    if (self.representingDayEvent.style == WADayEventStyleNone) {
+      cell.imageView.contentMode = UIViewContentModeCenter; // Do not show the white edges of WASummaryNoEvent.png
+    } else {
+      cell.imageView.contentMode = UIViewContentModeScaleAspectFill;
+    }
     cell.imageView.image = self.representingDayEvent.images[@(indexPath.row)];
     [self.representingDayEvent.images irObserve:[@(indexPath.row) description] options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:nil withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
       [[NSOperationQueue mainQueue] addOperationWithBlock:^{
