@@ -32,6 +32,7 @@
 #import "WAFetchManager.h"
 #import <QuartzCore/QuartzCore.h>
 #import "WASummaryViewController.h"
+#import "WANewSummaryViewController.h"
 #import "WAConnectionStatusView.h"
 
 static NSString * kWASlidingMenuViewControllerKVOContext = @"WASlidingMenuViewControllerKVOContext";
@@ -69,7 +70,7 @@ static NSString * kWASlidingMenuViewControllerKVOContext = @"WASlidingMenuViewCo
   
   UIViewController *swVC = nil;
   if (viewStyle == WAEventsViewStyle) {
-    swVC = [[WASummaryViewController alloc] initWithDate:nil];
+    swVC = [[WANewSummaryViewController alloc] init];
   } else {
     swVC = [[WADayViewController alloc] initWithStyle:viewStyle];
   }

@@ -313,6 +313,9 @@
 /* Title for alert view asking if user wants to disconnect her Google account */
 "GOOGLE_DISCONNECT_REQUEST_TITLE" = "Confirm to stop importing from Google.";
 
+/* greeting text of day summary view */
+"GREETING_TEXT" = "You have %d events today.";
+
 /* Hello text in summary view */
 "HELLO_NAME_TEXT" = "Hi, %@";
 
@@ -674,6 +677,15 @@
 
 /* Class = "IBUITextField"; placeholder = "PASSWORD_PLACEHOLDER"; ObjectID = "g7o-DD-LvS"; */
 "PASSWORD_PLACEHOLDER" = "••••••••";
+
+/* Class = "IBUILabel"; text = "OCT"; ObjectID = "134"; */
+"OCT" = "OCT";
+
+/* Class = "IBUILabel"; text = "DAY"; ObjectID = "135"; */
+"DAY" = "DAY";
+
+/* Class = "IBUILabel"; text = "WEEKDAY"; ObjectID = "136"; */
+"WEEKDAY" = "WEEKDAY";
 
 /* Class = "IBUITextField"; placeholder = "USERNAME_PLACEHOLDER"; ObjectID = "2Vk-4J-QH3"; */
 "USERNAME_PLACEHOLDER" = "me@example.com";

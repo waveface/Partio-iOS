@@ -74,6 +74,40 @@
   
 }
 
+- (NSDate *)dateOfPreviousDay {
+
+  return [self dateOfPreviousNumOfDays:1];
+
+}
+
+- (NSDate *)dateOfFollowingDay {
+
+  return [self dateOfNextNumOfDays:1];
+
+}
+
+- (NSDate *)dateOfPreviousNumOfDays:(NSUInteger)numOfDays {
+
+  NSCalendar *calendar = [NSCalendar currentCalendar];
+  
+  NSDateComponents *dateComponents = [calendar components:(NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit)
+				         fromDate:self];
+  dateComponents.day -= numOfDays;
+  return [calendar dateFromComponents:dateComponents];
+
+}
+
+- (NSDate *)dateOfNextNumOfDays:(NSUInteger)numOfDays {
+
+  NSCalendar *calendar = [NSCalendar currentCalendar];
+  
+  NSDateComponents *dateComponents = [calendar components:(NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit)
+				         fromDate:self];
+  dateComponents.day += numOfDays;
+  return [calendar dateFromComponents:dateComponents];
+
+}
+
 + (NSDateFormatter *) sharedDayStringFormatter {
   
   static NSDateFormatter *dateFormatter;
