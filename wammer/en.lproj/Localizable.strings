@@ -652,7 +652,7 @@
 "ACTION_SIGN_IN" = "Log In";
 
 /* Class = "IBUIButton"; normalTitle = "FORGOT_PASSWORD_TITLE"; ObjectID = "46"; */
-"FORGOT_PASSWORD_TITLE" = "Frogot password?";
+"FORGOT_PASSWORD_TITLE" = "forgot the password?";
 
 /* Class = "IBUIButton"; normalTitle = "ACTION_CONNECT_FACEBOOK"; ObjectID = "9"; */
 "ACTION_CONNECT_FACEBOOK" = "Connect with Facebook";
