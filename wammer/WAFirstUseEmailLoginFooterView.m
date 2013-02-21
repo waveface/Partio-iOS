@@ -7,6 +7,7 @@
 //
 
 #import "WAFirstUseEmailLoginFooterView.h"
+#import "WADefines.h"
 
 @implementation WAFirstUseEmailLoginFooterView
 
@@ -28,7 +29,14 @@
 	[self.emailLoginButton setTitleColor:[UIColor whiteColor] forState:UIControlStateDisabled];
 	self.emailLoginButton.layer.cornerRadius = 20.0;
 	self.emailLoginButton.contentEdgeInsets = UIEdgeInsetsMake(5.0, 15.0, 5.0, 15.0);
+  
+}
 
+- (IBAction)forgotPasswordPressed:(id)sender {
+ 
+  NSString *urlString = [[NSUserDefaults standardUserDefaults] valueForKey:kWAUserPasswordResetEndpointURL];
+  [[UIApplication sharedApplication] openURL:[NSURL URLWithString:urlString]];
+  
 }
 
 @end
