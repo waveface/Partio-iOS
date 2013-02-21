@@ -552,7 +552,7 @@
 "ULTIMATE_PLAN_DESCRIPTION" = "500GB of cloud storage & unlimited PC storage.";
 
 /* Settings for User popover */
-"USER_INFO_CONTROLLER_TITLE" = "User";
+"USER_INFO_CONTROLLER_TITLE" = "SETTINGS";
 
 /* Email placeholder in login page
    Email placeholder in signup page */
@@ -650,6 +650,9 @@
 
 /* Class = "IBUIButton"; normalTitle = "ACTION_SIGN_IN"; ObjectID = "6"; */
 "ACTION_SIGN_IN" = "Log In";
+
+/* Class = "IBUIButton"; normalTitle = "FORGOT_PASSWORD_TITLE"; ObjectID = "46"; */
+"FORGOT_PASSWORD_TITLE" = "forgot the password?";
 
 /* Class = "IBUIButton"; normalTitle = "ACTION_CONNECT_FACEBOOK"; ObjectID = "9"; */
 "ACTION_CONNECT_FACEBOOK" = "Connect with Facebook";

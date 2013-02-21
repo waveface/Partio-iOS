@@ -10,6 +10,7 @@
 
 @interface WAFirstUseEmailLoginFooterView : UIView
 
+@property (weak, nonatomic) IBOutlet UIButton *forgotPasswordButton;
 @property (weak, nonatomic) IBOutlet UIButton *emailLoginButton;
 
 + (WAFirstUseEmailLoginFooterView *)viewFromNib;
