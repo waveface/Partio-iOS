@@ -49,6 +49,11 @@
             wSelf.style = WADayEventStyleFourPhotos;
             break;
         }
+        // reload images if files count changed
+        if (wSelf.images) {
+          [wSelf unloadImages];
+          [wSelf loadImages];
+        }
       }];
       [anArticle irObserve:@"eventStartDate" options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:nil withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
         NSCParameterAssert([NSThread isMainThread]);

@@ -9,8 +9,9 @@
 #import <UIKit/UIKit.h>
 #import "WAContextMenuViewController.h"
 #import "WADayViewController.h"
+#import "WANewSummaryDataSource.h"
 
-@interface WANewSummaryViewController : UIViewController <UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, WAContextMenuDelegate, WADaysControlling>
+@interface WANewSummaryViewController : UIViewController <UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, WAContextMenuDelegate, WADaysControlling, WANewSummaryDataSourceDelegate>
 
 @property (weak, nonatomic) IBOutlet UIImageView *backgroundImageView;
 @property (weak, nonatomic) IBOutlet UIPageControl *eventPageControl;

@@ -319,7 +319,7 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 	
 	NSUInteger page = [self pageIndexOnDate:date];
 	
-	if (page > self.currentTotalPageSize) {
+	if (page >= self.currentTotalPageSize) {
 		_currentTotalPageSize = (page + kWAAppendingBatchSize);
 		[self.paginatedView reloadViews];
 	}

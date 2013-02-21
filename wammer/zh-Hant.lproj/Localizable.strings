@@ -675,9 +675,6 @@
 /* Class = "IBUITextField"; placeholder = "PASSWORD_PLACEHOLDER"; ObjectID = "g7o-DD-LvS"; */
 "PASSWORD_PLACEHOLDER" = "••••••••";
 
-/* Class = "IBUILabel"; text = "GREETING_TEXT"; ObjectID = "132"; */
-"GREETING_TEXT" = "你今天有 %d 個動態";
-
 /* Class = "IBUILabel"; text = "OCT"; ObjectID = "134"; */
 "OCT" = "OCT";
 

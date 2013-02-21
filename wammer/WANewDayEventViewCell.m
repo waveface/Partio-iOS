@@ -140,12 +140,7 @@ NSString *kWANewDayEventViewCellID = @"NewDayEventViewCell";
     NSUInteger zoomLevel = 14;
     [cell.mapView setCenterCoordinate:self.representingDayEvent.eventLocation zoomLevel:zoomLevel animated:NO];
     [cell.mapView addAnnotations:self.representingDayEvent.checkins];
-    __weak WANewDayEventViewCell *wSelf = self;
-    [cell irObserve:@"mapImage" options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:nil withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
-      if (!wSelf.representingDayEvent.backgroundImage) {
-        wSelf.representingDayEvent.backgroundImage = toValue;
-      }
-    }];
+    self.representingDayEvent.backgroundImage = cell.mapImage;
     return cell;
   } else {
     WANewDayEventImageViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:kWANewDayEventImageViewCellID forIndexPath:indexPath];
@@ -161,14 +156,6 @@ NSString *kWANewDayEventViewCellID = @"NewDayEventViewCell";
       }];
     }];
     return cell;
-  }
-
-}
-
-- (void)collectionView:(UICollectionView *)collectionView didEndDisplayingCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath {
-
-  if ([cell isKindOfClass:[WANewDayEventMapViewCell class]]) {
-    [cell irRemoveObserverBlocksForKeyPath:@"mapImage"];
   }
 
 }

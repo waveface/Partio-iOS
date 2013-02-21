@@ -91,6 +91,11 @@ NSString *kWANewDaySummaryViewCellID = @"NewDaySummaryViewCell";
   [self.websButton setTitle:zeroString forState:UIControlStateHighlighted];
   self.greetingLabel.text = [NSString stringWithFormat:NSLocalizedString(@"GREETING_TEXT", @"greeting text of day summary view"), 0];
 
+  [self.representingDaySummary irRemoveObserverBlocksForKeyPath:@"numOfPhotos"];
+  [self.representingDaySummary irRemoveObserverBlocksForKeyPath:@"numOfDocuments"];
+  [self.representingDaySummary irRemoveObserverBlocksForKeyPath:@"numOfWebpages"];
+  [self.representingDaySummary irRemoveObserverBlocksForKeyPath:@"numOfEvents"];
+
 }
 
 - (void)dealloc {

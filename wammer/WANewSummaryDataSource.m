@@ -14,6 +14,11 @@
 #import "NSDate+WAAdditions.h"
 #import "WADataStore.h"
 #import "WAArticle.h"
+#import "WAFile.h"
+#import "WAPhotoDay.h"
+#import "WAFileAccessLog.h"
+#import "WADocumentDay.h"
+#import "WAWebpageDay.h"
 
 @interface WANewSummaryDataSource ()
 
@@ -28,6 +33,9 @@
 @property (nonatomic, strong) NSFetchedResultsController *photoFetchedResultsController;
 @property (nonatomic, strong) NSFetchedResultsController *documentFetchedResultsController;
 @property (nonatomic, strong) NSFetchedResultsController *webpageFetchedResultsController;
+
+@property (nonatomic, strong) NSMutableSet *changedDaySummaries;
+@property (nonatomic) BOOL dayEventsCountChanged;
 
 @end
 
@@ -228,23 +236,16 @@
 
 }
 
-- (NSIndexPath *)indexPathOfDaySummaryOfDate:(NSDate *)aDate {
+- (NSIndexPath *)indexPathOfDaySummaryOnDate:(NSDate *)aDate {
 
-  NSCalendar *calendar = [NSCalendar currentCalendar];
-  NSUInteger flags = NSDayCalendarUnit|NSTimeZoneCalendarUnit;
-  NSDateComponents *dateComponents = [calendar components:flags fromDate:self.firstDate toDate:aDate options:0];
-  NSInteger itemIndex = dateComponents.day;
-
+  NSUInteger itemIndex = [self indexOfDaySummaryOnDate:aDate];
   return [NSIndexPath indexPathForItem:([self.daySummaries count]-itemIndex-1) inSection:0];
 
 }
 
-- (NSIndexPath *)indexPathOfFirstDayEventOfDate:(NSDate *)aDate {
+- (NSIndexPath *)indexPathOfFirstDayEventOnDate:(NSDate *)aDate {
 
-  NSIndexSet *indexes = [self.dayEvents indexesOfObjectsPassingTest:^BOOL(WANewDayEvent *dayEvent, NSUInteger idx, BOOL *stop) {
-    return isSameDay(dayEvent.startTime, aDate);
-  }];
-  
+  NSIndexSet *indexes = [self indexesOfEventsOnDate:aDate];
   NSUInteger itemIndex = [indexes lastIndex];
   NSAssert(itemIndex != NSNotFound, @"There should be a day event for any searchable dates");
 
@@ -252,12 +253,9 @@
 
 }
 
-- (NSIndexPath *)indexPathOfLastDayEventOfDate:(NSDate *)aDate {
+- (NSIndexPath *)indexPathOfLastDayEventOnDate:(NSDate *)aDate {
 
-  NSIndexSet *indexes = [self.dayEvents indexesOfObjectsPassingTest:^BOOL(WANewDayEvent *dayEvent, NSUInteger idx, BOOL *stop) {
-    return isSameDay(dayEvent.startTime, aDate);
-  }];
-  
+  NSIndexSet *indexes = [self indexesOfEventsOnDate:aDate];
   NSUInteger itemIndex = [indexes firstIndex];
   NSAssert(itemIndex != NSNotFound, @"There should be a day event for any searchable dates");
   
@@ -265,35 +263,67 @@
 
 }
 
-- (NSDate *)dateOfDaySummaryAtIndex:(NSUInteger)anIndex {
+- (NSIndexPath *)indexPathOfDayEvent:(WANewDayEvent *)aDayEvent {
 
-  NSUInteger itemIndex = ([self.daySummaries count]-anIndex-1);
+  // it's possible that the no event day would be replaced with a event,
+  // so we always return index path of the first event of the day
+  NSUInteger itemIndex = [self.dayEvents indexOfObjectPassingTest:^BOOL(WANewDayEvent *dayEvent, NSUInteger idx, BOOL *stop) {
+    return isSameDay(dayEvent.startTime, aDayEvent.startTime);
+  }];
+
+  NSAssert(itemIndex != NSNotFound, @"There should be a day event for any searchable day events");
+  
+  return [NSIndexPath indexPathForItem:([self.dayEvents count]-itemIndex-1) inSection:0];
+  
+}
+
+- (NSDate *)dateOfDaySummaryAtIndexPath:(NSIndexPath *)anIndexPath {
+
+  NSUInteger itemIndex = ([self.daySummaries count]-anIndexPath.item-1);
   WANewDaySummary *daySummary = self.daySummaries[itemIndex];
   return daySummary.date;
 
 }
 
-- (NSDate *)dateOfDayEventAtIndex:(NSUInteger)anIndex {
+- (NSDate *)dateOfDayEventAtIndexPath:(NSIndexPath *)anIndexPath {
 
-  NSUInteger itemIndex = ([self.dayEvents count]-anIndex-1);
+  NSUInteger itemIndex = ([self.dayEvents count]-anIndexPath.item-1);
   WANewDayEvent *dayEvent = self.dayEvents[itemIndex];
   return [dayEvent.startTime dayBegin];
 
 }
 
-- (id)daySummaryAtIndex:(NSUInteger)anIndex {
+- (WANewDaySummary *)daySummaryAtIndexPath:(NSIndexPath *)anIndexPath {
 
-  NSUInteger itemIndex = ([self.daySummaries count]-anIndex-1);
+  NSUInteger itemIndex = ([self.daySummaries count]-anIndexPath.item-1);
   WANewDaySummary *daySummary = self.daySummaries[itemIndex];
   return daySummary;
 
 }
 
-- (WANewDayEvent *)dayEventAtIndex:(NSUInteger)anIndex {
+- (WANewDayEvent *)dayEventAtIndexPath:(NSIndexPath *)anIndexPath {
 
-  NSUInteger itemIndex = ([self.dayEvents count]-anIndex-1);
+  NSUInteger itemIndex = ([self.dayEvents count]-anIndexPath.item-1);
   WANewDayEvent *dayEvent = self.dayEvents[itemIndex];
   return dayEvent;
+
+}
+
+- (NSUInteger)indexOfDaySummaryOnDate:(NSDate *)aDate {
+ 
+  NSCalendar *calendar = [NSCalendar currentCalendar];
+  NSUInteger flags = NSDayCalendarUnit|NSTimeZoneCalendarUnit;
+  NSDateComponents *dateComponents = [calendar components:flags fromDate:self.firstDate toDate:aDate options:0];
+  return dateComponents.day;
+
+}
+
+- (NSIndexSet *)indexesOfEventsOnDate:(NSDate *)aDate {
+  
+  NSIndexSet *indexes = [self.dayEvents indexesOfObjectsPassingTest:^BOOL(WANewDayEvent *dayEvent, NSUInteger idx, BOOL *stop) {
+    return isSameDay(dayEvent.startTime, aDate);
+  }];
+  return indexes;
 
 }
 
@@ -347,6 +377,96 @@
     NSAssert(NO, @"unexpected collection view %@", collectionView);
     return nil;
 
+  }
+  
+}
+
+#pragma mark - NSFetchedResultsController delegates
+
+- (void)controllerWillChangeContent:(NSFetchedResultsController *)controller {
+  
+  self.changedDaySummaries = [NSMutableSet set];
+  self.dayEventsCountChanged = NO;
+
+}
+
+- (void)controller:(NSFetchedResultsController *)controller didChangeObject:(id)anObject atIndexPath:(NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type newIndexPath:(NSIndexPath *)newIndexPath {
+  
+  switch (type) {
+      
+    case NSFetchedResultsChangeInsert:
+      if (controller == self.articleFetchedResultsController) {
+        WAArticle *article = anObject;
+        NSDate *date = [article.eventStartDate dayBegin];
+        NSUInteger daySummaryIndex = [self indexOfDaySummaryOnDate:date];
+        [self.changedDaySummaries addObject:self.daySummaries[daySummaryIndex]];
+
+        // remove no event day if needed
+        NSIndexSet *dayEventIndexes = [self indexesOfEventsOnDate:date];
+        NSUInteger itemIndex = [dayEventIndexes firstIndex];
+        NSAssert(itemIndex != NSNotFound, @"there should be a day event for any date");
+        if ([(WANewDayEvent *)self.dayEvents[itemIndex] style] == WADayEventStyleNone) {
+          [self.dayEvents removeObjectAtIndex:[dayEventIndexes firstIndex]];
+        }
+
+        // insert new day event to self.dayEvents
+        WANewDayEvent *dayEvent = [[WANewDayEvent alloc] initWithArticle:article date:date];
+        NSUInteger insertIndex = [self.dayEvents indexOfObject:dayEvent inSortedRange:NSMakeRange(0, [self.dayEvents count]) options:NSBinarySearchingInsertionIndex usingComparator:^NSComparisonResult(WANewDayEvent *dayEvent1, WANewDayEvent *dayEvent2) {
+          return [dayEvent1.startTime compare:dayEvent2.startTime];
+        }];
+        [self.dayEvents insertObject:dayEvent atIndex:insertIndex];
+        self.dayEventsCountChanged = YES;
+      } else if (controller == self.photoFetchedResultsController) {
+        WAFile *file = anObject;
+        NSUInteger index = [self indexOfDaySummaryOnDate:file.photoDay.day];
+        [self.changedDaySummaries addObject:self.daySummaries[index]];
+      } else if (controller == self.documentFetchedResultsController) {
+        WAFileAccessLog *fileAccessLog = anObject;
+        NSUInteger index = [self indexOfDaySummaryOnDate:fileAccessLog.day.day];
+        [self.changedDaySummaries addObject:self.daySummaries[index]];
+      } else if (controller == self.webpageFetchedResultsController) {
+        WAFileAccessLog *fileAccessLog = anObject;
+        NSUInteger index = [self indexOfDaySummaryOnDate:fileAccessLog.dayWebpages.day];
+        [self.changedDaySummaries addObject:self.daySummaries[index]];
+      }
+      break;
+      
+    case NSFetchedResultsChangeUpdate:
+      if (controller == self.articleFetchedResultsController) {
+        WAArticle *article = anObject;
+        if ([article.hidden boolValue]) {
+          NSDate *date = [article.eventStartDate dayBegin];
+          NSUInteger daySummaryIndex = [self indexOfDaySummaryOnDate:date];
+          [self.changedDaySummaries addObject:self.daySummaries[daySummaryIndex]];
+          NSUInteger removeIndex = [self.dayEvents indexOfObjectPassingTest:^BOOL(WANewDayEvent *dayEvent, NSUInteger idx, BOOL *stop) {
+            return [dayEvent.representingArticle.identifier isEqualToString:article.identifier];
+          }];
+          NSAssert(removeIndex != NSNotFound, @"there should be a day event for the updated article");
+          [self.dayEvents removeObjectAtIndex:removeIndex];
+          self.dayEventsCountChanged = YES;
+        }
+      }
+      
+    default:
+      break;
+      
+  }
+  
+}
+
+- (void)controllerDidChangeContent:(NSFetchedResultsController *)controller {
+
+  for (WANewDaySummary *daySummary in self.changedDaySummaries) {
+    [daySummary reloadData];
+  }
+
+  self.changedDaySummaries = nil;
+
+  if (self.dayEventsCountChanged) {
+    if ([self.delegate respondsToSelector:@selector(refreshViews)]) {
+      [self.delegate refreshViews];
+    }
+    self.dayEventsCountChanged = NO;
   }
   
 }
