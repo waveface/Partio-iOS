@@ -168,6 +168,7 @@
   }
   self.imageLoadingOperations = nil;
   self.images = nil;
+  self.backgroundImage = nil;
 
 }
 

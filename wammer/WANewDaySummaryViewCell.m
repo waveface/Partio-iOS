@@ -49,47 +49,68 @@ NSString *kWANewDaySummaryViewCellID = @"NewDaySummaryViewCell";
   __weak WANewDaySummaryViewCell *wSelf = self;
 
   [representingDaySummary irObserve:@"numOfPhotos" options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:nil withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
-    [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+    if ([NSThread isMainThread]) {
       NSString *numOfPhotosString = [NSString stringWithFormat:@"%d", [toValue integerValue]];
       [wSelf.photosButton setTitle:numOfPhotosString forState:UIControlStateNormal];
       [wSelf.photosButton setTitle:numOfPhotosString forState:UIControlStateHighlighted];
-    }];
+    } else {
+      [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+        NSString *numOfPhotosString = [NSString stringWithFormat:@"%d", [toValue integerValue]];
+        [wSelf.photosButton setTitle:numOfPhotosString forState:UIControlStateNormal];
+        [wSelf.photosButton setTitle:numOfPhotosString forState:UIControlStateHighlighted];
+      }];
+    }
   }];
   
   [representingDaySummary irObserve:@"numOfDocuments" options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:nil withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
-    [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+    if ([NSThread isMainThread]) {
       NSString *numOfDocsString = [NSString stringWithFormat:@"%d", [toValue integerValue]];
       [wSelf.docsButton setTitle:numOfDocsString forState:UIControlStateNormal];
       [wSelf.docsButton setTitle:numOfDocsString forState:UIControlStateHighlighted];
-    }];
+    } else {
+      [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+        NSString *numOfDocsString = [NSString stringWithFormat:@"%d", [toValue integerValue]];
+        [wSelf.docsButton setTitle:numOfDocsString forState:UIControlStateNormal];
+        [wSelf.docsButton setTitle:numOfDocsString forState:UIControlStateHighlighted];
+      }];
+    }
   }];
 
   [representingDaySummary irObserve:@"numOfWebpages" options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:nil withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
-    [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+    if ([NSThread isMainThread]) {
       NSString *numOfWebsString = [NSString stringWithFormat:@"%d", [toValue integerValue]];
       [wSelf.websButton setTitle:numOfWebsString forState:UIControlStateNormal];
       [wSelf.websButton setTitle:numOfWebsString forState:UIControlStateHighlighted];
-    }];
+    } else {
+      [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+        NSString *numOfWebsString = [NSString stringWithFormat:@"%d", [toValue integerValue]];
+        [wSelf.websButton setTitle:numOfWebsString forState:UIControlStateNormal];
+        [wSelf.websButton setTitle:numOfWebsString forState:UIControlStateHighlighted];
+      }];
+    }
   }];
   
   [representingDaySummary irObserve:@"numOfEvents" options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:nil withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
-    [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+    if ([NSThread isMainThread]) {
       wSelf.greetingLabel.text = [NSString stringWithFormat:NSLocalizedString(@"GREETING_TEXT", @"greeting text of day summary view"), [toValue integerValue]];
-    }];
+    } else {
+      [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+        wSelf.greetingLabel.text = [NSString stringWithFormat:NSLocalizedString(@"GREETING_TEXT", @"greeting text of day summary view"), [toValue integerValue]];
+      }];
+    }
   }];
 
 }
 
 - (void)prepareForReuse {
 
-  NSString *zeroString = [NSString stringWithFormat:@"%d", 0];
-  [self.photosButton setTitle:zeroString forState:UIControlStateNormal];
-  [self.photosButton setTitle:zeroString forState:UIControlStateHighlighted];
-  [self.docsButton setTitle:zeroString forState:UIControlStateNormal];
-  [self.docsButton setTitle:zeroString forState:UIControlStateHighlighted];
-  [self.websButton setTitle:zeroString forState:UIControlStateNormal];
-  [self.websButton setTitle:zeroString forState:UIControlStateHighlighted];
-  self.greetingLabel.text = [NSString stringWithFormat:NSLocalizedString(@"GREETING_TEXT", @"greeting text of day summary view"), 0];
+  [self.photosButton setTitle:@"" forState:UIControlStateNormal];
+  [self.photosButton setTitle:@"" forState:UIControlStateHighlighted];
+  [self.docsButton setTitle:@"" forState:UIControlStateNormal];
+  [self.docsButton setTitle:@"" forState:UIControlStateHighlighted];
+  [self.websButton setTitle:@"" forState:UIControlStateNormal];
+  [self.websButton setTitle:@"" forState:UIControlStateHighlighted];
+  self.greetingLabel.text = @"";
 
   [self.representingDaySummary irRemoveObserverBlocksForKeyPath:@"numOfPhotos"];
   [self.representingDaySummary irRemoveObserverBlocksForKeyPath:@"numOfDocuments"];

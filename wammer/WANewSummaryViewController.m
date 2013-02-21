@@ -410,6 +410,8 @@
 
       [self scrollToDayEventAtIndexPath:eventIndexPath animated:YES];
 
+      self.eventPageControl.currentPage = 0;
+
     }
     
   } else {
