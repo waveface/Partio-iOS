@@ -81,6 +81,7 @@ static NSString * const kWASegueSignUpToPhotoImport = @"WASegueSignUpToPhotoImpo
 	[self.emailSignupButton setTitle:NSLocalizedString(@"ACTION_SIGN_UP", @"Email sign up button") forState:UIControlStateDisabled];
 	[self.emailSignupButton setTitle:NSLocalizedString(@"ACTION_SIGN_UP", @"Email sign up button") forState:UIControlStateHighlighted];
 	[self.emailSignupButton addTarget:self action:@selector(handleEmailSignup:) forControlEvents:UIControlEventTouchUpInside];
+  [footer.forgotPasswordButton setHidden:YES];
 
 	UIButton *signup = self.emailSignupButton;
 	UIButton *facebook = self.facebookSignupButton;

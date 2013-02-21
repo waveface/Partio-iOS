@@ -82,6 +82,7 @@
 	if (!self.premiumPlanCell) {
 	  self.premiumPlanCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"UITableViewCell"];
 	  self.premiumPlanCell.textLabel.text = NSLocalizedString(@"OPTION_PREMIUM_PLAN", @"Premium plan option in plans page");
+      self.premiumPlanCell.textLabel.textColor = [UIColor lightGrayColor];// simulate gray out
 	  self.premiumPlanCell.detailTextLabel.text = NSLocalizedString(@"PREMIUM_PLAN_DESCRIPTION", @"Premium plan details in plans page");
 	  [self.view setNeedsUpdateConstraints];
 	}
@@ -90,6 +91,7 @@
 	if (!self.ultimatePlanCell) {
 	  self.ultimatePlanCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"UITableViewCell"];
 	  self.ultimatePlanCell.textLabel.text = NSLocalizedString(@"OPTION_ULTIMATE_PLAN", @"Ultimate plan option in plans page");
+      self.ultimatePlanCell.textLabel.textColor = [UIColor lightGrayColor];// simulate gray out
 	  self.ultimatePlanCell.detailTextLabel.text = NSLocalizedString(@"ULTIMATE_PLAN_DESCRIPTION", @"Ultimate plan details in plans page");
 	  [self.view setNeedsUpdateConstraints];
 	}
