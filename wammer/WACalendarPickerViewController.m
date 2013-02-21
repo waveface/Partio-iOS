@@ -188,6 +188,11 @@
 
 - (void) kalDidSelectOnDate:(NSDate *)date {
   
+  if ([date compare:[NSDate date]] == NSOrderedDescending) {
+    // jumping to future day is forbidden
+    return;
+  }
+
   WAAppDelegate_iOS *appDelegate = (WAAppDelegate_iOS*)AppDelegate();
   [appDelegate.slidingMenu.viewDeckController closeLeftView];
   [appDelegate.slidingMenu switchToViewStyle:self.currentViewStyle onDate:date];

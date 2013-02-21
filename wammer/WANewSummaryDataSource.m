@@ -74,9 +74,14 @@
     }
     self.firstDate = [self.daySummaries[0] date];
   } else if ([aDate isEqualToDate:self.lastDate]) {
+    NSDate *currentDate = [NSDate date];
     for (NSInteger i = 1; i <= numOfDays; i++) {
       WANewDaySummary *daySummary = [[WANewDaySummary alloc] init];
       daySummary.date = [self.lastDate dateOfNextNumOfDays:i];
+      if ([daySummary.date compare:currentDate] == NSOrderedDescending) {
+        // do not load future days
+        break;
+      }
       [daySummary reloadData];
       [self.daySummaries addObject:daySummary];
     }
@@ -107,8 +112,8 @@
 
   if ([self.dayEvents count]) {
     // load more days
-    NSDate *firstDayEventDate = [[self.dayEvents[0] startTime] dayBegin];
-    NSDate *lastDayEventDate = [[[self.dayEvents lastObject] startTime] dayBegin];
+    NSDate *firstDayEventDate = [self.dayEvents[0] startTime];
+    NSDate *lastDayEventDate = [[self.dayEvents lastObject] startTime];
     NSMutableArray *earlierArticles = [NSMutableArray array];
     NSMutableArray *laterArticles = [NSMutableArray array];
     for (WAArticle *article in articles) {

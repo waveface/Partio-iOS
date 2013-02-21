@@ -345,6 +345,11 @@
 
   if (scrollView.contentOffset.x < 0) {
 
+    if (isSameDay(self.currentDaySummary.date, [NSDate date])) {
+      // no need to load future days
+      return;
+    }
+
     self.reloading = YES;
     
     WAOverlayBezel *bezel = [[WAOverlayBezel alloc] initWithStyle:WAActivityIndicatorBezelStyle];
