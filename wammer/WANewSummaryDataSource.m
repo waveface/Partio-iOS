@@ -319,10 +319,17 @@
 }
 
 - (NSIndexSet *)indexesOfEventsOnDate:(NSDate *)aDate {
-  
-  NSIndexSet *indexes = [self.dayEvents indexesOfObjectsPassingTest:^BOOL(WANewDayEvent *dayEvent, NSUInteger idx, BOOL *stop) {
-    return isSameDay(dayEvent.startTime, aDate);
+
+  WANewDayEvent *leadingDayEvent = [[WANewDayEvent alloc] initWithArticle:nil date:[aDate dayBegin]];
+  NSUInteger leadingSentinel = [self.dayEvents indexOfObject:leadingDayEvent inSortedRange:NSMakeRange(0, [self.dayEvents count]) options:NSBinarySearchingInsertionIndex usingComparator:^NSComparisonResult(WANewDayEvent *dayEvent1, WANewDayEvent *dayEvent2) {
+    return [dayEvent1.startTime compare:dayEvent2.startTime];
   }];
+  WANewDayEvent *trailingDayEvent = [[WANewDayEvent alloc] initWithArticle:nil date:[aDate dayEnd]];
+  NSUInteger trailingSentinel = [self.dayEvents indexOfObject:trailingDayEvent inSortedRange:NSMakeRange(0, [self.dayEvents count]) options:NSBinarySearchingInsertionIndex usingComparator:^NSComparisonResult(WANewDayEvent *dayEvent1, WANewDayEvent *dayEvent2) {
+    return [dayEvent1.startTime compare:dayEvent2.startTime];
+  }];
+  NSIndexSet *indexes = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(leadingSentinel, trailingSentinel-leadingSentinel)];
+  
   return indexes;
 
 }
