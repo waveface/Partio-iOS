@@ -229,6 +229,7 @@
 		80092D3916AFD5A000020F64 /* WADataPlanViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 80092D3816AFD5A000020F64 /* WADataPlanViewController.m */; };
 		800D9A9216719B5D0034CDF6 /* MKMapView+ZoomLevel.m in Sources */ = {isa = PBXBuildFile; fileRef = 800D9A9116719B5D0034CDF6 /* MKMapView+ZoomLevel.m */; };
 		800E4FCE1671DD0C00F50E0B /* WATimelineViewCell-Checkin.xib in Resources */ = {isa = PBXBuildFile; fileRef = 800E4FCD1671DD0C00F50E0B /* WATimelineViewCell-Checkin.xib */; };
+		8012DB4F16D4C1150002B163 /* UIViewController+WAAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 8012DB4E16D4C1150002B163 /* UIViewController+WAAdditions.m */; };
 		8020F1B516B23AF900E185EC /* WAUserDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8020F1B416B23AF900E185EC /* WAUserDetailViewController.m */; };
 		8023BAF116770D2B00E6BED2 /* pindrop.png in Resources */ = {isa = PBXBuildFile; fileRef = 8023BAEF16770D2A00E6BED2 /* pindrop.png */; };
 		8023BAF216770D2B00E6BED2 /* pindrop@2X.png in Resources */ = {isa = PBXBuildFile; fileRef = 8023BAF016770D2A00E6BED2 /* pindrop@2X.png */; };
@@ -1185,6 +1186,8 @@
 		800D9A9016719B5D0034CDF6 /* MKMapView+ZoomLevel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "MKMapView+ZoomLevel.h"; path = "wammer/MKMapView+ZoomLevel.h"; sourceTree = "<group>"; };
 		800D9A9116719B5D0034CDF6 /* MKMapView+ZoomLevel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "MKMapView+ZoomLevel.m"; path = "wammer/MKMapView+ZoomLevel.m"; sourceTree = "<group>"; };
 		800E4FCD1671DD0C00F50E0B /* WATimelineViewCell-Checkin.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "WATimelineViewCell-Checkin.xib"; sourceTree = "<group>"; };
+		8012DB4D16D4C1150002B163 /* UIViewController+WAAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+WAAdditions.h"; sourceTree = "<group>"; };
+		8012DB4E16D4C1150002B163 /* UIViewController+WAAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+WAAdditions.m"; sourceTree = "<group>"; };
 		8020F1B316B23AF900E185EC /* WAUserDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAUserDetailViewController.h; sourceTree = "<group>"; };
 		8020F1B416B23AF900E185EC /* WAUserDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAUserDetailViewController.m; sourceTree = "<group>"; };
 		8023BAEF16770D2A00E6BED2 /* pindrop.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = pindrop.png; path = Resources/pindrop.png; sourceTree = "<group>"; };
@@ -2542,6 +2545,8 @@
 				131AEC2E1654DF0D000F9E74 /* WAStatusBar.m */,
 				80C61CA916A7F1050028356F /* WAAnnotation.h */,
 				80C61CAA16A7F1050028356F /* WAAnnotation.m */,
+				8012DB4D16D4C1150002B163 /* UIViewController+WAAdditions.h */,
+				8012DB4E16D4C1150002B163 /* UIViewController+WAAdditions.m */,
 			);
 			name = Views;
 			path = wammer;
@@ -4511,6 +4516,7 @@
 				13C9F59D16C8F14D00E62A2E /* WANewDayEventImageViewFlowLayout.m in Sources */,
 				139A0DA816CCAB76001D380B /* WANewDayEventImageViewCell.m in Sources */,
 				13A0C3D416D4D56400835687 /* WANewDayEventMapViewCell.m in Sources */,
+				8012DB4F16D4C1150002B163 /* UIViewController+WAAdditions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

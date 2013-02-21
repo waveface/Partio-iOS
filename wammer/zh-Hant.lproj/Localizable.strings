@@ -555,7 +555,7 @@
 "ULTIMATE_PLAN_DESCRIPTION" = "500GB 雲端儲存空間，PC 數量無限制。";
 
 /* Settings for User popover */
-"USER_INFO_CONTROLLER_TITLE" = "帳戶資訊";
+"USER_INFO_CONTROLLER_TITLE" = "設定";
 
 /* Email placeholder in login page
    Email placeholder in signup page */
@@ -653,6 +653,9 @@
 
 /* Class = "IBUIButton"; normalTitle = "ACTION_SIGN_IN"; ObjectID = "6"; */
 "ACTION_SIGN_IN" = "登入";
+
+/* Class = "IBUIButton"; normalTitle = "FORGOT_PASSWORD_TITLE"; ObjectID = "46"; */
+"FORGOT_PASSWORD_TITLE" = "忘了密碼?";
 
 /* Class = "IBUIButton"; normalTitle = "ACTION_CONNECT_FACEBOOK"; ObjectID = "9"; */
 "ACTION_CONNECT_FACEBOOK" = "連結Facebook帳號";

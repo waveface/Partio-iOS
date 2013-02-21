@@ -532,7 +532,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="0.95686274510000002" green="0.95686274510000002" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
                         <view key="tableHeaderView" contentMode="scaleToFill" id="JFY-Zp-liV">
-                            <rect key="frame" x="0.0" y="0.0" width="320" height="108"/>
+                            <rect key="frame" x="0.0" y="0.0" width="320" height="143"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="PLANS_DESCRIPTION" lineBreakMode="characterWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="280" translatesAutoresizingMaskIntoConstraints="NO" id="MRD-E4-twD" customClass="WALocalizedLabel">
@@ -552,7 +552,7 @@
                             </constraints>
                         </view>
                         <view key="tableFooterView" contentMode="scaleToFill" id="0qI-ID-u1L">
-                            <rect key="frame" x="0.0" y="288" width="320" height="262"/>
+                            <rect key="frame" x="0.0" y="323" width="320" height="262"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="ACTION_GOTO_WEBSITE" textAlignment="center" lineBreakMode="wordWrap" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0UL-JF-5TW" customClass="WALocalizedLabel">
@@ -572,7 +572,7 @@
                         </view>
                         <prototypes>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="0Ue-an-MDt">
-                                <rect key="frame" x="0.0" y="144" width="320" height="45"/>
+                                <rect key="frame" x="0.0" y="179" width="320" height="45"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                                     <rect key="frame" x="10" y="1" width="300" height="43"/>
@@ -581,7 +581,7 @@
                                 </view>
                             </tableViewCell>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="jWy-Lu-xxw">
-                                <rect key="frame" x="0.0" y="189" width="320" height="44"/>
+                                <rect key="frame" x="0.0" y="224" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                                     <rect key="frame" x="10" y="0.0" width="300" height="43"/>
@@ -590,7 +590,7 @@
                                 </view>
                             </tableViewCell>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="cgm-7F-0CS">
-                                <rect key="frame" x="0.0" y="233" width="320" height="45"/>
+                                <rect key="frame" x="0.0" y="268" width="320" height="45"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                                     <rect key="frame" x="10" y="0.0" width="300" height="43"/>
@@ -764,17 +764,16 @@
                         <rect key="frame" x="0.0" y="64" width="320" height="416"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <webView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NeW-kz-pas">
+                            <webView contentMode="scaleToFill" scalesPageToFit="YES" translatesAutoresizingMaskIntoConstraints="NO" id="NeW-kz-pas">
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="416" id="YZj-6Z-Ith"/>
-                                </constraints>
+                                <dataDetectorType key="dataDetectorTypes" link="YES"/>
                             </webView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="NeW-kz-pas" firstAttribute="leading" secondItem="PXV-kd-kaC" secondAttribute="leading" type="default" id="811-kL-0i6"/>
-                            <constraint firstItem="NeW-kz-pas" firstAttribute="top" secondItem="PXV-kd-kaC" secondAttribute="top" constant="1" id="aUI-KW-hcC"/>
+                            <constraint firstItem="NeW-kz-pas" firstAttribute="bottom" secondItem="PXV-kd-kaC" secondAttribute="bottom" type="default" id="UoY-ch-Vzj"/>
+                            <constraint firstItem="NeW-kz-pas" firstAttribute="centerY" secondItem="PXV-kd-kaC" secondAttribute="centerY" type="default" id="b1h-n5-nga"/>
                             <constraint firstItem="NeW-kz-pas" firstAttribute="trailing" secondItem="PXV-kd-kaC" secondAttribute="trailing" type="default" id="m0s-CV-Vo0"/>
                         </constraints>
                     </view>
