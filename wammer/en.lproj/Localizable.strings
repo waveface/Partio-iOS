@@ -552,7 +552,7 @@
 "ULTIMATE_PLAN_DESCRIPTION" = "500GB of cloud storage & unlimited PC storage.";
 
 /* Settings for User popover */
-"USER_INFO_CONTROLLER_TITLE" = "Settings";
+"USER_INFO_CONTROLLER_TITLE" = "SETTINGS";
 
 /* Email placeholder in login page
    Email placeholder in signup page */
