@@ -370,7 +370,12 @@
     NSAssert(cell, @"cell should be registered first");
     NSInteger numOfDayEvents = [self.dayEvents count];
     cell.representingDayEvent = self.dayEvents[numOfDayEvents - indexPath.row - 1];
-    for (NSInteger i = (numOfDayEvents-indexPath.row-1)-2; i<=(numOfDayEvents-indexPath.row-1)+2; i++) {
+    for (NSInteger i = (numOfDayEvents-indexPath.row-1)-2; i<(numOfDayEvents-indexPath.row-1); i++) {
+      if (i >= 0 && i < numOfDayEvents) {
+        [self.dayEvents[i] loadImages];
+      }
+    }
+    for (NSInteger i = (numOfDayEvents-indexPath.row-1)+2; i>=(numOfDayEvents-indexPath.row-1); i--) {
       if (i >= 0 && i < numOfDayEvents) {
         [self.dayEvents[i] loadImages];
       }
