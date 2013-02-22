@@ -248,7 +248,7 @@
 "FACEBOOK_CONNECT_REQUEST_TITLE" = "Confirm to start importing from Facebook.";
 
 /* Message for alert view asking if user wants to disconnect her Facebook account */
-"FACEBOOK_DISCONNECT_REQUEST_MESSAGE" = "Stream will stop importing posts from your Facebook account.";
+"FACEBOOK_DISCONNECT_REQUEST_MESSAGE" = "AOStream will stop importing posts from your Facebook account.";
 
 /* Title for alert view asking if user wants to disconnect her Facebook account */
 "FACEBOOK_DISCONNECT_REQUEST_TITLE" = "Confirm to stop importing from Facebook.";
@@ -377,7 +377,7 @@
 "NOTIFY_PHOTOS_IMPORTED" = "%@ photo(s) have been imported into your AOStream account.";
 
 /* For remote notification testing */
-"NOTIFY_TESTING" = "Hello, Stream!";
+"NOTIFY_TESTING" = "Hello, AOStream!";
 
 /* Section header in connection status view controller */
 "NOW_CONNECTING_HEADER" = "This device is connected to:";
@@ -528,7 +528,7 @@
 "TITLE_CALENDAR" = "Calendar";
 
 /* Alert on no location service enabled when open photo library */
-"TURN_ON_LOCATION_SERVICE" = "Turn on Location Services to allow Stream to access your Photo Library.";
+"TURN_ON_LOCATION_SERVICE" = "Turn on Location Services to allow AOStream to access your Photo Library.";
 
 /* User doesn't login his account in iOS setting. */
 "TWITTER_CONNECT_ACCOUNT_NOT_AVAILABLE" = "You may sign in your Twitter account from iOS Settings. ";
