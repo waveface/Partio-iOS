@@ -8,24 +8,16 @@
 
 #import "WANewDayEventMapViewCell.h"
 #import <Foundation+IRAdditions.h>
+#import <Nimbus/NINetworkImageView.h>
 
 NSString *kWANewDayEventMapViewCellID = @"NewDayEventMapViewCellID";
 
 @implementation WANewDayEventMapViewCell
 
-- (void)awakeFromNib {
-  UIGraphicsBeginImageContext(self.mapView.frame.size);
-  [self.mapView.layer renderInContext:UIGraphicsGetCurrentContext()];
-  self.mapImage = UIGraphicsGetImageFromCurrentImageContext();
-  UIGraphicsEndImageContext();
-}
-
 - (void)prepareForReuse {
-  [self.mapView removeAnnotations:self.mapView.annotations];
-}
 
-- (void)dealloc {
-  self.mapView.delegate = nil;
+  [self.mapImageView prepareForReuse];
+
 }
 
 @end

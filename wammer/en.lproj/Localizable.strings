@@ -323,7 +323,7 @@
 "GREETING_TEXT_WITH_EVENTS_PAST" = "Checkout these %d events.";
 
 /* greeting text of day summary view */
-"GREETING_TEXT_WITH_EVENTS_TODAY" = "Hi, %@.\nCheckout what you did today!";
+"GREETING_TEXT_WITH_EVENTS_TODAY" = "Hi, %@. Checkout what you did today!";
 
 /* Hello text in summary view */
 "HELLO_NAME_TEXT" = "Hi, %@";

@@ -11,7 +11,9 @@
 #import "Foundation+IRAdditions.h"
 #import "WANewDayEventImageViewCell.h"
 #import "WANewDayEventMapViewCell.h"
-#import "MKMapView+ZoomLevel.h"
+#import <StackBluriOS/UIImage+StackBlur.h>
+#import <MapKit/MapKit.h>
+#import "WAAnnotation.h"
 
 NSString *kWANewDayEventViewCellID = @"NewDayEventViewCell";
 
@@ -73,11 +75,6 @@ NSString *kWANewDayEventViewCellID = @"NewDayEventViewCell";
   [self.representingDayEvent irRemoveObserverBlocksForKeyPath:@"startTime"];
   [self.representingDayEvent irRemoveObserverBlocksForKeyPath:@"eventDescription"];
   [self.representingDayEvent.images irRemoveAllObserves];
-  for (UICollectionViewCell *cell in [self.imageCollectionView visibleCells]) {
-    if ([cell isKindOfClass:[WANewDayEventMapViewCell class]]) {
-      [cell irRemoveObserverBlocksForKeyPath:@"mapImage"];
-    }
-  }
   
 }
 
@@ -137,10 +134,12 @@ NSString *kWANewDayEventViewCellID = @"NewDayEventViewCell";
 
   if (self.representingDayEvent.style == WADayEventStyleCheckin) {
     WANewDayEventMapViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:kWANewDayEventMapViewCellID forIndexPath:indexPath];
-    NSUInteger zoomLevel = 14;
-    [cell.mapView setCenterCoordinate:self.representingDayEvent.eventLocation zoomLevel:zoomLevel animated:NO];
-    [cell.mapView addAnnotations:self.representingDayEvent.checkins];
-    self.representingDayEvent.backgroundImage = cell.mapImage;
+    cell.mapImageView.delegate = self;
+    CGSize imageSize = CGSizeMake(512, 256);
+    CLLocationCoordinate2D center = self.representingDayEvent.eventLocation;
+    CLLocationCoordinate2D annotation = [self.representingDayEvent.checkins[0] coordinate];
+    NSString *mapImageURL = [NSString stringWithFormat:@"http://maps.googleapis.com/maps/api/staticmap?size=%0dx%0d&center=%f,%f&zoom=17&markers=color:red%%7C%f,%f&sensor=false", (NSUInteger)imageSize.width*2, (NSUInteger)imageSize.height*2, center.latitude, center.longitude, annotation.latitude, annotation.longitude];
+    [cell.mapImageView setPathToNetworkImage:mapImageURL forDisplaySize:imageSize contentMode:UIViewContentModeScaleAspectFill];
     return cell;
   } else {
     WANewDayEventImageViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:kWANewDayEventImageViewCellID forIndexPath:indexPath];
@@ -156,6 +155,29 @@ NSString *kWANewDayEventViewCellID = @"NewDayEventViewCell";
       }];
     }];
     return cell;
+  }
+
+}
+
+- (void)collectionView:(UICollectionView *)collectionView didEndDisplayingCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath {
+
+  if ([cell isKindOfClass:[WANewDayEventMapViewCell class]]) {
+    [(WANewDayEventMapViewCell *)cell mapImageView].delegate = nil;
+  }
+
+}
+
+#pragma mark - NINetworkImageView delegates
+
+- (void)networkImageView:(NINetworkImageView *)imageView didLoadImage:(UIImage *)image {
+
+  WANewDayEvent *dayEvent = self.representingDayEvent;
+  if (dayEvent.style == WADayEventStyleCheckin) {
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+      if (!dayEvent.backgroundImage) {
+        dayEvent.backgroundImage = [image stackBlur:5];
+      }
+    });
   }
 
 }

@@ -7,11 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <Nimbus/NINetworkImageView.h>
 
 extern NSString *kWANewDayEventViewCellID;
 
 @class WANewDayEvent;
-@interface WANewDayEventViewCell : UICollectionViewCell <UICollectionViewDelegate, UICollectionViewDataSource>
+@interface WANewDayEventViewCell : UICollectionViewCell <UICollectionViewDelegate, UICollectionViewDataSource, NINetworkImageViewDelegate>
 
 @property (weak, nonatomic) IBOutlet UILabel *startTimeLabel;
 @property (weak, nonatomic) IBOutlet UILabel *descriptionLabel;
