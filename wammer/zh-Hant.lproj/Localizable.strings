@@ -543,7 +543,7 @@
 "TWITTER_CONNECT_FAIL_TITLE" = "無法同步Twitter";
 
 /* User doesn't permit the twitter access while connect to his twitter account. */
-"TWITTER_CONNECT_PERMISSION_TITLE" = "請打開您 Twitter 系統設定中 AOStream 的權線，否則我們將無法同步您的新貼文。";
+"TWITTER_CONNECT_PERMISSION_TITLE" = "請打開您 Twitter 系統設定中 AOStream 的權限，否則我們將無法同步您的新貼文。";
 
 /* Message for alert view asking if user wants to connect her Twitter account */
 "TWITTER_CONNECT_REQUEST_MESSAGE" = "啟動之後，AOStream將會開始同步您在Twitter上的新貼文。";
