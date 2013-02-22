@@ -16,7 +16,7 @@
 
 @end
 
-@implementation WAWebPreviewViewController
+@implementation WAWebPreviewViewController 
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -52,6 +52,14 @@
 	self.toolbarItems = @[self.backwardButton, space, self.forwardButton];
 	[self.navigationController setToolbarHidden:NO];
 
+}
+
+- (void) viewWillAppear:(BOOL)animated {
+  [super viewWillAppear:animated];
+
+  UIColor *naviBgColor = [UIColor colorWithRed:0.95f green:0.95f blue:0.95f alpha:1];
+  [self.navigationController.toolbar setTintColor:naviBgColor];
+  [self.navigationController setToolbarHidden:NO];
 }
 
 - (void) viewDidAppear:(BOOL)animated {

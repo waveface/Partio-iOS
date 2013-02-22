@@ -22,6 +22,7 @@
   NSDate *onDate;
   NSArray * layoutPartitionsOfThreeRows;
   NSArray * layoutPartitionsOfFourRows;
+  BOOL alreadyInitialLoaded;
 }
 
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
@@ -48,7 +49,8 @@
   if (self) {
     onDate = aDate;
 	_photos = @[];
-	
+	alreadyInitialLoaded = NO;
+    
 	layoutPartitionsOfThreeRows = @[
 								 @[@1,@1,@1],@[@1,@2],
 		 @[@2,@1],
@@ -70,26 +72,24 @@
   
   __weak WAPhotoStreamViewController *wSelf = self;
   
-  if (![_photos count]) {
-	dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-	
+  if (!alreadyInitialLoaded) {
+    alreadyInitialLoaded = YES;
+    double delayInSeconds = .2;
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+      
 	  NSPredicate *allFromToday = [NSPredicate predicateWithFormat:@"created BETWEEN {%@, %@}", [onDate dayBegin], [onDate dayEnd]];
 	  NSMutableArray *unsortedPhotos = [[WAFile MR_findAllWithPredicate:allFromToday inContext:[[WADataStore defaultStore] defaultAutoUpdatedMOC]] mutableCopy];
 	  NSSortDescriptor *sortByTime = [[NSSortDescriptor alloc] initWithKey:@"timestamp" ascending:NO];
 	  [unsortedPhotos sortUsingDescriptors:@[sortByTime]];
 	  _photos = unsortedPhotos;
-	  
-	  double delayInSeconds = .2f;
-	  dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-	  dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-				
-		if (isPad())
-		  [wSelf reloadLayout:layoutPartitionsOfFourRows];
-		else
-		  [wSelf reloadLayout:layoutPartitionsOfThreeRows];
-		[wSelf.collectionView reloadData];
-		
-	  });
+	  			
+      if (isPad())
+        [wSelf reloadLayout:layoutPartitionsOfFourRows];
+      else
+        [wSelf reloadLayout:layoutPartitionsOfThreeRows];
+      [wSelf.collectionView reloadData];
+
 	});
   }
   
@@ -143,11 +143,7 @@
                    ];
   
   self.collectionView.backgroundColor = [UIColor colorWithWhite:0.16f alpha:1.0f];
-    
-  if (isPad())
-    [self reloadLayout:layoutPartitionsOfFourRows];
-  else
-    [self reloadLayout:layoutPartitionsOfThreeRows];
+  
 }
 
 - (void)viewWillAppear:(BOOL)animated {

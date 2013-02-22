@@ -198,8 +198,36 @@
 		   
 		}];
 		
-	  }
-	}
+	  } else {
+        // no account available
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+          
+          [busyBezel dismissWithAnimation:WAOverlayBezelAnimationNone];
+          
+          [[[IRAlertView alloc] initWithTitle:NSLocalizedString(@"TWITTER_CONNECT_ACCOUNT_NOT_AVAILABLE", @"User doesn't login his account in iOS setting.") message:[wSelf errorString:[error code]] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
+          
+          [wSelf setEnabled:YES];
+          [wSelf setOn:NO animated:YES];
+          
+        });
+
+      }
+	} else {
+      // not granted
+      
+      dispatch_async(dispatch_get_main_queue(), ^{
+        
+        [busyBezel dismissWithAnimation:WAOverlayBezelAnimationNone];
+        
+        [[[IRAlertView alloc] initWithTitle:NSLocalizedString(@"TWITTER_CONNECT_PERMISSION_TITLE", @"User doesn't permit the twitter access while connect to his twitter account.") message:[wSelf errorString:[error code]] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
+        
+        [wSelf setEnabled:YES];
+        [wSelf setOn:NO animated:YES];
+        
+      });
+
+    }
 	
   }];
   
