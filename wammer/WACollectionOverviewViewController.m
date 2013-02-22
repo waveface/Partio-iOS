@@ -53,11 +53,20 @@
   
   UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"WACollectionOverviewViewCell" forIndexPath:indexPath];
   
+  UIImageView *imageView;
+  for (UIView *view in [cell subviews]) {
+    if ([view isKindOfClass:[UIImageView class]]) {
+      imageView = (UIImageView*)view;
+    } else {
+      imageView = [[UIImageView alloc] initWithFrame:(CGRect){0,0,75,75}];
+      [cell addSubview:imageView];
+      cell.clipsToBounds = YES;
+    }
+  }
+  
   WAFile *target = (WAFile*)[_collection.files objectAtIndex:[indexPath row]];
-  UIImageView *imageView = [[UIImageView alloc] initWithFrame:(CGRect){0,0,75,75}];
   imageView.image = target.smallThumbnailImage;
-  [cell addSubview:imageView];
-  cell.clipsToBounds = YES;
+  
   return (UICollectionViewCell*)cell;
 }
 
