@@ -251,6 +251,12 @@
 		8033024E168853B200004891 /* googlereader@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8033024C168853B200004891 /* googlereader@2x.png */; };
 		80330251168853D500004891 /* twitter.png in Resources */ = {isa = PBXBuildFile; fileRef = 8033024F168853D500004891 /* twitter.png */; };
 		80330252168853D500004891 /* twitter@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 80330250168853D500004891 /* twitter@2x.png */; };
+		8037A20116D76AF000BE7581 /* FacebookLogo@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8037A20016D76AF000BE7581 /* FacebookLogo@2x.png */; };
+		8037A21416D76E0B00BE7581 /* FlickrLogo@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8037A21016D76E0B00BE7581 /* FlickrLogo@2x.png */; };
+		8037A21516D76E0B00BE7581 /* FourSquareLogo@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8037A21116D76E0B00BE7581 /* FourSquareLogo@2x.png */; };
+		8037A21616D76E0B00BE7581 /* GoogleLogo@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8037A21216D76E0B00BE7581 /* GoogleLogo@2x.png */; };
+		8037A21716D76E0B00BE7581 /* twitterLogo@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8037A21316D76E0B00BE7581 /* twitterLogo@2x.png */; };
+		8037A21916D76E1B00BE7581 /* PicasaLogo@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8037A21816D76E1B00BE7581 /* PicasaLogo@2x.png */; };
 		8042891B16B2C67F00796F09 /* WAArticle.m in Sources */ = {isa = PBXBuildFile; fileRef = 80BF4D6B16B28A7000501E69 /* WAArticle.m */; };
 		8042891C16B2C73100796F09 /* WACollection+RemoteOperations.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BB6A9041696BBA300AB5F14 /* WACollection+RemoteOperations.m */; };
 		8042891D16B2C77600796F09 /* WADefines.m in Sources */ = {isa = PBXBuildFile; fileRef = FF0B2A2C14388FF000309F0E /* WADefines.m */; };
@@ -1231,6 +1237,12 @@
 		8033024C168853B200004891 /* googlereader@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "googlereader@2x.png"; path = "Resources/googlereader@2x.png"; sourceTree = "<group>"; };
 		8033024F168853D500004891 /* twitter.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = twitter.png; path = Resources/twitter.png; sourceTree = "<group>"; };
 		80330250168853D500004891 /* twitter@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "twitter@2x.png"; path = "Resources/twitter@2x.png"; sourceTree = "<group>"; };
+		8037A20016D76AF000BE7581 /* FacebookLogo@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "FacebookLogo@2x.png"; path = "Resources/FacebookLogo@2x.png"; sourceTree = "<group>"; };
+		8037A21016D76E0B00BE7581 /* FlickrLogo@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "FlickrLogo@2x.png"; path = "Resources/FlickrLogo@2x.png"; sourceTree = "<group>"; };
+		8037A21116D76E0B00BE7581 /* FourSquareLogo@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "FourSquareLogo@2x.png"; path = "Resources/FourSquareLogo@2x.png"; sourceTree = "<group>"; };
+		8037A21216D76E0B00BE7581 /* GoogleLogo@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "GoogleLogo@2x.png"; path = "Resources/GoogleLogo@2x.png"; sourceTree = "<group>"; };
+		8037A21316D76E0B00BE7581 /* twitterLogo@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "twitterLogo@2x.png"; path = "Resources/twitterLogo@2x.png"; sourceTree = "<group>"; };
+		8037A21816D76E1B00BE7581 /* PicasaLogo@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "PicasaLogo@2x.png"; path = "Resources/PicasaLogo@2x.png"; sourceTree = "<group>"; };
 		8046F44F16BB66DA00B0EEEB /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		80499B1016718F0400842788 /* WAEventHeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = WAEventHeaderView.xib; path = wammer/WAEventHeaderView.xib; sourceTree = "<group>"; };
 		80557BA715FDE38000336F3C /* WARemoteInterface+RemoteNotifications.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WARemoteInterface+RemoteNotifications.h"; sourceTree = "<group>"; };
@@ -3110,11 +3122,17 @@
 				803302471688539200004891 /* facebook.png */,
 				803302481688539200004891 /* facebook@2x.png */,
 				FFCCDE4B15B41B0000AEBB85 /* FacebookLogo.png */,
+				8037A20016D76AF000BE7581 /* FacebookLogo@2x.png */,
 				80C6FD8D16D766E700D450D3 /* FlickrLogo.png */,
 				80C6FD8E16D766E700D450D3 /* PicasaLogo.png */,
 				80C6FD9116D766F100D450D3 /* FourSquareLogo.png */,
 				80C6FD9216D766F100D450D3 /* GoogleLogo.png */,
 				80C6FD9516D7671900D450D3 /* twitterLogo.png */,
+				8037A21016D76E0B00BE7581 /* FlickrLogo@2x.png */,
+				8037A21116D76E0B00BE7581 /* FourSquareLogo@2x.png */,
+				8037A21216D76E0B00BE7581 /* GoogleLogo@2x.png */,
+				8037A21316D76E0B00BE7581 /* twitterLogo@2x.png */,
+				8037A21816D76E1B00BE7581 /* PicasaLogo@2x.png */,
 				FFCCDE4D15B41B0000AEBB85 /* Fontin_Sans_B_45b.otf */,
 				FFCCDE4E15B41B0000AEBB85 /* Fontin_Sans_BI_45b.otf */,
 				FFCCDE4F15B41B0000AEBB85 /* Fontin_Sans_I_45b.otf */,
@@ -4070,6 +4088,12 @@
 				80C6FD9316D766F100D450D3 /* FourSquareLogo.png in Resources */,
 				80C6FD9416D766F100D450D3 /* GoogleLogo.png in Resources */,
 				80C6FD9616D7671900D450D3 /* twitterLogo.png in Resources */,
+				8037A20116D76AF000BE7581 /* FacebookLogo@2x.png in Resources */,
+				8037A21416D76E0B00BE7581 /* FlickrLogo@2x.png in Resources */,
+				8037A21516D76E0B00BE7581 /* FourSquareLogo@2x.png in Resources */,
+				8037A21616D76E0B00BE7581 /* GoogleLogo@2x.png in Resources */,
+				8037A21716D76E0B00BE7581 /* twitterLogo@2x.png in Resources */,
+				8037A21916D76E1B00BE7581 /* PicasaLogo@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
