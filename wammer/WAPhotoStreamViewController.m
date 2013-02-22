@@ -71,7 +71,7 @@
   __weak WAPhotoStreamViewController *wSelf = self;
   
   if (![_photos count]) {
-	dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+	dispatch_async(dispatch_get_main_queue(), ^{
 	
 	  NSPredicate *allFromToday = [NSPredicate predicateWithFormat:@"created BETWEEN {%@, %@}", [onDate dayBegin], [onDate dayEnd]];
 	  NSMutableArray *unsortedPhotos = [[WAFile MR_findAllWithPredicate:allFromToday inContext:[[WADataStore defaultStore] defaultAutoUpdatedMOC]] mutableCopy];

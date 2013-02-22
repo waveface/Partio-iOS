@@ -71,7 +71,7 @@
 	return; // data already fetched
   
   __weak WADocumentStreamViewController *wSelf = self;
-  dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+  dispatch_async(dispatch_get_main_queue(), ^{
 	NSManagedObjectContext *context = [[WADataStore defaultStore] defaultAutoUpdatedMOC];
 	NSFetchRequest *request = [[wSelf class] fetchRequestForFileAccessLogsOnDate:wSelf.currentDate];
   

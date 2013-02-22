@@ -92,8 +92,8 @@
   if (self.fetchedResultsController)
 	return;
   
-  dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-
+  dispatch_async(dispatch_get_main_queue(), ^{
+  
 	NSManagedObjectContext *context = [[WADataStore defaultStore] defaultAutoUpdatedMOC];
     NSFetchRequest *fr = [[wSelf class] fetchRequestForWebpageAccessLogsOnDate:self.currentDate];
 
@@ -191,13 +191,13 @@
 		
 	  if (oldIndex == NSNotFound) {
 		
-		[self.webPages insertObject:anObject atIndex:newIndex];
+		[self.webPages insertObject:((WAFileAccessLog*)anObject) atIndex:newIndex];
 		[self.collectionView insertItemsAtIndexPaths:@[[NSIndexPath indexPathForRow:newIndex inSection:0]]];
 
 	  } else {
 		
-		[self.webPages removeObject:anObject];
-		[self.webPages insertObject:anObject atIndex:newIndex];
+		[self.webPages removeObject:((WAFileAccessLog*)anObject)];
+		[self.webPages insertObject:((WAFileAccessLog*)anObject) atIndex:newIndex];
 		[self.collectionView moveItemAtIndexPath:[NSIndexPath indexPathForRow:oldIndex inSection:0] toIndexPath:[NSIndexPath indexPathForRow:newIndex inSection:0]];
 		
 	  }
@@ -239,7 +239,7 @@
   NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
   [formatter setDateFormat:@"hh:mm a"];
 
-  cell.dateTimeLabel.text = [formatter stringFromDate:((WAFileAccessLog*)self.webPages[indexPath.row]).accessTime];
+  cell.dateTimeLabel.text = [formatter stringFromDate:accessLog.accessTime];
 
   [file irObserve:@"thumbnailImage"
 		  options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew
@@ -368,8 +368,9 @@ CGFloat (^rowSpacingWeb) (UICollectionView *) = ^ (UICollectionView *collectionV
 
 #pragma mark - UICollectionView Delegate
 -(void) collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
+  WAFileAccessLog *accessLog = self.webPages[indexPath.row];
 	
-  WAFile *file = ((WAFileAccessLog*)self.webPages[indexPath.row]).file;
+  WAFile *file = accessLog.file;
   NSAssert(file!=nil, @"Web page access log should refer to one WAFile");
 
   if (file.pageElements.count) {
