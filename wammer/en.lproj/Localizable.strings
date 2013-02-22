@@ -314,7 +314,16 @@
 "GOOGLE_DISCONNECT_REQUEST_TITLE" = "Confirm to stop importing from Google.";
 
 /* greeting text of day summary view */
-"GREETING_TEXT" = "You have %d events today.";
+"GREETING_TEXT_NO_EVENTS_PAST" = "Nothing to report, %@.";
+
+/* greeting text of day summary view */
+"GREETING_TEXT_NO_EVENTS_TODAY" = "Take a few pictures and see them here!";
+
+/* greeting text of day summary view */
+"GREETING_TEXT_WITH_EVENTS_PAST" = "Checkout these %d events.";
+
+/* greeting text of day summary view */
+"GREETING_TEXT_WITH_EVENTS_TODAY" = "Hi, %@. Checkout what you did today!";
 
 /* Hello text in summary view */
 "HELLO_NAME_TEXT" = "Hi, %@";

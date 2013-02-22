@@ -11,9 +11,9 @@
 
 extern NSString *kWANewDayEventMapViewCellID;
 
+@class NINetworkImageView;
 @interface WANewDayEventMapViewCell : UICollectionViewCell <MKMapViewDelegate>
 
-@property (weak, nonatomic) IBOutlet MKMapView *mapView;
-@property (nonatomic, strong) UIImage *mapImage;
+@property (weak, nonatomic) IBOutlet NINetworkImageView *mapImageView;
 
 @end
