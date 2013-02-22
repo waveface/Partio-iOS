@@ -135,6 +135,8 @@
 		4B8581BC15F79EEF00EE11AC /* Icon_develop.png in Resources */ = {isa = PBXBuildFile; fileRef = 4B8581B815F79EEF00EE11AC /* Icon_develop.png */; };
 		4B85823B15F7ABCF00EE11AC /* WADefaults.develop.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4B85823A15F7ABCF00EE11AC /* WADefaults.develop.plist */; };
 		4B8DFB7414FDFC3D000B41C5 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B8DFB7314FDFC3D000B41C5 /* CFNetwork.framework */; };
+		4B8E9A7C16D78F3A0078C2C3 /* WACollectionOverviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B8E9A7A16D78F3A0078C2C3 /* WACollectionOverviewViewController.m */; };
+		4B8E9A7D16D78F3A0078C2C3 /* WACollectionOverviewViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4B8E9A7B16D78F3A0078C2C3 /* WACollectionOverviewViewController.xib */; };
 		4B9B8DEB164DEE61007A2A74 /* libicucore.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 8002CDE515E5E85600D7BFF0 /* libicucore.dylib */; };
 		4BAA582B168014EF006324CF /* GetCollections.json in Resources */ = {isa = PBXBuildFile; fileRef = DEBED814166C8608001A2B24 /* GetCollections.json */; };
 		4BAD7579164DEC5300ADDE56 /* Accounts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D9B1D8C162BB1DE000E5350 /* Accounts.framework */; };
@@ -1073,6 +1075,9 @@
 		4B8CA96814BBE7BA006E06BB /* UnitTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UnitTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
 		4B8CA96914BBE7BA006E06BB /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
 		4B8DFB7314FDFC3D000B41C5 /* CFNetwork.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
+		4B8E9A7916D78F3A0078C2C3 /* WACollectionOverviewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WACollectionOverviewViewController.h; sourceTree = "<group>"; };
+		4B8E9A7A16D78F3A0078C2C3 /* WACollectionOverviewViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WACollectionOverviewViewController.m; sourceTree = "<group>"; };
+		4B8E9A7B16D78F3A0078C2C3 /* WACollectionOverviewViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WACollectionOverviewViewController.xib; sourceTree = "<group>"; };
 		4BAD7581164DED1700ADDE56 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
 		4BAE344E15DCA30200A9109D /* LoginBackground-Landscape.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "LoginBackground-Landscape.png"; path = "Resources/LoginBackground-Landscape.png"; sourceTree = "<group>"; };
 		4BAE344F15DCA30200A9109D /* LoginBackground-Landscape@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "LoginBackground-Landscape@2x.png"; path = "Resources/LoginBackground-Landscape@2x.png"; sourceTree = "<group>"; };
@@ -2236,6 +2241,9 @@
 		8007709516789A540085E525 /* Collection */ = {
 			isa = PBXGroup;
 			children = (
+				4B8E9A7916D78F3A0078C2C3 /* WACollectionOverviewViewController.h */,
+				4B8E9A7A16D78F3A0078C2C3 /* WACollectionOverviewViewController.m */,
+				4B8E9A7B16D78F3A0078C2C3 /* WACollectionOverviewViewController.xib */,
 				4B274E671675E0E9007406D3 /* WACollectionViewCell.h */,
 				4B274E681675E0E9007406D3 /* WACollectionViewCell.m */,
 				4B274E6A1675E104007406D3 /* WACollectionViewCell.xib */,
@@ -3956,6 +3964,7 @@
 				133948C216C10F5C003D2616 /* WebIcon.png in Resources */,
 				133948C316C10F5C003D2616 /* WebIcon@2x.png in Resources */,
 				4B78D1FD16C38F0B004C2532 /* WATinyArrowDown@2x.png in Resources */,
+				4B8E9A7D16D78F3A0078C2C3 /* WACollectionOverviewViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4429,6 +4438,7 @@
 				1329D5FB16BA54480095970E /* WAPhotoDay.m in Sources */,
 				80F5223316C0FAD8003A06D5 /* WARemoteInterface+Summary.m in Sources */,
 				4B603C4E16C37D6C003692CB /* WAModel.xcdatamodeld in Sources */,
+				4B8E9A7C16D78F3A0078C2C3 /* WACollectionOverviewViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
