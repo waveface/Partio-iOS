@@ -8,9 +8,11 @@
 
 #import <Foundation/Foundation.h>
 
+@class WAUser;
 @interface WANewDaySummary : NSObject
 
 @property (nonatomic, strong) NSDate *date;
+@property (nonatomic, strong) WAUser *user;
 @property (nonatomic) NSUInteger numOfPhotos;
 @property (nonatomic) NSUInteger numOfDocuments;
 @property (nonatomic) NSUInteger numOfWebpages;

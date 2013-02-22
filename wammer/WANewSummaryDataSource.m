@@ -19,9 +19,11 @@
 #import "WAFileAccessLog.h"
 #import "WADocumentDay.h"
 #import "WAWebpageDay.h"
+#import "WAUser.h"
 
 @interface WANewSummaryDataSource ()
 
+@property (nonatomic, strong) WAUser *user;
 @property (nonatomic, strong) NSDate *firstDate;
 @property (nonatomic, strong) NSDate *lastDate;
 @property (nonatomic, strong) NSDate *currentDate;
@@ -45,6 +47,8 @@
 
   self = [super init];
   if (self) {
+    WADataStore *ds = [WADataStore defaultStore];
+    self.user = [ds mainUserInContext:[ds defaultAutoUpdatedMOC]];
     self.daySummaries = [NSMutableArray array];
     self.dayEvents = [NSMutableArray array];
     self.firstDate = aDate;
@@ -61,6 +65,7 @@
   if (![self.daySummaries count]) {
     WANewDaySummary *daySummary = [[WANewDaySummary alloc] init];
     daySummary.date = aDate;
+    daySummary.user = self.user;
     [daySummary reloadData];
     [self.daySummaries addObject:daySummary];
   }
@@ -69,6 +74,7 @@
     for (NSInteger i = 1; i <= numOfDays; i++) {
       WANewDaySummary *daySummary = [[WANewDaySummary alloc] init];
       daySummary.date = [self.firstDate dateOfPreviousNumOfDays:i];
+      daySummary.user = self.user;
       [daySummary reloadData];
       [self.daySummaries insertObject:daySummary atIndex:0];
     }
@@ -78,6 +84,7 @@
     for (NSInteger i = 1; i <= numOfDays; i++) {
       WANewDaySummary *daySummary = [[WANewDaySummary alloc] init];
       daySummary.date = [self.lastDate dateOfNextNumOfDays:i];
+      daySummary.user = self.user;
       if ([daySummary.date compare:currentDate] == NSOrderedDescending) {
         // do not load future days
         break;
