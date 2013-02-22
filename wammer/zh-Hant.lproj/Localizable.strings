@@ -323,7 +323,7 @@
 "GREETING_TEXT_WITH_EVENTS_PAST" = "這天有 %d 個動態。";
 
 /* greeting text of day summary view */
-"GREETING_TEXT_WITH_EVENTS_TODAY" = "Hi, %@. 今天你幹了什麼好事！";
+"GREETING_TEXT_WITH_EVENTS_TODAY" = "Hi, %@. 你今天幹了什麼好事！";
 
 /* Hello text in summary view */
 "HELLO_NAME_TEXT" = "哈囉, %@";
