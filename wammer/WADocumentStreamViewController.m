@@ -71,7 +71,9 @@
 	return; // data already fetched
   
   __weak WADocumentStreamViewController *wSelf = self;
-  dispatch_async(dispatch_get_main_queue(), ^{
+  double delayInSeconds = .2;
+  dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+  dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
 	NSManagedObjectContext *context = [[WADataStore defaultStore] defaultAutoUpdatedMOC];
 	NSFetchRequest *request = [[wSelf class] fetchRequestForFileAccessLogsOnDate:wSelf.currentDate];
   
@@ -91,14 +93,8 @@
 	  }
 	}];
 	
-	double delayInSeconds = .2f;
-	dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-	dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-	
-	  [wSelf.collectionView reloadData];
-	  
-	});
-	
+    [wSelf.collectionView reloadData];
+	  	
   });
 
 }
