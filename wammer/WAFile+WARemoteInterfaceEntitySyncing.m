@@ -25,6 +25,7 @@
 #import "ALAsset+WAAdditions.h"
 #import "NSDate+WAAdditions.h"
 #import <NSString+SSToolkitAdditions.h>
+#import <AssetsLibrary/AssetsLibrary.h>
 
 
 NSString * kWAFileEntitySyncingErrorDomain = @"com.waveface.wammer.file.entitySyncing";
@@ -432,7 +433,7 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
       callback(WAFileEntitySyncingError(WAFileSyncingErrorCodePhotoImportDisabled, @"Photo import is disabled, stop sync files", nil));
       return;
     }
-
+    
     if (![[NSUserDefaults standardUserDefaults] boolForKey:kWAUseCellularEnabled] && ![[WARemoteInterface sharedInterface] hasWiFiConnection]) {
       callback(WAFileEntitySyncingError(WAFileSyncingErrorCodeSyncNotAllowed, @"Syncing is not allowed, stop sync files", nil));
       return;
@@ -451,11 +452,11 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
         
         if ([[options valueForKey:kWARemoteAttachmentSubtype] isEqualToString:WARemoteAttachmentMediumSubtype]) {
 	
-	file.thumbnailURL = [[file class] transformedValue:[@"/v3/attachments/view?object_id=" stringByAppendingFormat:@"%@&image_meta=medium", file.identifier] fromRemoteKeyPath:nil toLocalKeyPath:@"thumbnailURL"];
+          file.thumbnailURL = [[file class] transformedValue:[@"/v3/attachments/view?object_id=" stringByAppendingFormat:@"%@&image_meta=medium", file.identifier] fromRemoteKeyPath:nil toLocalKeyPath:@"thumbnailURL"];
 	
         } else if ([[options valueForKey:kWARemoteAttachmentSubtype] isEqualToString:WARemoteAttachmentOriginalSubtype]) {
 	
-	file.resourceURL = [[file class] transformedValue:[@"/v3/attachments/view?object_id=" stringByAppendingFormat:@"%@", file.identifier] fromRemoteKeyPath:nil toLocalKeyPath:@"resourceURL"];
+          file.resourceURL = [[file class] transformedValue:[@"/v3/attachments/view?object_id=" stringByAppendingFormat:@"%@", file.identifier] fromRemoteKeyPath:nil toLocalKeyPath:@"resourceURL"];
 	
         }
         
@@ -473,57 +474,57 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
       if ([[error domain] isEqualToString:kWARemoteInterfaceDomain] && [error code] == 0x6000 + 14) {
 
         [ds performBlock:^{
-
-	NSManagedObjectContext *context = [ds autoUpdatingMOC];
+          
+          NSManagedObjectContext *context = [ds autoUpdatingMOC];
+          
+          WAFile *file = (WAFile *)[context irManagedObjectForURI:ownURL];
 	
-	WAFile *file = (WAFile *)[context irManagedObjectForURI:ownURL];
+          if ([[options valueForKey:kWARemoteAttachmentSubtype] isEqualToString:WARemoteAttachmentMediumSubtype]) {
+	  
+            file.thumbnailURL = [[file class] transformedValue:[@"/v3/attachments/view?object_id=" stringByAppendingFormat:@"%@&image_meta=medium", file.identifier] fromRemoteKeyPath:nil toLocalKeyPath:@"thumbnailURL"];
+	  
+          } else if ([[options valueForKey:kWARemoteAttachmentSubtype] isEqualToString:WARemoteAttachmentOriginalSubtype]) {
+	  
+            file.resourceURL = [[file class] transformedValue:[@"/v3/attachments/view?object_id=" stringByAppendingFormat:@"%@", file.identifier] fromRemoteKeyPath:nil toLocalKeyPath:@"resourceURL"];
+	  
+          }
 	
-	if ([[options valueForKey:kWARemoteAttachmentSubtype] isEqualToString:WARemoteAttachmentMediumSubtype]) {
-	  
-	  file.thumbnailURL = [[file class] transformedValue:[@"/v3/attachments/view?object_id=" stringByAppendingFormat:@"%@&image_meta=medium", file.identifier] fromRemoteKeyPath:nil toLocalKeyPath:@"thumbnailURL"];
-	  
-	} else if ([[options valueForKey:kWARemoteAttachmentSubtype] isEqualToString:WARemoteAttachmentOriginalSubtype]) {
-	  
-	  file.resourceURL = [[file class] transformedValue:[@"/v3/attachments/view?object_id=" stringByAppendingFormat:@"%@", file.identifier] fromRemoteKeyPath:nil toLocalKeyPath:@"resourceURL"];
-	  
-	}
-	
-	NSError *error = nil;
-	BOOL didSave = [context save:&error];
-	NSCAssert1(didSave, @"Generated thumbnail uploaded but metadata is not saved correctly: %@", error);
-	
-	callback(error);
-
+          NSError *error = nil;
+          BOOL didSave = [context save:&error];
+          NSCAssert1(didSave, @"Generated thumbnail uploaded but metadata is not saved correctly: %@", error);
+          
+          callback(error);
+          
         } waitUntilDone:NO];
         
       } else if ([[error domain] isEqualToString:kWAFileEntitySyncingErrorDomain] && [error code] == WAFileSyncingErrorCodeAssetDeleted) {
         
         [ds performBlock:^{
 
-	NSManagedObjectContext *context = [ds autoUpdatingMOC];
+          NSManagedObjectContext *context = [ds autoUpdatingMOC];
 	
-	WAFile *file = (WAFile *)[context irManagedObjectForURI:ownURL];
+          WAFile *file = (WAFile *)[context irManagedObjectForURI:ownURL];
 	
-	if (file.thumbnailURL) {
+          if (file.thumbnailURL) {
 	  
-	  // The WAFile never needs sync because its asset has been deleted, but we don't have to hide it.
-	  // Just keep a hint in its resource URL (all-zero object id)
-	  file.resourceURL = [[file class] transformedValue:@"/v3/attachments/view?object_id=00000000000000000000000000000000" fromRemoteKeyPath:nil toLocalKeyPath:@"resourceURL"];
+            // The WAFile never needs sync because its asset has been deleted, but we don't have to hide it.
+            // Just keep a hint in its resource URL (all-zero object id)
+            file.resourceURL = [[file class] transformedValue:@"/v3/attachments/view?object_id=00000000000000000000000000000000" fromRemoteKeyPath:nil toLocalKeyPath:@"resourceURL"];
+            
+          } else {
 	  
-	} else {
-	  
-	  // Hide the attachment if its thumbnails has not been created.
-	  file.hidden = @YES;
-	  file.dirty = @YES;
-	  
-	}
+            // Hide the attachment if its thumbnails has not been created.
+            file.hidden = @YES;
+            file.dirty = @YES;
+            
+          }
 	
-	NSError *error = nil;
-	[context save:&error];
-	callback(error);
-
+          NSError *error = nil;
+          [context save:&error];
+          callback(error);
+          
         } waitUntilDone:NO];
-
+        
       } else {
         
         callback(error);
@@ -575,55 +576,57 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
         options[kWARemoteAttachmentImportTime] = file.importTime;
       }
       
-      if (!isValidPath(thumbnailFilePath)) {
+      if (file.assetURL) {
         
-        if (file.assetURL) {
-	
-	[[WAAssetsLibraryManager defaultManager] assetForURL:[NSURL URLWithString:file.assetURL] resultBlock:^(ALAsset *asset) {
-	  
-	  if (!asset) {
-	    NSLog(@"Asset does not exist for WAFile %@, hide it.", file);
-	    file.hidden = @YES;
-	    file.dirty = @YES;
-	    [context save:nil];
-	    callback(nil);
-	    return;
-	  }
+        [[WAAssetsLibraryManager defaultManager] assetForURL:[NSURL URLWithString:file.assetURL] resultBlock:^(ALAsset *asset) {
 
-	  [asset makeThumbnailWithOptions:WAThumbnailTypeMedium completeBlock:^(UIImage *image) {
-	    
-	    NSManagedObjectContext *context = [ds autoUpdatingMOC];
-	    context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
-	    
-	    WAFile *file = (WAFile *)[context irManagedObjectForURI:ownURL];
-	    
-	    // Fill EXIF data again to ensure the WAFileExif instance is readable
-	    if (file.exif) {
-	      options[kWARemoteAttachmentExif] = file.exif;
-	    }
-	    
-	    file.thumbnailFilePath = [[[WADataStore defaultStore] persistentFileURLForData:UIImageJPEGRepresentation(image, 0.85f) extension:@"jpeg"] path];
-	    
-	    NSError *error = nil;
-	    BOOL didSave = [context save:&error];
-	    NSCAssert1(didSave, @"Generated thumbnail could not be saved: %@", error);
-	    
-	    uploadAttachment([NSURL fileURLWithPath:file.thumbnailFilePath], options, callback);
-	    
-	  }];
-	  
-	} failureBlock:^(NSError *error) {
-	  
-	  NSLog(@"Unable to read asset from url: %@", file.assetURL);
-	  callback(error);
-	  
-	}];
-	
-        }
-        
-      } else {
-        
-        uploadAttachment([NSURL fileURLWithPath:file.thumbnailFilePath], options, callback);
+          if (!asset) {
+            NSLog(@"Asset does not exist for WAFile %@, hide it.", file);
+            file.hidden = @YES;
+            file.dirty = @YES;
+            [context save:nil];
+            callback(nil);
+            return;
+          }
+          
+          options[kWARemoteAttachmentFileName] = [[asset defaultRepresentation] filename];
+
+          if (!isValidPath(thumbnailFilePath)) {
+
+            [asset makeThumbnailWithOptions:WAThumbnailTypeMedium completeBlock:^(UIImage *image) {
+              
+              NSManagedObjectContext *context = [ds autoUpdatingMOC];
+              context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
+              
+              WAFile *file = (WAFile *)[context irManagedObjectForURI:ownURL];
+              
+              // Fill EXIF data again to ensure the WAFileExif instance is readable
+              if (file.exif) {
+                options[kWARemoteAttachmentExif] = file.exif;
+              }
+              
+              file.thumbnailFilePath = [[[WADataStore defaultStore] persistentFileURLForData:UIImageJPEGRepresentation(image, 0.85f) extension:@"jpeg"] path];
+              
+              NSError *error = nil;
+              BOOL didSave = [context save:&error];
+              NSCAssert1(didSave, @"Generated thumbnail could not be saved: %@", error);
+              
+              uploadAttachment([NSURL fileURLWithPath:file.thumbnailFilePath], options, callback);
+              
+            }];
+            
+          } else {
+
+            uploadAttachment([NSURL fileURLWithPath:file.thumbnailFilePath], options, callback);
+            
+          }
+          
+        } failureBlock:^(NSError *error) {
+          
+          NSLog(@"Unable to read asset from url: %@", file.assetURL);
+          callback(error);
+          
+        }];
         
       }
       

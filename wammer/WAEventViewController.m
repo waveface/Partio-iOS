@@ -26,6 +26,8 @@
 #import "GAI.h"
 #import "WANavigationController.h"
 
+#import <GoogleMaps/GoogleMaps.h>
+
 #import "WACompositionViewController.h"
 #import "WACompositionViewController+CustomUI.h"
 
@@ -140,28 +142,28 @@
 	
 	if (self.article.location.latitude && self.article.location.longitude) {
 		
-		CLLocationCoordinate2D center = { self.article.location.latitude.floatValue, self.article.location.longitude.floatValue };
-//		NSUInteger zoomLevel = [self.article.location.zoomLevel unsignedIntegerValue];
-	  NSUInteger zoomLevel = 14; // hardcoded, but we may tune this in the future
+	  NSUInteger zoomLevel = 15; // hardcoded, but we may tune this in the future
 		
-		NSMutableArray *checkins = [NSMutableArray array];
-		for (WALocation *loc in self.article.checkins) {
-			WAAnnotation *pin = [[WAAnnotation alloc] init];
-			
-			CLLocationCoordinate2D checkinCenter = { loc.latitude.floatValue, loc.longitude.floatValue };
-			pin.coordinate = checkinCenter;
-			if (loc.name)
-				pin.title = loc.name;
-			
-			[checkins addObject:pin];
-		}
-		
-		_headerView.mapView.delegate = self;
-		
-		[_headerView.mapView setCenterCoordinate:center zoomLevel:zoomLevel animated:NO];
-		[_headerView.mapView addAnnotations:checkins];
-		[_headerView.mapView setHidden:NO];
-		
+
+      GMSCameraPosition *camera = [GMSCameraPosition cameraWithLatitude:self.article.location.latitude.floatValue
+                                                              longitude:self.article.location.longitude.floatValue
+                                                                   zoom:zoomLevel];
+      
+      [_headerView.mapView setCamera:camera];
+      _headerView.mapView.myLocationEnabled = NO;
+      for (WALocation *loc in self.article.checkins) {   
+        GMSMarkerOptions *options = [[GMSMarkerOptions alloc] init];
+        CLLocationCoordinate2D checkinCenter = { loc.latitude.floatValue, loc.longitude.floatValue };
+        options.position = checkinCenter;
+        if (loc.name)
+          options.title = loc.name;
+        else
+          options.title = nil;
+        options.icon = [UIImage imageNamed:@"pindrop"];
+        [_headerView.mapView addMarkerWithOptions:options];
+        
+      }
+  		
 	}
 	
 	if (self.completion)
@@ -246,20 +248,6 @@
 	return formatter;
 }
 
-- (MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id<MKAnnotation>)annotation {
-	
-	static NSString *annotationIdentifier = @"EventMapView-Annotation";
-	MKAnnotationView *annView = (MKAnnotationView*)[mapView dequeueReusableAnnotationViewWithIdentifier:annotationIdentifier];
-	if (annView == nil) {
-		annView = [[MKAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:annotationIdentifier];
-	}
-	
-	annView.canShowCallout = YES;
-	annView.draggable = NO;
-	annView.image = [UIImage imageNamed:@"pindrop"];
-	return annView;
-	
-}
 
 + (NSDateFormatter *) timeFormatter {
 	static NSDateFormatter *formatter = nil;

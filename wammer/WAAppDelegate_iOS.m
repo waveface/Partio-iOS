@@ -37,6 +37,7 @@
 #import	"DCIntrospect.h"
 
 #import <FacebookSDK/FacebookSDK.h>
+#import <GoogleMaps/GoogleMaps.h>
 
 #import "WAWelcomeViewController.h"
 
@@ -44,6 +45,8 @@
 #import "WASlidingMenuViewController.h"
 #import "WADayViewController.h"
 #import "WACacheManager.h"
+
+#import "UIViewController+WAAdditions.h"
 
 #if ENABLE_PONYDEBUG
 #import "PonyDebugger/PDDebugger.h"
@@ -176,6 +179,8 @@ extern CFAbsoluteTime StartTime;
   [GAI sharedInstance].trackUncaughtExceptions = YES;
   self.tracker = [[GAI sharedInstance] trackerWithTrackingId:kTrackingId];
 
+  [GMSServices provideAPIKey:@"AIzaSyAyGVeC0T7mPhQJjiKk7GVj8Z2Wmxpas5s"];
+  
   [self bootstrap];
   
   WADefaultAppearance();
@@ -346,16 +351,7 @@ extern CFAbsoluteTime StartTime;
   
   UIViewController *rootVC = self.window.rootViewController;
   
-  __block void (^zapModal)(UIViewController *) = [^ (UIViewController *aVC) {
-    
-    if (aVC.presentedViewController)
-      zapModal(aVC.presentedViewController);
-    
-    [aVC dismissViewControllerAnimated:NO completion:nil];
-    
-  } copy];
-  
-  zapModal(rootVC);
+  [rootVC zapModal];
   
   self.window.rootViewController = [[WALoginBackgroundViewController alloc] init];
   
@@ -707,8 +703,8 @@ extern CFAbsoluteTime StartTime;
     });
     
   }
-  
-  WAFirstUseViewController *firstUseVC = [WAFirstUseViewController initWithAuthSuccessBlock:^(NSString *token, NSDictionary *userRep, NSArray *groupReps){
+  __weak WAAppDelegate_iOS *wSelf = self;
+  __block WAFirstUseViewController *firstUseVC = [WAFirstUseViewController initWithAuthSuccessBlock:^(NSString *token, NSDictionary *userRep, NSArray *groupReps){
     
     NSString *userID = [userRep valueForKeyPath:@"user_id"];
     
@@ -748,9 +744,12 @@ extern CFAbsoluteTime StartTime;
     [alertView show];
     
   } finishBlock:^{
-    
-    [wAppDelegate clearViewHierarchy];
-    [wAppDelegate recreateViewHierarchy];
+
+    [firstUseVC popToRootViewControllerAnimated:NO];
+    [firstUseVC dismissViewControllerAnimated:NO completion:^{
+      wSelf.window.rootViewController = nil;
+      [wAppDelegate recreateViewHierarchy];
+    }];
     
   }];
   
