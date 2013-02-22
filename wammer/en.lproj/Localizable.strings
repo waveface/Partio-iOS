@@ -530,14 +530,20 @@
 /* Alert on no location service enabled when open photo library */
 "TURN_ON_LOCATION_SERVICE" = "Turn on Location Services to allow Stream to access your Photo Library.";
 
+/* User doesn't login his account in iOS setting. */
+"TWITTER_CONNECT_ACCOUNT_NOT_AVAILABLE" = "You may sign in your Twitter account from iOS Settings. ";
+
 /* Message for an alert view to show user his Twitter account has been connected to another Stream user */
-"TWITTER_CONNECT_ACCOUNT_OCCUPIED_MESSAGE" = "TWITTER_CONNECT_ACCOUNT_OCCUPIED_MESSAGE";
+"TWITTER_CONNECT_ACCOUNT_OCCUPIED_MESSAGE" = "Your twitter account has been already linked to another AOStream user.";
 
 /* Message for an alert view to show user he already connects to another Twitter account. */
-"TWITTER_CONNECT_FAIL_MESSAGE" = "TWITTER_CONNECT_FAIL_MESSAGE";
+"TWITTER_CONNECT_FAIL_MESSAGE" = "Fail to connect your Twitter account.";
 
 /* Title for an alert view to show Twitter connection failure */
 "TWITTER_CONNECT_FAIL_TITLE" = "Unable to import from Twitter.";
+
+/* User doesn't permit the twitter access while connect to his twitter account. */
+"TWITTER_CONNECT_PERMISSION_TITLE" = "You may grant us the permission to access your Twitter account.";
 
 /* Message for alert view asking if user wants to connect her Twitter account */
 "TWITTER_CONNECT_REQUEST_MESSAGE" = "AOStream will start importing tweets from your Twitter account.";

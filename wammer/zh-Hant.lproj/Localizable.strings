@@ -530,14 +530,20 @@
 /* Alert on no location service enabled when open photo library */
 "TURN_ON_LOCATION_SERVICE" = "Stream 須開啟定位服務才能存取相簿的內容";
 
+/* User doesn't login his account in iOS setting. */
+"TWITTER_CONNECT_ACCOUNT_NOT_AVAILABLE" = "請到登入您的 Twitter 帳號";
+
 /* Message for an alert view to show user his Twitter account has been connected to another Stream user */
 "TWITTER_CONNECT_ACCOUNT_OCCUPIED_MESSAGE" = "TWITTER_CONNECT_ACCOUNT_OCCUPIED_MESSAGE";
 
 /* Message for an alert view to show user he already connects to another Twitter account. */
-"TWITTER_CONNECT_FAIL_MESSAGE" = "TWITTER_CONNECT_FAIL_MESSAGE";
+"TWITTER_CONNECT_FAIL_MESSAGE" = "無法正常同步您的 Twitter 帳號";
 
 /* Title for an alert view to show Twitter connection failure */
 "TWITTER_CONNECT_FAIL_TITLE" = "無法同步Twitter";
+
+/* User doesn't permit the twitter access while connect to his twitter account. */
+"TWITTER_CONNECT_PERMISSION_TITLE" = "請打開您 Twitter 系統設定中 AOStream 的權線，否則我們將無法同步您的新貼文。";
 
 /* Message for alert view asking if user wants to connect her Twitter account */
 "TWITTER_CONNECT_REQUEST_MESSAGE" = "啟動之後，Stream將會開始同步您在Twitter上的新貼文。";
