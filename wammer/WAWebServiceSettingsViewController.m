@@ -62,6 +62,7 @@ static NSString * const kWASegueSettingsToOAuth = @"WASegueSettingsToOAuth";
   self.googleConnectSwitch.enabled = NO;
   self.twitterConnectSwitch.enabled = NO;
   self.foursquareConnectSwitch.enabled = NO;
+  
 
   self.busyBezel = [WAOverlayBezel bezelWithStyle:WAActivityIndicatorBezelStyle];
 

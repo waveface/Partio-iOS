@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import <MapKit/MapKit.h>
+#import <GoogleMaps/GoogleMaps.h>
 
 @interface WAEventHeaderView : UICollectionReusableView
 
@@ -16,7 +16,8 @@
 @property (nonatomic, weak) IBOutlet UILabel *dateLabel;
 @property (nonatomic, weak) IBOutlet UILabel *timeLabel;
 @property (nonatomic, weak) IBOutlet UILabel *numberLabel;
-@property (nonatomic, weak) IBOutlet MKMapView *mapView;
+@property (nonatomic, weak) IBOutlet GMSMapView *mapView;
+//@property (nonatomic, weak) IBOutlet UIView *mapPlaceholderView;
 @property (nonatomic, weak) IBOutlet UILabel *descriptiveTagsLabel;
 @property (nonatomic, weak) IBOutlet UILabel *tagsLabel;
 
