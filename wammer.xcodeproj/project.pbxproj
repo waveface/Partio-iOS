@@ -232,7 +232,7 @@
 		8012DB4F16D4C1150002B163 /* UIViewController+WAAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 8012DB4E16D4C1150002B163 /* UIViewController+WAAdditions.m */; };
 		8020F1B516B23AF900E185EC /* WAUserDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8020F1B416B23AF900E185EC /* WAUserDetailViewController.m */; };
 		8023BAF116770D2B00E6BED2 /* pindrop.png in Resources */ = {isa = PBXBuildFile; fileRef = 8023BAEF16770D2A00E6BED2 /* pindrop.png */; };
-		8023BAF216770D2B00E6BED2 /* pindrop@2X.png in Resources */ = {isa = PBXBuildFile; fileRef = 8023BAF016770D2A00E6BED2 /* pindrop@2X.png */; };
+		8023BAF216770D2B00E6BED2 /* pindrop@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8023BAF016770D2A00E6BED2 /* pindrop@2x.png */; };
 		802427091689E1AF002454A7 /* WACollection.m in Sources */ = {isa = PBXBuildFile; fileRef = 802427081689E1AF002454A7 /* WACollection.m */; };
 		80316A0A15C0EC20009D43F0 /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 803169F815C0EC20009D43F0 /* .gitignore */; };
 		80316A0B15C0EC20009D43F0 /* IRAQAlbumCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 803169FA15C0EC20009D43F0 /* IRAQAlbumCell.m */; };
@@ -301,6 +301,11 @@
 		80A115681647CC0B005A4246 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 80A115671647CC0A005A4246 /* MapKit.framework */; };
 		80A13C74162071C4002880A9 /* NSDate+WAAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 80A13C73162071C4002880A9 /* NSDate+WAAdditions.m */; };
 		80A2217515ED1AFD006236AC /* WARemoteInterface+WebSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 8002CDEB15E5F6F300D7BFF0 /* WARemoteInterface+WebSocket.m */; };
+		80B0A38716D75BF100E391D2 /* GoogleMaps.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 80B0A38616D75BF100E391D2 /* GoogleMaps.framework */; };
+		80B0A38916D75C2500E391D2 /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 80B0A38816D75C2500E391D2 /* GLKit.framework */; };
+		80B0A38B16D75C3E00E391D2 /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 80B0A38A16D75C3E00E391D2 /* ImageIO.framework */; };
+		80B0A38D16D75C5400E391D2 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 80B0A38C16D75C5400E391D2 /* OpenGLES.framework */; };
+		80B0A38F16D75F2300E391D2 /* GoogleMaps.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 80B0A38E16D75F2300E391D2 /* GoogleMaps.bundle */; };
 		80B143FD16BA7F6E009A5FA9 /* Twitter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 80B143FC16BA7F6E009A5FA9 /* Twitter.framework */; };
 		80B1440E16BA8157009A5FA9 /* OAuth+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 80B1440D16BA8156009A5FA9 /* OAuth+Additions.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		80B1441116BA8479009A5FA9 /* OAuthCore.m in Sources */ = {isa = PBXBuildFile; fileRef = 80B1441016BA8478009A5FA9 /* OAuthCore.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -341,6 +346,11 @@
 		80C129C616398A0D001DDFE2 /* Create@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 80C129C416398A0D001DDFE2 /* Create@2x.png */; };
 		80C61CAB16A7F1050028356F /* WAAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 80C61CAA16A7F1050028356F /* WAAnnotation.m */; };
 		80C65D03167B0BB9000E61DB /* WAEventDay.m in Sources */ = {isa = PBXBuildFile; fileRef = 80719CE7167AFD4600E9729F /* WAEventDay.m */; };
+		80C6FD8F16D766E700D450D3 /* FlickrLogo.png in Resources */ = {isa = PBXBuildFile; fileRef = 80C6FD8D16D766E700D450D3 /* FlickrLogo.png */; };
+		80C6FD9016D766E700D450D3 /* PicasaLogo.png in Resources */ = {isa = PBXBuildFile; fileRef = 80C6FD8E16D766E700D450D3 /* PicasaLogo.png */; };
+		80C6FD9316D766F100D450D3 /* FourSquareLogo.png in Resources */ = {isa = PBXBuildFile; fileRef = 80C6FD9116D766F100D450D3 /* FourSquareLogo.png */; };
+		80C6FD9416D766F100D450D3 /* GoogleLogo.png in Resources */ = {isa = PBXBuildFile; fileRef = 80C6FD9216D766F100D450D3 /* GoogleLogo.png */; };
+		80C6FD9616D7671900D450D3 /* twitterLogo.png in Resources */ = {isa = PBXBuildFile; fileRef = 80C6FD9516D7671900D450D3 /* twitterLogo.png */; };
 		80C979F71649796A004F0CF4 /* EventCardBG.png in Resources */ = {isa = PBXBuildFile; fileRef = 80C979F61649796A004F0CF4 /* EventCardBG.png */; };
 		80DA984F16496FED0030CA21 /* WAEventHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 80DA984216496FED0030CA21 /* WAEventHeaderView.m */; };
 		80DA985116496FED0030CA21 /* WAEventLinkViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 80DA984516496FED0030CA21 /* WAEventLinkViewCell.m */; };
@@ -551,7 +561,6 @@
 		FFCCDF5015B41B0000AEBB85 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = FFCCDE4315B41B0000AEBB85 /* Default.png */; };
 		FFCCDF5115B41B0000AEBB85 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FFCCDE4415B41B0000AEBB85 /* Default@2x.png */; };
 		FFCCDF5815B41B0000AEBB85 /* FacebookLogo.png in Resources */ = {isa = PBXBuildFile; fileRef = FFCCDE4B15B41B0000AEBB85 /* FacebookLogo.png */; };
-		FFCCDF5915B41B0000AEBB85 /* FacebookLogo@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FFCCDE4C15B41B0000AEBB85 /* FacebookLogo@2x.png */; };
 		FFCCDF5A15B41B0000AEBB85 /* Fontin_Sans_B_45b.otf in Resources */ = {isa = PBXBuildFile; fileRef = FFCCDE4D15B41B0000AEBB85 /* Fontin_Sans_B_45b.otf */; };
 		FFCCDF5B15B41B0000AEBB85 /* Fontin_Sans_BI_45b.otf in Resources */ = {isa = PBXBuildFile; fileRef = FFCCDE4E15B41B0000AEBB85 /* Fontin_Sans_BI_45b.otf */; };
 		FFCCDF5C15B41B0000AEBB85 /* Fontin_Sans_I_45b.otf in Resources */ = {isa = PBXBuildFile; fileRef = FFCCDE4F15B41B0000AEBB85 /* Fontin_Sans_I_45b.otf */; };
@@ -1191,7 +1200,7 @@
 		8020F1B316B23AF900E185EC /* WAUserDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAUserDetailViewController.h; sourceTree = "<group>"; };
 		8020F1B416B23AF900E185EC /* WAUserDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAUserDetailViewController.m; sourceTree = "<group>"; };
 		8023BAEF16770D2A00E6BED2 /* pindrop.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = pindrop.png; path = Resources/pindrop.png; sourceTree = "<group>"; };
-		8023BAF016770D2A00E6BED2 /* pindrop@2X.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "pindrop@2X.png"; path = "Resources/pindrop@2X.png"; sourceTree = "<group>"; };
+		8023BAF016770D2A00E6BED2 /* pindrop@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "pindrop@2x.png"; path = "Resources/pindrop@2x.png"; sourceTree = "<group>"; };
 		802427071689E1AF002454A7 /* WACollection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WACollection.h; sourceTree = "<group>"; };
 		802427081689E1AF002454A7 /* WACollection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WACollection.m; sourceTree = "<group>"; };
 		803169F815C0EC20009D43F0 /* .gitignore */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
@@ -1287,6 +1296,11 @@
 		80A115671647CC0A005A4246 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		80A13C72162071C4002880A9 /* NSDate+WAAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSDate+WAAdditions.h"; path = "wammer/NSDate+WAAdditions.h"; sourceTree = "<group>"; };
 		80A13C73162071C4002880A9 /* NSDate+WAAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSDate+WAAdditions.m"; path = "wammer/NSDate+WAAdditions.m"; sourceTree = "<group>"; };
+		80B0A38616D75BF100E391D2 /* GoogleMaps.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GoogleMaps.framework; path = wammer/Libraries/GoogleMaps.framework; sourceTree = "<group>"; };
+		80B0A38816D75C2500E391D2 /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
+		80B0A38A16D75C3E00E391D2 /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
+		80B0A38C16D75C5400E391D2 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
+		80B0A38E16D75F2300E391D2 /* GoogleMaps.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = GoogleMaps.bundle; path = wammer/Libraries/GoogleMaps.framework/Versions/A/Resources/GoogleMaps.bundle; sourceTree = "<group>"; };
 		80B143FC16BA7F6E009A5FA9 /* Twitter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Twitter.framework; path = System/Library/Frameworks/Twitter.framework; sourceTree = SDKROOT; };
 		80B1440C16BA8156009A5FA9 /* OAuth+Additions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "OAuth+Additions.h"; path = "external/TWReverseAuth/Source/Vendor/ABOAuthCore/OAuth+Additions.h"; sourceTree = "<group>"; };
 		80B1440D16BA8156009A5FA9 /* OAuth+Additions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "OAuth+Additions.m"; path = "external/TWReverseAuth/Source/Vendor/ABOAuthCore/OAuth+Additions.m"; sourceTree = "<group>"; };
@@ -1337,6 +1351,11 @@
 		80C129C416398A0D001DDFE2 /* Create@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Create@2x.png"; path = "Resources/Create@2x.png"; sourceTree = "<group>"; };
 		80C61CA916A7F1050028356F /* WAAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAAnnotation.h; sourceTree = "<group>"; };
 		80C61CAA16A7F1050028356F /* WAAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAAnnotation.m; sourceTree = "<group>"; };
+		80C6FD8D16D766E700D450D3 /* FlickrLogo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = FlickrLogo.png; path = Resources/FlickrLogo.png; sourceTree = "<group>"; };
+		80C6FD8E16D766E700D450D3 /* PicasaLogo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = PicasaLogo.png; path = Resources/PicasaLogo.png; sourceTree = "<group>"; };
+		80C6FD9116D766F100D450D3 /* FourSquareLogo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = FourSquareLogo.png; path = Resources/FourSquareLogo.png; sourceTree = "<group>"; };
+		80C6FD9216D766F100D450D3 /* GoogleLogo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = GoogleLogo.png; path = Resources/GoogleLogo.png; sourceTree = "<group>"; };
+		80C6FD9516D7671900D450D3 /* twitterLogo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = twitterLogo.png; path = Resources/twitterLogo.png; sourceTree = "<group>"; };
 		80C979F61649796A004F0CF4 /* EventCardBG.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = EventCardBG.png; path = Resources/EventCardBG.png; sourceTree = "<group>"; };
 		80DA984116496FED0030CA21 /* WAEventHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WAEventHeaderView.h; path = wammer/WAEventHeaderView.h; sourceTree = "<group>"; };
 		80DA984216496FED0030CA21 /* WAEventHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WAEventHeaderView.m; path = wammer/WAEventHeaderView.m; sourceTree = "<group>"; };
@@ -1667,7 +1686,6 @@
 		FFCCDE4315B41B0000AEBB85 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Default.png; path = Resources/Default.png; sourceTree = "<group>"; };
 		FFCCDE4415B41B0000AEBB85 /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default@2x.png"; path = "Resources/Default@2x.png"; sourceTree = "<group>"; };
 		FFCCDE4B15B41B0000AEBB85 /* FacebookLogo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = FacebookLogo.png; path = Resources/FacebookLogo.png; sourceTree = "<group>"; };
-		FFCCDE4C15B41B0000AEBB85 /* FacebookLogo@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "FacebookLogo@2x.png"; path = "Resources/FacebookLogo@2x.png"; sourceTree = "<group>"; };
 		FFCCDE4D15B41B0000AEBB85 /* Fontin_Sans_B_45b.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = Fontin_Sans_B_45b.otf; path = Resources/Fontin_Sans_B_45b.otf; sourceTree = "<group>"; };
 		FFCCDE4E15B41B0000AEBB85 /* Fontin_Sans_BI_45b.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = Fontin_Sans_BI_45b.otf; path = Resources/Fontin_Sans_BI_45b.otf; sourceTree = "<group>"; };
 		FFCCDE4F15B41B0000AEBB85 /* Fontin_Sans_I_45b.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = Fontin_Sans_I_45b.otf; path = Resources/Fontin_Sans_I_45b.otf; sourceTree = "<group>"; };
@@ -1867,6 +1885,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				80B0A38D16D75C5400E391D2 /* OpenGLES.framework in Frameworks */,
+				80B0A38B16D75C3E00E391D2 /* ImageIO.framework in Frameworks */,
+				80B0A38916D75C2500E391D2 /* GLKit.framework in Frameworks */,
 				80B143FD16BA7F6E009A5FA9 /* Twitter.framework in Frameworks */,
 				80B6323116817CCC00A9E2A5 /* libSocketRocket.a in Frameworks */,
 				13222F4F16806B22000C57A7 /* CoreImage.framework in Frameworks */,
@@ -1908,6 +1929,7 @@
 				7DAD18A21626A73B00F87495 /* libGoogleAnalytics.a in Frameworks */,
 				94EB57761411451780C24560 /* libPods.a in Frameworks */,
 				4BAD7586164DEDA600ADDE56 /* libsqlite3.dylib in Frameworks */,
+				80B0A38716D75BF100E391D2 /* GoogleMaps.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2714,6 +2736,9 @@
 		FF73A53313D6C2CC00D54EC6 = {
 			isa = PBXGroup;
 			children = (
+				80B0A38C16D75C5400E391D2 /* OpenGLES.framework */,
+				80B0A38A16D75C3E00E391D2 /* ImageIO.framework */,
+				80B0A38816D75C2500E391D2 /* GLKit.framework */,
 				80B143FC16BA7F6E009A5FA9 /* Twitter.framework */,
 				DE7B38A0165CBB9900718262 /* Calendar Picker */,
 				7D0CDD04162E5A080027D35F /* StreamTests */,
@@ -2766,6 +2791,8 @@
 		FF73A54113D6C2CC00D54EC6 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				80B0A38E16D75F2300E391D2 /* GoogleMaps.bundle */,
+				80B0A38616D75BF100E391D2 /* GoogleMaps.framework */,
 				80DAA56A16BA7BD100A4E352 /* TwitterReverseAuth */,
 				80B6323916817F9A00A9E2A5 /* libPods-StreamTests.a */,
 				80C058421682FB4900BC46A7 /* libPods-UnitTests.a */,
@@ -3083,7 +3110,11 @@
 				803302471688539200004891 /* facebook.png */,
 				803302481688539200004891 /* facebook@2x.png */,
 				FFCCDE4B15B41B0000AEBB85 /* FacebookLogo.png */,
-				FFCCDE4C15B41B0000AEBB85 /* FacebookLogo@2x.png */,
+				80C6FD8D16D766E700D450D3 /* FlickrLogo.png */,
+				80C6FD8E16D766E700D450D3 /* PicasaLogo.png */,
+				80C6FD9116D766F100D450D3 /* FourSquareLogo.png */,
+				80C6FD9216D766F100D450D3 /* GoogleLogo.png */,
+				80C6FD9516D7671900D450D3 /* twitterLogo.png */,
 				FFCCDE4D15B41B0000AEBB85 /* Fontin_Sans_B_45b.otf */,
 				FFCCDE4E15B41B0000AEBB85 /* Fontin_Sans_BI_45b.otf */,
 				FFCCDE4F15B41B0000AEBB85 /* Fontin_Sans_I_45b.otf */,
@@ -3128,7 +3159,7 @@
 				DEF1326F164B83CE0051284D /* PhotosIcon@2x.png */,
 				4BB006B916A7AADC00A9B32C /* photoStreamNavigationBar.png */,
 				8023BAEF16770D2A00E6BED2 /* pindrop.png */,
-				8023BAF016770D2A00E6BED2 /* pindrop@2X.png */,
+				8023BAF016770D2A00E6BED2 /* pindrop@2x.png */,
 				FFCCDE8415B41B0000AEBB85 /* PLCameraButtonIcon.png */,
 				806A5C9816241E2800867E56 /* right.png */,
 				806A5C9916241E2800867E56 /* Right@2x.png */,
@@ -3788,7 +3819,6 @@
 				FFCCDF5015B41B0000AEBB85 /* Default.png in Resources */,
 				FFCCDF5115B41B0000AEBB85 /* Default@2x.png in Resources */,
 				FFCCDF5815B41B0000AEBB85 /* FacebookLogo.png in Resources */,
-				FFCCDF5915B41B0000AEBB85 /* FacebookLogo@2x.png in Resources */,
 				FFCCDF5A15B41B0000AEBB85 /* Fontin_Sans_B_45b.otf in Resources */,
 				FFCCDF5B15B41B0000AEBB85 /* Fontin_Sans_BI_45b.otf in Resources */,
 				FFCCDF5C15B41B0000AEBB85 /* Fontin_Sans_I_45b.otf in Resources */,
@@ -3981,7 +4011,7 @@
 				808DAA291675DE36003652BB /* add-Red.png in Resources */,
 				808DAA2A1675DE36003652BB /* add-Red@2x.png in Resources */,
 				8023BAF116770D2B00E6BED2 /* pindrop.png in Resources */,
-				8023BAF216770D2B00E6BED2 /* pindrop@2X.png in Resources */,
+				8023BAF216770D2B00E6BED2 /* pindrop@2x.png in Resources */,
 				4B274E511675BFCC007406D3 /* WACollectionViewController.xib in Resources */,
 				4B274E6B1675E104007406D3 /* WACollectionViewCell.xib in Resources */,
 				131560451679CCE400C29BFA /* WADocumentDownloadingView.xib in Resources */,
@@ -4034,6 +4064,12 @@
 				13F51F5016C7F41B00735D00 /* WANewDayEventViewCell.xib in Resources */,
 				139A0DAA16CCABB8001D380B /* WANewDayEventImageViewCell.xib in Resources */,
 				13A0C3E416D4D57F00835687 /* WANewDayEventMapViewCell.xib in Resources */,
+				80B0A38F16D75F2300E391D2 /* GoogleMaps.bundle in Resources */,
+				80C6FD8F16D766E700D450D3 /* FlickrLogo.png in Resources */,
+				80C6FD9016D766E700D450D3 /* PicasaLogo.png in Resources */,
+				80C6FD9316D766F100D450D3 /* FourSquareLogo.png in Resources */,
+				80C6FD9416D766F100D450D3 /* GoogleLogo.png in Resources */,
+				80C6FD9616D7671900D450D3 /* twitterLogo.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4701,6 +4737,7 @@
 					"\"$(SRCROOT)/external/CrashlyticsSDK\"",
 					"\"$(SYSTEM_APPS_DIR)/Xcode.app/Contents/Developer/Library/Frameworks\"",
 					"\"$(SRCROOT)/wammer/Libraries\"",
+					"\"$(SRCROOT)/external\"",
 				);
 				GCC_OPTIMIZATION_LEVEL = s;
 				GCC_PREFIX_HEADER = "wammer/wammer-iOS-Prefix.pch";
@@ -5241,6 +5278,7 @@
 					"\"$(SRCROOT)/external/CrashlyticsSDK\"",
 					"\"$(SYSTEM_APPS_DIR)/Xcode.app/Contents/Developer/Library/Frameworks\"",
 					"\"$(SRCROOT)/wammer/Libraries\"",
+					"\"$(SRCROOT)/external\"",
 				);
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREFIX_HEADER = "wammer/wammer-iOS-Prefix.pch";
@@ -5309,6 +5347,7 @@
 					"\"$(SRCROOT)/external/CrashlyticsSDK\"",
 					"\"$(SYSTEM_APPS_DIR)/Xcode.app/Contents/Developer/Library/Frameworks\"",
 					"\"$(SRCROOT)/wammer/Libraries\"",
+					"\"$(SRCROOT)/external\"",
 				);
 				GCC_OPTIMIZATION_LEVEL = s;
 				GCC_PREFIX_HEADER = "wammer/wammer-iOS-Prefix.pch";

@@ -37,6 +37,7 @@
 #import	"DCIntrospect.h"
 
 #import <FacebookSDK/FacebookSDK.h>
+#import <GoogleMaps/GoogleMaps.h>
 
 #import "WAWelcomeViewController.h"
 
@@ -178,6 +179,8 @@ extern CFAbsoluteTime StartTime;
   [GAI sharedInstance].trackUncaughtExceptions = YES;
   self.tracker = [[GAI sharedInstance] trackerWithTrackingId:kTrackingId];
 
+  [GMSServices provideAPIKey:@"AIzaSyAyGVeC0T7mPhQJjiKk7GVj8Z2Wmxpas5s"];
+  
   [self bootstrap];
   
   WADefaultAppearance();
