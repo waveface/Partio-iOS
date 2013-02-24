@@ -34,7 +34,9 @@
 @property (nonatomic) NSUInteger summaryPageIndex;
 @property (nonatomic) NSUInteger eventPageIndex;
 @property (nonatomic) BOOL contextMenuOpened;
-@property (nonatomic) BOOL reloading;
+@property (nonatomic) BOOL reloadingPreviousDays;
+@property (nonatomic) BOOL reloadingFollowingDays;
+@property (nonatomic, strong) WAOverlayBezel *reloadingBezel;
 @property (nonatomic) WADayViewSupportedStyle presentingStyle;
 
 @end
@@ -301,102 +303,26 @@
     return;
   }
   
-  if (self.reloading) {
+  if (self.reloadingPreviousDays || self.reloadingFollowingDays) {
     return;
   }
 
   CGFloat pageWidth = scrollView.frame.size.width;
   if (scrollView.contentOffset.x > scrollView.contentSize.width - pageWidth) {
-
-    self.reloading = YES;
-
-    WAOverlayBezel *bezel = [[WAOverlayBezel alloc] initWithStyle:WAActivityIndicatorBezelStyle];
-    [bezel show];
-
-    __weak WANewSummaryViewController *wSelf = self;
-
-    double delayInSeconds = 1.0;
-    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-      
-      [wSelf.dataSource loadMoreDays:20 since:wSelf.currentDaySummary.date];
-
-      [wSelf.summaryCollectionView reloadData];
-      [wSelf.eventCollectionView reloadData];
-
-      NSDate *previousDay = [wSelf.currentDaySummary.date dateOfPreviousDay];
-
-      NSIndexPath *daySummaryIndexPath = [wSelf.dataSource indexPathOfDaySummaryOnDate:previousDay];
-      wSelf.currentDaySummary = [wSelf.dataSource daySummaryAtIndexPath:daySummaryIndexPath];
-      [wSelf scrollToDaySummaryAtIndexPath:daySummaryIndexPath animated:YES];
-
-      NSIndexPath *dayEventIndexPath = [wSelf.dataSource indexPathOfFirstDayEventOnDate:previousDay];
-      wSelf.currentDayEvent = [wSelf.dataSource dayEventAtIndexPath:dayEventIndexPath];
-      [wSelf scrollToDayEventAtIndexPath:dayEventIndexPath animated:YES];
-
-      [bezel dismissWithAnimation:WAOverlayBezelAnimationFade];
-      
-      wSelf.reloading = NO;
-
-    });
-    
+    self.reloadingPreviousDays = YES;
+    self.reloadingBezel = [[WAOverlayBezel alloc] initWithStyle:WAActivityIndicatorBezelStyle];
+    [self.reloadingBezel show];
     return;
   }
 
   if (scrollView.contentOffset.x < 0) {
-
     if (isSameDay(self.currentDaySummary.date, [NSDate date])) {
       // no need to load future days
       return;
     }
-
-    self.reloading = YES;
-    
-    WAOverlayBezel *bezel = [[WAOverlayBezel alloc] initWithStyle:WAActivityIndicatorBezelStyle];
-    [bezel show];
-
-    __weak WANewSummaryViewController *wSelf = self;
-
-    double delayInSeconds = 1.0;
-    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-
-      [wSelf.dataSource loadMoreDays:20 since:wSelf.currentDaySummary.date];
-
-      [wSelf.summaryCollectionView reloadData];
-      [wSelf.eventCollectionView reloadData];
-
-      NSIndexPath *daySummaryIndexPath = [wSelf.dataSource indexPathOfDaySummaryOnDate:wSelf.currentDaySummary.date];
-      [wSelf scrollToDaySummaryAtIndexPath:daySummaryIndexPath animated:NO];
-      NSIndexPath *dayEventIndexPath = [wSelf.dataSource indexPathOfFirstDayEventOnDate:wSelf.currentDaySummary.date];
-      [wSelf scrollToDayEventAtIndexPath:dayEventIndexPath animated:NO];
-
-      [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-
-        NSDate *followingDay = [wSelf.currentDaySummary.date dateOfFollowingDay];
-
-        NSIndexPath *daySummaryIndexPath = [wSelf.dataSource indexPathOfDaySummaryOnDate:followingDay];
-        wSelf.currentDaySummary = [wSelf.dataSource daySummaryAtIndexPath:daySummaryIndexPath];
-        [wSelf scrollToDaySummaryAtIndexPath:daySummaryIndexPath animated:YES];
-
-        if (scrollView == wSelf.summaryCollectionView) {
-          NSIndexPath *dayEventIndexPath = [wSelf.dataSource indexPathOfFirstDayEventOnDate:followingDay];
-          wSelf.currentDayEvent = [wSelf.dataSource dayEventAtIndexPath:dayEventIndexPath];
-          [wSelf scrollToDayEventAtIndexPath:dayEventIndexPath animated:YES];
-        } else {
-          NSIndexPath *dayEventIndexPath = [wSelf.dataSource indexPathOfLastDayEventOnDate:followingDay];
-          wSelf.currentDayEvent = [wSelf.dataSource dayEventAtIndexPath:dayEventIndexPath];
-          [wSelf scrollToDayEventAtIndexPath:dayEventIndexPath animated:YES];
-        }
-
-        [bezel dismissWithAnimation:WAOverlayBezelAnimationFade];
-        
-        wSelf.reloading = NO;
-
-      }];
-
-    });
-    
+    self.reloadingFollowingDays = YES;
+    self.reloadingBezel = [[WAOverlayBezel alloc] initWithStyle:WAActivityIndicatorBezelStyle];
+    [self.reloadingBezel show];
     return;
   }
   
@@ -447,6 +373,81 @@
       }      
 
     }
+
+  }
+
+}
+
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
+  
+  __weak WANewSummaryViewController *wSelf = self;
+  
+  if (self.reloadingPreviousDays) {
+    
+    [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+
+      [wSelf.dataSource loadMoreDays:20 since:wSelf.currentDaySummary.date];
+      
+      [wSelf.summaryCollectionView reloadData];
+      [wSelf.eventCollectionView reloadData];
+      
+      NSDate *previousDay = [wSelf.currentDaySummary.date dateOfPreviousDay];
+      
+      NSIndexPath *daySummaryIndexPath = [wSelf.dataSource indexPathOfDaySummaryOnDate:previousDay];
+      wSelf.currentDaySummary = [wSelf.dataSource daySummaryAtIndexPath:daySummaryIndexPath];
+      [wSelf scrollToDaySummaryAtIndexPath:daySummaryIndexPath animated:YES];
+      
+      NSIndexPath *dayEventIndexPath = [wSelf.dataSource indexPathOfFirstDayEventOnDate:previousDay];
+      wSelf.currentDayEvent = [wSelf.dataSource dayEventAtIndexPath:dayEventIndexPath];
+      [wSelf scrollToDayEventAtIndexPath:dayEventIndexPath animated:YES];
+      
+      [wSelf.reloadingBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
+      wSelf.reloadingBezel = nil;
+      
+      wSelf.reloadingPreviousDays = NO;
+
+    }];
+    
+  } else if (self.reloadingFollowingDays) {
+
+    [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+
+      [wSelf.dataSource loadMoreDays:20 since:wSelf.currentDaySummary.date];
+      
+      [wSelf.summaryCollectionView reloadData];
+      [wSelf.eventCollectionView reloadData];
+      
+      NSIndexPath *daySummaryIndexPath = [wSelf.dataSource indexPathOfDaySummaryOnDate:wSelf.currentDaySummary.date];
+      [wSelf scrollToDaySummaryAtIndexPath:daySummaryIndexPath animated:NO];
+      NSIndexPath *dayEventIndexPath = [wSelf.dataSource indexPathOfFirstDayEventOnDate:wSelf.currentDaySummary.date];
+      [wSelf scrollToDayEventAtIndexPath:dayEventIndexPath animated:NO];
+      
+      [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+        
+        NSDate *followingDay = [wSelf.currentDaySummary.date dateOfFollowingDay];
+        
+        NSIndexPath *daySummaryIndexPath = [wSelf.dataSource indexPathOfDaySummaryOnDate:followingDay];
+        wSelf.currentDaySummary = [wSelf.dataSource daySummaryAtIndexPath:daySummaryIndexPath];
+        [wSelf scrollToDaySummaryAtIndexPath:daySummaryIndexPath animated:YES];
+        
+        if (scrollView == wSelf.summaryCollectionView) {
+          NSIndexPath *dayEventIndexPath = [wSelf.dataSource indexPathOfFirstDayEventOnDate:followingDay];
+          wSelf.currentDayEvent = [wSelf.dataSource dayEventAtIndexPath:dayEventIndexPath];
+          [wSelf scrollToDayEventAtIndexPath:dayEventIndexPath animated:YES];
+        } else {
+          NSIndexPath *dayEventIndexPath = [wSelf.dataSource indexPathOfLastDayEventOnDate:followingDay];
+          wSelf.currentDayEvent = [wSelf.dataSource dayEventAtIndexPath:dayEventIndexPath];
+          [wSelf scrollToDayEventAtIndexPath:dayEventIndexPath animated:YES];
+        }
+        
+        [wSelf.reloadingBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
+        wSelf.reloadingBezel = nil;
+        
+        wSelf.reloadingFollowingDays = NO;
+        
+      }];
+
+    }];
 
   }
 
