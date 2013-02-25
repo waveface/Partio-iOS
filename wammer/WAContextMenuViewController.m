@@ -66,7 +66,7 @@ static NSString *kWAContextViewCellIdentifier = @"ContextMenuItem";
     [self.tapper addTarget:self action:@selector(tapperTapped:) forControlEvents:UIControlEventTouchUpInside];
     [self.translucentOverlay addSubview:self.tapper];
     
-    self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(fullScreenFrame.size.width/2 - 80, 0, 160, 200)];
+    self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(fullScreenFrame.size.width/2 - 90, 0, 180, 200)];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
@@ -76,7 +76,7 @@ static NSString *kWAContextViewCellIdentifier = @"ContextMenuItem";
     
   } else {
     
-    self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, 160, 200)];
+    self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, 180, 200)];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
@@ -99,7 +99,7 @@ static NSString *kWAContextViewCellIdentifier = @"ContextMenuItem";
   static NSArray *origMenuItems;
   origMenuItems = @[
   @{@"style": [NSNumber numberWithUnsignedInteger:WAEventsViewStyle],
-  @"title": NSLocalizedString(@"SLIDING_MENU_TITLE_EVENTS", @"Title for Events in the sliding menu"),
+  @"title": NSLocalizedString(@"SLIDING_MENU_TITLE_MYDAYS", @"Title for MyDays in the sliding menu"),
   @"icon": [UIImage imageNamed:@"EventsIcon"],
   @"color": [UIColor colorWithRed:0.957 green:0.376 blue:0.298 alpha:1.0]
   },

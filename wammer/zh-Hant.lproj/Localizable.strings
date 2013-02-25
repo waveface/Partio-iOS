@@ -509,7 +509,7 @@
 "SLIDING_MENU_TITLE_MYDAYS" = "每日焦點";
 
 /* Title for Photos in the sliding menu */
-"SLIDING_MENU_TITLE_PHOTOS" = "相片";
+"SLIDING_MENU_TITLE_PHOTOS" = "照片";
 
 /* Title for Settings in the sliding menu */
 "SLIDING_MENU_TITLE_SETTINGS" = "設定";
@@ -663,7 +663,7 @@
 "ACTION_GOTO_WEBSITE" = "在網站上檢視詳細方案";
 
 /* Class = "IBUILabel"; text = "PLANS_DESCRIPTION"; ObjectID = "202"; */
-"PLANS_DESCRIPTION" = "AOStream會將您所有的珍貴檔案存放在指定的位置，您可以選擇存在家裡的PC，或者付費獲得額外的雲端儲存空間，讓您可以隨時隨地取得原始檔案。";
+"PLANS_DESCRIPTION" = "AOStream會將您所有的寶貝檔案存放在指定的位置，您可以選擇存在家裡的PC，或者付費獲得額外的雲端儲存空間，讓您可以隨時隨地取得原始檔案。";
 
 /* Class = "IBUITextField"; placeholder = "USERNAME_PLACEHOLDER"; ObjectID = "2Vk-4J-QH3"; */
 "USERNAME_PLACEHOLDER" = "me@example.com";
