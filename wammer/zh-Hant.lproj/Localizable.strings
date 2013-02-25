@@ -404,6 +404,9 @@
    Password placeholder in signup page */
 "PASSWORD_PLACEHOLDER" = "••••••••";
 
+/* Title of view controller advertising AOStream Windows */
+"PC_ADVERTISEMENT_CONTROLLER_TITLE" = "手邊有 PC 嗎？";
+
 /* Title of photo import settings view controller */
 "PHOTO_IMPORT_TITLE" = "照片匯入";
 
@@ -427,15 +430,6 @@
 
 /* String on customized status bar */
 "PHOTO_UPLOAD_STATUS_BAR_UPLOADING" = "正匯入 %d 張照片";
-
-/* Subtitle of photo upload status */
-"PHOTO_UPLOAD_STATUS_IMPORTING" = "正在掃瞄 %d/%d 張照片";
-
-/* Subtitle of photo upload status */
-"PHOTO_UPLOAD_STATUS_NOT_UPLOADING" = "尚未開啓";
-
-/* Subtitle of photo upload status */
-"PHOTO_UPLOAD_STATUS_UPLOADING" = "照片匯入中...";
 
 /* in day view */
 "PHOTOS_TITLE" = "照片";
@@ -470,8 +464,7 @@
 /* No comment provided by engineer. */
 "RESET_SETTINGS_CONFIRMATION_TITLE" = "清除設定";
 
-/* Subtitle of searching network in settings page.
-   Subtitle of searching network in setup done page. */
+/* Subtitle of searching network in settings page. */
 "SEARCHING_NETWORK_SUBTITLE" = "正在尋找 AOStream 網路...";
 
 /* No comment provided by engineer. */
@@ -612,15 +605,6 @@
 /* Class = "IBUILabel"; text = "WEBSERVICE_LIST_TITLE"; ObjectID = "0P9-dO-3KX"; */
 "WEBSERVICE_LIST_TITLE" = "可連接的服務";
 
-/* Class = "IBUILabel"; text = "PHOTO_UPLOAD_STATUS_TITLE"; ObjectID = "2wg-Lw-z1H"; */
-"PHOTO_UPLOAD_STATUS_TITLE" = "照片上傳";
-
-/* Class = "IBUILabel"; text = "CONNECTION_STATUS_TITLE"; ObjectID = "51O-As-E34"; */
-"CONNECTION_STATUS_TITLE" = "連線狀態";
-
-/* Class = "IBUILabel"; text = "PC_SETUP_INSTRUCTIONS"; ObjectID = "6Ib-wQ-B01"; */
-"PC_SETUP_INSTRUCTIONS" = "1. 在PC上安裝AOStream Windows\n2. 確認手機和PC位於同一個Wi-Fi底下";
-
 /* Class = "IBUILabel"; text = "PHOTO_UPLOAD_SWITCH_TITLE"; ObjectID = "749-zj-beb"; */
 "PHOTO_UPLOAD_SWITCH_TITLE" = "上傳相機膠卷的照片";
 
@@ -630,17 +614,17 @@
 /* Class = "IBUILabel"; text = "CONNECT_SERVICES_DESCRIPTION"; ObjectID = "GEd-xe-bMT"; */
 "CONNECT_SERVICES_DESCRIPTION" = "AOStream會將您在其他服務上的內容，自動匯進來並整理好，您一定會訝異原來自己的生活如此多彩多姿。";
 
-/* Class = "IBUIButton"; normalTitle = "LOGIN_LINK_DEVICE"; ObjectID = "Gch-g1-VSP"; */
-"LOGIN_LINK_DEVICE" = "登入並連結此裝置";
-
-/* Class = "IBUILabel"; text = "PC_SETUP_DESCRIPTION"; ObjectID = "Jfg-PE-RoZ"; */
-"PC_SETUP_DESCRIPTION" = "AOStream Windows可以將您的PC升級成個人雲，透過PC傳輸，等待時間將會大大減少！";
-
-/* Class = "IBUIButton"; normalTitle = "I_AM_NEW_HERE"; ObjectID = "KXA-OG-bKa"; */
+/* Class = "IBUILabel"; text = "I_AM_NEW_HERE"; ObjectID = "Gk5-O0-pNx"; */
 "I_AM_NEW_HERE" = "我想註冊！";
+
+/* Class = "IBUILabel"; text = "PC_AD_DESCRIPTION"; ObjectID = "Hwk-71-2jX"; */
+"PC_AD_DESCRIPTION" = "連接你的個人雲服務，體驗閃電般的傳輸速度。";
 
 /* Class = "IBUILabel"; text = "NOUN_PASSWORD"; ObjectID = "OIv-A5-N1k"; */
 "NOUN_PASSWORD" = "密碼";
+
+/* Class = "IBUILabel"; text = "SETUP_DONE_DESCRIPTION"; ObjectID = "OVz-tl-GMd"; */
+"SETUP_DONE_DESCRIPTION" = "這台裝置已經成功連接到AOStream網路，現在你可以開始瀏覽個人雲幫你彙整的數位內容。";
 
 /* Class = "IBUILabel"; text = "PHOTO_UPLOAD_DESCRIPTION"; ObjectID = "Phx-kE-dRu"; */
 "PHOTO_UPLOAD_DESCRIPTION" = "AOStream會自動匯入您手機中的照片，並整理出每日焦點動態，讓您隨時隨地欣賞與回顧。";
@@ -651,8 +635,11 @@
 /* Class = "IBUILabel"; text = "NOUN_NICKNAME"; ObjectID = "WOl-eU-Hik"; */
 "NOUN_NICKNAME" = "使用者名稱";
 
-/* Class = "IBUILabel"; text = "PHOTO_UPLOAD_STATUS_SUBTITLE"; ObjectID = "chO-N2-cYE"; */
-"PHOTO_UPLOAD_STATUS_SUBTITLE" = "PHOTO_UPLOAD_STATUS_SUBTITLE";
+/* Class = "IBUILabel"; text = "LOGIN_LINK_DEVICE"; ObjectID = "YX9-dy-aZa"; */
+"LOGIN_LINK_DEVICE" = "登入並連結此裝置";
+
+/* Class = "IBUIButton"; normalTitle = "ACTION_SEND_LINK"; ObjectID = "h9i-2T-iDG"; */
+"ACTION_SEND_LINK" = "寄連結給我";
 
 /* Class = "IBUILabel"; text = "NOUN_PASSWORD"; ObjectID = "qlc-Lu-gj2"; */
 "NOUN_PASSWORD" = "密碼";
@@ -660,11 +647,8 @@
 /* Class = "IBUIButton"; normalTitle = "ACTION_START_STREAM"; ObjectID = "u89-AV-2W1"; */
 "ACTION_START_STREAM" = "開始使用 AOStream";
 
-/* Class = "IBUILabel"; text = "CONNECTION_STATUS_SUBTITLE"; ObjectID = "urH-gP-L4v"; */
-"CONNECTION_STATUS_SUBTITLE" = "CONNECTION_STATUS_SUBTITLE";
-
-/* Class = "IBUILabel"; text = "PC_SETUP_TITLE"; ObjectID = "w7L-CQ-FdG"; */
-"PC_SETUP_TITLE" = "覺得很慢？";
+/* Class = "IBUILabel"; text = "PC_AD_TITLE"; ObjectID = "uze-n1-4Ca"; */
+"PC_AD_TITLE" = "安裝 AOStream Windows 版";
 
 /* Class = "IBUIButton"; normalTitle = "ACTION_SIGN_IN"; ObjectID = "6"; */
 "ACTION_SIGN_IN" = "登入";
@@ -679,7 +663,7 @@
 "ACTION_GOTO_WEBSITE" = "在網站上檢視詳細方案";
 
 /* Class = "IBUILabel"; text = "PLANS_DESCRIPTION"; ObjectID = "202"; */
-"PLANS_DESCRIPTION" = "AOStream會將您所有的珍貴檔案存放在指定的位置，您可以選擇存在家裡的PC，或者付費獲得額外的雲端儲存空間，讓您可以隨時隨地取得原始檔案。";
+"PLANS_DESCRIPTION" = "AOStream會將您所有的寶貝檔案存放在指定的位置，您可以選擇存在家裡的PC，或者付費獲得額外的雲端儲存空間，讓您可以隨時隨地取得原始檔案。";
 
 /* Class = "IBUITextField"; placeholder = "USERNAME_PLACEHOLDER"; ObjectID = "2Vk-4J-QH3"; */
 "USERNAME_PLACEHOLDER" = "me@example.com";

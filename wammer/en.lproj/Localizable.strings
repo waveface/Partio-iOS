@@ -404,6 +404,9 @@
    Password placeholder in signup page */
 "PASSWORD_PLACEHOLDER" = "••••••••";
 
+/* Title of view controller advertising AOStream Windows */
+"PC_ADVERTISEMENT_CONTROLLER_TITLE" = "Have a PC?";
+
 /* Title of photo import settings view controller */
 "PHOTO_IMPORT_TITLE" = "Photo Import";
 
@@ -427,15 +430,6 @@
 
 /* String on customized status bar */
 "PHOTO_UPLOAD_STATUS_BAR_UPLOADING" = "Importing %d photos";
-
-/* Subtitle of photo upload status */
-"PHOTO_UPLOAD_STATUS_IMPORTING" = "Scanning %d/%d photos";
-
-/* Subtitle of photo upload status */
-"PHOTO_UPLOAD_STATUS_NOT_UPLOADING" = "Disabled";
-
-/* Subtitle of photo upload status */
-"PHOTO_UPLOAD_STATUS_UPLOADING" = "Importing photos...";
 
 /* in day view */
 "PHOTOS_TITLE" = "PHOTOS";
@@ -470,8 +464,7 @@
 /* No comment provided by engineer. */
 "RESET_SETTINGS_CONFIRMATION_TITLE" = "Default Settings?";
 
-/* Subtitle of searching network in settings page.
-   Subtitle of searching network in setup done page. */
+/* Subtitle of searching network in settings page. */
 "SEARCHING_NETWORK_SUBTITLE" = "Searching AOStream network...";
 
 /* No comment provided by engineer. */
@@ -612,15 +605,6 @@
 /* Class = "IBUILabel"; text = "WEBSERVICE_LIST_TITLE"; ObjectID = "0P9-dO-3KX"; */
 "WEBSERVICE_LIST_TITLE" = "Connect to other accounts:";
 
-/* Class = "IBUILabel"; text = "PHOTO_UPLOAD_STATUS_TITLE"; ObjectID = "2wg-Lw-z1H"; */
-"PHOTO_UPLOAD_STATUS_TITLE" = "Camera Roll Upload Status";
-
-/* Class = "IBUILabel"; text = "CONNECTION_STATUS_TITLE"; ObjectID = "51O-As-E34"; */
-"CONNECTION_STATUS_TITLE" = "Connection Status";
-
-/* Class = "IBUILabel"; text = "PC_SETUP_INSTRUCTIONS"; ObjectID = "6Ib-wQ-B01"; */
-"PC_SETUP_INSTRUCTIONS" = "1. Install AOStream for Windows on your PC and start uploading photos.\n2. Connect your mobile device to the same WiFi network as your PC.";
-
 /* Class = "IBUILabel"; text = "PHOTO_UPLOAD_SWITCH_TITLE"; ObjectID = "749-zj-beb"; */
 "PHOTO_UPLOAD_SWITCH_TITLE" = "Upload Camera Roll";
 
@@ -630,17 +614,17 @@
 /* Class = "IBUILabel"; text = "CONNECT_SERVICES_DESCRIPTION"; ObjectID = "GEd-xe-bMT"; */
 "CONNECT_SERVICES_DESCRIPTION" = "You can change your settings later.";
 
-/* Class = "IBUIButton"; normalTitle = "LOGIN_LINK_DEVICE"; ObjectID = "Gch-g1-VSP"; */
-"LOGIN_LINK_DEVICE" = "Log in & link this device";
-
-/* Class = "IBUILabel"; text = "PC_SETUP_DESCRIPTION"; ObjectID = "Jfg-PE-RoZ"; */
-"PC_SETUP_DESCRIPTION" = "Follow these steps to link your devices to our PC-based AOStream Station to enable lightning-fast transfers of your original high-res photos back to your PC:";
-
-/* Class = "IBUIButton"; normalTitle = "I_AM_NEW_HERE"; ObjectID = "KXA-OG-bKa"; */
+/* Class = "IBUILabel"; text = "I_AM_NEW_HERE"; ObjectID = "Gk5-O0-pNx"; */
 "I_AM_NEW_HERE" = "Sign me up!";
+
+/* Class = "IBUILabel"; text = "PC_AD_DESCRIPTION"; ObjectID = "Hwk-71-2jX"; */
+"PC_AD_DESCRIPTION" = "Connect to your personal cloud service to experience the lightning trasferring speed.";
 
 /* Class = "IBUILabel"; text = "NOUN_PASSWORD"; ObjectID = "OIv-A5-N1k"; */
 "NOUN_PASSWORD" = "Password";
+
+/* Class = "IBUILabel"; text = "SETUP_DONE_DESCRIPTION"; ObjectID = "OVz-tl-GMd"; */
+"SETUP_DONE_DESCRIPTION" = "This device has connected to AOStream network. Now you can browse the digital content summarized by your personal cloud.";
 
 /* Class = "IBUILabel"; text = "PHOTO_UPLOAD_DESCRIPTION"; ObjectID = "Phx-kE-dRu"; */
 "PHOTO_UPLOAD_DESCRIPTION" = "Check the box below to let AOStream automatically upload your album photos and create real-life events in your personal cloud.";
@@ -651,8 +635,11 @@
 /* Class = "IBUILabel"; text = "NOUN_NICKNAME"; ObjectID = "WOl-eU-Hik"; */
 "NOUN_NICKNAME" = "Name";
 
-/* Class = "IBUILabel"; text = "PHOTO_UPLOAD_STATUS_SUBTITLE"; ObjectID = "chO-N2-cYE"; */
-"PHOTO_UPLOAD_STATUS_SUBTITLE" = "PHOTO_UPLOAD_STATUS_SUBTITLE";
+/* Class = "IBUILabel"; text = "LOGIN_LINK_DEVICE"; ObjectID = "YX9-dy-aZa"; */
+"LOGIN_LINK_DEVICE" = "Log in & link this device";
+
+/* Class = "IBUIButton"; normalTitle = "ACTION_SEND_LINK"; ObjectID = "h9i-2T-iDG"; */
+"ACTION_SEND_LINK" = "Send Me Link";
 
 /* Class = "IBUILabel"; text = "NOUN_PASSWORD"; ObjectID = "qlc-Lu-gj2"; */
 "NOUN_PASSWORD" = "Password";
@@ -660,11 +647,8 @@
 /* Class = "IBUIButton"; normalTitle = "ACTION_START_STREAM"; ObjectID = "u89-AV-2W1"; */
 "ACTION_START_STREAM" = "Start AOStream!";
 
-/* Class = "IBUILabel"; text = "CONNECTION_STATUS_SUBTITLE"; ObjectID = "urH-gP-L4v"; */
-"CONNECTION_STATUS_SUBTITLE" = "CONNECTION_STATUS_SUBTITLE";
-
-/* Class = "IBUILabel"; text = "PC_SETUP_TITLE"; ObjectID = "w7L-CQ-FdG"; */
-"PC_SETUP_TITLE" = "Here's the next step:";
+/* Class = "IBUILabel"; text = "PC_AD_TITLE"; ObjectID = "uze-n1-4Ca"; */
+"PC_AD_TITLE" = "Install AOStream Windows";
 
 /* Class = "IBUIButton"; normalTitle = "ACTION_SIGN_IN"; ObjectID = "6"; */
 "ACTION_SIGN_IN" = "Log In";
