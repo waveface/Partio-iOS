@@ -1,20 +1,20 @@
 /* accessibility label for adding photos in composition view */
-"ACCESS_ADD_PHOTO" = "加照片";
+"ACCESS_ADD_PHOTO" = "新增照片";
 
 /* The message in the dialog to confirm user want to delete account or not. */
-"ACCOUNT_DELETION_MSG" = "當你確認刪除帳號，AOStream 會寄送一封電子郵件到您的信箱，您可以按照信件中的指示完成帳號刪除的動作。";
+"ACCOUNT_DELETION_MSG" = "當您確認刪除帳號，AOStream 會寄送一封電子郵件到您的信箱，按照信件中的指示即可完成帳號刪除的動作。";
 
 /* The title of dialog to confirm user want to delete account or not. */
-"ACCOUNT_DELETION_TITLE" = "確定要刪除你的帳號嗎？";
+"ACCOUNT_DELETION_TITLE" = "確定要刪除您的帳號嗎？";
 
 /* Shows the final dialog to tell user to receive email to complete the account deletion process */
 "ACCOUNT_MSG_DELETION_MAIL_SENT" = "AOStream 已經寄送了一封電子郵件到您的信箱中，請按照信件中的指示完成帳號刪除的動作。如果您並不想移除帳號，只需要對該信件不予理會即可。";
 
 /* Shows the final dialog to tell user to receive email to complete the account deletion process. */
-"ACCOUNT_TITLE_DELETION_MAIL_SENT" = "帳號刪除郵件已被送出";
+"ACCOUNT_TITLE_DELETION_MAIL_SENT" = "刪除帳號郵件已被送出";
 
 /* add photo button in composition view */
-"ACTION_ADD" = "加照片";
+"ACTION_ADD" = "新增照片";
 
 /* In event view */
 "ACTION_ADD_TO_COLLECTION" = "完成";
@@ -161,7 +161,7 @@
 "CLOUD_NAME" = "AOStream Cloud";
 
 /* In navigation bar */
-"COLLECTIONS" = "選集";
+"COLLECTIONS" = "蒐藏";
 
 /* add photo button in composition view */
 "COMPOSITION_MANY_PHOTOS_BUTTON_CAPTION_FORMAT" = "%i 張照片";
@@ -227,16 +227,16 @@
 "EVENT_SEPERATION_LABEL_WITHOUT_PHOTOS" = "加些照片吧";
 
 /* Event summary text in summary view */
-"EVENT_SUMMARY_TEXT" = "你今天有 %d 個動態";
+"EVENT_SUMMARY_TEXT" = "您今天有 %d 個焦點動態";
 
 /* Title for Events view */
-"EVENTS_CONTROLLER_TITLE" = "我的天";
+"EVENTS_CONTROLLER_TITLE" = "今日焦點";
 
 /* Message for an alert view to show user his FB account has been connected to another Stream user */
 "FACEBOOK_CONNECT_ACCOUNT_OCCUPIED_MESSAGE" = "這個 Facebook 帳號已經被使用，請您再試試看其他的Facebook帳號。";
 
 /* Message for an alert view to show user he already connects to another FB account. */
-"FACEBOOK_CONNECT_FAIL_MESSAGE" = "你已經連結其他 Facebook 帳號，請登出目前 Facebook 帳號並重新啟動同步。";
+"FACEBOOK_CONNECT_FAIL_MESSAGE" = "您已經連結其他 Facebook 帳號，請登出目前 Facebook 帳號並重新啟動同步。";
 
 /* Title for an alert view to show facebook connection failure */
 "FACEBOOK_CONNECT_FAIL_TITLE" = "無法同步Facebook";
@@ -293,7 +293,7 @@
 "FOURSQUARE_DISCONNECT_REQUEST_TITLE" = "確認取消Foursquare同步";
 
 /* Free plan details in plans page */
-"FREE_PLAN_DESCRIPTION" = "將所有原始檔案存放在你的一台 PC 裡。";
+"FREE_PLAN_DESCRIPTION" = "將所有原始檔案存放在您指定的PC裡。";
 
 /* Title for an alert view to show Google connection failure */
 "GOOGLE_CONNECT_FAIL_TITLE" = "無法同步Google";
@@ -320,10 +320,10 @@
 "GREETING_TEXT_NO_EVENTS_TODAY" = "拍幾張照片來記錄新的一天吧！";
 
 /* greeting text of day summary view */
-"GREETING_TEXT_WITH_EVENTS_PAST" = "這天有 %d 個動態。";
+"GREETING_TEXT_WITH_EVENTS_PAST" = "這天有 %d 個焦點動態。";
 
 /* greeting text of day summary view */
-"GREETING_TEXT_WITH_EVENTS_TODAY" = "Hi, %@. 你今天幹了什麼好事！";
+"GREETING_TEXT_WITH_EVENTS_TODAY" = "哈囉, %@. 今天也是愉快的一天嗎？";
 
 /* Hello text in summary view */
 "HELLO_NAME_TEXT" = "哈囉, %@";
@@ -347,10 +347,10 @@
 "LABEL_MODAL_POPUP_CLOSE_BUTTON" = "關閉";
 
 /* The text of location label when there is no gps information we can refer to */
-"LABEL_WITHOUT_GPS_DATA" = "你在哪裡？";
+"LABEL_WITHOUT_GPS_DATA" = "您在哪裡？";
 
 /* The email subject users will share photos thru. The nickname of user will be appended to this subject. */
-"MAIL_ACTION_SUBJECT" = "%@ 透過 AOStream app 與你分享照片。";
+"MAIL_ACTION_SUBJECT" = "%@ 透過 AOStream app 與您分享照片。";
 
 /* No comment provided by engineer. */
 "MINUTE_PLURAL" = "%d分鐘";
@@ -371,7 +371,7 @@
 "NAVI_TITLE_WEB_LOADING" = "載入中..";
 
 /* In collection picker view */
-"NEW_COLLECTION" = "新選集…";
+"NEW_COLLECTION" = "新蒐藏…";
 
 /* Nickname placeholder in signup page */
 "NICKNAME_PLACEHOLDER" = "John Appleseed";
@@ -380,13 +380,13 @@
 "NO_INTERNET_CONNECTION" = "沒有網路連線";
 
 /* Cell title in connection status view controller */
-"NO_STATION_INSTALLED" = "尚未安裝 AOStream Station";
+"NO_STATION_INSTALLED" = "尚未安裝 AOStream Windows Station";
 
 /* Notification messages for photos auto-imported */
-"NOTIFY_PHOTOS_IMPORTED" = "%@ 張照片已經匯入到你的 AOStream 帳號中。";
+"NOTIFY_PHOTOS_IMPORTED" = "%@ 張照片已經匯入到您的 AOStream 帳號中。";
 
 /* For remote notification testing */
-"NOTIFY_TESTING" = "AOStream，你好！";
+"NOTIFY_TESTING" = "AOStream，您好！";
 
 /* Section header in connection status view controller */
 "NOW_CONNECTING_HEADER" = "連線至";
@@ -453,7 +453,7 @@
 "PLANS_CONTROLLER_TITLE" = "資費方案";
 
 /* Premium plan details in plans page */
-"PREMIUM_PLAN_DESCRIPTION" = "250GB 雲端儲存空間，PC 數量無限制。";
+"PREMIUM_PLAN_DESCRIPTION" = "250GB 雲端儲存空間，PC 備份數量無限制。";
 
 /* REACHABILITY_STATE_AVAILABLE */
 "REACHABILITY_STATE_AVAILABLE" = "可用";
@@ -513,7 +513,7 @@
 "SLIDING_MENU_TITLE_EVENTS" = "動態";
 
 /* Title for MyDays in the sliding menu */
-"SLIDING_MENU_TITLE_MYDAYS" = "我的天s";
+"SLIDING_MENU_TITLE_MYDAYS" = "每日焦點";
 
 /* Title for Photos in the sliding menu */
 "SLIDING_MENU_TITLE_PHOTOS" = "相片";
@@ -540,10 +540,10 @@
 "TURN_ON_LOCATION_SERVICE" = "AOStream 須開啟定位服務才能存取相簿的內容";
 
 /* User doesn't login his account in iOS setting. */
-"TWITTER_CONNECT_ACCOUNT_NOT_AVAILABLE" = "請到登入您的 Twitter 帳號";
+"TWITTER_CONNECT_ACCOUNT_NOT_AVAILABLE" = "請到登入您的Twitter帳號";
 
 /* Message for an alert view to show user his Twitter account has been connected to another Stream user */
-"TWITTER_CONNECT_ACCOUNT_OCCUPIED_MESSAGE" = "TWITTER_CONNECT_ACCOUNT_OCCUPIED_MESSAGE";
+"TWITTER_CONNECT_ACCOUNT_OCCUPIED_MESSAGE" = "您輸入的Twitter帳號已被其他帳戶連結，請嘗試其它的帳號";
 
 /* Message for an alert view to show user he already connects to another Twitter account. */
 "TWITTER_CONNECT_FAIL_MESSAGE" = "無法正常同步您的 Twitter 帳號";
@@ -552,7 +552,7 @@
 "TWITTER_CONNECT_FAIL_TITLE" = "無法同步Twitter";
 
 /* User doesn't permit the twitter access while connect to his twitter account. */
-"TWITTER_CONNECT_PERMISSION_TITLE" = "請打開您 Twitter 系統設定中 AOStream 的權限，否則我們將無法同步您的新貼文。";
+"TWITTER_CONNECT_PERMISSION_TITLE" = "請打開您Twitter系統設定中AOStream的權限，否則我們將無法同步您的新貼文。";
 
 /* Message for alert view asking if user wants to connect her Twitter account */
 "TWITTER_CONNECT_REQUEST_MESSAGE" = "啟動之後，AOStream將會開始同步您在Twitter上的新貼文。";
@@ -567,7 +567,7 @@
 "TWITTER_DISCONNECT_REQUEST_TITLE" = "確認取消Twitter同步";
 
 /* Ultimate plan details in plans page */
-"ULTIMATE_PLAN_DESCRIPTION" = "500GB 雲端儲存空間，PC 數量無限制。";
+"ULTIMATE_PLAN_DESCRIPTION" = "500GB雲端儲存空間，PC數量無限制。";
 
 /* Settings for User popover */
 "USER_INFO_CONTROLLER_TITLE" = "設定";
@@ -598,7 +598,7 @@
 "COMPOSITION_NO_PHOTO_REMINDER_TITLE" = "沒有照片";
 
 /* Class = "IBUILabel"; text = "COMPOSITION_NO_PHOTO_REMINDER_DESCRIPTION"; ObjectID = "26"; */
-"COMPOSITION_NO_PHOTO_REMINDER_DESCRIPTION" = "您可以插入一些照片";
+"COMPOSITION_NO_PHOTO_REMINDER_DESCRIPTION" = "您可以加入一些照片";
 
 /* Class = "IBUILabel"; text = "AUGUST"; ObjectID = "15"; */
 "AUGUST" = "AUGUST";
@@ -619,7 +619,7 @@
 "CONNECTION_STATUS_TITLE" = "連線狀態";
 
 /* Class = "IBUILabel"; text = "PC_SETUP_INSTRUCTIONS"; ObjectID = "6Ib-wQ-B01"; */
-"PC_SETUP_INSTRUCTIONS" = "1. 在 PC 上安裝 AOStream Windows\n2. 確認手機和 PC 位於同一個 WiFi";
+"PC_SETUP_INSTRUCTIONS" = "1. 在PC上安裝AOStream Windows\n2. 確認手機和PC位於同一個Wi-Fi底下";
 
 /* Class = "IBUILabel"; text = "PHOTO_UPLOAD_SWITCH_TITLE"; ObjectID = "749-zj-beb"; */
 "PHOTO_UPLOAD_SWITCH_TITLE" = "上傳相機膠卷的照片";
@@ -628,13 +628,13 @@
 "NOUN_USERNAME" = "電子郵件";
 
 /* Class = "IBUILabel"; text = "CONNECT_SERVICES_DESCRIPTION"; ObjectID = "GEd-xe-bMT"; */
-"CONNECT_SERVICES_DESCRIPTION" = "AOStream 會將你在其他服務上的內容自動匯進來並且整理好，你一定會訝異原來自己的人生這麼多彩多姿。";
+"CONNECT_SERVICES_DESCRIPTION" = "AOStream會將您在其他服務上的內容，自動匯進來並整理好，您一定會訝異原來自己的生活如此多彩多姿。";
 
 /* Class = "IBUIButton"; normalTitle = "LOGIN_LINK_DEVICE"; ObjectID = "Gch-g1-VSP"; */
 "LOGIN_LINK_DEVICE" = "登入並連結此裝置";
 
 /* Class = "IBUILabel"; text = "PC_SETUP_DESCRIPTION"; ObjectID = "Jfg-PE-RoZ"; */
-"PC_SETUP_DESCRIPTION" = "AOStream Windows 可以將你的 PC 升級成個人雲，透過它傳輸速度將會加快一百倍！";
+"PC_SETUP_DESCRIPTION" = "AOStream Windows可以將您的PC升級成個人雲，透過PC傳輸，等待時間將會大大減少！";
 
 /* Class = "IBUIButton"; normalTitle = "I_AM_NEW_HERE"; ObjectID = "KXA-OG-bKa"; */
 "I_AM_NEW_HERE" = "我想註冊！";
@@ -643,7 +643,7 @@
 "NOUN_PASSWORD" = "密碼";
 
 /* Class = "IBUILabel"; text = "PHOTO_UPLOAD_DESCRIPTION"; ObjectID = "Phx-kE-dRu"; */
-"PHOTO_UPLOAD_DESCRIPTION" = "AOStream 會自動匯入你手機中的照片到個人雲裡，並產生各式各樣的事件讓你可以隨時隨地瀏覽。";
+"PHOTO_UPLOAD_DESCRIPTION" = "AOStream會自動匯入您手機中的照片，並整理出每日焦點動態，讓您隨時隨地欣賞與回顧。";
 
 /* Class = "IBUILabel"; text = "NOUN_USERNAME"; ObjectID = "WAR-06-Bm8"; */
 "NOUN_USERNAME" = "電子郵件";
@@ -679,7 +679,7 @@
 "ACTION_GOTO_WEBSITE" = "在網站上檢視詳細方案";
 
 /* Class = "IBUILabel"; text = "PLANS_DESCRIPTION"; ObjectID = "202"; */
-"PLANS_DESCRIPTION" = "AOStream 會將你所有的寶貝檔案存放在指定的位置，你可以選擇存在家裡的 PC，或者付費獲得額外的雲端儲存空間，讓你可以隨時隨地取得原始檔案。";
+"PLANS_DESCRIPTION" = "AOStream會將您所有的珍貴檔案存放在指定的位置，您可以選擇存在家裡的PC，或者付費獲得額外的雲端儲存空間，讓您可以隨時隨地取得原始檔案。";
 
 /* Class = "IBUITextField"; placeholder = "USERNAME_PLACEHOLDER"; ObjectID = "2Vk-4J-QH3"; */
 "USERNAME_PLACEHOLDER" = "me@example.com";
@@ -751,13 +751,13 @@
 "ACTION_GOTO_WEBSITE" = "在網站上檢視詳細方案";
 
 /* Class = "IBUILabel"; text = "PC_SETUP_DESCRIPTION"; ObjectID = "1TK-Px-G5L"; */
-"PC_SETUP_DESCRIPTION" = "AOStream Windows 可以將你的 PC 升級成個人雲，透過它傳輸速度將會加快一百倍！";
+"PC_SETUP_DESCRIPTION" = "AOStream Windows可以將您的PC升級成個人雲，透過它傳輸速度將會加快一百倍！";
 
 /* Class = "IBUILabel"; text = "PHOTO_IMPORT_TITLE"; ObjectID = "2Vy-5o-43I"; */
 "PHOTO_IMPORT_TITLE" = "照片匯入";
 
 /* Class = "IBUILabel"; text = "PC_SETUP_INSTRUCTIONS"; ObjectID = "3ZQ-I2-m83"; */
-"PC_SETUP_INSTRUCTIONS" = "1. 在 PC 上安裝 AOStream Windows\n2. 確認手機和 PC 位於同一個 WiFi";
+"PC_SETUP_INSTRUCTIONS" = "1. 在PC上安裝AOStream Windows\n2. 確認手機和PC位於同一個Wi-Fi";
 
 /* Class = "IBUILabel"; text = "IMPORT_CAMERA_ROLL"; ObjectID = "Ehm-FE-RdU"; */
 "IMPORT_CAMERA_ROLL" = "匯入相機膠卷";
@@ -775,10 +775,10 @@
 "FILES_TO_UPLOAD" = "待上傳照片";
 
 /* Class = "IBUILabel"; text = "PLANS_DESCRIPTION"; ObjectID = "MRD-E4-twD"; */
-"PLANS_DESCRIPTION" = "AOStream 會將你所有的寶貝檔案存放在指定的位置，你可以選擇存在家裡的 PC，或者付費獲得額外的雲端儲存空間，讓你可以隨時隨地取得原始檔案。";
+"PLANS_DESCRIPTION" = "AOStream會將您所有的寶貝檔案存放在指定的位置，您可以選擇存在家裡的PC，或者付費獲得額外的雲端儲存空間，讓您可以隨時隨地取得原始檔案。";
 
 /* Class = "IBUILabel"; text = "USE_CELLULAR"; ObjectID = "Scf-t9-USz"; */
-"USE_CELLULAR" = "使用 3G 上傳";
+"USE_CELLULAR" = "使用3G上傳";
 
 /* Class = "IBUILabel"; text = "PC_SETUP_TITLE"; ObjectID = "UKL-kB-sZd"; */
 "PC_SETUP_TITLE" = "覺得很慢？";
@@ -793,7 +793,7 @@
 "DELETE_ACCOUNT" = "刪除帳號";
 
 /* Class = "IBUITableViewSection"; footerTitle = "PHOTO_IMPORT_SETTINGS_FOOTER"; ObjectID = "gj0-e5-1Bs"; */
-"PHOTO_IMPORT_SETTINGS_FOOTER" = "手機上的原圖會自動傳回相同 WiFi 下的 AOStream Windows Station";
+"PHOTO_IMPORT_SETTINGS_FOOTER" = "只要安裝AOStream Windows在PC上，在同一Wi-Fi連線下，手機的原始圖片會自動傳回PC中";
 
 /* Class = "IBUITableViewSection"; headerTitle = "PHOTO_IMPORT_SETTINGS_HEADER"; ObjectID = "gj0-e5-1Bs"; */
 "PHOTO_IMPORT_SETTINGS_HEADER" = "設定";
@@ -805,7 +805,7 @@
 "NONE" = "NONE";
 
 /* Class = "IBUITableViewSection"; footerTitle = "PHOTO_IMPORT_SWITCH_FOOTER"; ObjectID = "jPT-4f-lnH"; */
-"PHOTO_IMPORT_SWITCH_FOOTER" = "開啟照片匯入將你相機膠卷中所有照片匯入 AOStream";
+"PHOTO_IMPORT_SWITCH_FOOTER" = "開啟照片匯入，將您相機膠卷中所有照片匯入AOStream";
 
 /* Class = "IBUILabel"; text = "UPGRADE_ACCOUNT"; ObjectID = "n6T-1w-Odi"; */
 "UPGRADE_ACCOUNT" = "升級帳號";
