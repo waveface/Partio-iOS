@@ -149,6 +149,8 @@
 		4B8581BC15F79EEF00EE11AC /* Icon_develop.png in Resources */ = {isa = PBXBuildFile; fileRef = 4B8581B815F79EEF00EE11AC /* Icon_develop.png */; };
 		4B85823B15F7ABCF00EE11AC /* WADefaults.develop.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4B85823A15F7ABCF00EE11AC /* WADefaults.develop.plist */; };
 		4B8DFB7414FDFC3D000B41C5 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B8DFB7314FDFC3D000B41C5 /* CFNetwork.framework */; };
+		4B8E9A7C16D78F3A0078C2C3 /* WACollectionOverviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B8E9A7A16D78F3A0078C2C3 /* WACollectionOverviewViewController.m */; };
+		4B8E9A7D16D78F3A0078C2C3 /* WACollectionOverviewViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4B8E9A7B16D78F3A0078C2C3 /* WACollectionOverviewViewController.xib */; };
 		4B9B8DEB164DEE61007A2A74 /* libicucore.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 8002CDE515E5E85600D7BFF0 /* libicucore.dylib */; };
 		4BAA582B168014EF006324CF /* GetCollections.json in Resources */ = {isa = PBXBuildFile; fileRef = DEBED814166C8608001A2B24 /* GetCollections.json */; };
 		4BAD7579164DEC5300ADDE56 /* Accounts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D9B1D8C162BB1DE000E5350 /* Accounts.framework */; };
@@ -1126,6 +1128,9 @@
 		4B8CA96814BBE7BA006E06BB /* UnitTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UnitTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
 		4B8CA96914BBE7BA006E06BB /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
 		4B8DFB7314FDFC3D000B41C5 /* CFNetwork.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
+		4B8E9A7916D78F3A0078C2C3 /* WACollectionOverviewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WACollectionOverviewViewController.h; sourceTree = "<group>"; };
+		4B8E9A7A16D78F3A0078C2C3 /* WACollectionOverviewViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WACollectionOverviewViewController.m; sourceTree = "<group>"; };
+		4B8E9A7B16D78F3A0078C2C3 /* WACollectionOverviewViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WACollectionOverviewViewController.xib; sourceTree = "<group>"; };
 		4BAD7581164DED1700ADDE56 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
 		4BAE344E15DCA30200A9109D /* LoginBackground-Landscape.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "LoginBackground-Landscape.png"; path = "Resources/LoginBackground-Landscape.png"; sourceTree = "<group>"; };
 		4BAE344F15DCA30200A9109D /* LoginBackground-Landscape@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "LoginBackground-Landscape@2x.png"; path = "Resources/LoginBackground-Landscape@2x.png"; sourceTree = "<group>"; };
@@ -2340,6 +2345,9 @@
 		8007709516789A540085E525 /* Collection */ = {
 			isa = PBXGroup;
 			children = (
+				4B8E9A7916D78F3A0078C2C3 /* WACollectionOverviewViewController.h */,
+				4B8E9A7A16D78F3A0078C2C3 /* WACollectionOverviewViewController.m */,
+				4B8E9A7B16D78F3A0078C2C3 /* WACollectionOverviewViewController.xib */,
 				4B274E671675E0E9007406D3 /* WACollectionViewCell.h */,
 				4B274E681675E0E9007406D3 /* WACollectionViewCell.m */,
 				4B274E6A1675E104007406D3 /* WACollectionViewCell.xib */,
@@ -2348,6 +2356,7 @@
 				4B274E4E1675BFCC007406D3 /* WACollectionViewController.xib */,
 			);
 			name = Collection;
+			path = wammer;
 			sourceTree = "<group>";
 		};
 		80092D3316AFD46400020F64 /* Data Plan */ = {
@@ -2729,7 +2738,6 @@
 				80F957B916B8D3DC005121A1 /* Sliding Menu */,
 				139DC23116AD25EE00147F4D /* Summary */,
 				80074F8D167ED4A200A23EED /* Web Pages */,
-				8007709516789A540085E525 /* Collection */,
 				8007709416789A150085E525 /* Documents */,
 				8007709316789A0E0085E525 /* Photos */,
 				8007709216789A070085E525 /* Events */,
@@ -2748,10 +2756,6 @@
 		FF73A53313D6C2CC00D54EC6 = {
 			isa = PBXGroup;
 			children = (
-				80B0A38C16D75C5400E391D2 /* OpenGLES.framework */,
-				80B0A38A16D75C3E00E391D2 /* ImageIO.framework */,
-				80B0A38816D75C2500E391D2 /* GLKit.framework */,
-				80B143FC16BA7F6E009A5FA9 /* Twitter.framework */,
 				DE7B38A0165CBB9900718262 /* Calendar Picker */,
 				7D0CDD04162E5A080027D35F /* StreamTests */,
 				4B8CA96F14BBE7BA006E06BB /* UnitTests */,
@@ -2761,6 +2765,7 @@
 				FF890CAB1416297C00CD7D1F /* Authentication */,
 				13DE12E41637F2D100757F7C /* First Use */,
 				FF6E168314F2EB6500AE1C05 /* Timeline */,
+				8007709516789A540085E525 /* Collection */,
 				FFFC76391487761700247099 /* User Info */,
 				80A1155B164773EF005A4246 /* Event View */,
 				FF4570E51488F371005B5905 /* Attachments */,
@@ -2803,21 +2808,23 @@
 		FF73A54113D6C2CC00D54EC6 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				80B0A38E16D75F2300E391D2 /* GoogleMaps.bundle */,
-				80B0A38616D75BF100E391D2 /* GoogleMaps.framework */,
-				80DAA56A16BA7BD100A4E352 /* TwitterReverseAuth */,
 				80B6323916817F9A00A9E2A5 /* libPods-StreamTests.a */,
 				80C058421682FB4900BC46A7 /* libPods-UnitTests.a */,
 				80B6323716817F8A00A9E2A5 /* libPods-UnitTests.a */,
-				DE2BBDD616761AC100EEF922 /* Kal.xcodeproj */,
-				13222F4E16806B22000C57A7 /* CoreImage.framework */,
-				80A115671647CC0A005A4246 /* MapKit.framework */,
-				4BAD7581164DED1700ADDE56 /* libsqlite3.dylib */,
 				D215E734098A44479DEC4F88 /* libPods.a */,
+				80B0A38E16D75F2300E391D2 /* GoogleMaps.bundle */,
+				4BAD7581164DED1700ADDE56 /* libsqlite3.dylib */,
 				7D9B1D8C162BB1DE000E5350 /* Accounts.framework */,
 				7D9B1D8E162BB1E8000E5350 /* AdSupport.framework */,
+				13222F4E16806B22000C57A7 /* CoreImage.framework */,
+				80B0A38816D75C2500E391D2 /* GLKit.framework */,
+				80B0A38616D75BF100E391D2 /* GoogleMaps.framework */,
+				80B0A38A16D75C3E00E391D2 /* ImageIO.framework */,
+				80A115671647CC0A005A4246 /* MapKit.framework */,
+				80B0A38C16D75C5400E391D2 /* OpenGLES.framework */,
 				7D0CDCE7162E59DD0027D35F /* SenTestingKit.framework */,
 				7D9B1D90162BB1F6000E5350 /* Social.framework */,
+				80B143FC16BA7F6E009A5FA9 /* Twitter.framework */,
 				7D857D4B164249DA0092CF5F /* AQGridView.xcodeproj */,
 				FFBA66E2140E12AD00BE5A1D /* IRDiscreteLayoutManager.xcodeproj */,
 				FF73A59513D6DC6500D54EC6 /* IRFoundations.xcodeproj */,
@@ -2825,10 +2832,12 @@
 				FFA69459147F800300F46347 /* IRRecurrenceMachine.xcodeproj */,
 				FFB3C16F145E9A6600ED7A56 /* IRTextAttributor.xcodeproj */,
 				FF73A59E13D6DC6A00D54EC6 /* IRWebAPIKit.xcodeproj */,
+				DE2BBDD616761AC100EEF922 /* Kal.xcodeproj */,
 				7DC3AC0D1642203C009A8EA7 /* SocketRocket.xcodeproj */,
 				FFC9D96614FF28B2004197EC /* Google Analytics SDK */,
 				FFFDEFB414211D5C0083BEFB /* iOS */,
 				FF59F87914419581005508FC /* OSX */,
+				80DAA56A16BA7BD100A4E352 /* TwitterReverseAuth */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -4077,6 +4086,7 @@
 				133948C216C10F5C003D2616 /* WebIcon.png in Resources */,
 				133948C316C10F5C003D2616 /* WebIcon@2x.png in Resources */,
 				4B78D1FD16C38F0B004C2532 /* WATinyArrowDown@2x.png in Resources */,
+				4B8E9A7D16D78F3A0078C2C3 /* WACollectionOverviewViewController.xib in Resources */,
 				13F51F3A16C7E8B900735D00 /* WANewSummaryViewController.xib in Resources */,
 				13F51F4E16C7F40600735D00 /* WANewDaySummaryViewCell.xib in Resources */,
 				13F51F5016C7F41B00735D00 /* WANewDayEventViewCell.xib in Resources */,
@@ -4567,6 +4577,7 @@
 				1329D5FB16BA54480095970E /* WAPhotoDay.m in Sources */,
 				80F5223316C0FAD8003A06D5 /* WARemoteInterface+Summary.m in Sources */,
 				4B603C4E16C37D6C003692CB /* WAModel.xcdatamodeld in Sources */,
+				4B8E9A7C16D78F3A0078C2C3 /* WACollectionOverviewViewController.m in Sources */,
 				13F51F3916C7E8B900735D00 /* WANewSummaryViewController.m in Sources */,
 				13F51F3D16C7ED3200735D00 /* WANewSummaryDataSource.m in Sources */,
 				13F51F4016C7EF0500735D00 /* WANewDaySummary.m in Sources */,
