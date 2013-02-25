@@ -12,10 +12,10 @@
 #import "WACollection+RemoteOperations.h"
 #import "WAFile.h"
 #import <CoreData+MagicalRecord.h>
-#import "WAGalleryViewController.h"
 #import <MKNetworkKit/MKNetworkKit.h>
 #import "WARemoteInterface+Authentication.h"
 #import <WADataStore+WARemoteInterfaceAdditions.h>
+#import "WACollectionOverviewViewController.h"
 
 typedef NS_ENUM(NSUInteger, WACollectionSortMode){
   WACollectionSortByName = 0,
@@ -133,11 +133,11 @@ typedef NS_ENUM(NSUInteger, WACollectionSortMode){
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
   
-  WACollection *aCollection = [_fetchedResultsController objectAtIndexPath:indexPath];
-  WAGalleryViewController *galleryVC = [[WAGalleryViewController alloc]
-                                        initWithImageFiles:[aCollection.files array]
-                                        atIndex:0];
-  [self.navigationController pushViewController:galleryVC animated:YES];
+  WACollectionOverviewViewController *overviewViewController = [[WACollectionOverviewViewController alloc] init];
+  
+  overviewViewController.collection = [_fetchedResultsController objectAtIndexPath:indexPath];
+  
+  [self.navigationController pushViewController:overviewViewController animated:YES];
 }
 
 #pragma mark - Private Methods

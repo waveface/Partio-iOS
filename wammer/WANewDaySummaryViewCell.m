@@ -13,6 +13,7 @@
 #import "WAAppDelegate_iOS.h"
 #import "WADayViewController.h"
 #import "WASlidingMenuViewController.h"
+#import "WAUser.h"
 
 NSString *kWANewDaySummaryViewCellID = @"NewDaySummaryViewCell";
 
@@ -91,11 +92,26 @@ NSString *kWANewDaySummaryViewCellID = @"NewDaySummaryViewCell";
   }];
   
   [representingDaySummary irObserve:@"numOfEvents" options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:nil withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
+    void (^setGreetingText)(void) = ^ {
+      if (isSameDay(representingDaySummary.date, [NSDate date])) {
+        if ([toValue integerValue] == 0) {
+          wSelf.greetingLabel.text = NSLocalizedString(@"GREETING_TEXT_NO_EVENTS_TODAY", @"greeting text of day summary view");
+        } else {
+          wSelf.greetingLabel.text = [NSString stringWithFormat:NSLocalizedString(@"GREETING_TEXT_WITH_EVENTS_TODAY", @"greeting text of day summary view"), representingDaySummary.user.nickname];
+        }
+      } else {
+        if ([toValue integerValue] == 0) {
+          wSelf.greetingLabel.text = [NSString stringWithFormat:NSLocalizedString(@"GREETING_TEXT_NO_EVENTS_PAST", @"greeting text of day summary view"), representingDaySummary.user.nickname];
+        } else {
+          wSelf.greetingLabel.text = [NSString stringWithFormat:NSLocalizedString(@"GREETING_TEXT_WITH_EVENTS_PAST", @"greeting text of day summary view"), [toValue integerValue]];
+        }
+      }
+    };
     if ([NSThread isMainThread]) {
-      wSelf.greetingLabel.text = [NSString stringWithFormat:NSLocalizedString(@"GREETING_TEXT", @"greeting text of day summary view"), [toValue integerValue]];
+      setGreetingText();
     } else {
       [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-        wSelf.greetingLabel.text = [NSString stringWithFormat:NSLocalizedString(@"GREETING_TEXT", @"greeting text of day summary view"), [toValue integerValue]];
+        setGreetingText();
       }];
     }
   }];

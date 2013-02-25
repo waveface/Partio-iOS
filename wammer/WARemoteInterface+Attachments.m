@@ -22,11 +22,12 @@ NSString * const kWARemoteAttachmentTitle = @"WARemoteAttachmentTitle";
 NSString * const kWARemoteAttachmentDescription = @"WARemoteAttachmentDescription";
 NSString * const kWARemoteAttachmentRepresentingImageURL = @"WARemoteAttachmentRepresentingImageURL";
 NSString * const kWARemoteAttachmentUpdatedObjectIdentifier = @"WARemoteAttachmentUpdatedObjectIdentifier";
-NSString * const kWARemoteAttachmentSubtype = @"kWARemoteAttachmentDestinationImageType";
-NSString * const kWARemoteArticleIdentifier = @"kWARemoteArticleIdentifier";
-NSString * const kWARemoteAttachmentExif = @"kWARemoteAttachmentExif";
-NSString * const kWARemoteAttachmentCreateTime = @"kWARemoteAttachmentCreateTime";
-NSString * const kWARemoteAttachmentImportTime = @"kWARemoteAttachmentImportTime";
+NSString * const kWARemoteAttachmentSubtype = @"WARemoteAttachmentDestinationImageType";
+NSString * const kWARemoteArticleIdentifier = @"WARemoteArticleIdentifier";
+NSString * const kWARemoteAttachmentFileName = @"WARemoteAttachmentFileName";
+NSString * const kWARemoteAttachmentExif = @"WARemoteAttachmentExif";
+NSString * const kWARemoteAttachmentCreateTime = @"WARemoteAttachmentCreateTime";
+NSString * const kWARemoteAttachmentImportTime = @"WARemoteAttachmentImportTime";
 NSString * const WARemoteAttachmentOriginalSubtype = @"origin";
 NSString * const WARemoteAttachmentLargeSubtype = @"large";
 NSString * const WARemoteAttachmentMediumSubtype = @"medium";
@@ -40,7 +41,7 @@ NSString * const WARemoteAttachmentSmallSubtype = @"small";
   if ([aFileURL isFileURL]) {
     
     NSData *fileData = [NSData dataWithContentsOfFile:[aFileURL path] options:NSDataReadingMappedIfSafe error:nil];
-    [self createAttachmentWithFileData:fileData name:[[aFileURL path] lastPathComponent] group:aGroupIdentifier options:options onSuccess:successBlock onFailure:failureBlock];
+    [self createAttachmentWithFileData:fileData name:options[kWARemoteAttachmentFileName] group:aGroupIdentifier options:options onSuccess:successBlock onFailure:failureBlock];
     
   } else {
     

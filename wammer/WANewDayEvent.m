@@ -15,6 +15,8 @@
 #import "WAFile+ImplicitBlobFulfillment.h"
 #import "WALocation.h"
 #import "WAAnnotation.h"
+#import <Nimbus/NINetworkImageView.h>
+
 
 @interface WANewDayEvent ()
 
@@ -131,32 +133,31 @@
   if (self.style == WADayEventStyleNone) {
     self.images[[@0 description]] = [[self class] sharedNoEventImage];
     self.backgroundImage = [[self class] sharedNoEventBackgroundImage];
-    return;
-  }
-
-  __weak WANewDayEvent *wSelf = self;
-  // load images in reverse order for LIFO display queue
-  for (NSInteger idx = self.numOfImages-1; idx >= 0; idx--) {
-    WAFile *file = self.representingArticle.files[idx];
-    [file setDisplayingSmallThumbnail:YES];
-    [file irRemoveObserverBlocksForKeyPath:@"smallThumbnailFilePath"];
-    [file irObserve:@"smallThumbnailFilePath" options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:nil withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
-      // the image displaying operation will be put in a LIFO queue to make UI more responsible to user
-      if (toValue) {
-        NSString *filePath = [toValue copy];
-        [wSelf insertImageDisplayOperationWithFilePath:filePath index:idx];
-      } else {
-        // show xs thumbnail if small thumbnail does not exist
-        UIImage *extraSmallThumbnailImage = [UIImage imageWithContentsOfFile:file.extraSmallThumbnailFilePath];
-        if (extraSmallThumbnailImage) {
-          wSelf.images[[@(idx) description]] = extraSmallThumbnailImage;
-          wSelf.backgroundImage = [extraSmallThumbnailImage stackBlur:5];
+  } else {
+    __weak WANewDayEvent *wSelf = self;
+    // load images in reverse order for LIFO display queue
+    for (NSInteger idx = self.numOfImages-1; idx >= 0; idx--) {
+      WAFile *file = self.representingArticle.files[idx];
+      [file setDisplayingSmallThumbnail:YES];
+      [file irRemoveObserverBlocksForKeyPath:@"smallThumbnailFilePath"];
+      [file irObserve:@"smallThumbnailFilePath" options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:nil withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
+        // the image displaying operation will be put in a LIFO queue to make UI more responsible to user
+        if (toValue) {
+          NSString *filePath = [toValue copy];
+          [wSelf insertImageDisplayOperationWithFilePath:filePath index:idx];
+        } else {
+          // show xs thumbnail if small thumbnail does not exist
+          UIImage *extraSmallThumbnailImage = [UIImage imageWithContentsOfFile:file.extraSmallThumbnailFilePath];
+          if (extraSmallThumbnailImage) {
+            wSelf.images[[@(idx) description]] = extraSmallThumbnailImage;
+            wSelf.backgroundImage = [extraSmallThumbnailImage stackBlur:5];
+          }
         }
-      }
-      if (![[[wSelf class] sharedImageDisplayQueue] operationCount]) {
-        [wSelf enqueueImageDisplayOperationIfNeeded];
-      }
-    }];
+        if (![[[wSelf class] sharedImageDisplayQueue] operationCount]) {
+          [wSelf enqueueImageDisplayOperationIfNeeded];
+        }
+      }];
+    }
   }
 
 }
@@ -168,7 +169,11 @@
   }
   self.imageLoadingOperations = nil;
   self.images = nil;
-  self.backgroundImage = nil;
+
+  // we don't flush background image of checkin events because it cannot be preloaded for good user experience
+  if (self.style != WADayEventStyleCheckin) {
+    self.backgroundImage = nil;
+  }
 
 }
 
