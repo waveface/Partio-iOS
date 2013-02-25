@@ -502,9 +502,6 @@
 /* Title for Documents in the sliding menu */
 "SLIDING_MENU_TITLE_DOCS" = "DOCUMENTS";
 
-/* Title for Events in the sliding menu */
-"SLIDING_MENU_TITLE_EVENTS" = "EVENTS";
-
 /* Title for MyDays in the sliding menu */
 "SLIDING_MENU_TITLE_MYDAYS" = "MY DAYS";
 
