@@ -314,7 +314,7 @@
 "GOOGLE_DISCONNECT_REQUEST_TITLE" = "確認取消Google同步";
 
 /* greeting text of day summary view */
-"GREETING_TEXT_NO_EVENTS_PAST" = "今天沒有動態，%@來加幾張照片吧。";
+"GREETING_TEXT_NO_EVENTS_PAST" = "今天沒有動態，\n%@來加幾張照片吧。";
 
 /* greeting text of day summary view */
 "GREETING_TEXT_NO_EVENTS_TODAY" = "拍幾張照片來記錄新的一天吧！";
@@ -323,7 +323,7 @@
 "GREETING_TEXT_WITH_EVENTS_PAST" = "這天有 %d 個焦點動態。";
 
 /* greeting text of day summary view */
-"GREETING_TEXT_WITH_EVENTS_TODAY" = "哈囉, %@. 今天也是愉快的一天嗎？";
+"GREETING_TEXT_WITH_EVENTS_TODAY" = "哈囉, %@.\n今天也是愉快的一天嗎？";
 
 /* Hello text in summary view */
 "HELLO_NAME_TEXT" = "哈囉, %@";
