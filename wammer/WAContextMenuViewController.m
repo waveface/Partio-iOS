@@ -66,7 +66,7 @@ static NSString *kWAContextViewCellIdentifier = @"ContextMenuItem";
     [self.tapper addTarget:self action:@selector(tapperTapped:) forControlEvents:UIControlEventTouchUpInside];
     [self.translucentOverlay addSubview:self.tapper];
     
-    self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(fullScreenFrame.size.width/2 - 80, 0, 160, 200)];
+    self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(fullScreenFrame.size.width/2 - 90, 0, 180, 200)];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
@@ -76,7 +76,7 @@ static NSString *kWAContextViewCellIdentifier = @"ContextMenuItem";
     
   } else {
     
-    self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, 160, 200)];
+    self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, 180, 200)];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
