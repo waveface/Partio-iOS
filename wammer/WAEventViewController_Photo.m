@@ -84,8 +84,8 @@
 
 		[cell.imageView irUnbind:@"image"];
 
-		dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-		
+      	dispatch_async(dispatch_get_main_queue(), ^{
+          
 			[cell.imageView irBind:@"image" toObject:file keyPath:@"smallThumbnailImage" options:[NSDictionary dictionaryWithObjectsAndKeys: (id)kCFBooleanTrue, kIRBindingsAssignOnMainThreadOption, nil]];
 
 		});
