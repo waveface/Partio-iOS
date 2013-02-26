@@ -82,6 +82,10 @@
 		13CCDE6B168C384300962625 /* WAFetchManager+RemoteCollectionFetch.m in Sources */ = {isa = PBXBuildFile; fileRef = 13CCDE6A168C384200962625 /* WAFetchManager+RemoteCollectionFetch.m */; };
 		13CCDE6E168C3C9300962625 /* WAFetchManager+RemoteFileMetadataFetch.m in Sources */ = {isa = PBXBuildFile; fileRef = 13CCDE6D168C3C9300962625 /* WAFetchManager+RemoteFileMetadataFetch.m */; };
 		13CCDE71168C466100962625 /* WAFile.m in Sources */ = {isa = PBXBuildFile; fileRef = 13CCDE70168C466100962625 /* WAFile.m */; };
+		13D1396116DB340700A41F86 /* WAFirstUsePCAdvertisementViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 13D1396016DB340700A41F86 /* WAFirstUsePCAdvertisementViewController.m */; };
+		13D1397216DB467F00A41F86 /* WelcomeLogo.png in Resources */ = {isa = PBXBuildFile; fileRef = 13D1397016DB467F00A41F86 /* WelcomeLogo.png */; };
+		13D1397316DB467F00A41F86 /* WelcomeLogo@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 13D1397116DB467F00A41F86 /* WelcomeLogo@2x.png */; };
+		13D1397516DB474000A41F86 /* WelcomeBackgroundPattern.png in Resources */ = {isa = PBXBuildFile; fileRef = 13D1397416DB474000A41F86 /* WelcomeBackgroundPattern.png */; };
 		13D3E6F9169BC1A600D09298 /* WAFile.m in Sources */ = {isa = PBXBuildFile; fileRef = 13CCDE70168C466100962625 /* WAFile.m */; };
 		13DAAD7C166FB100002900D7 /* WADocumentStreamViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 13DAAD7B166FB100002900D7 /* WADocumentStreamViewCell.xib */; };
 		13DE12EB1637F30A00757F7C /* WAFirstUseDoneViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 13DE12E71637F30A00757F7C /* WAFirstUseDoneViewController.m */; };
@@ -1041,6 +1045,11 @@
 		13CCDE6D168C3C9300962625 /* WAFetchManager+RemoteFileMetadataFetch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "WAFetchManager+RemoteFileMetadataFetch.m"; path = "wammer/WAFetchManager+RemoteFileMetadataFetch.m"; sourceTree = "<group>"; };
 		13CCDE6F168C466100962625 /* WAFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAFile.h; sourceTree = "<group>"; };
 		13CCDE70168C466100962625 /* WAFile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAFile.m; sourceTree = "<group>"; };
+		13D1395F16DB340700A41F86 /* WAFirstUsePCAdvertisementViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WAFirstUsePCAdvertisementViewController.h; path = wammer/WAFirstUsePCAdvertisementViewController.h; sourceTree = "<group>"; };
+		13D1396016DB340700A41F86 /* WAFirstUsePCAdvertisementViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WAFirstUsePCAdvertisementViewController.m; path = wammer/WAFirstUsePCAdvertisementViewController.m; sourceTree = "<group>"; };
+		13D1397016DB467F00A41F86 /* WelcomeLogo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WelcomeLogo.png; path = Resources/WelcomeLogo.png; sourceTree = "<group>"; };
+		13D1397116DB467F00A41F86 /* WelcomeLogo@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "WelcomeLogo@2x.png"; path = "Resources/WelcomeLogo@2x.png"; sourceTree = "<group>"; };
+		13D1397416DB474000A41F86 /* WelcomeBackgroundPattern.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WelcomeBackgroundPattern.png; path = Resources/WelcomeBackgroundPattern.png; sourceTree = "<group>"; };
 		13DAAD7B166FB100002900D7 /* WADocumentStreamViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WADocumentStreamViewCell.xib; sourceTree = "<group>"; };
 		13DE12E61637F30A00757F7C /* WAFirstUseDoneViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WAFirstUseDoneViewController.h; path = wammer/WAFirstUseDoneViewController.h; sourceTree = "<group>"; };
 		13DE12E71637F30A00757F7C /* WAFirstUseDoneViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WAFirstUseDoneViewController.m; path = wammer/WAFirstUseDoneViewController.m; sourceTree = "<group>"; };
@@ -2077,6 +2086,8 @@
 				13DE12E91637F30A00757F7C /* WAFirstUseViewController.m */,
 				13A9B10F163F8A4D00537835 /* WAFirstUseWelcomeViewController.h */,
 				13A9B110163F8A4D00537835 /* WAFirstUseWelcomeViewController.m */,
+				13D1395F16DB340700A41F86 /* WAFirstUsePCAdvertisementViewController.h */,
+				13D1396016DB340700A41F86 /* WAFirstUsePCAdvertisementViewController.m */,
 			);
 			name = "First Use";
 			sourceTree = "<group>";
@@ -3076,6 +3087,9 @@
 		FFC2E04C13DD706600816EA1 /* iOS Resources */ = {
 			isa = PBXGroup;
 			children = (
+				13D1397016DB467F00A41F86 /* WelcomeLogo.png */,
+				13D1397116DB467F00A41F86 /* WelcomeLogo@2x.png */,
+				13D1397416DB474000A41F86 /* WelcomeBackgroundPattern.png */,
 				8090AB231646AE79007E2AC0 /* action.png */,
 				8090AB241646AE79007E2AC0 /* action@2x.png */,
 				808DAA131675DE36003652BB /* add-DB.png */,
@@ -4104,6 +4118,9 @@
 				8037A21616D76E0B00BE7581 /* GoogleLogo@2x.png in Resources */,
 				8037A21716D76E0B00BE7581 /* twitterLogo@2x.png in Resources */,
 				8037A21916D76E1B00BE7581 /* PicasaLogo@2x.png in Resources */,
+				13D1397216DB467F00A41F86 /* WelcomeLogo.png in Resources */,
+				13D1397316DB467F00A41F86 /* WelcomeLogo@2x.png in Resources */,
+				13D1397516DB474000A41F86 /* WelcomeBackgroundPattern.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4588,6 +4605,7 @@
 				139A0DA816CCAB76001D380B /* WANewDayEventImageViewCell.m in Sources */,
 				13A0C3D416D4D56400835687 /* WANewDayEventMapViewCell.m in Sources */,
 				8012DB4F16D4C1150002B163 /* UIViewController+WAAdditions.m in Sources */,
+				13D1396116DB340700A41F86 /* WAFirstUsePCAdvertisementViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
