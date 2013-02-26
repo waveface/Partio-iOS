@@ -29,4 +29,8 @@
 }
 */
 
+-(void)prepareForReuse {
+  _imageView.image = nil;
+}
+
 @end

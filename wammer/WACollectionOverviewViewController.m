@@ -34,6 +34,11 @@
           forCellWithReuseIdentifier:@"WACollectionOverviewViewCell"];
 }
 
+- (void)viewWillDisappear:(BOOL)animated {
+  [super viewWillDisappear:animated];
+  [self irRemoveAllObserves];
+}
+
 - (void)didReceiveMemoryWarning
 {
   [super didReceiveMemoryWarning];
@@ -59,12 +64,10 @@
     cell.imageView.image = target.smallThumbnailImage;
   } else {
     [target irObserve:@"smallThumbnailImage"
-              options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld
+              options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld
               context:nil
             withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
-              dispatch_async(dispatch_get_main_queue(), ^{
                 cell.imageView.image = toValue;
-              });
             }];
   }
   
