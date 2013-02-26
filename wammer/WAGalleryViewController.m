@@ -212,8 +212,8 @@ static NSString * kWAGalleryViewControllerKVOContext = @"WAGalleryViewController
 	self.onComplete();
 
 
-	[[GAI sharedInstance].defaultTracker trackEventWithCategory:@"Gallery"
-																									 withAction:@"Enter gallery"
+	[[GAI sharedInstance].defaultTracker trackEventWithCategory:@"Summary"
+																									 withAction:@"GalleryShown"
 																										withLabel:nil
 																										withValue:nil];
 

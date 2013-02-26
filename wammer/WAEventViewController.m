@@ -168,7 +168,8 @@
 	
 	if (self.completion)
 		self.completion();
-	
+  
+  [[GAI sharedInstance].defaultTracker trackEventWithCategory:@"Summary" withAction:@"Event" withLabel:@"" withValue:0];
 }
 
 - (void)viewWillAppear:(BOOL)animated

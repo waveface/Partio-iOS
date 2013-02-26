@@ -160,7 +160,8 @@
       wSelf.eventPageControl.numberOfPages = [toValue integerValue];
     }];
   }];
-
+  [[GAI sharedInstance].defaultTracker trackEventWithCategory:@"Summary" withAction:@"Show" withLabel:@"Event" withValue:@(_currentDaySummary.numOfEvents)];
+  
 }
 
 - (void)setCurrentDayEvent:(WANewDayEvent *)currentDayEvent {

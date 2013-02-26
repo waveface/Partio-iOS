@@ -147,9 +147,8 @@
 }
 
 - (void)viewWillAppear:(BOOL)animated {
-  
   [super viewWillAppear:animated];
-  
+  [[GAI sharedInstance].defaultTracker trackEventWithCategory:@"Photos" withAction:@"Show" withLabel:@"Count" withValue:@([_photos count])];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -233,7 +232,7 @@
   WAGalleryViewController *galleryVC = [[WAGalleryViewController alloc] initWithImageFiles:self.photos atIndex:[indexPath row]];
   
   [self.navigationController pushViewController:galleryVC animated:YES];
-  
+  [[GAI sharedInstance].defaultTracker trackEventWithCategory:@"Photos" withAction:@"Gallery" withLabel:nil withValue:nil];
 }
 
 #pragma mark - Target actions
