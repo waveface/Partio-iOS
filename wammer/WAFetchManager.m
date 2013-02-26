@@ -20,6 +20,7 @@
 @property (nonatomic, strong) IRRecurrenceMachine *recurrenceMachine;
 @property (nonatomic, strong) NSOperationQueue *articleFetchOperationQueue;
 @property (nonatomic, strong) NSOperationQueue *fileMetadataFetchOperationQueue;
+@property (nonatomic, strong) NSOperationQueue *collectionInsertOperationQueue;
 @property (nonatomic, strong) NSDate *currentDate;
 
 @end
@@ -39,6 +40,8 @@
     
     // file metadata can be concurrently fetched
     self.fileMetadataFetchOperationQueue = [[NSOperationQueue alloc] init];
+    self.collectionInsertOperationQueue = [[NSOperationQueue alloc] init];
+    self.collectionInsertOperationQueue.maxConcurrentOperationCount = 1;
 
     self.recurrenceMachine = [[IRRecurrenceMachine alloc] init];
     [self.recurrenceMachine.queue setMaxConcurrentOperationCount:1];

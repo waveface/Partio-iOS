@@ -32,23 +32,40 @@
     [ri.engine fireAPIRequestNamed:@"collections/getAll" withArguments:nil options:nil validator:WARemoteInterfaceGenericNoErrorValidator() successHandler:^(NSDictionary *response, IRWebAPIRequestContext *context) {
 
       WADataStore *ds = [WADataStore defaultStore];
-      [ds performBlock:^{
+      NSArray *collections = [response objectForKey:@"collections"];
+      for (NSDictionary *collectionResp in collections) {
 
-        NSManagedObjectContext *moc = [ds autoUpdatingMOC];
-        [WACollection insertOrUpdateObjectsUsingContext:moc
-			       withRemoteResponse:[response objectForKey:@"collections"]
-				   usingMapping:nil
-				        options:IRManagedObjectOptionIndividualOperations];
+        [wSelf.collectionInsertOperationQueue addOperation:[NSBlockOperation blockOperationWithBlock:^{
+          
+          [ds performBlock:^{
+          
+            NSManagedObjectContext *moc = [ds autoUpdatingMOC];
+            [WACollection insertOrUpdateObjectsUsingContext:moc
+                                         withRemoteResponse:@[collectionResp]
+                                               usingMapping:nil
+                                                    options:IRManagedObjectOptionIndividualOperations];
+            
+            NSError *error = nil;
+            if (![moc save:&error])
+              NSLog(@"Error on saving collection: %@", error);
+          } waitUntilDone:YES];
+          
+        }]];
         
-        NSError *error = nil;
-        if (![moc save:&error])
-	NSLog(@"Error on saving collection: %@", error);
+      }
 
-      } waitUntilDone:YES];
-
-      [[NSUserDefaults standardUserDefaults] setBool:NO forKey:kWAAllCollectionsFetchOnce];
-      [[NSUserDefaults standardUserDefaults] synchronize];
-
+      NSOperation *tailOp = [NSBlockOperation blockOperationWithBlock:^{
+        
+        [[NSUserDefaults standardUserDefaults] setBool:NO forKey:kWAAllCollectionsFetchOnce];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+        
+      }];
+      
+      for (NSOperation *op in wSelf.collectionInsertOperationQueue.operations) {
+        [tailOp addDependency:op];
+      }
+      [wSelf.collectionInsertOperationQueue addOperation:tailOp];
+  
       [wSelf endPostponingFetch];
 
     } failureHandler:WARemoteInterfaceGenericFailureHandler(^(NSError *error) {
@@ -85,6 +102,9 @@
   if (![WARemoteInterface sharedInterface].userToken) {
     return NO;
   }
+  
+  if ([self.collectionInsertOperationQueue operationCount])
+    return NO;//insert or merge ongoing
   
   if (![[NSUserDefaults standardUserDefaults] boolForKey:kWAAllCollectionsFetchOnce]) {
     return NO;
