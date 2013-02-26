@@ -8,9 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
-@interface WAFirstUseWelcomeViewController : UIViewController
+@interface WAFirstUseWelcomeViewController : UITableViewController
 
-@property (weak, nonatomic) IBOutlet UIButton *signupButton;
-@property (weak, nonatomic) IBOutlet UIButton *loginButton;
+@property (weak, nonatomic) IBOutlet UITableViewCell *signupCell;
+@property (weak, nonatomic) IBOutlet UITableViewCell *loginCell;
 
 @end

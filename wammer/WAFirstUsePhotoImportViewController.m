@@ -14,7 +14,7 @@
 // save switch value in global so that the switch status can be kept even the view controller is dismissed
 static BOOL enabled = YES;
 
-static NSString * const kWASeguePhotoImportToDone = @"WASeguePhotoImportToDone";
+static NSString * const kWASeguePhotoImportToSendLink = @"WASeguePhotoImportToSendLink";
 
 @interface WAFirstUsePhotoImportViewController ()
 
@@ -46,7 +46,7 @@ static NSString * const kWASeguePhotoImportToDone = @"WASeguePhotoImportToDone";
 	}
 	
 	UIBarButtonItem *nextButton = (UIBarButtonItem *)WABackBarButtonItem([UIImage imageNamed:@"forward"], @"", ^{
-		[wSelf performSegueWithIdentifier:kWASeguePhotoImportToDone sender:nil];
+		[wSelf performSegueWithIdentifier:kWASeguePhotoImportToSendLink sender:nil];
 	});
 
 	self.navigationItem.rightBarButtonItem = nextButton;

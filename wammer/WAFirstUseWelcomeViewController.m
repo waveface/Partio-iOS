@@ -15,21 +15,27 @@
 @implementation WAFirstUseWelcomeViewController
 
 - (void)viewDidLoad {
+  
+  [super viewDidLoad];
+  
+  UIImage *backgroundPattern = [UIImage imageNamed:@"WelcomeBackgroundPattern"];
+  self.tableView.backgroundColor = [UIColor colorWithPatternImage:backgroundPattern];
 
-	[super viewDidLoad];
-
-	self.signupButton.backgroundColor = [UIColor colorWithRed:0xe6/255.0 green:0xe6/255.0 blue:0xe6/255.0 alpha:1.0];
-	self.signupButton.contentEdgeInsets = UIEdgeInsetsMake(10.0, 0.0, 10.0, 0.0);
-	self.signupButton.layer.cornerRadius = 10.0;
-	self.loginButton.backgroundColor = [UIColor colorWithRed:0xe6/255.0 green:0xe6/255.0 blue:0xe6/255.0 alpha:1.0];
-	self.loginButton.contentEdgeInsets = UIEdgeInsetsMake(10.0, 0.0, 10.0, 0.0);
-	self.loginButton.layer.cornerRadius = 10.0;
-	
 }
 
 - (void)viewWillAppear:(BOOL)animated {
+  
+  [super viewWillAppear:animated];
 
-	self.navigationController.navigationBar.alpha = 0;
+  self.navigationController.navigationBar.alpha = 0;
+  
+}
+
+#pragma mark - UITableViewController delegates
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+
+  [tableView deselectRowAtIndexPath:indexPath animated:YES];
 
 }
 
