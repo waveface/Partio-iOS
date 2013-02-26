@@ -20,6 +20,7 @@
 "ACTION_ADD_TO_COLLECTION" = "Done";
 
 /* Action title for cancelling stuff
+   Cancel adding event
    Title for cancelling an action */
 "ACTION_CANCEL" = "Cancel";
 
@@ -105,6 +106,9 @@
 
 /* Action marking article as not favorite */
 "ACTION_UNMARK_FAVORITE" = "Unfavorite";
+
+/* Dialog describing adding event is not supported */
+"ADD_EVENT_NOT_SUPPORTED_DESCRIPTION" = "Sorry, this version does not support adding event.";
 
 /* No comment provided by engineer. */
 "ADVANCED_FEATURES_DISABLED_DESCRIPTION" = "Advanced features are disabled. Log in again to populate changes.";
