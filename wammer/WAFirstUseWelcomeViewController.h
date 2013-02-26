@@ -12,5 +12,6 @@
 
 @property (weak, nonatomic) IBOutlet UITableViewCell *signupCell;
 @property (weak, nonatomic) IBOutlet UITableViewCell *loginCell;
+@property (weak, nonatomic) IBOutlet UIView *headerView;
 
 @end

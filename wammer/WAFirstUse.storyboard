@@ -32,7 +32,7 @@
                             <rect key="frame" x="0.0" y="0.0" width="320" height="333"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
-                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="WelcomeLogo.png" translatesAutoresizingMaskIntoConstraints="NO" id="wHa-VB-jee"/>
+                                <imageView userInteractionEnabled="NO" contentMode="center" image="WelcomeLogo.png" translatesAutoresizingMaskIntoConstraints="NO" id="wHa-VB-jee"/>
                             </subviews>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             <constraints>
@@ -91,6 +91,7 @@
                     </tableView>
                     <navigationItem key="navigationItem" id="k16-LS-ikb"/>
                     <connections>
+                        <outlet property="headerView" destination="QJZ-nW-8Y4" id="eDD-F2-dGO"/>
                         <outlet property="loginCell" destination="oU3-eV-WcP" id="6x0-UG-8BY"/>
                         <outlet property="signupCell" destination="RIc-tA-RNE" id="mfM-Hf-T7T"/>
                     </connections>
@@ -228,7 +229,7 @@
                                 <color key="textColor" red="0.44705882349999998" green="0.43921568630000002" blue="0.43921568630000002" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="PC_AD_DESCRIPTION" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="280" translatesAutoresizingMaskIntoConstraints="NO" id="Hwk-71-2jX" customClass="WALocalizedLabel">
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="PC_AD_DESCRIPTION" lineBreakMode="tailTruncation" numberOfLines="4" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="280" translatesAutoresizingMaskIntoConstraints="NO" id="Hwk-71-2jX" customClass="WALocalizedLabel">
                                 <constraints>
                                     <constraint firstAttribute="height" priority="500" constant="21" type="user" id="A9G-XI-Ro7"/>
                                 </constraints>
@@ -281,7 +282,7 @@
                                     <action selector="handleDone:" destination="aPx-LF-QSi" eventType="touchUpInside" id="ihz-5U-24g"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="SETUP_DONE_DESCRIPTION" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="280" translatesAutoresizingMaskIntoConstraints="NO" id="OVz-tl-GMd" customClass="WALocalizedLabel">
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="SETUP_DONE_DESCRIPTION" lineBreakMode="tailTruncation" numberOfLines="5" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="280" translatesAutoresizingMaskIntoConstraints="NO" id="OVz-tl-GMd" customClass="WALocalizedLabel">
                                 <constraints>
                                     <constraint firstAttribute="height" priority="500" constant="21" type="user" id="dR7-fB-Erw"/>
                                 </constraints>
@@ -751,6 +752,7 @@
         <class className="WAFirstUseWelcomeViewController" superclassName="UITableViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/WAFirstUseWelcomeViewController.h"/>
             <relationships>
+                <relationship kind="outlet" name="headerView" candidateClass="UIView"/>
                 <relationship kind="outlet" name="loginCell" candidateClass="UITableViewCell"/>
                 <relationship kind="outlet" name="signupCell" candidateClass="UITableViewCell"/>
             </relationships>
