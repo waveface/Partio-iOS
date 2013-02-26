@@ -36,7 +36,9 @@
 
 - (void)viewWillDisappear:(BOOL)animated {
   [super viewWillDisappear:animated];
-  [self irRemoveAllObserves];
+  for (WAFile *target in _collection.files) {
+    [target irRemoveAllObserves];
+  }
 }
 
 - (void)didReceiveMemoryWarning
@@ -79,5 +81,10 @@
                                         initWithImageFiles:[_collection.files array]
                                         atIndex:[indexPath row]];
   [self.navigationController pushViewController:galleryVC animated:YES];
+}
+
+- (void)collectionView:(UICollectionView *)collectionView didEndDisplayingCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath {
+  WAFile *target = (WAFile*)[_collection.files objectAtIndex:[indexPath row]];
+  [target irRemoveAllObserves];
 }
 @end
