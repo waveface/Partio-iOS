@@ -224,6 +224,9 @@
 /* The conjunction between description and people's names */
 "EVENT_DESC_PEOPLE_CONJUNCTION" = "with";
 
+/* Event description for photo information only */
+"EVENT_DESCRIPTION_PHOTOS_ONLY" = "%d photos in this event.";
+
 /* EVENT_PHOTO_NUMBER_LABEL */
 "EVENT_PHOTO_NUMBER_LABEL" = "%d PHOTOS";
 

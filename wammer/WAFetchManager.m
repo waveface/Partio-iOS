@@ -78,6 +78,15 @@
 
 }
 
+- (void) cancelAllOperations {
+  
+  [self.recurrenceMachine.queue cancelAllOperations];
+  [self.articleFetchOperationQueue cancelAllOperations];
+  [self.fileMetadataFetchOperationQueue cancelAllOperations];
+  [self.collectionInsertOperationQueue cancelAllOperations];
+  
+}
+
 + (NSSet *)keyPathsForValuesAffectingIsFetching {
 
   return [NSSet setWithArray:@[
