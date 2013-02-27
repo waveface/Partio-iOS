@@ -384,7 +384,7 @@ static NSString * kWASlidingMenuViewControllerKVOContext = @"WASlidingMenuViewCo
       [self.viewDeckController closeLeftView];
       
       [self switchToViewStyle:WAEventsViewStyle];
-      
+      [[GAI sharedInstance].defaultTracker trackEventWithCategory:@"Menu" withAction:@"Summary" withLabel:nil withValue:@0];
       break;
     }
       
@@ -399,6 +399,7 @@ static NSString * kWASlidingMenuViewControllerKVOContext = @"WASlidingMenuViewCo
         [collectionViewController.viewDeckController toggleLeftView];
       });
       [self.viewDeckController setCenterController:navController];
+      [[GAI sharedInstance].defaultTracker trackEventWithCategory:@"Menu" withAction:@"Collection" withLabel:nil withValue:@0];
       break;
     }
       

@@ -133,6 +133,8 @@ typedef NS_ENUM(NSUInteger, WACollectionSortMode){
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
   
+  [[GAI sharedInstance].defaultTracker trackEventWithCategory:@"Collection" withAction:@"Enter Overview" withLabel:nil withValue:@0];
+  
   WACollectionOverviewViewController *overviewViewController = [[WACollectionOverviewViewController alloc] init];
   
   overviewViewController.collection = [_fetchedResultsController objectAtIndexPath:indexPath];

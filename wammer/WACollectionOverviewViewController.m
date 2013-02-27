@@ -77,6 +77,8 @@
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
+  [[GAI sharedInstance].defaultTracker trackEventWithCategory:@"Collection" withAction:@"Enter Gallery" withLabel:nil withValue:@0];
+  
   WAGalleryViewController *galleryVC = [[WAGalleryViewController alloc]
                                         initWithImageFiles:[_collection.files array]
                                         atIndex:[indexPath row]];

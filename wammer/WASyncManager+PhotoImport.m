@@ -20,18 +20,18 @@
 @implementation WASyncManager (PhotoImport)
 
 - (IRAsyncOperation *)photoImportOperationPrototype {
-
+  
   __weak WASyncManager *wSelf = self;
-
+  
   return [IRAsyncOperation operationWithWorker:^(IRAsyncOperationCallback callback) {
-
+    
     if (![wSelf canPerformPhotoImport]) {
       callback(nil);
       return;
     }
-
+    
     [wSelf beginPostponingSync];
-
+    
     NSDate *importTime = [NSDate date];
     WADataStore *ds = [WADataStore defaultStore];
     
@@ -47,79 +47,76 @@
       __block NSBlockOperation *operation = [NSBlockOperation blockOperationWithBlock:^{
         
         if ([operation isCancelled]) {
-		  NSLog(@"A photo import operation was canceled");
-		  return;
+          NSLog(@"A photo import operation was canceled");
+          return;
         }
-
+        
         NSManagedObjectContext *context = [ds disposableMOC];
         WAArticle *article = [WAArticle objectInsertingIntoContext:context withRemoteDictionary:@{}];
         [assets enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-	
-		  @autoreleasepool {
-	  
-			WAFile *file = (WAFile *)[WAFile objectInsertingIntoContext:context withRemoteDictionary:@{}];
-			CFUUIDRef theUUID = CFUUIDCreate(kCFAllocatorDefault);
-			if (theUUID)
-			  file.identifier = [((__bridge_transfer NSString *)CFUUIDCreateString(kCFAllocatorDefault, theUUID)) lowercaseString];
-			CFRelease(theUUID);
-			file.dirty = (id)kCFBooleanTrue;
-	  
-			[[article mutableOrderedSetValueForKey:@"files"] addObject:file];
-	  
-			ALAsset *asset = (ALAsset *)obj;
-	  
-			UIImage *extraSmallThumbnailImage = [UIImage imageWithCGImage:[asset thumbnail]];
-			file.extraSmallThumbnailFilePath = [[[WADataStore defaultStore] persistentFileURLForData:UIImageJPEGRepresentation(extraSmallThumbnailImage, 0.85f) extension:@"jpeg"] path];
-	  
-			file.assetURL = [[[asset defaultRepresentation] url] absoluteString];
-			file.resourceType = (NSString *)kUTTypeImage;
-			file.timestamp = [asset valueForProperty:ALAssetPropertyDate];
-			file.created = file.timestamp;
-			file.importTime = importTime;
-	  
-			WAFileExif *exif = (WAFileExif *)[WAFileExif objectInsertingIntoContext:context withRemoteDictionary:@{}];
-			NSDictionary *metadata = [[asset defaultRepresentation] metadata];
-			[exif initWithExif:metadata[@"{Exif}"] tiff:metadata[@"{TIFF}"] gps:metadata[@"{GPS}"]];
-	  
-			file.exif = exif;
-
-			WAPhotoDay *day = (WAPhotoDay *)[WAPhotoDay objectInsertingIntoContext:context withRemoteDictionary:@{}];
-			day.day = [file.created dayBegin];
-			file.photoDay = day;
-
-			if (!article.creationDate) {
-			  article.creationDate = file.timestamp;
-			} else {
-			  if ([file.timestamp compare:article.creationDate] == NSOrderedDescending) {
-				article.creationDate = file.timestamp;
-			  }
-			}
-	  
-			wSelf.importedFilesCount += 1;
-	  
-		  }
-	
+          
+          @autoreleasepool {
+            
+            WAFile *file = (WAFile *)[WAFile objectInsertingIntoContext:context withRemoteDictionary:@{}];
+            CFUUIDRef theUUID = CFUUIDCreate(kCFAllocatorDefault);
+            if (theUUID)
+              file.identifier = [((__bridge_transfer NSString *)CFUUIDCreateString(kCFAllocatorDefault, theUUID)) lowercaseString];
+            CFRelease(theUUID);
+            file.dirty = (id)kCFBooleanTrue;
+            
+            [[article mutableOrderedSetValueForKey:@"files"] addObject:file];
+            
+            ALAsset *asset = (ALAsset *)obj;
+            
+            UIImage *extraSmallThumbnailImage = [UIImage imageWithCGImage:[asset thumbnail]];
+            file.extraSmallThumbnailFilePath = [[[WADataStore defaultStore] persistentFileURLForData:UIImageJPEGRepresentation(extraSmallThumbnailImage, 0.85f) extension:@"jpeg"] path];
+            
+            file.assetURL = [[[asset defaultRepresentation] url] absoluteString];
+            file.resourceType = (NSString *)kUTTypeImage;
+            file.timestamp = [asset valueForProperty:ALAssetPropertyDate];
+            file.created = file.timestamp;
+            file.importTime = importTime;
+            
+            WAFileExif *exif = (WAFileExif *)[WAFileExif objectInsertingIntoContext:context withRemoteDictionary:@{}];
+            NSDictionary *metadata = [[asset defaultRepresentation] metadata];
+            [exif initWithExif:metadata[@"{Exif}"] tiff:metadata[@"{TIFF}"] gps:metadata[@"{GPS}"]];
+            
+            file.exif = exif;
+            
+            WAPhotoDay *day = (WAPhotoDay *)[WAPhotoDay objectInsertingIntoContext:context withRemoteDictionary:@{}];
+            day.day = [file.created dayBegin];
+            file.photoDay = day;
+            
+            if (!article.creationDate) {
+              article.creationDate = file.timestamp;
+            } else {
+              if ([file.timestamp compare:article.creationDate] == NSOrderedDescending) {
+                article.creationDate = file.timestamp;
+              }
+            }
+            
+            wSelf.importedFilesCount += 1;
+            
+          }
+          
         }];
         
-		article.event = @NO;
+        article.event = @NO;
         article.draft = (id)kCFBooleanFalse;
         CFUUIDRef theUUID = CFUUIDCreate(kCFAllocatorDefault);
         if (theUUID)
-		  article.identifier = [((__bridge_transfer NSString *)CFUUIDCreateString(kCFAllocatorDefault, theUUID)) lowercaseString];
+          article.identifier = [((__bridge_transfer NSString *)CFUUIDCreateString(kCFAllocatorDefault, theUUID)) lowercaseString];
         CFRelease(theUUID);
         article.dirty = (id)kCFBooleanTrue;
         article.creationDeviceName = [UIDevice currentDevice].name;
         
         NSError *savingError = nil;
         if ([context save:&savingError]) {
-		  [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-			[[GAI sharedInstance].defaultTracker trackEventWithCategory:@"CreatePost"
-															 withAction:@"CameraRoll"
-															  withLabel:@"Photos"
-															  withValue:@([article.files count])];
-		  }];
+          [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+            [[GAI sharedInstance].defaultTracker trackEventWithCategory:@"Application" withAction:@"ImportFromCameraRol" withLabel:@"Photos" withValue:@([article.files count])];
+          }];
         } else {
-		  NSLog(@"Error saving: %s %@", __PRETTY_FUNCTION__, savingError);
+          NSLog(@"Error saving: %s %@", __PRETTY_FUNCTION__, savingError);
         }
         
         return;
@@ -132,7 +129,7 @@
       
       NSCAssert(wSelf.needingImportFilesCount == 0, @"file import count should be reset before starting photo import");
       wSelf.needingImportFilesCount = filesCount; // display status bar via KVO
-
+      
       NSBlockOperation *tailOp = [NSBlockOperation blockOperationWithBlock:^{
         [wSelf endPostponingSync];
         callback(nil);
@@ -141,12 +138,12 @@
         [tailOp addDependency:operation];
       }
       [wSelf.photoImportOperationQueue addOperation:tailOp];
-
+      
     } onFailure:^(NSError *error) {
       
       NSCAssert(wSelf.needingImportFilesCount == 0, @"file import count should be reset before starting photo import");
       wSelf.needingImportFilesCount = filesCount; // display status bar via KVO
-
+      
       NSBlockOperation *tailOp = [NSBlockOperation blockOperationWithBlock:^{
         [wSelf endPostponingSync];
         callback(error);
@@ -155,27 +152,27 @@
         [tailOp addDependency:operation];
       }
       [wSelf.photoImportOperationQueue addOperation:tailOp];
-
+      
       NSLog(@"Unable to enumerate saved photos: %s %@", __PRETTY_FUNCTION__, error);
-
+      
     }];
-
+    
   } trampoline:^(IRAsyncOperationInvoker callback) {
-
+    
     NSCAssert(![NSThread isMainThread], @"should run in background");
     callback();
-
+    
   } callback:^(id results) {
-
+    
     // NO OP
-
+    
   } callbackTrampoline:^(IRAsyncOperationInvoker callback) {
-
+    
     NSCAssert(![NSThread isMainThread], @"should run in background");
     callback();
-
+    
   }];
-
+  
 }
 
 - (BOOL)canPerformPhotoImport {

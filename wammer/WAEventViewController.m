@@ -129,12 +129,6 @@
 		
 	});
 	
-	
-	[[GAI sharedInstance].defaultTracker trackEventWithCategory:@"Events"
-													 withAction:@"Enter single event"
-													  withLabel:nil
-													  withValue:nil];
-	
 }
 
 - (void) viewDidAppear:(BOOL)animated {
@@ -168,7 +162,7 @@
 	
 	if (self.completion)
 		self.completion();
-	
+
 }
 
 - (void)viewWillAppear:(BOOL)animated

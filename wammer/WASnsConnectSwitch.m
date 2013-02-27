@@ -24,7 +24,7 @@
 			self = [[WAGoogleConnectSwitch alloc] initForStyle:style];
 			return self;
 		}
-						
+      
 		case WASnsConnectFoursquareStyle: {
 			self = [[WAFoursquareConnectSwitch alloc] initForStyle:style];
 			return self;
@@ -38,7 +38,7 @@
 }
 
 - (id)init {
-
+  
 	self = [super init];
 	
 	if (self) {
@@ -46,16 +46,16 @@
 		[self waConfiguration];
 		[self addTarget:self action:@selector(handleValueChanged:) forControlEvents:UIControlEventValueChanged];
 		self.on = [[NSUserDefaults standardUserDefaults] boolForKey:self.keyForDefaultStore];
-
+    
 	}
 	return self;
-
+  
 }
 
 - (void) waConfiguration {
 	
 	[NSException raise:NSInternalInconsistencyException format:@"Subclass shall implement %s", __PRETTY_FUNCTION__];
-		
+  
 }
 
 - (IRAlertView *)newSnsConnectAlertView {
@@ -64,7 +64,7 @@
 	
 	NSString *cancelTitle = NSLocalizedString(@"ACTION_CANCEL", nil);
 	IRAction *cancelAction = [IRAction actionWithTitle:cancelTitle block:^{
-
+    
 		[wSelf setOn:NO animated:YES];
 		
 	}];
@@ -89,7 +89,7 @@
 	IRAction *cancelAction = [IRAction actionWithTitle:cancelTitle block:^{
 		
 		[wSelf setOn:YES animated:YES];
-
+    
 	}];
 	
 	IRAction *disconnectAction = [IRAction actionWithTitle:self.actionDisconnectShortTitle block:^{
@@ -97,7 +97,7 @@
 		[wSelf handleSnsDisconnect];
 		
 	}];
-		
+  
 	IRAlertView *alertView = [IRAlertView alertViewWithTitle:self.actionDisconnectRequestTitle message:self.actionDisconnectRequestMsg cancelAction:cancelAction otherActions:[NSArray arrayWithObjects:disconnectAction, nil]];
 	
 	return alertView;
@@ -118,12 +118,12 @@
 	}
 	WARemoteInterface *ri = [WARemoteInterface sharedInterface];
 	NSDictionary *parameters = @{
-	@"device": @"ios",
-	@"api_key": ri.apiKey,
-	@"session_token": ri.userToken,
-	@"locale": preferedLanguage,
-	@"xurl": self.xurlForConnect
-	};
+                              @"device": @"ios",
+                              @"api_key": ri.apiKey,
+                              @"session_token": ri.userToken,
+                              @"locale": preferedLanguage,
+                              @"xurl": self.xurlForConnect
+                              };
 	[request setHTTPBody:IRWebAPIEngineFormURLEncodedDataWithDictionary(parameters)];
 	
 	__weak WASnsConnectSwitch *wSelf = self;
@@ -132,11 +132,8 @@
 		if ([wSelf isSuccessURL:resultURL]) {
 			[wSelf setOn:YES animated:YES];
 			
-			[[GAI sharedInstance].defaultTracker trackEventWithCategory:@"Events"
-																											 withAction:@"Start Import"
-																												withLabel:wSelf.styleName
-																												withValue:nil];
-
+			[[GAI sharedInstance].defaultTracker trackEventWithCategory:@"Application" withAction:@"Start Import" withLabel:wSelf.styleName withValue:nil];
+      
 		} else {
 			IRAlertView *alert =
 			[[IRAlertView alloc] initWithTitle:self.titleForConnectionFailure
@@ -165,12 +162,12 @@
 	}
 	WARemoteInterface *ri = [WARemoteInterface sharedInterface];
 	NSDictionary *parameters = @{
-	@"device": @"ios",
-	@"api_key": ri.apiKey,
-	@"session_token": ri.userToken,
-	@"locale": preferedLanguage,
-	@"xurl": self.xurlForDisconnect
-	};
+                              @"device": @"ios",
+                              @"api_key": ri.apiKey,
+                              @"session_token": ri.userToken,
+                              @"locale": preferedLanguage,
+                              @"xurl": self.xurlForDisconnect
+                              };
 	[request setHTTPBody:IRWebAPIEngineFormURLEncodedDataWithDictionary(parameters)];
 	
 	__weak WASnsConnectSwitch *wSelf = self;
@@ -178,11 +175,8 @@
 		NSCParameterAssert([NSThread isMainThread]);
 		if ([wSelf isSuccessURL:resultURL]) {
 			[wSelf setOn:NO animated:YES];
-			[[GAI sharedInstance].defaultTracker trackEventWithCategory:@"Events"
-																											 withAction:@"Stop Import"
-																												withLabel:wSelf.styleName
-																												withValue:nil];
-
+			[[GAI sharedInstance].defaultTracker trackEventWithCategory:@"Application" withAction:@"Stop Import" withLabel:wSelf.styleName withValue:nil];
+      
 		} else {
 			IRAlertView *alert =
 			[[IRAlertView alloc] initWithTitle:self.titleForDisconnectionFailure
@@ -208,17 +202,17 @@
 #pragma mark - Target actions
 
 - (void)handleValueChanged:(id)sender {
-
+  
 	if ([[NSUserDefaults standardUserDefaults] boolForKey:self.keyForDefaultStore] == self.on) {
 		return;
 	}
 	
 	if (self.on) {
 		[[self newSnsConnectAlertView] show];
-
+    
 	} else {
 		[[self newSnsDisconnectAlertView] show];
-
+    
 	}
 	
 }

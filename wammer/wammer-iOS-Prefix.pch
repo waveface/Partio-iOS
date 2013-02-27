@@ -12,6 +12,7 @@
 #import <QuartzCore/QuartzCore.h>
 #import "WADefines+iOS.h"
 #import <Crashlytics/Crashlytics.h>
+#import "GAI.h"
 
   #if WF_USES_TESTFLIGHT
     #import	"TestFlight.h"

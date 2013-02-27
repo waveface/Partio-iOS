@@ -142,8 +142,8 @@ static NSString *const kTrackingId = @"UA-27817516-7";
     WF_TESTFLIGHT(^ {
       
       [TestFlight setOptions:[NSDictionary dictionaryWithObjectsAndKeys:
-			(id)kCFBooleanFalse, @"sendLogOnlyOnCrash",
-			nil]];
+                              (id)kCFBooleanFalse, @"sendLogOnlyOnCrash",
+                              nil]];
       
       [TestFlight takeOff:@"fc829e58-110d-4cc7-9ee0-39a3dd54e6c9"];
       
@@ -177,8 +177,8 @@ extern CFAbsoluteTime StartTime;
   // [GAI sharedInstance].debug = YES;
   [GAI sharedInstance].dispatchInterval = 120;
   [GAI sharedInstance].trackUncaughtExceptions = YES;
-  self.tracker = [[GAI sharedInstance] trackerWithTrackingId:kTrackingId];
-
+  [[GAI sharedInstance] trackerWithTrackingId:kTrackingId];
+  
   [GMSServices provideAPIKey:@"AIzaSyAyGVeC0T7mPhQJjiKk7GVj8Z2Wmxpas5s"];
   
   [self bootstrap];
@@ -215,10 +215,7 @@ extern CFAbsoluteTime StartTime;
     
   }
   
-  [self.tracker trackEventWithCategory:@"Application:didFinishLaunchingWithOptions:"
-		        withAction:@"App Launched"
-		         withLabel:nil
-		         withValue:@-1];
+  [[GAI sharedInstance].defaultTracker trackEventWithCategory:@"Application" withAction:@"Launched" withLabel:nil withValue:@0];
   
   [[WARemoteInterface sharedInterface] enableAutomaticRemoteUpdatesTimer];
   [[WARemoteInterface sharedInterface] performAutomaticRemoteUpdatesNow];
@@ -249,17 +246,17 @@ extern CFAbsoluteTime StartTime;
   
   
   dispatch_async(dispatch_get_main_queue(), ^{
-	[Crashlytics startWithAPIKey:kWACrashlyticsAPIKey];
-	WAUser *user = [[WADataStore defaultStore] mainUserInContext:[[WADataStore defaultStore] defaultAutoUpdatedMOC]];
-	[Crashlytics setUserIdentifier:user.identifier];
-	[Crashlytics setUserEmail:user.email];
-	[Crashlytics setUserName:user.nickname];
+    [Crashlytics startWithAPIKey:kWACrashlyticsAPIKey];
+    WAUser *user = [[WADataStore defaultStore] mainUserInContext:[[WADataStore defaultStore] defaultAutoUpdatedMOC]];
+    [Crashlytics setUserIdentifier:user.identifier];
+    [Crashlytics setUserEmail:user.email];
+    [Crashlytics setUserName:user.nickname];
   });
   
   dispatch_async(dispatch_get_main_queue(), ^{
     NSLog(@"Stream Launched in %0.2f seconds on %@.", CFAbsoluteTimeGetCurrent() - StartTime, [UIDevice currentDevice].model);
   });
- 
+  
   return YES;
 }
 
@@ -270,9 +267,9 @@ extern CFAbsoluteTime StartTime;
 #pragma unused(kMSG_NOTIFICATION_TESTING)
   
   NSString* deviceTokenString = [[[[deviceToken description]
-			     stringByReplacingOccurrencesOfString: @"<" withString: @""]
-			    stringByReplacingOccurrencesOfString: @">" withString: @""]
-			   stringByReplacingOccurrencesOfString: @" " withString: @""];
+                                   stringByReplacingOccurrencesOfString: @"<" withString: @""]
+                                  stringByReplacingOccurrencesOfString: @">" withString: @""]
+                                 stringByReplacingOccurrencesOfString: @" " withString: @""];
   
   NSLog(@"device token in data: %@", deviceToken);
   NSLog(@"device token : %@", deviceTokenString);
@@ -295,7 +292,7 @@ extern CFAbsoluteTime StartTime;
 - (void)applicationDidEnterBackground:(UIApplication *)application {
   
   __weak WAAppDelegate_iOS *wSelf = self;
-
+  
   if (self.syncManager && self.slidingMenu) {
     [self.syncManager removeObserver:self.slidingMenu forKeyPath:@"isSyncing"];
   }
@@ -346,7 +343,7 @@ extern CFAbsoluteTime StartTime;
   if (self.fetchManager && self.slidingMenu) {
     [self.fetchManager removeObserver:self.slidingMenu forKeyPath:@"isFetching"];
   }
-
+  
   self.slidingMenu = nil;
   
   UIViewController *rootVC = self.window.rootViewController;
@@ -365,19 +362,19 @@ extern CFAbsoluteTime StartTime;
   self.slidingMenu.delegate = self;
   WANavigationController *navSlide = [[WANavigationController alloc] initWithRootViewController:self.slidingMenu];
   navSlide.navigationBarHidden = YES;
-
+  
   NSParameterAssert(self.syncManager);
   [self.syncManager addObserver:self.slidingMenu forKeyPath:@"isSyncing" options:NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew context:nil];
   [self.fetchManager addObserver:self.slidingMenu forKeyPath:@"isFetching" options:NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew context:nil];
-
+  
   IIViewDeckController *viewDeckController = [[IIViewDeckController alloc] initWithCenterViewController:[WASlidingMenuViewController dayViewControllerForViewStyle:WAEventsViewStyle]
-																					 leftViewController:navSlide];
+                                                                                     leftViewController:navSlide];
   viewDeckController.view.backgroundColor = [UIColor blackColor];
   
   if (isPad() && (UIInterfaceOrientationIsLandscape([[UIApplication sharedApplication] statusBarOrientation])))
-	viewDeckController.leftLedge = self.window.frame.size.height - [WASlidingMenuViewController ledgeSize];
+    viewDeckController.leftLedge = self.window.frame.size.height - [WASlidingMenuViewController ledgeSize];
   else
-	viewDeckController.leftLedge = self.window.frame.size.width - [WASlidingMenuViewController ledgeSize];
+    viewDeckController.leftLedge = self.window.frame.size.width - [WASlidingMenuViewController ledgeSize];
   
   viewDeckController.rotationBehavior = IIViewDeckRotationKeepsLedgeSizes;
   //			viewDeckController.animationBehavior = IIViewDeckAnimationPullIn;
@@ -427,14 +424,14 @@ extern CFAbsoluteTime StartTime;
   dispatch_async(dispatch_get_main_queue(), ^ {
     
     [wSelf presentAuthenticationRequestWithReason:nil
-		         allowingCancellation:NO
-			  removingPriorData:YES
-		  clearingNavigationHierarchy:YES
-			      onAuthSuccess:
+                             allowingCancellation:NO
+                                removingPriorData:YES
+                      clearingNavigationHierarchy:YES
+                                    onAuthSuccess:
      ^(NSString *userIdentifier, NSString *userToken, NSString *primaryGroupIdentifier) {
        [wSelf updateCurrentCredentialsWithUserIdentifier:userIdentifier
-					 token:userToken
-				    primaryGroup:primaryGroupIdentifier];
+                                                   token:userToken
+                                            primaryGroup:primaryGroupIdentifier];
        // bind to user's persistent store
        [wSelf bootstrapPersistentStoreWithUserIdentifier:userIdentifier];
        
@@ -455,7 +452,7 @@ extern CFAbsoluteTime StartTime;
        [wSelf.syncManager reload];
        
      }
-		     runningOnboardingProcess:YES];
+                         runningOnboardingProcess:YES];
     
   });
   
@@ -638,13 +635,13 @@ extern CFAbsoluteTime StartTime;
 }
 
 - (BOOL) presentAuthenticationRequestWithReason:(NSString *)aReason
-		       allowingCancellation:(BOOL)allowsCancellation
-			removingPriorData:(BOOL)eraseAuthInfo
-		clearingNavigationHierarchy:(BOOL)zapEverything
-			    onAuthSuccess:(void (^)(NSString *userIdentifier,
-					        NSString *userToken,
-					        NSString *primaryGroupIdentifier))successBlock
-		   runningOnboardingProcess:(BOOL)shouldRunOnboardingChecksIfUserUnchanged {
+                           allowingCancellation:(BOOL)allowsCancellation
+                              removingPriorData:(BOOL)eraseAuthInfo
+                    clearingNavigationHierarchy:(BOOL)zapEverything
+                                  onAuthSuccess:(void (^)(NSString *userIdentifier,
+                                                          NSString *userToken,
+                                                          NSString *primaryGroupIdentifier))successBlock
+                       runningOnboardingProcess:(BOOL)shouldRunOnboardingChecksIfUserUnchanged {
   
   if ([self isRunningAuthRequest])
     return NO;
@@ -661,8 +658,8 @@ extern CFAbsoluteTime StartTime;
   }
   
   [self handleAuthRequest:aReason
-	    withOptions:nil
-	     completion:^(BOOL didFinish, NSError *error)
+              withOptions:nil
+               completion:^(BOOL didFinish, NSError *error)
    {
    WARemoteInterface * const ri = [WARemoteInterface sharedInterface];
    
@@ -747,7 +744,7 @@ extern CFAbsoluteTime StartTime;
     [alertView show];
     
   } finishBlock:^{
-
+    
     [firstUseVC popToRootViewControllerAnimated:NO];
     [firstUseVC dismissViewControllerAnimated:NO completion:^{
       wSelf.window.rootViewController = nil;
@@ -818,8 +815,8 @@ static NSInteger networkActivityStackingCount = 0;
     [FBSession.activeSession handleOpenURL:url];
   } else {
     NSDictionary *userInfo = @{@"url": url,
-    @"sourceApplication": sourceApplication,
-    @"annotation": annotation};
+                               @"sourceApplication": sourceApplication,
+                               @"annotation": annotation};
     
     [[NSNotificationCenter defaultCenter] postNotificationName:kWAApplicationDidReceiveRemoteURLNotification object:url userInfo:userInfo];
   }
@@ -849,10 +846,10 @@ static NSInteger networkActivityStackingCount = 0;
     [self.cacheManager clearPurgeableFilesIfNeeded];
     [self.fetchManager reload];
     [self.syncManager reload];
-
-	[self.syncManager addObserver:self.slidingMenu forKeyPath:@"isSyncing" options:NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew context:nil];
-	[self.fetchManager addObserver:self.slidingMenu forKeyPath:@"isFetching" options:NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew context:nil];
-
+    
+    [self.syncManager addObserver:self.slidingMenu forKeyPath:@"isSyncing" options:NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew context:nil];
+    [self.fetchManager addObserver:self.slidingMenu forKeyPath:@"isFetching" options:NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew context:nil];
+    
   }
   
 }
@@ -884,18 +881,18 @@ static NSInteger networkActivityStackingCount = 0;
 
 - (void) application:(UIApplication *)application willChangeStatusBarOrientation:(UIInterfaceOrientation)newStatusBarOrientation duration:(NSTimeInterval)duration {
   UIViewController *vc = self.window.rootViewController;
-
+  
   if (!vc || ![vc isKindOfClass:[IIViewDeckController class]])
-	return;
+    return;
   
   if (!isPad())
-	return;
-
+    return;
+  
   IIViewDeckController *viewDeck = (IIViewDeckController*)vc;
   if (UIInterfaceOrientationIsLandscape(newStatusBarOrientation)) {
-	viewDeck.leftLedge = self.window.frame.size.height - [WASlidingMenuViewController ledgeSize];
+    viewDeck.leftLedge = self.window.frame.size.height - [WASlidingMenuViewController ledgeSize];
   } else {
-	viewDeck.leftLedge = self.window.frame.size.width - [WASlidingMenuViewController ledgeSize];
+    viewDeck.leftLedge = self.window.frame.size.width - [WASlidingMenuViewController ledgeSize];
   }
 }
 

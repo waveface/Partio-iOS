@@ -328,8 +328,10 @@ static NSString *kWAContextViewCellIdentifier = @"ContextMenuItem";
 }
 
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-  
   NSDictionary *item = self.menuItems[indexPath.row];
+  
+  [[GAI sharedInstance].defaultTracker trackEventWithCategory:@"ContextMenu" withAction:item[@"title"] withLabel:nil withValue:@0];
+  
   if ([item[@"style"] isEqual:[NSNumber numberWithUnsignedInteger:currentViewStyle]])
     return;
   if (self.delegate)

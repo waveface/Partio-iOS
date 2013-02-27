@@ -211,12 +211,6 @@ static NSString * kWAGalleryViewControllerKVOContext = @"WAGalleryViewController
   if (self.onComplete)
 	self.onComplete();
 
-
-	[[GAI sharedInstance].defaultTracker trackEventWithCategory:@"Gallery"
-																									 withAction:@"Enter gallery"
-																										withLabel:nil
-																										withValue:nil];
-
 }
 
 - (void) viewWillAppear:(BOOL)animated {
@@ -331,7 +325,7 @@ static NSString * kWAGalleryViewControllerKVOContext = @"WAGalleryViewController
 		self.onViewWillDisappear(animated);
 	
 	[super viewWillDisappear:animated];
-
+  [[GAI sharedInstance].defaultTracker trackEventWithCategory:@"Gallery" withAction:@"Exit" withLabel:nil withValue:@0];
 }
 
 - (void) viewDidDisappear:(BOOL)animated {

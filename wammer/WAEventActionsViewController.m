@@ -127,10 +127,7 @@ void (^displayAlert)(NSString *, NSString *) = ^(NSString *title, NSString *msg)
     };
     [wSelf presentViewController:composeVC animated:YES completion:nil];
     
-    [[GAI sharedInstance].defaultTracker trackEventWithCategory:@"Events"
-                                                     withAction:@"Export"
-                                                      withLabel:SLname
-                                                      withValue:nil];
+    [[GAI sharedInstance].defaultTracker trackEventWithCategory:@"Events" withAction:@"Export" withLabel:SLname withValue:@([allImages count])];
     
   };
   
@@ -183,10 +180,7 @@ void (^displayAlert)(NSString *, NSString *) = ^(NSString *title, NSString *msg)
     }];
     [wSelf presentViewController:mailer animated:YES completion:nil];
     
-    [[GAI sharedInstance].defaultTracker trackEventWithCategory:@"Events"
-                                                     withAction:@"Export"
-                                                      withLabel:@"Mail"
-                                                      withValue:nil];
+    [[GAI sharedInstance].defaultTracker trackEventWithCategory:@"Events" withAction:@"Export" withLabel:@"Mail" withValue:@([_selectedPhotos count])];
     
   });
   [mlButton setTintColor:[UIColor clearColor]];
@@ -208,12 +202,6 @@ void (^displayAlert)(NSString *, NSString *) = ^(NSString *title, NSString *msg)
   });
   [self.navigationItem.leftBarButtonItem setTintColor:[UIColor clearColor]];
   [self.navigationItem.leftBarButtonItem setTitleTextAttributes:@{UITextAttributeTextColor: [UIColor whiteColor]} forState:UIControlStateNormal];
-  
-  [[GAI sharedInstance].defaultTracker trackEventWithCategory:@"Events"
-                                                   withAction:@"Enter event actions"
-                                                    withLabel:nil
-                                                    withValue:nil];
-  
 }
 
 - (void) observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {

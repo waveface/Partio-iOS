@@ -142,6 +142,8 @@
 	galleryVC = [WAGalleryViewController
 							 controllerRepresentingArticleAtURI:[[self.article objectID] URIRepresentation]
 							 context:[NSDictionary dictionaryWithObjectsAndKeys: [[file objectID] URIRepresentation], kWAGalleryViewControllerContextPreferredFileObjectURI, nil]];
+  
+  [[GAI sharedInstance].defaultTracker trackEventWithCategory:@"Event" withAction:@"EnterGallery" withLabel:nil withValue:@0];
 	
 	switch ([UIDevice currentDevice].userInterfaceIdiom) {
 			
