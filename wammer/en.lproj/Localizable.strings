@@ -451,7 +451,7 @@
 "PLAN_ULTIMATE" = "Paid";
 
 /* Title of view controller choosing plans */
-"PLANS_CONTROLLER_TITLE" = "AOStream Plans";
+"PLANS_CONTROLLER_TITLE" = "aostream Plans";
 
 /* Premium plan details in plans page */
 "PREMIUM_PLAN_DESCRIPTION" = "250GB of cloud storage & unlimited PC storage.";
@@ -606,9 +606,6 @@
 /* Class = "IBUILabel"; text = "PHOTOS"; ObjectID = "627"; */
 "PHOTOS" = "PHOTOS";
 
-/* Class = "IBUILabel"; text = "WEBSERVICE_LIST_TITLE"; ObjectID = "0P9-dO-3KX"; */
-"WEBSERVICE_LIST_TITLE" = "Connect to your favorite services:";
-
 /* Class = "IBUILabel"; text = "PHOTO_UPLOAD_SWITCH_TITLE"; ObjectID = "749-zj-beb"; */
 "PHOTO_UPLOAD_SWITCH_TITLE" = "Import Camera Roll";
 
@@ -616,7 +613,7 @@
 "NOUN_USERNAME" = "Email";
 
 /* Class = "IBUILabel"; text = "CONNECT_SERVICES_DESCRIPTION"; ObjectID = "GEd-xe-bMT"; */
-"CONNECT_SERVICES_DESCRIPTION" = "aostream will not post to those accounts unless you ask us to.";
+"CONNECT_SERVICES_DESCRIPTION" = "Connect to your favorite web services and let aostream pull useful information to create meaningful contexts for you.";
 
 /* Class = "IBUILabel"; text = "I_AM_NEW_HERE"; ObjectID = "Gk5-O0-pNx"; */
 "I_AM_NEW_HERE" = "Take a tour!";
@@ -749,9 +746,6 @@
 
 /* Class = "IBUILabel"; text = "IMPORT_CAMERA_ROLL"; ObjectID = "Ehm-FE-RdU"; */
 "IMPORT_CAMERA_ROLL" = "Import Camera Roll";
-
-/* Class = "IBUITableViewSection"; headerTitle = "WEB_SERVICES_HEADER"; ObjectID = "FEo-JU-xSP"; */
-"WEB_SERVICES_HEADER" = "Web Services";
 
 /* Class = "IBUILabel"; text = "PACKAGE"; ObjectID = "FjD-Cy-ggW"; */
 "PACKAGE" = "Plan";
