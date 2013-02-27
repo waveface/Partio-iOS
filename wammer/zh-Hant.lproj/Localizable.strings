@@ -606,9 +606,6 @@
 /* Class = "IBUILabel"; text = "PHOTOS"; ObjectID = "627"; */
 "PHOTOS" = "照片";
 
-/* Class = "IBUILabel"; text = "WEBSERVICE_LIST_TITLE"; ObjectID = "0P9-dO-3KX"; */
-"WEBSERVICE_LIST_TITLE" = "可連接的服務";
-
 /* Class = "IBUILabel"; text = "PHOTO_UPLOAD_SWITCH_TITLE"; ObjectID = "749-zj-beb"; */
 "PHOTO_UPLOAD_SWITCH_TITLE" = "匯入相機膠卷";
 
@@ -616,7 +613,7 @@
 "NOUN_USERNAME" = "電子郵件";
 
 /* Class = "IBUILabel"; text = "CONNECT_SERVICES_DESCRIPTION"; ObjectID = "GEd-xe-bMT"; */
-"CONNECT_SERVICES_DESCRIPTION" = "aostream會將您在其他服務上的內容，自動匯進來並整理好，您一定會訝異原來自己的生活如此多彩多姿。";
+"CONNECT_SERVICES_DESCRIPTION" = "連接您的其他網路服務帳號，利用這些服務上您所留下的人、事、時、地等資訊，來整理出每一天的生活點滴。";
 
 /* Class = "IBUILabel"; text = "I_AM_NEW_HERE"; ObjectID = "Gk5-O0-pNx"; */
 "I_AM_NEW_HERE" = "我想註冊！";
@@ -749,9 +746,6 @@
 
 /* Class = "IBUILabel"; text = "IMPORT_CAMERA_ROLL"; ObjectID = "Ehm-FE-RdU"; */
 "IMPORT_CAMERA_ROLL" = "匯入相機膠卷";
-
-/* Class = "IBUITableViewSection"; headerTitle = "WEB_SERVICES_HEADER"; ObjectID = "FEo-JU-xSP"; */
-"WEB_SERVICES_HEADER" = "可連接的網路服務";
 
 /* Class = "IBUILabel"; text = "PACKAGE"; ObjectID = "FjD-Cy-ggW"; */
 "PACKAGE" = "方案";
