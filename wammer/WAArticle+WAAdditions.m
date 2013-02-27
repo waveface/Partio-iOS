@@ -116,8 +116,7 @@
     }
     
     if (allTags.count) {
-      [desc appendFormat:@"%@%@ %@ ",
-       desc,
+      [desc appendFormat:@"%@ %@ ",
        NSLocalizedString(@"EVENT_DESC_LOCATION_CONJUNCTION", @"The conjunction between description and location."),
        [allTags componentsJoinedByString:@", "]];
     }
@@ -130,8 +129,7 @@
     }];
     
     if (people.count) {
-      [desc appendFormat:@"%@%@ %@",
-       desc,
+      [desc appendFormat:@"%@ %@",
        NSLocalizedString(@"EVENT_DESC_PEOPLE_CONJUNCTION", @"The conjunction between description and people's names"),
        [people componentsJoinedByString:@", "]];
     }

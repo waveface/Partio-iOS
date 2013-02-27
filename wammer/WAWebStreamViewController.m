@@ -238,16 +238,31 @@
 
   cell.dateTimeLabel.text = [formatter stringFromDate:accessLog.accessTime];
 
-  [file irObserve:@"thumbnailImage"
-		  options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew
-		  context:&kWAWebStreamViewCellKVOContext
-		withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
-						
-		  dispatch_async(dispatch_get_main_queue(), ^{
-			cell.imageView.image = (UIImage*)toValue;
-		  });
-					
-		}];
+  if (file.pageElements && [file.pageElements count]) {
+    [file.pageElements[0] irObserve:@"thumbnailImage"
+                            options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew
+                            context:&kWAWebStreamViewCellKVOContext
+                          withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
+                            
+                            dispatch_async(dispatch_get_main_queue(), ^{
+                              cell.imageView.image = (UIImage*)toValue;
+                            });
+                            
+                          }];
+  } else {
+    
+    [file irObserve:@"thumbnailImage"
+            options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew
+            context:&kWAWebStreamViewCellKVOContext
+          withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+              cell.imageView.image = (UIImage*)toValue;
+            });
+            
+          }];
+    
+  }
 	
   cell.file = file;
 	
