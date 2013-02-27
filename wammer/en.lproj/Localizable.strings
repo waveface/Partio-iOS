@@ -616,7 +616,7 @@
 "NOUN_USERNAME" = "Email";
 
 /* Class = "IBUILabel"; text = "CONNECT_SERVICES_DESCRIPTION"; ObjectID = "GEd-xe-bMT"; */
-"CONNECT_SERVICES_DESCRIPTION" = "aostream will not post to those accounts unless you ask us to.";
+"CONNECT_SERVICES_DESCRIPTION" = "Connect to your favorite web services and let aostream pull useful information to create meaningful contexts for you.";
 
 /* Class = "IBUILabel"; text = "I_AM_NEW_HERE"; ObjectID = "Gk5-O0-pNx"; */
 "I_AM_NEW_HERE" = "Take a tour!";
