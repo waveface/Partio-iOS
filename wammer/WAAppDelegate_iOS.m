@@ -215,10 +215,7 @@ extern CFAbsoluteTime StartTime;
     
   }
   
-  [[GAI sharedInstance].defaultTracker trackEventWithCategory:@"Application"
-                                                   withAction:@"Launched"
-                                                    withLabel:nil
-                                                    withValue:@-1];
+  [[GAI sharedInstance].defaultTracker trackEventWithCategory:@"Application" withAction:@"Launched" withLabel:nil withValue:@0];
   
   [[WARemoteInterface sharedInterface] enableAutomaticRemoteUpdatesTimer];
   [[WARemoteInterface sharedInterface] performAutomaticRemoteUpdatesNow];

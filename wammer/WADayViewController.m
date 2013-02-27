@@ -187,6 +187,7 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 		vc = [[containedClass alloc] initWithDate:dateForPage];
 		if ( [vc isKindOfClass:[WAPhotoStreamViewController class]]  ) {
 			((WAPhotoStreamViewController *)vc).delegate = self;
+      [[GAI sharedInstance].defaultTracker trackEventWithCategory:@"Photos" withAction:@"Swipe" withLabel:nil withValue:@0];
 		}
 		(self.daysControllers)[dateForPage] = vc;
 	}

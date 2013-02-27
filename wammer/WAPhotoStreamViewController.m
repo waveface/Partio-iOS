@@ -148,12 +148,10 @@
 
 - (void)viewWillAppear:(BOOL)animated {
   [super viewWillAppear:animated];
-  [[GAI sharedInstance].defaultTracker trackEventWithCategory:@"Photos" withAction:@"Show" withLabel:@"Count" withValue:@([_photos count])];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
   [super viewWillDisappear:animated];
-  
 }
 
 - (void)didReceiveMemoryWarning {

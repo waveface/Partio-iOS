@@ -160,7 +160,7 @@
       wSelf.eventPageControl.numberOfPages = [toValue integerValue];
     }];
   }];
-  [[GAI sharedInstance].defaultTracker trackEventWithCategory:@"Summary" withAction:@"Show" withLabel:@"Event" withValue:@(_currentDaySummary.numOfEvents)];
+  [[GAI sharedInstance].defaultTracker trackEventWithCategory:@"Summary" withAction:@"Swipe" withLabel:nil withValue:@0];
   
 }
 
@@ -228,6 +228,7 @@
     // NO OP
     
   } else {
+    [[GAI sharedInstance].defaultTracker trackEventWithCategory:@"Summary" withAction:@"Calendar" withLabel:nil withValue:@0];
     
     __block WACalendarPopupViewController_phone *calendarPopup = [[WACalendarPopupViewController_phone alloc] initWithDate:self.currentDaySummary.date viewStyle:WAEventsViewStyle completion:^{
       
@@ -287,10 +288,7 @@
     if (cell.representingDayEvent.style == WADayEventStyleNone) {
       UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:NSLocalizedString(@"ADD_EVENT_NOT_SUPPORTED_DESCRIPTION", @"Dialog describing adding event is not supported") delegate:nil cancelButtonTitle:NSLocalizedString(@"ACTION_CANCEL", @"Cancel adding event") otherButtonTitles:nil];
       [alertView show];
-      [[GAI sharedInstance].defaultTracker trackEventWithCategory:@"CreateEvent"
-                                                       withAction:@"ManualAddEvent"
-                                                        withLabel:@"Event"
-                                                        withValue:@0];
+      [[GAI sharedInstance].defaultTracker trackEventWithCategory:@"Summary" withAction:@"AddEvent" withLabel:nil withValue:@0];
     } else {
       WAArticle *article = cell.representingDayEvent.representingArticle;
       NSURL *articleURL = [[article objectID] URIRepresentation];
@@ -300,6 +298,7 @@
         WANavigationController *navVC = [[WANavigationController alloc] initWithRootViewController:eventVC];
         [wSelf presentViewController:navVC animated:YES completion:nil];
       }];
+      [[GAI sharedInstance].defaultTracker trackEventWithCategory:@"Summary" withAction:@"EnterEvent" withLabel:nil withValue:@0];
     }
   }
 
