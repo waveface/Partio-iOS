@@ -2,7 +2,7 @@
 "ACCESS_ADD_PHOTO" = "Add Photo";
 
 /* The message in the dialog to confirm user want to delete account or not. */
-"ACCOUNT_DELETION_MSG" = "Are you sure to leave AOStream? Once you confirm, An email will be sent to you. Click on the email’s link to permanently delete your AOStream account and clear all your data from our servers.";
+"ACCOUNT_DELETION_MSG" = "Are you sure to leave aostream? Once you confirm, An email will be sent to you. Click on the email’s link to permanently delete your aostream account and clear all your data from our servers.";
 
 /* The title of dialog to confirm user want to delete account or not. */
 "ACCOUNT_DELETION_TITLE" = "Delete your account?";
@@ -161,8 +161,8 @@
 /* Title for Cover Image picker */
 "CHANGE_REPRESENTING_FILE_TITLE" = "Pick Photo";
 
-/* AOStream Cloud Name */
-"CLOUD_NAME" = "AOStream Cloud";
+/* aostream Cloud Name */
+"CLOUD_NAME" = "aostream Cloud";
 
 /* In navigation bar */
 "COLLECTIONS" = "COLLECTIONS";
@@ -315,7 +315,7 @@
 "GOOGLE_DISCONNECT_FAIL_TITLE" = "Unable to stop importing. Try again later.";
 
 /* Message for alert view asking if user wants to disconnect her Google account */
-"GOOGLE_DISCONNECT_REQUEST_MESSAGE" = "AOStream will stop importing posts from your Google account.";
+"GOOGLE_DISCONNECT_REQUEST_MESSAGE" = "aostream will stop importing posts from your Google account.";
 
 /* Title for alert view asking if user wants to disconnect her Google account */
 "GOOGLE_DISCONNECT_REQUEST_TITLE" = "Confirm to stop importing from Google.";
@@ -357,7 +357,7 @@
 "LABEL_WITHOUT_GPS_DATA" = "Where were you?";
 
 /* The email subject users will share photos thru. The nickname of user will be appended to this subject. */
-"MAIL_ACTION_SUBJECT" = "%@ wants to share photos with you from their AOStream app.";
+"MAIL_ACTION_SUBJECT" = "%@ wants to share photos with you from their aostream app.";
 
 /* No comment provided by engineer. */
 "MINUTE_PLURAL" = "%d minutes";
@@ -390,10 +390,10 @@
 "NO_STATION_INSTALLED" = "aostream Station not yet installed.";
 
 /* Notification messages for photos auto-imported */
-"NOTIFY_PHOTOS_IMPORTED" = "%@ photo(s) have been imported into your AOStream account.";
+"NOTIFY_PHOTOS_IMPORTED" = "%@ photo(s) have been imported into your aostream account.";
 
 /* For remote notification testing */
-"NOTIFY_TESTING" = "Hello, AOStream!";
+"NOTIFY_TESTING" = "Hello, aostream!";
 
 /* Section header in connection status view controller */
 "NOW_CONNECTING_HEADER" = "This device is connected to:";
@@ -411,7 +411,7 @@
    Password placeholder in signup page */
 "PASSWORD_PLACEHOLDER" = "••••••••";
 
-/* Title of view controller advertising AOStream Windows */
+/* Title of view controller advertising aostream Windows */
 "PC_ADVERTISEMENT_CONTROLLER_TITLE" = "Got a PC?";
 
 /* Title of photo import settings view controller */
@@ -442,7 +442,7 @@
 "PHOTOS_TITLE" = "PHOTOS";
 
 /* business plan in settings page */
-"PLAN_FREE" = "AOStream Free";
+"PLAN_FREE" = "aostream Free";
 
 /* business plan in settings page */
 "PLAN_PREMIUM" = "Paid";
@@ -451,7 +451,7 @@
 "PLAN_ULTIMATE" = "Paid";
 
 /* Title of view controller choosing plans */
-"PLANS_CONTROLLER_TITLE" = "AOStream Plans";
+"PLANS_CONTROLLER_TITLE" = "aostream Plans";
 
 /* Premium plan details in plans page */
 "PREMIUM_PLAN_DESCRIPTION" = "250GB of cloud storage & unlimited PC storage.";
@@ -472,7 +472,7 @@
 "RESET_SETTINGS_CONFIRMATION_TITLE" = "Default Settings?";
 
 /* Subtitle of searching network in settings page. */
-"SEARCHING_NETWORK_SUBTITLE" = "Searching AOStream network...";
+"SEARCHING_NETWORK_SUBTITLE" = "Searching aostream network...";
 
 /* No comment provided by engineer. */
 "SECOND_PLURAL" = "%d seconds";
@@ -534,13 +534,13 @@
 "TITLE_CALENDAR" = "Calendar";
 
 /* Alert on no location service enabled when open photo library */
-"TURN_ON_LOCATION_SERVICE" = "Turn on Location Services to allow AOStream to access your Photo Library.";
+"TURN_ON_LOCATION_SERVICE" = "Turn on Location Services to allow aostream to access your Photo Library.";
 
 /* User doesn't login his account in iOS setting. */
 "TWITTER_CONNECT_ACCOUNT_NOT_AVAILABLE" = "You may sign in your Twitter account from iOS Settings. ";
 
 /* Message for an alert view to show user his Twitter account has been connected to another Stream user */
-"TWITTER_CONNECT_ACCOUNT_OCCUPIED_MESSAGE" = "Your twitter account has been already linked to another AOStream user.";
+"TWITTER_CONNECT_ACCOUNT_OCCUPIED_MESSAGE" = "Your twitter account has been already linked to another aostream user.";
 
 /* Message for an alert view to show user he already connects to another Twitter account. */
 "TWITTER_CONNECT_FAIL_MESSAGE" = "Fail to connect your Twitter account.";
@@ -552,13 +552,13 @@
 "TWITTER_CONNECT_PERMISSION_TITLE" = "You may grant us the permission to access your Twitter account.";
 
 /* Message for alert view asking if user wants to connect her Twitter account */
-"TWITTER_CONNECT_REQUEST_MESSAGE" = "AOStream will start importing tweets from your Twitter account.";
+"TWITTER_CONNECT_REQUEST_MESSAGE" = "aostream will start importing tweets from your Twitter account.";
 
 /* Title for alert view asking if user wants to connect her Twitter account */
 "TWITTER_CONNECT_REQUEST_TITLE" = "Confirm to import from Twitter.";
 
 /* Message for alert view asking if user wants to disconnect her Twitter account */
-"TWITTER_DISCONNECT_REQUEST_MESSAGE" = "AOStream will stop importing posts from your Twitter account.";
+"TWITTER_DISCONNECT_REQUEST_MESSAGE" = "aostream will stop importing posts from your Twitter account.";
 
 /* Title for alert view asking if user wants to disconnect her Twitter account */
 "TWITTER_DISCONNECT_REQUEST_TITLE" = "Confirm to stop importing from Twitter.";
@@ -649,7 +649,7 @@
 "NOUN_PASSWORD" = "Password";
 
 /* Class = "IBUIButton"; normalTitle = "ACTION_START_STREAM"; ObjectID = "u89-AV-2W1"; */
-"ACTION_START_STREAM" = "Start AOStream!";
+"ACTION_START_STREAM" = "Start aostream!";
 
 /* Class = "IBUILabel"; text = "PC_AD_TITLE"; ObjectID = "uze-n1-4Ca"; */
 "PC_AD_TITLE" = "Install aostream Windows";
@@ -739,7 +739,7 @@
 "ACTION_GOTO_WEBSITE" = "Learn more at www.waveface.com.";
 
 /* Class = "IBUILabel"; text = "PC_SETUP_DESCRIPTION"; ObjectID = "1TK-Px-G5L"; */
-"PC_SETUP_DESCRIPTION" = "Follow these steps to link your devices to our PC-based AOStream Station to enable lightning-fast transfers of your original high-res photos back to your PC:";
+"PC_SETUP_DESCRIPTION" = "Follow these steps to link your devices to our PC-based aostream Station to enable lightning-fast transfers of your original high-res photos back to your PC:";
 
 /* Class = "IBUILabel"; text = "PHOTO_IMPORT_TITLE"; ObjectID = "2Vy-5o-43I"; */
 "PHOTO_IMPORT_TITLE" = "Photo Import";
@@ -793,7 +793,7 @@
 "NONE" = "NONE";
 
 /* Class = "IBUITableViewSection"; footerTitle = "PHOTO_IMPORT_SWITCH_FOOTER"; ObjectID = "jPT-4f-lnH"; */
-"PHOTO_IMPORT_SWITCH_FOOTER" = "Turn on to sync all your camera roll photos to AOStream.";
+"PHOTO_IMPORT_SWITCH_FOOTER" = "Turn on to sync all your camera roll photos to aostream.";
 
 /* Class = "IBUILabel"; text = "UPGRADE_ACCOUNT"; ObjectID = "n6T-1w-Odi"; */
 "UPGRADE_ACCOUNT" = "Upgrade Account";
