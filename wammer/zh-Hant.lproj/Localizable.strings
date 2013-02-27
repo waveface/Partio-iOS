@@ -161,8 +161,8 @@
 /* Title for Cover Image picker */
 "CHANGE_REPRESENTING_FILE_TITLE" = "更換封面相片";
 
-/* AOStream Cloud Name */
-"CLOUD_NAME" = "AOStream Cloud";
+/* aostream Cloud Name */
+"CLOUD_NAME" = "aostream Cloud";
 
 /* In navigation bar */
 "COLLECTIONS" = "收藏";
@@ -249,7 +249,7 @@
 "FACEBOOK_CONNECT_FAIL_TITLE" = "無法同步Facebook";
 
 /* Message for alert view asking if user wants to connect her Facebook account */
-"FACEBOOK_CONNECT_REQUEST_MESSAGE" = "啟動之後，AOStream將會開始同步您在Facebook上的新貼文。";
+"FACEBOOK_CONNECT_REQUEST_MESSAGE" = "啟動之後，aostream將會開始同步您在Facebook上的新貼文。";
 
 /* Title for alert view asking if user wants to connect her Facebook account */
 "FACEBOOK_CONNECT_REQUEST_TITLE" = "確認同步Facebook";
@@ -393,7 +393,7 @@
 "NOTIFY_PHOTOS_IMPORTED" = "%@ 張照片已經匯入到您的 aostream 帳號中。";
 
 /* For remote notification testing */
-"NOTIFY_TESTING" = "AOStream，您好！";
+"NOTIFY_TESTING" = "aostream，您好！";
 
 /* Section header in connection status view controller */
 "NOW_CONNECTING_HEADER" = "連線至";
@@ -411,7 +411,7 @@
    Password placeholder in signup page */
 "PASSWORD_PLACEHOLDER" = "••••••••";
 
-/* Title of view controller advertising AOStream Windows */
+/* Title of view controller advertising aostream Windows */
 "PC_ADVERTISEMENT_CONTROLLER_TITLE" = "手邊有 PC 嗎？";
 
 /* Title of photo import settings view controller */
@@ -472,7 +472,7 @@
 "RESET_SETTINGS_CONFIRMATION_TITLE" = "清除設定";
 
 /* Subtitle of searching network in settings page. */
-"SEARCHING_NETWORK_SUBTITLE" = "正在尋找 AOStream 網路...";
+"SEARCHING_NETWORK_SUBTITLE" = "正在尋找 aostream 網路...";
 
 /* No comment provided by engineer. */
 "SECOND_PLURAL" = "%d秒";
@@ -606,6 +606,9 @@
 /* Class = "IBUILabel"; text = "PHOTOS"; ObjectID = "627"; */
 "PHOTOS" = "照片";
 
+/* Class = "IBUILabel"; text = "WEBSERVICE_LIST_TITLE"; ObjectID = "0P9-dO-3KX"; */
+"WEBSERVICE_LIST_TITLE" = "可連接的服務";
+
 /* Class = "IBUILabel"; text = "PHOTO_UPLOAD_SWITCH_TITLE"; ObjectID = "749-zj-beb"; */
 "PHOTO_UPLOAD_SWITCH_TITLE" = "匯入相機膠卷";
 
@@ -613,7 +616,7 @@
 "NOUN_USERNAME" = "電子郵件";
 
 /* Class = "IBUILabel"; text = "CONNECT_SERVICES_DESCRIPTION"; ObjectID = "GEd-xe-bMT"; */
-"CONNECT_SERVICES_DESCRIPTION" = "連接您的其他網路服務帳號，利用這些服務上您所留下的人、事、時、地等資訊，來整理出每一天的生活點滴。";
+"CONNECT_SERVICES_DESCRIPTION" = "aostream會將您在其他服務上的內容，自動匯進來並整理好，您一定會訝異原來自己的生活如此多彩多姿。";
 
 /* Class = "IBUILabel"; text = "I_AM_NEW_HERE"; ObjectID = "Gk5-O0-pNx"; */
 "I_AM_NEW_HERE" = "我想註冊！";
@@ -747,6 +750,9 @@
 /* Class = "IBUILabel"; text = "IMPORT_CAMERA_ROLL"; ObjectID = "Ehm-FE-RdU"; */
 "IMPORT_CAMERA_ROLL" = "匯入相機膠卷";
 
+/* Class = "IBUITableViewSection"; headerTitle = "WEB_SERVICES_HEADER"; ObjectID = "FEo-JU-xSP"; */
+"WEB_SERVICES_HEADER" = "可連接的網路服務";
+
 /* Class = "IBUILabel"; text = "PACKAGE"; ObjectID = "FjD-Cy-ggW"; */
 "PACKAGE" = "方案";
 
@@ -787,7 +793,7 @@
 "NONE" = "NONE";
 
 /* Class = "IBUITableViewSection"; footerTitle = "PHOTO_IMPORT_SWITCH_FOOTER"; ObjectID = "jPT-4f-lnH"; */
-"PHOTO_IMPORT_SWITCH_FOOTER" = "開啟照片匯入，將您相機膠卷中所有照片匯入AOStream";
+"PHOTO_IMPORT_SWITCH_FOOTER" = "開啟照片匯入，將您相機膠卷中所有照片匯入aostream";
 
 /* Class = "IBUILabel"; text = "UPGRADE_ACCOUNT"; ObjectID = "n6T-1w-Odi"; */
 "UPGRADE_ACCOUNT" = "升級帳號";
