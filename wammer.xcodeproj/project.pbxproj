@@ -108,6 +108,8 @@
 		13F51F5016C7F41B00735D00 /* WANewDayEventViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 13F51F4F16C7F41A00735D00 /* WANewDayEventViewCell.xib */; };
 		13FDC9901648C6B8005D4C56 /* WAFirstUseFacebookLoginView.m in Sources */ = {isa = PBXBuildFile; fileRef = 13FDC98F1648C6B8005D4C56 /* WAFirstUseFacebookLoginView.m */; };
 		13FDC9931648C6D5005D4C56 /* WAFirstUseEmailLoginFooterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 13FDC9921648C6D5005D4C56 /* WAFirstUseEmailLoginFooterView.m */; };
+		4B124CAF16DC996300BB7B61 /* WACollectionOverviewViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B124CAE16DC996300BB7B61 /* WACollectionOverviewViewCell.m */; };
+		4B124CC116DC9A8300BB7B61 /* WACollectionOverviewViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4B124CC016DC9A8300BB7B61 /* WACollectionOverviewViewCell.xib */; };
 		4B16701215FDCE9900990F4B /* WADefaults.staging.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4B16701115FDCE9900990F4B /* WADefaults.staging.plist */; };
 		4B26970B15E76A5F007E1054 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B8DFB7314FDFC3D000B41C5 /* CFNetwork.framework */; };
 		4B26970C15E76A99007E1054 /* libicucore.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 8002CDE515E5E85600D7BFF0 /* libicucore.dylib */; };
@@ -1088,6 +1090,9 @@
 		13FDC9911648C6D5005D4C56 /* WAFirstUseEmailLoginFooterView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WAFirstUseEmailLoginFooterView.h; path = wammer/WAFirstUseEmailLoginFooterView.h; sourceTree = "<group>"; };
 		13FDC9921648C6D5005D4C56 /* WAFirstUseEmailLoginFooterView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WAFirstUseEmailLoginFooterView.m; path = wammer/WAFirstUseEmailLoginFooterView.m; sourceTree = "<group>"; };
 		49320A35B57B404A94A27775 /* Pods-StreamTests.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-StreamTests.xcconfig"; path = "Pods/Pods-StreamTests.xcconfig"; sourceTree = SOURCE_ROOT; };
+		4B124CAD16DC996300BB7B61 /* WACollectionOverviewViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WACollectionOverviewViewCell.h; sourceTree = "<group>"; };
+		4B124CAE16DC996300BB7B61 /* WACollectionOverviewViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WACollectionOverviewViewCell.m; sourceTree = "<group>"; };
+		4B124CC016DC9A8300BB7B61 /* WACollectionOverviewViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WACollectionOverviewViewCell.xib; sourceTree = "<group>"; };
 		4B16701115FDCE9900990F4B /* WADefaults.staging.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = WADefaults.staging.plist; path = Resources/WADefaults.staging.plist; sourceTree = "<group>"; };
 		4B274E4C1675BFCC007406D3 /* WACollectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WACollectionViewController.h; sourceTree = "<group>"; };
 		4B274E4D1675BFCC007406D3 /* WACollectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WACollectionViewController.m; sourceTree = "<group>"; };
@@ -2356,6 +2361,9 @@
 		8007709516789A540085E525 /* Collection */ = {
 			isa = PBXGroup;
 			children = (
+				4B124CAD16DC996300BB7B61 /* WACollectionOverviewViewCell.h */,
+				4B124CAE16DC996300BB7B61 /* WACollectionOverviewViewCell.m */,
+				4B124CC016DC9A8300BB7B61 /* WACollectionOverviewViewCell.xib */,
 				4B8E9A7916D78F3A0078C2C3 /* WACollectionOverviewViewController.h */,
 				4B8E9A7A16D78F3A0078C2C3 /* WACollectionOverviewViewController.m */,
 				4B8E9A7B16D78F3A0078C2C3 /* WACollectionOverviewViewController.xib */,
@@ -4121,6 +4129,7 @@
 				13D1397216DB467F00A41F86 /* WelcomeLogo.png in Resources */,
 				13D1397316DB467F00A41F86 /* WelcomeLogo@2x.png in Resources */,
 				13D1397516DB474000A41F86 /* WelcomeBackgroundPattern.png in Resources */,
+				4B124CC116DC9A8300BB7B61 /* WACollectionOverviewViewCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4606,6 +4615,7 @@
 				13A0C3D416D4D56400835687 /* WANewDayEventMapViewCell.m in Sources */,
 				8012DB4F16D4C1150002B163 /* UIViewController+WAAdditions.m in Sources */,
 				13D1396116DB340700A41F86 /* WAFirstUsePCAdvertisementViewController.m in Sources */,
+				4B124CAF16DC996300BB7B61 /* WACollectionOverviewViewCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4728,7 +4738,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 569;
+				CURRENT_PROJECT_VERSION = 570;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"WF_USES_TESTFLIGHT=$(WF_USES_TESTFLIGHT)",
@@ -5207,7 +5217,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 569;
+				CURRENT_PROJECT_VERSION = 570;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -5270,7 +5280,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 569;
+				CURRENT_PROJECT_VERSION = 570;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"WF_USES_TESTFLIGHT=$(WF_USES_TESTFLIGHT)",

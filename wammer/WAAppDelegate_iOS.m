@@ -400,6 +400,9 @@ extern CFAbsoluteTime StartTime;
 
 - (void) logout {
   
+  [self.syncManager cancelAllOperations];
+  [self.fetchManager cancelAllOperations];
+  
   self.cacheManager = nil;
   self.syncManager = nil;
   self.fetchManager = nil;
@@ -838,7 +841,7 @@ static NSInteger networkActivityStackingCount = 0;
   [MagicalRecord cleanUp];
 }
 
-- (void)applicationDidBecomeActive:(UIApplication *)application {
+- (void)applicationWillEnterForeground:(UIApplication *)application {
   [FBSession.activeSession handleDidBecomeActive];
   
   if ([self hasAuthenticationData]) {

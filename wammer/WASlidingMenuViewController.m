@@ -112,6 +112,7 @@ static NSString * kWASlidingMenuViewControllerKVOContext = @"WASlidingMenuViewCo
 {
   [self.user removeObserver:self forKeyPath:@"avatar" context:&kWASlidingMenuViewControllerKVOContext];
   [self.user removeObserver:self forKeyPath:@"nickname" context:&kWASlidingMenuViewControllerKVOContext];
+  [self.statusBar showSyncCompleteWithDissmissBlock:nil];
   [self.statusBar stopDataExchangeAnimation];
   self.statusBar = nil;// dismiss the status bar
 }

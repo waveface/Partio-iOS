@@ -92,4 +92,53 @@
 
 }
 
+- (NSString *)description {
+  
+  NSMutableString *desc = [@"" mutableCopy];
+  if (self.text && self.text.length) {
+    [desc appendFormat:@"%@ ", self.text];
+  }
+
+  if (self.location && self.location.latitude && self.location.longitude) {
+    
+    NSMutableArray *allTags = [NSMutableArray array];
+    
+    for (WALocation *loc in self.checkins) {
+      if (loc.name)
+        [allTags addObject:loc.name];
+    }
+    
+    if (allTags.count > 0) // dedup
+      allTags = [NSMutableArray arrayWithArray:[[NSSet setWithArray:allTags] allObjects]];
+    
+    for (WATag *aTagRep in self.location.tags) {
+      [allTags addObject:aTagRep.tagValue];
+    }
+    
+    if (allTags.count) {
+      [desc appendFormat:@"%@%@ %@ ",
+       desc,
+       NSLocalizedString(@"EVENT_DESC_LOCATION_CONJUNCTION", @"The conjunction between description and location."),
+       [allTags componentsJoinedByString:@", "]];
+    }
+  }
+
+  if (self.people) {
+    NSMutableArray *people = [NSMutableArray array];
+    [self.people enumerateObjectsUsingBlock:^(WAPeople *aPersonRep, BOOL *stop) {
+      [people addObject:aPersonRep.name];
+    }];
+    
+    if (people.count) {
+      [desc appendFormat:@"%@%@ %@",
+       desc,
+       NSLocalizedString(@"EVENT_DESC_PEOPLE_CONJUNCTION", @"The conjunction between description and people's names"),
+       [people componentsJoinedByString:@", "]];
+    }
+  }
+  
+  return [NSString stringWithString:desc];
+
+}
+
 @end

@@ -8,6 +8,7 @@
 
 #import "WANewDayEvent.h"
 #import "WAArticle.h"
+#import "WAArticle+WAAdditions.h"
 #import "WAEventViewController.h"
 #import "WAFile.h"
 #import "NSString+WAAdditions.h"
@@ -63,7 +64,10 @@
       }];
       [anArticle irObserve:@"text" options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:nil withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
         NSCParameterAssert([NSThread isMainThread]);
-        wSelf.eventDescription = [[WAEventViewController attributedDescriptionStringForEvent:anArticle] string];
+        wSelf.eventDescription = [anArticle description];
+        if (!wSelf.eventDescription.length) {
+          wSelf.eventDescription = [NSString stringWithFormat:NSLocalizedString(@"EVENT_DESCRIPTION_PHOTOS_ONLY", "Event description for photo information only"), anArticle.files.count];
+        }
       }];
       [anArticle irObserve:@"location" options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:nil withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
         NSCParameterAssert([NSThread isMainThread]);

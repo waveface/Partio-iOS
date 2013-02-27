@@ -20,6 +20,7 @@
 "ACTION_ADD_TO_COLLECTION" = "完成";
 
 /* Action title for cancelling stuff
+   Cancel adding event
    Title for cancelling an action */
 "ACTION_CANCEL" = "取消";
 
@@ -105,6 +106,9 @@
 
 /* Action marking article as not favorite */
 "ACTION_UNMARK_FAVORITE" = "取消最愛";
+
+/* Dialog describing adding event is not supported */
+"ADD_EVENT_NOT_SUPPORTED_DESCRIPTION" = "不好意思，這版還不支援新增動態。";
 
 /* No comment provided by engineer. */
 "ADVANCED_FEATURES_DISABLED_DESCRIPTION" = "啓用除錯功能後，請重新登入。";
@@ -219,6 +223,9 @@
 
 /* The conjunction between description and people's names */
 "EVENT_DESC_PEOPLE_CONJUNCTION" = "與";
+
+/* Event description for photo information only */
+"EVENT_DESCRIPTION_PHOTOS_ONLY" = "動態裡有 %d 張照片。";
 
 /* EVENT_PHOTO_NUMBER_LABEL */
 "EVENT_PHOTO_NUMBER_LABEL" = "%d 張照片";

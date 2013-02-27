@@ -284,7 +284,14 @@
 
   if (collectionView == self.eventCollectionView) {
     WANewDayEventViewCell *cell = (WANewDayEventViewCell*)[self.eventCollectionView cellForItemAtIndexPath:indexPath];
-    if (cell.representingDayEvent.style != WADayEventStyleNone) {
+    if (cell.representingDayEvent.style == WADayEventStyleNone) {
+      UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:NSLocalizedString(@"ADD_EVENT_NOT_SUPPORTED_DESCRIPTION", @"Dialog describing adding event is not supported") delegate:nil cancelButtonTitle:NSLocalizedString(@"ACTION_CANCEL", @"Cancel adding event") otherButtonTitles:nil];
+      [alertView show];
+      [[GAI sharedInstance].defaultTracker trackEventWithCategory:@"CreateEvent"
+                                                       withAction:@"ManualAddEvent"
+                                                        withLabel:@"Event"
+                                                        withValue:@0];
+    } else {
       WAArticle *article = cell.representingDayEvent.representingArticle;
       NSURL *articleURL = [[article objectID] URIRepresentation];
       __weak WANewSummaryViewController *wSelf = self;
