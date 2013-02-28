@@ -2,13 +2,13 @@
 "ACCESS_ADD_PHOTO" = "Add Photo";
 
 /* The message in the dialog to confirm user want to delete account or not. */
-"ACCOUNT_DELETION_MSG" = "Are you sure to leave aostream? Once you confirm, An email will be sent to you. Click on the email’s link to permanently delete your aostream account and clear all your data from our servers.";
+"ACCOUNT_DELETION_MSG" = "A confirmation email will be sent to you. Click on the email's link to permanently delete your account and clear your data.";
 
 /* The title of dialog to confirm user want to delete account or not. */
 "ACCOUNT_DELETION_TITLE" = "Delete your account?";
 
 /* Shows the final dialog to tell user to receive email to complete the account deletion process */
-"ACCOUNT_MSG_DELETION_MAIL_SENT" = "Email sent. Check your email inbox to confirm that you want to delete your account.";
+"ACCOUNT_MSG_DELETION_MAIL_SENT" = "Confirmation email has been sent.";
 
 /* Shows the final dialog to tell user to receive email to complete the account deletion process. */
 "ACCOUNT_TITLE_DELETION_MAIL_SENT" = "Check your mailbox";
@@ -418,7 +418,7 @@
 "PC_ADVERTISEMENT_CONTROLLER_TITLE" = "Got a PC?";
 
 /* Title of photo import settings view controller */
-"PHOTO_IMPORT_TITLE" = "Photo Import";
+"PHOTO_IMPORT_TITLE" = "Photo Sync";
 
 /* in iPhone timeline */
 "PHOTO_PLURAL" = "%d photos";
@@ -427,7 +427,7 @@
 "PHOTO_SINGULAR" = "%d photo";
 
 /* Title of view controller setting photo upload */
-"PHOTO_UPLOAD_CONTROLLER_TITLE" = "Photo Import";
+"PHOTO_UPLOAD_CONTROLLER_TITLE" = "Photo Sync";
 
 /* String on customized status bar */
 "PHOTO_UPLOAD_STATUS_BAR_COMPLETE" = "Sync completed";
@@ -439,7 +439,7 @@
 "PHOTO_UPLOAD_STATUS_BAR_IMPORTING" = "Scanning photos %d/%d";
 
 /* String on customized status bar */
-"PHOTO_UPLOAD_STATUS_BAR_UPLOADING" = "Importing %d photos";
+"PHOTO_UPLOAD_STATUS_BAR_UPLOADING" = "Syncing %d photos";
 
 /* in day view */
 "PHOTOS_TITLE" = "PHOTOS";
@@ -457,7 +457,7 @@
 "PLANS_CONTROLLER_TITLE" = "aostream Plans";
 
 /* Premium plan details in plans page */
-"PREMIUM_PLAN_DESCRIPTION" = "250GB of cloud storage & unlimited PC storage.";
+"PREMIUM_PLAN_DESCRIPTION" = "250GB cloud storage & multi-PC storage management";
 
 /* REACHABILITY_STATE_AVAILABLE */
 "REACHABILITY_STATE_AVAILABLE" = "Available";
@@ -570,7 +570,7 @@
 "TWITTER_DISCONNECT_REQUEST_TITLE" = "Confirm to stop importing from Twitter.";
 
 /* Ultimate plan details in plans page */
-"ULTIMATE_PLAN_DESCRIPTION" = "500GB of cloud storage & unlimited PC storage.";
+"ULTIMATE_PLAN_DESCRIPTION" = "500GB cloud storage & multi-PC storage management";
 
 /* Settings for User popover */
 "USER_INFO_CONTROLLER_TITLE" = "SETTINGS";
@@ -619,22 +619,22 @@
 "NOUN_USERNAME" = "Email";
 
 /* Class = "IBUILabel"; text = "CONNECT_SERVICES_DESCRIPTION"; ObjectID = "GEd-xe-bMT"; */
-"CONNECT_SERVICES_DESCRIPTION" = "Connect to your favorite web services and let aostream pull useful information to create meaningful contexts for you.";
+"CONNECT_SERVICES_DESCRIPTION" = "Let aostream pull useful information from your favorite web services to create more meaningful events.";
 
 /* Class = "IBUILabel"; text = "I_AM_NEW_HERE"; ObjectID = "Gk5-O0-pNx"; */
-"I_AM_NEW_HERE" = "Take a tour!";
+"I_AM_NEW_HERE" = "I'm a new user";
 
 /* Class = "IBUILabel"; text = "PC_AD_DESCRIPTION"; ObjectID = "Hwk-71-2jX"; */
-"PC_AD_DESCRIPTION" = "Create your own Personal Cloud! Import tons of data and feel the lightning-fast sync.";
+"PC_AD_DESCRIPTION" = "Create your own Personal Cloud by installing aostream on your PC. It's the fastest way to import all your photos!";
 
 /* Class = "IBUILabel"; text = "NOUN_PASSWORD"; ObjectID = "OIv-A5-N1k"; */
 "NOUN_PASSWORD" = "Password";
 
 /* Class = "IBUILabel"; text = "SETUP_DONE_DESCRIPTION"; ObjectID = "OVz-tl-GMd"; */
-"SETUP_DONE_DESCRIPTION" = "This device has connected to aostream network. Now you can start to browse all the digital contents in your personal cloud. (Your events will be generated shortly.)";
+"SETUP_DONE_DESCRIPTION" = "This device is now connected to the aostream network (your events will be generated shortly).";
 
 /* Class = "IBUILabel"; text = "PHOTO_UPLOAD_DESCRIPTION"; ObjectID = "Phx-kE-dRu"; */
-"PHOTO_UPLOAD_DESCRIPTION" = "Let aostream automatically import your album photos and create real-life events in your personal cloud.";
+"PHOTO_UPLOAD_DESCRIPTION" = "Sync your camera roll photos and create events in your personal cloud.";
 
 /* Class = "IBUILabel"; text = "NOUN_USERNAME"; ObjectID = "WAR-06-Bm8"; */
 "NOUN_USERNAME" = "Email";
@@ -643,25 +643,25 @@
 "NOUN_NICKNAME" = "Name";
 
 /* Class = "IBUILabel"; text = "LOGIN_LINK_DEVICE"; ObjectID = "YX9-dy-aZa"; */
-"LOGIN_LINK_DEVICE" = "Log in & link this device";
+"LOGIN_LINK_DEVICE" = "Log in";
 
 /* Class = "IBUIButton"; normalTitle = "ACTION_SEND_LINK"; ObjectID = "h9i-2T-iDG"; */
-"ACTION_SEND_LINK" = "Send Me Link";
+"ACTION_SEND_LINK" = "Send me the link";
 
 /* Class = "IBUILabel"; text = "NOUN_PASSWORD"; ObjectID = "qlc-Lu-gj2"; */
 "NOUN_PASSWORD" = "Password";
 
 /* Class = "IBUIButton"; normalTitle = "ACTION_START_STREAM"; ObjectID = "u89-AV-2W1"; */
-"ACTION_START_STREAM" = "Start aostream!";
+"ACTION_START_STREAM" = "START";
 
 /* Class = "IBUILabel"; text = "PC_AD_TITLE"; ObjectID = "uze-n1-4Ca"; */
-"PC_AD_TITLE" = "Install aostream Windows";
+"PC_AD_TITLE" = "Try aostream for Windows!";
 
 /* Class = "IBUIButton"; normalTitle = "ACTION_SIGN_IN"; ObjectID = "6"; */
 "ACTION_SIGN_IN" = "Log In";
 
 /* Class = "IBUIButton"; normalTitle = "FORGOT_PASSWORD_TITLE"; ObjectID = "46"; */
-"FORGOT_PASSWORD_TITLE" = "forgot the password?";
+"FORGOT_PASSWORD_TITLE" = "Forgot password?";
 
 /* Class = "IBUIButton"; normalTitle = "ACTION_CONNECT_FACEBOOK"; ObjectID = "9"; */
 "ACTION_CONNECT_FACEBOOK" = "Connect with Facebook";
@@ -763,13 +763,13 @@
 "PC_SETUP_DESCRIPTION" = "Follow these steps to link your devices to our PC-based aostream Station to enable lightning-fast transfers of your original high-res photos back to your PC:";
 
 /* Class = "IBUILabel"; text = "PHOTO_IMPORT_TITLE"; ObjectID = "2Vy-5o-43I"; */
-"PHOTO_IMPORT_TITLE" = "Photo Import";
+"PHOTO_IMPORT_TITLE" = "Photo Sync";
 
 /* Class = "IBUILabel"; text = "PC_SETUP_INSTRUCTIONS"; ObjectID = "3ZQ-I2-m83"; */
 "PC_SETUP_INSTRUCTIONS" = "1. Install aostream for Windows on your PC and start uploading photos.\n2. Connect your mobile device to the same WiFi network as your PC.";
 
 /* Class = "IBUILabel"; text = "IMPORT_CAMERA_ROLL"; ObjectID = "Ehm-FE-RdU"; */
-"IMPORT_CAMERA_ROLL" = "Import Camera Roll";
+"IMPORT_CAMERA_ROLL" = "Sync Camera Roll";
 
 /* Class = "IBUILabel"; text = "PACKAGE"; ObjectID = "FjD-Cy-ggW"; */
 "PACKAGE" = "Plan";
@@ -784,7 +784,7 @@
 "PLANS_DESCRIPTION" = "aostream sends all your digital memories back to your PC where they are safely stored. You can also upgrade to a premium cloud storage plan and start enjoy all the benefits of a smart personal cloud.";
 
 /* Class = "IBUILabel"; text = "USE_CELLULAR"; ObjectID = "Scf-t9-USz"; */
-"USE_CELLULAR" = "Use Data Plan";
+"USE_CELLULAR" = "Upload over celluar";
 
 /* Class = "IBUILabel"; text = "PC_SETUP_TITLE"; ObjectID = "UKL-kB-sZd"; */
 "PC_SETUP_TITLE" = "Here's the next step:";
@@ -799,7 +799,7 @@
 "DELETE_ACCOUNT" = "Delete Account";
 
 /* Class = "IBUITableViewSection"; footerTitle = "PHOTO_IMPORT_SETTINGS_FOOTER"; ObjectID = "gj0-e5-1Bs"; */
-"PHOTO_IMPORT_SETTINGS_FOOTER" = "Please install aostream Windows. Imported photos will be sent automatically back to your PC under the same WiFi network.";
+"PHOTO_IMPORT_SETTINGS_FOOTER" = "Install aostream for Windows to automatically backup original photos back to your PC using WiFi.";
 
 /* Class = "IBUITableViewSection"; headerTitle = "PHOTO_IMPORT_SETTINGS_HEADER"; ObjectID = "gj0-e5-1Bs"; */
 "PHOTO_IMPORT_SETTINGS_HEADER" = "Settings";
