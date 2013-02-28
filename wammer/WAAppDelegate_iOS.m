@@ -300,7 +300,12 @@ extern CFAbsoluteTime StartTime;
   if (self.fetchManager && self.slidingMenu) {
     [self.fetchManager removeObserver:self.slidingMenu forKeyPath:@"isFetching"];
   }
-  self.slidingMenu.statusBar = nil;
+  
+  if (self.slidingMenu.statusBar) {
+    [self.slidingMenu.statusBar stopDataExchangeAnimation];
+    [self.slidingMenu.statusBar showSyncCompleteWithDissmissBlock:nil];
+    self.slidingMenu.statusBar = nil;
+  }
   
   self.bgTask = [application beginBackgroundTaskWithExpirationHandler:^{
     

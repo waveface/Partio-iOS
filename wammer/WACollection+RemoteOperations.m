@@ -76,7 +76,7 @@
        NSDictionary *response = [NSJSONSerialization JSONObjectWithData:[completedOperation responseData]
                                                                 options:NSJSONReadingAllowFragments
                                                                   error:&error];
-       NSManagedObjectContext *moc = [NSManagedObjectContext MR_context];
+       NSManagedObjectContext *moc = [[WADataStore defaultStore] disposableMOC];
        moc.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
        
        [WACollection
@@ -211,22 +211,27 @@
        NSDictionary *response = [NSJSONSerialization JSONObjectWithData:[completedOperation responseData]
                                                                 options:NSJSONReadingAllowFragments
                                                                   error:&error];
-       NSManagedObjectContext *moc = [NSManagedObjectContext MR_context];
-       moc.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
+       [[WADataStore defaultStore] performBlock:^{
        
-       [WACollection
-        insertOrUpdateObjectsUsingContext:moc
-        withRemoteResponse:[response objectForKey:@"collections"]
-        usingMapping:nil
-        options:IRManagedObjectOptionIndividualOperations
-        ];
+         NSManagedObjectContext *moc = [[WADataStore defaultStore] disposableMOC];
+         moc.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
+         
+         [WACollection
+          insertOrUpdateObjectsUsingContext:moc
+          withRemoteResponse:[response objectForKey:@"collections"]
+          usingMapping:nil
+          options:IRManagedObjectOptionIndividualOperations
+          ];
 			 
-       NSError *saveError;
-       if( [moc save:&saveError] ) {
-         [[NSNotificationCenter defaultCenter] postNotificationName:kWACollectionUpdated object:completedOperation];
-       }else {
-         NSLog(@"Upsert Collection error: %@", saveError);
-       }
+         NSError *saveError = nil;
+         if( [moc save:&saveError] ) {
+           [[NSNotificationCenter defaultCenter] postNotificationName:kWACollectionUpdated object:completedOperation];
+         }else {
+           NSLog(@"Upsert Collection error: %@", saveError);
+         }
+         
+       } waitUntilDone:YES];
+
      });
 
    }
