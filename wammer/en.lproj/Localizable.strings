@@ -161,7 +161,7 @@
 /* Title for Cover Image picker */
 "CHANGE_REPRESENTING_FILE_TITLE" = "Pick Photo";
 
-/* aostream Cloud Name */
+/* AOStream Cloud Name */
 "CLOUD_NAME" = "aostream Cloud";
 
 /* In navigation bar */
@@ -411,7 +411,7 @@
    Password placeholder in signup page */
 "PASSWORD_PLACEHOLDER" = "••••••••";
 
-/* Title of view controller advertising aostream Windows */
+/* Title of view controller advertising AOStream Windows */
 "PC_ADVERTISEMENT_CONTROLLER_TITLE" = "Got a PC?";
 
 /* Title of photo import settings view controller */
@@ -606,9 +606,6 @@
 /* Class = "IBUILabel"; text = "PHOTOS"; ObjectID = "627"; */
 "PHOTOS" = "PHOTOS";
 
-/* Class = "IBUILabel"; text = "WEBSERVICE_LIST_TITLE"; ObjectID = "0P9-dO-3KX"; */
-"WEBSERVICE_LIST_TITLE" = "Connect to your favorite services:";
-
 /* Class = "IBUILabel"; text = "PHOTO_UPLOAD_SWITCH_TITLE"; ObjectID = "749-zj-beb"; */
 "PHOTO_UPLOAD_SWITCH_TITLE" = "Import Camera Roll";
 
@@ -749,9 +746,6 @@
 
 /* Class = "IBUILabel"; text = "IMPORT_CAMERA_ROLL"; ObjectID = "Ehm-FE-RdU"; */
 "IMPORT_CAMERA_ROLL" = "Import Camera Roll";
-
-/* Class = "IBUITableViewSection"; headerTitle = "WEB_SERVICES_HEADER"; ObjectID = "FEo-JU-xSP"; */
-"WEB_SERVICES_HEADER" = "Web Services";
 
 /* Class = "IBUILabel"; text = "PACKAGE"; ObjectID = "FjD-Cy-ggW"; */
 "PACKAGE" = "Plan";
