@@ -112,9 +112,8 @@
 }
 
 
-- (void)viewDidDisappear:(BOOL)animated {
+- (void)dealloc {
 
-  [super viewDidDisappear:animated];
   dataSource = nil;
   calPicker = nil;
 
