@@ -12,6 +12,5 @@
 
 @property (weak, nonatomic) IBOutlet UIButton *doneButton;
 
-- (IBAction)handleDone:(id)sender;
 
 @end

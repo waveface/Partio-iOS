@@ -6,11 +6,15 @@
 //  Copyright (c) 2013年 Waveface. All rights reserved.
 //
 
+#import <MessageUI/MessageUI.h>
+#import <MessageUI/MFMailComposeViewController.h>
+
 #import "WAFirstUsePCAdvertisementViewController.h"
+#import "WARemoteInterface.h"
 
 static NSString * const kWASegueSendLinkToDone = @"WASegueSendLinkToDone";
 
-@interface WAFirstUsePCAdvertisementViewController ()
+@interface WAFirstUsePCAdvertisementViewController () <MFMailComposeViewControllerDelegate>
 
 @end
 
@@ -49,5 +53,30 @@ static NSString * const kWASegueSendLinkToDone = @"WASegueSendLinkToDone";
   
 }
 
+- (IBAction)sendMeLink:(id)sender {
+  if (![MFMailComposeViewController canSendMail])
+    return;
+  
+  MFMailComposeViewController *mailer = [[MFMailComposeViewController alloc] init];
+  mailer.mailComposeDelegate = self;
+  NSString *subject = NSLocalizedString(@"SUBJECT_MAIL_LINK", @"The email subject to send user the download link.");
+  [mailer setSubject:subject];
+  NSString *body = NSLocalizedString(@"BODY_MAIL_LINK", @"The content of email body to send user the download link");
+  [mailer setMessageBody:body isHTML:NO];
+
+  WAUser *user = [[WADataStore defaultStore] mainUserInContext:[[WADataStore defaultStore] disposableMOC]];
+
+  [mailer setToRecipients:@[user.email]];
+  [self presentViewController:mailer animated:YES completion:nil];
+
+  [[GAI sharedInstance].defaultTracker trackEventWithCategory:@"FirstUse" withAction:@"sendMeLink" withLabel:nil withValue:nil];
+
+}
+
+- (void) mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error {
+  
+  [controller dismissViewControllerAnimated:YES completion:nil];
+  
+}
 
 @end

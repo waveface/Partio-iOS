@@ -140,6 +140,9 @@
 /* Unknown Error */
 "AUTH_UNKNOWN_ERROR" = "未知錯誤";
 
+/* The content of email body to send user the download link */
+"BODY_MAIL_LINK" = "到官方網站立刻免費下載 aostream Windows版本。 點擊這裡: www.waveface.com/";
+
 /* Collection View Navigation Bar */
 "By Date" = "按日期";
 
@@ -529,6 +532,9 @@
 
 /* storage usage detail in settings page */
 "STORAGE_USAGE_DETAIL" = "%.1f%% of %@";
+
+/* The email subject to send user the download link. */
+"SUBJECT_MAIL_LINK" = "立刻下載 aostream Windows版!";
 
 /* Title of Canlendar */
 "TITLE_CALENDAR" = "月曆";

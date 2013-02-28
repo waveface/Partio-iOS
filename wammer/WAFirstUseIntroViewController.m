@@ -39,6 +39,7 @@
 	self.scrollView.delegate = self;
 
 	self.pageControl.numberOfPages = [self.pages count];
+  [self.pageControl setPageIndicatorTintColor:[UIColor darkGrayColor]];
 	self.pageControl.currentPage = 0;
 
 	self.title = NSLocalizedString(@"INTRODUCTION_TITLE", @"Title on introduction pages");

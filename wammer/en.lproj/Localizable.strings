@@ -140,6 +140,9 @@
 /* Unknown Error */
 "AUTH_UNKNOWN_ERROR" = "Unknown error";
 
+/* The content of email body to send user the download link */
+"BODY_MAIL_LINK" = "Go to the aostream website to download the Windows version for FREE! Click here: www.waveface.com/";
+
 /* Collection View Navigation Bar */
 "By Date" = "By Date";
 
@@ -529,6 +532,9 @@
 
 /* storage usage detail in settings page */
 "STORAGE_USAGE_DETAIL" = "%.1f%% of %@";
+
+/* The email subject to send user the download link. */
+"SUBJECT_MAIL_LINK" = "Download aostream for Windows here!";
 
 /* Title of Canlendar */
 "TITLE_CALENDAR" = "Calendar";

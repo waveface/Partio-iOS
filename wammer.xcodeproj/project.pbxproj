@@ -245,6 +245,9 @@
 		802FFDA816DF642A00237762 /* downloadStation.png in Resources */ = {isa = PBXBuildFile; fileRef = 802FFDA516DF642A00237762 /* downloadStation.png */; };
 		802FFDA916DF642A00237762 /* Intro1.png in Resources */ = {isa = PBXBuildFile; fileRef = 802FFDA616DF642A00237762 /* Intro1.png */; };
 		802FFDAA16DF642A00237762 /* Intro2.png in Resources */ = {isa = PBXBuildFile; fileRef = 802FFDA716DF642A00237762 /* Intro2.png */; };
+		802FFDBB16DF746C00237762 /* WAFirstUseCoachmarkController.m in Sources */ = {isa = PBXBuildFile; fileRef = 802FFDBA16DF746C00237762 /* WAFirstUseCoachmarkController.m */; };
+		802FFDBE16DF8DB900237762 /* coachmark-568h.png in Resources */ = {isa = PBXBuildFile; fileRef = 802FFDBC16DF8DB900237762 /* coachmark-568h.png */; };
+		802FFDBF16DF8DB900237762 /* coachmark.png in Resources */ = {isa = PBXBuildFile; fileRef = 802FFDBD16DF8DB900237762 /* coachmark.png */; };
 		80316A0A15C0EC20009D43F0 /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 803169F815C0EC20009D43F0 /* .gitignore */; };
 		80316A0B15C0EC20009D43F0 /* IRAQAlbumCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 803169FA15C0EC20009D43F0 /* IRAQAlbumCell.m */; };
 		80316A0C15C0EC20009D43F0 /* IRAQAlbumListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 803169FC15C0EC20009D43F0 /* IRAQAlbumListViewController.m */; };
@@ -1234,6 +1237,10 @@
 		802FFDA516DF642A00237762 /* downloadStation.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = downloadStation.png; path = Resources/downloadStation.png; sourceTree = "<group>"; };
 		802FFDA616DF642A00237762 /* Intro1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Intro1.png; path = Resources/Intro1.png; sourceTree = "<group>"; };
 		802FFDA716DF642A00237762 /* Intro2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Intro2.png; path = Resources/Intro2.png; sourceTree = "<group>"; };
+		802FFDB916DF746C00237762 /* WAFirstUseCoachmarkController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WAFirstUseCoachmarkController.h; path = wammer/WAFirstUseCoachmarkController.h; sourceTree = "<group>"; };
+		802FFDBA16DF746C00237762 /* WAFirstUseCoachmarkController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WAFirstUseCoachmarkController.m; path = wammer/WAFirstUseCoachmarkController.m; sourceTree = "<group>"; };
+		802FFDBC16DF8DB900237762 /* coachmark-568h.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "coachmark-568h.png"; path = "Resources/coachmark-568h.png"; sourceTree = "<group>"; };
+		802FFDBD16DF8DB900237762 /* coachmark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = coachmark.png; path = Resources/coachmark.png; sourceTree = "<group>"; };
 		803169F815C0EC20009D43F0 /* .gitignore */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		803169F915C0EC20009D43F0 /* IRAQAlbumCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IRAQAlbumCell.h; sourceTree = "<group>"; };
 		803169FA15C0EC20009D43F0 /* IRAQAlbumCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IRAQAlbumCell.m; sourceTree = "<group>"; };
@@ -2078,6 +2085,8 @@
 				13DE12FF1638143A00757F7C /* WAFirstUseConnectServicesViewController.m */,
 				13DE12E61637F30A00757F7C /* WAFirstUseDoneViewController.h */,
 				13DE12E71637F30A00757F7C /* WAFirstUseDoneViewController.m */,
+				802FFDB916DF746C00237762 /* WAFirstUseCoachmarkController.h */,
+				802FFDBA16DF746C00237762 /* WAFirstUseCoachmarkController.m */,
 				13FDC9911648C6D5005D4C56 /* WAFirstUseEmailLoginFooterView.h */,
 				13FDC9921648C6D5005D4C56 /* WAFirstUseEmailLoginFooterView.m */,
 				13BFC39A164A40DE00FC39A4 /* WAFirstUseEmailLoginFooterView.xib */,
@@ -3123,6 +3132,8 @@
 				DEF288721664653D0078B1D7 /* CalBtn.png */,
 				DEF288731664653D0078B1D7 /* CalBtn@2x.png */,
 				DEF288741664653D0078B1D7 /* CalBtnPress.png */,
+				802FFDBC16DF8DB900237762 /* coachmark-568h.png */,
+				802FFDBD16DF8DB900237762 /* coachmark.png */,
 				DEF288751664653D0078B1D7 /* CalBtnPress@2x.png */,
 				806A5C8C16241E2800867E56 /* CalHL.png */,
 				806A5C8D16241E2800867E56 /* CalHL@2x.png */,
@@ -4142,6 +4153,8 @@
 				802FFDA816DF642A00237762 /* downloadStation.png in Resources */,
 				802FFDA916DF642A00237762 /* Intro1.png in Resources */,
 				802FFDAA16DF642A00237762 /* Intro2.png in Resources */,
+				802FFDBE16DF8DB900237762 /* coachmark-568h.png in Resources */,
+				802FFDBF16DF8DB900237762 /* coachmark.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4628,6 +4641,7 @@
 				8012DB4F16D4C1150002B163 /* UIViewController+WAAdditions.m in Sources */,
 				13D1396116DB340700A41F86 /* WAFirstUsePCAdvertisementViewController.m in Sources */,
 				4B124CAF16DC996300BB7B61 /* WACollectionOverviewViewCell.m in Sources */,
+				802FFDBB16DF746C00237762 /* WAFirstUseCoachmarkController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
