@@ -220,6 +220,9 @@
                                 <state key="highlighted">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
+                                <connections>
+                                    <action selector="sendMeLink:" destination="CiT-6r-Lxj" eventType="touchUpInside" id="2Lb-SW-eqp"/>
+                                </connections>
                             </button>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="PC_AD_TITLE" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uze-n1-4Ca" customClass="WALocalizedLabel">
                                 <constraints>
@@ -237,17 +240,25 @@
                                 <color key="textColor" red="0.44705882349999998" green="0.43921568630000002" blue="0.43921568630000002" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" image="downloadStation.png" translatesAutoresizingMaskIntoConstraints="NO" id="wBb-bo-p0c">
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="197" id="lm4-tt-BJg"/>
+                                </constraints>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" red="0.95686274510000002" green="0.95686274510000002" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
-                            <constraint firstAttribute="bottom" secondItem="Hwk-71-2jX" secondAttribute="bottom" constant="148" id="0e6-xq-2ai"/>
                             <constraint firstItem="Hwk-71-2jX" firstAttribute="leading" secondItem="JVF-UL-zJc" secondAttribute="leading" constant="20" symbolic="YES" type="default" id="4UI-PR-ud3"/>
                             <constraint firstAttribute="trailing" secondItem="Hwk-71-2jX" secondAttribute="trailing" constant="20" symbolic="YES" type="default" id="9Mx-XF-hbF"/>
                             <constraint firstAttribute="bottom" secondItem="h9i-2T-iDG" secondAttribute="bottom" constant="58" id="AaF-Ko-YWe"/>
                             <constraint firstItem="uze-n1-4Ca" firstAttribute="leading" secondItem="JVF-UL-zJc" secondAttribute="leading" constant="20" symbolic="YES" type="default" id="Ini-Nd-Jea"/>
+                            <constraint firstItem="uze-n1-4Ca" firstAttribute="top" secondItem="wBb-bo-p0c" secondAttribute="bottom" constant="8" symbolic="YES" type="default" id="MuR-LP-emT"/>
                             <constraint firstAttribute="trailing" secondItem="h9i-2T-iDG" secondAttribute="trailing" constant="20" symbolic="YES" type="default" id="Wr1-wW-Dxx"/>
+                            <constraint firstItem="wBb-bo-p0c" firstAttribute="leading" secondItem="JVF-UL-zJc" secondAttribute="leading" type="default" id="XI6-MM-OIw"/>
                             <constraint firstAttribute="trailing" secondItem="uze-n1-4Ca" secondAttribute="trailing" constant="20" symbolic="YES" type="default" id="dl0-lH-Ag1"/>
                             <constraint firstItem="h9i-2T-iDG" firstAttribute="leading" secondItem="JVF-UL-zJc" secondAttribute="leading" constant="20" symbolic="YES" type="default" id="hLL-et-9BW"/>
+                            <constraint firstItem="wBb-bo-p0c" firstAttribute="trailing" secondItem="JVF-UL-zJc" secondAttribute="trailing" type="default" id="qJo-Yr-3xO"/>
+                            <constraint firstItem="wBb-bo-p0c" firstAttribute="top" secondItem="JVF-UL-zJc" secondAttribute="top" constant="13" id="v8p-E5-QDk"/>
                             <constraint firstItem="Hwk-71-2jX" firstAttribute="top" secondItem="uze-n1-4Ca" secondAttribute="bottom" constant="8" symbolic="YES" type="default" id="wUS-fC-rzL"/>
                         </constraints>
                     </view>
@@ -279,7 +290,7 @@
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <action selector="handleDone:" destination="aPx-LF-QSi" eventType="touchUpInside" id="ihz-5U-24g"/>
+                                    <segue destination="AL8-Hm-XMn" kind="push" id="j2c-rm-VjX"/>
                                 </connections>
                             </button>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="SETUP_DONE_DESCRIPTION" lineBreakMode="tailTruncation" numberOfLines="5" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="280" translatesAutoresizingMaskIntoConstraints="NO" id="OVz-tl-GMd" customClass="WALocalizedLabel">
@@ -309,6 +320,46 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="qTr-EH-FJl" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="3379" y="99"/>
+        </scene>
+        <!--First Use Coachmark Controller-->
+        <scene sceneID="08K-ip-V9O">
+            <objects>
+                <viewController id="AL8-Hm-XMn" customClass="WAFirstUseCoachmarkController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="qYC-rd-kkw">
+                        <rect key="frame" x="0.0" y="20" width="320" height="460"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CnK-iM-bbA">
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                                <state key="normal">
+                                    <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="titleShadowColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                </state>
+                                <state key="highlighted">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="handleDone:" destination="AL8-Hm-XMn" eventType="touchUpInside" id="500-iG-CHM"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="CnK-iM-bbA" firstAttribute="leading" secondItem="qYC-rd-kkw" secondAttribute="leading" type="default" id="2P3-Sg-9kt"/>
+                            <constraint firstItem="CnK-iM-bbA" firstAttribute="bottom" secondItem="qYC-rd-kkw" secondAttribute="bottom" type="default" id="ESN-0F-y6Z"/>
+                            <constraint firstItem="CnK-iM-bbA" firstAttribute="trailing" secondItem="qYC-rd-kkw" secondAttribute="trailing" type="default" id="LAP-0j-0p5"/>
+                            <constraint firstItem="CnK-iM-bbA" firstAttribute="top" secondItem="qYC-rd-kkw" secondAttribute="top" type="default" id="OJ9-yc-htX"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="MZr-WA-Tfv"/>
+                    <nil key="simulatedTopBarMetrics"/>
+                    <connections>
+                        <outlet property="coachmarkButton" destination="CnK-iM-bbA" id="fLd-aI-hAh"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Ar6-fC-A2i" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3780" y="99"/>
         </scene>
         <!--First Use Log In View Controller - Log In-->
         <scene sceneID="hPv-I8-sSz">
@@ -674,11 +725,19 @@
         <image name="GoogleLogo.png" width="32" height="32"/>
         <image name="PicasaLogo.png" width="32" height="32"/>
         <image name="WelcomeLogo.png" width="320" height="360"/>
+        <image name="downloadStation.png" width="539" height="338"/>
         <image name="twitterLogo.png" width="32" height="32"/>
     </resources>
     <classes>
         <class className="NSLayoutConstraint" superclassName="NSObject">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/NSLayoutConstraint.h"/>
+        </class>
+        <class className="WAFirstUseCoachmarkController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/WAFirstUseCoachmarkController.h"/>
+            <relationships>
+                <relationship kind="action" name="handleDone:"/>
+                <relationship kind="outlet" name="coachmarkButton" candidateClass="UIButton"/>
+            </relationships>
         </class>
         <class className="WAFirstUseConnectServicesViewController" superclassName="UITableViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/WAFirstUseConnectServicesViewController.h"/>
@@ -694,7 +753,6 @@
         <class className="WAFirstUseDoneViewController" superclassName="UIViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/WAFirstUseDoneViewController.h"/>
             <relationships>
-                <relationship kind="action" name="handleDone:"/>
                 <relationship kind="outlet" name="doneButton" candidateClass="UIButton"/>
             </relationships>
         </class>
