@@ -237,17 +237,25 @@
                                 <color key="textColor" red="0.44705882349999998" green="0.43921568630000002" blue="0.43921568630000002" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" image="downloadStation.png" translatesAutoresizingMaskIntoConstraints="NO" id="wBb-bo-p0c">
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="197" id="lm4-tt-BJg"/>
+                                </constraints>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" red="0.95686274510000002" green="0.95686274510000002" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
-                            <constraint firstAttribute="bottom" secondItem="Hwk-71-2jX" secondAttribute="bottom" constant="148" id="0e6-xq-2ai"/>
                             <constraint firstItem="Hwk-71-2jX" firstAttribute="leading" secondItem="JVF-UL-zJc" secondAttribute="leading" constant="20" symbolic="YES" type="default" id="4UI-PR-ud3"/>
                             <constraint firstAttribute="trailing" secondItem="Hwk-71-2jX" secondAttribute="trailing" constant="20" symbolic="YES" type="default" id="9Mx-XF-hbF"/>
                             <constraint firstAttribute="bottom" secondItem="h9i-2T-iDG" secondAttribute="bottom" constant="58" id="AaF-Ko-YWe"/>
                             <constraint firstItem="uze-n1-4Ca" firstAttribute="leading" secondItem="JVF-UL-zJc" secondAttribute="leading" constant="20" symbolic="YES" type="default" id="Ini-Nd-Jea"/>
+                            <constraint firstItem="uze-n1-4Ca" firstAttribute="top" secondItem="wBb-bo-p0c" secondAttribute="bottom" constant="8" symbolic="YES" type="default" id="MuR-LP-emT"/>
                             <constraint firstAttribute="trailing" secondItem="h9i-2T-iDG" secondAttribute="trailing" constant="20" symbolic="YES" type="default" id="Wr1-wW-Dxx"/>
+                            <constraint firstItem="wBb-bo-p0c" firstAttribute="leading" secondItem="JVF-UL-zJc" secondAttribute="leading" type="default" id="XI6-MM-OIw"/>
                             <constraint firstAttribute="trailing" secondItem="uze-n1-4Ca" secondAttribute="trailing" constant="20" symbolic="YES" type="default" id="dl0-lH-Ag1"/>
                             <constraint firstItem="h9i-2T-iDG" firstAttribute="leading" secondItem="JVF-UL-zJc" secondAttribute="leading" constant="20" symbolic="YES" type="default" id="hLL-et-9BW"/>
+                            <constraint firstItem="wBb-bo-p0c" firstAttribute="trailing" secondItem="JVF-UL-zJc" secondAttribute="trailing" type="default" id="qJo-Yr-3xO"/>
+                            <constraint firstItem="wBb-bo-p0c" firstAttribute="top" secondItem="JVF-UL-zJc" secondAttribute="top" constant="13" id="v8p-E5-QDk"/>
                             <constraint firstItem="Hwk-71-2jX" firstAttribute="top" secondItem="uze-n1-4Ca" secondAttribute="bottom" constant="8" symbolic="YES" type="default" id="wUS-fC-rzL"/>
                         </constraints>
                     </view>
@@ -674,6 +682,7 @@
         <image name="GoogleLogo.png" width="32" height="32"/>
         <image name="PicasaLogo.png" width="32" height="32"/>
         <image name="WelcomeLogo.png" width="320" height="360"/>
+        <image name="downloadStation.png" width="539" height="338"/>
         <image name="twitterLogo.png" width="32" height="32"/>
     </resources>
     <classes>

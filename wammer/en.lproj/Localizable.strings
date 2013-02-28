@@ -660,11 +660,29 @@
 /* Class = "IBUIButton"; normalTitle = "ACTION_CONNECT_FACEBOOK"; ObjectID = "9"; */
 "ACTION_CONNECT_FACEBOOK" = "Connect with Facebook";
 
+/* Class = "IBUILabel"; text = "TITLE_INTRODUCTION_1"; ObjectID = "4"; */
+"TITLE_INTRODUCTION_1" = "All your photos on all your devices";
+
+/* Class = "IBUILabel"; text = "TITLE_INTRODUCTION_2"; ObjectID = "9"; */
+"TITLE_INTRODUCTION_2" = "Relive and share sweet memories";
+
 /* Class = "IBUILabel"; text = "ACTION_GOTO_WEBSITE"; ObjectID = "189"; */
 "ACTION_GOTO_WEBSITE" = "Learn more at www.waveface.com.";
 
 /* Class = "IBUILabel"; text = "PLANS_DESCRIPTION"; ObjectID = "202"; */
 "PLANS_DESCRIPTION" = "aostream sends all your digital memories back to your PC where they are safely stored. You can also upgrade to a premium cloud storage plan and start enjoy all the benefits of a smart personal cloud.";
+
+/* Class = "IBUILabel"; text = "BODY_INTRODUCTION_1"; ObjectID = "229"; */
+"BODY_INTRODUCTION_1" = "aostream automatically puts the photos taken on the phone and those imported from PC in one place, so you can view them from anywhere. ";
+
+/* Class = "IBUILabel"; text = "SUBBODY_INTRODUCTION_1"; ObjectID = "234"; */
+"SUBBODY_INTRODUCTION_1" = "For a blazing fast experience, install aostream on Windows PC and sync over the LAN. aostream streams the photos from the cloud so it doesn't use up precious storage space. ";
+
+/* Class = "IBUILabel"; text = "BODY_INTRODUCTION_2"; ObjectID = "255"; */
+"BODY_INTRODUCTION_2" = "Quickly go through highlights of your days and easily recall the moment, including where you were and who you were with. You can also view all the photos day by day and create collections to show others.";
+
+/* Class = "IBUILabel"; text = "SUBBODY_INTRODUCTION_2"; ObjectID = "260"; */
+"SUBBODY_INTRODUCTION_2" = "Please allow a few minutes after linking your accounts to complete syncing.";
 
 /* Class = "IBUITextField"; placeholder = "USERNAME_PLACEHOLDER"; ObjectID = "2Vk-4J-QH3"; */
 "USERNAME_PLACEHOLDER" = "me@example.com";
