@@ -234,7 +234,9 @@ static NSString * const kWAFetchingAnimation = @"WAFetchingAnimation";
     [UIView animateWithDuration:1.0 animations:^{
       wSelf.alpha = 0;
     } completion:^(BOOL finished) {
-      dismissBlock();
+      if (dismissBlock) {
+        dismissBlock();
+      }
     }];
   }
 
