@@ -13,6 +13,7 @@
 #import "WAAppearance.h"
 #import "WASnsConnectSwitch.h"
 #import "WAOAuthViewController.h"
+#import "WADefines.h"
 
 static NSString * const kWASegueConnectServicesToPhotoImport = @"WASegueConnectServicesToPhotoImport";
 static NSString * const kWASegueConnectServicesToOAuth = @"WASegueConnectServicesToOAuth";
@@ -39,6 +40,12 @@ static NSString * const kWASegueConnectServicesToOAuth = @"WASegueConnectService
 	self.navigationItem.hidesBackButton = YES;
 
 	self.facebookConnectCell.accessoryView = [[WAFacebookConnectionSwitch alloc] init];
+  
+  if ([[NSUserDefaults standardUserDefaults] boolForKey:kWASNSFacebookConnectEnabled])
+    [(WAFacebookConnectionSwitch*)self.facebookConnectCell.accessoryView setOn:YES];
+  else
+    [(WAFacebookConnectionSwitch*)self.facebookConnectCell.accessoryView setOn:NO];
+  
 	UISwitch *flickrSwitch = [[UISwitch alloc] init];
 	flickrSwitch.enabled = NO;
 	self.flickrConnectCell.accessoryView = flickrSwitch;
