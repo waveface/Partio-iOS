@@ -1,4 +1,4 @@
 /* Localized versions of Info.plist keys */
 
-"CFBundleName" = "AOStream";
-"CFBundleDisplayName" = "AOStream";
+"CFBundleName" = "aostream";
+"CFBundleDisplayName" = "aostream";
