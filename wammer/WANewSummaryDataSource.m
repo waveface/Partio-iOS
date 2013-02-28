@@ -80,7 +80,10 @@
     }
     self.firstDate = [self.daySummaries[0] date];
   } else if ([aDate isEqualToDate:self.lastDate]) {
-    NSDate *currentDate = [NSDate date];
+    NSDate *currentDate = [[NSDate date] dayBegin];
+    if ([aDate isEqualToDate:currentDate]) {
+      return NO;
+    }
     for (NSInteger i = 1; i <= numOfDays; i++) {
       WANewDaySummary *daySummary = [[WANewDaySummary alloc] init];
       daySummary.date = [self.lastDate dateOfNextNumOfDays:i];

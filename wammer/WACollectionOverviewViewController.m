@@ -10,7 +10,7 @@
 #import "WAFile+LazyImages.h"
 #import "WAGalleryViewController.h"
 #import "WACollection.h"
-
+#import "WACollectionOverviewViewCell.h"
 @interface WACollectionOverviewViewController ()
 
 @end
@@ -30,8 +30,15 @@
 {
   [super viewDidLoad];
   // Do any additional setup after loading the view from its nib.
-  [self.collectionView registerClass:[UICollectionViewCell class]
+  [self.collectionView registerClass:[WACollectionOverviewViewCell class]
           forCellWithReuseIdentifier:@"WACollectionOverviewViewCell"];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+  [super viewWillDisappear:animated];
+  for (WAFile *target in _collection.files) {
+    [target irRemoveAllObserves];
+  }
 }
 
 - (void)didReceiveMemoryWarning
@@ -49,31 +56,37 @@
   return [_collection.files count];
 }
 
-- (UICollectionViewCell*)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
+- (WACollectionOverviewViewCell*)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
   
-  UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"WACollectionOverviewViewCell" forIndexPath:indexPath];
-  
-  UIImageView *imageView;
-  for (UIView *view in [cell subviews]) {
-    if ([view isKindOfClass:[UIImageView class]]) {
-      imageView = (UIImageView*)view;
-    } else {
-      imageView = [[UIImageView alloc] initWithFrame:(CGRect){0,0,75,75}];
-      [cell addSubview:imageView];
-      cell.clipsToBounds = YES;
-    }
-  }
+  WACollectionOverviewViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"WACollectionOverviewViewCell" forIndexPath:indexPath];
   
   WAFile *target = (WAFile*)[_collection.files objectAtIndex:[indexPath row]];
-  imageView.image = target.smallThumbnailImage;
+
+  if (target.smallThumbnailImage) {
+    cell.imageView.image = target.smallThumbnailImage;
+  } else {
+    [target irObserve:@"smallThumbnailImage"
+              options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld
+              context:nil
+            withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
+                cell.imageView.image = toValue;
+            }];
+  }
   
-  return (UICollectionViewCell*)cell;
+  return cell;
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
+  [[GAI sharedInstance].defaultTracker trackEventWithCategory:@"Collection" withAction:@"Enter Gallery" withLabel:nil withValue:@0];
+  
   WAGalleryViewController *galleryVC = [[WAGalleryViewController alloc]
                                         initWithImageFiles:[_collection.files array]
                                         atIndex:[indexPath row]];
   [self.navigationController pushViewController:galleryVC animated:YES];
+}
+
+- (void)collectionView:(UICollectionView *)collectionView didEndDisplayingCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath {
+  WAFile *target = (WAFile*)[_collection.files objectAtIndex:[indexPath row]];
+  [target irRemoveAllObserves];
 }
 @end
