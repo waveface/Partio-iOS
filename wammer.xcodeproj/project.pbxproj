@@ -574,10 +574,6 @@
 		FFBEF162153F664100CF2203 /* WAStorage+WARemoteInterfaceEntitySyncing.m in Sources */ = {isa = PBXBuildFile; fileRef = FFBEF160153F664100CF2203 /* WAStorage+WARemoteInterfaceEntitySyncing.m */; };
 		FFC6200E149CF03A0097C377 /* WADefines+iOS.m in Sources */ = {isa = PBXBuildFile; fileRef = FFC6200D149CF03A0097C377 /* WADefines+iOS.m */; };
 		FFC6201C149CF31F0097C377 /* WAAppDelegate_iOS.m in Sources */ = {isa = PBXBuildFile; fileRef = FFC6201B149CF31F0097C377 /* WAAppDelegate_iOS.m */; };
-		FFCCDF4C15B41B0000AEBB85 /* Default-Landscape.png in Resources */ = {isa = PBXBuildFile; fileRef = FFCCDE3F15B41B0000AEBB85 /* Default-Landscape.png */; };
-		FFCCDF4D15B41B0000AEBB85 /* Default-Landscape@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FFCCDE4015B41B0000AEBB85 /* Default-Landscape@2x.png */; };
-		FFCCDF4E15B41B0000AEBB85 /* Default-Portrait.png in Resources */ = {isa = PBXBuildFile; fileRef = FFCCDE4115B41B0000AEBB85 /* Default-Portrait.png */; };
-		FFCCDF4F15B41B0000AEBB85 /* Default-Portrait@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FFCCDE4215B41B0000AEBB85 /* Default-Portrait@2x.png */; };
 		FFCCDF5015B41B0000AEBB85 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = FFCCDE4315B41B0000AEBB85 /* Default.png */; };
 		FFCCDF5115B41B0000AEBB85 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FFCCDE4415B41B0000AEBB85 /* Default@2x.png */; };
 		FFCCDF5815B41B0000AEBB85 /* FacebookLogo.png in Resources */ = {isa = PBXBuildFile; fileRef = FFCCDE4B15B41B0000AEBB85 /* FacebookLogo.png */; };
@@ -1723,10 +1719,6 @@
 		FFC813C213EB8F7E007B0683 /* AssetsLibrary.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
 		FFC81D0E14277F0300B41DB9 /* WAFauxRootNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAFauxRootNavigationController.h; sourceTree = "<group>"; };
 		FFC81D0F14277F0300B41DB9 /* WAFauxRootNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAFauxRootNavigationController.m; sourceTree = "<group>"; };
-		FFCCDE3F15B41B0000AEBB85 /* Default-Landscape.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default-Landscape.png"; path = "Resources/Default-Landscape.png"; sourceTree = "<group>"; };
-		FFCCDE4015B41B0000AEBB85 /* Default-Landscape@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default-Landscape@2x.png"; path = "Resources/Default-Landscape@2x.png"; sourceTree = "<group>"; };
-		FFCCDE4115B41B0000AEBB85 /* Default-Portrait.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default-Portrait.png"; path = "Resources/Default-Portrait.png"; sourceTree = "<group>"; };
-		FFCCDE4215B41B0000AEBB85 /* Default-Portrait@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default-Portrait@2x.png"; path = "Resources/Default-Portrait@2x.png"; sourceTree = "<group>"; };
 		FFCCDE4315B41B0000AEBB85 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Default.png; path = Resources/Default.png; sourceTree = "<group>"; };
 		FFCCDE4415B41B0000AEBB85 /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default@2x.png"; path = "Resources/Default@2x.png"; sourceTree = "<group>"; };
 		FFCCDE4B15B41B0000AEBB85 /* FacebookLogo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = FacebookLogo.png; path = Resources/FacebookLogo.png; sourceTree = "<group>"; };
@@ -3153,10 +3145,6 @@
 				80C129C316398A0D001DDFE2 /* Create.png */,
 				80C129C416398A0D001DDFE2 /* Create@2x.png */,
 				7D85EE6D1637936A00D5630A /* Default-568h@2x.png */,
-				FFCCDE3F15B41B0000AEBB85 /* Default-Landscape.png */,
-				FFCCDE4015B41B0000AEBB85 /* Default-Landscape@2x.png */,
-				FFCCDE4115B41B0000AEBB85 /* Default-Portrait.png */,
-				FFCCDE4215B41B0000AEBB85 /* Default-Portrait@2x.png */,
 				FFCCDE4315B41B0000AEBB85 /* Default.png */,
 				FFCCDE4415B41B0000AEBB85 /* Default@2x.png */,
 				132824BF167B196700B2FB67 /* DocumentsIcon.png */,
@@ -3881,10 +3869,6 @@
 				FF56850815AF72FA00706CC2 /* WAWelcomeViewController.xib in Resources */,
 				FF56850A15AF74A700706CC2 /* WASignUpViewController.storyboard in Resources */,
 				FF6BCFA115AF78C60046AAC8 /* WALogInViewController.storyboard in Resources */,
-				FFCCDF4C15B41B0000AEBB85 /* Default-Landscape.png in Resources */,
-				FFCCDF4D15B41B0000AEBB85 /* Default-Landscape@2x.png in Resources */,
-				FFCCDF4E15B41B0000AEBB85 /* Default-Portrait.png in Resources */,
-				FFCCDF4F15B41B0000AEBB85 /* Default-Portrait@2x.png in Resources */,
 				FFCCDF5015B41B0000AEBB85 /* Default.png in Resources */,
 				FFCCDF5115B41B0000AEBB85 /* Default@2x.png in Resources */,
 				FFCCDF5815B41B0000AEBB85 /* FacebookLogo.png in Resources */,
