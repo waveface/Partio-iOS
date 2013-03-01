@@ -61,7 +61,7 @@
 #define MR_SHORTHAND
 #import "CoreData+MagicalRecord.h"
 
-static NSString *const kTrackingId = @"UA-27817516-7";
+static NSString *const kTrackingId = @"UA-27817516-8";
 
 @interface WALoginBackgroundViewController : UIViewController
 @end
