@@ -29,7 +29,7 @@
 	self.actionConnectRequestMsg = NSLocalizedString(@"GOOGLE_CONNECT_REQUEST_MESSAGE", @"Message for alert view asking if user wants to connect her Google account");
 	self.actionDisconnectShortTitle = NSLocalizedString(@"ACTION_DISCONNECT_GOOGLE", @"Short action title for disconnecting Google");
 	self.actionDisconnectRequestTitle = NSLocalizedString(@"GOOGLE_DISCONNECT_REQUEST_TITLE", @"Title for alert view asking if user wants to disconnect her Google account");
-	self.actionConnectRequestMsg = NSLocalizedString(@"GOOGLE_DISCONNECT_REQUEST_MESSAGE", @"Message for alert view asking if user wants to disconnect her Google account");
+	self.actionDisconnectRequestMsg = NSLocalizedString(@"GOOGLE_DISCONNECT_REQUEST_MESSAGE", @"Message for alert view asking if user wants to disconnect her Google account");
 	
 	self.titleForConnectionFailure = NSLocalizedString(@"GOOGLE_CONNECT_FAIL_TITLE", @"Title for an alert view to show Google connection failure");
 	self.titleForDisconnectionFailure = NSLocalizedString(@"GOOGLE_DISCONNECT_FAIL_TITLE", @"Title for an alert view to show Google disconnection failure");
