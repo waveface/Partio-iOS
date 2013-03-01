@@ -45,7 +45,7 @@
 /* Action deleting an article
    The label on the confirmation dialog to make sure user want to delete account or not
    Title for deleting an article from the Timeline */
-"ACTION_DELETE" = "Delete";
+"ACTION_DELETE" = "Confirm";
 
 /* Action title for discarding a draft */
 "ACTION_DISCARD" = "Discard";
@@ -188,7 +188,7 @@
 /* in relative date format */
 "DATE_AGO" = "%@ ago";
 
-/* No comment provided by engineer. */
+/* No comment provided by engineer. */s
 "DAY_PLURAL" = "%d days";
 
 /* No comment provided by engineer. */
