@@ -789,9 +789,6 @@
 /* Class = "IBUILabel"; text = "PC_SETUP_TITLE"; ObjectID = "UKL-kB-sZd"; */
 "PC_SETUP_TITLE" = "Here's the next step:";
 
-/* Class = "IBUILabel"; text = "STORAGE_USAGE"; ObjectID = "aOf-bH-Me7"; */
-"STORAGE_USAGE" = "Cloud Usage";
-
 /* Class = "IBUILabel"; text = "NOUN_USERNAME"; ObjectID = "drm-tH-4is"; */
 "NOUN_USERNAME" = "Email";
 

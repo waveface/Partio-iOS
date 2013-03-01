@@ -789,9 +789,6 @@
 /* Class = "IBUILabel"; text = "PC_SETUP_TITLE"; ObjectID = "UKL-kB-sZd"; */
 "PC_SETUP_TITLE" = "覺得很慢？";
 
-/* Class = "IBUILabel"; text = "STORAGE_USAGE"; ObjectID = "aOf-bH-Me7"; */
-"STORAGE_USAGE" = "已使用雲端空間";
-
 /* Class = "IBUILabel"; text = "NOUN_USERNAME"; ObjectID = "drm-tH-4is"; */
 "NOUN_USERNAME" = "電子郵件";
 
