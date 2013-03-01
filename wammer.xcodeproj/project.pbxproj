@@ -242,6 +242,12 @@
 		8023BAF116770D2B00E6BED2 /* pindrop.png in Resources */ = {isa = PBXBuildFile; fileRef = 8023BAEF16770D2A00E6BED2 /* pindrop.png */; };
 		8023BAF216770D2B00E6BED2 /* pindrop@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8023BAF016770D2A00E6BED2 /* pindrop@2x.png */; };
 		802427091689E1AF002454A7 /* WACollection.m in Sources */ = {isa = PBXBuildFile; fileRef = 802427081689E1AF002454A7 /* WACollection.m */; };
+		802FFDA816DF642A00237762 /* downloadStation.png in Resources */ = {isa = PBXBuildFile; fileRef = 802FFDA516DF642A00237762 /* downloadStation.png */; };
+		802FFDA916DF642A00237762 /* Intro1.png in Resources */ = {isa = PBXBuildFile; fileRef = 802FFDA616DF642A00237762 /* Intro1.png */; };
+		802FFDAA16DF642A00237762 /* Intro2.png in Resources */ = {isa = PBXBuildFile; fileRef = 802FFDA716DF642A00237762 /* Intro2.png */; };
+		802FFDBB16DF746C00237762 /* WAFirstUseCoachmarkController.m in Sources */ = {isa = PBXBuildFile; fileRef = 802FFDBA16DF746C00237762 /* WAFirstUseCoachmarkController.m */; };
+		802FFDBE16DF8DB900237762 /* coachmark-568h.png in Resources */ = {isa = PBXBuildFile; fileRef = 802FFDBC16DF8DB900237762 /* coachmark-568h.png */; };
+		802FFDBF16DF8DB900237762 /* coachmark.png in Resources */ = {isa = PBXBuildFile; fileRef = 802FFDBD16DF8DB900237762 /* coachmark.png */; };
 		80316A0A15C0EC20009D43F0 /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 803169F815C0EC20009D43F0 /* .gitignore */; };
 		80316A0B15C0EC20009D43F0 /* IRAQAlbumCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 803169FA15C0EC20009D43F0 /* IRAQAlbumCell.m */; };
 		80316A0C15C0EC20009D43F0 /* IRAQAlbumListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 803169FC15C0EC20009D43F0 /* IRAQAlbumListViewController.m */; };
@@ -1228,6 +1234,13 @@
 		8023BAF016770D2A00E6BED2 /* pindrop@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "pindrop@2x.png"; path = "Resources/pindrop@2x.png"; sourceTree = "<group>"; };
 		802427071689E1AF002454A7 /* WACollection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WACollection.h; sourceTree = "<group>"; };
 		802427081689E1AF002454A7 /* WACollection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WACollection.m; sourceTree = "<group>"; };
+		802FFDA516DF642A00237762 /* downloadStation.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = downloadStation.png; path = Resources/downloadStation.png; sourceTree = "<group>"; };
+		802FFDA616DF642A00237762 /* Intro1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Intro1.png; path = Resources/Intro1.png; sourceTree = "<group>"; };
+		802FFDA716DF642A00237762 /* Intro2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Intro2.png; path = Resources/Intro2.png; sourceTree = "<group>"; };
+		802FFDB916DF746C00237762 /* WAFirstUseCoachmarkController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WAFirstUseCoachmarkController.h; path = wammer/WAFirstUseCoachmarkController.h; sourceTree = "<group>"; };
+		802FFDBA16DF746C00237762 /* WAFirstUseCoachmarkController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WAFirstUseCoachmarkController.m; path = wammer/WAFirstUseCoachmarkController.m; sourceTree = "<group>"; };
+		802FFDBC16DF8DB900237762 /* coachmark-568h.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "coachmark-568h.png"; path = "Resources/coachmark-568h.png"; sourceTree = "<group>"; };
+		802FFDBD16DF8DB900237762 /* coachmark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = coachmark.png; path = Resources/coachmark.png; sourceTree = "<group>"; };
 		803169F815C0EC20009D43F0 /* .gitignore */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		803169F915C0EC20009D43F0 /* IRAQAlbumCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IRAQAlbumCell.h; sourceTree = "<group>"; };
 		803169FA15C0EC20009D43F0 /* IRAQAlbumCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IRAQAlbumCell.m; sourceTree = "<group>"; };
@@ -1819,7 +1832,7 @@
 		FFCCDF4615B41B0000AEBB85 /* WAUserGlyph@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "WAUserGlyph@2x.png"; path = "Resources/WAUserGlyph@2x.png"; sourceTree = "<group>"; };
 		FFCD325014B9EA4D0035C4F5 /* WAFile+WAAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WAFile+WAAdditions.h"; sourceTree = "<group>"; };
 		FFCD325114B9EA4D0035C4F5 /* WAFile+WAAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WAFile+WAAdditions.m"; sourceTree = "<group>"; };
-		FFCFE0FB142111E100B9E6AF /* AOStream.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AOStream.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		FFCFE0FB142111E100B9E6AF /* aostream.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = aostream.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FFD14F0514C5E24C0053116F /* Crashlytics.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = Crashlytics.framework; path = external/CrashlyticsSDK/Crashlytics.framework; sourceTree = "<group>"; };
 		FFD4F92E157E07F90027BF3F /* IRObjectQueue.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = IRObjectQueue.xcodeproj; path = external/IRObjectQueue/IRObjectQueue.xcodeproj; sourceTree = "<group>"; };
 		FFD5295515B94DCA008DA71B /* WALocalizedTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WALocalizedTextField.h; sourceTree = "<group>"; };
@@ -2072,6 +2085,8 @@
 				13DE12FF1638143A00757F7C /* WAFirstUseConnectServicesViewController.m */,
 				13DE12E61637F30A00757F7C /* WAFirstUseDoneViewController.h */,
 				13DE12E71637F30A00757F7C /* WAFirstUseDoneViewController.m */,
+				802FFDB916DF746C00237762 /* WAFirstUseCoachmarkController.h */,
+				802FFDBA16DF746C00237762 /* WAFirstUseCoachmarkController.m */,
 				13FDC9911648C6D5005D4C56 /* WAFirstUseEmailLoginFooterView.h */,
 				13FDC9921648C6D5005D4C56 /* WAFirstUseEmailLoginFooterView.m */,
 				13BFC39A164A40DE00FC39A4 /* WAFirstUseEmailLoginFooterView.xib */,
@@ -2817,7 +2832,7 @@
 		FF73A53F13D6C2CC00D54EC6 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				FFCFE0FB142111E100B9E6AF /* AOStream.app */,
+				FFCFE0FB142111E100B9E6AF /* aostream.app */,
 				4B8CA96814BBE7BA006E06BB /* UnitTests.octest */,
 				7D0CDD00162E5A080027D35F /* StreamTests.octest */,
 			);
@@ -3117,6 +3132,8 @@
 				DEF288721664653D0078B1D7 /* CalBtn.png */,
 				DEF288731664653D0078B1D7 /* CalBtn@2x.png */,
 				DEF288741664653D0078B1D7 /* CalBtnPress.png */,
+				802FFDBC16DF8DB900237762 /* coachmark-568h.png */,
+				802FFDBD16DF8DB900237762 /* coachmark.png */,
 				DEF288751664653D0078B1D7 /* CalBtnPress@2x.png */,
 				806A5C8C16241E2800867E56 /* CalHL.png */,
 				806A5C8D16241E2800867E56 /* CalHL@2x.png */,
@@ -3130,6 +3147,9 @@
 				80C129C0163989C6001DDFE2 /* cloudy@2x.png */,
 				DEF13263164B83B50051284D /* CollectionIcon.png */,
 				DEF1326D164B83CE0051284D /* CollectionIcon@2x.png */,
+				802FFDA516DF642A00237762 /* downloadStation.png */,
+				802FFDA616DF642A00237762 /* Intro1.png */,
+				802FFDA716DF642A00237762 /* Intro2.png */,
 				80C129C316398A0D001DDFE2 /* Create.png */,
 				80C129C416398A0D001DDFE2 /* Create@2x.png */,
 				7D85EE6D1637936A00D5630A /* Default-568h@2x.png */,
@@ -3582,7 +3602,7 @@
 			);
 			name = "wammer-iOS";
 			productName = "wammer-iOS";
-			productReference = FFCFE0FB142111E100B9E6AF /* AOStream.app */;
+			productReference = FFCFE0FB142111E100B9E6AF /* aostream.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -4130,6 +4150,11 @@
 				13D1397316DB467F00A41F86 /* WelcomeLogo@2x.png in Resources */,
 				13D1397516DB474000A41F86 /* WelcomeBackgroundPattern.png in Resources */,
 				4B124CC116DC9A8300BB7B61 /* WACollectionOverviewViewCell.xib in Resources */,
+				802FFDA816DF642A00237762 /* downloadStation.png in Resources */,
+				802FFDA916DF642A00237762 /* Intro1.png in Resources */,
+				802FFDAA16DF642A00237762 /* Intro2.png in Resources */,
+				802FFDBE16DF8DB900237762 /* coachmark-568h.png in Resources */,
+				802FFDBF16DF8DB900237762 /* coachmark.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4616,6 +4641,7 @@
 				8012DB4F16D4C1150002B163 /* UIViewController+WAAdditions.m in Sources */,
 				13D1396116DB340700A41F86 /* WAFirstUsePCAdvertisementViewController.m in Sources */,
 				4B124CAF16DC996300BB7B61 /* WACollectionOverviewViewCell.m in Sources */,
+				802FFDBB16DF746C00237762 /* WAFirstUseCoachmarkController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4738,7 +4764,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 570;
+				CURRENT_PROJECT_VERSION = 573;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"WF_USES_TESTFLIGHT=$(WF_USES_TESTFLIGHT)",
@@ -4844,7 +4870,7 @@
 					"-weak_framework",
 					Social,
 				);
-				PRODUCT_NAME = AOStream;
+				PRODUCT_NAME = aostream;
 				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos;
 				STREAM_BUNDLE_ID_SUFFIX = .beta;
@@ -5217,7 +5243,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 570;
+				CURRENT_PROJECT_VERSION = 573;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -5280,7 +5306,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 570;
+				CURRENT_PROJECT_VERSION = 573;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"WF_USES_TESTFLIGHT=$(WF_USES_TESTFLIGHT)",
@@ -5385,7 +5411,7 @@
 					"-weak_framework",
 					Social,
 				);
-				PRODUCT_NAME = AOStream;
+				PRODUCT_NAME = aostream;
 				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos;
 				STREAM_BUNDLE_ID_SUFFIX = .develop;
@@ -5454,7 +5480,7 @@
 					"-weak_framework",
 					Social,
 				);
-				PRODUCT_NAME = AOStream;
+				PRODUCT_NAME = aostream;
 				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos;
 				STREAM_BUNDLE_ID_SUFFIX = "";

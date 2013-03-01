@@ -46,15 +46,5 @@
   
 }
 
-#pragma mark Target actions
-
-- (IBAction)handleDone:(id)sender {
-  
-  WAFirstUseViewController *firstUseVC = (WAFirstUseViewController *)self.navigationController;
-  if (firstUseVC.didFinishBlock) {
-    firstUseVC.didFinishBlock();
-  }
-  
-}
 
 @end

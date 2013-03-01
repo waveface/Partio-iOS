@@ -14,6 +14,7 @@
 #import "Kal.h"
 #import "WAFileAccessLog.h"
 #import "WAAppDelegate_iOS.h"
+#import "NSDate+WAAdditions.h"
 
 @interface WACalendarPickerViewController () <KalDelegate>
 {
@@ -111,9 +112,8 @@
 }
 
 
-- (void)viewDidDisappear:(BOOL)animated {
+- (void)dealloc {
 
-  [super viewDidDisappear:animated];
   dataSource = nil;
   calPicker = nil;
 
@@ -207,7 +207,7 @@
   
   WAAppDelegate_iOS *appDelegate = (WAAppDelegate_iOS*)AppDelegate();
   [appDelegate.slidingMenu.viewDeckController closeLeftView];
-  [appDelegate.slidingMenu switchToViewStyle:self.currentViewStyle onDate:[NSDate date]];
+  [appDelegate.slidingMenu switchToViewStyle:self.currentViewStyle onDate:[[NSDate date] dayBegin]];
   
   if (self.onDismissBlock)
 	self.onDismissBlock();

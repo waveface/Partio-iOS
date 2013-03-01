@@ -15,6 +15,7 @@
 #import <FacebookSDK/FacebookSDK.h>
 #import <Accounts/Accounts.h>
 #import "WAAppearance.h"
+#import "WADefines.h"
 
 
 static NSString * const kWASegueLogInToPhotoImport = @"WASegueLogInToPhotoImport";
@@ -227,29 +228,70 @@ static NSString * const kWASegueLogInToConnectServices = @"WASegueLogInToConnect
 			 NSLog(@"Facebook auth error: %@", error);
 			 return;
 		 }
+       
+       BOOL (^snsEnabled)(NSArray*, NSString *) = ^(NSArray *reps, NSString *snsType) {
+         NSArray *snsReps = [reps filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^ (id evaluatedObject, NSDictionary *bindings) {
+           
+           return [[evaluatedObject valueForKeyPath:@"type"] isEqual:snsType];
+           
+         }]];
+         
+         NSDictionary *snsRep = [snsReps lastObject];
+         NSNumber *enabled = [snsRep valueForKeyPath:@"enabled"];
+         
+         if ([enabled isEqual:(id)kCFBooleanTrue])
+           return YES;
+         else
+           return NO;
+       };
+
 		 
 		 [[WARemoteInterface sharedInterface]
 			signupUserWithFacebookToken:session.accessToken
 			withOptions:nil
 			onSuccess:^(NSString *token, NSDictionary *userRep, NSArray *groupReps) {
-				
-				dispatch_async(dispatch_get_main_queue(), ^{
-					
-					[busyBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
-					sender.enabled = YES;
-					
-					if (firstUseVC.didAuthSuccessBlock) {
-						firstUseVC.didAuthSuccessBlock(token, userRep, groupReps);
-					}
-					
-					if ([userRep[@"state"] isEqualToString:@"created"]) {
-						// user might haven't registered facebook account to Stream, then go signup flow.
-						[wSelf performSegueWithIdentifier:kWASegueLogInToConnectServices sender:sender];
-					} else {
-						[wSelf performSegueWithIdentifier:kWASegueLogInToPhotoImport sender:sender];
-					}
-					
+
+              if (firstUseVC.didAuthSuccessBlock) {
+                firstUseVC.didAuthSuccessBlock(token, userRep, groupReps);
+              }
+              
+              void (^dismissAndContinue)() = ^() {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                  
+                  [busyBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
+                  sender.enabled = YES;
+                  
+                  
+                  if ([userRep[@"state"] isEqualToString:@"created"]) {
+                    // user might haven't registered facebook account to Stream, then go signup flow.
+                    [wSelf performSegueWithIdentifier:kWASegueLogInToConnectServices sender:sender];
+                  } else {
+                    [wSelf performSegueWithIdentifier:kWASegueLogInToPhotoImport sender:sender];
+                  }
+                  
 				});
+
+              };
+              
+              [[WARemoteInterface sharedInterface] retrieveConnectedSocialNetworksOnSuccess:^(NSArray *snsReps) {
+                
+                BOOL fbImported = snsEnabled(snsReps, @"facebook");
+                if (fbImported) {
+                  [[NSUserDefaults standardUserDefaults] setBool:YES forKey:kWASNSFacebookConnectEnabled];
+                } else {
+                  [[NSUserDefaults standardUserDefaults] setBool:NO forKey:kWASNSFacebookConnectEnabled];
+                }
+                [[NSUserDefaults standardUserDefaults] synchronize];
+				
+                dismissAndContinue();
+                
+              } onFailure:^(NSError *error) {
+                
+                // doesn't matter, we continue the signup process
+                dismissAndContinue();
+                
+              }];
+
 				
 			} onFailure:^(NSError *error) {
 				
