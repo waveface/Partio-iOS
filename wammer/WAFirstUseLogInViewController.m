@@ -13,6 +13,7 @@
 #import "WAFirstUseFacebookLoginView.h"
 #import "WAFirstUseEmailLoginFooterView.h"
 #import <FacebookSDK/FacebookSDK.h>
+#import <FacebookSDK/FBError.h>
 #import <Accounts/Accounts.h>
 #import "WAAppearance.h"
 #import "WADefines.h"
@@ -224,10 +225,21 @@ static NSString * const kWASegueLogInToConnectServices = @"WASegueLogInToConnect
 	 allowLoginUI:YES
 	 completionHandler:^(FBSession *session, FBSessionState status, NSError *error) {
 		 
-		 if (error) {
-			 NSLog(@"Facebook auth error: %@", error);
-			 return;
-		 }
+       if (error) {
+         NSLog(@"Facebook auth error: %@", error);
+         dispatch_async(dispatch_get_main_queue(), ^{
+           
+           [busyBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
+           sender.enabled = YES;
+           
+           if (firstUseVC.didAuthFailBlock) {
+             firstUseVC.didAuthFailBlock(error);
+           }
+           
+         });
+
+         return;
+       }
        
        BOOL (^snsEnabled)(NSArray*, NSString *) = ^(NSArray *reps, NSString *snsType) {
          NSArray *snsReps = [reps filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^ (id evaluatedObject, NSDictionary *bindings) {
