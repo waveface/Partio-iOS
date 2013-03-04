@@ -25,7 +25,7 @@ NSString * const kWARemoteAttachmentUpdatedObjectIdentifier = @"WARemoteAttachme
 NSString * const kWARemoteAttachmentSubtype = @"WARemoteAttachmentDestinationImageType";
 NSString * const kWARemoteArticleIdentifier = @"WARemoteArticleIdentifier";
 NSString * const kWARemoteAttachmentFileName = @"WARemoteAttachmentFileName";
-NSString * const kWARemoteAttachmentExif = @"WARemoteAttachmentExif";
+NSString * const kWARemoteAttachmentExifId = @"WARemoteAttachmentExif";
 NSString * const kWARemoteAttachmentCreateTime = @"WARemoteAttachmentCreateTime";
 NSString * const kWARemoteAttachmentImportTime = @"WARemoteAttachmentImportTime";
 NSString * const WARemoteAttachmentOriginalSubtype = @"origin";
@@ -79,6 +79,7 @@ NSString * const WARemoteAttachmentSmallSubtype = @"small";
   
   [mergedOptions addEntriesFromDictionary:options];
   
+  NSManagedObjectContext *moc = [[WADataStore defaultStore] disposableMOC];
   
   WARemoteAttachmentType type = [[mergedOptions objectForKey:kWARemoteAttachmentType] unsignedIntegerValue];
   WARemoteAttachmentSubtype subtype = [mergedOptions objectForKey:kWARemoteAttachmentSubtype];
@@ -90,11 +91,10 @@ NSString * const WARemoteAttachmentSmallSubtype = @"small";
   NSString *fileCreateTime = [[mergedOptions objectForKey:kWARemoteAttachmentCreateTime] ISO8601String];
   NSString *fileImportTime = [[mergedOptions objectForKey:kWARemoteAttachmentImportTime] ISO8601String];
   NSString *timezone = [NSString stringWithFormat:@"%d", [[NSTimeZone localTimeZone] secondsFromGMT]/60];
-  WAFileExif *exif = [mergedOptions objectForKey:kWARemoteAttachmentExif];
+  WAFileExif *exif = (WAFileExif*)[moc objectWithID:(NSManagedObjectID*)[mergedOptions objectForKey:kWARemoteAttachmentExifId]];
   NSString *exifJsonString = nil;
   
   if (exif) {
-    CLS_LOG(@"ArticleID:%@, ObjectID:%@", articleIdentifier, updatedObjectID);
     NSDictionary *exifData = [exif remoteRepresentation];
     if ([NSJSONSerialization isValidJSONObject:exifData]) {
       NSError *error = nil;
