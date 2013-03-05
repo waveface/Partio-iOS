@@ -24,6 +24,7 @@
 #import "SSToolkit/NSDate+SSToolkitAdditions.h"
 #import "ALAsset+WAAdditions.h"
 #import "NSDate+WAAdditions.h"
+#import "WAFileExif.h"
 #import <NSString+SSToolkitAdditions.h>
 #import <AssetsLibrary/AssetsLibrary.h>
 
@@ -569,7 +570,7 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
       }
       
       if (file.exif) {
-        options[kWARemoteAttachmentExif] = file.exif;
+        options[kWARemoteAttachmentExifId] = [file.exif objectID];
       }
       
       if (file.importTime) {
@@ -602,7 +603,7 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
               
               // Fill EXIF data again to ensure the WAFileExif instance is readable
               if (file.exif) {
-                options[kWARemoteAttachmentExif] = file.exif;
+                options[kWARemoteAttachmentExifId] = [file.exif objectID];
               }
               
               file.thumbnailFilePath = [[[WADataStore defaultStore] persistentFileURLForData:UIImageJPEGRepresentation(image, 0.85f) extension:@"jpeg"] path];
@@ -677,7 +678,7 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
       }
       
       if (file.exif) {
-        options[kWARemoteAttachmentExif] = file.exif;
+        options[kWARemoteAttachmentExifId] = [file.exif objectID];
       }
       
       if (file.timestamp) {
