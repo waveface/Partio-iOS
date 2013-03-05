@@ -95,6 +95,7 @@ NSString * const WARemoteAttachmentSmallSubtype = @"small";
   NSString *exifJsonString = nil;
   
   if (exif) {
+    CLS_LOG(@"ArticleID:%@, ObjectID:%@", articleIdentifier, updatedObjectID);
     NSDictionary *exifData = [exif remoteRepresentation];
     if ([NSJSONSerialization isValidJSONObject:exifData]) {
       NSError *error = nil;
