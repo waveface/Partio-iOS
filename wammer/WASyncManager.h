@@ -19,6 +19,7 @@
 
 - (void) waitUntilFinished;
 - (void) cancelAllOperations;
+- (void) cancelWithRecovery;
 
 @property (nonatomic, readonly, strong) NSOperationQueue *articleSyncOperationQueue;
 @property (nonatomic, readonly, strong) NSOperationQueue *fileSyncOperationQueue;

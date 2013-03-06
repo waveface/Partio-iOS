@@ -128,6 +128,15 @@
 /* Authentication Error Description */
 "AUTH_ERROR_ALREADY_REGISTERED" = "電子郵件已註冊。請重新輸入新的電子郵件帳號。";
 
+/* User cancel facebook app */
+"AUTH_ERROR_FB_CANCEL" = "請打開您Facebook系統設定中aostream的權限，否則我們將無法同步您的新貼文。";
+
+/* Require to a valid facebook permission token */
+"AUTH_ERROR_FB_PERMISSION_REQUIRED" = "請打開您Facebook系統設定中aostream的權限，否則我們將無法同步您的新貼文。";
+
+/* Require to login with facebook again */
+"AUTH_ERROR_FB_REOPEN_REQUIRED" = "請重新用您的Facebook帳號登入";
+
 /* Authentication Error Description */
 "AUTH_ERROR_INVALID_EMAIL_FORMAT" = "電子郵件格式錯誤";
 
@@ -673,7 +682,7 @@
 "TITLE_INTRODUCTION_2" = "分享回顧您的生活點滴";
 
 /* Class = "IBUILabel"; text = "ACTION_GOTO_WEBSITE"; ObjectID = "189"; */
-"ACTION_GOTO_WEBSITE" = "詳細內容請至 www.waveface.com";
+"ACTION_GOTO_WEBSITE" = "在網站上檢視詳細方案";
 
 /* Class = "IBUILabel"; text = "PLANS_DESCRIPTION"; ObjectID = "202"; */
 "PLANS_DESCRIPTION" = "aostream會將您所有的珍貴檔案存放在指定的位置，您可以選擇存在家裡的PC，或者付費獲得額外的雲端儲存空間，讓您可以隨時隨地取得原始檔案。";

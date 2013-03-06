@@ -21,5 +21,6 @@
 - (void) endPostponingFetch;
 - (void) reload;
 - (void) cancelAllOperations;
+- (void) cancelWithRecovery;
 
 @end

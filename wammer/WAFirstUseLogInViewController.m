@@ -14,6 +14,7 @@
 #import "WAFirstUseEmailLoginFooterView.h"
 #import <FacebookSDK/FacebookSDK.h>
 #import <FacebookSDK/FBError.h>
+#import <FacebookSDK/NSError+FBError.h>
 #import <Accounts/Accounts.h>
 #import "WAAppearance.h"
 #import "WADefines.h"
@@ -259,7 +260,7 @@ static NSString * const kWASegueLogInToConnectServices = @"WASegueLogInToConnect
 
 		 
 		 [[WARemoteInterface sharedInterface]
-			signupUserWithFacebookToken:session.accessToken
+			signupUserWithFacebookToken:session.accessTokenData.accessToken
 			withOptions:nil
 			onSuccess:^(NSString *token, NSDictionary *userRep, NSArray *groupReps) {
 

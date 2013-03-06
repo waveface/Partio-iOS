@@ -128,6 +128,15 @@
 /* Authentication Error Description */
 "AUTH_ERROR_ALREADY_REGISTERED" = "This email address is already registered. Please try another one.";
 
+/* User cancel facebook app */
+"AUTH_ERROR_FB_CANCEL" = "You may grant us the permission to access your Facebook account.";
+
+/* Require to a valid facebook permission token */
+"AUTH_ERROR_FB_PERMISSION_REQUIRED" = "You may grant us the permission to access your Facebook account.;
+
+/* Require to login with facebook again */
+"AUTH_ERROR_FB_REOPEN_REQUIRED" = "Please re-signin or signup with your Facebook account again.";
+
 /* Authentication Error Description */
 "AUTH_ERROR_INVALID_EMAIL_FORMAT" = "Email address is invalid.";
 
