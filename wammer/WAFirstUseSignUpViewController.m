@@ -215,7 +215,7 @@ static NSString * const kWASegueSignUpToPhotoImport = @"WASegueSignUpToPhotoImpo
 
 		 
        [[WARemoteInterface sharedInterface]
-        signupUserWithFacebookToken:session.accessToken
+        signupUserWithFacebookToken:session.accessTokenData.accessToken
         withOptions:nil
         onSuccess:^(NSString *token, NSDictionary *userRep, NSArray *groupReps) {
 				

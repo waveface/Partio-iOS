@@ -114,7 +114,7 @@
     [busyBezel showWithAnimation:WAOverlayBezelAnimationFade];
     
     [wSelf
-     connectFacebookWithToken:FBSession.activeSession.accessToken
+     connectFacebookWithToken:FBSession.activeSession.accessTokenData
      onSuccess:^{
        
        [busyBezel dismissWithAnimation:WAOverlayBezelAnimationNone];
@@ -133,7 +133,7 @@
        
        [busyBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
        
-       [wSelf requestFacebookTokenWithCompletion:^(NSString *token, NSError *error) {
+       [wSelf requestFacebookTokenWithCompletion:^(FBAccessTokenData *token, NSError *error) {
          
          if (token) {
 	 
@@ -177,7 +177,7 @@
     
   } else {
     
-    [wSelf requestFacebookTokenWithCompletion:^(NSString *token, NSError *error) {
+    [wSelf requestFacebookTokenWithCompletion:^(FBAccessTokenData *token, NSError *error) {
       
       if (token) {
         
@@ -301,7 +301,7 @@
   
 }
 
-- (void) connectFacebookWithToken:(NSString *)token
+- (void) connectFacebookWithToken:(FBAccessTokenData *)token
 		    onSuccess:(void(^)(void))successBlock
 		    onFailure:(void(^)(NSError *error))failureBlock {
   
@@ -309,7 +309,7 @@
   
   [ri
    connectSocialNetwork:@"facebook"
-   withOptions: @{@"auth_token": token}
+   withOptions: @{@"auth_token": token.accessToken}
    onSuccess:^{
      if (successBlock) {
        dispatch_async(dispatch_get_main_queue(), ^{successBlock();} );
@@ -322,7 +322,7 @@
    }];
 }
 
-- (void) requestFacebookTokenWithCompletion:(void(^)(NSString *token, NSError *error))block {
+- (void) requestFacebookTokenWithCompletion:(void(^)(FBAccessTokenData *token, NSError *error))block {
   [FBSession
    openActiveSessionWithReadPermissions:@[@"email", @"user_photos", @"user_videos", @"user_notes", @"user_status", @"read_stream", @"user_likes", @"friends_photos", @"friends_videos", @"friends_status", @"friends_notes", @"friends_likes"]
    allowLoginUI:YES
@@ -333,7 +333,7 @@
        return;
      }
 
-     NSString *token = error ? nil : session.accessToken;
+     FBAccessTokenData *token = error ? nil : session.accessTokenData;
      dispatch_async(dispatch_get_main_queue(), ^{
        if (block) {
          block(token, error);

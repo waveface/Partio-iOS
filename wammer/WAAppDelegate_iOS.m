@@ -37,6 +37,7 @@
 #import	"DCIntrospect.h"
 
 #import <FacebookSDK/FacebookSDK.h>
+#import <FacebookSDK/NSError+FBError.h>
 #import <GoogleMaps/GoogleMaps.h>
 
 #import "WAWelcomeViewController.h"
@@ -402,8 +403,8 @@ extern CFAbsoluteTime StartTime;
 
 - (void) logout {
   
-  [self.syncManager cancelAllOperations];
-  [self.fetchManager cancelAllOperations];
+  [self.syncManager cancelWithRecovery];
+  [self.fetchManager cancelWithRecovery];
   
   self.cacheManager = nil;
   self.syncManager = nil;
@@ -740,6 +741,14 @@ extern CFAbsoluteTime StartTime;
       message = NSLocalizedString(@"AUTH_ERROR_INVALID_EMAIL_PWD", @"Authentication Error Description");
     } else if ([error code] == 0x1002) {
       message = NSLocalizedString(@"AUTH_ERROR_ALREADY_REGISTERED", @"Authentication Error Description");
+    } else if ([error code] == 0x1004) {
+      message = NSLocalizedString(@"AUTH_ERROR_FB_PERMISSION_REQUIRED", @"Require to a valid facebook permission token");
+    } else if ([error fberrorShouldNotifyUser]) {
+      message = error.fberrorUserMessage;
+    } else if ([error fberrorCategory] == FBErrorCategoryUserCancelled) {
+      message = NSLocalizedString(@"AUTH_ERROR_FB_CANCEL", @"User cancel facebook app");
+    } else if ([error fberrorCategory] == FBErrorCategoryAuthenticationReopenSession) {
+      message = NSLocalizedString(@"AUTH_ERROR_FB_REOPEN_REQUIRED", @"Require to login with facebook again");
     } else {
       message = NSLocalizedString(@"AUTH_UNKNOWN_ERROR", @"Unknown Error");
     }
@@ -843,8 +852,13 @@ static NSInteger networkActivityStackingCount = 0;
   [MagicalRecord cleanUp];
 }
 
-- (void)applicationWillEnterForeground:(UIApplication *)application {
+- (void)applicationDidBecomeActive:(UIApplication *)application {
+
   [FBSession.activeSession handleDidBecomeActive];
+  
+}
+
+- (void)applicationWillEnterForeground:(UIApplication *)application {
   
   if ([self hasAuthenticationData]) {
     
