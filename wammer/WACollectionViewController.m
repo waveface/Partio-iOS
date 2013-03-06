@@ -121,7 +121,9 @@ typedef NS_ENUM(NSUInteger, WACollectionSortMode){
     coverFile = coverFile.pageElements[0];
   }
   
-  [coverFile irObserve:@"smallThumbnailImage"
+  cell.cover = coverFile;
+  
+  [cell.cover irObserve:@"smallThumbnailImage"
                options:(NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew)
                  context:nil
                withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
@@ -131,9 +133,6 @@ typedef NS_ENUM(NSUInteger, WACollectionSortMode){
   return cell;
 }
 
-- (void)collectionView:(UICollectionView *)collectionView didEndDisplayingCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath {
-  [cell irRemoveAllObserves];
-}
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
   
@@ -168,7 +167,7 @@ typedef NS_ENUM(NSUInteger, WACollectionSortMode){
   NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:@"WACollection"];
   //TODO: sort by time or sort by title
   
-  _moc = [[WADataStore defaultStore] autoUpdatingMOC];
+  _moc = [[WADataStore defaultStore] defaultAutoUpdatedMOC];
 
   fetchRequest.predicate = allCollections;
   if (mode == WACollectionSortByName) {
