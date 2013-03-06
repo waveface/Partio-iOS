@@ -132,7 +132,7 @@
 "AUTH_ERROR_FB_CANCEL" = "You may grant us the permission to access your Facebook account.";
 
 /* Require to a valid facebook permission token */
-"AUTH_ERROR_FB_PERMISSION_REQUIRED" = "You may grant us the permission to access your Facebook account.;
+"AUTH_ERROR_FB_PERMISSION_REQUIRED" = "You may grant us the permission to access your Facebook account.";
 
 /* Require to login with facebook again */
 "AUTH_ERROR_FB_REOPEN_REQUIRED" = "Please re-signin or signup with your Facebook account again.";

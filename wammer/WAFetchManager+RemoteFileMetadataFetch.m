@@ -39,43 +39,43 @@
         NSArray *updatingFilesCopy = [NSArray arrayWithArray:updatingFiles];
         IRAsyncOperation *operation = [IRAsyncOperation operationWithWorker:^(IRAsyncOperationCallback callback) {
 
-	[[WARemoteInterface sharedInterface] retrieveMetaForAttachments:updatingFilesCopy onSuccess:^(NSArray *attachmentReps) {
+          [[WARemoteInterface sharedInterface] retrieveMetaForAttachments:updatingFilesCopy onSuccess:^(NSArray *attachmentReps) {
 	  
-	  [ds performBlock:^{
+            [ds performBlock:^{
 
-	    NSManagedObjectContext *context = [ds autoUpdatingMOC];
-	    [WAFile insertOrUpdateObjectsUsingContext:context
-			       withRemoteResponse:attachmentReps
-				   usingMapping:nil
-				        options:IRManagedObjectOptionIndividualOperations];
-	    [context save:nil];
-	    
-	  } waitUntilDone:YES];
-
-	  callback(nil);	  
-
-	} onFailure:^(NSError *error) {
+              NSManagedObjectContext *context = [ds autoUpdatingMOC];
+              [WAFile insertOrUpdateObjectsUsingContext:context
+                                     withRemoteResponse:attachmentReps
+                                           usingMapping:nil
+                                                options:IRManagedObjectOptionIndividualOperations];
+              [context save:nil];
+              
+            } waitUntilDone:YES];
+            
+            callback(nil);
+            
+          } onFailure:^(NSError *error) {
+            
+            NSLog(@"Unable to retrieve attachment metas:%@ error:%@", updatingFiles, error);
+            
+            callback(error);
 	  
-	  NSLog(@"Unable to retrieve attachment metas:%@ error:%@", updatingFiles, error);
-	  
-	  callback(error);
-	  
-	}];
+          }];
 	
         } trampoline:^(IRAsyncOperationInvoker callback) {
-
-	NSCParameterAssert(![NSThread isMainThread]);
-	callback();
-
+          
+          NSCParameterAssert(![NSThread isMainThread]);
+          callback();
+          
         } callback:^(id results) {
 
-	// NO OP
-
+          // NO OP
+          
         } callbackTrampoline:^(IRAsyncOperationInvoker callback) {
-
-	NSCParameterAssert(![NSThread isMainThread]);
-	callback();
-
+          
+          NSCParameterAssert(![NSThread isMainThread]);
+          callback();
+          
         }];
         
         [wSelf.fileMetadataFetchOperationQueue addOperation:operation];
