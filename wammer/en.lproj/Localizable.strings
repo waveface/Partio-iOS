@@ -631,7 +631,7 @@
 "CONNECT_SERVICES_DESCRIPTION" = "Let aostream pull useful information from your favorite web services to create more meaningful events.";
 
 /* Class = "IBUILabel"; text = "I_AM_NEW_HERE"; ObjectID = "Gk5-O0-pNx"; */
-"I_AM_NEW_HERE" = "I'm a new user";
+"I_AM_NEW_HERE" = "I'm a New User";
 
 /* Class = "IBUILabel"; text = "PC_AD_DESCRIPTION"; ObjectID = "Hwk-71-2jX"; */
 "PC_AD_DESCRIPTION" = "Create your own Personal Cloud by installing aostream on your PC. It's the fastest way to import all your photos!";
@@ -652,16 +652,16 @@
 "NOUN_NICKNAME" = "Name";
 
 /* Class = "IBUILabel"; text = "LOGIN_LINK_DEVICE"; ObjectID = "YX9-dy-aZa"; */
-"LOGIN_LINK_DEVICE" = "Log in";
+"LOGIN_LINK_DEVICE" = "Log In";
 
 /* Class = "IBUIButton"; normalTitle = "ACTION_SEND_LINK"; ObjectID = "h9i-2T-iDG"; */
-"ACTION_SEND_LINK" = "Send me the link";
+"ACTION_SEND_LINK" = "Send Me the Link";
 
 /* Class = "IBUILabel"; text = "NOUN_PASSWORD"; ObjectID = "qlc-Lu-gj2"; */
 "NOUN_PASSWORD" = "Password";
 
 /* Class = "IBUIButton"; normalTitle = "ACTION_START_STREAM"; ObjectID = "u89-AV-2W1"; */
-"ACTION_START_STREAM" = "START";
+"ACTION_START_STREAM" = "Start";
 
 /* Class = "IBUILabel"; text = "PC_AD_TITLE"; ObjectID = "uze-n1-4Ca"; */
 "PC_AD_TITLE" = "Try aostream for Windows!";
