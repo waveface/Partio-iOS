@@ -682,10 +682,10 @@
 "TITLE_INTRODUCTION_2" = "Relive and share sweet memories";
 
 /* Class = "IBUILabel"; text = "ACTION_GOTO_WEBSITE"; ObjectID = "189"; */
-"ACTION_GOTO_WEBSITE" = "Learn more at www.waveface.com.";
+"ACTION_GOTO_WEBSITE" = "Premium plans will be arriving in the following updates.";
 
 /* Class = "IBUILabel"; text = "PLANS_DESCRIPTION"; ObjectID = "202"; */
-"PLANS_DESCRIPTION" = "aostream sends all your digital memories back to your PC where they are safely stored. You can also upgrade to a premium cloud storage plan and start enjoy all the benefits of a smart personal cloud.";
+"PLANS_DESCRIPTION" = "Select the cloud storage plan that is best for you and start enjoying the benefits of a smart personal cloud!";
 
 /* Class = "IBUILabel"; text = "BODY_INTRODUCTION_1"; ObjectID = "229"; */
 "BODY_INTRODUCTION_1" = "aostream automatically puts the photos taken on the phone and those imported from PC in one place, so you can view them from anywhere. ";

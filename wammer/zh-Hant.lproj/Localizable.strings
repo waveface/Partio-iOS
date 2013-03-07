@@ -682,7 +682,7 @@
 "TITLE_INTRODUCTION_2" = "分享回顧您的生活點滴";
 
 /* Class = "IBUILabel"; text = "ACTION_GOTO_WEBSITE"; ObjectID = "189"; */
-"ACTION_GOTO_WEBSITE" = "在網站上檢視詳細方案";
+"ACTION_GOTO_WEBSITE" = "接下來的更新版本將提供更多付費方案。";
 
 /* Class = "IBUILabel"; text = "PLANS_DESCRIPTION"; ObjectID = "202"; */
 "PLANS_DESCRIPTION" = "aostream會將您所有的珍貴檔案存放在指定的位置，您可以選擇存在家裡的PC，或者付費獲得額外的雲端儲存空間，讓您可以隨時隨地取得原始檔案。";
