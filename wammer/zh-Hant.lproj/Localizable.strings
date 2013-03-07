@@ -766,7 +766,7 @@
 "EVENT_TEXT" = "EVENT_TEXT";
 
 /* Class = "IBUILabel"; text = "ACTION_GOTO_WEBSITE"; ObjectID = "0UL-JF-5TW"; */
-"ACTION_GOTO_WEBSITE" = "在網站上檢視詳細方案";
+"ACTION_GOTO_WEBSITE" = "接下來的更新版本將提供更多付費方案。";
 
 /* Class = "IBUILabel"; text = "PC_SETUP_DESCRIPTION"; ObjectID = "1TK-Px-G5L"; */
 "PC_SETUP_DESCRIPTION" = "aostream Windows可以將您的PC升級成個人雲，透過它傳輸速度將會加快一百倍！";
