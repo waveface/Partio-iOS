@@ -16,6 +16,7 @@
 #import "WARemoteInterface+Authentication.h"
 #import <WADataStore+WARemoteInterfaceAdditions.h>
 #import "WACollectionOverviewViewController.h"
+#import "WADataStore.h"
 
 typedef NS_ENUM(NSUInteger, WACollectionSortMode){
   WACollectionSortByName = 0,
@@ -28,6 +29,8 @@ typedef NS_ENUM(NSUInteger, WACollectionSortMode){
 
 @property (nonatomic, strong) NSFetchedResultsController *fetchedResultsController;
 @property (nonatomic, strong) UIRefreshControl *refreshControl;
+@property (nonatomic, strong) NSManagedObjectContext *moc;
+
 @end
 
 @implementation WACollectionViewController
@@ -51,7 +54,6 @@ typedef NS_ENUM(NSUInteger, WACollectionSortMode){
   _refreshControl = [[UIRefreshControl alloc] initWithFrame:CGRectMake(0, -44, 320, 44)];
   [_refreshControl addTarget:self action:@selector(refreshAllCollectionMetas) forControlEvents:UIControlEventValueChanged];
   [self.collectionView addSubview:_refreshControl];
-  
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -62,9 +64,9 @@ typedef NS_ENUM(NSUInteger, WACollectionSortMode){
   [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updated:) name:kWACollectionUpdated object:nil];
   
   //  if ([WACollection MR_countOfEntities] == 0) {
-  [self refreshAllCollectionMetas];
-  //  }
+  [self reloadCollection];
   [self.collectionView reloadData];
+  //  }
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -99,12 +101,16 @@ typedef NS_ENUM(NSUInteger, WACollectionSortMode){
   return [[ [_fetchedResultsController sections] objectAtIndex:section] numberOfObjects];
 }
 
-- (UICollectionViewCell *)collectionView:(UICollectionView *)aCollectionView
+- (WACollectionViewCell *)collectionView:(UICollectionView *)aCollectionView
                   cellForItemAtIndexPath:(NSIndexPath *)indexPath {
   
   WACollectionViewCell *cell = [aCollectionView dequeueReusableCellWithReuseIdentifier:kCollectionViewCellID
                                                                           forIndexPath:indexPath];
+  
   WACollection *aCollection = [_fetchedResultsController objectAtIndexPath:indexPath];
+  
+  if (!cell)
+    return nil;
   
   cell.title.text = [aCollection.title stringByAppendingFormat:@" (%d)", [aCollection.files count]];
   
@@ -115,21 +121,18 @@ typedef NS_ENUM(NSUInteger, WACollectionSortMode){
     coverFile = coverFile.pageElements[0];
   }
   
-  if (coverFile.thumbnailImage) {
-    cell.coverImage.image = coverFile.thumbnailImage;
-  } else {
-    [coverFile irObserve:@"thumbnailImage"
-                 options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew
+  cell.cover = coverFile;
+  
+  [cell.cover irObserve:@"smallThumbnailImage"
+               options:(NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew)
                  context:nil
                withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
-                 dispatch_async(dispatch_get_main_queue(), ^{
-                   ((WACollectionViewCell *)[aCollectionView cellForItemAtIndexPath:indexPath]).coverImage.image = toValue;
-                 });
+                 cell.coverImage.image = toValue;
                }];
-  }
   
-  return (UICollectionViewCell *)cell;
+  return cell;
 }
+
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
   
@@ -137,7 +140,7 @@ typedef NS_ENUM(NSUInteger, WACollectionSortMode){
   
   WACollectionOverviewViewController *overviewViewController = [[WACollectionOverviewViewController alloc] init];
   
-  overviewViewController.collection = [_fetchedResultsController objectAtIndexPath:indexPath];
+  overviewViewController.collectionURI =[[[_fetchedResultsController objectAtIndexPath:indexPath] objectID] URIRepresentation];
   
   [self.navigationController pushViewController:overviewViewController animated:YES];
 }
@@ -161,12 +164,32 @@ typedef NS_ENUM(NSUInteger, WACollectionSortMode){
 
 - (void)reloadCollection {
   NSPredicate *allCollections = [NSPredicate predicateWithFormat:@"isHidden == FALSE AND files.@count > 0"];
-  _fetchedResultsController = [WACollection MR_fetchAllSortedBy:(mode == WACollectionSortByName)? @"title": @"modificationDate"
-                                                      ascending:(mode == WACollectionSortByName)? YES: NO
-                                                  withPredicate:allCollections
-                                                        groupBy:nil
-                                                       delegate:self
-                                                      inContext:[[WADataStore defaultStore] autoUpdatingMOC]];
+  NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:@"WACollection"];
+  //TODO: sort by time or sort by title
+  
+  _moc = [[WADataStore defaultStore] defaultAutoUpdatedMOC];
+
+  fetchRequest.predicate = allCollections;
+  if (mode == WACollectionSortByName) {
+    fetchRequest.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"title" ascending:YES]];
+  } else {
+    fetchRequest.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"modificationDate" ascending:NO]];
+  }
+  
+  _fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest managedObjectContext:_moc sectionNameKeyPath:nil cacheName:@"WACollection All"];
+  _fetchedResultsController.delegate = self;
+  
+  NSError *error;
+  if (![_fetchedResultsController performFetch:&error]) {
+    NSLog(@"Error: %@", error);
+  }
+  
+//  _fetchedResultsController = [WACollection MR_fetchAllSortedBy:(mode == WACollectionSortByName)? @"title": @"modificationDate"
+//                                                      ascending:(mode == WACollectionSortByName)? YES: NO
+//                                                  withPredicate:allCollections
+//                                                        groupBy:nil
+//                                                       delegate:self
+//                                                      inContext:[[WADataStore defaultStore] autoUpdatingMOC]];
   
   NSString *title = (mode == WACollectionSortByName)?
   NSLocalizedString(@"By Name", @"Collection View Navigation Bar"):

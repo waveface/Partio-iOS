@@ -305,8 +305,8 @@
                         <color key="backgroundColor" red="0.95686274510000002" green="0.95686274510000002" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="OVz-tl-GMd" secondAttribute="trailing" constant="20" symbolic="YES" type="default" id="2Fh-wL-7nQ"/>
+                            <constraint firstItem="OVz-tl-GMd" firstAttribute="top" secondItem="IVt-oU-cYl" secondAttribute="top" constant="80" id="FcU-2q-Net"/>
                             <constraint firstItem="OVz-tl-GMd" firstAttribute="leading" secondItem="IVt-oU-cYl" secondAttribute="leading" constant="20" symbolic="YES" type="default" id="Hz8-zr-frO"/>
-                            <constraint firstItem="OVz-tl-GMd" firstAttribute="top" secondItem="IVt-oU-cYl" secondAttribute="top" constant="20" symbolic="YES" type="default" id="W8Q-Kr-mcz"/>
                             <constraint firstAttribute="bottom" secondItem="u89-AV-2W1" secondAttribute="bottom" constant="59" id="ZgI-gI-eGW"/>
                             <constraint firstItem="u89-AV-2W1" firstAttribute="leading" secondItem="IVt-oU-cYl" secondAttribute="leading" constant="20" symbolic="YES" type="default" id="n8C-Vf-UXw"/>
                             <constraint firstAttribute="trailing" secondItem="u89-AV-2W1" secondAttribute="trailing" constant="20" symbolic="YES" type="default" id="o5x-DC-h5E"/>

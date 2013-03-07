@@ -11,6 +11,8 @@
 #import "WAGalleryViewController.h"
 #import "WACollection.h"
 #import "WACollectionOverviewViewCell.h"
+#import "WADataStore.h"
+
 @interface WACollectionOverviewViewController ()
 
 @end
@@ -32,6 +34,13 @@
   // Do any additional setup after loading the view from its nib.
   [self.collectionView registerClass:[WACollectionOverviewViewCell class]
           forCellWithReuseIdentifier:@"WACollectionOverviewViewCell"];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+  [super viewWillAppear:animated];
+  NSManagedObjectContext *moc = [[WADataStore defaultStore] defaultAutoUpdatedMOC];
+  _collection = (WACollection*)[moc irManagedObjectForURI:_collectionURI];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {

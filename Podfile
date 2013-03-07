@@ -1,7 +1,7 @@
 platform :ios, '6.0'
 
 pod 'DCIntrospect', '~> 0.0.2'
-pod 'Facebook-iOS-SDK', '~> 3.1.1'
+pod 'Facebook-iOS-SDK', '~> 3.2.0'
 pod 'InAppSettingsKit', '~> 1.0'
 pod 'JSONKit', '~> 1.5pre'
 pod 'MagicalRecord', '~> 2.0.7'

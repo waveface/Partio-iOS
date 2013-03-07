@@ -53,9 +53,12 @@
 		  
 		} waitUntilDone:YES];
 		  
-		if ([remainingCount integerValue] == 0) {
+		if ([remainingCount integerValue] == 0 && [postReps count] != 0) {
 		  [[NSUserDefaults standardUserDefaults] setBool:YES forKey:kWAFirstArticleFetched];
 		  [[NSUserDefaults standardUserDefaults] synchronize];
+
+          [ds setMinSequenceNumber:nextSeq];
+
 		}
         
 		if (![ds maxSequenceNumber]) {
@@ -70,7 +73,6 @@
 		  }
 		}
 		
-		[ds setMinSequenceNumber:nextSeq];
 
 		[wSelf endPostponingFetch];
         

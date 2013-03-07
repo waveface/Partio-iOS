@@ -128,6 +128,15 @@
 /* Authentication Error Description */
 "AUTH_ERROR_ALREADY_REGISTERED" = "電子郵件已註冊。請重新輸入新的電子郵件帳號。";
 
+/* User cancel facebook app */
+"AUTH_ERROR_FB_CANCEL" = "請打開您Facebook系統設定中aostream的權限，否則我們將無法同步您的新貼文。";
+
+/* Require to a valid facebook permission token */
+"AUTH_ERROR_FB_PERMISSION_REQUIRED" = "請打開您Facebook系統設定中aostream的權限，否則我們將無法同步您的新貼文。";
+
+/* Require to login with facebook again */
+"AUTH_ERROR_FB_REOPEN_REQUIRED" = "請重新用您的Facebook帳號登入";
+
 /* Authentication Error Description */
 "AUTH_ERROR_INVALID_EMAIL_FORMAT" = "電子郵件格式錯誤";
 
@@ -405,10 +414,10 @@
 "OPTION_FREE_PLAN" = "免費";
 
 /* Premium plan option in plans page */
-"OPTION_PREMIUM_PLAN" = "NT149/月";
+"OPTION_PREMIUM_PLAN" = "NT249/月";
 
 /* Ultimate plan option in plans page */
-"OPTION_ULTIMATE_PLAN" = "NT239/月";
+"OPTION_ULTIMATE_PLAN" = "NT499/月";
 
 /* Password placeholder in login page
    Password placeholder in signup page */
@@ -679,7 +688,7 @@
 "PLANS_DESCRIPTION" = "aostream會將您所有的珍貴檔案存放在指定的位置，您可以選擇存在家裡的PC，或者付費獲得額外的雲端儲存空間，讓您可以隨時隨地取得原始檔案。";
 
 /* Class = "IBUILabel"; text = "BODY_INTRODUCTION_1"; ObjectID = "229"; */
-"BODY_INTRODUCTION_1" = "只要啟用GPS拍照，所有照片會自動同步到所有裝置。從Windows PC匯入照片，也只需一鍵完成，不限容量。";
+"BODY_INTRODUCTION_1" = "只要啟用照片匯入，所有照片會自動同步到所有裝置。從Windows PC匯入照片，也只需一鍵完成，不限容量。";
 
 /* Class = "IBUILabel"; text = "SUBBODY_INTRODUCTION_1"; ObjectID = "234"; */
 "SUBBODY_INTRODUCTION_1" = "aostream使用雲端串流技術，不佔您的手機空間。手機原始照片會自動傳回PC備份，讓你保存一份最完整的照片庫。第一次同步，建議使用區域網路連PC以加快同步速度。";
@@ -688,7 +697,7 @@
 "BODY_INTRODUCTION_2" = "aostream根據拍照時間、地點、參與對象，打卡動態來自動記錄您的每日活動。您也能透過自定照片選輯，輕鬆整理出您專屬的個人蒐藏。";
 
 /* Class = "IBUILabel"; text = "SUBBODY_INTRODUCTION_2"; ObjectID = "260"; */
-"SUBBODY_INTRODUCTION_2" = "您必須先連結Facebook與Foursquare等帳號。請放心，我們不會po東西到您的帳號中。";
+"SUBBODY_INTRODUCTION_2" = "您必須先連結Facebook與Foursquare等帳號。請放心，我們不會擅自貼文到您的帳號中。";
 
 /* Class = "IBUITextField"; placeholder = "USERNAME_PLACEHOLDER"; ObjectID = "2Vk-4J-QH3"; */
 "USERNAME_PLACEHOLDER" = "me@example.com";
@@ -778,7 +787,7 @@
 "LOGOUT" = "登出";
 
 /* Class = "IBUILabel"; text = "FILES_TO_UPLOAD"; ObjectID = "Ldp-qK-xdo"; */
-"FILES_TO_UPLOAD" = "待上傳照片";
+"FILES_TO_UPLOAD" = "待備份照片";
 
 /* Class = "IBUILabel"; text = "PLANS_DESCRIPTION"; ObjectID = "MRD-E4-twD"; */
 "PLANS_DESCRIPTION" = "aostream會將您所有的珍貴檔案存放在指定的位置，您可以選擇存在家裡的PC，或者付費獲得額外的雲端儲存空間，讓您可以隨時隨地取得原始檔案。";

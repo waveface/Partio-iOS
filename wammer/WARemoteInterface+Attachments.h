@@ -40,7 +40,7 @@ extern NSString * const kWARemoteAttachmentSubtype;
 
 extern NSString * const kWARemoteArticleIdentifier;
 extern NSString * const kWARemoteAttachmentFileName;
-extern NSString * const kWARemoteAttachmentExif;
+extern NSString * const kWARemoteAttachmentExifId;
 extern NSString * const kWARemoteAttachmentCreateTime;
 extern NSString * const kWARemoteAttachmentImportTime;
 

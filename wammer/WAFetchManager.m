@@ -87,6 +87,35 @@
   
 }
 
+- (void)waitUntilFinished {
+  
+  [self.recurrenceMachine.queue waitUntilAllOperationsAreFinished];
+  [self.articleFetchOperationQueue waitUntilAllOperationsAreFinished];
+  [self.fileMetadataFetchOperationQueue waitUntilAllOperationsAreFinished];
+  [self.collectionInsertOperationQueue waitUntilAllOperationsAreFinished];
+  
+}
+
+- (void)cancelWithRecovery {
+  
+  __weak WAFetchManager *wSelf = self;
+  dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+    
+    [wSelf cancelAllOperations];
+    [wSelf waitUntilFinished];
+    
+    // reset postponing counter because the operations decreasing the postponing count
+    // might be canceled by the method
+    dispatch_sync(dispatch_get_main_queue(), ^{
+      while ([wSelf.recurrenceMachine isPostponingOperations]) {
+        [wSelf.recurrenceMachine endPostponingOperations];
+      }
+    });
+    
+  });
+  
+}
+
 + (NSSet *)keyPathsForValuesAffectingIsFetching {
 
   return [NSSet setWithArray:@[

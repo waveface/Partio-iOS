@@ -182,6 +182,18 @@ static NSString * const kWASegueSignUpToPhotoImport = @"WASegueSignUpToPhotoImpo
 		 
        if (error) {
          NSLog(@"Facebook auth error: %@", error);
+         dispatch_async(dispatch_get_main_queue(), ^{
+           
+           [busyBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
+           sender.enabled = YES;
+           
+           if (firstUseVC.didAuthFailBlock) {
+             firstUseVC.didAuthFailBlock(error);
+           }
+           
+         });
+         
+
          return;
        }
        
@@ -203,7 +215,7 @@ static NSString * const kWASegueSignUpToPhotoImport = @"WASegueSignUpToPhotoImpo
 
 		 
        [[WARemoteInterface sharedInterface]
-        signupUserWithFacebookToken:session.accessToken
+        signupUserWithFacebookToken:session.accessTokenData.accessToken
         withOptions:nil
         onSuccess:^(NSString *token, NSDictionary *userRep, NSArray *groupReps) {
 				

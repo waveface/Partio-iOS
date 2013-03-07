@@ -13,5 +13,6 @@
 
 @property (strong, nonatomic) IBOutlet UICollectionView *collectionView;
 @property (strong, nonatomic) WACollection *collection;
+@property (strong, nonatomic) NSURL *collectionURI;
 
 @end
