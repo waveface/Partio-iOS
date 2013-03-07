@@ -509,7 +509,7 @@
                             <rect key="frame" x="0.0" y="0.0" width="320" height="143"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
-                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="PLANS_DESCRIPTION" lineBreakMode="characterWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="280" translatesAutoresizingMaskIntoConstraints="NO" id="MRD-E4-twD" customClass="WALocalizedLabel">
+                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="PLANS_DESCRIPTION" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="280" translatesAutoresizingMaskIntoConstraints="NO" id="MRD-E4-twD" customClass="WALocalizedLabel">
                                     <constraints>
                                         <constraint firstAttribute="height" priority="500" constant="21" type="user" id="tlp-tB-WlU"/>
                                     </constraints>
@@ -529,8 +529,9 @@
                             <rect key="frame" x="0.0" y="323" width="320" height="262"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
-                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="ACTION_GOTO_WEBSITE" textAlignment="center" lineBreakMode="wordWrap" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0UL-JF-5TW" customClass="WALocalizedLabel">
+                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="ACTION_GOTO_WEBSITE" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="294" translatesAutoresizingMaskIntoConstraints="NO" id="0UL-JF-5TW" customClass="WALocalizedLabel">
                                     <constraints>
+                                        <constraint firstAttribute="height" constant="58" id="XAD-2Q-lk1"/>
                                         <constraint firstAttribute="width" constant="294" id="Z61-KP-2Sj"/>
                                     </constraints>
                                     <fontDescription key="fontDescription" name="Helvetica-Bold" family="Helvetica" pointSize="14"/>
