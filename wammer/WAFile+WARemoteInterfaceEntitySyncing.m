@@ -587,13 +587,13 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
             
             NSManagedObjectID *objectID = file.objectID;
             [[WARemoteInterface sharedInterface] deleteAttachment:file.identifier onSuccess:^{
-              NSManagedObjectContext *moc = [[WADataStore defaultManager] disposableMOC];
+              NSManagedObjectContext *moc = [[WADataStore defaultStore] disposableMOC];
               [moc deleteObject:[moc objectWithID:objectID]];
               [moc save:nil];
               callback(nil);
-              NSLog(@"Asset does not exist for WAFile %@, delete it from cloud and local.", file);
+              NSLog(@"Asset does not exist for WAFile %@, delete it from cloud and local.", objectID);
             } onFailure:^(NSError *error) {
-              NSLog(@"Asset does not exist for WAFile %@, but fail to delete it from cloud.", file);
+              NSLog(@"Asset does not exist for WAFile %@, but fail to delete it from cloud.", objectID);
               callback(error);
             }];
             return;

@@ -66,6 +66,7 @@ static NSString * const kWASeguePhotoImportToSendLink = @"WASeguePhotoImportToSe
 	} else {
 		[[NSUserDefaults standardUserDefaults] setBool:NO forKey:kWAPhotoImportEnabled];
 	}
+  [[NSUserDefaults standardUserDefaults] setBool:YES forKey:kWAFirstUseVisited];
 	[[NSUserDefaults standardUserDefaults] synchronize];
 
 }
