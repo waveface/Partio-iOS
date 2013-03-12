@@ -28,6 +28,8 @@
 #import <NSString+SSToolkitAdditions.h>
 #import <AssetsLibrary/AssetsLibrary.h>
 
+#import "WARemoteInterface+Attachments.h"
+
 
 NSString * kWAFileEntitySyncingErrorDomain = @"com.waveface.wammer.file.entitySyncing";
 NSError * WAFileEntitySyncingError (WAFileSyncingErrorCode code, NSString *descriptionKey, NSString *reasonKey) {
@@ -582,11 +584,18 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
         [[WAAssetsLibraryManager defaultManager] assetForURL:[NSURL URLWithString:file.assetURL] resultBlock:^(ALAsset *asset) {
 
           if (!asset) {
-            NSLog(@"Asset does not exist for WAFile %@, hide it.", file);
-            file.hidden = @YES;
-            file.dirty = @YES;
-            [context save:nil];
-            callback(nil);
+            
+            NSManagedObjectID *objectID = file.objectID;
+            [[WARemoteInterface sharedInterface] deleteAttachment:file.identifier onSuccess:^{
+              NSManagedObjectContext *moc = [[WADataStore defaultManager] disposableMOC];
+              [moc deleteObject:[moc objectWithID:objectID]];
+              [moc save:nil];
+              callback(nil);
+              NSLog(@"Asset does not exist for WAFile %@, delete it from cloud and local.", file);
+            } onFailure:^(NSError *error) {
+              NSLog(@"Asset does not exist for WAFile %@, but fail to delete it from cloud.", file);
+              callback(error);
+            }];
             return;
           }
           
