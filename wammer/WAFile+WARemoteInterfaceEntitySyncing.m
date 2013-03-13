@@ -546,8 +546,20 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
     [operations addObject:[IRAsyncBarrierOperation operationWithWorker:^(IRAsyncOperationCallback callback) {
       
       NSManagedObjectContext *context = [ds disposableMOC];
+
       
-      WAFile *file = (WAFile *)[context irManagedObjectForURI:ownURL];
+      /* when handling a case about removing photos from camera roll while scaning, attachment uploading would crash. It is a strange issue, since the WAFile 
+       * managed object is correctly saved, but it was not correctly fetched out in this thread, which caused the crash. But I tried not to fetch the faulted object,
+       * fetch a full managed object instead, the problem is solved. Not sure the exact reason. 
+       */
+      NSManagedObjectID *objectID = [[context persistentStoreCoordinator] managedObjectIDForURIRepresentation:ownURL];
+      NSError *error = nil;
+      WAFile *file = (WAFile *)[context existingObjectWithID:objectID error:&error];
+      if (error) {
+        NSLog(@"Fail to fetch WAFile %@ for error: %@", ownURL, error);
+        callback(nil);
+        return;
+      }
       
       if (file.thumbnailURL) {
         callback(nil);

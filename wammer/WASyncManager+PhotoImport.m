@@ -54,13 +54,13 @@
         NSManagedObjectContext *context = [ds disposableMOC];
         WAArticle *article = [WAArticle objectInsertingIntoContext:context withRemoteDictionary:@{}];
         [assets enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+          ALAsset *asset = (ALAsset *)obj;
+          if (![[asset defaultRepresentation] url]) {// asset no longer exist
+            NSLog(@"asset no longer exist.");
+            return;
+          }
           
           @autoreleasepool {
-            ALAsset *asset = (ALAsset *)obj;
-            if (![[asset defaultRepresentation] url]) {// asset no longer exist
-              NSLog(@"asset no longer exist.");
-              return ;
-            }
             
             WAFile *file = (WAFile *)[WAFile objectInsertingIntoContext:context withRemoteDictionary:@{}];
             CFUUIDRef theUUID = CFUUIDCreate(kCFAllocatorDefault);
@@ -121,7 +121,7 @@
         } else {
           NSLog(@"Error saving: %s %@", __PRETTY_FUNCTION__, savingError);
         }
-        
+ 
         return;
         
       }];
