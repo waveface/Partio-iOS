@@ -28,6 +28,8 @@
 #import <NSString+SSToolkitAdditions.h>
 #import <AssetsLibrary/AssetsLibrary.h>
 
+#import "WARemoteInterface+Attachments.h"
+
 
 NSString * kWAFileEntitySyncingErrorDomain = @"com.waveface.wammer.file.entitySyncing";
 NSError * WAFileEntitySyncingError (WAFileSyncingErrorCode code, NSString *descriptionKey, NSString *reasonKey) {
@@ -544,8 +546,20 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
     [operations addObject:[IRAsyncBarrierOperation operationWithWorker:^(IRAsyncOperationCallback callback) {
       
       NSManagedObjectContext *context = [ds disposableMOC];
+
       
-      WAFile *file = (WAFile *)[context irManagedObjectForURI:ownURL];
+      /* when handling a case about removing photos from camera roll while scaning, attachment uploading would crash. It is a strange issue, since the WAFile 
+       * managed object is correctly saved, but it was not correctly fetched out in this thread, which caused the crash. But I tried not to fetch the faulted object,
+       * fetch a full managed object instead, the problem is solved. Not sure the exact reason. 
+       */
+      NSManagedObjectID *objectID = [[context persistentStoreCoordinator] managedObjectIDForURIRepresentation:ownURL];
+      NSError *error = nil;
+      WAFile *file = (WAFile *)[context existingObjectWithID:objectID error:&error];
+      if (error) {
+        NSLog(@"Fail to fetch WAFile %@ for error: %@", ownURL, error);
+        callback(nil);
+        return;
+      }
       
       if (file.thumbnailURL) {
         callback(nil);
@@ -586,11 +600,18 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
         [[WAAssetsLibraryManager defaultManager] assetForURL:[NSURL URLWithString:file.assetURL] resultBlock:^(ALAsset *asset) {
 
           if (!asset) {
-            NSLog(@"Asset does not exist for WAFile %@, hide it.", file);
-            file.hidden = @YES;
-            file.dirty = @YES;
-            [context save:nil];
-            callback(nil);
+            
+            NSManagedObjectID *objectID = file.objectID;
+            [[WARemoteInterface sharedInterface] deleteAttachment:file.identifier onSuccess:^{
+              NSManagedObjectContext *moc = [[WADataStore defaultStore] disposableMOC];
+              [moc deleteObject:[moc objectWithID:objectID]];
+              [moc save:nil];
+              callback(nil);
+              NSLog(@"Asset does not exist for WAFile %@, delete it from cloud and local.", objectID);
+            } onFailure:^(NSError *error) {
+              NSLog(@"Asset does not exist for WAFile %@, but fail to delete it from cloud.", objectID);
+              callback(error);
+            }];
             return;
           }
           

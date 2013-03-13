@@ -124,11 +124,10 @@
           WAFile *file = (WAFile *)[context irManagedObjectForURI:ownURL];
           
           if (!asset) {
-            NSLog(@"Asset does not exist for WAFile %@, hide it.", file);
-            file.hidden = @YES;
-            file.dirty = @YES;
+            [context deleteObject:file];
             [context save:nil];
             callback(nil);
+            NSLog(@"asset does not exist for WAFile %@, deleted it locally.", file);
             return;
           }
           

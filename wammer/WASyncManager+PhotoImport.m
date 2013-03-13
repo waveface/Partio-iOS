@@ -54,6 +54,11 @@
         NSManagedObjectContext *context = [ds disposableMOC];
         WAArticle *article = [WAArticle objectInsertingIntoContext:context withRemoteDictionary:@{}];
         [assets enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+          ALAsset *asset = (ALAsset *)obj;
+          if (![[asset defaultRepresentation] url]) {// asset no longer exist
+            NSLog(@"asset no longer exist.");
+            return;
+          }
           
           @autoreleasepool {
             
@@ -65,8 +70,6 @@
             file.dirty = (id)kCFBooleanTrue;
             
             [[article mutableOrderedSetValueForKey:@"files"] addObject:file];
-            
-            ALAsset *asset = (ALAsset *)obj;
             
             UIImage *extraSmallThumbnailImage = [UIImage imageWithCGImage:[asset thumbnail]];
             file.extraSmallThumbnailFilePath = [[[WADataStore defaultStore] persistentFileURLForData:UIImageJPEGRepresentation(extraSmallThumbnailImage, 0.85f) extension:@"jpeg"] path];
@@ -118,7 +121,7 @@
         } else {
           NSLog(@"Error saving: %s %@", __PRETTY_FUNCTION__, savingError);
         }
-        
+ 
         return;
         
       }];
@@ -176,6 +179,9 @@
 }
 
 - (BOOL)canPerformPhotoImport {
+  
+  if (![[NSUserDefaults standardUserDefaults] boolForKey:kWAFirstUseVisited])
+    return NO;// don't import photos before user has visite photo import setting in first use
   
   if (![[NSUserDefaults standardUserDefaults] boolForKey:kWAPhotoImportEnabled]) {
     return NO;
