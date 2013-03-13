@@ -591,6 +591,10 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
         options[kWARemoteAttachmentImportTime] = file.importTime;
       }
       
+      if (file.created) {
+        options[kWARemoteAttachmentCreateTime] = file.created;
+      }
+      
       if (file.assetURL) {
         
         [[WAAssetsLibraryManager defaultManager] assetForURL:[NSURL URLWithString:file.assetURL] resultBlock:^(ALAsset *asset) {
