@@ -53,13 +53,18 @@
 		  
 		} waitUntilDone:YES];
 		  
-		if ([remainingCount integerValue] == 0 && [postReps count] != 0) {
-		  [[NSUserDefaults standardUserDefaults] setBool:YES forKey:kWAFirstArticleFetched];
-		  [[NSUserDefaults standardUserDefaults] synchronize];
+		if ([remainingCount integerValue] == 0) {
+          
+            [[NSUserDefaults standardUserDefaults] setBool:YES forKey:kWAFirstArticleFetched];
+            [[NSUserDefaults standardUserDefaults] synchronize];
 
+        }
+        
+        if ([nextSeq compare:currentSeq] == NSOrderedAscending) {
+          
           [ds setMinSequenceNumber:nextSeq];
-
-		}
+          
+        }
         
 		if (![ds maxSequenceNumber]) {
 		  if ([postReps count]) {
