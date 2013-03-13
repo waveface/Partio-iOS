@@ -27,7 +27,8 @@
 /* Action changing representing file of an article */
 "ACTION_CHANGE_REPRESENTING_FILE" = "Change Cover";
 
-/* Place photos in collections */
+/* Adding to collection action in the event view
+   Place photos in collections */
 "ACTION_COLLECTION" = "Collections";
 
 /* Short action title for connecting Facebook creds */
@@ -43,6 +44,7 @@
 "ACTION_CONNECT_TWITTER_SHORT" = "Start Importing";
 
 /* Action deleting an article
+   Deleting action in the event view
    The label on the confirmation dialog to make sure user want to delete account or not
    Title for deleting an article from the Timeline */
 "ACTION_DELETE" = "Confirm";
@@ -91,6 +93,9 @@
 
 /* Action title for saving a draft */
 "ACTION_SAVE_DRAFT" = "Save Draft";
+
+/* Sharing action in the event view */
+"ACTION_SHARE" = "ACTION_SHARE";
 
 /* No comment provided by engineer. */
 "ACTION_SIGN_OUT" = "Log Out";

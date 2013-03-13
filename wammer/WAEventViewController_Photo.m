@@ -13,10 +13,14 @@
 #import "IRBindings.h"
 #import "WAAppearance.h"
 #import "WAEventActionsViewController.h"
+#import "GAI.h"
 
 @interface WAEventViewController_Photo () 
 
 @property (nonatomic, strong) UICollectionView *itemsView;
+@property (nonatomic, strong) NSMutableIndexSet *selectedPhotos;
+@property (nonatomic, assign) BOOL editing;
+@property (nonatomic, assign) BOOL excludeTwitter;
 
 @end
 
@@ -28,41 +32,98 @@
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-			
 
+      self.editing = NO;
+      self.excludeTwitter = NO;
+      self.selectedPhotos = [NSMutableIndexSet indexSet];
+      
+      [self.selectedPhotos addObserver:self
+                            forKeyPath:@"count"
+                               options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld
+                               context:nil];
+      
     }
     return self;
 }
 
 - (void)viewDidLoad
 {
-	[super viewDidLoad];
+  [super viewDidLoad];
 
-	morePhotoBtnImages = [NSMutableArray arrayWithArray:@[@"add-DB", @"add-G", @"add-LB", @"add-O", @"add-Red"]];
+  
+  __weak WAEventViewController_Photo *wSelf = self;
 
-	__weak WAEventViewController *wSelf = self;
+  IRBarButtonItem *shareButton = WABarButtonItem(nil, NSLocalizedString(@"ACTION_SHARE", @"Sharing action in the event view"), ^{
+    
+    NSMutableArray *activities = [@[wSelf.article.text] mutableCopy];
+    [activities addObjectsFromArray:[wSelf imagesSelected]];
+    
+    UIActivityViewController *actVC = [[UIActivityViewController alloc] initWithActivityItems:activities applicationActivities:nil];
+    actVC.completionHandler = ^(NSString *activityType, BOOL completed) {
+      [[GAI sharedInstance].defaultTracker trackEventWithCategory:@"Events" withAction:@"Export" withLabel:activityType withValue:@([wSelf.selectedPhotos count])];
+    };
+    
+    if (wSelf.excludeTwitter)
+      actVC.excludedActivityTypes = @[UIActivityTypePrint, UIActivityTypeCopyToPasteboard, UIActivityTypeAssignToContact, UIActivityTypeSaveToCameraRoll];
+    else
+      actVC.excludedActivityTypes = @[UIActivityTypePrint, UIActivityTypeCopyToPasteboard, UIActivityTypeAssignToContact, UIActivityTypeSaveToCameraRoll, UIActivityTypePostToTwitter];
+    
+    [wSelf presentViewController:actVC animated:YES completion:nil];
+    
+  });
+
+  IRBarButtonItem *collectionButton = WABarButtonItem(nil, NSLocalizedString(@"ACTION_COLLECTION", @"Adding to collection action in the event view"), ^{
+  });
+  
+  IRBarButtonItem *deleteButton = WABarButtonItem(nil, NSLocalizedString(@"ACTION_DELETE", @"Deleting action in the event view"), ^{
+  });
+
+  self.toolbarItems = @[shareButton, collectionButton, deleteButton];
+  self.navigationController.toolbar.barStyle = UIBarStyleBlackTranslucent;
+  self.navigationController.toolbar.tintColor = [UIColor clearColor];
+  self.navigationController.toolbarHidden = YES;
+  
+  morePhotoBtnImages = [NSMutableArray arrayWithArray:@[@"add-DB", @"add-G", @"add-LB", @"add-O", @"add-Red"]];
+
 	
-	self.navigationItem.rightBarButtonItem = WABarButtonItem([UIImage imageNamed:@"action"], nil, ^{
-		WAEventActionsViewController *editingModeVC = [WAEventActionsViewController new];
-		editingModeVC.article = wSelf.article;
-
-		WANavigationController *navVC = [[WANavigationController alloc] initWithRootViewController:editingModeVC];
-		if (isPad()) {
-			
-			navVC.modalPresentationStyle = UIModalPresentationCurrentContext;
-			navVC.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
-
-		} else
-			navVC.modalPresentationStyle = UIModalPresentationPageSheet;
-
-		[wSelf presentViewController:navVC animated:YES completion:nil];
+  IRBarButtonItem *cancelButton = WABarButtonItem(nil, @"Cancel", nil);
+  
+  IRBarButtonItem *actionButton = WABarButtonItem([UIImage imageNamed:@"action"], nil, ^{
+    [wSelf.navigationController setToolbarHidden:NO animated:YES];
+    wSelf.navigationItem.rightBarButtonItem = cancelButton;
+    wSelf.navigationItem.leftBarButtonItem.enabled = NO;
+    wSelf.editing = YES;
+//		WAEventActionsViewController *editingModeVC = [WAEventActionsViewController new];
+//		editingModeVC.article = wSelf.article;
+//
+//		WANavigationController *navVC = [[WANavigationController alloc] initWithRootViewController:editingModeVC];
+//		if (isPad()) {
+//			
+//			navVC.modalPresentationStyle = UIModalPresentationCurrentContext;
+//			navVC.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+//
+//		} else
+//			navVC.modalPresentationStyle = UIModalPresentationPageSheet;
+//
+//		[wSelf presentViewController:navVC animated:YES completion:nil];
 	});
+  
+  cancelButton.block = ^{
+    [wSelf.navigationController setToolbarHidden:YES animated:YES];
+    wSelf.navigationItem.rightBarButtonItem = actionButton;
+    wSelf.navigationItem.leftBarButtonItem.enabled = YES;
+    wSelf.editing = NO;
+    [wSelf.selectedPhotos removeAllIndexes];
+    [wSelf.itemsView reloadData];
+  };
+  
+  self.navigationItem.rightBarButtonItem = actionButton;
   
   if (![self.article.files count]) { // No photo available
 	self.navigationItem.rightBarButtonItem.enabled = NO;
   }
 	
-	[self.itemsView registerClass:[WAEventPhotoViewCell class] forCellWithReuseIdentifier:@"EventPhotoCell"];
+  [self.itemsView registerClass:[WAEventPhotoViewCell class] forCellWithReuseIdentifier:@"EventPhotoCell"];
 	
 }
 
@@ -70,6 +131,53 @@
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void) dealloc {
+
+  [self.selectedPhotos removeObserver:self forKeyPath:@"count" context:nil];
+
+}
+
+- (void) observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+  
+  if ([keyPath isEqualToString:@"count"]) {
+    NSInteger newNum = [change[NSKeyValueChangeNewKey] integerValue];
+    NSInteger oldNum = [change[NSKeyValueChangeOldKey] integerValue];
+    if (!oldNum && newNum) {
+      
+      for(UIBarButtonItem *barButton in self.toolbarItems) {
+        barButton.enabled = YES;
+      }
+      
+    } else if (!newNum && oldNum) {
+      
+      for(UIBarButtonItem *barButton in self.toolbarItems) {
+        barButton.enabled = NO;
+      }
+      
+    }
+	
+	if (newNum > 1)
+      self.excludeTwitter = YES;
+	else if (newNum == 1)
+      self.excludeTwitter = NO;
+  }
+  
+}
+
+- (NSArray*) imagesSelected {
+  
+  NSMutableArray *marray = [NSMutableArray array];
+  __weak WAEventViewController_Photo *wSelf = self;
+  [self.selectedPhotos enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop) {
+    WAFile *file = wSelf.article.files[idx];
+    if (file.smallThumbnailImage)
+      [marray addObject:file.smallThumbnailImage];
+  }];
+  
+  return [NSArray arrayWithArray:marray];
+  
 }
 
 #pragma mark - CollectionView datasource
@@ -89,6 +197,14 @@
 			[cell.imageView irBind:@"image" toObject:file keyPath:@"smallThumbnailImage" options:[NSDictionary dictionaryWithObjectsAndKeys: (id)kCFBooleanTrue, kIRBindingsAssignOnMainThreadOption, nil]];
 
 		});
+
+      if ([self.selectedPhotos containsIndex:indexPath.row]) {
+        cell.checkMarkView.hidden = NO;
+        cell.checkMarkView.image = [UIImage imageNamed:@"IRAQ-Checkmark"];
+      } else {
+        cell.checkMarkView.image = nil;
+        cell.checkMarkView.hidden = YES;
+      }
 		
 	} else {
 		
@@ -130,54 +246,81 @@
 #pragma mark - CollectionView delegate
 - (void) collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
 
+  if (!self.editing) {
 	__weak WAGalleryViewController *galleryVC = nil;
 	
 	if (!self.article.files.count) {
-		//TODO: popup UI to add some photos
-		return;
+      //TODO: popup UI to add some photos
+      return;
 	}
 	
 	WAFile *file = [self.article.files objectAtIndex:indexPath.row];
 	
 	galleryVC = [WAGalleryViewController
-							 controllerRepresentingArticleAtURI:[[self.article objectID] URIRepresentation]
-							 context:[NSDictionary dictionaryWithObjectsAndKeys: [[file objectID] URIRepresentation], kWAGalleryViewControllerContextPreferredFileObjectURI, nil]];
+                 controllerRepresentingArticleAtURI:[[self.article objectID] URIRepresentation]
+                 context:[NSDictionary dictionaryWithObjectsAndKeys: [[file objectID] URIRepresentation], kWAGalleryViewControllerContextPreferredFileObjectURI, nil]];
   
-  [[GAI sharedInstance].defaultTracker trackEventWithCategory:@"Event" withAction:@"EnterGallery" withLabel:nil withValue:@0];
+    [[GAI sharedInstance].defaultTracker trackEventWithCategory:@"Event" withAction:@"EnterGallery" withLabel:nil withValue:@0];
 	
 	switch ([UIDevice currentDevice].userInterfaceIdiom) {
-			
-		case UIUserInterfaceIdiomPhone: {
-			
-			galleryVC.onDismiss = ^ {
-				
-				[galleryVC.navigationController popViewControllerAnimated:YES];
-				
-			};
-			
-			[self.navigationController pushViewController:galleryVC animated:YES];
-			
-			break;
-			
-		}
-			
-		case UIUserInterfaceIdiomPad: {
-			
-			galleryVC.onDismiss = ^ {
-				
-				[galleryVC dismissViewControllerAnimated:NO completion:nil];
-				
-			};
-			
-			[self presentViewController:galleryVC animated:NO completion:nil];
-			
-			break;
-			
-		}
-			
+        
+      case UIUserInterfaceIdiomPhone: {
+        
+        galleryVC.onDismiss = ^ {
+              
+          [galleryVC.navigationController popViewControllerAnimated:YES];
+          
+        };
+        
+        [self.navigationController pushViewController:galleryVC animated:YES];
+        
+        break;
+        
+      }
+        
+      case UIUserInterfaceIdiomPad: {
+        
+        galleryVC.onDismiss = ^ {
+          
+          [galleryVC dismissViewControllerAnimated:NO completion:nil];
+          
+        };
+        
+        [self presentViewController:galleryVC animated:NO completion:nil];
+        
+        break;
+        
+      }
+        
 	}
+    
+  } else {
+   
+    WAEventPhotoViewCell *cell = (WAEventPhotoViewCell*)[collectionView cellForItemAtIndexPath:indexPath];
+    
+    cell.checkMarkView.hidden = NO;
+    cell.checkMarkView.image = [UIImage imageNamed:@"IRAQ-Checkmark"];
 
+    [self.selectedPhotos willChangeValueForKey:@"count"];
+    [self.selectedPhotos addIndex:indexPath.row];
+    [self.selectedPhotos didChangeValueForKey:@"count"];
+
+  }
 	
+}
+- (void) collectionView:(UICollectionView *)collectionView didDeselectItemAtIndexPath:(NSIndexPath *)indexPath {
+
+  if (self.editing) {
+    WAEventPhotoViewCell *cell = (WAEventPhotoViewCell*)[collectionView cellForItemAtIndexPath:indexPath];
+    
+    cell.checkMarkView.hidden = YES;
+    cell.checkMarkView.image = nil;
+    
+    [self.selectedPhotos willChangeValueForKey:@"count"];
+    [self.selectedPhotos removeIndex:indexPath.row];
+    [self.selectedPhotos didChangeValueForKey:@"count"];
+  }
+  
 }
 
 
