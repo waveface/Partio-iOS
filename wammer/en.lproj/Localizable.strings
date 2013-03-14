@@ -681,12 +681,6 @@
 /* Class = "IBUILabel"; text = "TITLE_INTRODUCTION_2"; ObjectID = "9"; */
 "TITLE_INTRODUCTION_2" = "Relive and share sweet memories";
 
-/* Class = "IBUILabel"; text = "ACTION_GOTO_WEBSITE"; ObjectID = "189"; */
-"ACTION_GOTO_WEBSITE" = "Premium plans will be arriving in the following updates.";
-
-/* Class = "IBUILabel"; text = "PLANS_DESCRIPTION"; ObjectID = "202"; */
-"PLANS_DESCRIPTION" = "aostream sends all your digital memories back to your PC where they are safely stored. You can also upgrade to a premium cloud storage plan and start enjoy all the benefits of a smart personal cloud.";
-
 /* Class = "IBUILabel"; text = "BODY_INTRODUCTION_1"; ObjectID = "229"; */
 "BODY_INTRODUCTION_1" = "aostream automatically puts the photos taken on the phone and those imported from PC in one place, so you can view them from anywhere. ";
 
@@ -818,9 +812,6 @@
 
 /* Class = "IBUITableViewSection"; footerTitle = "PHOTO_IMPORT_SWITCH_FOOTER"; ObjectID = "jPT-4f-lnH"; */
 "PHOTO_IMPORT_SWITCH_FOOTER" = "Turn on to sync all your camera roll photos to aostream.";
-
-/* Class = "IBUILabel"; text = "UPGRADE_ACCOUNT"; ObjectID = "n6T-1w-Odi"; */
-"UPGRADE_ACCOUNT" = "Upgrade Account";
 
 /* Class = "IBUILabel"; text = "ACTION_CONTACT_DEVELOPER"; ObjectID = "yLg-eE-ehZ"; */
 "ACTION_CONTACT_DEVELOPER" = "Contact Us";

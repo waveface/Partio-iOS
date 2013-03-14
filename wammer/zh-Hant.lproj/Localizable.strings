@@ -681,12 +681,6 @@
 /* Class = "IBUILabel"; text = "TITLE_INTRODUCTION_2"; ObjectID = "9"; */
 "TITLE_INTRODUCTION_2" = "分享回顧您的生活點滴";
 
-/* Class = "IBUILabel"; text = "ACTION_GOTO_WEBSITE"; ObjectID = "189"; */
-"ACTION_GOTO_WEBSITE" = "接下來的更新版本將提供更多付費方案。";
-
-/* Class = "IBUILabel"; text = "PLANS_DESCRIPTION"; ObjectID = "202"; */
-"PLANS_DESCRIPTION" = "aostream會將您所有的珍貴檔案存放在指定的位置，您可以選擇存在家裡的PC，或者付費獲得額外的雲端儲存空間，讓您可以隨時隨地取得原始檔案。";
-
 /* Class = "IBUILabel"; text = "BODY_INTRODUCTION_1"; ObjectID = "229"; */
 "BODY_INTRODUCTION_1" = "只要啟用照片匯入，所有照片會自動同步到所有裝置。從Windows PC匯入照片，也只需一鍵完成，不限容量。";
 
@@ -818,9 +812,6 @@
 
 /* Class = "IBUITableViewSection"; footerTitle = "PHOTO_IMPORT_SWITCH_FOOTER"; ObjectID = "jPT-4f-lnH"; */
 "PHOTO_IMPORT_SWITCH_FOOTER" = "開啟照片匯入，將您相機膠卷中所有照片匯入aostream";
-
-/* Class = "IBUILabel"; text = "UPGRADE_ACCOUNT"; ObjectID = "n6T-1w-Odi"; */
-"UPGRADE_ACCOUNT" = "升級帳號";
 
 /* Class = "IBUILabel"; text = "ACTION_CONTACT_DEVELOPER"; ObjectID = "yLg-eE-ehZ"; */
 "ACTION_CONTACT_DEVELOPER" = "聯絡我們";
