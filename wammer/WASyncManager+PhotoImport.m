@@ -180,7 +180,7 @@
 
 - (BOOL)canPerformPhotoImport {
   
-  if (![[NSUserDefaults standardUserDefaults] boolForKey:kWAFirstUseVisited])
+  if ([[NSUserDefaults standardUserDefaults] objectForKey:kWAFirstUseVisited]!=nil &&  ![[NSUserDefaults standardUserDefaults] boolForKey:kWAFirstUseVisited])
     return NO;// don't import photos before user has visite photo import setting in first use
   
   if (![[NSUserDefaults standardUserDefaults] boolForKey:kWAPhotoImportEnabled]) {
