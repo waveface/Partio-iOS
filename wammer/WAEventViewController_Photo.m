@@ -9,10 +9,15 @@
 #import "WAEventViewController_Photo.h"
 #import "WAEventPhotoViewCell.h"
 #import "WAFile+LazyImages.h"
+#import "WACollection.h"
 #import "WAGalleryViewController.h"
 #import "IRBindings.h"
 #import "WAAppearance.h"
 #import "WAEventActionsViewController.h"
+#import "WADataStore.h"
+#import "WACollectionActivity.h"
+#import "WANewCollectionActivity.h"
+#import <CoreData+MagicalRecord.h>
 #import "GAI.h"
 
 @interface WAEventViewController_Photo () 
@@ -55,24 +60,48 @@
 
   IRBarButtonItem *shareButton = WABarButtonItem(nil, NSLocalizedString(@"ACTION_SHARE", @"Sharing action in the event view"), ^{
     
-    NSMutableArray *activities = [@[wSelf.article.text] mutableCopy];
-    [activities addObjectsFromArray:[wSelf imagesSelected]];
+    NSMutableArray *activityItems = [@[wSelf.article.text] mutableCopy];
+    [activityItems addObjectsFromArray:[wSelf imagesSelected]];
     
-    UIActivityViewController *actVC = [[UIActivityViewController alloc] initWithActivityItems:activities applicationActivities:nil];
+    UIActivityViewController *actVC = [[UIActivityViewController alloc] initWithActivityItems:activityItems applicationActivities:nil];
     actVC.completionHandler = ^(NSString *activityType, BOOL completed) {
       [[GAI sharedInstance].defaultTracker trackEventWithCategory:@"Events" withAction:@"Export" withLabel:activityType withValue:@([wSelf.selectedPhotos count])];
     };
-    
-    if (wSelf.excludeTwitter)
-      actVC.excludedActivityTypes = @[UIActivityTypePrint, UIActivityTypeCopyToPasteboard, UIActivityTypeAssignToContact, UIActivityTypeSaveToCameraRoll];
-    else
-      actVC.excludedActivityTypes = @[UIActivityTypePrint, UIActivityTypeCopyToPasteboard, UIActivityTypeAssignToContact, UIActivityTypeSaveToCameraRoll, UIActivityTypePostToTwitter];
+    actVC.excludedActivityTypes = @[UIActivityTypePrint, UIActivityTypeCopyToPasteboard, UIActivityTypeAssignToContact, UIActivityTypeSaveToCameraRoll];
     
     [wSelf presentViewController:actVC animated:YES completion:nil];
     
   });
 
   IRBarButtonItem *collectionButton = WABarButtonItem(nil, NSLocalizedString(@"ACTION_COLLECTION", @"Adding to collection action in the event view"), ^{
+    
+    NSMutableArray *activityItems = [@[] mutableCopy];
+    [self.selectedPhotos enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop) {
+      WAFile *file = wSelf.article.files[idx];
+      [activityItems addObject:[file objectID]];
+    }];
+    
+    NSPredicate *allCollections = [NSPredicate predicateWithFormat:@"isHidden == FALSE"];
+    NSArray *collections = [WACollection MR_findAllSortedBy:@"modificationDate"
+                                                  ascending:NO
+                                              withPredicate:allCollections
+                                                  inContext:[[WADataStore defaultStore] disposableMOC]];
+    WANewCollectionActivity *addAct = [[WANewCollectionActivity alloc] init];
+    NSMutableArray *activities = [@[addAct] mutableCopy];
+    [collections enumerateObjectsUsingBlock:^(WACollection *collection, NSUInteger idx, BOOL *stop) {
+      WACollectionActivity *activity = [[WACollectionActivity alloc] initWithCollectionID:[collection objectID]];
+      [activities addObject:activity];
+    }];
+
+    UIActivityViewController *actVC = [[UIActivityViewController alloc] initWithActivityItems:activityItems applicationActivities:activities];
+    actVC.completionHandler = ^(NSString *activityType, BOOL completed) {
+      [[GAI sharedInstance].defaultTracker trackEventWithCategory:@"Events" withAction:@"Export" withLabel:activityType withValue:@([wSelf.selectedPhotos count])];
+    };
+    actVC.excludedActivityTypes = @[UIActivityTypePostToFacebook, UIActivityTypePostToTwitter, UIActivityTypePostToWeibo, UIActivityTypeMail, UIActivityTypeMessage, UIActivityTypePrint, UIActivityTypeCopyToPasteboard, UIActivityTypeAssignToContact, UIActivityTypeSaveToCameraRoll];
+    
+    [wSelf presentViewController:actVC animated:YES completion:nil];
+
+
   });
   
   IRBarButtonItem *deleteButton = WABarButtonItem(nil, NSLocalizedString(@"ACTION_DELETE", @"Deleting action in the event view"), ^{

@@ -297,6 +297,9 @@
 		80719CF9167AFF8000E9729F /* WAEventDay+WARemoteInterfaceEntitySyncing.m in Sources */ = {isa = PBXBuildFile; fileRef = 80719CF8167AFF8000E9729F /* WAEventDay+WARemoteInterfaceEntitySyncing.m */; };
 		80719CFC167B03B900E9729F /* WAPhotoDay+WARemoteInterfaceEntitySyncing.m in Sources */ = {isa = PBXBuildFile; fileRef = 80719CFB167B03B900E9729F /* WAPhotoDay+WARemoteInterfaceEntitySyncing.m */; };
 		8074EF8816AD0ABA0033E99A /* WACalendarPopupViewController_phone.m in Sources */ = {isa = PBXBuildFile; fileRef = 8074EF8716AD0ABA0033E99A /* WACalendarPopupViewController_phone.m */; };
+		808A1F2516F0A69B00EC22C8 /* WACollectionActivity.m in Sources */ = {isa = PBXBuildFile; fileRef = 808A1F2416F0A69B00EC22C8 /* WACollectionActivity.m */; };
+		808A1F5116F0C63000EC22C8 /* WANewCollectionActivity.m in Sources */ = {isa = PBXBuildFile; fileRef = 808A1F5016F0C63000EC22C8 /* WANewCollectionActivity.m */; };
+		808A1F6216F0CB3400EC22C8 /* WANewCollectionDialogViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 808A1F6116F0CB3400EC22C8 /* WANewCollectionDialogViewController.m */; };
 		808DAA0C167597C9003652BB /* WAEventPeopleListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 808DAA0B167597C9003652BB /* WAEventPeopleListViewController.m */; };
 		808DAA0F1675B1D2003652BB /* WAEventPeopleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 808DAA0E1675B1D2003652BB /* WAEventPeopleCell.m */; };
 		808DAA111675B1E8003652BB /* WAEventPeopleCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 808DAA101675B1E8003652BB /* WAEventPeopleCell.xib */; };
@@ -1310,6 +1313,12 @@
 		80719CFB167B03B900E9729F /* WAPhotoDay+WARemoteInterfaceEntitySyncing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WAPhotoDay+WARemoteInterfaceEntitySyncing.m"; sourceTree = "<group>"; };
 		8074EF8616AD0ABA0033E99A /* WACalendarPopupViewController_phone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WACalendarPopupViewController_phone.h; path = wammer/WACalendarPopupViewController_phone.h; sourceTree = "<group>"; };
 		8074EF8716AD0ABA0033E99A /* WACalendarPopupViewController_phone.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WACalendarPopupViewController_phone.m; path = wammer/WACalendarPopupViewController_phone.m; sourceTree = "<group>"; };
+		808A1F2316F0A69B00EC22C8 /* WACollectionActivity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WACollectionActivity.h; path = wammer/WACollectionActivity.h; sourceTree = "<group>"; };
+		808A1F2416F0A69B00EC22C8 /* WACollectionActivity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WACollectionActivity.m; path = wammer/WACollectionActivity.m; sourceTree = "<group>"; };
+		808A1F4F16F0C63000EC22C8 /* WANewCollectionActivity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WANewCollectionActivity.h; path = wammer/WANewCollectionActivity.h; sourceTree = "<group>"; };
+		808A1F5016F0C63000EC22C8 /* WANewCollectionActivity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WANewCollectionActivity.m; path = wammer/WANewCollectionActivity.m; sourceTree = "<group>"; };
+		808A1F6016F0CB3400EC22C8 /* WANewCollectionDialogViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WANewCollectionDialogViewController.h; path = wammer/WANewCollectionDialogViewController.h; sourceTree = "<group>"; };
+		808A1F6116F0CB3400EC22C8 /* WANewCollectionDialogViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WANewCollectionDialogViewController.m; path = wammer/WANewCollectionDialogViewController.m; sourceTree = "<group>"; };
 		808DAA0A167597C9003652BB /* WAEventPeopleListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WAEventPeopleListViewController.h; path = wammer/WAEventPeopleListViewController.h; sourceTree = "<group>"; };
 		808DAA0B167597C9003652BB /* WAEventPeopleListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WAEventPeopleListViewController.m; path = wammer/WAEventPeopleListViewController.m; sourceTree = "<group>"; };
 		808DAA0D1675B1D2003652BB /* WAEventPeopleCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WAEventPeopleCell.h; path = wammer/WAEventPeopleCell.h; sourceTree = "<group>"; };
@@ -2469,6 +2478,12 @@
 				80DA984A16496FED0030CA21 /* WAEventViewController_Link.m */,
 				80DA984B16496FED0030CA21 /* WAEventViewController_Photo.h */,
 				80DA984C16496FED0030CA21 /* WAEventViewController_Photo.m */,
+				808A1F2316F0A69B00EC22C8 /* WACollectionActivity.h */,
+				808A1F2416F0A69B00EC22C8 /* WACollectionActivity.m */,
+				808A1F4F16F0C63000EC22C8 /* WANewCollectionActivity.h */,
+				808A1F5016F0C63000EC22C8 /* WANewCollectionActivity.m */,
+				808A1F6016F0CB3400EC22C8 /* WANewCollectionDialogViewController.h */,
+				808A1F6116F0CB3400EC22C8 /* WANewCollectionDialogViewController.m */,
 				80DA984D16496FED0030CA21 /* WAEventViewController.h */,
 				80DA984E16496FED0030CA21 /* WAEventViewController.m */,
 				DEBED81D166C86C0001A2B24 /* WAEventActionsViewController.h */,
@@ -4642,6 +4657,9 @@
 				13D1396116DB340700A41F86 /* WAFirstUsePCAdvertisementViewController.m in Sources */,
 				4B124CAF16DC996300BB7B61 /* WACollectionOverviewViewCell.m in Sources */,
 				802FFDBB16DF746C00237762 /* WAFirstUseCoachmarkController.m in Sources */,
+				808A1F2516F0A69B00EC22C8 /* WACollectionActivity.m in Sources */,
+				808A1F5116F0C63000EC22C8 /* WANewCollectionActivity.m in Sources */,
+				808A1F6216F0CB3400EC22C8 /* WANewCollectionDialogViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
