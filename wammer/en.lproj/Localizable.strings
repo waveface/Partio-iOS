@@ -16,19 +16,24 @@
 /* add photo button in composition view */
 "ACTION_ADD" = "Add Photo";
 
+/* Adding to collection action in the event view */
+"ACTION_ADD_COLLECTION" = "Collections";
+
 /* In event view */
 "ACTION_ADD_TO_COLLECTION" = "Done";
 
 /* Action title for cancelling stuff
    Cancel adding event
+   Cancel adding selected photos into collection
+   Cancel the photo deletion
+   Cancel the photos adding to collection
    Title for cancelling an action */
 "ACTION_CANCEL" = "Cancel";
 
 /* Action changing representing file of an article */
 "ACTION_CHANGE_REPRESENTING_FILE" = "Change Cover";
 
-/* Adding to collection action in the event view
-   Place photos in collections */
+/* Place photos in collections */
 "ACTION_COLLECTION" = "Collections";
 
 /* Short action title for connecting Facebook creds */
@@ -43,8 +48,10 @@
 /* Short action title for connecting Twitter creds */
 "ACTION_CONNECT_TWITTER_SHORT" = "Start Importing";
 
+/* The action to create a new collection */
+"ACTION_CREATE_COLLECTION" = "ACTION_CREATE_COLLECTION";
+
 /* Action deleting an article
-   Deleting action in the event view
    The label on the confirmation dialog to make sure user want to delete account or not
    Title for deleting an article from the Timeline */
 "ACTION_DELETE" = "Confirm";
@@ -88,6 +95,9 @@
 /* Alert Dismissal Action */
 "ACTION_OKAY" = "OK";
 
+/* Deleting action in the event view */
+"ACTION_PHOTOS_DELETE" = "Delete";
+
 /* No comment provided by engineer. */
 "ACTION_RESET" = "Reset";
 
@@ -95,7 +105,7 @@
 "ACTION_SAVE_DRAFT" = "Save Draft";
 
 /* Sharing action in the event view */
-"ACTION_SHARE" = "ACTION_SHARE";
+"ACTION_SHARE" = "Share";
 
 /* No comment provided by engineer. */
 "ACTION_SIGN_OUT" = "Log Out";
@@ -112,6 +122,24 @@
 /* Action marking article as not favorite */
 "ACTION_UNMARK_FAVORITE" = "Unfavorite";
 
+/* The action title to add selected photos in a collection */
+"ACTIONSHEET_ACTION_ADD_EXISTING" = "Add to an existing collection";
+
+/* Remove selected photos from event */
+"ACTIONSHEET_ACTION_DEL_INEVENT" = "Remove from event";
+
+/* Hide the selected photos */
+"ACTIONSHEET_ACTION_DELETE" = "Remove selected";
+
+/* The action title to new a collection */
+"ACTIONSHEET_ACTION_NEW_COLLECTION" = "Create a new collection";
+
+/* The title of action sheets to add selected photos into collection */
+"ACTIONSHEET_TITLE_ADD_COLLECTION" = "Add to a collection";
+
+/* The title of action sheets to delete selected photos */
+"ACTIONSHEET_TITLE_DELETE_PHOTOS" = "Remove photos";
+
 /* Dialog describing adding event is not supported */
 "ADD_EVENT_NOT_SUPPORTED_DESCRIPTION" = "Sorry, this version does not support adding event.";
 
@@ -126,6 +154,9 @@
 
 /* No comment provided by engineer. */
 "ADVANCED_FEATURES_ENABLED_TITLE" = "Advanced Features Enabled";
+
+/* The title of an alert view for user to input a collection name */
+"ALERT_TITLE_NEW_COLLECTION" = "Collection Name";
 
 /* title in attachments view */
 "ATTACHMENTS_VIEW_TITLE" = "Attachments";

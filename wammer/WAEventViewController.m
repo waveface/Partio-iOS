@@ -36,7 +36,7 @@
 @property (nonatomic, strong, readwrite) UICollectionView *itemsView;
 @property (nonatomic, strong) WAEventHeaderView *headerView;
 @property (nonatomic, strong) UIPopoverController *popover;
-@property (nonatomic, strong) NSManagedObjectContext *managedObjectContext;
+@property (nonatomic, strong, readwrite) NSManagedObjectContext *managedObjectContext;
 
 @end
 

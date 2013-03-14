@@ -8,16 +8,21 @@
 
 #import "WAEventViewController_Photo.h"
 #import "WAEventPhotoViewCell.h"
+
+#import "WARemoteInterface.h"
+
 #import "WAFile+LazyImages.h"
+#import "WADataStore.h"
 #import "WACollection.h"
+#import "WACollection+RemoteOperations.h"
+#import "WACollectionPickerViewController.h"
+
 #import "WAGalleryViewController.h"
 #import "IRBindings.h"
+
+#import "WAOverlayBezel.h"
 #import "WAAppearance.h"
-#import "WAEventActionsViewController.h"
-#import "WADataStore.h"
-#import "WACollectionActivity.h"
-#import "WANewCollectionActivity.h"
-#import <CoreData+MagicalRecord.h>
+#import <BlocksKit/BlocksKit.h>
 #import "GAI.h"
 
 @interface WAEventViewController_Photo () 
@@ -25,7 +30,6 @@
 @property (nonatomic, strong) UICollectionView *itemsView;
 @property (nonatomic, strong) NSMutableIndexSet *selectedPhotos;
 @property (nonatomic, assign) BOOL editing;
-@property (nonatomic, assign) BOOL excludeTwitter;
 
 @end
 
@@ -39,9 +43,9 @@
     if (self) {
 
       self.editing = NO;
-      self.excludeTwitter = NO;
+
       self.selectedPhotos = [NSMutableIndexSet indexSet];
-      
+
       [self.selectedPhotos addObserver:self
                             forKeyPath:@"count"
                                options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld
@@ -55,7 +59,6 @@
 {
   [super viewDidLoad];
 
-  
   __weak WAEventViewController_Photo *wSelf = self;
 
   IRBarButtonItem *shareButton = WABarButtonItem(nil, NSLocalizedString(@"ACTION_SHARE", @"Sharing action in the event view"), ^{
@@ -73,41 +76,107 @@
     
   });
 
-  IRBarButtonItem *collectionButton = WABarButtonItem(nil, NSLocalizedString(@"ACTION_COLLECTION", @"Adding to collection action in the event view"), ^{
+  IRBarButtonItem *collectionButton = WABarButtonItem(nil, NSLocalizedString(@"ACTION_ADD_COLLECTION", @"Adding to collection action in the event view"), ^{
     
-    NSMutableArray *activityItems = [@[] mutableCopy];
-    [self.selectedPhotos enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop) {
-      WAFile *file = wSelf.article.files[idx];
-      [activityItems addObject:[file objectID]];
+    UIActionSheet *actions = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"ACTIONSHEET_TITLE_ADD_COLLECTION", @"The title of action sheets to add selected photos into collection")];
+    [actions addButtonWithTitle:NSLocalizedString(@"ACTIONSHEET_ACTION_NEW_COLLECTION", @"The action title to new a collection") handler:^{
+      UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"ALERT_TITLE_NEW_COLLECTION", @"The title of an alert view for user to input a collection name") message:@""];
+      __weak UIAlertView *wAlert = alert;
+      alert.alertViewStyle = UIAlertViewStylePlainTextInput;
+      [alert setCancelButtonWithTitle:NSLocalizedString(@"ACTION_CANCEL", @"Cancel adding selected photos into collection") handler:nil];
+      [alert addButtonWithTitle:NSLocalizedString(@"ACTION_CREATE_COLLECTION", @"The action to create a new collection") handler:^{
+        NSString *collectionName = [wAlert textFieldAtIndex:0].text;
+        wSelf.managedObjectContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
+        WACollection *collection = [[WACollection alloc] initWithName:collectionName
+                                                            withFiles:[wSelf.article.files objectsAtIndexes:wSelf.selectedPhotos]
+                                               inManagedObjectContext:wSelf.managedObjectContext];
+        collection.creator = [[WADataStore defaultStore] mainUserInContext:wSelf.managedObjectContext];
+        NSError *error;
+        if ([wSelf.managedObjectContext save:&error]==NO){
+          NSLog(@"Save error: %@", error);
+        }
+
+      }];
+      [alert show];
     }];
     
-    NSPredicate *allCollections = [NSPredicate predicateWithFormat:@"isHidden == FALSE"];
-    NSArray *collections = [WACollection MR_findAllSortedBy:@"modificationDate"
-                                                  ascending:NO
-                                              withPredicate:allCollections
-                                                  inContext:[[WADataStore defaultStore] disposableMOC]];
-    WANewCollectionActivity *addAct = [[WANewCollectionActivity alloc] init];
-    NSMutableArray *activities = [@[addAct] mutableCopy];
-    [collections enumerateObjectsUsingBlock:^(WACollection *collection, NSUInteger idx, BOOL *stop) {
-      WACollectionActivity *activity = [[WACollectionActivity alloc] initWithCollectionID:[collection objectID]];
-      [activities addObject:activity];
+    [actions addButtonWithTitle:NSLocalizedString(@"ACTIONSHEET_ACTION_ADD_EXISTING", @"The action title to add selected photos in a collection") handler:^{
+      
+      __block WACollectionPickerViewController *picker = [WACollectionPickerViewController pickerWithHandler:^(NSManagedObjectID *selectedCollection) {
+        
+        WACollection *collection = (WACollection*)[wSelf.managedObjectContext objectWithID:selectedCollection];
+        
+        [collection addObjects:[wSelf.article.files objectsAtIndexes:wSelf.selectedPhotos]];
+        
+        NSError *error = nil;
+        [wSelf.managedObjectContext save:&error];
+        if (error) {
+          NSLog(@"Fail to save collection for error: %@", error);
+        }
+        
+        [picker dismissViewControllerAnimated:YES completion:nil];
+        picker = nil;
+      } onCancel:^{
+        [picker dismissViewControllerAnimated:YES completion:nil];
+        picker = nil;
+      }];
+      
+      wSelf.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+      wSelf.modalPresentationStyle = UIModalPresentationFullScreen;
+      [wSelf presentViewController:picker animated:YES completion:nil];
     }];
-
-    UIActivityViewController *actVC = [[UIActivityViewController alloc] initWithActivityItems:activityItems applicationActivities:activities];
-    actVC.completionHandler = ^(NSString *activityType, BOOL completed) {
-      [[GAI sharedInstance].defaultTracker trackEventWithCategory:@"Events" withAction:@"Export" withLabel:activityType withValue:@([wSelf.selectedPhotos count])];
-    };
-    actVC.excludedActivityTypes = @[UIActivityTypePostToFacebook, UIActivityTypePostToTwitter, UIActivityTypePostToWeibo, UIActivityTypeMail, UIActivityTypeMessage, UIActivityTypePrint, UIActivityTypeCopyToPasteboard, UIActivityTypeAssignToContact, UIActivityTypeSaveToCameraRoll];
     
-    [wSelf presentViewController:actVC animated:YES completion:nil];
-
+    [actions setCancelButtonWithTitle:NSLocalizedString(@"ACTION_CANCEL", @"Cancel the photos adding to collection") handler:nil];
+    
+    [actions showFromToolbar:wSelf.navigationController.toolbar];
 
   });
   
-  IRBarButtonItem *deleteButton = WABarButtonItem(nil, NSLocalizedString(@"ACTION_DELETE", @"Deleting action in the event view"), ^{
+  IRBarButtonItem *deleteButton = WABarButtonItem(nil, NSLocalizedString(@"ACTION_PHOTOS_DELETE", @"Deleting action in the event view"), ^{
+
+    UIActionSheet *actions = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"ACTIONSHEET_TITLE_DELETE_PHOTOS", @"The title of action sheets to delete selected photos")];
+    [actions addButtonWithTitle:NSLocalizedString(@"ACTIONSHEET_ACTION_DEL_INEVENT", @"Remove selected photos from event") handler:^{
+      
+    }];
+    
+    [actions addButtonWithTitle:NSLocalizedString(@"ACTIONSHEET_ACTION_DELETE", @"Hide the selected photos") handler:^{
+      
+      NSMutableArray *identifiers = [NSMutableArray array];
+      [wSelf.selectedPhotos enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop) {
+        [identifiers addObject:[[wSelf.article.files objectAtIndex:idx] identifier]];
+      }];
+      
+      WAOverlayBezel *busyBezel = [WAOverlayBezel bezelWithStyle:WAActivityIndicatorBezelStyle];
+      dispatch_async(dispatch_get_main_queue(), ^{
+        [busyBezel showWithAnimation:WAOverlayBezelAnimationFade];
+      });
+      
+      [[WARemoteInterface sharedInterface] hideAttachments:identifiers onSuccess:^(NSArray *successIDs) {
+
+        dispatch_async(dispatch_get_main_queue(), ^{
+          [busyBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
+        });
+
+      } onFailure:^(NSError *error) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+          [busyBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
+        });
+      }];
+      
+    }];
+    
+    [actions setCancelButtonWithTitle:NSLocalizedString(@"ACTION_CANCEL", @"Cancel the photo deletion") handler:nil];
+    
+    [actions showFromToolbar:wSelf.navigationController.toolbar];
+
   });
 
   self.toolbarItems = @[shareButton, collectionButton, deleteButton];
+  
+  for(UIBarButtonItem *barButton in self.toolbarItems) {
+    barButton.enabled = NO;
+  }
+  
   self.navigationController.toolbar.barStyle = UIBarStyleBlackTranslucent;
   self.navigationController.toolbar.tintColor = [UIColor clearColor];
   self.navigationController.toolbarHidden = YES;
@@ -122,6 +191,7 @@
     wSelf.navigationItem.rightBarButtonItem = cancelButton;
     wSelf.navigationItem.leftBarButtonItem.enabled = NO;
     wSelf.editing = YES;
+    wSelf.itemsView.allowsMultipleSelection = YES;
 //		WAEventActionsViewController *editingModeVC = [WAEventActionsViewController new];
 //		editingModeVC.article = wSelf.article;
 //
@@ -142,6 +212,7 @@
     wSelf.navigationItem.rightBarButtonItem = actionButton;
     wSelf.navigationItem.leftBarButtonItem.enabled = YES;
     wSelf.editing = NO;
+    wSelf.itemsView.allowsMultipleSelection = NO;
     [wSelf.selectedPhotos removeAllIndexes];
     [wSelf.itemsView reloadData];
   };
@@ -187,10 +258,6 @@
       
     }
 	
-	if (newNum > 1)
-      self.excludeTwitter = YES;
-	else if (newNum == 1)
-      self.excludeTwitter = NO;
   }
   
 }
@@ -337,6 +404,7 @@
   }
 	
 }
+
 - (void) collectionView:(UICollectionView *)collectionView didDeselectItemAtIndexPath:(NSIndexPath *)indexPath {
 
   if (self.editing) {

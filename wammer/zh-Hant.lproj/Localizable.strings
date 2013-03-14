@@ -16,19 +16,24 @@
 /* add photo button in composition view */
 "ACTION_ADD" = "新增照片";
 
+/* Adding to collection action in the event view */
+"ACTION_ADD_COLLECTION" = "加入收藏";
+
 /* In event view */
 "ACTION_ADD_TO_COLLECTION" = "完成";
 
 /* Action title for cancelling stuff
    Cancel adding event
+   Cancel adding selected photos into collection
+   Cancel the photo deletion
+   Cancel the photos adding to collection
    Title for cancelling an action */
 "ACTION_CANCEL" = "取消";
 
 /* Action changing representing file of an article */
 "ACTION_CHANGE_REPRESENTING_FILE" = "更換封面";
 
-/* Adding to collection action in the event view
-   Place photos in collections */
+/* Place photos in collections */
 "ACTION_COLLECTION" = "收藏";
 
 /* Short action title for connecting Facebook creds */
@@ -43,8 +48,10 @@
 /* Short action title for connecting Twitter creds */
 "ACTION_CONNECT_TWITTER_SHORT" = "同步";
 
+/* The action to create a new collection */
+"ACTION_CREATE_COLLECTION" = "ACTION_CREATE_COLLECTION";
+
 /* Action deleting an article
-   Deleting action in the event view
    The label on the confirmation dialog to make sure user want to delete account or not
    Title for deleting an article from the Timeline */
 "ACTION_DELETE" = "丟棄";
@@ -88,6 +95,9 @@
 /* Alert Dismissal Action */
 "ACTION_OKAY" = "確定";
 
+/* Deleting action in the event view */
+"ACTION_PHOTOS_DELETE" = "刪除";
+
 /* No comment provided by engineer. */
 "ACTION_RESET" = "重設";
 
@@ -95,7 +105,7 @@
 "ACTION_SAVE_DRAFT" = "存成草稿";
 
 /* Sharing action in the event view */
-"ACTION_SHARE" = "ACTION_SHARE";
+"ACTION_SHARE" = "分享";
 
 /* No comment provided by engineer. */
 "ACTION_SIGN_OUT" = "登出";
@@ -112,6 +122,24 @@
 /* Action marking article as not favorite */
 "ACTION_UNMARK_FAVORITE" = "取消最愛";
 
+/* The action title to add selected photos in a collection */
+"ACTIONSHEET_ACTION_ADD_EXISTING" = "新增至現有收藏";
+
+/* Remove selected photos from event */
+"ACTIONSHEET_ACTION_DEL_INEVENT" = "從事件中移除";
+
+/* Hide the selected photos */
+"ACTIONSHEET_ACTION_DELETE" = "刪除選擇照片";
+
+/* The action title to new a collection */
+"ACTIONSHEET_ACTION_NEW_COLLECTION" = "建立新收藏";
+
+/* The title of action sheets to add selected photos into collection */
+"ACTIONSHEET_TITLE_ADD_COLLECTION" = "新增至收藏";
+
+/* The title of action sheets to delete selected photos */
+"ACTIONSHEET_TITLE_DELETE_PHOTOS" = "移除照片";
+
 /* Dialog describing adding event is not supported */
 "ADD_EVENT_NOT_SUPPORTED_DESCRIPTION" = "不好意思，這版還不支援新增動態。";
 
@@ -126,6 +154,9 @@
 
 /* No comment provided by engineer. */
 "ADVANCED_FEATURES_ENABLED_TITLE" = "除錯功能已啟用";
+
+/* The title of an alert view for user to input a collection name */
+"ALERT_TITLE_NEW_COLLECTION" = "收藏名稱";
 
 /* title in attachments view */
 "ATTACHMENTS_VIEW_TITLE" = "附加檔案";
