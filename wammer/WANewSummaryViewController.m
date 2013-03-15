@@ -353,51 +353,32 @@
   if (scrollView == self.summaryCollectionView) {
     
     if (self.summaryPageIndex != pageIndex) {
-      
       self.summaryPageIndex = pageIndex;
-      
       self.currentDaySummary = [self.dataSource daySummaryAtIndexPath:[NSIndexPath indexPathForItem:self.summaryPageIndex inSection:0]];
-      
       NSIndexPath *eventIndexPath = [self.dataSource indexPathOfFirstDayEventOnDate:self.currentDaySummary.date];
       self.currentDayEvent = [self.dataSource dayEventAtIndexPath:eventIndexPath];
-      
       [self scrollToDayEventAtIndexPath:eventIndexPath animated:YES];
-      
       self.eventPageControl.currentPage = 0;
-      
     }
     
   } else {
     
     if (self.eventPageIndex != pageIndex) {
-      
       self.eventPageControl.currentPage += (pageIndex-self.eventPageIndex);
       self.eventPageIndex = pageIndex;
       
       self.currentDayEvent = [self.dataSource dayEventAtIndexPath:[NSIndexPath indexPathForItem:self.eventPageIndex inSection:0]];
-      
       NSDate *eventDate = [self.dataSource dateOfDayEventAtIndexPath:[NSIndexPath indexPathForItem:self.eventPageIndex inSection:0]];
       NSDate *summaryDate = [self.dataSource dateOfDaySummaryAtIndexPath:[NSIndexPath indexPathForItem:self.summaryPageIndex inSection:0]];
       
       if ([eventDate compare:summaryDate] != NSOrderedSame) {
-        
         NSIndexPath *summaryIndexPath = [self.dataSource indexPathOfDaySummaryOnDate:eventDate];
         self.currentDaySummary = [self.dataSource daySummaryAtIndexPath:summaryIndexPath];
-        
         [self scrollToDaySummaryAtIndexPath:summaryIndexPath animated:YES];
-        
-        if ([eventDate compare:summaryDate] == NSOrderedAscending) {
-          self.eventPageControl.currentPage = 0;
-        } else {
-          self.eventPageControl.currentPage = self.eventPageControl.numberOfPages-1;
-        }
-        
+        self.eventPageControl.currentPage = ([eventDate compare:summaryDate] == NSOrderedAscending)? self.eventPageControl.numberOfPages-1:0;
       }
-      
     }
-    
   }
-  
 }
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
