@@ -31,7 +31,6 @@
 #import "WASyncManager.h"
 #import "WAFetchManager.h"
 #import <QuartzCore/QuartzCore.h>
-#import "WASummaryViewController.h"
 #import "WANewSummaryViewController.h"
 #import "WAConnectionStatusView.h"
 
