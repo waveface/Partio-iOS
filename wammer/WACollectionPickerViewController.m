@@ -12,6 +12,7 @@
 #import "WAAppearance.h"
 #import "WAFile+LazyImages.h"
 #import "WANavigationController.h"
+#import "WACollectionPickerCell.h"
 #import <MagicalRecord/CoreData+MagicalRecord.h>
 
 @interface WACollectionPickerViewController ()
@@ -42,7 +43,7 @@
   if (self) {
     self.completionBlock = completionBlock;
     
-    [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"Cell"];
+    [self.tableView registerNib:[UINib nibWithNibName:@"WACollectionPickerCell" bundle:nil] forCellReuseIdentifier:@"Cell"];
     self.managedObjectContext = [[WADataStore defaultStore] defaultAutoUpdatedMOC];
     
     NSPredicate *allCollections = [NSPredicate predicateWithFormat:@"isHidden == FALSE"];
@@ -90,15 +91,16 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
   static NSString *CellIdentifier = @"Cell";
-  UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
+  WACollectionPickerCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
     
   if(!cell) {
-    cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+    cell = [[WACollectionPickerCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
   }
   
   WACollection *collection = (WACollection*)self.fetchedResultsController.fetchedObjects[indexPath.row];
   
   cell.imageView.image = nil;
+  cell.imageView.contentMode = UIViewContentModeScaleAspectFill;
   if(collection.cover) {
     cell.imageView.image = [(WAFile*)collection.cover smallThumbnailImage];
   } else {
@@ -111,6 +113,11 @@
   cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
   
   return cell;
+}
+
+
+- (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+  return 60.0f;
 }
 
 /*

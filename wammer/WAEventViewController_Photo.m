@@ -29,6 +29,8 @@
 
 @property (nonatomic, strong) UICollectionView *itemsView;
 @property (nonatomic, strong) NSMutableIndexSet *selectedPhotos;
+@property (nonatomic, strong) IRBarButtonItem *actionButton;
+@property (nonatomic, strong) IRBarButtonItem *cancelButton;
 @property (nonatomic, assign) BOOL editing;
 
 @end
@@ -72,7 +74,9 @@
     };
     actVC.excludedActivityTypes = @[UIActivityTypePrint, UIActivityTypeCopyToPasteboard, UIActivityTypeAssignToContact, UIActivityTypeSaveToCameraRoll];
     
-    [wSelf presentViewController:actVC animated:YES completion:nil];
+    [wSelf presentViewController:actVC animated:YES completion:^{
+      [wSelf showDoneBezel];
+    }];
     
   });
 
@@ -98,6 +102,7 @@
                               NSLog(@"Save error: %@", error);
                             }
                             
+                            [wSelf showDoneBezel];
                           }];
                           
                           [alert show];
@@ -117,10 +122,17 @@
                             [wSelf.managedObjectContext save:&error];
                             if (error) {
                               NSLog(@"Fail to save collection for error: %@", error);
+                              [picker dismissViewControllerAnimated:YES completion:nil];
+                              picker = nil;
+
+                              [wSelf showErrorBezelWithReason:error.description];
+                            } else {
+                              [picker dismissViewControllerAnimated:YES completion:nil];
+                              picker = nil;
+
+                              [wSelf showDoneBezel];
                             }
-        
-                            [picker dismissViewControllerAnimated:YES completion:nil];
-                            picker = nil;
+                            
                             
                           } onCancel:^{
                             
@@ -162,8 +174,10 @@
                                                                                onSuccess:^(NSDictionary *postRep) {
 
                                                                                  dispatch_async(dispatch_get_main_queue(), ^{
-                                                                                   [wSelf.itemsView reloadData];
                                                                                    [busyBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
+                                                                                   [wSelf showDoneBezel];
+                                                                                   [wSelf.itemsView reloadData];
+
                                                                                  });
 
                                                                                }
@@ -171,6 +185,9 @@
                                                                                  
                                                                                  dispatch_async(dispatch_get_main_queue(), ^{
                                                                                    [busyBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
+                                                                                   
+                                                                                   [wSelf showErrorBezelWithReason:error.description];
+                                                                                   
                                                                                  });
 
                                                                                }];
@@ -195,11 +212,14 @@
                                                                        dispatch_async(dispatch_get_main_queue(), ^{
                                                                          [wSelf.itemsView reloadData];
                                                                          [busyBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
+                                                                         [wSelf showDoneBezel];
                                                                        });
                                                                        
                                                                      } onFailure:^(NSError *error) {
                                                                        dispatch_async(dispatch_get_main_queue(), ^{
                                                                          [busyBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
+                                                                         [wSelf showErrorBezelWithReason:error.description];
+
                                                                        });
                                                                      }];
                           
@@ -211,7 +231,8 @@
 
   });
 
-  self.toolbarItems = @[shareButton, collectionButton, deleteButton];
+  UIBarButtonItem *space = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+  self.toolbarItems = @[space, shareButton, space, collectionButton, space, deleteButton, space];
   
   for(UIBarButtonItem *barButton in self.toolbarItems) {
     barButton.enabled = NO;
@@ -224,27 +245,17 @@
   morePhotoBtnImages = [NSMutableArray arrayWithArray:@[@"add-DB", @"add-G", @"add-LB", @"add-O", @"add-Red"]];
 
 	
-  IRBarButtonItem *cancelButton = WABarButtonItem(nil, @"Cancel", nil);
+  self.cancelButton = WABarButtonItem(nil, @"Cancel", nil);
   
-  IRBarButtonItem *actionButton = WABarButtonItem([UIImage imageNamed:@"action"], nil, ^{
-    [wSelf.navigationController setToolbarHidden:NO animated:YES];
-    wSelf.navigationItem.rightBarButtonItem = cancelButton;
-    wSelf.navigationItem.leftBarButtonItem.enabled = NO;
-    wSelf.editing = YES;
-    wSelf.itemsView.allowsMultipleSelection = YES;
+  self.actionButton = WABarButtonItem([UIImage imageNamed:@"action"], nil, ^{
+    [wSelf enterEditingMode];
   });
   
-  cancelButton.block = ^{
-    [wSelf.navigationController setToolbarHidden:YES animated:YES];
-    wSelf.navigationItem.rightBarButtonItem = actionButton;
-    wSelf.navigationItem.leftBarButtonItem.enabled = YES;
-    wSelf.editing = NO;
-    wSelf.itemsView.allowsMultipleSelection = NO;
-    [wSelf.selectedPhotos removeAllIndexes];
-    [wSelf.itemsView reloadData];
+  self.cancelButton.block = ^{
+    [wSelf leaveEditingMode];
   };
   
-  self.navigationItem.rightBarButtonItem = actionButton;
+  self.navigationItem.rightBarButtonItem = self.actionButton;
   
   if (![self.article.unhiddenFiles count]) { // No photo available
 	self.navigationItem.rightBarButtonItem.enabled = NO;
@@ -252,6 +263,62 @@
 	
   [self.itemsView registerClass:[WAEventPhotoViewCell class] forCellWithReuseIdentifier:@"EventPhotoCell"];
 	
+}
+
+- (void) showDoneBezel {
+  __weak id wSelf = self;
+
+  if (![NSThread isMainThread]) {
+    dispatch_async(dispatch_get_main_queue(), ^{
+      [wSelf showDoneBezel];
+    });
+  }
+  
+  WAOverlayBezel *doneBezel = [WAOverlayBezel bezelWithStyle:WACheckmarkBezelStyle];
+  [doneBezel showWithAnimation:WAOverlayBezelAnimationNone];
+  dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 2.0 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+    [doneBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
+  });
+  
+}
+
+- (void) showErrorBezelWithReason:(NSString*)reason {
+  __weak id wSelf = self;
+  if (![NSThread isMainThread]) {
+    dispatch_async(dispatch_get_main_queue(), ^{
+      [wSelf showErrorBezelWithReason:reason];
+    });
+  }
+
+  WAOverlayBezel *errorBezel = [[WAOverlayBezel alloc] initWithStyle:WAErrorBezelStyle];
+  [errorBezel setCaption:reason];
+  [errorBezel show];
+  dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 2.0 * NSEC_PER_SEC), dispatch_get_main_queue(), ^ {
+    [errorBezel dismiss];
+  });
+
+}
+
+- (void) enterEditingMode {
+  
+  [self.navigationController setToolbarHidden:NO animated:YES];
+  self.navigationItem.rightBarButtonItem = self.cancelButton;
+  self.navigationItem.leftBarButtonItem.enabled = NO;
+  self.editing = YES;
+  self.itemsView.allowsMultipleSelection = YES;
+
+}
+
+- (void) leaveEditingMode {
+
+  [self.navigationController setToolbarHidden:YES animated:YES];
+  self.navigationItem.rightBarButtonItem = self.actionButton;
+  self.navigationItem.leftBarButtonItem.enabled = YES;
+  self.editing = NO;
+  self.itemsView.allowsMultipleSelection = NO;
+  [self.selectedPhotos removeAllIndexes];
+  [self.itemsView reloadData];
+
 }
 
 - (void)didReceiveMemoryWarning

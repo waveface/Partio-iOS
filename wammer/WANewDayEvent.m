@@ -33,9 +33,10 @@
   if (self) {
     if (anArticle) {
       __weak WANewDayEvent *wSelf = self;
-      [anArticle irObserve:@"unhiddenFiles.@count" options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:nil withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
+      [anArticle irObserve:@"files.@count" options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:nil withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
         NSCParameterAssert([NSThread isMainThread]);
-        switch ([toValue integerValue]) {
+        NSUInteger count = anArticle.unhiddenFiles.count;
+        switch (count) {
           case 0:
             wSelf.style = WADayEventStyleCheckin;
             break;
