@@ -79,52 +79,61 @@
   IRBarButtonItem *collectionButton = WABarButtonItem(nil, NSLocalizedString(@"ACTION_ADD_COLLECTION", @"Adding to collection action in the event view"), ^{
     
     UIActionSheet *actions = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"ACTIONSHEET_TITLE_ADD_COLLECTION", @"The title of action sheets to add selected photos into collection")];
-    [actions addButtonWithTitle:NSLocalizedString(@"ACTIONSHEET_ACTION_NEW_COLLECTION", @"The action title to new a collection") handler:^{
-      UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"ALERT_TITLE_NEW_COLLECTION", @"The title of an alert view for user to input a collection name") message:@""];
-      __weak UIAlertView *wAlert = alert;
-      alert.alertViewStyle = UIAlertViewStylePlainTextInput;
-      [alert setCancelButtonWithTitle:NSLocalizedString(@"ACTION_CANCEL", @"Cancel adding selected photos into collection") handler:nil];
-      [alert addButtonWithTitle:NSLocalizedString(@"ACTION_CREATE_COLLECTION", @"The action to create a new collection") handler:^{
-        NSString *collectionName = [wAlert textFieldAtIndex:0].text;
-        wSelf.managedObjectContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
-        WACollection *collection = [[WACollection alloc] initWithName:collectionName
-                                                            withFiles:[wSelf.article.files objectsAtIndexes:wSelf.selectedPhotos]
-                                               inManagedObjectContext:wSelf.managedObjectContext];
-        collection.creator = [[WADataStore defaultStore] mainUserInContext:wSelf.managedObjectContext];
-        NSError *error;
-        if ([wSelf.managedObjectContext save:&error]==NO){
-          NSLog(@"Save error: %@", error);
-        }
-
-      }];
-      [alert show];
-    }];
     
-    [actions addButtonWithTitle:NSLocalizedString(@"ACTIONSHEET_ACTION_ADD_EXISTING", @"The action title to add selected photos in a collection") handler:^{
+    [actions addButtonWithTitle:NSLocalizedString(@"ACTIONSHEET_ACTION_NEW_COLLECTION", @"The action title to new a collection")
+                        handler:^{
+                          UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"ALERT_TITLE_NEW_COLLECTION", @"The title of an alert view for user to input a collection name") message:@""];
+                          __weak UIAlertView *wAlert = alert;
+                          alert.alertViewStyle = UIAlertViewStylePlainTextInput;
+                          [alert setCancelButtonWithTitle:NSLocalizedString(@"ACTION_CANCEL", @"Cancel adding selected photos into collection") handler:nil];
+                          [alert addButtonWithTitle:NSLocalizedString(@"ACTION_CREATE_COLLECTION", @"The action to create a new collection") handler:^{
+                            NSString *collectionName = [wAlert textFieldAtIndex:0].text;
+                            wSelf.managedObjectContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
+                            WACollection *collection = [[WACollection alloc] initWithName:collectionName
+                                                                                withFiles:[wSelf.article.unhiddenFiles objectsAtIndexes:wSelf.selectedPhotos]
+                                                                   inManagedObjectContext:wSelf.managedObjectContext];
+                            collection.creator = [[WADataStore defaultStore] mainUserInContext:wSelf.managedObjectContext];
+                            NSError *error;
+                            if ([wSelf.managedObjectContext save:&error]==NO){
+                              NSLog(@"Save error: %@", error);
+                            }
+                            
+                          }];
+                          
+                          [alert show];
+                          
+                        }];
+    
+    [actions addButtonWithTitle:NSLocalizedString(@"ACTIONSHEET_ACTION_ADD_EXISTING", @"The action title to add selected photos in a collection")
+                        handler:^{
       
-      __block WACollectionPickerViewController *picker = [WACollectionPickerViewController pickerWithHandler:^(NSManagedObjectID *selectedCollection) {
+                          __block WACollectionPickerViewController *picker = [WACollectionPickerViewController pickerWithHandler:^(NSManagedObjectID *selectedCollection) {
         
-        WACollection *collection = (WACollection*)[wSelf.managedObjectContext objectWithID:selectedCollection];
+                            WACollection *collection = (WACollection*)[wSelf.managedObjectContext objectWithID:selectedCollection];
         
-        [collection addObjects:[wSelf.article.files objectsAtIndexes:wSelf.selectedPhotos]];
+                            [collection addObjects:[wSelf.article.unhiddenFiles objectsAtIndexes:wSelf.selectedPhotos]];
         
-        NSError *error = nil;
-        [wSelf.managedObjectContext save:&error];
-        if (error) {
-          NSLog(@"Fail to save collection for error: %@", error);
-        }
+                            NSError *error = nil;
+                            [wSelf.managedObjectContext save:&error];
+                            if (error) {
+                              NSLog(@"Fail to save collection for error: %@", error);
+                            }
         
-        [picker dismissViewControllerAnimated:YES completion:nil];
-        picker = nil;
-      } onCancel:^{
-        [picker dismissViewControllerAnimated:YES completion:nil];
-        picker = nil;
-      }];
+                            [picker dismissViewControllerAnimated:YES completion:nil];
+                            picker = nil;
+                            
+                          } onCancel:^{
+                            
+                            [picker dismissViewControllerAnimated:YES completion:nil];
+                            picker = nil;
+                            
+                          }];
       
-      wSelf.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
-      wSelf.modalPresentationStyle = UIModalPresentationFullScreen;
-      [wSelf presentViewController:picker animated:YES completion:nil];
-    }];
+                          wSelf.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+                          wSelf.modalPresentationStyle = UIModalPresentationFullScreen;
+                          [wSelf presentViewController:picker animated:YES completion:nil];
+                          
+                        }];
     
     [actions setCancelButtonWithTitle:NSLocalizedString(@"ACTION_CANCEL", @"Cancel the photos adding to collection") handler:nil];
     
@@ -135,35 +144,66 @@
   IRBarButtonItem *deleteButton = WABarButtonItem(nil, NSLocalizedString(@"ACTION_PHOTOS_DELETE", @"Deleting action in the event view"), ^{
 
     UIActionSheet *actions = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"ACTIONSHEET_TITLE_DELETE_PHOTOS", @"The title of action sheets to delete selected photos")];
-    [actions addButtonWithTitle:NSLocalizedString(@"ACTIONSHEET_ACTION_DEL_INEVENT", @"Remove selected photos from event") handler:^{
+    [actions addButtonWithTitle:NSLocalizedString(@"ACTIONSHEET_ACTION_DEL_INEVENT", @"Remove selected photos from event")
+                        handler:^{
+
+                          NSMutableArray *identifiers = [NSMutableArray array];
+                          [wSelf.selectedPhotos enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop) {
+                            [identifiers addObject:[[wSelf.article.unhiddenFiles objectAtIndex:idx] identifier]];
+                          }];
+                          
+                          WAOverlayBezel *busyBezel = [WAOverlayBezel bezelWithStyle:WAActivityIndicatorBezelStyle];
+                          dispatch_async(dispatch_get_main_queue(), ^{
+                            [busyBezel showWithAnimation:WAOverlayBezelAnimationFade];
+                          });
       
-    }];
+                          [[WARemoteInterface sharedInterface] removeAttachmentsFromPost:wSelf.article.identifier
+                                                                             attachments:identifiers
+                                                                               onSuccess:^(NSDictionary *postRep) {
+
+                                                                                 dispatch_async(dispatch_get_main_queue(), ^{
+                                                                                   [wSelf.itemsView reloadData];
+                                                                                   [busyBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
+                                                                                 });
+
+                                                                               }
+                                                                               onFailure:^(NSError *error) {
+                                                                                 
+                                                                                 dispatch_async(dispatch_get_main_queue(), ^{
+                                                                                   [busyBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
+                                                                                 });
+
+                                                                               }];
+                        }];
     
-    [actions addButtonWithTitle:NSLocalizedString(@"ACTIONSHEET_ACTION_DELETE", @"Hide the selected photos") handler:^{
+    [actions addButtonWithTitle:NSLocalizedString(@"ACTIONSHEET_ACTION_DELETE", @"Hide the selected photos")
+                        handler:^{
       
-      NSMutableArray *identifiers = [NSMutableArray array];
-      [wSelf.selectedPhotos enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop) {
-        [identifiers addObject:[[wSelf.article.files objectAtIndex:idx] identifier]];
-      }];
+                          NSMutableArray *identifiers = [NSMutableArray array];
+                          [wSelf.selectedPhotos enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop) {
+                            [identifiers addObject:[[wSelf.article.unhiddenFiles objectAtIndex:idx] identifier]];
+                          }];
       
-      WAOverlayBezel *busyBezel = [WAOverlayBezel bezelWithStyle:WAActivityIndicatorBezelStyle];
-      dispatch_async(dispatch_get_main_queue(), ^{
-        [busyBezel showWithAnimation:WAOverlayBezelAnimationFade];
-      });
+                          WAOverlayBezel *busyBezel = [WAOverlayBezel bezelWithStyle:WAActivityIndicatorBezelStyle];
+                          dispatch_async(dispatch_get_main_queue(), ^{
+                            [busyBezel showWithAnimation:WAOverlayBezelAnimationFade];
+                          });
       
-      [[WARemoteInterface sharedInterface] hideAttachments:identifiers onSuccess:^(NSArray *successIDs) {
-
-        dispatch_async(dispatch_get_main_queue(), ^{
-          [busyBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
-        });
-
-      } onFailure:^(NSError *error) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-          [busyBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
-        });
-      }];
-      
-    }];
+                          [[WARemoteInterface sharedInterface] hideAttachments:identifiers
+                                                                     onSuccess:^(NSArray *successIDs) {
+                            
+                                                                       dispatch_async(dispatch_get_main_queue(), ^{
+                                                                         [wSelf.itemsView reloadData];
+                                                                         [busyBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
+                                                                       });
+                                                                       
+                                                                     } onFailure:^(NSError *error) {
+                                                                       dispatch_async(dispatch_get_main_queue(), ^{
+                                                                         [busyBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
+                                                                       });
+                                                                     }];
+                          
+                        }];
     
     [actions setCancelButtonWithTitle:NSLocalizedString(@"ACTION_CANCEL", @"Cancel the photo deletion") handler:nil];
     
@@ -192,20 +232,7 @@
     wSelf.navigationItem.leftBarButtonItem.enabled = NO;
     wSelf.editing = YES;
     wSelf.itemsView.allowsMultipleSelection = YES;
-//		WAEventActionsViewController *editingModeVC = [WAEventActionsViewController new];
-//		editingModeVC.article = wSelf.article;
-//
-//		WANavigationController *navVC = [[WANavigationController alloc] initWithRootViewController:editingModeVC];
-//		if (isPad()) {
-//			
-//			navVC.modalPresentationStyle = UIModalPresentationCurrentContext;
-//			navVC.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
-//
-//		} else
-//			navVC.modalPresentationStyle = UIModalPresentationPageSheet;
-//
-//		[wSelf presentViewController:navVC animated:YES completion:nil];
-	});
+  });
   
   cancelButton.block = ^{
     [wSelf.navigationController setToolbarHidden:YES animated:YES];
@@ -219,7 +246,7 @@
   
   self.navigationItem.rightBarButtonItem = actionButton;
   
-  if (![self.article.files count]) { // No photo available
+  if (![self.article.unhiddenFiles count]) { // No photo available
 	self.navigationItem.rightBarButtonItem.enabled = NO;
   }
 	
@@ -267,7 +294,7 @@
   NSMutableArray *marray = [NSMutableArray array];
   __weak WAEventViewController_Photo *wSelf = self;
   [self.selectedPhotos enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop) {
-    WAFile *file = wSelf.article.files[idx];
+    WAFile *file = wSelf.article.unhiddenFiles[idx];
     if (file.smallThumbnailImage)
       [marray addObject:file.smallThumbnailImage];
   }];
@@ -282,9 +309,9 @@
 
 	WAEventPhotoViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"EventPhotoCell" forIndexPath:indexPath];
 	
-	if (self.article.files.count) {
+	if (self.article.unhiddenFiles.count) {
 	
-		WAFile *file = [self.article.files objectAtIndex:indexPath.row];
+		WAFile *file = [self.article.unhiddenFiles objectAtIndex:indexPath.row];
 
 		[cell.imageView irUnbind:@"image"];
 
@@ -345,12 +372,12 @@
   if (!self.editing) {
 	__weak WAGalleryViewController *galleryVC = nil;
 	
-	if (!self.article.files.count) {
+	if (!self.article.unhiddenFiles.count) {
       //TODO: popup UI to add some photos
       return;
 	}
 	
-	WAFile *file = [self.article.files objectAtIndex:indexPath.row];
+	WAFile *file = [self.article.unhiddenFiles objectAtIndex:indexPath.row];
 	
 	galleryVC = [WAGalleryViewController
                  controllerRepresentingArticleAtURI:[[self.article objectID] URIRepresentation]

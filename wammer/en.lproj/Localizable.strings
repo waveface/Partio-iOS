@@ -49,7 +49,7 @@
 "ACTION_CONNECT_TWITTER_SHORT" = "Start Importing";
 
 /* The action to create a new collection */
-"ACTION_CREATE_COLLECTION" = "ACTION_CREATE_COLLECTION";
+"ACTION_CREATE_COLLECTION" = "Create";
 
 /* Action deleting an article
    The label on the confirmation dialog to make sure user want to delete account or not
