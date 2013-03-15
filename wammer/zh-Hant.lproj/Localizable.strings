@@ -17,7 +17,7 @@
 "ACTION_ADD" = "新增照片";
 
 /* Adding to collection action in the event view */
-"ACTION_ADD_COLLECTION" = "加入收藏";
+"ACTION_ADD_COLLECTION" = "新增至";
 
 /* In event view */
 "ACTION_ADD_TO_COLLECTION" = "完成";

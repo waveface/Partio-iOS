@@ -17,7 +17,7 @@
 "ACTION_ADD" = "Add Photo";
 
 /* Adding to collection action in the event view */
-"ACTION_ADD_COLLECTION" = "Collections";
+"ACTION_ADD_COLLECTION" = "Add to";
 
 /* In event view */
 "ACTION_ADD_TO_COLLECTION" = "Done";
@@ -123,7 +123,7 @@
 "ACTION_UNMARK_FAVORITE" = "Unfavorite";
 
 /* The action title to add selected photos in a collection */
-"ACTIONSHEET_ACTION_ADD_EXISTING" = "Add to an existing collection";
+"ACTIONSHEET_ACTION_ADD_EXISTING" = "Add to an existing";
 
 /* Remove selected photos from event */
 "ACTIONSHEET_ACTION_DEL_INEVENT" = "Remove from event";
@@ -132,7 +132,7 @@
 "ACTIONSHEET_ACTION_DELETE" = "Remove selected";
 
 /* The action title to new a collection */
-"ACTIONSHEET_ACTION_NEW_COLLECTION" = "Create a new collection";
+"ACTIONSHEET_ACTION_NEW_COLLECTION" = "Create a new one";
 
 /* The title of action sheets to add selected photos into collection */
 "ACTIONSHEET_TITLE_ADD_COLLECTION" = "Add to a collection";

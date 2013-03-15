@@ -30,7 +30,8 @@
 @property (nonatomic, strong) UICollectionView *itemsView;
 @property (nonatomic, strong) NSMutableIndexSet *selectedPhotos;
 @property (nonatomic, strong) IRBarButtonItem *actionButton;
-@property (nonatomic, strong) IRBarButtonItem *cancelButton;
+@property (nonatomic, strong) UIBarButtonItem *cancelButton;
+@property (nonatomic, strong) UIBarButtonItem *backButton;
 @property (nonatomic, assign) BOOL editing;
 
 @end
@@ -62,6 +63,8 @@
   [super viewDidLoad];
 
   __weak WAEventViewController_Photo *wSelf = self;
+  
+  self.backButton = self.navigationItem.leftBarButtonItem;
 
   IRBarButtonItem *shareButton = WABarButtonItem(nil, NSLocalizedString(@"ACTION_SHARE", @"Sharing action in the event view"), ^{
     
@@ -74,11 +77,11 @@
     };
     actVC.excludedActivityTypes = @[UIActivityTypePrint, UIActivityTypeCopyToPasteboard, UIActivityTypeAssignToContact, UIActivityTypeSaveToCameraRoll];
     
-    [wSelf presentViewController:actVC animated:YES completion:^{
-      [wSelf showDoneBezel];
-    }];
+    [wSelf presentViewController:actVC animated:YES completion:nil];
     
   });
+  [shareButton setTitleTextAttributes:@{UITextAttributeTextColor: [UIColor whiteColor]} forState:UIControlStateNormal];
+  [shareButton setTintColor:[UIColor blackColor]];
 
   IRBarButtonItem *collectionButton = WABarButtonItem(nil, NSLocalizedString(@"ACTION_ADD_COLLECTION", @"Adding to collection action in the event view"), ^{
     
@@ -127,6 +130,7 @@
 
                               [wSelf showErrorBezelWithReason:error.description];
                             } else {
+                              
                               [picker dismissViewControllerAnimated:YES completion:nil];
                               picker = nil;
 
@@ -152,6 +156,8 @@
     [actions showFromToolbar:wSelf.navigationController.toolbar];
 
   });
+  [collectionButton setTitleTextAttributes:@{UITextAttributeTextColor: [UIColor whiteColor]} forState:UIControlStateNormal];
+  [collectionButton setTintColor:[UIColor blackColor]];
   
   IRBarButtonItem *deleteButton = WABarButtonItem(nil, NSLocalizedString(@"ACTION_PHOTOS_DELETE", @"Deleting action in the event view"), ^{
 
@@ -230,6 +236,8 @@
     [actions showFromToolbar:wSelf.navigationController.toolbar];
 
   });
+  deleteButton.tintColor = [UIColor redColor];
+  [deleteButton setTitleTextAttributes:@{UITextAttributeTextColor: [UIColor whiteColor]} forState:UIControlStateNormal];
 
   UIBarButtonItem *space = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
   self.toolbarItems = @[space, shareButton, space, collectionButton, space, deleteButton, space];
@@ -238,23 +246,23 @@
     barButton.enabled = NO;
   }
   
-  self.navigationController.toolbar.barStyle = UIBarStyleBlackTranslucent;
+  self.navigationController.toolbar.barStyle = UIBarStyleBlack;
+  self.navigationController.toolbar.translucent = YES;
   self.navigationController.toolbar.tintColor = [UIColor clearColor];
   self.navigationController.toolbarHidden = YES;
   
   morePhotoBtnImages = [NSMutableArray arrayWithArray:@[@"add-DB", @"add-G", @"add-LB", @"add-O", @"add-Red"]];
 
 	
-  self.cancelButton = WABarButtonItem(nil, @"Cancel", nil);
+  self.cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel handler:^(id sender) {
+    [wSelf leaveEditingMode];
+    
+  }];
   
   self.actionButton = WABarButtonItem([UIImage imageNamed:@"action"], nil, ^{
     [wSelf enterEditingMode];
   });
-  
-  self.cancelButton.block = ^{
-    [wSelf leaveEditingMode];
-  };
-  
+    
   self.navigationItem.rightBarButtonItem = self.actionButton;
   
   if (![self.article.unhiddenFiles count]) { // No photo available
@@ -303,7 +311,7 @@
   
   [self.navigationController setToolbarHidden:NO animated:YES];
   self.navigationItem.rightBarButtonItem = self.cancelButton;
-  self.navigationItem.leftBarButtonItem.enabled = NO;
+  self.navigationItem.leftBarButtonItem = nil;
   self.editing = YES;
   self.itemsView.allowsMultipleSelection = YES;
 
@@ -311,13 +319,13 @@
 
 - (void) leaveEditingMode {
 
-  [self.navigationController setToolbarHidden:YES animated:YES];
   self.navigationItem.rightBarButtonItem = self.actionButton;
-  self.navigationItem.leftBarButtonItem.enabled = YES;
+  self.navigationItem.leftBarButtonItem = self.backButton;
   self.editing = NO;
   self.itemsView.allowsMultipleSelection = NO;
   [self.selectedPhotos removeAllIndexes];
   [self.itemsView reloadData];
+  [self.navigationController setToolbarHidden:YES animated:YES];
 
 }
 
