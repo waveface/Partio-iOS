@@ -27,6 +27,10 @@
 
 @implementation WANewDayEvent
 
+- (NSString *)description {
+  return [NSString stringWithFormat:@"%@, %@.", _startTime, _eventDescription];
+}
+
 - (id)initWithArticle:(WAArticle *)anArticle date:(NSDate *)aDate {
 
   self = [super init];

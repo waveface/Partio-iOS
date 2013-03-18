@@ -281,9 +281,6 @@
 /* The text of label on separation line in the event view when there is no photo presented. */
 "EVENT_SEPERATION_LABEL_WITHOUT_PHOTOS" = "Add some photos";
 
-/* Event summary text in summary view */
-"EVENT_SUMMARY_TEXT" = "You have %d events today.";
-
 /* Title for Events view */
 "EVENTS_CONTROLLER_TITLE" = "MY DAYS";
 
@@ -379,9 +376,6 @@
 
 /* greeting text of day summary view */
 "GREETING_TEXT_WITH_EVENTS_TODAY" = "Hi, %@.\nCheck out what you did today!";
-
-/* Hello text in summary view */
-"HELLO_NAME_TEXT" = "Hi, %@";
 
 /* No comment provided by engineer. */
 "HOUR_PLURAL" = "%d hours";
@@ -785,21 +779,6 @@
 
 /* Class = "IBUILabel"; text = "STATE_LOADING_SINGLE_DOCUMENT_PROGRESS"; ObjectID = "10"; */
 "STATE_LOADING_SINGLE_DOCUMENT_PROGRESS" = "%1 of %2";
-
-/* Class = "IBUILabel"; text = "OCT"; ObjectID = "5"; */
-"OCT" = "OCT";
-
-/* Class = "IBUILabel"; text = "DAY"; ObjectID = "9"; */
-"DAY" = "DAY";
-
-/* Class = "IBUILabel"; text = "WEEKDAY"; ObjectID = "10"; */
-"WEEKDAY" = "WEEKDAY";
-
-/* Class = "IBUILabel"; text = "HELLO_TEXT"; ObjectID = "49"; */
-"HELLO_TEXT" = "HELLO_TEXT";
-
-/* Class = "IBUILabel"; text = "EVENT_TEXT"; ObjectID = "50"; */
-"EVENT_TEXT" = "EVENT_TEXT";
 
 /* Class = "IBUILabel"; text = "ACTION_GOTO_WEBSITE"; ObjectID = "0UL-JF-5TW"; */
 "ACTION_GOTO_WEBSITE" = "Premium plans will be arriving in the following updates.";

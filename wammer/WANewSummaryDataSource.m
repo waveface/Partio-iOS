@@ -254,27 +254,58 @@
 - (NSIndexPath *)indexPathOfDaySummaryOnDate:(NSDate *)aDate {
 
   NSUInteger itemIndex = [self indexOfDaySummaryOnDate:aDate];
-  return [NSIndexPath indexPathForItem:([self.daySummaries count]-itemIndex-1) inSection:0];
+  return [NSIndexPath indexPathForItem:itemIndex inSection:0];
 
+}
+
+- (NSUInteger)indexOfDaySummaryOnDate:(NSDate *)aDate {
+  
+  NSCalendar *calendar = [NSCalendar currentCalendar];
+  NSUInteger flags = NSDayCalendarUnit|NSTimeZoneCalendarUnit;
+  NSDateComponents *dateComponents = [calendar components:flags fromDate:self.firstDate toDate:aDate options:0];
+  return dateComponents.day;
+  
 }
 
 - (NSIndexPath *)indexPathOfFirstDayEventOnDate:(NSDate *)aDate {
 
   NSIndexSet *indexes = [self indexesOfEventsOnDate:aDate];
-  NSUInteger itemIndex = [indexes lastIndex];
+  NSUInteger itemIndex = [indexes firstIndex];
   NSAssert(itemIndex != NSNotFound, @"There should be a day event for any searchable dates");
 
-  return [NSIndexPath indexPathForItem:([self.dayEvents count]-itemIndex-1) inSection:0];
+  return [NSIndexPath indexPathForItem:itemIndex inSection:0];
 
+}
+
+- (NSIndexSet *)indexesOfEventsOnDate:(NSDate *)aDate {
+  
+  WANewDayEvent *leadingDayEvent = [[WANewDayEvent alloc] initWithArticle:nil date:[aDate dayBegin]];
+  NSUInteger leadingSentinel = [self.dayEvents indexOfObject:leadingDayEvent
+                                               inSortedRange:NSMakeRange(0, [self.dayEvents count])
+                                                     options:NSBinarySearchingInsertionIndex
+                                             usingComparator:^NSComparisonResult(WANewDayEvent *dayEvent1, WANewDayEvent *dayEvent2) {
+                                               return [dayEvent1.startTime compare:dayEvent2.startTime];
+                                             }];
+  WANewDayEvent *trailingDayEvent = [[WANewDayEvent alloc] initWithArticle:nil date:[aDate dayEnd]];
+  NSUInteger trailingSentinel = [self.dayEvents indexOfObject:trailingDayEvent
+                                                inSortedRange:NSMakeRange(0, [self.dayEvents count])
+                                                      options:NSBinarySearchingInsertionIndex
+                                              usingComparator:^NSComparisonResult(WANewDayEvent *dayEvent1, WANewDayEvent *dayEvent2) {
+                                                return [dayEvent1.startTime compare:dayEvent2.startTime];
+                                              }];
+  NSIndexSet *indexes = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(leadingSentinel, trailingSentinel-leadingSentinel)];
+  
+  return indexes;
+  
 }
 
 - (NSIndexPath *)indexPathOfLastDayEventOnDate:(NSDate *)aDate {
 
   NSIndexSet *indexes = [self indexesOfEventsOnDate:aDate];
-  NSUInteger itemIndex = [indexes firstIndex];
+  NSUInteger itemIndex = [indexes lastIndex];
   NSAssert(itemIndex != NSNotFound, @"There should be a day event for any searchable dates");
   
-  return [NSIndexPath indexPathForItem:([self.dayEvents count]-itemIndex-1) inSection:0];
+  return [NSIndexPath indexPathForItem:(itemIndex) inSection:0];
 
 }
 
@@ -288,64 +319,39 @@
 
   NSAssert(itemIndex != NSNotFound, @"There should be a day event for any searchable day events");
   
-  return [NSIndexPath indexPathForItem:([self.dayEvents count]-itemIndex-1) inSection:0];
+  return [NSIndexPath indexPathForItem:(itemIndex) inSection:0];
   
 }
 
 - (NSDate *)dateOfDaySummaryAtIndexPath:(NSIndexPath *)anIndexPath {
 
-  NSUInteger itemIndex = ([self.daySummaries count]-anIndexPath.item-1);
-  WANewDaySummary *daySummary = self.daySummaries[itemIndex];
+  WANewDaySummary *daySummary = self.daySummaries[anIndexPath.row];
   return daySummary.date;
 
 }
 
 - (NSDate *)dateOfDayEventAtIndexPath:(NSIndexPath *)anIndexPath {
 
-  NSUInteger itemIndex = ([self.dayEvents count]-anIndexPath.item-1);
-  WANewDayEvent *dayEvent = self.dayEvents[itemIndex];
+  WANewDayEvent *dayEvent = self.dayEvents[anIndexPath.item];
   return [dayEvent.startTime dayBegin];
 
 }
 
 - (WANewDaySummary *)daySummaryAtIndexPath:(NSIndexPath *)anIndexPath {
 
-  NSUInteger itemIndex = ([self.daySummaries count]-anIndexPath.item-1);
-  WANewDaySummary *daySummary = self.daySummaries[itemIndex];
-  return daySummary;
+  if ([anIndexPath row] >= [_daySummaries count])
+    return nil;
+  
+  return _daySummaries[[anIndexPath row]];
 
 }
 
 - (WANewDayEvent *)dayEventAtIndexPath:(NSIndexPath *)anIndexPath {
-
-  NSUInteger itemIndex = ([self.dayEvents count]-anIndexPath.item-1);
-  WANewDayEvent *dayEvent = self.dayEvents[itemIndex];
-  return dayEvent;
-
-}
-
-- (NSUInteger)indexOfDaySummaryOnDate:(NSDate *)aDate {
- 
-  NSCalendar *calendar = [NSCalendar currentCalendar];
-  NSUInteger flags = NSDayCalendarUnit|NSTimeZoneCalendarUnit;
-  NSDateComponents *dateComponents = [calendar components:flags fromDate:self.firstDate toDate:aDate options:0];
-  return dateComponents.day;
-
-}
-
-- (NSIndexSet *)indexesOfEventsOnDate:(NSDate *)aDate {
-
-  WANewDayEvent *leadingDayEvent = [[WANewDayEvent alloc] initWithArticle:nil date:[aDate dayBegin]];
-  NSUInteger leadingSentinel = [self.dayEvents indexOfObject:leadingDayEvent inSortedRange:NSMakeRange(0, [self.dayEvents count]) options:NSBinarySearchingInsertionIndex usingComparator:^NSComparisonResult(WANewDayEvent *dayEvent1, WANewDayEvent *dayEvent2) {
-    return [dayEvent1.startTime compare:dayEvent2.startTime];
-  }];
-  WANewDayEvent *trailingDayEvent = [[WANewDayEvent alloc] initWithArticle:nil date:[aDate dayEnd]];
-  NSUInteger trailingSentinel = [self.dayEvents indexOfObject:trailingDayEvent inSortedRange:NSMakeRange(0, [self.dayEvents count]) options:NSBinarySearchingInsertionIndex usingComparator:^NSComparisonResult(WANewDayEvent *dayEvent1, WANewDayEvent *dayEvent2) {
-    return [dayEvent1.startTime compare:dayEvent2.startTime];
-  }];
-  NSIndexSet *indexes = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(leadingSentinel, trailingSentinel-leadingSentinel)];
   
-  return indexes;
+  if ([anIndexPath row] >= [_dayEvents count])
+    return nil;
+  
+  return _dayEvents[anIndexPath.item];
 
 }
 
@@ -370,31 +376,17 @@
 
     WANewDaySummaryViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:kWANewDaySummaryViewCellID forIndexPath:indexPath];
     NSAssert(cell, @"cell should be registered first");
-    NSUInteger numOfDaySummaries = [self.daySummaries count];
-    cell.representingDaySummary = self.daySummaries[numOfDaySummaries - indexPath.row - 1];
+    cell.representingDaySummary = self.daySummaries[indexPath.row];
     return cell;
 
   } else if (collectionView == self.eventCollectionView) {
 
     WANewDayEventViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:kWANewDayEventViewCellID forIndexPath:indexPath];
     NSAssert(cell, @"cell should be registered first");
-    NSInteger numOfDayEvents = [self.dayEvents count];
-    cell.representingDayEvent = self.dayEvents[numOfDayEvents - indexPath.row - 1];
-    for (NSInteger i = (numOfDayEvents-indexPath.row-1)-2; i<(numOfDayEvents-indexPath.row-1); i++) {
-      if (i >= 0 && i < numOfDayEvents) {
-        [self.dayEvents[i] loadImages];
-      }
-    }
-    for (NSInteger i = (numOfDayEvents-indexPath.row-1)+2; i>=(numOfDayEvents-indexPath.row-1); i--) {
-      if (i >= 0 && i < numOfDayEvents) {
-        [self.dayEvents[i] loadImages];
-      }
-    }
-    if ((numOfDayEvents-indexPath.row-1)-3 >= 0) {
-      [self.dayEvents[(numOfDayEvents-indexPath.row-1)-3] unloadImages];
-    }
-    if ((numOfDayEvents-indexPath.row-1)+3 < numOfDayEvents) {
-      [self.dayEvents[(numOfDayEvents-indexPath.row-1)+3] unloadImages];
+    cell.representingDayEvent = self.dayEvents[indexPath.row];
+    
+    for (int i=0; i<5 && i+indexPath.row<[self.dayEvents count]; i++) {
+      [self.dayEvents[indexPath.row+i] loadImages];
     }
     
     return cell;

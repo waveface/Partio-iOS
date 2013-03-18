@@ -16,6 +16,10 @@
 
 @implementation WANewDaySummary
 
+- (NSString *)description {
+  return [NSString stringWithFormat:@"%@, {%d Events, %d Photos, %d Documents, %d WebPages}", _date, _numOfEvents, _numOfPhotos, _numOfDocuments, _numOfWebpages];
+}
+
 - (void)reloadData {
   
   NSAssert(self.date, @"Date should be initialized before reloading data.");
