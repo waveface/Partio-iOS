@@ -245,9 +245,6 @@
 /* The text of label on separation line in the event view when there is no photo presented. */
 "EVENT_SEPERATION_LABEL_WITHOUT_PHOTOS" = "加些照片吧";
 
-/* Event summary text in summary view */
-"EVENT_SUMMARY_TEXT" = "您今天有 %d 個焦點動態";
-
 /* Title for Events view */
 "EVENTS_CONTROLLER_TITLE" = "每日焦點";
 
@@ -343,9 +340,6 @@
 
 /* greeting text of day summary view */
 "GREETING_TEXT_WITH_EVENTS_TODAY" = "哈囉, %@.\n今天也是愉快的一天嗎？";
-
-/* Hello text in summary view */
-"HELLO_NAME_TEXT" = "哈囉, %@";
 
 /* No comment provided by engineer. */
 "HOUR_PLURAL" = "%d小時";
@@ -749,21 +743,6 @@
 
 /* Class = "IBUILabel"; text = "STATE_LOADING_SINGLE_DOCUMENT_PROGRESS"; ObjectID = "10"; */
 "STATE_LOADING_SINGLE_DOCUMENT_PROGRESS" = "%1 / %2";
-
-/* Class = "IBUILabel"; text = "OCT"; ObjectID = "5"; */
-"OCT" = "OCT";
-
-/* Class = "IBUILabel"; text = "DAY"; ObjectID = "9"; */
-"DAY" = "DAY";
-
-/* Class = "IBUILabel"; text = "WEEKDAY"; ObjectID = "10"; */
-"WEEKDAY" = "WEEKDAY";
-
-/* Class = "IBUILabel"; text = "HELLO_TEXT"; ObjectID = "49"; */
-"HELLO_TEXT" = "HELLO_TEXT";
-
-/* Class = "IBUILabel"; text = "EVENT_TEXT"; ObjectID = "50"; */
-"EVENT_TEXT" = "EVENT_TEXT";
 
 /* Class = "IBUILabel"; text = "ACTION_GOTO_WEBSITE"; ObjectID = "0UL-JF-5TW"; */
 "ACTION_GOTO_WEBSITE" = "接下來的更新版本將提供更多付費方案。";
