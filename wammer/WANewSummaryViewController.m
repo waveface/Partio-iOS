@@ -100,7 +100,8 @@
                             }];
                           }];
   
-  self.currentDayEvent = [self.dataSource dayEventAtIndexPath:todayIndexPath];
+  NSIndexPath *latestEvent = [self.dataSource indexPathOfFirstDayEventOnDate:[NSDate date]];
+  self.currentDayEvent = [self.dataSource dayEventAtIndexPath:latestEvent];
   [self.backgroundImageView addCrossFadeAnimationWithTargetImage:self.currentDayEvent.backgroundImage];
   [self.currentDayEvent irObserve:@"backgroundImage"
                           options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld
@@ -110,16 +111,6 @@
                             [wSelf.backgroundImageView addCrossFadeAnimationWithTargetImage:toValue];
                           }];
                         }];
-  
-}
-
-- (void)viewWillAppear:(BOOL)animated {
-  [super viewWillAppear:animated];
-  
-  NSIndexPath *daySummaryIndex = [self.dataSource indexPathOfDaySummaryOnDate:[NSDate date]];
-  NSIndexPath *dayEventIndex = [self.dataSource indexPathOfFirstDayEventOnDate:[NSDate date]];
-  [self scrollToDaySummaryAtIndexPath:daySummaryIndex animated:NO];
-  [self scrollToDayEventAtIndexPath:dayEventIndex animated:NO];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -130,11 +121,11 @@
   if ([self.dataSource loadMoreDays:20 since:date]) { // load 20 future days if possible
     [self.summaryCollectionView reloadData];
     [self.eventCollectionView reloadData];
-    NSIndexPath *daySummaryIndex = [self.dataSource indexPathOfDaySummaryOnDate:date];
-    NSIndexPath *dayEventIndex = [self.dataSource indexPathOfFirstDayEventOnDate:date];
-    [self scrollToDaySummaryAtIndexPath:daySummaryIndex animated:NO];
-    [self scrollToDayEventAtIndexPath:dayEventIndex animated:NO];
   }
+  NSIndexPath *daySummaryIndex = [self.dataSource indexPathOfDaySummaryOnDate:date];
+  NSIndexPath *dayEventIndex = [self.dataSource indexPathOfFirstDayEventOnDate:date];
+  [self scrollToDaySummaryAtIndexPath:daySummaryIndex animated:NO];
+  [self scrollToDayEventAtIndexPath:dayEventIndex animated:NO];
   
 }
 
@@ -351,14 +342,19 @@
   NSInteger pageIndex = floor((scrollView.contentOffset.x - pageWidth / 2) / pageWidth) + 1;
   
   if (scrollView == self.summaryCollectionView) {
-    
     if (self.summaryPageIndex != pageIndex) {
-      self.summaryPageIndex = pageIndex;
-      self.currentDaySummary = [self.dataSource daySummaryAtIndexPath:[NSIndexPath indexPathForItem:self.summaryPageIndex inSection:0]];
-      NSIndexPath *eventIndexPath = [self.dataSource indexPathOfFirstDayEventOnDate:self.currentDaySummary.date];
+      self.currentDaySummary = [self.dataSource daySummaryAtIndexPath:[NSIndexPath indexPathForItem:pageIndex inSection:0]];
+      NSIndexPath *eventIndexPath;
+      if (pageIndex > _summaryPageIndex) {
+        eventIndexPath = [self.dataSource indexPathOfFirstDayEventOnDate:self.currentDaySummary.date];
+        self.eventPageControl.currentPage = 0;
+      } else {
+        eventIndexPath = [self.dataSource indexPathOfLastDayEventOnDate:self.currentDaySummary.date];
+        self.eventPageControl.currentPage = [eventIndexPath row]-1;
+      }
       self.currentDayEvent = [self.dataSource dayEventAtIndexPath:eventIndexPath];
       [self scrollToDayEventAtIndexPath:eventIndexPath animated:YES];
-      self.eventPageControl.currentPage = 0;
+      self.summaryPageIndex = pageIndex;
     }
     
   } else {
