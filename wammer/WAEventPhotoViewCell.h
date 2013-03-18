@@ -10,6 +10,7 @@
 
 @interface WAEventPhotoViewCell : UICollectionViewCell
 
+@property (nonatomic, getter = isEditing) BOOL editing;
 @property (nonatomic, strong) UIImageView *imageView;
 @property (nonatomic, strong) UIImageView *checkMarkView;
 

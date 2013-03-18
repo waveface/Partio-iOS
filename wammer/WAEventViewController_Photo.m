@@ -51,7 +51,7 @@
 
       [self.selectedPhotos addObserver:self
                             forKeyPath:@"count"
-                               options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld
+                               options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld
                                context:nil];
       
     }
@@ -314,6 +314,7 @@
   self.navigationItem.leftBarButtonItem = nil;
   self.editing = YES;
   self.itemsView.allowsMultipleSelection = YES;
+  [self.itemsView reloadData];
 
 }
 
@@ -383,7 +384,8 @@
 - (UICollectionViewCell*) collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
 
 	WAEventPhotoViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"EventPhotoCell" forIndexPath:indexPath];
-	
+  cell.editing = self.editing;
+  
 	if (self.article.unhiddenFiles.count) {
 	
 		WAFile *file = [self.article.unhiddenFiles objectAtIndex:indexPath.row];
@@ -494,11 +496,6 @@
     
   } else {
    
-    WAEventPhotoViewCell *cell = (WAEventPhotoViewCell*)[collectionView cellForItemAtIndexPath:indexPath];
-    
-    cell.checkMarkView.hidden = NO;
-    cell.checkMarkView.image = [UIImage imageNamed:@"IRAQ-Checkmark"];
-
     [self.selectedPhotos willChangeValueForKey:@"count"];
     [self.selectedPhotos addIndex:indexPath.row];
     [self.selectedPhotos didChangeValueForKey:@"count"];
@@ -510,10 +507,6 @@
 - (void) collectionView:(UICollectionView *)collectionView didDeselectItemAtIndexPath:(NSIndexPath *)indexPath {
 
   if (self.editing) {
-    WAEventPhotoViewCell *cell = (WAEventPhotoViewCell*)[collectionView cellForItemAtIndexPath:indexPath];
-    
-    cell.checkMarkView.hidden = YES;
-    cell.checkMarkView.image = nil;
     
     [self.selectedPhotos willChangeValueForKey:@"count"];
     [self.selectedPhotos removeIndex:indexPath.row];

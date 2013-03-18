@@ -41,7 +41,9 @@
 
 @end
 
-@implementation WAEventViewController
+@implementation WAEventViewController {
+  CGFloat initialHeaderHeight;
+}
 
 + (WAEventViewController *) controllerForArticleURL:(NSURL*)anArticleURL {
 	NSMutableString *literal = [[NSMutableString alloc] initWithString:@"WAEventViewController"];
@@ -100,6 +102,8 @@
 	[super viewDidLoad];
   		
 	CGRect rect = (CGRect){ CGPointZero, self.view.frame.size };
+  
+  [self headerView];
 	
 	UICollectionViewFlowLayout *flowlayout = [[UICollectionViewFlowLayout alloc] init];
 	flowlayout.scrollDirection = UICollectionViewScrollDirectionVertical;
@@ -503,12 +507,7 @@
 		
 	}
 	
-	CGRect newFrame = _headerView.frame;
-	newFrame.size.width = CGRectGetWidth(self.itemsView.frame);
-	_headerView.frame = newFrame;
-	_headerView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
- 
-	[_headerView setNeedsLayout];
+  initialHeaderHeight = CGRectGetHeight(_headerView.frame);
 	
 	return _headerView;
 
@@ -642,9 +641,7 @@
 
 - (CGSize) collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section {
 
-	CGFloat height = MAX(self.headerView.frame.size.height, CGRectGetMaxY(self.headerView.separatorLineBelowMap.frame));
-	return (CGSize) { CGRectGetWidth(collectionView.frame), height + 7 };
-
+  return (CGSize ) { CGRectGetWidth(collectionView.frame) , initialHeaderHeight + 7 };
 }
 
 #pragma mark - CollectionView delegate
