@@ -492,8 +492,11 @@
   self.summaryCollectionView.dataSource = self.dataSource;
   self.eventCollectionView.dataSource = self.dataSource;
   
-  self.currentDaySummary = [self.dataSource daySummaryAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:0]];
-  self.currentDayEvent = [self.dataSource dayEventAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:0]];
+  NSIndexPath *dayIndexPath = [self.dataSource indexPathOfDaySummaryOnDate:date];
+  self.currentDaySummary = [self.dataSource daySummaryAtIndexPath:dayIndexPath];
+  
+  NSIndexPath *eventIndexPath = [self.dataSource indexPathOfFirstDayEventOnDate:date];
+  self.currentDayEvent = [self.dataSource dayEventAtIndexPath:eventIndexPath];
   
   [self.summaryCollectionView reloadData];
   [self.eventCollectionView reloadData];
