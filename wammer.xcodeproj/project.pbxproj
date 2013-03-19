@@ -393,7 +393,6 @@
 		DEBED818166C8643001A2B24 /* forward.png in Resources */ = {isa = PBXBuildFile; fileRef = DEBED816166C8643001A2B24 /* forward.png */; };
 		DEBED819166C8643001A2B24 /* forward@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DEBED817166C8643001A2B24 /* forward@2x.png */; };
 		DEBED81C166C8689001A2B24 /* WACollection+WARemoteInterfaceEntitySyncing.m in Sources */ = {isa = PBXBuildFile; fileRef = DEBED81B166C8689001A2B24 /* WACollection+WARemoteInterfaceEntitySyncing.m */; };
-		DEBED81F166C86C0001A2B24 /* WAEventActionsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DEBED81E166C86C0001A2B24 /* WAEventActionsViewController.m */; };
 		DEBED823166C8713001A2B24 /* WAGoogleConnectSwitch.m in Sources */ = {isa = PBXBuildFile; fileRef = DEBED822166C8713001A2B24 /* WAGoogleConnectSwitch.m */; };
 		DEBED826166C8739001A2B24 /* WAOAuthSwitch.m in Sources */ = {isa = PBXBuildFile; fileRef = DEBED825166C8739001A2B24 /* WAOAuthSwitch.m */; };
 		DEBED829166C874D001A2B24 /* WAOAuthViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DEBED828166C874D001A2B24 /* WAOAuthViewController.m */; };
@@ -1427,8 +1426,6 @@
 		DEBED817166C8643001A2B24 /* forward@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "forward@2x.png"; path = "Resources/forward@2x.png"; sourceTree = "<group>"; };
 		DEBED81A166C8689001A2B24 /* WACollection+WARemoteInterfaceEntitySyncing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WACollection+WARemoteInterfaceEntitySyncing.h"; sourceTree = "<group>"; };
 		DEBED81B166C8689001A2B24 /* WACollection+WARemoteInterfaceEntitySyncing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WACollection+WARemoteInterfaceEntitySyncing.m"; sourceTree = "<group>"; };
-		DEBED81D166C86C0001A2B24 /* WAEventActionsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WAEventActionsViewController.h; path = wammer/WAEventActionsViewController.h; sourceTree = "<group>"; };
-		DEBED81E166C86C0001A2B24 /* WAEventActionsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WAEventActionsViewController.m; path = wammer/WAEventActionsViewController.m; sourceTree = "<group>"; };
 		DEBED821166C8713001A2B24 /* WAGoogleConnectSwitch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WAGoogleConnectSwitch.h; path = wammer/WAGoogleConnectSwitch.h; sourceTree = "<group>"; };
 		DEBED822166C8713001A2B24 /* WAGoogleConnectSwitch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WAGoogleConnectSwitch.m; path = wammer/WAGoogleConnectSwitch.m; sourceTree = "<group>"; };
 		DEBED824166C8739001A2B24 /* WAOAuthSwitch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WAOAuthSwitch.h; path = wammer/WAOAuthSwitch.h; sourceTree = "<group>"; };
@@ -2435,8 +2432,6 @@
 				80DA984C16496FED0030CA21 /* WAEventViewController_Photo.m */,
 				80DA984D16496FED0030CA21 /* WAEventViewController.h */,
 				80DA984E16496FED0030CA21 /* WAEventViewController.m */,
-				DEBED81D166C86C0001A2B24 /* WAEventActionsViewController.h */,
-				DEBED81E166C86C0001A2B24 /* WAEventActionsViewController.m */,
 				800D9A9016719B5D0034CDF6 /* MKMapView+ZoomLevel.h */,
 				800D9A9116719B5D0034CDF6 /* MKMapView+ZoomLevel.m */,
 				808DAA121675C4B7003652BB /* Event People List */,
@@ -4514,7 +4509,6 @@
 				DE46FC17165E228300CC4FFF /* WACalendarPickerViewController.m in Sources */,
 				DEF28871165F6A0D0078B1D7 /* WACalendarPickerDataSource.m in Sources */,
 				DEBED81C166C8689001A2B24 /* WACollection+WARemoteInterfaceEntitySyncing.m in Sources */,
-				DEBED81F166C86C0001A2B24 /* WAEventActionsViewController.m in Sources */,
 				DEBED823166C8713001A2B24 /* WAGoogleConnectSwitch.m in Sources */,
 				DEBED826166C8739001A2B24 /* WAOAuthSwitch.m in Sources */,
 				DEBED829166C874D001A2B24 /* WAOAuthViewController.m in Sources */,

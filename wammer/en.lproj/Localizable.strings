@@ -19,9 +19,6 @@
 /* Adding to collection action in the event view */
 "ACTION_ADD_COLLECTION" = "Add to";
 
-/* In event view */
-"ACTION_ADD_TO_COLLECTION" = "Done";
-
 /* Action title for cancelling stuff
    Cancel adding event
    Cancel adding selected photos into collection
@@ -32,9 +29,6 @@
 
 /* Action changing representing file of an article */
 "ACTION_CHANGE_REPRESENTING_FILE" = "Change Cover";
-
-/* Place photos in collections */
-"ACTION_COLLECTION" = "Collections";
 
 /* Short action title for connecting Facebook creds */
 "ACTION_CONNECT_FACEBOOK_SHORT" = "Start Importing";
@@ -74,12 +68,6 @@
 /* In iPad composition view */
 "ACTION_DONE" = "Stream!";
 
-/* Share thru Email */
-"ACTION_EMAIL" = "Email";
-
-/* Share to Facebook action */
-"ACTION_FACEBOOK" = "Facebook";
-
 /* Button title for showing an image picker */
 "ACTION_INSERT_PHOTO_FROM_LIBRARY" = "Photo Library";
 
@@ -115,9 +103,6 @@
 
 /* Button title for showing a camera capture controller */
 "ACTION_TAKE_PHOTO_WITH_CAMERA" = "Camera";
-
-/* Share to Twitter action */
-"ACTION_TWITTER" = "Twitter";
 
 /* Action marking article as not favorite */
 "ACTION_UNMARK_FAVORITE" = "Unfavorite";
@@ -398,9 +383,6 @@
 /* The text of location label when there is no gps information we can refer to */
 "LABEL_WITHOUT_GPS_DATA" = "Where were you?";
 
-/* The email subject users will share photos thru. The nickname of user will be appended to this subject. */
-"MAIL_ACTION_SUBJECT" = "%@ wants to share photos with you from their aostream app.";
-
 /* No comment provided by engineer. */
 "MINUTE_PLURAL" = "%d minutes";
 
@@ -418,9 +400,6 @@
 
 /* Navigation bar title for web preview while loading */
 "NAVI_TITLE_WEB_LOADING" = "Loading..";
-
-/* In collection picker view */
-"NEW_COLLECTION" = "New collection…";
 
 /* Nickname placeholder in signup page */
 "NICKNAME_PLACEHOLDER" = "Johnny Appleseed";

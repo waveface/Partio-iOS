@@ -19,9 +19,6 @@
 /* Adding to collection action in the event view */
 "ACTION_ADD_COLLECTION" = "新增至";
 
-/* In event view */
-"ACTION_ADD_TO_COLLECTION" = "完成";
-
 /* Action title for cancelling stuff
    Cancel adding event
    Cancel adding selected photos into collection
@@ -32,9 +29,6 @@
 
 /* Action changing representing file of an article */
 "ACTION_CHANGE_REPRESENTING_FILE" = "更換封面";
-
-/* Place photos in collections */
-"ACTION_COLLECTION" = "收藏";
 
 /* Short action title for connecting Facebook creds */
 "ACTION_CONNECT_FACEBOOK_SHORT" = "同步";
@@ -74,12 +68,6 @@
 /* In iPad composition view */
 "ACTION_DONE" = "完成";
 
-/* Share thru Email */
-"ACTION_EMAIL" = "電郵";
-
-/* Share to Facebook action */
-"ACTION_FACEBOOK" = "臉書";
-
 /* Button title for showing an image picker */
 "ACTION_INSERT_PHOTO_FROM_LIBRARY" = "相片庫";
 
@@ -115,9 +103,6 @@
 
 /* Button title for showing a camera capture controller */
 "ACTION_TAKE_PHOTO_WITH_CAMERA" = "相機";
-
-/* Share to Twitter action */
-"ACTION_TWITTER" = "推特";
 
 /* Action marking article as not favorite */
 "ACTION_UNMARK_FAVORITE" = "取消最愛";
@@ -398,9 +383,6 @@
 /* The text of location label when there is no gps information we can refer to */
 "LABEL_WITHOUT_GPS_DATA" = "您在哪裡？";
 
-/* The email subject users will share photos thru. The nickname of user will be appended to this subject. */
-"MAIL_ACTION_SUBJECT" = "%@ 透過 aostream app 與您分享照片。";
-
 /* No comment provided by engineer. */
 "MINUTE_PLURAL" = "%d分鐘";
 
@@ -418,9 +400,6 @@
 
 /* Navigation bar title for web preview while loading */
 "NAVI_TITLE_WEB_LOADING" = "載入中..";
-
-/* In collection picker view */
-"NEW_COLLECTION" = "新收藏…";
 
 /* Nickname placeholder in signup page */
 "NICKNAME_PLACEHOLDER" = "John Appleseed";

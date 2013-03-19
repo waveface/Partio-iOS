@@ -94,16 +94,20 @@
                           alert.alertViewStyle = UIAlertViewStylePlainTextInput;
                           [alert setCancelButtonWithTitle:NSLocalizedString(@"ACTION_CANCEL", @"Cancel adding selected photos into collection") handler:nil];
                           [alert addButtonWithTitle:NSLocalizedString(@"ACTION_CREATE_COLLECTION", @"The action to create a new collection") handler:^{
-                            NSString *collectionName = [wAlert textFieldAtIndex:0].text;
-                            wSelf.managedObjectContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
-                            WACollection *collection = [[WACollection alloc] initWithName:collectionName
-                                                                                withFiles:[wSelf.article.unhiddenFiles objectsAtIndexes:wSelf.selectedPhotos]
-                                                                   inManagedObjectContext:wSelf.managedObjectContext];
-                            collection.creator = [[WADataStore defaultStore] mainUserInContext:wSelf.managedObjectContext];
-                            NSError *error;
-                            if ([wSelf.managedObjectContext save:&error]==NO){
-                              NSLog(@"Save error: %@", error);
-                            }
+                            
+                            [wSelf.managedObjectContext performBlockAndWait:^{
+                              
+                              NSString *collectionName = [wAlert textFieldAtIndex:0].text;
+                              wSelf.managedObjectContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
+                              WACollection *collection = [[WACollection alloc] initWithName:collectionName
+                                                                                  withFiles:[wSelf.article.unhiddenFiles objectsAtIndexes:wSelf.selectedPhotos]
+                                                                     inManagedObjectContext:wSelf.managedObjectContext];
+                              collection.creator = [[WADataStore defaultStore] mainUserInContext:wSelf.managedObjectContext];
+                              NSError *error;
+                              if ([wSelf.managedObjectContext save:&error]==NO){
+                                NSLog(@"Save error: %@", error);
+                              }
+                            }];
                             
                             [wSelf showDoneBezel];
                           }];
@@ -116,27 +120,31 @@
                         handler:^{
       
                           __block WACollectionPickerViewController *picker = [WACollectionPickerViewController pickerWithHandler:^(NSManagedObjectID *selectedCollection) {
-        
-                            WACollection *collection = (WACollection*)[wSelf.managedObjectContext objectWithID:selectedCollection];
-        
-                            [collection addObjects:[wSelf.article.unhiddenFiles objectsAtIndexes:wSelf.selectedPhotos]];
-        
-                            NSError *error = nil;
-                            [wSelf.managedObjectContext save:&error];
-                            if (error) {
-                              NSLog(@"Fail to save collection for error: %@", error);
-                              [picker dismissViewControllerAnimated:YES completion:nil];
-                              picker = nil;
-
-                              [wSelf showErrorBezelWithReason:error.description];
-                            } else {
-                              
-                              [picker dismissViewControllerAnimated:YES completion:nil];
-                              picker = nil;
-
-                              [wSelf showDoneBezel];
-                            }
                             
+                            [wSelf.managedObjectContext performBlockAndWait:^{
+        
+                              WACollection *collection = (WACollection*)[wSelf.managedObjectContext objectWithID:selectedCollection];
+                              
+                              [collection addObjects:[wSelf.article.unhiddenFiles objectsAtIndexes:wSelf.selectedPhotos]];
+        
+                              NSError *error = nil;
+                              
+                              [wSelf.managedObjectContext save:&error];
+                              if (error) {
+                                NSLog(@"Fail to save collection for error: %@", error);
+                                [picker dismissViewControllerAnimated:YES completion:nil];
+                                picker = nil;
+                                
+                                [wSelf showErrorBezelWithReason:error.description];
+                              } else {
+                                
+                                [picker dismissViewControllerAnimated:YES completion:nil];
+                                picker = nil;
+                                
+                                [wSelf showDoneBezel];
+                              }
+                              
+                            }];
                             
                           } onCancel:^{
                             
@@ -179,9 +187,21 @@
                                                                              attachments:identifiers
                                                                                onSuccess:^(NSDictionary *postRep) {
 
+                                                                                 [wSelf.managedObjectContext performBlock:^{
+                                                                                   NSArray *remainingFiles = [[wSelf.article.files array] filteredArrayUsingPredicate:(NSPredicate *)[NSPredicate predicateWithFormat:@"NOT (identifier IN %@)", identifiers]];
+
+                                                                                   wSelf.article.files = [NSOrderedSet orderedSetWithArray:remainingFiles];
+                                                                                   NSError *error = nil;
+                                                                                   
+                                                                                   if (![wSelf.managedObjectContext save:&error]) {
+                                                                                     NSLog(@"Fail to remove files %@ from article %@ for %@", identifiers, wSelf.article, error);
+                                                                                   }
+                                                                                 }];
+                                                                                 
                                                                                  dispatch_async(dispatch_get_main_queue(), ^{
                                                                                    [busyBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
                                                                                    [wSelf showDoneBezel];
+                                                                                   [wSelf.selectedPhotos removeAllIndexes];
                                                                                    [wSelf.itemsView reloadData];
 
                                                                                  });
@@ -214,11 +234,31 @@
       
                           [[WARemoteInterface sharedInterface] hideAttachments:identifiers
                                                                      onSuccess:^(NSArray *successIDs) {
-                            
+                                                                       
+                                                                       NSManagedObjectContext *moc = [[WADataStore defaultStore] autoUpdatingMOC];
+                                                                       NSFetchRequest *fetch = [[NSFetchRequest alloc] init];
+                                                                       fetch.entity = [NSEntityDescription entityForName:@"WAFile" inManagedObjectContext:moc];
+                                                                       fetch.predicate = [NSPredicate predicateWithFormat:@"identifier IN %@", identifiers];
+                                                                       NSError *error = nil;
+                                                                       NSArray *hiddingFiles = [moc executeFetchRequest:fetch error:&error];
+                                                                       if (error) {
+                                                                         NSLog(@"Unable to fetch files %@ for %@", identifiers, error);
+                                                                       } else {
+                                                                         for (WAFile *file in hiddingFiles) {
+                                                                           file.hidden = @YES;
+                                                                         }
+                                                                         if(![moc save:&error]) {
+                                                                           NSLog(@"Fail to hide files for: %@", error);
+                                                                         }
+                                                                       }
+                                                  
+                                                                       
                                                                        dispatch_async(dispatch_get_main_queue(), ^{
                                                                          [wSelf.itemsView reloadData];
                                                                          [busyBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
                                                                          [wSelf showDoneBezel];
+                                                                         [wSelf.selectedPhotos removeAllIndexes];
+                                                                         [wSelf.itemsView reloadData];
                                                                        });
                                                                        
                                                                      } onFailure:^(NSError *error) {
