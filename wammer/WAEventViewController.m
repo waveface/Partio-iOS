@@ -35,12 +35,15 @@
 
 @property (nonatomic, strong, readwrite) UICollectionView *itemsView;
 @property (nonatomic, strong) WAEventHeaderView *headerView;
+@property (nonatomic, strong, readwrite) WAArticle *article;
 @property (nonatomic, strong) UIPopoverController *popover;
-@property (nonatomic, strong) NSManagedObjectContext *managedObjectContext;
+@property (nonatomic, strong, readwrite) NSManagedObjectContext *managedObjectContext;
 
 @end
 
-@implementation WAEventViewController
+@implementation WAEventViewController {
+  CGFloat initialHeaderHeight;
+}
 
 + (WAEventViewController *) controllerForArticleURL:(NSURL*)anArticleURL {
 	NSMutableString *literal = [[NSMutableString alloc] initWithString:@"WAEventViewController"];
@@ -87,6 +90,8 @@
   
   _article = (WAArticle*)[self.managedObjectContext irManagedObjectForURI:self.articleURL];
   [_article addObserver:self forKeyPath:@"text" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:nil];
+  
+  
   return _article;
   
 }
@@ -97,6 +102,8 @@
 	[super viewDidLoad];
   		
 	CGRect rect = (CGRect){ CGPointZero, self.view.frame.size };
+  
+  [self headerView];
 	
 	UICollectionViewFlowLayout *flowlayout = [[UICollectionViewFlowLayout alloc] init];
 	flowlayout.scrollDirection = UICollectionViewScrollDirectionVertical;
@@ -397,7 +404,7 @@
 	
 	_headerView.timeLabel.text = [[[self class] timeFormatter] stringFromDate:self.article.eventStartDate];
 	
-	_headerView.numberLabel.text = [NSString stringWithFormat:NSLocalizedString(@"EVENT_PHOTO_NUMBER_LABEL", @"EVENT_PHOTO_NUMBER_LABEL"), self.article.files.count];
+	_headerView.numberLabel.text = [NSString stringWithFormat:NSLocalizedString(@"EVENT_PHOTO_NUMBER_LABEL", @"EVENT_PHOTO_NUMBER_LABEL"), self.article.unhiddenFiles.count];
 	
 	if (self.article.people != nil) {
 		
@@ -493,19 +500,14 @@
 		
 	}
 	
-	if (!self.article.files.count) {
+	if (!self.article.unhiddenFiles.count) {
 		
 		_headerView.labelOverSeparationLine.text = NSLocalizedString(@"EVENT_SEPERATION_LABEL_WITHOUT_PHOTOS", @"The text of label on separation line in the event view when there is no photo presented.");
 		[_headerView.labelOverSeparationLine sizeToFit];
 		
 	}
 	
-	CGRect newFrame = _headerView.frame;
-	newFrame.size.width = CGRectGetWidth(self.itemsView.frame);
-	_headerView.frame = newFrame;
-	_headerView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
- 
-	[_headerView setNeedsLayout];
+  initialHeaderHeight = CGRectGetHeight(_headerView.frame);
 	
 	return _headerView;
 
@@ -597,11 +599,11 @@
 
 - (NSInteger) collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
 	
-	if (!self.article.files.count)
-		return isPad() ? 5 : 3; // add buttons placehoder
-	
-	return self.article.files.count;
-	
+  if (!self.article.unhiddenFiles.count)
+    return isPad() ? 5 : 3; // add buttons placehoder
+  
+  return self.article.unhiddenFiles.count;
+  
 }
 
 - (UICollectionViewCell*) collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
@@ -639,9 +641,7 @@
 
 - (CGSize) collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section {
 
-	CGFloat height = MAX(self.headerView.frame.size.height, CGRectGetMaxY(self.headerView.separatorLineBelowMap.frame));
-	return (CGSize) { CGRectGetWidth(collectionView.frame), height + 7 };
-
+  return (CGSize ) { CGRectGetWidth(collectionView.frame) , initialHeaderHeight + 7 };
 }
 
 #pragma mark - CollectionView delegate

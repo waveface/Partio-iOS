@@ -18,7 +18,8 @@ typedef void (^completionHandler) (void);
 @property (nonatomic, strong, readonly) WAEventHeaderView *headerView;
 
 @property (nonatomic, strong) NSURL *articleURL;
-@property (nonatomic, strong) WAArticle *article;
+@property (nonatomic, strong, readonly) WAArticle *article;
+@property (nonatomic, strong, readonly) NSManagedObjectContext *managedObjectContext;
 
 @property (nonatomic, copy) completionHandler completion;
 @property (nonatomic, strong, readonly) UICollectionView *itemsView;

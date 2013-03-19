@@ -188,6 +188,23 @@
   
 }
 
+- (void) removeAttachmentsFromPost:(NSString *)postID attachments:(NSArray*)attachmentIDs onSuccess:(void(^)(NSDictionary *postRep))successBlock onFailure:(void(^)(NSError *error))failureBlock {
+  
+  NSString *attachmentJSONString = [attachmentIDs JSONString];
+  
+  NSDictionary *entry = @{
+                          @"attachment_ids": attachmentJSONString,
+                          @"post_id": postID
+                          };
+  
+  [self.engine fireAPIRequestNamed:@"events/remove_attachments" withArguments:nil options:WARemoteInterfaceEnginePostFormEncodedOptionsDictionary(entry, nil) validator:WARemoteInterfaceGenericNoErrorValidator() successHandler:^(NSDictionary *inResponseOrNil, IRWebAPIRequestContext *inResponseContext) {
+    
+    if (successBlock)
+      successBlock(inResponseOrNil);
+    
+  } failureHandler: WARemoteInterfaceGenericFailureHandler(failureBlock)];
+}
+
 - (void) createCommentForPost:(NSString *)aPostIdentifier inGroup:(NSString *)aGroupIdentifier withContentText:(NSString *)contentTextOrNil onSuccess:(void (^)(NSDictionary *))successBlock onFailure:(void (^)(NSError *))failureBlock {
   
   [self.engine fireAPIRequestNamed:@"posts/newComment" withArguments:nil options:WARemoteInterfaceEnginePostFormEncodedOptionsDictionary(@{@"group_id": aGroupIdentifier,
