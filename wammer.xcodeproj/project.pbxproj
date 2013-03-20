@@ -383,6 +383,7 @@
 		80F957B816B8D23F005121A1 /* station@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 80F957B616B8D23F005121A1 /* station@2x.png */; };
 		80F957BC16B8D40A005121A1 /* WAConnectionStatusView.m in Sources */ = {isa = PBXBuildFile; fileRef = 80F957BB16B8D40A005121A1 /* WAConnectionStatusView.m */; };
 		80F957BE16B8D421005121A1 /* WAConnectionStatusView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 80F957BD16B8D421005121A1 /* WAConnectionStatusView.xib */; };
+		80FA833816F9E79B003BF983 /* WAEventPhotoAddingCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 80FA833716F9E79B003BF983 /* WAEventPhotoAddingCell.m */; };
 		94EB57761411451780C24560 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D215E734098A44479DEC4F88 /* libPods.a */; };
 		DE46FC17165E228300CC4FFF /* WACalendarPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DE46FC16165E228300CC4FFF /* WACalendarPickerViewController.m */; };
 		DE696E011675D020008DC3F6 /* WASnsConnectSwitch.m in Sources */ = {isa = PBXBuildFile; fileRef = DE696E001675D020008DC3F6 /* WASnsConnectSwitch.m */; };
@@ -1408,6 +1409,8 @@
 		80F957BA16B8D40A005121A1 /* WAConnectionStatusView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAConnectionStatusView.h; sourceTree = "<group>"; };
 		80F957BB16B8D40A005121A1 /* WAConnectionStatusView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAConnectionStatusView.m; sourceTree = "<group>"; };
 		80F957BD16B8D421005121A1 /* WAConnectionStatusView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WAConnectionStatusView.xib; sourceTree = "<group>"; };
+		80FA833616F9E79B003BF983 /* WAEventPhotoAddingCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WAEventPhotoAddingCell.h; path = wammer/WAEventPhotoAddingCell.h; sourceTree = "<group>"; };
+		80FA833716F9E79B003BF983 /* WAEventPhotoAddingCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WAEventPhotoAddingCell.m; path = wammer/WAEventPhotoAddingCell.m; sourceTree = "<group>"; };
 		9A79ED179A7140438E44ACD8 /* Pods-UnitTests.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UnitTests.xcconfig"; path = "Pods/Pods-UnitTests.xcconfig"; sourceTree = SOURCE_ROOT; };
 		D215E734098A44479DEC4F88 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		D26DABE040324ABAAAC5058D /* Pods-StreamTests.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-StreamTests.xcconfig"; path = "Pods/Pods-StreamTests.xcconfig"; sourceTree = SOURCE_ROOT; };
@@ -2426,6 +2429,8 @@
 				80DA984616496FED0030CA21 /* WAEventLinkViewCell.xib */,
 				80DA984716496FED0030CA21 /* WAEventPhotoViewCell.h */,
 				80DA984816496FED0030CA21 /* WAEventPhotoViewCell.m */,
+				80FA833616F9E79B003BF983 /* WAEventPhotoAddingCell.h */,
+				80FA833716F9E79B003BF983 /* WAEventPhotoAddingCell.m */,
 				80DA984916496FED0030CA21 /* WAEventViewController_Link.h */,
 				80DA984A16496FED0030CA21 /* WAEventViewController_Link.m */,
 				80DA984B16496FED0030CA21 /* WAEventViewController_Photo.h */,
@@ -4588,6 +4593,7 @@
 				80762CF216F1C05800DDA5A7 /* WACollectionPickerViewController.m in Sources */,
 				800F240E16F2D3DC000157C1 /* WAFile.m in Sources */,
 				8093C6F116F3236F00C7D001 /* WACollectionPickerCell.m in Sources */,
+				80FA833816F9E79B003BF983 /* WAEventPhotoAddingCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

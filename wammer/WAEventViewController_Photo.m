@@ -8,6 +8,7 @@
 
 #import "WAEventViewController_Photo.h"
 #import "WAEventPhotoViewCell.h"
+#import "WAEventPhotoAddingCell.h"
 
 #import "WARemoteInterface.h"
 
@@ -310,6 +311,7 @@
   }
 	
   [self.itemsView registerClass:[WAEventPhotoViewCell class] forCellWithReuseIdentifier:@"EventPhotoCell"];
+  [self.itemsView registerClass:[WAEventPhotoAddingCell class] forCellWithReuseIdentifier:@"EventPhotoAddingCell"];
 	
 }
 
@@ -422,22 +424,21 @@
 #pragma mark - CollectionView datasource
 
 - (UICollectionViewCell*) collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
-
-	WAEventPhotoViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"EventPhotoCell" forIndexPath:indexPath];
-  cell.editing = self.editing;
   
 	if (self.article.unhiddenFiles.count) {
-	
-		WAFile *file = [self.article.unhiddenFiles objectAtIndex:indexPath.row];
+      WAEventPhotoViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"EventPhotoCell" forIndexPath:indexPath];
+      cell.editing = self.editing;
 
-		[cell.imageView irUnbind:@"image"];
-
-      	dispatch_async(dispatch_get_main_queue(), ^{
-          
-			[cell.imageView irBind:@"image" toObject:file keyPath:@"smallThumbnailImage" options:[NSDictionary dictionaryWithObjectsAndKeys: (id)kCFBooleanTrue, kIRBindingsAssignOnMainThreadOption, nil]];
-
-		});
-
+      WAFile *file = [self.article.unhiddenFiles objectAtIndex:indexPath.row];
+      
+      [cell.imageView irUnbind:@"image"];
+      
+      dispatch_async(dispatch_get_main_queue(), ^{
+        
+        [cell.imageView irBind:@"image" toObject:file keyPath:@"smallThumbnailImage" options:[NSDictionary dictionaryWithObjectsAndKeys: (id)kCFBooleanTrue, kIRBindingsAssignOnMainThreadOption, nil]];
+        
+      });
+      
       if ([self.selectedPhotos containsIndex:indexPath.row]) {
         cell.checkMarkView.hidden = NO;
         cell.checkMarkView.image = [UIImage imageNamed:@"IRAQ-Checkmark"];
@@ -446,22 +447,24 @@
         cell.checkMarkView.hidden = YES;
       }
 		
+      return cell;
 	} else {
 		
-		int index = arc4random() % morePhotoBtnImages.count;
+      WAEventPhotoAddingCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"EventPhotoAddingCell" forIndexPath:indexPath];
 
-		cell.contentView.frame = CGRectInset(cell.contentView.frame, 5, 5);
-		cell.imageView.frame = CGRectInset(cell.contentView.frame, 20, 20);
-		cell.imageView.backgroundColor = [UIColor clearColor];
-		cell.imageView.image = [UIImage imageNamed:morePhotoBtnImages[index]];
-		cell.contentView.backgroundColor = [UIColor colorWithRed:0.95f green:0.95f blue:0.95f alpha:1];
-		cell.backgroundColor = [UIColor whiteColor]; // create a white frame outside the image
+      int index = arc4random() % morePhotoBtnImages.count;
+
+      cell.imageView.image = [UIImage imageNamed:morePhotoBtnImages[index]];
+      [morePhotoBtnImages removeObjectAtIndex:index];
+      
+      if (!morePhotoBtnImages.count) {
+        morePhotoBtnImages = [@[@"add-DB", @"add-G", @"add-LB", @"add-O", @"add-Red"] mutableCopy];
+      }
 		
-		[morePhotoBtnImages removeObjectAtIndex:index];
-		
+      return cell;
 	}
 
-	return cell;
+	return nil;
 	
 }
 
