@@ -317,14 +317,14 @@
   }
   
   CGFloat pageWidth = scrollView.frame.size.width;
-  if (scrollView.contentOffset.x > scrollView.contentSize.width - pageWidth) {
+  if (scrollView.contentOffset.x < 0) {
     self.reloadingPreviousDays = YES;
     self.reloadingBezel = [[WAOverlayBezel alloc] initWithStyle:WAActivityIndicatorBezelStyle];
     [self.reloadingBezel show];
     return;
   }
   
-  if (scrollView.contentOffset.x < 0) {
+  if (scrollView.contentOffset.x > scrollView.contentSize.width - pageWidth) {
     if (isSameDay(self.currentDaySummary.date, [NSDate date])) {
       // no need to load future days
       return;
