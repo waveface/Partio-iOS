@@ -181,16 +181,19 @@ NSString * const WARemoteAttachmentSmallSubtype = @"small";
   
 }
 
-- (void) deleteAttachment:(NSString *)anIdentifier onSuccess:(void(^)(void))successBlock onFailure:(void(^)(NSError *error))failureBlock {
+- (void) deleteAttachments:(NSArray *)identifiers onSuccess:(void(^)(NSArray *successIDs))successBlock onFailure:(void(^)(NSError *error))failureBlock {
   
+  NSError *error = nil;
+  NSData *sentIdentifiers = [NSJSONSerialization dataWithJSONObject:identifiers options:0 error:&error];
+  NSString *sentIdentifiersString = [[NSString alloc] initWithData:sentIdentifiers encoding:NSUTF8StringEncoding];
   [self.engine fireAPIRequestNamed:@"attachments/delete" withArguments:nil options:WARemoteInterfaceEnginePostFormEncodedOptionsDictionary([NSDictionary dictionaryWithObjectsAndKeys:
 														
-														anIdentifier, @"object_id",
+														sentIdentifiersString, @"object_ids",
 														
 														nil], nil) validator:WARemoteInterfaceGenericNoErrorValidator() successHandler:^(NSDictionary *inResponseOrNil, IRWebAPIRequestContext *inResponseContext) {
     
     if (successBlock)
-      successBlock();
+      successBlock(inResponseOrNil[@"success_ids"]);
     
   } failureHandler:WARemoteInterfaceGenericFailureHandler(failureBlock)];
   

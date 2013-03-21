@@ -233,7 +233,7 @@
                             [busyBezel showWithAnimation:WAOverlayBezelAnimationFade];
                           });
       
-                          [[WARemoteInterface sharedInterface] hideAttachments:identifiers
+                          [[WARemoteInterface sharedInterface] deleteAttachments:identifiers
                                                                      onSuccess:^(NSArray *successIDs) {
                                                                        
                                                                        NSManagedObjectContext *moc = [[WADataStore defaultStore] autoUpdatingMOC];
@@ -246,13 +246,13 @@
                                                                          NSLog(@"Unable to fetch files %@ for %@", identifiers, error);
                                                                        } else {
                                                                          for (WAFile *file in hiddingFiles) {
-                                                                           file.hidden = @YES;
+                                                                           [moc deleteObject:file];
                                                                          }
                                                                          if(![moc save:&error]) {
-                                                                           NSLog(@"Fail to hide files for: %@", error);
+                                                                           NSLog(@"Fail to delete files for: %@", error);
                                                                          }
                                                                        }
-                                                  
+                                                                    
                                                                        
                                                                        dispatch_async(dispatch_get_main_queue(), ^{
                                                                          [wSelf.itemsView reloadData];
