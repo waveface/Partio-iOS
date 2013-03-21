@@ -22,7 +22,7 @@
 #import "WADocumentStreamViewController.h"
 #import "WAWebStreamViewController.h"
 
-static const NSUInteger kWAAppendingBatchSize = 30;
+static const NSUInteger kWAAppendingBatchSize = 20;
 static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPostsViewControllerPhone_RepresentedObjectURI";
 
 @interface WADayViewController () <NSFetchedResultsControllerDelegate, WAContextMenuDelegate> {
@@ -109,17 +109,19 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 }
 
 - (void) viewWillAppear:(BOOL)animated {
-	[super viewWillAppear:animated];
+  [super viewWillAppear:animated];
 
-	self.navigationItem.titleView.alpha = 1;
+  self.navigationItem.titleView.alpha = 1;
 
 }
 
 - (void) viewDidLoad {
 	
-	[super viewDidLoad];
+  [super viewDidLoad];
 	
-	[self.paginatedView reloadViews];
+  self.paginatedView.currentPage = self.currentTotalPageSize - 1;
+  [self.paginatedView reloadViews];
+
 }
 
 - (void)didReceiveMemoryWarning
@@ -198,14 +200,15 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 
 - (NSDate *) dayAtPageIndex:(NSInteger)idx {
 	
-	NSCalendar *calendar = [NSCalendar currentCalendar];
+  NSCalendar *calendar = [NSCalendar currentCalendar];
   NSDateComponents *dateComponents = [calendar components:(NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit|NSTimeZoneCalendarUnit) fromDate:self.beginningDate];
-  dateComponents.day -= idx;
+  NSInteger offset = self.currentTotalPageSize - idx - 1;
+  dateComponents.day -= offset;
   return [calendar dateFromComponents:dateComponents];
 
 }
 
-- (NSUInteger) pageIndexOnDate:(NSDate*)date {
+- (NSUInteger) offsetFromCurrentDateToDate:(NSDate*)date {
 	
 	NSTimeInterval diff = [self.beginningDate timeIntervalSinceDate:[date dayBegin]];
 	
@@ -242,17 +245,19 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 }
 
 - (void)paginatedView:(IRPaginatedView *)paginatedView didShowView:(UIView *)aView atIndex:(NSUInteger)index {
-
-	if ((self.paginatedView.currentPage + 2) >= self.currentTotalPageSize) {
-		
-		_currentTotalPageSize += kWAAppendingBatchSize;
-		[self.paginatedView reloadViews];
-
-	}
   
   UIViewController *viewController = [self controllerAtPageIndex:index];
   if ([viewController respondsToSelector:@selector(viewControllerInitialAppeareadOnDayView)])
 	[viewController performSelector:@selector(viewControllerInitialAppeareadOnDayView)];
+  
+  if (self.paginatedView.currentPage <= self.paginatedView.numberOfEnsuringPages) {
+    
+    NSUInteger currentPage = self.paginatedView.currentPage;
+    
+    _currentTotalPageSize += kWAAppendingBatchSize;
+    [self.paginatedView reloadViews];
+    [self.paginatedView scrollToPageAtIndex:currentPage+kWAAppendingBatchSize animated:NO];
+  }
 	
 }
 
@@ -318,14 +323,14 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 
 - (BOOL)jumpToDate:(NSDate*)date animated:(BOOL)animated{
 	
-	NSUInteger page = [self pageIndexOnDate:date];
+	NSUInteger offset = [self offsetFromCurrentDateToDate:date];
 	
-	if (page >= self.currentTotalPageSize) {
-		_currentTotalPageSize = (page + kWAAppendingBatchSize);
+	if (offset >= self.currentTotalPageSize) {
+		_currentTotalPageSize = (offset + kWAAppendingBatchSize);
 		[self.paginatedView reloadViews];
 	}
 	
-	[self.paginatedView scrollToPageAtIndex:page animated:animated];
+	[self.paginatedView scrollToPageAtIndex:_currentTotalPageSize-offset-1 animated:animated];
 	return YES;
 }
 
