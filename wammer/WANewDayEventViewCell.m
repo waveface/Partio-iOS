@@ -137,7 +137,11 @@ NSString *kWANewDayEventViewCellID = @"NewDayEventViewCell";
     cell.mapImageView.delegate = self;
     CGSize imageSize = CGSizeMake(512, 256);
     CLLocationCoordinate2D center = self.representingDayEvent.eventLocation;
-    CLLocationCoordinate2D annotation = [self.representingDayEvent.checkins[0] coordinate];
+    CLLocationCoordinate2D annotation;
+    if (self.representingDayEvent.checkins.count)
+      annotation = [self.representingDayEvent.checkins[0] coordinate];
+    else
+      annotation = self.representingDayEvent.eventLocation;
     NSString *mapImageURL = [NSString stringWithFormat:@"http://maps.googleapis.com/maps/api/staticmap?size=%0dx%0d&center=%f,%f&zoom=15&markers=color:red%%7C%f,%f&sensor=false", (NSUInteger)imageSize.width*2, (NSUInteger)imageSize.height*2, center.latitude, center.longitude, annotation.latitude, annotation.longitude];
     [cell.mapImageView setPathToNetworkImage:mapImageURL forDisplaySize:imageSize contentMode:UIViewContentModeScaleAspectFill];
     return cell;
