@@ -122,10 +122,6 @@
     [self.summaryCollectionView reloadData];
     [self.eventCollectionView reloadData];
   }
-  NSIndexPath *daySummaryIndex = [self.dataSource indexPathOfDaySummaryOnDate:date];
-  NSIndexPath *dayEventIndex = [self.dataSource indexPathOfFirstDayEventOnDate:date];
-  [self scrollToDaySummaryAtIndexPath:daySummaryIndex animated:NO];
-  [self scrollToDayEventAtIndexPath:dayEventIndex animated:NO];
   
 }
 
@@ -492,11 +488,17 @@
   self.summaryCollectionView.dataSource = self.dataSource;
   self.eventCollectionView.dataSource = self.dataSource;
   
-  self.currentDaySummary = [self.dataSource daySummaryAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:0]];
-  self.currentDayEvent = [self.dataSource dayEventAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:0]];
-  
   [self.summaryCollectionView reloadData];
   [self.eventCollectionView reloadData];
+  
+  NSIndexPath *daySummaryIndex = [self.dataSource indexPathOfDaySummaryOnDate:date];
+  self.currentDaySummary = [self.dataSource daySummaryAtIndexPath:daySummaryIndex];
+  
+  NSIndexPath *dayEventIndex = [self.dataSource indexPathOfFirstDayEventOnDate:date];
+  self.currentDayEvent = [self.dataSource dayEventAtIndexPath:dayEventIndex];
+  
+  [self scrollToDaySummaryAtIndexPath:daySummaryIndex animated:NO];
+  [self scrollToDayEventAtIndexPath:dayEventIndex animated:NO];
   
   return YES;
   
