@@ -352,6 +352,9 @@
 - (void) enterEditingMode {
   
   [self.navigationController setToolbarHidden:NO animated:YES];
+  CGRect frame = self.itemsView.frame;
+  frame.size.height -= self.navigationController.toolbar.frame.size.height;
+  self.itemsView.frame = frame;
   self.navigationItem.rightBarButtonItem = self.cancelButton;
   self.navigationItem.leftBarButtonItem = nil;
   self.editing = YES;
@@ -368,6 +371,9 @@
   self.itemsView.allowsMultipleSelection = NO;
   [self.selectedPhotos removeAllIndexes];
   [self.itemsView reloadData];
+  CGRect frame = self.itemsView.frame;
+  frame.size.height += self.navigationController.toolbar.frame.size.height;
+  self.itemsView.frame = frame;
   [self.navigationController setToolbarHidden:YES animated:YES];
 
 }
