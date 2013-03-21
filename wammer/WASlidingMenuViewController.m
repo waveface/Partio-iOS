@@ -33,6 +33,7 @@
 #import <QuartzCore/QuartzCore.h>
 #import "WANewSummaryViewController.h"
 #import "WAConnectionStatusView.h"
+#import "NSDate+WAAdditions.h"
 
 static NSString * kWASlidingMenuViewControllerKVOContext = @"WASlidingMenuViewControllerKVOContext";
 
@@ -76,6 +77,9 @@ static NSString * kWASlidingMenuViewControllerKVOContext = @"WASlidingMenuViewCo
   WANavigationController *navVC = [[WANavigationController alloc] initWithRootViewController:swVC];
   
   swVC.view.backgroundColor = [UIColor colorWithRed:0.95f green:0.95f blue:0.95f alpha:1];
+  if (viewStyle == WAEventsViewStyle) {
+    [(WANewSummaryViewController *)swVC jumpToDate:[[NSDate date] dayBegin] animated:NO];
+  }
 
   if (viewStyle == WAPhotosViewStyle) {
     [swVC.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"photoStreamNavigationBar"] forBarMetrics:UIBarMetricsDefault];
@@ -446,6 +450,9 @@ static NSString * kWASlidingMenuViewControllerKVOContext = @"WASlidingMenuViewCo
   
   UINavigationController *navVC = (UINavigationController *)[[self class] dayViewControllerForViewStyle:viewStyle];
   WADayViewController *swVC = (WADayViewController*)navVC.topViewController;
+  
+  if (!date)
+    date = [[NSDate date] dayBegin];
   
   if (animated) {
     
