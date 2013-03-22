@@ -411,6 +411,7 @@ extern CFAbsoluteTime StartTime;
   self.fetchManager = nil;
   
   [[NSUserDefaults standardUserDefaults] setBool:NO forKey:kWAPhotoImportEnabled];
+  [[NSUserDefaults standardUserDefaults] setBool:NO forKey:kWAFirstUseVisited];
   [[NSUserDefaults standardUserDefaults] setBool:YES forKey:kWAAllCollectionsFetchOnce];
   [[NSUserDefaults standardUserDefaults] setBool:NO forKey:kWAFirstArticleFetched];
   [[NSUserDefaults standardUserDefaults] setBool:NO forKey:kWASNSFacebookConnectEnabled];
@@ -467,15 +468,37 @@ extern CFAbsoluteTime StartTime;
 - (void) handleObservedAuthenticationFailure:(NSNotification *)aNotification {
   
   NSError *error = [aNotification userInfo][@"error"];
-  
+
+  __weak WAAppDelegate_iOS *wSelf = self;
   [self unsubscribeRemoteNotification];
   
   dispatch_async(dispatch_get_main_queue(), ^{
     
-    [self presentAuthenticationRequestWithReason:[error localizedDescription] allowingCancellation:YES removingPriorData:NO clearingNavigationHierarchy:NO onAuthSuccess:^(NSString *userIdentifier, NSString *userToken, NSString *primaryGroupIdentifier) {
+    [self presentAuthenticationRequestWithReason:[error localizedDescription]
+                            allowingCancellation:YES
+                               removingPriorData:YES
+                     clearingNavigationHierarchy:YES
+                                   onAuthSuccess:^(NSString *userIdentifier, NSString *userToken, NSString *primaryGroupIdentifier) {
       
-      [self updateCurrentCredentialsWithUserIdentifier:userIdentifier token:userToken primaryGroup:primaryGroupIdentifier];
-      [self bootstrapPersistentStoreWithUserIdentifier:userIdentifier];
+                                     [wSelf updateCurrentCredentialsWithUserIdentifier:userIdentifier token:userToken primaryGroup:primaryGroupIdentifier];
+                                     [wSelf bootstrapPersistentStoreWithUserIdentifier:userIdentifier];
+                                     
+                                     [wSelf.cacheManager clearPurgeableFilesIfNeeded];
+                                     
+                                     // reset monitored hosts
+                                     WARemoteInterface *ri = [WARemoteInterface sharedInterface];
+                                     
+                                     // close websocket if needed
+                                     [ri closeWebSocketConnection];
+                                     
+                                     ri.monitoredHosts = nil;
+                                     [ri performAutomaticRemoteUpdatesNow];
+                                     
+                                     wSelf.fetchManager = [[WAFetchManager alloc] init];
+                                     [wSelf.fetchManager reload];
+                                     wSelf.syncManager = [[WASyncManager alloc] init];
+                                     [wSelf.syncManager reload];
+
       
     } runningOnboardingProcess:NO];
     

@@ -16,19 +16,19 @@
 /* add photo button in composition view */
 "ACTION_ADD" = "Add Photo";
 
-/* In event view */
-"ACTION_ADD_TO_COLLECTION" = "Done";
+/* Adding to collection action in the event view */
+"ACTION_ADD_COLLECTION" = "Add to";
 
 /* Action title for cancelling stuff
    Cancel adding event
+   Cancel adding selected photos into collection
+   Cancel the photo deletion
+   Cancel the photos adding to collection
    Title for cancelling an action */
 "ACTION_CANCEL" = "Cancel";
 
 /* Action changing representing file of an article */
 "ACTION_CHANGE_REPRESENTING_FILE" = "Change Cover";
-
-/* Place photos in collections */
-"ACTION_COLLECTION" = "Collections";
 
 /* Short action title for connecting Facebook creds */
 "ACTION_CONNECT_FACEBOOK_SHORT" = "Start Importing";
@@ -41,6 +41,9 @@
 
 /* Short action title for connecting Twitter creds */
 "ACTION_CONNECT_TWITTER_SHORT" = "Start Importing";
+
+/* The action to create a new collection */
+"ACTION_CREATE_COLLECTION" = "Create";
 
 /* Action deleting an article
    The label on the confirmation dialog to make sure user want to delete account or not
@@ -65,12 +68,6 @@
 /* In iPad composition view */
 "ACTION_DONE" = "Stream!";
 
-/* Share thru Email */
-"ACTION_EMAIL" = "Email";
-
-/* Share to Facebook action */
-"ACTION_FACEBOOK" = "Facebook";
-
 /* Button title for showing an image picker */
 "ACTION_INSERT_PHOTO_FROM_LIBRARY" = "Photo Library";
 
@@ -86,11 +83,17 @@
 /* Alert Dismissal Action */
 "ACTION_OKAY" = "OK";
 
+/* Deleting action in the event view */
+"ACTION_PHOTOS_DELETE" = "Delete";
+
 /* No comment provided by engineer. */
 "ACTION_RESET" = "Reset";
 
 /* Action title for saving a draft */
 "ACTION_SAVE_DRAFT" = "Save Draft";
+
+/* Sharing action in the event view */
+"ACTION_SHARE" = "Share";
 
 /* No comment provided by engineer. */
 "ACTION_SIGN_OUT" = "Log Out";
@@ -101,11 +104,26 @@
 /* Button title for showing a camera capture controller */
 "ACTION_TAKE_PHOTO_WITH_CAMERA" = "Camera";
 
-/* Share to Twitter action */
-"ACTION_TWITTER" = "Twitter";
-
 /* Action marking article as not favorite */
 "ACTION_UNMARK_FAVORITE" = "Unfavorite";
+
+/* The action title to add selected photos in a collection */
+"ACTIONSHEET_ACTION_ADD_EXISTING" = "Add to an existing";
+
+/* Remove selected photos from event */
+"ACTIONSHEET_ACTION_DEL_INEVENT" = "Remove from event";
+
+/* Hide the selected photos */
+"ACTIONSHEET_ACTION_DELETE" = "Remove selected";
+
+/* The action title to new a collection */
+"ACTIONSHEET_ACTION_NEW_COLLECTION" = "Create a new one";
+
+/* The title of action sheets to add selected photos into collection */
+"ACTIONSHEET_TITLE_ADD_COLLECTION" = "Add to a collection";
+
+/* The title of action sheets to delete selected photos */
+"ACTIONSHEET_TITLE_DELETE_PHOTOS" = "Remove photos";
 
 /* Dialog describing adding event is not supported */
 "ADD_EVENT_NOT_SUPPORTED_DESCRIPTION" = "Sorry, this version does not support adding event.";
@@ -121,6 +139,9 @@
 
 /* No comment provided by engineer. */
 "ADVANCED_FEATURES_ENABLED_TITLE" = "Advanced Features Enabled";
+
+/* The title of an alert view for user to input a collection name */
+"ALERT_TITLE_NEW_COLLECTION" = "Collection Name";
 
 /* title in attachments view */
 "ATTACHMENTS_VIEW_TITLE" = "Attachments";
@@ -245,9 +266,6 @@
 /* The text of label on separation line in the event view when there is no photo presented. */
 "EVENT_SEPERATION_LABEL_WITHOUT_PHOTOS" = "Add some photos";
 
-/* Event summary text in summary view */
-"EVENT_SUMMARY_TEXT" = "You have %d events today.";
-
 /* Title for Events view */
 "EVENTS_CONTROLLER_TITLE" = "MY DAYS";
 
@@ -344,9 +362,6 @@
 /* greeting text of day summary view */
 "GREETING_TEXT_WITH_EVENTS_TODAY" = "Hi, %@.\nCheck out what you did today!";
 
-/* Hello text in summary view */
-"HELLO_NAME_TEXT" = "Hi, %@";
-
 /* No comment provided by engineer. */
 "HOUR_PLURAL" = "%d hours";
 
@@ -368,9 +383,6 @@
 /* The text of location label when there is no gps information we can refer to */
 "LABEL_WITHOUT_GPS_DATA" = "Where were you?";
 
-/* The email subject users will share photos thru. The nickname of user will be appended to this subject. */
-"MAIL_ACTION_SUBJECT" = "%@ wants to share photos with you from their aostream app.";
-
 /* No comment provided by engineer. */
 "MINUTE_PLURAL" = "%d minutes";
 
@@ -388,9 +400,6 @@
 
 /* Navigation bar title for web preview while loading */
 "NAVI_TITLE_WEB_LOADING" = "Loading..";
-
-/* In collection picker view */
-"NEW_COLLECTION" = "New collection…";
 
 /* Nickname placeholder in signup page */
 "NICKNAME_PLACEHOLDER" = "Johnny Appleseed";
@@ -743,21 +752,6 @@
 
 /* Class = "IBUILabel"; text = "STATE_LOADING_SINGLE_DOCUMENT_PROGRESS"; ObjectID = "10"; */
 "STATE_LOADING_SINGLE_DOCUMENT_PROGRESS" = "%1 of %2";
-
-/* Class = "IBUILabel"; text = "OCT"; ObjectID = "5"; */
-"OCT" = "OCT";
-
-/* Class = "IBUILabel"; text = "DAY"; ObjectID = "9"; */
-"DAY" = "DAY";
-
-/* Class = "IBUILabel"; text = "WEEKDAY"; ObjectID = "10"; */
-"WEEKDAY" = "WEEKDAY";
-
-/* Class = "IBUILabel"; text = "HELLO_TEXT"; ObjectID = "49"; */
-"HELLO_TEXT" = "HELLO_TEXT";
-
-/* Class = "IBUILabel"; text = "EVENT_TEXT"; ObjectID = "50"; */
-"EVENT_TEXT" = "EVENT_TEXT";
 
 /* Class = "IBUILabel"; text = "ACTION_GOTO_WEBSITE"; ObjectID = "0UL-JF-5TW"; */
 "ACTION_GOTO_WEBSITE" = "Premium plans will be arriving in the following updates.";

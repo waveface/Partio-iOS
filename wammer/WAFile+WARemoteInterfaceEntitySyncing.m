@@ -28,6 +28,8 @@
 #import <NSString+SSToolkitAdditions.h>
 #import <AssetsLibrary/AssetsLibrary.h>
 
+#import "WARemoteInterface+Attachments.h"
+
 
 NSString * kWAFileEntitySyncingErrorDomain = @"com.waveface.wammer.file.entitySyncing";
 NSError * WAFileEntitySyncingError (WAFileSyncingErrorCode code, NSString *descriptionKey, NSString *reasonKey) {
@@ -544,8 +546,8 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
     [operations addObject:[IRAsyncBarrierOperation operationWithWorker:^(IRAsyncOperationCallback callback) {
       
       NSManagedObjectContext *context = [ds disposableMOC];
-      
-      WAFile *file = (WAFile *)[context irManagedObjectForURI:ownURL];
+
+      WAFile *file = (WAFile*)[context irManagedObjectForURI:ownURL];
       
       if (file.thumbnailURL) {
         callback(nil);
@@ -586,11 +588,18 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
         [[WAAssetsLibraryManager defaultManager] assetForURL:[NSURL URLWithString:file.assetURL] resultBlock:^(ALAsset *asset) {
 
           if (!asset) {
-            NSLog(@"Asset does not exist for WAFile %@, hide it.", file);
-            file.hidden = @YES;
-            file.dirty = @YES;
-            [context save:nil];
-            callback(nil);
+            
+            NSManagedObjectID *objectID = file.objectID;
+            [[WARemoteInterface sharedInterface] deleteAttachments:@[file.identifier] onSuccess:^(NSArray *successIDs){
+              NSManagedObjectContext *moc = [[WADataStore defaultStore] disposableMOC];
+              [moc deleteObject:[moc objectWithID:objectID]];
+              [moc save:nil];
+              callback(nil);
+              NSLog(@"Asset does not exist for WAFile %@, delete it from cloud and local.", objectID);
+            } onFailure:^(NSError *error) {
+              NSLog(@"Asset does not exist for WAFile %@, but fail to delete it from cloud.", objectID);
+              callback(error);
+            }];
             return;
           }
           
@@ -622,7 +631,7 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
             
           } else {
 
-            uploadAttachment([NSURL fileURLWithPath:file.thumbnailFilePath], options, callback);
+            uploadAttachment([NSURL fileURLWithPath:thumbnailFilePath], options, callback);
             
           }
           

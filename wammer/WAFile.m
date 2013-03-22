@@ -2,8 +2,8 @@
 //  WAFile.m
 //  wammer
 //
-//  Created by kchiu on 12/12/27.
-//  Copyright (c) 2012年 Waveface. All rights reserved.
+//  Created by Shen Steven on 3/15/13.
+//  Copyright (c) 2013 Waveface. All rights reserved.
 //
 
 #import "WAFile.h"

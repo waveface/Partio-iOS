@@ -36,7 +36,7 @@
 + (NSFetchRequest *)fetchRequestForPhotosOnDate:(NSDate *)date {
 
   NSFetchRequest *request = [[NSFetchRequest alloc] initWithEntityName:@"WAFile"];
-  [request setPredicate:[NSPredicate predicateWithFormat:@"photoDay.day == %@", date]];
+  [request setPredicate:[NSPredicate predicateWithFormat:@"photoDay.day == %@ AND hidden == NO", date]];
   [request setSortDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"timestamp" ascending:NO]]];
   [request setRelationshipKeyPathsForPrefetching:@[@"photoDay"]];
   
@@ -78,7 +78,7 @@
     dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
     dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
       
-	  NSPredicate *allFromToday = [NSPredicate predicateWithFormat:@"created BETWEEN {%@, %@}", [onDate dayBegin], [onDate dayEnd]];
+	  NSPredicate *allFromToday = [NSPredicate predicateWithFormat:@"created BETWEEN {%@, %@} AND hidden == NO", [onDate dayBegin], [onDate dayEnd]];
 	  NSMutableArray *unsortedPhotos = [[WAFile MR_findAllWithPredicate:allFromToday inContext:[[WADataStore defaultStore] defaultAutoUpdatedMOC]] mutableCopy];
 	  NSSortDescriptor *sortByTime = [[NSSortDescriptor alloc] initWithKey:@"timestamp" ascending:NO];
 	  [unsortedPhotos sortUsingDescriptors:@[sortByTime]];
