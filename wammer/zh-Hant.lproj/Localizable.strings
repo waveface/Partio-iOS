@@ -768,9 +768,6 @@
 /* Class = "IBUILabel"; text = "IMPORT_CAMERA_ROLL"; ObjectID = "Ehm-FE-RdU"; */
 "IMPORT_CAMERA_ROLL" = "匯入相機膠卷";
 
-/* Class = "IBUILabel"; text = "PACKAGE"; ObjectID = "FjD-Cy-ggW"; */
-"PACKAGE" = "方案";
-
 /* Class = "IBUILabel"; text = "LOGOUT"; ObjectID = "GUv-Fm-Efw"; */
 "LOGOUT" = "登出";
 

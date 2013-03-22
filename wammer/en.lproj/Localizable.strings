@@ -768,9 +768,6 @@
 /* Class = "IBUILabel"; text = "IMPORT_CAMERA_ROLL"; ObjectID = "Ehm-FE-RdU"; */
 "IMPORT_CAMERA_ROLL" = "Sync Camera Roll";
 
-/* Class = "IBUILabel"; text = "PACKAGE"; ObjectID = "FjD-Cy-ggW"; */
-"PACKAGE" = "Plan";
-
 /* Class = "IBUILabel"; text = "LOGOUT"; ObjectID = "GUv-Fm-Efw"; */
 "LOGOUT" = "Log Out";
 
