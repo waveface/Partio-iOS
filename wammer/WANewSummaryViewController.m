@@ -386,7 +386,7 @@
       [wSelf.summaryCollectionView reloadData];
       [wSelf.eventCollectionView reloadData];
       
-      NSDate *previousDay = [wSelf.currentDaySummary.date dateOfFollowingDay];
+      NSDate *previousDay = [wSelf.currentDaySummary.date dateOfPreviousDay];
       
       if ([previousDay compare:[NSDate date]] == NSOrderedAscending) {
         
