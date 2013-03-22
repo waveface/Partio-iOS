@@ -111,12 +111,18 @@
                             [wSelf.backgroundImageView addCrossFadeAnimationWithTargetImage:toValue];
                           }];
                         }];
+  
 }
 
 - (void)viewDidAppear:(BOOL)animated {
   
   [super viewDidAppear:animated];
-  
+
+  NSIndexPath *daySummaryIndexPath = [self.dataSource indexPathOfDaySummaryOnDate:self.currentDaySummary.date];
+  NSIndexPath *dayEventIndexPath = [self.dataSource indexPathOfDayEvent:self.currentDayEvent];
+  [self scrollToDaySummaryAtIndexPath:daySummaryIndexPath animated:NO];
+  [self scrollToDayEventAtIndexPath:dayEventIndexPath animated:NO];
+
   NSDate *date = self.currentDaySummary.date;
   if ([self.dataSource loadMoreDays:20 since:date]) { // load 20 future days if possible
     [self.summaryCollectionView reloadData];
