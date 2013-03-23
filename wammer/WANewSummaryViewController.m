@@ -100,7 +100,7 @@
                             }];
                           }];
   
-  NSIndexPath *latestEvent = [self.dataSource indexPathOfFirstDayEventOnDate:[NSDate date]];
+  NSIndexPath *latestEvent = [self.dataSource indexPathOfLastDayEventOnDate:[NSDate date]];
   self.currentDayEvent = [self.dataSource dayEventAtIndexPath:latestEvent];
   [self.backgroundImageView addCrossFadeAnimationWithTargetImage:self.currentDayEvent.backgroundImage];
   [self.currentDayEvent irObserve:@"backgroundImage"
@@ -386,7 +386,7 @@
       [wSelf.summaryCollectionView reloadData];
       [wSelf.eventCollectionView reloadData];
       
-      NSDate *previousDay = [wSelf.currentDaySummary.date dateOfFollowingDay];
+      NSDate *previousDay = [wSelf.currentDaySummary.date dateOfPreviousDay];
       
       if ([previousDay compare:[NSDate date]] == NSOrderedAscending) {
         
@@ -494,7 +494,7 @@
   NSIndexPath *daySummaryIndex = [self.dataSource indexPathOfDaySummaryOnDate:date];
   self.currentDaySummary = [self.dataSource daySummaryAtIndexPath:daySummaryIndex];
   
-  NSIndexPath *dayEventIndex = [self.dataSource indexPathOfFirstDayEventOnDate:date];
+  NSIndexPath *dayEventIndex = [self.dataSource indexPathOfLastDayEventOnDate:date];
   self.currentDayEvent = [self.dataSource dayEventAtIndexPath:dayEventIndex];
   
   [self scrollToDaySummaryAtIndexPath:daySummaryIndex animated:NO];

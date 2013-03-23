@@ -383,10 +383,25 @@
 
     WANewDayEventViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:kWANewDayEventViewCellID forIndexPath:indexPath];
     NSAssert(cell, @"cell should be registered first");
+    
+    NSInteger numOfDayEvents = [self.dayEvents count];
     cell.representingDayEvent = self.dayEvents[indexPath.row];
     
-    for (int i=0; i<5 && i+indexPath.row<[self.dayEvents count]; i++) {
-      [self.dayEvents[indexPath.row+i] loadImages];
+    for (NSInteger i = indexPath.row-3; i<indexPath.row; i++) {
+      if (i >= 0 && i < numOfDayEvents) {
+        [self.dayEvents[i] loadImages];
+      }
+    }
+    for (NSInteger i = indexPath.row+3; i>=indexPath.row; i--) {
+      if (i >= 0 && i < numOfDayEvents) {
+        [self.dayEvents[i] loadImages];
+      }
+    }
+    if (indexPath.row-4 >= 0) {
+      [self.dayEvents[indexPath.row-4] unloadImages];
+    }
+    if (indexPath.row+4 < numOfDayEvents) {
+      [self.dayEvents[indexPath.row+4] unloadImages];
     }
     
     return cell;
