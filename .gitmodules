@@ -4,15 +4,6 @@
 [submodule "external/IRWebAPIKit"]
 	path = external/IRWebAPIKit
 	url = git://github.com/waveface/IRWebAPIKit.git
-[submodule "external/mockingBird"]
-	path = external/mockingBird
-	url = git://github.com/waveface/mockingBird.git
-[submodule "external/IRDiscreteLayoutManager"]
-	path = external/IRDiscreteLayoutManager
-	url = git://github.com/waveface/IRDiscreteLayoutManager.git
-[submodule "external/Chameleon"]
-	path = external/Chameleon
-	url = git://github.com/iridia/Chameleon.git
 [submodule "external/NSLogger"]
 	path = external/NSLogger
 	url = git://github.com/waveface/NSLogger.git
@@ -36,7 +27,7 @@
 	url = git://github.com/waveface/WFPresentation.git
 [submodule "external/IRObjectQueue"]
 	path = external/IRObjectQueue
-	url = git://github.com/waveface/IRObjectQueue.git
+	url = git@github.com:waveface/IRObjectQueue.git
 [submodule "external/AGImagePickerController"]
 	path = external/AGImagePickerController
 	url = git@github.com:waveface/AGImagePickerController.git
