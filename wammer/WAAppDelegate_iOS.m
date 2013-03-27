@@ -475,7 +475,7 @@ extern CFAbsoluteTime StartTime;
   dispatch_async(dispatch_get_main_queue(), ^{
     
     [self presentAuthenticationRequestWithReason:[error localizedDescription]
-                            allowingCancellation:YES
+                            allowingCancellation:NO
                                removingPriorData:YES
                      clearingNavigationHierarchy:YES
                                    onAuthSuccess:^(NSString *userIdentifier, NSString *userToken, NSString *primaryGroupIdentifier) {
