@@ -96,8 +96,6 @@
       [self.daySummaries addObject:daySummary];
     }
     self.lastDate = [[self.daySummaries lastObject] date];
-  } else {
-    return NO;
   }
   
   [self resetFetchedResultsControllers];
