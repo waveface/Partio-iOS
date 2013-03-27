@@ -14,7 +14,5 @@
 - (BOOL) hasMeaningfulContent;
 
 @property (nonatomic, readonly, strong) NSDate *presentationDate;
-@property (nonatomic, readonly, strong) NSArray *hiddenFiles;
-@property (nonatomic, readonly, strong) NSArray *unhiddenFiles;
 
 @end

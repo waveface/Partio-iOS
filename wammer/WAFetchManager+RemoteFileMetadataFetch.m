@@ -10,6 +10,8 @@
 #import "Foundation+IRAdditions.h"
 #import "WARemoteInterface.h"
 #import "WADataStore.h"
+#import <MagicalRecord/MagicalRecord.h>
+#import <MagicalRecord/NSManagedObject+MagicalRecord.h>
 
 @implementation WAFetchManager (RemoteFileMetadataFetch)
 
@@ -39,7 +41,7 @@
         NSArray *updatingFilesCopy = [NSArray arrayWithArray:updatingFiles];
         IRAsyncOperation *operation = [IRAsyncOperation operationWithWorker:^(IRAsyncOperationCallback callback) {
 
-          [[WARemoteInterface sharedInterface] retrieveMetaForAttachments:updatingFilesCopy onSuccess:^(NSArray *attachmentReps) {
+          [[WARemoteInterface sharedInterface] retrieveMetaForAttachments:updatingFilesCopy onSuccess:^(NSArray *attachmentReps, NSArray *successList, NSArray *failureList) {
 	  
             [ds performBlock:^{
 
@@ -49,6 +51,9 @@
                                      withRemoteResponse:attachmentReps
                                            usingMapping:nil
                                                 options:IRManagedObjectOptionIndividualOperations];
+              if (failureList.count) {
+                [WAFile MR_deleteAllMatchingPredicate:[NSPredicate predicateWithFormat:@"identifier IN %@", failureList] inContext:context];
+              }
               [context save:nil];
               
             } waitUntilDone:YES];

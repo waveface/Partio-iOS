@@ -180,7 +180,7 @@ NSString * const WARemoteAttachmentSmallSubtype = @"small";
   
 }
 
-- (void) deleteAttachments:(NSArray *)identifiers onSuccess:(void(^)(NSArray *successIDs))successBlock onFailure:(void(^)(NSError *error))failureBlock {
+- (void) deleteAttachments:(NSArray *)identifiers onSuccess:(void(^)(NSArray *successIDs, NSArray *failureIDs))successBlock onFailure:(void(^)(NSError *error))failureBlock {
   
   NSError *error = nil;
   NSData *sentIdentifiers = [NSJSONSerialization dataWithJSONObject:identifiers options:0 error:&error];
@@ -192,7 +192,7 @@ NSString * const WARemoteAttachmentSmallSubtype = @"small";
 														nil], nil) validator:WARemoteInterfaceGenericNoErrorValidator() successHandler:^(NSDictionary *inResponseOrNil, IRWebAPIRequestContext *inResponseContext) {
     
     if (successBlock)
-      successBlock(inResponseOrNil[@"success_ids"]);
+      successBlock(inResponseOrNil[@"success_ids"], inResponseOrNil[@"failure_ids"]);
     
   } failureHandler:WARemoteInterfaceGenericFailureHandler(failureBlock)];
   
@@ -281,7 +281,7 @@ NSString * const WARemoteAttachmentSmallSubtype = @"small";
   
 }
 
-- (void)retrieveMetaForAttachments:(NSArray *)identifiers onSuccess:(void(^)(NSArray *))successBlock onFailure:(void(^)(NSError *))failureBlock {
+- (void)retrieveMetaForAttachments:(NSArray *)identifiers onSuccess:(void(^)(NSArray *attachmentReps, NSArray *successList, NSArray *failureList))successBlock onFailure:(void(^)(NSError *))failureBlock {
   
   if ([NSJSONSerialization isValidJSONObject:identifiers]) {
     NSError *error = nil;
@@ -301,7 +301,7 @@ NSString * const WARemoteAttachmentSmallSubtype = @"small";
 		         validator:WARemoteInterfaceGenericNoErrorValidator()
 		    successHandler: ^ (NSDictionary *inResponseOrNil, IRWebAPIRequestContext *inResponseContext) {
 		      if (successBlock)
-		        successBlock(inResponseOrNil[@"results"]);}
+		        successBlock(inResponseOrNil[@"results"], inResponseOrNil[@"success_ids"], inResponseOrNil[@"failure_ids"]);}
 		    failureHandler:WARemoteInterfaceGenericFailureHandler(^ (NSError *anError){
         if (failureBlock)
 	failureBlock(anError);})];

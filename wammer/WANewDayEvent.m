@@ -41,13 +41,13 @@
       void (^updateEventDescription)(void) = ^(void) {
         wSelf.eventDescription = [anArticle description];
         if (!wSelf.eventDescription.length) {
-          wSelf.eventDescription = [NSString stringWithFormat:NSLocalizedString(@"EVENT_DESCRIPTION_PHOTOS_ONLY", "Event description for photo information only"), anArticle.unhiddenFiles.count];
+          wSelf.eventDescription = [NSString stringWithFormat:NSLocalizedString(@"EVENT_DESCRIPTION_PHOTOS_ONLY", "Event description for photo information only"), anArticle.files.count];
         }
       };
       
       [anArticle irObserve:@"files.@count" options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:nil withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
         NSCParameterAssert([NSThread isMainThread]);
-        NSUInteger count = anArticle.unhiddenFiles.count;
+        NSUInteger count = anArticle.files.count;
         WADayEventStyle origStyle = wSelf.style;
         WADayEventStyle newStyle;
         switch (count) {
@@ -119,11 +119,11 @@
 
 - (void)dealloc {
 
-  [self.representingArticle irRemoveObserverBlocksForKeyPath:@"unhiddenFiles.@count"];
+  [self.representingArticle irRemoveObserverBlocksForKeyPath:@"files.@count"];
   [self.representingArticle irRemoveObserverBlocksForKeyPath:@"eventStartDate"];
   [self.representingArticle irRemoveObserverBlocksForKeyPath:@"text"];
   for (NSUInteger i = 0; i < self.numOfImages; i++) {
-    [self.representingArticle.unhiddenFiles[i] irRemoveObserverBlocksForKeyPath:@"smallThumbnailFilePath"];
+    [self.representingArticle.files[i] irRemoveObserverBlocksForKeyPath:@"smallThumbnailFilePath"];
   }
 
 }
@@ -162,7 +162,7 @@
     __weak WANewDayEvent *wSelf = self;
     // load images in reverse order for LIFO display queue
     for (NSInteger idx = self.numOfImages-1; idx >= 0; idx--) {
-      WAFile *file = self.representingArticle.unhiddenFiles[idx];
+      WAFile *file = self.representingArticle.files[idx];
       [file setDisplayingSmallThumbnail:YES];
       [file irRemoveObserverBlocksForKeyPath:@"smallThumbnailFilePath"];
       [file irObserve:@"smallThumbnailFilePath" options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:nil withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
