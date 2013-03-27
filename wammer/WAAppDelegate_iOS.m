@@ -294,20 +294,6 @@ extern CFAbsoluteTime StartTime;
   
   __weak WAAppDelegate_iOS *wSelf = self;
   
-  if (self.syncManager && self.slidingMenu) {
-    [self.syncManager removeObserver:self.slidingMenu forKeyPath:@"isSyncing"];
-  }
-  
-  if (self.fetchManager && self.slidingMenu) {
-    [self.fetchManager removeObserver:self.slidingMenu forKeyPath:@"isFetching"];
-  }
-  
-  if (self.slidingMenu.statusBar) {
-    [self.slidingMenu.statusBar stopDataExchangeAnimation];
-    [self.slidingMenu.statusBar showSyncCompleteWithDissmissBlock:nil];
-    self.slidingMenu.statusBar = nil;
-  }
-  
   self.bgTask = [application beginBackgroundTaskWithExpirationHandler:^{
     
     NSLog(@"Background photo import expired");
@@ -341,15 +327,7 @@ extern CFAbsoluteTime StartTime;
 }
 
 - (void) clearViewHierarchy {
-  
-  if (self.syncManager && self.slidingMenu) {
-    [self.syncManager removeObserver:self.slidingMenu forKeyPath:@"isSyncing"];
-  }
-  
-  if (self.fetchManager && self.slidingMenu) {
-    [self.fetchManager removeObserver:self.slidingMenu forKeyPath:@"isFetching"];
-  }
-  
+    
   self.slidingMenu = nil;
   
   UIViewController *rootVC = self.window.rootViewController;
@@ -370,8 +348,6 @@ extern CFAbsoluteTime StartTime;
   navSlide.navigationBarHidden = YES;
   
   NSParameterAssert(self.syncManager);
-  [self.syncManager addObserver:self.slidingMenu forKeyPath:@"isSyncing" options:NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew context:nil];
-  [self.fetchManager addObserver:self.slidingMenu forKeyPath:@"isFetching" options:NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew context:nil];
   
   IIViewDeckController *viewDeckController = [[IIViewDeckController alloc] initWithCenterViewController:[WASlidingMenuViewController dayViewControllerForViewStyle:WAEventsViewStyle]
                                                                                      leftViewController:navSlide];
@@ -888,9 +864,6 @@ static NSInteger networkActivityStackingCount = 0;
     [self.cacheManager clearPurgeableFilesIfNeeded];
     [self.fetchManager reload];
     [self.syncManager reload];
-    
-    [self.syncManager addObserver:self.slidingMenu forKeyPath:@"isSyncing" options:NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew context:nil];
-    [self.fetchManager addObserver:self.slidingMenu forKeyPath:@"isFetching" options:NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew context:nil];
     
   }
   
