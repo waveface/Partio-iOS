@@ -590,7 +590,7 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
           if (!asset) {
             
             NSManagedObjectID *objectID = file.objectID;
-            [[WARemoteInterface sharedInterface] deleteAttachments:@[file.identifier] onSuccess:^(NSArray *successIDs){
+            [[WARemoteInterface sharedInterface] deleteAttachments:@[file.identifier] onSuccess:^(NSArray *successIDs, NSArray *failureIDs){
               NSManagedObjectContext *moc = [[WADataStore defaultStore] disposableMOC];
               [moc deleteObject:[moc objectWithID:objectID]];
               [moc save:nil];
