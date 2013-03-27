@@ -63,7 +63,7 @@ typedef NSString * const WARemoteAttachmentSubtype;
 - (void) retrieveAttachment:(NSString *)anIdentifier onSuccess:(void(^)(NSDictionary *attachmentRep))successBlock onFailure:(void(^)(NSError *error))failureBlock;
 
 //	POST attachments/delete
-- (void) deleteAttachments:(NSArray *)identifiers onSuccess:(void(^)(NSArray *successIDs))successBlock onFailure:(void(^)(NSError *error))failureBlock;
+- (void) deleteAttachments:(NSArray *)identifiers onSuccess:(void(^)(NSArray *successIDs, NSArray *failureIDs))successBlock onFailure:(void(^)(NSError *error))failureBlock;
 
 //	GET attachments/view
 - (void) retrieveThumbnailForAttachment:(NSString *)anIdentifier ofType:(WARemoteAttachmentType)aType onSuccess:(void(^)(NSURL *aThumbnailURL))successBlock onFailure:(void(^)(NSError *error))failureBlock;
@@ -74,7 +74,7 @@ typedef NSString * const WARemoteAttachmentSubtype;
 - (void) createAttachmentMetas:(NSArray *)metas onSuccess:(void(^)(NSArray *successIDs))successBlock onFailure:(void(^)(NSError *error))failureBlock;
 
 // POST attachments/multiple_get
-- (void) retrieveMetaForAttachments:(NSArray *)identifiers onSuccess:(void(^)(NSArray *attachmentReps))successBlock onFailure:(void(^)(NSError *error))failureBlock;
+- (void) retrieveMetaForAttachments:(NSArray *)identifiers onSuccess:(void(^)(NSArray *attachmentReps, NSArray *successList, NSArray *failureList))successBlock onFailure:(void(^)(NSError *error))failureBlock;
 
 // POST attachments/hide
 - (void) hideAttachments:(NSArray *)identifiers onSuccess:(void(^)(NSArray *successIDs))successBlock onFailure:(void(^)(NSError *error))failureBlock;

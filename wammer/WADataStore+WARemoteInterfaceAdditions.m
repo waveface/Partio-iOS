@@ -14,6 +14,8 @@
 
 #import "WAFacebookConnectionSwitch.h"
 #import "WAStation.h"
+#import <MagicalRecord/MagicalRecord.h>
+#import <MagicalRecord/NSManagedObject+MagicalRecord.h>
 
 NSString * const kWADataStoreArticleUpdateShowsBezels = @"WADataStoreArticleUpdateShowsBezels";
 
@@ -69,16 +71,21 @@ NSString * const kWADataStoreArticleUpdateShowsBezels = @"WADataStoreArticleUpda
       
       if ([updatingFiles count] == MAX_UPDATING_FILES_COUNT || idx == [files count] - 1) {
         
-        [[WARemoteInterface sharedInterface] retrieveMetaForAttachments:updatingFiles onSuccess:^(NSArray *attachmentReps) {
+        [[WARemoteInterface sharedInterface] retrieveMetaForAttachments:updatingFiles onSuccess:^(NSArray *attachmentReps, NSArray *successList, NSArray *failureList) {
 	
-	NSManagedObjectContext *context = [ds autoUpdatingMOC];
-	context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
-	[WAFile insertOrUpdateObjectsUsingContext:context withRemoteResponse:attachmentReps usingMapping:nil options:IRManagedObjectOptionIndividualOperations];
-	[context save:nil];
+          NSManagedObjectContext *context = [ds autoUpdatingMOC];
+          context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
+          [WAFile insertOrUpdateObjectsUsingContext:context withRemoteResponse:attachmentReps usingMapping:nil options:IRManagedObjectOptionIndividualOperations];
+
+          if (failureList.count) {
+            [WAFile MR_deleteAllMatchingPredicate:[NSPredicate predicateWithFormat:@"identifier IN %@", failureList] inContext:context];
+          }
+
+          [context save:nil];
 	
         } onFailure:^(NSError *error) {
 	
-	NSLog(@"Unable to retrieve attachment metas:%@ error:%@", updatingFiles, error);
+          NSLog(@"Unable to retrieve attachment metas:%@ error:%@", updatingFiles, error);
 	
         }];
         
