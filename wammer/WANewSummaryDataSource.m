@@ -311,10 +311,8 @@
 
 - (NSIndexPath *)indexPathOfDayEvent:(WANewDayEvent *)aDayEvent {
 
-  // it's possible that the no event day would be replaced with a event,
-  // so we always return index path of the first event of the day
   NSUInteger itemIndex = [self.dayEvents indexOfObjectPassingTest:^BOOL(WANewDayEvent *dayEvent, NSUInteger idx, BOOL *stop) {
-    return isSameDay(dayEvent.startTime, aDayEvent.startTime);
+    return [dayEvent.startTime isEqualToDate:aDayEvent.startTime];
   }];
 
   NSAssert(itemIndex != NSNotFound, @"There should be a day event for any searchable day events");

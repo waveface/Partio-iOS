@@ -423,7 +423,7 @@
           [wSelf scrollToDaySummaryAtIndexPath:daySummaryIndexPath animated:NO];
         }
         
-        NSIndexPath *dayEventIndexPath = [wSelf.dataSource indexPathOfFirstDayEventOnDate:previousDay];
+        NSIndexPath *dayEventIndexPath = [wSelf.dataSource indexPathOfLastDayEventOnDate:previousDay];
         wSelf.currentDayEvent = [wSelf.dataSource dayEventAtIndexPath:dayEventIndexPath];
         [wSelf scrollToDayEventAtIndexPath:dayEventIndexPath animated:NO];
       }
