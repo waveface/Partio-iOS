@@ -92,38 +92,6 @@
 
 }
 
-- (NSArray*) hiddenFiles {
-  
-  [self willAccessValueForKey:@"files"];
-  NSOrderedSet *files = [self primitiveValueForKey:@"files"];
-  [self didAccessValueForKey:@"files"];
-  
-  if ([files count]) {
-    
-    NSArray *_fs = [files array];
-    return [_fs filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"hidden == YES"]];
-    
-  }
-  return nil;
-}
-
-- (NSArray *)unhiddenFiles {
-  
-  [self willAccessValueForKey:@"files"];
-  NSOrderedSet *files = [self primitiveValueForKey:@"files"];
-  [self didAccessValueForKey:@"files"];
-  
-  if ([files count]) {
-    
-    NSArray *_fs = [files array];
-    return [_fs filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"hidden == NO"]];
-
-  }
-  return nil;
-  
-}
-
-
 - (NSString *)description {
   
   NSMutableString *desc = [@"" mutableCopy];

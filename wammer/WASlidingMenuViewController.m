@@ -447,8 +447,6 @@ static NSString * kWASlidingMenuViewControllerKVOContext = @"WASlidingMenuViewCo
   __weak WASlidingMenuViewController *wSelf = self;
   
   UINavigationController *navVC = (UINavigationController *)[[self class] dayViewControllerForViewStyle:viewStyle];
-  WADayViewController *swVC = (WADayViewController*)navVC.topViewController;
-  
   
   if (animated) {
     
@@ -459,16 +457,29 @@ static NSString * kWASlidingMenuViewControllerKVOContext = @"WASlidingMenuViewCo
                        wSelf.viewDeckController.centerController = navVC;
                      }
                      completion: ^(BOOL complete) {
-                       if (date)
-                         [swVC jumpToDate:date animated:NO];
+                       if (date) {
+                         if (viewStyle != WAEventsViewStyle) {
+                           WADayViewController *swVC = (WADayViewController*)navVC.topViewController;
+                           [swVC jumpToDate:date animated:NO];
+                         } else {
+                           WANewSummaryViewController *swVC = (WANewSummaryViewController*)navVC.topViewController;
+                           [swVC jumpToDate:date animated:NO];
+                         }
+                       }
                      }];
     
   } else {
     
     self.viewDeckController.centerController = navVC;
-    if (date)
-      [swVC jumpToDate:date animated:NO];
-    
+    if (date) {
+      if (viewStyle != WAEventsViewStyle) {
+        WADayViewController *swVC = (WADayViewController*)navVC.topViewController;
+        [swVC jumpToDate:date animated:NO];
+      } else {
+        WANewSummaryViewController *swVC = (WANewSummaryViewController*)navVC.topViewController;
+        [swVC jumpToDate:date animated:NO];
+      }
+    }
   }
   
 }

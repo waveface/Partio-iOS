@@ -67,6 +67,12 @@
 - (void) setSelected:(BOOL)selected {
   [super setSelected:selected];
   
+  if (!_editing) {
+    self.checkMarkView.hidden = YES;
+    self.checkMarkView.image = nil;
+    return;
+  }
+  
   if (selected) {
     [self.transparentLayer removeFromSuperlayer];
     self.checkMarkView.hidden = NO;

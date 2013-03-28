@@ -88,6 +88,16 @@
   self.dataSource.eventCollectionView = self.eventCollectionView;
   self.dataSource.delegate = self;
   
+  if ([[UIScreen mainScreen] bounds].size.height < (CGFloat)568) {
+    /* In iPad and iPhone4, the summary size is smaller then which is set in the XIB. The autoLayout constraints is set during the
+     * layoutSubviews, which is later then viewWillAppear. If we want to scrollToItemAtIndexPath at this point, we need to setup
+     * the size of item and collection view. */
+    [(UICollectionViewFlowLayout*)self.summaryCollectionView.collectionViewLayout setItemSize:(CGSize)CGSizeMake(320, 268)];
+    CGRect newFrame = self.summaryCollectionView.frame;
+    newFrame.size.height = 268;
+    self.summaryCollectionView.frame = newFrame;
+  }
+  
   self.summaryCollectionView.dataSource = self.dataSource;
   self.summaryCollectionView.delegate = self;
   self.eventCollectionView.dataSource = self.dataSource;
@@ -125,6 +135,20 @@
   NSIndexPath *dayEventIndexPath = [self.dataSource indexPathOfDayEvent:self.currentDayEvent];
   [self scrollToDaySummaryAtIndexPath:daySummaryIndexPath animated:NO];
   [self scrollToDayEventAtIndexPath:dayEventIndexPath animated:NO];
+
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+  
+  [super viewDidAppear:animated];
+
+  // load 20 future days if date of the last summaryCollectionView page is not today
+  NSDate *date = self.currentDaySummary.date;
+  if (!isSameDay(date, [NSDate date])) { 
+    [self.dataSource loadMoreDays:20 since:date];
+    [self.summaryCollectionView reloadData];
+    [self.eventCollectionView reloadData];
+  }
 }
 
 - (void)dealloc {

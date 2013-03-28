@@ -37,43 +37,59 @@
   if (self) {
     if (anArticle) {
       __weak WANewDayEvent *wSelf = self;
+      
+      void (^updateEventDescription)(void) = ^(void) {
+        wSelf.eventDescription = [anArticle description];
+        if (!wSelf.eventDescription.length) {
+          wSelf.eventDescription = [NSString stringWithFormat:NSLocalizedString(@"EVENT_DESCRIPTION_PHOTOS_ONLY", "Event description for photo information only"), anArticle.files.count];
+        }
+      };
+      
       [anArticle irObserve:@"files.@count" options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:nil withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
         NSCParameterAssert([NSThread isMainThread]);
-        NSUInteger count = anArticle.unhiddenFiles.count;
+        NSUInteger count = anArticle.files.count;
+        WADayEventStyle origStyle = wSelf.style;
+        WADayEventStyle newStyle;
         switch (count) {
           case 0:
-            wSelf.style = WADayEventStyleCheckin;
+            newStyle = WADayEventStyleCheckin;
             break;
           case 1:
-            wSelf.style = WADayEventStyleOnePhoto;
+            newStyle = WADayEventStyleOnePhoto;
             break;
           case 2:
-            wSelf.style = WADayEventStyleTwoPhotos;
+            newStyle = WADayEventStyleTwoPhotos;
             break;
           case 3:
-            wSelf.style = WADayEventStyleThreePhotos;
+            newStyle = WADayEventStyleThreePhotos;
             break;
           default:
-            wSelf.style = WADayEventStyleFourPhotos;
+            newStyle = WADayEventStyleFourPhotos;
             break;
+        }
+        if (newStyle != origStyle) {
+          [wSelf willChangeValueForKey:@"style"];
+          wSelf.style = newStyle;
+          [wSelf didChangeValueForKey:@"style"];
         }
         // reload images if files count changed
         if (wSelf.images) {
           [wSelf unloadImages];
           [wSelf loadImages];
         }
+        updateEventDescription();
       }];
+      
       [anArticle irObserve:@"eventStartDate" options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:nil withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
         NSCParameterAssert([NSThread isMainThread]);
         wSelf.startTime = [toValue copy];
       }];
+      
       [anArticle irObserve:@"text" options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:nil withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
         NSCParameterAssert([NSThread isMainThread]);
-        wSelf.eventDescription = [anArticle description];
-        if (!wSelf.eventDescription.length) {
-          wSelf.eventDescription = [NSString stringWithFormat:NSLocalizedString(@"EVENT_DESCRIPTION_PHOTOS_ONLY", "Event description for photo information only"), anArticle.unhiddenFiles.count];
-        }
+        updateEventDescription();
       }];
+      
       [anArticle irObserve:@"location" options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:nil withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
         NSCParameterAssert([NSThread isMainThread]);
         WALocation *location = (WALocation *)toValue;
@@ -103,11 +119,11 @@
 
 - (void)dealloc {
 
-  [self.representingArticle irRemoveObserverBlocksForKeyPath:@"unhiddenFiles.@count"];
+  [self.representingArticle irRemoveObserverBlocksForKeyPath:@"files.@count"];
   [self.representingArticle irRemoveObserverBlocksForKeyPath:@"eventStartDate"];
   [self.representingArticle irRemoveObserverBlocksForKeyPath:@"text"];
   for (NSUInteger i = 0; i < self.numOfImages; i++) {
-    [self.representingArticle.unhiddenFiles[i] irRemoveObserverBlocksForKeyPath:@"smallThumbnailFilePath"];
+    [self.representingArticle.files[i] irRemoveObserverBlocksForKeyPath:@"smallThumbnailFilePath"];
   }
 
 }
@@ -146,7 +162,7 @@
     __weak WANewDayEvent *wSelf = self;
     // load images in reverse order for LIFO display queue
     for (NSInteger idx = self.numOfImages-1; idx >= 0; idx--) {
-      WAFile *file = self.representingArticle.unhiddenFiles[idx];
+      WAFile *file = self.representingArticle.files[idx];
       [file setDisplayingSmallThumbnail:YES];
       [file irRemoveObserverBlocksForKeyPath:@"smallThumbnailFilePath"];
       [file irObserve:@"smallThumbnailFilePath" options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:nil withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
