@@ -17,6 +17,7 @@
 #import <WADataStore+WARemoteInterfaceAdditions.h>
 #import "WACollectionOverviewViewController.h"
 #import "WADataStore.h"
+#import "WALocalizedLabel.h"
 
 typedef NS_ENUM(NSUInteger, WACollectionSortMode){
   WACollectionSortByName = 0,
@@ -67,6 +68,7 @@ typedef NS_ENUM(NSUInteger, WACollectionSortMode){
   [self reloadCollection];
   [self.collectionView reloadData];
   //  }
+  _coachLabel.hidden = !![self.collectionView numberOfItemsInSection:0];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
