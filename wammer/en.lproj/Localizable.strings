@@ -618,6 +618,9 @@
 /* No comment provided by engineer. */
 "YEAR_SINGULAR" = "%d year";
 
+/* Class = "IBUILabel"; text = "NO_COLLECTION_HELPTEXT"; ObjectID = "15"; */
+"NO_COLLECTION_HELPTEXT" = "You can create collections by selecting photos from your events, or by importing folders from Windows Station. Collections are synced over all your devices.";
+
 /* Class = "IBUILabel"; text = "COMPOSITION_NO_PHOTO_REMINDER_TITLE"; ObjectID = "25"; */
 "COMPOSITION_NO_PHOTO_REMINDER_TITLE" = "To add a photo, press the camera icon.";
 

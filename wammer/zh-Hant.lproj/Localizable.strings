@@ -618,6 +618,9 @@
 /* No comment provided by engineer. */
 "YEAR_SINGULAR" = "%d年";
 
+/* Class = "IBUILabel"; text = "NO_COLLECTION_HELPTEXT"; ObjectID = "15"; */
+"NO_COLLECTION_HELPTEXT" = "您可以透過選取事件中的照片或是由 Windows Station 裡面匯入資料夾來建立收藏。";
+
 /* Class = "IBUILabel"; text = "COMPOSITION_NO_PHOTO_REMINDER_TITLE"; ObjectID = "25"; */
 "COMPOSITION_NO_PHOTO_REMINDER_TITLE" = "沒有照片";
 
