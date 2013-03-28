@@ -82,7 +82,6 @@
   } else if ([aDate isEqualToDate:self.lastDate]) {
     NSDate *currentDate = [[NSDate date] dayBegin];
     if ([aDate isEqualToDate:currentDate]) {
-      [self resetFetchedResultsControllers];
       return NO;
     }
     for (NSInteger i = 1; i <= numOfDays; i++) {
