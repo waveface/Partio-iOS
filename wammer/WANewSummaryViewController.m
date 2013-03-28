@@ -51,7 +51,7 @@
   }
 }
 
-- (void)viewDidLoad {
+- (void)viewWillAppear:(BOOL)animated {
   
   [super viewDidLoad];
   
@@ -395,12 +395,12 @@
         NSIndexPath *daySummaryIndexPath = [wSelf.dataSource indexPathOfDaySummaryOnDate:previousDay];
         wSelf.currentDaySummary = [wSelf.dataSource daySummaryAtIndexPath:daySummaryIndexPath];
         if (wSelf.currentDaySummary) {
-          [wSelf scrollToDaySummaryAtIndexPath:daySummaryIndexPath animated:YES];
+          [wSelf scrollToDaySummaryAtIndexPath:daySummaryIndexPath animated:NO];
         }
         
         NSIndexPath *dayEventIndexPath = [wSelf.dataSource indexPathOfFirstDayEventOnDate:previousDay];
         wSelf.currentDayEvent = [wSelf.dataSource dayEventAtIndexPath:dayEventIndexPath];
-        [wSelf scrollToDayEventAtIndexPath:dayEventIndexPath animated:YES];
+        [wSelf scrollToDayEventAtIndexPath:dayEventIndexPath animated:NO];
       }
       
       [wSelf.reloadingBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
