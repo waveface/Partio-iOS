@@ -13,5 +13,7 @@
 + (id) viewFromNib;
 @property (nonatomic, weak) IBOutlet UIImageView *imageView;
 @property (nonatomic, weak) IBOutlet UILabel *textLabel;
+@property (nonatomic, weak) IBOutlet UIImageView *refreshImageView;
+@property (nonatomic, weak) IBOutlet UILabel *syncStatusText;
 
 @end
