@@ -80,7 +80,7 @@
       
 	  NSPredicate *allFromToday = [NSPredicate predicateWithFormat:@"created BETWEEN {%@, %@} AND hidden == NO", [onDate dayBegin], [onDate dayEnd]];
 	  NSMutableArray *unsortedPhotos = [[WAFile MR_findAllWithPredicate:allFromToday inContext:[[WADataStore defaultStore] defaultAutoUpdatedMOC]] mutableCopy];
-	  NSSortDescriptor *sortByTime = [[NSSortDescriptor alloc] initWithKey:@"timestamp" ascending:NO];
+	  NSSortDescriptor *sortByTime = [[NSSortDescriptor alloc] initWithKey:@"created" ascending:NO];
 	  [unsortedPhotos sortUsingDescriptors:@[sortByTime]];
 	  _photos = unsortedPhotos;
 	  			
