@@ -68,16 +68,17 @@ static NSString * kWASlidingMenuViewControllerKVOContext = @"WASlidingMenuViewCo
   
   NSAssert1(((viewStyle==WAEventsViewStyle) || (viewStyle == WAPhotosViewStyle) || (viewStyle == WADocumentsViewStyle) || (viewStyle == WAWebpagesViewStyle)), @"Unsupported view style: %d", viewStyle);
   
-  UIViewController *swVC = nil;
-  if (viewStyle == WAEventsViewStyle) {
+  UIViewController *swVC;
+  if (viewStyle==WAEventsViewStyle) {
     swVC = [[WANewSummaryViewController alloc] init];
+    
   } else {
     swVC = [[WADayViewController alloc] initWithStyle:viewStyle];
+    
   }
+
   WANavigationController *navVC = [[WANavigationController alloc] initWithRootViewController:swVC];
   
-  swVC.view.backgroundColor = [UIColor colorWithRed:0.95f green:0.95f blue:0.95f alpha:1];
-
   if (viewStyle == WAPhotosViewStyle) {
     [swVC.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"photoStreamNavigationBar"] forBarMetrics:UIBarMetricsDefault];
     swVC.view.backgroundColor = [UIColor colorWithWhite:0.16f alpha:1.0f];
