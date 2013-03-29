@@ -215,9 +215,9 @@
 - (void)scrollToDaySummaryAtIndexPath:(NSIndexPath *)indexPath animated:(BOOL)animated {
   
   if (animated) {
-    [self.summaryCollectionView scrollToItemAtIndexPath:indexPath atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally animated:YES];
+    [self.summaryCollectionView scrollToItemAtIndexPath:indexPath atScrollPosition:UICollectionViewScrollPositionRight animated:YES];
   } else {
-    [self.summaryCollectionView scrollToItemAtIndexPath:indexPath atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally animated:NO];
+    [self.summaryCollectionView scrollToItemAtIndexPath:indexPath atScrollPosition:UICollectionViewScrollPositionLeft animated:NO];
   }
   
   self.summaryPageIndex = indexPath.item;
@@ -415,6 +415,11 @@
       [wSelf.summaryCollectionView reloadData];
       [wSelf.eventCollectionView reloadData];
       
+      NSIndexPath *daySummaryIndexPath = [wSelf.dataSource indexPathOfDaySummaryOnDate:wSelf.currentDaySummary.date];
+      [wSelf scrollToDaySummaryAtIndexPath:daySummaryIndexPath animated:NO];
+      NSIndexPath *dayEventIndexPath = [wSelf.dataSource indexPathOfFirstDayEventOnDate:wSelf.currentDaySummary.date];
+      [wSelf scrollToDayEventAtIndexPath:dayEventIndexPath animated:NO];
+
       NSDate *previousDay = [wSelf.currentDaySummary.date dateOfPreviousDay];
       
       if ([previousDay compare:[NSDate date]] == NSOrderedAscending) {
@@ -422,13 +427,13 @@
         NSIndexPath *daySummaryIndexPath = [wSelf.dataSource indexPathOfDaySummaryOnDate:previousDay];
         wSelf.currentDaySummary = [wSelf.dataSource daySummaryAtIndexPath:daySummaryIndexPath];
         if (wSelf.currentDaySummary) {
-          [wSelf scrollToDaySummaryAtIndexPath:daySummaryIndexPath animated:NO];
+          [wSelf scrollToDaySummaryAtIndexPath:daySummaryIndexPath animated:YES];
         }
         
         NSIndexPath *dayEventIndexPath = [wSelf.dataSource indexPathOfLastDayEventOnDate:previousDay];
         wSelf.currentDayEvent = [wSelf.dataSource dayEventAtIndexPath:dayEventIndexPath];
         wSelf.eventPageControl.currentPage = dayEventIndexPath.item;
-        [wSelf scrollToDayEventAtIndexPath:dayEventIndexPath animated:NO];
+        [wSelf scrollToDayEventAtIndexPath:dayEventIndexPath animated:YES];
       }
       
       [wSelf.reloadingBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
@@ -446,15 +451,10 @@
       
       [wSelf.summaryCollectionView reloadData];
       [wSelf.eventCollectionView reloadData];
-      
-      NSIndexPath *daySummaryIndexPath = [wSelf.dataSource indexPathOfDaySummaryOnDate:wSelf.currentDaySummary.date];
-      [wSelf scrollToDaySummaryAtIndexPath:daySummaryIndexPath animated:NO];
-      NSIndexPath *dayEventIndexPath = [wSelf.dataSource indexPathOfFirstDayEventOnDate:wSelf.currentDaySummary.date];
-      [wSelf scrollToDayEventAtIndexPath:dayEventIndexPath animated:NO];
-      
+            
       [[NSOperationQueue mainQueue] addOperationWithBlock:^{
         
-        NSDate *followingDay = [wSelf.currentDaySummary.date dateOfPreviousDay];
+        NSDate *followingDay = [wSelf.currentDaySummary.date dateOfFollowingDay];
         
         NSIndexPath *daySummaryIndexPath = [wSelf.dataSource indexPathOfDaySummaryOnDate:followingDay];
         wSelf.currentDaySummary = [wSelf.dataSource daySummaryAtIndexPath:daySummaryIndexPath];
@@ -515,7 +515,6 @@
     self.selectedDate = date;
   }
   
-  //TODO: reload data
   return YES;
   
 }
