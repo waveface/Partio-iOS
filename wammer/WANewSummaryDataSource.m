@@ -116,7 +116,7 @@
     self.articleFetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:articleFetchRequest managedObjectContext:moc sectionNameKeyPath:nil cacheName:nil];
     self.articleFetchedResultsController.delegate = self;
   }
-  [self.articleFetchedResultsController.fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"hidden = FALSE AND event = TRUE AND eventStartDate >= %@ AND eventStartDate <= %@", self.firstDate, [self.lastDate dayEnd]]];
+  [self.articleFetchedResultsController.fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"eventStartDate >= %@ AND eventStartDate <= %@ AND event = TRUE AND hidden = FALSE ", self.firstDate, [self.lastDate dayEnd]]];
   [self.articleFetchedResultsController performFetch:nil];
   NSArray *articles = self.articleFetchedResultsController.fetchedObjects;
 
@@ -385,22 +385,26 @@
     NSInteger numOfDayEvents = [self.dayEvents count];
     cell.representingDayEvent = self.dayEvents[indexPath.row];
     
-    for (NSInteger i = indexPath.row-3; i<indexPath.row; i++) {
+    NSIndexPath *indexPathOfPreviousLastDayEvent = [self indexPathOfLastDayEventOnDate:[self.currentDate dateOfPreviousDay]];
+    NSIndexPath *indexPathOfNextFirstDayEvent = [self indexPathOfFirstDayEventOnDate:[self.currentDate dateOfFollowingDay]];
+    NSIndexPath *indexPathOf2ndPreviousLastDayEvent= [self indexPathOfLastDayEventOnDate:[self.currentDate dateOfPreviousNumOfDays:2]];
+    NSIndexPath *indexPathOf2ndNextFirstDayEvent = [self indexPathOfFirstDayEventOnDate:[self.currentDate dateOfPreviousNumOfDays:2]];
+    [self.dayEvents[indexPathOfPreviousLastDayEvent.item] loadImages];
+    [self.dayEvents[indexPathOfNextFirstDayEvent.item] loadImages];
+    for (NSInteger i = indexPath.row-1; i<=indexPath.row+1; i++) {
       if (i >= 0 && i < numOfDayEvents) {
         [self.dayEvents[i] loadImages];
       }
     }
-    for (NSInteger i = indexPath.row+3; i>=indexPath.row; i--) {
-      if (i >= 0 && i < numOfDayEvents) {
-        [self.dayEvents[i] loadImages];
-      }
+    if (indexPath.row-2 >= 0 && indexPath.row-2 != indexPathOfPreviousLastDayEvent.item) {
+      [self.dayEvents[indexPath.row-2] unloadImages];
     }
-    if (indexPath.row-4 >= 0) {
-      [self.dayEvents[indexPath.row-4] unloadImages];
+    if (indexPath.row+2 < numOfDayEvents && indexPath.row+2 != indexPathOfNextFirstDayEvent.item) {
+      [self.dayEvents[indexPath.row+2] unloadImages];
     }
-    if (indexPath.row+4 < numOfDayEvents) {
-      [self.dayEvents[indexPath.row+4] unloadImages];
-    }
+    [self.dayEvents[indexPathOf2ndPreviousLastDayEvent.item] unloadImages];
+    [self.dayEvents[indexPathOf2ndNextFirstDayEvent.item] unloadImages];
+    
     
     return cell;
 

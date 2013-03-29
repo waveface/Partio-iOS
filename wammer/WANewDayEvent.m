@@ -189,17 +189,18 @@
 
 - (void)unloadImages {
   
-  for (NSOperation *operation in self.imageLoadingOperations) {
-    [operation cancel];
+  if (self.images) {
+    for (NSOperation *operation in self.imageLoadingOperations) {
+      [operation cancel];
+    }
+    self.imageLoadingOperations = nil;
+    self.images = nil;
+    
+    // we don't flush background image of checkin events because it cannot be preloaded for good user experience
+    if (self.style != WADayEventStyleCheckin) {
+      self.backgroundImage = nil;
+    }
   }
-  self.imageLoadingOperations = nil;
-  self.images = nil;
-
-  // we don't flush background image of checkin events because it cannot be preloaded for good user experience
-  if (self.style != WADayEventStyleCheckin) {
-    self.backgroundImage = nil;
-  }
-
 }
 
 - (void)insertImageDisplayOperationWithFilePath:(NSString *)aFilePath index:(NSUInteger)anIndex {
