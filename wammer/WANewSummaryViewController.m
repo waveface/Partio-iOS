@@ -107,7 +107,8 @@
   self.eventCollectionView.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.6];
   self.eventPageControl.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.6];
   
-  NSIndexPath *todayIndexPath = [self.dataSource indexPathOfDaySummaryOnDate:self.selectedDate? self.selectedDate : [[NSDate date] dayBegin]];
+  self.selectedDate = self.selectedDate? self.selectedDate : [[NSDate date] dayBegin];
+  NSIndexPath *todayIndexPath = [self.dataSource indexPathOfDaySummaryOnDate:self.selectedDate];
   self.currentDaySummary = [self.dataSource daySummaryAtIndexPath:todayIndexPath];
   self.eventPageControl.numberOfPages = self.currentDaySummary.numOfEvents;
   [self.currentDaySummary irObserve:@"numOfEvents"
@@ -510,10 +511,10 @@
 
   if (date) {
     self.selectedDate = date;
-    return YES;
   }
   
-  return NO;
+  //TODO: reload data
+  return YES;
   
 }
 
