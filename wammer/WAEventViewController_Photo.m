@@ -101,7 +101,7 @@
                               NSString *collectionName = [wAlert textFieldAtIndex:0].text;
                               wSelf.managedObjectContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
                               WACollection *collection = [[WACollection alloc] initWithName:collectionName
-                                                                                  withFiles:[wSelf.article.unhiddenFiles objectsAtIndexes:wSelf.selectedPhotos]
+                                                                                  withFiles:[wSelf.article.files objectsAtIndexes:wSelf.selectedPhotos]
                                                                      inManagedObjectContext:wSelf.managedObjectContext];
                               collection.creator = [[WADataStore defaultStore] mainUserInContext:wSelf.managedObjectContext];
                               NSError *error;
@@ -126,7 +126,7 @@
         
                               WACollection *collection = (WACollection*)[wSelf.managedObjectContext objectWithID:selectedCollection];
                               
-                              [collection addObjects:[wSelf.article.unhiddenFiles objectsAtIndexes:wSelf.selectedPhotos]];
+                              [collection addObjects:[wSelf.article.files objectsAtIndexes:wSelf.selectedPhotos]];
         
                               NSError *error = nil;
                               
@@ -176,7 +176,7 @@
 
                           NSMutableArray *identifiers = [NSMutableArray array];
                           [wSelf.selectedPhotos enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop) {
-                            [identifiers addObject:[[wSelf.article.unhiddenFiles objectAtIndex:idx] identifier]];
+                            [identifiers addObject:[[wSelf.article.files objectAtIndex:idx] identifier]];
                           }];
                           
                           WAOverlayBezel *busyBezel = [WAOverlayBezel bezelWithStyle:WAActivityIndicatorBezelStyle];
@@ -225,7 +225,7 @@
       
                           NSMutableArray *identifiers = [NSMutableArray array];
                           [wSelf.selectedPhotos enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop) {
-                            [identifiers addObject:[[wSelf.article.unhiddenFiles objectAtIndex:idx] identifier]];
+                            [identifiers addObject:[[wSelf.article.files objectAtIndex:idx] identifier]];
                           }];
       
                           WAOverlayBezel *busyBezel = [WAOverlayBezel bezelWithStyle:WAActivityIndicatorBezelStyle];
@@ -234,7 +234,7 @@
                           });
       
                           [[WARemoteInterface sharedInterface] deleteAttachments:identifiers
-                                                                     onSuccess:^(NSArray *successIDs) {
+                                                                     onSuccess:^(NSArray *successIDs, NSArray *failureIDs) {
                                                                        
                                                                        NSManagedObjectContext *moc = [[WADataStore defaultStore] autoUpdatingMOC];
                                                                        NSFetchRequest *fetch = [[NSFetchRequest alloc] init];
@@ -306,7 +306,7 @@
     
   self.navigationItem.rightBarButtonItem = self.actionButton;
   
-  if (![self.article.unhiddenFiles count]) { // No photo available
+  if (![self.article.files count]) { // No photo available
 	self.navigationItem.rightBarButtonItem.enabled = NO;
   }
 	
@@ -418,7 +418,7 @@
   NSMutableArray *marray = [NSMutableArray array];
   __weak WAEventViewController_Photo *wSelf = self;
   [self.selectedPhotos enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop) {
-    WAFile *file = wSelf.article.unhiddenFiles[idx];
+    WAFile *file = wSelf.article.files[idx];
     if (file.smallThumbnailImage)
       [marray addObject:file.smallThumbnailImage];
   }];
@@ -431,11 +431,11 @@
 
 - (UICollectionViewCell*) collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
   
-	if (self.article.unhiddenFiles.count) {
+	if (self.article.files.count) {
       WAEventPhotoViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"EventPhotoCell" forIndexPath:indexPath];
       cell.editing = self.editing;
 
-      WAFile *file = [self.article.unhiddenFiles objectAtIndex:indexPath.row];
+      WAFile *file = [self.article.files objectAtIndex:indexPath.row];
       
       [cell.imageView irUnbind:@"image"];
       
@@ -498,12 +498,12 @@
   if (!self.editing) {
 	__weak WAGalleryViewController *galleryVC = nil;
 	
-	if (!self.article.unhiddenFiles.count) {
+	if (!self.article.files.count) {
       //TODO: popup UI to add some photos
       return;
 	}
 	
-	WAFile *file = [self.article.unhiddenFiles objectAtIndex:indexPath.row];
+	WAFile *file = [self.article.files objectAtIndex:indexPath.row];
 	
 	galleryVC = [WAGalleryViewController
                  controllerRepresentingArticleAtURI:[[self.article objectID] URIRepresentation]

@@ -9,8 +9,11 @@
 #import <UIKit/UIKit.h>
 #import "IIViewDeckController.h"
 
+@class WALocalizedLabel;
+
 @interface WACollectionViewController : UIViewController <UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, IIViewDeckControllerDelegate, NSFetchedResultsControllerDelegate>
 
 @property (strong, nonatomic) IBOutlet UICollectionView *collectionView;
+@property (strong, nonatomic) IBOutlet WALocalizedLabel *coachLabel;
 
 @end

@@ -55,14 +55,17 @@
       
       IRAsyncOperation *operation = [IRAsyncOperation operationWithWorker:^(IRAsyncOperationCallback callback) {
         
-        [[WARemoteInterface sharedInterface] hideAttachments:hiddenFileIdentifiers onSuccess:^(NSArray *successIDs){
+        [[WARemoteInterface sharedInterface] deleteAttachments:hiddenFileIdentifiers onSuccess:^(NSArray *successIDs, NSArray *failureIDs){
+          
+          // delete them from core data no matter success or failure
+          NSArray *deletingIDs = [successIDs arrayByAddingObjectsFromArray:failureIDs];
           
           NSManagedObjectContext *context = [[WADataStore defaultStore] disposableMOC];
           context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
           NSFetchRequest *request = [[NSFetchRequest alloc] init];
           NSEntityDescription *entity = [NSEntityDescription entityForName:@"WAFile" inManagedObjectContext:context];
           [request setEntity:entity];
-          NSPredicate *predicate = [NSPredicate predicateWithFormat:@"identifier IN %@", successIDs];
+          NSPredicate *predicate = [NSPredicate predicateWithFormat:@"identifier IN %@", deletingIDs];
           [request setPredicate:predicate];
 	
           NSError *error = nil;
@@ -71,7 +74,7 @@
             NSLog(@"Unable to fetch WAFiles in %@, error: %@", successIDs, error);
           } else {
             for (WAFile *file in files) {
-              file.dirty = @NO;
+              [context deleteObject:file];
             }
             if (![context save:&error]) {
               NSLog(@"Unable to save WAFiles %@, error: %@", files, error);

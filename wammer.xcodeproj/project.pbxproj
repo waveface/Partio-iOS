@@ -666,7 +666,6 @@
 		FFCCE05215B41B0000AEBB85 /* WAUserGlyph.png in Resources */ = {isa = PBXBuildFile; fileRef = FFCCDF4515B41B0000AEBB85 /* WAUserGlyph.png */; };
 		FFCCE05315B41B0000AEBB85 /* WAUserGlyph@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FFCCDF4615B41B0000AEBB85 /* WAUserGlyph@2x.png */; };
 		FFCD325214B9EA4D0035C4F5 /* WAFile+WAAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = FFCD325114B9EA4D0035C4F5 /* WAFile+WAAdditions.m */; };
-		FFCEF41215199ED10021AECB /* libIRDiscreteLayoutManager.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FFBA66EB140E12AD00BE5A1D /* libIRDiscreteLayoutManager.a */; };
 		FFCEF41415199F000021AECB /* WAArticle+WAAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = FF88E14414E8D7DC00B347A8 /* WAArticle+WAAdditions.m */; };
 		FFCEF41815199F000021AECB /* WADataStore.m in Sources */ = {isa = PBXBuildFile; fileRef = FF97382413D821DF003D1722 /* WADataStore.m */; };
 		FFCEF41B15199F000021AECB /* WAFilePageElement.m in Sources */ = {isa = PBXBuildFile; fileRef = FF7997A81490A23C000CE08D /* WAFilePageElement.m */; };
@@ -859,27 +858,6 @@
 			proxyType = 1;
 			remoteGlobalIDString = FFF2237F143774C3001B6773;
 			remoteInfo = IRTextAttributorTouch;
-		};
-		FFBA66EA140E12AD00BE5A1D /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = FFBA66E2140E12AD00BE5A1D /* IRDiscreteLayoutManager.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = FF55E1961407CE8400D8F3C7;
-			remoteInfo = IRDiscreteLayoutManager;
-		};
-		FFBA66EC140E12AD00BE5A1D /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = FFBA66E2140E12AD00BE5A1D /* IRDiscreteLayoutManager.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = FF2BFEE0140AC72300604E8D;
-			remoteInfo = IRDiscreteLayoutTests;
-		};
-		FFCFE07A142111E100B9E6AF /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = FFBA66E2140E12AD00BE5A1D /* IRDiscreteLayoutManager.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = FF55E1951407CE8400D8F3C7;
-			remoteInfo = IRDiscreteLayoutManager;
 		};
 		FFCFE07E142111E100B9E6AF /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -1661,7 +1639,6 @@
 		FFB81F40148C8AA000FB11B1 /* WASingleFileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WASingleFileViewController.m; sourceTree = "<group>"; };
 		FFB81F41148C8AA000FB11B1 /* WASingleFileViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WASingleFileViewController.xib; sourceTree = "<group>"; };
 		FFB81F46148C8B0700FB11B1 /* WASingleFileViewController~iphone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "WASingleFileViewController~iphone.xib"; sourceTree = "<group>"; };
-		FFBA66E2140E12AD00BE5A1D /* IRDiscreteLayoutManager.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = IRDiscreteLayoutManager.xcodeproj; path = external/IRDiscreteLayoutManager/IRDiscreteLayoutManager.xcodeproj; sourceTree = "<group>"; };
 		FFBEF14F153F622E00CF2203 /* WAUser+WARemoteInterfaceEntitySyncing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WAUser+WARemoteInterfaceEntitySyncing.h"; sourceTree = "<group>"; };
 		FFBEF150153F622E00CF2203 /* WAUser+WARemoteInterfaceEntitySyncing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WAUser+WARemoteInterfaceEntitySyncing.m"; sourceTree = "<group>"; };
 		FFBEF152153F624500CF2203 /* WAUser+WAAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WAUser+WAAdditions.h"; sourceTree = "<group>"; };
@@ -1842,7 +1819,6 @@
 				4B26970B15E76A5F007E1054 /* CFNetwork.framework in Frameworks */,
 				FF586BBA1519B59E00F308E2 /* libIRRecurrenceMachine.a in Frameworks */,
 				FFCEF43F15199F550021AECB /* libIRFoundationsTouch.a in Frameworks */,
-				FFCEF41215199ED10021AECB /* libIRDiscreteLayoutManager.a in Frameworks */,
 				FF2981B414F6DFEB004F6893 /* Foundation.framework in Frameworks */,
 				FF2981B514F6DFEB004F6893 /* UIKit.framework in Frameworks */,
 				FF2981B614F6DFF1004F6893 /* AssetsLibrary.framework in Frameworks */,
@@ -2815,7 +2791,6 @@
 				7D9B1D90162BB1F6000E5350 /* Social.framework */,
 				80B143FC16BA7F6E009A5FA9 /* Twitter.framework */,
 				7D857D4B164249DA0092CF5F /* AQGridView.xcodeproj */,
-				FFBA66E2140E12AD00BE5A1D /* IRDiscreteLayoutManager.xcodeproj */,
 				FF73A59513D6DC6500D54EC6 /* IRFoundations.xcodeproj */,
 				FFD4F92E157E07F90027BF3F /* IRObjectQueue.xcodeproj */,
 				FFA69459147F800300F46347 /* IRRecurrenceMachine.xcodeproj */,
@@ -3049,15 +3024,6 @@
 			isa = PBXGroup;
 			children = (
 				FFB3C177145E9A6600ED7A56 /* libIRTextAttributor.a */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
-		FFBA66E3140E12AD00BE5A1D /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				FFBA66EB140E12AD00BE5A1D /* libIRDiscreteLayoutManager.a */,
-				FFBA66ED140E12AD00BE5A1D /* IRDiscreteLayoutTests.octest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -3547,7 +3513,6 @@
 				FFD4F93B157E08460027BF3F /* PBXTargetDependency */,
 				FFB117C5147F8B34002094E5 /* PBXTargetDependency */,
 				FFB3C179145E9A6F00ED7A56 /* PBXTargetDependency */,
-				FFCFE079142111E100B9E6AF /* PBXTargetDependency */,
 				FFCFE07D142111E100B9E6AF /* PBXTargetDependency */,
 				FFCFE07F142111E100B9E6AF /* PBXTargetDependency */,
 			);
@@ -3583,10 +3548,6 @@
 				{
 					ProductGroup = 7D857D4C164249DA0092CF5F /* Products */;
 					ProjectRef = 7D857D4B164249DA0092CF5F /* AQGridView.xcodeproj */;
-				},
-				{
-					ProductGroup = FFBA66E3140E12AD00BE5A1D /* Products */;
-					ProjectRef = FFBA66E2140E12AD00BE5A1D /* IRDiscreteLayoutManager.xcodeproj */;
 				},
 				{
 					ProductGroup = FF73A59613D6DC6500D54EC6 /* Products */;
@@ -3744,20 +3705,6 @@
 			fileType = archive.ar;
 			path = libIRTextAttributor.a;
 			remoteRef = FFB3C176145E9A6600ED7A56 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		FFBA66EB140E12AD00BE5A1D /* libIRDiscreteLayoutManager.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libIRDiscreteLayoutManager.a;
-			remoteRef = FFBA66EA140E12AD00BE5A1D /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		FFBA66ED140E12AD00BE5A1D /* IRDiscreteLayoutTests.octest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = IRDiscreteLayoutTests.octest;
-			remoteRef = FFBA66EC140E12AD00BE5A1D /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		FFD4F937157E07F90027BF3F /* libIRObjectQueue.a */ = {
@@ -4604,11 +4551,6 @@
 			name = IRTextAttributorTouch;
 			targetProxy = FFB3C178145E9A6F00ED7A56 /* PBXContainerItemProxy */;
 		};
-		FFCFE079142111E100B9E6AF /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = IRDiscreteLayoutManager;
-			targetProxy = FFCFE07A142111E100B9E6AF /* PBXContainerItemProxy */;
-		};
 		FFCFE07D142111E100B9E6AF /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = IRFoundationsTouch;
@@ -4700,7 +4642,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 583;
+				CURRENT_PROJECT_VERSION = 584;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"WF_USES_TESTFLIGHT=$(WF_USES_TESTFLIGHT)",
@@ -5179,7 +5121,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 583;
+				CURRENT_PROJECT_VERSION = 584;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -5242,7 +5184,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 583;
+				CURRENT_PROJECT_VERSION = 584;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"WF_USES_TESTFLIGHT=$(WF_USES_TESTFLIGHT)",

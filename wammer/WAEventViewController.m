@@ -404,7 +404,7 @@
 	
 	_headerView.timeLabel.text = [[[self class] timeFormatter] stringFromDate:self.article.eventStartDate];
 	
-	_headerView.numberLabel.text = [NSString stringWithFormat:NSLocalizedString(@"EVENT_PHOTO_NUMBER_LABEL", @"EVENT_PHOTO_NUMBER_LABEL"), self.article.unhiddenFiles.count];
+	_headerView.numberLabel.text = [NSString stringWithFormat:NSLocalizedString(@"EVENT_PHOTO_NUMBER_LABEL", @"EVENT_PHOTO_NUMBER_LABEL"), self.article.files.count];
 	
 	if (self.article.people != nil) {
 		
@@ -500,7 +500,7 @@
 		
 	}
 	
-	if (!self.article.unhiddenFiles.count) {
+	if (!self.article.files.count) {
 		
 		_headerView.labelOverSeparationLine.text = NSLocalizedString(@"EVENT_SEPERATION_LABEL_WITHOUT_PHOTOS", @"The text of label on separation line in the event view when there is no photo presented.");
 		[_headerView.labelOverSeparationLine sizeToFit];
@@ -599,10 +599,10 @@
 
 - (NSInteger) collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
 	
-  if (!self.article.unhiddenFiles.count)
+  if (!self.article.files.count)
     return isPad() ? 5 : 3; // add buttons placehoder
   
-  return self.article.unhiddenFiles.count;
+  return self.article.files.count;
   
 }
 

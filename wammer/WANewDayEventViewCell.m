@@ -67,6 +67,21 @@ NSString *kWANewDayEventViewCellID = @"NewDayEventViewCell";
       wSelf.descriptionLabel.text = toValue;
     }];
   }];
+  
+  [_representingDayEvent irObserve:@"style"
+                           options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld
+                           context:nil
+                         withBlock:^(NSKeyValueChange kind, NSNumber *fromValue, NSNumber *toValue, NSIndexSet *indices, BOOL isPrior) {
+                           
+                           WADayEventStyle origStyle = [fromValue integerValue];
+                           WADayEventStyle newStyle = [toValue integerValue];
+                           [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+                             if (origStyle!=WADayEventStyleCheckin && newStyle==WADayEventStyleCheckin)
+                               wSelf.representingDayEvent.backgroundImage = nil;
+                             [wSelf.imageCollectionView reloadData];
+                           }];
+                           
+                         }];
 
 }
 
@@ -74,6 +89,7 @@ NSString *kWANewDayEventViewCellID = @"NewDayEventViewCell";
 
   [self.representingDayEvent irRemoveObserverBlocksForKeyPath:@"startTime"];
   [self.representingDayEvent irRemoveObserverBlocksForKeyPath:@"eventDescription"];
+  [self.representingDayEvent irRemoveObserverBlocksForKeyPath:@"style"];
   [self.representingDayEvent.images irRemoveAllObserves];
   
 }
@@ -84,6 +100,7 @@ NSString *kWANewDayEventViewCellID = @"NewDayEventViewCell";
 
   [self.representingDayEvent irRemoveObserverBlocksForKeyPath:@"startTime"];
   [self.representingDayEvent irRemoveObserverBlocksForKeyPath:@"eventDescription"];
+  [self.representingDayEvent irRemoveObserverBlocksForKeyPath:@"style"];
   [self.representingDayEvent.images irRemoveAllObserves];
 
   self.representingDayEvent = nil;
