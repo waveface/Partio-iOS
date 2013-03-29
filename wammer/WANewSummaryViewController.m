@@ -134,6 +134,7 @@
   
   NSIndexPath *daySummaryIndexPath = [self.dataSource indexPathOfDaySummaryOnDate:self.currentDaySummary.date];
   NSIndexPath *dayEventIndexPath = [self.dataSource indexPathOfDayEvent:self.currentDayEvent];
+  self.eventPageControl.currentPage = dayEventIndexPath.item;
   [self scrollToDaySummaryAtIndexPath:daySummaryIndexPath animated:NO];
   [self scrollToDayEventAtIndexPath:dayEventIndexPath animated:NO];
 
@@ -426,6 +427,7 @@
         
         NSIndexPath *dayEventIndexPath = [wSelf.dataSource indexPathOfLastDayEventOnDate:previousDay];
         wSelf.currentDayEvent = [wSelf.dataSource dayEventAtIndexPath:dayEventIndexPath];
+        wSelf.eventPageControl.currentPage = dayEventIndexPath.item;
         [wSelf scrollToDayEventAtIndexPath:dayEventIndexPath animated:NO];
       }
       
