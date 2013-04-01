@@ -385,8 +385,8 @@
     NSInteger numOfDayEvents = [self.dayEvents count];
     cell.representingDayEvent = self.dayEvents[indexPath.row];
     
-    NSDate *dateOfPreviousDay = [self.currentDate dateOfPreviousDay];
-    NSDate *dateOfFollowingDay = [self.currentDate dateOfFollowingDay];
+    NSDate *dateOfPreviousDay = [[self dateOfDayEventAtIndexPath:indexPath] dateOfPreviousDay];
+    NSDate *dateOfFollowingDay = [[self dateOfDayEventAtIndexPath:indexPath] dateOfFollowingDay];
     if ([dateOfPreviousDay compare:self.firstDate] != NSOrderedAscending) {
       NSIndexPath *indexPathOfPreviousLastDayEvent = [self indexPathOfLastDayEventOnDate:dateOfPreviousDay];
       [self.dayEvents[indexPathOfPreviousLastDayEvent.item] loadImages];
@@ -418,8 +418,8 @@
       }
     }
     
-    NSDate *dateOfPrevious2Day = [self.currentDate dateOfPreviousNumOfDays:2];
-    NSDate *dateOfFollowing2Day = [self.currentDate dateOfPreviousNumOfDays:2];
+    NSDate *dateOfPrevious2Day = [[self dateOfDayEventAtIndexPath:indexPath] dateOfPreviousNumOfDays:2];
+    NSDate *dateOfFollowing2Day = [[self dateOfDayEventAtIndexPath:indexPath] dateOfNextNumOfDays:2];
     if ([dateOfPrevious2Day compare:self.firstDate] != NSOrderedAscending) {
       NSIndexPath *indexPathOf2ndPreviousLastDayEvent= [self indexPathOfLastDayEventOnDate:dateOfPrevious2Day];
       [self.dayEvents[indexPathOf2ndPreviousLastDayEvent.item] unloadImages];
