@@ -260,6 +260,9 @@
 /* Event description for photo information only */
 "EVENT_DESCRIPTION_PHOTOS_ONLY" = "動態裡有 %d 張照片。";
 
+/* EVENT_ONE_PHOTO_NUMBER_LABEL */
+"EVENT_ONE_PHOTO_NUMBER_LABEL" = "EVENT_ONE_PHOTO_NUMBER_LABEL";
+
 /* EVENT_PHOTO_NUMBER_LABEL */
 "EVENT_PHOTO_NUMBER_LABEL" = "%d 張照片";
 
@@ -367,6 +370,9 @@
 
 /* No comment provided by engineer. */
 "HOUR_SINGULAR" = "%d小時";
+
+/* INPUT_RECEIVER_EMAIL */
+"INPUT_RECEIVER_EMAIL" = "輸入收件人的 Email";
 
 /* Title on introduction pages */
 "INTRODUCTION_TITLE" = "aostream 是什麼？";

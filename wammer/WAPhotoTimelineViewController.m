@@ -13,6 +13,7 @@
 #import "WAPhotoCollageCell.h"
 #import "WAAssetsLibraryManager.h"
 #import "WATimelineIndexView.h"
+#import "WAContactPickerViewController.h"
 #import <CoreLocation/CoreLocation.h>
 #import "WAGeoLocation.h"
 #import <GoogleMaps/GoogleMaps.h>
@@ -71,6 +72,7 @@
   
   UIImage *actionImage = [UIImage imageNamed:@"action"];
   UIButton *actionButton = [[UIButton alloc] initWithFrame:(CGRect){CGPointZero, actionImage.size}];
+  [actionButton addTarget:self action:@selector(actionButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
   [actionButton setImage:actionImage forState:UIControlStateNormal];
   UIBarButtonItem *actionItem = [[UIBarButtonItem alloc] initWithCustomView:actionButton];
   
@@ -128,6 +130,15 @@
 
 - (void) backButtonClicked:(id)sender {
   [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)actionButtonClicked:(id)sender
+{
+  __weak WAPhotoTimelineViewController *wSelf = self;
+  WAContactPickerViewController *cpVC = [[WAContactPickerViewController alloc] initWithStyle:UITableViewStylePlain];
+  UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:cpVC];
+  [wSelf presentViewController:nav animated:YES completion:nil];
+
 }
 
 - (void)didReceiveMemoryWarning
