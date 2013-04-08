@@ -11,6 +11,6 @@
 @interface WAPhotoTimelineViewController : UIViewController
 
 - (id) initWithAssets:(NSArray*)assets;
-- (id) initWithArticle:(NSManagedObjectID *)managedObjectID;
+- (id) initWithArticleID:(NSManagedObjectID *)articleID;
 
 @end
