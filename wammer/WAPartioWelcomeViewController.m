@@ -101,7 +101,19 @@
         signupUserWithFacebookToken:session.accessTokenData.accessToken
         withOptions:nil
         onSuccess:^(NSString *token, NSDictionary *userRep, NSArray *groupReps) {
+          NSString *userID = [userRep valueForKeyPath:@"user_id"];
           
+          NSString *primaryGroupID = [[[groupReps filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary *bindings) {
+            
+            return [[evaluatedObject valueForKeyPath:@"creator_id"] isEqual:userID];
+            
+          }]] lastObject] valueForKeyPath:@"group_id"];
+          
+          WARemoteInterface *ri = [WARemoteInterface sharedInterface];
+          ri.userIdentifier = userID;
+          ri.userToken = token;
+          ri.primaryGroupIdentifier = primaryGroupID;
+
           dispatch_async(dispatch_get_main_queue(), ^{
             if (firstUse.completionBlock)
               firstUse.completionBlock();
