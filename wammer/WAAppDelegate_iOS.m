@@ -30,6 +30,9 @@
 #import "WAUserInfoViewController.h"
 #import "WAOverlayBezel.h"
 
+#import "WAPhotoHighlightsViewController.h"
+#import "WAPartioFirstUseViewController.h"
+
 #import "Foundation+IRAdditions.h"
 #import "UIKit+IRAdditions.h"
 
@@ -198,9 +201,9 @@ extern CFAbsoluteTime StartTime;
     
     [self recreateViewHierarchy];
     
-  } else if (![self hasAuthenticationData]) {
-    
-    [self applicationRootViewControllerDidRequestReauthentication:nil];
+//  } else if (![self hasAuthenticationData]) {
+//    
+//    [self applicationRootViewControllerDidRequestReauthentication:nil];
     
   } else {
     
@@ -209,8 +212,8 @@ extern CFAbsoluteTime StartTime;
     if (lastAuthenticatedUserIdentifier)
       [self bootstrapPersistentStoreWithUserIdentifier:lastAuthenticatedUserIdentifier];
     
-    self.fetchManager = [[WAFetchManager alloc] init];
-    self.syncManager = [[WASyncManager alloc] init];
+//    self.fetchManager = [[WAFetchManager alloc] init];
+//    self.syncManager = [[WASyncManager alloc] init];
     
     [self recreateViewHierarchy];
     
@@ -342,31 +345,43 @@ extern CFAbsoluteTime StartTime;
   
   [[IRRemoteResourcesManager sharedManager].queue cancelAllOperations];
   
-  self.slidingMenu = [[WASlidingMenuViewController alloc] init];
-  self.slidingMenu.delegate = self;
-  WANavigationController *navSlide = [[WANavigationController alloc] initWithRootViewController:self.slidingMenu];
-  navSlide.navigationBarHidden = YES;
+//  self.slidingMenu = [[WASlidingMenuViewController alloc] init];
+//  self.slidingMenu.delegate = self;
+//  WANavigationController *navSlide = [[WANavigationController alloc] initWithRootViewController:self.slidingMenu];
+//  navSlide.navigationBarHidden = YES;
+//  
+//  NSParameterAssert(self.syncManager);
+//  
+//  IIViewDeckController *viewDeckController = [[IIViewDeckController alloc] initWithCenterViewController:[WASlidingMenuViewController dayViewControllerForViewStyle:WAEventsViewStyle]
+//                                                                                     leftViewController:navSlide];
+//  viewDeckController.view.backgroundColor = [UIColor blackColor];
+//  
+//  if (isPad() && (UIInterfaceOrientationIsLandscape([[UIApplication sharedApplication] statusBarOrientation])))
+//    viewDeckController.leftLedge = self.window.frame.size.height - [WASlidingMenuViewController ledgeSize];
+//  else
+//    viewDeckController.leftLedge = self.window.frame.size.width - [WASlidingMenuViewController ledgeSize];
+//  
+//  viewDeckController.rotationBehavior = IIViewDeckRotationKeepsLedgeSizes;
+//  //			viewDeckController.animationBehavior = IIViewDeckAnimationPullIn;
+//  viewDeckController.panningMode = IIViewDeckNoPanning;
+//  [viewDeckController setWantsFullScreenLayout:YES];
+//  viewDeckController.delegate = self.slidingMenu;
+//  viewDeckController.centerhiddenInteractivity = IIViewDeckCenterHiddenNotUserInteractiveWithTapToClose;
   
-  NSParameterAssert(self.syncManager);
-  
-  IIViewDeckController *viewDeckController = [[IIViewDeckController alloc] initWithCenterViewController:[WASlidingMenuViewController dayViewControllerForViewStyle:WAEventsViewStyle]
-                                                                                     leftViewController:navSlide];
-  viewDeckController.view.backgroundColor = [UIColor blackColor];
-  
-  if (isPad() && (UIInterfaceOrientationIsLandscape([[UIApplication sharedApplication] statusBarOrientation])))
-    viewDeckController.leftLedge = self.window.frame.size.height - [WASlidingMenuViewController ledgeSize];
-  else
-    viewDeckController.leftLedge = self.window.frame.size.width - [WASlidingMenuViewController ledgeSize];
-  
-  viewDeckController.rotationBehavior = IIViewDeckRotationKeepsLedgeSizes;
-  //			viewDeckController.animationBehavior = IIViewDeckAnimationPullIn;
-  viewDeckController.panningMode = IIViewDeckNoPanning;
-  [viewDeckController setWantsFullScreenLayout:YES];
-  viewDeckController.delegate = self.slidingMenu;
-  viewDeckController.centerhiddenInteractivity = IIViewDeckCenterHiddenNotUserInteractiveWithTapToClose;
-  
-  self.window.rootViewController = viewDeckController;
-  
+
+  __weak WAAppDelegate_iOS *wSelf = self;
+  WAPartioFirstUseViewController *partioFirstUse = [WAPartioFirstUseViewController firstUseViewControllerWithCompletionBlock:^{
+    UIViewController *rootVC = self.window.rootViewController;
+    
+    [rootVC zapModal];
+
+    WAPhotoHighlightsViewController *photoGroupsVC = [[WAPhotoHighlightsViewController alloc] initWithStyle:UITableViewStylePlain];
+    wSelf.window.rootViewController = photoGroupsVC;
+
+  } failure:^(NSError *error) {
+    NSLog(@"fail to sign up for error: %@", error);
+  }];
+  self.window.rootViewController = partioFirstUse;
   
   UIViewController *vc = self.window.rootViewController;
   

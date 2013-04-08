@@ -71,6 +71,39 @@
   
 }
 
+- (void)retrieveTimeSortedPhotosWhenComplete:(void (^)(NSArray *result))onCompleteBlock onFailure:(void (^)(NSError *))onFailureBlock {
+  NSMutableArray *allAssets = [NSMutableArray array];
+  
+  [self.assetsLibrary enumerateGroupsWithTypes:ALAssetsGroupSavedPhotos usingBlock:^(ALAssetsGroup *group, BOOL *stop) {
+    
+    if (group) {
+      
+      [group setAssetsFilter:[ALAssetsFilter allPhotos]];
+      
+      // sorting all photos in camera roll by photo creation date
+      [group enumerateAssetsUsingBlock:^(ALAsset *result, NSUInteger index, BOOL *stop) {
+        if (result) {
+          NSUInteger indexToInsert = [allAssets indexOfObject:result inSortedRange:NSMakeRange(0, [allAssets count]) options:NSBinarySearchingInsertionIndex usingComparator:^NSComparisonResult(ALAsset *asset1, ALAsset *asset2) {
+            return [[asset2 valueForProperty:ALAssetPropertyDate] compare:[asset1 valueForProperty:ALAssetPropertyDate]];
+          }];
+          [allAssets insertObject:result atIndex:indexToInsert];
+        }
+      }];
+      
+    } else {
+      
+      onCompleteBlock([NSArray arrayWithArray:allAssets]);
+      
+    }
+    
+  } failureBlock:^(NSError *error) {
+    
+    onFailureBlock(error);
+    
+  }];
+
+}
+
 - (void)enumerateSavedPhotosSince:(NSDate *)sinceDate onProgess:(void (^)(NSArray *))onProgressBlock onComplete:(void (^)())onCompleteBlock onFailure:(void (^)(NSError *))onFailureBlock {
   
   NSCalendar *calendar = [NSCalendar currentCalendar];
@@ -100,53 +133,53 @@
       NSMutableArray *allAssets = [NSMutableArray array];
       [group enumerateAssetsUsingBlock:^(ALAsset *result, NSUInteger index, BOOL *stop) {
         if (result) {
-	if (![importedFileAssetURLs containsObject:[[[result defaultRepresentation] url] absoluteString]]) {
-	  NSUInteger indexToInsert = [allAssets indexOfObject:result inSortedRange:NSMakeRange(0, [allAssets count]) options:NSBinarySearchingInsertionIndex usingComparator:^NSComparisonResult(ALAsset *asset1, ALAsset *asset2) {
-	    return [[asset1 valueForProperty:ALAssetPropertyDate] compare:[asset2 valueForProperty:ALAssetPropertyDate]];
-	  }];
-	  [allAssets insertObject:result atIndex:indexToInsert];
-	}
+          if (![importedFileAssetURLs containsObject:[[[result defaultRepresentation] url] absoluteString]]) {
+            NSUInteger indexToInsert = [allAssets indexOfObject:result inSortedRange:NSMakeRange(0, [allAssets count]) options:NSBinarySearchingInsertionIndex usingComparator:^NSComparisonResult(ALAsset *asset1, ALAsset *asset2) {
+              return [[asset1 valueForProperty:ALAssetPropertyDate] compare:[asset2 valueForProperty:ALAssetPropertyDate]];
+            }];
+            [allAssets insertObject:result atIndex:indexToInsert];
+          }
         }
       }];
 
       [allAssets enumerateObjectsUsingBlock:^(ALAsset *result, NSUInteger index, BOOL *stop) {
         
         if (result) {
+          
+          NSDate *assetDate = [result valueForProperty:ALAssetPropertyDate];
+          NSDateComponents *assetDateComponents = [calendar components:comps fromDate:assetDate];
+          assetDate = [calendar dateFromComponents:assetDateComponents];
+          if (sinceDate && ([assetDate compare:sinceDate] != NSOrderedDescending)) {
+            return;
+          }
 	
-	NSDate *assetDate = [result valueForProperty:ALAssetPropertyDate];
-	NSDateComponents *assetDateComponents = [calendar components:comps fromDate:assetDate];
-	assetDate = [calendar dateFromComponents:assetDateComponents];
-	if (sinceDate && ([assetDate compare:sinceDate] != NSOrderedDescending)) {
-	  return;
-	}
-	
-	if (midnight) {
+          if (midnight) {
 	  
-	  if ([assetDate compare:midnight] != NSOrderedAscending) {
+            if ([assetDate compare:midnight] != NSOrderedAscending) {
 	    
-	    NSArray *assets = [insertedAssets copy];
-	    onProgressBlock(assets);
-	    [insertedAssets removeAllObjects];
-	    midnight = [assetDate laterMidnight];
-	    
-	  }
+              NSArray *assets = [insertedAssets copy];
+              onProgressBlock(assets);
+              [insertedAssets removeAllObjects];
+              midnight = [assetDate laterMidnight];
+              
+            }
+            
+          } else {
 	  
-	} else {
-	  
-	  midnight = [assetDate laterMidnight];
-	  
-	}
+            midnight = [assetDate laterMidnight];
+            
+          }
 	
-	[insertedAssets addObject:result];
+          [insertedAssets addObject:result];
 	
         }
         
         if (index == [allAssets count] - 1) {
 
-	NSArray *assets = [insertedAssets copy];
-	onProgressBlock(assets);
-	[insertedAssets removeAllObjects];
-
+          NSArray *assets = [insertedAssets copy];
+          onProgressBlock(assets);
+          [insertedAssets removeAllObjects];
+          
         }
         
       }];

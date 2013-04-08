@@ -54,8 +54,9 @@
         <relationship name="file" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="WAFile" inverseName="caches" inverseEntity="WAFile" syncable="YES"/>
         <relationship name="pageElement" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="WAFilePageElement" inverseName="cache" inverseEntity="WAFilePageElement" syncable="YES"/>
     </entity>
-    <entity name="WACheckins" syncable="YES">
+    <entity name="WACheckin" representedClassName="WACheckin" syncable="YES">
         <attribute name="createDate" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="identifier" optional="YES" attributeType="String" indexed="YES" syncable="YES"/>
         <attribute name="message" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="taggedUsers" optional="YES" attributeType="String" syncable="YES"/>
@@ -324,6 +325,6 @@
         <element name="WATagGroup" positionX="0" positionY="0" width="128" height="90"/>
         <element name="WAUser" positionX="0" positionY="0" width="128" height="210"/>
         <element name="WAWebpageDay" positionX="160" positionY="192" width="128" height="75"/>
-        <element name="WACheckins" positionX="160" positionY="192" width="128" height="105"/>
+        <element name="WACheckin" positionX="160" positionY="192" width="128" height="120"/>
     </elements>
 </model>
