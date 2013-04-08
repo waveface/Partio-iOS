@@ -10,4 +10,6 @@
 
 @interface WAPhotoHighlightsViewController : UITableViewController
 
+- (id) init;
+
 @end
