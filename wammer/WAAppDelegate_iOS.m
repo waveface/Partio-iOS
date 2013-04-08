@@ -30,6 +30,7 @@
 #import "WAUserInfoViewController.h"
 #import "WAOverlayBezel.h"
 
+#import "WASharedEventViewController.h"
 #import "WAPhotoHighlightsViewController.h"
 #import "WAPartioFirstUseViewController.h"
 
@@ -459,6 +460,7 @@ extern CFAbsoluteTime StartTime;
 //  viewDeckController.delegate = self.slidingMenu;
 //  viewDeckController.centerhiddenInteractivity = IIViewDeckCenterHiddenNotUserInteractiveWithTapToClose;
   
+  __weak WAAppDelegate_iOS *wSelf = self;
   
   if (![FBSession activeSession].isOpen) {
     [[self class] backgroundLoginWithFacebookIDWithCompleteHandler:^(NSError *error) {
@@ -468,8 +470,12 @@ extern CFAbsoluteTime StartTime;
         
       } else {
 
-        WAPhotoHighlightsViewController *highlightVC = [[WAPhotoHighlightsViewController alloc] init];
-        self.window.rootViewController = highlightVC;
+//        WAPhotoHighlightsViewController *highlightVC = [[WAPhotoHighlightsViewController alloc] init];
+//        self.window.rootViewController = highlightVC;
+
+        
+    WASharedEventViewController *sharedEventsVC = [[WASharedEventViewController alloc] initWithStyle:UITableViewStylePlain];
+    wSelf.window.rootViewController = sharedEventsVC;
 
       }
     

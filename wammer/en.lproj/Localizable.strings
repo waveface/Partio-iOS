@@ -260,6 +260,9 @@
 /* Event description for photo information only */
 "EVENT_DESCRIPTION_PHOTOS_ONLY" = "%d photos in this event.";
 
+/* EVENT_ONE_PHOTO_NUMBER_LABEL */
+"EVENT_ONE_PHOTO_NUMBER_LABEL" = "%d PHOTO";
+
 /* EVENT_PHOTO_NUMBER_LABEL */
 "EVENT_PHOTO_NUMBER_LABEL" = "%d PHOTOS";
 
@@ -367,6 +370,9 @@
 
 /* No comment provided by engineer. */
 "HOUR_SINGULAR" = "%d hour";
+
+/* INPUT_RECEIVER_EMAIL */
+"INPUT_RECEIVER_EMAIL" = "Input a reciever email";
 
 /* Title on introduction pages */
 "INTRODUCTION_TITLE" = "What is aostream?";
