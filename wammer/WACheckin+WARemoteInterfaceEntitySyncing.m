@@ -59,9 +59,9 @@
       fromRemoteKeyPath:(NSString *)aRemoteKeyPath
          toLocalKeyPath:(NSString *)aLocalKeyPath {
 
-  if ( [aLocalKeyPath isEqualToString:@"checkin_id"] )
+  if ( [aRemoteKeyPath isEqualToString:@"checkin_id"] )
     return [NSString stringWithFormat:@"%@", aValue];
-  if ( [aLocalKeyPath isEqualToString:@"tagged_uids"])
+  if ( [aRemoteKeyPath isEqualToString:@"tagged_uids"])
     return [[NSString alloc] initWithData:[NSJSONSerialization dataWithJSONObject:(NSArray*)aValue options:0 error:nil] encoding:NSUTF8StringEncoding];
 
   
