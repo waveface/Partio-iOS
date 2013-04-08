@@ -126,6 +126,96 @@ static NSString *const kTrackingId = @"UA-27817516-8";
 @synthesize window = _window;
 @synthesize alreadyRequestingAuthentication;
 
++ (void) backgroundLoginWithFacebookIDWithCompleteHandler:(void(^)(NSError *error))completionHandler {
+  
+  WAOverlayBezel *busyBezel = [WAOverlayBezel bezelWithStyle:WAActivityIndicatorBezelStyle];
+  [busyBezel showWithAnimation:WAOverlayBezelAnimationFade];
+  
+  // http://stackoverflow.com/questions/12601191/facebook-sdk-3-1-error-validating-access-token
+  // This should and will be fixed from FB SDK
+  
+  ACAccountStore *accountStore;
+  ACAccountType *accountTypeFB;
+  if ((accountStore = [[ACAccountStore alloc] init]) &&
+      (accountTypeFB = [accountStore accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierFacebook] ) ){
+    
+    NSArray *fbAccounts = [accountStore accountsWithAccountType:accountTypeFB];
+    id account;
+    if (fbAccounts && [fbAccounts count] > 0 &&
+        (account = [fbAccounts objectAtIndex:0])){
+      
+      [accountStore renewCredentialsForAccount:account completion:^(ACAccountCredentialRenewResult renewResult, NSError *error) {
+        //we don't actually need to inspect renewResult or error.
+        if (error){
+          
+        }
+      }];
+    }
+  }
+
+  
+  [FBSession
+   openActiveSessionWithReadPermissions:@[@"email", @"user_photos", @"user_videos", @"user_notes", @"user_status", @"user_likes", @"read_stream", @"friends_photos", @"friends_videos", @"friends_status", @"friends_notes", @"friends_likes"]
+   allowLoginUI:YES
+   completionHandler:^(FBSession *session, FBSessionState status, NSError *error) {
+     
+     if (error) {
+       
+       NSLog(@"Facebook auth error: %@", error);
+       dispatch_async(dispatch_get_main_queue(), ^{
+         
+         [busyBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
+         if (completionHandler)
+           completionHandler(error);
+         
+       });
+       
+       return;
+     }
+     
+     [[WARemoteInterface sharedInterface]
+      signupUserWithFacebookToken:session.accessTokenData.accessToken
+      withOptions:nil
+      onSuccess:^(NSString *token, NSDictionary *userRep, NSArray *groupReps) {
+        
+        WARemoteInterface * const ri = [WARemoteInterface sharedInterface];
+
+        NSString *userID = [userRep valueForKeyPath:@"user_id"];
+        
+        NSString *primaryGroupID = [[[groupReps filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary *bindings) {
+          
+          return [[evaluatedObject valueForKeyPath:@"creator_id"] isEqual:userID];
+          
+        }]] lastObject] valueForKeyPath:@"group_id"];
+        
+
+        ri.userIdentifier = userID;
+        ri.userToken = token;
+        ri.primaryGroupIdentifier = primaryGroupID;
+
+        dispatch_async(dispatch_get_main_queue(), ^{
+          if (completionHandler)
+            completionHandler(nil);
+        });
+        
+        
+      } onFailure:^(NSError *error) {
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+          
+          [busyBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
+          
+          if (completionHandler)
+            completionHandler(error);
+          
+        });
+        
+      }];
+     
+   }];
+
+}
+
 - (void) bootstrap {
   
   [super bootstrap];
@@ -201,8 +291,9 @@ extern CFAbsoluteTime StartTime;
     
     [self recreateViewHierarchy];
     
-//  } else if (![self hasAuthenticationData]) {
-//    
+  } else if (![self hasAuthenticationData]) {
+  
+    [self handlePartioAuthRequest];
 //    [self applicationRootViewControllerDidRequestReauthentication:nil];
     
   } else {
@@ -368,20 +459,28 @@ extern CFAbsoluteTime StartTime;
 //  viewDeckController.delegate = self.slidingMenu;
 //  viewDeckController.centerhiddenInteractivity = IIViewDeckCenterHiddenNotUserInteractiveWithTapToClose;
   
-
-  __weak WAAppDelegate_iOS *wSelf = self;
-  WAPartioFirstUseViewController *partioFirstUse = [WAPartioFirstUseViewController firstUseViewControllerWithCompletionBlock:^{
-    UIViewController *rootVC = self.window.rootViewController;
+  
+  if (![FBSession activeSession].isOpen) {
+    [[self class] backgroundLoginWithFacebookIDWithCompleteHandler:^(NSError *error) {
     
-    [rootVC zapModal];
+      if (error) {
+        NSLog(@"failed to login facebook for error: %@", error);
+        
+      } else {
 
-    WAPhotoHighlightsViewController *photoGroupsVC = [[WAPhotoHighlightsViewController alloc] initWithStyle:UITableViewStylePlain];
-    wSelf.window.rootViewController = photoGroupsVC;
+        WAPhotoHighlightsViewController *highlightVC = [[WAPhotoHighlightsViewController alloc] init];
+        self.window.rootViewController = highlightVC;
 
-  } failure:^(NSError *error) {
-    NSLog(@"fail to sign up for error: %@", error);
-  }];
-  self.window.rootViewController = partioFirstUse;
+      }
+    
+    }];
+  } else {
+    
+    WAPhotoHighlightsViewController *highlightVC = [[WAPhotoHighlightsViewController alloc] init];
+    self.window.rootViewController = highlightVC;
+    
+  }
+  
   
   UIViewController *vc = self.window.rootViewController;
   
@@ -691,6 +790,38 @@ extern CFAbsoluteTime StartTime;
   
   return YES;
   
+}
+
+- (void) handlePartioAuthRequest {
+
+  __weak WAAppDelegate_iOS *wSelf = self;
+  __block WAPartioFirstUseViewController *partioFirstUse = [WAPartioFirstUseViewController firstUseViewControllerWithCompletionBlock:^{
+
+    WARemoteInterface *ri = [WARemoteInterface sharedInterface];
+    if (ri.userToken) {
+      [wSelf updateCurrentCredentialsWithUserIdentifier:ri.userIdentifier token:ri.userToken primaryGroup:ri.primaryGroupIdentifier];
+      [wSelf bootstrapPersistentStoreWithUserIdentifier:ri.userIdentifier];
+    }
+    [partioFirstUse popToRootViewControllerAnimated:NO];
+    
+    [partioFirstUse dismissViewControllerAnimated:NO completion:^{
+      wSelf.window.rootViewController = nil;
+      [wSelf recreateViewHierarchy];
+    }];
+    
+    WAPhotoHighlightsViewController *photoGroupsVC = [[WAPhotoHighlightsViewController alloc] init];
+    wSelf.window.rootViewController = photoGroupsVC;
+    
+  } failure:^(NSError *error) {
+    NSLog(@"fail to sign up for error: %@", error);
+    IRAction *okAction = [IRAction actionWithTitle:NSLocalizedString(@"ACTION_OKAY", @"Alert Dismissal Action") block:nil];
+    
+    IRAlertView *alertView = [IRAlertView alertViewWithTitle:nil message:@"Login failed" cancelAction:okAction otherActions:nil];
+    [alertView show];
+
+  }];
+  self.window.rootViewController = partioFirstUse;
+
 }
 
 - (void) handleAuthRequest:(NSString *)reason withOptions:(NSDictionary *)options completion:(void(^)(BOOL didFinish, NSError *error))block {
