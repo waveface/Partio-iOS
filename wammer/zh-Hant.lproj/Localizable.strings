@@ -566,6 +566,12 @@
 /* Title of Canlendar */
 "TITLE_CALENDAR" = "月曆";
 
+/* Title of the day photo picker view */
+"TITLE_OF_DAY_PHOTO_PICKER" = "挑選照片";
+
+/* The title of highlight view */
+"TITLE_OF_HIGHLIGHTS" = "小確性";
+
 /* Alert on no location service enabled when open photo library */
 "TURN_ON_LOCATION_SERVICE" = "aostream 須開啟定位服務才能存取相簿的內容";
 
