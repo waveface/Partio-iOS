@@ -305,9 +305,6 @@ extern CFAbsoluteTime StartTime;
     if (lastAuthenticatedUserIdentifier)
       [self bootstrapPersistentStoreWithUserIdentifier:lastAuthenticatedUserIdentifier];
     
-//    self.fetchManager = [[WAFetchManager alloc] init];
-//    self.syncManager = [[WASyncManager alloc] init];
-    
     [self recreateViewHierarchy];
     
   }
@@ -470,21 +467,22 @@ extern CFAbsoluteTime StartTime;
         NSLog(@"failed to login facebook for error: %@", error);
         
       } else {
-
-//        WAPhotoHighlightsViewController *highlightVC = [[WAPhotoHighlightsViewController alloc] init];
-//        self.window.rootViewController = highlightVC;
-
         
         WASharedEventViewController *sharedEventsVC = [[WASharedEventViewController alloc] initWithStyle:UITableViewStylePlain];
-        wSelf.window.rootViewController = sharedEventsVC;
+        UINavigationController *navVC = [[UINavigationController alloc] initWithRootViewController:sharedEventsVC];
+        wSelf.window.rootViewController = navVC;
 
+        wSelf.fetchManager = [[WAFetchManager alloc] init];
+        wSelf.syncManager = [[WASyncManager alloc] init];
+ 
       }
     
     }];
   } else {
 
     WASharedEventViewController *sharedEventsVC = [[WASharedEventViewController alloc] initWithStyle:UITableViewStylePlain];
-    wSelf.window.rootViewController = sharedEventsVC;
+    UINavigationController *navVC = [[UINavigationController alloc] initWithRootViewController:sharedEventsVC];
+    wSelf.window.rootViewController = navVC;
         
   }
   

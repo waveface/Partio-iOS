@@ -50,6 +50,7 @@
     __weak WADayPhotoPickerViewController *wSelf = self;
     UIBarButtonItem *buttonItem = [[UIBarButtonItem alloc] initWithTitle:@"Create" style:UIBarButtonItemStyleBordered handler:^(id sender) {
       WAPhotoTimelineViewController *photoTimeline = [[WAPhotoTimelineViewController alloc] initWithAssets:wSelf.selectedAssets];
+      
       [wSelf.navigationController pushViewController:photoTimeline animated:YES];
     }];
 
@@ -61,6 +62,7 @@
   [self.collectionView registerNib:[UINib nibWithNibName:@"WADayPhotoPickerSectionHeaderView" bundle:nil] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"WADayPhotoPickerSectionHeaderView"];
 }
 - (void) viewDidAppear:(BOOL)animated {
+  
   [super viewDidAppear:animated];
 
   __weak WADayPhotoPickerViewController *wSelf = self;

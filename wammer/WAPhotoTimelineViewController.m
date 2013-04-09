@@ -10,32 +10,44 @@
 #import "WAPhotoTimelineNavigationBar.h"
 #import "WAPhotoTimelineCover.h"
 #import "WAPhotoTimelineLayout.h"
-#import "WAPhotoCollageCell.h"
-#import "WAAssetsLibraryManager.h"
 #import "WATimelineIndexView.h"
+
+#import "WAPhotoCollageCell.h"
+#import "WADefines.h"
+
+#import "WAAssetsLibraryManager.h"
 #import "WAArticle.h"
 #import "WADataStore.h"
-#import "WAContactPickerViewController.h"
-#import <CoreLocation/CoreLocation.h>
-#import "WAGeoLocation.h"
+#import "WAFile.h"
 #import "WAFile+LazyImages.h"
-#import <GoogleMaps/GoogleMaps.h>
+#import "WAFileExif.h"
+#import "WAFileExif+WAAdditions.h"
 
+#import "WAContactPickerViewController.h"
+#import "WAGeoLocation.h"
+#import <CoreLocation/CoreLocation.h>
+#import <GoogleMaps/GoogleMaps.h>
+#import <MobileCoreServices/MobileCoreServices.h>
+
+#import "WARemoteInterface.h"
 
 @interface WAPhotoTimelineViewController () <UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UIScrollViewDelegate>
 
-@property (nonatomic, strong) WAArticle *representingArticle;
 @property (nonatomic, strong) WAPhotoTimelineCover *headerView;
 @property (nonatomic, strong) WAPhotoTimelineNavigationBar *navigationBar;
 @property (nonatomic, weak) IBOutlet UICollectionView *collectionView;
 @property (nonatomic, weak) IBOutlet WATimelineIndexView *indexView;
+
+@property (nonatomic, strong) NSManagedObjectContext *managedObjectContext;
+@property (nonatomic, strong) NSOperationQueue *imageDisplayQueue;
+
+@property (nonatomic, strong) WAArticle *representingArticle;
 @property (nonatomic, strong) NSArray *allAssets;
+@property (nonatomic, strong) NSArray *importedImageIDArray;
 @property (nonatomic, strong) WAGeoLocation *geoLocation;
 @property (nonatomic, strong) NSDate *eventDate;
 @property (nonatomic, strong) NSDate *beginDate;
 @property (nonatomic, strong) NSDate *endDate;
-@property (nonatomic, strong) NSManagedObjectContext *managedObjectContext;
-@property (nonatomic, strong) NSOperationQueue *imageDisplayQueue;
 @property (nonatomic, readonly) CLLocationCoordinate2D coordinate;
 
 @end
@@ -81,11 +93,11 @@
   self.imageDisplayQueue = [[NSOperationQueue alloc] init];
   self.imageDisplayQueue.maxConcurrentOperationCount = 1;
   
-  UIImage *backImage = [UIImage imageNamed:@"back"];
-  UIButton *backButton = [[UIButton alloc] initWithFrame:(CGRect){CGPointZero, backImage.size}];
-  [backButton addTarget:self action:@selector(backButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
-  [backButton setImage:backImage forState:UIControlStateNormal];
-  UIBarButtonItem *backItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];
+//  UIImage *backImage = [UIImage imageNamed:@"back"];
+//  UIButton *backButton = [[UIButton alloc] initWithFrame:(CGRect){CGPointZero, backImage.size}];
+//  [backButton addTarget:self action:@selector(backButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+//  [backButton setImage:backImage forState:UIControlStateNormal];
+//  UIBarButtonItem *backItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];
   
   UIImage *actionImage = [UIImage imageNamed:@"action"];
   UIButton *actionButton = [[UIButton alloc] initWithFrame:(CGRect){CGPointZero, actionImage.size}];
@@ -93,7 +105,7 @@
   [actionButton setImage:actionImage forState:UIControlStateNormal];
   UIBarButtonItem *actionItem = [[UIBarButtonItem alloc] initWithCustomView:actionButton];
   
-  self.navigationItem.leftBarButtonItem = backItem;
+//  self.navigationItem.leftBarButtonItem = backItem;
   self.navigationItem.rightBarButtonItem = actionItem;
   
   self.navigationBar = [[WAPhotoTimelineNavigationBar alloc] initWithFrame:(CGRect)CGRectMake(0, 0, self.view.frame.size.width, 44)];
@@ -131,12 +143,115 @@
 
   [self.indexView addIndex:0.01 label:[formatter stringFromDate:self.beginDate]];
   [self.indexView addIndex:0.99 label:[formatter stringFromDate:self.endDate]];
+  
+  
+  if ([WARemoteInterface sharedInterface].userToken) {
+    [self startImportSelectedPhotos];
+  }
 }
 
 - (BOOL) shouldAutorotate {
 
   return YES;
 
+}
+
++ (NSOperationQueue *)sharedImportPhotoOperationQueue {
+  
+  static NSOperationQueue *opq = nil;
+  
+  static dispatch_once_t onceToken;
+  dispatch_once(&onceToken, ^{
+    opq = [[NSOperationQueue alloc] init];
+    opq.maxConcurrentOperationCount = 1;
+  });
+  
+  return opq;
+}
+
+- (void) startImportSelectedPhotos {
+  
+  __weak WAPhotoTimelineViewController *wSelf = self;
+  NSBlockOperation *op = [NSBlockOperation blockOperationWithBlock:^{
+    NSDate *importTime = [NSDate date];
+    
+    NSManagedObjectContext *moc = [[WADataStore defaultStore] disposableMOC];
+    WAArticle *article = [WAArticle objectInsertingIntoContext:moc withRemoteDictionary:@{}];
+    NSMutableArray *imageArray = [NSMutableArray arrayWithCapacity:wSelf.allAssets.count];
+
+    for (ALAsset *asset in self.allAssets) {
+      @autoreleasepool {
+
+        NSFetchRequest *fr = [[NSFetchRequest alloc] initWithEntityName:@"WAFile"];
+        fr.predicate = [NSPredicate predicateWithFormat:@"assetURL = %@", [[[asset defaultRepresentation] url] absoluteString]];
+        NSError *error = nil;
+        NSArray *result = [moc executeFetchRequest:fr error:&error];
+        if (result.count) {
+          [imageArray addObject:result[0]];
+          continue;
+        }
+      
+        WAFile *file = (WAFile *)[WAFile objectInsertingIntoContext:moc withRemoteDictionary:@{}];
+        CFUUIDRef theUUID = CFUUIDCreate(kCFAllocatorDefault);
+        if (theUUID)
+          file.identifier = [((__bridge_transfer NSString *)CFUUIDCreateString(kCFAllocatorDefault, theUUID)) lowercaseString];
+        CFRelease(theUUID);
+        file.dirty = (id)kCFBooleanTrue;
+        
+        [[article mutableOrderedSetValueForKey:@"files"] addObject:file];
+        
+        UIImage *extraSmallThumbnailImage = [UIImage imageWithCGImage:[asset thumbnail]];
+        file.extraSmallThumbnailFilePath = [[[WADataStore defaultStore] persistentFileURLForData:UIImageJPEGRepresentation(extraSmallThumbnailImage, 0.85f) extension:@"jpeg"] path];
+        
+        file.assetURL = [[[asset defaultRepresentation] url] absoluteString];
+        file.resourceType = (NSString *)kUTTypeImage;
+        file.timestamp = [asset valueForProperty:ALAssetPropertyDate];
+        file.created = file.timestamp;
+        file.importTime = importTime;
+        
+        WAFileExif *exif = (WAFileExif *)[WAFileExif objectInsertingIntoContext:moc withRemoteDictionary:@{}];
+        NSDictionary *metadata = [[asset defaultRepresentation] metadata];
+        [exif initWithExif:metadata[@"{Exif}"] tiff:metadata[@"{TIFF}"] gps:metadata[@"{GPS}"]];
+        
+        file.exif = exif;
+        
+        [imageArray addObject:file];
+                
+        if (!article.creationDate) {
+          article.creationDate = file.timestamp;
+        } else {
+          if ([file.timestamp compare:article.creationDate] == NSOrderedDescending) {
+            article.creationDate = file.timestamp;
+          }
+        }
+        
+      }
+    }
+    
+    article.event = @NO;
+    article.draft = (id)kCFBooleanFalse;
+    CFUUIDRef theUUID = CFUUIDCreate(kCFAllocatorDefault);
+    if (theUUID)
+      article.identifier = [((__bridge_transfer NSString *)CFUUIDCreateString(kCFAllocatorDefault, theUUID)) lowercaseString];
+    CFRelease(theUUID);
+    article.dirty = (id)kCFBooleanTrue;
+    article.creationDeviceName = [UIDevice currentDevice].name;
+    
+    NSError *savingError = nil;
+    if ([moc save:&savingError]) {
+      NSMutableArray *idList = [NSMutableArray array];
+      for (WAFile *file in imageArray) {
+        [idList addObject:file.objectID];
+      }
+      wSelf.importedImageIDArray = [NSArray arrayWithArray:idList];
+    } else {
+      NSLog(@"error on creating a new import post for error: %@", savingError);
+    }
+    
+  }];
+  
+  [[[self class] sharedImportPhotoOperationQueue] addOperation:op];
+  
 }
 
 - (NSManagedObjectContext*)managedObjectContext {
@@ -160,11 +275,41 @@
 
 - (void)actionButtonClicked:(id)sender
 {
-  __weak WAPhotoTimelineViewController *wSelf = self;
-  WAContactPickerViewController *cpVC = [[WAContactPickerViewController alloc] initWithStyle:UITableViewStylePlain];
-  UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:cpVC];
-  [wSelf presentViewController:nav animated:YES completion:nil];
 
+  if (!self.importedImageIDArray || !self.importedImageIDArray.count) {
+    // importing
+  } else {
+    WAArticle *article = [WAArticle objectInsertingIntoContext:self.managedObjectContext withRemoteDictionary:@{}];
+    article.event = (id)kCFBooleanTrue;
+    article.eventType = [NSNumber numberWithInt:WAEventArticleSharedType];
+    article.draft = (id)kCFBooleanFalse;
+    CFUUIDRef theUUID = CFUUIDCreate(kCFAllocatorDefault);
+    if (theUUID)
+      article.identifier = [((__bridge_transfer NSString *)CFUUIDCreateString(kCFAllocatorDefault, theUUID)) lowercaseString];
+    CFRelease(theUUID);
+    article.dirty = (id)kCFBooleanTrue;
+    article.creationDeviceName = [UIDevice currentDevice].name;
+    article.creationDate = [NSDate date];
+    
+    for(NSManagedObjectID *objectID in self.importedImageIDArray) {
+      WAFile *file = (WAFile*)[self.managedObjectContext objectWithID:objectID];
+      if (file) {
+        [[article mutableOrderedSetValueForKey:@"files"] addObject:file];
+      } else {
+        NSLog(@"nil file: %@", objectID);
+      }
+    }
+    
+    NSError *error = nil;
+    [self.managedObjectContext save:&error];
+    if (error) {
+      NSLog(@"failed to create a sharing event for error: %@", error);
+    }
+    [self.navigationController popToRootViewControllerAnimated:NO];
+  }
+//  WAContactPickerViewController *cpVC = [[WAContactPickerViewController alloc] initWithStyle:UITableViewStylePlain];
+//  [self.navigationController pushViewController:cpVC animated:YES];
+ 
 }
 
 - (void)didReceiveMemoryWarning
