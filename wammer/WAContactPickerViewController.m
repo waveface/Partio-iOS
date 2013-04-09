@@ -39,6 +39,10 @@
 
 - (void)done
 {
+  if (self.onNextHandler) {
+    self.onNextHandler(_members);
+  }
+  
   [self dismissViewControllerAnimated:YES completion:nil];
 }
 

@@ -12,6 +12,7 @@
 @interface WAContactPickerViewController : UITableViewController <ABPeoplePickerNavigationControllerDelegate>
 
 @property (nonatomic, strong) NSMutableArray *members;
+@property (copy) void (^onNextHandler)(NSArray *selectedContacts);
 
 -(IBAction)showContactsPicker:(id)sender;
 
