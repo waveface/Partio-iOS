@@ -16,6 +16,7 @@
 
 @class IRBarButtonItem, IRBorder, IRShadow;
 
+extern void WAPartioDefaultAppearance(void);
 extern void WADefaultAppearance(void);
 
 extern void WADefaultBarButtonInitialize (void);

@@ -55,6 +55,10 @@ void WADefaultAppearance(void) {
 		
 }
 
+void WAPartioDefaultAppearance(void) {
+  [[UINavigationBar appearance] setTintColor:[UIColor blackColor]];
+}
+
 #pragma mark - Origianl appearance settings
 void WADefaultBarButtonInitialize (void) {
 
