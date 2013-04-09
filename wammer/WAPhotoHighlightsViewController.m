@@ -8,6 +8,7 @@
 
 #import "WAPhotoHighlightsViewController.h"
 #import "WAPhotoHighlightViewCell.h"
+#import "WADayPhotoPickerViewController.h"
 #import "WAAssetsLibraryManager.h"
 #import "WAOverlayBezel.h"
 #import "WAGeoLocation.h"
@@ -16,7 +17,7 @@
 #import "FBRequestConnection+WAAdditions.h"
 #import "WADataStore.h"
 #import "WACheckin.h"
-#import <MagicalRecord/MagicalRecord.h>
+#import <BlocksKit/BlocksKit.h>
 
 #define GROUPING_THRESHOLD (30 * 60)
 
@@ -46,6 +47,17 @@
   
   self.allTimeSortedAssets = @[];
   self.photoGroups = [@[] mutableCopy];
+  
+  self.title = NSLocalizedString(@"TITLE_OF_HIGHLIGHTS", @"The title of highlight view");
+  
+  if (self.navigationController) {
+    __weak WAPhotoHighlightsViewController *wSelf = self;
+    UIBarButtonItem *buttonItem = [[UIBarButtonItem alloc] initWithTitle:@"By Date" style:UIBarButtonItemStyleBordered handler:^(id sender) {
+      WADayPhotoPickerViewController *picker = [[WADayPhotoPickerViewController alloc] initWithSelectedAssets:nil];
+      [wSelf.navigationController pushViewController:picker animated:YES];
+    }];
+    self.navigationItem.rightBarButtonItem = buttonItem;
+  }
   
   self.managedObjectContext = [[WADataStore defaultStore] disposableMOC];
   
@@ -291,13 +303,15 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-  
+  /*
   WAPhotoTimelineViewController *vc = [[WAPhotoTimelineViewController alloc] initWithAssets:self.photoGroups[indexPath.row]];
   
   self.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
   self.modalPresentationStyle = UIModalPresentationCurrentContext;
   [self presentViewController:vc animated:YES completion:nil];
-  
+  */
+  WADayPhotoPickerViewController *picker = [[WADayPhotoPickerViewController alloc] initWithSelectedAssets:self.photoGroups[indexPath.row]];
+  [self.navigationController pushViewController:picker animated:YES];
 }
 
 @end

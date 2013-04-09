@@ -240,6 +240,12 @@
 		8023BAF216770D2B00E6BED2 /* pindrop@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8023BAF016770D2A00E6BED2 /* pindrop@2x.png */; };
 		802427091689E1AF002454A7 /* WACollection.m in Sources */ = {isa = PBXBuildFile; fileRef = 802427081689E1AF002454A7 /* WACollection.m */; };
 		8027264F1710078800BB1733 /* WATimelineIndexView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8027264E1710078800BB1733 /* WATimelineIndexView.m */; };
+		802835541713009A00E0A187 /* WADayPhotoPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 802835521713009A00E0A187 /* WADayPhotoPickerViewController.m */; };
+		802835551713009A00E0A187 /* WADayPhotoPickerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 802835531713009A00E0A187 /* WADayPhotoPickerViewController.xib */; };
+		80283557171302B900E0A187 /* WADayPhotoPickerViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 80283556171302B900E0A187 /* WADayPhotoPickerViewCell.xib */; };
+		8028355A1713037900E0A187 /* WADayPhotoPickerViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 802835591713037900E0A187 /* WADayPhotoPickerViewCell.m */; };
+		8028355D1713046100E0A187 /* WADayPhotoPickerSectionHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8028355C1713046100E0A187 /* WADayPhotoPickerSectionHeaderView.m */; };
+		8028355F1713047A00E0A187 /* WADayPhotoPickerSectionHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8028355E1713047A00E0A187 /* WADayPhotoPickerSectionHeaderView.xib */; };
 		802FFDA816DF642A00237762 /* downloadStation.png in Resources */ = {isa = PBXBuildFile; fileRef = 802FFDA516DF642A00237762 /* downloadStation.png */; };
 		802FFDA916DF642A00237762 /* Intro1.png in Resources */ = {isa = PBXBuildFile; fileRef = 802FFDA616DF642A00237762 /* Intro1.png */; };
 		802FFDAA16DF642A00237762 /* Intro2.png in Resources */ = {isa = PBXBuildFile; fileRef = 802FFDA716DF642A00237762 /* Intro2.png */; };
@@ -1231,6 +1237,15 @@
 		802427081689E1AF002454A7 /* WACollection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WACollection.m; sourceTree = "<group>"; };
 		8027264D1710078800BB1733 /* WATimelineIndexView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WATimelineIndexView.h; path = wammer/WATimelineIndexView.h; sourceTree = "<group>"; };
 		8027264E1710078800BB1733 /* WATimelineIndexView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WATimelineIndexView.m; path = wammer/WATimelineIndexView.m; sourceTree = "<group>"; };
+		802835511713009A00E0A187 /* WADayPhotoPickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WADayPhotoPickerViewController.h; path = wammer/WADayPhotoPickerViewController.h; sourceTree = "<group>"; };
+		802835521713009A00E0A187 /* WADayPhotoPickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WADayPhotoPickerViewController.m; path = wammer/WADayPhotoPickerViewController.m; sourceTree = "<group>"; };
+		802835531713009A00E0A187 /* WADayPhotoPickerViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = WADayPhotoPickerViewController.xib; path = wammer/WADayPhotoPickerViewController.xib; sourceTree = "<group>"; };
+		80283556171302B900E0A187 /* WADayPhotoPickerViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = WADayPhotoPickerViewCell.xib; path = wammer/WADayPhotoPickerViewCell.xib; sourceTree = "<group>"; };
+		802835581713037900E0A187 /* WADayPhotoPickerViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WADayPhotoPickerViewCell.h; path = wammer/WADayPhotoPickerViewCell.h; sourceTree = "<group>"; };
+		802835591713037900E0A187 /* WADayPhotoPickerViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WADayPhotoPickerViewCell.m; path = wammer/WADayPhotoPickerViewCell.m; sourceTree = "<group>"; };
+		8028355B1713046100E0A187 /* WADayPhotoPickerSectionHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WADayPhotoPickerSectionHeaderView.h; path = wammer/WADayPhotoPickerSectionHeaderView.h; sourceTree = "<group>"; };
+		8028355C1713046100E0A187 /* WADayPhotoPickerSectionHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WADayPhotoPickerSectionHeaderView.m; path = wammer/WADayPhotoPickerSectionHeaderView.m; sourceTree = "<group>"; };
+		8028355E1713047A00E0A187 /* WADayPhotoPickerSectionHeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = WADayPhotoPickerSectionHeaderView.xib; path = wammer/WADayPhotoPickerSectionHeaderView.xib; sourceTree = "<group>"; };
 		802FFDA516DF642A00237762 /* downloadStation.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = downloadStation.png; path = Resources/downloadStation.png; sourceTree = "<group>"; };
 		802FFDA616DF642A00237762 /* Intro1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Intro1.png; path = Resources/Intro1.png; sourceTree = "<group>"; };
 		802FFDA716DF642A00237762 /* Intro2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Intro2.png; path = Resources/Intro2.png; sourceTree = "<group>"; };
@@ -2522,7 +2537,7 @@
 			name = "Event View";
 			sourceTree = "<group>";
 		};
-		80B1137D170DD08D0087EBC4 /* Photo Groups */ = {
+		80B1137D170DD08D0087EBC4 /* Photo Highlights */ = {
 			isa = PBXGroup;
 			children = (
 				80090B45170E8BBF005AF6B8 /* WAGeoLocation.h */,
@@ -2535,8 +2550,17 @@
 				80B11390170DD1280087EBC4 /* WAPhotoHighlightViewCell.xib */,
 				80B11392170DD1450087EBC4 /* WAPhotoHighlightViewCell.h */,
 				80B11393170DD1450087EBC4 /* WAPhotoHighlightViewCell.m */,
+				802835511713009A00E0A187 /* WADayPhotoPickerViewController.h */,
+				802835521713009A00E0A187 /* WADayPhotoPickerViewController.m */,
+				8028355B1713046100E0A187 /* WADayPhotoPickerSectionHeaderView.h */,
+				8028355C1713046100E0A187 /* WADayPhotoPickerSectionHeaderView.m */,
+				8028355E1713047A00E0A187 /* WADayPhotoPickerSectionHeaderView.xib */,
+				802835581713037900E0A187 /* WADayPhotoPickerViewCell.h */,
+				802835591713037900E0A187 /* WADayPhotoPickerViewCell.m */,
+				80283556171302B900E0A187 /* WADayPhotoPickerViewCell.xib */,
+				802835531713009A00E0A187 /* WADayPhotoPickerViewController.xib */,
 			);
-			name = "Photo Groups";
+			name = "Photo Highlights";
 			sourceTree = "<group>";
 		};
 		80C768DC17105683000F10A8 /* Partio Welcome */ = {
@@ -2885,7 +2909,7 @@
 				80C768DC17105683000F10A8 /* Partio Welcome */,
 				80090B48170EC74A005AF6B8 /* New Event View */,
 				DE67A4B11712BA7800099106 /* Shared Events */,
-				80B1137D170DD08D0087EBC4 /* Photo Groups */,
+				80B1137D170DD08D0087EBC4 /* Photo Highlights */,
 				DE7B38A0165CBB9900718262 /* Calendar Picker */,
 				7D0CDD04162E5A080027D35F /* StreamTests */,
 				4B8CA96F14BBE7BA006E06BB /* UnitTests */,
@@ -4231,6 +4255,9 @@
 				DE67A4C01712BB7700099106 /* WAContactPickerViewController.xib in Resources */,
 				DE67A4C51712BB9300099106 /* WASharedEventViewController.xib in Resources */,
 				DE67A4C71712BE4100099106 /* WAPhotoCollageCell_Stack1.xib in Resources */,
+				802835551713009A00E0A187 /* WADayPhotoPickerViewController.xib in Resources */,
+				80283557171302B900E0A187 /* WADayPhotoPickerViewCell.xib in Resources */,
+				8028355F1713047A00E0A187 /* WADayPhotoPickerSectionHeaderView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4730,6 +4757,9 @@
 				80C768F21711BBF4000F10A8 /* WACheckin+WARemoteInterfaceEntitySyncing.m in Sources */,
 				DE67A4BF1712BB7700099106 /* WAContactPickerViewController.m in Sources */,
 				DE67A4C41712BB9300099106 /* WASharedEventViewController.m in Sources */,
+				802835541713009A00E0A187 /* WADayPhotoPickerViewController.m in Sources */,
+				8028355A1713037900E0A187 /* WADayPhotoPickerViewCell.m in Sources */,
+				8028355D1713046100E0A187 /* WADayPhotoPickerSectionHeaderView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -13,24 +13,29 @@
 #import "WAPhotoCollageCell.h"
 #import "WAAssetsLibraryManager.h"
 #import "WATimelineIndexView.h"
+#import "WAArticle.h"
+#import "WADataStore.h"
 #import "WAContactPickerViewController.h"
 #import <CoreLocation/CoreLocation.h>
 #import "WAGeoLocation.h"
+#import "WAFile+LazyImages.h"
 #import <GoogleMaps/GoogleMaps.h>
 
 
 @interface WAPhotoTimelineViewController () <UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UIScrollViewDelegate>
 
+@property (nonatomic, strong) WAArticle *representingArticle;
 @property (nonatomic, strong) WAPhotoTimelineCover *headerView;
 @property (nonatomic, strong) WAPhotoTimelineNavigationBar *navigationBar;
 @property (nonatomic, weak) IBOutlet UICollectionView *collectionView;
 @property (nonatomic, weak) IBOutlet WATimelineIndexView *indexView;
-@property (nonatomic, strong) NSOperationQueue *imageDisplayQueue;
 @property (nonatomic, strong) NSArray *allAssets;
 @property (nonatomic, strong) WAGeoLocation *geoLocation;
 @property (nonatomic, strong) NSDate *eventDate;
 @property (nonatomic, strong) NSDate *beginDate;
 @property (nonatomic, strong) NSDate *endDate;
+@property (nonatomic, strong) NSManagedObjectContext *managedObjectContext;
+@property (nonatomic, strong) NSOperationQueue *imageDisplayQueue;
 @property (nonatomic, readonly) CLLocationCoordinate2D coordinate;
 
 @end
@@ -45,12 +50,24 @@
   if (self) {
     NSMutableArray *array = [NSMutableArray arrayWithCapacity:assets.count];
     NSEnumerator *enumerator = [assets reverseObjectEnumerator];
-    for (id element in enumerator) {
+    for (ALAsset *element in enumerator) {
       [array addObject:element];
     }
     self.allAssets = [NSArray arrayWithArray:array];
+    
     _coordinate.latitude = 0;
     _coordinate.longitude = 0;
+  }
+  return self;
+}
+
+- (id) initWithArticleID:(NSManagedObjectID *)articleID {
+  self = [super initWithNibName:@"WAPhotoTimelineViewController" bundle:nil];
+  if (self) {
+    
+    self.representingArticle = (WAArticle*)[self.managedObjectContext objectWithID:articleID];
+    self.allAssets = @[];
+
   }
   return self;
 }
@@ -122,6 +139,15 @@
 
 }
 
+- (NSManagedObjectContext*)managedObjectContext {
+  if (_managedObjectContext)
+    return _managedObjectContext;
+  
+  _managedObjectContext = [[WADataStore defaultStore] disposableMOC];
+  return _managedObjectContext;
+  
+}
+
 - (NSUInteger) supportedInterfaceOrientations {
   
   return UIInterfaceOrientationMaskPortrait;
@@ -151,15 +177,20 @@
   
   if (_coordinate.latitude!=0 && _coordinate.longitude!=0)
     return _coordinate;
-  
-  for (ALAsset *asset in self.allAssets) {
-    NSDictionary *meta = [asset defaultRepresentation].metadata;
-    if (meta) {
-      NSDictionary *gps = meta[@"{GPS}"];
-      if (gps) {
-        _coordinate.latitude = [(NSNumber*)[gps valueForKey:@"Latitude"] doubleValue];
-        _coordinate.longitude = [(NSNumber*)[gps valueForKey:@"Longitude"] doubleValue];
-        break;
+
+  if (self.representingArticle) {
+    _coordinate.latitude = [self.representingArticle.location.latitude floatValue];
+    _coordinate.longitude = [self.representingArticle.location.longitude floatValue];
+  } else {
+    for (ALAsset *asset in self.allAssets) {
+      NSDictionary *meta = [asset defaultRepresentation].metadata;
+      if (meta) {
+        NSDictionary *gps = meta[@"{GPS}"];
+        if (gps) {
+          _coordinate.latitude = [(NSNumber*)[gps valueForKey:@"Latitude"] doubleValue];
+          _coordinate.longitude = [(NSNumber*)[gps valueForKey:@"Longitude"] doubleValue];
+          break;
+        }
       }
     }
   }
@@ -170,8 +201,11 @@
   
   if (_eventDate)
     return _eventDate;
-  
-  _eventDate = [self.allAssets[0] valueForProperty:ALAssetPropertyDate];
+
+  if (self.representingArticle)
+    _eventDate = self.representingArticle.eventStartDate;
+  else
+    _eventDate = [self.allAssets[0] valueForProperty:ALAssetPropertyDate];
   return _eventDate;
   
 }
@@ -179,8 +213,11 @@
 - (NSDate *) beginDate {
   if (_beginDate)
     return _beginDate;
-  
-  _beginDate = [self.allAssets[0] valueForProperty:ALAssetPropertyDate];
+ 
+  if (self.representingArticle)
+    _beginDate = self.representingArticle.eventStartDate;
+  else
+    _beginDate = [self.allAssets[0] valueForProperty:ALAssetPropertyDate];
   return _beginDate;
 }
 
@@ -188,7 +225,10 @@
   if (_endDate)
     return _endDate;
   
-  _endDate = [self.allAssets.lastObject valueForProperty:ALAssetPropertyDate];
+  if (self.representingArticle)
+    _endDate = self.representingArticle.eventEndDate;
+  else
+    _endDate = [self.allAssets.lastObject valueForProperty:ALAssetPropertyDate];
   return _endDate;
 }
 
@@ -199,8 +239,11 @@
 
 - (NSInteger) collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
   
-  NSUInteger totalItem = (self.allAssets.count / 10) * 4;
-  NSUInteger mod = self.allAssets.count % 10;
+  NSUInteger numOfPhotos = self.allAssets.count;
+  if (self.representingArticle)
+    numOfPhotos = self.representingArticle.files.count;
+  NSUInteger totalItem = (numOfPhotos / 10) * 4;
+  NSUInteger mod = numOfPhotos % 10;
   if (mod == 0)
     return totalItem;
   else if (mod < 4)
@@ -216,6 +259,10 @@
 
 - (UICollectionViewCell*)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
   
+  NSUInteger totalNumber = self.allAssets.count;
+  if (self.representingArticle)
+    totalNumber = self.representingArticle.files.count;
+
   NSUInteger numOfPhotos = 4 - (indexPath.row % 4);
   NSString *identifier = [NSString stringWithFormat:@"CollectionItemCell%d", numOfPhotos];
   
@@ -238,18 +285,28 @@
   }
   
   __weak WAPhotoTimelineViewController *wSelf = self;
-  for (NSUInteger i = 0; i < numOfPhotos && ((base+i)<self.allAssets.count); i++) {
+  for (NSUInteger i = 0; i < numOfPhotos && ((base+i)<totalNumber); i++) {
     
-    NSBlockOperation *op = [NSBlockOperation blockOperationWithBlock:^{
-      ALAsset *asset = wSelf.allAssets[base+i];
-      UIImage *image = [UIImage imageWithCGImage:[asset thumbnail]];
-      
+    if (self.representingArticle) {
+     
+      UIImage *image = [(WAFile*)(self.representingArticle.files[base+i]) thumbnailImage];
       [[NSOperationQueue mainQueue] addOperationWithBlock:^{
         ((UIImageView *)cell.imageViews[i]).image = image;
       }];
-    }];
+      
+    } else {
+      NSBlockOperation *op = [NSBlockOperation blockOperationWithBlock:^{
+      
+        ALAsset *asset = wSelf.allAssets[base+i];
+        UIImage *image = [UIImage imageWithCGImage:asset.thumbnail];
+        
+        [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+          ((UIImageView *)cell.imageViews[i]).image = image;
+        }];
+      }];
     
-    [self.imageDisplayQueue addOperation:op];
+      [self.imageDisplayQueue addOperation:op];
+    }
   }
   
   return cell;
@@ -261,17 +318,27 @@
         
     WAPhotoTimelineCover *cover = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"PhotoTimelineCover" forIndexPath:indexPath];
     
-    ALAsset *coverAsset = self.allAssets[(NSInteger)(self.allAssets.count/3)];
-
-    NSBlockOperation *op = [NSBlockOperation blockOperationWithBlock:^{
-      UIImage *coverImage = [UIImage imageWithCGImage:[coverAsset defaultRepresentation].fullScreenImage];
-
+    if (self.representingArticle) {
+      
+      UIImage *coverImage = self.representingArticle.representingFile.thumbnailImage;
       [[NSOperationQueue mainQueue] addOperationWithBlock:^{
         cover.coverImageView.image = coverImage;
       }];
-    }];
-    
-    [self.imageDisplayQueue addOperation:op];
+      
+    } else {
+      ALAsset *coverAsset = self.allAssets[(NSInteger)(self.allAssets.count/3)];
+      
+      NSBlockOperation *op = [NSBlockOperation blockOperationWithBlock:^{
+        
+        UIImage *coverImage = [UIImage imageWithCGImage:[coverAsset defaultRepresentation].fullScreenImage];
+        
+        [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+          cover.coverImageView.image = coverImage;
+        }];
+      }];
+
+      [self.imageDisplayQueue addOperation:op];
+    }
     
     self.headerView = cover;
     

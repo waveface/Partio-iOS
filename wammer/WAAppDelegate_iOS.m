@@ -278,7 +278,8 @@ extern CFAbsoluteTime StartTime;
   
   [self bootstrap];
   
-  WADefaultAppearance();
+//  WADefaultAppearance();
+  WAPartioDefaultAppearance();
   
   self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
   self.window.backgroundColor = [UIColor colorWithRed:0.87 green:0.87 blue:0.84 alpha:1.0];
