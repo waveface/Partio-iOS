@@ -104,7 +104,8 @@
     
   } else {
     cell.imageView.image = [UIImage imageNamed:@"FacebookLogo"];
-    cell.textLabel.text = _members[indexPath.row][@"name"];
+    //TODO: first name then last name, or last name then first name by system settings
+    cell.textLabel.text = [NSString stringWithFormat:@"%@ %@", _members[indexPath.row][@"firstName"], _members[indexPath.row][@"lastName"]];
     cell.detailTextLabel.text = [NSString stringWithFormat:@"%@ %@",
                                  _members[indexPath.row][@"phone"],
                                  ([_members[indexPath.row][@"email"] count])? _members[indexPath.row][@"email"][0]: @""];
@@ -165,12 +166,17 @@
   NSString *lastname = (__bridge_transfer NSString*)ABRecordCopyValue(person, kABPersonLastNameProperty);
   NSArray *email = (__bridge_transfer NSArray*)ABMultiValueCopyArrayOfAllValues(ABRecordCopyValue(person, kABPersonEmailProperty));
   
+  //TODO: pick mobile phone numbers 
   NSString *phone = (__bridge_transfer NSString*)ABMultiValueCopyValueAtIndex(ABRecordCopyValue(person, kABPersonPhoneProperty), 0);;
   
-  NSDictionary *aPerson = @{@"name": [NSString stringWithFormat:@"%@ %@", firstname, lastname],
+  NSDictionary *aPerson = @{@"firstName": firstname,
+                            @"lastName": lastname,
                             @"email": (email)? email : @[],
-                            @"phone": (phone)? phone : @"[None]"};
-  [_members addObject:aPerson];
+                            @"phone": (phone)? phone : @"[N/A]"};
+
+  if (![_members containsObject:aPerson]) {
+    [_members addObject:aPerson];
+  }
   
 }
 
