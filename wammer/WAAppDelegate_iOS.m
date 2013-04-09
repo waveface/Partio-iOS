@@ -475,17 +475,17 @@ extern CFAbsoluteTime StartTime;
 //        self.window.rootViewController = highlightVC;
 
         
-    WASharedEventViewController *sharedEventsVC = [[WASharedEventViewController alloc] initWithStyle:UITableViewStylePlain];
-    wSelf.window.rootViewController = sharedEventsVC;
+        WASharedEventViewController *sharedEventsVC = [[WASharedEventViewController alloc] initWithStyle:UITableViewStylePlain];
+        wSelf.window.rootViewController = sharedEventsVC;
 
       }
     
     }];
   } else {
-    
-    WAPhotoHighlightsViewController *highlightVC = [[WAPhotoHighlightsViewController alloc] init];
-    self.window.rootViewController = highlightVC;
-    
+
+    WASharedEventViewController *sharedEventsVC = [[WASharedEventViewController alloc] initWithStyle:UITableViewStylePlain];
+    wSelf.window.rootViewController = sharedEventsVC;
+        
   }
   
   
