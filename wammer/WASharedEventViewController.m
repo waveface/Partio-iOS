@@ -113,7 +113,7 @@
   sharedDateFormatter = [[NSDateFormatter alloc] init];
   [sharedDateFormatter setDateFormat:@"yyyy MM dd"];
   NSString *eventDate = [sharedDateFormatter stringFromDate:[self.events[indexPath.row] eventStartDate]];
-  NSString *location = [[self.events[indexPath.row] description] substringFromIndex:3];
+  NSString *location = [self.events[indexPath.row] description];
   cell.textLabel.text = [NSString stringWithFormat:@"%@\n%@\n%@", photoNumbers, eventDate, location];
   [cell.textLabel setNumberOfLines:0];
   [cell.textLabel setBackgroundColor:[UIColor clearColor]];
