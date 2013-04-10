@@ -144,7 +144,7 @@ NSString * const WARemoteAttachmentSmallSubtype = @"small";
   stitch(fileImportTime, @"import_time");
   stitch(timezone, @"timezone");
   
-  [self.engine fireAPIRequestNamed:@"attachments/upload" withArguments:nil options:[NSDictionary dictionaryWithObjectsAndKeys:
+  [self.engine fireAPIRequestNamed:@"pio_attachments/upload" withArguments:nil options:[NSDictionary dictionaryWithObjectsAndKeys:
 								    
 								    sentRemoteOptions, kIRWebAPIEngineRequestContextFormMultipartFieldsKey,
 								    @"POST", kIRWebAPIEngineRequestHTTPMethod,
@@ -165,7 +165,7 @@ NSString * const WARemoteAttachmentSmallSubtype = @"small";
 
 - (void) retrieveAttachment:(NSString *)anIdentifier onSuccess:(void(^)(NSDictionary *attachmentRep))successBlock onFailure:(void(^)(NSError *error))failureBlock {
   
-  [self.engine fireAPIRequestNamed:@"attachments/get" withArguments:[NSDictionary dictionaryWithObjectsAndKeys:
+  [self.engine fireAPIRequestNamed:@"pio_attachments/get" withArguments:[NSDictionary dictionaryWithObjectsAndKeys:
 						         
 						         anIdentifier, @"object_id",
 						         
@@ -185,7 +185,7 @@ NSString * const WARemoteAttachmentSmallSubtype = @"small";
   NSError *error = nil;
   NSData *sentIdentifiers = [NSJSONSerialization dataWithJSONObject:identifiers options:0 error:&error];
   NSString *sentIdentifiersString = [[NSString alloc] initWithData:sentIdentifiers encoding:NSUTF8StringEncoding];
-  [self.engine fireAPIRequestNamed:@"attachments/delete" withArguments:nil options:WARemoteInterfaceEnginePostFormEncodedOptionsDictionary([NSDictionary dictionaryWithObjectsAndKeys:
+  [self.engine fireAPIRequestNamed:@"pio_attachments/delete" withArguments:nil options:WARemoteInterfaceEnginePostFormEncodedOptionsDictionary([NSDictionary dictionaryWithObjectsAndKeys:
 														
 														sentIdentifiersString, @"object_ids",
 														
@@ -201,7 +201,7 @@ NSString * const WARemoteAttachmentSmallSubtype = @"small";
 - (void) retrieveThumbnailForAttachment:(NSString *)anIdentifier ofType:(WARemoteAttachmentType)aType onSuccess:(void(^)(NSURL *aThumbnailURL))successBlock onFailure:(void(^)(NSError *error))failureBlock {
   
   NSDictionary *arguments = @{@"object_id": anIdentifier, @"image_meta":@"large"};
-  [self.engine fireAPIRequestNamed:@"attachments/view"
+  [self.engine fireAPIRequestNamed:@"pio_attachments/view"
 					 withArguments:nil
 						   options:@{kIRWebAPIEngineRequestContextFormURLEncodingFieldsKey:arguments ,kIRWebAPIEngineRequestHTTPMethod: @"POST"}
 						 validator:WARemoteInterfaceGenericNoErrorValidator()
@@ -295,7 +295,7 @@ NSString * const WARemoteAttachmentSmallSubtype = @"small";
     kIRWebAPIEngineRequestHTTPMethod:@"POST"
       };
       
-      [self.engine fireAPIRequestNamed:@"attachments/multiple_get"
+      [self.engine fireAPIRequestNamed:@"pio_attachments/multiple_get"
 		     withArguments:nil
 			 options:apiOptions
 		         validator:WARemoteInterfaceGenericNoErrorValidator()
@@ -324,7 +324,7 @@ NSString * const WARemoteAttachmentSmallSubtype = @"small";
     kIRWebAPIEngineRequestHTTPMethod:@"POST"
       };
       
-      [self.engine fireAPIRequestNamed:@"attachments/hide"
+      [self.engine fireAPIRequestNamed:@"pio_attachments/hide"
 		     withArguments:nil
 			 options:apiOptions
 		         validator:WARemoteInterfaceGenericNoErrorValidator()

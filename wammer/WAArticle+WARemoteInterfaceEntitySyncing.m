@@ -1,4 +1,4 @@
-//
+	//
 //  WAArticle+WARemoteInterfaceEntitySyncing.m
 //  wammer
 //
@@ -145,6 +145,11 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 	[returnedDictionary setValue:@NO forKey:@"event"];
   }
   
+  if ([type isEqualToString:@"partio"]) {
+    [returnedDictionary setValue:@YES forKey:@"event"];
+    [returnedDictionary setValue:@(WAEventArticleSharedType) forKey:@"eventType"];
+  }
+  
   if ([incomingRepresentation[@"event_type"] isEqualToString:@"photo"]) {
 	[returnedDictionary setValue:@(WAEventArticlePhotoType) forKey:@"eventType"];
   }
@@ -206,14 +211,14 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
     
     returnedDictionary[@"tags"] = transformedTags;
   }
-    
-  NSString *event_start_time = incomingRepresentation[@"event_start_time"];
-  if (event_start_time && [returnedDictionary[@"event"] isEqual:@YES]) {					// It is an event, we record its event day
-    
-    [returnedDictionary setValue:@{@"day" : [[NSDate dateFromISO8601String:event_start_time] dayBegin]}
-		      forKey:@"eventDay"];
-    
-  }
+  
+//  NSString *event_start_time = incomingRepresentation[@"event_start_time"];
+//  if (event_start_time && ![event_start_time isKindOfClass:[NSNull class]] &&[returnedDictionary[@"event"] isEqual:@YES]) {					// It is an event, we record its event day
+//    
+//    [returnedDictionary setValue:@{@"day" : [[NSDate dateFromISO8601String:event_start_time] dayBegin]}
+//		      forKey:@"eventDay"];
+//    
+//  }
   
   return returnedDictionary;
   
@@ -281,6 +286,7 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
   BOOL isFavorite = [self.favorite isEqualToNumber:(id)kCFBooleanTrue];
   BOOL isHidden = [self.hidden isEqualToNumber:(id)kCFBooleanTrue];
   BOOL isEvent = [self.event isEqualToNumber:(id)kCFBooleanTrue];
+  BOOL isSharedEvent = [self.eventType isEqualToNumber:[NSNumber numberWithInt:WAEventArticleSharedType]];
   
   if (!isDraft) {
     
@@ -471,7 +477,7 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
         [ri createPostInGroup:groupID
 			  withContentText:postText
 				  attachments:attachments
-						 type:isEvent?WAArticleTypeEvent:WAArticleTypeImport
+						 type:isEvent?(isSharedEvent?WAArticleTypeSharedEvent:WAArticleTypeEvent):WAArticleTypeImport
 					   postId:postID
 				   createTime:postCreationDate
 				   updateTime:postModificationDate
@@ -526,7 +532,7 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 			  withText:postText
 		   attachments:attachments
 		mainAttachment:postCoverPhotoID
-				  type:isEvent?WAArticleTypeEvent:WAArticleTypeImport
+				  type:isEvent?(isSharedEvent?WAArticleTypeSharedEvent:WAArticleTypeEvent):WAArticleTypeImport
 			  favorite:isFavorite
 				hidden:isHidden
  replacingDataWithDate:lastPostModDate

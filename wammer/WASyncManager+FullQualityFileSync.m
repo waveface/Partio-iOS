@@ -121,9 +121,9 @@
 
 - (BOOL) canPerformBlobSync {
   
-  if (![[NSUserDefaults standardUserDefaults] boolForKey:kWAPhotoImportEnabled]) {
-    return NO;
-  }
+//  if (![[NSUserDefaults standardUserDefaults] boolForKey:kWAPhotoImportEnabled]) {
+//    return NO;
+//  }
   
   WARemoteInterface * const ri = [WARemoteInterface sharedInterface];
   if (!ri.userToken) {

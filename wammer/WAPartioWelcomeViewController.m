@@ -10,6 +10,7 @@
 #import "WAPartioFirstUseViewController.h"
 #import "WAOverlayBezel.h"
 #import "WARemoteInterface.h"
+#import "UIKit+IRAdditions.h"
 #import <Accounts/Accounts.h>
 #import <FacebookSDK/FacebookSDK.h>
 
@@ -48,8 +49,15 @@
   WAPartioFirstUseViewController *firstUse = (WAPartioFirstUseViewController*)self.navigationController;
   
   if (indexPath.row == 0) {
-    if (firstUse.completionBlock)
-      firstUse.completionBlock();
+    IRAction *cancelAction = [IRAction actionWithTitle:@"OK" block:nil];
+    
+    [[IRAlertView alertViewWithTitle:@"Not support yet"
+                             message:@"Current version requires you to login with Facebook account first. 'Try' scenario will be implemented in the near future."
+                        cancelAction:cancelAction
+                        otherActions:nil] show];
+
+//    if (firstUse.completionBlock)
+//      firstUse.completionBlock();
   } else if (indexPath.row == 1) {
     
 	WAOverlayBezel *busyBezel = [WAOverlayBezel bezelWithStyle:WAActivityIndicatorBezelStyle];

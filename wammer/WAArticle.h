@@ -12,12 +12,14 @@
 
 typedef NS_ENUM(NSUInteger, WAArticleType) {
   WAArticleTypeEvent = 0,
-  WAArticleTypeImport = 1
+  WAArticleTypeImport = 1,
+  WAArticleTypeSharedEvent = 2
 };
 
 typedef NS_ENUM(NSUInteger, WAEventArticleType) {
   WAEventArticleUnknownType = 0,
   WAEventArticlePhotoType = 1,
+  WAEventArticleSharedType = 2
 };
 
 @class WAEventDay, WAFile, WAGroup, WALocation, WAPeople, WATag, WATagGroup, WAUser;

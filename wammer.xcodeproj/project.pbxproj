@@ -389,6 +389,7 @@
 		80C768EE1711B9D5000F10A8 /* WACheckin.m in Sources */ = {isa = PBXBuildFile; fileRef = 80C768ED1711B9D5000F10A8 /* WACheckin.m */; };
 		80C768F21711BBF4000F10A8 /* WACheckin+WARemoteInterfaceEntitySyncing.m in Sources */ = {isa = PBXBuildFile; fileRef = 80C768F11711BBF4000F10A8 /* WACheckin+WARemoteInterfaceEntitySyncing.m */; };
 		80C979F71649796A004F0CF4 /* EventCardBG.png in Resources */ = {isa = PBXBuildFile; fileRef = 80C979F61649796A004F0CF4 /* EventCardBG.png */; };
+		80CBC7721713FBDE0056D9CF /* partioIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 80CBC7711713FBDE0056D9CF /* partioIcon.png */; };
 		80DA984F16496FED0030CA21 /* WAEventHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 80DA984216496FED0030CA21 /* WAEventHeaderView.m */; };
 		80DA985116496FED0030CA21 /* WAEventLinkViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 80DA984516496FED0030CA21 /* WAEventLinkViewCell.m */; };
 		80DA985216496FED0030CA21 /* WAEventLinkViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 80DA984616496FED0030CA21 /* WAEventLinkViewCell.xib */; };
@@ -399,6 +400,8 @@
 		80DAA57D16BA7C2400A4E352 /* TWAPIManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 80DAA57A16BA7C2400A4E352 /* TWAPIManager.m */; };
 		80DAA57E16BA7C2400A4E352 /* TWSignedRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 80DAA57C16BA7C2400A4E352 /* TWSignedRequest.m */; };
 		80E5173C1670F3B200E1C3AD /* WALocation.m in Sources */ = {isa = PBXBuildFile; fileRef = 80E5173B1670F3B200E1C3AD /* WALocation.m */; };
+		80F2752D171410B400C49FAB /* WAPartioSignupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 80F2752C171410B400C49FAB /* WAPartioSignupViewController.m */; };
+		80F2753C171410D500C49FAB /* WAPartioSignupViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 80F2753B171410D500C49FAB /* WAPartioSignupViewController.xib */; };
 		80F42C0215F70EDF00C8A72B /* WAWebSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 809D428F15F5CE4300CB4F89 /* WAWebSocket.m */; };
 		80F5223316C0FAD8003A06D5 /* WARemoteInterface+Summary.m in Sources */ = {isa = PBXBuildFile; fileRef = 80F5223216C0FAD8003A06D5 /* WARemoteInterface+Summary.m */; };
 		80F800F615C2624C00132A96 /* IRAQ-Checkmark.png in Resources */ = {isa = PBXBuildFile; fileRef = 80F800F415C2624C00132A96 /* IRAQ-Checkmark.png */; };
@@ -1436,6 +1439,7 @@
 		80C768F01711BBF4000F10A8 /* WACheckin+WARemoteInterfaceEntitySyncing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WACheckin+WARemoteInterfaceEntitySyncing.h"; sourceTree = "<group>"; };
 		80C768F11711BBF4000F10A8 /* WACheckin+WARemoteInterfaceEntitySyncing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WACheckin+WARemoteInterfaceEntitySyncing.m"; sourceTree = "<group>"; };
 		80C979F61649796A004F0CF4 /* EventCardBG.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = EventCardBG.png; path = Resources/EventCardBG.png; sourceTree = "<group>"; };
+		80CBC7711713FBDE0056D9CF /* partioIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = partioIcon.png; path = Resources/partioIcon.png; sourceTree = "<group>"; };
 		80DA984116496FED0030CA21 /* WAEventHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WAEventHeaderView.h; path = wammer/WAEventHeaderView.h; sourceTree = "<group>"; };
 		80DA984216496FED0030CA21 /* WAEventHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WAEventHeaderView.m; path = wammer/WAEventHeaderView.m; sourceTree = "<group>"; };
 		80DA984416496FED0030CA21 /* WAEventLinkViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WAEventLinkViewCell.h; path = wammer/WAEventLinkViewCell.h; sourceTree = "<group>"; };
@@ -1455,6 +1459,9 @@
 		80DAA57C16BA7C2400A4E352 /* TWSignedRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TWSignedRequest.m; path = external/TWReverseAuth/Source/Classes/TWSignedRequest.m; sourceTree = "<group>"; };
 		80E5173A1670F3B200E1C3AD /* WALocation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WALocation.h; sourceTree = "<group>"; };
 		80E5173B1670F3B200E1C3AD /* WALocation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WALocation.m; sourceTree = "<group>"; };
+		80F2752B171410B400C49FAB /* WAPartioSignupViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WAPartioSignupViewController.h; path = wammer/WAPartioSignupViewController.h; sourceTree = "<group>"; };
+		80F2752C171410B400C49FAB /* WAPartioSignupViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WAPartioSignupViewController.m; path = wammer/WAPartioSignupViewController.m; sourceTree = "<group>"; };
+		80F2753B171410D500C49FAB /* WAPartioSignupViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = WAPartioSignupViewController.xib; path = wammer/WAPartioSignupViewController.xib; sourceTree = "<group>"; };
 		80F5223116C0FAD8003A06D5 /* WARemoteInterface+Summary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WARemoteInterface+Summary.h"; sourceTree = "<group>"; };
 		80F5223216C0FAD8003A06D5 /* WARemoteInterface+Summary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WARemoteInterface+Summary.m"; sourceTree = "<group>"; };
 		80F800F415C2624C00132A96 /* IRAQ-Checkmark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "IRAQ-Checkmark.png"; sourceTree = "<group>"; };
@@ -2434,6 +2441,9 @@
 				DE67A4C61712BE4100099106 /* WAPhotoCollageCell_Stack1.xib */,
 				8027264D1710078800BB1733 /* WATimelineIndexView.h */,
 				8027264E1710078800BB1733 /* WATimelineIndexView.m */,
+				80F2752B171410B400C49FAB /* WAPartioSignupViewController.h */,
+				80F2752C171410B400C49FAB /* WAPartioSignupViewController.m */,
+				80F2753B171410D500C49FAB /* WAPartioSignupViewController.xib */,
 			);
 			name = "New Event View";
 			sourceTree = "<group>";
@@ -3225,6 +3235,7 @@
 		FFC2E04C13DD706600816EA1 /* iOS Resources */ = {
 			isa = PBXGroup;
 			children = (
+				80CBC7711713FBDE0056D9CF /* partioIcon.png */,
 				13D1397016DB467F00A41F86 /* WelcomeLogo.png */,
 				13D1397116DB467F00A41F86 /* WelcomeLogo@2x.png */,
 				13D1397416DB474000A41F86 /* WelcomeBackgroundPattern.png */,
@@ -4258,6 +4269,8 @@
 				802835551713009A00E0A187 /* WADayPhotoPickerViewController.xib in Resources */,
 				80283557171302B900E0A187 /* WADayPhotoPickerViewCell.xib in Resources */,
 				8028355F1713047A00E0A187 /* WADayPhotoPickerSectionHeaderView.xib in Resources */,
+				80CBC7721713FBDE0056D9CF /* partioIcon.png in Resources */,
+				80F2753C171410D500C49FAB /* WAPartioSignupViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4760,6 +4773,7 @@
 				802835541713009A00E0A187 /* WADayPhotoPickerViewController.m in Sources */,
 				8028355A1713037900E0A187 /* WADayPhotoPickerViewCell.m in Sources */,
 				8028355D1713046100E0A187 /* WADayPhotoPickerSectionHeaderView.m in Sources */,
+				80F2752D171410B400C49FAB /* WAPartioSignupViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

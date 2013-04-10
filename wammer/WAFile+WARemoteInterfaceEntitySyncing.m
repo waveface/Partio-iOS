@@ -432,10 +432,10 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
     
     NSCParameterAssert(fileURL);
     
-    if (![[NSUserDefaults standardUserDefaults] boolForKey:kWAPhotoImportEnabled]) {
-      callback(WAFileEntitySyncingError(WAFileSyncingErrorCodePhotoImportDisabled, @"Photo import is disabled, stop sync files", nil));
-      return;
-    }
+//    if (![[NSUserDefaults standardUserDefaults] boolForKey:kWAPhotoImportEnabled]) {
+//      callback(WAFileEntitySyncingError(WAFileSyncingErrorCodePhotoImportDisabled, @"Photo import is disabled, stop sync files", nil));
+//      return;
+//    }
     
     if (![[NSUserDefaults standardUserDefaults] boolForKey:kWAUseCellularEnabled] && ![[WARemoteInterface sharedInterface] hasWiFiConnection]) {
       callback(WAFileEntitySyncingError(WAFileSyncingErrorCodeSyncNotAllowed, @"Syncing is not allowed, stop sync files", nil));

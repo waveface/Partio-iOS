@@ -38,6 +38,8 @@
 	sentData[@"type"] = @"event";
   else if (postType == WAArticleTypeImport)
 	sentData[@"type"] = @"import";
+  else if (postType == WAArticleTypeSharedEvent)
+    sentData[@"type"] = @"partio";
   
   //	This is fubar, we should NOT use 1 to 5 for fave and string literals for hidden status
   
@@ -146,7 +148,7 @@
   
   NSDictionary *postEntity = [[self class] postEntityWithGroupID:aGroupIdentifier postID:postID text:contentTextOrNil attachments:attachmentIdentifiersOrNil mainAttachment:nil type:postType isFavorite:isFavorite isHidden:NO createTime:createTime updateTime:updateTime];
   
-  [self.engine fireAPIRequestNamed:@"posts/new" withArguments:nil options:WARemoteInterfaceEnginePostFormEncodedOptionsDictionary(postEntity, nil) validator:WARemoteInterfaceGenericNoErrorValidator() successHandler:^(NSDictionary *inResponseOrNil, IRWebAPIRequestContext *inResponseContext) {
+  [self.engine fireAPIRequestNamed:@"pio_posts/new" withArguments:nil options:WARemoteInterfaceEnginePostFormEncodedOptionsDictionary(postEntity, nil) validator:WARemoteInterfaceGenericNoErrorValidator() successHandler:^(NSDictionary *inResponseOrNil, IRWebAPIRequestContext *inResponseContext) {
     
     if (!successBlock)
       return;
@@ -222,7 +224,7 @@
 
 - (void)retrievePostsInGroup:(NSString *)aGroupIdentifier usingSequenceNumber:(NSNumber *)aSequenceNumber withLimit:(NSNumber *)aLimit onSuccess:(void (^)(NSArray *, NSNumber *, NSNumber *))successBlock onFailure:(void (^)(NSError *))failureBlock {
 
-  [self.engine fireAPIRequestNamed:@"posts/fetchBySeq" withArguments:@{@"group_id":aGroupIdentifier, @"datum":aSequenceNumber, @"limit":aLimit, @"component_options": [@[@"content"] JSONString]} options:nil validator:WARemoteInterfaceGenericNoErrorValidator() successHandler:^(NSDictionary *response, IRWebAPIRequestContext *context) {
+  [self.engine fireAPIRequestNamed:@"pio_posts/fetchBySeq" withArguments:@{@"group_id":aGroupIdentifier, @"datum":aSequenceNumber, @"limit":aLimit, @"component_options": [@[@"content"] JSONString]} options:nil validator:WARemoteInterfaceGenericNoErrorValidator() successHandler:^(NSDictionary *response, IRWebAPIRequestContext *context) {
 
     if (!successBlock)
       return;
@@ -254,7 +256,7 @@
   arguments[@"component_options"] = [@[@"content"] JSONString];
   
   [self.engine
-   fireAPIRequestNamed:@"posts/fetchByFilter"
+   fireAPIRequestNamed:@"pio_posts/fetchByFilter"
    withArguments:arguments
    options:nil
    validator:WARemoteInterfaceGenericNoErrorValidator()
@@ -286,7 +288,7 @@
 				 nil];
   
   [self.engine
-   fireAPIRequestNamed:@"posts/fetchByFilter"
+   fireAPIRequestNamed:@"pio_posts/fetchByFilter"
    withArguments:nil
    options:WARemoteInterfaceEnginePostFormEncodedOptionsDictionary(postListEntity, nil)
    validator:WARemoteInterfaceGenericNoErrorValidator()
