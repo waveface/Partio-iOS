@@ -56,6 +56,11 @@
       WADayPhotoPickerViewController *picker = [[WADayPhotoPickerViewController alloc] initWithSelectedAssets:nil];
       [wSelf.navigationController pushViewController:picker animated:YES];
     }];
+    
+    UIBarButtonItem *cancelItem = [[UIBarButtonItem alloc] initWithTitle:@"Cancel" style:UIBarButtonItemStyleBordered handler:^(id sender) {
+      [wSelf dismissViewControllerAnimated:YES completion:nil];
+    }];
+    self.navigationItem.leftBarButtonItem = cancelItem;
     self.navigationItem.rightBarButtonItem = buttonItem;
   }
   
