@@ -37,12 +37,13 @@
 
 - (NSArray *)loadEventsFrom:(NSDate *)aDate toPreviousDays:(NSInteger)days
 {
+  //TODO: when to load more events
   NSManagedObjectContext *moc = [[WADataStore defaultStore] autoUpdatingMOC];
   NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] initWithEntityName:@"WAArticle"];
   NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"eventStartDate" ascending:NO];
   [fetchRequest setSortDescriptors:@[sortDescriptor]];
   self.eventFetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest managedObjectContext:moc sectionNameKeyPath:nil cacheName:nil];
-  NSPredicate *predicate = [NSPredicate predicateWithFormat:@"eventStartDate >= %@ AND eventStartDate <= %@ AND event = TRUE AND hidden = FALSE AND files.@count > 0", [aDate dateOfPreviousNumOfDays:days], aDate];
+  NSPredicate *predicate = [NSPredicate predicateWithFormat:@"eventStartDate >= %@ AND eventStartDate <= %@ AND event = TRUE AND eventType = %d AND files.@count > 0", [aDate dateOfPreviousNumOfDays:days], aDate, WAEventArticleSharedType];
   [self.eventFetchedResultsController.fetchRequest setPredicate:predicate];
   
   NSError *Err;
