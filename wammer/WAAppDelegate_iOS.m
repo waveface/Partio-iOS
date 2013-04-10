@@ -814,9 +814,14 @@ extern CFAbsoluteTime StartTime;
       [wSelf recreateViewHierarchy];
     }];
     
-    WAPhotoHighlightsViewController *photoGroupsVC = [[WAPhotoHighlightsViewController alloc] init];
-    wSelf.window.rootViewController = photoGroupsVC;
-    
+    WASharedEventViewController *sharedEventsVC = [[WASharedEventViewController alloc] initWithStyle:UITableViewStylePlain];
+    UINavigationController *navVC = [[UINavigationController alloc] initWithRootViewController:sharedEventsVC];
+    wSelf.window.rootViewController = navVC;
+
+    if (ri.userToken) {
+      wSelf.fetchManager = [[WAFetchManager alloc] init];
+      wSelf.syncManager = [[WASyncManager alloc] init];
+    }
   } failure:^(NSError *error) {
     NSLog(@"fail to sign up for error: %@", error);
     IRAction *okAction = [IRAction actionWithTitle:NSLocalizedString(@"ACTION_OKAY", @"Alert Dismissal Action") block:nil];
