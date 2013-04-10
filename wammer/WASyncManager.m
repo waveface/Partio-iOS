@@ -63,10 +63,10 @@
       wSelf.needingSyncFilesCount = 0;
       wSelf.syncedFilesCount = 0;
     }]];
-    [self.recurrenceMachine addRecurringOperation:[self photoImportOperationPrototype]];
+//    [self.recurrenceMachine addRecurringOperation:[self photoImportOperationPrototype]];
     [self.recurrenceMachine addRecurringOperation:[self fileMetadataSyncOperationPrototype]];
     [self.recurrenceMachine addRecurringOperation:[self dirtyArticleSyncOperationPrototype]];
-    [self.recurrenceMachine addRecurringOperation:[self fullQualityFileSyncOperationPrototype]];
+//    [self.recurrenceMachine addRecurringOperation:[self fullQualityFileSyncOperationPrototype]];
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleUserDefaultsChanged:) name:NSUserDefaultsDidChangeNotification object:nil];
     

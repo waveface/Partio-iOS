@@ -12,6 +12,7 @@
 #import "WADayPhotoPickerSectionHeaderView.h"
 #import "WAOverlayBezel.h"
 #import "NSDate+WAAdditions.h"
+#import "WAPhotoTimelineViewController.h"
 #import <BlocksKit/BlocksKit.h>
 
 @interface WADayPhotoPickerViewController () <UICollectionViewDelegateFlowLayout, UICollectionViewDataSource>
@@ -19,7 +20,7 @@
 @property (nonatomic, weak) IBOutlet UICollectionView *collectionView;
 @property (nonatomic, strong) NSOperationQueue *imageDisplayQueue;
 @property (nonatomic, strong) NSArray *photoGroups;
-@property (nonatomic, strong) NSArray *selectedAssets;
+@property (nonatomic, strong) NSMutableArray *selectedAssets;
 @property (nonatomic, strong) NSArray *allTimeSortedAssets;
 
 @end
@@ -30,7 +31,10 @@
 - (id) initWithSelectedAssets:(NSArray *)assets {
   self = [super initWithNibName:nil bundle:nil];
   if (self) {
-    self.selectedAssets = assets;
+    if (assets)
+      self.selectedAssets = [NSMutableArray arrayWithArray:assets];
+    else
+      self.selectedAssets = [NSMutableArray array];
   }
   return self;
 }
@@ -43,8 +47,11 @@
   self.imageDisplayQueue.maxConcurrentOperationCount = 1;
   
   if (self.navigationController) {
+    __weak WADayPhotoPickerViewController *wSelf = self;
     UIBarButtonItem *buttonItem = [[UIBarButtonItem alloc] initWithTitle:@"Create" style:UIBarButtonItemStyleBordered handler:^(id sender) {
+      WAPhotoTimelineViewController *photoTimeline = [[WAPhotoTimelineViewController alloc] initWithAssets:wSelf.selectedAssets];
       
+      [wSelf.navigationController pushViewController:photoTimeline animated:YES];
     }];
 
     self.navigationItem.rightBarButtonItem = buttonItem;
@@ -55,6 +62,7 @@
   [self.collectionView registerNib:[UINib nibWithNibName:@"WADayPhotoPickerSectionHeaderView" bundle:nil] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"WADayPhotoPickerSectionHeaderView"];
 }
 - (void) viewDidAppear:(BOOL)animated {
+  
   [super viewDidAppear:animated];
 
   __weak WADayPhotoPickerViewController *wSelf = self;
@@ -210,6 +218,24 @@
   }
   
   return nil;
+}
+
+- (void) collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
+
+  ALAsset *asset = (ALAsset*)self.photoGroups[indexPath.section][indexPath.row];
+  if (self.selectedAssets != nil && [self.selectedAssets indexOfObject:asset] != NSNotFound) {
+    [self.selectedAssets addObject:asset];
+  }
+  
+}
+
+- (void) collectionView:(UICollectionView *)collectionView didDeselectItemAtIndexPath:(NSIndexPath *)indexPath {
+
+  ALAsset *asset = (ALAsset*)self.photoGroups[indexPath.section][indexPath.row];
+  if (self.selectedAssets != nil && [self.selectedAssets indexOfObject:asset] != NSNotFound) {
+    [self.selectedAssets removeObject:asset];
+  }
+
 }
 
 @end

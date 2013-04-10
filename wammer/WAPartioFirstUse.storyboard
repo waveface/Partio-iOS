@@ -82,7 +82,8 @@
         <!--Partio First Use View Controller-->
         <scene sceneID="1qW-0a-rxO">
             <objects>
-                <navigationController definesPresentationContext="YES" id="5uK-1U-ns4" customClass="WAPartioFirstUseViewController" sceneMemberID="viewController">
+                <navigationController definesPresentationContext="YES" navigationBarHidden="YES" id="5uK-1U-ns4" customClass="WAPartioFirstUseViewController" sceneMemberID="viewController">
+                    <nil key="simulatedTopBarMetrics"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="n7o-4p-12N">
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -98,6 +99,17 @@
     <resources>
         <image name="WelcomeLogo.png" width="320" height="360"/>
     </resources>
+    <classes>
+        <class className="NSLayoutConstraint" superclassName="NSObject">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/NSLayoutConstraint.h"/>
+        </class>
+        <class className="WAPartioFirstUseViewController" superclassName="UINavigationController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/WAPartioFirstUseViewController.h"/>
+        </class>
+        <class className="WAPartioWelcomeViewController" superclassName="UITableViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/WAPartioWelcomeViewController.h"/>
+        </class>
+    </classes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>
