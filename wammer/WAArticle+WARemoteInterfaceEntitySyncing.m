@@ -145,6 +145,11 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 	[returnedDictionary setValue:@NO forKey:@"event"];
   }
   
+  if ([type isEqualToString:@"partio"]) {
+    [returnedDictionary setValue:@YES forKey:@"event"];
+    [returnedDictionary setValue:@(WAEventArticleSharedType) forKey:@"eventType"];
+  }
+  
   if ([incomingRepresentation[@"event_type"] isEqualToString:@"photo"]) {
 	[returnedDictionary setValue:@(WAEventArticlePhotoType) forKey:@"eventType"];
   }
@@ -206,14 +211,14 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
     
     returnedDictionary[@"tags"] = transformedTags;
   }
-    
-  NSString *event_start_time = incomingRepresentation[@"event_start_time"];
-  if (event_start_time && [returnedDictionary[@"event"] isEqual:@YES]) {					// It is an event, we record its event day
-    
-    [returnedDictionary setValue:@{@"day" : [[NSDate dateFromISO8601String:event_start_time] dayBegin]}
-		      forKey:@"eventDay"];
-    
-  }
+  
+//  NSString *event_start_time = incomingRepresentation[@"event_start_time"];
+//  if (event_start_time && ![event_start_time isKindOfClass:[NSNull class]] &&[returnedDictionary[@"event"] isEqual:@YES]) {					// It is an event, we record its event day
+//    
+//    [returnedDictionary setValue:@{@"day" : [[NSDate dateFromISO8601String:event_start_time] dayBegin]}
+//		      forKey:@"eventDay"];
+//    
+//  }
   
   return returnedDictionary;
   

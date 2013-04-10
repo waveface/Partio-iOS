@@ -43,7 +43,6 @@
 
 @property (nonatomic, strong) WAArticle *representingArticle;
 @property (nonatomic, strong) NSArray *allAssets;
-@property (nonatomic, strong) NSArray *importedImageIDArray;
 @property (nonatomic, strong) WAGeoLocation *geoLocation;
 @property (nonatomic, strong) NSDate *eventDate;
 @property (nonatomic, strong) NSDate *beginDate;
@@ -144,10 +143,6 @@
   [self.indexView addIndex:0.01 label:[formatter stringFromDate:self.beginDate]];
   [self.indexView addIndex:0.99 label:[formatter stringFromDate:self.endDate]];
   
-  
-  if ([WARemoteInterface sharedInterface].userToken) {
-    [self startImportSelectedPhotos];
-  }
 }
 
 - (BOOL) shouldAutorotate {
@@ -169,28 +164,28 @@
   return opq;
 }
 
-- (void) startImportSelectedPhotos {
+- (void) finishCreatingSharingEvent {
   
-  __weak WAPhotoTimelineViewController *wSelf = self;
-  NSBlockOperation *op = [NSBlockOperation blockOperationWithBlock:^{
-    NSDate *importTime = [NSDate date];
-    
-    NSManagedObjectContext *moc = [[WADataStore defaultStore] disposableMOC];
-    WAArticle *article = [WAArticle objectInsertingIntoContext:moc withRemoteDictionary:@{}];
-    NSMutableArray *imageArray = [NSMutableArray arrayWithCapacity:wSelf.allAssets.count];
-
-    for (ALAsset *asset in self.allAssets) {
-      @autoreleasepool {
-
-        NSFetchRequest *fr = [[NSFetchRequest alloc] initWithEntityName:@"WAFile"];
-        fr.predicate = [NSPredicate predicateWithFormat:@"assetURL = %@", [[[asset defaultRepresentation] url] absoluteString]];
-        NSError *error = nil;
-        NSArray *result = [moc executeFetchRequest:fr error:&error];
-        if (result.count) {
-          [imageArray addObject:result[0]];
-          continue;
-        }
+//  __weak WAPhotoTimelineViewController *wSelf = self;
+  NSDate *importTime = [NSDate date];
+  
+//  NSManagedObjectContext *moc = [[WADataStore defaultStore] disposableMOC];
+  NSManagedObjectContext *moc = self.managedObjectContext;
+  WAArticle *article = [WAArticle objectInsertingIntoContext:moc withRemoteDictionary:@{}];
+  
+  for (ALAsset *asset in self.allAssets) {
+    @autoreleasepool {
       
+      NSFetchRequest *fr = [[NSFetchRequest alloc] initWithEntityName:@"WAFile"];
+      fr.predicate = [NSPredicate predicateWithFormat:@"assetURL = %@", [[[asset defaultRepresentation] url] absoluteString]];
+      NSError *error = nil;
+      NSArray *result = [moc executeFetchRequest:fr error:&error];
+      if (result.count) {
+        
+        [[article mutableOrderedSetValueForKey:@"files"] addObject:(WAFile*)result[0]];
+        
+      } else {
+        
         WAFile *file = (WAFile *)[WAFile objectInsertingIntoContext:moc withRemoteDictionary:@{}];
         CFUUIDRef theUUID = CFUUIDCreate(kCFAllocatorDefault);
         if (theUUID)
@@ -215,20 +210,11 @@
         
         file.exif = exif;
         
-        [imageArray addObject:file];
-                
-        if (!article.creationDate) {
-          article.creationDate = file.timestamp;
-        } else {
-          if ([file.timestamp compare:article.creationDate] == NSOrderedDescending) {
-            article.creationDate = file.timestamp;
-          }
-        }
-        
       }
     }
     
-    article.event = @NO;
+    article.event = (id)kCFBooleanTrue;
+    article.eventType = [NSNumber numberWithInt:WAEventArticleSharedType];
     article.draft = (id)kCFBooleanFalse;
     CFUUIDRef theUUID = CFUUIDCreate(kCFAllocatorDefault);
     if (theUUID)
@@ -236,21 +222,15 @@
     CFRelease(theUUID);
     article.dirty = (id)kCFBooleanTrue;
     article.creationDeviceName = [UIDevice currentDevice].name;
+    article.creationDate = [NSDate date];
     
     NSError *savingError = nil;
     if ([moc save:&savingError]) {
-      NSMutableArray *idList = [NSMutableArray array];
-      for (WAFile *file in imageArray) {
-        [idList addObject:file.objectID];
-      }
-      wSelf.importedImageIDArray = [NSArray arrayWithArray:idList];
+      NSLog(@"Sharing event successfully created");
     } else {
       NSLog(@"error on creating a new import post for error: %@", savingError);
     }
-    
-  }];
-  
-  [[[self class] sharedImportPhotoOperationQueue] addOperation:op];
+  }
   
 }
 
@@ -275,38 +255,8 @@
 
 - (void)actionButtonClicked:(id)sender
 {
-
-  if (!self.importedImageIDArray || !self.importedImageIDArray.count) {
-    // importing
-  } else {
-    WAArticle *article = [WAArticle objectInsertingIntoContext:self.managedObjectContext withRemoteDictionary:@{}];
-    article.event = (id)kCFBooleanTrue;
-    article.eventType = [NSNumber numberWithInt:WAEventArticleSharedType];
-    article.draft = (id)kCFBooleanFalse;
-    CFUUIDRef theUUID = CFUUIDCreate(kCFAllocatorDefault);
-    if (theUUID)
-      article.identifier = [((__bridge_transfer NSString *)CFUUIDCreateString(kCFAllocatorDefault, theUUID)) lowercaseString];
-    CFRelease(theUUID);
-    article.dirty = (id)kCFBooleanTrue;
-    article.creationDeviceName = [UIDevice currentDevice].name;
-    article.creationDate = [NSDate date];
-    
-    for(NSManagedObjectID *objectID in self.importedImageIDArray) {
-      WAFile *file = (WAFile*)[self.managedObjectContext objectWithID:objectID];
-      if (file) {
-        [[article mutableOrderedSetValueForKey:@"files"] addObject:file];
-      } else {
-        NSLog(@"nil file: %@", objectID);
-      }
-    }
-    
-    NSError *error = nil;
-    [self.managedObjectContext save:&error];
-    if (error) {
-      NSLog(@"failed to create a sharing event for error: %@", error);
-    }
-    [self.navigationController popToRootViewControllerAnimated:NO];
-  }
+  [self finishCreatingSharingEvent];
+  [self.navigationController popToRootViewControllerAnimated:NO];
 //  WAContactPickerViewController *cpVC = [[WAContactPickerViewController alloc] initWithStyle:UITableViewStylePlain];
 //  [self.navigationController pushViewController:cpVC animated:YES];
  
