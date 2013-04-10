@@ -130,10 +130,10 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
   [tableView deselectRowAtIndexPath:indexPath animated:NO];
-//  __weak WASharedEventViewController *wSelf = self;
-//  WAPhotoTimelineViewController *ptVC = [[WAPhotoTimelineViewController alloc] initWithArticle:[self.events[indexPath.row] objectID]];
-//  WANavigationController *nav = [[WANavigationController alloc] initWithRootViewController:ptVC];
-//  [wSelf presentViewController:nav animated:YES completion:nil];
+  __weak WASharedEventViewController *wSelf = self;
+  WAPhotoTimelineViewController *ptVC = [[WAPhotoTimelineViewController alloc] initWithArticleID:[self.events[indexPath.row] objectID]];
+  UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:ptVC];
+  [wSelf presentViewController:nav animated:YES completion:nil];
 }
 
 #pragma - toolbar
