@@ -82,6 +82,8 @@
     cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
   }
   
+  [cell.textLabel setTextColor:[UIColor whiteColor]];
+  
   // Configure the cell...
   if (indexPath.section == 0) {
     if (indexPath.row == 0) {
@@ -92,18 +94,33 @@
       cell.imageView.image = [UIImage imageNamed:@"FacebookLogo"];
       cell.textLabel.text = @"Contacts";
       cell.detailTextLabel.text = @"Find friends from your contacts.";
+      [cell.detailTextLabel setTextColor:[UIColor lightGrayColor]];
       
     } else if (indexPath.row == 2) {
       cell.imageView.image = [UIImage imageNamed:@"FacebookLogo"];
       cell.textLabel.text = @"Facebook";
+      [cell.textLabel setTextColor:[UIColor whiteColor]];
       cell.detailTextLabel.text = @"Find friends from Facebook.";
+      [cell.detailTextLabel setTextColor:[UIColor lightGrayColor]];
       
     }
     
   } else {
     cell.imageView.image = [UIImage imageNamed:@"FacebookLogo"];
     //TODO: first name then last name, or last name then first name by system settings
-    cell.textLabel.text = [NSString stringWithFormat:@"%@ %@", _members[indexPath.row][@"firstName"], _members[indexPath.row][@"lastName"]];
+    
+    if (_members[indexPath.row][@"firstName"] && _members[indexPath.row][@"lastName"]) {
+      cell.textLabel.text = [NSString stringWithFormat:@"%@ %@",
+                             _members[indexPath.row][@"firstName"],
+                             _members[indexPath.row][@"lastName"]];
+    } else if (_members[indexPath.row][@"firstName"]) {
+      cell.textLabel.text = _members[indexPath.row][@"firstName"];
+                           
+    } else if (_members[indexPath.row][@"lastName"]) {
+      cell.textLabel.text = _members[indexPath.row][@"lastName"];
+      
+    }
+    
     cell.detailTextLabel.text = [NSString stringWithFormat:@"%@ %@",
                                  _members[indexPath.row][@"phone"],
                                  ([_members[indexPath.row][@"email"] count])? _members[indexPath.row][@"email"][0]: @""];
