@@ -108,7 +108,7 @@
   } else {
     cell.imageView.image = [UIImage imageNamed:@"FacebookLogo"];
     //TODO: first name then last name, or last name then first name by system settings
-    
+    //FIXME: use fullname
     if (_members[indexPath.row][@"firstName"] && _members[indexPath.row][@"lastName"]) {
       cell.textLabel.text = [NSString stringWithFormat:@"%@ %@",
                              _members[indexPath.row][@"firstName"],
