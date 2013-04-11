@@ -75,8 +75,9 @@
     
     [wSelf.collectionView reloadData];
     
-    if (wSelf.selectedAssets.count)
-      [wSelf scrollToDate:[(ALAsset*)wSelf.selectedAssets[0] valueForProperty:ALAssetPropertyDate]];
+    if (wSelf.selectedAssets.count) {
+      [wSelf.collectionView scrollToItemAtIndexPath:[wSelf indexPathForAsset:wSelf.selectedAssets[0]] atScrollPosition:UICollectionViewScrollPositionCenteredVertically animated:YES];
+    }
   } onFailure:^(NSError *error) {
     [busyBezel dismiss];
     
@@ -145,6 +146,36 @@
   
   _photoGroups = [NSArray arrayWithArray:sortedGroups];
   return _photoGroups;
+}
+
+- (NSIndexPath *)indexPathForAsset:(ALAsset*)targetAsset {
+ 
+  NSDate *targetDate = [targetAsset valueForProperty:ALAssetPropertyDate];
+  NSInteger section = 0;
+  for (NSArray *group in self.photoGroups) {
+    NSDate *date = [(ALAsset *)group[0] valueForProperty:ALAssetPropertyDate];
+    if (isSameDay(targetDate, date)) {
+      NSInteger row = 0;
+      for (ALAsset *item in self.photoGroups[section]) {
+        if ([item isEqual:targetAsset]) {
+          NSIndexPath *indexPath = [NSIndexPath indexPathForRow:row inSection:section];
+          return indexPath;
+        }
+        row ++;
+      }
+      
+      NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:section];
+      return indexPath;
+    }
+    
+    if ([targetDate compare:date] == NSOrderedDescending) {
+      NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:section];
+      return indexPath;
+    }
+    
+    section ++;
+  }
+  return [NSIndexPath indexPathForRow:0 inSection:0];
 }
 
 - (void) scrollToDate:(NSDate*)targetDate {
@@ -223,7 +254,7 @@
 - (void) collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
 
   ALAsset *asset = (ALAsset*)self.photoGroups[indexPath.section][indexPath.row];
-  if (self.selectedAssets != nil && [self.selectedAssets indexOfObject:asset] != NSNotFound) {
+  if (self.selectedAssets != nil && [self.selectedAssets indexOfObject:asset] == NSNotFound) {
     [self.selectedAssets addObject:asset];
   }
   

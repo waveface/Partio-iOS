@@ -215,6 +215,7 @@
     </entity>
     <entity name="WAPeople" representedClassName="WAPeople" syncable="YES">
         <attribute name="avatarURL" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="email" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="article" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="WAArticle" inverseName="people" inverseEntity="WAArticle" syncable="YES"/>
     </entity>
@@ -308,6 +309,7 @@
     <elements>
         <element name="WAArticle" positionX="0" positionY="0" width="128" height="405"/>
         <element name="WACache" positionX="0" positionY="0" width="128" height="135"/>
+        <element name="WACheckin" positionX="160" positionY="192" width="128" height="120"/>
         <element name="WACollection" positionX="0" positionY="0" width="128" height="195"/>
         <element name="WADocumentDay" positionX="0" positionY="0" width="128" height="75"/>
         <element name="WAEventDay" positionX="160" positionY="192" width="128" height="75"/>
@@ -317,7 +319,7 @@
         <element name="WAFilePageElement" positionX="0" positionY="0" width="128" height="135"/>
         <element name="WAGroup" positionX="0" positionY="0" width="128" height="120"/>
         <element name="WALocation" positionX="0" positionY="0" width="128" height="135"/>
-        <element name="WAPeople" positionX="0" positionY="0" width="128" height="90"/>
+        <element name="WAPeople" positionX="0" positionY="0" width="128" height="105"/>
         <element name="WAPhotoDay" positionX="160" positionY="192" width="128" height="75"/>
         <element name="WAStation" positionX="160" positionY="192" width="128" height="120"/>
         <element name="WAStorage" positionX="0" positionY="0" width="128" height="240"/>
@@ -325,6 +327,5 @@
         <element name="WATagGroup" positionX="0" positionY="0" width="128" height="90"/>
         <element name="WAUser" positionX="0" positionY="0" width="128" height="210"/>
         <element name="WAWebpageDay" positionX="160" positionY="192" width="128" height="75"/>
-        <element name="WACheckin" positionX="160" positionY="192" width="128" height="120"/>
     </elements>
 </model>
