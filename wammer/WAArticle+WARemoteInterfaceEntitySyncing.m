@@ -281,6 +281,27 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
   NSString * const postCoverPhotoID = self.representingFile.identifier;
   NSDate * const postCreationDate = self.creationDate;
   NSDate * const postModificationDate = self.modificationDate;
+  NSArray * invitingEmails = [(NSSet*)[self.people valueForKey:@"email"] allObjects];
+  
+  NSMutableDictionary *postLocation = nil;
+  if (self.location) {
+    postLocation = [NSMutableDictionary dictionary];
+    if (self.location.name)
+      postLocation[@"name"] = self.location.name;
+    
+    if (self.location.latitude && self.location.longitude) {
+      postLocation[@"latitude"] = self.location.latitude;
+      postLocation[@"longtitude"] = self.location.longitude;
+    }
+    
+    if (self.tags) {
+      NSMutableArray *tags = [NSMutableArray array];
+      for (WATag *tag in self.tags) {
+        [tags addObject:tag.tagValue];
+      }
+      postLocation[@"tags"] = [NSArray arrayWithArray:tags];
+    }
+  }
   
   BOOL isDraft = ([self.draft isEqualToNumber:(id)kCFBooleanTrue] || !self.identifier || !self.modificationDate);
   BOOL isFavorite = [self.favorite isEqualToNumber:(id)kCFBooleanTrue];
@@ -482,6 +503,9 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 				   createTime:postCreationDate
 				   updateTime:postModificationDate
 					 favorite:isFavorite
+               invitingEmails:invitingEmails
+                     location:postLocation
+                     checkins:nil
 					onSuccess:^(NSDictionary *postRep) {
 	
 					  callback(postRep);
