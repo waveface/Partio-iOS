@@ -107,23 +107,17 @@
     
   } else {
     cell.imageView.image = [UIImage imageNamed:@"FacebookLogo"];
-    //TODO: first name then last name, or last name then first name by system settings
-    //FIXME: use fullname
-    if (_members[indexPath.row][@"firstName"] && _members[indexPath.row][@"lastName"]) {
-      cell.textLabel.text = [NSString stringWithFormat:@"%@ %@",
-                             _members[indexPath.row][@"firstName"],
-                             _members[indexPath.row][@"lastName"]];
-    } else if (_members[indexPath.row][@"firstName"]) {
-      cell.textLabel.text = _members[indexPath.row][@"firstName"];
-                           
-    } else if (_members[indexPath.row][@"lastName"]) {
-      cell.textLabel.text = _members[indexPath.row][@"lastName"];
-      
+
+    NSString *name = _members[indexPath.row][@"name"];
+    if (name) {
+      cell.textLabel.text = name;
     }
     
-    cell.detailTextLabel.text = [NSString stringWithFormat:@"%@ %@",
-                                 _members[indexPath.row][@"phone"],
-                                 ([_members[indexPath.row][@"email"] count])? _members[indexPath.row][@"email"][0]: @""];
+    NSString *email = _members[indexPath.row][@"email"];
+    if (email) {
+      cell.detailTextLabel.text = email;
+    }
+    
     cell.accessoryType = UITableViewCellAccessoryCheckmark;
     
   }
@@ -179,15 +173,45 @@
 {
   NSString *firstname = (__bridge_transfer NSString*)ABRecordCopyValue(person, kABPersonFirstNameProperty);
   NSString *lastname = (__bridge_transfer NSString*)ABRecordCopyValue(person, kABPersonLastNameProperty);
-  NSArray *email = (__bridge_transfer NSArray*)ABMultiValueCopyArrayOfAllValues(ABRecordCopyValue(person, kABPersonEmailProperty));
+  NSString *name = @"";
   
-  //TODO: pick mobile phone numbers 
-  NSString *phone = (__bridge_transfer NSString*)ABMultiValueCopyValueAtIndex(ABRecordCopyValue(person, kABPersonPhoneProperty), 0);;
+  if (firstname && lastname) {
+    if (ABPersonGetCompositeNameFormat() == kABPersonCompositeNameFormatFirstNameFirst) {
+      name = [NSString stringWithFormat:@"%@ %@", firstname, lastname];
+    
+    } else {
+      name = [NSString stringWithFormat:@"%@ %@", lastname, firstname];
+      
+    }
   
-  NSDictionary *aPerson = @{@"firstName": firstname,
-                            @"lastName": lastname,
-                            @"email": (email)? email : @[],
-                            @"phone": (phone)? phone : @"[N/A]"};
+  } else if (firstname && !lastname) {
+    name = firstname;
+  
+  } else if (!firstname && lastname) {
+    name = lastname;
+    
+  }
+  
+  NSString *email = @"";
+  NSArray *allEmail = (__bridge_transfer NSArray*)ABMultiValueCopyArrayOfAllValues(ABRecordCopyValue(person, kABPersonEmailProperty));
+  if ([allEmail count]) {
+    email = allEmail[0];
+    
+  } else {
+    //TODO: prompt dialog to input email
+  }
+  
+  NSString *phone = @"";
+  ABMultiValueRef phoneNumbers = ABRecordCopyValue(person, kABPersonPhoneProperty);
+  if (ABMultiValueGetCount(phoneNumbers) > 0) {
+    phone = (__bridge_transfer NSString*)ABMultiValueCopyValueAtIndex(phoneNumbers, 0);
+    
+  }
+  CFRelease(phoneNumbers);
+  
+  NSDictionary *aPerson = @{@"name": name,
+                            @"email": email,
+                            @"phone": phone};
 
   if (![_members containsObject:aPerson]) {
     [_members addObject:aPerson];
