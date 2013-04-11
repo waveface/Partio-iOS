@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface WAPartioWelcomeViewController : UITableViewController
+@interface WAPartioWelcomeViewController : UIViewController
 
 @end

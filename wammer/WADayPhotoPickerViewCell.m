@@ -33,7 +33,7 @@
   
   if (selected) {
     self.checkMarkView.hidden = NO;
-    self.checkMarkView.image = [UIImage imageNamed:@"IRAQ-Checkmark"];
+    self.checkMarkView.image = [UIImage imageNamed:@"Checked"];
     
     if (!self.transparentLayer) {
       self.transparentLayer = [CALayer layer];

@@ -302,6 +302,13 @@
 		80719CFC167B03B900E9729F /* WAPhotoDay+WARemoteInterfaceEntitySyncing.m in Sources */ = {isa = PBXBuildFile; fileRef = 80719CFB167B03B900E9729F /* WAPhotoDay+WARemoteInterfaceEntitySyncing.m */; };
 		8074EF8816AD0ABA0033E99A /* WACalendarPopupViewController_phone.m in Sources */ = {isa = PBXBuildFile; fileRef = 8074EF8716AD0ABA0033E99A /* WACalendarPopupViewController_phone.m */; };
 		80762CF216F1C05800DDA5A7 /* WACollectionPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 80762CF116F1C05800DDA5A7 /* WACollectionPickerViewController.m */; };
+		808A33681716979D00CF5C8D /* WAFetchManager+RemoteArticlesFetch.m in Sources */ = {isa = PBXBuildFile; fileRef = 808A33671716979D00CF5C8D /* WAFetchManager+RemoteArticlesFetch.m */; };
+		808A337B1716ABC100CF5C8D /* PartioLogin.png in Resources */ = {isa = PBXBuildFile; fileRef = 808A33771716ABC100CF5C8D /* PartioLogin.png */; };
+		808A337C1716ABC100CF5C8D /* PartioLogin@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 808A33781716ABC100CF5C8D /* PartioLogin@2x.png */; };
+		808A337D1716ABC100CF5C8D /* PartioSplashPage.png in Resources */ = {isa = PBXBuildFile; fileRef = 808A33791716ABC100CF5C8D /* PartioSplashPage.png */; };
+		808A337E1716ABC100CF5C8D /* PartioSplashPage@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 808A337A1716ABC100CF5C8D /* PartioSplashPage@2x.png */; };
+		808A33811716AC3F00CF5C8D /* Checked.png in Resources */ = {isa = PBXBuildFile; fileRef = 808A337F1716AC3F00CF5C8D /* Checked.png */; };
+		808A33821716AC3F00CF5C8D /* Checked@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 808A33801716AC3F00CF5C8D /* Checked@2x.png */; };
 		808DAA0C167597C9003652BB /* WAEventPeopleListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 808DAA0B167597C9003652BB /* WAEventPeopleListViewController.m */; };
 		808DAA0F1675B1D2003652BB /* WAEventPeopleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 808DAA0E1675B1D2003652BB /* WAEventPeopleCell.m */; };
 		808DAA111675B1E8003652BB /* WAEventPeopleCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 808DAA101675B1E8003652BB /* WAEventPeopleCell.xib */; };
@@ -1330,6 +1337,14 @@
 		8074EF8716AD0ABA0033E99A /* WACalendarPopupViewController_phone.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WACalendarPopupViewController_phone.m; path = wammer/WACalendarPopupViewController_phone.m; sourceTree = "<group>"; };
 		80762CF016F1C05800DDA5A7 /* WACollectionPickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WACollectionPickerViewController.h; sourceTree = "<group>"; };
 		80762CF116F1C05800DDA5A7 /* WACollectionPickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WACollectionPickerViewController.m; sourceTree = "<group>"; };
+		808A33661716979D00CF5C8D /* WAFetchManager+RemoteArticlesFetch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "WAFetchManager+RemoteArticlesFetch.h"; path = "wammer/WAFetchManager+RemoteArticlesFetch.h"; sourceTree = "<group>"; };
+		808A33671716979D00CF5C8D /* WAFetchManager+RemoteArticlesFetch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "WAFetchManager+RemoteArticlesFetch.m"; path = "wammer/WAFetchManager+RemoteArticlesFetch.m"; sourceTree = "<group>"; };
+		808A33771716ABC100CF5C8D /* PartioLogin.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = PartioLogin.png; path = Resources/PartioLogin.png; sourceTree = "<group>"; };
+		808A33781716ABC100CF5C8D /* PartioLogin@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "PartioLogin@2x.png"; path = "Resources/PartioLogin@2x.png"; sourceTree = "<group>"; };
+		808A33791716ABC100CF5C8D /* PartioSplashPage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = PartioSplashPage.png; path = Resources/PartioSplashPage.png; sourceTree = "<group>"; };
+		808A337A1716ABC100CF5C8D /* PartioSplashPage@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "PartioSplashPage@2x.png"; path = "Resources/PartioSplashPage@2x.png"; sourceTree = "<group>"; };
+		808A337F1716AC3F00CF5C8D /* Checked.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Checked.png; path = Resources/Checked.png; sourceTree = "<group>"; };
+		808A33801716AC3F00CF5C8D /* Checked@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Checked@2x.png"; path = "Resources/Checked@2x.png"; sourceTree = "<group>"; };
 		808DAA0A167597C9003652BB /* WAEventPeopleListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WAEventPeopleListViewController.h; path = wammer/WAEventPeopleListViewController.h; sourceTree = "<group>"; };
 		808DAA0B167597C9003652BB /* WAEventPeopleListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WAEventPeopleListViewController.m; path = wammer/WAEventPeopleListViewController.m; sourceTree = "<group>"; };
 		808DAA0D1675B1D2003652BB /* WAEventPeopleCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WAEventPeopleCell.h; path = wammer/WAEventPeopleCell.h; sourceTree = "<group>"; };
@@ -2098,6 +2113,8 @@
 				13CCDE64168C308A00962625 /* WAFetchManager.m */,
 				13CCDE66168C33A300962625 /* WAFetchManager+RemoteIndexFetch.h */,
 				13CCDE67168C33A400962625 /* WAFetchManager+RemoteIndexFetch.m */,
+				808A33661716979D00CF5C8D /* WAFetchManager+RemoteArticlesFetch.h */,
+				808A33671716979D00CF5C8D /* WAFetchManager+RemoteArticlesFetch.m */,
 				13CCDE69168C384200962625 /* WAFetchManager+RemoteCollectionFetch.h */,
 				13CCDE6A168C384200962625 /* WAFetchManager+RemoteCollectionFetch.m */,
 				13CCDE6C168C3C9300962625 /* WAFetchManager+RemoteFileMetadataFetch.h */,
@@ -2491,6 +2508,20 @@
 			);
 			name = IRAQPhotoPicker;
 			path = external/IRAQPhotoPicker;
+			sourceTree = "<group>";
+		};
+		808A33761716ABAB00CF5C8D /* Partio */ = {
+			isa = PBXGroup;
+			children = (
+				808A337F1716AC3F00CF5C8D /* Checked.png */,
+				808A33801716AC3F00CF5C8D /* Checked@2x.png */,
+				808A33771716ABC100CF5C8D /* PartioLogin.png */,
+				808A33781716ABC100CF5C8D /* PartioLogin@2x.png */,
+				808A33791716ABC100CF5C8D /* PartioSplashPage.png */,
+				808A337A1716ABC100CF5C8D /* PartioSplashPage@2x.png */,
+				80CBC7711713FBDE0056D9CF /* partioIcon.png */,
+			);
+			name = Partio;
 			sourceTree = "<group>";
 		};
 		808DAA121675C4B7003652BB /* Event People List */ = {
@@ -3244,7 +3275,7 @@
 		FFC2E04C13DD706600816EA1 /* iOS Resources */ = {
 			isa = PBXGroup;
 			children = (
-				80CBC7711713FBDE0056D9CF /* partioIcon.png */,
+				808A33761716ABAB00CF5C8D /* Partio */,
 				13D1397016DB467F00A41F86 /* WelcomeLogo.png */,
 				13D1397116DB467F00A41F86 /* WelcomeLogo@2x.png */,
 				13D1397416DB474000A41F86 /* WelcomeBackgroundPattern.png */,
@@ -4284,6 +4315,12 @@
 				80F2753C171410D500C49FAB /* WAPartioSignupViewController.xib in Resources */,
 				809550521716710700BEDDE0 /* HighlightAddEventBtn.png in Resources */,
 				809550531716710700BEDDE0 /* HighlightAddEventBtn@2x.png in Resources */,
+				808A337B1716ABC100CF5C8D /* PartioLogin.png in Resources */,
+				808A337C1716ABC100CF5C8D /* PartioLogin@2x.png in Resources */,
+				808A337D1716ABC100CF5C8D /* PartioSplashPage.png in Resources */,
+				808A337E1716ABC100CF5C8D /* PartioSplashPage@2x.png in Resources */,
+				808A33811716AC3F00CF5C8D /* Checked.png in Resources */,
+				808A33821716AC3F00CF5C8D /* Checked@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4788,6 +4825,7 @@
 				80F2752D171410B400C49FAB /* WAPartioSignupViewController.m in Sources */,
 				8040F2261715697F0074072E /* WAPeople.m in Sources */,
 				8095504F17166FE100BEDDE0 /* WAFacebookSignupViewController.m in Sources */,
+				808A33681716979D00CF5C8D /* WAFetchManager+RemoteArticlesFetch.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

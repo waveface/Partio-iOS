@@ -144,14 +144,11 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
   } else {
 	[returnedDictionary setValue:@NO forKey:@"event"];
   }
-  
-  if ([type isEqualToString:@"partio"]) {
-    [returnedDictionary setValue:@YES forKey:@"event"];
-    [returnedDictionary setValue:@(WAEventArticleSharedType) forKey:@"eventType"];
-  }
-  
+    
   if ([incomingRepresentation[@"event_type"] isEqualToString:@"photo"]) {
 	[returnedDictionary setValue:@(WAEventArticlePhotoType) forKey:@"eventType"];
+  } else if ([incomingRepresentation[@"event_type"] isEqualToString:@"shared"]) {
+    [returnedDictionary setValue:@(WAEventArticleSharedType) forKey:@"eventType"];
   }
   
   NSMutableArray *fullAttachmentList = [incomingRepresentation[@"attachment_id_array"] mutableCopy];
@@ -282,6 +279,7 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
   NSDate * const postCreationDate = self.creationDate;
   NSDate * const postModificationDate = self.modificationDate;
   NSArray * invitingEmails = [(NSSet*)[self.people valueForKey:@"email"] allObjects];
+  WAEventArticleType eventType = [self.eventType intValue];
   
   NSMutableDictionary *postLocation = nil;
   if (self.location) {
@@ -499,6 +497,7 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 			  withContentText:postText
 				  attachments:attachments
 						 type:isEvent?(isSharedEvent?WAArticleTypeSharedEvent:WAArticleTypeEvent):WAArticleTypeImport
+                    eventType:isEvent?eventType:WAEventArticleUnknownType
 					   postId:postID
 				   createTime:postCreationDate
 				   updateTime:postModificationDate
@@ -557,6 +556,7 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 		   attachments:attachments
 		mainAttachment:postCoverPhotoID
 				  type:isEvent?(isSharedEvent?WAArticleTypeSharedEvent:WAArticleTypeEvent):WAArticleTypeImport
+             eventType:isEvent?eventType:WAEventArticleUnknownType
 			  favorite:isFavorite
 				hidden:isHidden
  replacingDataWithDate:lastPostModDate

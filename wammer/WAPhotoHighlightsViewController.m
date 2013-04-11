@@ -68,6 +68,15 @@
   
   [self.tableView registerNib:[UINib nibWithNibName:@"WAPhotoHighlightViewCell" bundle:nil] forCellReuseIdentifier:@"WAPhotoHighlightViewCell"];
   
+  UILabel *description = [[UILabel alloc] initWithFrame:CGRectMake(20, -88, 380, 88)];
+  description.textAlignment = NSTextAlignmentCenter;
+  description.text = @"Select a highlight from your camera roll to share, or decide which photos by yourself.";
+  description.textColor = [UIColor whiteColor];
+  description.backgroundColor = [UIColor clearColor];
+  description.lineBreakMode = NSLineBreakByWordWrapping;
+  description.numberOfLines = 0;
+  [self.tableView addSubview:description];
+
   __weak WAPhotoHighlightsViewController *wSelf = self;
   WAOverlayBezel *busyBezel = [[WAOverlayBezel alloc] initWithStyle:WAActivityIndicatorBezelStyle];
   [busyBezel show];
@@ -160,6 +169,11 @@
   
   [_allTimeSortedAssets enumerateObjectsUsingBlock:^(ALAsset *asset, NSUInteger idx, BOOL *stop) {
   
+    NSString *filename = [[asset defaultRepresentation] filename];
+    NSRange found = [filename rangeOfString:@".PNG" options:NSCaseInsensitiveSearch];
+    if (found.location != NSNotFound)
+      return;
+    
     if (!previousDate) {
       [photoList addObject:asset];
       previousDate = [asset valueForProperty:ALAssetPropertyDate];
@@ -172,7 +186,9 @@
       if ((previousInterval - assetInterval) > GROUPING_THRESHOLD) {
         
         previousDate = assetDate;
-        [sortedGroups addObject:[photoList copy]];
+        if (photoList.count > 5)
+          [sortedGroups addObject:[photoList copy]];
+        
         [photoList removeAllObjects];
         [photoList addObject:asset];
         
