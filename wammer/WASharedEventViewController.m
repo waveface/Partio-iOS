@@ -210,11 +210,10 @@
   [self.navigationController pushViewController:ptVC animated:YES];
 }
 
-#pragma - toolbar
+#pragma mark - toolbar
 
 - (void)shareNewEventFromHighlight
 {
-  __weak WASharedEventViewController *wSelf = self;
   WAPhotoHighlightsViewController *phVC = [[WAPhotoHighlightsViewController alloc] init];
   UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:phVC];
   [self presentViewController:nav animated:YES completion:nil];
