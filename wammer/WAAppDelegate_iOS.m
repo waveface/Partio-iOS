@@ -466,6 +466,12 @@ extern CFAbsoluteTime StartTime;
       if (error) {
         NSLog(@"failed to login facebook for error: %@", error);
         
+        IRAction *cancelAction = [IRAction actionWithTitle:@"Dismiss" block:^{
+          [wSelf handlePartioAuthRequest];
+        }];
+        IRAlertView *alertView = [IRAlertView alertViewWithTitle:@"Oops! Something wrong" message:@"Unable to login. Please check your networking adn try again." cancelAction:cancelAction otherActions:nil];
+        [alertView show];
+        
       } else {
         
         WASharedEventViewController *sharedEventsVC = [[WASharedEventViewController alloc] initWithStyle:UITableViewStylePlain];

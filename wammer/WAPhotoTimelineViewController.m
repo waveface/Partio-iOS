@@ -22,6 +22,8 @@
 #import "WAFile+LazyImages.h"
 #import "WAFileExif.h"
 #import "WAFileExif+WAAdditions.h"
+#import "WAPeople.h"
+#import "WALocation.h"
 
 #import "WAContactPickerViewController.h"
 #import "WAGeoLocation.h"
@@ -164,7 +166,7 @@
   return opq;
 }
 
-- (void) finishCreatingSharingEvent {
+- (void) finishCreatingSharingEventForSharingTargets:(NSArray *)contacts {
   
 //  __weak WAPhotoTimelineViewController *wSelf = self;
   NSDate *importTime = [NSDate date];
@@ -212,29 +214,59 @@
         
       }
     }
-    
-    article.event = (id)kCFBooleanTrue;
-    article.eventType = [NSNumber numberWithInt:WAEventArticleSharedType];
-    article.draft = (id)kCFBooleanFalse;
-    CFUUIDRef theUUID = CFUUIDCreate(kCFAllocatorDefault);
-    if (theUUID)
-      article.identifier = [((__bridge_transfer NSString *)CFUUIDCreateString(kCFAllocatorDefault, theUUID)) lowercaseString];
-    CFRelease(theUUID);
-    article.dirty = (id)kCFBooleanTrue;
-    article.creationDeviceName = [UIDevice currentDevice].name;
-    article.creationDate = [NSDate date];
-    
-    NSError *savingError = nil;
-    if ([moc save:&savingError]) {
-      NSLog(@"Sharing event successfully created");
-    } else {
-      NSLog(@"error on creating a new import post for error: %@", savingError);
+  }
+  
+  article.event = (id)kCFBooleanTrue;
+  article.eventType = [NSNumber numberWithInt:WAEventArticleSharedType];
+  article.draft = (id)kCFBooleanFalse;
+  CFUUIDRef theUUID = CFUUIDCreate(kCFAllocatorDefault);
+  if (theUUID)
+    article.identifier = [((__bridge_transfer NSString *)CFUUIDCreateString(kCFAllocatorDefault, theUUID)) lowercaseString];
+  CFRelease(theUUID);
+  article.dirty = (id)kCFBooleanTrue;
+  article.creationDeviceName = [UIDevice currentDevice].name;
+  article.creationDate = [NSDate date];
+  
+  NSArray *emailsFromContacts = [contacts valueForKey:@"email"];
+  NSMutableArray *invitingEmails = [NSMutableArray array];
+  for (NSArray *contactEmails in emailsFromContacts) {
+    [invitingEmails addObjectsFromArray:contactEmails];
+  }
+  NSFetchRequest *fr = [[NSFetchRequest alloc] initWithEntityName:@"WAPeople"];
+  fr.predicate = [NSPredicate predicateWithFormat:@"email IN %@", invitingEmails];
+  NSError *error = nil;
+  NSArray *peopleFound = [moc executeFetchRequest:fr error:&error];
+  if (peopleFound.count) {
+    for (WAPeople *person in peopleFound) {
+      [[article mutableSetValueForKey:@"people"] addObject:person];
+      if ([invitingEmails indexOfObject:person.email] != NSNotFound) {
+        [invitingEmails removeObject:person.email];
+      }
     }
+  }
+  for (NSString *email in invitingEmails) {
+    WAPeople *person = (WAPeople*)[WAPeople objectInsertingIntoContext:moc withRemoteDictionary:@{}];
+    person.email = email;
+    [[article mutableSetValueForKey:@"people"] addObject:person];
+  }
+  
+  WALocation *location = (WALocation*)[WALocation objectInsertingIntoContext:moc withRemoteDictionary:@{}];
+  location.latitude = [NSNumber numberWithFloat:self.coordinate.latitude];
+  location.longitude = [NSNumber numberWithFloat:self.coordinate.longitude];
+  location.name = @""; // TBD
+  article.location = location;
+  
+  NSError *savingError = nil;
+  if ([moc save:&savingError]) {
+    NSLog(@"Sharing event successfully created");
+  } else {
+    NSLog(@"error on creating a new import post for error: %@", savingError);
   }
   
 }
 
 - (NSManagedObjectContext*)managedObjectContext {
+  
   if (_managedObjectContext)
     return _managedObjectContext;
   
@@ -255,8 +287,19 @@
 
 - (void)actionButtonClicked:(id)sender
 {
-  [self finishCreatingSharingEvent];
-  [self.navigationController popToRootViewControllerAnimated:NO];
+  
+  __weak WAPhotoTimelineViewController *wSelf = self;
+  WAContactPickerViewController *contactPicker = [[WAContactPickerViewController alloc] initWithStyle:UITableViewStylePlain];
+  if (self.navigationController) {
+    
+    contactPicker.onNextHandler = ^(NSArray *results) {
+      [wSelf finishCreatingSharingEventForSharingTargets:results];
+      [wSelf.navigationController popToRootViewControllerAnimated:NO];
+    };
+    [self.navigationController pushViewController:contactPicker animated:YES];
+    
+  }
+  
 //  WAContactPickerViewController *cpVC = [[WAContactPickerViewController alloc] initWithStyle:UITableViewStylePlain];
 //  [self.navigationController pushViewController:cpVC animated:YES];
  

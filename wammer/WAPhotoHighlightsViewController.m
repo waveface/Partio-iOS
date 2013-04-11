@@ -256,7 +256,7 @@
   NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
   formatter = [[NSDateFormatter alloc] init];
   formatter.dateStyle = NSDateFormatterMediumStyle;
-  formatter.timeStyle = NSDateFormatterMediumStyle;
+  formatter.timeStyle = NSDateFormatterNoStyle;
   cell.dateLabel.text = [formatter stringFromDate:eventDate];
   
   cell.locationLabel.text = @"";
@@ -300,6 +300,12 @@
     }
   }
 
+  __weak WAPhotoHighlightsViewController *wSelf = self;
+  [cell.addButton removeEventHandlersForControlEvents:UIControlEventTouchUpInside];
+  [cell.addButton addEventHandler:^(id sender) {
+    WADayPhotoPickerViewController *picker = [[WADayPhotoPickerViewController alloc] initWithSelectedAssets:wSelf.photoGroups[indexPath.row]];
+    [wSelf.navigationController pushViewController:picker animated:YES];
+  } forControlEvents:UIControlEventTouchUpInside];
   
   return cell;
 }
@@ -308,15 +314,11 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-  /*
-  WAPhotoTimelineViewController *vc = [[WAPhotoTimelineViewController alloc] initWithAssets:self.photoGroups[indexPath.row]];
   
-  self.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
-  self.modalPresentationStyle = UIModalPresentationCurrentContext;
-  [self presentViewController:vc animated:YES completion:nil];
-  */
-  WADayPhotoPickerViewController *picker = [[WADayPhotoPickerViewController alloc] initWithSelectedAssets:self.photoGroups[indexPath.row]];
-  [self.navigationController pushViewController:picker animated:YES];
+  WAPhotoTimelineViewController *vc = [[WAPhotoTimelineViewController alloc] initWithAssets:self.photoGroups[indexPath.row]];
+
+  [self.navigationController pushViewController:vc animated:YES];
+  
 }
 
 @end
