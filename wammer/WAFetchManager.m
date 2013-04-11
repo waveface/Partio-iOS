@@ -49,8 +49,8 @@
     self.recurrenceMachine.recurrenceInterval = 10;
 
 //    [self.recurrenceMachine addRecurringOperation:[self remoteCollectionFetchOperationPrototype]];
-//    [self.recurrenceMachine addRecurringOperation:[self remoteIndexFetchOperationPrototype]];
-    [self.recurrenceMachine addRecurringOperation:[self remoteArticlesFetchOperationPrototype]];
+    [self.recurrenceMachine addRecurringOperation:[self remoteIndexFetchOperationPrototype]];
+//    [self.recurrenceMachine addRecurringOperation:[self remoteArticlesFetchOperationPrototype]];
     [self.recurrenceMachine addRecurringOperation:[self remoteChangeFetchOperationPrototype]];
     [self.recurrenceMachine addRecurringOperation:[self remoteFileMetadataFetchOperationPrototype]];
 

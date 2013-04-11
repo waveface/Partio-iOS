@@ -753,6 +753,12 @@
 /* Class = "IBUILabel"; text = "WEEKDAY"; ObjectID = "136"; */
 "WEEKDAY" = "WEEKDAY";
 
+/* Class = "IBUIButton"; normalTitle = "SIGNUP_BUTTON"; ObjectID = "MNF-gq-mhw"; */
+"SIGNUP_BUTTON" = "使用 Facebook 帳號登入";
+
+/* Class = "IBUIButton"; normalTitle = "NOSIGNUP_BUTTON"; ObjectID = "ZCd-nx-9I5"; */
+"NOSIGNUP_BUTTON" = "體驗先";
+
 /* Class = "IBUITextField"; placeholder = "USERNAME_PLACEHOLDER"; ObjectID = "2Vk-4J-QH3"; */
 "USERNAME_PLACEHOLDER" = "me@example.com";
 

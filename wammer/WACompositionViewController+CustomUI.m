@@ -91,6 +91,7 @@
 	   attachments:attachments
 	mainAttachment:postCoverPhotoId
 		   type:WAArticleTypeEvent
+         eventType:WAEventArticlePhotoType
 		  favorite:NO
 			hidden:NO
 replacingDataWithDate:anArticleOrNil.modificationDate
