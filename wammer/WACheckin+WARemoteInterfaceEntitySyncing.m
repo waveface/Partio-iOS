@@ -33,7 +33,7 @@
     mapping = @{
                 @"name": @"name",
                 @"message": @"message",
-                @"checkin_id": @"identifier",
+                @"identifier": @"identifier",
                 @"create_time": @"createDate",
                 @"tagged_uids": @"taggedUsers"
                 };
@@ -51,6 +51,11 @@
   if (timestampNumber) {
     returnedDictionary[@"create_time"] = [NSDate dateWithTimeIntervalSince1970:timestampNumber.intValue];
   }
+  
+  NSNumber *checkinID = incomingDictionary[@"checkin_id"];
+  if (checkinID) {
+    returnedDictionary[@"identifier"] = [NSString stringWithFormat:@"%@", checkinID];
+  }
     
   return returnedDictionary;
 }
@@ -59,8 +64,6 @@
       fromRemoteKeyPath:(NSString *)aRemoteKeyPath
          toLocalKeyPath:(NSString *)aLocalKeyPath {
 
-  if ( [aRemoteKeyPath isEqualToString:@"checkin_id"] )
-    return [NSString stringWithFormat:@"%@", aValue];
   if ( [aRemoteKeyPath isEqualToString:@"tagged_uids"])
     return [[NSString alloc] initWithData:[NSJSONSerialization dataWithJSONObject:(NSArray*)aValue options:0 error:nil] encoding:NSUTF8StringEncoding];
 

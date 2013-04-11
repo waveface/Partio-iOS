@@ -300,9 +300,6 @@
     
   }
   
-//  WAContactPickerViewController *cpVC = [[WAContactPickerViewController alloc] initWithStyle:UITableViewStylePlain];
-//  [self.navigationController pushViewController:cpVC animated:YES];
- 
 }
 
 - (void)didReceiveMemoryWarning
