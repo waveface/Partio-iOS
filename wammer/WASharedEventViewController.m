@@ -9,7 +9,7 @@
 #import "WASharedEventViewController.h"
 #import "WAPhotoHighlightsViewController.h"
 #import "WAPhotoTimelineViewController.h"
-#import "WALocation.h"
+#import "WAGeoLocation.h"
 #import <CoreLocation/CoreLocation.h>
 #import "WADataStore.h"
 #import "NSDate+WAAdditions.h"
@@ -17,7 +17,6 @@
 @interface WASharedEventViewController ()
 
 @property (nonatomic, strong) NSFetchedResultsController *eventFetchedResultsController;
-@property (nonatomic, strong) NSMutableArray *events;
 
 @end
 
@@ -28,22 +27,20 @@
   self = [super initWithStyle:style];
   if (self) {
     // Custom initialization
-    self.events = [[NSMutableArray alloc] init];
+    [self loadEvents];
   }
-  self.events = [[self loadEventsFrom:[NSDate date] toPreviousDays:100] copy];
   
   return self;
 }
 
-- (NSArray *)loadEventsFrom:(NSDate *)aDate toPreviousDays:(NSInteger)days
+- (NSArray *)loadEvents
 {
-  //TODO: when to load more events
   NSManagedObjectContext *moc = [[WADataStore defaultStore] autoUpdatingMOC];
   NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] initWithEntityName:@"WAArticle"];
-  NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"eventStartDate" ascending:NO];
+  NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"creationDate" ascending:NO];
   [fetchRequest setSortDescriptors:@[sortDescriptor]];
   self.eventFetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest managedObjectContext:moc sectionNameKeyPath:nil cacheName:nil];
-  NSPredicate *predicate = [NSPredicate predicateWithFormat:@"eventStartDate >= %@ AND eventStartDate <= %@ AND event = TRUE AND eventType = %d AND files.@count > 0", [aDate dateOfPreviousNumOfDays:days], aDate, WAEventArticleSharedType];
+  NSPredicate *predicate = [NSPredicate predicateWithFormat:@"event = TRUE AND eventType = %d AND hidden = FALSE", WAEventArticleSharedType];
   [self.eventFetchedResultsController.fetchRequest setPredicate:predicate];
   
   NSError *Err;
@@ -68,7 +65,7 @@
 {
   [super viewDidAppear:animated];
   
-  if (![self.events count]) {
+  if (![self.eventFetchedResultsController.fetchedObjects count]) {
     [self shareNewEventFromHighlight];
     
   }
@@ -78,6 +75,66 @@
 {
   [super didReceiveMemoryWarning];
   // Dispose of any resources that can be recreated.
+}
+
+#pragma mark - NSFetchedResultsControllerDelegate
+
+- (void)controllerWillChangeContent:(NSFetchedResultsController *)controller
+{
+  [self.tableView beginUpdates];
+}
+
+- (void)controller:(NSFetchedResultsController *)controller didChangeSection:(id <NSFetchedResultsSectionInfo>)sectionInfo
+           atIndex:(NSUInteger)sectionIndex forChangeType:(NSFetchedResultsChangeType)type {
+  
+  switch(type) {
+    case NSFetchedResultsChangeInsert:
+      [self.tableView insertSections:[NSIndexSet indexSetWithIndex:sectionIndex]
+                    withRowAnimation:UITableViewRowAnimationFade];
+      break;
+      
+    case NSFetchedResultsChangeDelete:
+      [self.tableView deleteSections:[NSIndexSet indexSetWithIndex:sectionIndex]
+                    withRowAnimation:UITableViewRowAnimationFade];
+      break;
+  }
+}
+
+
+- (void)controller:(NSFetchedResultsController *)controller didChangeObject:(id)anObject
+       atIndexPath:(NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type
+      newIndexPath:(NSIndexPath *)newIndexPath {
+  
+  UITableView *tableView = self.tableView;
+  
+  switch(type) {
+      
+    case NSFetchedResultsChangeInsert:
+      [tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath]
+                       withRowAnimation:UITableViewRowAnimationFade];
+      break;
+      
+    case NSFetchedResultsChangeDelete:
+      [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath]
+                       withRowAnimation:UITableViewRowAnimationFade];
+      break;
+      
+    case NSFetchedResultsChangeUpdate:
+      //TODO: update info: photo number, checkin number, date, location
+      break;
+      
+    case NSFetchedResultsChangeMove:
+      [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath]
+                       withRowAnimation:UITableViewRowAnimationFade];
+      [tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath]
+                       withRowAnimation:UITableViewRowAnimationFade];
+      break;
+  }
+}
+
+
+- (void)controllerDidChangeContent:(NSFetchedResultsController *)controller {
+  [self.tableView endUpdates];
 }
 
 #pragma mark - Table view data source
@@ -91,7 +148,7 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
   // Return the number of rows in the section.
-  return [self.events count];
+  return [self.eventFetchedResultsController.fetchedObjects count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -103,18 +160,29 @@
   }
   
   // Configure the cell...
-  cell.backgroundView = [[UIImageView alloc] initWithImage:[[self.events[indexPath.row] representingFile] thumbnailImage]];
   cell.backgroundView.contentMode = UIViewContentModeScaleAspectFill;
   cell.backgroundView.clipsToBounds = YES;
-  NSString *photoNumbers = [NSString stringWithFormat:([[self.events[indexPath.row] files] count] == 1)?
+
+  UIImage *backgroundImage = [[[self.eventFetchedResultsController objectAtIndexPath:indexPath] valueForKeyPath:@"representingFile"] thumbnailImage];
+  cell.backgroundView = [[UIImageView alloc] initWithImage:backgroundImage];
+  
+  NSInteger fileNumbers = [[[self.eventFetchedResultsController objectAtIndexPath:indexPath] valueForKey:@"files"] count];
+  NSString *photoNumbers = [NSString stringWithFormat:(fileNumbers == 1)?
                             NSLocalizedString(@"EVENT_ONE_PHOTO_NUMBER_LABEL", @"EVENT_ONE_PHOTO_NUMBER_LABEL"):
                             NSLocalizedString(@"EVENT_PHOTO_NUMBER_LABEL", @"EVENT_PHOTO_NUMBER_LABEL"),
-                            [[self.events[indexPath.row] files] count]];
+                            fileNumbers];
   static NSDateFormatter *sharedDateFormatter;
   sharedDateFormatter = [[NSDateFormatter alloc] init];
   [sharedDateFormatter setDateFormat:@"yyyy MM dd"];
-  NSString *eventDate = [sharedDateFormatter stringFromDate:[self.events[indexPath.row] eventStartDate]];
-  NSString *location = [self.events[indexPath.row] description];
+  NSString *eventDate = [sharedDateFormatter stringFromDate:[[self.eventFetchedResultsController objectAtIndexPath:indexPath] valueForKey:@"eventStartDate"]];
+  
+  NSString *location = @"";
+  NSArray *checkins = [[self.eventFetchedResultsController objectAtIndexPath:indexPath] valueForKeyPath:@"checkins"];
+  if ([checkins count]) {
+    location = [[checkins valueForKeyPath:@"name"] componentsJoinedByString:@", "];
+    
+  }
+  
   cell.textLabel.text = [NSString stringWithFormat:@"%@\n%@\n%@", photoNumbers, eventDate, location];
   [cell.textLabel setNumberOfLines:0];
   [cell.textLabel setBackgroundColor:[UIColor clearColor]];
@@ -130,10 +198,8 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
   [tableView deselectRowAtIndexPath:indexPath animated:NO];
-  __weak WASharedEventViewController *wSelf = self;
-  WAPhotoTimelineViewController *ptVC = [[WAPhotoTimelineViewController alloc] initWithArticleID:[self.events[indexPath.row] objectID]];
-  UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:ptVC];
-  [wSelf presentViewController:nav animated:YES completion:nil];
+  WAPhotoTimelineViewController *ptVC = [[WAPhotoTimelineViewController alloc] initWithArticleID:[[self.eventFetchedResultsController objectAtIndexPath:indexPath] objectID]];
+  [self.navigationController pushViewController:ptVC animated:YES];
 }
 
 #pragma - toolbar
