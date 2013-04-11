@@ -10,6 +10,7 @@
 #import "IRRecurrenceMachine.h"
 #import "Foundation+IRAdditions.h"
 #import "WAFetchManager+RemoteIndexFetch.h"
+#import "WAFetchManager+RemoteArticlesFetch.h"
 #import "WAFetchManager+RemoteCollectionFetch.h"
 #import "WAFetchManager+RemoteChangeFetch.h"
 #import "WAFetchManager+RemoteFileMetadataFetch.h"
@@ -49,6 +50,7 @@
 
 //    [self.recurrenceMachine addRecurringOperation:[self remoteCollectionFetchOperationPrototype]];
     [self.recurrenceMachine addRecurringOperation:[self remoteIndexFetchOperationPrototype]];
+//    [self.recurrenceMachine addRecurringOperation:[self remoteArticlesFetchOperationPrototype]];
     [self.recurrenceMachine addRecurringOperation:[self remoteChangeFetchOperationPrototype]];
     [self.recurrenceMachine addRecurringOperation:[self remoteFileMetadataFetchOperationPrototype]];
 

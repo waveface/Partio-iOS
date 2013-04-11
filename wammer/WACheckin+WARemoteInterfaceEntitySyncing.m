@@ -56,7 +56,6 @@
   if (checkinID) {
     returnedDictionary[@"identifier"] = [NSString stringWithFormat:@"%@", checkinID];
   }
-  
   return returnedDictionary;
 }
 
