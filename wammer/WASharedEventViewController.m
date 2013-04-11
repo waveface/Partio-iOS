@@ -79,6 +79,14 @@
   // Dispose of any resources that can be recreated.
 }
 
+- (BOOL) shouldAutorotate {
+  return YES;
+}
+
+- (NSUInteger) supportedInterfaceOrientations {
+  return UIInterfaceOrientationMaskPortrait;
+}
+
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView

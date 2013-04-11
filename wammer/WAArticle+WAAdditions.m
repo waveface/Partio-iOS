@@ -125,8 +125,11 @@
   if (self.people) {
     NSMutableArray *people = [NSMutableArray array];
     [self.people enumerateObjectsUsingBlock:^(WAPeople *aPersonRep, BOOL *stop) {
-      [people addObject:aPersonRep.name];
-    }];
+      if (aPersonRep.name)
+        [people addObject:aPersonRep.name];
+      else if (aPersonRep.email)
+        [people addObject:aPersonRep.email];
+     }];
     
     if (people.count) {
       [desc appendFormat:@"%@ %@",

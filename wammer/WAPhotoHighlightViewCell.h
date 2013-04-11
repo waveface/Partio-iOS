@@ -16,6 +16,7 @@
 @property (nonatomic, weak) IBOutlet UILabel *dateLabel;
 @property (nonatomic, weak) IBOutlet UILabel *photoNumberLabel;
 @property (nonatomic, weak) IBOutlet UILabel *locationLabel;
+@property (nonatomic, weak) IBOutlet UIButton *addButton;
 @property (nonatomic, strong) WAGeoLocation *geoLocation;
 @property (nonatomic, strong) FBRequestConnection *fbRequest;
 

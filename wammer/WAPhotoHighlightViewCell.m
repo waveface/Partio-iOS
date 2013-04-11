@@ -29,12 +29,18 @@
 
 - (void) awakeFromNib {
   
-  CAGradientLayer *gradientLayer = [CAGradientLayer layer];
-  gradientLayer.frame = (CGRect) {CGPointZero, self.bgImageView.frame.size};
-  gradientLayer.colors = @[(id)[[UIColor colorWithWhite:0.0 alpha:0.0] CGColor], (id)[[UIColor colorWithWhite:0.0 alpha:0.8] CGColor]];
+//  CAGradientLayer *gradientLayer = [CAGradientLayer layer];
+//  gradientLayer.frame = (CGRect) {CGPointZero, self.bgImageView.frame.size};
+//  gradientLayer.colors = @[(id)[[UIColor colorWithWhite:0.0 alpha:0.0] CGColor], (id)[[UIColor colorWithWhite:0.0 alpha:0.8] CGColor]];
   
-  [self.bgImageView.layer insertSublayer:gradientLayer above:nil];
+//  [self.bgImageView.layer insertSublayer:gradientLayer above:nil];
 
+  CALayer *layer = [CALayer layer];
+  layer.frame = (CGRect){CGPointZero, self.bgImageView.frame.size};
+  layer.opacity = 0.4f;
+  layer.opaque = NO;
+  layer.backgroundColor = [UIColor blackColor].CGColor;
+  [self.bgImageView.layer insertSublayer:layer above:nil];
 }
 
 @end
