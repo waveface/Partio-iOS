@@ -100,14 +100,16 @@
 //  [backButton setImage:backImage forState:UIControlStateNormal];
 //  UIBarButtonItem *backItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];
   
-  UIImage *actionImage = [UIImage imageNamed:@"action"];
-  UIButton *actionButton = [[UIButton alloc] initWithFrame:(CGRect){CGPointZero, actionImage.size}];
-  [actionButton addTarget:self action:@selector(actionButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
-  [actionButton setImage:actionImage forState:UIControlStateNormal];
-  UIBarButtonItem *actionItem = [[UIBarButtonItem alloc] initWithCustomView:actionButton];
+  if (!self.representingArticle) {
+    UIImage *actionImage = [UIImage imageNamed:@"action"];
+    UIButton *actionButton = [[UIButton alloc] initWithFrame:(CGRect){CGPointZero, actionImage.size}];
+    [actionButton addTarget:self action:@selector(actionButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+    [actionButton setImage:actionImage forState:UIControlStateNormal];
+    UIBarButtonItem *actionItem = [[UIBarButtonItem alloc] initWithCustomView:actionButton];
   
-//  self.navigationItem.leftBarButtonItem = backItem;
-  self.navigationItem.rightBarButtonItem = actionItem;
+    //  self.navigationItem.leftBarButtonItem = backItem;
+    self.navigationItem.rightBarButtonItem = actionItem;
+  }
   
   self.navigationBar = [[WAPhotoTimelineNavigationBar alloc] initWithFrame:(CGRect)CGRectMake(0, 0, self.view.frame.size.width, 44)];
   self.navigationBar.barStyle = UIBarStyleDefault;
