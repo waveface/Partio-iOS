@@ -22,12 +22,12 @@
 
 - (void) awakeFromNib {
   
-    CAGradientLayer *gradientLayer = [CAGradientLayer layer];
-    gradientLayer.frame = (CGRect) {CGPointZero, self.gradientBackground.frame.size};
-    gradientLayer.colors = @[(id)[[UIColor colorWithWhite:0.0 alpha:0.0] CGColor], (id)[[UIColor colorWithWhite:0.0 alpha:0.8] CGColor]];
-    
-    [self.gradientBackground.layer insertSublayer:gradientLayer above:nil];
-    
+//    CAGradientLayer *gradientLayer = [CAGradientLayer layer];
+//    gradientLayer.frame = (CGRect) {CGPointZero, self.gradientBackground.frame.size};
+//    gradientLayer.colors = @[(id)[[UIColor colorWithWhite:0.0 alpha:0.0] CGColor], (id)[[UIColor colorWithWhite:0.0 alpha:0.8] CGColor]];
+//    
+//    [self.gradientBackground.layer insertSublayer:gradientLayer above:nil];
+  
     self.mapView.layer.borderWidth = 4;
     self.mapView.layer.borderColor = [UIColor blackColor].CGColor;
     self.mapView.layer.cornerRadius = 30;
