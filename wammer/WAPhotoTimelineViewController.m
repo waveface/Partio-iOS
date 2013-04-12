@@ -272,7 +272,7 @@
   if (_managedObjectContext)
     return _managedObjectContext;
   
-  _managedObjectContext = [[WADataStore defaultStore] disposableMOC];
+  _managedObjectContext = [[WADataStore defaultStore] autoUpdatingMOC];
   return _managedObjectContext;
   
 }
