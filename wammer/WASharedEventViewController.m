@@ -125,7 +125,7 @@
       break;
       
     case NSFetchedResultsChangeUpdate:
-      [tableView reloadRowsAtIndexPaths:@[newIndexPath] withRowAnimation:UITableViewRowAnimationNone];
+      [tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
       break;
       
   }
