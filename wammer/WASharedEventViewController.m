@@ -159,11 +159,16 @@
   cell.selectionStyle = UITableViewCellSelectionStyleGray;
   
   // Configure the cell...
-  UIImage *backgroundImage = [[[self.eventFetchedResultsController objectAtIndexPath:indexPath] valueForKeyPath:@"representingFile"] thumbnailImage];
-  cell.backgroundView = [[UIImageView alloc] initWithImage:backgroundImage];
-  cell.backgroundView.contentMode = UIViewContentModeScaleAspectFill;
-  cell.backgroundView.clipsToBounds = YES;
+  WAArticle *aArticle = [self.eventFetchedResultsController objectAtIndexPath:indexPath];
+  [aArticle irObserve:@"representingFile.thumbnailImage"
+              options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionNew
+              context:nil withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior){
+                cell.backgroundView = [[UIImageView alloc] initWithImage:(UIImage *)toValue];
+                cell.backgroundView.contentMode = UIViewContentModeScaleAspectFill;
+                cell.backgroundView.clipsToBounds = YES;
 
+              }];
+  
   CAGradientLayer *gradientLayer = [CAGradientLayer layer];
   gradientLayer.frame = (CGRect){CGPointZero, cell.backgroundView.frame.size};
   gradientLayer.colors = @[(id)[[UIColor colorWithWhite:0.f alpha:0.4] CGColor], (id)[[UIColor colorWithWhite:0.f alpha:1.f] CGColor]];
