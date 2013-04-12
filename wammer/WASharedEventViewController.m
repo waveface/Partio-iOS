@@ -18,7 +18,7 @@
 
 @property (nonatomic, strong) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, strong) NSFetchedResultsController *eventFetchedResultsController;
-@property (nonatomic, strong) NSFetchedResultsController *checkinFetchedResultsController;
+
 @end
 
 @implementation WASharedEventViewController
@@ -167,8 +167,6 @@
   CAGradientLayer *gradientLayer = [CAGradientLayer layer];
   gradientLayer.frame = (CGRect){CGPointZero, cell.backgroundView.frame.size};
   gradientLayer.colors = @[(id)[[UIColor colorWithWhite:0.f alpha:0.4] CGColor], (id)[[UIColor colorWithWhite:0.f alpha:1.f] CGColor]];
-  //gradientLayer.locations = @[[NSNumber numberWithFloat:0.f],
-  //                            [NSNumber numberWithFloat:0.4]];
   [cell.backgroundView.layer insertSublayer:gradientLayer above:nil];
   
   NSInteger fileNumbers = [[[self.eventFetchedResultsController objectAtIndexPath:indexPath] valueForKey:@"files"] count];
@@ -186,24 +184,23 @@
   NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] initWithEntityName:@"WACheckin"];
   NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"createDate" ascending:NO];
   fetchRequest.sortDescriptors = @[sortDescriptor];
-  self.checkinFetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest
-                                                                             managedObjectContext:_managedObjectContext
-                                                                               sectionNameKeyPath:nil
-                                                                                        cacheName:nil];
-  self.checkinFetchedResultsController.delegate = self;
   NSPredicate *predicate = [NSPredicate predicateWithFormat:@"createDate = %@", eDate];
   fetchRequest.predicate = predicate;
   
   NSError *Error;
-  if (![self.checkinFetchedResultsController performFetch:&Error]) {
+  NSArray *checkins = [self.managedObjectContext executeFetchRequest:fetchRequest error:&Error];
+  if (Error) {
     NSLog(@"Failed to fetch checkins: %@", Error);
     
   } else {
-    NSArray *checkins = self.checkinFetchedResultsController.fetchedObjects;
     if ([checkins count]) {
       location = [[checkins valueForKeyPath:@"name"] componentsJoinedByString:@", "];
       
+    } else {
+      location = @"Location";
+      
     }
+    
   }
   
   cell.textLabel.text = [NSString stringWithFormat:@"%@\n%@\n%@", photoNumbers, eventDate, location];
