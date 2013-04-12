@@ -87,7 +87,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="PartioLogin.png" width="320" height="558"/>
+        <image name="PartioLogin.png" width="320" height="470"/>
     </resources>
     <classes>
         <class className="NSLayoutConstraint" superclassName="NSObject">
