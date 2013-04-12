@@ -163,7 +163,7 @@
   [aArticle irObserve:@"representingFile.thumbnailImage"
               options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionNew
               context:nil withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior){
-                dispatch_sync(dispatch_get_main_queue(), ^{
+                dispatch_async(dispatch_get_main_queue(), ^{
                   cell.backgroundView = [[UIImageView alloc] initWithImage:(UIImage *)toValue];
                   cell.backgroundView.contentMode = UIViewContentModeScaleAspectFill;
                   cell.backgroundView.clipsToBounds = YES;
