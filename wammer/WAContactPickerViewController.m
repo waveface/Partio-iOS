@@ -113,9 +113,9 @@
       cell.textLabel.text = name;
     }
     
-    NSString *email = _members[indexPath.row][@"email"];
-    if (email) {
-      cell.detailTextLabel.text = email;
+    NSArray *emails = _members[indexPath.row][@"email"];
+    if ([emails count]) {
+      cell.detailTextLabel.text = emails[0];
     }
     
     cell.accessoryType = UITableViewCellAccessoryCheckmark;
@@ -192,10 +192,10 @@
     
   }
   
-  NSString *email = @"";
+  NSArray *email = @[];
   NSArray *allEmail = (__bridge_transfer NSArray*)ABMultiValueCopyArrayOfAllValues(ABRecordCopyValue(person, kABPersonEmailProperty));
   if ([allEmail count]) {
-    email = allEmail[0];
+    email = allEmail;
     
   } else {
     //TODO: prompt dialog to input email
