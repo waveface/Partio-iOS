@@ -18,6 +18,5 @@
 @property (nonatomic, readonly, strong) WASlidingMenuViewController *slidingMenu;
 
 - (void) recreateViewHierarchy;
-+ (void) backgroundLoginWithFacebookIDWithCompleteHandler:(void(^)(NSError *error))completionHandler;
 
 @end
