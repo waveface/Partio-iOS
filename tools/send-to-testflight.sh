@@ -11,7 +11,7 @@ function usage() {
 }
 
 
-PROJECT_NAME="Wammer-iOS"
+PROJECT_NAME="Partio-iOS"
 
 VERSION_MARKETING="`agvtool mvers -terse1`"
 VERSION_BUILD="`agvtool vers -terse`"
