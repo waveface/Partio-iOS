@@ -73,7 +73,7 @@
   if (location) {
     NSMutableDictionary *gps = [@{
                           @"latitude": location[@"latitude"],
-                          @"longitude": location[@"longitude"]
+                          @"longtitude": location[@"longtitude"]
                           } mutableCopy];
     
     if (location[@"name"])
@@ -169,7 +169,7 @@
   
   NSParameterAssert(aGroupIdentifier);
   
-  NSDictionary *postEntity = [[self class] postEntityWithGroupID:aGroupIdentifier postID:postID text:contentTextOrNil attachments:attachmentIdentifiersOrNil mainAttachment:nil type:postType eventType:eventType isFavorite:isFavorite isHidden:NO createTime:createTime updateTime:updateTime invitingEmails:emails];
+  NSDictionary *postEntity = [[self class] postEntityWithGroupID:aGroupIdentifier postID:postID text:contentTextOrNil attachments:attachmentIdentifiersOrNil mainAttachment:nil type:postType eventType:eventType isFavorite:isFavorite isHidden:NO createTime:createTime updateTime:updateTime invitingEmails:emails location:location checkins:checkins];
   
   [self.engine fireAPIRequestNamed:@"pio_posts/new" withArguments:nil options:WARemoteInterfaceEnginePostFormEncodedOptionsDictionary(postEntity, nil) validator:WARemoteInterfaceGenericNoErrorValidator() successHandler:^(NSDictionary *inResponseOrNil, IRWebAPIRequestContext *inResponseContext) {
     
@@ -186,7 +186,7 @@
 
 - (void) updatePost:(NSString *)postID inGroup:(NSString *)groupID withText:(NSString *)text attachments:(NSArray *)attachmentIDs mainAttachment:(NSString *)mainAttachmentID type:(WAArticleType)postType eventType:(WAEventArticleType)eventType favorite:(BOOL)isFavorite hidden:(BOOL)isHidden replacingDataWithDate:(NSDate *)lastKnownModificationDate updateTime:(NSDate *)updateTime onSuccess:(void(^)(NSDictionary *postRep))successBlock onFailure:(void(^)(NSError *error))failureBlock {
   
-  NSMutableDictionary *postEntity = [[[self class] postEntityWithGroupID:groupID postID:postID text:text attachments:attachmentIDs mainAttachment:mainAttachmentID type:postType eventType:eventType isFavorite:isFavorite isHidden:isHidden createTime:nil updateTime:updateTime invitingEmails:nil] mutableCopy];
+  NSMutableDictionary *postEntity = [[[self class] postEntityWithGroupID:groupID postID:postID text:text attachments:attachmentIDs mainAttachment:mainAttachmentID type:postType eventType:eventType isFavorite:isFavorite isHidden:isHidden createTime:nil updateTime:updateTime invitingEmails:nil location:nil checkins:nil] mutableCopy];
   
   if (lastKnownModificationDate) {
     

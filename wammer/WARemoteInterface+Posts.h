@@ -12,7 +12,7 @@
 
 @interface WARemoteInterface (Posts)
 
-+ (NSDictionary *) postEntityWithGroupID:(NSString *)groupID postID:(NSString *)postID text:(NSString *)text attachments:(NSArray *)attachmentIDs mainAttachment:(NSString *)mainAttachmentID type:(WAArticleType)postType eventType:(WAEventArticleType)eventType isFavorite:(BOOL)isFavorite isHidden:(BOOL)isHidden createTime:(NSDate *)createTime updateTime:(NSDate *)updateTime invitingEmails:(NSArray*)emails;
++ (NSDictionary *) postEntityWithGroupID:(NSString *)groupID postID:(NSString *)postID text:(NSString *)text attachments:(NSArray *)attachmentIDs mainAttachment:(NSString *)mainAttachmentID type:(WAArticleType)postType eventType:(WAEventArticleType)eventType isFavorite:(BOOL)isFavorite isHidden:(BOOL)isHidden createTime:(NSDate *)createTime updateTime:(NSDate *)updateTime invitingEmails:(NSArray*)emails location:(NSDictionary*)location checkins:(NSArray*)checkins;
 
 //	GET posts/getSingle
 - (void) retrievePost:(NSString *)anIdentifier inGroup:(NSString *)aGroupIdentifier onSuccess:(void(^)(NSDictionary *postRep))successBlock onFailure:(void(^)(NSError *error))failureBlock;

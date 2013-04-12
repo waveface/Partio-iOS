@@ -16,8 +16,9 @@
 
 @interface WASharedEventViewController ()
 
+@property (nonatomic, strong) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, strong) NSFetchedResultsController *eventFetchedResultsController;
-
+@property (nonatomic, strong) NSFetchedResultsController *checkinFetchedResultsController;
 @end
 
 @implementation WASharedEventViewController
@@ -29,17 +30,30 @@
     // Custom initialization
     [self loadEvents];
   }
-  
   return self;
+}
+
+- (NSManagedObjectContext*)managedObjectContext {
+  if (_managedObjectContext)
+    return _managedObjectContext;
+  
+  _managedObjectContext = [[WADataStore defaultStore] defaultAutoUpdatedMOC];
+  return _managedObjectContext;
 }
 
 - (NSArray *)loadEvents
 {
-  NSManagedObjectContext *moc = [[WADataStore defaultStore] autoUpdatingMOC];
+  NSManagedObjectContext *moc = self.managedObjectContext;
   NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] initWithEntityName:@"WAArticle"];
   NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"creationDate" ascending:NO];
   [fetchRequest setSortDescriptors:@[sortDescriptor]];
-  self.eventFetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest managedObjectContext:moc sectionNameKeyPath:nil cacheName:nil];
+  
+  self.eventFetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest
+                                                                           managedObjectContext:moc
+                                                                             sectionNameKeyPath:nil
+                                                                                      cacheName:nil];
+  self.eventFetchedResultsController.delegate = self;
+  
   NSPredicate *predicate = [NSPredicate predicateWithFormat:@"event = TRUE AND eventType = %d AND hidden = FALSE", WAEventArticleSharedType];
   [self.eventFetchedResultsController.fetchRequest setPredicate:predicate];
   
@@ -55,6 +69,8 @@
 {
   [super viewDidLoad];
   
+  [self.navigationController setTitle:NSLocalizedString(@"LABEL_SHARED_EVENTS", @"LABEL_SHARED_EVENTS")];
+  
   [self.navigationController setToolbarHidden:NO];
   UIBarButtonItem *flexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
   UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(shareNewEventFromHighlight)];
@@ -68,7 +84,10 @@
   if (![self.eventFetchedResultsController.fetchedObjects count]) {
     [self shareNewEventFromHighlight];
     
+  } else {
+    [self.tableView reloadData];
   }
+  
 }
 
 - (void)didReceiveMemoryWarning
@@ -77,6 +96,7 @@
   // Dispose of any resources that can be recreated.
 }
 
+//FIXME: don't autorotate
 - (BOOL) shouldAutorotate {
   return YES;
 }
@@ -92,23 +112,6 @@
   [self.tableView beginUpdates];
 }
 
-- (void)controller:(NSFetchedResultsController *)controller didChangeSection:(id <NSFetchedResultsSectionInfo>)sectionInfo
-           atIndex:(NSUInteger)sectionIndex forChangeType:(NSFetchedResultsChangeType)type {
-  
-  switch(type) {
-    case NSFetchedResultsChangeInsert:
-      [self.tableView insertSections:[NSIndexSet indexSetWithIndex:sectionIndex]
-                    withRowAnimation:UITableViewRowAnimationFade];
-      break;
-      
-    case NSFetchedResultsChangeDelete:
-      [self.tableView deleteSections:[NSIndexSet indexSetWithIndex:sectionIndex]
-                    withRowAnimation:UITableViewRowAnimationFade];
-      break;
-  }
-}
-
-
 - (void)controller:(NSFetchedResultsController *)controller didChangeObject:(id)anObject
        atIndexPath:(NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type
       newIndexPath:(NSIndexPath *)newIndexPath {
@@ -118,28 +121,15 @@
   switch(type) {
       
     case NSFetchedResultsChangeInsert:
-      [tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath]
-                       withRowAnimation:UITableViewRowAnimationFade];
-      break;
-      
-    case NSFetchedResultsChangeDelete:
-      [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath]
-                       withRowAnimation:UITableViewRowAnimationFade];
+      [tableView insertRowsAtIndexPaths:@[newIndexPath] withRowAnimation:UITableViewRowAnimationFade];
       break;
       
     case NSFetchedResultsChangeUpdate:
-      //TODO: update info: photo number, checkin number, date, location
+      [tableView reloadRowsAtIndexPaths:@[newIndexPath] withRowAnimation:UITableViewRowAnimationNone];
       break;
       
-    case NSFetchedResultsChangeMove:
-      [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath]
-                       withRowAnimation:UITableViewRowAnimationFade];
-      [tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath]
-                       withRowAnimation:UITableViewRowAnimationFade];
-      break;
   }
 }
-
 
 - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller {
   [self.tableView endUpdates];
@@ -166,13 +156,20 @@
   if (cell == nil) {
     cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
   }
+  cell.selectionStyle = UITableViewCellSelectionStyleGray;
   
   // Configure the cell...
+  UIImage *backgroundImage = [[[self.eventFetchedResultsController objectAtIndexPath:indexPath] valueForKeyPath:@"representingFile"] thumbnailImage];
+  cell.backgroundView = [[UIImageView alloc] initWithImage:backgroundImage];
   cell.backgroundView.contentMode = UIViewContentModeScaleAspectFill;
   cell.backgroundView.clipsToBounds = YES;
 
-  UIImage *backgroundImage = [[[self.eventFetchedResultsController objectAtIndexPath:indexPath] valueForKeyPath:@"representingFile"] thumbnailImage];
-  cell.backgroundView = [[UIImageView alloc] initWithImage:backgroundImage];
+  CAGradientLayer *gradientLayer = [CAGradientLayer layer];
+  gradientLayer.frame = (CGRect){CGPointZero, cell.backgroundView.frame.size};
+  gradientLayer.colors = @[(id)[[UIColor colorWithWhite:0.f alpha:0.4] CGColor], (id)[[UIColor colorWithWhite:0.f alpha:1.f] CGColor]];
+  //gradientLayer.locations = @[[NSNumber numberWithFloat:0.f],
+  //                            [NSNumber numberWithFloat:0.4]];
+  [cell.backgroundView.layer insertSublayer:gradientLayer above:nil];
   
   NSInteger fileNumbers = [[[self.eventFetchedResultsController objectAtIndexPath:indexPath] valueForKey:@"files"] count];
   NSString *photoNumbers = [NSString stringWithFormat:(fileNumbers == 1)?
@@ -182,13 +179,31 @@
   static NSDateFormatter *sharedDateFormatter;
   sharedDateFormatter = [[NSDateFormatter alloc] init];
   [sharedDateFormatter setDateFormat:@"yyyy MM dd"];
-  NSString *eventDate = [sharedDateFormatter stringFromDate:[[self.eventFetchedResultsController objectAtIndexPath:indexPath] valueForKey:@"eventStartDate"]];
+  NSDate *eDate = [[self.eventFetchedResultsController objectAtIndexPath:indexPath] valueForKey:@"creationDate"];
+  NSString *eventDate = [sharedDateFormatter stringFromDate:eDate];
   
   NSString *location = @"";
-  NSArray *checkins = [[self.eventFetchedResultsController objectAtIndexPath:indexPath] valueForKeyPath:@"checkins"];
-  if ([checkins count]) {
-    location = [[checkins valueForKeyPath:@"name"] componentsJoinedByString:@", "];
+  NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] initWithEntityName:@"WACheckin"];
+  NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"createDate" ascending:NO];
+  fetchRequest.sortDescriptors = @[sortDescriptor];
+  self.checkinFetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest
+                                                                             managedObjectContext:_managedObjectContext
+                                                                               sectionNameKeyPath:nil
+                                                                                        cacheName:nil];
+  self.checkinFetchedResultsController.delegate = self;
+  NSPredicate *predicate = [NSPredicate predicateWithFormat:@"createDate = %@", eDate];
+  fetchRequest.predicate = predicate;
+  
+  NSError *Error;
+  if (![self.checkinFetchedResultsController performFetch:&Error]) {
+    NSLog(@"Failed to fetch checkins: %@", Error);
     
+  } else {
+    NSArray *checkins = self.checkinFetchedResultsController.fetchedObjects;
+    if ([checkins count]) {
+      location = [[checkins valueForKeyPath:@"name"] componentsJoinedByString:@", "];
+      
+    }
   }
   
   cell.textLabel.text = [NSString stringWithFormat:@"%@\n%@\n%@", photoNumbers, eventDate, location];
