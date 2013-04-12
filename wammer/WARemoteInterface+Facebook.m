@@ -25,7 +25,7 @@
 		accessToken, @"auth_token",
 		preferredLanguage, @"lang",
 		@"facebook", @"sns",
-		@"yes", @"sns_connect",
+		@"no", @"sns_connect",
 		@"yes", @"subscribed",
 		WADeviceName(), @"device_name",
 		WADeviceIdentifier(), @"device_id",

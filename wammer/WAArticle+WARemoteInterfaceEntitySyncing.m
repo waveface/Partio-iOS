@@ -278,6 +278,8 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
   NSString * const postCoverPhotoID = self.representingFile.identifier;
   NSDate * const postCreationDate = self.creationDate;
   NSDate * const postModificationDate = self.modificationDate;
+  NSDate * const eventStartTime = self.eventStartDate;
+  NSDate * const eventEndTime = self.eventEndDate;
   NSArray * invitingEmails = [(NSSet*)[self.people valueForKey:@"email"] allObjects];
   WAEventArticleType eventType = [self.eventType intValue];
   
@@ -501,6 +503,8 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 					   postId:postID
 				   createTime:postCreationDate
 				   updateTime:postModificationDate
+               eventStartTime:eventStartTime
+                 eventEndTime:eventEndTime
 					 favorite:isFavorite
                invitingEmails:invitingEmails
                      location:postLocation

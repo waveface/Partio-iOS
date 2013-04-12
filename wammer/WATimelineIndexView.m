@@ -87,11 +87,11 @@
 
 - (void) awakeFromNib {
     
-  self.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.6];
+  self.backgroundColor = [UIColor colorWithWhite:0 alpha:0.5];
   self.layer.cornerRadius = self.frame.size.width/2;
   self.dot = [[UIView alloc] initWithFrame:CGRectMake(self.frame.size.width/2-4, 10, 8, 8)];
   self.dot.layer.cornerRadius = self.dot.frame.size.width/2;
-  self.dot.backgroundColor = [UIColor colorWithWhite:120 alpha:0.8];
+  self.dot.backgroundColor = [UIColor colorWithWhite:250 alpha:0.8];
   [self addSubview:self.dot];
     
   self.indexics = [NSMutableArray array];

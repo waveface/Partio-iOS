@@ -93,63 +93,65 @@
   }];
   
   if ([FBSession activeSession].isOpen) {
-    self.fbConnection = [FBRequestConnection startForUserCheckinsAfterId:nil
-                                                         completeHandler:^(FBRequestConnection *connection, NSArray *result, NSError *error) {
+    self.fbConnection = [FBRequestConnection
+                         startForUserCheckinsAfterId:nil
+                         
+                         completeHandler:^(FBRequestConnection *connection, NSArray *result, NSError *error) {
     
-                                                           if (error) {
-                                                             NSLog(@"fb request error: %@", error);
-                                                           } else {
-                                                             //                                                          NSLog(@"fb request success: %@", result);
-                                                          
-                                                             NSManagedObjectContext *context = [[WADataStore defaultStore] disposableMOC];
-                                                             NSMutableArray *changedIndexPaths = [NSMutableArray array];
-                                                          
-                                                             for (NSDictionary *checkinItem in result) {
-                                                               NSNumber *timestampNumber = checkinItem[@"timestamp"];
-                                                               NSDate *checkinDate = [NSDate dateWithTimeIntervalSince1970:timestampNumber.floatValue];
-                                                               
-                                                               BOOL found = NO;
-                                                               
-                                                               [WACheckin insertOrUpdateObjectsUsingContext:context withRemoteResponse:result usingMapping:nil options:IRManagedObjectOptionIndividualOperations];
-                                                               
-                                                               NSUInteger groupIndex = 0;
-                                                               for (NSArray *group in self.photoGroups) {
-                                                                 NSDate *enddingDate = [NSDate dateWithTimeInterval:(30*60) sinceDate:[(ALAsset*)group[0] valueForProperty:ALAssetPropertyDate]];
-                                                                 NSDate *beginningDate = [NSDate dateWithTimeInterval:(-30*60) sinceDate:[(ALAsset*)group.lastObject valueForProperty:ALAssetPropertyDate]];
-                                                                 
-                                                                 if (groupIndex == 0) {
-                                                                   NSLog(@"%@ ~ %@", beginningDate, enddingDate);
-                                                                 }
-                                                                 if ([checkinDate compare:beginningDate] == NSOrderedAscending) {
-                                                                   groupIndex ++;
-                                                                   continue;
-                                                                 }
-                                                                 
-                                                                 if ([checkinDate compare:enddingDate] == NSOrderedAscending) {
-                                                                   found = YES;
-                                                                 }
-                                                                 
-                                                                 break;
-                                                                 
-                                                               }
-                                                               
-                                                               if (found) {
-                                                                 [changedIndexPaths addObject:[NSIndexPath indexPathForRow:groupIndex inSection:0]];
-                                                                 NSLog(@"found %@ at indexPath row: %d", checkinItem[@"name"],groupIndex);
-                                                               }
-                                                             }
-                                                             
-                                                             NSError *error = nil;
-                                                             [context save:&error];
-                                                             if (error) {
-                                                               NSLog(@"fail to save checkin for %@", error);
-                                                             }
-                                                             
-                                                             dispatch_async(dispatch_get_main_queue(), ^{
-                                                               [wSelf.tableView reloadRowsAtIndexPaths:changedIndexPaths withRowAnimation:YES];
-                                                             });
-                                                           }
-                                                         }];
+                           if (error) {
+                             NSLog(@"fb request error: %@", error);
+                           } else {
+                             //                                                          NSLog(@"fb request success: %@", result);
+                             
+                             NSManagedObjectContext *context = [[WADataStore defaultStore] disposableMOC];
+                             NSMutableArray *changedIndexPaths = [NSMutableArray array];
+                             
+                             for (NSDictionary *checkinItem in result) {
+                               NSNumber *timestampNumber = checkinItem[@"timestamp"];
+                               NSDate *checkinDate = [NSDate dateWithTimeIntervalSince1970:timestampNumber.floatValue];
+                               
+                               BOOL found = NO;
+                               
+                               [WACheckin insertOrUpdateObjectsUsingContext:context withRemoteResponse:result usingMapping:nil options:IRManagedObjectOptionIndividualOperations];
+                               
+                               NSUInteger groupIndex = 0;
+                               for (NSArray *group in self.photoGroups) {
+                                 NSDate *enddingDate = [NSDate dateWithTimeInterval:(30*60) sinceDate:[(ALAsset*)group[0] valueForProperty:ALAssetPropertyDate]];
+                                 NSDate *beginningDate = [NSDate dateWithTimeInterval:(-30*60) sinceDate:[(ALAsset*)group.lastObject valueForProperty:ALAssetPropertyDate]];
+                                 
+                                 if (groupIndex == 0) {
+                                   NSLog(@"%@ ~ %@", beginningDate, enddingDate);
+                                 }
+                                 if ([checkinDate compare:beginningDate] == NSOrderedAscending) {
+                                   groupIndex ++;
+                                   continue;
+                                 }
+                                 
+                                 if ([checkinDate compare:enddingDate] == NSOrderedAscending) {
+                                   found = YES;
+                                 }
+                                 
+                                 break;
+                                 
+                               }
+                               
+                               if (found) {
+                                 [changedIndexPaths addObject:[NSIndexPath indexPathForRow:groupIndex inSection:0]];
+                                 NSLog(@"found %@ at indexPath row: %d", checkinItem[@"name"],groupIndex);
+                               }
+                             }
+                             
+                             NSError *error = nil;
+                             [context save:&error];
+                             if (error) {
+                               NSLog(@"fail to save checkin for %@", error);
+                             }
+                             
+                             dispatch_async(dispatch_get_main_queue(), ^{
+                               [wSelf.tableView reloadRowsAtIndexPaths:changedIndexPaths withRowAnimation:YES];
+                             });
+                           }
+                         }];
     
   }
 }

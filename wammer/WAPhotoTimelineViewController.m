@@ -170,11 +170,9 @@
 
 - (void) finishCreatingSharingEventForSharingTargets:(NSArray *)contacts {
   
-//  __weak WAPhotoTimelineViewController *wSelf = self;
   NSDate *importTime = [NSDate date];
   
-//  NSManagedObjectContext *moc = [[WADataStore defaultStore] disposableMOC];
-  NSManagedObjectContext *moc = self.managedObjectContext;
+  NSManagedObjectContext *moc = [[WADataStore defaultStore] autoUpdatingMOC];
   WAArticle *article = [WAArticle objectInsertingIntoContext:moc withRemoteDictionary:@{}];
   
   for (ALAsset *asset in self.allAssets) {
@@ -227,6 +225,8 @@
   CFRelease(theUUID);
   article.dirty = (id)kCFBooleanTrue;
   article.creationDeviceName = [UIDevice currentDevice].name;
+  article.eventStartDate = [self beginDate];
+  article.eventEndDate = [self endDate];
   article.creationDate = [NSDate date];
   
   NSArray *emailsFromContacts = [contacts valueForKey:@"email"];
@@ -272,7 +272,7 @@
   if (_managedObjectContext)
     return _managedObjectContext;
   
-  _managedObjectContext = [[WADataStore defaultStore] disposableMOC];
+  _managedObjectContext = [[WADataStore defaultStore] defaultAutoUpdatedMOC];
   return _managedObjectContext;
   
 }
@@ -296,7 +296,8 @@
     
     contactPicker.onNextHandler = ^(NSArray *results) {
       [wSelf finishCreatingSharingEventForSharingTargets:results];
-      [wSelf.navigationController popToRootViewControllerAnimated:NO];
+//      [wSelf.navigationController popToRootViewControllerAnimated:NO];
+      [wSelf.navigationController dismissViewControllerAnimated:YES completion:nil];
     };
     [self.navigationController pushViewController:contactPicker animated:YES];
     
@@ -426,10 +427,18 @@
     
     if (self.representingArticle) {
      
-      UIImage *image = [(WAFile*)(self.representingArticle.files[base+i]) thumbnailImage];
-      [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-        ((UIImageView *)cell.imageViews[i]).image = image;
-      }];
+      [self.representingArticle.files[base+i]
+       irObserve:@"thumbnailImage"
+       options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionNew
+       context:nil
+       withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
+         
+         UIImage *image = (UIImage*)toValue;
+         [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+           ((UIImageView *)cell.imageViews[i]).image = image;
+         }];
+         
+       }];
       
     } else {
       NSBlockOperation *op = [NSBlockOperation blockOperationWithBlock:^{
@@ -456,11 +465,19 @@
     WAPhotoTimelineCover *cover = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"PhotoTimelineCover" forIndexPath:indexPath];
     
     if (self.representingArticle) {
-      
-      UIImage *coverImage = self.representingArticle.representingFile.thumbnailImage;
-      [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-        cover.coverImageView.image = coverImage;
-      }];
+    
+      [self.representingArticle.representingFile
+       irObserve:@"thumbnailImage"
+       options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionNew
+       context:nil
+       withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
+
+         UIImage *image = (UIImage*)toValue;
+         [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+           cover.coverImageView.image = image;
+         }];
+         
+       }];
       
     } else {
       ALAsset *coverAsset = self.allAssets[(NSInteger)(self.allAssets.count/3)];
