@@ -289,7 +289,7 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
     
     if (self.location.latitude && self.location.longitude) {
       postLocation[@"latitude"] = self.location.latitude;
-      postLocation[@"longtitude"] = self.location.longitude;
+      postLocation[@"longitude"] = self.location.longitude;
     }
     
     if (self.tags) {

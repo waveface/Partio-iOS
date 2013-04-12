@@ -138,7 +138,8 @@
 {
   [tableView deselectRowAtIndexPath:indexPath animated:NO];
 //  __weak WASharedEventViewController *wSelf = self;
-//  WAPhotoTimelineViewController *ptVC = [[WAPhotoTimelineViewController alloc] initWithArticle:[self.events[indexPath.row] objectID]];
+  WAPhotoTimelineViewController *ptVC = [[WAPhotoTimelineViewController alloc] initWithArticleID:[self.events[indexPath.row] objectID]];
+  [self.navigationController pushViewController:ptVC animated:YES];
 //  WANavigationController *nav = [[WANavigationController alloc] initWithRootViewController:ptVC];
 //  [wSelf presentViewController:nav animated:YES completion:nil];
 }
