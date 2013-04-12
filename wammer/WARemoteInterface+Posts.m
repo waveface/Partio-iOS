@@ -83,7 +83,7 @@
   if (location) {
     NSMutableDictionary *gps = [@{
                           @"latitude": location[@"latitude"],
-                          @"longtitude": location[@"longtitude"]
+                          @"longitude": location[@"longitude"]
                           } mutableCopy];
     
     if (location[@"name"])
