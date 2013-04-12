@@ -387,7 +387,7 @@
 "LABEL_MODAL_POPUP_CLOSE_BUTTON" = "關閉";
 
 /* LABEL_SHARED_EVENTS */
-"LABEL_SHARED_EVENTS" = "分享選輯";
+"LABEL_SHARED_EVENTS" = "所有共享";
 
 /* The text of location label when there is no gps information we can refer to */
 "LABEL_WITHOUT_GPS_DATA" = "您在哪裡？";

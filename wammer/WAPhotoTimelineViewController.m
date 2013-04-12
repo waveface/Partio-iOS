@@ -94,6 +94,8 @@
   self.imageDisplayQueue = [[NSOperationQueue alloc] init];
   self.imageDisplayQueue.maxConcurrentOperationCount = 1;
   
+  self.navigationController.toolbarHidden = YES;
+  
 //  UIImage *backImage = [UIImage imageNamed:@"back"];
 //  UIButton *backButton = [[UIButton alloc] initWithFrame:(CGRect){CGPointZero, backImage.size}];
 //  [backButton addTarget:self action:@selector(backButtonClicked:) forControlEvents:UIControlEventTouchUpInside];

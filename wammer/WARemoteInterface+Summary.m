@@ -28,7 +28,7 @@
 							  @"group_id":anGroupIdentifier,
 							  @"local_time_zone": @(timezoneOffset)};
 
-  [self.engine fireAPIRequestNamed:@"summary/getByPeriod"
+  [self.engine fireAPIRequestNamed:@"pio_summary/getByPeriod"
 					 withArguments:nil
 						   options:@{kIRWebAPIEngineRequestContextFormURLEncodingFieldsKey:arguments ,kIRWebAPIEngineRequestHTTPMethod: @"POST"}
 						 validator:WARemoteInterfaceGenericNoErrorValidator()

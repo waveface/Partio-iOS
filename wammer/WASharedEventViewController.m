@@ -12,6 +12,7 @@
 #import "WAGeoLocation.h"
 #import <CoreLocation/CoreLocation.h>
 #import "WADataStore.h"
+#import "WAPartioNavigationController.h"
 #import "NSDate+WAAdditions.h"
 
 @interface WASharedEventViewController ()
@@ -69,7 +70,7 @@
 {
   [super viewDidLoad];
   
-  [self.navigationController setTitle:NSLocalizedString(@"LABEL_SHARED_EVENTS", @"LABEL_SHARED_EVENTS")];
+  [self setTitle:NSLocalizedString(@"LABEL_SHARED_EVENTS", @"LABEL_SHARED_EVENTS")];
   
   [self.navigationController setToolbarHidden:NO];
   UIBarButtonItem *flexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
@@ -163,12 +164,12 @@
   [aArticle irObserve:@"representingFile.thumbnailImage"
               options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionNew
               context:nil withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior){
-                dispatch_sync(dispatch_get_main_queue(), ^{
+                //    dispatch_sync(dispatch_get_main_queue(), ^{
                   cell.backgroundView = [[UIImageView alloc] initWithImage:(UIImage *)toValue];
                   cell.backgroundView.contentMode = UIViewContentModeScaleAspectFill;
                   cell.backgroundView.clipsToBounds = YES;
 
-                });                
+                //});
               }];
   
   CAGradientLayer *gradientLayer = [CAGradientLayer layer];
@@ -234,7 +235,7 @@
 - (void)shareNewEventFromHighlight
 {
   WAPhotoHighlightsViewController *phVC = [[WAPhotoHighlightsViewController alloc] init];
-  UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:phVC];
+  WAPartioNavigationController *nav = [[WAPartioNavigationController alloc] initWithRootViewController:phVC];
   [self presentViewController:nav animated:YES completion:nil];
 }
 
