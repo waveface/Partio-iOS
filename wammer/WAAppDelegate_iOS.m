@@ -385,7 +385,7 @@ extern CFAbsoluteTime StartTime;
         
       } else {
         
-        WASharedEventViewController *sharedEventsVC = [[WASharedEventViewController alloc] initWithStyle:UITableViewStylePlain];
+        WASharedEventViewController *sharedEventsVC = [[WASharedEventViewController alloc] init];
         UINavigationController *navVC = [[UINavigationController alloc] initWithRootViewController:sharedEventsVC];
         wSelf.window.rootViewController = navVC;
 
