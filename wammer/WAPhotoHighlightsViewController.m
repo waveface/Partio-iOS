@@ -68,9 +68,9 @@
   
   [self.tableView registerNib:[UINib nibWithNibName:@"WAPhotoHighlightViewCell" bundle:nil] forCellReuseIdentifier:@"WAPhotoHighlightViewCell"];
   
-  UILabel *description = [[UILabel alloc] initWithFrame:CGRectMake(20, -88, 380, 88)];
+  UILabel *description = [[UILabel alloc] initWithFrame:CGRectMake(20, -88, 280, 88)];
   description.textAlignment = NSTextAlignmentCenter;
-  description.text = @"Select a highlight from your camera roll to share, or decide which photos by yourself.";
+  description.text = @"Highlight is a smart group of your photos. You can choose one of them to share, or select photos by yourself.";
   description.textColor = [UIColor whiteColor];
   description.backgroundColor = [UIColor clearColor];
   description.lineBreakMode = NSLineBreakByWordWrapping;
