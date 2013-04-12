@@ -334,6 +334,7 @@
 		809A1CE71716DC0A004083BA /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 809A1CE61716DC0A004083BA /* Default.png */; };
 		809A1CEB1716F2E9004083BA /* WAFacebookLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 809A1CE91716F2E9004083BA /* WAFacebookLoginViewController.m */; };
 		809A1CEC1716F2E9004083BA /* WAFacebookLoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 809A1CEA1716F2E9004083BA /* WAFacebookLoginViewController.xib */; };
+		809A1CF01717C36E004083BA /* WSCoachMarksView.m in Sources */ = {isa = PBXBuildFile; fileRef = 809A1CEF1717C36E004083BA /* WSCoachMarksView.m */; };
 		809C6D26160583A00016E196 /* IIViewDeckController.m in Sources */ = {isa = PBXBuildFile; fileRef = 809C6D23160583A00016E196 /* IIViewDeckController.m */; };
 		809C6D27160583A00016E196 /* WrapController.m in Sources */ = {isa = PBXBuildFile; fileRef = 809C6D25160583A00016E196 /* WrapController.m */; };
 		809C6D2B1605845A0016E196 /* WASlidingMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 809C6D291605845A0016E196 /* WASlidingMenuViewController.m */; };
@@ -1378,6 +1379,8 @@
 		809A1CE81716F2E9004083BA /* WAFacebookLoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WAFacebookLoginViewController.h; path = wammer/WAFacebookLoginViewController.h; sourceTree = "<group>"; };
 		809A1CE91716F2E9004083BA /* WAFacebookLoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WAFacebookLoginViewController.m; path = wammer/WAFacebookLoginViewController.m; sourceTree = "<group>"; };
 		809A1CEA1716F2E9004083BA /* WAFacebookLoginViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = WAFacebookLoginViewController.xib; path = wammer/WAFacebookLoginViewController.xib; sourceTree = "<group>"; };
+		809A1CEE1717C36E004083BA /* WSCoachMarksView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WSCoachMarksView.h; path = external/WSCoachMarksView/WSCoachMarksView.h; sourceTree = "<group>"; };
+		809A1CEF1717C36E004083BA /* WSCoachMarksView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WSCoachMarksView.m; path = external/WSCoachMarksView/WSCoachMarksView.m; sourceTree = "<group>"; };
 		809C6D22160583A00016E196 /* IIViewDeckController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IIViewDeckController.h; path = external/ViewDeck/ViewDeck/IIViewDeckController.h; sourceTree = "<group>"; };
 		809C6D23160583A00016E196 /* IIViewDeckController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = IIViewDeckController.m; path = external/ViewDeck/ViewDeck/IIViewDeckController.m; sourceTree = "<group>"; };
 		809C6D24160583A00016E196 /* WrapController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WrapController.h; path = external/ViewDeck/ViewDeck/WrapController.h; sourceTree = "<group>"; };
@@ -2553,6 +2556,15 @@
 			name = "Collection Picker";
 			sourceTree = "<group>";
 		};
+		809A1CED1717C35D004083BA /* CoachMark */ = {
+			isa = PBXGroup;
+			children = (
+				809A1CEE1717C36E004083BA /* WSCoachMarksView.h */,
+				809A1CEF1717C36E004083BA /* WSCoachMarksView.m */,
+			);
+			name = CoachMark;
+			sourceTree = "<group>";
+		};
 		809C6D21160582F40016E196 /* ViewDeck */ = {
 			isa = PBXGroup;
 			children = (
@@ -3672,6 +3684,7 @@
 		FFFDEFB414211D5C0083BEFB /* iOS */ = {
 			isa = PBXGroup;
 			children = (
+				809A1CED1717C35D004083BA /* CoachMark */,
 				809C6D21160582F40016E196 /* ViewDeck */,
 				803169F715C0EC20009D43F0 /* IRAQPhotoPicker */,
 				4B31BA861591A74C00DC1A70 /* AGImagePickerController */,
@@ -4840,6 +4853,7 @@
 				8095504F17166FE100BEDDE0 /* WAFacebookSignupViewController.m in Sources */,
 				808A33681716979D00CF5C8D /* WAFetchManager+RemoteArticlesFetch.m in Sources */,
 				809A1CEB1716F2E9004083BA /* WAFacebookLoginViewController.m in Sources */,
+				809A1CF01717C36E004083BA /* WSCoachMarksView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
