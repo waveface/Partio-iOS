@@ -168,8 +168,8 @@
                   cell.backgroundView = [[UIImageView alloc] initWithImage:(UIImage *)toValue];
                   cell.backgroundView.contentMode = UIViewContentModeScaleAspectFill;
                   cell.backgroundView.clipsToBounds = YES;
-
                 });
+
               }];
   
   CAGradientLayer *gradientLayer = [CAGradientLayer layer];
@@ -234,9 +234,8 @@
 
 - (void)shareNewEventFromHighlight
 {
-  WAPhotoHighlightsViewController *phVC = [[WAPhotoHighlightsViewController alloc] init];
-  WAPartioNavigationController *nav = [[WAPartioNavigationController alloc] initWithRootViewController:phVC];
-  [self presentViewController:nav animated:YES completion:nil];
+  WAPhotoHighlightsViewController *phVC = [WAPhotoHighlightsViewController viewControllerWithNavigationControllerWrapped];
+  [self presentViewController:phVC animated:YES completion:nil];
 }
 
 @end

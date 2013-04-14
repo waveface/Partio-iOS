@@ -8,8 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
-@interface WAPhotoHighlightsViewController : UITableViewController
+@interface WAPhotoHighlightsViewController : UIViewController
 
++ (id) viewControllerWithNavigationControllerWrapped;
 - (id) init;
 
 @end

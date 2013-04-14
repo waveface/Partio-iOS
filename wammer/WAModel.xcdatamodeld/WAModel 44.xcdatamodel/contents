@@ -38,6 +38,7 @@
         </relationship>
         <relationship name="people" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="WAPeople" inverseName="article" inverseEntity="WAPeople" syncable="YES"/>
         <relationship name="representingFile" optional="YES" minCount="1" maxCount="1" deletionRule="Deny" destinationEntity="WAFile" inverseName="representedArticle" inverseEntity="WAFile" syncable="YES"/>
+        <relationship name="sharingContacts" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="WAPeople" syncable="YES"/>
         <relationship name="tags" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="WATag" inverseName="article" inverseEntity="WATag" syncable="YES"/>
         <compoundIndexes>
             <compoundIndex>
@@ -307,7 +308,7 @@
     <fetchRequest name="WAFRLocalImportedArticles" entity="WAArticle" predicateString="import == 1"/>
     <fetchRequest name="WAFRUser" entity="WAUser" predicateString="identifier == $Identifier"/>
     <elements>
-        <element name="WAArticle" positionX="0" positionY="0" width="128" height="405"/>
+        <element name="WAArticle" positionX="0" positionY="0" width="128" height="420"/>
         <element name="WACache" positionX="0" positionY="0" width="128" height="135"/>
         <element name="WACheckin" positionX="160" positionY="192" width="128" height="120"/>
         <element name="WACollection" positionX="0" positionY="0" width="128" height="195"/>

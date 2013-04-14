@@ -2,7 +2,7 @@
 //  WAArticle.h
 //  wammer
 //
-//  Created by Shen Steven on 1/25/13.
+//  Created by Shen Steven on 4/13/13.
 //  Copyright (c) 2013 Waveface. All rights reserved.
 //
 
@@ -31,15 +31,15 @@ typedef NS_ENUM(NSUInteger, WAEventArticleType) {
 @property (nonatomic, retain) NSNumber * dirty;
 @property (nonatomic, retain) NSNumber * draft;
 @property (nonatomic, retain) NSNumber * event;
+@property (nonatomic, retain) NSDate * eventEndDate;
+@property (nonatomic, retain) NSDate * eventStartDate;
+@property (nonatomic, retain) NSNumber * eventType;
 @property (nonatomic, retain) NSNumber * favorite;
 @property (nonatomic, retain) NSNumber * hidden;
 @property (nonatomic, retain) NSString * identifier;
 @property (nonatomic, retain) NSDate * modificationDate;
 @property (nonatomic, retain) NSString * text;
-@property (nonatomic, retain) NSNumber * eventType;
 @property (nonatomic, retain) NSString * textAuto;
-@property (nonatomic, retain) NSDate * eventStartDate;
-@property (nonatomic, retain) NSDate * eventEndDate;
 @property (nonatomic, retain) NSSet *checkins;
 @property (nonatomic, retain) NSSet *descriptiveTags;
 @property (nonatomic, retain) WAEventDay *eventDay;
@@ -50,6 +50,7 @@ typedef NS_ENUM(NSUInteger, WAEventArticleType) {
 @property (nonatomic, retain) NSSet *people;
 @property (nonatomic, retain) WAFile *representingFile;
 @property (nonatomic, retain) NSSet *tags;
+@property (nonatomic, retain) NSSet *sharingContacts;
 @end
 
 @interface WAArticle (CoreDataGeneratedAccessors)
@@ -83,5 +84,10 @@ typedef NS_ENUM(NSUInteger, WAEventArticleType) {
 - (void)removeTagsObject:(WATag *)value;
 - (void)addTags:(NSSet *)values;
 - (void)removeTags:(NSSet *)values;
+
+- (void)addSharingContactsObject:(WAPeople *)value;
+- (void)removeSharingContactsObject:(WAPeople *)value;
+- (void)addSharingContacts:(NSSet *)values;
+- (void)removeSharingContacts:(NSSet *)values;
 
 @end

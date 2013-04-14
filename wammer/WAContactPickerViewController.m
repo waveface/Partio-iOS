@@ -7,16 +7,17 @@
 //
 
 #import "WAContactPickerViewController.h"
+#import "WAContactPickerSectionHeaderView.h"
 
-@interface WAContactPickerViewController ()
-
+@interface WAContactPickerViewController () <UITableViewDelegate, UITableViewDataSource>
+@property (nonatomic, weak) IBOutlet UITableView *tableView;
+@property (nonatomic, weak) IBOutlet UINavigationBar *navigationBar;
 @end
 
 @implementation WAContactPickerViewController
 
-- (id)initWithStyle:(UITableViewStyle)style
-{
-  self = [super initWithStyle:style];
+- (id) init {
+  self = [super initWithNibName:nil bundle:nil];
   if (self) {
     // Custom initialization
     _members = [[NSMutableArray alloc] init];
@@ -29,12 +30,20 @@
   [super viewDidLoad];
   
   self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(done)];
+  
+  __weak WAContactPickerViewController *wSelf = self;
+  self.navigationItem.leftBarButtonItem = WAPartioBackButton(^{
+    [wSelf.navigationController popViewControllerAnimated:YES];
+  });
+  self.navigationItem.title = @"Invite Friends";
+  
+  [self.navigationBar pushNavigationItem:self.navigationItem animated:NO];
 }
 
 - (void)done
 {
   if (self.onNextHandler) {
-    self.onNextHandler(_members);
+    self.onNextHandler([NSArray arrayWithArray:_members]);
   }
   
   [self dismissViewControllerAnimated:YES completion:nil];
@@ -66,12 +75,15 @@
   }
 }
 
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
-{
-  UIView *headerView = [super tableView:tableView viewForHeaderInSection:section];
-  // Customize the header view
+- (UIView*)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+  WAContactPickerSectionHeaderView *header = [[[UINib nibWithNibName:@"WAContactPickerSectionHeaderView" bundle:[NSBundle mainBundle]] instantiateWithOwner:nil options:nil] lastObject];
   
-  return headerView;
+  if (section == 0) {
+    header.title.text = @"Select contacts";
+  } else {
+    header.title.text = @"Selected contacts";
+  }
+  return header;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
