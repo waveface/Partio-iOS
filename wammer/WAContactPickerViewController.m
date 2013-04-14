@@ -11,6 +11,7 @@
 
 @interface WAContactPickerViewController () <UITextFieldDelegate, UITextInputTraits>
 
+@property (nonatomic, weak) UIBarButtonItem *textFieldDoneBarButton;
 @end
 
 @implementation WAContactPickerViewController
@@ -156,9 +157,7 @@
       [textField setSecureTextEntry:NO];
       
       [cell.contentView addSubview:textField];
-      
-//      UIBarButtonItem *textFieldDoneBarButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonItemStyleDone target:self action:@selector(nil)];
-      
+            
     } else if (indexPath.row == 1) {
       cell.imageView.image = [UIImage imageNamed:@"FacebookLogo"];
       cell.textLabel.text = @"Contacts";
@@ -255,10 +254,16 @@
 #pragma mark - UITextFieldDelegate
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField
-{}
+{
+  self.textFieldDoneBarButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonItemStyleDone target:self action:@selector(nil)];
+
+}
 
 - (void)textFieldDidEndEditing:(UITextField *)textField
-{}
+{
+  self.textFieldDoneBarButton = nil;
+  [self addEmailIntoInvitedList:textField.text];
+}
 
 - (BOOL)textFieldShouldEndEditing:(UITextField *)textField
 {
@@ -267,6 +272,16 @@
     return YES;
   } else {
     return NO;
+  }
+}
+
+- (void)addEmailIntoInvitedList:(NSString *)email
+{
+  NSString *name = email;
+  NSDictionary *aPerson = @{@"name": name, @"email": email};
+  
+  if (![_members containsObject:aPerson]) {
+    [_members addObject:aPerson];
   }
 }
 
@@ -368,6 +383,18 @@
                                           otherButtonTitles:NSLocalizedString(@"ACTION_INVITE", @"ACTION_INVITE"), nil];
     
     [alert setAlertViewStyle:UIAlertViewStylePlainTextInput];
+    
+    // Manage keyboard for email input
+    UITextField *textField = [alert textFieldAtIndex:0];
+    [textField setAutocapitalizationType:UITextAutocapitalizationTypeNone];
+    [textField setAutocorrectionType:UITextAutocorrectionTypeNo];
+    [textField setSpellCheckingType:UITextSpellCheckingTypeNo];
+    [textField setEnablesReturnKeyAutomatically:YES];
+    [textField setKeyboardAppearance:UIKeyboardAppearanceDefault];
+    [textField setKeyboardType:UIKeyboardTypeEmailAddress];
+    [textField setReturnKeyType:UIReturnKeyDone];
+    [textField setSecureTextEntry:NO];
+    
     [alert show];
   }
   
