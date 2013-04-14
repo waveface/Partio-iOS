@@ -73,7 +73,7 @@
 "ACTION_INSERT_PHOTO_FROM_LIBRARY" = "相片庫";
 
 /* ACTION_INVITE */
-"ACTION_INVITE" = "ACTION_INVITE";
+"ACTION_INVITE" = "邀請";
 
 /* No comment provided by engineer. */
 "ACTION_LATER" = "稍後再做";
@@ -376,7 +376,7 @@
 "HOUR_SINGULAR" = "%d小時";
 
 /* INPUT_RECEIVER_EMAIL */
-"INPUT_RECEIVER_EMAIL" = "輸入收件人的 Email";
+"INPUT_RECEIVER_EMAIL" = "朋友的Email";
 
 /* Title on introduction pages */
 "INTRODUCTION_TITLE" = "aostream 是什麼？";
@@ -400,7 +400,7 @@
 "MEMBERS_LABEL_CONTACT_PICKER" = "朋友";
 
 /* MESSAGE_EMAIL_REQUEST */
-"MESSAGE_EMAIL_REQUEST" = "MESSAGE_EMAIL_REQUEST";
+"MESSAGE_EMAIL_REQUEST" = "我們會送封邀請 Email 給他/她。";
 
 /* No comment provided by engineer. */
 "MINUTE_PLURAL" = "%d分鐘";
@@ -580,7 +580,7 @@
 "TITLE_CALENDAR" = "月曆";
 
 /* TITLE_INPUT_EMAIL_ALERT */
-"TITLE_INPUT_EMAIL_ALERT" = "TITLE_INPUT_EMAIL_ALERT";
+"TITLE_INPUT_EMAIL_ALERT" = "%@的Email是？";
 
 /* TITLE_INVITE_CONTACTS */
 "TITLE_INVITE_CONTACTS" = "邀請朋友";

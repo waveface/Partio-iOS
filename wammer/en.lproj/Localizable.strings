@@ -73,7 +73,7 @@
 "ACTION_INSERT_PHOTO_FROM_LIBRARY" = "Photo Library";
 
 /* ACTION_INVITE */
-"ACTION_INVITE" = "ACTION_INVITE";
+"ACTION_INVITE" = "Invite";
 
 /* No comment provided by engineer. */
 "ACTION_LATER" = "Later";
@@ -376,7 +376,7 @@
 "HOUR_SINGULAR" = "%d hour";
 
 /* INPUT_RECEIVER_EMAIL */
-"INPUT_RECEIVER_EMAIL" = "Input a reciever email";
+"INPUT_RECEIVER_EMAIL" = "Their Email";
 
 /* Title on introduction pages */
 "INTRODUCTION_TITLE" = "What is aostream?";
@@ -400,7 +400,7 @@
 "MEMBERS_LABEL_CONTACT_PICKER" = "Members";
 
 /* MESSAGE_EMAIL_REQUEST */
-"MESSAGE_EMAIL_REQUEST" = "MESSAGE_EMAIL_REQUEST";
+"MESSAGE_EMAIL_REQUEST" = "We'll invite your friend by email.";
 
 /* No comment provided by engineer. */
 "MINUTE_PLURAL" = "%d minutes";
@@ -580,7 +580,7 @@
 "TITLE_CALENDAR" = "Calendar";
 
 /* TITLE_INPUT_EMAIL_ALERT */
-"TITLE_INPUT_EMAIL_ALERT" = "TITLE_INPUT_EMAIL_ALERT";
+"TITLE_INPUT_EMAIL_ALERT" = "What's %@'s email?";
 
 /* TITLE_INVITE_CONTACTS */
 "TITLE_INVITE_CONTACTS" = "Invite Friends";
