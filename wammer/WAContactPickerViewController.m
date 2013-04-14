@@ -271,6 +271,9 @@
   if ([self NSStringIsValidEmail:textField.text]) {
     return YES;
   } else {
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"TITLE_ERROR_INVALID_EMAIL_FORMAT", @"TITLE_ERROR_INVALID_EMAIL_FORMAT") message:nil delegate:self cancelButtonTitle:NSLocalizedString(@"ACTION_OKAY", @"ACTION_OKAY") otherButtonTitles:nil];
+    [alert show];
+    
     return NO;
   }
 }
