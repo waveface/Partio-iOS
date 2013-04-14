@@ -20,6 +20,7 @@
 "ACTION_ADD_COLLECTION" = "新增至";
 
 /* Action title for cancelling stuff
+   ACTION_CANCEL
    Cancel adding event
    Cancel adding selected photos into collection
    Cancel the photo deletion
@@ -70,6 +71,9 @@
 
 /* Button title for showing an image picker */
 "ACTION_INSERT_PHOTO_FROM_LIBRARY" = "相片庫";
+
+/* ACTION_INVITE */
+"ACTION_INVITE" = "ACTION_INVITE";
 
 /* No comment provided by engineer. */
 "ACTION_LATER" = "稍後再做";
@@ -392,6 +396,12 @@
 /* The text of location label when there is no gps information we can refer to */
 "LABEL_WITHOUT_GPS_DATA" = "您在哪裡？";
 
+/* MEMBERS_LABEL_CONTACT_PICKER */
+"MEMBERS_LABEL_CONTACT_PICKER" = "朋友";
+
+/* MESSAGE_EMAIL_REQUEST */
+"MESSAGE_EMAIL_REQUEST" = "MESSAGE_EMAIL_REQUEST";
+
 /* No comment provided by engineer. */
 "MINUTE_PLURAL" = "%d分鐘";
 
@@ -568,6 +578,12 @@
 
 /* Title of Canlendar */
 "TITLE_CALENDAR" = "月曆";
+
+/* TITLE_INPUT_EMAIL_ALERT */
+"TITLE_INPUT_EMAIL_ALERT" = "TITLE_INPUT_EMAIL_ALERT";
+
+/* TITLE_INVITE_CONTACTS */
+"TITLE_INVITE_CONTACTS" = "邀請朋友";
 
 /* Title of the day photo picker view */
 "TITLE_OF_DAY_PHOTO_PICKER" = "挑選照片";

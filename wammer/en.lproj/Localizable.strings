@@ -20,6 +20,7 @@
 "ACTION_ADD_COLLECTION" = "Add to";
 
 /* Action title for cancelling stuff
+   ACTION_CANCEL
    Cancel adding event
    Cancel adding selected photos into collection
    Cancel the photo deletion
@@ -70,6 +71,9 @@
 
 /* Button title for showing an image picker */
 "ACTION_INSERT_PHOTO_FROM_LIBRARY" = "Photo Library";
+
+/* ACTION_INVITE */
+"ACTION_INVITE" = "ACTION_INVITE";
 
 /* No comment provided by engineer. */
 "ACTION_LATER" = "Later";
@@ -392,6 +396,12 @@
 /* The text of location label when there is no gps information we can refer to */
 "LABEL_WITHOUT_GPS_DATA" = "Where were you?";
 
+/* MEMBERS_LABEL_CONTACT_PICKER */
+"MEMBERS_LABEL_CONTACT_PICKER" = "Members";
+
+/* MESSAGE_EMAIL_REQUEST */
+"MESSAGE_EMAIL_REQUEST" = "MESSAGE_EMAIL_REQUEST";
+
 /* No comment provided by engineer. */
 "MINUTE_PLURAL" = "%d minutes";
 
@@ -568,6 +578,12 @@
 
 /* Title of Canlendar */
 "TITLE_CALENDAR" = "Calendar";
+
+/* TITLE_INPUT_EMAIL_ALERT */
+"TITLE_INPUT_EMAIL_ALERT" = "TITLE_INPUT_EMAIL_ALERT";
+
+/* TITLE_INVITE_CONTACTS */
+"TITLE_INVITE_CONTACTS" = "Invite Friends";
 
 /* Title of the day photo picker view */
 "TITLE_OF_DAY_PHOTO_PICKER" = "Select Photos";

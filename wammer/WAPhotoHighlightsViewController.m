@@ -150,6 +150,7 @@
                              dispatch_async(dispatch_get_main_queue(), ^{
                                [wSelf.tableView reloadRowsAtIndexPaths:changedIndexPaths withRowAnimation:YES];
                              });
+                           
                            }
                          }];
     
