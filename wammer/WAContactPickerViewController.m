@@ -99,8 +99,9 @@
   [headerView addSubview:titleLabel];
   
   [headerView.layer setMasksToBounds:NO];
-  [headerView.layer setShadowPath:[[UIBezierPath bezierPathWithRect:[[tableView headerViewForSection:section] frame]] CGPath]];
-  [headerView.layer setShadowOffset:CGSizeMake(0, 5)];
+  [headerView.layer setShadowPath:[[UIBezierPath bezierPathWithRect:CGRectMake(0.f, -5.f, 320.f, 32.f)] CGPath]];
+  [headerView.layer setDoubleSided:YES];
+  [headerView.layer setShadowOffset:CGSizeMake(0.f, 5.f)];
   [headerView.layer setShadowColor:[[UIColor blackColor] CGColor]];
   [headerView.layer setShadowOpacity:0.5f];
   return headerView;
