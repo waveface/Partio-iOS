@@ -41,9 +41,9 @@
   
   if (!urlString) {
     if (urlStringKey == kWAFileSmallThumbnailURL) {
-      urlString = [NSString stringWithFormat:@"http://invalid.local/v3/attachments/view?object_id=%@&image_meta=%@", self.identifier, @"small"];
+      urlString = [NSString stringWithFormat:@"http://invalid.local/v3/pio_attachments/view?object_id=%@&image_meta=%@", self.identifier, @"small"];
     } else if (urlStringKey == kWAFileThumbnailURL) {
-      urlString = [NSString stringWithFormat:@"http://invalid.local/v3/attachments/view?object_id=%@&image_meta=%@", self.identifier, @"medium"];
+      urlString = [NSString stringWithFormat:@"http://invalid.local/v3/pio_attachments/view?object_id=%@&image_meta=%@", self.identifier, @"medium"];
     }
   }
   
