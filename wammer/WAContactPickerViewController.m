@@ -8,10 +8,13 @@
 
 #import "WAContactPickerViewController.h"
 #import "WAContactPickerSectionHeaderView.h"
+#import <BlocksKit/BlocksKit.h>
+#import <FacebookSDK/FacebookSDK.h>
 
-@interface WAContactPickerViewController () <UITableViewDelegate, UITableViewDataSource>
+@interface WAContactPickerViewController () <UITableViewDelegate, UITableViewDataSource, FBFriendPickerDelegate>
 @property (nonatomic, weak) IBOutlet UITableView *tableView;
 @property (nonatomic, weak) IBOutlet UINavigationBar *navigationBar;
+@property (nonatomic, strong) FBFriendPickerViewController *fbFriendPickerViewController;
 @end
 
 @implementation WAContactPickerViewController
@@ -143,12 +146,35 @@
 {
   [tableView deselectRowAtIndexPath:indexPath animated:YES];
   
-  if (indexPath.section == 0 && indexPath.row == 1) {
-    ABPeoplePickerNavigationController *abPicker = [[ABPeoplePickerNavigationController alloc] init];
-    abPicker.peoplePickerDelegate = self;
-    
-    [self presentViewController:abPicker animated:YES completion:nil];
+  if (indexPath.section == 0) {
+    if (indexPath.row == 0) {
+      UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"TITLE_INPUT_EMAIL", @"Title of dialog to input email") message:NSLocalizedString(@"MESSAGE_INPUT_EMAIL", @"Message of dialog to input email")];
+      __weak UIAlertView *wAlert = alert;
+      alert.alertViewStyle = UIAlertViewStylePlainTextInput;
+      [alert setCancelButtonWithTitle:NSLocalizedString(@"ACTION_CANCEL", @"Cancel adding selected photos into collection") handler:nil];
+      [alert addButtonWithTitle:NSLocalizedString(@"ACTION_INPUT_EMAIL", @"The action to create a new collection") handler:^{
+        NSString *email = [wAlert textFieldAtIndex:0].text;
+        NSDictionary *contact = @{@"name": email, @"email": @[email]};
+        if (![_members containsObject:contact])
+          [_members addObject:contact];
+        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:_members.count-1 inSection:1];
+        [self.tableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:YES];
+      }];
+      
+      [alert show];
 
+    } else if (indexPath.row == 1) {
+      ABPeoplePickerNavigationController *abPicker = [[ABPeoplePickerNavigationController alloc] init];
+      abPicker.peoplePickerDelegate = self;
+    
+      [self presentViewController:abPicker animated:YES completion:nil];
+    } else if (indexPath.row == 2) {
+//      self.fbFriendPickerViewController = [[FBFriendPickerViewController alloc] initWithNibName:nil bundle:nil];
+//      self.fbFriendPickerViewController.title = NSLocalizedString(@"FB_FRIEND_PICKER_TITLE", @"Title of FB friends picker");
+//      self.fbFriendPickerViewController.delegate = self;
+//      [self.fbFriendPickerViewController loadData];
+//      [self.navigationController presentViewController:self.fbFriendPickerViewController animated:YES completion:nil];
+    }
   }
 }
 
