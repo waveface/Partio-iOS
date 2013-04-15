@@ -433,6 +433,10 @@
 		80F957BE16B8D421005121A1 /* WAConnectionStatusView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 80F957BD16B8D421005121A1 /* WAConnectionStatusView.xib */; };
 		80FA833816F9E79B003BF983 /* WAEventPhotoAddingCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 80FA833716F9E79B003BF983 /* WAEventPhotoAddingCell.m */; };
 		94EB57761411451780C24560 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D215E734098A44479DEC4F88 /* libPods.a */; };
+		DE0870A2171C084000FA2A5E /* contact.png in Resources */ = {isa = PBXBuildFile; fileRef = DE0870A0171C084000FA2A5E /* contact.png */; };
+		DE0870A3171C084000FA2A5E /* contact@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DE0870A1171C084000FA2A5E /* contact@2x.png */; };
+		DE0870B3171C085300FA2A5E /* FB.png in Resources */ = {isa = PBXBuildFile; fileRef = DE0870B1171C085300FA2A5E /* FB.png */; };
+		DE0870B4171C085300FA2A5E /* FB@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DE0870B2171C085300FA2A5E /* FB@2x.png */; };
 		DE46FC17165E228300CC4FFF /* WACalendarPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DE46FC16165E228300CC4FFF /* WACalendarPickerViewController.m */; };
 		DE67A4A21712BA0500099106 /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DE67A4A01712BA0400099106 /* AddressBook.framework */; };
 		DE67A4A31712BA0500099106 /* AddressBookUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DE67A4A11712BA0400099106 /* AddressBookUI.framework */; };
@@ -1538,6 +1542,10 @@
 		9A79ED179A7140438E44ACD8 /* Pods-UnitTests.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UnitTests.xcconfig"; path = "Pods/Pods-UnitTests.xcconfig"; sourceTree = SOURCE_ROOT; };
 		D215E734098A44479DEC4F88 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		D26DABE040324ABAAAC5058D /* Pods-StreamTests.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-StreamTests.xcconfig"; path = "Pods/Pods-StreamTests.xcconfig"; sourceTree = SOURCE_ROOT; };
+		DE0870A0171C084000FA2A5E /* contact.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = contact.png; path = Resources/contact.png; sourceTree = "<group>"; };
+		DE0870A1171C084000FA2A5E /* contact@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "contact@2x.png"; path = "Resources/contact@2x.png"; sourceTree = "<group>"; };
+		DE0870B1171C085300FA2A5E /* FB.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = FB.png; path = Resources/FB.png; sourceTree = "<group>"; };
+		DE0870B2171C085300FA2A5E /* FB@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "FB@2x.png"; path = "Resources/FB@2x.png"; sourceTree = "<group>"; };
 		DE2BBDD616761AC100EEF922 /* Kal.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Kal.xcodeproj; path = external/Kal/src/Kal.xcodeproj; sourceTree = SOURCE_ROOT; };
 		DE46FC15165E228300CC4FFF /* WACalendarPickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WACalendarPickerViewController.h; path = wammer/WACalendarPickerViewController.h; sourceTree = "<group>"; };
 		DE46FC16165E228300CC4FFF /* WACalendarPickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WACalendarPickerViewController.m; path = wammer/WACalendarPickerViewController.m; sourceTree = "<group>"; };
@@ -2578,12 +2586,16 @@
 				DEEFACA21718472600AD907B /* Btn1@2x.png */,
 				808A337F1716AC3F00CF5C8D /* Checked.png */,
 				808A33801716AC3F00CF5C8D /* Checked@2x.png */,
+				DE0870B1171C085300FA2A5E /* FB.png */,
+				DE0870B2171C085300FA2A5E /* FB@2x.png */,
 				80CBC7711713FBDE0056D9CF /* partioIcon.png */,
 				800D2E07171804420028F47F /* PartioLogin-568h@2x.png */,
 				800D2E08171804420028F47F /* PartioLogin.png */,
 				800D2E09171804420028F47F /* PartioLogin@2x.png */,
 				DEEFACBA1718476C00AD907B /* Checkin.png */,
 				DEEFACBB1718476C00AD907B /* Checkin@2x.png */,
+				DE0870A0171C084000FA2A5E /* contact.png */,
+				DE0870A1171C084000FA2A5E /* contact@2x.png */,
 				DEEFAC991718472600AD907B /* HighlightAddEventBtn.png */,
 				DEEFAC9A1718472600AD907B /* HighlightAddEventBtn@2x.png */,
 				DEEFACBC1718476C00AD907B /* New.png */,
@@ -4436,6 +4448,10 @@
 				80C9F3801719AA81003E7C6E /* WAPhotoHighlightsViewController.xib in Resources */,
 				80C9F3821719B2E9003E7C6E /* WAContactPickerViewController.xib in Resources */,
 				80C9F3841719B6B8003E7C6E /* WAContactPickerSectionHeaderView.xib in Resources */,
+				DE0870A2171C084000FA2A5E /* contact.png in Resources */,
+				DE0870A3171C084000FA2A5E /* contact@2x.png in Resources */,
+				DE0870B3171C085300FA2A5E /* FB.png in Resources */,
+				DE0870B4171C085300FA2A5E /* FB@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

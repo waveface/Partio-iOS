@@ -34,13 +34,11 @@
 {
   [super viewDidLoad];
   
-  [self setTitle:NSLocalizedString(@"TITLE_INVITE_CONTACTS", @"TITLE_INVITE_CONTACTS")];
-
   __weak WAContactPickerViewController *wSelf = self;
   self.navigationItem.leftBarButtonItem = WAPartioBackButton(^{
     [wSelf.navigationController popViewControllerAnimated:YES];
   });
-  self.navigationItem.title = @"Invite Friends";
+  self.navigationItem.title = NSLocalizedString(@"TITLE_INVITE_CONTACTS", @"TITLE_INVITE_CONTACTS");
   
   [self.navigationBar pushNavigationItem:self.navigationItem animated:NO];
   
@@ -55,7 +53,7 @@
   static UIButton *aButton;
   aButton = [UIButton buttonWithType:UIButtonTypeCustom];
   [aButton setFrame:CGRectMake(0.f, 0.f, 100.f, 40.f)];
-  [aButton setTitle:@"Share" forState:UIControlStateNormal];
+  [aButton setTitle:NSLocalizedString(@"LABEL_SHARE_BUTTON", @"LABEL_SHARE_BUTTON") forState:UIControlStateNormal];
   [aButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
   [aButton.titleLabel setFont:[UIFont fontWithName:@"OpenSans-Semibold" size:24.f]];
   [aButton.titleLabel setTextAlignment:NSTextAlignmentCenter];
@@ -81,6 +79,14 @@
   // Dispose of any resources that can be recreated.
 }
 
+- (BOOL) shouldAutorotate {
+  return YES;
+}
+
+- (NSUInteger) supportedInterfaceOrientations {
+  return UIInterfaceOrientationMaskPortrait;
+}
+
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -103,23 +109,20 @@
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-  UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0.f, 0.f, 320.f, 22.f)];
+  WAContactPickerSectionHeaderView *headerView = [[WAContactPickerSectionHeaderView alloc] initWithFrame:CGRectMake(0.f, 0.f, 320.f, 22.f)];
   headerView.backgroundColor = tableView.backgroundColor;
-  
-  UILabel *titleLabel = [[UILabel alloc] initWithFrame:headerView.frame];
-  [titleLabel setFont:[UIFont fontWithName:@"OpenSans-Semibold" size:14.f]];
-  [titleLabel setTextColor:[UIColor whiteColor]];
-  [titleLabel setText:NSLocalizedString(@"MEMBERS_LABEL_CONTACT_PICKER", @"MEMBERS_LABEL_CONTACT_PICKER")];
-  [titleLabel setTextAlignment:NSTextAlignmentCenter];
-  [titleLabel setBackgroundColor:[UIColor clearColor]];
-  [headerView addSubview:titleLabel];
+  [headerView.title setText: NSLocalizedString(@"MEMBERS_LABEL_CONTACT_PICKER", @"MEMBERS_LABEL_CONTACT_PICKER")];
+  [headerView.title setFont:[UIFont fontWithName:@"OpenSans-Semibold" size:14.f]];
+  [headerView.title setTextColor:[UIColor whiteColor]];
   
   [headerView.layer setMasksToBounds:NO];
-  [headerView.layer setShadowPath:[[UIBezierPath bezierPathWithRect:CGRectMake(0.f, -2.5f, 320.f, 27.f)] CGPath]];
+  [headerView.layer setShadowPath:[[UIBezierPath bezierPathWithRect:CGRectMake(0.f, 0.f, 320.f, 22.f)] CGPath]];
   [headerView.layer setDoubleSided:YES];
-  [headerView.layer setShadowOffset:CGSizeMake(0.f, 2.5f)];
+  [headerView.layer setShadowRadius:2.f];
+  [headerView.layer setShadowOffset:CGSizeMake(0.f, 2.f)];
   [headerView.layer setShadowColor:[[UIColor blackColor] CGColor]];
   [headerView.layer setShadowOpacity:0.5f];
+
   return headerView;
 }
 
@@ -176,12 +179,12 @@
       
       
     } else if (indexPath.row == 1) {
-      cell.imageView.image = [UIImage imageNamed:@"FacebookLogo"];
+      cell.imageView.image = [UIImage imageNamed:@"contact"];
       cell.textLabel.text = @"Contacts";
       cell.detailTextLabel.text = @"Find friends from your contacts.";
       
     } else if (indexPath.row == 2) {
-      cell.imageView.image = [UIImage imageNamed:@"FacebookLogo"];
+      cell.imageView.image = [UIImage imageNamed:@"FB"];
       cell.textLabel.text = @"Facebook";
       cell.detailTextLabel.text = @"Find friends from Facebook.";
       
@@ -213,7 +216,9 @@
 - (void)textFieldDidEndEditing:(UITextField *)textField
 {
   NSLog(@"Email input: %@", textField.text);
-  [self addEmailIntoInvitedList:textField.text];
+  if (textField.text) {
+    [self addEmailIntoInvitedList:textField.text];
+  }
   [self.tableView reloadData];
 }
 

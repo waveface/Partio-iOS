@@ -97,7 +97,6 @@
   // Dispose of any resources that can be recreated.
 }
 
-//FIXME: don't autorotate
 - (BOOL) shouldAutorotate {
   return YES;
 }
