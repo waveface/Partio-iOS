@@ -16,9 +16,13 @@
 #import <FacebookSDK/FacebookSDK.h>
 
 @interface WAPartioWelcomeViewController ()
+@property (nonatomic, weak) IBOutlet UIImageView *backgroundImageView;
 @property (nonatomic, weak) IBOutlet UIButton *experienceButton;
 @property (nonatomic, weak) IBOutlet UIButton *signupButton;
 @end
+
+
+#define IS_WIDESCREEN ( fabs( ( double )[ [ UIScreen mainScreen ] bounds ].size.height - ( double )568 ) < DBL_EPSILON )
 
 @implementation WAPartioWelcomeViewController
 
@@ -43,12 +47,14 @@
   [self.experienceButton setBackgroundColor:[UIColor colorWithWhite:255 alpha:0.4]];
   self.experienceButton.layer.cornerRadius = 22;
   
+  if(IS_WIDESCREEN)
+    self.backgroundImageView.image = [UIImage imageNamed:@"PartioLogin-h568"];
+  else
+    self.backgroundImageView.image = [UIImage imageNamed:@"PartioLogin"];
 }
 
 - (IBAction) experienceButtonClicked:(id)sender {
-  
-  WAPartioFirstUseViewController *firstUse = (WAPartioFirstUseViewController*)self.navigationController;
-  
+    
   IRAction *cancelAction = [IRAction actionWithTitle:@"OK" block:nil];
   
   [[IRAlertView alertViewWithTitle:@"Not support yet"

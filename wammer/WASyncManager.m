@@ -154,9 +154,9 @@
 
 - (BOOL)isSyncing {
 
-  if (![[NSUserDefaults standardUserDefaults] boolForKey:kWAPhotoImportEnabled]) {
-    return NO;
-  }
+//  if (![[NSUserDefaults standardUserDefaults] boolForKey:kWAPhotoImportEnabled]) {
+//    return NO;
+//  }
   
   // there will be at least one tail op if any sync operation exists in these op queue,
   // and metadata sync will not show on status bar
