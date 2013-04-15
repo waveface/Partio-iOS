@@ -69,7 +69,7 @@
 "ACTION_DONE" = "完成";
 
 /* The action to create a new collection */
-"ACTION_INPUT_EMAIL" = "輸入電子郵件信箱";
+"ACTION_INPUT_EMAIL" = "完成";
 
 /* Button title for showing an image picker */
 "ACTION_INSERT_PHOTO_FROM_LIBRARY" = "相片庫";
@@ -582,7 +582,7 @@
 "TITLE_HIGHLIGHT" = "選輯";
 
 /* Title of dialog to input email */
-"TITLE_INPUT_EMAIL" = "TITLE_INPUT_EMAIL";
+"TITLE_INPUT_EMAIL" = "輸入電子郵件信箱";
 
 /* Title of the day photo picker view */
 "TITLE_OF_DAY_PHOTO_PICKER" = "挑選照片";

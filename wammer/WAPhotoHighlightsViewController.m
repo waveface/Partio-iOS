@@ -149,7 +149,9 @@
                                }
                                
                                if (found) {
-                                 [changedIndexPaths addObject:[NSIndexPath indexPathForRow:groupIndex inSection:0]];
+                                 NSIndexPath *newIndexPath = [NSIndexPath indexPathForRow:groupIndex inSection:0];
+                                 if (![changedIndexPaths containsObject:newIndexPath])
+                                   [changedIndexPaths addObject:newIndexPath];
                                  NSLog(@"found %@ at indexPath row: %d", checkinItem[@"name"],groupIndex);
                                }
                              }
@@ -160,9 +162,11 @@
                                NSLog(@"fail to save checkin for %@", error);
                              }
                              
-                             dispatch_async(dispatch_get_main_queue(), ^{
-                               [wSelf.tableView reloadRowsAtIndexPaths:changedIndexPaths withRowAnimation:YES];
-                             });
+                             if (changedIndexPaths.count) {
+                               dispatch_async(dispatch_get_main_queue(), ^{
+                                 [wSelf.tableView reloadRowsAtIndexPaths:changedIndexPaths withRowAnimation:YES];
+                               });
+                             }
                            }
                          }];
     
