@@ -70,7 +70,7 @@
 "ACTION_DONE" = "完成";
 
 /* The action to create a new collection */
-"ACTION_INPUT_EMAIL" = "完成";
+"ACTION_INPUT_EMAIL" = "輸入電子郵件信箱";
 
 /* Button title for showing an image picker */
 "ACTION_INSERT_PHOTO_FROM_LIBRARY" = "相片庫";
@@ -87,7 +87,8 @@
 /* No comment provided by engineer. */
 "ACTION_OK" = "確定";
 
-/* Alert Dismissal Action */
+/* ACTION_OKAY
+   Alert Dismissal Action */
 "ACTION_OKAY" = "確定";
 
 /* Deleting action in the event view */
@@ -300,9 +301,6 @@
 /* Title for alert view asking if user wants to disconnect her Facebook account */
 "FACEBOOK_DISCONNECT_REQUEST_TITLE" = "確認取消Facebook同步";
 
-/* Title of FB friends picker */
-"FB_FRIEND_PICKER_TITLE" = "FB_FRIEND_PICKER_TITLE";
-
 /* Display title for a fetch request working against all the articles */
 "FETCH_REQUEST_ALL_ARTICLES_DISPLAY_TITLE" = "全部";
 
@@ -382,7 +380,7 @@
 "HOUR_SINGULAR" = "%d小時";
 
 /* INPUT_RECEIVER_EMAIL */
-"INPUT_RECEIVER_EMAIL" = "朋友的Email";
+"INPUT_RECEIVER_EMAIL" = "輸入電子郵件信箱";
 
 /* Title on introduction pages */
 "INTRODUCTION_TITLE" = "aostream 是什麼？";
@@ -406,7 +404,7 @@
 "MEMBERS_LABEL_CONTACT_PICKER" = "朋友";
 
 /* MESSAGE_EMAIL_REQUEST */
-"MESSAGE_EMAIL_REQUEST" = "我們會送封電子郵件邀請他/她。";
+"MESSAGE_EMAIL_REQUEST" = "我們會送封電子郵件邀請他/她一起共享生活中的寶貴回憶。";
 
 /* Message of dialog to input email */
 "MESSAGE_INPUT_EMAIL" = "請輸入您朋友的電子信箱，讓他與您一起共享生活中寶貴的回憶。";
@@ -588,17 +586,20 @@
 /* Title of Canlendar */
 "TITLE_CALENDAR" = "月曆";
 
-/* TITLE_INPUT_EMAIL_ALERT */
-"TITLE_INPUT_EMAIL_ALERT" = "%@的Email是？";
-
-/* TITLE_INVITE_CONTACTS */
-"TITLE_INVITE_CONTACTS" = "邀請朋友";
+/* TITLE_ERROR_INVALID_EMAIL_FORMAT */
+"TITLE_ERROR_INVALID_EMAIL_FORMAT" = "TITLE_ERROR_INVALID_EMAIL_FORMAT";
 
 /* title of highlights */
 "TITLE_HIGHLIGHT" = "選輯";
 
 /* Title of dialog to input email */
 "TITLE_INPUT_EMAIL" = "輸入電子郵件信箱";
+
+/* TITLE_INPUT_EMAIL_ALERT */
+"TITLE_INPUT_EMAIL_ALERT" = "%@的Email是？";
+
+/* TITLE_INVITE_CONTACTS */
+"TITLE_INVITE_CONTACTS" = "邀請朋友";
 
 /* Title of the day photo picker view */
 "TITLE_OF_DAY_PHOTO_PICKER" = "挑選照片";

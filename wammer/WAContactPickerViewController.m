@@ -13,11 +13,10 @@
 #import <BlocksKit/BlocksKit.h>
 #import <FacebookSDK/FacebookSDK.h>
 
-@interface WAContactPickerViewController () <UITableViewDelegate, UITableViewDataSource, FBFriendPickerDelegate>
+@interface WAContactPickerViewController () <UITableViewDelegate, UITableViewDataSource, FBFriendPickerDelegate, UITextFieldDelegate>
 @property (nonatomic, weak) IBOutlet UITableView *tableView;
 @property (nonatomic, weak) IBOutlet UINavigationBar *navigationBar;
 @property (nonatomic, strong) FBFriendPickerViewController *fbFriendPickerViewController;
-@property (nonatomic, weak) UIBarButtonItem *textFieldDoneBarButton;
 @end
 
 @implementation WAContactPickerViewController
@@ -36,7 +35,6 @@
   [super viewDidLoad];
   
   [self setTitle:NSLocalizedString(@"TITLE_INVITE_CONTACTS", @"TITLE_INVITE_CONTACTS")];
-  self.navigationItem.rightBarButtonItem = [self shareBarButton];
 
   __weak WAContactPickerViewController *wSelf = self;
   self.navigationItem.leftBarButtonItem = WAPartioBackButton(^{
@@ -45,13 +43,18 @@
   self.navigationItem.title = @"Invite Friends";
   
   [self.navigationBar pushNavigationItem:self.navigationItem animated:NO];
+  
+  [self.navigationController setToolbarHidden:NO];
+  [self.navigationController.toolbar setBarStyle:UIBarStyleBlackTranslucent];
+  UIBarButtonItem *flexspace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+  [self setToolbarItems:@[flexspace, [self shareBarButton], flexspace] animated:YES];
 }
 
 - (UIBarButtonItem *)shareBarButton
 {
   static UIButton *aButton;
   aButton = [UIButton buttonWithType:UIButtonTypeCustom];
-  [aButton setFrame:CGRectMake(0.f, 0.f, 58.f, 31.f)];
+  [aButton setFrame:CGRectMake(0.f, 0.f, 100.f, 40.f)];
   [aButton setTitle:@"Share" forState:UIControlStateNormal];
   [aButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
   [aButton.titleLabel setFont:[UIFont fontWithName:@"OpenSans-Semibold" size:24.f]];
@@ -104,7 +107,7 @@
   headerView.backgroundColor = tableView.backgroundColor;
   
   UILabel *titleLabel = [[UILabel alloc] initWithFrame:headerView.frame];
-  [titleLabel setFont:[UIFont fontWithName:@"OpenSans-Semibold" size:24.f]];
+  [titleLabel setFont:[UIFont fontWithName:@"OpenSans-Semibold" size:14.f]];
   [titleLabel setTextColor:[UIColor whiteColor]];
   [titleLabel setText:NSLocalizedString(@"MEMBERS_LABEL_CONTACT_PICKER", @"MEMBERS_LABEL_CONTACT_PICKER")];
   [titleLabel setTextAlignment:NSTextAlignmentCenter];
@@ -112,9 +115,9 @@
   [headerView addSubview:titleLabel];
   
   [headerView.layer setMasksToBounds:NO];
-  [headerView.layer setShadowPath:[[UIBezierPath bezierPathWithRect:CGRectMake(0.f, -5.f, 320.f, 32.f)] CGPath]];
+  [headerView.layer setShadowPath:[[UIBezierPath bezierPathWithRect:CGRectMake(0.f, -2.5f, 320.f, 27.f)] CGPath]];
   [headerView.layer setDoubleSided:YES];
-  [headerView.layer setShadowOffset:CGSizeMake(0.f, 5.f)];
+  [headerView.layer setShadowOffset:CGSizeMake(0.f, 2.5f)];
   [headerView.layer setShadowColor:[[UIColor blackColor] CGColor]];
   [headerView.layer setShadowOpacity:0.5f];
   return headerView;
@@ -140,11 +143,11 @@
   }
   
   [cell.textLabel setTextColor:[UIColor whiteColor]];
-  [cell.detailTextLabel setFont:[UIFont fontWithName:@"OpenSans-Regular" size:24.f]];
+  [cell.detailTextLabel setFont:[UIFont fontWithName:@"OpenSans-Regular" size:14.f]];
   [cell.detailTextLabel setTextColor:[UIColor colorWithRed:0.537 green:0.537 blue:0.537 alpha:1.0]];
   
   if (indexPath.section == 0) {
-    [cell.textLabel setFont:[UIFont fontWithName:@"OpenSans-Semibold" size:30.f]];
+    [cell.textLabel setFont:[UIFont fontWithName:@"OpenSans-Semibold" size:18.f]];
     
     if (indexPath.row == 0) {
       [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
@@ -167,9 +170,11 @@
       [textField setKeyboardType:UIKeyboardTypeEmailAddress];
       [textField setReturnKeyType:UIReturnKeyDone];
       [textField setSecureTextEntry:NO];
+      textField.delegate = self;
       
       [cell.contentView addSubview:textField];
-            
+      
+      
     } else if (indexPath.row == 1) {
       cell.imageView.image = [UIImage imageNamed:@"FacebookLogo"];
       cell.textLabel.text = @"Contacts";
@@ -183,7 +188,7 @@
     }
     
   } else {
-    [cell.textLabel setFont:[UIFont fontWithName:@"OpenSans-Regular" size:30.f]];
+    [cell.textLabel setFont:[UIFont fontWithName:@"OpenSans-Regular" size:18.f]];
     
     cell.imageView.image = [UIImage imageNamed:@"Avatar"];
 
@@ -197,103 +202,43 @@
       cell.detailTextLabel.text = emails[0];
     }
     
-    cell.accessoryView = [self sharedCheckedButton];
-    
-    switch (indexPath.row) {
-      case 0:
-        break;
-        
-      case 1:
-        [cell.accessoryView addSubview:[self sharedInvitedButton]];
-        break;
-        
-      case 2:
-        [cell.accessoryView addSubview:[self sharedNudgeButton]];
-        break;
-    }
-  
   }
   
   return cell;
 }
 
-- (UIButton *)sharedCheckedButton
-{
-  static UIButton *aButton;
-  aButton = [UIButton buttonWithType:UIButtonTypeCustom];
-  [aButton setImage:[UIImage imageNamed:@"Checked"] forState:UIControlStateNormal];
-  [aButton addTarget:self action:nil forControlEvents:UIControlEventTouchUpInside];
-  
-  return aButton;
-}
-
-- (UIButton *)sharedInvitedButton
-{
-  static UIButton *aButton;
-  aButton = [UIButton buttonWithType:UIButtonTypeCustom];
-  [aButton setFrame:CGRectMake(0.f, 0.f, 75.f, 27.f)];
-  [aButton setTitle:@"Invited" forState:UIControlStateNormal];
-  [aButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-  [aButton.titleLabel setFont:[UIFont fontWithName:@"OpenSans-Regular" size:30.f]];
-  [aButton.titleLabel setTextAlignment:NSTextAlignmentCenter];
-  [aButton setBackgroundColor:[UIColor colorWithRed:0.894 green:0.435 blue:0.353 alpha:1.0]];
-  [aButton.layer setCornerRadius:30.f];
-  [aButton setClipsToBounds:YES];
-  [aButton addTarget:self action:nil forControlEvents:UIControlEventTouchUpInside];
-  
-  return aButton;
-
-}
-
-- (UIButton *)sharedNudgeButton
-{
-  static UIButton *aButton;
-  aButton = [UIButton buttonWithType:UIButtonTypeCustom];
-  [aButton setFrame:CGRectMake(0.f, 0.f, 75.f, 27.f)];
-  [aButton setTitle:@"Nudge" forState:UIControlStateNormal];
-  [aButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-  [aButton.titleLabel setFont:[UIFont fontWithName:@"OpenSans-Regular" size:30.f]];
-  [aButton.titleLabel setTextAlignment:NSTextAlignmentCenter];
-  [aButton setBackgroundColor:[UIColor colorWithRed:0.984 green:0.804 blue:0.02 alpha:1.0]];
-  [aButton.layer setCornerRadius:30.f];
-  [aButton setClipsToBounds:YES];
-  [aButton addTarget:self action:nil forControlEvents:UIControlEventTouchUpInside];
-  
-  return aButton;
-
-}
 
 #pragma mark - UITextFieldDelegate
 
-- (void)textFieldDidBeginEditing:(UITextField *)textField
-{
-  self.textFieldDoneBarButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonItemStyleDone target:self action:@selector(nil)];
-
-}
-
 - (void)textFieldDidEndEditing:(UITextField *)textField
 {
-  self.textFieldDoneBarButton = nil;
+  NSLog(@"Email input: %@", textField.text);
   [self addEmailIntoInvitedList:textField.text];
+  [self.tableView reloadData];
 }
 
-- (BOOL)textFieldShouldEndEditing:(UITextField *)textField
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
   //validate content
   if ([self NSStringIsValidEmail:textField.text]) {
+    NSLog(@"Valid email:%@", textField.text);
+    [textField resignFirstResponder];
     return YES;
+    
   } else {
+    NSLog(@"Invalid email:%@", textField.text);
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"TITLE_ERROR_INVALID_EMAIL_FORMAT", @"TITLE_ERROR_INVALID_EMAIL_FORMAT") message:nil delegate:self cancelButtonTitle:NSLocalizedString(@"ACTION_OKAY", @"ACTION_OKAY") otherButtonTitles:nil];
     [alert show];
     
     return NO;
   }
+
 }
 
 - (void)addEmailIntoInvitedList:(NSString *)email
 {
   NSString *name = email;
-  NSDictionary *aPerson = @{@"name": name, @"email": email};
+  NSDictionary *aPerson = @{@"name": name, @"email": @[email]};
   
   if (![_members containsObject:aPerson]) {
     [_members addObject:aPerson];
@@ -319,6 +264,20 @@
   
   if (indexPath.section == 0) {
     if (!indexPath.row) {
+      UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"TITLE_INPUT_EMAIL", @"Title of dialog to input email") message:NSLocalizedString(@"MESSAGE_INPUT_EMAIL", @"Message of dialog to input email")];
+      __weak UIAlertView *wAlert = alert;
+      alert.alertViewStyle = UIAlertViewStylePlainTextInput;
+      [alert setCancelButtonWithTitle:NSLocalizedString(@"ACTION_CANCEL", @"Cancel adding selected photos into collection") handler:nil];
+      [alert addButtonWithTitle:NSLocalizedString(@"ACTION_INPUT_EMAIL", @"The action to create a new collection") handler:^{
+        NSString *email = [wAlert textFieldAtIndex:0].text;
+        NSDictionary *contact = @{@"name": email, @"email": @[email]};
+        if (![_members containsObject:contact])
+          [_members addObject:contact];
+        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:_members.count-1 inSection:1];
+        [self.tableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:YES];
+      }];
+      
+      [alert show];
       
     } else if (indexPath.row == 1) {
       ABPeoplePickerNavigationController *abPicker = [[ABPeoplePickerNavigationController alloc] init];

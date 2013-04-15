@@ -2746,10 +2746,10 @@
 				DE67A4C31712BB9300099106 /* WASharedEventViewController.xib */,
 				DE67A4BC1712BB7700099106 /* WAContactPickerViewController.h */,
 				DE67A4BD1712BB7700099106 /* WAContactPickerViewController.m */,
+				80C9F3811719B2E9003E7C6E /* WAContactPickerViewController.xib */,
 				80C9F3851719B761003E7C6E /* WAContactPickerSectionHeaderView.h */,
 				80C9F3861719B761003E7C6E /* WAContactPickerSectionHeaderView.m */,
 				80C9F3831719B6B8003E7C6E /* WAContactPickerSectionHeaderView.xib */,
-				80C9F3811719B2E9003E7C6E /* WAContactPickerViewController.xib */,
 				80C9F349171859E2003E7C6E /* WAPartioNavigationController.h */,
 				80C9F34A171859E2003E7C6E /* WAPartioNavigationController.m */,
 			);

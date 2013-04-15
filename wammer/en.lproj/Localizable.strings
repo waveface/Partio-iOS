@@ -70,7 +70,7 @@
 "ACTION_DONE" = "Stream!";
 
 /* The action to create a new collection */
-"ACTION_INPUT_EMAIL" = "Done";
+"ACTION_INPUT_EMAIL" = "Add";
 
 /* Button title for showing an image picker */
 "ACTION_INSERT_PHOTO_FROM_LIBRARY" = "Photo Library";
@@ -87,7 +87,8 @@
 /* No comment provided by engineer. */
 "ACTION_OK" = "OK";
 
-/* Alert Dismissal Action */
+/* ACTION_OKAY
+   Alert Dismissal Action */
 "ACTION_OKAY" = "OK";
 
 /* Deleting action in the event view */
@@ -300,9 +301,6 @@
 /* Title for alert view asking if user wants to disconnect her Facebook account */
 "FACEBOOK_DISCONNECT_REQUEST_TITLE" = "Confirm to stop importing from Facebook.";
 
-/* Title of FB friends picker */
-"FB_FRIEND_PICKER_TITLE" = "FB_FRIEND_PICKER_TITLE";
-
 /* Display title for a fetch request working against all the articles */
 "FETCH_REQUEST_ALL_ARTICLES_DISPLAY_TITLE" = "All (My Days)";
 
@@ -382,7 +380,7 @@
 "HOUR_SINGULAR" = "%d hour";
 
 /* INPUT_RECEIVER_EMAIL */
-"INPUT_RECEIVER_EMAIL" = "Their Email";
+"INPUT_RECEIVER_EMAIL" = "Input Email";
 
 /* Title on introduction pages */
 "INTRODUCTION_TITLE" = "What is aostream?";
@@ -588,17 +586,20 @@
 /* Title of Canlendar */
 "TITLE_CALENDAR" = "Calendar";
 
-/* TITLE_INPUT_EMAIL_ALERT */
-"TITLE_INPUT_EMAIL_ALERT" = "What's %@'s email?";
-
-/* TITLE_INVITE_CONTACTS */
-"TITLE_INVITE_CONTACTS" = "Invite Friends";
+/* TITLE_ERROR_INVALID_EMAIL_FORMAT */
+"TITLE_ERROR_INVALID_EMAIL_FORMAT" = "TITLE_ERROR_INVALID_EMAIL_FORMAT";
 
 /* title of highlights */
 "TITLE_HIGHLIGHT" = "Highlights";
 
 /* Title of dialog to input email */
-"TITLE_INPUT_EMAIL" = "Input Email";
+"TITLE_INPUT_EMAIL" = "Your friend's Email";
+
+/* TITLE_INPUT_EMAIL_ALERT */
+"TITLE_INPUT_EMAIL_ALERT" = "What's %@'s email?";
+
+/* TITLE_INVITE_CONTACTS */
+"TITLE_INVITE_CONTACTS" = "Invite Friends";
 
 /* Title of the day photo picker view */
 "TITLE_OF_DAY_PHOTO_PICKER" = "Select Photos";
