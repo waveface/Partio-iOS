@@ -12,7 +12,7 @@
                         <rect key="frame" x="0.0" y="20" width="320" height="548"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="PartioLogin.png" translatesAutoresizingMaskIntoConstraints="NO" id="0wI-JD-49A"/>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="PartioLogin-568h@2x.png" translatesAutoresizingMaskIntoConstraints="NO" id="0wI-JD-49A"/>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZCd-nx-9I5" customClass="WALocalizedButton">
                                 <constraints>
                                     <constraint firstAttribute="height" constant="44" id="Dgo-Dq-m7t"/>
@@ -50,17 +50,19 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="0wI-JD-49A" firstAttribute="bottom" secondItem="T1D-UL-yY8" secondAttribute="bottom" type="default" id="Ejj-bE-0ry"/>
-                            <constraint firstAttribute="bottom" secondItem="ZCd-nx-9I5" secondAttribute="bottom" constant="115" id="EnI-kK-YFW"/>
                             <constraint firstItem="0wI-JD-49A" firstAttribute="top" secondItem="T1D-UL-yY8" secondAttribute="top" type="default" id="PKO-49-dUl"/>
                             <constraint firstItem="ZCd-nx-9I5" firstAttribute="leading" secondItem="MNF-gq-mhw" secondAttribute="leading" type="default" id="QFj-bj-pS1"/>
                             <constraint firstItem="0wI-JD-49A" firstAttribute="leading" secondItem="T1D-UL-yY8" secondAttribute="leading" type="default" id="ZNn-13-KFu"/>
-                            <constraint firstItem="ZCd-nx-9I5" firstAttribute="centerX" secondItem="0wI-JD-49A" secondAttribute="centerX" type="default" id="reR-R9-oOo"/>
-                            <constraint firstAttribute="bottom" secondItem="MNF-gq-mhw" secondAttribute="bottom" constant="20" symbolic="YES" type="default" id="y5e-q3-Nmc"/>
+                            <constraint firstItem="ZCd-nx-9I5" firstAttribute="centerX" secondItem="0wI-JD-49A" secondAttribute="centerX" type="default" id="esp-2r-iiG"/>
+                            <constraint firstItem="0wI-JD-49A" firstAttribute="trailing" secondItem="T1D-UL-yY8" secondAttribute="trailing" type="default" id="f25-fF-f0u"/>
+                            <constraint firstAttribute="bottom" secondItem="ZCd-nx-9I5" secondAttribute="bottom" constant="100" id="hHN-8h-Pr5"/>
                             <constraint firstItem="ZCd-nx-9I5" firstAttribute="trailing" secondItem="MNF-gq-mhw" secondAttribute="trailing" type="default" id="yuP-Mj-rJS"/>
+                            <constraint firstAttribute="bottom" secondItem="MNF-gq-mhw" secondAttribute="bottom" constant="13" id="zRg-u6-4g0"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="xNI-MP-IeD"/>
                     <connections>
+                        <outlet property="backgroundImageView" destination="0wI-JD-49A" id="lJE-Rr-ONC"/>
                         <outlet property="experienceButton" destination="ZCd-nx-9I5" id="5Lc-Ga-R8b"/>
                         <outlet property="signupButton" destination="MNF-gq-mhw" id="9cL-td-x6n"/>
                     </connections>
@@ -87,8 +89,27 @@
         </scene>
     </scenes>
     <resources>
-        <image name="PartioLogin.png" width="320" height="470"/>
+        <image name="PartioLogin-568h@2x.png" width="640" height="1116"/>
     </resources>
+    <classes>
+        <class className="NSLayoutConstraint" superclassName="NSObject">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/NSLayoutConstraint.h"/>
+        </class>
+        <class className="WALocalizedButton" superclassName="UIButton">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/WALocalizedButton.h"/>
+        </class>
+        <class className="WAPartioFirstUseViewController" superclassName="UINavigationController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/WAPartioFirstUseViewController.h"/>
+        </class>
+        <class className="WAPartioWelcomeViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/WAPartioWelcomeViewController.h"/>
+            <relationships>
+                <relationship kind="outlet" name="backgroundImageView" candidateClass="UIImageView"/>
+                <relationship kind="outlet" name="experienceButton" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="signupButton" candidateClass="UIButton"/>
+            </relationships>
+        </class>
+    </classes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>

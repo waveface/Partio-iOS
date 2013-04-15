@@ -233,7 +233,7 @@
 		80092D3916AFD5A000020F64 /* WADataPlanViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 80092D3816AFD5A000020F64 /* WADataPlanViewController.m */; };
 		800D2E04171803BD0028F47F /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 800D2E03171803BD0028F47F /* Default.png */; };
 		800D2E06171803CF0028F47F /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 800D2E05171803CF0028F47F /* Default@2x.png */; };
-		800D2E0A171804420028F47F /* PartioLogin-h568@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 800D2E07171804420028F47F /* PartioLogin-h568@2x.png */; };
+		800D2E0A171804420028F47F /* PartioLogin-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 800D2E07171804420028F47F /* PartioLogin-568h@2x.png */; };
 		800D2E0B171804420028F47F /* PartioLogin.png in Resources */ = {isa = PBXBuildFile; fileRef = 800D2E08171804420028F47F /* PartioLogin.png */; };
 		800D2E0C171804420028F47F /* PartioLogin@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 800D2E09171804420028F47F /* PartioLogin@2x.png */; };
 		800D9A9216719B5D0034CDF6 /* MKMapView+ZoomLevel.m in Sources */ = {isa = PBXBuildFile; fileRef = 800D9A9116719B5D0034CDF6 /* MKMapView+ZoomLevel.m */; };
@@ -1241,7 +1241,7 @@
 		80092D3816AFD5A000020F64 /* WADataPlanViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WADataPlanViewController.m; path = wammer/WADataPlanViewController.m; sourceTree = "<group>"; };
 		800D2E03171803BD0028F47F /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Default.png; path = Resources/Default.png; sourceTree = "<group>"; };
 		800D2E05171803CF0028F47F /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default@2x.png"; path = "Resources/Default@2x.png"; sourceTree = "<group>"; };
-		800D2E07171804420028F47F /* PartioLogin-h568@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "PartioLogin-h568@2x.png"; path = "Resources/PartioLogin-h568@2x.png"; sourceTree = "<group>"; };
+		800D2E07171804420028F47F /* PartioLogin-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "PartioLogin-568h@2x.png"; path = "Resources/PartioLogin-568h@2x.png"; sourceTree = "<group>"; };
 		800D2E08171804420028F47F /* PartioLogin.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = PartioLogin.png; path = Resources/PartioLogin.png; sourceTree = "<group>"; };
 		800D2E09171804420028F47F /* PartioLogin@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "PartioLogin@2x.png"; path = "Resources/PartioLogin@2x.png"; sourceTree = "<group>"; };
 		800D9A9016719B5D0034CDF6 /* MKMapView+ZoomLevel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "MKMapView+ZoomLevel.h"; path = "wammer/MKMapView+ZoomLevel.h"; sourceTree = "<group>"; };
@@ -2528,7 +2528,7 @@
 				808A337F1716AC3F00CF5C8D /* Checked.png */,
 				808A33801716AC3F00CF5C8D /* Checked@2x.png */,
 				80CBC7711713FBDE0056D9CF /* partioIcon.png */,
-				800D2E07171804420028F47F /* PartioLogin-h568@2x.png */,
+				800D2E07171804420028F47F /* PartioLogin-568h@2x.png */,
 				800D2E08171804420028F47F /* PartioLogin.png */,
 				800D2E09171804420028F47F /* PartioLogin@2x.png */,
 			);
@@ -4337,7 +4337,7 @@
 				809A1CEC1716F2E9004083BA /* WAFacebookLoginViewController.xib in Resources */,
 				800D2E04171803BD0028F47F /* Default.png in Resources */,
 				800D2E06171803CF0028F47F /* Default@2x.png in Resources */,
-				800D2E0A171804420028F47F /* PartioLogin-h568@2x.png in Resources */,
+				800D2E0A171804420028F47F /* PartioLogin-568h@2x.png in Resources */,
 				800D2E0B171804420028F47F /* PartioLogin.png in Resources */,
 				800D2E0C171804420028F47F /* PartioLogin@2x.png in Resources */,
 				80C9F3801719AA81003E7C6E /* WAPhotoHighlightsViewController.xib in Resources */,
