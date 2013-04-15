@@ -59,6 +59,7 @@ void WADefaultAppearance(void) {
 
 void WAPartioDefaultAppearance(void) {
   [[UINavigationBar appearance] setTintColor:[UIColor blackColor]];
+  [[UINavigationBar appearance] setTitleTextAttributes:@{@"UITextAttributeFont": [UIFont fontNamesForFamilyName:@"OpenSans_Semibold"]}];
 }
 
 #pragma mark - Origianl appearance settings
