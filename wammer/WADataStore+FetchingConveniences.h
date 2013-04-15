@@ -28,6 +28,8 @@
 - (NSFetchRequest *) newFetchRequestForArticlesWithPhotos;
 - (NSFetchRequest *) newFetchRequestForArticlesWithoutPreviewsOrPhotos;
 
+- (NSFetchRequest *) newFetchReuqestForCheckinFrom:(NSDate*)from to:(NSDate*)to;
+
 - (void) fetchLatestCreatedArticleInGroup:(NSString *)aGroupIdentifier onSuccess:(void(^)(NSString *identifier, WAArticle *article))callback;
 
 - (void) fetchLatestCreatedArticleInGroup:(NSString *)aGroupIdentifier usingContext:(NSManagedObjectContext *)aContext onSuccess:(void(^)(NSString *identifier, WAArticle *article))callback;

@@ -241,6 +241,18 @@
   
 }
 
+- (NSFetchRequest *) newFetchReuqestForCheckinFrom:(NSDate*)from to:(NSDate*)to {
+
+  NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] initWithEntityName:@"WACheckin"];
+  NSPredicate *predicate = [NSPredicate predicateWithFormat:@"createDate >= %@ AND createDate <= %@", from, to];
+  [fetchRequest setPredicate:predicate];
+  NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"createDate" ascending:NO];
+  [fetchRequest setSortDescriptors:@[sortDescriptor]];
+  
+  return fetchRequest;
+  
+}
+
 - (void) fetchLatestCreatedArticleInGroup:(NSString *)aGroupIdentifier onSuccess:(void(^)(NSString *identifier, WAArticle *article))callback {
   
   [self fetchLatestCreatedArticleInGroup:aGroupIdentifier usingContext:[self disposableMOC] onSuccess:callback];

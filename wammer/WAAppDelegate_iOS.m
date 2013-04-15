@@ -30,6 +30,7 @@
 #import "WAUserInfoViewController.h"
 #import "WAOverlayBezel.h"
 
+#import "WAPartioNavigationController.h"
 #import "WASharedEventViewController.h"
 #import "WAPhotoHighlightsViewController.h"
 #import "WAPartioFirstUseViewController.h"
@@ -384,9 +385,10 @@ extern CFAbsoluteTime StartTime;
         [alertView show];
         
       } else {
-        
+
+        [wSelf cacheManager];
         WASharedEventViewController *sharedEventsVC = [[WASharedEventViewController alloc] init];
-        UINavigationController *navVC = [[UINavigationController alloc] initWithRootViewController:sharedEventsVC];
+        WAPartioNavigationController *navVC = [[WAPartioNavigationController alloc] initWithRootViewController:sharedEventsVC];
         wSelf.window.rootViewController = navVC;
 
         wSelf.fetchManager = [[WAFetchManager alloc] init];
@@ -399,7 +401,7 @@ extern CFAbsoluteTime StartTime;
   } else {
 
     WASharedEventViewController *sharedEventsVC = [[WASharedEventViewController alloc] initWithStyle:UITableViewStylePlain];
-    UINavigationController *navVC = [[UINavigationController alloc] initWithRootViewController:sharedEventsVC];
+    WAPartioNavigationController *navVC = [[WAPartioNavigationController alloc] initWithRootViewController:sharedEventsVC];
     wSelf.window.rootViewController = navVC;
         
   }
@@ -724,6 +726,7 @@ extern CFAbsoluteTime StartTime;
     if (ri.userToken) {
       [wSelf updateCurrentCredentialsWithUserIdentifier:ri.userIdentifier token:ri.userToken primaryGroup:ri.primaryGroupIdentifier];
       [wSelf bootstrapPersistentStoreWithUserIdentifier:ri.userIdentifier];
+      [wSelf cacheManager];
     }
     [partioFirstUse popToRootViewControllerAnimated:NO];
     
@@ -733,7 +736,7 @@ extern CFAbsoluteTime StartTime;
     }];
     
     WASharedEventViewController *sharedEventsVC = [[WASharedEventViewController alloc] initWithStyle:UITableViewStylePlain];
-    UINavigationController *navVC = [[UINavigationController alloc] initWithRootViewController:sharedEventsVC];
+    WAPartioNavigationController *navVC = [[WAPartioNavigationController alloc] initWithRootViewController:sharedEventsVC];
     wSelf.window.rootViewController = navVC;
 
     if (ri.userToken) {

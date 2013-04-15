@@ -25,10 +25,12 @@
 #import "WAPeople.h"
 #import "WALocation.h"
 
+#import "WADataStore+FetchingConveniences.h"
 #import "WAContactPickerViewController.h"
 #import "WAGeoLocation.h"
 #import <CoreLocation/CoreLocation.h>
 #import <GoogleMaps/GoogleMaps.h>
+#import <BlocksKit/BlocksKit.h>
 #import <MobileCoreServices/MobileCoreServices.h>
 
 #import "WARemoteInterface.h"
@@ -94,11 +96,10 @@
   self.imageDisplayQueue = [[NSOperationQueue alloc] init];
   self.imageDisplayQueue.maxConcurrentOperationCount = 1;
   
-//  UIImage *backImage = [UIImage imageNamed:@"back"];
-//  UIButton *backButton = [[UIButton alloc] initWithFrame:(CGRect){CGPointZero, backImage.size}];
-//  [backButton addTarget:self action:@selector(backButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
-//  [backButton setImage:backImage forState:UIControlStateNormal];
-//  UIBarButtonItem *backItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];
+  __weak WAPhotoTimelineViewController *wSelf = self;
+  self.navigationItem.leftBarButtonItem = WAPartioBackButton(^{
+    [wSelf.navigationController popViewControllerAnimated:YES];
+  });
   
   if (!self.representingArticle) {
     UIImage *actionImage = [UIImage imageNamed:@"action"];
@@ -291,12 +292,11 @@
 {
   
   __weak WAPhotoTimelineViewController *wSelf = self;
-  WAContactPickerViewController *contactPicker = [[WAContactPickerViewController alloc] initWithStyle:UITableViewStylePlain];
+  WAContactPickerViewController *contactPicker = [[WAContactPickerViewController alloc] init];
   if (self.navigationController) {
     
     contactPicker.onNextHandler = ^(NSArray *results) {
       [wSelf finishCreatingSharingEventForSharingTargets:results];
-//      [wSelf.navigationController popToRootViewControllerAnimated:NO];
       [wSelf.navigationController dismissViewControllerAnimated:YES completion:nil];
     };
     [self.navigationController pushViewController:contactPicker animated:YES];
@@ -423,35 +423,39 @@
   }
   
   __weak WAPhotoTimelineViewController *wSelf = self;
-  for (NSUInteger i = 0; i < numOfPhotos && ((base+i)<totalNumber); i++) {
+  for (NSUInteger i = 0; i < numOfPhotos; i++) {
     
-    if (self.representingArticle) {
-     
-      [self.representingArticle.files[base+i]
-       irObserve:@"thumbnailImage"
-       options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionNew
-       context:nil
-       withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
-         
-         UIImage *image = (UIImage*)toValue;
-         [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-           ((UIImageView *)cell.imageViews[i]).image = image;
-         }];
-         
-       }];
-      
-    } else {
-      NSBlockOperation *op = [NSBlockOperation blockOperationWithBlock:^{
-      
-        ALAsset *asset = wSelf.allAssets[base+i];
-        UIImage *image = [UIImage imageWithCGImage:asset.thumbnail];
+    if ((base+i) < totalNumber) {
+      if (self.representingArticle) {
         
-        [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-          ((UIImageView *)cell.imageViews[i]).image = image;
+        [self.representingArticle.files[base+i]
+         irObserve:@"thumbnailImage"
+         options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionNew
+         context:nil
+         withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
+           
+           UIImage *image = (UIImage*)toValue;
+           [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+             ((UIImageView *)cell.imageViews[i]).image = image;
+           }];
+           
+         }];
+        
+      } else {
+        NSBlockOperation *op = [NSBlockOperation blockOperationWithBlock:^{
+          
+          ALAsset *asset = wSelf.allAssets[base+i];
+          UIImage *image = [UIImage imageWithCGImage:asset.thumbnail];
+          
+          [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+            ((UIImageView *)cell.imageViews[i]).image = image;
+          }];
         }];
-      }];
-    
-      [self.imageDisplayQueue addOperation:op];
+        
+        [self.imageDisplayQueue addOperation:op];
+      }
+    } else {
+      [(UIImageView*)cell.imageViews[i] setBackgroundColor:[UIColor clearColor]];
     }
   }
   
@@ -505,9 +509,23 @@
     [cover.mapView setCamera:camera];
     cover.mapView.myLocationEnabled = NO;
     
+    NSFetchRequest * fetchRequest = [[WADataStore defaultStore] newFetchReuqestForCheckinFrom:[self beginDate] to:[self endDate]];
+    
+    NSError *error = nil;
+    NSArray *checkins = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
+    if (error) {
+      NSLog(@"error to query checkin db: %@", error);
+    } else if (checkins.count) {
+      cover.titleLabel.text = [[checkins valueForKeyPath:@"name"] componentsJoinedByString:@","];
+    }
+    
+    cover.titleLabel.text = @"";
     self.geoLocation = [[WAGeoLocation alloc] init];
     [self.geoLocation identifyLocation:self.coordinate onComplete:^(NSArray *results) {
-      cover.titleLabel.text = [results componentsJoinedByString:@","];
+      if (cover.titleLabel.text.length == 0)
+        cover.titleLabel.text = [results componentsJoinedByString:@","];
+      else
+        cover.titleLabel.text = [NSString stringWithFormat:@"%@,%@", cover.titleLabel.text, [results componentsJoinedByString:@","]];
     } onError:^(NSError *error) {
       NSLog(@"Unable to identify location: %@", error);
     }];
@@ -619,9 +637,13 @@
     naviBarShown = NO;
   }
     
-  if (scrollView.contentOffset.y > 0)
-    self.indexView.percentage = (scrollView.contentOffset.y / scrollView.contentSize.height);
-  
+  if (scrollView.contentOffset.y > 0) {
+//    CGFloat ratio = scrollView.contentSize.height / (scrollView.contentSize.height - scrollView.frame.size.height);
+    CGFloat percent = (scrollView.contentOffset.y / (scrollView.contentSize.height - self.collectionView.frame.size.height));
+    NSLog(@"%@ %f", NSStringFromCGSize(scrollView.contentSize), percent);
+    self.indexView.percentage = percent;
+  }
+
 }
 
 - (void) scrollViewDidEndDecelerating:(UIScrollView *)scrollView {

@@ -84,6 +84,10 @@
 
 }
 
+- (void) cancel {
+  [self.connection cancel];
+}
+
 - (void)connectionDidFinishLoading:(NSURLConnection *)conn {
   
   NSError *jsonError          = nil;
