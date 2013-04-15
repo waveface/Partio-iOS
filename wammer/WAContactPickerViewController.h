@@ -9,8 +9,9 @@
 #import <UIKit/UIKit.h>
 #import <AddressBookUI/AddressBookUI.h>
 
-@interface WAContactPickerViewController : UITableViewController <ABPeoplePickerNavigationControllerDelegate>
+@interface WAContactPickerViewController : UIViewController <ABPeoplePickerNavigationControllerDelegate>
 
+- (id)init;
 @property (nonatomic, strong) NSMutableArray *members;
 @property (copy) void (^onNextHandler)(NSArray *selectedContacts);
 

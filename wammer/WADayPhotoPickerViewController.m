@@ -23,6 +23,7 @@
 @property (nonatomic, strong) NSMutableArray *selectedAssets;
 @property (nonatomic, strong) NSArray *allTimeSortedAssets;
 
+@property (nonatomic, weak) IBOutlet UINavigationBar *navigationBar;
 @end
 
 @implementation WADayPhotoPickerViewController
@@ -42,7 +43,6 @@
 - (void)viewDidLoad
 {
   [super viewDidLoad];
-  self.title = NSLocalizedString(@"TITLE_OF_DAY_PHOTO_PICKER", @"Title of the day photo picker view");
   self.imageDisplayQueue = [[NSOperationQueue alloc] init];
   self.imageDisplayQueue.maxConcurrentOperationCount = 1;
   
@@ -55,7 +55,14 @@
     }];
 
     self.navigationItem.rightBarButtonItem = buttonItem;
+    
+    self.navigationItem.leftBarButtonItem = WAPartioBackButton(^{
+      [wSelf.navigationController popViewControllerAnimated:YES];
+    });
+    self.navigationItem.title = NSLocalizedString(@"TITLE_OF_DAY_PHOTO_PICKER", @"Title of the day photo picker view");
+
   }
+  [self.navigationBar pushNavigationItem:self.navigationItem animated:NO];
   
   self.collectionView.allowsMultipleSelection = YES;
   [self.collectionView registerNib:[UINib nibWithNibName:@"WADayPhotoPickerViewCell" bundle:nil] forCellWithReuseIdentifier:@"WADayPhotoPickerViewCell"];

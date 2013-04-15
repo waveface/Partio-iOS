@@ -13,4 +13,5 @@
 
 - (void) identifyLocation:(CLLocationCoordinate2D)coordinate onComplete:(void(^)(NSArray*))completeBlock onError:(void(^)(NSError*))failureBlock;
 
+- (void) cancel;
 @end
