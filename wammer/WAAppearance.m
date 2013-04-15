@@ -10,6 +10,7 @@
 #import <UIKit/UIKit.h>
 #import "UIKit+IRAdditions.h"
 #import "WACalendarPickerViewController.h"
+#import <BlocksKit/BlocksKit.h>
 
 #pragma mark - UIAppearance
 void WADefaultAppearance(void) {
@@ -55,6 +56,7 @@ void WADefaultAppearance(void) {
 		
 }
 
+
 void WAPartioDefaultAppearance(void) {
   [[UINavigationBar appearance] setTintColor:[UIColor blackColor]];
 }
@@ -92,6 +94,17 @@ void WADefaultBarButtonInitialize (void) {
 	
 }
 
+UIBarButtonItem *WAPartioBackButton(void(^handler)(void)) {
+  UIImage *backImage = [UIImage imageNamed:@"back"];
+  UIButton *backButton = [[UIButton alloc] initWithFrame:(CGRect){CGPointZero, backImage.size}];
+  [backButton setImage:backImage forState:UIControlStateNormal];
+  [backButton addEventHandler:^(id sender) {
+    if (handler)
+      handler();
+  } forControlEvents:UIControlEventTouchUpInside];
+  UIBarButtonItem *backItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];
+  return backItem;
+}
 
 IRBarButtonItem * WABarButtonItem (UIImage *image, NSString *labelText, void(^aBlock)(void)) {
 

@@ -12,6 +12,7 @@
 #import "WAGeoLocation.h"
 #import <CoreLocation/CoreLocation.h>
 #import "WADataStore.h"
+#import "WAPartioNavigationController.h"
 #import "NSDate+WAAdditions.h"
 
 @interface WASharedEventViewController ()
@@ -167,8 +168,8 @@
                   cell.backgroundView = [[UIImageView alloc] initWithImage:(UIImage *)toValue];
                   cell.backgroundView.contentMode = UIViewContentModeScaleAspectFill;
                   cell.backgroundView.clipsToBounds = YES;
+                });
 
-                });                
               }];
   
   CAGradientLayer *gradientLayer = [CAGradientLayer layer];
@@ -233,9 +234,8 @@
 
 - (void)shareNewEventFromHighlight
 {
-  WAPhotoHighlightsViewController *phVC = [[WAPhotoHighlightsViewController alloc] init];
-  UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:phVC];
-  [self presentViewController:nav animated:YES completion:nil];
+  WAPhotoHighlightsViewController *phVC = [WAPhotoHighlightsViewController viewControllerWithNavigationControllerWrapped];
+  [self presentViewController:phVC animated:YES completion:nil];
 }
 
 @end

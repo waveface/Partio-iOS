@@ -9,16 +9,21 @@
 #import "WAContactPickerViewController.h"
 #import <QuartzCore/QuartzCore.h>
 
-@interface WAContactPickerViewController () <UITextFieldDelegate, UITextInputTraits>
+#import "WAContactPickerSectionHeaderView.h"
+#import <BlocksKit/BlocksKit.h>
+#import <FacebookSDK/FacebookSDK.h>
 
+@interface WAContactPickerViewController () <UITableViewDelegate, UITableViewDataSource, FBFriendPickerDelegate>
+@property (nonatomic, weak) IBOutlet UITableView *tableView;
+@property (nonatomic, weak) IBOutlet UINavigationBar *navigationBar;
+@property (nonatomic, strong) FBFriendPickerViewController *fbFriendPickerViewController;
 @property (nonatomic, weak) UIBarButtonItem *textFieldDoneBarButton;
 @end
 
 @implementation WAContactPickerViewController
 
-- (id)initWithStyle:(UITableViewStyle)style
-{
-  self = [super initWithStyle:style];
+- (id) init {
+  self = [super initWithNibName:nil bundle:nil];
   if (self) {
     // Custom initialization
     _members = [[NSMutableArray alloc] init];
@@ -32,7 +37,14 @@
   
   [self setTitle:NSLocalizedString(@"TITLE_INVITE_CONTACTS", @"TITLE_INVITE_CONTACTS")];
   self.navigationItem.rightBarButtonItem = [self shareBarButton];
+
+  __weak WAContactPickerViewController *wSelf = self;
+  self.navigationItem.leftBarButtonItem = WAPartioBackButton(^{
+    [wSelf.navigationController popViewControllerAnimated:YES];
+  });
+  self.navigationItem.title = @"Invite Friends";
   
+  [self.navigationBar pushNavigationItem:self.navigationItem animated:NO];
 }
 
 - (UIBarButtonItem *)shareBarButton
@@ -54,7 +66,7 @@
 - (void)done
 {
   if (self.onNextHandler) {
-    self.onNextHandler(_members);
+    self.onNextHandler([NSArray arrayWithArray:_members]);
   }
   
   [self dismissViewControllerAnimated:YES completion:nil];

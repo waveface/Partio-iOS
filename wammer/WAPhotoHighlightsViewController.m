@@ -17,24 +17,36 @@
 #import "FBRequestConnection+WAAdditions.h"
 #import "WADataStore.h"
 #import "WACheckin.h"
+#import "WADataStore+FetchingConveniences.h"
 #import <BlocksKit/BlocksKit.h>
 
 #define GROUPING_THRESHOLD (30 * 60)
 
-@interface WAPhotoHighlightsViewController ()
+@interface WAPhotoHighlightsViewController () <UITableViewDataSource, UITableViewDelegate>
 
 @property (nonatomic, strong) NSArray *allTimeSortedAssets;
 @property (nonatomic, strong) NSArray *photoGroups;
 @property (nonatomic, strong) FBRequestConnection *fbConnection;
 @property (nonatomic, strong) NSManagedObjectContext *managedObjectContext;
 
+@property (nonatomic, weak) IBOutlet UINavigationBar *navigationBar;
+@property (nonatomic, weak) IBOutlet UITableView *tableView;
+
 @end
 
 @implementation WAPhotoHighlightsViewController
 
++ (id) viewControllerWithNavigationControllerWrapped {
+  WAPhotoHighlightsViewController *vc = [[WAPhotoHighlightsViewController alloc] init];
+  UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:vc];
+  navigationController.navigationBarHidden = YES;
+  navigationController.toolbarHidden = YES;
+  return navigationController;
+}
+
 - (id) init {
   
-  self = [self initWithStyle:UITableViewStylePlain];
+  self = [self initWithNibName:nil bundle:nil];
   if (self) {
     
   }
@@ -48,11 +60,9 @@
   self.allTimeSortedAssets = @[];
   self.photoGroups = [@[] mutableCopy];
   
-  self.title = NSLocalizedString(@"TITLE_OF_HIGHLIGHTS", @"The title of highlight view");
-  
   if (self.navigationController) {
     __weak WAPhotoHighlightsViewController *wSelf = self;
-    UIBarButtonItem *buttonItem = [[UIBarButtonItem alloc] initWithTitle:@"By Date" style:UIBarButtonItemStyleBordered handler:^(id sender) {
+    UIBarButtonItem *buttonItem = [[UIBarButtonItem alloc] initWithTitle:@"All Photos" style:UIBarButtonItemStyleBordered handler:^(id sender) {
       WADayPhotoPickerViewController *picker = [[WADayPhotoPickerViewController alloc] initWithSelectedAssets:nil];
       [wSelf.navigationController pushViewController:picker animated:YES];
     }];
@@ -63,6 +73,9 @@
     self.navigationItem.leftBarButtonItem = cancelItem;
     self.navigationItem.rightBarButtonItem = buttonItem;
   }
+
+  self.navigationItem.title = NSLocalizedString(@"TITLE_HIGHLIGHT", @"title of highlights");
+  [self.navigationBar pushNavigationItem:self.navigationItem animated:NO];
   
   self.managedObjectContext = [[WADataStore defaultStore] disposableMOC];
   
@@ -136,7 +149,9 @@
                                }
                                
                                if (found) {
-                                 [changedIndexPaths addObject:[NSIndexPath indexPathForRow:groupIndex inSection:0]];
+                                 NSIndexPath *newIndexPath = [NSIndexPath indexPathForRow:groupIndex inSection:0];
+                                 if (![changedIndexPaths containsObject:newIndexPath])
+                                   [changedIndexPaths addObject:newIndexPath];
                                  NSLog(@"found %@ at indexPath row: %d", checkinItem[@"name"],groupIndex);
                                }
                              }
@@ -147,10 +162,11 @@
                                NSLog(@"fail to save checkin for %@", error);
                              }
                              
-                             dispatch_async(dispatch_get_main_queue(), ^{
-                               [wSelf.tableView reloadRowsAtIndexPaths:changedIndexPaths withRowAnimation:YES];
-                             });
-                           
+                             if (changedIndexPaths.count) {
+                               dispatch_async(dispatch_get_main_queue(), ^{
+                                 [wSelf.tableView reloadRowsAtIndexPaths:changedIndexPaths withRowAnimation:YES];
+                               });
+                             }
                            }
                          }];
     
@@ -280,11 +296,8 @@
   
   cell.locationLabel.text = @"";
   
-  NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] initWithEntityName:@"WACheckin"];
-  NSPredicate *predicate = [NSPredicate predicateWithFormat:@"createDate >= %@ AND createDate <= %@", beginDate, endDate];
-  [fetchRequest setPredicate:predicate];
-  NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"createDate" ascending:NO];
-  [fetchRequest setSortDescriptors:@[sortDescriptor]];
+  
+  NSFetchRequest * fetchRequest = [[WADataStore defaultStore] newFetchReuqestForCheckinFrom:beginDate to:endDate];
 
   NSError *error = nil;
   NSArray *checkins = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
@@ -292,30 +305,34 @@
     NSLog(@"error to query checkin db: %@", error);
   } else if (checkins.count) {
     cell.locationLabel.text = [[checkins valueForKeyPath:@"name"] componentsJoinedByString:@","];
-  } else {
+  }
   
-    if (imageMeta) {
-      NSDictionary *gps = imageMeta[@"{GPS}"];
-      if (gps) {
-        CLLocationCoordinate2D coordinate;
-        coordinate.latitude = [(NSNumber*)gps[@"Latitude"] doubleValue];
-        coordinate.longitude = [(NSNumber*)gps[@"Longitude"] doubleValue];
-        cell.geoLocation = [[WAGeoLocation alloc] init];
-        [cell.geoLocation identifyLocation:coordinate
-                                onComplete:^(NSArray *results) {
-                              
-                                  dispatch_async(dispatch_get_main_queue(), ^{
+  if (imageMeta) {
+    NSDictionary *gps = imageMeta[@"{GPS}"];
+    if (gps) {
+      CLLocationCoordinate2D coordinate;
+      coordinate.latitude = [(NSNumber*)gps[@"Latitude"] doubleValue];
+      coordinate.longitude = [(NSNumber*)gps[@"Longitude"] doubleValue];
+      if (cell.geoLocation)
+        [cell.geoLocation cancel];
+      cell.geoLocation = [[WAGeoLocation alloc] init];
+      [cell.geoLocation identifyLocation:coordinate
+                              onComplete:^(NSArray *results) {
+                                
+                                dispatch_async(dispatch_get_main_queue(), ^{
+                                  
+                                  if (cell.locationLabel.text.length)
+                                    cell.locationLabel.text = [NSString stringWithFormat:@"%@,%@", cell.locationLabel.text, [results componentsJoinedByString:@","]];
+                                  else
+                                    cell.locationLabel.text = [results componentsJoinedByString:@","];
                                     
-                                    cell.locationLabel.text = [NSString stringWithFormat:@"%@%@", cell.locationLabel.text, [results componentsJoinedByString:@","]];
-                                    
-                                  });
-                                  
-                                } onError:^(NSError *error) {
-                                  
-                                  NSLog(@"geolocation error: %@", error);
-                                  
-                                }];
-      }
+                                });
+                                
+                              } onError:^(NSError *error) {
+                                
+                                NSLog(@"geolocation error: %@", error);
+                                
+                              }];
     }
   }
 
@@ -334,6 +351,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
   
+//  self.navigationController.navigationBarHidden = YES;
   WAPhotoTimelineViewController *vc = [[WAPhotoTimelineViewController alloc] initWithAssets:self.photoGroups[indexPath.row]];
 
   [self.navigationController pushViewController:vc animated:YES];

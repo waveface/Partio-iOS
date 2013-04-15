@@ -143,8 +143,11 @@
 }
 
 - (void) setPercentage:(CGFloat)percentage {
-    
-  CGFloat newY = self.frame.size.height * percentage;
+  
+  if (percentage < 0 || percentage > 1)
+    return ;
+  
+  CGFloat newY = (self.frame.size.height*0.94) * percentage + (self.frame.size.height*0.02);
   CGRect newRect = CGRectMake(self.frame.size.width/2-4, newY, 8, 8);
   [UIView animateWithDuration:0.2 animations:^{
     self.dot.frame = newRect;
