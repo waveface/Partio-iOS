@@ -59,6 +59,9 @@
 	<string>© Waveface Inc.</string>
 	<key>UIAppFonts</key>
 	<array>
+		<string>OpenSans_Light.otf</string>
+		<string>OpenSans_Regular.otf</string>
+		<string>OpenSans_Semibold.otf</string>
 		<string>Sansus Webissimo-Italic.otf</string>
 		<string>Sansus Webissimo-Regular.otf</string>
 		<string>Fontin_Sans_B_45b.otf</string>
