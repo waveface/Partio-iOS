@@ -34,6 +34,9 @@
 #import <MobileCoreServices/MobileCoreServices.h>
 
 #import "WARemoteInterface.h"
+#import "WASyncManager.h"
+#import "WAAppDelegate.h"
+#import "WAAppDelegate_iOS.h"
 
 @interface WAPhotoTimelineViewController () <UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UIScrollViewDelegate>
 
@@ -265,6 +268,9 @@
   } else {
     NSLog(@"error on creating a new import post for error: %@", savingError);
   }
+  
+  WAAppDelegate_iOS *appDelegate = (WAAppDelegate_iOS*)AppDelegate();
+  [appDelegate.syncManager reload];
   
 }
 

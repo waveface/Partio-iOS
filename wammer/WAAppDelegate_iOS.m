@@ -20,6 +20,7 @@
 #import "WARemoteInterface+RemoteNotifications.h"
 #import "WASyncManager.h"
 #import "WAFetchManager.h"
+#import "WAStatusBar.h"
 
 #import "WADataStore.h"
 #import "WADataStore+WARemoteInterfaceAdditions.h"
@@ -115,6 +116,7 @@ static NSString *const kTrackingId = @"UA-27817516-8";
 @property (nonatomic, strong) WASyncManager *syncManager;
 @property (nonatomic, strong) WAFetchManager *fetchManager;
 @property (nonatomic, strong) WASlidingMenuViewController *slidingMenu;
+@property (nonatomic, strong) WAStatusBar *statusBar;
 
 - (void) clearViewHierarchy;
 - (void) recreateViewHierarchy;
@@ -307,6 +309,10 @@ extern CFAbsoluteTime StartTime;
     
   }];
   
+  dispatch_async(dispatch_get_main_queue(), ^{
+    [wSelf hideStatusBarIfNecessary];
+  });
+  
   dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
     
     NSLog(@"Enter background, wait until sync operations finished");
@@ -340,6 +346,57 @@ extern CFAbsoluteTime StartTime;
   [rootVC zapModal];
   
   self.window.rootViewController = [[WALoginBackgroundViewController alloc] init];
+  
+}
+
+- (void) initStatusBar {
+  
+  if (self.syncManager) {
+    [self.syncManager addObserver:self
+                       forKeyPath:@"syncedFilesCount"
+                          options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld
+                          context:nil];
+  }
+}
+
+- (void) observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+  if ([keyPath isEqualToString:@"syncedFilesCount"]) {
+    [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+
+      if (self.syncManager.isSyncing) {
+  
+        if (!self.statusBar) {
+          self.statusBar = [[WAStatusBar alloc] initWithFrame:CGRectZero];
+        }
+        
+        if (self.syncManager.needingSyncFilesCount) {
+          [self.statusBar showPhotoSyncingWithSyncedFilesCount:self.syncManager.syncedFilesCount
+                                         needingSyncFilesCount:self.syncManager.needingSyncFilesCount];
+          [self.statusBar startDataExchangeAnimation];
+        } else {
+          [self.statusBar showSyncCompleteWithDissmissBlock:^{
+            self.statusBar = nil;
+          }];
+        }
+      
+      } else {
+        [self.statusBar showSyncCompleteWithDissmissBlock:^{
+          self.statusBar = nil;
+        }];
+      }
+    }];
+    
+  }
+}
+
+- (void) hideStatusBarIfNecessary {
+  
+  if (self.syncManager) {
+    [self.syncManager removeObserver:self forKeyPath:@"syncedFilesCount"];
+  }
+  if (self.statusBar) {
+    self.statusBar = nil;
+  }
   
 }
 
@@ -393,6 +450,7 @@ extern CFAbsoluteTime StartTime;
 
         wSelf.fetchManager = [[WAFetchManager alloc] init];
         wSelf.syncManager = [[WASyncManager alloc] init];
+        [wSelf initStatusBar];
  
       }
     
@@ -402,8 +460,11 @@ extern CFAbsoluteTime StartTime;
 
     WASharedEventViewController *sharedEventsVC = [[WASharedEventViewController alloc] initWithStyle:UITableViewStylePlain];
     WAPartioNavigationController *navVC = [[WAPartioNavigationController alloc] initWithRootViewController:sharedEventsVC];
-    wSelf.window.rootViewController = navVC;
-        
+    self.window.rootViewController = navVC;
+    
+    self.fetchManager = [[WAFetchManager alloc] init];
+    self.syncManager = [[WASyncManager alloc] init];
+    [self initStatusBar];
   }
   
   
@@ -742,6 +803,7 @@ extern CFAbsoluteTime StartTime;
     if (ri.userToken) {
       wSelf.fetchManager = [[WAFetchManager alloc] init];
       wSelf.syncManager = [[WASyncManager alloc] init];
+      [wSelf initStatusBar];
     }
   } failure:^(NSError *error) {
     NSLog(@"fail to sign up for error: %@", error);
@@ -939,9 +1001,12 @@ static NSInteger networkActivityStackingCount = 0;
   if ([self hasAuthenticationData]) {
     
     [self.cacheManager clearPurgeableFilesIfNeeded];
-    [self.fetchManager reload];
-    [self.syncManager reload];
-    
+    if (self.fetchManager && self.syncManager) {
+      [self.fetchManager reload];
+      [self.syncManager reload];
+      
+      [self initStatusBar];
+    }
   }
   
 }
