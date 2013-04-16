@@ -47,6 +47,7 @@
 @property (nonatomic, strong) WAPhotoTimelineNavigationBar *navigationBar;
 @property (nonatomic, weak) IBOutlet UICollectionView *collectionView;
 @property (nonatomic, weak) IBOutlet WATimelineIndexView *indexView;
+@property (nonatomic, strong) WAPartioSignupViewController *signupVC;
 
 @property (nonatomic, strong) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, strong) NSOperationQueue *imageDisplayQueue;
@@ -315,7 +316,6 @@
   __weak WAPhotoTimelineViewController *wSelf = self;
   WAContactPickerViewController *contactPicker = [[WAContactPickerViewController alloc] init];
   if (self.navigationController) {
-    
     contactPicker.onNextHandler = ^(NSArray *results) {
       
       WARemoteInterface *ri = [WARemoteInterface sharedInterface];
@@ -328,7 +328,9 @@
 
       } else {
         
-        __block WAPartioSignupViewController *createAccountVC = [[WAPartioSignupViewController alloc] initWithCompleteHandler:^(NSError *error) {
+        WAPartioSignupViewController *createAccountVC = [[WAPartioSignupViewController alloc] initWithCompleteHandler:nil];
+        __weak WAPartioSignupViewController *sCreateAccountVC = createAccountVC;
+        createAccountVC.completeHandler = ^(NSError *error) {
         
           if ([WARemoteInterface sharedInterface].userToken) {
             WAAppDelegate_iOS *appDelegate = (WAAppDelegate_iOS*)AppDelegate();
@@ -338,14 +340,21 @@
           [wSelf finishCreatingSharingEventForSharingTargets:results];
           
           showSuccessBezel(^{
-            [createAccountVC dismissViewControllerAnimated:YES completion:^{
+            [sCreateAccountVC dismissViewControllerAnimated:YES completion:^{
               [wSelf.navigationController dismissViewControllerAnimated:YES completion:nil];
             }];
           });
           
+        };
+        
+        wSelf.signupVC = createAccountVC;
+        wSelf.navigationController.modalPresentationStyle = UIModalPresentationCurrentContext;
+        createAccountVC.view.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.7];
+        createAccountVC.view.alpha = 0;
+        [wSelf presentViewController:createAccountVC animated:NO completion:nil];
+        [UIView animateWithDuration:0.5 animations:^{
+          createAccountVC.view.alpha = 1;
         }];
-        [wSelf.navigationController pushViewController:createAccountVC animated:YES];
-//        [wSelf.navigationController presentViewController:createAccountVC animated:NO completion:nil];
       }
     };
     [self.navigationController pushViewController:contactPicker animated:YES];

@@ -2,7 +2,7 @@
 //  WAPartioSignupViewController.m
 //  wammer
 //
-//  Created by Shen Steven on 4/9/13.
+//  Created by Shen Steven on 4/16/13.
 //  Copyright (c) 2013 Waveface. All rights reserved.
 //
 
@@ -10,29 +10,24 @@
 #import "WAFacebookLoginViewController.h"
 
 @interface WAPartioSignupViewController ()
-
-@property (nonatomic, copy) void (^completionHandler)(NSError *error);
-
+@property (nonatomic, weak) IBOutlet UIButton *facebookButton;
 @end
 
 @implementation WAPartioSignupViewController
 
-- (id) initWithCompleteHandler:(void(^)(NSError *error))completeHandler {
-  
+- (id)initWithCompleteHandler:(void(^)(NSError *error))completeHandler {
+
   self = [super initWithNibName:nil bundle:nil];
   if (self) {
-    
-    self.completionHandler = completeHandler;
-    
+    self.completeHandler = completeHandler;
   }
   return self;
-  
 }
 
 - (void)viewDidLoad
 {
-    [super viewDidLoad];
-	// Do any additional setup after loading the view.
+  [super viewDidLoad];
+  [self.facebookButton setBackgroundColor:[UIColor blueColor]];
 }
 
 - (void)didReceiveMemoryWarning
@@ -41,20 +36,18 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (BOOL) shouldAutorotate {
-  return YES;
-}
-
-- (NSUInteger) supportedInterfaceOrientations {
-  return UIInterfaceOrientationMaskPortrait;
-}
-
 - (IBAction)fbButtonClicked:(id)sender {
- 
+  
   [WAFacebookLoginViewController backgroundLoginWithFacebookIDWithCompleteHandler:^(NSError *error) {
-    if (self.completionHandler)
-      self.completionHandler(error);
+    if (self.completeHandler)
+      self.completeHandler(error);
   }];
-
+  
 }
+
+- (IBAction)cancelButtonClicked:(id)sender {
+  [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+
 @end

@@ -72,7 +72,6 @@
     self.onNextHandler([NSArray arrayWithArray:_members]);
   }
   
-  [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)didReceiveMemoryWarning
