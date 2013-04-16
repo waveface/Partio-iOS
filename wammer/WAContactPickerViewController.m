@@ -8,6 +8,8 @@
 
 #import "WAContactPickerViewController.h"
 #import <QuartzCore/QuartzCore.h>
+#import "WAAppearance.h"
+#import "WATranslucentToolbar.h"
 
 #import "WAContactPickerSectionHeaderView.h"
 #import <BlocksKit/BlocksKit.h>
@@ -15,6 +17,7 @@
 
 @interface WAContactPickerViewController () <UITableViewDelegate, UITableViewDataSource, FBFriendPickerDelegate, UITextFieldDelegate>
 @property (nonatomic, weak) IBOutlet UITableView *tableView;
+@property (nonatomic, strong) WATranslucentToolbar *toolbar;
 @property (nonatomic, weak) IBOutlet UINavigationBar *navigationBar;
 @property (nonatomic, strong) FBFriendPickerViewController *fbFriendPickerViewController;
 @end
@@ -43,36 +46,22 @@
   self.navigationItem.title = @"Invite Friends";
   
   [self.navigationBar pushNavigationItem:self.navigationItem animated:NO];
-  
-  [self.navigationController setToolbarHidden:NO];
-  [self.navigationController.toolbar setBarStyle:UIBarStyleBlackTranslucent];
+
   UIBarButtonItem *flexspace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
-  [self setToolbarItems:@[flexspace, [self shareBarButton], flexspace] animated:YES];
+  self.toolbar = [[WATranslucentToolbar alloc] initWithFrame:CGRectMake(0, CGRectGetHeight(self.view.frame)-44, CGRectGetWidth(self.view.frame), 44)];
+  self.toolbar.items = @[flexspace, [self shareBarButton], flexspace];
+  [self.view addSubview:self.toolbar];
 }
 
 - (UIBarButtonItem *)shareBarButton
 {
-  static UIButton *aButton;
-  aButton = [UIButton buttonWithType:UIButtonTypeCustom];
-  [aButton setFrame:CGRectMake(0.f, 0.f, 100.f, 40.f)];
-  [aButton setTitle:@"Share" forState:UIControlStateNormal];
-  [aButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-  [aButton.titleLabel setFont:[UIFont fontWithName:@"OpenSans-Semibold" size:24.f]];
-  [aButton.titleLabel setTextAlignment:NSTextAlignmentCenter];
-  [aButton setBackgroundImage:[UIImage imageNamed:@"Btn"] forState:UIControlStateNormal];
-  [aButton setBackgroundImage:[UIImage imageNamed:@"Btn1"] forState:UIControlStateHighlighted];
-  [aButton addTarget:self action:@selector(done) forControlEvents:UIControlEventTouchUpInside];
-  
-  return [[UIBarButtonItem alloc] initWithCustomView:aButton];
+  return WAPartioToolbarNextButton(@"Share", ^{
+    if (self.onNextHandler) {
+      self.onNextHandler([NSArray arrayWithArray:_members]);
+    }
+  });
 }
 
-- (void)done
-{
-  if (self.onNextHandler) {
-    self.onNextHandler([NSArray arrayWithArray:_members]);
-  }
-  
-}
 
 - (void)didReceiveMemoryWarning
 {

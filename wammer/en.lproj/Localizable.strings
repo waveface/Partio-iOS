@@ -21,6 +21,7 @@
 
 /* Action title for cancelling stuff
    ACTION_CANCEL
+   Cancel action
    Cancel adding event
    Cancel adding selected photos into collection
    Cancel the photo deletion
@@ -373,6 +374,9 @@
 /* greeting text of day summary view */
 "GREETING_TEXT_WITH_EVENTS_TODAY" = "Hi, %@.\nCheck out what you did today!";
 
+/* description of what is highlight */
+"HIGHLIGHT_DESCRIPTION" = "Highlight is a smart group of your photos. You can choose one of them to share, or select from all photos.";
+
 /* No comment provided by engineer. */
 "HOUR_PLURAL" = "%d hours";
 
@@ -384,6 +388,9 @@
 
 /* Title on introduction pages */
 "INTRODUCTION_TITLE" = "What is aostream?";
+
+/* label text of all photos button in highlight */
+"LABEL_ALL_PHOTOS_BUTTON" = "All photos";
 
 /* Shows OFF when auto import is turned off in the settings panel */
 "LABEL_AUTO_IMPORT_VALUE_OFF" = "Off";
@@ -426,6 +433,9 @@
 
 /* Navigation bar title for web preview while loading */
 "NAVI_TITLE_WEB_LOADING" = "Loading..";
+
+/* action next */
+"NEXT_ACTION" = "Next";
 
 /* Nickname placeholder in signup page */
 "NICKNAME_PLACEHOLDER" = "Johnny Appleseed";

@@ -34,6 +34,7 @@
 #import <BlocksKit/BlocksKit.h>
 #import <MobileCoreServices/MobileCoreServices.h>
 #import "WAOverlayBezel.h"
+#import "WATranslucentToolbar.h"
 
 #import "WADefines.h"
 #import "WARemoteInterface.h"
@@ -45,6 +46,7 @@
 
 @property (nonatomic, strong) WAPhotoTimelineCover *headerView;
 @property (nonatomic, strong) WAPhotoTimelineNavigationBar *navigationBar;
+@property (nonatomic, strong) WATranslucentToolbar *toolbar;
 @property (nonatomic, weak) IBOutlet UICollectionView *collectionView;
 @property (nonatomic, weak) IBOutlet WATimelineIndexView *indexView;
 @property (nonatomic, strong) WAPartioSignupViewController *signupVC;
@@ -107,18 +109,7 @@
   self.navigationItem.leftBarButtonItem = WAPartioBackButton(^{
     [wSelf.navigationController popViewControllerAnimated:YES];
   });
-  
-  if (!self.representingArticle) {
-    UIImage *actionImage = [UIImage imageNamed:@"action"];
-    UIButton *actionButton = [[UIButton alloc] initWithFrame:(CGRect){CGPointZero, actionImage.size}];
-    [actionButton addTarget:self action:@selector(actionButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
-    [actionButton setImage:actionImage forState:UIControlStateNormal];
-    UIBarButtonItem *actionItem = [[UIBarButtonItem alloc] initWithCustomView:actionButton];
-  
-    //  self.navigationItem.leftBarButtonItem = backItem;
-    self.navigationItem.rightBarButtonItem = actionItem;
-  }
-  
+    
   self.navigationBar = [[WAPhotoTimelineNavigationBar alloc] initWithFrame:(CGRect)CGRectMake(0, 0, self.view.frame.size.width, 44)];
   self.navigationBar.barStyle = UIBarStyleDefault;
   self.navigationBar.tintColor = [UIColor clearColor];
@@ -154,7 +145,18 @@
 
   [self.indexView addIndex:0.01 label:[formatter stringFromDate:self.beginDate]];
   [self.indexView addIndex:0.99 label:[formatter stringFromDate:self.endDate]];
-  
+
+  if (!self.representingArticle) {
+    UIBarButtonItem *flexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+
+    UIBarButtonItem *nextItem = WAPartioToolbarNextButton(NSLocalizedString(@"NEXT_ACTION", @"action next"), ^{
+      [wSelf actionButtonClicked:nil];
+    });
+    
+    self.toolbar = [[WATranslucentToolbar alloc] initWithFrame:CGRectMake(0, CGRectGetHeight(self.view.frame)-44, CGRectGetWidth(self.view.frame), 44)];
+    self.toolbar.items = @[flexibleSpace, nextItem, flexibleSpace];
+    [self.view addSubview:self.toolbar];
+  }
 }
 
 - (BOOL) shouldAutorotate {

@@ -107,6 +107,23 @@ UIBarButtonItem *WAPartioBackButton(void(^handler)(void)) {
   return backItem;
 }
 
+UIBarButtonItem *WAPartioToolbarNextButton(NSString *labelText, void(^aBlock)(void)) {
+  UIImage *nextImage = [UIImage imageNamed:@"Btn"];
+  UIButton *nextButton = [[UIButton alloc] initWithFrame:(CGRect){CGPointZero, CGSizeMake((43/nextImage.size.height)*nextImage.size.width, 43)}];
+  [nextButton setBackgroundImage:nextImage forState:UIControlStateNormal];
+  [nextButton setBackgroundImage:[UIImage imageNamed:@"Btn1"] forState:UIControlStateHighlighted];
+  [nextButton setTitle:labelText forState:UIControlStateNormal];
+  [nextButton.titleLabel setFont:[UIFont fontWithName:@"OpenSans-Semibold" size:14.f]];
+  [nextButton.titleLabel setTextAlignment:NSTextAlignmentCenter];
+  nextButton.titleLabel.textColor = [UIColor whiteColor];
+  [nextButton addEventHandler:^(id sender) {
+    if (aBlock)
+      aBlock();
+  } forControlEvents:UIControlEventTouchUpInside];
+  UIBarButtonItem *nextItem = [[UIBarButtonItem alloc] initWithCustomView:nextButton];
+  return nextItem;
+}
+
 IRBarButtonItem * WABarButtonItem (UIImage *image, NSString *labelText, void(^aBlock)(void)) {
 
 	IRBarButtonItem *item = nil;
