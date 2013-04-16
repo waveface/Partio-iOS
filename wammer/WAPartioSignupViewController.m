@@ -7,30 +7,26 @@
 //
 
 #import "WAPartioSignupViewController.h"
+#import "WAFacebookLoginViewController.h"
 
 @interface WAPartioSignupViewController ()
+
+@property (nonatomic, copy) void (^completionHandler)(NSError *error);
 
 @end
 
 @implementation WAPartioSignupViewController
 
-- (id) init {
+- (id) initWithCompleteHandler:(void(^)(NSError *error))completeHandler {
   
   self = [super initWithNibName:nil bundle:nil];
   if (self) {
     
+    self.completionHandler = completeHandler;
+    
   }
   return self;
   
-}
-
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
 }
 
 - (void)viewDidLoad
@@ -45,4 +41,20 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (BOOL) shouldAutorotate {
+  return YES;
+}
+
+- (NSUInteger) supportedInterfaceOrientations {
+  return UIInterfaceOrientationMaskPortrait;
+}
+
+- (IBAction)fbButtonClicked:(id)sender {
+ 
+  [WAFacebookLoginViewController backgroundLoginWithFacebookIDWithCompleteHandler:^(NSError *error) {
+    if (self.completionHandler)
+      self.completionHandler(error);
+  }];
+
+}
 @end

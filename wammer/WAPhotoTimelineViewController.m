@@ -11,6 +11,7 @@
 #import "WAPhotoTimelineCover.h"
 #import "WAPhotoTimelineLayout.h"
 #import "WATimelineIndexView.h"
+#import "WAPartioSignupViewController.h"
 
 #import "WAPhotoCollageCell.h"
 #import "WADefines.h"
@@ -32,7 +33,9 @@
 #import <GoogleMaps/GoogleMaps.h>
 #import <BlocksKit/BlocksKit.h>
 #import <MobileCoreServices/MobileCoreServices.h>
+#import "WAOverlayBezel.h"
 
+#import "WADefines.h"
 #import "WARemoteInterface.h"
 #import "WASyncManager.h"
 #import "WAAppDelegate.h"
@@ -296,14 +299,54 @@
 
 - (void)actionButtonClicked:(id)sender
 {
-  
+  void (^showSuccessBezel) (void(^)(void)) = ^(void(^block)(void)) {
+    WAOverlayBezel *doneBezel = [WAOverlayBezel bezelWithStyle:WACheckmarkBezelStyle];
+    [doneBezel show];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1.5 * NSEC_PER_SEC), dispatch_get_main_queue(), ^ {
+      [doneBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
+
+      if (block) {
+        block();
+      }
+      
+    });
+  };
+
   __weak WAPhotoTimelineViewController *wSelf = self;
   WAContactPickerViewController *contactPicker = [[WAContactPickerViewController alloc] init];
   if (self.navigationController) {
     
     contactPicker.onNextHandler = ^(NSArray *results) {
-      [wSelf finishCreatingSharingEventForSharingTargets:results];
-      [wSelf.navigationController dismissViewControllerAnimated:YES completion:nil];
+      
+      WARemoteInterface *ri = [WARemoteInterface sharedInterface];
+      if (ri.userToken) {
+        [wSelf finishCreatingSharingEventForSharingTargets:results];
+
+        showSuccessBezel(^{
+          [wSelf.navigationController dismissViewControllerAnimated:YES completion:nil];
+        });
+
+      } else {
+        
+        __block WAPartioSignupViewController *createAccountVC = [[WAPartioSignupViewController alloc] initWithCompleteHandler:^(NSError *error) {
+        
+          if ([WARemoteInterface sharedInterface].userToken) {
+            WAAppDelegate_iOS *appDelegate = (WAAppDelegate_iOS*)AppDelegate();
+            [appDelegate bootstrapWhenUserLogin];
+          }
+          
+          [wSelf finishCreatingSharingEventForSharingTargets:results];
+          
+          showSuccessBezel(^{
+            [createAccountVC dismissViewControllerAnimated:YES completion:^{
+              [wSelf.navigationController dismissViewControllerAnimated:YES completion:nil];
+            }];
+          });
+          
+        }];
+        [wSelf.navigationController pushViewController:createAccountVC animated:YES];
+//        [wSelf.navigationController presentViewController:createAccountVC animated:NO completion:nil];
+      }
     };
     [self.navigationController pushViewController:contactPicker animated:YES];
     

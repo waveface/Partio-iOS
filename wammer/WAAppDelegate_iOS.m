@@ -177,6 +177,19 @@ static NSString *const kTrackingId = @"UA-27817516-8";
   
 }
 
+- (void) bootstrapWhenUserLogin {
+  
+  WARemoteInterface *ri = [WARemoteInterface sharedInterface];
+  if (ri.userToken) {
+    [self updateCurrentCredentialsWithUserIdentifier:ri.userIdentifier token:ri.userToken primaryGroup:ri.primaryGroupIdentifier];
+    [self bootstrapPersistentStoreWithUserIdentifier:ri.userIdentifier];
+    [self cacheManager];
+    self.fetchManager = [[WAFetchManager alloc] init];
+    self.syncManager = [[WASyncManager alloc] init];
+    [self initStatusBar];
+  }
+  
+}
 
 extern CFAbsoluteTime StartTime;
 
@@ -444,27 +457,21 @@ extern CFAbsoluteTime StartTime;
       } else {
 
         [wSelf cacheManager];
+        [wSelf bootstrapWhenUserLogin];
         WASharedEventViewController *sharedEventsVC = [[WASharedEventViewController alloc] init];
         WAPartioNavigationController *navVC = [[WAPartioNavigationController alloc] initWithRootViewController:sharedEventsVC];
         wSelf.window.rootViewController = navVC;
-
-        wSelf.fetchManager = [[WAFetchManager alloc] init];
-        wSelf.syncManager = [[WASyncManager alloc] init];
-        [wSelf initStatusBar];
- 
       }
     
     }];
     self.window.rootViewController = fbLoginVC;
   } else {
 
+    [self bootstrapWhenUserLogin];
     WASharedEventViewController *sharedEventsVC = [[WASharedEventViewController alloc] initWithStyle:UITableViewStylePlain];
     WAPartioNavigationController *navVC = [[WAPartioNavigationController alloc] initWithRootViewController:sharedEventsVC];
     self.window.rootViewController = navVC;
     
-    self.fetchManager = [[WAFetchManager alloc] init];
-    self.syncManager = [[WASyncManager alloc] init];
-    [self initStatusBar];
   }
   
   
@@ -783,12 +790,7 @@ extern CFAbsoluteTime StartTime;
   __weak WAAppDelegate_iOS *wSelf = self;
   __block WAPartioFirstUseViewController *partioFirstUse = [WAPartioFirstUseViewController firstUseViewControllerWithCompletionBlock:^{
 
-    WARemoteInterface *ri = [WARemoteInterface sharedInterface];
-    if (ri.userToken) {
-      [wSelf updateCurrentCredentialsWithUserIdentifier:ri.userIdentifier token:ri.userToken primaryGroup:ri.primaryGroupIdentifier];
-      [wSelf bootstrapPersistentStoreWithUserIdentifier:ri.userIdentifier];
-      [wSelf cacheManager];
-    }
+    [self bootstrapWhenUserLogin];
     [partioFirstUse popToRootViewControllerAnimated:NO];
     
     [partioFirstUse dismissViewControllerAnimated:NO completion:^{
@@ -800,11 +802,6 @@ extern CFAbsoluteTime StartTime;
     WAPartioNavigationController *navVC = [[WAPartioNavigationController alloc] initWithRootViewController:sharedEventsVC];
     wSelf.window.rootViewController = navVC;
 
-    if (ri.userToken) {
-      wSelf.fetchManager = [[WAFetchManager alloc] init];
-      wSelf.syncManager = [[WASyncManager alloc] init];
-      [wSelf initStatusBar];
-    }
   } failure:^(NSError *error) {
     NSLog(@"fail to sign up for error: %@", error);
     IRAction *okAction = [IRAction actionWithTitle:NSLocalizedString(@"ACTION_OKAY", @"Alert Dismissal Action") block:nil];

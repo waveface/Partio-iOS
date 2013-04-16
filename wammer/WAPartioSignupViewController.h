@@ -10,6 +10,6 @@
 
 @interface WAPartioSignupViewController : UIViewController
 
-- (id) init;
+- (id) initWithCompleteHandler:(void(^)(NSError *error))completeHandler;
 
 @end
