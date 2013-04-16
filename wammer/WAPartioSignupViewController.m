@@ -11,6 +11,7 @@
 
 @interface WAPartioSignupViewController ()
 @property (nonatomic, weak) IBOutlet UIButton *facebookButton;
+@property (nonatomic, weak) IBOutlet UIView *bottomView;
 @end
 
 @implementation WAPartioSignupViewController
@@ -27,7 +28,10 @@
 - (void)viewDidLoad
 {
   [super viewDidLoad];
-  [self.facebookButton setBackgroundColor:[UIColor blueColor]];
+  [self.facebookButton setBackgroundColor:[UIColor colorWithRed:0.23 green:0.349 blue:0.596 alpha:1]];
+  self.facebookButton.layer.cornerRadius = 15;
+  
+  self.bottomView.layer.cornerRadius = 10;
 }
 
 - (void)didReceiveMemoryWarning
