@@ -48,20 +48,24 @@
   self.experienceButton.layer.cornerRadius = 22;
   
   if(IS_WIDESCREEN)
-    self.backgroundImageView.image = [UIImage imageNamed:@"PartioLogin-h568"];
+    self.backgroundImageView.image = [UIImage imageNamed:@"PartioLogin-568h"];
   else
     self.backgroundImageView.image = [UIImage imageNamed:@"PartioLogin"];
 }
 
 - (IBAction) experienceButtonClicked:(id)sender {
-    
+/*
   IRAction *cancelAction = [IRAction actionWithTitle:@"OK" block:nil];
   
   [[IRAlertView alertViewWithTitle:@"Not support yet"
                            message:@"Current version requires you to login with Facebook account first. 'Try' scenario will be implemented in the near future."
                       cancelAction:cancelAction
                       otherActions:nil] show];
-  
+  */
+  WAPartioFirstUseViewController *firstUse = (WAPartioFirstUseViewController *)self.navigationController;
+  if (firstUse.completionBlock) {
+    firstUse.completionBlock();
+  }
 }
 
 - (IBAction) signupButtonClicked:(id)sender {

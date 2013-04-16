@@ -352,6 +352,7 @@
 {
   
 //  self.navigationController.navigationBarHidden = YES;
+  [tableView deselectRowAtIndexPath:indexPath animated:NO];
   WAPhotoTimelineViewController *vc = [[WAPhotoTimelineViewController alloc] initWithAssets:self.photoGroups[indexPath.row]];
 
   [self.navigationController pushViewController:vc animated:YES];

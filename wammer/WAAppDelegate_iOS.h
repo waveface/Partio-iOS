@@ -18,5 +18,6 @@
 @property (nonatomic, readonly, strong) WASlidingMenuViewController *slidingMenu;
 
 - (void) recreateViewHierarchy;
+- (void) bootstrapWhenUserLogin;
 
 @end
