@@ -331,6 +331,8 @@
 		8095504F17166FE100BEDDE0 /* WAFacebookSignupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8095504E17166FE100BEDDE0 /* WAFacebookSignupViewController.m */; };
 		809550521716710700BEDDE0 /* HighlightAddEventBtn.png in Resources */ = {isa = PBXBuildFile; fileRef = 80955050171670DA00BEDDE0 /* HighlightAddEventBtn.png */; };
 		809550531716710700BEDDE0 /* HighlightAddEventBtn@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 80955051171670ED00BEDDE0 /* HighlightAddEventBtn@2x.png */; };
+		809A1756171D246C000AF6ED /* WAPartioSignupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 809A1754171D246C000AF6ED /* WAPartioSignupViewController.m */; };
+		809A1757171D246C000AF6ED /* WAPartioSignupViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 809A1755171D246C000AF6ED /* WAPartioSignupViewController.xib */; };
 		809A1CE51716DBF1004083BA /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 809A1CE41716DBF1004083BA /* Default-568h@2x.png */; };
 		809A1CEB1716F2E9004083BA /* WAFacebookLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 809A1CE91716F2E9004083BA /* WAFacebookLoginViewController.m */; };
 		809A1CEC1716F2E9004083BA /* WAFacebookLoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 809A1CEA1716F2E9004083BA /* WAFacebookLoginViewController.xib */; };
@@ -417,8 +419,6 @@
 		80DAA57D16BA7C2400A4E352 /* TWAPIManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 80DAA57A16BA7C2400A4E352 /* TWAPIManager.m */; };
 		80DAA57E16BA7C2400A4E352 /* TWSignedRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 80DAA57C16BA7C2400A4E352 /* TWSignedRequest.m */; };
 		80E5173C1670F3B200E1C3AD /* WALocation.m in Sources */ = {isa = PBXBuildFile; fileRef = 80E5173B1670F3B200E1C3AD /* WALocation.m */; };
-		80F2752D171410B400C49FAB /* WAPartioSignupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 80F2752C171410B400C49FAB /* WAPartioSignupViewController.m */; };
-		80F2753C171410D500C49FAB /* WAPartioSignupViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 80F2753B171410D500C49FAB /* WAPartioSignupViewController.xib */; };
 		80F42C0215F70EDF00C8A72B /* WAWebSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 809D428F15F5CE4300CB4F89 /* WAWebSocket.m */; };
 		80F5223316C0FAD8003A06D5 /* WARemoteInterface+Summary.m in Sources */ = {isa = PBXBuildFile; fileRef = 80F5223216C0FAD8003A06D5 /* WARemoteInterface+Summary.m */; };
 		80F800F615C2624C00132A96 /* IRAQ-Checkmark.png in Resources */ = {isa = PBXBuildFile; fileRef = 80F800F415C2624C00132A96 /* IRAQ-Checkmark.png */; };
@@ -1397,6 +1397,9 @@
 		8095504E17166FE100BEDDE0 /* WAFacebookSignupViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WAFacebookSignupViewController.m; path = wammer/WAFacebookSignupViewController.m; sourceTree = "<group>"; };
 		80955050171670DA00BEDDE0 /* HighlightAddEventBtn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = HighlightAddEventBtn.png; path = Resources/HighlightAddEventBtn.png; sourceTree = "<group>"; };
 		80955051171670ED00BEDDE0 /* HighlightAddEventBtn@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "HighlightAddEventBtn@2x.png"; path = "Resources/HighlightAddEventBtn@2x.png"; sourceTree = "<group>"; };
+		809A1753171D246C000AF6ED /* WAPartioSignupViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WAPartioSignupViewController.h; path = wammer/WAPartioSignupViewController.h; sourceTree = "<group>"; };
+		809A1754171D246C000AF6ED /* WAPartioSignupViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WAPartioSignupViewController.m; path = wammer/WAPartioSignupViewController.m; sourceTree = "<group>"; };
+		809A1755171D246C000AF6ED /* WAPartioSignupViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = WAPartioSignupViewController.xib; path = wammer/WAPartioSignupViewController.xib; sourceTree = "<group>"; };
 		809A1CE41716DBF1004083BA /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default-568h@2x.png"; path = "Resources/Default-568h@2x.png"; sourceTree = "<group>"; };
 		809A1CE81716F2E9004083BA /* WAFacebookLoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WAFacebookLoginViewController.h; path = wammer/WAFacebookLoginViewController.h; sourceTree = "<group>"; };
 		809A1CE91716F2E9004083BA /* WAFacebookLoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WAFacebookLoginViewController.m; path = wammer/WAFacebookLoginViewController.m; sourceTree = "<group>"; };
@@ -1517,9 +1520,6 @@
 		80DAA57C16BA7C2400A4E352 /* TWSignedRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TWSignedRequest.m; path = external/TWReverseAuth/Source/Classes/TWSignedRequest.m; sourceTree = "<group>"; };
 		80E5173A1670F3B200E1C3AD /* WALocation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WALocation.h; sourceTree = "<group>"; };
 		80E5173B1670F3B200E1C3AD /* WALocation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WALocation.m; sourceTree = "<group>"; };
-		80F2752B171410B400C49FAB /* WAPartioSignupViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WAPartioSignupViewController.h; path = wammer/WAPartioSignupViewController.h; sourceTree = "<group>"; };
-		80F2752C171410B400C49FAB /* WAPartioSignupViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WAPartioSignupViewController.m; path = wammer/WAPartioSignupViewController.m; sourceTree = "<group>"; };
-		80F2753B171410D500C49FAB /* WAPartioSignupViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = WAPartioSignupViewController.xib; path = wammer/WAPartioSignupViewController.xib; sourceTree = "<group>"; };
 		80F5223116C0FAD8003A06D5 /* WARemoteInterface+Summary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WARemoteInterface+Summary.h"; sourceTree = "<group>"; };
 		80F5223216C0FAD8003A06D5 /* WARemoteInterface+Summary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WARemoteInterface+Summary.m"; sourceTree = "<group>"; };
 		80F800F415C2624C00132A96 /* IRAQ-Checkmark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "IRAQ-Checkmark.png"; sourceTree = "<group>"; };
@@ -2519,9 +2519,9 @@
 				DE67A4C61712BE4100099106 /* WAPhotoCollageCell_Stack1.xib */,
 				8027264D1710078800BB1733 /* WATimelineIndexView.h */,
 				8027264E1710078800BB1733 /* WATimelineIndexView.m */,
-				80F2752B171410B400C49FAB /* WAPartioSignupViewController.h */,
-				80F2752C171410B400C49FAB /* WAPartioSignupViewController.m */,
-				80F2753B171410D500C49FAB /* WAPartioSignupViewController.xib */,
+				809A1753171D246C000AF6ED /* WAPartioSignupViewController.h */,
+				809A1754171D246C000AF6ED /* WAPartioSignupViewController.m */,
+				809A1755171D246C000AF6ED /* WAPartioSignupViewController.xib */,
 			);
 			name = "New Event View";
 			sourceTree = "<group>";
@@ -4400,7 +4400,6 @@
 				80283557171302B900E0A187 /* WADayPhotoPickerViewCell.xib in Resources */,
 				8028355F1713047A00E0A187 /* WADayPhotoPickerSectionHeaderView.xib in Resources */,
 				80CBC7721713FBDE0056D9CF /* partioIcon.png in Resources */,
-				80F2753C171410D500C49FAB /* WAPartioSignupViewController.xib in Resources */,
 				809550521716710700BEDDE0 /* HighlightAddEventBtn.png in Resources */,
 				809550531716710700BEDDE0 /* HighlightAddEventBtn@2x.png in Resources */,
 				808A33811716AC3F00CF5C8D /* Checked.png in Resources */,
@@ -4436,6 +4435,7 @@
 				80C9F3801719AA81003E7C6E /* WAPhotoHighlightsViewController.xib in Resources */,
 				80C9F3821719B2E9003E7C6E /* WAContactPickerViewController.xib in Resources */,
 				80C9F3841719B6B8003E7C6E /* WAContactPickerSectionHeaderView.xib in Resources */,
+				809A1757171D246C000AF6ED /* WAPartioSignupViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4935,7 +4935,6 @@
 				802835541713009A00E0A187 /* WADayPhotoPickerViewController.m in Sources */,
 				8028355A1713037900E0A187 /* WADayPhotoPickerViewCell.m in Sources */,
 				8028355D1713046100E0A187 /* WADayPhotoPickerSectionHeaderView.m in Sources */,
-				80F2752D171410B400C49FAB /* WAPartioSignupViewController.m in Sources */,
 				8040F2261715697F0074072E /* WAPeople.m in Sources */,
 				8095504F17166FE100BEDDE0 /* WAFacebookSignupViewController.m in Sources */,
 				808A33681716979D00CF5C8D /* WAFetchManager+RemoteArticlesFetch.m in Sources */,
@@ -4943,6 +4942,7 @@
 				80C9F34B171859E2003E7C6E /* WAPartioNavigationController.m in Sources */,
 				80C9F37E17190372003E7C6E /* WAArticle.m in Sources */,
 				80C9F3871719B761003E7C6E /* WAContactPickerSectionHeaderView.m in Sources */,
+				809A1756171D246C000AF6ED /* WAPartioSignupViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

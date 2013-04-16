@@ -11,5 +11,5 @@
 @interface WAFacebookLoginViewController : UIViewController
 
 - (id) initWithCompletionHandler:(void(^)(NSError *error))completion;
-
++ (void) backgroundLoginWithFacebookIDWithCompleteHandler:(void(^)(NSError *error))completionHandler;
 @end
