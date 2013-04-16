@@ -434,6 +434,9 @@
 /* Navigation bar title for web preview while loading */
 "NAVI_TITLE_WEB_LOADING" = "Loading..";
 
+/* action next */
+"NEXT_ACTION" = "Next";
+
 /* Nickname placeholder in signup page */
 "NICKNAME_PLACEHOLDER" = "Johnny Appleseed";
 
