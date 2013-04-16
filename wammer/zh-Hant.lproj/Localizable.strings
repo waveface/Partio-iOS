@@ -21,6 +21,7 @@
 
 /* Action title for cancelling stuff
    ACTION_CANCEL
+   Cancel action
    Cancel adding event
    Cancel adding selected photos into collection
    Cancel the photo deletion
@@ -373,6 +374,9 @@
 /* greeting text of day summary view */
 "GREETING_TEXT_WITH_EVENTS_TODAY" = "哈囉, %@.\n今天也是愉快的一天嗎？";
 
+/* description of what is highlight */
+"HIGHLIGHT_DESCRIPTION" = "我們從你的相簿中塞選出一些不錯的選輯，你可以選擇其中之一來分享，或者從所有照片裡去自行挑選。";
+
 /* No comment provided by engineer. */
 "HOUR_PLURAL" = "%d小時";
 
@@ -384,6 +388,9 @@
 
 /* Title on introduction pages */
 "INTRODUCTION_TITLE" = "aostream 是什麼？";
+
+/* label text of all photos button in highlight */
+"LABEL_ALL_PHOTOS_BUTTON" = "所有照片";
 
 /* Shows OFF when auto import is turned off in the settings panel */
 "LABEL_AUTO_IMPORT_VALUE_OFF" = "關閉";
