@@ -20,5 +20,5 @@
 @property (nonatomic, strong) IBOutlet UILabel *location;
 @property (nonatomic, strong) IBOutlet UIImageView *peopleIcon;
 @property (nonatomic, strong) IBOutlet UILabel *peopleNumber;
-
+@property (nonatomic, strong) IBOutlet UIView *infoView;
 @end

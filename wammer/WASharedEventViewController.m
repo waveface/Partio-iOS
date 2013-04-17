@@ -248,7 +248,10 @@ static NSString *kCellID = @"EventCell";
   [cell.date setText:eventDate];
   [cell.location setText:location];
   
-  CAGradientLayer *gradientLayer = [[CAGradientLayer alloc] init];
+  [cell.infoView setFrame:CGRectMake(0.f, cell.center.y + cell.frame.size.height/2.f - 80.f, 320.f, 80.f)];
+  [cell.infoView setAutoresizingMask:UIViewAutoresizingFlexibleTopMargin];
+  
+  CAGradientLayer *gradientLayer = [CAGradientLayer layer];
   [gradientLayer setFrame:CGRectMake(0.f, cell.center.y + cell.frame.size.height/2.f - 80.f, 320.f, 80.f)];
   [gradientLayer setColors:@[(id)[[UIColor colorWithWhite:0.f alpha:0.3f] CGColor],
    (id)[[UIColor colorWithWhite:0.f alpha:0.5f] CGColor],
