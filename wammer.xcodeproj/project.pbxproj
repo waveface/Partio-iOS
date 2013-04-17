@@ -333,6 +333,7 @@
 		809550531716710700BEDDE0 /* HighlightAddEventBtn@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 80955051171670ED00BEDDE0 /* HighlightAddEventBtn@2x.png */; };
 		809A1756171D246C000AF6ED /* WAPartioSignupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 809A1754171D246C000AF6ED /* WAPartioSignupViewController.m */; };
 		809A1757171D246C000AF6ED /* WAPartioSignupViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 809A1755171D246C000AF6ED /* WAPartioSignupViewController.xib */; };
+		809A175E171D4EBC000AF6ED /* WATranslucentToolbar.m in Sources */ = {isa = PBXBuildFile; fileRef = 809A175D171D4EBC000AF6ED /* WATranslucentToolbar.m */; };
 		809A1CE51716DBF1004083BA /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 809A1CE41716DBF1004083BA /* Default-568h@2x.png */; };
 		809A1CEB1716F2E9004083BA /* WAFacebookLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 809A1CE91716F2E9004083BA /* WAFacebookLoginViewController.m */; };
 		809A1CEC1716F2E9004083BA /* WAFacebookLoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 809A1CEA1716F2E9004083BA /* WAFacebookLoginViewController.xib */; };
@@ -1400,6 +1401,8 @@
 		809A1753171D246C000AF6ED /* WAPartioSignupViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WAPartioSignupViewController.h; path = wammer/WAPartioSignupViewController.h; sourceTree = "<group>"; };
 		809A1754171D246C000AF6ED /* WAPartioSignupViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WAPartioSignupViewController.m; path = wammer/WAPartioSignupViewController.m; sourceTree = "<group>"; };
 		809A1755171D246C000AF6ED /* WAPartioSignupViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = WAPartioSignupViewController.xib; path = wammer/WAPartioSignupViewController.xib; sourceTree = "<group>"; };
+		809A175C171D4EBC000AF6ED /* WATranslucentToolbar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WATranslucentToolbar.h; sourceTree = "<group>"; };
+		809A175D171D4EBC000AF6ED /* WATranslucentToolbar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WATranslucentToolbar.m; sourceTree = "<group>"; };
 		809A1CE41716DBF1004083BA /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default-568h@2x.png"; path = "Resources/Default-568h@2x.png"; sourceTree = "<group>"; };
 		809A1CE81716F2E9004083BA /* WAFacebookLoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WAFacebookLoginViewController.h; path = wammer/WAFacebookLoginViewController.h; sourceTree = "<group>"; };
 		809A1CE91716F2E9004083BA /* WAFacebookLoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WAFacebookLoginViewController.m; path = wammer/WAFacebookLoginViewController.m; sourceTree = "<group>"; };
@@ -2882,6 +2885,8 @@
 				80C61CAA16A7F1050028356F /* WAAnnotation.m */,
 				8012DB4D16D4C1150002B163 /* UIViewController+WAAdditions.h */,
 				8012DB4E16D4C1150002B163 /* UIViewController+WAAdditions.m */,
+				809A175C171D4EBC000AF6ED /* WATranslucentToolbar.h */,
+				809A175D171D4EBC000AF6ED /* WATranslucentToolbar.m */,
 			);
 			name = Views;
 			path = wammer;
@@ -4943,6 +4948,7 @@
 				80C9F37E17190372003E7C6E /* WAArticle.m in Sources */,
 				80C9F3871719B761003E7C6E /* WAContactPickerSectionHeaderView.m in Sources */,
 				809A1756171D246C000AF6ED /* WAPartioSignupViewController.m in Sources */,
+				809A175E171D4EBC000AF6ED /* WATranslucentToolbar.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
