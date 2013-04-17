@@ -470,13 +470,10 @@ extern CFAbsoluteTime StartTime;
     self.window.rootViewController = fbLoginVC;
   } else {
 
-<<<<<<< HEAD
+    [self bootstrapWhenUserLogin];
+
     WAFishEyeAtTopFlowLayout *flowlayout = [[WAFishEyeAtTopFlowLayout alloc] init];
     WASharedEventViewController *sharedEventsVC = [[WASharedEventViewController alloc] initWithCollectionViewLayout:flowlayout];
-=======
-    [self bootstrapWhenUserLogin];
-    WASharedEventViewController *sharedEventsVC = [[WASharedEventViewController alloc] initWithStyle:UITableViewStylePlain];
->>>>>>> develop
     WAPartioNavigationController *navVC = [[WAPartioNavigationController alloc] initWithRootViewController:sharedEventsVC];
     self.window.rootViewController = navVC;
     
