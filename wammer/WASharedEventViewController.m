@@ -7,6 +7,7 @@
 //
 
 #import "WASharedEventViewController.h"
+#import "WASharedEventViewCell.h"
 #import "WAPhotoHighlightsViewController.h"
 #import "WAPhotoTimelineViewController.h"
 #import "WAGeoLocation.h"
@@ -19,22 +20,15 @@
 
 @property (nonatomic, strong) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, strong) NSFetchedResultsController *eventFetchedResultsController;
+@property (nonatomic, strong) NSMutableArray *objectChanges;
 
 @end
 
+static NSString *kCellID = @"EventCell";
+
 @implementation WASharedEventViewController
 
-- (id)initWithStyle:(UITableViewStyle)style
-{
-  self = [super initWithStyle:style];
-  if (self) {
-    // Custom initialization
-    [self loadEvents];
-  }
-  return self;
-}
-
-- (NSManagedObjectContext*)managedObjectContext {
+- (NSManagedObjectContext *)managedObjectContext {
   if (_managedObjectContext)
     return _managedObjectContext;
   
@@ -42,28 +36,32 @@
   return _managedObjectContext;
 }
 
-- (NSArray *)loadEvents
+- (NSFetchedResultsController *)eventFetchedResultsController
 {
+  if (_eventFetchedResultsController) {
+    return _eventFetchedResultsController;
+  }
+  
   NSManagedObjectContext *moc = self.managedObjectContext;
   NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] initWithEntityName:@"WAArticle"];
   NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"creationDate" ascending:NO];
   [fetchRequest setSortDescriptors:@[sortDescriptor]];
   
-  self.eventFetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest
-                                                                           managedObjectContext:moc
-                                                                             sectionNameKeyPath:nil
-                                                                                      cacheName:nil];
-  self.eventFetchedResultsController.delegate = self;
+  _eventFetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest
+                                                                       managedObjectContext:moc
+                                                                         sectionNameKeyPath:nil
+                                                                                  cacheName:nil];
+  _eventFetchedResultsController.delegate = self;
   
   NSPredicate *predicate = [NSPredicate predicateWithFormat:@"event = TRUE AND eventType = %d AND hidden = FALSE", WAEventArticleSharedType];
-  [self.eventFetchedResultsController.fetchRequest setPredicate:predicate];
+  [_eventFetchedResultsController.fetchRequest setPredicate:predicate];
   
   NSError *Err;
-  if (![self.eventFetchedResultsController performFetch:&Err]) {
+  if (![_eventFetchedResultsController performFetch:&Err]) {
     NSLog(@"Fetch WAArticle failed: %@", Err);
   }
   
-  return self.eventFetchedResultsController.fetchedObjects;
+  return _eventFetchedResultsController;
 }
 
 - (void)viewDidLoad
@@ -76,18 +74,21 @@
   UIBarButtonItem *flexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
   UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(shareNewEventFromHighlight)];
   self.toolbarItems = @[flexibleSpace, addButton, flexibleSpace];
+  
+  [self.collectionView registerNib:[UINib nibWithNibName:@"WASharedEventViewCell" bundle:nil] forCellWithReuseIdentifier:kCellID];
+  
+  _objectChanges = [[NSMutableArray alloc] init];
+  [self eventFetchedResultsController];
 }
 
 - (void)viewDidAppear:(BOOL)animated
 {
   [super viewDidAppear:animated];
   
-  if (![self.eventFetchedResultsController.fetchedObjects count]) {
+  if (![_eventFetchedResultsController.fetchedObjects count]) {
     [self shareNewEventFromHighlight];
     
-  } else {
-    [self.tableView reloadData];
-  }
+  } 
   
 }
 
@@ -107,80 +108,80 @@
 
 #pragma mark - NSFetchedResultsControllerDelegate
 
-- (void)controllerWillChangeContent:(NSFetchedResultsController *)controller
-{
-  [self.tableView beginUpdates];
-}
-
 - (void)controller:(NSFetchedResultsController *)controller didChangeObject:(id)anObject
        atIndexPath:(NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type
       newIndexPath:(NSIndexPath *)newIndexPath {
   
-  UITableView *tableView = self.tableView;
-  
   switch(type) {
       
     case NSFetchedResultsChangeInsert:
-      [tableView insertRowsAtIndexPaths:@[newIndexPath] withRowAnimation:UITableViewRowAnimationFade];
+      [self.objectChanges addObject:@{@"insert": newIndexPath}];
       break;
       
     case NSFetchedResultsChangeUpdate:
-      [tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+      [self.objectChanges addObject:@{@"update": indexPath}];
       break;
       
   }
+  
 }
 
-- (void)controllerDidChangeContent:(NSFetchedResultsController *)controller {
-  [self.tableView endUpdates];
+- (void)controllerDidChangeContent:(NSFetchedResultsController *)controller
+{
+  if ([self.objectChanges count]) {
+    [self.collectionView performBatchUpdates:^{
+      
+      NSArray *insertQueue = [self.objectChanges valueForKey:@"insert"];
+      [self.collectionView insertItemsAtIndexPaths:[NSArray arrayWithArray:insertQueue]];
+      
+      NSArray *updateQueue = [self.objectChanges valueForKey:@"update"];
+      [self.collectionView reloadItemsAtIndexPaths:[NSArray arrayWithArray:updateQueue]];
+      
+    }
+                                  completion:nil];
+  }
 }
 
-#pragma mark - Table view data source
+#pragma mark - UICollectionViewDataSource
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+- (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
 {
   // Return the number of sections.
   return 1;
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
   // Return the number of rows in the section.
-  return [self.eventFetchedResultsController.fetchedObjects count];
+  return [_eventFetchedResultsController.fetchedObjects count];
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-  static NSString *CellIdentifier = @"Cell";
-  UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-  if (cell == nil) {
-    cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
-  }
-  cell.selectionStyle = UITableViewCellSelectionStyleGray;
+  WASharedEventViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:kCellID forIndexPath:indexPath];
   
   // Configure the cell...
-  WAArticle *aArticle = [self.eventFetchedResultsController objectAtIndexPath:indexPath];
+  WAArticle *aArticle = [_eventFetchedResultsController objectAtIndexPath:indexPath];
   [aArticle irObserve:@"representingFile.thumbnailImage"
               options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionNew
               context:nil withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior){
+               
                 dispatch_async(dispatch_get_main_queue(), ^{
-                  cell.backgroundView = [[UIImageView alloc] initWithImage:(UIImage *)toValue];
-                  cell.backgroundView.contentMode = UIViewContentModeScaleAspectFill;
-                  cell.backgroundView.clipsToBounds = YES;
+                  cell.imageView.image = (UIImage *)toValue;
+                  cell.imageView.clipsToBounds = YES;
                 });
 
               }];
+  
+  NSInteger pplNumber = 0;
   
   CAGradientLayer *gradientLayer = [CAGradientLayer layer];
   gradientLayer.frame = (CGRect){CGPointZero, cell.backgroundView.frame.size};
   gradientLayer.colors = @[(id)[[UIColor colorWithWhite:0.f alpha:0.4] CGColor], (id)[[UIColor colorWithWhite:0.f alpha:1.f] CGColor]];
   [cell.backgroundView.layer insertSublayer:gradientLayer above:nil];
   
-  NSInteger fileNumbers = [[[self.eventFetchedResultsController objectAtIndexPath:indexPath] valueForKey:@"files"] count];
-  NSString *photoNumbers = [NSString stringWithFormat:(fileNumbers == 1)?
-                            NSLocalizedString(@"EVENT_ONE_PHOTO_NUMBER_LABEL", @"EVENT_ONE_PHOTO_NUMBER_LABEL"):
-                            NSLocalizedString(@"EVENT_PHOTO_NUMBER_LABEL", @"EVENT_PHOTO_NUMBER_LABEL"),
-                            fileNumbers];
+  NSInteger photoNumbers = [[[self.eventFetchedResultsController objectAtIndexPath:indexPath] valueForKey:@"files"] count];
+  
   static NSDateFormatter *sharedDateFormatter;
   sharedDateFormatter = [[NSDateFormatter alloc] init];
   [sharedDateFormatter setDateFormat:@"yyyy MM dd"];
@@ -196,11 +197,13 @@
   
   NSError *Error;
   NSArray *checkins = [self.managedObjectContext executeFetchRequest:fetchRequest error:&Error];
+  NSInteger checkinNumbers = 0;
   if (Error) {
     NSLog(@"Failed to fetch checkins: %@", Error);
     
   } else {
-    if ([checkins count]) {
+    checkinNumbers = [checkins count];
+    if (checkinNumbers) {
       location = [[checkins valueForKeyPath:@"name"] componentsJoinedByString:@", "];
       
     } else {
@@ -210,30 +213,42 @@
     
   }
   
-  cell.textLabel.text = [NSString stringWithFormat:@"%@\n%@\n%@", photoNumbers, eventDate, location];
-  [cell.textLabel setNumberOfLines:0];
-  [cell.textLabel setBackgroundColor:[UIColor clearColor]];
-  [cell.textLabel setTextColor:[UIColor whiteColor]];
+  [cell.photoNumber setText:[NSString stringWithFormat:@"%d", photoNumbers]];
+  [cell.checkinNumber setText:[NSString stringWithFormat:@"%d", checkinNumbers]];
+  [cell.peopleNumber setText:[NSString stringWithFormat:@"%d", pplNumber]];
+  [cell.date setText:eventDate];
+  [cell.location setText:location];
   
   return cell;
 
   
 }
 
-#pragma mark - Table view delegate
+#pragma mark - Collection view delegate
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-  [tableView deselectRowAtIndexPath:indexPath animated:NO];
   WAPhotoTimelineViewController *ptVC = [[WAPhotoTimelineViewController alloc] initWithArticleID:[[self.eventFetchedResultsController objectAtIndexPath:indexPath] objectID]];
   [self.navigationController pushViewController:ptVC animated:YES];
+}
+
+#pragma - conform to UICollectionViewDelegateFlowLayout
+
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
+{
+//  if (!indexPath.row) {
+//    return CGSizeMake(320.f, 275.f);
+//  } else {
+    return CGSizeMake(320.f, 140.f);
+//  }
+  
 }
 
 #pragma mark - toolbar
 
 - (void)shareNewEventFromHighlight
 {
-  WAPhotoHighlightsViewController *phVC = [WAPhotoHighlightsViewController viewControllerWithNavigationControllerWrapped];
+  WAPartioNavigationController *phVC = [WAPhotoHighlightsViewController viewControllerWithNavigationControllerWrapped];
   [self presentViewController:phVC animated:YES completion:nil];
 }
 

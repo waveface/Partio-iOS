@@ -33,6 +33,7 @@
 
 #import "WAPartioNavigationController.h"
 #import "WASharedEventViewController.h"
+#import "WAFishEyeAtTopFlowLayout.h"
 #import "WAPhotoHighlightsViewController.h"
 #import "WAPartioFirstUseViewController.h"
 #import "WAFacebookLoginViewController.h"
@@ -444,7 +445,8 @@ extern CFAbsoluteTime StartTime;
       } else {
 
         [wSelf cacheManager];
-        WASharedEventViewController *sharedEventsVC = [[WASharedEventViewController alloc] init];
+        WAFishEyeAtTopFlowLayout *flowlayout = [[WAFishEyeAtTopFlowLayout alloc] init];
+        WASharedEventViewController *sharedEventsVC = [[WASharedEventViewController alloc] initWithCollectionViewLayout:flowlayout];
         WAPartioNavigationController *navVC = [[WAPartioNavigationController alloc] initWithRootViewController:sharedEventsVC];
         wSelf.window.rootViewController = navVC;
 
@@ -458,7 +460,8 @@ extern CFAbsoluteTime StartTime;
     self.window.rootViewController = fbLoginVC;
   } else {
 
-    WASharedEventViewController *sharedEventsVC = [[WASharedEventViewController alloc] initWithStyle:UITableViewStylePlain];
+    WAFishEyeAtTopFlowLayout *flowlayout = [[WAFishEyeAtTopFlowLayout alloc] init];
+    WASharedEventViewController *sharedEventsVC = [[WASharedEventViewController alloc] initWithCollectionViewLayout:flowlayout];
     WAPartioNavigationController *navVC = [[WAPartioNavigationController alloc] initWithRootViewController:sharedEventsVC];
     self.window.rootViewController = navVC;
     
@@ -796,7 +799,8 @@ extern CFAbsoluteTime StartTime;
       [wSelf recreateViewHierarchy];
     }];
     
-    WASharedEventViewController *sharedEventsVC = [[WASharedEventViewController alloc] initWithStyle:UITableViewStylePlain];
+    WAFishEyeAtTopFlowLayout *flowlayout = [[WAFishEyeAtTopFlowLayout alloc] init];
+    WASharedEventViewController *sharedEventsVC = [[WASharedEventViewController alloc] initWithCollectionViewLayout:flowlayout];
     WAPartioNavigationController *navVC = [[WAPartioNavigationController alloc] initWithRootViewController:sharedEventsVC];
     wSelf.window.rootViewController = navVC;
 

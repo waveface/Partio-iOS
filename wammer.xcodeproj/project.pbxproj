@@ -437,6 +437,9 @@
 		DE0870A3171C084000FA2A5E /* contact@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DE0870A1171C084000FA2A5E /* contact@2x.png */; };
 		DE0870B3171C085300FA2A5E /* FB.png in Resources */ = {isa = PBXBuildFile; fileRef = DE0870B1171C085300FA2A5E /* FB.png */; };
 		DE0870B4171C085300FA2A5E /* FB@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DE0870B2171C085300FA2A5E /* FB@2x.png */; };
+		DE0870DF171CFDD200FA2A5E /* WASharedEventViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DE0870DB171CFDD200FA2A5E /* WASharedEventViewCell.m */; };
+		DE0870E0171CFDD200FA2A5E /* WASharedEventViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = DE0870DC171CFDD200FA2A5E /* WASharedEventViewCell.xib */; };
+		DE0870E1171CFDD200FA2A5E /* WAFishEyeAtTopFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = DE0870DE171CFDD200FA2A5E /* WAFishEyeAtTopFlowLayout.m */; };
 		DE46FC17165E228300CC4FFF /* WACalendarPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DE46FC16165E228300CC4FFF /* WACalendarPickerViewController.m */; };
 		DE67A4A21712BA0500099106 /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DE67A4A01712BA0400099106 /* AddressBook.framework */; };
 		DE67A4A31712BA0500099106 /* AddressBookUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DE67A4A11712BA0400099106 /* AddressBookUI.framework */; };
@@ -1546,6 +1549,11 @@
 		DE0870A1171C084000FA2A5E /* contact@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "contact@2x.png"; path = "Resources/contact@2x.png"; sourceTree = "<group>"; };
 		DE0870B1171C085300FA2A5E /* FB.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = FB.png; path = Resources/FB.png; sourceTree = "<group>"; };
 		DE0870B2171C085300FA2A5E /* FB@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "FB@2x.png"; path = "Resources/FB@2x.png"; sourceTree = "<group>"; };
+		DE0870DA171CFDD100FA2A5E /* WASharedEventViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WASharedEventViewCell.h; path = wammer/WASharedEventViewCell.h; sourceTree = "<group>"; };
+		DE0870DB171CFDD200FA2A5E /* WASharedEventViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WASharedEventViewCell.m; path = wammer/WASharedEventViewCell.m; sourceTree = "<group>"; };
+		DE0870DC171CFDD200FA2A5E /* WASharedEventViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = WASharedEventViewCell.xib; path = wammer/WASharedEventViewCell.xib; sourceTree = "<group>"; };
+		DE0870DD171CFDD200FA2A5E /* WAFishEyeAtTopFlowLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WAFishEyeAtTopFlowLayout.h; path = wammer/WAFishEyeAtTopFlowLayout.h; sourceTree = "<group>"; };
+		DE0870DE171CFDD200FA2A5E /* WAFishEyeAtTopFlowLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WAFishEyeAtTopFlowLayout.m; path = wammer/WAFishEyeAtTopFlowLayout.m; sourceTree = "<group>"; };
 		DE2BBDD616761AC100EEF922 /* Kal.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Kal.xcodeproj; path = external/Kal/src/Kal.xcodeproj; sourceTree = SOURCE_ROOT; };
 		DE46FC15165E228300CC4FFF /* WACalendarPickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WACalendarPickerViewController.h; path = wammer/WACalendarPickerViewController.h; sourceTree = "<group>"; };
 		DE46FC16165E228300CC4FFF /* WACalendarPickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WACalendarPickerViewController.m; path = wammer/WACalendarPickerViewController.m; sourceTree = "<group>"; };
@@ -2756,6 +2764,11 @@
 				DE67A4C11712BB9300099106 /* WASharedEventViewController.h */,
 				DE67A4C21712BB9300099106 /* WASharedEventViewController.m */,
 				DE67A4C31712BB9300099106 /* WASharedEventViewController.xib */,
+				DE0870DA171CFDD100FA2A5E /* WASharedEventViewCell.h */,
+				DE0870DB171CFDD200FA2A5E /* WASharedEventViewCell.m */,
+				DE0870DC171CFDD200FA2A5E /* WASharedEventViewCell.xib */,
+				DE0870DD171CFDD200FA2A5E /* WAFishEyeAtTopFlowLayout.h */,
+				DE0870DE171CFDD200FA2A5E /* WAFishEyeAtTopFlowLayout.m */,
 				DE67A4BC1712BB7700099106 /* WAContactPickerViewController.h */,
 				DE67A4BD1712BB7700099106 /* WAContactPickerViewController.m */,
 				80C9F3811719B2E9003E7C6E /* WAContactPickerViewController.xib */,
@@ -4452,6 +4465,7 @@
 				DE0870A3171C084000FA2A5E /* contact@2x.png in Resources */,
 				DE0870B3171C085300FA2A5E /* FB.png in Resources */,
 				DE0870B4171C085300FA2A5E /* FB@2x.png in Resources */,
+				DE0870E0171CFDD200FA2A5E /* WASharedEventViewCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4959,6 +4973,8 @@
 				80C9F34B171859E2003E7C6E /* WAPartioNavigationController.m in Sources */,
 				80C9F37E17190372003E7C6E /* WAArticle.m in Sources */,
 				80C9F3871719B761003E7C6E /* WAContactPickerSectionHeaderView.m in Sources */,
+				DE0870DF171CFDD200FA2A5E /* WASharedEventViewCell.m in Sources */,
+				DE0870E1171CFDD200FA2A5E /* WAFishEyeAtTopFlowLayout.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
