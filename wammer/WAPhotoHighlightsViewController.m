@@ -19,6 +19,7 @@
 #import "WADataStore.h"
 #import "WACheckin.h"
 #import "WADataStore+FetchingConveniences.h"
+#import "WANavigationController.h"
 #import <BlocksKit/BlocksKit.h>
 
 #define GROUPING_THRESHOLD (30 * 60)
@@ -38,11 +39,13 @@
 @implementation WAPhotoHighlightsViewController
 
 + (id) viewControllerWithNavigationControllerWrapped {
+  
   WAPhotoHighlightsViewController *vc = [[WAPhotoHighlightsViewController alloc] init];
   WAPartioNavigationController *navigationController = [[WAPartioNavigationController alloc] initWithRootViewController:vc];
   navigationController.navigationBarHidden = YES;
   navigationController.toolbarHidden = YES;
   return navigationController;
+  
 }
 
 - (id) init {
@@ -63,12 +66,12 @@
   
   if (self.navigationController) {
     __weak WAPhotoHighlightsViewController *wSelf = self;
-    UIBarButtonItem *buttonItem = [[UIBarButtonItem alloc] initWithTitle:@"All Photos" style:UIBarButtonItemStyleBordered handler:^(id sender) {
+    UIBarButtonItem *buttonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"LABEL_ALL_PHOTOS_BUTTON", @"label text of all photos button in highlight") style:UIBarButtonItemStyleBordered handler:^(id sender) {
       WADayPhotoPickerViewController *picker = [[WADayPhotoPickerViewController alloc] initWithSelectedAssets:nil];
       [wSelf.navigationController pushViewController:picker animated:YES];
     }];
     
-    UIBarButtonItem *cancelItem = [[UIBarButtonItem alloc] initWithTitle:@"Cancel" style:UIBarButtonItemStyleBordered handler:^(id sender) {
+    UIBarButtonItem *cancelItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"ACTION_CANCEL", @"Cancel action") style:UIBarButtonItemStyleBordered handler:^(id sender) {
       [wSelf dismissViewControllerAnimated:YES completion:nil];
     }];
     self.navigationItem.leftBarButtonItem = cancelItem;
@@ -84,7 +87,7 @@
   
   UILabel *description = [[UILabel alloc] initWithFrame:CGRectMake(20, -88, 280, 88)];
   description.textAlignment = NSTextAlignmentCenter;
-  description.text = @"Highlight is a smart group of your photos. You can choose one of them to share, or select photos by yourself.";
+  description.text = NSLocalizedString(@"HIGHLIGHT_DESCRIPTION", @"description of what is highlight");
   description.textColor = [UIColor whiteColor];
   description.backgroundColor = [UIColor clearColor];
   description.lineBreakMode = NSLineBreakByWordWrapping;
@@ -353,6 +356,7 @@
 {
   
 //  self.navigationController.navigationBarHidden = YES;
+  [tableView deselectRowAtIndexPath:indexPath animated:NO];
   WAPhotoTimelineViewController *vc = [[WAPhotoTimelineViewController alloc] initWithAssets:self.photoGroups[indexPath.row]];
 
   [self.navigationController pushViewController:vc animated:YES];

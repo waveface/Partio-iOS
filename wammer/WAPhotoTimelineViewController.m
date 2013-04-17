@@ -11,6 +11,7 @@
 #import "WAPhotoTimelineCover.h"
 #import "WAPhotoTimelineLayout.h"
 #import "WATimelineIndexView.h"
+#import "WAPartioSignupViewController.h"
 
 #import "WAPhotoCollageCell.h"
 #import "WADefines.h"
@@ -32,7 +33,10 @@
 #import <GoogleMaps/GoogleMaps.h>
 #import <BlocksKit/BlocksKit.h>
 #import <MobileCoreServices/MobileCoreServices.h>
+#import "WAOverlayBezel.h"
+#import "WATranslucentToolbar.h"
 
+#import "WADefines.h"
 #import "WARemoteInterface.h"
 #import "WASyncManager.h"
 #import "WAAppDelegate.h"
@@ -42,8 +46,10 @@
 
 @property (nonatomic, strong) WAPhotoTimelineCover *headerView;
 @property (nonatomic, strong) WAPhotoTimelineNavigationBar *navigationBar;
+@property (nonatomic, strong) WATranslucentToolbar *toolbar;
 @property (nonatomic, weak) IBOutlet UICollectionView *collectionView;
 @property (nonatomic, weak) IBOutlet WATimelineIndexView *indexView;
+@property (nonatomic, strong) WAPartioSignupViewController *signupVC;
 
 @property (nonatomic, strong) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, strong) NSOperationQueue *imageDisplayQueue;
@@ -103,18 +109,7 @@
   self.navigationItem.leftBarButtonItem = WAPartioBackButton(^{
     [wSelf.navigationController popViewControllerAnimated:YES];
   });
-  
-  if (!self.representingArticle) {
-    UIImage *actionImage = [UIImage imageNamed:@"action"];
-    UIButton *actionButton = [[UIButton alloc] initWithFrame:(CGRect){CGPointZero, actionImage.size}];
-    [actionButton addTarget:self action:@selector(actionButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
-    [actionButton setImage:actionImage forState:UIControlStateNormal];
-    UIBarButtonItem *actionItem = [[UIBarButtonItem alloc] initWithCustomView:actionButton];
-  
-    //  self.navigationItem.leftBarButtonItem = backItem;
-    self.navigationItem.rightBarButtonItem = actionItem;
-  }
-  
+    
   self.navigationBar = [[WAPhotoTimelineNavigationBar alloc] initWithFrame:(CGRect)CGRectMake(0, 0, self.view.frame.size.width, 44)];
   self.navigationBar.barStyle = UIBarStyleDefault;
   self.navigationBar.tintColor = [UIColor clearColor];
@@ -150,7 +145,18 @@
 
   [self.indexView addIndex:0.01 label:[formatter stringFromDate:self.beginDate]];
   [self.indexView addIndex:0.99 label:[formatter stringFromDate:self.endDate]];
-  
+
+  if (!self.representingArticle) {
+    UIBarButtonItem *flexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+
+    UIBarButtonItem *nextItem = WAPartioToolbarNextButton(NSLocalizedString(@"NEXT_ACTION", @"action next"), ^{
+      [wSelf actionButtonClicked:nil];
+    });
+    
+    self.toolbar = [[WATranslucentToolbar alloc] initWithFrame:CGRectMake(0, CGRectGetHeight(self.view.frame)-44, CGRectGetWidth(self.view.frame), 44)];
+    self.toolbar.items = @[flexibleSpace, nextItem, flexibleSpace];
+    [self.view addSubview:self.toolbar];
+  }
 }
 
 - (BOOL) shouldAutorotate {
@@ -296,14 +302,62 @@
 
 - (void)actionButtonClicked:(id)sender
 {
-  
+  void (^showSuccessBezel) (void(^)(void)) = ^(void(^block)(void)) {
+    WAOverlayBezel *doneBezel = [WAOverlayBezel bezelWithStyle:WACheckmarkBezelStyle];
+    [doneBezel show];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1.5 * NSEC_PER_SEC), dispatch_get_main_queue(), ^ {
+      [doneBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
+
+      if (block) {
+        block();
+      }
+      
+    });
+  };
+
   __weak WAPhotoTimelineViewController *wSelf = self;
   WAContactPickerViewController *contactPicker = [[WAContactPickerViewController alloc] init];
   if (self.navigationController) {
-    
     contactPicker.onNextHandler = ^(NSArray *results) {
-      [wSelf finishCreatingSharingEventForSharingTargets:results];
-      [wSelf.navigationController dismissViewControllerAnimated:YES completion:nil];
+      
+      WARemoteInterface *ri = [WARemoteInterface sharedInterface];
+      if (ri.userToken) {
+        [wSelf finishCreatingSharingEventForSharingTargets:results];
+
+        showSuccessBezel(^{
+          [wSelf.navigationController dismissViewControllerAnimated:YES completion:nil];
+        });
+
+      } else {
+        
+        WAPartioSignupViewController *createAccountVC = [[WAPartioSignupViewController alloc] initWithCompleteHandler:nil];
+        __weak WAPartioSignupViewController *sCreateAccountVC = createAccountVC;
+        createAccountVC.completeHandler = ^(NSError *error) {
+        
+          if ([WARemoteInterface sharedInterface].userToken) {
+            WAAppDelegate_iOS *appDelegate = (WAAppDelegate_iOS*)AppDelegate();
+            [appDelegate bootstrapWhenUserLogin];
+          }
+          
+          [wSelf finishCreatingSharingEventForSharingTargets:results];
+          
+          showSuccessBezel(^{
+            [sCreateAccountVC dismissViewControllerAnimated:YES completion:^{
+              [wSelf.navigationController dismissViewControllerAnimated:YES completion:nil];
+            }];
+          });
+          
+        };
+        
+        wSelf.signupVC = createAccountVC;
+        wSelf.navigationController.modalPresentationStyle = UIModalPresentationCurrentContext;
+        createAccountVC.view.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.7];
+        createAccountVC.view.alpha = 0;
+        [wSelf presentViewController:createAccountVC animated:NO completion:nil];
+        [UIView animateWithDuration:0.5 animations:^{
+          createAccountVC.view.alpha = 1;
+        }];
+      }
     };
     [self.navigationController pushViewController:contactPicker animated:YES];
     

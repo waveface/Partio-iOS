@@ -21,6 +21,7 @@
 
 /* Action title for cancelling stuff
    ACTION_CANCEL
+   Cancel action
    Cancel adding event
    Cancel adding selected photos into collection
    Cancel the photo deletion
@@ -370,6 +371,9 @@
 /* greeting text of day summary view */
 "GREETING_TEXT_WITH_EVENTS_TODAY" = "GREETING_TEXT_WITH_EVENTS_TODAY";
 
+/* description of what is highlight */
+"HIGHLIGHT_DESCRIPTION" = "我們從你的相簿中塞選出一些不錯的選輯，你可以選擇其中之一來分享，或者從所有照片裡去自行挑選。";
+
 /* No comment provided by engineer. */
 "HOUR_PLURAL" = "HOUR_PLURAL";
 
@@ -381,6 +385,9 @@
 
 /* Title on introduction pages */
 "INTRODUCTION_TITLE" = "INTRODUCTION_TITLE";
+
+/* label text of all photos button in highlight */
+"LABEL_ALL_PHOTOS_BUTTON" = "所有照片";
 
 /* Shows OFF when auto import is turned off in the settings panel */
 "LABEL_AUTO_IMPORT_VALUE_OFF" = "LABEL_AUTO_IMPORT_VALUE_OFF";
@@ -426,6 +433,9 @@
 
 /* Navigation bar title for web preview while loading */
 "NAVI_TITLE_WEB_LOADING" = "NAVI_TITLE_WEB_LOADING";
+
+/* action next */
+"NEXT_ACTION" = "下一步";
 
 /* Nickname placeholder in signup page */
 "NICKNAME_PLACEHOLDER" = "NICKNAME_PLACEHOLDER";
@@ -790,6 +800,12 @@
 
 /* Class = "IBUIButton"; normalTitle = "NOSIGNUP_BUTTON"; ObjectID = "ZCd-nx-9I5"; */
 "NOSIGNUP_BUTTON" = "NOSIGNUP_BUTTON";
+
+/* Class = "IBUIButton"; normalTitle = "FACEBOOK_SIGNUP_BUTTON"; ObjectID = "4"; */
+"FACEBOOK_SIGNUP_BUTTON" = "連結 Facebook";
+
+/* Class = "IBUILabel"; text = "DESCRIPTION_WHY_SIGNUP"; ObjectID = "40"; */
+"DESCRIPTION_WHY_SIGNUP" = "在沒有您的允許下，我們不會私自張貼任何訊息到您的 Facebook 帳號中。";
 
 /* Class = "IBUITextField"; placeholder = "USERNAME_PLACEHOLDER"; ObjectID = "2Vk-4J-QH3"; */
 "USERNAME_PLACEHOLDER" = "USERNAME_PLACEHOLDER";

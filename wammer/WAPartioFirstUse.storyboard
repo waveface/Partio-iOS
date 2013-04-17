@@ -89,19 +89,13 @@
         </scene>
     </scenes>
     <resources>
-        <image name="PartioLogin-568h@2x.png" width="640" height="1116"/>
+        <image name="PartioLogin-568h@2x.png" width="16" height="16"/>
     </resources>
     <classes>
         <class className="NSLayoutConstraint" superclassName="NSObject">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/NSLayoutConstraint.h"/>
         </class>
-        <class className="WALocalizedButton" superclassName="UIButton">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/WALocalizedButton.h"/>
-        </class>
-        <class className="WAPartioFirstUseViewController" superclassName="UINavigationController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/WAPartioFirstUseViewController.h"/>
-        </class>
-        <class className="WAPartioWelcomeViewController" superclassName="UIViewController">
+        <class className="WAPartioWelcomeViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/WAPartioWelcomeViewController.h"/>
             <relationships>
                 <relationship kind="outlet" name="backgroundImageView" candidateClass="UIImageView"/>

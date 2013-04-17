@@ -8,6 +8,8 @@
 
 #import "WAContactPickerViewController.h"
 #import <QuartzCore/QuartzCore.h>
+#import "WAAppearance.h"
+#import "WATranslucentToolbar.h"
 
 #import "WAContactPickerSectionHeaderView.h"
 #import <BlocksKit/BlocksKit.h>
@@ -15,6 +17,7 @@
 
 @interface WAContactPickerViewController () <UITableViewDelegate, UITableViewDataSource, FBFriendPickerDelegate, UITextFieldDelegate>
 @property (nonatomic, weak) IBOutlet UITableView *tableView;
+@property (nonatomic, strong) WATranslucentToolbar *toolbar;
 @property (nonatomic, weak) IBOutlet UINavigationBar *navigationBar;
 @property (nonatomic, strong) FBFriendPickerViewController *fbFriendPickerViewController;
 @end
@@ -41,11 +44,11 @@
   self.navigationItem.title = NSLocalizedString(@"TITLE_INVITE_CONTACTS", @"TITLE_INVITE_CONTACTS");
   
   [self.navigationBar pushNavigationItem:self.navigationItem animated:NO];
-  
-  [self.navigationController setToolbarHidden:NO];
-  [self.navigationController.toolbar setBarStyle:UIBarStyleBlackTranslucent];
+
   UIBarButtonItem *flexspace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
-  [self setToolbarItems:@[flexspace, [self shareBarButton], flexspace] animated:YES];
+  self.toolbar = [[WATranslucentToolbar alloc] initWithFrame:CGRectMake(0, CGRectGetHeight(self.view.frame)-44, CGRectGetWidth(self.view.frame), 44)];
+  self.toolbar.items = @[flexspace, [self shareBarButton], flexspace];
+  [self.view addSubview:self.toolbar];
 }
 
 - (UIBarButtonItem *)shareBarButton
@@ -61,17 +64,13 @@
   [aButton setBackgroundImage:[UIImage imageNamed:@"Btn1"] forState:UIControlStateHighlighted];
   [aButton addTarget:self action:@selector(done) forControlEvents:UIControlEventTouchUpInside];
   
-  return [[UIBarButtonItem alloc] initWithCustomView:aButton];
+  return WAPartioToolbarNextButton(@"Share", ^{
+    if (self.onNextHandler) {
+      self.onNextHandler([NSArray arrayWithArray:_members]);
+    }
+  });
 }
 
-- (void)done
-{
-  if (self.onNextHandler) {
-    self.onNextHandler([NSArray arrayWithArray:_members]);
-  }
-  
-  [self dismissViewControllerAnimated:YES completion:nil];
-}
 
 - (void)didReceiveMemoryWarning
 {

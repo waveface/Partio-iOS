@@ -95,6 +95,7 @@
         ri.primaryGroupIdentifier = primaryGroupID;
         
         dispatch_async(dispatch_get_main_queue(), ^{
+          [busyBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
           if (completionHandler)
             completionHandler(nil);
         });
