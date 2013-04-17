@@ -112,17 +112,29 @@ static NSString *kCellID = @"EventCell";
        atIndexPath:(NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type
       newIndexPath:(NSIndexPath *)newIndexPath {
   
+  NSMutableDictionary *change = [[NSMutableDictionary alloc] init];
+  
   switch(type) {
       
     case NSFetchedResultsChangeInsert:
-      [self.objectChanges addObject:@{@"insert": newIndexPath}];
+      change[@(type)] = newIndexPath;
+      break;
+      
+    case NSFetchedResultsChangeDelete:
+      change[@(type)] = indexPath;
       break;
       
     case NSFetchedResultsChangeUpdate:
-      [self.objectChanges addObject:@{@"update": indexPath}];
+      change[@(type)] = indexPath;
+      break;
+      
+    case NSFetchedResultsChangeMove:
+      change[@(type)] = @[indexPath, newIndexPath];
       break;
       
   }
+  
+  [self.objectChanges addObject:change];
   
 }
 
@@ -131,15 +143,36 @@ static NSString *kCellID = @"EventCell";
   if ([self.objectChanges count]) {
     [self.collectionView performBatchUpdates:^{
       
-      NSArray *insertQueue = [self.objectChanges valueForKey:@"insert"];
-      [self.collectionView insertItemsAtIndexPaths:[NSArray arrayWithArray:insertQueue]];
-      
-      NSArray *updateQueue = [self.objectChanges valueForKey:@"update"];
-      [self.collectionView reloadItemsAtIndexPaths:[NSArray arrayWithArray:updateQueue]];
-      
+      for (NSDictionary *change in self.objectChanges) {
+        [change enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+          
+          NSFetchedResultsChangeType type = [key unsignedIntegerValue];
+          
+          switch (type) {
+            case NSFetchedResultsChangeInsert:
+              [self.collectionView insertItemsAtIndexPaths:@[obj]];
+              break;
+              
+            case NSFetchedResultsChangeDelete:
+              [self.collectionView deleteItemsAtIndexPaths:@[obj]];
+              break;
+              
+            case NSFetchedResultsChangeUpdate:
+              [self.collectionView reloadItemsAtIndexPaths:@[obj]];
+              break;
+              
+            case NSFetchedResultsChangeMove:
+              [self.collectionView moveItemAtIndexPath:obj[0] toIndexPath:obj[1]];
+              break;
+              
+          }
+        }];
+      }
     }
                                   completion:nil];
   }
+  
+  [self.objectChanges removeAllObjects];
 }
 
 #pragma mark - UICollectionViewDataSource
@@ -175,10 +208,6 @@ static NSString *kCellID = @"EventCell";
   
   NSInteger pplNumber = 0;
   
-  CAGradientLayer *gradientLayer = [CAGradientLayer layer];
-  gradientLayer.frame = (CGRect){CGPointZero, cell.backgroundView.frame.size};
-  gradientLayer.colors = @[(id)[[UIColor colorWithWhite:0.f alpha:0.4] CGColor], (id)[[UIColor colorWithWhite:0.f alpha:1.f] CGColor]];
-  [cell.backgroundView.layer insertSublayer:gradientLayer above:nil];
   
   NSInteger photoNumbers = [[[self.eventFetchedResultsController objectAtIndexPath:indexPath] valueForKey:@"files"] count];
   
@@ -219,6 +248,13 @@ static NSString *kCellID = @"EventCell";
   [cell.date setText:eventDate];
   [cell.location setText:location];
   
+  CAGradientLayer *gradientLayer = [[CAGradientLayer alloc] init];
+  [gradientLayer setFrame:CGRectMake(0.f, cell.center.y + cell.frame.size.height/2.f - 80.f, 320.f, 80.f)];
+  [gradientLayer setColors:@[(id)[[UIColor colorWithWhite:0.f alpha:0.3f] CGColor],
+   (id)[[UIColor colorWithWhite:0.f alpha:0.5f] CGColor],
+   (id)[[UIColor colorWithWhite:0.f alpha:0.7f] CGColor]]];
+  [cell.infoView.layer insertSublayer:gradientLayer atIndex:0];
+
   return cell;
 
   
@@ -236,11 +272,11 @@ static NSString *kCellID = @"EventCell";
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-//  if (!indexPath.row) {
-//    return CGSizeMake(320.f, 275.f);
-//  } else {
+  if (!indexPath.row) {
+    return CGSizeMake(320.f, 275.f);
+  } else {
     return CGSizeMake(320.f, 140.f);
-//  }
+  }
   
 }
 
