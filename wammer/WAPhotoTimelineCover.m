@@ -30,7 +30,7 @@
   
     self.mapView.layer.borderWidth = 4;
     self.mapView.layer.borderColor = [UIColor blackColor].CGColor;
-    self.mapView.layer.cornerRadius = 30;
+    self.mapView.layer.cornerRadius = 40;
     self.mapView.layer.masksToBounds = YES;
   
 }

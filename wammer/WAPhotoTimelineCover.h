@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import <GoogleMaps/GoogleMaps.h>
+#import <MapKit/MapKit.h>
 
 @interface WAPhotoTimelineCover : UICollectionReusableView
 
@@ -15,6 +15,7 @@
 @property (nonatomic, weak) IBOutlet UIView *gradientBackground;
 @property (nonatomic, weak) IBOutlet UILabel *titleLabel;
 @property (nonatomic, weak) IBOutlet UILabel *dateLabel;
-@property (nonatomic, weak) IBOutlet GMSMapView *mapView;
+@property (nonatomic, weak) IBOutlet MKMapView *mapView;
+@property (nonatomic, weak) IBOutlet UIButton *detailButton;
 
 @end

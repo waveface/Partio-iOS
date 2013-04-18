@@ -12,6 +12,7 @@
 #import "WAPhotoTimelineLayout.h"
 #import "WATimelineIndexView.h"
 #import "WAPartioSignupViewController.h"
+#import "WAEventDetailsViewController.h"
 
 #import "WAPhotoCollageCell.h"
 #import "WADefines.h"
@@ -30,7 +31,6 @@
 #import "WAContactPickerViewController.h"
 #import "WAGeoLocation.h"
 #import <CoreLocation/CoreLocation.h>
-#import <GoogleMaps/GoogleMaps.h>
 #import <BlocksKit/BlocksKit.h>
 #import <MobileCoreServices/MobileCoreServices.h>
 #import "WAOverlayBezel.h"
@@ -55,11 +55,13 @@
 @property (nonatomic, strong) NSOperationQueue *imageDisplayQueue;
 
 @property (nonatomic, strong) WAArticle *representingArticle;
+@property (nonatomic, strong) NSArray *sortedImages;
 @property (nonatomic, strong) NSArray *allAssets;
 @property (nonatomic, strong) WAGeoLocation *geoLocation;
 @property (nonatomic, strong) NSDate *eventDate;
 @property (nonatomic, strong) NSDate *beginDate;
 @property (nonatomic, strong) NSDate *endDate;
+@property (nonatomic, strong) NSArray *checkins;
 @property (nonatomic, readonly) CLLocationCoordinate2D coordinate;
 
 @end
@@ -90,6 +92,10 @@
   if (self) {
     
     self.representingArticle = (WAArticle*)[self.managedObjectContext objectWithID:articleID];
+    self.sortedImages = [self.representingArticle.files sortedArrayUsingComparator:^NSComparisonResult(WAFile *obj1, WAFile *obj2) {
+      return [obj1.created compare:obj2.created];
+    }];
+  
     self.allAssets = @[];
 
   }
@@ -430,6 +436,30 @@
   return _endDate;
 }
 
+- (NSArray *)checkins {
+  
+  if (self.representingArticle)
+    return [self.representingArticle.checkins allObjects];
+  else {
+    NSDate *beginDate = [NSDate dateWithTimeInterval:(-30*60) sinceDate:self.beginDate];
+    NSDate *endDate = [NSDate dateWithTimeInterval:(30*60) sinceDate:self.endDate];
+    NSFetchRequest * fetchRequest = [[WADataStore defaultStore] newFetchReuqestForCheckinFrom:beginDate to:endDate];
+    
+    NSError *error = nil;
+    NSArray *checkins = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
+    [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
+    if (error) {
+      NSLog(@"error to query checkin db: %@", error);
+      _checkins = @[];
+      return _checkins;
+    } else if (checkins.count) {
+      _checkins = checkins;
+      return _checkins;
+    }
+  }
+  return @[];
+}
+
 #pragma mark - UICollectionView datasource
 - (NSInteger) numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
   return 1;
@@ -439,7 +469,7 @@
   
   NSUInteger numOfPhotos = self.allAssets.count;
   if (self.representingArticle)
-    numOfPhotos = self.representingArticle.files.count;
+    numOfPhotos = self.sortedImages.count;
   NSUInteger totalItem = (numOfPhotos / 10) * 4;
   NSUInteger mod = numOfPhotos % 10;
   if (mod == 0)
@@ -459,7 +489,7 @@
   
   NSUInteger totalNumber = self.allAssets.count;
   if (self.representingArticle)
-    totalNumber = self.representingArticle.files.count;
+    totalNumber = self.sortedImages.count;
 
   NSUInteger numOfPhotos = 4 - (indexPath.row % 4);
   NSString *identifier = [NSString stringWithFormat:@"CollectionItemCell%d", numOfPhotos];
@@ -488,7 +518,7 @@
     if ((base+i) < totalNumber) {
       if (self.representingArticle) {
         
-        [self.representingArticle.files[base+i]
+        [self.sortedImages[base+i]
          irObserve:@"thumbnailImage"
          options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionNew
          context:nil
@@ -530,7 +560,7 @@
     
     if (self.representingArticle) {
     
-      [self.representingArticle.representingFile
+      [self.sortedImages[self.sortedImages.count/3]
        irObserve:@"thumbnailImage"
        options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionNew
        context:nil
@@ -560,26 +590,24 @@
     
     self.headerView = cover;
     
-    NSUInteger zoomLevel = 15; // hardcoded, but we may tune this in the future
+//    NSUInteger zoomLevel = 15; // hardcoded, but we may tune this in the future
     
-    GMSCameraPosition *camera = [GMSCameraPosition cameraWithLatitude:self.coordinate.latitude
-                                                            longitude:self.coordinate.longitude
-                                                                 zoom:zoomLevel];
+    MKCoordinateRegion region = MKCoordinateRegionMake(self.coordinate, MKCoordinateSpanMake(0.02, 0.02));
+//    cover.mapView.region = [cover.mapView regionThatFits:region];
+    cover.mapView.region = region;
+//    GMSCameraPosition *camera = [GMSCameraPosition cameraWithLatitude:self.coordinate.latitude
+//                                                            longitude:self.coordinate.longitude
+//                                                                 zoom:zoomLevel];
+//    
+//    [cover.mapView setCamera:camera];
+//    cover.mapView.myLocationEnabled = NO;
     
-    [cover.mapView setCamera:camera];
-    cover.mapView.myLocationEnabled = NO;
+    if (self.checkins.count) {
+      NSArray *checkinNames = [self.checkins valueForKey:@"name"];
+      cover.titleLabel.text = [checkinNames componentsJoinedByString:@","];
+    } else
+      cover.titleLabel.text = @"";
     
-    NSFetchRequest * fetchRequest = [[WADataStore defaultStore] newFetchReuqestForCheckinFrom:[self beginDate] to:[self endDate]];
-    
-    NSError *error = nil;
-    NSArray *checkins = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
-    if (error) {
-      NSLog(@"error to query checkin db: %@", error);
-    } else if (checkins.count) {
-      cover.titleLabel.text = [[checkins valueForKeyPath:@"name"] componentsJoinedByString:@","];
-    }
-    
-    cover.titleLabel.text = @"";
     self.geoLocation = [[WAGeoLocation alloc] init];
     [self.geoLocation identifyLocation:self.coordinate onComplete:^(NSArray *results) {
       if (cover.titleLabel.text.length == 0)
@@ -595,6 +623,19 @@
     formatter.dateStyle = NSDateFormatterMediumStyle;
     formatter.timeStyle = NSDateFormatterMediumStyle;
     cover.dateLabel.text = [formatter stringFromDate:self.eventDate];
+    
+    [cover.detailButton addEventHandler:^(id sender) {
+      __weak WAPhotoTimelineViewController *wSelf = self;
+      NSDictionary *detailInfo = @{
+                               @"eventStartDate": [self beginDate],
+                               @"eventEndDate":[self endDate],
+                               @"latitude": @(self.coordinate.latitude),
+                               @"longitude":@(self.coordinate.longitude),
+                               @"checkins": [self checkins]
+                               };
+      WAEventDetailsViewController *detail = [WAEventDetailsViewController wrappedNavigationControllerForDetailInfo:detailInfo];
+      [wSelf presentViewController:detail animated:YES completion:nil];
+    } forControlEvents:UIControlEventTouchUpInside];
     
     return cover;
     
@@ -700,7 +741,6 @@
   if (scrollView.contentOffset.y > 0) {
 //    CGFloat ratio = scrollView.contentSize.height / (scrollView.contentSize.height - scrollView.frame.size.height);
     CGFloat percent = (scrollView.contentOffset.y / (scrollView.contentSize.height - self.collectionView.frame.size.height));
-    NSLog(@"%@ %f", NSStringFromCGSize(scrollView.contentSize), percent);
     self.indexView.percentage = percent;
   }
 
