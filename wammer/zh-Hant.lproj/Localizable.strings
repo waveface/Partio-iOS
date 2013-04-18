@@ -387,7 +387,7 @@
 "GREETING_TEXT_WITH_EVENTS_TODAY" = "哈囉, %@.\n今天也是愉快的一天嗎？";
 
 /* description of what is highlight */
-"HIGHLIGHT_DESCRIPTION" = "我們從你的相簿中塞選出一些不錯的選輯，你可以選擇其中之一來分享，或者從所有照片裡去自行挑選。";
+"HIGHLIGHT_DESCRIPTION" = "我們從你的相簿中挑選出一些不錯的選輯，你可以選擇其中之一來分享，或者從所有照片裡去自行挑選。";
 
 /* No comment provided by engineer. */
 "HOUR_PLURAL" = "%d小時";

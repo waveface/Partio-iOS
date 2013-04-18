@@ -440,8 +440,24 @@
   
   if (self.representingArticle)
     return [self.representingArticle.checkins allObjects];
-  else
-    return [NSArray array];
+  else {
+    NSDate *beginDate = [NSDate dateWithTimeInterval:(-30*60) sinceDate:self.beginDate];
+    NSDate *endDate = [NSDate dateWithTimeInterval:(30*60) sinceDate:self.endDate];
+    NSFetchRequest * fetchRequest = [[WADataStore defaultStore] newFetchReuqestForCheckinFrom:beginDate to:endDate];
+    
+    NSError *error = nil;
+    NSArray *checkins = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
+    [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
+    if (error) {
+      NSLog(@"error to query checkin db: %@", error);
+      _checkins = @[];
+      return _checkins;
+    } else if (checkins.count) {
+      _checkins = checkins;
+      return _checkins;
+    }
+  }
+  return @[];
 }
 
 #pragma mark - UICollectionView datasource
@@ -586,17 +602,12 @@
 //    [cover.mapView setCamera:camera];
 //    cover.mapView.myLocationEnabled = NO;
     
-    NSFetchRequest * fetchRequest = [[WADataStore defaultStore] newFetchReuqestForCheckinFrom:[self beginDate] to:[self endDate]];
+    if (self.checkins.count) {
+      NSArray *checkinNames = [self.checkins valueForKey:@"name"];
+      cover.titleLabel.text = [checkinNames componentsJoinedByString:@","];
+    } else
+      cover.titleLabel.text = @"";
     
-    NSError *error = nil;
-    NSArray *checkins = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
-    if (error) {
-      NSLog(@"error to query checkin db: %@", error);
-    } else if (checkins.count) {
-      cover.titleLabel.text = [[checkins valueForKeyPath:@"name"] componentsJoinedByString:@","];
-    }
-    
-    cover.titleLabel.text = @"";
     self.geoLocation = [[WAGeoLocation alloc] init];
     [self.geoLocation identifyLocation:self.coordinate onComplete:^(NSArray *results) {
       if (cover.titleLabel.text.length == 0)
@@ -730,7 +741,6 @@
   if (scrollView.contentOffset.y > 0) {
 //    CGFloat ratio = scrollView.contentSize.height / (scrollView.contentSize.height - scrollView.frame.size.height);
     CGFloat percent = (scrollView.contentOffset.y / (scrollView.contentSize.height - self.collectionView.frame.size.height));
-    NSLog(@"%@ %f", NSStringFromCGSize(scrollView.contentSize), percent);
     self.indexView.percentage = percent;
   }
 
