@@ -236,6 +236,18 @@
 /* Title for confirming a post deletion */
 "DELETE_POST_CONFIRMATION_DESCRIPTION" = "註：刪除的貼文可以從aostream網頁版復原。";
 
+/* Checkins section header for detail */
+"DETAIL_CHECKINS" = "打卡：";
+
+/* End time section header for detail */
+"DETAIL_END_TIME" = "結束時間：";
+
+/* Location section header for detail */
+"DETAIL_LOCATION" = "地點：";
+
+/* Start time section header for detail */
+"DETAIL_START_TIME" = "開始時間：";
+
 /* Title of document download */
 "DOC_DOWNLOAD_FAIL_TITLE" = "無法下載原始檔案";
 
@@ -598,6 +610,9 @@
 
 /* TITLE_ERROR_INVALID_EMAIL_FORMAT */
 "TITLE_ERROR_INVALID_EMAIL_FORMAT" = "TITLE_ERROR_INVALID_EMAIL_FORMAT";
+
+/* Title of event details */
+"TITLE_EVENT_DETAILS" = "內容";
 
 /* title of highlights */
 "TITLE_HIGHLIGHT" = "選輯";
