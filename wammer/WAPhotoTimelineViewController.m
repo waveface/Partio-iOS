@@ -36,6 +36,7 @@
 #import <MobileCoreServices/MobileCoreServices.h>
 #import "WAOverlayBezel.h"
 #import "WATranslucentToolbar.h"
+#import "NINetworkImageView.h"
 
 #import "WADefines.h"
 #import "WARemoteInterface.h"
@@ -56,6 +57,7 @@
 @property (nonatomic, strong) NSOperationQueue *imageDisplayQueue;
 
 @property (nonatomic, strong) WAArticle *representingArticle;
+@property (nonatomic, strong) WAUser *user;
 @property (nonatomic, strong) NSArray *sortedImages;
 @property (nonatomic, strong) NSArray *allAssets;
 @property (nonatomic, strong) WAGeoLocation *geoLocation;
@@ -69,6 +71,8 @@
 
 @implementation WAPhotoTimelineViewController {
   BOOL naviBarShown;
+  BOOL toolBarShown;
+  CGFloat previousYOffset;
   CLLocationCoordinate2D _coordinate;
 }
 
@@ -108,6 +112,8 @@
   [super viewDidLoad];
   
   naviBarShown = NO;
+  toolBarShown = YES;
+  previousYOffset = 0;
   
   self.imageDisplayQueue = [[NSOperationQueue alloc] init];
   self.imageDisplayQueue.maxConcurrentOperationCount = 1;
@@ -577,6 +583,24 @@
   return @[];
 }
 
+- (NSArray *)contacts {
+  if (self.representingArticle) {
+    return [self.representingArticle.people allObjects];
+  } else {
+    return @[];
+  }
+}
+
+- (WAUser*) user {
+
+  if (self.representingArticle) {
+    return self.representingArticle.owner;
+  } else {
+    return [[WADataStore defaultStore] mainUserInContext:self.managedObjectContext];
+  }
+  
+}
+
 #pragma mark - UICollectionView datasource
 - (NSInteger) numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
   return 1;
@@ -753,7 +777,14 @@
       WAEventDetailsViewController *detail = [WAEventDetailsViewController wrappedNavigationControllerForDetailInfo:detailInfo];
       [wSelf presentViewController:detail animated:YES completion:nil];
     } forControlEvents:UIControlEventTouchUpInside];
-    
+
+    WAUser *user = [self user];
+    cover.avatarView.image = user.avatar;
+
+    if (self.representingArticle)
+      cover.informationLabel.text = [NSString stringWithFormat:@"%@ with some other %d friends.", self.user.nickname, self.representingArticle.people.count];
+    else
+      cover.informationLabel.text = @"Invite more people to share photos together with you.";
     return cover;
     
   }
@@ -859,6 +890,25 @@
 //    CGFloat ratio = scrollView.contentSize.height / (scrollView.contentSize.height - scrollView.frame.size.height);
     CGFloat percent = (scrollView.contentOffset.y / (scrollView.contentSize.height - self.collectionView.frame.size.height));
     self.indexView.percentage = percent;
+  }
+  
+  if (scrollView.contentOffset.y > 0) {
+    if (scrollView.contentOffset.y > previousYOffset) {
+      if (toolBarShown) {
+        toolBarShown = NO;
+        [UIView animateWithDuration:0.5 animations:^{
+          self.toolbar.alpha = 0;
+        } completion:nil];
+      }
+    } else {
+      if (!toolBarShown) {
+        toolBarShown = YES;
+        [UIView animateWithDuration:0.5 animations:^{
+          self.toolbar.alpha = 1;
+        }];
+      }
+    }
+    previousYOffset = scrollView.contentOffset.y;
   }
 
 }

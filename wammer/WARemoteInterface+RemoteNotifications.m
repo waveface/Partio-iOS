@@ -14,21 +14,20 @@
 
 	NSParameterAssert(aDevToken);
 	
-	[self.engine fireAPIRequestNamed:@"notifications/subscribe" withArguments:[NSDictionary dictionaryWithObjectsAndKeys:
-																																						@"iOS", @"ostype",
-																																						aDevToken, @"devtoken", nil]
-													 options:nil
-												 validator:WARemoteInterfaceGenericNoErrorValidator()
-										successHandler:^(NSDictionary *inResponseOrNil, IRWebAPIRequestContext *inResponseContext) {
+	[self.engine fireAPIRequestNamed:@"pio_notifications/send_apnstoken"
+                       withArguments:[NSDictionary dictionaryWithObjectsAndKeys:aDevToken, @"apns_token", nil]
+                             options:nil
+                           validator:WARemoteInterfaceGenericNoErrorValidator()
+                      successHandler:^(NSDictionary *inResponseOrNil, IRWebAPIRequestContext *inResponseContext) {
+                        
+                        if (!successBlock)
+                          return;
 		
-		if (!successBlock)
-			return;
-		
-		successBlock();
-		
-	} failureHandler:WARemoteInterfaceGenericFailureHandler(failureBlock)];
-
-	
+                        successBlock();
+                        
+                      } failureHandler:WARemoteInterfaceGenericFailureHandler(failureBlock)];
+  
+  
 }
 
 - (void) unsubscribeRemoteNotificationForDevToken: (NSString*)aDevToken {

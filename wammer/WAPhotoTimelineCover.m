@@ -28,10 +28,14 @@
 //    
 //    [self.gradientBackground.layer insertSublayer:gradientLayer above:nil];
   
-    self.mapView.layer.borderWidth = 4;
-    self.mapView.layer.borderColor = [UIColor blackColor].CGColor;
-    self.mapView.layer.cornerRadius = 40;
-    self.mapView.layer.masksToBounds = YES;
+  self.mapView.layer.borderWidth = 4;
+  self.mapView.layer.borderColor = [UIColor blackColor].CGColor;
+  self.mapView.layer.cornerRadius = 40;
+  self.mapView.layer.masksToBounds = YES;
+  
+  self.titleLabel.font = [UIFont fontWithName:@"OpenSans-Semibold" size:24.0f];
+  self.informationLabel.font = [UIFont fontWithName:@"OpenSans" size:12.0f];
+  self.avatarView.layer.cornerRadius = 4;
   
 }
 /*
