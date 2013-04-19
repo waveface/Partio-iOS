@@ -211,6 +211,11 @@
 		7DBE8DF6165B383C005C2347 /* WADayHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 80C129B716398933001DDFE2 /* WADayHeaderView.m */; };
 		7DC3AC0F1642203C009A8EA7 /* SocketRocket.xcodeproj in Resources */ = {isa = PBXBuildFile; fileRef = 7DC3AC0D1642203C009A8EA7 /* SocketRocket.xcodeproj */; };
 		7DC3AC101642203C009A8EA7 /* SocketRocket.xcodeproj in Resources */ = {isa = PBXBuildFile; fileRef = 7DC3AC0D1642203C009A8EA7 /* SocketRocket.xcodeproj */; };
+		800095F117210DAA0082E1B5 /* AddPhotoBtn.png in Resources */ = {isa = PBXBuildFile; fileRef = 800095ED17210DA80082E1B5 /* AddPhotoBtn.png */; };
+		800095F217210DAA0082E1B5 /* AddPhotoBtn@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 800095EE17210DA80082E1B5 /* AddPhotoBtn@2x.png */; };
+		800095F317210DAA0082E1B5 /* AddPplBtn.png in Resources */ = {isa = PBXBuildFile; fileRef = 800095EF17210DA90082E1B5 /* AddPplBtn.png */; };
+		800095F417210DAA0082E1B5 /* AddPplBtn@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 800095F017210DA90082E1B5 /* AddPplBtn@2x.png */; };
+		800096071721235B0082E1B5 /* WAPartioNavigationBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 800096061721235B0082E1B5 /* WAPartioNavigationBar.m */; };
 		8002CDE615E5E85600D7BFF0 /* libicucore.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 8002CDE515E5E85600D7BFF0 /* libicucore.dylib */; };
 		8002CDE915E5E92100D7BFF0 /* WARemoteInterface+Notification.m in Sources */ = {isa = PBXBuildFile; fileRef = 8002CDE815E5E92100D7BFF0 /* WARemoteInterface+Notification.m */; };
 		8002CDEC15E5F6F300D7BFF0 /* WARemoteInterface+WebSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 8002CDEB15E5F6F300D7BFF0 /* WARemoteInterface+WebSocket.m */; };
@@ -1234,6 +1239,12 @@
 		7DB78A67164900E400E165E9 /* WAPhotoStreamViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAPhotoStreamViewCell.m; sourceTree = "<group>"; };
 		7DB78A6B164900FA00E165E9 /* WAPhotoStreamViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WAPhotoStreamViewCell.xib; sourceTree = "<group>"; };
 		7DC3AC0D1642203C009A8EA7 /* SocketRocket.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SocketRocket.xcodeproj; path = "external/WFPresentation/Bindings/Objective-C/../../../SocketRocket/SocketRocket.xcodeproj"; sourceTree = "<group>"; };
+		800095ED17210DA80082E1B5 /* AddPhotoBtn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = AddPhotoBtn.png; path = Resources/AddPhotoBtn.png; sourceTree = "<group>"; };
+		800095EE17210DA80082E1B5 /* AddPhotoBtn@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "AddPhotoBtn@2x.png"; path = "Resources/AddPhotoBtn@2x.png"; sourceTree = "<group>"; };
+		800095EF17210DA90082E1B5 /* AddPplBtn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = AddPplBtn.png; path = Resources/AddPplBtn.png; sourceTree = "<group>"; };
+		800095F017210DA90082E1B5 /* AddPplBtn@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "AddPplBtn@2x.png"; path = "Resources/AddPplBtn@2x.png"; sourceTree = "<group>"; };
+		800096051721235B0082E1B5 /* WAPartioNavigationBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAPartioNavigationBar.h; sourceTree = "<group>"; };
+		800096061721235B0082E1B5 /* WAPartioNavigationBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAPartioNavigationBar.m; sourceTree = "<group>"; };
 		8002CDE515E5E85600D7BFF0 /* libicucore.dylib */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "compiled.mach-o.dylib"; name = libicucore.dylib; path = usr/lib/libicucore.dylib; sourceTree = SDKROOT; };
 		8002CDE715E5E92100D7BFF0 /* WARemoteInterface+Notification.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WARemoteInterface+Notification.h"; sourceTree = "<group>"; };
 		8002CDE815E5E92100D7BFF0 /* WARemoteInterface+Notification.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WARemoteInterface+Notification.m"; sourceTree = "<group>"; };
@@ -2611,6 +2622,10 @@
 				DEEFACC21718476C00AD907B /* Photo@2x.png */,
 				DEEFACC31718476C00AD907B /* ppls.png */,
 				DEEFACC41718476C00AD907B /* ppls@2x.png */,
+				800095ED17210DA80082E1B5 /* AddPhotoBtn.png */,
+				800095EE17210DA80082E1B5 /* AddPhotoBtn@2x.png */,
+				800095EF17210DA90082E1B5 /* AddPplBtn.png */,
+				800095F017210DA90082E1B5 /* AddPplBtn@2x.png */,
 			);
 			name = Partio;
 			sourceTree = "<group>";
@@ -2903,6 +2918,8 @@
 				8012DB4E16D4C1150002B163 /* UIViewController+WAAdditions.m */,
 				809A175C171D4EBC000AF6ED /* WATranslucentToolbar.h */,
 				809A175D171D4EBC000AF6ED /* WATranslucentToolbar.m */,
+				800096051721235B0082E1B5 /* WAPartioNavigationBar.h */,
+				800096061721235B0082E1B5 /* WAPartioNavigationBar.m */,
 			);
 			name = Views;
 			path = wammer;
@@ -4459,6 +4476,10 @@
 				809A1757171D246C000AF6ED /* WAPartioSignupViewController.xib in Resources */,
 				80B3A3A4171FA58500A9B57B /* WAEventDetailsViewController.xib in Resources */,
 				80B3A3B3171FA9AB00A9B57B /* WAEventDetailsMapCell.xib in Resources */,
+				800095F117210DAA0082E1B5 /* AddPhotoBtn.png in Resources */,
+				800095F217210DAA0082E1B5 /* AddPhotoBtn@2x.png in Resources */,
+				800095F317210DAA0082E1B5 /* AddPplBtn.png in Resources */,
+				800095F417210DAA0082E1B5 /* AddPplBtn@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4969,6 +4990,7 @@
 				809A175E171D4EBC000AF6ED /* WATranslucentToolbar.m in Sources */,
 				80B3A3A3171FA58500A9B57B /* WAEventDetailsViewController.m in Sources */,
 				80B3A3B6171FA9F100A9B57B /* WAEventDetailsMapCell.m in Sources */,
+				800096071721235B0082E1B5 /* WAPartioNavigationBar.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5140,7 +5162,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 5AE49661BAA04638AA81DC49 /* Pods.xcconfig */;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer: Shih-Yun Shen (ZBB2QV4YJ7)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COMPRESS_PNG_FILES = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -5193,7 +5215,7 @@
 					Social,
 				);
 				PRODUCT_NAME = partio;
-				PROVISIONING_PROFILE = "DE7D08E9-A992-477A-9EC7-764E7763F0A2";
+				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos;
 				STREAM_BUNDLE_ID_SUFFIX = .beta;
 				STREAM_FACEBOOK_ID = 356863037711668;
@@ -5681,7 +5703,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 5AE49661BAA04638AA81DC49 /* Pods.xcconfig */;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer: Shih-Yun Shen (ZBB2QV4YJ7)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COMPRESS_PNG_FILES = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -5734,7 +5756,7 @@
 					Social,
 				);
 				PRODUCT_NAME = partio;
-				PROVISIONING_PROFILE = "DE7D08E9-A992-477A-9EC7-764E7763F0A2";
+				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos;
 				STREAM_BUNDLE_ID_SUFFIX = .develop;
 				STREAM_FACEBOOK_ID = 357087874306060;
@@ -5750,7 +5772,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 5AE49661BAA04638AA81DC49 /* Pods.xcconfig */;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer: Shih-Yun Shen (ZBB2QV4YJ7)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COMPRESS_PNG_FILES = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -5803,7 +5825,7 @@
 					Social,
 				);
 				PRODUCT_NAME = partio;
-				PROVISIONING_PROFILE = "DE7D08E9-A992-477A-9EC7-764E7763F0A2";
+				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos;
 				STREAM_BUNDLE_ID_SUFFIX = "";
 				STREAM_FACEBOOK_ID = 234823683291756;
