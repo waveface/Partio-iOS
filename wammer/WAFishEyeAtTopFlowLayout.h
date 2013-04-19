@@ -10,4 +10,6 @@
 
 @interface WAFishEyeAtTopFlowLayout : UICollectionViewFlowLayout
 
+- (id)initWithMaxItemSize:(CGFloat)maxItemSize minItemSize:(CGFloat)minItemSize itemWidth:(CGFloat)itemWidth;
+
 @end

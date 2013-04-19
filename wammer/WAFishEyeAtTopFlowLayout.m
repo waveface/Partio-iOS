@@ -8,19 +8,24 @@
 
 #import "WAFishEyeAtTopFlowLayout.h"
 
+@interface WAFishEyeAtTopFlowLayout()
+
+@property (nonatomic, assign) CGFloat maxItemSize;
+@property (nonatomic, assign) CGFloat minItemSize;
+@property (nonatomic, assign) CGFloat itemWidth;
+
+@end
 @implementation WAFishEyeAtTopFlowLayout
 
-#define ITEM_WIDTH 320.f
-#define ITEM_HEIGHT 140.f
-#define LENGTHEN_HEIGHT 275.f
-#define ACTIVE_DISTANCE 207.5f 
-#define ScreenRect (CGRect)([[UIScreen mainScreen] applicationFrame])
-
-- (id)init
+- (id)initWithMaxItemSize:(CGFloat)maxItemSize minItemSize:(CGFloat)minItemSize itemWidth:(CGFloat)itemWidth
 {
   self = [super init];
   if (self) {
-    self.itemSize = CGSizeMake(ITEM_WIDTH, ITEM_HEIGHT);
+    self.maxItemSize = maxItemSize;
+    self.minItemSize = minItemSize;
+    self.itemWidth = itemWidth;
+    
+    self.itemSize = CGSizeMake(itemWidth, minItemSize);
     self.scrollDirection = UICollectionViewScrollDirectionVertical;
     self.sectionInset = UIEdgeInsetsMake(0.f, 0.f, 0.f, 0.f);
     self.minimumLineSpacing = 0.f;
@@ -37,26 +42,36 @@
 
 -(NSArray *)layoutAttributesForElementsInRect:(CGRect)rect
 {
-  NSArray *array = [super layoutAttributesForElementsInRect:rect];
-  CGRect visibleRect;
-  visibleRect.origin = self.collectionView.contentOffset;
-  visibleRect.size = self.collectionView.bounds.size;
+  CGFloat visibleRectOriginY = self.collectionView.contentOffset.y;
   
+  NSMutableArray *array = [[super layoutAttributesForElementsInRect:rect] mutableCopy];
+
   for (UICollectionViewLayoutAttributes *attributes in array) {
-    if (CGRectIntersectsRect(attributes.frame, rect)) {
-      CGFloat distance = (visibleRect.origin.y + LENGTHEN_HEIGHT/2.f) - attributes.center.y;
-      CGFloat normalizedDistance = distance / ITEM_HEIGHT;
+    CGFloat itemY = attributes.indexPath.row * self.minItemSize;
+    
+    if (itemY == visibleRectOriginY) {
+      attributes.frame = CGRectMake(attributes.frame.origin.x, itemY, self.itemWidth, self.maxItemSize);
       
-      if (ABS(distance) < ITEM_HEIGHT &&
-          attributes.center.y > (visibleRect.origin.y + LENGTHEN_HEIGHT/2.f ) &&
-          attributes.center.y <= (visibleRect.origin.y + LENGTHEN_HEIGHT + ITEM_HEIGHT/2.f)) {
-//        if (!attributes.frame.origin.y) {
-//          continue;
-//        }
-        CGFloat zoom = 1 + (1 - ABS(normalizedDistance)) * (LENGTHEN_HEIGHT / ITEM_HEIGHT - 1);
-        attributes.size = CGSizeMake(ITEM_WIDTH, attributes.size.height * zoom);
-        attributes.zIndex = round(zoom);
-      }
+    } else if (itemY < visibleRectOriginY && itemY > (visibleRectOriginY - self.minItemSize)) {
+      CGFloat h = itemY + self.minItemSize - visibleRectOriginY;
+      attributes.frame = CGRectMake(attributes.frame.origin.x, itemY, self.itemWidth, (visibleRectOriginY - itemY) + h * self.maxItemSize / self.minItemSize);
+      
+    } else if (itemY > visibleRectOriginY && itemY <= (visibleRectOriginY + self.minItemSize)) {
+      CGFloat h = itemY - visibleRectOriginY;
+      attributes.frame = CGRectMake(attributes.frame.origin.x,
+                                    visibleRectOriginY + self.maxItemSize * (h / self.minItemSize),
+                                    self.itemWidth,
+                                    (self.maxItemSize + h) - h * self.maxItemSize / self.minItemSize);
+      
+    } else if (itemY < visibleRectOriginY) {
+      attributes.frame = CGRectMake(attributes.frame.origin.x, itemY, self.itemWidth, self.minItemSize);
+
+    } else {
+      CGFloat h = (attributes.indexPath.row+1) * self.minItemSize - (self.minItemSize*3 - (self.minItemSize+self.maxItemSize));
+      attributes.frame = CGRectMake(attributes.frame.origin.x,
+                                    h,
+                                    self.itemWidth,
+                                    self.minItemSize);
     }
   }
   
@@ -66,15 +81,15 @@
 - (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)proposedContentOffset withScrollingVelocity:(CGPoint)velocity
 {
   CGFloat offsetAjustment = MAXFLOAT;
-  CGFloat targetItemVerticalCenter = proposedContentOffset.y + LENGTHEN_HEIGHT/2.f;
+  CGFloat targetItemY = proposedContentOffset.y;
   
   CGRect targetRect = CGRectMake(0.f, proposedContentOffset.y, self.collectionView.bounds.size.width, self.collectionView.bounds.size.height);
   NSArray *array = [super layoutAttributesForElementsInRect:targetRect];
   
   for (UICollectionViewLayoutAttributes *attributes in array) {
-    CGFloat itemVerticalCenter = attributes.center.y;
-    if (ABS(itemVerticalCenter - targetItemVerticalCenter) < offsetAjustment) {
-      offsetAjustment = itemVerticalCenter - targetItemVerticalCenter;
+    CGFloat itemY = attributes.frame.origin.y;
+    if (ABS(itemY - targetItemY) < offsetAjustment) {
+      offsetAjustment = itemY - targetItemY;
     }
   }
   

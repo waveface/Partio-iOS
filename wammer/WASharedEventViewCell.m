@@ -10,9 +10,17 @@
 
 @implementation WASharedEventViewCell
 
-- (void)awakeFromNib
-{
-  
+- (id)initWithFrame:(CGRect)frame {
+  self = [super initWithFrame:frame];
+  if (self) {
+   
+    [self.photoNumber setFont:[UIFont fontWithName:@"OpenSans_Regular" size:12.f]];
+    [self.checkinNumber setFont:[UIFont fontWithName:@"OpenSans_Regular" size:12.f]];
+    [self.date setFont:[UIFont fontWithName:@"OpenSans_Semibold" size:24.f]];
+    [self.location setFont:[UIFont fontWithName:@"OpenSans_Regular" size:18.f]];
+    [self.peopleNumber setFont:[UIFont fontWithName:@"OpenSans_Semibold" size:24.f]];
+  }
+  return self;
 }
 
 /*

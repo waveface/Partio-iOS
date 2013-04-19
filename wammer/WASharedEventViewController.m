@@ -10,17 +10,20 @@
 #import "WASharedEventViewCell.h"
 #import "WAPhotoHighlightsViewController.h"
 #import "WAPhotoTimelineViewController.h"
+#import "WATranslucentToolbar.h"
 #import "WAGeoLocation.h"
 #import <CoreLocation/CoreLocation.h>
 #import "WADataStore.h"
 #import "WAPartioNavigationController.h"
 #import "NSDate+WAAdditions.h"
+#import <QuartzCore/QuartzCore.h>
 
 @interface WASharedEventViewController ()
 
 @property (nonatomic, strong) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, strong) NSFetchedResultsController *eventFetchedResultsController;
 @property (nonatomic, strong) NSMutableArray *objectChanges;
+@property (nonatomic, strong) WATranslucentToolbar *toolbar;
 
 @end
 
@@ -70,10 +73,13 @@ static NSString *kCellID = @"EventCell";
   
   [self setTitle:NSLocalizedString(@"LABEL_SHARED_EVENTS", @"LABEL_SHARED_EVENTS")];
   
-  [self.navigationController setToolbarHidden:NO];
   UIBarButtonItem *flexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
-  UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(shareNewEventFromHighlight)];
-  self.toolbarItems = @[flexibleSpace, addButton, flexibleSpace];
+  UIBarButtonItem *addButton = (UIBarButtonItem*)WABarButtonItem([UIImage imageNamed:@"AddEvent"], @"", ^{
+    [self shareNewEventFromHighlight];
+  });
+  self.toolbar = [[WATranslucentToolbar alloc] initWithFrame:CGRectMake(0.f, CGRectGetHeight(self.view.frame) - 120.f, CGRectGetWidth(self.view.frame), 120.f)];
+  self.toolbar.items = @[flexibleSpace, addButton, flexibleSpace];
+  [self.view addSubview:self.toolbar];
   
   [self.collectionView registerNib:[UINib nibWithNibName:@"WASharedEventViewCell" bundle:nil] forCellWithReuseIdentifier:kCellID];
   
@@ -140,37 +146,42 @@ static NSString *kCellID = @"EventCell";
 
 - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller
 {
-  if ([self.objectChanges count]) {
-    [self.collectionView performBatchUpdates:^{
+  dispatch_async(dispatch_get_main_queue(), ^{
+    if ([self.objectChanges count]) {
       
-      for (NSDictionary *change in self.objectChanges) {
-        [change enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
-          
-          NSFetchedResultsChangeType type = [key unsignedIntegerValue];
-          
-          switch (type) {
-            case NSFetchedResultsChangeInsert:
-              [self.collectionView insertItemsAtIndexPaths:@[obj]];
-              break;
-              
-            case NSFetchedResultsChangeDelete:
-              [self.collectionView deleteItemsAtIndexPaths:@[obj]];
-              break;
-              
-            case NSFetchedResultsChangeUpdate:
-              [self.collectionView reloadItemsAtIndexPaths:@[obj]];
-              break;
-              
-            case NSFetchedResultsChangeMove:
-              [self.collectionView moveItemAtIndexPath:obj[0] toIndexPath:obj[1]];
-              break;
-              
-          }
-        }];
+      [self.collectionView performBatchUpdates:^{
+        
+        for (NSDictionary *change in self.objectChanges) {
+          [change enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+            
+            NSFetchedResultsChangeType type = [key unsignedIntegerValue];
+            
+            switch (type) {
+              case NSFetchedResultsChangeInsert:
+                [self.collectionView insertItemsAtIndexPaths:@[obj]];
+                break;
+                
+              case NSFetchedResultsChangeDelete:
+                [self.collectionView deleteItemsAtIndexPaths:@[obj]];
+                break;
+                
+              case NSFetchedResultsChangeUpdate:
+                [self.collectionView reloadItemsAtIndexPaths:@[obj]];
+                break;
+                
+              case NSFetchedResultsChangeMove:
+                [self.collectionView moveItemAtIndexPath:obj[0] toIndexPath:obj[1]];
+                break;
+                
+            }
+            
+          }];
+        }
       }
+                                    completion:nil];
     }
-                                  completion:nil];
-  }
+    
+  });
   
   [self.objectChanges removeAllObjects];
 }
@@ -206,14 +217,16 @@ static NSString *kCellID = @"EventCell";
 
               }];
   
-  NSInteger pplNumber = 0;
+  NSInteger pplNumber = [[[self.eventFetchedResultsController objectAtIndexPath:indexPath] valueForKey:@"people"] count];
   
   
   NSInteger photoNumbers = [[[self.eventFetchedResultsController objectAtIndexPath:indexPath] valueForKey:@"files"] count];
   
   static NSDateFormatter *sharedDateFormatter;
   sharedDateFormatter = [[NSDateFormatter alloc] init];
-  [sharedDateFormatter setDateFormat:@"yyyy MM dd"];
+  [sharedDateFormatter setDateStyle:NSDateFormatterLongStyle];
+  [sharedDateFormatter setTimeStyle:NSDateFormatterNoStyle];
+  
   NSDate *eDate = [[self.eventFetchedResultsController objectAtIndexPath:indexPath] valueForKey:@"creationDate"];
   NSString *eventDate = [sharedDateFormatter stringFromDate:eDate];
   
@@ -237,26 +250,24 @@ static NSString *kCellID = @"EventCell";
       
     } else {
       location = @"Location";
+      //location = [[[self.eventFetchedResultsController objectAtIndexPath:indexPath] valueForKey:@"location"] name];
       
     }
-    
   }
   
+  [cell.stickerNew setHidden:NO];
   [cell.photoNumber setText:[NSString stringWithFormat:@"%d", photoNumbers]];
   [cell.checkinNumber setText:[NSString stringWithFormat:@"%d", checkinNumbers]];
   [cell.peopleNumber setText:[NSString stringWithFormat:@"%d", pplNumber]];
   [cell.date setText:eventDate];
   [cell.location setText:location];
   
-  [cell.infoView setFrame:CGRectMake(0.f, cell.center.y + cell.frame.size.height/2.f - 80.f, 320.f, 80.f)];
-  [cell.infoView setAutoresizingMask:UIViewAutoresizingFlexibleTopMargin];
-  
-  CAGradientLayer *gradientLayer = [CAGradientLayer layer];
-  [gradientLayer setFrame:CGRectMake(0.f, cell.center.y + cell.frame.size.height/2.f - 80.f, 320.f, 80.f)];
-  [gradientLayer setColors:@[(id)[[UIColor colorWithWhite:0.f alpha:0.3f] CGColor],
-   (id)[[UIColor colorWithWhite:0.f alpha:0.5f] CGColor],
-   (id)[[UIColor colorWithWhite:0.f alpha:0.7f] CGColor]]];
-  [cell.infoView.layer insertSublayer:gradientLayer atIndex:0];
+//  [cell.infoView.layer setFrame:CGRectMake(0.f, cell.frame.size.height - 80.f, 320.f, 80.f)];
+//  CAGradientLayer *gradientLayer = [CAGradientLayer layer];
+//  [gradientLayer setFrame:CGRectMake(0.f, 0.f, 320.f, 80.f)];
+//  [gradientLayer setColors:@[(id)[[UIColor colorWithWhite:0.f alpha:0.f] CGColor],
+//                             (id)[[UIColor colorWithWhite:0.f alpha:0.5f] CGColor]]];
+//  [cell.infoView.layer insertSublayer:gradientLayer atIndex:0];
 
   return cell;
 
@@ -275,11 +286,7 @@ static NSString *kCellID = @"EventCell";
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-  if (!indexPath.row) {
-    return CGSizeMake(320.f, 275.f);
-  } else {
-    return CGSizeMake(320.f, 140.f);
-  }
+  return CGSizeMake(320.f, 140.f);
   
 }
 
