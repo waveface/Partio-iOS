@@ -211,6 +211,11 @@
 		7DBE8DF6165B383C005C2347 /* WADayHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 80C129B716398933001DDFE2 /* WADayHeaderView.m */; };
 		7DC3AC0F1642203C009A8EA7 /* SocketRocket.xcodeproj in Resources */ = {isa = PBXBuildFile; fileRef = 7DC3AC0D1642203C009A8EA7 /* SocketRocket.xcodeproj */; };
 		7DC3AC101642203C009A8EA7 /* SocketRocket.xcodeproj in Resources */ = {isa = PBXBuildFile; fileRef = 7DC3AC0D1642203C009A8EA7 /* SocketRocket.xcodeproj */; };
+		800095F117210DAA0082E1B5 /* AddPhotoBtn.png in Resources */ = {isa = PBXBuildFile; fileRef = 800095ED17210DA80082E1B5 /* AddPhotoBtn.png */; };
+		800095F217210DAA0082E1B5 /* AddPhotoBtn@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 800095EE17210DA80082E1B5 /* AddPhotoBtn@2x.png */; };
+		800095F317210DAA0082E1B5 /* AddPplBtn.png in Resources */ = {isa = PBXBuildFile; fileRef = 800095EF17210DA90082E1B5 /* AddPplBtn.png */; };
+		800095F417210DAA0082E1B5 /* AddPplBtn@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 800095F017210DA90082E1B5 /* AddPplBtn@2x.png */; };
+		800096071721235B0082E1B5 /* WAPartioNavigationBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 800096061721235B0082E1B5 /* WAPartioNavigationBar.m */; };
 		8002CDE615E5E85600D7BFF0 /* libicucore.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 8002CDE515E5E85600D7BFF0 /* libicucore.dylib */; };
 		8002CDE915E5E92100D7BFF0 /* WARemoteInterface+Notification.m in Sources */ = {isa = PBXBuildFile; fileRef = 8002CDE815E5E92100D7BFF0 /* WARemoteInterface+Notification.m */; };
 		8002CDEC15E5F6F300D7BFF0 /* WARemoteInterface+WebSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 8002CDEB15E5F6F300D7BFF0 /* WARemoteInterface+WebSocket.m */; };
@@ -366,6 +371,10 @@
 		80B1CD0A164B8479009941E5 /* EventDocIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 80B1CD03164B8479009941E5 /* EventDocIcon@2x.png */; };
 		80B1CD0B164B8479009941E5 /* EventLinkIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 80B1CD04164B8479009941E5 /* EventLinkIcon.png */; };
 		80B1CD0C164B8479009941E5 /* EventLinkIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 80B1CD05164B8479009941E5 /* EventLinkIcon@2x.png */; };
+		80B3A3A3171FA58500A9B57B /* WAEventDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 80B3A3A1171FA58500A9B57B /* WAEventDetailsViewController.m */; };
+		80B3A3A4171FA58500A9B57B /* WAEventDetailsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 80B3A3A2171FA58500A9B57B /* WAEventDetailsViewController.xib */; };
+		80B3A3B3171FA9AB00A9B57B /* WAEventDetailsMapCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 80B3A3B2171FA9AB00A9B57B /* WAEventDetailsMapCell.xib */; };
+		80B3A3B6171FA9F100A9B57B /* WAEventDetailsMapCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 80B3A3B5171FA9F100A9B57B /* WAEventDetailsMapCell.m */; };
 		80B6323116817CCC00A9E2A5 /* libSocketRocket.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D6470A71642218800DBDEA6 /* libSocketRocket.a */; };
 		80B6323A16817F9A00A9E2A5 /* libPods-StreamTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 80B6323916817F9A00A9E2A5 /* libPods-StreamTests.a */; };
 		80B9E50516719B1200222F57 /* Location@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 80B9E4FB16719B1100222F57 /* Location@2x.png */; };
@@ -1237,6 +1246,12 @@
 		7DB78A67164900E400E165E9 /* WAPhotoStreamViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAPhotoStreamViewCell.m; sourceTree = "<group>"; };
 		7DB78A6B164900FA00E165E9 /* WAPhotoStreamViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WAPhotoStreamViewCell.xib; sourceTree = "<group>"; };
 		7DC3AC0D1642203C009A8EA7 /* SocketRocket.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SocketRocket.xcodeproj; path = "external/WFPresentation/Bindings/Objective-C/../../../SocketRocket/SocketRocket.xcodeproj"; sourceTree = "<group>"; };
+		800095ED17210DA80082E1B5 /* AddPhotoBtn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = AddPhotoBtn.png; path = Resources/AddPhotoBtn.png; sourceTree = "<group>"; };
+		800095EE17210DA80082E1B5 /* AddPhotoBtn@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "AddPhotoBtn@2x.png"; path = "Resources/AddPhotoBtn@2x.png"; sourceTree = "<group>"; };
+		800095EF17210DA90082E1B5 /* AddPplBtn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = AddPplBtn.png; path = Resources/AddPplBtn.png; sourceTree = "<group>"; };
+		800095F017210DA90082E1B5 /* AddPplBtn@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "AddPplBtn@2x.png"; path = "Resources/AddPplBtn@2x.png"; sourceTree = "<group>"; };
+		800096051721235B0082E1B5 /* WAPartioNavigationBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAPartioNavigationBar.h; sourceTree = "<group>"; };
+		800096061721235B0082E1B5 /* WAPartioNavigationBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAPartioNavigationBar.m; sourceTree = "<group>"; };
 		8002CDE515E5E85600D7BFF0 /* libicucore.dylib */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "compiled.mach-o.dylib"; name = libicucore.dylib; path = usr/lib/libicucore.dylib; sourceTree = SDKROOT; };
 		8002CDE715E5E92100D7BFF0 /* WARemoteInterface+Notification.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WARemoteInterface+Notification.h"; sourceTree = "<group>"; };
 		8002CDE815E5E92100D7BFF0 /* WARemoteInterface+Notification.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WARemoteInterface+Notification.m"; sourceTree = "<group>"; };
@@ -1457,6 +1472,12 @@
 		80B1CD03164B8479009941E5 /* EventDocIcon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "EventDocIcon@2x.png"; path = "Resources/EventDocIcon@2x.png"; sourceTree = "<group>"; };
 		80B1CD04164B8479009941E5 /* EventLinkIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = EventLinkIcon.png; path = Resources/EventLinkIcon.png; sourceTree = "<group>"; };
 		80B1CD05164B8479009941E5 /* EventLinkIcon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "EventLinkIcon@2x.png"; path = "Resources/EventLinkIcon@2x.png"; sourceTree = "<group>"; };
+		80B3A3A0171FA58500A9B57B /* WAEventDetailsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WAEventDetailsViewController.h; path = wammer/WAEventDetailsViewController.h; sourceTree = "<group>"; };
+		80B3A3A1171FA58500A9B57B /* WAEventDetailsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WAEventDetailsViewController.m; path = wammer/WAEventDetailsViewController.m; sourceTree = "<group>"; };
+		80B3A3A2171FA58500A9B57B /* WAEventDetailsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = WAEventDetailsViewController.xib; path = wammer/WAEventDetailsViewController.xib; sourceTree = "<group>"; };
+		80B3A3B2171FA9AB00A9B57B /* WAEventDetailsMapCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = WAEventDetailsMapCell.xib; path = wammer/WAEventDetailsMapCell.xib; sourceTree = "<group>"; };
+		80B3A3B4171FA9F100A9B57B /* WAEventDetailsMapCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WAEventDetailsMapCell.h; path = wammer/WAEventDetailsMapCell.h; sourceTree = "<group>"; };
+		80B3A3B5171FA9F100A9B57B /* WAEventDetailsMapCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WAEventDetailsMapCell.m; path = wammer/WAEventDetailsMapCell.m; sourceTree = "<group>"; };
 		80B6323716817F8A00A9E2A5 /* libPods-UnitTests.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-UnitTests.a"; path = "Pods/build/Release-iphoneos/libPods-UnitTests.a"; sourceTree = "<group>"; };
 		80B6323916817F9A00A9E2A5 /* libPods-StreamTests.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-StreamTests.a"; path = "Pods/build/Release-iphoneos/libPods-StreamTests.a"; sourceTree = "<group>"; };
 		80B9E4FB16719B1100222F57 /* Location@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Location@2x.png"; path = "Resources/Location@2x.png"; sourceTree = "<group>"; };
@@ -2530,6 +2551,12 @@
 				80090B57170EC9D8005AF6B8 /* WAPhotoTimelineCover.h */,
 				80090B58170EC9D8005AF6B8 /* WAPhotoTimelineCover.m */,
 				80090B5A170EC9FD005AF6B8 /* WAPhotoTimelineCover.xib */,
+				80B3A3A0171FA58500A9B57B /* WAEventDetailsViewController.h */,
+				80B3A3A1171FA58500A9B57B /* WAEventDetailsViewController.m */,
+				80B3A3A2171FA58500A9B57B /* WAEventDetailsViewController.xib */,
+				80B3A3B2171FA9AB00A9B57B /* WAEventDetailsMapCell.xib */,
+				80B3A3B4171FA9F100A9B57B /* WAEventDetailsMapCell.h */,
+				80B3A3B5171FA9F100A9B57B /* WAEventDetailsMapCell.m */,
 				80090B5C170ECE28005AF6B8 /* WAPhotoCollageCell.h */,
 				80090B5D170ECE28005AF6B8 /* WAPhotoCollageCell.m */,
 				80090B5F170ECE45005AF6B8 /* WAPhotoCollageCell_Stack4.xib */,
@@ -2615,6 +2642,10 @@
 				DEEFACC21718476C00AD907B /* Photo@2x.png */,
 				DEEFACC31718476C00AD907B /* ppls.png */,
 				DEEFACC41718476C00AD907B /* ppls@2x.png */,
+				800095ED17210DA80082E1B5 /* AddPhotoBtn.png */,
+				800095EE17210DA80082E1B5 /* AddPhotoBtn@2x.png */,
+				800095EF17210DA90082E1B5 /* AddPplBtn.png */,
+				800095F017210DA90082E1B5 /* AddPplBtn@2x.png */,
 			);
 			name = Partio;
 			sourceTree = "<group>";
@@ -2912,6 +2943,8 @@
 				8012DB4E16D4C1150002B163 /* UIViewController+WAAdditions.m */,
 				809A175C171D4EBC000AF6ED /* WATranslucentToolbar.h */,
 				809A175D171D4EBC000AF6ED /* WATranslucentToolbar.m */,
+				800096051721235B0082E1B5 /* WAPartioNavigationBar.h */,
+				800096061721235B0082E1B5 /* WAPartioNavigationBar.m */,
 			);
 			name = Views;
 			path = wammer;
@@ -4471,6 +4504,12 @@
 				DE0870B4171C085300FA2A5E /* FB@2x.png in Resources */,
 				DE0870E0171CFDD200FA2A5E /* WASharedEventViewCell.xib in Resources */,
 				809A1757171D246C000AF6ED /* WAPartioSignupViewController.xib in Resources */,
+				80B3A3A4171FA58500A9B57B /* WAEventDetailsViewController.xib in Resources */,
+				80B3A3B3171FA9AB00A9B57B /* WAEventDetailsMapCell.xib in Resources */,
+				800095F117210DAA0082E1B5 /* AddPhotoBtn.png in Resources */,
+				800095F217210DAA0082E1B5 /* AddPhotoBtn@2x.png in Resources */,
+				800095F317210DAA0082E1B5 /* AddPplBtn.png in Resources */,
+				800095F417210DAA0082E1B5 /* AddPplBtn@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4981,6 +5020,9 @@
 				DE0870E1171CFDD200FA2A5E /* WAFishEyeAtTopFlowLayout.m in Sources */,
 				809A1756171D246C000AF6ED /* WAPartioSignupViewController.m in Sources */,
 				809A175E171D4EBC000AF6ED /* WATranslucentToolbar.m in Sources */,
+				80B3A3A3171FA58500A9B57B /* WAEventDetailsViewController.m in Sources */,
+				80B3A3B6171FA9F100A9B57B /* WAEventDetailsMapCell.m in Sources */,
+				800096071721235B0082E1B5 /* WAPartioNavigationBar.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

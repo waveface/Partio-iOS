@@ -13,6 +13,7 @@
 #import "WAAssetsLibraryManager.h"
 #import "WAOverlayBezel.h"
 #import "WAGeoLocation.h"
+#import "WAPartioNavigationBar.h"
 #import <StackBluriOS/UIImage+StackBlur.h>
 #import "WAPhotoTimelineViewController.h"
 #import "FBRequestConnection+WAAdditions.h"
@@ -31,7 +32,7 @@
 @property (nonatomic, strong) FBRequestConnection *fbConnection;
 @property (nonatomic, strong) NSManagedObjectContext *managedObjectContext;
 
-@property (nonatomic, weak) IBOutlet UINavigationBar *navigationBar;
+@property (nonatomic, weak) IBOutlet WAPartioNavigationBar *navigationBar;
 @property (nonatomic, weak) IBOutlet UITableView *tableView;
 
 @end
@@ -68,6 +69,10 @@
     __weak WAPhotoHighlightsViewController *wSelf = self;
     UIBarButtonItem *buttonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"LABEL_ALL_PHOTOS_BUTTON", @"label text of all photos button in highlight") style:UIBarButtonItemStyleBordered handler:^(id sender) {
       WADayPhotoPickerViewController *picker = [[WADayPhotoPickerViewController alloc] initWithSelectedAssets:nil];
+      picker.onNextHandler = ^(NSArray *selectedAssets) {
+        WAPhotoTimelineViewController *photoTimeline = [[WAPhotoTimelineViewController alloc] initWithAssets:selectedAssets];
+        [wSelf.navigationController pushViewController:photoTimeline animated:YES];
+      };
       [wSelf.navigationController pushViewController:picker animated:YES];
     }];
     
@@ -344,6 +349,12 @@
   [cell.addButton removeEventHandlersForControlEvents:UIControlEventTouchUpInside];
   [cell.addButton addEventHandler:^(id sender) {
     WADayPhotoPickerViewController *picker = [[WADayPhotoPickerViewController alloc] initWithSelectedAssets:wSelf.photoGroups[indexPath.row]];
+    picker.onNextHandler = ^(NSArray *selectedAssets) {
+      
+      WAPhotoTimelineViewController *photoTimeline = [[WAPhotoTimelineViewController alloc] initWithAssets:selectedAssets];
+      [wSelf.navigationController pushViewController:photoTimeline animated:YES];
+
+    };
     [wSelf.navigationController pushViewController:picker animated:YES];
   } forControlEvents:UIControlEventTouchUpInside];
   

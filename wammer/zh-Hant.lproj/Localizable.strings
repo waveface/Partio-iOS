@@ -236,6 +236,18 @@
 /* Title for confirming a post deletion */
 "DELETE_POST_CONFIRMATION_DESCRIPTION" = "DELETE_POST_CONFIRMATION_DESCRIPTION";
 
+/* Checkins section header for detail */
+"DETAIL_CHECKINS" = "打卡：";
+
+/* End time section header for detail */
+"DETAIL_END_TIME" = "結束時間：";
+
+/* Location section header for detail */
+"DETAIL_LOCATION" = "地點：";
+
+/* Start time section header for detail */
+"DETAIL_START_TIME" = "開始時間：";
+
 /* Title of document download */
 "DOC_DOWNLOAD_FAIL_TITLE" = "DOC_DOWNLOAD_FAIL_TITLE";
 
@@ -372,7 +384,7 @@
 "GREETING_TEXT_WITH_EVENTS_TODAY" = "GREETING_TEXT_WITH_EVENTS_TODAY";
 
 /* description of what is highlight */
-"HIGHLIGHT_DESCRIPTION" = "我們從你的相簿中塞選出一些不錯的選輯，你可以選擇其中之一來分享，或者從所有照片裡去自行挑選。";
+"HIGHLIGHT_DESCRIPTION" = "我們從你的相簿中挑選出一些不錯的選輯，你可以選擇其中之一來分享，或者從所有照片裡去自行挑選。";
 
 /* No comment provided by engineer. */
 "HOUR_PLURAL" = "HOUR_PLURAL";
@@ -598,6 +610,9 @@
 
 /* TITLE_ERROR_INVALID_EMAIL_FORMAT */
 "TITLE_ERROR_INVALID_EMAIL_FORMAT" = "TITLE_ERROR_INVALID_EMAIL_FORMAT";
+
+/* Title of event details */
+"TITLE_EVENT_DETAILS" = "內容";
 
 /* title of highlights */
 "TITLE_HIGHLIGHT" = "TITLE_HIGHLIGHT";

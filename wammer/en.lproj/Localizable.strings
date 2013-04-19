@@ -236,6 +236,18 @@
 /* Title for confirming a post deletion */
 "DELETE_POST_CONFIRMATION_DESCRIPTION" = "Note: Deleted posts can always be recovered from our web version.";
 
+/* Checkins section header for detail */
+"DETAIL_CHECKINS" = "Checkins:";
+
+/* End time section header for detail */
+"DETAIL_END_TIME" = "End Time:";
+
+/* Location section header for detail */
+"DETAIL_LOCATION" = "Location:";
+
+/* Start time section header for detail */
+"DETAIL_START_TIME" = "Start time:";
+
 /* Title of document download */
 "DOC_DOWNLOAD_FAIL_TITLE" = "Unable to download file.";
 
@@ -598,6 +610,9 @@
 
 /* TITLE_ERROR_INVALID_EMAIL_FORMAT */
 "TITLE_ERROR_INVALID_EMAIL_FORMAT" = "TITLE_ERROR_INVALID_EMAIL_FORMAT";
+
+/* Title of event details */
+"TITLE_EVENT_DETAILS" = "Details";
 
 /* title of highlights */
 "TITLE_HIGHLIGHT" = "Highlights";

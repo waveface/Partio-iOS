@@ -12,6 +12,8 @@
 #import "WAPhotoTimelineLayout.h"
 #import "WATimelineIndexView.h"
 #import "WAPartioSignupViewController.h"
+#import "WAEventDetailsViewController.h"
+#import "WADayPhotoPickerViewController.h"
 
 #import "WAPhotoCollageCell.h"
 #import "WADefines.h"
@@ -30,11 +32,11 @@
 #import "WAContactPickerViewController.h"
 #import "WAGeoLocation.h"
 #import <CoreLocation/CoreLocation.h>
-#import <GoogleMaps/GoogleMaps.h>
 #import <BlocksKit/BlocksKit.h>
 #import <MobileCoreServices/MobileCoreServices.h>
 #import "WAOverlayBezel.h"
 #import "WATranslucentToolbar.h"
+#import "NINetworkImageView.h"
 
 #import "WADefines.h"
 #import "WARemoteInterface.h"
@@ -55,17 +57,22 @@
 @property (nonatomic, strong) NSOperationQueue *imageDisplayQueue;
 
 @property (nonatomic, strong) WAArticle *representingArticle;
+@property (nonatomic, strong) WAUser *user;
+@property (nonatomic, strong) NSArray *sortedImages;
 @property (nonatomic, strong) NSArray *allAssets;
 @property (nonatomic, strong) WAGeoLocation *geoLocation;
 @property (nonatomic, strong) NSDate *eventDate;
 @property (nonatomic, strong) NSDate *beginDate;
 @property (nonatomic, strong) NSDate *endDate;
+@property (nonatomic, strong) NSArray *checkins;
 @property (nonatomic, readonly) CLLocationCoordinate2D coordinate;
 
 @end
 
 @implementation WAPhotoTimelineViewController {
   BOOL naviBarShown;
+  BOOL toolBarShown;
+  CGFloat previousYOffset;
   CLLocationCoordinate2D _coordinate;
 }
 
@@ -90,6 +97,10 @@
   if (self) {
     
     self.representingArticle = (WAArticle*)[self.managedObjectContext objectWithID:articleID];
+    self.sortedImages = [self.representingArticle.files sortedArrayUsingComparator:^NSComparisonResult(WAFile *obj1, WAFile *obj2) {
+      return [obj1.created compare:obj2.created];
+    }];
+  
     self.allAssets = @[];
 
   }
@@ -101,6 +112,8 @@
   [super viewDidLoad];
   
   naviBarShown = NO;
+  toolBarShown = YES;
+  previousYOffset = 0;
   
   self.imageDisplayQueue = [[NSOperationQueue alloc] init];
   self.imageDisplayQueue.maxConcurrentOperationCount = 1;
@@ -156,6 +169,30 @@
     self.toolbar = [[WATranslucentToolbar alloc] initWithFrame:CGRectMake(0, CGRectGetHeight(self.view.frame)-44, CGRectGetWidth(self.view.frame), 44)];
     self.toolbar.items = @[flexibleSpace, nextItem, flexibleSpace];
     [self.view addSubview:self.toolbar];
+  } else {
+    
+    UIBarButtonItem *flexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+    
+    UIBarButtonItem *addContacts = WAPartioToolbarButton(nil, [UIImage imageNamed:@"AddPplBtn"],nil, ^{
+      
+    });
+    
+    UIBarButtonItem *addPhotos = WAPartioToolbarButton(nil, [UIImage imageNamed:@"AddPhotoBtn"], nil, ^{
+      WADayPhotoPickerViewController *photoPicker = [[WADayPhotoPickerViewController alloc] initWithSuggestedDateRangeFrom:[self beginDate] to:[self endDate]];
+      __weak WADayPhotoPickerViewController *wpp = photoPicker;
+      photoPicker.onCancelHandler = ^{
+        [wpp dismissViewControllerAnimated:YES completion:nil];
+      };
+      photoPicker.onNextHandler = ^(NSArray *selectedAssets) {
+        [wpp dismissViewControllerAnimated:YES completion:nil];
+      };
+      wSelf.modalPresentationStyle = UIModalPresentationCurrentContext;
+      [wSelf presentViewController:photoPicker animated:YES completion:nil];
+    });
+    
+    self.toolbar = [[WATranslucentToolbar alloc] initWithFrame:CGRectMake(0, CGRectGetHeight(self.view.frame)-44, CGRectGetWidth(self.view.frame), 44)];
+    self.toolbar.items = @[ addContacts, flexibleSpace, addPhotos];
+    [self.view addSubview:self.toolbar];
   }
 }
 
@@ -176,6 +213,96 @@
   });
   
   return opq;
+}
+
+- (void) updateSharingEventWithPhotoChanges:(NSArray*)newAssets contacts:(NSArray*)contacts {
+  NSDate *importTime = [NSDate date];
+  BOOL changed = NO;
+  
+  NSManagedObjectContext *moc = [[WADataStore defaultStore] autoUpdatingMOC];
+  WAArticle *article = (WAArticle*)[moc objectWithID:self.representingArticle.objectID];
+  
+  for (ALAsset *asset in newAssets) {
+    
+    NSFetchRequest *fr = [[NSFetchRequest alloc] initWithEntityName:@"WAFile"];
+    fr.predicate = [NSPredicate predicateWithFormat:@"assetURL = %@", [[[asset defaultRepresentation] url] absoluteString]];
+    NSError *error = nil;
+    NSArray *result = [moc executeFetchRequest:fr error:&error];
+    if (result.count) {
+      WAFile *file = (WAFile*)result[0];
+      if ([article.files containsObject:file])
+          break;
+        [[article mutableOrderedSetValueForKey:@"files"] addObject:file];
+      changed = YES;
+    } else {
+      
+      WAFile *file = (WAFile*)[WAFile objectInsertingIntoContext:moc withRemoteDictionary:@{}];
+      CFUUIDRef theUUID = CFUUIDCreate(kCFAllocatorDefault);
+      if (theUUID)
+        file.identifier = [((__bridge_transfer NSString *)CFUUIDCreateString(kCFAllocatorDefault, theUUID)) lowercaseString];
+      CFRelease(theUUID);
+      file.dirty = (id)kCFBooleanTrue;
+      
+      [[article mutableOrderedSetValueForKey:@"files"] addObject:file];
+      
+      UIImage *extraSmallThumbnailImage = [UIImage imageWithCGImage:[asset thumbnail]];
+      file.extraSmallThumbnailFilePath = [[[WADataStore defaultStore] persistentFileURLForData:UIImageJPEGRepresentation(extraSmallThumbnailImage, 0.85f) extension:@"jpeg"] path];
+      
+      file.assetURL = [[[asset defaultRepresentation] url] absoluteString];
+      file.resourceType = (NSString *)kUTTypeImage;
+      file.timestamp = [asset valueForProperty:ALAssetPropertyDate];
+      file.created = file.timestamp;
+      file.importTime = importTime;
+      
+      WAFileExif *exif = (WAFileExif *)[WAFileExif objectInsertingIntoContext:moc withRemoteDictionary:@{}];
+      NSDictionary *metadata = [[asset defaultRepresentation] metadata];
+      [exif initWithExif:metadata[@"{Exif}"] tiff:metadata[@"{TIFF}"] gps:metadata[@"{GPS}"]];
+      
+      file.exif = exif;
+      changed = YES;
+    }
+  }
+  
+  if (contacts.count) {
+    NSArray *emailsFromContacts = [contacts valueForKey:@"email"];
+    NSMutableArray *invitingEmails = [NSMutableArray array];
+    for (NSArray *contactEmails in emailsFromContacts) {
+      [invitingEmails addObjectsFromArray:contactEmails];
+    }
+    NSFetchRequest *fr = [[NSFetchRequest alloc] initWithEntityName:@"WAPeople"];
+    fr.predicate = [NSPredicate predicateWithFormat:@"email IN %@", invitingEmails];
+    NSError *error = nil;
+    NSArray *peopleFound = [moc executeFetchRequest:fr error:&error];
+    if (peopleFound.count) {
+      for (WAPeople *person in peopleFound) {
+        [[article mutableSetValueForKey:@"people"] addObject:person];
+        if ([invitingEmails indexOfObject:person.email] != NSNotFound) {
+          [invitingEmails removeObject:person.email];
+        }
+      }
+    }
+    for (NSString *email in invitingEmails) {
+      WAPeople *person = (WAPeople*)[WAPeople objectInsertingIntoContext:moc withRemoteDictionary:@{}];
+      person.email = email;
+      [[article mutableSetValueForKey:@"people"] addObject:person];
+    }
+  }
+  
+  if (changed) {
+    article.dirty = (id)kCFBooleanTrue;
+    NSError *savingError = nil;
+    if ([moc save:&savingError]) {
+      NSLog(@"Sharing event successfully created");
+    } else {
+      NSLog(@"error on creating a new import post for error: %@", savingError);
+    }
+    
+    WAAppDelegate_iOS *appDelegate = (WAAppDelegate_iOS*)AppDelegate();
+    [appDelegate.syncManager reload];
+
+  }
+
+
 }
 
 - (void) finishCreatingSharingEventForSharingTargets:(NSArray *)contacts {
@@ -239,27 +366,29 @@
   article.eventEndDate = [self endDate];
   article.creationDate = [NSDate date];
   
-  NSArray *emailsFromContacts = [contacts valueForKey:@"email"];
-  NSMutableArray *invitingEmails = [NSMutableArray array];
-  for (NSArray *contactEmails in emailsFromContacts) {
-    [invitingEmails addObjectsFromArray:contactEmails];
-  }
-  NSFetchRequest *fr = [[NSFetchRequest alloc] initWithEntityName:@"WAPeople"];
-  fr.predicate = [NSPredicate predicateWithFormat:@"email IN %@", invitingEmails];
-  NSError *error = nil;
-  NSArray *peopleFound = [moc executeFetchRequest:fr error:&error];
-  if (peopleFound.count) {
-    for (WAPeople *person in peopleFound) {
-      [[article mutableSetValueForKey:@"people"] addObject:person];
-      if ([invitingEmails indexOfObject:person.email] != NSNotFound) {
-        [invitingEmails removeObject:person.email];
+  if (contacts.count) {
+    NSArray *emailsFromContacts = [contacts valueForKey:@"email"];
+    NSMutableArray *invitingEmails = [NSMutableArray array];
+    for (NSArray *contactEmails in emailsFromContacts) {
+      [invitingEmails addObjectsFromArray:contactEmails];
+    }
+    NSFetchRequest *fr = [[NSFetchRequest alloc] initWithEntityName:@"WAPeople"];
+    fr.predicate = [NSPredicate predicateWithFormat:@"email IN %@", invitingEmails];
+    NSError *error = nil;
+    NSArray *peopleFound = [moc executeFetchRequest:fr error:&error];
+    if (peopleFound.count) {
+      for (WAPeople *person in peopleFound) {
+        [[article mutableSetValueForKey:@"people"] addObject:person];
+        if ([invitingEmails indexOfObject:person.email] != NSNotFound) {
+          [invitingEmails removeObject:person.email];
+        }
       }
     }
-  }
-  for (NSString *email in invitingEmails) {
-    WAPeople *person = (WAPeople*)[WAPeople objectInsertingIntoContext:moc withRemoteDictionary:@{}];
-    person.email = email;
-    [[article mutableSetValueForKey:@"people"] addObject:person];
+    for (NSString *email in invitingEmails) {
+      WAPeople *person = (WAPeople*)[WAPeople objectInsertingIntoContext:moc withRemoteDictionary:@{}];
+      person.email = email;
+      [[article mutableSetValueForKey:@"people"] addObject:person];
+    }
   }
   
   WALocation *location = (WALocation*)[WALocation objectInsertingIntoContext:moc withRemoteDictionary:@{}];
@@ -430,6 +559,48 @@
   return _endDate;
 }
 
+- (NSArray *)checkins {
+  
+  if (self.representingArticle)
+    return [self.representingArticle.checkins allObjects];
+  else {
+    NSDate *beginDate = [NSDate dateWithTimeInterval:(-30*60) sinceDate:self.beginDate];
+    NSDate *endDate = [NSDate dateWithTimeInterval:(30*60) sinceDate:self.endDate];
+    NSFetchRequest * fetchRequest = [[WADataStore defaultStore] newFetchReuqestForCheckinFrom:beginDate to:endDate];
+    
+    NSError *error = nil;
+    NSArray *checkins = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
+    [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
+    if (error) {
+      NSLog(@"error to query checkin db: %@", error);
+      _checkins = @[];
+      return _checkins;
+    } else if (checkins.count) {
+      _checkins = checkins;
+      return _checkins;
+    }
+  }
+  return @[];
+}
+
+- (NSArray *)contacts {
+  if (self.representingArticle) {
+    return [self.representingArticle.people allObjects];
+  } else {
+    return @[];
+  }
+}
+
+- (WAUser*) user {
+
+  if (self.representingArticle) {
+    return self.representingArticle.owner;
+  } else {
+    return [[WADataStore defaultStore] mainUserInContext:self.managedObjectContext];
+  }
+  
+}
+
 #pragma mark - UICollectionView datasource
 - (NSInteger) numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
   return 1;
@@ -439,7 +610,7 @@
   
   NSUInteger numOfPhotos = self.allAssets.count;
   if (self.representingArticle)
-    numOfPhotos = self.representingArticle.files.count;
+    numOfPhotos = self.sortedImages.count;
   NSUInteger totalItem = (numOfPhotos / 10) * 4;
   NSUInteger mod = numOfPhotos % 10;
   if (mod == 0)
@@ -459,7 +630,7 @@
   
   NSUInteger totalNumber = self.allAssets.count;
   if (self.representingArticle)
-    totalNumber = self.representingArticle.files.count;
+    totalNumber = self.sortedImages.count;
 
   NSUInteger numOfPhotos = 4 - (indexPath.row % 4);
   NSString *identifier = [NSString stringWithFormat:@"CollectionItemCell%d", numOfPhotos];
@@ -488,7 +659,7 @@
     if ((base+i) < totalNumber) {
       if (self.representingArticle) {
         
-        [self.representingArticle.files[base+i]
+        [self.sortedImages[base+i]
          irObserve:@"thumbnailImage"
          options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionNew
          context:nil
@@ -530,7 +701,7 @@
     
     if (self.representingArticle) {
     
-      [self.representingArticle.representingFile
+      [self.sortedImages[self.sortedImages.count/3]
        irObserve:@"thumbnailImage"
        options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionNew
        context:nil
@@ -560,26 +731,24 @@
     
     self.headerView = cover;
     
-    NSUInteger zoomLevel = 15; // hardcoded, but we may tune this in the future
+//    NSUInteger zoomLevel = 15; // hardcoded, but we may tune this in the future
     
-    GMSCameraPosition *camera = [GMSCameraPosition cameraWithLatitude:self.coordinate.latitude
-                                                            longitude:self.coordinate.longitude
-                                                                 zoom:zoomLevel];
+    MKCoordinateRegion region = MKCoordinateRegionMake(self.coordinate, MKCoordinateSpanMake(0.02, 0.02));
+//    cover.mapView.region = [cover.mapView regionThatFits:region];
+    cover.mapView.region = region;
+//    GMSCameraPosition *camera = [GMSCameraPosition cameraWithLatitude:self.coordinate.latitude
+//                                                            longitude:self.coordinate.longitude
+//                                                                 zoom:zoomLevel];
+//    
+//    [cover.mapView setCamera:camera];
+//    cover.mapView.myLocationEnabled = NO;
     
-    [cover.mapView setCamera:camera];
-    cover.mapView.myLocationEnabled = NO;
+    if (self.checkins.count) {
+      NSArray *checkinNames = [self.checkins valueForKey:@"name"];
+      cover.titleLabel.text = [checkinNames componentsJoinedByString:@","];
+    } else
+      cover.titleLabel.text = @"";
     
-    NSFetchRequest * fetchRequest = [[WADataStore defaultStore] newFetchReuqestForCheckinFrom:[self beginDate] to:[self endDate]];
-    
-    NSError *error = nil;
-    NSArray *checkins = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
-    if (error) {
-      NSLog(@"error to query checkin db: %@", error);
-    } else if (checkins.count) {
-      cover.titleLabel.text = [[checkins valueForKeyPath:@"name"] componentsJoinedByString:@","];
-    }
-    
-    cover.titleLabel.text = @"";
     self.geoLocation = [[WAGeoLocation alloc] init];
     [self.geoLocation identifyLocation:self.coordinate onComplete:^(NSArray *results) {
       if (cover.titleLabel.text.length == 0)
@@ -596,6 +765,26 @@
     formatter.timeStyle = NSDateFormatterMediumStyle;
     cover.dateLabel.text = [formatter stringFromDate:self.eventDate];
     
+    [cover.detailButton addEventHandler:^(id sender) {
+      __weak WAPhotoTimelineViewController *wSelf = self;
+      NSDictionary *detailInfo = @{
+                               @"eventStartDate": [self beginDate],
+                               @"eventEndDate":[self endDate],
+                               @"latitude": @(self.coordinate.latitude),
+                               @"longitude":@(self.coordinate.longitude),
+                               @"checkins": [self checkins]
+                               };
+      WAEventDetailsViewController *detail = [WAEventDetailsViewController wrappedNavigationControllerForDetailInfo:detailInfo];
+      [wSelf presentViewController:detail animated:YES completion:nil];
+    } forControlEvents:UIControlEventTouchUpInside];
+
+    WAUser *user = [self user];
+    cover.avatarView.image = user.avatar;
+
+    if (self.representingArticle)
+      cover.informationLabel.text = [NSString stringWithFormat:@"%@ with some other %d friends.", self.user.nickname, self.representingArticle.people.count];
+    else
+      cover.informationLabel.text = @"Invite more people to share photos together with you.";
     return cover;
     
   }
@@ -700,8 +889,26 @@
   if (scrollView.contentOffset.y > 0) {
 //    CGFloat ratio = scrollView.contentSize.height / (scrollView.contentSize.height - scrollView.frame.size.height);
     CGFloat percent = (scrollView.contentOffset.y / (scrollView.contentSize.height - self.collectionView.frame.size.height));
-    NSLog(@"%@ %f", NSStringFromCGSize(scrollView.contentSize), percent);
     self.indexView.percentage = percent;
+  }
+  
+  if (scrollView.contentOffset.y > 0) {
+    if (scrollView.contentOffset.y > previousYOffset) {
+      if (toolBarShown) {
+        toolBarShown = NO;
+        [UIView animateWithDuration:0.5 animations:^{
+          self.toolbar.alpha = 0;
+        } completion:nil];
+      }
+    } else {
+      if (!toolBarShown) {
+        toolBarShown = YES;
+        [UIView animateWithDuration:0.5 animations:^{
+          self.toolbar.alpha = 1;
+        }];
+      }
+    }
+    previousYOffset = scrollView.contentOffset.y;
   }
 
 }

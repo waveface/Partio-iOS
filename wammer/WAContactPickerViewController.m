@@ -10,6 +10,7 @@
 #import <QuartzCore/QuartzCore.h>
 #import "WAAppearance.h"
 #import "WATranslucentToolbar.h"
+#import "WAPartioNavigationBar.h"
 
 #import "WAContactPickerSectionHeaderView.h"
 #import <BlocksKit/BlocksKit.h>
@@ -18,7 +19,7 @@
 @interface WAContactPickerViewController () <UITableViewDelegate, UITableViewDataSource, FBFriendPickerDelegate, UITextFieldDelegate>
 @property (nonatomic, weak) IBOutlet UITableView *tableView;
 @property (nonatomic, strong) WATranslucentToolbar *toolbar;
-@property (nonatomic, weak) IBOutlet UINavigationBar *navigationBar;
+@property (nonatomic, weak) IBOutlet WAPartioNavigationBar *navigationBar;
 @property (nonatomic, strong) FBFriendPickerViewController *fbFriendPickerViewController;
 @end
 

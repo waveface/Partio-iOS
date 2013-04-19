@@ -108,20 +108,26 @@ UIBarButtonItem *WAPartioBackButton(void(^handler)(void)) {
 }
 
 UIBarButtonItem *WAPartioToolbarNextButton(NSString *labelText, void(^aBlock)(void)) {
-  UIImage *nextImage = [UIImage imageNamed:@"Btn"];
-  UIButton *nextButton = [[UIButton alloc] initWithFrame:(CGRect){CGPointZero, CGSizeMake((43/nextImage.size.height)*nextImage.size.width, 43)}];
-  [nextButton setBackgroundImage:nextImage forState:UIControlStateNormal];
-  [nextButton setBackgroundImage:[UIImage imageNamed:@"Btn1"] forState:UIControlStateHighlighted];
-  [nextButton setTitle:labelText forState:UIControlStateNormal];
-  [nextButton.titleLabel setFont:[UIFont fontWithName:@"OpenSans-Semibold" size:14.f]];
-  [nextButton.titleLabel setTextAlignment:NSTextAlignmentCenter];
-  nextButton.titleLabel.textColor = [UIColor whiteColor];
-  [nextButton addEventHandler:^(id sender) {
+  return WAPartioToolbarButton(labelText, [UIImage imageNamed:@"Btn"], [UIImage imageNamed:@"Btn1"], aBlock);
+}
+
+UIBarButtonItem *WAPartioToolbarButton(NSString *labelText, UIImage *image, UIImage *imageHighlight, void(^aBlock)(void)) {
+  UIButton *button = [[UIButton alloc] initWithFrame:(CGRect){CGPointZero, CGSizeMake((43/image.size.height)*image.size.width, 43)}];
+  if (image)
+    [button setBackgroundImage:image forState:UIControlStateNormal];
+  if (imageHighlight)
+    [button setBackgroundImage:imageHighlight forState:UIControlStateHighlighted];
+  [button setTitle:labelText forState:UIControlStateNormal];
+  [button.titleLabel setFont:[UIFont fontWithName:@"OpenSans-Semibold" size:14.f]];
+  [button.titleLabel setTextAlignment:NSTextAlignmentCenter];
+  button.titleLabel.textColor = [UIColor whiteColor];
+  [button addEventHandler:^(id sender) {
     if (aBlock)
       aBlock();
   } forControlEvents:UIControlEventTouchUpInside];
-  UIBarButtonItem *nextItem = [[UIBarButtonItem alloc] initWithCustomView:nextButton];
+  UIBarButtonItem *nextItem = [[UIBarButtonItem alloc] initWithCustomView:button];
   return nextItem;
+  
 }
 
 IRBarButtonItem * WABarButtonItem (UIImage *image, NSString *labelText, void(^aBlock)(void)) {
