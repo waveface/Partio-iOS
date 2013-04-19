@@ -175,6 +175,19 @@
   
 }
 
+- (void) retrieveSharedUsersForPostId:(NSString *)aPostIdentifier inGroup:(NSString*)aGroupIdentifier onSuccess:(void (^)(NSArray *results))successBlock onFailure:(void(^)(NSError *error))failureBlock {
+ 
+  NSParameterAssert(aPostIdentifier);
+  NSDictionary *arguments = @{
+                              @"post_id": aPostIdentifier,
+                              @"group_id": aGroupIdentifier
+                              };
+
+  [self.engine fireAPIRequestNamed:@"pio_posts/getSharedUserInfos" withArguments:nil options:WARemoteInterfaceEnginePostFormEncodedOptionsDictionary(arguments, nil) validator:WARemoteInterfaceGenericNoErrorValidator() successHandler:^(NSDictionary *inResponseOrNil, IRWebAPIRequestContext *inResponseContext) {
+    
+  } failureHandler:WARemoteInterfaceGenericFailureHandler(failureBlock)];
+}
+
 - (void) createPostInGroup:(NSString *)aGroupIdentifier withContentText:(NSString *)contentTextOrNil attachments:(NSArray *)attachmentIdentifiersOrNil type:(WAArticleType)postType eventType:(WAEventArticleType)eventType postId:(NSString *)postID createTime:(NSDate *)createTime updateTime:(NSDate *)updateTime eventStartTime:(NSDate*)eventStartTime eventEndTime:(NSDate*)eventEndTime favorite:(BOOL)isFavorite invitingEmails:(NSArray *)emails location:(NSDictionary*)location checkins:(NSArray*)checkins onSuccess:(void (^)(NSDictionary *))successBlock onFailure:(void (^)(NSError *))failureBlock {
   
   NSParameterAssert(aGroupIdentifier);

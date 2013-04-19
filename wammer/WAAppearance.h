@@ -40,7 +40,8 @@ extern NSArray *kWADefaultBarButtonHighlightedGradientColors;
 extern UIColor *kWADefaultBarButtonHighlightedBackgroundColor;
 
 extern UIBarButtonItem *WAPartioBackButton(void(^handler)(void));
-UIBarButtonItem *WAPartioToolbarNextButton(NSString *labelText, void(^aBlock)(void));
+extern UIBarButtonItem *WAPartioToolbarNextButton(NSString *labelText, void(^aBlock)(void));
+extern UIBarButtonItem *WAPartioToolbarButton(NSString *labelText, UIImage *image, UIImage *imageHighlight, void(^aBlock)(void));
 
 extern IRBarButtonItem * WABarButtonItem (UIImage *image, NSString *title, void(^block)(void));
 extern IRBarButtonItem * WABarButtonItemWithButton (UIButton *button, void(^block)(void));

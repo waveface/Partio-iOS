@@ -187,6 +187,8 @@ static NSString *const kTrackingId = @"UA-27817516-8";
     self.fetchManager = [[WAFetchManager alloc] init];
     self.syncManager = [[WASyncManager alloc] init];
     [self initStatusBar];
+    
+    [self subscribeRemoteNotification];
   }
   
 }
