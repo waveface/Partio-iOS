@@ -507,6 +507,7 @@
 		DEF13274164B83CE0051284D /* PhotosIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DEF1326F164B83CE0051284D /* PhotosIcon@2x.png */; };
 		DEF13275164B83CE0051284D /* SettingsIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DEF13270164B83CE0051284D /* SettingsIcon@2x.png */; };
 		DEF28871165F6A0D0078B1D7 /* WACalendarPickerDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = DEF28870165F6A0D0078B1D7 /* WACalendarPickerDataSource.m */; };
+		DEF38F5617219E5B0006DE2C /* WATransparentToolbar.m in Sources */ = {isa = PBXBuildFile; fileRef = DEF38F5517219E5B0006DE2C /* WATransparentToolbar.m */; };
 		FF0024FF14B44D5400F54AAF /* WASyncManager.m in Sources */ = {isa = PBXBuildFile; fileRef = FF0024FE14B44D5400F54AAF /* WASyncManager.m */; };
 		FF01135715B6522F0058C6ED /* WAWelcomeViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = FF01135615B6522F0058C6ED /* WAWelcomeViewController~ipad.xib */; };
 		FF0505EF14C08900002EA455 /* WAButton.m in Sources */ = {isa = PBXBuildFile; fileRef = FF0505EE14C088FF002EA455 /* WAButton.m */; };
@@ -1655,6 +1656,8 @@
 		DEF288731664653D0078B1D7 /* CalBtn@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "CalBtn@2x.png"; path = "Resources/CalBtn@2x.png"; sourceTree = "<group>"; };
 		DEF288741664653D0078B1D7 /* CalBtnPress.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = CalBtnPress.png; path = Resources/CalBtnPress.png; sourceTree = "<group>"; };
 		DEF288751664653D0078B1D7 /* CalBtnPress@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "CalBtnPress@2x.png"; path = "Resources/CalBtnPress@2x.png"; sourceTree = "<group>"; };
+		DEF38F5417219E5B0006DE2C /* WATransparentToolbar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WATransparentToolbar.h; path = ../WATransparentToolbar.h; sourceTree = "<group>"; };
+		DEF38F5517219E5B0006DE2C /* WATransparentToolbar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WATransparentToolbar.m; path = ../WATransparentToolbar.m; sourceTree = "<group>"; };
 		FF0024FD14B44D5400F54AAF /* WASyncManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WASyncManager.h; sourceTree = "<group>"; };
 		FF0024FE14B44D5400F54AAF /* WASyncManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WASyncManager.m; sourceTree = "<group>"; };
 		FF01135615B6522F0058C6ED /* WAWelcomeViewController~ipad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "WAWelcomeViewController~ipad.xib"; sourceTree = "<group>"; };
@@ -2943,6 +2946,8 @@
 				8012DB4E16D4C1150002B163 /* UIViewController+WAAdditions.m */,
 				809A175C171D4EBC000AF6ED /* WATranslucentToolbar.h */,
 				809A175D171D4EBC000AF6ED /* WATranslucentToolbar.m */,
+				DEF38F5417219E5B0006DE2C /* WATransparentToolbar.h */,
+				DEF38F5517219E5B0006DE2C /* WATransparentToolbar.m */,
 				800096051721235B0082E1B5 /* WAPartioNavigationBar.h */,
 				800096061721235B0082E1B5 /* WAPartioNavigationBar.m */,
 			);
@@ -5023,6 +5028,7 @@
 				80B3A3A3171FA58500A9B57B /* WAEventDetailsViewController.m in Sources */,
 				80B3A3B6171FA9F100A9B57B /* WAEventDetailsMapCell.m in Sources */,
 				800096071721235B0082E1B5 /* WAPartioNavigationBar.m in Sources */,
+				DEF38F5617219E5B0006DE2C /* WATransparentToolbar.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

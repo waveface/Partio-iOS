@@ -10,7 +10,7 @@
 #import "WASharedEventViewCell.h"
 #import "WAPhotoHighlightsViewController.h"
 #import "WAPhotoTimelineViewController.h"
-#import "WATranslucentToolbar.h"
+#import "WATransparentToolbar.h"
 #import "WAGeoLocation.h"
 #import <CoreLocation/CoreLocation.h>
 #import "WADataStore.h"
@@ -23,7 +23,7 @@
 @property (nonatomic, strong) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, strong) NSFetchedResultsController *eventFetchedResultsController;
 @property (nonatomic, strong) NSMutableArray *objectChanges;
-@property (nonatomic, strong) WATranslucentToolbar *toolbar;
+@property (nonatomic, strong) WATransparentToolbar *toolbar;
 
 @end
 
@@ -74,10 +74,12 @@ static NSString *kCellID = @"EventCell";
   [self setTitle:NSLocalizedString(@"LABEL_SHARED_EVENTS", @"LABEL_SHARED_EVENTS")];
   
   UIBarButtonItem *flexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
-  UIBarButtonItem *addButton = (UIBarButtonItem*)WABarButtonItem([UIImage imageNamed:@"AddEvent"], @"", ^{
-    [self shareNewEventFromHighlight];
-  });
-  self.toolbar = [[WATranslucentToolbar alloc] initWithFrame:CGRectMake(0.f, CGRectGetHeight(self.view.frame) - 120.f, CGRectGetWidth(self.view.frame), 120.f)];
+  UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+  [button setFrame:CGRectMake(0.f, 0.f, 105.f, 93.f)];
+  [button setImage:[UIImage imageNamed:@"AddEvent"] forState:UIControlStateNormal];
+  [button addTarget:self action:@selector(shareNewEventFromHighlight) forControlEvents:UIControlEventTouchUpInside];
+  UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithCustomView:button];
+  self.toolbar = [[WATransparentToolbar alloc] initWithFrame:CGRectMake(0.f, CGRectGetHeight(self.view.frame) - 170.f, 320.f, 170.f)];
   self.toolbar.items = @[flexibleSpace, addButton, flexibleSpace];
   [self.view addSubview:self.toolbar];
   
@@ -117,7 +119,7 @@ static NSString *kCellID = @"EventCell";
 - (void)controller:(NSFetchedResultsController *)controller didChangeObject:(id)anObject
        atIndexPath:(NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type
       newIndexPath:(NSIndexPath *)newIndexPath {
-  
+
   NSMutableDictionary *change = [[NSMutableDictionary alloc] init];
   
   switch(type) {
@@ -146,6 +148,8 @@ static NSString *kCellID = @"EventCell";
 
 - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller
 {
+  //FIXME: update change fist
+
   dispatch_async(dispatch_get_main_queue(), ^{
     if ([self.objectChanges count]) {
       
@@ -262,13 +266,8 @@ static NSString *kCellID = @"EventCell";
   [cell.date setText:eventDate];
   [cell.location setText:location];
   
-//  [cell.infoView.layer setFrame:CGRectMake(0.f, cell.frame.size.height - 80.f, 320.f, 80.f)];
-//  CAGradientLayer *gradientLayer = [CAGradientLayer layer];
-//  [gradientLayer setFrame:CGRectMake(0.f, 0.f, 320.f, 80.f)];
-//  [gradientLayer setColors:@[(id)[[UIColor colorWithWhite:0.f alpha:0.f] CGColor],
-//                             (id)[[UIColor colorWithWhite:0.f alpha:0.5f] CGColor]]];
-//  [cell.infoView.layer insertSublayer:gradientLayer atIndex:0];
-
+  [cell.infoView.layer layoutIfNeeded];
+  
   return cell;
 
   

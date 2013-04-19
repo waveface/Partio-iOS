@@ -21,10 +21,18 @@
 {
   self = [super init];
   if (self) {
-    self.maxItemSize = maxItemSize;
-    self.minItemSize = minItemSize;
-    self.itemWidth = itemWidth;
+    self.maxItemSize = 275.f;
+    self.minItemSize = 140.f;
+    self.itemWidth = 320.f;
     
+    if (maxItemSize && minItemSize && maxItemSize >= minItemSize) {
+      self.maxItemSize = maxItemSize;
+      self.minItemSize = minItemSize;
+    }
+    if (itemWidth > 160.f) {
+      self.itemWidth = itemWidth;
+    }
+        
     self.itemSize = CGSizeMake(itemWidth, minItemSize);
     self.scrollDirection = UICollectionViewScrollDirectionVertical;
     self.sectionInset = UIEdgeInsetsMake(0.f, 0.f, 0.f, 0.f);

@@ -150,7 +150,7 @@
   [cell.detailTextLabel setTextColor:[UIColor colorWithRed:0.537 green:0.537 blue:0.537 alpha:1.0]];
   
   if (indexPath.section == 0) {
-    [cell.textLabel setFont:[UIFont fontWithName:@"OpenSans-Semibold" size:18.f]];
+    [cell.textLabel setFont:[UIFont fontWithName:@"OpenSans-Semibold" size:20.f]];
     
     if (indexPath.row == 0) {
       [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
@@ -191,7 +191,7 @@
     }
     
   } else {
-    [cell.textLabel setFont:[UIFont fontWithName:@"OpenSans-Regular" size:18.f]];
+    [cell.textLabel setFont:[UIFont fontWithName:@"OpenSans-Regular" size:20.f]];
     
     cell.imageView.image = [UIImage imageNamed:@"Avatar"];
 
