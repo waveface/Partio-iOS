@@ -11,6 +11,7 @@
 #import "WADayPhotoPickerViewCell.h"
 #import "WADayPhotoPickerSectionHeaderView.h"
 #import "WAOverlayBezel.h"
+#import "WAPartioNavigationBar.h"
 #import "NSDate+WAAdditions.h"
 #import "WAPhotoTimelineViewController.h"
 #import <BlocksKit/BlocksKit.h>
@@ -21,9 +22,11 @@
 @property (nonatomic, strong) NSOperationQueue *imageDisplayQueue;
 @property (nonatomic, strong) NSArray *photoGroups;
 @property (nonatomic, strong) NSMutableArray *selectedAssets;
+@property (nonatomic, strong) NSDate *selectedRangeFromDate;
+@property (nonatomic, strong) NSDate *selectedRangeToDate;
 @property (nonatomic, strong) NSArray *allTimeSortedAssets;
 
-@property (nonatomic, weak) IBOutlet UINavigationBar *navigationBar;
+@property (nonatomic, weak) IBOutlet WAPartioNavigationBar *navigationBar;
 @end
 
 @implementation WADayPhotoPickerViewController
@@ -40,6 +43,16 @@
   return self;
 }
 
+- (id) initWithSuggestedDateRangeFrom:(NSDate*)from to:(NSDate*)to {
+  self = [super initWithNibName:nil bundle:nil];
+  if (self) {
+    self.selectedAssets = [NSMutableArray array];
+    self.selectedRangeFromDate = from;
+    self.selectedRangeToDate = to;
+  }
+  return self;
+}
+
 - (void)viewDidLoad
 {
   [super viewDidLoad];
@@ -48,17 +61,22 @@
   
   if (self.navigationController) {
     __weak WADayPhotoPickerViewController *wSelf = self;
-    UIBarButtonItem *buttonItem = [[UIBarButtonItem alloc] initWithTitle:@"Create" style:UIBarButtonItemStyleBordered handler:^(id sender) {
-      WAPhotoTimelineViewController *photoTimeline = [[WAPhotoTimelineViewController alloc] initWithAssets:wSelf.selectedAssets];
-      
-      [wSelf.navigationController pushViewController:photoTimeline animated:YES];
+    UIBarButtonItem *buttonItem = [[UIBarButtonItem alloc] initWithTitle:@"Next" style:UIBarButtonItemStyleBordered handler:^(id sender) {
+      if (wSelf.onNextHandler)
+        wSelf.onNextHandler(wSelf.selectedAssets);
     }];
 
     self.navigationItem.rightBarButtonItem = buttonItem;
     
-    self.navigationItem.leftBarButtonItem = WAPartioBackButton(^{
-      [wSelf.navigationController popViewControllerAnimated:YES];
-    });
+    if (!self.onCancelHandler) {
+      self.navigationItem.leftBarButtonItem = WAPartioBackButton(^{
+        [wSelf.navigationController popViewControllerAnimated:YES];
+      });
+    } else {
+      self.navigationItem.leftBarButtonItem = (UIBarButtonItem*)WABarButtonItem(nil, @"Cancel", ^{
+        wSelf.onCancelHandler();
+      });
+    }
     self.navigationItem.title = NSLocalizedString(@"TITLE_OF_DAY_PHOTO_PICKER", @"Title of the day photo picker view");
 
   }
@@ -80,10 +98,34 @@
     wSelf.allTimeSortedAssets = result;
     [busyBezel dismiss];
     
-    [wSelf.collectionView reloadData];
-    
     if (wSelf.selectedAssets.count) {
-      [wSelf.collectionView scrollToItemAtIndexPath:[wSelf indexPathForAsset:wSelf.selectedAssets[0]] atScrollPosition:UICollectionViewScrollPositionCenteredVertically animated:YES];
+      [wSelf.collectionView reloadData];
+
+      [wSelf.collectionView scrollToItemAtIndexPath:[wSelf indexPathForAsset:wSelf.selectedAssets[0]] atScrollPosition:UICollectionViewScrollPositionTop animated:YES];
+    } else if (self.selectedRangeFromDate && self.selectedRangeToDate) {
+      
+      NSInteger idx = 0, firstIdx = 0;
+      for (ALAsset *asset in self.allTimeSortedAssets) {
+        NSDate *assetDate = [asset valueForProperty:ALAssetPropertyDate];
+        if ([assetDate compare:self.selectedRangeFromDate] == NSOrderedAscending)
+          break;
+        
+        if ([assetDate compare:self.selectedRangeToDate] == NSOrderedDescending) {
+          idx ++;
+          continue;
+        }
+        if (!self.selectedAssets.count) {
+          firstIdx = idx;
+        }
+        [self.selectedAssets addObject:asset];
+        
+        idx++;
+      }
+
+      [wSelf.collectionView reloadData];
+      [wSelf.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForRow:firstIdx inSection:0] atScrollPosition:UICollectionViewScrollPositionTop animated:YES];
+    } else {
+      [wSelf.collectionView reloadData];
     }
   } onFailure:^(NSError *error) {
     [busyBezel dismiss];

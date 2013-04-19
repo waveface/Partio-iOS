@@ -13,6 +13,7 @@
 #import "WATimelineIndexView.h"
 #import "WAPartioSignupViewController.h"
 #import "WAEventDetailsViewController.h"
+#import "WADayPhotoPickerViewController.h"
 
 #import "WAPhotoCollageCell.h"
 #import "WADefines.h"
@@ -35,6 +36,7 @@
 #import <MobileCoreServices/MobileCoreServices.h>
 #import "WAOverlayBezel.h"
 #import "WATranslucentToolbar.h"
+#import "NINetworkImageView.h"
 
 #import "WADefines.h"
 #import "WARemoteInterface.h"
@@ -55,6 +57,7 @@
 @property (nonatomic, strong) NSOperationQueue *imageDisplayQueue;
 
 @property (nonatomic, strong) WAArticle *representingArticle;
+@property (nonatomic, strong) WAUser *user;
 @property (nonatomic, strong) NSArray *sortedImages;
 @property (nonatomic, strong) NSArray *allAssets;
 @property (nonatomic, strong) WAGeoLocation *geoLocation;
@@ -68,6 +71,8 @@
 
 @implementation WAPhotoTimelineViewController {
   BOOL naviBarShown;
+  BOOL toolBarShown;
+  CGFloat previousYOffset;
   CLLocationCoordinate2D _coordinate;
 }
 
@@ -107,6 +112,8 @@
   [super viewDidLoad];
   
   naviBarShown = NO;
+  toolBarShown = YES;
+  previousYOffset = 0;
   
   self.imageDisplayQueue = [[NSOperationQueue alloc] init];
   self.imageDisplayQueue.maxConcurrentOperationCount = 1;
@@ -162,6 +169,30 @@
     self.toolbar = [[WATranslucentToolbar alloc] initWithFrame:CGRectMake(0, CGRectGetHeight(self.view.frame)-44, CGRectGetWidth(self.view.frame), 44)];
     self.toolbar.items = @[flexibleSpace, nextItem, flexibleSpace];
     [self.view addSubview:self.toolbar];
+  } else {
+    
+    UIBarButtonItem *flexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+    
+    UIBarButtonItem *addContacts = WAPartioToolbarButton(nil, [UIImage imageNamed:@"AddPplBtn"],nil, ^{
+      
+    });
+    
+    UIBarButtonItem *addPhotos = WAPartioToolbarButton(nil, [UIImage imageNamed:@"AddPhotoBtn"], nil, ^{
+      WADayPhotoPickerViewController *photoPicker = [[WADayPhotoPickerViewController alloc] initWithSuggestedDateRangeFrom:[self beginDate] to:[self endDate]];
+      __weak WADayPhotoPickerViewController *wpp = photoPicker;
+      photoPicker.onCancelHandler = ^{
+        [wpp dismissViewControllerAnimated:YES completion:nil];
+      };
+      photoPicker.onNextHandler = ^(NSArray *selectedAssets) {
+        [wpp dismissViewControllerAnimated:YES completion:nil];
+      };
+      wSelf.modalPresentationStyle = UIModalPresentationCurrentContext;
+      [wSelf presentViewController:photoPicker animated:YES completion:nil];
+    });
+    
+    self.toolbar = [[WATranslucentToolbar alloc] initWithFrame:CGRectMake(0, CGRectGetHeight(self.view.frame)-44, CGRectGetWidth(self.view.frame), 44)];
+    self.toolbar.items = @[ addContacts, flexibleSpace, addPhotos];
+    [self.view addSubview:self.toolbar];
   }
 }
 
@@ -182,6 +213,96 @@
   });
   
   return opq;
+}
+
+- (void) updateSharingEventWithPhotoChanges:(NSArray*)newAssets contacts:(NSArray*)contacts {
+  NSDate *importTime = [NSDate date];
+  BOOL changed = NO;
+  
+  NSManagedObjectContext *moc = [[WADataStore defaultStore] autoUpdatingMOC];
+  WAArticle *article = (WAArticle*)[moc objectWithID:self.representingArticle.objectID];
+  
+  for (ALAsset *asset in newAssets) {
+    
+    NSFetchRequest *fr = [[NSFetchRequest alloc] initWithEntityName:@"WAFile"];
+    fr.predicate = [NSPredicate predicateWithFormat:@"assetURL = %@", [[[asset defaultRepresentation] url] absoluteString]];
+    NSError *error = nil;
+    NSArray *result = [moc executeFetchRequest:fr error:&error];
+    if (result.count) {
+      WAFile *file = (WAFile*)result[0];
+      if ([article.files containsObject:file])
+          break;
+        [[article mutableOrderedSetValueForKey:@"files"] addObject:file];
+      changed = YES;
+    } else {
+      
+      WAFile *file = (WAFile*)[WAFile objectInsertingIntoContext:moc withRemoteDictionary:@{}];
+      CFUUIDRef theUUID = CFUUIDCreate(kCFAllocatorDefault);
+      if (theUUID)
+        file.identifier = [((__bridge_transfer NSString *)CFUUIDCreateString(kCFAllocatorDefault, theUUID)) lowercaseString];
+      CFRelease(theUUID);
+      file.dirty = (id)kCFBooleanTrue;
+      
+      [[article mutableOrderedSetValueForKey:@"files"] addObject:file];
+      
+      UIImage *extraSmallThumbnailImage = [UIImage imageWithCGImage:[asset thumbnail]];
+      file.extraSmallThumbnailFilePath = [[[WADataStore defaultStore] persistentFileURLForData:UIImageJPEGRepresentation(extraSmallThumbnailImage, 0.85f) extension:@"jpeg"] path];
+      
+      file.assetURL = [[[asset defaultRepresentation] url] absoluteString];
+      file.resourceType = (NSString *)kUTTypeImage;
+      file.timestamp = [asset valueForProperty:ALAssetPropertyDate];
+      file.created = file.timestamp;
+      file.importTime = importTime;
+      
+      WAFileExif *exif = (WAFileExif *)[WAFileExif objectInsertingIntoContext:moc withRemoteDictionary:@{}];
+      NSDictionary *metadata = [[asset defaultRepresentation] metadata];
+      [exif initWithExif:metadata[@"{Exif}"] tiff:metadata[@"{TIFF}"] gps:metadata[@"{GPS}"]];
+      
+      file.exif = exif;
+      changed = YES;
+    }
+  }
+  
+  if (contacts.count) {
+    NSArray *emailsFromContacts = [contacts valueForKey:@"email"];
+    NSMutableArray *invitingEmails = [NSMutableArray array];
+    for (NSArray *contactEmails in emailsFromContacts) {
+      [invitingEmails addObjectsFromArray:contactEmails];
+    }
+    NSFetchRequest *fr = [[NSFetchRequest alloc] initWithEntityName:@"WAPeople"];
+    fr.predicate = [NSPredicate predicateWithFormat:@"email IN %@", invitingEmails];
+    NSError *error = nil;
+    NSArray *peopleFound = [moc executeFetchRequest:fr error:&error];
+    if (peopleFound.count) {
+      for (WAPeople *person in peopleFound) {
+        [[article mutableSetValueForKey:@"people"] addObject:person];
+        if ([invitingEmails indexOfObject:person.email] != NSNotFound) {
+          [invitingEmails removeObject:person.email];
+        }
+      }
+    }
+    for (NSString *email in invitingEmails) {
+      WAPeople *person = (WAPeople*)[WAPeople objectInsertingIntoContext:moc withRemoteDictionary:@{}];
+      person.email = email;
+      [[article mutableSetValueForKey:@"people"] addObject:person];
+    }
+  }
+  
+  if (changed) {
+    article.dirty = (id)kCFBooleanTrue;
+    NSError *savingError = nil;
+    if ([moc save:&savingError]) {
+      NSLog(@"Sharing event successfully created");
+    } else {
+      NSLog(@"error on creating a new import post for error: %@", savingError);
+    }
+    
+    WAAppDelegate_iOS *appDelegate = (WAAppDelegate_iOS*)AppDelegate();
+    [appDelegate.syncManager reload];
+
+  }
+
+
 }
 
 - (void) finishCreatingSharingEventForSharingTargets:(NSArray *)contacts {
@@ -245,27 +366,29 @@
   article.eventEndDate = [self endDate];
   article.creationDate = [NSDate date];
   
-  NSArray *emailsFromContacts = [contacts valueForKey:@"email"];
-  NSMutableArray *invitingEmails = [NSMutableArray array];
-  for (NSArray *contactEmails in emailsFromContacts) {
-    [invitingEmails addObjectsFromArray:contactEmails];
-  }
-  NSFetchRequest *fr = [[NSFetchRequest alloc] initWithEntityName:@"WAPeople"];
-  fr.predicate = [NSPredicate predicateWithFormat:@"email IN %@", invitingEmails];
-  NSError *error = nil;
-  NSArray *peopleFound = [moc executeFetchRequest:fr error:&error];
-  if (peopleFound.count) {
-    for (WAPeople *person in peopleFound) {
-      [[article mutableSetValueForKey:@"people"] addObject:person];
-      if ([invitingEmails indexOfObject:person.email] != NSNotFound) {
-        [invitingEmails removeObject:person.email];
+  if (contacts.count) {
+    NSArray *emailsFromContacts = [contacts valueForKey:@"email"];
+    NSMutableArray *invitingEmails = [NSMutableArray array];
+    for (NSArray *contactEmails in emailsFromContacts) {
+      [invitingEmails addObjectsFromArray:contactEmails];
+    }
+    NSFetchRequest *fr = [[NSFetchRequest alloc] initWithEntityName:@"WAPeople"];
+    fr.predicate = [NSPredicate predicateWithFormat:@"email IN %@", invitingEmails];
+    NSError *error = nil;
+    NSArray *peopleFound = [moc executeFetchRequest:fr error:&error];
+    if (peopleFound.count) {
+      for (WAPeople *person in peopleFound) {
+        [[article mutableSetValueForKey:@"people"] addObject:person];
+        if ([invitingEmails indexOfObject:person.email] != NSNotFound) {
+          [invitingEmails removeObject:person.email];
+        }
       }
     }
-  }
-  for (NSString *email in invitingEmails) {
-    WAPeople *person = (WAPeople*)[WAPeople objectInsertingIntoContext:moc withRemoteDictionary:@{}];
-    person.email = email;
-    [[article mutableSetValueForKey:@"people"] addObject:person];
+    for (NSString *email in invitingEmails) {
+      WAPeople *person = (WAPeople*)[WAPeople objectInsertingIntoContext:moc withRemoteDictionary:@{}];
+      person.email = email;
+      [[article mutableSetValueForKey:@"people"] addObject:person];
+    }
   }
   
   WALocation *location = (WALocation*)[WALocation objectInsertingIntoContext:moc withRemoteDictionary:@{}];
@@ -460,6 +583,24 @@
   return @[];
 }
 
+- (NSArray *)contacts {
+  if (self.representingArticle) {
+    return [self.representingArticle.people allObjects];
+  } else {
+    return @[];
+  }
+}
+
+- (WAUser*) user {
+
+  if (self.representingArticle) {
+    return self.representingArticle.owner;
+  } else {
+    return [[WADataStore defaultStore] mainUserInContext:self.managedObjectContext];
+  }
+  
+}
+
 #pragma mark - UICollectionView datasource
 - (NSInteger) numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
   return 1;
@@ -636,7 +777,14 @@
       WAEventDetailsViewController *detail = [WAEventDetailsViewController wrappedNavigationControllerForDetailInfo:detailInfo];
       [wSelf presentViewController:detail animated:YES completion:nil];
     } forControlEvents:UIControlEventTouchUpInside];
-    
+
+    WAUser *user = [self user];
+    cover.avatarView.image = user.avatar;
+
+    if (self.representingArticle)
+      cover.informationLabel.text = [NSString stringWithFormat:@"%@ with some other %d friends.", self.user.nickname, self.representingArticle.people.count];
+    else
+      cover.informationLabel.text = @"Invite more people to share photos together with you.";
     return cover;
     
   }
@@ -742,6 +890,25 @@
 //    CGFloat ratio = scrollView.contentSize.height / (scrollView.contentSize.height - scrollView.frame.size.height);
     CGFloat percent = (scrollView.contentOffset.y / (scrollView.contentSize.height - self.collectionView.frame.size.height));
     self.indexView.percentage = percent;
+  }
+  
+  if (scrollView.contentOffset.y > 0) {
+    if (scrollView.contentOffset.y > previousYOffset) {
+      if (toolBarShown) {
+        toolBarShown = NO;
+        [UIView animateWithDuration:0.5 animations:^{
+          self.toolbar.alpha = 0;
+        } completion:nil];
+      }
+    } else {
+      if (!toolBarShown) {
+        toolBarShown = YES;
+        [UIView animateWithDuration:0.5 animations:^{
+          self.toolbar.alpha = 1;
+        }];
+      }
+    }
+    previousYOffset = scrollView.contentOffset.y;
   }
 
 }
