@@ -31,7 +31,6 @@
 #import "WAUserInfoViewController.h"
 #import "WAOverlayBezel.h"
 
-#import "WAPartioNavigationController.h"
 #import "WASharedEventViewController.h"
 #import "WASpotlightSlideFlowLayout.h"
 #import "WAPhotoHighlightsViewController.h"
