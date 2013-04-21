@@ -11,5 +11,6 @@
 @interface WAContactPickerSectionHeaderView : UIView
 
 @property (nonatomic, weak) IBOutlet UILabel *title;
+@property (nonatomic, strong) UIView *topShadowView;
 
 @end
