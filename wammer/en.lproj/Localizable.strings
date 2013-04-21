@@ -281,9 +281,6 @@
 /* Event description for photo information only */
 "EVENT_DESCRIPTION_PHOTOS_ONLY" = "%d photos in this event.";
 
-/* EVENT_ONE_PHOTO_NUMBER_LABEL */
-"EVENT_ONE_PHOTO_NUMBER_LABEL" = "%d PHOTO";
-
 /* EVENT_PHOTO_NUMBER_LABEL */
 "EVENT_PHOTO_NUMBER_LABEL" = "%d PHOTOS";
 
@@ -412,6 +409,9 @@
 
 /* Text for modal popup close button */
 "LABEL_MODAL_POPUP_CLOSE_BUTTON" = "Close";
+
+/* LABEL_SHARE_BUTTON */
+"LABEL_SHARE_BUTTON" = "Share";
 
 /* LABEL_SHARED_EVENTS */
 "LABEL_SHARED_EVENTS" = "All Events";

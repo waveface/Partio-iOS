@@ -58,8 +58,19 @@ void WADefaultAppearance(void) {
 
 
 void WAPartioDefaultAppearance(void) {
-  [[UINavigationBar appearance] setTintColor:[UIColor blackColor]];
-  [[UINavigationBar appearance] setTitleTextAttributes:@{@"UITextAttributeFont": [UIFont fontNamesForFamilyName:@"OpenSans_Semibold"]}];
+  [[UINavigationBar appearance] setBackgroundImage:[[UIImage alloc] init] forBarMetrics:UIBarMetricsDefault];
+  [[UINavigationBar appearance] setBackgroundColor:[UIColor colorWithRed:0.168 green:0.168 blue:0.168 alpha:1]];
+  [[UINavigationBar appearance] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:
+    [UIColor whiteColor], UITextAttributeTextColor,
+    [UIColor clearColor],UITextAttributeTextShadowColor,
+    [NSValue valueWithUIOffset:UIOffsetMake(0, 0)], UITextAttributeTextShadowOffset,
+    [UIFont fontWithName:@"OpenSans-Semibold" size:20.0], UITextAttributeFont, nil]];
+  
+  [[UIButton appearance] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:
+                                                [UIColor whiteColor], UITextAttributeTextColor,
+                                                [UIColor clearColor],UITextAttributeTextShadowColor,
+                                                [NSValue valueWithUIOffset:UIOffsetMake(0, 0)], UITextAttributeTextShadowOffset,
+                                                 [UIFont fontWithName:@"OpenSans-Regular" size:20.0], UITextAttributeFont, nil]];
 }
 
 #pragma mark - Origianl appearance settings

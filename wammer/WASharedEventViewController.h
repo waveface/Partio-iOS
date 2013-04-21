@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface WASharedEventViewController : UITableViewController <UITableViewDataSource, UITableViewDelegate, NSFetchedResultsControllerDelegate>
+@interface WASharedEventViewController : UICollectionViewController <UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, NSFetchedResultsControllerDelegate>
 
 
 @end
