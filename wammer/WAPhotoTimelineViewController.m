@@ -197,12 +197,6 @@
   }
 }
 
-- (BOOL) shouldAutorotate {
-
-  return YES;
-
-}
-
 + (NSOperationQueue *)sharedImportPhotoOperationQueue {
   
   static NSOperationQueue *opq = nil;
@@ -420,10 +414,26 @@
   
 }
 
+- (BOOL) shouldAutorotate {
+  
+  return YES;
+  
+}
+
 - (NSUInteger) supportedInterfaceOrientations {
   
   return UIInterfaceOrientationMaskPortrait;
 
+}
+
+- (void) didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
+  if (UIInterfaceOrientationIsPortrait(fromInterfaceOrientation)) {
+    if (self.representingArticle) {
+      WAGalleryViewController *gallery = [WAGalleryViewController controllerRepresentingArticleAtURI:[[self.representingArticle objectID] URIRepresentation] context:nil];
+      [self.navigationController pushViewController:gallery animated:YES];
+
+    }
+  }
 }
 
 - (void) backButtonClicked:(id)sender {

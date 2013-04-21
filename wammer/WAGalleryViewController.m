@@ -9,6 +9,7 @@
 #import "WAGalleryViewController.h"
 #import "IRPaginatedView.h"
 #import "WADataStore.h"
+#import "WAAppearance.h"
 #import "WAGalleryImageView.h"
 #import "WAImageStreamPickerView.h"
 #import "UIImage+IRAdditions.h"
@@ -20,6 +21,7 @@
 #import "WADefines.h"
 #import "GAI.h"
 #import "WASlidingMenuViewController.h"
+#import <BlocksKit/BlocksKit.h>
 
 NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGalleryViewControllerContextPreferredFileObjectURI";
 static NSString * kWAGalleryViewControllerKVOContext = @"WAGalleryViewControllerKVOContext";
@@ -142,7 +144,10 @@ static NSString * kWAGalleryViewControllerKVOContext = @"WAGalleryViewController
 		[wSelf waSubviewWillLayout];
 	};
 	
-	self.previousNavigationItem = [[UINavigationItem alloc] init];
+//	self.previousNavigationItem = [[UINavigationItem alloc] init];
+  self.navigationItem.leftBarButtonItem = WAPartioBackButton(^{
+    [wSelf.navigationController popViewControllerAnimated:YES];
+  });
 	
 	self.paginatedView = [[IRPaginatedView alloc] initWithFrame:self.view.bounds];
 	self.paginatedView.horizontalSpacing = 24.0f;
@@ -156,10 +161,10 @@ static NSString * kWAGalleryViewControllerKVOContext = @"WAGalleryViewController
 	self.navigationBar.translucent = YES;
 	self.navigationBar.tintColor = [UIColor clearColor];
 
-	NSParameterAssert(self.previousNavigationItem);
+//	NSParameterAssert(self.previousNavigationItem);
 	NSParameterAssert(self.navigationItem);
 	
-	[self.navigationBar pushNavigationItem:self.previousNavigationItem animated:NO];
+//	[self.navigationBar pushNavigationItem:self.previousNavigationItem animated:NO];
 	[self.navigationBar pushNavigationItem:self.navigationItem animated:NO];
 	
 	self.toolbar = [[UIToolbar alloc] initWithFrame:(CGRect){ 0.0f, CGRectGetHeight(self.view.bounds) - 44.0f, CGRectGetWidth(self.view.bounds), 44.0f }];
@@ -215,7 +220,7 @@ static NSString * kWAGalleryViewControllerKVOContext = @"WAGalleryViewController
 
 - (void) viewWillAppear:(BOOL)animated {
 	
-	if (self.navigationController) {
+	if (self.navigationController && !self.navigationController.navigationBarHidden) {
 
 		UINavigationController *navC = self.navigationController;
 

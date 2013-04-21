@@ -281,9 +281,6 @@
 /* Event description for photo information only */
 "EVENT_DESCRIPTION_PHOTOS_ONLY" = "動態裡有 %d 張照片。";
 
-/* EVENT_ONE_PHOTO_NUMBER_LABEL */
-"EVENT_ONE_PHOTO_NUMBER_LABEL" = "%d 張照片";
-
 /* EVENT_PHOTO_NUMBER_LABEL */
 "EVENT_PHOTO_NUMBER_LABEL" = "%d 張照片";
 
@@ -412,6 +409,9 @@
 
 /* Text for modal popup close button */
 "LABEL_MODAL_POPUP_CLOSE_BUTTON" = "關閉";
+
+/* LABEL_SHARE_BUTTON */
+"LABEL_SHARE_BUTTON" = "分享";
 
 /* LABEL_SHARED_EVENTS */
 "LABEL_SHARED_EVENTS" = "所有共享";

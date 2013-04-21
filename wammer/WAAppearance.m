@@ -65,7 +65,11 @@ void WAPartioDefaultAppearance(void) {
     [UIColor clearColor],UITextAttributeTextShadowColor,
     [NSValue valueWithUIOffset:UIOffsetMake(0, 0)], UITextAttributeTextShadowOffset,
     [UIFont fontWithName:@"OpenSans-Semibold" size:20.0], UITextAttributeFont, nil]];
-  
+
+  UIImage *btnBgImage = [UIImage imageNamed:@"Btn1"];
+  [[UIBarButtonItem appearance] setBackgroundImage:btnBgImage
+                                          forState:UIControlStateNormal
+                                        barMetrics:UIBarMetricsDefault];
 }
 
 #pragma mark - Origianl appearance settings
