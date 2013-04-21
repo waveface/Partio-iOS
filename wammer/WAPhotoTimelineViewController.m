@@ -14,6 +14,7 @@
 #import "WAPartioSignupViewController.h"
 #import "WAEventDetailsViewController.h"
 #import "WADayPhotoPickerViewController.h"
+#import "WAGalleryViewController.h"
 
 #import "WAPhotoCollageCell.h"
 #import "WADefines.h"
@@ -818,6 +819,14 @@
   }
   return CGSizeMake(self.collectionView.frame.size.width, height);
   
+}
+
+- (void) collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
+  if (self.representingArticle) {
+    WAFile *file = self.sortedImages[indexPath.row];
+    WAGalleryViewController *gallery = [WAGalleryViewController controllerRepresentingArticleAtURI:[[self.representingArticle objectID] URIRepresentation] context:@{kWAGalleryViewControllerContextPreferredFileObjectURI: file.objectID.URIRepresentation}];
+    [self.navigationController pushViewController:gallery animated:YES];
+  }
 }
 
 - (void) showingNavigationBar {
