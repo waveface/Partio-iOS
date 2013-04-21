@@ -443,6 +443,13 @@
 		80F957BE16B8D421005121A1 /* WAConnectionStatusView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 80F957BD16B8D421005121A1 /* WAConnectionStatusView.xib */; };
 		80FA833816F9E79B003BF983 /* WAEventPhotoAddingCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 80FA833716F9E79B003BF983 /* WAEventPhotoAddingCell.m */; };
 		94EB57761411451780C24560 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D215E734098A44479DEC4F88 /* libPods.a */; };
+		DE0870A2171C084000FA2A5E /* contact.png in Resources */ = {isa = PBXBuildFile; fileRef = DE0870A0171C084000FA2A5E /* contact.png */; };
+		DE0870A3171C084000FA2A5E /* contact@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DE0870A1171C084000FA2A5E /* contact@2x.png */; };
+		DE0870B3171C085300FA2A5E /* FB.png in Resources */ = {isa = PBXBuildFile; fileRef = DE0870B1171C085300FA2A5E /* FB.png */; };
+		DE0870B4171C085300FA2A5E /* FB@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DE0870B2171C085300FA2A5E /* FB@2x.png */; };
+		DE0870DF171CFDD200FA2A5E /* WASharedEventViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DE0870DB171CFDD200FA2A5E /* WASharedEventViewCell.m */; };
+		DE0870E0171CFDD200FA2A5E /* WASharedEventViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = DE0870DC171CFDD200FA2A5E /* WASharedEventViewCell.xib */; };
+		DE0870E1171CFDD200FA2A5E /* WAFishEyeAtTopFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = DE0870DE171CFDD200FA2A5E /* WAFishEyeAtTopFlowLayout.m */; };
 		DE46FC17165E228300CC4FFF /* WACalendarPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DE46FC16165E228300CC4FFF /* WACalendarPickerViewController.m */; };
 		DE67A4A21712BA0500099106 /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DE67A4A01712BA0400099106 /* AddressBook.framework */; };
 		DE67A4A31712BA0500099106 /* AddressBookUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DE67A4A11712BA0400099106 /* AddressBookUI.framework */; };
@@ -500,6 +507,7 @@
 		DEF13274164B83CE0051284D /* PhotosIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DEF1326F164B83CE0051284D /* PhotosIcon@2x.png */; };
 		DEF13275164B83CE0051284D /* SettingsIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DEF13270164B83CE0051284D /* SettingsIcon@2x.png */; };
 		DEF28871165F6A0D0078B1D7 /* WACalendarPickerDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = DEF28870165F6A0D0078B1D7 /* WACalendarPickerDataSource.m */; };
+		DEF38F5617219E5B0006DE2C /* WATransparentToolbar.m in Sources */ = {isa = PBXBuildFile; fileRef = DEF38F5517219E5B0006DE2C /* WATransparentToolbar.m */; };
 		FF0024FF14B44D5400F54AAF /* WASyncManager.m in Sources */ = {isa = PBXBuildFile; fileRef = FF0024FE14B44D5400F54AAF /* WASyncManager.m */; };
 		FF01135715B6522F0058C6ED /* WAWelcomeViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = FF01135615B6522F0058C6ED /* WAWelcomeViewController~ipad.xib */; };
 		FF0505EF14C08900002EA455 /* WAButton.m in Sources */ = {isa = PBXBuildFile; fileRef = FF0505EE14C088FF002EA455 /* WAButton.m */; };
@@ -1562,6 +1570,15 @@
 		9A79ED179A7140438E44ACD8 /* Pods-UnitTests.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UnitTests.xcconfig"; path = "Pods/Pods-UnitTests.xcconfig"; sourceTree = SOURCE_ROOT; };
 		D215E734098A44479DEC4F88 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		D26DABE040324ABAAAC5058D /* Pods-StreamTests.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-StreamTests.xcconfig"; path = "Pods/Pods-StreamTests.xcconfig"; sourceTree = SOURCE_ROOT; };
+		DE0870A0171C084000FA2A5E /* contact.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = contact.png; path = Resources/contact.png; sourceTree = "<group>"; };
+		DE0870A1171C084000FA2A5E /* contact@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "contact@2x.png"; path = "Resources/contact@2x.png"; sourceTree = "<group>"; };
+		DE0870B1171C085300FA2A5E /* FB.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = FB.png; path = Resources/FB.png; sourceTree = "<group>"; };
+		DE0870B2171C085300FA2A5E /* FB@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "FB@2x.png"; path = "Resources/FB@2x.png"; sourceTree = "<group>"; };
+		DE0870DA171CFDD100FA2A5E /* WASharedEventViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WASharedEventViewCell.h; path = wammer/WASharedEventViewCell.h; sourceTree = "<group>"; };
+		DE0870DB171CFDD200FA2A5E /* WASharedEventViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WASharedEventViewCell.m; path = wammer/WASharedEventViewCell.m; sourceTree = "<group>"; };
+		DE0870DC171CFDD200FA2A5E /* WASharedEventViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = WASharedEventViewCell.xib; path = wammer/WASharedEventViewCell.xib; sourceTree = "<group>"; };
+		DE0870DD171CFDD200FA2A5E /* WAFishEyeAtTopFlowLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WAFishEyeAtTopFlowLayout.h; path = wammer/WAFishEyeAtTopFlowLayout.h; sourceTree = "<group>"; };
+		DE0870DE171CFDD200FA2A5E /* WAFishEyeAtTopFlowLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WAFishEyeAtTopFlowLayout.m; path = wammer/WAFishEyeAtTopFlowLayout.m; sourceTree = "<group>"; };
 		DE2BBDD616761AC100EEF922 /* Kal.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Kal.xcodeproj; path = external/Kal/src/Kal.xcodeproj; sourceTree = SOURCE_ROOT; };
 		DE46FC15165E228300CC4FFF /* WACalendarPickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WACalendarPickerViewController.h; path = wammer/WACalendarPickerViewController.h; sourceTree = "<group>"; };
 		DE46FC16165E228300CC4FFF /* WACalendarPickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WACalendarPickerViewController.m; path = wammer/WACalendarPickerViewController.m; sourceTree = "<group>"; };
@@ -1639,6 +1656,8 @@
 		DEF288731664653D0078B1D7 /* CalBtn@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "CalBtn@2x.png"; path = "Resources/CalBtn@2x.png"; sourceTree = "<group>"; };
 		DEF288741664653D0078B1D7 /* CalBtnPress.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = CalBtnPress.png; path = Resources/CalBtnPress.png; sourceTree = "<group>"; };
 		DEF288751664653D0078B1D7 /* CalBtnPress@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "CalBtnPress@2x.png"; path = "Resources/CalBtnPress@2x.png"; sourceTree = "<group>"; };
+		DEF38F5417219E5B0006DE2C /* WATransparentToolbar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WATransparentToolbar.h; path = ../WATransparentToolbar.h; sourceTree = "<group>"; };
+		DEF38F5517219E5B0006DE2C /* WATransparentToolbar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WATransparentToolbar.m; path = ../WATransparentToolbar.m; sourceTree = "<group>"; };
 		FF0024FD14B44D5400F54AAF /* WASyncManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WASyncManager.h; sourceTree = "<group>"; };
 		FF0024FE14B44D5400F54AAF /* WASyncManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WASyncManager.m; sourceTree = "<group>"; };
 		FF01135615B6522F0058C6ED /* WAWelcomeViewController~ipad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "WAWelcomeViewController~ipad.xib"; sourceTree = "<group>"; };
@@ -2608,12 +2627,16 @@
 				DEEFACA21718472600AD907B /* Btn1@2x.png */,
 				808A337F1716AC3F00CF5C8D /* Checked.png */,
 				808A33801716AC3F00CF5C8D /* Checked@2x.png */,
+				DE0870B1171C085300FA2A5E /* FB.png */,
+				DE0870B2171C085300FA2A5E /* FB@2x.png */,
 				80CBC7711713FBDE0056D9CF /* partioIcon.png */,
 				800D2E07171804420028F47F /* PartioLogin-568h@2x.png */,
 				800D2E08171804420028F47F /* PartioLogin.png */,
 				800D2E09171804420028F47F /* PartioLogin@2x.png */,
 				DEEFACBA1718476C00AD907B /* Checkin.png */,
 				DEEFACBB1718476C00AD907B /* Checkin@2x.png */,
+				DE0870A0171C084000FA2A5E /* contact.png */,
+				DE0870A1171C084000FA2A5E /* contact@2x.png */,
 				DEEFAC991718472600AD907B /* HighlightAddEventBtn.png */,
 				DEEFAC9A1718472600AD907B /* HighlightAddEventBtn@2x.png */,
 				DEEFACBC1718476C00AD907B /* New.png */,
@@ -2778,6 +2801,11 @@
 				DE67A4C11712BB9300099106 /* WASharedEventViewController.h */,
 				DE67A4C21712BB9300099106 /* WASharedEventViewController.m */,
 				DE67A4C31712BB9300099106 /* WASharedEventViewController.xib */,
+				DE0870DA171CFDD100FA2A5E /* WASharedEventViewCell.h */,
+				DE0870DB171CFDD200FA2A5E /* WASharedEventViewCell.m */,
+				DE0870DC171CFDD200FA2A5E /* WASharedEventViewCell.xib */,
+				DE0870DD171CFDD200FA2A5E /* WAFishEyeAtTopFlowLayout.h */,
+				DE0870DE171CFDD200FA2A5E /* WAFishEyeAtTopFlowLayout.m */,
 				DE67A4BC1712BB7700099106 /* WAContactPickerViewController.h */,
 				DE67A4BD1712BB7700099106 /* WAContactPickerViewController.m */,
 				80C9F3811719B2E9003E7C6E /* WAContactPickerViewController.xib */,
@@ -2918,6 +2946,8 @@
 				8012DB4E16D4C1150002B163 /* UIViewController+WAAdditions.m */,
 				809A175C171D4EBC000AF6ED /* WATranslucentToolbar.h */,
 				809A175D171D4EBC000AF6ED /* WATranslucentToolbar.m */,
+				DEF38F5417219E5B0006DE2C /* WATransparentToolbar.h */,
+				DEF38F5517219E5B0006DE2C /* WATransparentToolbar.m */,
 				800096051721235B0082E1B5 /* WAPartioNavigationBar.h */,
 				800096061721235B0082E1B5 /* WAPartioNavigationBar.m */,
 			);
@@ -4473,6 +4503,11 @@
 				80C9F3801719AA81003E7C6E /* WAPhotoHighlightsViewController.xib in Resources */,
 				80C9F3821719B2E9003E7C6E /* WAContactPickerViewController.xib in Resources */,
 				80C9F3841719B6B8003E7C6E /* WAContactPickerSectionHeaderView.xib in Resources */,
+				DE0870A2171C084000FA2A5E /* contact.png in Resources */,
+				DE0870A3171C084000FA2A5E /* contact@2x.png in Resources */,
+				DE0870B3171C085300FA2A5E /* FB.png in Resources */,
+				DE0870B4171C085300FA2A5E /* FB@2x.png in Resources */,
+				DE0870E0171CFDD200FA2A5E /* WASharedEventViewCell.xib in Resources */,
 				809A1757171D246C000AF6ED /* WAPartioSignupViewController.xib in Resources */,
 				80B3A3A4171FA58500A9B57B /* WAEventDetailsViewController.xib in Resources */,
 				80B3A3B3171FA9AB00A9B57B /* WAEventDetailsMapCell.xib in Resources */,
@@ -4986,11 +5021,14 @@
 				80C9F34B171859E2003E7C6E /* WAPartioNavigationController.m in Sources */,
 				80C9F37E17190372003E7C6E /* WAArticle.m in Sources */,
 				80C9F3871719B761003E7C6E /* WAContactPickerSectionHeaderView.m in Sources */,
+				DE0870DF171CFDD200FA2A5E /* WASharedEventViewCell.m in Sources */,
+				DE0870E1171CFDD200FA2A5E /* WAFishEyeAtTopFlowLayout.m in Sources */,
 				809A1756171D246C000AF6ED /* WAPartioSignupViewController.m in Sources */,
 				809A175E171D4EBC000AF6ED /* WATranslucentToolbar.m in Sources */,
 				80B3A3A3171FA58500A9B57B /* WAEventDetailsViewController.m in Sources */,
 				80B3A3B6171FA9F100A9B57B /* WAEventDetailsMapCell.m in Sources */,
 				800096071721235B0082E1B5 /* WAPartioNavigationBar.m in Sources */,
+				DEF38F5617219E5B0006DE2C /* WATransparentToolbar.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
