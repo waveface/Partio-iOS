@@ -8,8 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
-@interface WAFishEyeAtTopFlowLayout : UICollectionViewFlowLayout
+@interface WASpotlightSlideFlowLayout : UICollectionViewFlowLayout
 
-- (id)initWithMaxItemSize:(CGFloat)maxItemSize minItemSize:(CGFloat)minItemSize itemWidth:(CGFloat)itemWidth;
+- (id)init;
 
 @end

@@ -73,14 +73,15 @@ static NSString *kCellID = @"EventCell";
   
   [self setTitle:NSLocalizedString(@"LABEL_SHARED_EVENTS", @"LABEL_SHARED_EVENTS")];
   
-  UIBarButtonItem *flexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+  self.collectionView.decelerationRate = UIScrollViewDecelerationRateFast;
+  
   UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
   [button setFrame:CGRectMake(0.f, 0.f, 105.f, 93.f)];
   [button setImage:[UIImage imageNamed:@"AddEvent"] forState:UIControlStateNormal];
   [button addTarget:self action:@selector(shareNewEventFromHighlight) forControlEvents:UIControlEventTouchUpInside];
   UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithCustomView:button];
-  self.toolbar = [[WATransparentToolbar alloc] initWithFrame:CGRectMake(0.f, CGRectGetHeight(self.view.frame) - 170.f, 320.f, 170.f)];
-  self.toolbar.items = @[flexibleSpace, addButton, flexibleSpace];
+  self.toolbar = [[WATransparentToolbar alloc] initWithFrame:CGRectMake(CGRectGetWidth(self.view.frame)/2.f - 105/2.f - 15.f, CGRectGetHeight(self.view.frame) - 170.f, CGRectGetWidth(button.frame), 170.f)];
+  self.toolbar.items = @[addButton];
   [self.view addSubview:self.toolbar];
   
   [self.collectionView registerNib:[UINib nibWithNibName:@"WASharedEventViewCell" bundle:nil] forCellWithReuseIdentifier:kCellID];
@@ -125,6 +126,7 @@ static NSString *kCellID = @"EventCell";
   switch(type) {
       
     case NSFetchedResultsChangeInsert:
+      NSLog(@"objectID: %@, indexPath: %@, newIndexPath: %@", [anObject object], indexPath, newIndexPath);
       change[@(type)] = newIndexPath;
       break;
       
@@ -133,6 +135,7 @@ static NSString *kCellID = @"EventCell";
       break;
       
     case NSFetchedResultsChangeUpdate:
+      NSLog(@"objectID: %@, indexPath: %@, newIndexPath: %@", [anObject object], indexPath, newIndexPath);
       change[@(type)] = indexPath;
       break;
       
@@ -155,31 +158,37 @@ static NSString *kCellID = @"EventCell";
       
       [self.collectionView performBatchUpdates:^{
         
-        for (NSDictionary *change in self.objectChanges) {
-          [change enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
-            
-            NSFetchedResultsChangeType type = [key unsignedIntegerValue];
-            
-            switch (type) {
-              case NSFetchedResultsChangeInsert:
-                [self.collectionView insertItemsAtIndexPaths:@[obj]];
-                break;
-                
-              case NSFetchedResultsChangeDelete:
-                [self.collectionView deleteItemsAtIndexPaths:@[obj]];
-                break;
-                
-              case NSFetchedResultsChangeUpdate:
-                [self.collectionView reloadItemsAtIndexPaths:@[obj]];
-                break;
-                
-              case NSFetchedResultsChangeMove:
-                [self.collectionView moveItemAtIndexPath:obj[0] toIndexPath:obj[1]];
-                break;
-                
-            }
-            
-          }];
+        if ([self shouldReloadCollectionView]) {
+          //FIXME: representing image is reloaded to another one
+          [self.collectionView reloadData];
+        
+        } else {
+          for (NSDictionary *change in self.objectChanges) {
+            [change enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+              
+              NSFetchedResultsChangeType type = [key unsignedIntegerValue];
+              
+              switch (type) {
+                case NSFetchedResultsChangeInsert:
+                  [self.collectionView insertItemsAtIndexPaths:@[obj]];
+                  break;
+                  
+                case NSFetchedResultsChangeDelete:
+                  [self.collectionView deleteItemsAtIndexPaths:@[obj]];
+                  break;
+                  
+                case NSFetchedResultsChangeUpdate:
+                  [self.collectionView reloadItemsAtIndexPaths:@[obj]];
+                  break;
+                  
+                case NSFetchedResultsChangeMove:
+                  [self.collectionView moveItemAtIndexPath:obj[0] toIndexPath:obj[1]];
+                  break;
+                  
+              }
+              
+            }];
+          }
         }
       }
                                     completion:nil];
@@ -188,6 +197,32 @@ static NSString *kCellID = @"EventCell";
   });
   
   [self.objectChanges removeAllObjects];
+}
+
+- (BOOL)shouldReloadCollectionView
+{
+  __block BOOL shouldReload = NO;
+  for (NSDictionary *change in self.objectChanges) {
+    [change enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+      NSIndexPath *indexPath = obj;
+      NSFetchedResultsChangeType type = [key unsignedIntegerValue];
+      switch (type) {
+        case NSFetchedResultsChangeInsert:
+          if (![self.collectionView numberOfItemsInSection:indexPath.section]) {
+            shouldReload = YES;
+          }
+          break;
+          
+        case NSFetchedResultsChangeDelete:
+          if ([self.collectionView numberOfItemsInSection:indexPath.section] == 1) {
+            shouldReload = YES;
+          }
+          break;
+      }
+    }];
+  }
+  
+  return shouldReload;
 }
 
 #pragma mark - UICollectionViewDataSource
@@ -271,6 +306,11 @@ static NSString *kCellID = @"EventCell";
   return cell;
 
   
+}
+
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout referenceSizeForFooterInSection:(NSInteger)section
+{
+  return CGSizeMake(320.f, CGRectGetHeight(self.view.frame) - 140.f);
 }
 
 #pragma mark - Collection view delegate

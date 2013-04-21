@@ -33,7 +33,7 @@
 
 #import "WAPartioNavigationController.h"
 #import "WASharedEventViewController.h"
-#import "WAFishEyeAtTopFlowLayout.h"
+#import "WASpotlightSlideFlowLayout.h"
 #import "WAPhotoHighlightsViewController.h"
 #import "WAPartioFirstUseViewController.h"
 #import "WAFacebookLoginViewController.h"
@@ -462,7 +462,7 @@ extern CFAbsoluteTime StartTime;
         [wSelf cacheManager];
         [wSelf bootstrapWhenUserLogin];
 
-        WAFishEyeAtTopFlowLayout *flowlayout = [[WAFishEyeAtTopFlowLayout alloc] initWithMaxItemSize:275.f minItemSize:140.f itemWidth:320.f];
+        WASpotlightSlideFlowLayout *flowlayout = [[WASpotlightSlideFlowLayout alloc] init];
         WASharedEventViewController *sharedEventsVC = [[WASharedEventViewController alloc] initWithCollectionViewLayout:flowlayout];
         WAPartioNavigationController *navVC = [[WAPartioNavigationController alloc] initWithRootViewController:sharedEventsVC];
         wSelf.window.rootViewController = navVC;
@@ -474,7 +474,7 @@ extern CFAbsoluteTime StartTime;
 
     [self bootstrapWhenUserLogin];
 
-    WAFishEyeAtTopFlowLayout *flowlayout = [[WAFishEyeAtTopFlowLayout alloc] initWithMaxItemSize:275.f minItemSize:140.f itemWidth:320.f];
+    WASpotlightSlideFlowLayout *flowlayout = [[WASpotlightSlideFlowLayout alloc] init];
     WASharedEventViewController *sharedEventsVC = [[WASharedEventViewController alloc] initWithCollectionViewLayout:flowlayout];
     WAPartioNavigationController *navVC = [[WAPartioNavigationController alloc] initWithRootViewController:sharedEventsVC];
     self.window.rootViewController = navVC;
@@ -805,7 +805,7 @@ extern CFAbsoluteTime StartTime;
       [wSelf recreateViewHierarchy];
     }];
     
-    WAFishEyeAtTopFlowLayout *flowlayout = [[WAFishEyeAtTopFlowLayout alloc] initWithMaxItemSize:275.f minItemSize:140.f itemWidth:320.f];
+    WASpotlightSlideFlowLayout *flowlayout = [[WASpotlightSlideFlowLayout alloc] init];
     WASharedEventViewController *sharedEventsVC = [[WASharedEventViewController alloc] initWithCollectionViewLayout:flowlayout];
     WAPartioNavigationController *navVC = [[WAPartioNavigationController alloc] initWithRootViewController:sharedEventsVC];
     wSelf.window.rootViewController = navVC;

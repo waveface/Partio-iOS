@@ -6,34 +6,26 @@
 //  Copyright (c) 2013年 Waveface. All rights reserved.
 //
 
-#import "WAFishEyeAtTopFlowLayout.h"
+#import "WASpotlightSlideFlowLayout.h"
 
-@interface WAFishEyeAtTopFlowLayout()
+@interface WASpotlightSlideFlowLayout()
 
 @property (nonatomic, assign) CGFloat maxItemSize;
 @property (nonatomic, assign) CGFloat minItemSize;
 @property (nonatomic, assign) CGFloat itemWidth;
 
 @end
-@implementation WAFishEyeAtTopFlowLayout
+@implementation WASpotlightSlideFlowLayout
 
-- (id)initWithMaxItemSize:(CGFloat)maxItemSize minItemSize:(CGFloat)minItemSize itemWidth:(CGFloat)itemWidth
+- (id)init
 {
   self = [super init];
   if (self) {
     self.maxItemSize = 275.f;
     self.minItemSize = 140.f;
     self.itemWidth = 320.f;
-    
-    if (maxItemSize && minItemSize && maxItemSize >= minItemSize) {
-      self.maxItemSize = maxItemSize;
-      self.minItemSize = minItemSize;
-    }
-    if (itemWidth > 160.f) {
-      self.itemWidth = itemWidth;
-    }
-        
-    self.itemSize = CGSizeMake(itemWidth, minItemSize);
+            
+    self.itemSize = CGSizeMake(self.itemWidth, self.minItemSize);
     self.scrollDirection = UICollectionViewScrollDirectionVertical;
     self.sectionInset = UIEdgeInsetsMake(0.f, 0.f, 0.f, 0.f);
     self.minimumLineSpacing = 0.f;
@@ -88,20 +80,13 @@
 
 - (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)proposedContentOffset withScrollingVelocity:(CGPoint)velocity
 {
-  CGFloat offsetAjustment = MAXFLOAT;
-  CGFloat targetItemY = proposedContentOffset.y;
-  
-  CGRect targetRect = CGRectMake(0.f, proposedContentOffset.y, self.collectionView.bounds.size.width, self.collectionView.bounds.size.height);
-  NSArray *array = [super layoutAttributesForElementsInRect:targetRect];
-  
-  for (UICollectionViewLayoutAttributes *attributes in array) {
-    CGFloat itemY = attributes.frame.origin.y;
-    if (ABS(itemY - targetItemY) < offsetAjustment) {
-      offsetAjustment = itemY - targetItemY;
-    }
+  NSLog(@"Velocity: %f", velocity.y);
+  NSInteger base = (NSInteger)proposedContentOffset.y / self.minItemSize;
+  if (velocity.y > 0.f) {
+    base++;
   }
   
-  return CGPointMake(proposedContentOffset.x, proposedContentOffset.y + offsetAjustment);
+  return CGPointMake(proposedContentOffset.x, base * self.minItemSize);
 }
 
 @end
