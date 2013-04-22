@@ -24,7 +24,6 @@
 @property (nonatomic, strong) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, strong) NSFetchedResultsController *eventFetchedResultsController;
 @property (nonatomic, strong) NSMutableArray *objectChanges;
-@property (nonatomic, strong) WATransparentToolbar *toolbar;
 @property (nonatomic, strong) WAPartioNavigationBar *navigationBar;
 @property (nonatomic, strong) IBOutlet UICollectionView *collectionView;
 
@@ -84,17 +83,7 @@ static NSString *kCellID = @"EventCell";
                                            CGRectGetHeight(self.navigationBar.frame),
                                            CGRectGetHeight(self.view.frame),
                                            CGRectGetHeight(self.view.frame) - CGRectGetHeight(self.navigationBar.frame))];
-  
-  UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-  [button setFrame:CGRectMake(0.f, 0.f, 105.f, 93.f)];
-  [button setImage:[UIImage imageNamed:@"AddEvent"] forState:UIControlStateNormal];
-  [button addTarget:self action:@selector(shareNewEventFromHighlight) forControlEvents:UIControlEventTouchUpInside];
-  UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithCustomView:button];
-  
-  self.toolbar = [[WATransparentToolbar alloc] initWithFrame:CGRectMake(CGRectGetWidth(self.view.frame)/2.f - 105/2.f - 15.f, CGRectGetHeight(self.view.frame) - 170.f, CGRectGetWidth(button.frame), 170.f)];
-  self.toolbar.items = @[addButton];
-  [self.view addSubview:self.toolbar];
-  
+    
   [self.collectionView registerNib:[UINib nibWithNibName:@"WASharedEventViewCell" bundle:nil] forCellWithReuseIdentifier:kCellID];
   
   _objectChanges = [[NSMutableArray alloc] init];
@@ -105,7 +94,7 @@ static NSString *kCellID = @"EventCell";
   [super viewDidAppear:animated];
   
   if (![self.eventFetchedResultsController.fetchedObjects count]) {
-    [self shareNewEventFromHighlight];
+    [self shareNewEventFromHighlight:nil];
     
   } 
   
@@ -272,7 +261,7 @@ static NSString *kCellID = @"EventCell";
     }
   }
   
-  [cell.stickerNew setHidden:NO];
+  [cell.stickerNew setHidden:YES];
   [cell.photoNumber setText:[NSString stringWithFormat:@"%d", photoNumbers]];
   [cell.checkinNumber setText:[NSString stringWithFormat:@"%d", checkinNumbers]];
   [cell.peopleNumber setText:[NSString stringWithFormat:@"%d", pplNumber]];
@@ -307,7 +296,7 @@ static NSString *kCellID = @"EventCell";
 
 #pragma mark - toolbar
 
-- (void)shareNewEventFromHighlight
+- (IBAction)shareNewEventFromHighlight:(id)sender
 {
   WANavigationController *phVC = [WAPhotoHighlightsViewController viewControllerWithNavigationControllerWrapped];
   [self presentViewController:phVC animated:YES completion:nil];
