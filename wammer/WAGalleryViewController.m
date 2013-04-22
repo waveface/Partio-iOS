@@ -10,6 +10,7 @@
 #import "IRPaginatedView.h"
 #import "WADataStore.h"
 #import "WAAppearance.h"
+#import "WAAssetsLibraryManager.h"
 #import "WAGalleryImageView.h"
 #import "WAImageStreamPickerView.h"
 #import "UIImage+IRAdditions.h"
@@ -19,6 +20,7 @@
 #import "WACompositionViewController.h"
 #import "WAAppDelegate_iOS.h"
 #import "WADefines.h"
+#import "WAOverlayBezel.h"
 #import "GAI.h"
 #import "WASlidingMenuViewController.h"
 #import <BlocksKit/BlocksKit.h>
@@ -36,6 +38,7 @@ static NSString * kWAGalleryViewControllerKVOContext = @"WAGalleryViewController
 @property (nonatomic, readwrite, retain) UIToolbar *toolbar;
 @property (nonatomic, readwrite, retain) UINavigationItem *previousNavigationItem;
 @property (nonatomic, readwrite, retain) WAImageStreamPickerView *streamPickerView;
+@property (nonatomic, strong) WAAssetsLibraryManager *assetsLibraryManager;
 
 @property (nonatomic, readwrite, copy) void (^onViewDidLoad)(void);
 @property (nonatomic, readwrite, copy) void (^onViewDidAppear)(BOOL animated);
@@ -147,6 +150,31 @@ static NSString * kWAGalleryViewControllerKVOContext = @"WAGalleryViewController
 //	self.previousNavigationItem = [[UINavigationItem alloc] init];
   self.navigationItem.leftBarButtonItem = WAPartioBackButton(^{
     [wSelf.navigationController popViewControllerAnimated:YES];
+  });
+  self.navigationItem.rightBarButtonItem = WABarButtonItem([UIImage imageNamed:@"action"], nil, ^{
+    UIAlertView *alertView = [UIAlertView alertViewWithTitle:NSLocalizedString(@"CONFIRM_SAVE_CAMERAROLL", @"Title of alert view to save to camera roll")];
+    [alertView setCancelButtonWithTitle:NSLocalizedString(@"ACTION_CANCEL", @"Cancel") handler:nil];
+    [alertView addButtonWithTitle:NSLocalizedString(@"ACTION_OK", @"Ok") handler:^{
+      
+      NSUInteger currentIndex = self.paginatedView.currentPage;
+      WAOverlayBezel *busyBezel = [WAOverlayBezel bezelWithStyle:WAActivityIndicatorBezelStyle];
+      [busyBezel show];
+      [[WAAssetsLibraryManager defaultManager] writeImageToSavedPhotosAlbum:[[(WAFile*)self.imageFiles[currentIndex] bestPresentableImage] CGImage]
+                                                                orientation:ALAssetOrientationUp
+                                                            completionBlock:^(NSURL *assetURL, NSError *error) {
+                                                              dispatch_async(dispatch_get_main_queue(), ^{
+                                                                [busyBezel dismiss];
+                                                                WAOverlayBezel *doneBezel = [WAOverlayBezel bezelWithStyle:WACheckmarkBezelStyle];
+                                                                [doneBezel showWithAnimation:WAOverlayBezelAnimationNone];
+                                                                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1.0 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+                                                                  [doneBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
+                                                                });
+                                                              });
+                                                            }];
+    }];
+    
+    [alertView show];
+
   });
 	
 	self.paginatedView = [[IRPaginatedView alloc] initWithFrame:self.view.bounds];
