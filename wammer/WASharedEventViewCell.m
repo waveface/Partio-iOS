@@ -14,9 +14,9 @@
 {
   static CAGradientLayer *gradientLayer;
   gradientLayer = [CAGradientLayer layer];
-  [gradientLayer setBounds:CGRectMake(0, self.infoView.bounds.size.height - 80, 320, 80)];
+  gradientLayer.frame = (CGRect){CGPointZero, self.infoView.frame.size};
   [gradientLayer setColors:@[(id)[[UIColor colorWithWhite:0.f alpha:0.f] CGColor],
-                             (id)[[UIColor colorWithWhite:0.f alpha:0.8f] CGColor]]];
+   (id)[[UIColor colorWithWhite:0.f alpha:1.0f] CGColor]]];
   [self.infoView.layer insertSublayer:gradientLayer atIndex:0];
   
   [self.photoNumber setFont:[UIFont fontWithName:@"OpenSans-Regular" size:12.f]];

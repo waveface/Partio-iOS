@@ -53,18 +53,7 @@
 }
 
 - (UIBarButtonItem *)shareBarButton
-{
-  static UIButton *aButton;
-  aButton = [UIButton buttonWithType:UIButtonTypeCustom];
-  [aButton setFrame:CGRectMake(0.f, 0.f, 100.f, 40.f)];
-  [aButton setTitle:NSLocalizedString(@"LABEL_SHARE_BUTTON", @"LABEL_SHARE_BUTTON") forState:UIControlStateNormal];
-  [aButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-  [aButton.titleLabel setFont:[UIFont fontWithName:@"OpenSans-Semibold" size:24.f]];
-  [aButton.titleLabel setTextAlignment:NSTextAlignmentCenter];
-  [aButton setBackgroundImage:[UIImage imageNamed:@"Btn"] forState:UIControlStateNormal];
-  [aButton setBackgroundImage:[UIImage imageNamed:@"Btn1"] forState:UIControlStateHighlighted];
-  [aButton addTarget:self action:@selector(done) forControlEvents:UIControlEventTouchUpInside];
-  
+{ 
   return WAPartioToolbarNextButton(@"Share", ^{
     if (self.onNextHandler) {
       self.onNextHandler([NSArray arrayWithArray:_members]);
