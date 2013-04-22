@@ -38,12 +38,15 @@
 #import "WAOverlayBezel.h"
 #import "WATranslucentToolbar.h"
 #import "NINetworkImageView.h"
+#import <SMCalloutView/SMCalloutView.h>
 
 #import "WADefines.h"
 #import "WARemoteInterface.h"
 #import "WASyncManager.h"
 #import "WAAppDelegate.h"
 #import "WAAppDelegate_iOS.h"
+
+static NSString * const kWAPhotoTimelineViewController_CoachMarks = @"kWAPhotoTimelineViewController_CoachMarks";
 
 @interface WAPhotoTimelineViewController () <UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UIScrollViewDelegate>
 
@@ -68,6 +71,8 @@
 @property (nonatomic, strong) NSArray *checkins;
 @property (nonatomic, readonly) CLLocationCoordinate2D coordinate;
 
+@property (nonatomic, strong) UITapGestureRecognizer *tapGesture;
+@property (nonatomic, strong) SMCalloutView *shareInstructionView;
 @end
 
 @implementation WAPhotoTimelineViewController {
@@ -195,6 +200,39 @@
     self.toolbar.items = @[ addContacts, flexibleSpace, addPhotos];
     [self.view addSubview:self.toolbar];
   }
+  
+}
+
+- (void) viewDidAppear:(BOOL)animated {
+  
+  [super viewDidAppear:animated];
+
+  BOOL coachmarkShown = [[NSUserDefaults standardUserDefaults] boolForKey:kWAPhotoTimelineViewController_CoachMarks];
+  if (!coachmarkShown) {
+    __weak WAPhotoTimelineViewController *wSelf = self;
+    if (!self.shareInstructionView) {
+      self.shareInstructionView = [SMCalloutView new];
+      self.shareInstructionView.title = @"Tap Next to invite more friends!";
+      [self.shareInstructionView presentCalloutFromRect:CGRectMake(self.view.frame.size.width/2, self.view.frame.size.height-44, 1, 1) inView:self.view constrainedToView:self.view permittedArrowDirections:SMCalloutArrowDirectionDown animated:YES];
+      self.tapGesture = [[UITapGestureRecognizer alloc] initWithHandler:^(UIGestureRecognizer *sender, UIGestureRecognizerState state, CGPoint location) {
+        if (wSelf.shareInstructionView) {
+          [wSelf.shareInstructionView dismissCalloutAnimated:YES];
+          wSelf.shareInstructionView = nil;
+        }
+        [wSelf.view removeGestureRecognizer:wSelf.tapGesture];
+        wSelf.tapGesture = nil;
+      }];
+      [self.view addGestureRecognizer:self.tapGesture];
+    }
+    
+    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:kWAPhotoTimelineViewController_CoachMarks];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+  }
+}
+
+- (void) dealloc {
+  if (self.tapGesture)
+    [self.view removeGestureRecognizer:self.tapGesture];
 }
 
 + (NSOperationQueue *)sharedImportPhotoOperationQueue {
@@ -626,11 +664,11 @@
   NSUInteger mod = numOfPhotos % 10;
   if (mod == 0)
     return totalItem;
-  else if (mod < 4)
+  else if (mod < 5)
     return totalItem + 1;
-  else if (mod < 7)
+  else if (mod < 8)
     return totalItem + 2;
-  else if (mod < 9)
+  else if (mod < 10)
     return totalItem + 3;
   else
     return totalItem + 4;
@@ -889,6 +927,13 @@
 }
 
 - (void) scrollViewDidScroll:(UIScrollView *)scrollView {
+  
+  if (self.shareInstructionView) {
+    [self.shareInstructionView dismissCalloutAnimated:YES];
+    self.shareInstructionView = nil;
+    [self.view removeGestureRecognizer:self.tapGesture];
+    self.tapGesture = nil;
+  }
   
   if (self.indexView.hidden && scrollView.contentOffset.y > 0)
     self.indexView.hidden = NO;
