@@ -10,6 +10,7 @@
 
 @interface WASharedEventViewController : UIViewController <UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, NSFetchedResultsControllerDelegate>
 
+- (IBAction)shareNewEventFromHighlight:(id)sender;
 
 @end
 
