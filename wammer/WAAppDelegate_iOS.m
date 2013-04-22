@@ -461,7 +461,7 @@ extern CFAbsoluteTime StartTime;
         [wSelf bootstrapWhenUserLogin];
 
         WASharedEventViewController *sharedEventsVC = [[WASharedEventViewController alloc] init];
-        WAPartioNavigationController *navVC = [[WAPartioNavigationController alloc] initWithRootViewController:sharedEventsVC];
+        WANavigationController *navVC = [[WANavigationController alloc] initWithRootViewController:sharedEventsVC];
         wSelf.window.rootViewController = navVC;
       }
     
@@ -472,7 +472,7 @@ extern CFAbsoluteTime StartTime;
     [self bootstrapWhenUserLogin];
 
     WASharedEventViewController *sharedEventsVC = [[WASharedEventViewController alloc] init];
-    WAPartioNavigationController *navVC = [[WAPartioNavigationController alloc] initWithRootViewController:sharedEventsVC];
+    WANavigationController *navVC = [[WANavigationController alloc] initWithRootViewController:sharedEventsVC];
     self.window.rootViewController = navVC;
     
   }
@@ -802,7 +802,7 @@ extern CFAbsoluteTime StartTime;
     }];
     
     WASharedEventViewController *sharedEventsVC = [[WASharedEventViewController alloc] init];
-    WAPartioNavigationController *navVC = [[WAPartioNavigationController alloc] initWithRootViewController:sharedEventsVC];
+    WANavigationController *navVC = [[WANavigationController alloc] initWithRootViewController:sharedEventsVC];
     wSelf.window.rootViewController = navVC;
 
   } failure:^(NSError *error) {

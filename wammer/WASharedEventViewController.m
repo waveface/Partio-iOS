@@ -15,7 +15,6 @@
 #import "WAGeoLocation.h"
 #import <CoreLocation/CoreLocation.h>
 #import "WADataStore.h"
-#import "WAPartioNavigationController.h"
 #import "WAPartioNavigationBar.h"
 #import "NSDate+WAAdditions.h"
 #import <QuartzCore/QuartzCore.h>
@@ -225,6 +224,7 @@ static NSString *kCellID = @"EventCell";
   
   // Configure the cell...
   WAArticle *aArticle = [self.eventFetchedResultsController objectAtIndexPath:indexPath];
+  cell.imageView.image = nil;
   [aArticle irObserve:@"representingFile.thumbnailImage"
               options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionNew
               context:nil withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior){
