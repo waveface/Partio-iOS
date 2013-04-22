@@ -120,8 +120,12 @@
 
 - (void)viewDidLoad
 {
-    [super viewDidLoad];
-    // Do any additional setup after loading the view from its nib.
+  [super viewDidLoad];
+  if(IS_WIDESCREEN)
+    self.imageView.image = [UIImage imageNamed:@"Default-568h"];
+  else
+    self.imageView.image = [UIImage imageNamed:@"Default"];
+
 }
 
 - (void) viewDidAppear:(BOOL)animated {

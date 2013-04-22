@@ -52,7 +52,7 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks = @"kWAPhotoTi
 
 @property (nonatomic, strong) WAPhotoTimelineCover *headerView;
 @property (nonatomic, strong) WAPhotoTimelineNavigationBar *navigationBar;
-@property (nonatomic, strong) WATranslucentToolbar *toolbar;
+@property (nonatomic, weak) IBOutlet UIToolbar *toolbar;
 @property (nonatomic, weak) IBOutlet UICollectionView *collectionView;
 @property (nonatomic, weak) IBOutlet WATimelineIndexView *indexView;
 @property (nonatomic, strong) WAPartioSignupViewController *signupVC;
@@ -165,6 +165,8 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks = @"kWAPhotoTi
   [self.indexView addIndex:0.01 label:[formatter stringFromDate:self.beginDate]];
   [self.indexView addIndex:0.99 label:[formatter stringFromDate:self.endDate]];
 
+  [self.toolbar setBackgroundImage:[[UIImage alloc] init] forToolbarPosition:UIToolbarPositionAny barMetrics:UIBarMetricsDefault];
+  self.toolbar.backgroundColor = [UIColor colorWithWhite:0.0f alpha:0.4f];
   if (!self.representingArticle) {
     UIBarButtonItem *flexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
 
@@ -172,7 +174,6 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks = @"kWAPhotoTi
       [wSelf actionButtonClicked:nil];
     });
     
-    self.toolbar = [[WATranslucentToolbar alloc] initWithFrame:CGRectMake(0, CGRectGetHeight(self.view.frame)-44, CGRectGetWidth(self.view.frame), 44)];
     self.toolbar.items = @[flexibleSpace, nextItem, flexibleSpace];
     [self.view addSubview:self.toolbar];
   } else {
@@ -196,7 +197,6 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks = @"kWAPhotoTi
       [wSelf presentViewController:photoPicker animated:YES completion:nil];
     });
     
-    self.toolbar = [[WATranslucentToolbar alloc] initWithFrame:CGRectMake(0, CGRectGetHeight(self.view.frame)-44, CGRectGetWidth(self.view.frame), 44)];
     self.toolbar.items = @[ addContacts, flexibleSpace, addPhotos];
     [self.view addSubview:self.toolbar];
   }

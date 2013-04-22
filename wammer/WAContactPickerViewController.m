@@ -18,7 +18,7 @@
 
 @interface WAContactPickerViewController () <UITableViewDelegate, UITableViewDataSource, FBFriendPickerDelegate, UITextFieldDelegate>
 @property (nonatomic, weak) IBOutlet UITableView *tableView;
-@property (nonatomic, strong) WATranslucentToolbar *toolbar;
+@property (nonatomic, weak) IBOutlet UIToolbar *toolbar;
 @property (nonatomic, weak) IBOutlet WAPartioNavigationBar *navigationBar;
 @property (nonatomic, strong) FBFriendPickerViewController *fbFriendPickerViewController;
 @end
@@ -46,8 +46,11 @@
   
   [self.navigationBar pushNavigationItem:self.navigationItem animated:NO];
 
+  [self.toolbar setBackgroundImage:[[UIImage alloc] init] forToolbarPosition:UIToolbarPositionAny barMetrics:UIBarMetricsDefault];
+  self.toolbar.backgroundColor = [UIColor colorWithWhite:0.0f alpha:0.4f];
   UIBarButtonItem *flexspace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
-  self.toolbar = [[WATranslucentToolbar alloc] initWithFrame:CGRectMake(0, CGRectGetHeight(self.view.frame)-44, CGRectGetWidth(self.view.frame), 44)];
+//  self.toolbar = [[WATranslucentToolbar alloc] initWithFrame:CGRectMake(0, CGRectGetHeight(self.view.frame)-44, CGRectGetWidth(self.view.frame), 44)];
+  
   self.toolbar.items = @[flexspace, [self shareBarButton], flexspace];
   [self.view addSubview:self.toolbar];
 }
