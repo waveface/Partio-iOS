@@ -10,6 +10,4 @@
 
 @interface WASpotlightSlideFlowLayout : UICollectionViewFlowLayout
 
-- (id)init;
-
 @end

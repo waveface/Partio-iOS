@@ -32,7 +32,6 @@
 #import "WAOverlayBezel.h"
 
 #import "WASharedEventViewController.h"
-#import "WASpotlightSlideFlowLayout.h"
 #import "WAPhotoHighlightsViewController.h"
 #import "WAPartioFirstUseViewController.h"
 #import "WAFacebookLoginViewController.h"
@@ -461,8 +460,7 @@ extern CFAbsoluteTime StartTime;
         [wSelf cacheManager];
         [wSelf bootstrapWhenUserLogin];
 
-        WASpotlightSlideFlowLayout *flowlayout = [[WASpotlightSlideFlowLayout alloc] init];
-        WASharedEventViewController *sharedEventsVC = [[WASharedEventViewController alloc] initWithCollectionViewLayout:flowlayout];
+        WASharedEventViewController *sharedEventsVC = [[WASharedEventViewController alloc] init];
         WANavigationController *navVC = [[WANavigationController alloc] initWithRootViewController:sharedEventsVC];
         wSelf.window.rootViewController = navVC;
       }
@@ -473,8 +471,7 @@ extern CFAbsoluteTime StartTime;
 
     [self bootstrapWhenUserLogin];
 
-    WASpotlightSlideFlowLayout *flowlayout = [[WASpotlightSlideFlowLayout alloc] init];
-    WASharedEventViewController *sharedEventsVC = [[WASharedEventViewController alloc] initWithCollectionViewLayout:flowlayout];
+    WASharedEventViewController *sharedEventsVC = [[WASharedEventViewController alloc] init];
     WANavigationController *navVC = [[WANavigationController alloc] initWithRootViewController:sharedEventsVC];
     self.window.rootViewController = navVC;
     
@@ -804,8 +801,7 @@ extern CFAbsoluteTime StartTime;
       [wSelf recreateViewHierarchy];
     }];
     
-    WASpotlightSlideFlowLayout *flowlayout = [[WASpotlightSlideFlowLayout alloc] init];
-    WASharedEventViewController *sharedEventsVC = [[WASharedEventViewController alloc] initWithCollectionViewLayout:flowlayout];
+    WASharedEventViewController *sharedEventsVC = [[WASharedEventViewController alloc] init];
     WANavigationController *navVC = [[WANavigationController alloc] initWithRootViewController:sharedEventsVC];
     wSelf.window.rootViewController = navVC;
 
