@@ -11,10 +11,10 @@
 #import "WAPhotoHighlightsViewController.h"
 #import "WAPhotoTimelineViewController.h"
 #import "WATransparentToolbar.h"
+#import "WANavigationController.h"
 #import "WAGeoLocation.h"
 #import <CoreLocation/CoreLocation.h>
 #import "WADataStore.h"
-#import "WAPartioNavigationController.h"
 #import "NSDate+WAAdditions.h"
 #import <QuartzCore/QuartzCore.h>
 
@@ -333,7 +333,7 @@ static NSString *kCellID = @"EventCell";
 
 - (void)shareNewEventFromHighlight
 {
-  WAPartioNavigationController *phVC = [WAPhotoHighlightsViewController viewControllerWithNavigationControllerWrapped];
+  WANavigationController *phVC = [WAPhotoHighlightsViewController viewControllerWithNavigationControllerWrapped];
   [self presentViewController:phVC animated:YES completion:nil];
 }
 
