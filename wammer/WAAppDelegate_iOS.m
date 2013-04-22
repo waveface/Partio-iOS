@@ -31,7 +31,6 @@
 #import "WAUserInfoViewController.h"
 #import "WAOverlayBezel.h"
 
-#import "WAPartioNavigationController.h"
 #import "WASharedEventViewController.h"
 #import "WASpotlightSlideFlowLayout.h"
 #import "WAPhotoHighlightsViewController.h"
@@ -464,7 +463,7 @@ extern CFAbsoluteTime StartTime;
 
         WASpotlightSlideFlowLayout *flowlayout = [[WASpotlightSlideFlowLayout alloc] init];
         WASharedEventViewController *sharedEventsVC = [[WASharedEventViewController alloc] initWithCollectionViewLayout:flowlayout];
-        WAPartioNavigationController *navVC = [[WAPartioNavigationController alloc] initWithRootViewController:sharedEventsVC];
+        WANavigationController *navVC = [[WANavigationController alloc] initWithRootViewController:sharedEventsVC];
         wSelf.window.rootViewController = navVC;
       }
     
@@ -476,7 +475,7 @@ extern CFAbsoluteTime StartTime;
 
     WASpotlightSlideFlowLayout *flowlayout = [[WASpotlightSlideFlowLayout alloc] init];
     WASharedEventViewController *sharedEventsVC = [[WASharedEventViewController alloc] initWithCollectionViewLayout:flowlayout];
-    WAPartioNavigationController *navVC = [[WAPartioNavigationController alloc] initWithRootViewController:sharedEventsVC];
+    WANavigationController *navVC = [[WANavigationController alloc] initWithRootViewController:sharedEventsVC];
     self.window.rootViewController = navVC;
     
   }
@@ -807,7 +806,7 @@ extern CFAbsoluteTime StartTime;
     
     WASpotlightSlideFlowLayout *flowlayout = [[WASpotlightSlideFlowLayout alloc] init];
     WASharedEventViewController *sharedEventsVC = [[WASharedEventViewController alloc] initWithCollectionViewLayout:flowlayout];
-    WAPartioNavigationController *navVC = [[WAPartioNavigationController alloc] initWithRootViewController:sharedEventsVC];
+    WANavigationController *navVC = [[WANavigationController alloc] initWithRootViewController:sharedEventsVC];
     wSelf.window.rootViewController = navVC;
 
   } failure:^(NSError *error) {
