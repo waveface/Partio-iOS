@@ -10,6 +10,9 @@
 
 @interface WAFacebookLoginViewController : UIViewController
 
+@property (nonatomic, strong) IBOutlet UIImageView *imageView;
+
 - (id) initWithCompletionHandler:(void(^)(NSError *error))completion;
 + (void) backgroundLoginWithFacebookIDWithCompleteHandler:(void(^)(NSError *error))completionHandler;
+
 @end

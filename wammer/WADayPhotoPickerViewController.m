@@ -85,6 +85,10 @@
   self.collectionView.allowsMultipleSelection = YES;
   [self.collectionView registerNib:[UINib nibWithNibName:@"WADayPhotoPickerViewCell" bundle:nil] forCellWithReuseIdentifier:@"WADayPhotoPickerViewCell"];
   [self.collectionView registerNib:[UINib nibWithNibName:@"WADayPhotoPickerSectionHeaderView" bundle:nil] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"WADayPhotoPickerSectionHeaderView"];
+  
+  if (!self.selectedAssets.count) {
+    self.navigationItem.rightBarButtonItem.enabled = NO;
+  }
 }
 - (void) viewDidAppear:(BOOL)animated {
   
@@ -307,6 +311,9 @@
     [self.selectedAssets addObject:asset];
   }
   
+  if (self.selectedAssets.count)
+    [self.navigationItem.rightBarButtonItem setEnabled:YES];
+  
 }
 
 - (void) collectionView:(UICollectionView *)collectionView didDeselectItemAtIndexPath:(NSIndexPath *)indexPath {
@@ -315,7 +322,9 @@
   if (self.selectedAssets != nil && [self.selectedAssets indexOfObject:asset] != NSNotFound) {
     [self.selectedAssets removeObject:asset];
   }
-
+  
+  if (!self.selectedAssets.count)
+    [self.navigationItem.rightBarButtonItem setEnabled:NO];
 }
 
 @end
