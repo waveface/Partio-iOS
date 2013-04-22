@@ -14,7 +14,9 @@
 #import "WAGeoLocation.h"
 #import <CoreLocation/CoreLocation.h>
 #import "WADataStore.h"
+#import "WASpotlightSlideFlowLayout.h"
 #import "WAPartioNavigationController.h"
+#import "WAPartioNavigationBar.h"
 #import "NSDate+WAAdditions.h"
 #import <QuartzCore/QuartzCore.h>
 
@@ -24,6 +26,8 @@
 @property (nonatomic, strong) NSFetchedResultsController *eventFetchedResultsController;
 @property (nonatomic, strong) NSMutableArray *objectChanges;
 @property (nonatomic, strong) WATransparentToolbar *toolbar;
+@property (nonatomic, strong) WAPartioNavigationBar *navigationBar;
+@property (nonatomic, strong) IBOutlet UICollectionView *collectionView;
 
 @end
 
@@ -71,15 +75,23 @@ static NSString *kCellID = @"EventCell";
 {
   [super viewDidLoad];
   
-  [self setTitle:NSLocalizedString(@"LABEL_SHARED_EVENTS", @"LABEL_SHARED_EVENTS")];
+  self.navigationController.navigationBarHidden = YES;
+  [self.navigationItem setTitle:NSLocalizedString(@"LABEL_SHARED_EVENTS", @"LABEL_SHARED_EVENTS")];
+  self.navigationBar = [[WAPartioNavigationBar alloc] initWithFrame:CGRectMake(0.f, 0.f, CGRectGetWidth(self.view.frame), 44.f)];
+  [self.navigationBar pushNavigationItem:self.navigationItem animated:NO];
+  [self.view addSubview:self.navigationBar];
   
-  self.collectionView.decelerationRate = UIScrollViewDecelerationRateFast;
+  [self.collectionView setFrame:CGRectMake(0.f,
+                                           CGRectGetHeight(self.navigationBar.frame),
+                                           CGRectGetHeight(self.view.frame),
+                                           CGRectGetHeight(self.view.frame) - CGRectGetHeight(self.navigationBar.frame))];
   
   UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
   [button setFrame:CGRectMake(0.f, 0.f, 105.f, 93.f)];
   [button setImage:[UIImage imageNamed:@"AddEvent"] forState:UIControlStateNormal];
   [button addTarget:self action:@selector(shareNewEventFromHighlight) forControlEvents:UIControlEventTouchUpInside];
   UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithCustomView:button];
+  
   self.toolbar = [[WATransparentToolbar alloc] initWithFrame:CGRectMake(CGRectGetWidth(self.view.frame)/2.f - 105/2.f - 15.f, CGRectGetHeight(self.view.frame) - 170.f, CGRectGetWidth(button.frame), 170.f)];
   self.toolbar.items = @[addButton];
   [self.view addSubview:self.toolbar];
@@ -87,14 +99,13 @@ static NSString *kCellID = @"EventCell";
   [self.collectionView registerNib:[UINib nibWithNibName:@"WASharedEventViewCell" bundle:nil] forCellWithReuseIdentifier:kCellID];
   
   _objectChanges = [[NSMutableArray alloc] init];
-  [self eventFetchedResultsController];
 }
 
 - (void)viewDidAppear:(BOOL)animated
 {
   [super viewDidAppear:animated];
   
-  if (![_eventFetchedResultsController.fetchedObjects count]) {
+  if (![self.eventFetchedResultsController.fetchedObjects count]) {
     [self shareNewEventFromHighlight];
     
   } 
@@ -126,7 +137,7 @@ static NSString *kCellID = @"EventCell";
   switch(type) {
       
     case NSFetchedResultsChangeInsert:
-      NSLog(@"objectID: %@, indexPath: %@, newIndexPath: %@", [anObject object], indexPath, newIndexPath);
+      NSLog(@"objectID: %@, indexPath: %@, newIndexPath: %@", [anObject objectID], indexPath, newIndexPath);
       change[@(type)] = newIndexPath;
       break;
       
@@ -135,7 +146,7 @@ static NSString *kCellID = @"EventCell";
       break;
       
     case NSFetchedResultsChangeUpdate:
-      NSLog(@"objectID: %@, indexPath: %@, newIndexPath: %@", [anObject object], indexPath, newIndexPath);
+      NSLog(@"objectID: %@, indexPath: %@, newIndexPath: %@", [anObject objectID], indexPath, newIndexPath);
       change[@(type)] = indexPath;
       break;
       
@@ -152,77 +163,46 @@ static NSString *kCellID = @"EventCell";
 - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller
 {
   //FIXME: update change fist
-
+  NSLog(@"%d items in section 0", [self.collectionView numberOfItemsInSection:0]);
+  
   dispatch_async(dispatch_get_main_queue(), ^{
     if ([self.objectChanges count]) {
       
       [self.collectionView performBatchUpdates:^{
         
-        if ([self shouldReloadCollectionView]) {
-          //FIXME: representing image is reloaded to another one
-          [self.collectionView reloadData];
-        
-        } else {
-          for (NSDictionary *change in self.objectChanges) {
-            [change enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
-              
-              NSFetchedResultsChangeType type = [key unsignedIntegerValue];
-              
-              switch (type) {
-                case NSFetchedResultsChangeInsert:
-                  [self.collectionView insertItemsAtIndexPaths:@[obj]];
-                  break;
-                  
-                case NSFetchedResultsChangeDelete:
-                  [self.collectionView deleteItemsAtIndexPaths:@[obj]];
-                  break;
-                  
-                case NSFetchedResultsChangeUpdate:
-                  [self.collectionView reloadItemsAtIndexPaths:@[obj]];
-                  break;
-                  
-                case NSFetchedResultsChangeMove:
-                  [self.collectionView moveItemAtIndexPath:obj[0] toIndexPath:obj[1]];
-                  break;
-                  
-              }
-              
-            }];
-          }
+        for (NSDictionary *change in self.objectChanges) {
+          [change enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+            
+            NSFetchedResultsChangeType type = [key unsignedIntegerValue];
+            
+            switch (type) {
+              case NSFetchedResultsChangeInsert:
+                [self.collectionView insertItemsAtIndexPaths:@[obj]];
+                break;
+                
+              case NSFetchedResultsChangeDelete:
+                [self.collectionView deleteItemsAtIndexPaths:@[obj]];
+                break;
+                
+              case NSFetchedResultsChangeUpdate:
+                [self.collectionView reloadItemsAtIndexPaths:@[obj]];
+                break;
+                
+              case NSFetchedResultsChangeMove:
+                [self.collectionView moveItemAtIndexPath:obj[0] toIndexPath:obj[1]];
+                break;
+                
+            }
+            
+          }];
         }
-      }
-                                    completion:nil];
+        
+      } completion:nil];
     }
     
   });
   
   [self.objectChanges removeAllObjects];
-}
-
-- (BOOL)shouldReloadCollectionView
-{
-  __block BOOL shouldReload = NO;
-  for (NSDictionary *change in self.objectChanges) {
-    [change enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
-      NSIndexPath *indexPath = obj;
-      NSFetchedResultsChangeType type = [key unsignedIntegerValue];
-      switch (type) {
-        case NSFetchedResultsChangeInsert:
-          if (![self.collectionView numberOfItemsInSection:indexPath.section]) {
-            shouldReload = YES;
-          }
-          break;
-          
-        case NSFetchedResultsChangeDelete:
-          if ([self.collectionView numberOfItemsInSection:indexPath.section] == 1) {
-            shouldReload = YES;
-          }
-          break;
-      }
-    }];
-  }
-  
-  return shouldReload;
 }
 
 #pragma mark - UICollectionViewDataSource
@@ -236,7 +216,7 @@ static NSString *kCellID = @"EventCell";
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
   // Return the number of rows in the section.
-  return [_eventFetchedResultsController.fetchedObjects count];
+  return [self.eventFetchedResultsController.fetchedObjects count];
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
@@ -244,7 +224,7 @@ static NSString *kCellID = @"EventCell";
   WASharedEventViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:kCellID forIndexPath:indexPath];
   
   // Configure the cell...
-  WAArticle *aArticle = [_eventFetchedResultsController objectAtIndexPath:indexPath];
+  WAArticle *aArticle = [self.eventFetchedResultsController objectAtIndexPath:indexPath];
   [aArticle irObserve:@"representingFile.thumbnailImage"
               options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionNew
               context:nil withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior){
@@ -257,8 +237,6 @@ static NSString *kCellID = @"EventCell";
               }];
   
   NSInteger pplNumber = [[[self.eventFetchedResultsController objectAtIndexPath:indexPath] valueForKey:@"people"] count];
-  
-  
   NSInteger photoNumbers = [[[self.eventFetchedResultsController objectAtIndexPath:indexPath] valueForKey:@"files"] count];
   
   static NSDateFormatter *sharedDateFormatter;
@@ -301,8 +279,6 @@ static NSString *kCellID = @"EventCell";
   [cell.date setText:eventDate];
   [cell.location setText:location];
   
-  [cell.infoView.layer layoutIfNeeded];
-  
   return cell;
 
   
@@ -310,7 +286,7 @@ static NSString *kCellID = @"EventCell";
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout referenceSizeForFooterInSection:(NSInteger)section
 {
-  return CGSizeMake(320.f, CGRectGetHeight(self.view.frame) - 140.f);
+  return CGSizeMake(CGRectGetWidth(collectionView.frame), CGRectGetHeight(self.view.frame) - 140.f);
 }
 
 #pragma mark - Collection view delegate
@@ -325,7 +301,7 @@ static NSString *kCellID = @"EventCell";
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-  return CGSizeMake(320.f, 140.f);
+  return CGSizeMake(CGRectGetWidth(collectionView.frame), 140.f);
   
 }
 
