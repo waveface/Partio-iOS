@@ -21,6 +21,7 @@
 
 /* Action title for cancelling stuff
    ACTION_CANCEL
+   Cancel
    Cancel action
    Cancel adding event
    Cancel adding selected photos into collection
@@ -85,7 +86,7 @@
 /* Action marking article as favorite */
 "ACTION_MARK_FAVORITE" = "Favorite";
 
-/* No comment provided by engineer. */
+/* Ok */
 "ACTION_OK" = "OK";
 
 /* ACTION_OKAY
@@ -217,6 +218,9 @@
 
 /* Title for the composition view */
 "COMPOSITION_TITLE" = "Compose";
+
+/* Title of alert view to save to camera roll */
+"CONFIRM_SAVE_CAMERAROLL" = "Save to Camera Roll?";
 
 /* Title of view controller connecting services */
 "CONNECT_SERVICES_CONTROLLER_TITLE" = "Connections";
@@ -409,9 +413,6 @@
 
 /* Text for modal popup close button */
 "LABEL_MODAL_POPUP_CLOSE_BUTTON" = "Close";
-
-/* LABEL_SHARE_BUTTON */
-"LABEL_SHARE_BUTTON" = "Share";
 
 /* LABEL_SHARED_EVENTS */
 "LABEL_SHARED_EVENTS" = "All Events";

@@ -9,7 +9,6 @@
 #import "WAPhotoHighlightsViewController.h"
 #import "WAPhotoHighlightViewCell.h"
 #import "WADayPhotoPickerViewController.h"
-#import "WAPartioNavigationController.h"
 #import "WAAssetsLibraryManager.h"
 #import "WAOverlayBezel.h"
 #import "WAGeoLocation.h"
@@ -42,7 +41,7 @@
 + (id) viewControllerWithNavigationControllerWrapped {
   
   WAPhotoHighlightsViewController *vc = [[WAPhotoHighlightsViewController alloc] init];
-  WAPartioNavigationController *navigationController = [[WAPartioNavigationController alloc] initWithRootViewController:vc];
+  WANavigationController *navigationController = [[WANavigationController alloc] initWithRootViewController:vc];
   navigationController.navigationBarHidden = YES;
   navigationController.toolbarHidden = YES;
   return navigationController;

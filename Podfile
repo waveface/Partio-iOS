@@ -14,6 +14,7 @@ pod 'Reachability', '~> 3.1.0'
 pod 'ColorArt', '~> 0.0.6'
 pod 'StackBluriOS', '~> 0.0.1'
 pod 'BlocksKit', '~> 1.8.1'
+pod 'SMCalloutView', '~> 1.1.2'
 
 target :UnitTests do
 	link_with 'UnitTests'
