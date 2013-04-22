@@ -414,9 +414,6 @@
 /* Text for modal popup close button */
 "LABEL_MODAL_POPUP_CLOSE_BUTTON" = "關閉";
 
-/* LABEL_SHARE_BUTTON */
-"LABEL_SHARE_BUTTON" = "分享";
-
 /* LABEL_SHARED_EVENTS */
 "LABEL_SHARED_EVENTS" = "所有共享";
 

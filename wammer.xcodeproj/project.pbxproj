@@ -295,7 +295,6 @@
 		8056C9881682C4CC001C9199 /* WAWebPreviewViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8056C9871682C4CC001C9199 /* WAWebPreviewViewController.xib */; };
 		80638BF2164CA663005695E3 /* WATag.m in Sources */ = {isa = PBXBuildFile; fileRef = 80638BF1164CA663005695E3 /* WATag.m */; };
 		80638BFC164CA7DA005695E3 /* WATagGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = 80638BFB164CA7DA005695E3 /* WATagGroup.m */; };
-		8066D2C41723F1C900BD071E /* WASpotlightSlideFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 8066D2C31723F1C900BD071E /* WASpotlightSlideFlowLayout.m */; };
 		806A5C851623C6C500867E56 /* WAContextMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 806A5C841623C6C500867E56 /* WAContextMenuViewController.m */; };
 		806A5C9C16241E2800867E56 /* Cal.png in Resources */ = {isa = PBXBuildFile; fileRef = 806A5C8A16241E2800867E56 /* Cal.png */; };
 		806A5C9D16241E2800867E56 /* Cal@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 806A5C8B16241E2800867E56 /* Cal@2x.png */; };
@@ -449,6 +448,7 @@
 		DE0870B4171C085300FA2A5E /* FB@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DE0870B2171C085300FA2A5E /* FB@2x.png */; };
 		DE0870DF171CFDD200FA2A5E /* WASharedEventViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DE0870DB171CFDD200FA2A5E /* WASharedEventViewCell.m */; };
 		DE0870E0171CFDD200FA2A5E /* WASharedEventViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = DE0870DC171CFDD200FA2A5E /* WASharedEventViewCell.xib */; };
+		DE0870E1171CFDD200FA2A5E /* WASpotlightSlideFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = DE0870DE171CFDD200FA2A5E /* WASpotlightSlideFlowLayout.m */; };
 		DE46FC17165E228300CC4FFF /* WACalendarPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DE46FC16165E228300CC4FFF /* WACalendarPickerViewController.m */; };
 		DE67A4A21712BA0500099106 /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DE67A4A01712BA0400099106 /* AddressBook.framework */; };
 		DE67A4A31712BA0500099106 /* AddressBookUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DE67A4A11712BA0400099106 /* AddressBookUI.framework */; };
@@ -1362,8 +1362,6 @@
 		80638BF1164CA663005695E3 /* WATag.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WATag.m; sourceTree = "<group>"; };
 		80638BFA164CA7DA005695E3 /* WATagGroup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WATagGroup.h; sourceTree = "<group>"; };
 		80638BFB164CA7DA005695E3 /* WATagGroup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WATagGroup.m; sourceTree = "<group>"; };
-		8066D2C21723F1C900BD071E /* WASpotlightSlideFlowLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WASpotlightSlideFlowLayout.h; path = wammer/WASpotlightSlideFlowLayout.h; sourceTree = "<group>"; };
-		8066D2C31723F1C900BD071E /* WASpotlightSlideFlowLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WASpotlightSlideFlowLayout.m; path = wammer/WASpotlightSlideFlowLayout.m; sourceTree = "<group>"; };
 		806A5C831623C6C500867E56 /* WAContextMenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAContextMenuViewController.h; sourceTree = "<group>"; };
 		806A5C841623C6C500867E56 /* WAContextMenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAContextMenuViewController.m; sourceTree = "<group>"; };
 		806A5C8A16241E2800867E56 /* Cal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Cal.png; path = Resources/Cal.png; sourceTree = "<group>"; };
@@ -1572,6 +1570,8 @@
 		DE0870DA171CFDD100FA2A5E /* WASharedEventViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WASharedEventViewCell.h; path = wammer/WASharedEventViewCell.h; sourceTree = "<group>"; };
 		DE0870DB171CFDD200FA2A5E /* WASharedEventViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WASharedEventViewCell.m; path = wammer/WASharedEventViewCell.m; sourceTree = "<group>"; };
 		DE0870DC171CFDD200FA2A5E /* WASharedEventViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = WASharedEventViewCell.xib; path = wammer/WASharedEventViewCell.xib; sourceTree = "<group>"; };
+		DE0870DD171CFDD200FA2A5E /* WASpotlightSlideFlowLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WASpotlightSlideFlowLayout.h; path = wammer/WASpotlightSlideFlowLayout.h; sourceTree = "<group>"; };
+		DE0870DE171CFDD200FA2A5E /* WASpotlightSlideFlowLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WASpotlightSlideFlowLayout.m; path = wammer/WASpotlightSlideFlowLayout.m; sourceTree = "<group>"; };
 		DE2BBDD616761AC100EEF922 /* Kal.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Kal.xcodeproj; path = external/Kal/src/Kal.xcodeproj; sourceTree = SOURCE_ROOT; };
 		DE46FC15165E228300CC4FFF /* WACalendarPickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WACalendarPickerViewController.h; path = wammer/WACalendarPickerViewController.h; sourceTree = "<group>"; };
 		DE46FC16165E228300CC4FFF /* WACalendarPickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WACalendarPickerViewController.m; path = wammer/WACalendarPickerViewController.m; sourceTree = "<group>"; };
@@ -2793,8 +2793,8 @@
 				DE0870DA171CFDD100FA2A5E /* WASharedEventViewCell.h */,
 				DE0870DB171CFDD200FA2A5E /* WASharedEventViewCell.m */,
 				DE0870DC171CFDD200FA2A5E /* WASharedEventViewCell.xib */,
-				8066D2C21723F1C900BD071E /* WASpotlightSlideFlowLayout.h */,
-				8066D2C31723F1C900BD071E /* WASpotlightSlideFlowLayout.m */,
+				DE0870DD171CFDD200FA2A5E /* WASpotlightSlideFlowLayout.h */,
+				DE0870DE171CFDD200FA2A5E /* WASpotlightSlideFlowLayout.m */,
 				DE67A4BC1712BB7700099106 /* WAContactPickerViewController.h */,
 				DE67A4BD1712BB7700099106 /* WAContactPickerViewController.m */,
 				80C9F3811719B2E9003E7C6E /* WAContactPickerViewController.xib */,
@@ -5000,13 +5000,13 @@
 				80C9F37E17190372003E7C6E /* WAArticle.m in Sources */,
 				80C9F3871719B761003E7C6E /* WAContactPickerSectionHeaderView.m in Sources */,
 				DE0870DF171CFDD200FA2A5E /* WASharedEventViewCell.m in Sources */,
+				DE0870E1171CFDD200FA2A5E /* WASpotlightSlideFlowLayout.m in Sources */,
 				809A1756171D246C000AF6ED /* WAPartioSignupViewController.m in Sources */,
 				809A175E171D4EBC000AF6ED /* WATranslucentToolbar.m in Sources */,
 				80B3A3A3171FA58500A9B57B /* WAEventDetailsViewController.m in Sources */,
 				80B3A3B6171FA9F100A9B57B /* WAEventDetailsMapCell.m in Sources */,
 				800096071721235B0082E1B5 /* WAPartioNavigationBar.m in Sources */,
 				DEF38F5617219E5B0006DE2C /* WATransparentToolbar.m in Sources */,
-				8066D2C41723F1C900BD071E /* WASpotlightSlideFlowLayout.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

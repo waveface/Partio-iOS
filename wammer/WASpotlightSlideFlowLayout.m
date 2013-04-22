@@ -17,22 +17,15 @@
 @end
 @implementation WASpotlightSlideFlowLayout
 
-- (id)init
-{
-  self = [super init];
-  if (self) {
-    self.maxItemSize = 275.f;
-    self.minItemSize = 140.f;
-    self.itemWidth = 320.f;
-            
-    self.itemSize = CGSizeMake(self.itemWidth, self.minItemSize);
-    self.scrollDirection = UICollectionViewScrollDirectionVertical;
-    self.sectionInset = UIEdgeInsetsMake(0.f, 0.f, 0.f, 0.f);
-    self.minimumLineSpacing = 0.f;
-    
-  }
+- (void) prepareLayout {
+  self.scrollDirection = UICollectionViewScrollDirectionVertical;
+  self.sectionInset = UIEdgeInsetsMake(0.f, 0.f, 0.f, 0.f);
+  self.minimumLineSpacing = 0.f;
   
-  return self;
+  self.itemWidth = CGRectGetWidth(self.collectionView.frame);
+  self.minItemSize = 140.f;
+  self.maxItemSize = 275.f;
+
 }
 
 - (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)newBounds
@@ -80,11 +73,13 @@
 
 - (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)proposedContentOffset withScrollingVelocity:(CGPoint)velocity
 {
-  NSLog(@"Velocity: %f", velocity.y);
-  NSInteger base = (NSInteger)proposedContentOffset.y / self.minItemSize;
-  if (velocity.y > 0.f) {
-    base++;
-  }
+  NSInteger base = (NSInteger)self.collectionView.contentOffset.y / self.minItemSize;
+  if (velocity.y > 2.f || velocity.y < -2.f) {
+    base = (NSInteger)proposedContentOffset.y / self.minItemSize;
+    base += 1;
+  } else if (velocity.y > 0){
+    base += 1;
+  } 
   
   return CGPointMake(proposedContentOffset.x, base * self.minItemSize);
 }
