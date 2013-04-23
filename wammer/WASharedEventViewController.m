@@ -13,6 +13,7 @@
 #import "WATransparentToolbar.h"
 #import "WANavigationController.h"
 #import "WAGeoLocation.h"
+#import "WADefines.h"
 #import <CoreLocation/CoreLocation.h>
 #import "WADataStore.h"
 #import "WAPartioNavigationBar.h"
@@ -73,6 +74,8 @@ static NSString *kCellID = @"EventCell";
 {
   [super viewDidLoad];
   
+  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleCoreDataReinitialization:) name:kWACoreDataReinitialization object:nil];
+  
   self.navigationController.navigationBarHidden = YES;
   [self.navigationItem setTitle:NSLocalizedString(@"LABEL_SHARED_EVENTS", @"LABEL_SHARED_EVENTS")];
   self.navigationBar = [[WAPartioNavigationBar alloc] initWithFrame:CGRectMake(0.f, 0.f, CGRectGetWidth(self.view.frame), 44.f)];
@@ -108,6 +111,15 @@ static NSString *kCellID = @"EventCell";
 
 - (BOOL) shouldAutorotate {
   return YES;
+}
+
+- (void) handleCoreDataReinitialization:(id)sender {
+  
+  _managedObjectContext = nil;
+  _eventFetchedResultsController = nil;
+  [self eventFetchedResultsController];
+  [self.collectionView reloadData];
+  
 }
 
 - (NSUInteger) supportedInterfaceOrientations {
