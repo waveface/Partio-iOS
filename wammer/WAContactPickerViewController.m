@@ -39,9 +39,18 @@
   [super viewDidLoad];
   
   __weak WAContactPickerViewController *wSelf = self;
-  self.navigationItem.leftBarButtonItem = WAPartioBackButton(^{
-    [wSelf.navigationController popViewControllerAnimated:YES];
-  });
+  if (self.navigationController) {
+    self.navigationItem.leftBarButtonItem = WAPartioBackButton(^{
+      [wSelf.navigationController popViewControllerAnimated:YES];
+      if (self.onDismissHandler)
+        self.onDismissHandler();
+    });
+  } else {
+    self.navigationItem.leftBarButtonItem = (UIBarButtonItem*)WABarButtonItem(nil, NSLocalizedString(@"ACTION_CANCEL", @"cancel"), ^{
+      if (wSelf.onDismissHandler)
+        wSelf.onDismissHandler();
+    });
+  }
   self.navigationItem.title = NSLocalizedString(@"TITLE_INVITE_CONTACTS", @"TITLE_INVITE_CONTACTS");
   
   [self.navigationBar pushNavigationItem:self.navigationItem animated:NO];
