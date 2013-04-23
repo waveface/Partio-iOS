@@ -284,7 +284,7 @@ static NSString * const kWASharedEventViewController_CoachMarks = @"kWASharedEve
   [sharedDateFormatter setDateStyle:NSDateFormatterLongStyle];
   [sharedDateFormatter setTimeStyle:NSDateFormatterNoStyle];
   
-  NSDate *eDate = [[self.eventFetchedResultsController objectAtIndexPath:indexPath] valueForKey:@"creationDate"];
+  NSDate *eDate = [[self.eventFetchedResultsController objectAtIndexPath:indexPath] valueForKey:@"eventStartDate"];
   NSString *eventDate = [sharedDateFormatter stringFromDate:eDate];
   
   NSString *location = @"";

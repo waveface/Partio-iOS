@@ -33,6 +33,11 @@
   return YES;
 }
 
+- (CGSize)collectionViewContentSize {
+  NSInteger numOfItem = [self.collectionView numberOfItemsInSection:0];
+  return CGSizeMake(self.itemWidth, numOfItem * self.minItemSize + 135);
+}
+
 -(NSArray *)layoutAttributesForElementsInRect:(CGRect)rect
 {
   
