@@ -48,6 +48,7 @@ NSString * const kWACompositionSessionRequestedNotification = @"WACompositionSes
 NSString * const kWAApplicationDidReceiveRemoteURLNotification = @"WAApplicationDidReceiveRemoteURLNotification";
 NSString * const kWARemoteInterfaceDidObserveAuthenticationFailureNotification = @"WARemoteInterfaceDidObserveAuthenticationFailureNotification";
 NSString * const kWASettingsDidRequestActionNotification = @"kWASettingsDidRequestActionNotification";
+NSString * const kWACoreDataReinitialization = @"kWACoreDataReinitialization";
 
 NSString * const kWAFacebookDidLoginNotification = @"kWAFacebookDidLoginNotification";
 NSString * const kWAFacebookAppID = @"WAFacebookAppID";
