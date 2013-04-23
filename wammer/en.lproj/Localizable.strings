@@ -415,6 +415,9 @@
 /* Shows ON when auto import is turned on in the settings panel */
 "LABEL_AUTO_IMPORT_VALUE_ON" = "On";
 
+/* LABEL_INVITED_BUTTON */
+"LABEL_INVITED_BUTTON" = "Invited";
+
 /* Text for modal popup close button */
 "LABEL_MODAL_POPUP_CLOSE_BUTTON" = "Close";
 
@@ -615,7 +618,7 @@
 "TITLE_CALENDAR" = "Calendar";
 
 /* TITLE_ERROR_INVALID_EMAIL_FORMAT */
-"TITLE_ERROR_INVALID_EMAIL_FORMAT" = "TITLE_ERROR_INVALID_EMAIL_FORMAT";
+"TITLE_ERROR_INVALID_EMAIL_FORMAT" = "Oops, invalid email. Please input again.";
 
 /* Title of event details */
 "TITLE_EVENT_DETAILS" = "Details";
