@@ -21,6 +21,9 @@
 @property (nonatomic, weak) IBOutlet UIToolbar *toolbar;
 @property (nonatomic, weak) IBOutlet WAPartioNavigationBar *navigationBar;
 @property (nonatomic, strong) FBFriendPickerViewController *fbFriendPickerViewController;
+@property (nonatomic, strong) UITextField *textField;
+@property (nonatomic, strong) UITapGestureRecognizer *tap;
+
 @end
 
 @implementation WAContactPickerViewController
@@ -53,6 +56,12 @@
   
   self.toolbar.items = @[flexspace, [self shareBarButton], flexspace];
   [self.view addSubview:self.toolbar];
+  
+  self.textField = [[UITextField alloc] initWithFrame:CGRectMake(5.f, 5.f, 310.f, 34.f)];
+  self.tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissKeyboard)];
+  self.tap.cancelsTouchesInView = NO;
+  [self.view addGestureRecognizer:self.tap];
+  
 }
 
 - (UIBarButtonItem *)shareBarButton
@@ -64,6 +73,15 @@
   });
 }
 
+- (void)dismissKeyboard
+{
+  if ([self.textField isEditing]) {
+    [self.textField setText:@""];
+    [self.textField resignFirstResponder];
+    [self.tap setCancelsTouchesInView:NO];
+  }
+  
+}
 
 - (void)didReceiveMemoryWarning
 {
@@ -91,7 +109,7 @@
 {
   // Return the number of rows in the section.
   if (section == 0) {
-    return 3;
+    return 2;
     
   } else {
     return [_members count];
@@ -136,6 +154,7 @@
   if (cell == nil) {
     cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
   }
+  cell.selectionStyle = UITableViewCellSelectionStyleGray;
   
   [cell.textLabel setTextColor:[UIColor whiteColor]];
   [cell.detailTextLabel setFont:[UIFont fontWithName:@"OpenSans-Regular" size:14.f]];
@@ -145,29 +164,26 @@
     [cell.textLabel setFont:[UIFont fontWithName:@"OpenSans-Semibold" size:20.f]];
     
     if (indexPath.row == 0) {
-      [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
-      
       for (UIView *subview in cell.contentView.subviews) {
         [subview removeFromSuperview];
       }
       
-      UITextField *textField = [[UITextField alloc] initWithFrame:CGRectMake(5.f, 5.f, 310.f, 34.f)];
-      [textField setBorderStyle:UITextBorderStyleRoundedRect];
-      [textField setPlaceholder:NSLocalizedString(@"INPUT_RECEIVER_EMAIL", @"INPUT_RECEIVER_EMAIL")];
-      [textField setClearButtonMode:UITextFieldViewModeWhileEditing];
+      [self.textField setBorderStyle:UITextBorderStyleRoundedRect];
+      [self.textField setPlaceholder:NSLocalizedString(@"INPUT_RECEIVER_EMAIL", @"INPUT_RECEIVER_EMAIL")];
+      [self.textField setClearButtonMode:UITextFieldViewModeWhileEditing];
       
       // Manage keyboard for email input
-      [textField setAutocapitalizationType:UITextAutocapitalizationTypeNone];
-      [textField setAutocorrectionType:UITextAutocorrectionTypeNo];
-      [textField setSpellCheckingType:UITextSpellCheckingTypeNo];
-      [textField setEnablesReturnKeyAutomatically:YES];
-      [textField setKeyboardAppearance:UIKeyboardAppearanceDefault];
-      [textField setKeyboardType:UIKeyboardTypeEmailAddress];
-      [textField setReturnKeyType:UIReturnKeyDone];
-      [textField setSecureTextEntry:NO];
-      textField.delegate = self;
+      [self.textField setAutocapitalizationType:UITextAutocapitalizationTypeNone];
+      [self.textField setAutocorrectionType:UITextAutocorrectionTypeNo];
+      [self.textField setSpellCheckingType:UITextSpellCheckingTypeNo];
+      [self.textField setEnablesReturnKeyAutomatically:YES];
+      [self.textField setKeyboardAppearance:UIKeyboardAppearanceDefault];
+      [self.textField setKeyboardType:UIKeyboardTypeEmailAddress];
+      [self.textField setReturnKeyType:UIReturnKeyDone];
+      [self.textField setSecureTextEntry:NO];
+      self.textField.delegate = self;
       
-      [cell.contentView addSubview:textField];
+      [cell.contentView addSubview:self.textField];
       
       
     } else if (indexPath.row == 1) {
@@ -202,16 +218,15 @@
   return cell;
 }
 
-
 #pragma mark - UITextFieldDelegate
 
 - (void)textFieldDidEndEditing:(UITextField *)textField
 {
   NSLog(@"Email input: %@", textField.text);
-  if (textField.text) {
+  if (![textField.text isEqualToString:@""]) {
     [self addEmailIntoInvitedList:textField.text];
+    [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:_members.count-1 inSection:1]] withRowAnimation:UITableViewRowAnimationAutomatic];
   }
-  [self.tableView reloadData];
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
@@ -274,11 +289,17 @@
         [self.tableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:YES];
       }];
       
+      [self.tap setCancelsTouchesInView:YES];
+      
       [alert show];
       
     } else if (indexPath.row == 1) {
       ABPeoplePickerNavigationController *abPicker = [[ABPeoplePickerNavigationController alloc] init];
       abPicker.peoplePickerDelegate = self;
+      
+//      [abPicker setDisplayedProperties:@[[NSNumber numberWithInt:kABPersonFirstNameProperty],
+//                                         [NSNumber numberWithInt:kABPersonLastNameProperty],
+//                                         [NSNumber numberWithInt:kABPersonEmailProperty]]];
       
       [self presentViewController:abPicker animated:YES completion:nil];
     }
