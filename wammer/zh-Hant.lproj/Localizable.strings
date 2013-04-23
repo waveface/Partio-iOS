@@ -411,6 +411,9 @@
 /* Shows ON when auto import is turned on in the settings panel */
 "LABEL_AUTO_IMPORT_VALUE_ON" = "開啟";
 
+/* LABEL_INVITED_BUTTON */
+"LABEL_INVITED_BUTTON" = "已邀請";
+
 /* Text for modal popup close button */
 "LABEL_MODAL_POPUP_CLOSE_BUTTON" = "關閉";
 
