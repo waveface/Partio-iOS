@@ -13,7 +13,8 @@
 
 - (id)init;
 @property (nonatomic, strong) NSMutableArray *members;
-@property (copy) void (^onNextHandler)(NSArray *selectedContacts);
+@property (nonatomic, copy) void (^onNextHandler)(NSArray *selectedContacts);
+@property (nonatomic, copy) void (^onDismissHandler)();
 
 -(IBAction)showContactsPicker:(id)sender;
 
