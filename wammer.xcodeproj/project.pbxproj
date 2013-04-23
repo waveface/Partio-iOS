@@ -1990,7 +1990,7 @@
 		FFCCDF4615B41B0000AEBB85 /* WAUserGlyph@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "WAUserGlyph@2x.png"; path = "Resources/WAUserGlyph@2x.png"; sourceTree = "<group>"; };
 		FFCD325014B9EA4D0035C4F5 /* WAFile+WAAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WAFile+WAAdditions.h"; sourceTree = "<group>"; };
 		FFCD325114B9EA4D0035C4F5 /* WAFile+WAAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WAFile+WAAdditions.m"; sourceTree = "<group>"; };
-		FFCFE0FB142111E100B9E6AF /* partio.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = partio.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		FFCFE0FB142111E100B9E6AF /* Grupin.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Grupin.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FFD14F0514C5E24C0053116F /* Crashlytics.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = Crashlytics.framework; path = external/CrashlyticsSDK/Crashlytics.framework; sourceTree = "<group>"; };
 		FFD4F92E157E07F90027BF3F /* IRObjectQueue.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = IRObjectQueue.xcodeproj; path = external/IRObjectQueue/IRObjectQueue.xcodeproj; sourceTree = "<group>"; };
 		FFD5295515B94DCA008DA71B /* WALocalizedTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WALocalizedTextField.h; sourceTree = "<group>"; };
@@ -3148,7 +3148,7 @@
 		FF73A53F13D6C2CC00D54EC6 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				FFCFE0FB142111E100B9E6AF /* partio.app */,
+				FFCFE0FB142111E100B9E6AF /* Grupin.app */,
 				4B8CA96814BBE7BA006E06BB /* UnitTests.octest */,
 				7D0CDD00162E5A080027D35F /* StreamTests.octest */,
 			);
@@ -3912,7 +3912,7 @@
 			);
 			name = "wammer-iOS";
 			productName = "wammer-iOS";
-			productReference = FFCFE0FB142111E100B9E6AF /* partio.app */;
+			productReference = FFCFE0FB142111E100B9E6AF /* Grupin.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -5230,7 +5230,7 @@
 					"-weak_framework",
 					Social,
 				);
-				PRODUCT_NAME = partio;
+				PRODUCT_NAME = Grupin;
 				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos;
 				STREAM_BUNDLE_ID_SUFFIX = .beta;
@@ -5771,7 +5771,7 @@
 					"-weak_framework",
 					Social,
 				);
-				PRODUCT_NAME = partio;
+				PRODUCT_NAME = Grupin;
 				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos;
 				STREAM_BUNDLE_ID_SUFFIX = .develop;
@@ -5840,7 +5840,7 @@
 					"-weak_framework",
 					Social,
 				);
-				PRODUCT_NAME = partio;
+				PRODUCT_NAME = Grupin;
 				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos;
 				STREAM_BUNDLE_ID_SUFFIX = "";
