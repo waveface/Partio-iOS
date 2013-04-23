@@ -60,8 +60,9 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks = @"kWAPhotoTi
 @property (nonatomic, strong) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, strong) NSOperationQueue *imageDisplayQueue;
 
+@property (nonatomic, strong) NSManagedObjectID *representingArticleID;
 @property (nonatomic, strong) WAArticle *representingArticle;
-@property (nonatomic, strong) WAUser *user;
+@property (nonatomic, strong) NSDictionary *userInfo;
 @property (nonatomic, strong) NSArray *sortedImages;
 @property (nonatomic, strong) NSArray *allAssets;
 @property (nonatomic, strong) WAGeoLocation *geoLocation;
@@ -102,6 +103,7 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks = @"kWAPhotoTi
   self = [super initWithNibName:@"WAPhotoTimelineViewController" bundle:nil];
   if (self) {
     
+    self.representingArticleID = articleID;
     self.representingArticle = (WAArticle*)[self.managedObjectContext objectWithID:articleID];
     self.sortedImages = [self.representingArticle.files sortedArrayUsingComparator:^NSComparisonResult(WAFile *obj1, WAFile *obj2) {
       return [obj1.created compare:obj2.created];
@@ -180,18 +182,44 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks = @"kWAPhotoTi
     
     UIBarButtonItem *flexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
     
+    // add contacts button
     UIBarButtonItem *addContacts = WAPartioToolbarButton(nil, [UIImage imageNamed:@"AddPplBtn"],nil, ^{
+      WAContactPickerViewController *contactPicker = [[WAContactPickerViewController alloc] init];
+      __weak WAContactPickerViewController *wcp = contactPicker;
+      contactPicker.onNextHandler = ^(NSArray *selectedContacts){
+        [wcp dismissViewControllerAnimated:YES completion:nil];
+      };
       
+      contactPicker.onDismissHandler = ^{
+        [wcp dismissViewControllerAnimated:YES completion:nil];
+      };
+      
+      wSelf.modalPresentationStyle = UIModalPresentationCurrentContext;
+      [wSelf presentViewController:contactPicker animated:YES completion:nil];
     });
     
+    // add photos button
     UIBarButtonItem *addPhotos = WAPartioToolbarButton(nil, [UIImage imageNamed:@"AddPhotoBtn"], nil, ^{
       WADayPhotoPickerViewController *photoPicker = [[WADayPhotoPickerViewController alloc] initWithSuggestedDateRangeFrom:[self beginDate] to:[self endDate]];
       __weak WADayPhotoPickerViewController *wpp = photoPicker;
       photoPicker.onCancelHandler = ^{
         [wpp dismissViewControllerAnimated:YES completion:nil];
       };
+      
+      // done
       photoPicker.onNextHandler = ^(NSArray *selectedAssets) {
         [wpp dismissViewControllerAnimated:YES completion:nil];
+        
+        [wSelf updateSharingEventWithPhotoChanges:selectedAssets contacts:nil onComplete:^{
+          dispatch_async(dispatch_get_main_queue(), ^{
+            
+            wSelf.sortedImages = [self.representingArticle.files sortedArrayUsingComparator:^NSComparisonResult(WAFile *obj1, WAFile *obj2) {
+              return [obj1.created compare:obj2.created];
+            }];
+
+            [wSelf.collectionView reloadData];
+          });
+        }];
       };
       wSelf.modalPresentationStyle = UIModalPresentationCurrentContext;
       [wSelf presentViewController:photoPicker animated:YES completion:nil];
@@ -248,12 +276,12 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks = @"kWAPhotoTi
   return opq;
 }
 
-- (void) updateSharingEventWithPhotoChanges:(NSArray*)newAssets contacts:(NSArray*)contacts {
+- (void) updateSharingEventWithPhotoChanges:(NSArray*)newAssets contacts:(NSArray*)contacts onComplete:(void(^)(void))completionBlock {
   NSDate *importTime = [NSDate date];
   BOOL changed = NO;
   
   NSManagedObjectContext *moc = [[WADataStore defaultStore] autoUpdatingMOC];
-  WAArticle *article = (WAArticle*)[moc objectWithID:self.representingArticle.objectID];
+  WAArticle *article = (WAArticle*)[moc objectWithID:self.representingArticleID];
   
   for (ALAsset *asset in newAssets) {
     
@@ -264,7 +292,7 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks = @"kWAPhotoTi
     if (result.count) {
       WAFile *file = (WAFile*)result[0];
       if ([article.files containsObject:file])
-          break;
+          continue;
         [[article mutableOrderedSetValueForKey:@"files"] addObject:file];
       changed = YES;
     } else {
@@ -300,7 +328,9 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks = @"kWAPhotoTi
     NSArray *emailsFromContacts = [contacts valueForKey:@"email"];
     NSMutableArray *invitingEmails = [NSMutableArray array];
     for (NSArray *contactEmails in emailsFromContacts) {
-      [invitingEmails addObjectsFromArray:contactEmails];
+      [invitingEmails addObjectsFromArray:[contactEmails filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(NSString *evaluatedObject, NSDictionary *bindings) {
+        return evaluatedObject.length!=0;
+      }]]];
     }
     NSFetchRequest *fr = [[NSFetchRequest alloc] initWithEntityName:@"WAPeople"];
     fr.predicate = [NSPredicate predicateWithFormat:@"email IN %@", invitingEmails];
@@ -323,9 +353,10 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks = @"kWAPhotoTi
   
   if (changed) {
     article.dirty = (id)kCFBooleanTrue;
+    article.modificationDate = [NSDate date];
     NSError *savingError = nil;
     if ([moc save:&savingError]) {
-      NSLog(@"Sharing event successfully created");
+      NSLog(@"Sharing event successfully updated");
     } else {
       NSLog(@"error on creating a new import post for error: %@", savingError);
     }
@@ -333,6 +364,8 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks = @"kWAPhotoTi
     WAAppDelegate_iOS *appDelegate = (WAAppDelegate_iOS*)AppDelegate();
     [appDelegate.syncManager reload];
 
+    if (completionBlock)
+      completionBlock();
   }
 
 
@@ -403,7 +436,9 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks = @"kWAPhotoTi
     NSArray *emailsFromContacts = [contacts valueForKey:@"email"];
     NSMutableArray *invitingEmails = [NSMutableArray array];
     for (NSArray *contactEmails in emailsFromContacts) {
-      [invitingEmails addObjectsFromArray:contactEmails];
+      [invitingEmails addObjectsFromArray:[contactEmails filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(NSString *evaluatedObject, NSDictionary *bindings) {
+        return evaluatedObject.length!=0;
+      }]]];
     }
     NSFetchRequest *fr = [[NSFetchRequest alloc] initWithEntityName:@"WAPeople"];
     fr.predicate = [NSPredicate predicateWithFormat:@"email IN %@", invitingEmails];
@@ -418,9 +453,11 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks = @"kWAPhotoTi
       }
     }
     for (NSString *email in invitingEmails) {
-      WAPeople *person = (WAPeople*)[WAPeople objectInsertingIntoContext:moc withRemoteDictionary:@{}];
-      person.email = email;
-      [[article mutableSetValueForKey:@"people"] addObject:person];
+      if (email.length) {
+        WAPeople *person = (WAPeople*)[WAPeople objectInsertingIntoContext:moc withRemoteDictionary:@{}];
+        person.email = email;
+        [[article mutableSetValueForKey:@"people"] addObject:person];
+      }
     }
   }
   
@@ -505,7 +542,7 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks = @"kWAPhotoTi
         showSuccessBezel(^{
           [wSelf.navigationController dismissViewControllerAnimated:YES completion:nil];
         });
-
+      
       } else {
         
         WAPartioSignupViewController *createAccountVC = [[WAPartioSignupViewController alloc] initWithCompleteHandler:nil];
@@ -513,12 +550,16 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks = @"kWAPhotoTi
         createAccountVC.completeHandler = ^(NSError *error) {
         
           if ([WARemoteInterface sharedInterface].userToken) {
+            
             WAAppDelegate_iOS *appDelegate = (WAAppDelegate_iOS*)AppDelegate();
             [appDelegate bootstrapWhenUserLogin];
+            
           }
           
           [wSelf finishCreatingSharingEventForSharingTargets:results];
-          
+
+          [[NSNotificationCenter defaultCenter] postNotificationName:kWACoreDataReinitialization object:self];
+
           showSuccessBezel(^{
             [sCreateAccountVC dismissViewControllerAnimated:YES completion:^{
               [wSelf.navigationController dismissViewControllerAnimated:YES completion:nil];
@@ -634,18 +675,41 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks = @"kWAPhotoTi
 
 - (NSArray *)contacts {
   if (self.representingArticle) {
-    return [self.representingArticle.people allObjects];
+    return [self.representingArticle.sharingContacts allObjects];
   } else {
     return @[];
   }
 }
 
-- (WAUser*) user {
+- (NSDictionary*) userInfo {
 
   if (self.representingArticle) {
-    return self.representingArticle.owner;
+    NSString *creatorID = self.representingArticle.owner.identifier;
+    WAPeople *contact = nil;
+    for (WAPeople *person in self.representingArticle.sharingContacts) {
+      contact = person;
+    }
+
+    if (contact) {
+      NSMutableDictionary *dict = [NSMutableDictionary dictionary];
+      if (contact.avatarURL)
+        dict[@"avatarURL"] = contact.avatarURL;
+      if (contact.email)
+        dict[@"email"] = contact.email;
+      return dict;
+    } else {
+      return nil;
+    }
   } else {
-    return [[WADataStore defaultStore] mainUserInContext:self.managedObjectContext];
+    WAUser *user = [[WADataStore defaultStore] mainUserInContext:self.managedObjectContext];
+    NSMutableDictionary *dict = [NSMutableDictionary dictionary];
+    if (user.avatarURL)
+      dict[@"avatarURL"] = user.avatarURL;
+    if (user.avatar)
+      dict[@"avatar"] = user.avatar;
+    if (user.email)
+      dict[@"email"] = user.email;
+    return dict;
   }
   
 }
@@ -817,21 +881,29 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks = @"kWAPhotoTi
     [cover.detailButton addEventHandler:^(id sender) {
       __weak WAPhotoTimelineViewController *wSelf = self;
       NSDictionary *detailInfo = @{
-                               @"eventStartDate": [self beginDate],
-                               @"eventEndDate":[self endDate],
-                               @"latitude": @(self.coordinate.latitude),
-                               @"longitude":@(self.coordinate.longitude),
-                               @"checkins": [self checkins]
+                                  @"eventStartDate": [self beginDate],
+                                  @"eventEndDate":[self endDate],
+                                  @"latitude": @(self.coordinate.latitude),
+                                  @"longitude":@(self.coordinate.longitude),
+                                  @"checkins": [self checkins],
+                                  @"contacts": [self contacts]
                                };
       WAEventDetailsViewController *detail = [WAEventDetailsViewController wrappedNavigationControllerForDetailInfo:detailInfo];
       [wSelf presentViewController:detail animated:YES completion:nil];
     } forControlEvents:UIControlEventTouchUpInside];
 
-    WAUser *user = [self user];
-    cover.avatarView.image = user.avatar;
+    NSDictionary *user = self.userInfo;
+    cover.avatarView.image = [UIImage imageNamed:@"avatar"];
+    if (user[@"avatarURL"]) {
+      [cover.avatarView setPathToNetworkImage:user[@"avatar"] forDisplaySize:cover.avatarView.frame.size];
+    } else {
+      if (user[@"avatar"]) {
+        cover.avatarView.image = user[@"avatar"];
+      }
+    }
 
     if (self.representingArticle)
-      cover.informationLabel.text = [NSString stringWithFormat:@"%@ with some other %d friends.", self.user.nickname, self.representingArticle.people.count];
+      cover.informationLabel.text = [NSString stringWithFormat:@"with some other %d friends.", self.representingArticle.sharingContacts.count];
     else
       cover.informationLabel.text = @"Invite more people to share photos together with you.";
     return cover;
