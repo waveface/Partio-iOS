@@ -105,14 +105,26 @@
   NSParameterAssert(anIdentifier);
   NSParameterAssert(aGroupIdentifier);
   
-  [self.engine fireAPIRequestNamed:@"posts/getSingle" withArguments:@{@"group_id": aGroupIdentifier,
-   @"post_id": anIdentifier} options:nil validator:WARemoteInterfaceGenericNoErrorValidator() successHandler: ^ (NSDictionary *inResponseOrNil, IRWebAPIRequestContext *inResponseContext) {
+  NSMutableDictionary *arguments = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+                                    aGroupIdentifier, @"group_id",
+                                    nil];
+  
+  arguments[@"post_id_list"] = [@[anIdentifier] JSONString];
+  arguments[@"component_options"] = [@[@"content"] JSONString];
+
+  [self.engine
+   fireAPIRequestNamed:@"pio_posts/fetchByFilter"
+   withArguments:arguments
+   options:nil
+   validator:WARemoteInterfaceGenericNoErrorValidator()
+   successHandler:^(NSDictionary *inResponseOrNil, IRWebAPIRequestContext *inResponseContext) {
      
      if (!successBlock)
        return;
      
+     NSArray *posts = [inResponseOrNil valueForKeyPath:@"posts"];
      successBlock(
-	        [inResponseOrNil valueForKeyPath:@"post"]
+                  posts.count ? posts[0] : nil
 	        );
      
    } failureHandler:WARemoteInterfaceGenericFailureHandler(failureBlock)];
@@ -207,9 +219,9 @@
   
 }
 
-- (void) updatePost:(NSString *)postID inGroup:(NSString *)groupID withText:(NSString *)text attachments:(NSArray *)attachmentIDs mainAttachment:(NSString *)mainAttachmentID type:(WAArticleType)postType eventType:(WAEventArticleType)eventType favorite:(BOOL)isFavorite hidden:(BOOL)isHidden replacingDataWithDate:(NSDate *)lastKnownModificationDate updateTime:(NSDate *)updateTime onSuccess:(void(^)(NSDictionary *postRep))successBlock onFailure:(void(^)(NSError *error))failureBlock {
+- (void) updatePost:(NSString *)postID inGroup:(NSString *)groupID withText:(NSString *)text attachments:(NSArray *)attachmentIDs mainAttachment:(NSString *)mainAttachmentID type:(WAArticleType)postType eventType:(WAEventArticleType)eventType favorite:(BOOL)isFavorite hidden:(BOOL)isHidden replacingDataWithDate:(NSDate *)lastKnownModificationDate updateTime:(NSDate *)updateTime eventStartTime:(NSDate*)eventStartTime eventEndTime:(NSDate*)eventEndTime invitingEmails:(NSArray*)emails location:(NSDictionary*)location checkins:(NSArray*)checkins onSuccess:(void(^)(NSDictionary *postRep))successBlock onFailure:(void(^)(NSError *error))failureBlock {
   
-  NSMutableDictionary *postEntity = [[[self class] postEntityWithGroupID:groupID postID:postID text:text attachments:attachmentIDs mainAttachment:mainAttachmentID type:postType eventType:eventType isFavorite:isFavorite isHidden:isHidden createTime:nil updateTime:updateTime eventStartTime:nil eventEndTime:nil invitingEmails:nil location:nil checkins:nil] mutableCopy];
+  NSMutableDictionary *postEntity = [[[self class] postEntityWithGroupID:groupID postID:postID text:text attachments:attachmentIDs mainAttachment:mainAttachmentID type:postType eventType:eventType isFavorite:isFavorite isHidden:isHidden createTime:nil updateTime:updateTime eventStartTime:eventStartTime eventEndTime:eventEndTime invitingEmails:emails location:location checkins:checkins] mutableCopy];
   
   if (lastKnownModificationDate) {
     
@@ -223,7 +235,7 @@
     
   }
   
-  [self.engine fireAPIRequestNamed:@"posts/update" withArguments:nil options:WARemoteInterfaceEnginePostFormEncodedOptionsDictionary(postEntity, nil) validator:WARemoteInterfaceGenericNoErrorValidator() successHandler:^(NSDictionary *inResponseOrNil, IRWebAPIRequestContext *inResponseContext) {
+  [self.engine fireAPIRequestNamed:@"pio_posts/update" withArguments:nil options:WARemoteInterfaceEnginePostFormEncodedOptionsDictionary(postEntity, nil) validator:WARemoteInterfaceGenericNoErrorValidator() successHandler:^(NSDictionary *inResponseOrNil, IRWebAPIRequestContext *inResponseContext) {
     
     if (!successBlock)
       return;

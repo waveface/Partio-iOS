@@ -59,27 +59,25 @@
   self.imageDisplayQueue = [[NSOperationQueue alloc] init];
   self.imageDisplayQueue.maxConcurrentOperationCount = 1;
   
-  if (self.navigationController) {
-    __weak WADayPhotoPickerViewController *wSelf = self;
-    UIBarButtonItem *buttonItem = [[UIBarButtonItem alloc] initWithTitle:@"Next" style:UIBarButtonItemStyleBordered handler:^(id sender) {
-      if (wSelf.onNextHandler)
-        wSelf.onNextHandler(wSelf.selectedAssets);
-    }];
+  __weak WADayPhotoPickerViewController *wSelf = self;
+  UIBarButtonItem *buttonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"NEXT_ACTION", @"Next") style:UIBarButtonItemStyleBordered handler:^(id sender) {
+    if (wSelf.onNextHandler)
+      wSelf.onNextHandler(wSelf.selectedAssets);
+  }];
 
-    self.navigationItem.rightBarButtonItem = buttonItem;
-    
-    if (!self.onCancelHandler) {
-      self.navigationItem.leftBarButtonItem = WAPartioBackButton(^{
-        [wSelf.navigationController popViewControllerAnimated:YES];
-      });
-    } else {
-      self.navigationItem.leftBarButtonItem = (UIBarButtonItem*)WABarButtonItem(nil, @"Cancel", ^{
-        wSelf.onCancelHandler();
-      });
-    }
-    self.navigationItem.title = NSLocalizedString(@"TITLE_OF_DAY_PHOTO_PICKER", @"Title of the day photo picker view");
-
+  self.navigationItem.rightBarButtonItem = buttonItem;
+  
+  if (!self.onCancelHandler) {
+    self.navigationItem.leftBarButtonItem = WAPartioBackButton(^{
+      [wSelf.navigationController popViewControllerAnimated:YES];
+    });
+  } else {
+    self.navigationItem.leftBarButtonItem = (UIBarButtonItem*)WABarButtonItem(nil, NSLocalizedString(@"ACTION_CANCEL", @"Cancel"), ^{
+      wSelf.onCancelHandler();
+    });
   }
+  self.navigationItem.title = NSLocalizedString(@"TITLE_OF_DAY_PHOTO_PICKER", @"Title of the day photo picker view");
+
   [self.navigationBar pushNavigationItem:self.navigationItem animated:NO];
   
   self.collectionView.allowsMultipleSelection = YES;
@@ -108,26 +106,26 @@
       [wSelf.collectionView scrollToItemAtIndexPath:[wSelf indexPathForAsset:wSelf.selectedAssets[0]] atScrollPosition:UICollectionViewScrollPositionTop animated:YES];
     } else if (self.selectedRangeFromDate && self.selectedRangeToDate) {
       
-      NSInteger idx = 0, firstIdx = 0;
       for (ALAsset *asset in self.allTimeSortedAssets) {
         NSDate *assetDate = [asset valueForProperty:ALAssetPropertyDate];
         if ([assetDate compare:self.selectedRangeFromDate] == NSOrderedAscending)
           break;
         
         if ([assetDate compare:self.selectedRangeToDate] == NSOrderedDescending) {
-          idx ++;
           continue;
-        }
-        if (!self.selectedAssets.count) {
-          firstIdx = idx;
         }
         [self.selectedAssets addObject:asset];
         
-        idx++;
       }
-
+      
       [wSelf.collectionView reloadData];
-      [wSelf.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForRow:firstIdx inSection:0] atScrollPosition:UICollectionViewScrollPositionTop animated:YES];
+      if (self.selectedAssets.count) {
+        self.navigationItem.rightBarButtonItem.enabled = YES;
+        NSIndexPath *indexPath = [wSelf indexPathForAsset:self.selectedAssets[0]];
+        dispatch_async(dispatch_get_main_queue(), ^{
+          [wSelf.collectionView scrollToItemAtIndexPath:indexPath atScrollPosition:UICollectionViewScrollPositionTop animated:YES];
+        });
+      }
     } else {
       [wSelf.collectionView reloadData];
     }

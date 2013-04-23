@@ -81,6 +81,7 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
     @"gps": @"location",
     @"checkins": @"checkins",
     @"people": @"people",
+    @"shared_users": @"sharingContacts",
     @"extra_parameters": @"descriptiveTags",
     };
     
@@ -122,6 +123,7 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
   @"representingFile": @"WAFile",
   @"gps": @"WALocation",
   @"people": @"WAPeople",
+           @"shared_users": @"WAPeople",
   @"checkins": @"WALocation",
   @"tags": @"WATag",
   @"eventDay": @"WAEventDay",
@@ -196,6 +198,13 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
   NSArray *people = incomingRepresentation[@"people"];
   if (!people || people.count == 0) {
     [returnedDictionary removeObjectForKey:@"people"];
+  }
+  
+  NSArray *sharedPeople = incomingRepresentation[@"shared_users"];
+  if (!sharedPeople.count) {
+    [returnedDictionary removeObjectForKey:@"shared_users"];
+  } else {
+    NSLog(@"shared_users: %@", sharedPeople);
   }
   
   NSArray *tags = incomingRepresentation[@"tags"];
@@ -280,7 +289,7 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
   NSDate * const postModificationDate = self.modificationDate;
   NSDate * const eventStartTime = self.eventStartDate;
   NSDate * const eventEndTime = self.eventEndDate;
-  NSArray * invitingEmails = [(NSSet*)[self.people valueForKey:@"email"] allObjects];
+  NSArray * invitingEmails = [(NSSet*)[self.sharingContacts valueForKey:@"email"] allObjects];
   WAEventArticleType eventType = [self.eventType intValue];
   
   NSMutableDictionary *postLocation = nil;
@@ -565,6 +574,11 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 				hidden:isHidden
  replacingDataWithDate:lastPostModDate
 			updateTime:postModificationDate
+        eventStartTime:eventStartTime
+          eventEndTime:eventEndTime
+        invitingEmails:invitingEmails
+              location:postLocation
+              checkins:nil
 			 onSuccess:^(NSDictionary *postRep) {
 	
 			   callback(postRep);
