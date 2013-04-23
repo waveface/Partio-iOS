@@ -35,9 +35,11 @@
 	dispatch_once(&onceToken, ^{
     
 		mapping = [NSDictionary dictionaryWithObjectsAndKeys:
-							 @"name", @"name",
-							 @"avatarURL", @"avatar",
-							 nil];
+                   @"name", @"name",
+                   @"email", @"email",
+                   @"avatarURL", @"avatar_url",
+                   @"avatarURL", @"avatar",
+                   nil];
 		
 	});
 	

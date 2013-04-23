@@ -246,7 +246,7 @@ static NSString *kCellID = @"EventCell";
 
               }];
   
-  NSInteger pplNumber = [[[self.eventFetchedResultsController objectAtIndexPath:indexPath] valueForKey:@"people"] count];
+  NSInteger pplNumber = [[[self.eventFetchedResultsController objectAtIndexPath:indexPath] valueForKey:@"sharingContacts"] count];
   NSInteger photoNumbers = [[[self.eventFetchedResultsController objectAtIndexPath:indexPath] valueForKey:@"files"] count];
   
   static NSDateFormatter *sharedDateFormatter;
