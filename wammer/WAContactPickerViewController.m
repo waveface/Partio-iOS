@@ -131,6 +131,7 @@
   [headerView.title setText: NSLocalizedString(@"MEMBERS_LABEL_CONTACT_PICKER", @"MEMBERS_LABEL_CONTACT_PICKER")];
   [headerView.title setFont:[UIFont fontWithName:@"OpenSans-Semibold" size:14.f]];
   [headerView.title setTextColor:[UIColor whiteColor]];
+  [headerView.title setTextAlignment:NSTextAlignmentCenter];
   
   [headerView.layer setMasksToBounds:NO];
   [headerView.layer setShadowPath:[[UIBezierPath bezierPathWithRect:CGRectMake(0.f, 0.f, 320.f, 22.f)] CGPath]];
@@ -225,24 +226,16 @@
     }
     
     cell.accessoryType = UITableViewCellAccessoryCheckmark;
-    cell.accessoryView = [self checkedButton];
+    cell.accessoryView = [self checkmark];
     
   }
   
   return cell;
 }
 
-- (UIButton *)checkedButton
+- (UIImageView *)checkmark
 {
-  UIButton *aButton = [UIButton buttonWithType:UIButtonTypeCustom];
-  [aButton setFrame:CGRectMake(0.f, 0.f, 75.f, 30.f)];
-  [aButton setImage:[UIImage imageNamed:@"checked"] forState:UIControlStateNormal];
-  [aButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-  [aButton.layer setCornerRadius:15.f];
-  [aButton setClipsToBounds:YES];
-  [aButton setEnabled:NO];
-  
-  return aButton;
+  return [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Checked"]];
 }
 
 - (UIButton *)invitedButton
@@ -265,7 +258,7 @@
   UIButton *aButton = [UIButton buttonWithType:UIButtonTypeCustom];
   [aButton setFrame:CGRectMake(0.f, 0.f, 75.f, 30.f)];
   [aButton setBackgroundColor:[UIColor colorWithRed:0.984 green:0.804 blue:0.02 alpha:1.0]];
-  [aButton setTitle:NSLocalizedString(@"LABEL_INVITED_BUTTON", @"LABEL_INVITED_BUTTON") forState:UIControlStateNormal];
+  [aButton setTitle:NSLocalizedString(@"LABEL_NUDGE_BUTTON", @"LABEL_NUDGE_BUTTON") forState:UIControlStateNormal];
   [aButton.titleLabel setFont:[UIFont fontWithName:@"OpenSans-Regular" size:18.f]];
   [aButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
   [aButton.layer setCornerRadius:15.f];
