@@ -9,7 +9,6 @@
 #import "WAContactPickerViewController.h"
 #import <QuartzCore/QuartzCore.h>
 #import "WAAppearance.h"
-#import "WATranslucentToolbar.h"
 #import "WAPartioNavigationBar.h"
 
 #import "WAContactPickerSectionHeaderView.h"
@@ -19,7 +18,7 @@
 @interface WAContactPickerViewController () <UITableViewDelegate, UITableViewDataSource, FBFriendPickerDelegate, UITextFieldDelegate>
 @property (nonatomic, weak) IBOutlet UITableView *tableView;
 @property (nonatomic, weak) IBOutlet UIToolbar *toolbar;
-@property (nonatomic, weak) IBOutlet WAPartioNavigationBar *navigationBar;
+@property (nonatomic, strong) IBOutlet WAPartioNavigationBar *navigationBar;
 @property (nonatomic, strong) FBFriendPickerViewController *fbFriendPickerViewController;
 @property (nonatomic, strong) UITextField *textField;
 @property (nonatomic, strong) UITapGestureRecognizer *tap;
@@ -40,6 +39,7 @@
 - (void)viewDidLoad
 {
   [super viewDidLoad];
+  [self.tableView setBackgroundColor:[UIColor colorWithRed:0.168 green:0.168 blue:0.168 alpha:1]];
   
   __weak WAContactPickerViewController *wSelf = self;
   if (self.navigationController) {
@@ -56,8 +56,10 @@
   }
   self.navigationItem.title = NSLocalizedString(@"TITLE_INVITE_CONTACTS", @"TITLE_INVITE_CONTACTS");
   
+  self.navigationBar = [[WAPartioNavigationBar alloc] initWithFrame:CGRectMake(0.f, 0.f, CGRectGetWidth(self.view.frame), 44.f)];
   [self.navigationBar pushNavigationItem:self.navigationItem animated:NO];
-
+  [self.view addSubview:self.navigationBar];
+  
   [self.toolbar setBackgroundImage:[[UIImage alloc] init] forToolbarPosition:UIToolbarPositionAny barMetrics:UIBarMetricsDefault];
   self.toolbar.backgroundColor = [UIColor colorWithWhite:0.0f alpha:0.4f];
   UIBarButtonItem *flexspace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
@@ -126,20 +128,8 @@
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-  WAContactPickerSectionHeaderView *headerView = [[WAContactPickerSectionHeaderView alloc] initWithFrame:CGRectMake(0.f, 0.f, 320.f, 22.f)];
+  WAContactPickerSectionHeaderView *headerView = [[WAContactPickerSectionHeaderView alloc] initWithFrame:CGRectMake(0.f, 0.f, 320.f, 24.f)];
   headerView.backgroundColor = tableView.backgroundColor;
-  [headerView.title setText: NSLocalizedString(@"MEMBERS_LABEL_CONTACT_PICKER", @"MEMBERS_LABEL_CONTACT_PICKER")];
-  [headerView.title setFont:[UIFont fontWithName:@"OpenSans-Semibold" size:14.f]];
-  [headerView.title setTextColor:[UIColor whiteColor]];
-  [headerView.title setTextAlignment:NSTextAlignmentCenter];
-  
-  [headerView.layer setMasksToBounds:NO];
-  [headerView.layer setShadowPath:[[UIBezierPath bezierPathWithRect:CGRectMake(0.f, 0.f, 320.f, 22.f)] CGPath]];
-  [headerView.layer setDoubleSided:YES];
-  [headerView.layer setShadowRadius:2.f];
-  [headerView.layer setShadowOffset:CGSizeMake(0.f, 2.f)];
-  [headerView.layer setShadowColor:[[UIColor blackColor] CGColor]];
-  [headerView.layer setShadowOpacity:0.5f];
 
   return headerView;
 }
@@ -150,7 +140,7 @@
     return 0.f;
   
   } else {
-    return 22.f;
+    return 24.f;
   
   }
 }
@@ -165,7 +155,7 @@
   cell.selectionStyle = UITableViewCellSelectionStyleGray;
   
   [cell.textLabel setTextColor:[UIColor whiteColor]];
-  [cell.detailTextLabel setFont:[UIFont fontWithName:@"OpenSans-Regular" size:14.f]];
+  [cell.detailTextLabel setFont:[UIFont fontWithName:@"OpenSans-Regular" size:10.f]];
   [cell.detailTextLabel setTextColor:[UIColor colorWithRed:0.537 green:0.537 blue:0.537 alpha:1.0]];
   
   if (indexPath.section == 0) {
