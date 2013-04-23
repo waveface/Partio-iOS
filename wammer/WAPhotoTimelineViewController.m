@@ -338,7 +338,7 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks = @"kWAPhotoTi
     NSArray *peopleFound = [moc executeFetchRequest:fr error:&error];
     if (peopleFound.count) {
       for (WAPeople *person in peopleFound) {
-        [[article mutableSetValueForKey:@"people"] addObject:person];
+        [[article mutableSetValueForKey:@"sharingContacts"] addObject:person];
         if ([invitingEmails indexOfObject:person.email] != NSNotFound) {
           [invitingEmails removeObject:person.email];
         }
@@ -347,7 +347,7 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks = @"kWAPhotoTi
     for (NSString *email in invitingEmails) {
       WAPeople *person = (WAPeople*)[WAPeople objectInsertingIntoContext:moc withRemoteDictionary:@{}];
       person.email = email;
-      [[article mutableSetValueForKey:@"people"] addObject:person];
+      [[article mutableSetValueForKey:@"sharingContacts"] addObject:person];
     }
   }
   
@@ -446,7 +446,7 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks = @"kWAPhotoTi
     NSArray *peopleFound = [moc executeFetchRequest:fr error:&error];
     if (peopleFound.count) {
       for (WAPeople *person in peopleFound) {
-        [[article mutableSetValueForKey:@"people"] addObject:person];
+        [[article mutableSetValueForKey:@"sharingContacts"] addObject:person];
         if ([invitingEmails indexOfObject:person.email] != NSNotFound) {
           [invitingEmails removeObject:person.email];
         }
@@ -456,7 +456,7 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks = @"kWAPhotoTi
       if (email.length) {
         WAPeople *person = (WAPeople*)[WAPeople objectInsertingIntoContext:moc withRemoteDictionary:@{}];
         person.email = email;
-        [[article mutableSetValueForKey:@"people"] addObject:person];
+        [[article mutableSetValueForKey:@"sharingContacts"] addObject:person];
       }
     }
   }
@@ -893,9 +893,9 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks = @"kWAPhotoTi
     } forControlEvents:UIControlEventTouchUpInside];
 
     NSDictionary *user = self.userInfo;
-    cover.avatarView.image = [UIImage imageNamed:@"avatar"];
+    cover.avatarView.image = [UIImage imageNamed:@"Avatar"];
     if (user[@"avatarURL"]) {
-      [cover.avatarView setPathToNetworkImage:user[@"avatar"] forDisplaySize:cover.avatarView.frame.size];
+      [cover.avatarView setPathToNetworkImage:user[@"Avatar"] forDisplaySize:cover.avatarView.frame.size];
     } else {
       if (user[@"avatar"]) {
         cover.avatarView.image = user[@"avatar"];
