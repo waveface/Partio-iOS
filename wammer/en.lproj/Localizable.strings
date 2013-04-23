@@ -403,6 +403,12 @@
 /* INPUT_RECEIVER_EMAIL */
 "INPUT_RECEIVER_EMAIL" = "Input Email";
 
+/* Instruction shown above the create button in the event list view. */
+"INSTRUCTION_IN_EVENTLIST_CREATE_BUTTON" = "Start here to share";
+
+/* The instruction show to go next in the preview view */
+"INSTRUCTION_IN_PREVIEW_SHARE_BUTTON" = "Tap Next to invite your friends.";
+
 /* Title on introduction pages */
 "INTRODUCTION_TITLE" = "What is aostream?";
 

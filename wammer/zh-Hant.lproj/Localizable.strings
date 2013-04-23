@@ -403,6 +403,12 @@
 /* INPUT_RECEIVER_EMAIL */
 "INPUT_RECEIVER_EMAIL" = "輸入電子郵件信箱";
 
+/* Instruction shown above the create button in the event list view. */
+"INSTRUCTION_IN_EVENTLIST_CREATE_BUTTON" = "來開始分享照片吧！";
+
+/* The instruction show to go next in the preview view */
+"INSTRUCTION_IN_PREVIEW_SHARE_BUTTON" = "點「下一步」來邀請朋友";
+
 /* Title on introduction pages */
 "INTRODUCTION_TITLE" = "aostream 是什麼？";
 

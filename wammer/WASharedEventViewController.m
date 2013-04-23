@@ -18,6 +18,8 @@
 #import "WADataStore.h"
 #import "WAPartioNavigationBar.h"
 #import "NSDate+WAAdditions.h"
+#import <SMCalloutView/SMCalloutView.h>
+#import <BlocksKit/BlocksKit.h>
 #import <QuartzCore/QuartzCore.h>
 
 @interface WASharedEventViewController ()
@@ -26,11 +28,16 @@
 @property (nonatomic, strong) NSFetchedResultsController *eventFetchedResultsController;
 @property (nonatomic, strong) NSMutableArray *objectChanges;
 @property (nonatomic, strong) WAPartioNavigationBar *navigationBar;
-@property (nonatomic, strong) IBOutlet UICollectionView *collectionView;
+@property (nonatomic, weak) IBOutlet UICollectionView *collectionView;
+@property (nonatomic, weak) IBOutlet UIButton *creationButton;
+
+@property (nonatomic, strong) UITapGestureRecognizer *tapGesture;
+@property (nonatomic, strong) SMCalloutView *shareInstructionView;
 
 @end
 
-static NSString *kCellID = @"EventCell";
+static NSString * const kCellID = @"EventCell";
+static NSString * const kWASharedEventViewController_CoachMarks = @"kWASharedEventViewController_CoachMarks";
 
 @implementation WASharedEventViewController
 
@@ -96,10 +103,28 @@ static NSString *kCellID = @"EventCell";
 {
   [super viewDidAppear:animated];
   
-  if (![self.eventFetchedResultsController.fetchedObjects count]) {
-    [self shareNewEventFromHighlight:nil];
+  BOOL coachmarkShown = [[NSUserDefaults standardUserDefaults] boolForKey:kWASharedEventViewController_CoachMarks];
+  if (!coachmarkShown) {
+    __weak WASharedEventViewController *wSelf = self;
+    if (!self.shareInstructionView) {
+      self.shareInstructionView = [SMCalloutView new];
+      self.shareInstructionView.title = NSLocalizedString(@"INSTRUCTION_IN_EVENTLIST_CREATE_BUTTON", @"Instruction shown above the create button in the event list view.");
+      [self.shareInstructionView presentCalloutFromRect:CGRectMake(self.creationButton.frame.origin.x +self.creationButton.frame.size.width/2, self.creationButton.frame.origin.y, 1, 1) inView:self.view constrainedToView:self.view permittedArrowDirections:SMCalloutArrowDirectionDown animated:YES];
+      
+      self.tapGesture = [[UITapGestureRecognizer alloc] initWithHandler:^(UIGestureRecognizer *sender, UIGestureRecognizerState state, CGPoint location) {
+        if (wSelf.shareInstructionView) {
+          [wSelf.shareInstructionView dismissCalloutAnimated:YES];
+          wSelf.shareInstructionView = nil;
+        }
+        [wSelf.view removeGestureRecognizer:wSelf.tapGesture];
+        wSelf.tapGesture = nil;
+      }];
+      [self.view addGestureRecognizer:self.tapGesture];
+    }
     
-  } 
+    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:kWASharedEventViewController_CoachMarks];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+  }
   
 }
 
@@ -107,6 +132,11 @@ static NSString *kCellID = @"EventCell";
 {
   [super didReceiveMemoryWarning];
   // Dispose of any resources that can be recreated.
+}
+
+- (void) dealloc {
+  if (self.tapGesture)
+    [self.view removeGestureRecognizer:self.tapGesture];
 }
 
 - (BOOL) shouldAutorotate {
@@ -314,6 +344,13 @@ static NSString *kCellID = @"EventCell";
 
 - (IBAction)shareNewEventFromHighlight:(id)sender
 {
+  if (self.shareInstructionView) {
+    [self.shareInstructionView dismissCalloutAnimated:YES];
+    self.shareInstructionView = nil;
+  }
+  [self.view removeGestureRecognizer:self.tapGesture];
+  self.tapGesture = nil;
+
   WANavigationController *phVC = [WAPhotoHighlightsViewController viewControllerWithNavigationControllerWrapped];
   [self presentViewController:phVC animated:YES completion:nil];
 }

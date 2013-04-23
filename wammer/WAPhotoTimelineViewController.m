@@ -246,7 +246,7 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks = @"kWAPhotoTi
     __weak WAPhotoTimelineViewController *wSelf = self;
     if (!self.shareInstructionView) {
       self.shareInstructionView = [SMCalloutView new];
-      self.shareInstructionView.title = @"Tap Next to invite more friends!";
+      self.shareInstructionView.title = NSLocalizedString(@"INSTRUCTION_IN_PREVIEW_SHARE_BUTTON", @"The instruction show to go next in the preview view");
       [self.shareInstructionView presentCalloutFromRect:CGRectMake(self.view.frame.size.width/2, self.view.frame.size.height-44, 1, 1) inView:self.view constrainedToView:self.view permittedArrowDirections:SMCalloutArrowDirectionDown animated:YES];
       self.tapGesture = [[UITapGestureRecognizer alloc] initWithHandler:^(UIGestureRecognizer *sender, UIGestureRecognizerState state, CGPoint location) {
         if (wSelf.shareInstructionView) {
