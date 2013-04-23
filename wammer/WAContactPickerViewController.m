@@ -18,7 +18,7 @@
 
 @interface WAContactPickerViewController () <UITableViewDelegate, UITableViewDataSource, FBFriendPickerDelegate, UITextFieldDelegate>
 @property (nonatomic, weak) IBOutlet UITableView *tableView;
-@property (nonatomic, strong) WATranslucentToolbar *toolbar;
+@property (nonatomic, weak) IBOutlet UIToolbar *toolbar;
 @property (nonatomic, weak) IBOutlet WAPartioNavigationBar *navigationBar;
 @property (nonatomic, strong) FBFriendPickerViewController *fbFriendPickerViewController;
 @property (nonatomic, strong) UITextField *textField;
@@ -42,28 +42,33 @@
   [super viewDidLoad];
   
   __weak WAContactPickerViewController *wSelf = self;
-  self.navigationItem.leftBarButtonItem = WAPartioBackButton(^{
-    [wSelf.navigationController popViewControllerAnimated:YES];
-  });
+  if (self.navigationController) {
+    self.navigationItem.leftBarButtonItem = WAPartioBackButton(^{
+      [wSelf.navigationController popViewControllerAnimated:YES];
+      if (self.onDismissHandler)
+        self.onDismissHandler();
+    });
+  } else {
+    self.navigationItem.leftBarButtonItem = (UIBarButtonItem*)WABarButtonItem(nil, NSLocalizedString(@"ACTION_CANCEL", @"cancel"), ^{
+      if (wSelf.onDismissHandler)
+        wSelf.onDismissHandler();
+    });
+  }
   self.navigationItem.title = NSLocalizedString(@"TITLE_INVITE_CONTACTS", @"TITLE_INVITE_CONTACTS");
   
   [self.navigationBar pushNavigationItem:self.navigationItem animated:NO];
 
+  [self.toolbar setBackgroundImage:[[UIImage alloc] init] forToolbarPosition:UIToolbarPositionAny barMetrics:UIBarMetricsDefault];
+  self.toolbar.backgroundColor = [UIColor colorWithWhite:0.0f alpha:0.4f];
   UIBarButtonItem *flexspace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
-  self.toolbar = [[WATranslucentToolbar alloc] initWithFrame:CGRectMake(0, CGRectGetHeight(self.view.frame)-44, CGRectGetWidth(self.view.frame), 44)];
+//  self.toolbar = [[WATranslucentToolbar alloc] initWithFrame:CGRectMake(0, CGRectGetHeight(self.view.frame)-44, CGRectGetWidth(self.view.frame), 44)];
+  
   self.toolbar.items = @[flexspace, [self shareBarButton], flexspace];
   [self.view addSubview:self.toolbar];
   
   self.tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissKeyboard)];
   [self.tap setCancelsTouchesInView:NO];
   [self.view addGestureRecognizer:self.tap];
-}
-
-- (void)dismissKeyboard
-{
-  [self.textField setText:@""];
-  [self.textField resignFirstResponder];
-  [self.tap setCancelsTouchesInView:NO];
 }
 
 - (UIBarButtonItem *)shareBarButton
@@ -75,6 +80,15 @@
   });
 }
 
+- (void)dismissKeyboard
+{
+  if ([self.textField isEditing]) {
+    [self.textField setText:@""];
+    [self.textField resignFirstResponder];
+    [self.tap setCancelsTouchesInView:NO];
+  }
+  
+}
 
 - (void)didReceiveMemoryWarning
 {
@@ -147,6 +161,7 @@
   if (cell == nil) {
     cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
   }
+  cell.selectionStyle = UITableViewCellSelectionStyleGray;
   
   [cell.textLabel setTextColor:[UIColor whiteColor]];
   [cell.detailTextLabel setFont:[UIFont fontWithName:@"OpenSans-Regular" size:14.f]];
@@ -266,8 +281,8 @@
   NSLog(@"Email input: %@", textField.text);
   if (![textField.text isEqualToString:@""]) {
     [self addEmailIntoInvitedList:textField.text];
+    [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:_members.count-1 inSection:1]] withRowAnimation:UITableViewRowAnimationAutomatic];
   }
-  [self.tableView reloadData];
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
@@ -337,10 +352,6 @@
       ABPeoplePickerNavigationController *abPicker = [[ABPeoplePickerNavigationController alloc] init];
       abPicker.peoplePickerDelegate = self;
       
-      [abPicker setDisplayedProperties:@[[NSNumber numberWithInt:kABPersonFirstNameProperty],
-                                         [NSNumber numberWithInt:kABPersonLastNameProperty],
-                                         [NSNumber numberWithInt:kABPersonEmailProperty]]];
-      [abPicker.view setBackgroundColor:[UIColor colorWithRed:0.168 green:0.168 blue:0.168 alpha:1]];
       [self presentViewController:abPicker animated:YES completion:nil];
     }
   }

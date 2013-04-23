@@ -13,6 +13,7 @@
 #import "WATransparentToolbar.h"
 #import "WANavigationController.h"
 #import "WAGeoLocation.h"
+#import "WADefines.h"
 #import <CoreLocation/CoreLocation.h>
 #import "WADataStore.h"
 #import "WAPartioNavigationBar.h"
@@ -73,6 +74,8 @@ static NSString *kCellID = @"EventCell";
 {
   [super viewDidLoad];
   
+  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleCoreDataReinitialization:) name:kWACoreDataReinitialization object:nil];
+  
   self.navigationController.navigationBarHidden = YES;
   [self.navigationItem setTitle:NSLocalizedString(@"LABEL_SHARED_EVENTS", @"LABEL_SHARED_EVENTS")];
   self.navigationBar = [[WAPartioNavigationBar alloc] initWithFrame:CGRectMake(0.f, 0.f, CGRectGetWidth(self.view.frame), 44.f)];
@@ -110,6 +113,15 @@ static NSString *kCellID = @"EventCell";
   return YES;
 }
 
+- (void) handleCoreDataReinitialization:(id)sender {
+  
+  _managedObjectContext = nil;
+  _eventFetchedResultsController = nil;
+  [self eventFetchedResultsController];
+  [self.collectionView reloadData];
+  
+}
+
 - (NSUInteger) supportedInterfaceOrientations {
   return UIInterfaceOrientationMaskPortrait;
 }
@@ -125,20 +137,22 @@ static NSString *kCellID = @"EventCell";
   switch(type) {
       
     case NSFetchedResultsChangeInsert:
-      NSLog(@"objectID: %@, indexPath: %@, newIndexPath: %@", [anObject objectID], indexPath, newIndexPath);
+      NSLog(@"Insert, objectID: %@, indexPath: %@, newIndexPath: %@", [anObject objectID], indexPath, newIndexPath);
       change[@(type)] = newIndexPath;
       break;
       
     case NSFetchedResultsChangeDelete:
+      NSLog(@"Delete, objectID: %@, indexPath: %@", [anObject objectID], indexPath);
       change[@(type)] = indexPath;
       break;
       
     case NSFetchedResultsChangeUpdate:
-      NSLog(@"objectID: %@, indexPath: %@, newIndexPath: %@", [anObject objectID], indexPath, newIndexPath);
+      NSLog(@"Update, objectID: %@, indexPath: %@", [anObject objectID], indexPath);
       change[@(type)] = indexPath;
       break;
       
     case NSFetchedResultsChangeMove:
+      NSLog(@"Move, objectID: %@, indexPath: %@, newIndexPath: %@", [anObject objectID], indexPath, newIndexPath);
       change[@(type)] = @[indexPath, newIndexPath];
       break;
       
@@ -151,46 +165,52 @@ static NSString *kCellID = @"EventCell";
 - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller
 {
   //FIXME: update change fist
-  NSLog(@"%d items in section 0", [self.collectionView numberOfItemsInSection:0]);
   
-  dispatch_async(dispatch_get_main_queue(), ^{
-    if ([self.objectChanges count]) {
+  __weak WASharedEventViewController *wSelf = self;
+  if ([self.objectChanges count]) {
+/* FIXME: Bugs here
+    dispatch_async(dispatch_get_main_queue(), ^{
       
-      [self.collectionView performBatchUpdates:^{
-        
-        for (NSDictionary *change in self.objectChanges) {
-          [change enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
-            
-            NSFetchedResultsChangeType type = [key unsignedIntegerValue];
-            
-            switch (type) {
-              case NSFetchedResultsChangeInsert:
-                [self.collectionView insertItemsAtIndexPaths:@[obj]];
-                break;
-                
-              case NSFetchedResultsChangeDelete:
-                [self.collectionView deleteItemsAtIndexPaths:@[obj]];
-                break;
-                
-              case NSFetchedResultsChangeUpdate:
-                [self.collectionView reloadItemsAtIndexPaths:@[obj]];
-                break;
-                
-              case NSFetchedResultsChangeMove:
-                [self.collectionView moveItemAtIndexPath:obj[0] toIndexPath:obj[1]];
-                break;
-                
-            }
-            
-          }];
-        }
-        
-      } completion:nil];
-    }
-    
-  });
+    [self.collectionView performBatchUpdates:^{
+      
+      for (NSDictionary *change in self.objectChanges) {
+        [change enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+          
+          NSFetchedResultsChangeType type = [key unsignedIntegerValue];
+          
+          switch (type) {
+            case NSFetchedResultsChangeInsert:
+              [wSelf.collectionView insertItemsAtIndexPaths:@[obj]];
+              break;
+              
+            case NSFetchedResultsChangeDelete:
+              [wSelf.collectionView deleteItemsAtIndexPaths:@[obj]];
+              break;
+              
+            case NSFetchedResultsChangeUpdate:
+              [wSelf.collectionView reloadItemsAtIndexPaths:@[obj]];
+              break;
+              
+            case NSFetchedResultsChangeMove:
+              [wSelf.collectionView moveItemAtIndexPath:obj[0] toIndexPath:obj[1]];
+              break;
+              
+          }
+          
+        }];
+      }
+      
+    } completion:^(BOOL finished) {
+      
+      [wSelf.objectChanges removeAllObjects];
+      
+    }];
+    });
+*/
+    [self.collectionView reloadData];
+    [wSelf.objectChanges removeAllObjects];
+  }
   
-  [self.objectChanges removeAllObjects];
 }
 
 #pragma mark - UICollectionViewDataSource
@@ -204,7 +224,8 @@ static NSString *kCellID = @"EventCell";
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
   // Return the number of rows in the section.
-  return [self.eventFetchedResultsController.fetchedObjects count];
+//  return [self.eventFetchedResultsController.fetchedObjects count];
+  return [[[self.eventFetchedResultsController sections] objectAtIndex:section] numberOfObjects];
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
@@ -271,11 +292,6 @@ static NSString *kCellID = @"EventCell";
   return cell;
 
   
-}
-
-- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout referenceSizeForFooterInSection:(NSInteger)section
-{
-  return CGSizeMake(CGRectGetWidth(collectionView.frame), CGRectGetHeight(self.view.frame) - 140.f);
 }
 
 #pragma mark - Collection view delegate

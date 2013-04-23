@@ -38,6 +38,7 @@ extern NSString * const kWACompositionSessionRequestedNotification;
 extern NSString * const kWAApplicationDidReceiveRemoteURLNotification;
 extern NSString * const kWARemoteInterfaceDidObserveAuthenticationFailureNotification;
 extern NSString * const kWASettingsDidRequestActionNotification;
+extern NSString * const kWACoreDataReinitialization;
 
 extern NSString * const kWAFacebookDidLoginNotification;
 extern NSString * const kWAFacebookAppID;
