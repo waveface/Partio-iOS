@@ -120,6 +120,7 @@
       
       [wSelf.collectionView reloadData];
       if (self.selectedAssets.count) {
+        self.navigationItem.rightBarButtonItem.enabled = YES;
         NSIndexPath *indexPath = [wSelf indexPathForAsset:self.selectedAssets[0]];
         dispatch_async(dispatch_get_main_queue(), ^{
           [wSelf.collectionView scrollToItemAtIndexPath:indexPath atScrollPosition:UICollectionViewScrollPositionTop animated:YES];
