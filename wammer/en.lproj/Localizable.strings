@@ -832,7 +832,7 @@
 "FACEBOOK_SIGNUP_BUTTON" = "Signup with Facebook";
 
 /* Class = "IBUILabel"; text = "DESCRIPTION_WHY_SIGNUP"; ObjectID = "40"; */
-"DESCRIPTION_WHY_SIGNUP" = "To complete the sharing, you need to signup Grupin to let us know who you are. We won't post anything or contact your friends without your approval.";
+"DESCRIPTION_WHY_SIGNUP" = "It is almost done! You just need to signup Grupin with Facebook to let us know who you are. We won't post anything or contact your friends without your approval.";
 
 /* Class = "IBUITextField"; placeholder = "USERNAME_PLACEHOLDER"; ObjectID = "2Vk-4J-QH3"; */
 "USERNAME_PLACEHOLDER" = "me@example.com";
