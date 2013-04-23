@@ -140,9 +140,6 @@
                                  NSDate *enddingDate = [NSDate dateWithTimeInterval:(30*60) sinceDate:[(ALAsset*)group[0] valueForProperty:ALAssetPropertyDate]];
                                  NSDate *beginningDate = [NSDate dateWithTimeInterval:(-30*60) sinceDate:[(ALAsset*)group.lastObject valueForProperty:ALAssetPropertyDate]];
                                  
-                                 if (groupIndex == 0) {
-                                   NSLog(@"%@ ~ %@", beginningDate, enddingDate);
-                                 }
                                  if ([checkinDate compare:beginningDate] == NSOrderedAscending) {
                                    groupIndex ++;
                                    continue;

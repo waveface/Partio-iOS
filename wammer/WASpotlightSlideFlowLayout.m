@@ -35,42 +35,62 @@
 
 -(NSArray *)layoutAttributesForElementsInRect:(CGRect)rect
 {
-  CGFloat visibleRectOriginY = self.collectionView.contentOffset.y;
   
-  NSMutableArray *array = [[super layoutAttributesForElementsInRect:rect] mutableCopy];
-
+  NSArray *array = [[super layoutAttributesForElementsInRect:rect] mutableCopy];
+  NSMutableArray *newAttributesArray = [NSMutableArray array];
+  
   for (UICollectionViewLayoutAttributes *attributes in array) {
-    CGFloat itemY = attributes.indexPath.row * self.minItemSize;
-    
-    if (itemY == visibleRectOriginY) {
-      attributes.frame = CGRectMake(attributes.frame.origin.x, itemY, self.itemWidth, self.maxItemSize);
-      
-    } else if (itemY < visibleRectOriginY && itemY > (visibleRectOriginY - self.minItemSize)) {
-      CGFloat h = itemY + self.minItemSize - visibleRectOriginY;
-      attributes.frame = CGRectMake(attributes.frame.origin.x, itemY, self.itemWidth, (visibleRectOriginY - itemY) + h * self.maxItemSize / self.minItemSize);
-      
-    } else if (itemY > visibleRectOriginY && itemY <= (visibleRectOriginY + self.minItemSize)) {
-      CGFloat h = itemY - visibleRectOriginY;
-      attributes.frame = CGRectMake(attributes.frame.origin.x,
-                                    visibleRectOriginY + self.maxItemSize * (h / self.minItemSize),
-                                    self.itemWidth,
-                                    (self.maxItemSize + h) - h * self.maxItemSize / self.minItemSize);
-      
-    } else if (itemY < visibleRectOriginY) {
-      attributes.frame = CGRectMake(attributes.frame.origin.x, itemY, self.itemWidth, self.minItemSize);
-
-    } else {
-      CGFloat h = (attributes.indexPath.row+1) * self.minItemSize - (self.minItemSize*3 - (self.minItemSize+self.maxItemSize));
-      attributes.frame = CGRectMake(attributes.frame.origin.x,
-                                    h,
-                                    self.itemWidth,
-                                    self.minItemSize);
-    }
+    [newAttributesArray addObject:[self relayoutAttributesForAttributes:attributes]];
   }
   
-  return array;
+  return [NSArray arrayWithArray:newAttributesArray];
 }
 
+- (UICollectionViewLayoutAttributes*)relayoutAttributesForAttributes:(UICollectionViewLayoutAttributes*)attributes {
+  CGFloat visibleRectOriginY = self.collectionView.contentOffset.y;
+
+  CGFloat itemY = attributes.indexPath.row * self.minItemSize;
+  
+  if (itemY == visibleRectOriginY) {
+    attributes.frame = CGRectMake(attributes.frame.origin.x, itemY, self.itemWidth, self.maxItemSize);
+    
+  } else if (itemY < visibleRectOriginY && itemY > (visibleRectOriginY - self.minItemSize)) {
+    CGFloat h = itemY + self.minItemSize - visibleRectOriginY;
+    attributes.frame = CGRectMake(attributes.frame.origin.x, itemY, self.itemWidth, (visibleRectOriginY - itemY) + h * self.maxItemSize / self.minItemSize);
+    
+  } else if (itemY > visibleRectOriginY && itemY <= (visibleRectOriginY + self.minItemSize)) {
+    CGFloat h = itemY - visibleRectOriginY;
+    attributes.frame = CGRectMake(attributes.frame.origin.x,
+                                  visibleRectOriginY + self.maxItemSize * (h / self.minItemSize),
+                                  self.itemWidth,
+                                  (self.maxItemSize + h) - h * self.maxItemSize / self.minItemSize);
+    
+  } else if (itemY < visibleRectOriginY) {
+    attributes.frame = CGRectMake(attributes.frame.origin.x, itemY, self.itemWidth, self.minItemSize);
+    
+  } else {
+    CGFloat h = (attributes.indexPath.row+1) * self.minItemSize - (self.minItemSize*3 - (self.minItemSize+self.maxItemSize));
+    attributes.frame = CGRectMake(attributes.frame.origin.x,
+                                  h,
+                                  self.itemWidth,
+                                  self.minItemSize);
+  } 
+  return attributes;
+}
+/*
+- (UICollectionViewLayoutAttributes*)layoutAttributesForItemAtIndexPath:(NSIndexPath *)indexPath {
+
+  UICollectionViewLayoutAttributes *attributes = [super layoutAttributesForItemAtIndexPath:indexPath];
+  [self relayoutAttributesForAttributes:attributes];
+  return attributes;
+}
+
+- (UICollectionViewLayoutAttributes*)initialLayoutAttributesForAppearingItemAtIndexPath:(NSIndexPath *)itemIndexPath {
+  UICollectionViewLayoutAttributes *attributes = [super initialLayoutAttributesForAppearingItemAtIndexPath:itemIndexPath];
+  [self relayoutAttributesForAttributes:attributes];
+  return attributes;
+}
+*/
 - (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)proposedContentOffset withScrollingVelocity:(CGPoint)velocity
 {
   NSInteger base = (NSInteger)self.collectionView.contentOffset.y / self.minItemSize;

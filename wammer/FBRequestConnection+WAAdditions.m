@@ -22,7 +22,6 @@
  
   NSString *queryString = [[NSString alloc] initWithData:[NSJSONSerialization dataWithJSONObject:queries options:0 error:nil] encoding:NSUTF8StringEncoding];
 
-  NSLog(@"query: %@", queryString);
   return [FBRequestConnection startWithGraphPath:@"/fql"
                                       parameters:@{@"q":queryString}
                                       HTTPMethod:@"GET"
