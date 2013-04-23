@@ -826,7 +826,7 @@
 "FACEBOOK_SIGNUP_BUTTON" = "Connect with Facebook";
 
 /* Class = "IBUILabel"; text = "DESCRIPTION_WHY_SIGNUP"; ObjectID = "40"; */
-"DESCRIPTION_WHY_SIGNUP" = "We won't post anything or contact your friends without your approval.";
+"DESCRIPTION_WHY_SIGNUP" = "Connect Facebook is to create an account in Grupin service to know who you are. We won't post anything or contact your friends without your approval.";
 
 /* Class = "IBUITextField"; placeholder = "USERNAME_PLACEHOLDER"; ObjectID = "2Vk-4J-QH3"; */
 "USERNAME_PLACEHOLDER" = "me@example.com";

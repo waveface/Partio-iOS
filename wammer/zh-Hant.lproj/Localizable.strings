@@ -820,13 +820,13 @@
 "SIGNUP_BUTTON" = "使用 Facebook 帳號登入";
 
 /* Class = "IBUIButton"; normalTitle = "NOSIGNUP_BUTTON"; ObjectID = "ZCd-nx-9I5"; */
-"NOSIGNUP_BUTTON" = "體驗先";
+"NOSIGNUP_BUTTON" = "先行體驗";
 
 /* Class = "IBUIButton"; normalTitle = "FACEBOOK_SIGNUP_BUTTON"; ObjectID = "4"; */
 "FACEBOOK_SIGNUP_BUTTON" = "連結 Facebook";
 
 /* Class = "IBUILabel"; text = "DESCRIPTION_WHY_SIGNUP"; ObjectID = "40"; */
-"DESCRIPTION_WHY_SIGNUP" = "在沒有您的允許下，我們不會私自張貼任何訊息到您的 Facebook 帳號中。";
+"DESCRIPTION_WHY_SIGNUP" = "我們需要連結你的 Facebook 來建立 Grupin 帳號，目的是在確認是你本人以及取得一些必要的資訊。在沒有您的允許下，我們不會私自張貼任何訊息到您的 Facebook 帳號中。";
 
 /* Class = "IBUITextField"; placeholder = "USERNAME_PLACEHOLDER"; ObjectID = "2Vk-4J-QH3"; */
 "USERNAME_PLACEHOLDER" = "me@example.com";
