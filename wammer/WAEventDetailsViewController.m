@@ -83,16 +83,16 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-  return 5;
+  return 6;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-  if (section != 2)
-    return 1;
   if (section == 2)
     return [self.details[@"checkins"] count];
-  return 0;
+  if (section == 5)
+    return [self.details[@"contacts"] count];
+  return 1;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -121,9 +121,13 @@
     cell.textLabel.text = [formatter stringFromDate:self.details[@"eventStartDate"]];
   } else if (indexPath.section == 4) {
     cell.textLabel.text = [formatter stringFromDate:self.details[@"eventEndDate"]];
-  } else {
-    WACheckin *checkin = (WACheckin*)[[self.details[@"checkins"] allObjects] objectAtIndex:indexPath.row];
+  } else if (indexPath.section == 2) {
+    WACheckin *checkin = (WACheckin*)[self.details[@"checkins"] objectAtIndex:indexPath.row];
     cell.textLabel.text = checkin.name;
+  } else if (indexPath.section == 5) {
+    WAPeople *contact = (WAPeople*)[self.details[@"contacts"] objectAtIndex:indexPath.row];
+    cell.textLabel.text = contact.email;
+    cell.detailTextLabel.text = contact.email;
   }
   
   cell.textLabel.textColor = [UIColor whiteColor];
@@ -153,6 +157,9 @@
   
   if (section == 4)
     return NSLocalizedString(@"DETAIL_END_TIME", @"End time section header for detail");
+  
+  if (section == 5)
+    return NSLocalizedString(@"DETAIL_MEMBERS", @"Member section header for detail");
   
   return nil;
 }

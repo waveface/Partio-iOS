@@ -22,6 +22,7 @@
 /* Action title for cancelling stuff
    ACTION_CANCEL
    Cancel
+   cancel
    Cancel action
    Cancel adding event
    Cancel adding selected photos into collection
@@ -249,6 +250,9 @@
 /* Location section header for detail */
 "DETAIL_LOCATION" = "地點：";
 
+/* Member section header for detail */
+"DETAIL_MEMBERS" = "成員：";
+
 /* Start time section header for detail */
 "DETAIL_START_TIME" = "開始時間：";
 
@@ -450,7 +454,8 @@
 /* Navigation bar title for web preview while loading */
 "NAVI_TITLE_WEB_LOADING" = "載入中..";
 
-/* action next */
+/* action next
+   Next */
 "NEXT_ACTION" = "下一步";
 
 /* Nickname placeholder in signup page */
