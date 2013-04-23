@@ -188,9 +188,14 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks = @"kWAPhotoTi
       __weak WAContactPickerViewController *wcp = contactPicker;
       contactPicker.onNextHandler = ^(NSArray *selectedContacts){
         [wcp dismissViewControllerAnimated:YES completion:nil];
+        [wSelf updateSharingEventWithPhotoChanges:nil contacts:selectedContacts onComplete:^{
+          [WAOverlayBezel showSuccessBezelWithDuration:1.5 handler:nil];
+          [wSelf.collectionView reloadData];
+        }];
+
       };
       
-      contactPicker.onDismissHandler = ^{
+      contactPicker.onDismissHandler = ^ {
         [wcp dismissViewControllerAnimated:YES completion:nil];
       };
       
@@ -212,6 +217,7 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks = @"kWAPhotoTi
         
         [wSelf updateSharingEventWithPhotoChanges:selectedAssets contacts:nil onComplete:^{
           dispatch_async(dispatch_get_main_queue(), ^{
+            [WAOverlayBezel showSuccessBezelWithDuration:1.5 handler:nil];
             
             wSelf.sortedImages = [self.representingArticle.files sortedArrayUsingComparator:^NSComparisonResult(WAFile *obj1, WAFile *obj2) {
               return [obj1.created compare:obj2.created];
@@ -342,12 +348,14 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks = @"kWAPhotoTi
         if ([invitingEmails indexOfObject:person.email] != NSNotFound) {
           [invitingEmails removeObject:person.email];
         }
+        changed = YES;
       }
     }
     for (NSString *email in invitingEmails) {
       WAPeople *person = (WAPeople*)[WAPeople objectInsertingIntoContext:moc withRemoteDictionary:@{}];
       person.email = email;
       [[article mutableSetValueForKey:@"sharingContacts"] addObject:person];
+      changed = YES;
     }
   }
   
@@ -517,19 +525,7 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks = @"kWAPhotoTi
 
 - (void)actionButtonClicked:(id)sender
 {
-  void (^showSuccessBezel) (void(^)(void)) = ^(void(^block)(void)) {
-    WAOverlayBezel *doneBezel = [WAOverlayBezel bezelWithStyle:WACheckmarkBezelStyle];
-    [doneBezel show];
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1.5 * NSEC_PER_SEC), dispatch_get_main_queue(), ^ {
-      [doneBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
-
-      if (block) {
-        block();
-      }
-      
-    });
-  };
-
+  
   __weak WAPhotoTimelineViewController *wSelf = self;
   WAContactPickerViewController *contactPicker = [[WAContactPickerViewController alloc] init];
   if (self.navigationController) {
@@ -539,9 +535,10 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks = @"kWAPhotoTi
       if (ri.userToken) {
         [wSelf finishCreatingSharingEventForSharingTargets:results];
 
-        showSuccessBezel(^{
+        [WAOverlayBezel showSuccessBezelWithDuration:1.5 handler:^{
+          
           [wSelf.navigationController dismissViewControllerAnimated:YES completion:nil];
-        });
+        }];
       
       } else {
         
@@ -560,11 +557,14 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks = @"kWAPhotoTi
 
           [[NSNotificationCenter defaultCenter] postNotificationName:kWACoreDataReinitialization object:self];
 
-          showSuccessBezel(^{
+          [WAOverlayBezel showSuccessBezelWithDuration:1.5 handler:^{
+            
             [sCreateAccountVC dismissViewControllerAnimated:YES completion:^{
               [wSelf.navigationController dismissViewControllerAnimated:YES completion:nil];
             }];
-          });
+        
+          }];
+
           
         };
         
