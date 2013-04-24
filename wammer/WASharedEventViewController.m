@@ -288,27 +288,15 @@ static NSString * const kWASharedEventViewController_CoachMarks = @"kWASharedEve
   NSString *eventDate = [sharedDateFormatter stringFromDate:eDate];
   
   NSString *location = @"";
-  NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] initWithEntityName:@"WACheckin"];
-  NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"createDate" ascending:NO];
-  fetchRequest.sortDescriptors = @[sortDescriptor];
-  NSPredicate *predicate = [NSPredicate predicateWithFormat:@"createDate = %@", eDate];
-  fetchRequest.predicate = predicate;
-  
-  NSError *Error;
-  NSArray *checkins = [self.managedObjectContext executeFetchRequest:fetchRequest error:&Error];
-  NSInteger checkinNumbers = 0;
-  if (Error) {
-    NSLog(@"Failed to fetch checkins: %@", Error);
-    
-  } else {
-    checkinNumbers = [checkins count];
-    if (checkinNumbers) {
-      location = [[checkins valueForKeyPath:@"name"] componentsJoinedByString:@", "];
-      
-    } else {
-      location = @"Location";
-      //location = [[[self.eventFetchedResultsController objectAtIndexPath:indexPath] valueForKey:@"location"] name];
-      
+  if (aArticle.location) {
+    location = aArticle.location.name;
+  }
+
+  NSInteger checkinNumbers = [aArticle.checkins count];
+  if (checkinNumbers) {
+    NSString *checkinString = [[[aArticle.checkins allObjects] valueForKey:@"name"] componentsJoinedByString:@","];
+    if (location.length && checkinString.length) {
+      location = [NSString stringWithFormat:@"%@,%@", checkinString, location];
     }
   }
   

@@ -28,6 +28,7 @@
 #import "WAFileExif+WAAdditions.h"
 #import "WAPeople.h"
 #import "WALocation.h"
+#import "WACheckin.h"
 
 #import "WADataStore+FetchingConveniences.h"
 #import "WAContactPickerViewController.h"
@@ -71,6 +72,7 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks = @"kWAPhotoTi
 @property (nonatomic, strong) NSDate *endDate;
 @property (nonatomic, strong) NSArray *checkins;
 @property (nonatomic, readonly) CLLocationCoordinate2D coordinate;
+@property (nonatomic, strong) NSString *locationName;
 
 @property (nonatomic, strong) UITapGestureRecognizer *tapGesture;
 @property (nonatomic, strong) SMCalloutView *shareInstructionView;
@@ -359,6 +361,15 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks = @"kWAPhotoTi
     }
   }
   
+  if (self.checkins.count) {
+    for (WALocation *checkin in self.checkins) {
+      if (![article.checkins containsObject:checkin]) {
+        [[article mutableSetValueForKey:@"checkins"] addObject:checkin];
+        changed = YES;
+      }
+    }
+  }
+  
   if (changed) {
     article.dirty = (id)kCFBooleanTrue;
     article.modificationDate = [NSDate date];
@@ -472,8 +483,16 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks = @"kWAPhotoTi
   WALocation *location = (WALocation*)[WALocation objectInsertingIntoContext:moc withRemoteDictionary:@{}];
   location.latitude = [NSNumber numberWithFloat:self.coordinate.latitude];
   location.longitude = [NSNumber numberWithFloat:self.coordinate.longitude];
-  location.name = @""; // TBD
+  location.name = self.locationName;
   article.location = location;
+  
+  if (self.checkins.count) {
+    for (WACheckin *checkin in self.checkins) {
+      if (![article.checkins containsObject:checkin]) {
+        [[article mutableSetValueForKey:@"checkins"] addObject:checkin];
+      }
+    }
+  }
   
   NSError *savingError = nil;
   if ([moc save:&savingError]) {
@@ -808,6 +827,7 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks = @"kWAPhotoTi
 
 - (UICollectionReusableView*)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath {
   
+  __weak WAPhotoTimelineViewController *wSelf = self;
   if ([kind isEqualToString:UICollectionElementKindSectionHeader]) {
         
     WAPhotoTimelineCover *cover = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"PhotoTimelineCover" forIndexPath:indexPath];
@@ -864,6 +884,7 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks = @"kWAPhotoTi
     
     self.geoLocation = [[WAGeoLocation alloc] init];
     [self.geoLocation identifyLocation:self.coordinate onComplete:^(NSArray *results) {
+      wSelf.locationName = [results componentsJoinedByString:@","];
       if (cover.titleLabel.text.length == 0)
         cover.titleLabel.text = [results componentsJoinedByString:@","];
       else

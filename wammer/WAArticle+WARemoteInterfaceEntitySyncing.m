@@ -14,6 +14,7 @@
 #import "Foundation+IRAdditions.h"
 #import "IRAsyncOperation.h"
 #import "WADefines.h"
+#import "WACheckin.h"
 #import "WAAppDelegate_iOS.h"
 #import "NSDate+WAAdditions.h"
 #import <NSDate+SSToolkitAdditions.h>
@@ -124,7 +125,7 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
   @"gps": @"WALocation",
   @"people": @"WAPeople",
            @"shared_users": @"WAPeople",
-  @"checkins": @"WALocation",
+  @"checkins": @"WACheckin",
   @"tags": @"WATag",
   @"eventDay": @"WAEventDay",
   @"extra_parameters": @"WATagGroup"};
@@ -309,6 +310,21 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
         [tags addObject:tag.tagValue];
       }
       postLocation[@"tags"] = [NSArray arrayWithArray:tags];
+    }
+  }
+  
+  NSMutableArray *postCheckins = nil;
+  if (self.checkins.count) {
+    postCheckins = [NSMutableArray array];
+    for (WACheckin *checkin in self.checkins) {
+      NSMutableDictionary *dict = [NSMutableDictionary dictionary];
+      if (checkin.name)
+        dict[@"name"] = checkin.name;
+      if (checkin.latitude)
+        dict[@"latitude"] = checkin.latitude;
+      if (checkin.longitude)
+        dict[@"longitude"] = checkin.longitude;
+      [postCheckins addObject:dict];
     }
   }
   
@@ -517,7 +533,7 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 					 favorite:isFavorite
                invitingEmails:invitingEmails
                      location:postLocation
-                     checkins:nil
+                     checkins:postCheckins
 					onSuccess:^(NSDictionary *postRep) {
 	
 					  callback(postRep);
@@ -578,7 +594,7 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
           eventEndTime:eventEndTime
         invitingEmails:invitingEmails
               location:postLocation
-              checkins:nil
+              checkins:postCheckins
 			 onSuccess:^(NSDictionary *postRep) {
 	
 			   callback(postRep);

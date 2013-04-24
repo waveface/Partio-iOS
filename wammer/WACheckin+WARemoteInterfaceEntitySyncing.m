@@ -35,7 +35,9 @@
                 @"message": @"message",
                 @"identifier": @"identifier",
                 @"create_time": @"createDate",
-                @"tagged_uids": @"taggedUsers"
+                @"tagged_uids": @"taggedUsers",
+                @"latitude": @"latitude",
+                @"longitude": @"longitude"
                 };
     
   });

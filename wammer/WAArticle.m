@@ -2,11 +2,12 @@
 //  WAArticle.m
 //  wammer
 //
-//  Created by Shen Steven on 4/13/13.
+//  Created by Shen Steven on 4/24/13.
 //  Copyright (c) 2013 Waveface. All rights reserved.
 //
 
 #import "WAArticle.h"
+#import "WACheckin.h"
 #import "WAEventDay.h"
 #import "WAFile.h"
 #import "WAGroup.h"
@@ -42,7 +43,7 @@
 @dynamic owner;
 @dynamic people;
 @dynamic representingFile;
-@dynamic tags;
 @dynamic sharingContacts;
+@dynamic tags;
 
 @end

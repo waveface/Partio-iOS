@@ -2,7 +2,7 @@
 //  WAArticle.h
 //  wammer
 //
-//  Created by Shen Steven on 4/13/13.
+//  Created by Shen Steven on 4/24/13.
 //  Copyright (c) 2013 Waveface. All rights reserved.
 //
 
@@ -22,7 +22,7 @@ typedef NS_ENUM(NSUInteger, WAEventArticleType) {
   WAEventArticleSharedType = 2
 };
 
-@class WAEventDay, WAFile, WAGroup, WALocation, WAPeople, WATag, WATagGroup, WAUser;
+@class WACheckin, WAEventDay, WAFile, WAGroup, WALocation, WAPeople, WATag, WATagGroup, WAUser;
 
 @interface WAArticle : IRManagedObject
 
@@ -49,14 +49,14 @@ typedef NS_ENUM(NSUInteger, WAEventArticleType) {
 @property (nonatomic, retain) WAUser *owner;
 @property (nonatomic, retain) NSSet *people;
 @property (nonatomic, retain) WAFile *representingFile;
-@property (nonatomic, retain) NSSet *tags;
 @property (nonatomic, retain) NSSet *sharingContacts;
+@property (nonatomic, retain) NSSet *tags;
 @end
 
 @interface WAArticle (CoreDataGeneratedAccessors)
 
-- (void)addCheckinsObject:(WALocation *)value;
-- (void)removeCheckinsObject:(WALocation *)value;
+- (void)addCheckinsObject:(WACheckin *)value;
+- (void)removeCheckinsObject:(WACheckin *)value;
 - (void)addCheckins:(NSSet *)values;
 - (void)removeCheckins:(NSSet *)values;
 
@@ -80,14 +80,14 @@ typedef NS_ENUM(NSUInteger, WAEventArticleType) {
 - (void)addPeople:(NSSet *)values;
 - (void)removePeople:(NSSet *)values;
 
-- (void)addTagsObject:(WATag *)value;
-- (void)removeTagsObject:(WATag *)value;
-- (void)addTags:(NSSet *)values;
-- (void)removeTags:(NSSet *)values;
-
 - (void)addSharingContactsObject:(WAPeople *)value;
 - (void)removeSharingContactsObject:(WAPeople *)value;
 - (void)addSharingContacts:(NSSet *)values;
 - (void)removeSharingContacts:(NSSet *)values;
+
+- (void)addTagsObject:(WATag *)value;
+- (void)removeTagsObject:(WATag *)value;
+- (void)addTags:(NSSet *)values;
+- (void)removeTags:(NSSet *)values;
 
 @end

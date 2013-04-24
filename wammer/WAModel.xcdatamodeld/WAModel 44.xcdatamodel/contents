@@ -25,7 +25,7 @@
             <userInfo/>
         </attribute>
         <attribute name="textAuto" optional="YES" attributeType="String" syncable="YES"/>
-        <relationship name="checkins" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="WALocation" inverseName="article" inverseEntity="WALocation" syncable="YES"/>
+        <relationship name="checkins" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="WACheckin" syncable="YES"/>
         <relationship name="descriptiveTags" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="WATagGroup" inverseName="article" inverseEntity="WATagGroup" syncable="YES"/>
         <relationship name="eventDay" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="WAEventDay" inverseName="article" inverseEntity="WAEventDay" syncable="YES"/>
         <relationship name="files" optional="YES" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="WAFile" inverseName="articles" inverseEntity="WAFile">
@@ -58,6 +58,8 @@
     <entity name="WACheckin" representedClassName="WACheckin" syncable="YES">
         <attribute name="createDate" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="identifier" optional="YES" attributeType="String" indexed="YES" syncable="YES"/>
+        <attribute name="latitude" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="longitude" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
         <attribute name="message" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="taggedUsers" optional="YES" attributeType="String" syncable="YES"/>
@@ -211,7 +213,7 @@
         <attribute name="longitude" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="zoomLevel" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
-        <relationship name="article" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="WAArticle" inverseName="checkins" inverseEntity="WAArticle" syncable="YES"/>
+        <relationship name="article" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="WAArticle" syncable="YES"/>
         <relationship name="tags" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="WATag" inverseName="location" inverseEntity="WATag" syncable="YES"/>
     </entity>
     <entity name="WAPeople" representedClassName="WAPeople" syncable="YES">
@@ -310,7 +312,7 @@
     <elements>
         <element name="WAArticle" positionX="0" positionY="0" width="128" height="420"/>
         <element name="WACache" positionX="0" positionY="0" width="128" height="135"/>
-        <element name="WACheckin" positionX="160" positionY="192" width="128" height="120"/>
+        <element name="WACheckin" positionX="160" positionY="192" width="128" height="150"/>
         <element name="WACollection" positionX="0" positionY="0" width="128" height="195"/>
         <element name="WADocumentDay" positionX="0" positionY="0" width="128" height="75"/>
         <element name="WAEventDay" positionX="160" positionY="192" width="128" height="75"/>
