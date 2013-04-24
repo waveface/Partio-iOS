@@ -66,11 +66,9 @@
   self.toolbar.items = @[flexspace, [self shareBarButton], flexspace];
   [self.view addSubview:self.toolbar];
   
-  self.textField = [[UITextField alloc] initWithFrame:CGRectMake(5.f, 5.f, 310.f, 34.f)];
   self.tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissKeyboard)];
-  self.tap.cancelsTouchesInView = NO;
+  [self.tap setCancelsTouchesInView:NO];
   [self.view addGestureRecognizer:self.tap];
-  
 }
 
 - (UIBarButtonItem *)shareBarButton
@@ -173,13 +171,17 @@
     [cell.textLabel setFont:[UIFont fontWithName:@"OpenSans-Semibold" size:20.f]];
     
     if (indexPath.row == 0) {
+      [cell setSelectionStyle:UITableViewCellSelectionStyleGray];
+      
       for (UIView *subview in cell.contentView.subviews) {
         [subview removeFromSuperview];
       }
       
+      self.textField = [[UITextField alloc] initWithFrame:CGRectMake(5.f, 5.f, 310.f, 34.f)];
       [self.textField setBorderStyle:UITextBorderStyleRoundedRect];
       [self.textField setPlaceholder:NSLocalizedString(@"INPUT_RECEIVER_EMAIL", @"INPUT_RECEIVER_EMAIL")];
       [self.textField setClearButtonMode:UITextFieldViewModeWhileEditing];
+      [self.textField setContentVerticalAlignment:UIControlContentVerticalAlignmentCenter];
       
       // Manage keyboard for email input
       [self.textField setAutocapitalizationType:UITextAutocapitalizationTypeNone];
@@ -222,9 +224,54 @@
       cell.detailTextLabel.text = emails[0];
     }
     
+    cell.accessoryType = UITableViewCellAccessoryCheckmark;
+    cell.accessoryView = [self checkedButton];
+    
   }
   
   return cell;
+}
+
+- (UIButton *)checkedButton
+{
+  UIButton *aButton = [UIButton buttonWithType:UIButtonTypeCustom];
+  [aButton setFrame:CGRectMake(0.f, 0.f, 75.f, 30.f)];
+  [aButton setImage:[UIImage imageNamed:@"checked"] forState:UIControlStateNormal];
+  [aButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+  [aButton.layer setCornerRadius:15.f];
+  [aButton setClipsToBounds:YES];
+  [aButton setEnabled:NO];
+  
+  return aButton;
+}
+
+- (UIButton *)invitedButton
+{
+  UIButton *aButton = [UIButton buttonWithType:UIButtonTypeCustom];
+  [aButton setFrame:CGRectMake(0.f, 0.f, 75.f, 30.f)];
+  [aButton setBackgroundColor:[UIColor colorWithRed:0.894 green:0.435 blue:0.353 alpha:1.0]];
+  [aButton setTitle:NSLocalizedString(@"LABEL_INVITED_BUTTON", @"LABEL_INVITED_BUTTON") forState:UIControlStateNormal];
+  [aButton.titleLabel setFont:[UIFont fontWithName:@"OpenSans-Regular" size:18.f]];
+  [aButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+  [aButton.layer setCornerRadius:15.f];
+  [aButton setClipsToBounds:YES];
+  [aButton setEnabled:NO];
+  
+  return aButton;
+}
+
+- (UIButton *)nudgeButton
+{
+  UIButton *aButton = [UIButton buttonWithType:UIButtonTypeCustom];
+  [aButton setFrame:CGRectMake(0.f, 0.f, 75.f, 30.f)];
+  [aButton setBackgroundColor:[UIColor colorWithRed:0.984 green:0.804 blue:0.02 alpha:1.0]];
+  [aButton setTitle:NSLocalizedString(@"LABEL_INVITED_BUTTON", @"LABEL_INVITED_BUTTON") forState:UIControlStateNormal];
+  [aButton.titleLabel setFont:[UIFont fontWithName:@"OpenSans-Regular" size:18.f]];
+  [aButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+  [aButton.layer setCornerRadius:15.f];
+  [aButton setClipsToBounds:YES];
+  
+  return aButton;
 }
 
 #pragma mark - UITextFieldDelegate
@@ -299,16 +346,11 @@
       }];
       
       [self.tap setCancelsTouchesInView:YES];
-      
       [alert show];
       
     } else if (indexPath.row == 1) {
       ABPeoplePickerNavigationController *abPicker = [[ABPeoplePickerNavigationController alloc] init];
       abPicker.peoplePickerDelegate = self;
-      
-//      [abPicker setDisplayedProperties:@[[NSNumber numberWithInt:kABPersonFirstNameProperty],
-//                                         [NSNumber numberWithInt:kABPersonLastNameProperty],
-//                                         [NSNumber numberWithInt:kABPersonEmailProperty]]];
       
       [self presentViewController:abPicker animated:YES completion:nil];
     }
