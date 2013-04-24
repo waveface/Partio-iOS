@@ -125,6 +125,10 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks = @"kWAPhotoTi
   toolBarShown = YES;
   previousYOffset = 0;
   
+  if (self.representingArticle) {
+    [self touchArticleForRead];
+  }
+  
   self.imageDisplayQueue = [[NSOperationQueue alloc] init];
   self.imageDisplayQueue.maxConcurrentOperationCount = 1;
   
@@ -282,6 +286,14 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks = @"kWAPhotoTi
   });
   
   return opq;
+}
+
+- (void) touchArticleForRead {
+  if (self.representingArticle) {
+    self.representingArticle.lastRead = [NSDate date];
+    NSError *error = nil;
+    [self.managedObjectContext save:&error];
+  }
 }
 
 - (void) updateSharingEventWithPhotoChanges:(NSArray*)newAssets contacts:(NSArray*)contacts onComplete:(void(^)(void))completionBlock {
@@ -706,7 +718,10 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks = @"kWAPhotoTi
     NSString *creatorID = self.representingArticle.owner.identifier;
     WAPeople *contact = nil;
     for (WAPeople *person in self.representingArticle.sharingContacts) {
-      contact = person;
+      if ([person.identifier isEqualToString:creatorID]) {
+        contact = person;
+        break;
+      }
     }
 
     if (contact) {

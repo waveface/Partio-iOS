@@ -34,6 +34,7 @@
 @dynamic modificationDate;
 @dynamic text;
 @dynamic textAuto;
+@dynamic lastRead;
 @dynamic checkins;
 @dynamic descriptiveTags;
 @dynamic eventDay;

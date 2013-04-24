@@ -300,7 +300,11 @@ static NSString * const kWASharedEventViewController_CoachMarks = @"kWASharedEve
     }
   }
   
-  [cell.stickerNew setHidden:YES];
+  if (aArticle.lastRead || [aArticle.lastRead compare:aArticle.modificationDate] == NSOrderedDescending) {
+    [cell.stickerNew setHidden:NO];
+  } else {
+    [cell.stickerNew setHidden:YES];
+  }
   [cell.photoNumber setText:[NSString stringWithFormat:@"%d", photoNumbers]];
   [cell.checkinNumber setText:[NSString stringWithFormat:@"%d", checkinNumbers]];
   [cell.peopleNumber setText:[NSString stringWithFormat:@"%d", pplNumber]];

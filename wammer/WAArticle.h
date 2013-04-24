@@ -22,6 +22,7 @@ typedef NS_ENUM(NSUInteger, WAEventArticleType) {
   WAEventArticleSharedType = 2
 };
 
+
 @class WACheckin, WAEventDay, WAFile, WAGroup, WALocation, WAPeople, WATag, WATagGroup, WAUser;
 
 @interface WAArticle : IRManagedObject
@@ -40,6 +41,7 @@ typedef NS_ENUM(NSUInteger, WAEventArticleType) {
 @property (nonatomic, retain) NSDate * modificationDate;
 @property (nonatomic, retain) NSString * text;
 @property (nonatomic, retain) NSString * textAuto;
+@property (nonatomic, retain) NSDate * lastRead;
 @property (nonatomic, retain) NSSet *checkins;
 @property (nonatomic, retain) NSSet *descriptiveTags;
 @property (nonatomic, retain) WAEventDay *eventDay;

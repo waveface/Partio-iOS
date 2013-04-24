@@ -204,9 +204,7 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
   NSArray *sharedPeople = incomingRepresentation[@"shared_users"];
   if (!sharedPeople.count) {
     [returnedDictionary removeObjectForKey:@"shared_users"];
-  } else {
-    NSLog(@"shared_users: %@", sharedPeople);
-  }
+  } 
   
   NSArray *tags = incomingRepresentation[@"tags"];
   if ([tags count]) {
