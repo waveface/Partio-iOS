@@ -12,6 +12,7 @@
 #import "WAEventDetailsMapCell.h"
 #import "WACheckin.h"
 #import "WAGeoLocation.h"
+#import "WAEventDetailsCell.h"
 #import <BlocksKit/BlocksKit.h>
 #import <MapKit/MapKit.h>
 
@@ -50,6 +51,7 @@
   [super viewDidLoad];
   
   [self.tableView registerNib:[UINib nibWithNibName:@"WAEventDetailsMapCell" bundle:nil] forCellReuseIdentifier:@"mapCell"];
+  [self.tableView registerNib:[UINib nibWithNibName:@"WAEventDetailsCell" bundle:nil] forCellReuseIdentifier:@"contactCell"];
 
   __weak WAEventDetailsViewController *wSelf = self;
   self.geoLocation = [[WAGeoLocation alloc] init];
@@ -125,9 +127,17 @@
     WACheckin *checkin = (WACheckin*)[self.details[@"checkins"] objectAtIndex:indexPath.row];
     cell.textLabel.text = checkin.name;
   } else if (indexPath.section == 5) {
+    WAEventDetailsCell *cell = [tableView dequeueReusableCellWithIdentifier:@"contactCell" forIndexPath:indexPath];
     WAPeople *contact = (WAPeople*)[self.details[@"contacts"] objectAtIndex:indexPath.row];
-    cell.textLabel.text = contact.email;
-    cell.detailTextLabel.text = contact.email;
+    cell.nameLabel.text = contact.name;
+    cell.emailLabel.text = contact.email;
+    cell.avatarView.image = [UIImage imageNamed:@"Avatar"];
+    if (contact.avatarURL) {
+      [cell.avatarView setPathToNetworkImage:contact.avatarURL
+                              forDisplaySize:cell.avatarView.frame.size
+                                 contentMode:UIViewContentModeScaleAspectFill];
+    }
+    
   }
   
   cell.textLabel.textColor = [UIColor whiteColor];

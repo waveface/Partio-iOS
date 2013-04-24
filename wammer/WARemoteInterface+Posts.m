@@ -96,6 +96,11 @@
     sentData[@"gps"] = [[NSString alloc] initWithData:[NSJSONSerialization dataWithJSONObject:gps options:0 error:&error] encoding:NSUTF8StringEncoding];
   }
   
+  if (checkins.count) {
+    NSError *error = nil;
+    sentData[@"checkins"] = [[NSString alloc] initWithData:[NSJSONSerialization dataWithJSONObject:checkins options:0 error:&error] encoding:NSUTF8StringEncoding];
+  }
+  
   return sentData;
   
 }

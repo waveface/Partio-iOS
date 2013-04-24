@@ -364,9 +364,17 @@
   
 //  self.navigationController.navigationBarHidden = YES;
   [tableView deselectRowAtIndexPath:indexPath animated:NO];
-  WAPhotoTimelineViewController *vc = [[WAPhotoTimelineViewController alloc] initWithAssets:self.photoGroups[indexPath.row]];
+//  WAPhotoTimelineViewController *vc = [[WAPhotoTimelineViewController alloc] initWithAssets:self.photoGroups[indexPath.row]];
+//
+//  [self.navigationController pushViewController:vc animated:YES];
 
-  [self.navigationController pushViewController:vc animated:YES];
+  __weak WAPhotoHighlightsViewController *wSelf = self;
+  WADayPhotoPickerViewController *picker = [[WADayPhotoPickerViewController alloc] initWithSelectedAssets:self.photoGroups[indexPath.row]];
+  picker.onNextHandler = ^(NSArray *selectedAssets) {
+    WAPhotoTimelineViewController *photoTimeline = [[WAPhotoTimelineViewController alloc] initWithAssets:selectedAssets];
+    [wSelf.navigationController pushViewController:photoTimeline animated:YES];
+  };
+  [self.navigationController pushViewController:picker animated:YES];
   
 }
 
