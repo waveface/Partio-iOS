@@ -254,7 +254,6 @@ static NSString * const kWASharedEventViewController_CoachMarks = @"kWASharedEve
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
   // Return the number of rows in the section.
-//  return [self.eventFetchedResultsController.fetchedObjects count];
   return [[[self.eventFetchedResultsController sections] objectAtIndex:section] numberOfObjects];
 }
 
@@ -265,17 +264,14 @@ static NSString * const kWASharedEventViewController_CoachMarks = @"kWASharedEve
   // Configure the cell...
   WAArticle *aArticle = [self.eventFetchedResultsController objectAtIndexPath:indexPath];
   cell.imageView.image = nil;
-  [aArticle irObserve:@"representingFile.thumbnailImage"
-              options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionNew
-              context:nil withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior){
-               
-                dispatch_async(dispatch_get_main_queue(), ^{
-                  cell.imageView.image = (UIImage *)toValue;
-                  cell.imageView.clipsToBounds = YES;
-                });
-
-              }];
+  cell.imageView.clipsToBounds = YES;
   
+  [cell.imageView irUnbind:@"image"];
+  [cell.imageView irBind:@"image"
+                toObject:aArticle
+                 keyPath:@"representingFile.thumbnailImage"
+                 options:[NSDictionary dictionaryWithObjectsAndKeys: (id)kCFBooleanTrue, kIRBindingsAssignOnMainThreadOption, nil]];
+    
   NSInteger pplNumber = [[[self.eventFetchedResultsController objectAtIndexPath:indexPath] valueForKey:@"sharingContacts"] count];
   NSInteger photoNumbers = [[[self.eventFetchedResultsController objectAtIndexPath:indexPath] valueForKey:@"files"] count];
   
