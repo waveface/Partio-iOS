@@ -421,6 +421,9 @@
 /* Text for modal popup close button */
 "LABEL_MODAL_POPUP_CLOSE_BUTTON" = "Close";
 
+/* LABEL_NUDGE_BUTTON */
+"LABEL_NUDGE_BUTTON" = "Nudge";
+
 /* LABEL_SHARED_EVENTS */
 "LABEL_SHARED_EVENTS" = "All Events";
 

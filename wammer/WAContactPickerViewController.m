@@ -9,7 +9,6 @@
 #import "WAContactPickerViewController.h"
 #import <QuartzCore/QuartzCore.h>
 #import "WAAppearance.h"
-#import "WATranslucentToolbar.h"
 #import "WAPartioNavigationBar.h"
 
 #import "WAContactPickerSectionHeaderView.h"
@@ -19,10 +18,11 @@
 @interface WAContactPickerViewController () <UITableViewDelegate, UITableViewDataSource, FBFriendPickerDelegate, UITextFieldDelegate>
 @property (nonatomic, weak) IBOutlet UITableView *tableView;
 @property (nonatomic, weak) IBOutlet UIToolbar *toolbar;
-@property (nonatomic, weak) IBOutlet WAPartioNavigationBar *navigationBar;
+@property (nonatomic, strong) IBOutlet WAPartioNavigationBar *navigationBar;
 @property (nonatomic, strong) FBFriendPickerViewController *fbFriendPickerViewController;
 @property (nonatomic, strong) UITextField *textField;
 @property (nonatomic, strong) UITapGestureRecognizer *tap;
+@property (nonatomic, strong) NSString *nameWithEmailInput;
 
 @end
 
@@ -40,6 +40,7 @@
 - (void)viewDidLoad
 {
   [super viewDidLoad];
+  [self.tableView setBackgroundColor:[UIColor colorWithRed:0.168 green:0.168 blue:0.168 alpha:1]];
   
   __weak WAContactPickerViewController *wSelf = self;
   if (self.navigationController) {
@@ -56,8 +57,10 @@
   }
   self.navigationItem.title = NSLocalizedString(@"TITLE_INVITE_CONTACTS", @"TITLE_INVITE_CONTACTS");
   
+  self.navigationBar = [[WAPartioNavigationBar alloc] initWithFrame:CGRectMake(0.f, 0.f, CGRectGetWidth(self.view.frame), 44.f)];
   [self.navigationBar pushNavigationItem:self.navigationItem animated:NO];
-
+  [self.view addSubview:self.navigationBar];
+  
   [self.toolbar setBackgroundImage:[[UIImage alloc] init] forToolbarPosition:UIToolbarPositionAny barMetrics:UIBarMetricsDefault];
   self.toolbar.backgroundColor = [UIColor colorWithWhite:0.0f alpha:0.4f];
   UIBarButtonItem *flexspace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
@@ -126,19 +129,8 @@
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-  WAContactPickerSectionHeaderView *headerView = [[WAContactPickerSectionHeaderView alloc] initWithFrame:CGRectMake(0.f, 0.f, 320.f, 22.f)];
+  WAContactPickerSectionHeaderView *headerView = [[WAContactPickerSectionHeaderView alloc] initWithFrame:CGRectMake(0.f, 0.f, 320.f, 24.f)];
   headerView.backgroundColor = tableView.backgroundColor;
-  [headerView.title setText: NSLocalizedString(@"MEMBERS_LABEL_CONTACT_PICKER", @"MEMBERS_LABEL_CONTACT_PICKER")];
-  [headerView.title setFont:[UIFont fontWithName:@"OpenSans-Semibold" size:14.f]];
-  [headerView.title setTextColor:[UIColor whiteColor]];
-  
-  [headerView.layer setMasksToBounds:NO];
-  [headerView.layer setShadowPath:[[UIBezierPath bezierPathWithRect:CGRectMake(0.f, 0.f, 320.f, 22.f)] CGPath]];
-  [headerView.layer setDoubleSided:YES];
-  [headerView.layer setShadowRadius:2.f];
-  [headerView.layer setShadowOffset:CGSizeMake(0.f, 2.f)];
-  [headerView.layer setShadowColor:[[UIColor blackColor] CGColor]];
-  [headerView.layer setShadowOpacity:0.5f];
 
   return headerView;
 }
@@ -149,7 +141,7 @@
     return 0.f;
   
   } else {
-    return 22.f;
+    return 24.f;
   
   }
 }
@@ -164,7 +156,7 @@
   cell.selectionStyle = UITableViewCellSelectionStyleGray;
   
   [cell.textLabel setTextColor:[UIColor whiteColor]];
-  [cell.detailTextLabel setFont:[UIFont fontWithName:@"OpenSans-Regular" size:14.f]];
+  [cell.detailTextLabel setFont:[UIFont fontWithName:@"OpenSans-Regular" size:10.f]];
   [cell.detailTextLabel setTextColor:[UIColor colorWithRed:0.537 green:0.537 blue:0.537 alpha:1.0]];
   
   if (indexPath.section == 0) {
@@ -225,24 +217,16 @@
     }
     
     cell.accessoryType = UITableViewCellAccessoryCheckmark;
-    cell.accessoryView = [self checkedButton];
+    cell.accessoryView = [self checkmark];
     
   }
   
   return cell;
 }
 
-- (UIButton *)checkedButton
+- (UIImageView *)checkmark
 {
-  UIButton *aButton = [UIButton buttonWithType:UIButtonTypeCustom];
-  [aButton setFrame:CGRectMake(0.f, 0.f, 75.f, 30.f)];
-  [aButton setImage:[UIImage imageNamed:@"checked"] forState:UIControlStateNormal];
-  [aButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-  [aButton.layer setCornerRadius:15.f];
-  [aButton setClipsToBounds:YES];
-  [aButton setEnabled:NO];
-  
-  return aButton;
+  return [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Checked"]];
 }
 
 - (UIButton *)invitedButton
@@ -265,7 +249,7 @@
   UIButton *aButton = [UIButton buttonWithType:UIButtonTypeCustom];
   [aButton setFrame:CGRectMake(0.f, 0.f, 75.f, 30.f)];
   [aButton setBackgroundColor:[UIColor colorWithRed:0.984 green:0.804 blue:0.02 alpha:1.0]];
-  [aButton setTitle:NSLocalizedString(@"LABEL_INVITED_BUTTON", @"LABEL_INVITED_BUTTON") forState:UIControlStateNormal];
+  [aButton setTitle:NSLocalizedString(@"LABEL_NUDGE_BUTTON", @"LABEL_NUDGE_BUTTON") forState:UIControlStateNormal];
   [aButton.titleLabel setFont:[UIFont fontWithName:@"OpenSans-Regular" size:18.f]];
   [aButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
   [aButton.layer setCornerRadius:15.f];
@@ -352,6 +336,7 @@
       ABPeoplePickerNavigationController *abPicker = [[ABPeoplePickerNavigationController alloc] init];
       abPicker.peoplePickerDelegate = self;
       
+      
       [self presentViewController:abPicker animated:YES completion:nil];
     }
   }
@@ -409,15 +394,20 @@
     
   }
   
+  if (![name isEqualToString:@""]) {
+    self.nameWithEmailInput = name;
+  }
+  
   NSArray *email = @[];
   NSArray *allEmail = (__bridge_transfer NSArray*)ABMultiValueCopyArrayOfAllValues(ABRecordCopyValue(person, kABPersonEmailProperty));
   if ([allEmail count]) {
     email = allEmail;
     if (!name) {
       name = allEmail[0];
-      
     }
+    
   } else {
+    
     NSString *title = [NSString stringWithFormat:NSLocalizedString(@"TITLE_INPUT_EMAIL_ALERT", @"TITLE_INPUT_EMAIL_ALERT"), name];
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title
                                                     message:NSLocalizedString(@"MESSAGE_EMAIL_REQUEST", @"MESSAGE_EMAIL_REQUEST")
@@ -465,23 +455,24 @@
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-  if (buttonIndex == 1) {
-    NSArray *words = [[alertView title] componentsSeparatedByString:@" "];
-    NSString *name;
-    if ([words count] == 3) {
-      name = words[1];
-      
-    } else if ([words count] == 4) {
-      name = [NSString stringWithFormat:@"%@ %@", words[1], words[2]];
-      
-    }
+  if (!buttonIndex) {
+    return;
     
+  } else if (buttonIndex == 1) {
+    NSString *name = @"";
+    if (![self.nameWithEmailInput isEqualToString:@""]) {
+      name = self.nameWithEmailInput;
+    }
+      
     NSString *email = [[alertView textFieldAtIndex:0] text];
     if (![self NSStringIsValidEmail:email]) {
+      UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"TITLE_ERROR_INVALID_EMAIL_FORMAT", @"TITLE_ERROR_INVALID_EMAIL_FORMAT") message:nil delegate:self cancelButtonTitle:NSLocalizedString(@"ACTION_OKAY", @"ACTION_OKAY") otherButtonTitles:nil];
+      [alert show];
       return;
+      
     }
     
-    if (!name) {
+    if ([name isEqualToString:@""]) {
       name = email;
     }
     NSDictionary *aPerson = @{@"name": name, @"email": @[email]};
