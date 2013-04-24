@@ -22,6 +22,7 @@
 @property (nonatomic, strong) FBFriendPickerViewController *fbFriendPickerViewController;
 @property (nonatomic, strong) UITextField *textField;
 @property (nonatomic, strong) UITapGestureRecognizer *tap;
+@property (nonatomic, strong) NSString *nameWithEmailInput;
 
 @end
 
@@ -335,6 +336,7 @@
       ABPeoplePickerNavigationController *abPicker = [[ABPeoplePickerNavigationController alloc] init];
       abPicker.peoplePickerDelegate = self;
       
+      
       [self presentViewController:abPicker animated:YES completion:nil];
     }
   }
@@ -392,15 +394,20 @@
     
   }
   
+  if (![name isEqualToString:@""]) {
+    self.nameWithEmailInput = name;
+  }
+  
   NSArray *email = @[];
   NSArray *allEmail = (__bridge_transfer NSArray*)ABMultiValueCopyArrayOfAllValues(ABRecordCopyValue(person, kABPersonEmailProperty));
   if ([allEmail count]) {
     email = allEmail;
     if (!name) {
       name = allEmail[0];
-      
     }
+    
   } else {
+    
     NSString *title = [NSString stringWithFormat:NSLocalizedString(@"TITLE_INPUT_EMAIL_ALERT", @"TITLE_INPUT_EMAIL_ALERT"), name];
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title
                                                     message:NSLocalizedString(@"MESSAGE_EMAIL_REQUEST", @"MESSAGE_EMAIL_REQUEST")
@@ -448,23 +455,24 @@
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-  if (buttonIndex == 1) {
-    NSArray *words = [[alertView title] componentsSeparatedByString:@" "];
-    NSString *name;
-    if ([words count] == 3) {
-      name = words[1];
-      
-    } else if ([words count] == 4) {
-      name = [NSString stringWithFormat:@"%@ %@", words[1], words[2]];
-      
-    }
+  if (!buttonIndex) {
+    return;
     
+  } else if (buttonIndex == 1) {
+    NSString *name = @"";
+    if (![self.nameWithEmailInput isEqualToString:@""]) {
+      name = self.nameWithEmailInput;
+    }
+      
     NSString *email = [[alertView textFieldAtIndex:0] text];
     if (![self NSStringIsValidEmail:email]) {
+      UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"TITLE_ERROR_INVALID_EMAIL_FORMAT", @"TITLE_ERROR_INVALID_EMAIL_FORMAT") message:nil delegate:self cancelButtonTitle:NSLocalizedString(@"ACTION_OKAY", @"ACTION_OKAY") otherButtonTitles:nil];
+      [alert show];
       return;
+      
     }
     
-    if (!name) {
+    if ([name isEqualToString:@""]) {
       name = email;
     }
     NSDictionary *aPerson = @{@"name": name, @"email": @[email]};
