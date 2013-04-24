@@ -449,6 +449,8 @@
 		DE0870DF171CFDD200FA2A5E /* WASharedEventViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DE0870DB171CFDD200FA2A5E /* WASharedEventViewCell.m */; };
 		DE0870E0171CFDD200FA2A5E /* WASharedEventViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = DE0870DC171CFDD200FA2A5E /* WASharedEventViewCell.xib */; };
 		DE0870E1171CFDD200FA2A5E /* WASpotlightSlideFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = DE0870DE171CFDD200FA2A5E /* WASpotlightSlideFlowLayout.m */; };
+		DE0F9CDA17277FCA008E94CE /* WAAddressBookPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DE0F9CD917277FCA008E94CE /* WAAddressBookPickerViewController.m */; };
+		DE0F9CDC17277FFF008E94CE /* WAAddressBookPickerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DE0F9CDB17277FFF008E94CE /* WAAddressBookPickerViewController.xib */; };
 		DE46FC17165E228300CC4FFF /* WACalendarPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DE46FC16165E228300CC4FFF /* WACalendarPickerViewController.m */; };
 		DE67A4A21712BA0500099106 /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DE67A4A01712BA0400099106 /* AddressBook.framework */; };
 		DE67A4A31712BA0500099106 /* AddressBookUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DE67A4A11712BA0400099106 /* AddressBookUI.framework */; };
@@ -1572,6 +1574,9 @@
 		DE0870DC171CFDD200FA2A5E /* WASharedEventViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = WASharedEventViewCell.xib; path = wammer/WASharedEventViewCell.xib; sourceTree = "<group>"; };
 		DE0870DD171CFDD200FA2A5E /* WASpotlightSlideFlowLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WASpotlightSlideFlowLayout.h; path = wammer/WASpotlightSlideFlowLayout.h; sourceTree = "<group>"; };
 		DE0870DE171CFDD200FA2A5E /* WASpotlightSlideFlowLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WASpotlightSlideFlowLayout.m; path = wammer/WASpotlightSlideFlowLayout.m; sourceTree = "<group>"; };
+		DE0F9CD817277FCA008E94CE /* WAAddressBookPickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAAddressBookPickerViewController.h; sourceTree = "<group>"; };
+		DE0F9CD917277FCA008E94CE /* WAAddressBookPickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAAddressBookPickerViewController.m; sourceTree = "<group>"; };
+		DE0F9CDB17277FFF008E94CE /* WAAddressBookPickerViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WAAddressBookPickerViewController.xib; sourceTree = "<group>"; };
 		DE2BBDD616761AC100EEF922 /* Kal.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Kal.xcodeproj; path = external/Kal/src/Kal.xcodeproj; sourceTree = SOURCE_ROOT; };
 		DE46FC15165E228300CC4FFF /* WACalendarPickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WACalendarPickerViewController.h; path = wammer/WACalendarPickerViewController.h; sourceTree = "<group>"; };
 		DE46FC16165E228300CC4FFF /* WACalendarPickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WACalendarPickerViewController.m; path = wammer/WACalendarPickerViewController.m; sourceTree = "<group>"; };
@@ -2784,6 +2789,22 @@
 			name = "Sliding Menu";
 			sourceTree = "<group>";
 		};
+		DE0F9CCA17277EF4008E94CE /* Contact Picker */ = {
+			isa = PBXGroup;
+			children = (
+				DE67A4BC1712BB7700099106 /* WAContactPickerViewController.h */,
+				DE67A4BD1712BB7700099106 /* WAContactPickerViewController.m */,
+				80C9F3811719B2E9003E7C6E /* WAContactPickerViewController.xib */,
+				80C9F3851719B761003E7C6E /* WAContactPickerSectionHeaderView.h */,
+				80C9F3861719B761003E7C6E /* WAContactPickerSectionHeaderView.m */,
+				80C9F3831719B6B8003E7C6E /* WAContactPickerSectionHeaderView.xib */,
+				DE0F9CD817277FCA008E94CE /* WAAddressBookPickerViewController.h */,
+				DE0F9CD917277FCA008E94CE /* WAAddressBookPickerViewController.m */,
+				DE0F9CDB17277FFF008E94CE /* WAAddressBookPickerViewController.xib */,
+			);
+			name = "Contact Picker";
+			sourceTree = "<group>";
+		};
 		DE67A4B11712BA7800099106 /* Shared Events */ = {
 			isa = PBXGroup;
 			children = (
@@ -2795,12 +2816,6 @@
 				DE0870DC171CFDD200FA2A5E /* WASharedEventViewCell.xib */,
 				DE0870DD171CFDD200FA2A5E /* WASpotlightSlideFlowLayout.h */,
 				DE0870DE171CFDD200FA2A5E /* WASpotlightSlideFlowLayout.m */,
-				DE67A4BC1712BB7700099106 /* WAContactPickerViewController.h */,
-				DE67A4BD1712BB7700099106 /* WAContactPickerViewController.m */,
-				80C9F3811719B2E9003E7C6E /* WAContactPickerViewController.xib */,
-				80C9F3851719B761003E7C6E /* WAContactPickerSectionHeaderView.h */,
-				80C9F3861719B761003E7C6E /* WAContactPickerSectionHeaderView.m */,
-				80C9F3831719B6B8003E7C6E /* WAContactPickerSectionHeaderView.xib */,
 			);
 			name = "Shared Events";
 			sourceTree = "<group>";
@@ -3105,6 +3120,7 @@
 				80C768DC17105683000F10A8 /* Partio Welcome */,
 				80090B48170EC74A005AF6B8 /* New Event View */,
 				DE67A4B11712BA7800099106 /* Shared Events */,
+				DE0F9CCA17277EF4008E94CE /* Contact Picker */,
 				80B1137D170DD08D0087EBC4 /* Photo Highlights */,
 				DE7B38A0165CBB9900718262 /* Calendar Picker */,
 				7D0CDD04162E5A080027D35F /* StreamTests */,
@@ -4494,6 +4510,7 @@
 				800095F217210DAA0082E1B5 /* AddPhotoBtn@2x.png in Resources */,
 				800095F317210DAA0082E1B5 /* AddPplBtn.png in Resources */,
 				800095F417210DAA0082E1B5 /* AddPplBtn@2x.png in Resources */,
+				DE0F9CDC17277FFF008E94CE /* WAAddressBookPickerViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5007,6 +5024,7 @@
 				80B3A3B6171FA9F100A9B57B /* WAEventDetailsMapCell.m in Sources */,
 				800096071721235B0082E1B5 /* WAPartioNavigationBar.m in Sources */,
 				DEF38F5617219E5B0006DE2C /* WATransparentToolbar.m in Sources */,
+				DE0F9CDA17277FCA008E94CE /* WAAddressBookPickerViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

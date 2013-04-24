@@ -12,6 +12,7 @@
 #import "WAPartioNavigationBar.h"
 
 #import "WAContactPickerSectionHeaderView.h"
+#import "WAAddressBookPickerViewController.h"
 #import <BlocksKit/BlocksKit.h>
 #import <FacebookSDK/FacebookSDK.h>
 
@@ -42,7 +43,6 @@
   [super viewDidLoad];
   [self.tableView setBackgroundColor:[UIColor colorWithRed:0.168 green:0.168 blue:0.168 alpha:1]];
   
-  [self.navigationController setNavigationBarHidden:YES];
   __weak WAContactPickerViewController *wSelf = self;
   if (self.navigationController) {
     self.navigationItem.leftBarButtonItem = WAPartioBackButton(^{
@@ -127,7 +127,7 @@
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-  WAContactPickerSectionHeaderView *headerView = [[WAContactPickerSectionHeaderView alloc] initWithFrame:CGRectMake(0.f, 0.f, 320.f, 24.f)];
+  WAContactPickerSectionHeaderView *headerView = [[WAContactPickerSectionHeaderView alloc] initWithFrame:CGRectMake(0.f, 2.f, 320.f, 22.f)];
   headerView.backgroundColor = tableView.backgroundColor;
 
   return headerView;
@@ -139,7 +139,7 @@
     return 0.f;
   
   } else {
-    return 24.f;
+    return 22.f;
   
   }
 }
@@ -331,9 +331,9 @@
       [alert show];
       
     } else if (indexPath.row == 1) {
-      ABPeoplePickerNavigationController *abPicker = [[ABPeoplePickerNavigationController alloc] init];
-      abPicker.peoplePickerDelegate = self;
-      
+//      ABPeoplePickerNavigationController *abPicker = [[ABPeoplePickerNavigationController alloc] init];
+//      abPicker.peoplePickerDelegate = self;
+      WAAddressBookPickerViewController *abPicker = [[WAAddressBookPickerViewController alloc] init];
       
       [self presentViewController:abPicker animated:YES completion:nil];
     }

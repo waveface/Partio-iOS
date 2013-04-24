@@ -76,7 +76,6 @@ static NSString *kCellID = @"EventCell";
   
   [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleCoreDataReinitialization:) name:kWACoreDataReinitialization object:nil];
   
-  [self.navigationController setNavigationBarHidden:YES];
   [self.navigationItem setTitle:NSLocalizedString(@"LABEL_SHARED_EVENTS", @"LABEL_SHARED_EVENTS")];
   [self.navigationItem setHidesBackButton:YES];
   [self.navigationBar pushNavigationItem:self.navigationItem animated:NO];
