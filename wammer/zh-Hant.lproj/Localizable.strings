@@ -400,6 +400,12 @@
 /* No comment provided by engineer. */
 "HOUR_SINGULAR" = "%d小時";
 
+/* show how many friends with creator */
+"INFO_EVENT_FRIENDS" = "與 %d 位好友一起分享";
+
+/* information in event view to show hint */
+"INFO_HINT" = "邀一些好友來一起分享吧！";
+
 /* INPUT_RECEIVER_EMAIL */
 "INPUT_RECEIVER_EMAIL" = "輸入電子郵件信箱";
 

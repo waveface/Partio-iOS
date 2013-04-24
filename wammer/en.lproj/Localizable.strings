@@ -400,6 +400,12 @@
 /* No comment provided by engineer. */
 "HOUR_SINGULAR" = "%d hour";
 
+/* show how many friends with creator */
+"INFO_EVENT_FRIENDS" = "together with other %d friends.";
+
+/* information in event view to show hint */
+"INFO_HINT" = "Invite some friends to share this event.";
+
 /* INPUT_RECEIVER_EMAIL */
 "INPUT_RECEIVER_EMAIL" = "Input Email";
 

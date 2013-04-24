@@ -928,9 +928,9 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks = @"kWAPhotoTi
     }
 
     if (self.representingArticle)
-      cover.informationLabel.text = [NSString stringWithFormat:@"with some other %d friends.", self.representingArticle.sharingContacts.count];
+      cover.informationLabel.text = [NSString stringWithFormat:NSLocalizedString(@"INFO_EVENT_FRIENDS", @"show how many friends with creator"), self.representingArticle.sharingContacts.count - 1];
     else
-      cover.informationLabel.text = @"Invite more people to share photos together with you.";
+      cover.informationLabel.text = NSLocalizedString(@"INFO_HINT", @"information in event view to show hint");
     return cover;
     
   }
