@@ -15,16 +15,19 @@
     self = [super initWithFrame:frame];
     if (self) {
         // Initialization code
-      [self.layer setMasksToBounds:NO];
-      [self.layer setShadowRadius:2.f];
-      [self.layer setShadowOffset:CGSizeMake(0.f, 2.f)];
-      [self.layer setShadowColor:[[UIColor blackColor] CGColor]];
-      [self.layer setShadowOpacity:0.5f];
-
     }
     return self;
 }
 
+- (void)awakeFromNib
+{
+  [self.layer setMasksToBounds:NO];
+  [self.layer setShadowRadius:2.f];
+  [self.layer setShadowOffset:CGSizeMake(0.f, 2.f)];
+  [self.layer setShadowColor:[[UIColor blackColor] CGColor]];
+  [self.layer setShadowOpacity:0.5f];
+  
+}
 
 // Only override drawRect: if you perform custom drawing.
 // An empty implementation adversely affects performance during animation.

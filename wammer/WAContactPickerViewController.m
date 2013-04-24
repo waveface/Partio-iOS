@@ -18,7 +18,7 @@
 @interface WAContactPickerViewController () <UITableViewDelegate, UITableViewDataSource, FBFriendPickerDelegate, UITextFieldDelegate>
 @property (nonatomic, weak) IBOutlet UITableView *tableView;
 @property (nonatomic, weak) IBOutlet UIToolbar *toolbar;
-@property (nonatomic, strong) IBOutlet WAPartioNavigationBar *navigationBar;
+@property (nonatomic, weak) IBOutlet WAPartioNavigationBar *navigationBar;
 @property (nonatomic, strong) FBFriendPickerViewController *fbFriendPickerViewController;
 @property (nonatomic, strong) UITextField *textField;
 @property (nonatomic, strong) UITapGestureRecognizer *tap;
@@ -42,6 +42,7 @@
   [super viewDidLoad];
   [self.tableView setBackgroundColor:[UIColor colorWithRed:0.168 green:0.168 blue:0.168 alpha:1]];
   
+  [self.navigationController setNavigationBarHidden:YES];
   __weak WAContactPickerViewController *wSelf = self;
   if (self.navigationController) {
     self.navigationItem.leftBarButtonItem = WAPartioBackButton(^{
@@ -56,10 +57,7 @@
     });
   }
   self.navigationItem.title = NSLocalizedString(@"TITLE_INVITE_CONTACTS", @"TITLE_INVITE_CONTACTS");
-  
-  self.navigationBar = [[WAPartioNavigationBar alloc] initWithFrame:CGRectMake(0.f, 0.f, CGRectGetWidth(self.view.frame), 44.f)];
   [self.navigationBar pushNavigationItem:self.navigationItem animated:NO];
-  [self.view addSubview:self.navigationBar];
   
   [self.toolbar setBackgroundImage:[[UIImage alloc] init] forToolbarPosition:UIToolbarPositionAny barMetrics:UIBarMetricsDefault];
   self.toolbar.backgroundColor = [UIColor colorWithWhite:0.0f alpha:0.4f];
