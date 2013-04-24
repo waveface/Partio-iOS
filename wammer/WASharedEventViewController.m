@@ -263,15 +263,21 @@ static NSString * const kWASharedEventViewController_CoachMarks = @"kWASharedEve
   
   // Configure the cell...
   WAArticle *aArticle = [self.eventFetchedResultsController objectAtIndexPath:indexPath];
-  cell.imageView.image = nil;
   cell.imageView.clipsToBounds = YES;
   
   [cell.imageView irUnbind:@"image"];
   [cell.imageView irBind:@"image"
                 toObject:aArticle
                  keyPath:@"representingFile.thumbnailImage"
-                 options:[NSDictionary dictionaryWithObjectsAndKeys: (id)kCFBooleanTrue, kIRBindingsAssignOnMainThreadOption, nil]];
-    
+                 options:[NSDictionary dictionaryWithObjectsAndKeys: (id)kCFBooleanTrue, kIRBindingsAssignOnMainThreadOption,
+                          [^(id inOldValue, id inNewValue, NSString *changeKind) {
+                            if ([inNewValue isEqual:[NSNull null]]) {
+                              return [UIImage imageNamed:@"EventListPlaceHolder"];
+                            } else {
+                              return (UIImage*)inNewValue;
+                            }
+                          } copy], kIRBindingsValueTransformerBlock, nil]];
+  
   NSInteger pplNumber = [[[self.eventFetchedResultsController objectAtIndexPath:indexPath] valueForKey:@"sharingContacts"] count];
   NSInteger photoNumbers = [[[self.eventFetchedResultsController objectAtIndexPath:indexPath] valueForKey:@"files"] count];
   
