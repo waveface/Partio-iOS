@@ -62,14 +62,13 @@
   [self.toolbar setBackgroundImage:[[UIImage alloc] init] forToolbarPosition:UIToolbarPositionAny barMetrics:UIBarMetricsDefault];
   self.toolbar.backgroundColor = [UIColor colorWithWhite:0.0f alpha:0.4f];
   UIBarButtonItem *flexspace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
-//  self.toolbar = [[WATranslucentToolbar alloc] initWithFrame:CGRectMake(0, CGRectGetHeight(self.view.frame)-44, CGRectGetWidth(self.view.frame), 44)];
-  
   self.toolbar.items = @[flexspace, [self shareBarButton], flexspace];
   [self.view addSubview:self.toolbar];
   
   self.tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissKeyboard)];
   [self.tap setCancelsTouchesInView:NO];
   [self.view addGestureRecognizer:self.tap];
+  
 }
 
 - (UIBarButtonItem *)shareBarButton
@@ -308,6 +307,27 @@
 
 #pragma mark - Table view delegate
 
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
+{
+  return YES;
+}
+
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+  if (editingStyle == UITableViewCellEditingStyleDelete) {
+    
+    [tableView beginUpdates];
+    [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationLeft];
+    
+    if ([self.members objectAtIndex:indexPath.row]) {
+      [self.members removeObjectAtIndex:indexPath.row];
+    }
+
+    [tableView endUpdates];
+    
+  }
+}
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
   [tableView deselectRowAtIndexPath:indexPath animated:YES];
@@ -331,9 +351,8 @@
       [alert show];
       
     } else if (indexPath.row == 1) {
-//      ABPeoplePickerNavigationController *abPicker = [[ABPeoplePickerNavigationController alloc] init];
-//      abPicker.peoplePickerDelegate = self;
-      WAAddressBookPickerViewController *abPicker = [[WAAddressBookPickerViewController alloc] init];
+      ABPeoplePickerNavigationController *abPicker = [[ABPeoplePickerNavigationController alloc] init];
+      abPicker.peoplePickerDelegate = self;
       
       [self presentViewController:abPicker animated:YES completion:nil];
     }
@@ -441,12 +460,11 @@
     NSDictionary *aPerson = @{@"name": name,
                               @"email": email,
                               @"phone": phone};
-
+    
     if (![_members containsObject:aPerson]) {
       [_members addObject:aPerson];
     }
   }
-  
 }
 
 #pragma mark - UIAlertViewDelegate
