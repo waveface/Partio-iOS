@@ -403,6 +403,12 @@
 /* INPUT_RECEIVER_EMAIL */
 "INPUT_RECEIVER_EMAIL" = "Input Email";
 
+/* Instruction shown above the create button in the event list view. */
+"INSTRUCTION_IN_EVENTLIST_CREATE_BUTTON" = "Start here to share";
+
+/* The instruction show to go next in the preview view */
+"INSTRUCTION_IN_PREVIEW_SHARE_BUTTON" = "Tap Next to invite your friends.";
+
 /* Title on introduction pages */
 "INTRODUCTION_TITLE" = "What is aostream?";
 
@@ -829,10 +835,10 @@
 "NOSIGNUP_BUTTON" = "Experience without Signup";
 
 /* Class = "IBUIButton"; normalTitle = "FACEBOOK_SIGNUP_BUTTON"; ObjectID = "4"; */
-"FACEBOOK_SIGNUP_BUTTON" = "Connect with Facebook";
+"FACEBOOK_SIGNUP_BUTTON" = "Signup with Facebook";
 
 /* Class = "IBUILabel"; text = "DESCRIPTION_WHY_SIGNUP"; ObjectID = "40"; */
-"DESCRIPTION_WHY_SIGNUP" = "We won't post anything or contact your friends without your approval.";
+"DESCRIPTION_WHY_SIGNUP" = "It is almost done! You just need to signup Grupin with Facebook to let us know who you are. We won't post anything or contact your friends without your approval.";
 
 /* Class = "IBUITextField"; placeholder = "USERNAME_PLACEHOLDER"; ObjectID = "2Vk-4J-QH3"; */
 "USERNAME_PLACEHOLDER" = "me@example.com";

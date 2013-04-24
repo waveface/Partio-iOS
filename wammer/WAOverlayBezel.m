@@ -42,6 +42,28 @@
 
 }
 
++ (void) showSuccessBezelWithDuration:(CGFloat)seconds handler:(void(^)(void))completionHandler {
+
+  if (![NSThread isMainThread]) {
+    dispatch_async(dispatch_get_main_queue(), ^ {
+      [WAOverlayBezel showSuccessBezelWithDuration:seconds handler:completionHandler];
+    });
+    return;
+  }
+
+  WAOverlayBezel *doneBezel = [WAOverlayBezel bezelWithStyle:WACheckmarkBezelStyle];
+  [doneBezel show];
+  dispatch_after(dispatch_time(DISPATCH_TIME_NOW, seconds * NSEC_PER_SEC), dispatch_get_main_queue(), ^ {
+    [doneBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
+    
+    if (completionHandler) {
+      completionHandler();
+    }
+    
+  });
+
+}
+
 - (WAOverlayBezel *) initWithStyle:(WAOverlayBezelStyle)aStyle {
 
 	self = [super initWithFrame:(CGRect){ CGPointZero, (CGSize){ 128, 128 }}];

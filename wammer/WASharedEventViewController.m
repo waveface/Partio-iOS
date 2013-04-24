@@ -18,6 +18,8 @@
 #import "WADataStore.h"
 #import "WAPartioNavigationBar.h"
 #import "NSDate+WAAdditions.h"
+#import <SMCalloutView/SMCalloutView.h>
+#import <BlocksKit/BlocksKit.h>
 #import <QuartzCore/QuartzCore.h>
 
 @interface WASharedEventViewController ()
@@ -26,11 +28,16 @@
 @property (nonatomic, strong) NSFetchedResultsController *eventFetchedResultsController;
 @property (nonatomic, strong) NSMutableArray *objectChanges;
 @property (nonatomic, strong) WAPartioNavigationBar *navigationBar;
-@property (nonatomic, strong) IBOutlet UICollectionView *collectionView;
+@property (nonatomic, weak) IBOutlet UICollectionView *collectionView;
+@property (nonatomic, weak) IBOutlet UIButton *creationButton;
+
+@property (nonatomic, strong) UITapGestureRecognizer *tapGesture;
+@property (nonatomic, strong) SMCalloutView *shareInstructionView;
 
 @end
 
-static NSString *kCellID = @"EventCell";
+static NSString * const kCellID = @"EventCell";
+static NSString * const kWASharedEventViewController_CoachMarks = @"kWASharedEventViewController_CoachMarks";
 
 @implementation WASharedEventViewController
 
@@ -96,10 +103,28 @@ static NSString *kCellID = @"EventCell";
 {
   [super viewDidAppear:animated];
   
-  if (![self.eventFetchedResultsController.fetchedObjects count]) {
-    [self shareNewEventFromHighlight:nil];
+  BOOL coachmarkShown = [[NSUserDefaults standardUserDefaults] boolForKey:kWASharedEventViewController_CoachMarks];
+  if (!coachmarkShown) {
+    __weak WASharedEventViewController *wSelf = self;
+    if (!self.shareInstructionView) {
+      self.shareInstructionView = [SMCalloutView new];
+      self.shareInstructionView.title = NSLocalizedString(@"INSTRUCTION_IN_EVENTLIST_CREATE_BUTTON", @"Instruction shown above the create button in the event list view.");
+      [self.shareInstructionView presentCalloutFromRect:CGRectMake(self.creationButton.frame.origin.x +self.creationButton.frame.size.width/2, self.creationButton.frame.origin.y, 1, 1) inView:self.view constrainedToView:self.view permittedArrowDirections:SMCalloutArrowDirectionDown animated:YES];
+      
+      self.tapGesture = [[UITapGestureRecognizer alloc] initWithHandler:^(UIGestureRecognizer *sender, UIGestureRecognizerState state, CGPoint location) {
+        if (wSelf.shareInstructionView) {
+          [wSelf.shareInstructionView dismissCalloutAnimated:YES];
+          wSelf.shareInstructionView = nil;
+        }
+        [wSelf.view removeGestureRecognizer:wSelf.tapGesture];
+        wSelf.tapGesture = nil;
+      }];
+      [self.view addGestureRecognizer:self.tapGesture];
+    }
     
-  } 
+    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:kWASharedEventViewController_CoachMarks];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+  }
   
 }
 
@@ -107,6 +132,11 @@ static NSString *kCellID = @"EventCell";
 {
   [super didReceiveMemoryWarning];
   // Dispose of any resources that can be recreated.
+}
+
+- (void) dealloc {
+  if (self.tapGesture)
+    [self.view removeGestureRecognizer:self.tapGesture];
 }
 
 - (BOOL) shouldAutorotate {
@@ -224,7 +254,6 @@ static NSString *kCellID = @"EventCell";
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
   // Return the number of rows in the section.
-//  return [self.eventFetchedResultsController.fetchedObjects count];
   return [[[self.eventFetchedResultsController sections] objectAtIndex:section] numberOfObjects];
 }
 
@@ -234,17 +263,20 @@ static NSString *kCellID = @"EventCell";
   
   // Configure the cell...
   WAArticle *aArticle = [self.eventFetchedResultsController objectAtIndexPath:indexPath];
-  cell.imageView.image = nil;
-  [aArticle irObserve:@"representingFile.thumbnailImage"
-              options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionNew
-              context:nil withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior){
-               
-                dispatch_async(dispatch_get_main_queue(), ^{
-                  cell.imageView.image = (UIImage *)toValue;
-                  cell.imageView.clipsToBounds = YES;
-                });
-
-              }];
+  cell.imageView.clipsToBounds = YES;
+  
+  [cell.imageView irUnbind:@"image"];
+  [cell.imageView irBind:@"image"
+                toObject:aArticle
+                 keyPath:@"representingFile.thumbnailImage"
+                 options:[NSDictionary dictionaryWithObjectsAndKeys: (id)kCFBooleanTrue, kIRBindingsAssignOnMainThreadOption,
+                          [^(id inOldValue, id inNewValue, NSString *changeKind) {
+                            if ([inNewValue isEqual:[NSNull null]]) {
+                              return [UIImage imageNamed:@"EventListPlaceHolder"];
+                            } else {
+                              return (UIImage*)inNewValue;
+                            }
+                          } copy], kIRBindingsValueTransformerBlock, nil]];
   
   NSInteger pplNumber = [[[self.eventFetchedResultsController objectAtIndexPath:indexPath] valueForKey:@"sharingContacts"] count];
   NSInteger photoNumbers = [[[self.eventFetchedResultsController objectAtIndexPath:indexPath] valueForKey:@"files"] count];
@@ -254,35 +286,27 @@ static NSString *kCellID = @"EventCell";
   [sharedDateFormatter setDateStyle:NSDateFormatterLongStyle];
   [sharedDateFormatter setTimeStyle:NSDateFormatterNoStyle];
   
-  NSDate *eDate = [[self.eventFetchedResultsController objectAtIndexPath:indexPath] valueForKey:@"creationDate"];
+  NSDate *eDate = [[self.eventFetchedResultsController objectAtIndexPath:indexPath] valueForKey:@"eventStartDate"];
   NSString *eventDate = [sharedDateFormatter stringFromDate:eDate];
   
   NSString *location = @"";
-  NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] initWithEntityName:@"WACheckin"];
-  NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"createDate" ascending:NO];
-  fetchRequest.sortDescriptors = @[sortDescriptor];
-  NSPredicate *predicate = [NSPredicate predicateWithFormat:@"createDate = %@", eDate];
-  fetchRequest.predicate = predicate;
-  
-  NSError *Error;
-  NSArray *checkins = [self.managedObjectContext executeFetchRequest:fetchRequest error:&Error];
-  NSInteger checkinNumbers = 0;
-  if (Error) {
-    NSLog(@"Failed to fetch checkins: %@", Error);
-    
-  } else {
-    checkinNumbers = [checkins count];
-    if (checkinNumbers) {
-      location = [[checkins valueForKeyPath:@"name"] componentsJoinedByString:@", "];
-      
-    } else {
-      location = @"Location";
-      //location = [[[self.eventFetchedResultsController objectAtIndexPath:indexPath] valueForKey:@"location"] name];
-      
+  if (aArticle.location) {
+    location = aArticle.location.name;
+  }
+
+  NSInteger checkinNumbers = [aArticle.checkins count];
+  if (checkinNumbers) {
+    NSString *checkinString = [[[aArticle.checkins allObjects] valueForKey:@"name"] componentsJoinedByString:@","];
+    if (location.length && checkinString.length) {
+      location = [NSString stringWithFormat:@"%@,%@", checkinString, location];
     }
   }
   
-  [cell.stickerNew setHidden:YES];
+  if (!aArticle.lastRead && [aArticle.lastRead compare:aArticle.modificationDate] == NSOrderedDescending) {
+    [cell.stickerNew setHidden:NO];
+  } else {
+    [cell.stickerNew setHidden:YES];
+  }
   [cell.photoNumber setText:[NSString stringWithFormat:@"%d", photoNumbers]];
   [cell.checkinNumber setText:[NSString stringWithFormat:@"%d", checkinNumbers]];
   [cell.peopleNumber setText:[NSString stringWithFormat:@"%d", pplNumber]];
@@ -314,6 +338,13 @@ static NSString *kCellID = @"EventCell";
 
 - (IBAction)shareNewEventFromHighlight:(id)sender
 {
+  if (self.shareInstructionView) {
+    [self.shareInstructionView dismissCalloutAnimated:YES];
+    self.shareInstructionView = nil;
+  }
+  [self.view removeGestureRecognizer:self.tapGesture];
+  self.tapGesture = nil;
+
   WANavigationController *phVC = [WAPhotoHighlightsViewController viewControllerWithNavigationControllerWrapped];
   [self presentViewController:phVC animated:YES completion:nil];
 }

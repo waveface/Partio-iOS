@@ -39,6 +39,8 @@ typedef enum {
 + (WAOverlayBezel *) bezelWithStyle:(WAOverlayBezelStyle)aStyle;
 - (WAOverlayBezel *) initWithStyle:(WAOverlayBezelStyle)aStyle;
 
++ (void) showSuccessBezelWithDuration:(CGFloat)seconds handler:(void(^)(void))completionHandler;
+
 @property (nonatomic, readwrite, copy) NSString *caption;
 
 - (void) show;

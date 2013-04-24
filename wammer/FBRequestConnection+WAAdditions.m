@@ -63,6 +63,10 @@
                                      if ([place[@"page_id"] isEqualToNumber:checkin[@"page_id"]]) {
                                        NSMutableDictionary *returningItem = [NSMutableDictionary dictionaryWithDictionary:checkin];
                                        returningItem[@"name"] = place[@"name"];
+                                       if (checkin[@"coords"]) {
+                                         returningItem[@"latitude"] = checkin[@"coords"][@"latitude"];
+                                         returningItem[@"longitude"] = checkin[@"coords"][@"longitude"];
+                                       }
                                        [returningList addObject:returningItem];
                                        break;
                                      }
