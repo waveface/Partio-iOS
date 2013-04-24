@@ -914,24 +914,13 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks = @"kWAPhotoTi
     formatter.timeStyle = NSDateFormatterMediumStyle;
     cover.dateLabel.text = [formatter stringFromDate:self.eventDate];
     
-    [cover.detailButton addEventHandler:^(id sender) {
-      __weak WAPhotoTimelineViewController *wSelf = self;
-      NSDictionary *detailInfo = @{
-                                  @"eventStartDate": [self beginDate],
-                                  @"eventEndDate":[self endDate],
-                                  @"latitude": @(self.coordinate.latitude),
-                                  @"longitude":@(self.coordinate.longitude),
-                                  @"checkins": [self checkins],
-                                  @"contacts": [self contacts]
-                               };
-      WAEventDetailsViewController *detail = [WAEventDetailsViewController wrappedNavigationControllerForDetailInfo:detailInfo];
-      [wSelf presentViewController:detail animated:YES completion:nil];
-    } forControlEvents:UIControlEventTouchUpInside];
+    [cover.detailButton addTarget:self action:@selector(detailButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+    [cover.nameDetailButton addTarget:self action:@selector(detailButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
 
-    NSDictionary *user = self.userInfo;
+    NSDictionary *user = [self userInfo];
     cover.avatarView.image = [UIImage imageNamed:@"Avatar"];
     if (user[@"avatarURL"]) {
-      [cover.avatarView setPathToNetworkImage:user[@"Avatar"] forDisplaySize:cover.avatarView.frame.size];
+      [cover.avatarView setPathToNetworkImage:user[@"avatarURL"] forDisplaySize:cover.avatarView.frame.size];
     } else {
       if (user[@"avatar"]) {
         cover.avatarView.image = user[@"avatar"];
@@ -946,6 +935,19 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks = @"kWAPhotoTi
     
   }
   return nil;
+}
+
+- (IBAction)detailButtonTapped:(id)sender {
+  NSDictionary *detailInfo = @{
+                               @"eventStartDate": [self beginDate],
+                               @"eventEndDate":[self endDate],
+                               @"latitude": @(self.coordinate.latitude),
+                               @"longitude":@(self.coordinate.longitude),
+                               @"checkins": [self checkins],
+                               @"contacts": [self contacts]
+                               };
+  WAEventDetailsViewController *detail = [WAEventDetailsViewController wrappedNavigationControllerForDetailInfo:detailInfo];
+  [self presentViewController:detail animated:YES completion:nil];
 }
 
 #pragma mark - UICollectionViewFlowLayout delegate

@@ -12,13 +12,13 @@
 
 + (NSString *) keyPathHoldingUniqueValue {
 	
-	return @"email";
+  return nil;
 	
 }
 
 + (BOOL) skipsNonexistantRemoteKey {
 	
-	return YES;
+  return YES;
 	
 }
 

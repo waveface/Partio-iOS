@@ -300,7 +300,7 @@ static NSString * const kWASharedEventViewController_CoachMarks = @"kWASharedEve
     }
   }
   
-  if (aArticle.lastRead || [aArticle.lastRead compare:aArticle.modificationDate] == NSOrderedDescending) {
+  if (!aArticle.lastRead && [aArticle.lastRead compare:aArticle.modificationDate] == NSOrderedDescending) {
     [cell.stickerNew setHidden:NO];
   } else {
     [cell.stickerNew setHidden:YES];
