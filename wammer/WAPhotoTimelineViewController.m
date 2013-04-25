@@ -15,6 +15,7 @@
 #import "WAEventDetailsViewController.h"
 #import "WADayPhotoPickerViewController.h"
 #import "WAGalleryViewController.h"
+#import "WAAddressBookPickerViewController.h"
 
 #import "WAPhotoCollageCell.h"
 #import "WADefines.h"
@@ -548,7 +549,9 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks = @"kWAPhotoTi
 {
   
   __weak WAPhotoTimelineViewController *wSelf = self;
-  WAContactPickerViewController *contactPicker = [[WAContactPickerViewController alloc] init];
+  //WAContactPickerViewController *contactPicker = [[WAContactPickerViewController alloc] init];
+  WAAddressBookPickerViewController *contactPicker = [[WAAddressBookPickerViewController alloc] init];
+  
   if (self.navigationController) {
     contactPicker.onNextHandler = ^(NSArray *results) {
       

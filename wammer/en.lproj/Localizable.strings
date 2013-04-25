@@ -432,7 +432,7 @@
 "LABEL_AUTO_IMPORT_VALUE_ON" = "On";
 
 /* LABEL_CONTACTS_FRIENDS */
-"LABEL_CONTACTS_FRIENDS" = "LABEL_CONTACTS_FRIENDS";
+"LABEL_CONTACTS_FRIENDS" = "Contacts";
 
 /* LABEL_INVITED_BUTTON */
 "LABEL_INVITED_BUTTON" = "Invited";
@@ -457,6 +457,9 @@
 
 /* Message of dialog to input email */
 "MESSAGE_INPUT_EMAIL" = "Please input your friend's email to invite him/her to share your precious moments with you.";
+
+/* MESSAGE_REQUEST_CONTACT_PERMISSION */
+"MESSAGE_REQUEST_CONTACT_PERMISSION" = "You may grant Grupin to access contact in Settings-Privacy-Contact.";
 
 /* No comment provided by engineer. */
 "MINUTE_PLURAL" = "%d minutes";
@@ -543,6 +546,9 @@
 
 /* in day view */
 "PHOTOS_TITLE" = "PHOTOS";
+
+/* PLACEHOLER_CHOSEN_FRIENDS_ADDRESS_BOOK_PICKER */
+"PLACEHOLER_CHOSEN_FRIENDS_ADDRESS_BOOK_PICKER" = "Name or Email";
 
 /* PLACEHOLER_CHOSEN_FRIENDS_ADDRESSBOOKPICKER */
 "PLACEHOLER_CHOSEN_FRIENDS_ADDRESSBOOKPICKER" = "PLACEHOLER_CHOSEN_FRIENDS_ADDRESSBOOKPICKER";
@@ -659,6 +665,12 @@
 
 /* TITLE_INPUT_EMAIL_ALERT */
 "TITLE_INPUT_EMAIL_ALERT" = "What's %@'s email?";
+
+/* TITLE_INVITATION_NUMBER_ONE */
+"TITLE_INVITATION_NUMBER_ONE" = "%d contact";
+
+/* TITLE_INVITATION_NUMBERS */
+"TITLE_INVITATION_NUMBERS" = "%d contacts";
 
 /* TITLE_INVITE_CONTACTS */
 "TITLE_INVITE_CONTACTS" = "Invite Friends";

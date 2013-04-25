@@ -436,8 +436,8 @@
 		DE0870DF171CFDD200FA2A5E /* WASharedEventViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DE0870DB171CFDD200FA2A5E /* WASharedEventViewCell.m */; };
 		DE0870E0171CFDD200FA2A5E /* WASharedEventViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = DE0870DC171CFDD200FA2A5E /* WASharedEventViewCell.xib */; };
 		DE0870E1171CFDD200FA2A5E /* WASpotlightSlideFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = DE0870DE171CFDD200FA2A5E /* WASpotlightSlideFlowLayout.m */; };
-		DE0F9D4517281CB4008E94CE /* WAAddressBookPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DE0F9D4317281CB4008E94CE /* WAAddressBookPickerViewController.m */; };
-		DE0F9D4617281CB4008E94CE /* WAAddressBookPickerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DE0F9D4417281CB4008E94CE /* WAAddressBookPickerViewController.xib */; };
+		DE0F9E1F17297165008E94CE /* WAAddressBookPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DE0F9E1D17297165008E94CE /* WAAddressBookPickerViewController.m */; };
+		DE0F9E2017297165008E94CE /* WAAddressBookPickerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DE0F9E1E17297165008E94CE /* WAAddressBookPickerViewController.xib */; };
 		DE46FC17165E228300CC4FFF /* WACalendarPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DE46FC16165E228300CC4FFF /* WACalendarPickerViewController.m */; };
 		DE67A4A21712BA0500099106 /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DE67A4A01712BA0400099106 /* AddressBook.framework */; };
 		DE67A4A31712BA0500099106 /* AddressBookUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DE67A4A11712BA0400099106 /* AddressBookUI.framework */; };
@@ -1539,9 +1539,9 @@
 		DE0870DC171CFDD200FA2A5E /* WASharedEventViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = WASharedEventViewCell.xib; path = wammer/WASharedEventViewCell.xib; sourceTree = "<group>"; };
 		DE0870DD171CFDD200FA2A5E /* WASpotlightSlideFlowLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WASpotlightSlideFlowLayout.h; path = wammer/WASpotlightSlideFlowLayout.h; sourceTree = "<group>"; };
 		DE0870DE171CFDD200FA2A5E /* WASpotlightSlideFlowLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WASpotlightSlideFlowLayout.m; path = wammer/WASpotlightSlideFlowLayout.m; sourceTree = "<group>"; };
-		DE0F9D4217281CB4008E94CE /* WAAddressBookPickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WAAddressBookPickerViewController.h; path = wammer/WAAddressBookPickerViewController.h; sourceTree = "<group>"; };
-		DE0F9D4317281CB4008E94CE /* WAAddressBookPickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WAAddressBookPickerViewController.m; path = wammer/WAAddressBookPickerViewController.m; sourceTree = "<group>"; };
-		DE0F9D4417281CB4008E94CE /* WAAddressBookPickerViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = WAAddressBookPickerViewController.xib; path = wammer/WAAddressBookPickerViewController.xib; sourceTree = "<group>"; };
+		DE0F9E1C17297165008E94CE /* WAAddressBookPickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WAAddressBookPickerViewController.h; path = wammer/WAAddressBookPickerViewController.h; sourceTree = "<group>"; };
+		DE0F9E1D17297165008E94CE /* WAAddressBookPickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WAAddressBookPickerViewController.m; path = wammer/WAAddressBookPickerViewController.m; sourceTree = "<group>"; };
+		DE0F9E1E17297165008E94CE /* WAAddressBookPickerViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = WAAddressBookPickerViewController.xib; path = wammer/WAAddressBookPickerViewController.xib; sourceTree = "<group>"; };
 		DE2BBDD616761AC100EEF922 /* Kal.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Kal.xcodeproj; path = external/Kal/src/Kal.xcodeproj; sourceTree = SOURCE_ROOT; };
 		DE46FC15165E228300CC4FFF /* WACalendarPickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WACalendarPickerViewController.h; path = wammer/WACalendarPickerViewController.h; sourceTree = "<group>"; };
 		DE46FC16165E228300CC4FFF /* WACalendarPickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WACalendarPickerViewController.m; path = wammer/WACalendarPickerViewController.m; sourceTree = "<group>"; };
@@ -2759,9 +2759,9 @@
 				80C9F3851719B761003E7C6E /* WAContactPickerSectionHeaderView.h */,
 				80C9F3861719B761003E7C6E /* WAContactPickerSectionHeaderView.m */,
 				80C9F3831719B6B8003E7C6E /* WAContactPickerSectionHeaderView.xib */,
-				DE0F9D4217281CB4008E94CE /* WAAddressBookPickerViewController.h */,
-				DE0F9D4317281CB4008E94CE /* WAAddressBookPickerViewController.m */,
-				DE0F9D4417281CB4008E94CE /* WAAddressBookPickerViewController.xib */,
+				DE0F9E1C17297165008E94CE /* WAAddressBookPickerViewController.h */,
+				DE0F9E1D17297165008E94CE /* WAAddressBookPickerViewController.m */,
+				DE0F9E1E17297165008E94CE /* WAAddressBookPickerViewController.xib */,
 			);
 			name = "Contact Picker";
 			sourceTree = "<group>";
@@ -4416,11 +4416,11 @@
 				800095F217210DAA0082E1B5 /* AddPhotoBtn@2x.png in Resources */,
 				800095F317210DAA0082E1B5 /* AddPplBtn.png in Resources */,
 				800095F417210DAA0082E1B5 /* AddPplBtn@2x.png in Resources */,
-				DE0F9D4617281CB4008E94CE /* WAAddressBookPickerViewController.xib in Resources */,
 				80CDF05E1727C5B300B359DD /* WAEventDetailsCell.xib in Resources */,
 				80CDF0631727DC3C00B359DD /* EventListPlaceHolder.png in Resources */,
 				80CDF0661727E30100B359DD /* watermark.png in Resources */,
 				80CDF0671727E30100B359DD /* watermark@2x.png in Resources */,
+				DE0F9E2017297165008E94CE /* WAAddressBookPickerViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4930,11 +4930,11 @@
 				80B3A3A3171FA58500A9B57B /* WAEventDetailsViewController.m in Sources */,
 				80B3A3B6171FA9F100A9B57B /* WAEventDetailsMapCell.m in Sources */,
 				800096071721235B0082E1B5 /* WAPartioNavigationBar.m in Sources */,
-				DE0F9D4517281CB4008E94CE /* WAAddressBookPickerViewController.m in Sources */,
 				80CDF0401727B02200B359DD /* WACheckin.m in Sources */,
 				80CDF0591727BB2700B359DD /* WAPeople.m in Sources */,
 				80CDF05C1727BBA700B359DD /* WAArticle.m in Sources */,
 				80CDF0611727C62A00B359DD /* WAEventDetailsCell.m in Sources */,
+				DE0F9E1F17297165008E94CE /* WAAddressBookPickerViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
