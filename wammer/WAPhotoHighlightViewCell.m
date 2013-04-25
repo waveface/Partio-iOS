@@ -37,7 +37,7 @@
 
   CALayer *layer = [CALayer layer];
   layer.frame = (CGRect){CGPointZero, self.bgImageView.frame.size};
-  layer.opacity = 0.4f;
+  layer.opacity = 0.3f;
   layer.opaque = NO;
   layer.backgroundColor = [UIColor blackColor].CGColor;
   [self.bgImageView.layer insertSublayer:layer above:nil];

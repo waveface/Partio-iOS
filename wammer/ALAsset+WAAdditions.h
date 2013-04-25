@@ -12,5 +12,6 @@
 @interface ALAsset (WAAdditions)
 
 - (void)makeThumbnailWithOptions:(WAThumbnailType)type completeBlock:(WAImageProcessComplete)didCompleteBlock;
+- (UIImage *) cachedPresentableImage;
 
 @end

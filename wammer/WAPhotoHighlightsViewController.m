@@ -20,6 +20,11 @@
 #import "WACheckin.h"
 #import "WADataStore+FetchingConveniences.h"
 #import "WANavigationController.h"
+#import "WAImageProcessing.h"
+#import "IRBindings.h"
+#import <CoreFoundation/CoreFoundation.h>
+#import "AssetsLibrary+IRAdditions.h"
+#import "ALAsset+WAAdditions.h"
 #import <BlocksKit/BlocksKit.h>
 
 #define GROUPING_THRESHOLD (30 * 60)
@@ -256,18 +261,6 @@
   return [self.photoGroups count];
 }
 
-+ (NSOperationQueue*)sharedImageDisplayingQueue {
-  
-  static NSOperationQueue *opQueue = nil;
-  static dispatch_once_t onceToken;
-  dispatch_once(&onceToken, ^{
-    opQueue = [[NSOperationQueue alloc] init];
-    opQueue.maxConcurrentOperationCount = 1;
-  });
-  
-  return  opQueue;
-}
-
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
   static NSString *CellIdentifier = @"WAPhotoHighlightViewCell";
@@ -283,13 +276,8 @@
 
   cell.bgImageView.image = nil;
 
-  NSBlockOperation *op = [NSBlockOperation blockOperationWithBlock:^{
-    UIImage *image = [[UIImage imageWithCGImage:[asset thumbnail]] stackBlur:1];
-    [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-      [(UIImageView*)cell.bgImageView setImage:image];
-    }];
-  }];
-  [[[self class] sharedImageDisplayingQueue] addOperation:op];
+  [cell.bgImageView irUnbind:@"image"];
+  [cell.bgImageView irBind:@"image" toObject:asset keyPath:@"cachedPresentableImage" options:@{kIRBindingsAssignOnMainThreadOption: (id)kCFBooleanTrue}];
   
   cell.photoNumberLabel.text = [NSString stringWithFormat:@"%d Photos", photoList.count];
   
