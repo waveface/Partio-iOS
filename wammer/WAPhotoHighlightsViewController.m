@@ -66,18 +66,18 @@
   
   if (self.navigationController) {
     __weak WAPhotoHighlightsViewController *wSelf = self;
-    UIBarButtonItem *buttonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"LABEL_ALL_PHOTOS_BUTTON", @"label text of all photos button in highlight") style:UIBarButtonItemStyleBordered handler:^(id sender) {
+    UIBarButtonItem *buttonItem = WAPartioNaviBarButton(NSLocalizedString(@"LABEL_ALL_PHOTOS_BUTTON", @"label text of all photos button in highlight"), [UIImage imageNamed:@"Btn1"], nil, ^{
       WADayPhotoPickerViewController *picker = [[WADayPhotoPickerViewController alloc] initWithSelectedAssets:nil];
       picker.onNextHandler = ^(NSArray *selectedAssets) {
         WAPhotoTimelineViewController *photoTimeline = [[WAPhotoTimelineViewController alloc] initWithAssets:selectedAssets];
         [wSelf.navigationController pushViewController:photoTimeline animated:YES];
       };
       [wSelf.navigationController pushViewController:picker animated:YES];
-    }];
+    });
     
-    UIBarButtonItem *cancelItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"ACTION_CANCEL", @"Cancel action") style:UIBarButtonItemStyleBordered handler:^(id sender) {
+    UIBarButtonItem *cancelItem = WAPartioNaviBarButton(NSLocalizedString(@"ACTION_CANCEL", @"Cancel action"), [UIImage imageNamed:@"Btn1"], nil, ^{      
       [wSelf dismissViewControllerAnimated:YES completion:nil];
-    }];
+    });
     self.navigationItem.leftBarButtonItem = cancelItem;
     self.navigationItem.rightBarButtonItem = buttonItem;
   }

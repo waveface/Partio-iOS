@@ -60,10 +60,10 @@
   self.imageDisplayQueue.maxConcurrentOperationCount = 1;
   
   __weak WADayPhotoPickerViewController *wSelf = self;
-  UIBarButtonItem *buttonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"NEXT_ACTION", @"Next") style:UIBarButtonItemStyleBordered handler:^(id sender) {
+  UIBarButtonItem *buttonItem = WAPartioNaviBarButton(NSLocalizedString(@"NEXT_ACTION", @"Next"), [UIImage imageNamed:@"Btn"], nil, ^{
     if (wSelf.onNextHandler)
       wSelf.onNextHandler(wSelf.selectedAssets);
-  }];
+  });
 
   self.navigationItem.rightBarButtonItem = buttonItem;
   
@@ -72,7 +72,7 @@
       [wSelf.navigationController popViewControllerAnimated:YES];
     });
   } else {
-    self.navigationItem.leftBarButtonItem = (UIBarButtonItem*)WABarButtonItem(nil, NSLocalizedString(@"ACTION_CANCEL", @"Cancel"), ^{
+    self.navigationItem.leftBarButtonItem = (UIBarButtonItem*)WAPartioNaviBarButton(NSLocalizedString(@"ACTION_CANCEL", @"Cancel"), [UIImage imageNamed:@"Btn1"], nil, ^{
       wSelf.onCancelHandler();
     });
   }
