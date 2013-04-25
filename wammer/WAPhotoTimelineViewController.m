@@ -29,6 +29,9 @@
 #import "WAPeople.h"
 #import "WALocation.h"
 #import "WACheckin.h"
+#import "WAImageProcessing.h"
+#import "ALAsset+WAAdditions.h"
+#import "IRBindings.h"
 
 #import "WADataStore+FetchingConveniences.h"
 #import "WAContactPickerViewController.h"
@@ -273,19 +276,6 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks = @"kWAPhotoTi
 - (void) dealloc {
   if (self.tapGesture)
     [self.view removeGestureRecognizer:self.tapGesture];
-}
-
-+ (NSOperationQueue *)sharedImportPhotoOperationQueue {
-  
-  static NSOperationQueue *opq = nil;
-  
-  static dispatch_once_t onceToken;
-  dispatch_once(&onceToken, ^{
-    opq = [[NSOperationQueue alloc] init];
-    opq.maxConcurrentOperationCount = 1;
-  });
-  
-  return opq;
 }
 
 - (void) touchArticleForRead {
@@ -820,17 +810,11 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks = @"kWAPhotoTi
          }];
         
       } else {
-        NSBlockOperation *op = [NSBlockOperation blockOperationWithBlock:^{
-          
-          ALAsset *asset = wSelf.allAssets[base+i];
-          UIImage *image = [UIImage imageWithCGImage:asset.thumbnail];
-          
-          [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-            ((UIImageView *)cell.imageViews[i]).image = image;
-          }];
-        }];
+        ALAsset *asset = wSelf.allAssets[base+i];
         
-        [self.imageDisplayQueue addOperation:op];
+        [cell.imageViews[i] irUnbind:@"image"];
+        [cell.imageViews[i] irBind:@"image" toObject:asset keyPath:@"cachedPresentableImage" options:@{kIRBindingsAssignOnMainThreadOption: (id)kCFBooleanTrue}];
+        
       }
     } else {
       [(UIImageView*)cell.imageViews[i] setBackgroundColor:[UIColor clearColor]];

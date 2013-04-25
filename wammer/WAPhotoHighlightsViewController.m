@@ -20,6 +20,11 @@
 #import "WACheckin.h"
 #import "WADataStore+FetchingConveniences.h"
 #import "WANavigationController.h"
+#import "WAImageProcessing.h"
+#import "IRBindings.h"
+#import <CoreFoundation/CoreFoundation.h>
+#import "AssetsLibrary+IRAdditions.h"
+#import "ALAsset+WAAdditions.h"
 #import <BlocksKit/BlocksKit.h>
 
 #define GROUPING_THRESHOLD (30 * 60)
@@ -66,18 +71,18 @@
   
   if (self.navigationController) {
     __weak WAPhotoHighlightsViewController *wSelf = self;
-    UIBarButtonItem *buttonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"LABEL_ALL_PHOTOS_BUTTON", @"label text of all photos button in highlight") style:UIBarButtonItemStyleBordered handler:^(id sender) {
+    UIBarButtonItem *buttonItem = WAPartioNaviBarButton(NSLocalizedString(@"LABEL_ALL_PHOTOS_BUTTON", @"label text of all photos button in highlight"), [UIImage imageNamed:@"Btn1"], nil, ^{
       WADayPhotoPickerViewController *picker = [[WADayPhotoPickerViewController alloc] initWithSelectedAssets:nil];
       picker.onNextHandler = ^(NSArray *selectedAssets) {
         WAPhotoTimelineViewController *photoTimeline = [[WAPhotoTimelineViewController alloc] initWithAssets:selectedAssets];
         [wSelf.navigationController pushViewController:photoTimeline animated:YES];
       };
       [wSelf.navigationController pushViewController:picker animated:YES];
-    }];
+    });
     
-    UIBarButtonItem *cancelItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"ACTION_CANCEL", @"Cancel action") style:UIBarButtonItemStyleBordered handler:^(id sender) {
+    UIBarButtonItem *cancelItem = WAPartioNaviBarButton(NSLocalizedString(@"ACTION_CANCEL", @"Cancel action"), [UIImage imageNamed:@"Btn1"], nil, ^{      
       [wSelf dismissViewControllerAnimated:YES completion:nil];
-    }];
+    });
     self.navigationItem.leftBarButtonItem = cancelItem;
     self.navigationItem.rightBarButtonItem = buttonItem;
   }
@@ -256,18 +261,6 @@
   return [self.photoGroups count];
 }
 
-+ (NSOperationQueue*)sharedImageDisplayingQueue {
-  
-  static NSOperationQueue *opQueue = nil;
-  static dispatch_once_t onceToken;
-  dispatch_once(&onceToken, ^{
-    opQueue = [[NSOperationQueue alloc] init];
-    opQueue.maxConcurrentOperationCount = 1;
-  });
-  
-  return  opQueue;
-}
-
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
   static NSString *CellIdentifier = @"WAPhotoHighlightViewCell";
@@ -283,13 +276,8 @@
 
   cell.bgImageView.image = nil;
 
-  NSBlockOperation *op = [NSBlockOperation blockOperationWithBlock:^{
-    UIImage *image = [[UIImage imageWithCGImage:[asset thumbnail]] stackBlur:1];
-    [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-      [(UIImageView*)cell.bgImageView setImage:image];
-    }];
-  }];
-  [[[self class] sharedImageDisplayingQueue] addOperation:op];
+  [cell.bgImageView irUnbind:@"image"];
+  [cell.bgImageView irBind:@"image" toObject:asset keyPath:@"cachedPresentableImage" options:@{kIRBindingsAssignOnMainThreadOption: (id)kCFBooleanTrue}];
   
   cell.photoNumberLabel.text = [NSString stringWithFormat:@"%d Photos", photoList.count];
   

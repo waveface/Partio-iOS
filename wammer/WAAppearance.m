@@ -140,6 +140,25 @@ UIBarButtonItem *WAPartioToolbarButton(NSString *labelText, UIImage *image, UIIm
   
 }
 
+UIBarButtonItem *WAPartioNaviBarButton(NSString *labelText, UIImage *image, UIImage *imageHighlight, void(^aBlock)(void)) {
+  UIButton *button = [[UIButton alloc] initWithFrame:(CGRect){CGPointZero, CGSizeMake((40/image.size.height)*image.size.width, 30)}];
+  if (image)
+    [button setBackgroundImage:image forState:UIControlStateNormal];
+  if (imageHighlight)
+    [button setBackgroundImage:imageHighlight forState:UIControlStateHighlighted];
+  [button setTitle:labelText forState:UIControlStateNormal];
+  [button.titleLabel setFont:[UIFont fontWithName:@"OpenSans-Semibold" size:12.f]];
+  [button.titleLabel setTextAlignment:NSTextAlignmentCenter];
+  button.titleLabel.textColor = [UIColor whiteColor];
+  [button addEventHandler:^(id sender) {
+    if (aBlock)
+      aBlock();
+  } forControlEvents:UIControlEventTouchUpInside];
+  UIBarButtonItem *nextItem = [[UIBarButtonItem alloc] initWithCustomView:button];
+  return nextItem;
+  
+}
+
 IRBarButtonItem * WABarButtonItem (UIImage *image, NSString *labelText, void(^aBlock)(void)) {
 
 	IRBarButtonItem *item = nil;
