@@ -12,13 +12,13 @@
 
 + (NSString *) keyPathHoldingUniqueValue {
 	
-	return nil;
+  return nil;
 	
 }
 
 + (BOOL) skipsNonexistantRemoteKey {
 	
-	return YES;
+  return YES;
 	
 }
 
@@ -35,10 +35,11 @@
 	dispatch_once(&onceToken, ^{
     
 		mapping = [NSDictionary dictionaryWithObjectsAndKeys:
-                   @"name", @"name",
+                   @"name", @"nickname",
                    @"email", @"email",
                    @"avatarURL", @"avatar_url",
                    @"avatarURL", @"avatar",
+                   @"identifier", @"user_id",
                    nil];
 		
 	});

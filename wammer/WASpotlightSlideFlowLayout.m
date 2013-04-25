@@ -33,6 +33,11 @@
   return YES;
 }
 
+- (CGSize)collectionViewContentSize {
+  NSInteger numOfItem = [self.collectionView numberOfItemsInSection:0];
+  return CGSizeMake(self.itemWidth, numOfItem * self.minItemSize + self.collectionView.frame.size.height - self.minItemSize);
+}
+
 -(NSArray *)layoutAttributesForElementsInRect:(CGRect)rect
 {
   
@@ -48,9 +53,25 @@
 
 - (UICollectionViewLayoutAttributes*)relayoutAttributesForAttributes:(UICollectionViewLayoutAttributes*)attributes {
   CGFloat visibleRectOriginY = self.collectionView.contentOffset.y;
-
+  
   CGFloat itemY = attributes.indexPath.row * self.minItemSize;
   
+  if (visibleRectOriginY < 0) {
+    
+    if (attributes.indexPath.row == 0 ) {
+      attributes.frame = CGRectMake(attributes.frame.origin.x, 0, self.itemWidth, self.maxItemSize);
+
+    } else if (attributes.indexPath.row > 0) {
+      CGFloat h = (attributes.indexPath.row+1) * self.minItemSize - (self.minItemSize*3 - (self.minItemSize+self.maxItemSize));
+      attributes.frame = CGRectMake(attributes.frame.origin.x,
+                                    h,
+                                    self.itemWidth,
+                                    self.minItemSize);
+    
+    }
+    return attributes;
+  }
+
   if (itemY == visibleRectOriginY) {
     attributes.frame = CGRectMake(attributes.frame.origin.x, itemY, self.itemWidth, self.maxItemSize);
     
@@ -64,7 +85,7 @@
                                   visibleRectOriginY + self.maxItemSize * (h / self.minItemSize),
                                   self.itemWidth,
                                   (self.maxItemSize + h) - h * self.maxItemSize / self.minItemSize);
-    
+  
   } else if (itemY < visibleRectOriginY) {
     attributes.frame = CGRectMake(attributes.frame.origin.x, itemY, self.itemWidth, self.minItemSize);
     
@@ -74,7 +95,7 @@
                                   h,
                                   self.itemWidth,
                                   self.minItemSize);
-  } 
+  }
   return attributes;
 }
 /*

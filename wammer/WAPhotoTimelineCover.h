@@ -18,6 +18,7 @@
 @property (nonatomic, weak) IBOutlet UILabel *dateLabel;
 @property (nonatomic, weak) IBOutlet MKMapView *mapView;
 @property (nonatomic, weak) IBOutlet UIButton *detailButton;
+@property (nonatomic, weak) IBOutlet UIButton *nameDetailButton;
 @property (nonatomic, weak) IBOutlet UIView *informationView;
 @property (nonatomic, weak) IBOutlet NINetworkImageView *avatarView;
 @property (nonatomic, weak) IBOutlet UILabel *informationLabel;

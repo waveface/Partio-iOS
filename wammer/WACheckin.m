@@ -2,7 +2,7 @@
 //  WACheckin.m
 //  wammer
 //
-//  Created by Shen Steven on 4/7/13.
+//  Created by Shen Steven on 4/24/13.
 //  Copyright (c) 2013 Waveface. All rights reserved.
 //
 
@@ -11,10 +11,12 @@
 
 @implementation WACheckin
 
-@dynamic name;
-@dynamic message;
-@dynamic taggedUsers;
-@dynamic identifier;
 @dynamic createDate;
+@dynamic identifier;
+@dynamic message;
+@dynamic name;
+@dynamic taggedUsers;
+@dynamic latitude;
+@dynamic longitude;
 
 @end

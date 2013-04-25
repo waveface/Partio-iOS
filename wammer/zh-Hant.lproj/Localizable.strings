@@ -400,8 +400,20 @@
 /* No comment provided by engineer. */
 "HOUR_SINGULAR" = "%d小時";
 
+/* show how many friends with creator */
+"INFO_EVENT_FRIENDS" = "與 %d 位好友一起分享";
+
+/* information in event view to show hint */
+"INFO_HINT" = "邀一些好友來一起分享吧！";
+
 /* INPUT_RECEIVER_EMAIL */
 "INPUT_RECEIVER_EMAIL" = "輸入電子郵件信箱";
+
+/* Instruction shown above the create button in the event list view. */
+"INSTRUCTION_IN_EVENTLIST_CREATE_BUTTON" = "來開始分享照片吧！";
+
+/* The instruction show to go next in the preview view */
+"INSTRUCTION_IN_PREVIEW_SHARE_BUTTON" = "點「下一步」來邀請朋友";
 
 /* Title on introduction pages */
 "INTRODUCTION_TITLE" = "aostream 是什麼？";
@@ -826,13 +838,13 @@
 "SIGNUP_BUTTON" = "使用 Facebook 帳號登入";
 
 /* Class = "IBUIButton"; normalTitle = "NOSIGNUP_BUTTON"; ObjectID = "ZCd-nx-9I5"; */
-"NOSIGNUP_BUTTON" = "體驗先";
+"NOSIGNUP_BUTTON" = "先行體驗";
 
 /* Class = "IBUIButton"; normalTitle = "FACEBOOK_SIGNUP_BUTTON"; ObjectID = "4"; */
-"FACEBOOK_SIGNUP_BUTTON" = "連結 Facebook";
+"FACEBOOK_SIGNUP_BUTTON" = "使用 Facebook 帳號註冊";
 
 /* Class = "IBUILabel"; text = "DESCRIPTION_WHY_SIGNUP"; ObjectID = "40"; */
-"DESCRIPTION_WHY_SIGNUP" = "在沒有您的允許下，我們不會私自張貼任何訊息到您的 Facebook 帳號中。";
+"DESCRIPTION_WHY_SIGNUP" = "就快完成了！最後一步，我們需要你建立 Grupin 帳號，請點選下方 Facebook 按鈕完成註冊程序。在沒有您的允許下，我們不會私自張貼任何訊息到您的 Facebook 帳號中。";
 
 /* Class = "IBUITextField"; placeholder = "USERNAME_PLACEHOLDER"; ObjectID = "2Vk-4J-QH3"; */
 "USERNAME_PLACEHOLDER" = "me@example.com";

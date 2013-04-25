@@ -32,7 +32,7 @@
 
 	nil];
 	
-	[self.engine fireAPIRequestNamed:@"auth/signup" withArguments:nil options:WARemoteInterfaceEnginePostFormEncodedOptionsDictionary(payload, nil) validator:WARemoteInterfaceGenericNoErrorValidator() successHandler: ^ (NSDictionary *inResponseOrNil, IRWebAPIRequestContext *inResponseContext) {
+	[self.engine fireAPIRequestNamed:@"pio_auth/signup" withArguments:nil options:WARemoteInterfaceEnginePostFormEncodedOptionsDictionary(payload, nil) validator:WARemoteInterfaceGenericNoErrorValidator() successHandler: ^ (NSDictionary *inResponseOrNil, IRWebAPIRequestContext *inResponseContext) {
 											
 		if (successBlock) {
 			successBlock(

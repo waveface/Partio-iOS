@@ -2,7 +2,7 @@
 //  WAPeople.m
 //  wammer
 //
-//  Created by Shen Steven on 4/10/13.
+//  Created by Shen Steven on 4/24/13.
 //  Copyright (c) 2013 Waveface. All rights reserved.
 //
 
@@ -13,8 +13,10 @@
 @implementation WAPeople
 
 @dynamic avatarURL;
-@dynamic name;
 @dynamic email;
+@dynamic name;
+@dynamic identifier;
+@dynamic state;
 @dynamic article;
 
 @end

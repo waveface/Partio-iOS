@@ -28,6 +28,7 @@
 #import "WAFileExif+WAAdditions.h"
 #import "WAPeople.h"
 #import "WALocation.h"
+#import "WACheckin.h"
 
 #import "WADataStore+FetchingConveniences.h"
 #import "WAContactPickerViewController.h"
@@ -71,6 +72,7 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks = @"kWAPhotoTi
 @property (nonatomic, strong) NSDate *endDate;
 @property (nonatomic, strong) NSArray *checkins;
 @property (nonatomic, readonly) CLLocationCoordinate2D coordinate;
+@property (nonatomic, strong) NSString *locationName;
 
 @property (nonatomic, strong) UITapGestureRecognizer *tapGesture;
 @property (nonatomic, strong) SMCalloutView *shareInstructionView;
@@ -122,6 +124,10 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks = @"kWAPhotoTi
   naviBarShown = NO;
   toolBarShown = YES;
   previousYOffset = 0;
+  
+  if (self.representingArticle) {
+    [self touchArticleForRead];
+  }
   
   self.imageDisplayQueue = [[NSOperationQueue alloc] init];
   self.imageDisplayQueue.maxConcurrentOperationCount = 1;
@@ -188,9 +194,14 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks = @"kWAPhotoTi
       __weak WAContactPickerViewController *wcp = contactPicker;
       contactPicker.onNextHandler = ^(NSArray *selectedContacts){
         [wcp dismissViewControllerAnimated:YES completion:nil];
+        [wSelf updateSharingEventWithPhotoChanges:nil contacts:selectedContacts onComplete:^{
+          [WAOverlayBezel showSuccessBezelWithDuration:1.5 handler:nil];
+          [wSelf.collectionView reloadData];
+        }];
+
       };
       
-      contactPicker.onDismissHandler = ^{
+      contactPicker.onDismissHandler = ^ {
         [wcp dismissViewControllerAnimated:YES completion:nil];
       };
       
@@ -212,6 +223,7 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks = @"kWAPhotoTi
         
         [wSelf updateSharingEventWithPhotoChanges:selectedAssets contacts:nil onComplete:^{
           dispatch_async(dispatch_get_main_queue(), ^{
+            [WAOverlayBezel showSuccessBezelWithDuration:1.5 handler:nil];
             
             wSelf.sortedImages = [self.representingArticle.files sortedArrayUsingComparator:^NSComparisonResult(WAFile *obj1, WAFile *obj2) {
               return [obj1.created compare:obj2.created];
@@ -240,7 +252,7 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks = @"kWAPhotoTi
     __weak WAPhotoTimelineViewController *wSelf = self;
     if (!self.shareInstructionView) {
       self.shareInstructionView = [SMCalloutView new];
-      self.shareInstructionView.title = @"Tap Next to invite more friends!";
+      self.shareInstructionView.title = NSLocalizedString(@"INSTRUCTION_IN_PREVIEW_SHARE_BUTTON", @"The instruction show to go next in the preview view");
       [self.shareInstructionView presentCalloutFromRect:CGRectMake(self.view.frame.size.width/2, self.view.frame.size.height-44, 1, 1) inView:self.view constrainedToView:self.view permittedArrowDirections:SMCalloutArrowDirectionDown animated:YES];
       self.tapGesture = [[UITapGestureRecognizer alloc] initWithHandler:^(UIGestureRecognizer *sender, UIGestureRecognizerState state, CGPoint location) {
         if (wSelf.shareInstructionView) {
@@ -274,6 +286,14 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks = @"kWAPhotoTi
   });
   
   return opq;
+}
+
+- (void) touchArticleForRead {
+  if (self.representingArticle) {
+    self.representingArticle.lastRead = [NSDate date];
+    NSError *error = nil;
+    [self.managedObjectContext save:&error];
+  }
 }
 
 - (void) updateSharingEventWithPhotoChanges:(NSArray*)newAssets contacts:(NSArray*)contacts onComplete:(void(^)(void))completionBlock {
@@ -342,12 +362,23 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks = @"kWAPhotoTi
         if ([invitingEmails indexOfObject:person.email] != NSNotFound) {
           [invitingEmails removeObject:person.email];
         }
+        changed = YES;
       }
     }
     for (NSString *email in invitingEmails) {
       WAPeople *person = (WAPeople*)[WAPeople objectInsertingIntoContext:moc withRemoteDictionary:@{}];
       person.email = email;
       [[article mutableSetValueForKey:@"sharingContacts"] addObject:person];
+      changed = YES;
+    }
+  }
+  
+  if (self.checkins.count) {
+    for (WALocation *checkin in self.checkins) {
+      if (![article.checkins containsObject:checkin]) {
+        [[article mutableSetValueForKey:@"checkins"] addObject:checkin];
+        changed = YES;
+      }
     }
   }
   
@@ -464,8 +495,16 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks = @"kWAPhotoTi
   WALocation *location = (WALocation*)[WALocation objectInsertingIntoContext:moc withRemoteDictionary:@{}];
   location.latitude = [NSNumber numberWithFloat:self.coordinate.latitude];
   location.longitude = [NSNumber numberWithFloat:self.coordinate.longitude];
-  location.name = @""; // TBD
+  location.name = self.locationName;
   article.location = location;
+  
+  if (self.checkins.count) {
+    for (WACheckin *checkin in self.checkins) {
+      if (![article.checkins containsObject:checkin]) {
+        [[article mutableSetValueForKey:@"checkins"] addObject:checkin];
+      }
+    }
+  }
   
   NSError *savingError = nil;
   if ([moc save:&savingError]) {
@@ -517,19 +556,7 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks = @"kWAPhotoTi
 
 - (void)actionButtonClicked:(id)sender
 {
-  void (^showSuccessBezel) (void(^)(void)) = ^(void(^block)(void)) {
-    WAOverlayBezel *doneBezel = [WAOverlayBezel bezelWithStyle:WACheckmarkBezelStyle];
-    [doneBezel show];
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1.5 * NSEC_PER_SEC), dispatch_get_main_queue(), ^ {
-      [doneBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
-
-      if (block) {
-        block();
-      }
-      
-    });
-  };
-
+  
   __weak WAPhotoTimelineViewController *wSelf = self;
   WAContactPickerViewController *contactPicker = [[WAContactPickerViewController alloc] init];
   if (self.navigationController) {
@@ -539,9 +566,10 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks = @"kWAPhotoTi
       if (ri.userToken) {
         [wSelf finishCreatingSharingEventForSharingTargets:results];
 
-        showSuccessBezel(^{
+        [WAOverlayBezel showSuccessBezelWithDuration:1.5 handler:^{
+          
           [wSelf.navigationController dismissViewControllerAnimated:YES completion:nil];
-        });
+        }];
       
       } else {
         
@@ -560,11 +588,14 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks = @"kWAPhotoTi
 
           [[NSNotificationCenter defaultCenter] postNotificationName:kWACoreDataReinitialization object:self];
 
-          showSuccessBezel(^{
+          [WAOverlayBezel showSuccessBezelWithDuration:1.5 handler:^{
+            
             [sCreateAccountVC dismissViewControllerAnimated:YES completion:^{
               [wSelf.navigationController dismissViewControllerAnimated:YES completion:nil];
             }];
-          });
+        
+          }];
+
           
         };
         
@@ -687,7 +718,10 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks = @"kWAPhotoTi
     NSString *creatorID = self.representingArticle.owner.identifier;
     WAPeople *contact = nil;
     for (WAPeople *person in self.representingArticle.sharingContacts) {
-      contact = person;
+      if ([person.identifier isEqualToString:creatorID]) {
+        contact = person;
+        break;
+      }
     }
 
     if (contact) {
@@ -808,6 +842,7 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks = @"kWAPhotoTi
 
 - (UICollectionReusableView*)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath {
   
+  __weak WAPhotoTimelineViewController *wSelf = self;
   if ([kind isEqualToString:UICollectionElementKindSectionHeader]) {
         
     WAPhotoTimelineCover *cover = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"PhotoTimelineCover" forIndexPath:indexPath];
@@ -864,6 +899,7 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks = @"kWAPhotoTi
     
     self.geoLocation = [[WAGeoLocation alloc] init];
     [self.geoLocation identifyLocation:self.coordinate onComplete:^(NSArray *results) {
+      wSelf.locationName = [results componentsJoinedByString:@","];
       if (cover.titleLabel.text.length == 0)
         cover.titleLabel.text = [results componentsJoinedByString:@","];
       else
@@ -878,24 +914,13 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks = @"kWAPhotoTi
     formatter.timeStyle = NSDateFormatterMediumStyle;
     cover.dateLabel.text = [formatter stringFromDate:self.eventDate];
     
-    [cover.detailButton addEventHandler:^(id sender) {
-      __weak WAPhotoTimelineViewController *wSelf = self;
-      NSDictionary *detailInfo = @{
-                                  @"eventStartDate": [self beginDate],
-                                  @"eventEndDate":[self endDate],
-                                  @"latitude": @(self.coordinate.latitude),
-                                  @"longitude":@(self.coordinate.longitude),
-                                  @"checkins": [self checkins],
-                                  @"contacts": [self contacts]
-                               };
-      WAEventDetailsViewController *detail = [WAEventDetailsViewController wrappedNavigationControllerForDetailInfo:detailInfo];
-      [wSelf presentViewController:detail animated:YES completion:nil];
-    } forControlEvents:UIControlEventTouchUpInside];
+    [cover.detailButton addTarget:self action:@selector(detailButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+    [cover.nameDetailButton addTarget:self action:@selector(detailButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
 
-    NSDictionary *user = self.userInfo;
+    NSDictionary *user = [self userInfo];
     cover.avatarView.image = [UIImage imageNamed:@"Avatar"];
     if (user[@"avatarURL"]) {
-      [cover.avatarView setPathToNetworkImage:user[@"Avatar"] forDisplaySize:cover.avatarView.frame.size];
+      [cover.avatarView setPathToNetworkImage:user[@"avatarURL"] forDisplaySize:cover.avatarView.frame.size];
     } else {
       if (user[@"avatar"]) {
         cover.avatarView.image = user[@"avatar"];
@@ -903,13 +928,26 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks = @"kWAPhotoTi
     }
 
     if (self.representingArticle)
-      cover.informationLabel.text = [NSString stringWithFormat:@"with some other %d friends.", self.representingArticle.sharingContacts.count];
+      cover.informationLabel.text = [NSString stringWithFormat:NSLocalizedString(@"INFO_EVENT_FRIENDS", @"show how many friends with creator"), self.representingArticle.sharingContacts.count - 1];
     else
-      cover.informationLabel.text = @"Invite more people to share photos together with you.";
+      cover.informationLabel.text = NSLocalizedString(@"INFO_HINT", @"information in event view to show hint");
     return cover;
     
   }
   return nil;
+}
+
+- (IBAction)detailButtonTapped:(id)sender {
+  NSDictionary *detailInfo = @{
+                               @"eventStartDate": [self beginDate],
+                               @"eventEndDate":[self endDate],
+                               @"latitude": @(self.coordinate.latitude),
+                               @"longitude":@(self.coordinate.longitude),
+                               @"checkins": [self checkins],
+                               @"contacts": [self contacts]
+                               };
+  WAEventDetailsViewController *detail = [WAEventDetailsViewController wrappedNavigationControllerForDetailInfo:detailInfo];
+  [self presentViewController:detail animated:YES completion:nil];
 }
 
 #pragma mark - UICollectionViewFlowLayout delegate
