@@ -7,6 +7,7 @@
 //
 
 #import "WASyncManager+DirtyArticleSync.h"
+#import "WAArticle.h"
 #import "Foundation+IRAdditions.h"
 #import "IRRecurrenceMachine.h"
 #import "WADataStore+WASyncManagerAdditions.h"
@@ -36,7 +37,7 @@
     __block NSUInteger filesCount = 0;
     [ds enumerateDirtyArticlesInContext:nil usingBlock:^(WAArticle *anArticle, NSUInteger index, BOOL *stop) {
       
-      filesCount += [anArticle.files count];
+      filesCount += [[[anArticle.files array] filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"dirty = YES"]] count];
       NSURL *articleURL = [[anArticle objectID] URIRepresentation];
       [articleURIs addObject:articleURL];
       
