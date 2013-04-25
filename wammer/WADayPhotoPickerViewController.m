@@ -126,6 +126,7 @@
         self.navigationItem.rightBarButtonItem.enabled = YES;
         NSIndexPath *indexPath = [wSelf indexPathForAsset:self.selectedAssets[0]];
         dispatch_async(dispatch_get_main_queue(), ^{
+          [wSelf updateNavigationBarTitle];
           [wSelf.collectionView scrollToItemAtIndexPath:indexPath atScrollPosition:UICollectionViewScrollPositionTop animated:YES];
         });
       }
@@ -141,7 +142,7 @@
 }
 
 - (void) updateNavigationBarTitle {
-  if (self.selectedAssets) {
+  if (self.selectedAssets.count) {
     self.navigationItem.title = [NSString stringWithFormat:NSLocalizedString(@"DAY_PHOTO_PICKER_PHOTOS_SELECTED", @"Show how many photos selected in the day photo picker"), self.selectedAssets.count];
   } else {
     self.navigationItem.title = NSLocalizedString(@"TITLE_OF_DAY_PHOTO_PICKER", @"Title of the day photo picker view");
