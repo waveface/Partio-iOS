@@ -10,7 +10,6 @@
 #import "WASharedEventViewCell.h"
 #import "WAPhotoHighlightsViewController.h"
 #import "WAPhotoTimelineViewController.h"
-#import "WATransparentToolbar.h"
 #import "WANavigationController.h"
 #import "WAGeoLocation.h"
 #import "WADefines.h"
@@ -78,7 +77,9 @@ static NSString *kCellID = @"EventCell";
   
   [self.navigationItem setTitle:NSLocalizedString(@"LABEL_SHARED_EVENTS", @"LABEL_SHARED_EVENTS")];
   [self.navigationItem setHidesBackButton:YES];
+  [self.navigationController setNavigationBarHidden:YES];
   [self.navigationBar pushNavigationItem:self.navigationItem animated:NO];
+
   
   [self.collectionView setFrame:CGRectMake(0.f,
                                            CGRectGetHeight(self.navigationBar.frame),
