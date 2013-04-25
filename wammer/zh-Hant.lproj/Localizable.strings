@@ -69,7 +69,8 @@
 /* Short action title for disconnecting Twitter creds */
 "ACTION_DISCONNECT_TWITTER" = "停止";
 
-/* In iPad composition view */
+/* ACTION_DONE
+   In iPad composition view */
 "ACTION_DONE" = "完成";
 
 /* The action to create a new collection */
@@ -427,6 +428,9 @@
 /* Shows ON when auto import is turned on in the settings panel */
 "LABEL_AUTO_IMPORT_VALUE_ON" = "開啟";
 
+/* LABEL_CONTACTS_FRIENDS */
+"LABEL_CONTACTS_FRIENDS" = "LABEL_CONTACTS_FRIENDS";
+
 /* LABEL_INVITED_BUTTON */
 "LABEL_INVITED_BUTTON" = "已邀請";
 
@@ -537,6 +541,9 @@
 /* in day view */
 "PHOTOS_TITLE" = "照片";
 
+/* PLACEHOLER_CHOSEN_FRIENDS_ADDRESSBOOKPICKER */
+"PLACEHOLER_CHOSEN_FRIENDS_ADDRESSBOOKPICKER" = "PLACEHOLER_CHOSEN_FRIENDS_ADDRESSBOOKPICKER";
+
 /* business plan in settings page */
 "PLAN_FREE" = "免費";
 
@@ -628,6 +635,9 @@
 
 /* The email subject to send user the download link. */
 "SUBJECT_MAIL_LINK" = "立刻下載 aostream Windows版!";
+
+/* TITLE_ADDRESS_BOOK_PICKER */
+"TITLE_ADDRESS_BOOK_PICKER" = "TITLE_ADDRESS_BOOK_PICKER";
 
 /* Title of Canlendar */
 "TITLE_CALENDAR" = "月曆";
