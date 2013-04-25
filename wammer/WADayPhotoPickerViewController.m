@@ -60,10 +60,10 @@
   self.imageDisplayQueue.maxConcurrentOperationCount = 1;
   
   __weak WADayPhotoPickerViewController *wSelf = self;
-  UIBarButtonItem *buttonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"NEXT_ACTION", @"Next") style:UIBarButtonItemStyleBordered handler:^(id sender) {
+  UIBarButtonItem *buttonItem = WAPartioNaviBarButton(NSLocalizedString(@"NEXT_ACTION", @"Next"), [UIImage imageNamed:@"Btn"], nil, ^{
     if (wSelf.onNextHandler)
       wSelf.onNextHandler(wSelf.selectedAssets);
-  }];
+  });
 
   self.navigationItem.rightBarButtonItem = buttonItem;
   
@@ -72,11 +72,10 @@
       [wSelf.navigationController popViewControllerAnimated:YES];
     });
   } else {
-    self.navigationItem.leftBarButtonItem = (UIBarButtonItem*)WABarButtonItem(nil, NSLocalizedString(@"ACTION_CANCEL", @"Cancel"), ^{
+    self.navigationItem.leftBarButtonItem = (UIBarButtonItem*)WAPartioNaviBarButton(NSLocalizedString(@"ACTION_CANCEL", @"Cancel"), [UIImage imageNamed:@"Btn1"], nil, ^{
       wSelf.onCancelHandler();
     });
   }
-  self.navigationItem.title = NSLocalizedString(@"TITLE_OF_DAY_PHOTO_PICKER", @"Title of the day photo picker view");
 
   [self.navigationBar pushNavigationItem:self.navigationItem animated:NO];
   
@@ -87,7 +86,11 @@
   if (!self.selectedAssets.count) {
     self.navigationItem.rightBarButtonItem.enabled = NO;
   }
+  
+  [self updateNavigationBarTitle];
+  
 }
+
 - (void) viewDidAppear:(BOOL)animated {
   
   [super viewDidAppear:animated];
@@ -123,6 +126,7 @@
         self.navigationItem.rightBarButtonItem.enabled = YES;
         NSIndexPath *indexPath = [wSelf indexPathForAsset:self.selectedAssets[0]];
         dispatch_async(dispatch_get_main_queue(), ^{
+          [wSelf updateNavigationBarTitle];
           [wSelf.collectionView scrollToItemAtIndexPath:indexPath atScrollPosition:UICollectionViewScrollPositionTop animated:YES];
         });
       }
@@ -135,6 +139,14 @@
     NSLog(@"error: %@", error);
   }];
 
+}
+
+- (void) updateNavigationBarTitle {
+  if (self.selectedAssets.count) {
+    self.navigationItem.title = [NSString stringWithFormat:NSLocalizedString(@"DAY_PHOTO_PICKER_PHOTOS_SELECTED", @"Show how many photos selected in the day photo picker"), self.selectedAssets.count];
+  } else {
+    self.navigationItem.title = NSLocalizedString(@"TITLE_OF_DAY_PHOTO_PICKER", @"Title of the day photo picker view");
+  }
 }
 
 - (void) viewDidDisappear:(BOOL)animated {
@@ -312,6 +324,8 @@
   if (self.selectedAssets.count)
     [self.navigationItem.rightBarButtonItem setEnabled:YES];
   
+  [self updateNavigationBarTitle];
+  
 }
 
 - (void) collectionView:(UICollectionView *)collectionView didDeselectItemAtIndexPath:(NSIndexPath *)indexPath {
@@ -323,6 +337,8 @@
   
   if (!self.selectedAssets.count)
     [self.navigationItem.rightBarButtonItem setEnabled:NO];
+  
+  [self updateNavigationBarTitle];
 }
 
 @end

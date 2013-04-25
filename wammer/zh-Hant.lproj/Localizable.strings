@@ -233,6 +233,9 @@
 /* in relative date format */
 "DATE_AGO" = "%@前";
 
+/* Show how many photos selected in the day photo picker */
+"DAY_PHOTO_PICKER_PHOTOS_SELECTED" = "已選%d張照片";
+
 /* No comment provided by engineer. */
 "DAY_PLURAL" = "%d天";
 
