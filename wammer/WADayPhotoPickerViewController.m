@@ -76,7 +76,6 @@
       wSelf.onCancelHandler();
     });
   }
-  self.navigationItem.title = NSLocalizedString(@"TITLE_OF_DAY_PHOTO_PICKER", @"Title of the day photo picker view");
 
   [self.navigationBar pushNavigationItem:self.navigationItem animated:NO];
   
@@ -87,7 +86,11 @@
   if (!self.selectedAssets.count) {
     self.navigationItem.rightBarButtonItem.enabled = NO;
   }
+  
+  [self updateNavigationBarTitle];
+  
 }
+
 - (void) viewDidAppear:(BOOL)animated {
   
   [super viewDidAppear:animated];
@@ -135,6 +138,14 @@
     NSLog(@"error: %@", error);
   }];
 
+}
+
+- (void) updateNavigationBarTitle {
+  if (self.selectedAssets) {
+    self.navigationItem.title = [NSString stringWithFormat:NSLocalizedString(@"DAY_PHOTO_PICKER_PHOTOS_SELECTED", @"Show how many photos selected in the day photo picker"), self.selectedAssets.count];
+  } else {
+    self.navigationItem.title = NSLocalizedString(@"TITLE_OF_DAY_PHOTO_PICKER", @"Title of the day photo picker view");
+  }
 }
 
 - (void) viewDidDisappear:(BOOL)animated {
@@ -312,6 +323,8 @@
   if (self.selectedAssets.count)
     [self.navigationItem.rightBarButtonItem setEnabled:YES];
   
+  [self updateNavigationBarTitle];
+  
 }
 
 - (void) collectionView:(UICollectionView *)collectionView didDeselectItemAtIndexPath:(NSIndexPath *)indexPath {
@@ -323,6 +336,8 @@
   
   if (!self.selectedAssets.count)
     [self.navigationItem.rightBarButtonItem setEnabled:NO];
+  
+  [self updateNavigationBarTitle];
 }
 
 @end
