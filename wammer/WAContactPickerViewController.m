@@ -263,8 +263,9 @@
   NSLog(@"Email input: %@", textField.text);
   if (![textField.text isEqualToString:@""]) {
     [self addEmailIntoInvitedList:textField.text];
-    [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:_members.count-1 inSection:1]] withRowAnimation:UITableViewRowAnimationAutomatic];
+    [self.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:_members.count-1 inSection:1]] withRowAnimation:UITableViewRowAnimationAutomatic];
   }
+  textField.text = @"";
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
@@ -292,6 +293,7 @@
   
   if (![_members containsObject:aPerson]) {
     [_members addObject:aPerson];
+    
   }
 }
 
@@ -344,8 +346,7 @@
         NSDictionary *contact = @{@"name": email, @"email": @[email]};
         if (![_members containsObject:contact])
           [_members addObject:contact];
-        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:_members.count-1 inSection:1];
-        [self.tableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:YES];
+          [self.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:_members.count-1 inSection:1]] withRowAnimation:YES];
       }];
       
       [self.tap setCancelsTouchesInView:YES];
@@ -379,7 +380,6 @@
 {
   [self addIntoInvitedList:person];
   [self dismissViewControllerAnimated:YES completion:nil];
-  [self.tableView reloadData];
   
   return NO;
 }
@@ -447,6 +447,7 @@
     [textField setSecureTextEntry:NO];
     
     [alert show];
+    return;
   }
   
   NSString *phone = @"";
@@ -464,6 +465,7 @@
     
     if (![_members containsObject:aPerson]) {
       [_members addObject:aPerson];
+      [self.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:(_members.count-1) inSection:1]] withRowAnimation:UITableViewRowAnimationFade];
     }
   }
 }
@@ -496,9 +498,9 @@
     
     if (![_members containsObject:aPerson]) {
       [_members addObject:aPerson];
+      [self.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:(_members.count-1) inSection:1]] withRowAnimation:UITableViewRowAnimationFade];
     }
     
-    [self.tableView reloadData];
   }
 }
 
