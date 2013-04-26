@@ -28,6 +28,7 @@
 #import <BlocksKit/BlocksKit.h>
 
 #define GROUPING_THRESHOLD (30 * 60)
+static NSString * const kWAPhotoHighlightsViewController_CoachMarks = @"kWAPhotoHighlightsViewController_CoachMarks";
 
 @interface WAPhotoHighlightsViewController () <UITableViewDataSource, UITableViewDelegate>
 
@@ -112,6 +113,7 @@
     [busyBezel dismiss];
     
     [wSelf.tableView reloadData];
+    
   } onFailure:^(NSError *error) {
     [busyBezel dismiss];
     
@@ -183,6 +185,29 @@
   }
 }
 
+- (void) viewDidAppear:(BOOL)animated {
+  [super viewDidAppear:animated];
+  
+  BOOL coachmarkShown = [[NSUserDefaults standardUserDefaults] boolForKey:kWAPhotoHighlightsViewController_CoachMarks];
+  if (!coachmarkShown) {
+    [self performSelector:@selector(showInstruction) withObject:nil afterDelay:0.5];
+    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:kWAPhotoHighlightsViewController_CoachMarks];
+  }
+
+}
+
+- (void) showInstruction {
+  
+  [self.tableView setContentOffset:CGPointMake(0, -88) animated:YES];
+  [self performSelector:@selector(hideInstruction) withObject:nil afterDelay:1];
+  
+}
+
+- (void) hideInstruction {
+
+  [self.tableView setContentOffset:CGPointMake(0, 0) animated:YES];
+  
+}
 
 - (NSArray*) photoGroups {
   
