@@ -526,7 +526,7 @@
 "PHOTO_UPLOAD_STATUS_BAR_COMPLETE" = "Sync completed";
 
 /* String on customized status bar */
-"PHOTO_UPLOAD_STATUS_BAR_FAIL" = "Sync failed";
+"PHOTO_UPLOAD_STATUS_BAR_FAIL" = "Upload failed";
 
 /* String on customized status bar */
 "PHOTO_UPLOAD_STATUS_BAR_IMPORTING" = "Scanning %d/%d";
@@ -535,7 +535,7 @@
 "PHOTO_UPLOAD_STATUS_BAR_SYNCING" = "Syncing";
 
 /* String on customized status bar */
-"PHOTO_UPLOAD_STATUS_BAR_UPLOADING" = "Syncing %d photos";
+"PHOTO_UPLOAD_STATUS_BAR_UPLOADING" = "Uploading %d photos";
 
 /* in day view */
 "PHOTOS_TITLE" = "PHOTOS";
