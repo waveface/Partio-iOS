@@ -106,7 +106,7 @@
     if (wSelf.selectedAssets.count) {
       [wSelf.collectionView reloadData];
 
-      [wSelf.collectionView scrollToItemAtIndexPath:[wSelf indexPathForAsset:wSelf.selectedAssets[0]] atScrollPosition:UICollectionViewScrollPositionTop animated:YES];
+      [wSelf.collectionView scrollToItemAtIndexPath:[wSelf indexPathForAsset:wSelf.selectedAssets[0]] atScrollPosition:UICollectionViewScrollPositionTop animated:NO];
     } else if (self.selectedRangeFromDate && self.selectedRangeToDate) {
       
       for (ALAsset *asset in self.allTimeSortedAssets) {
@@ -127,7 +127,7 @@
         NSIndexPath *indexPath = [wSelf indexPathForAsset:self.selectedAssets[0]];
         dispatch_async(dispatch_get_main_queue(), ^{
           [wSelf updateNavigationBarTitle];
-          [wSelf.collectionView scrollToItemAtIndexPath:indexPath atScrollPosition:UICollectionViewScrollPositionTop animated:YES];
+          [wSelf.collectionView scrollToItemAtIndexPath:indexPath atScrollPosition:UICollectionViewScrollPositionTop animated:NO];
         });
       }
     } else {
@@ -256,7 +256,7 @@
     index ++;
   }
   
-  [self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:index] atScrollPosition:UICollectionViewScrollPositionCenteredVertically animated:YES];
+  [self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:index] atScrollPosition:UICollectionViewScrollPositionCenteredVertically animated:NO];
 }
 
 
@@ -274,8 +274,12 @@
   
   __weak WADayPhotoPickerViewController *wSelf = self;
   WADayPhotoPickerViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"WADayPhotoPickerViewCell" forIndexPath:indexPath];
+
+  if (cell.imageLoadingOperation) {
+    [cell.imageLoadingOperation cancel];
+  }
   
-  NSBlockOperation *op = [NSBlockOperation blockOperationWithBlock:^{
+  cell.imageLoadingOperation = [NSBlockOperation blockOperationWithBlock:^{
     
     UIImage *image = [UIImage imageWithCGImage:[(ALAsset*)wSelf.photoGroups[indexPath.section][indexPath.row] thumbnail]];
     
@@ -288,7 +292,7 @@
 
     }];
   }];
-  [self.imageDisplayQueue addOperation:op];
+  [self.imageDisplayQueue addOperation:cell.imageLoadingOperation];
   
   
   return cell;
