@@ -19,7 +19,8 @@
 @property (nonatomic, weak) IBOutlet UITableView *tableView;
 @property (nonatomic, strong) NSArray *contacts;
 @property (nonatomic, strong) UITapGestureRecognizer *tap;
-@property (nonatomic, strong) NSArray *dataSource;
+@property (nonatomic, strong) NSArray *dataDisplay;
+@property (nonatomic, assign) ABAddressBookRef addressBook;
 
 @end
 
@@ -63,7 +64,7 @@ NSString *kPlaceholderChooseFriends;
   [self.tap setCancelsTouchesInView:NO];
   [self.view addGestureRecognizer:self.tap];
 
-  self.dataSource = self.contacts;
+  self.dataDisplay = self.contacts;
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -125,7 +126,7 @@ NSString *kPlaceholderChooseFriends;
       NSString *firstname = (__bridge_transfer NSString*)ABRecordCopyValue((__bridge ABRecordRef)evaluatedObject, kABPersonFirstNameProperty);
       
       if (firstname) {
-        if ([firstname rangeOfString:textView.text].location != NSNotFound) {
+        if ([firstname rangeOfString:textView.text].length) {
           result = YES;
           return result;
         }
@@ -134,23 +135,32 @@ NSString *kPlaceholderChooseFriends;
       NSString *lastname = (__bridge_transfer NSString*)ABRecordCopyValue((__bridge ABRecordRef)evaluatedObject, kABPersonLastNameProperty);
       
       if (lastname) {
-        if ([lastname rangeOfString:textView.text].location != NSNotFound) {
+        
+        if ([lastname rangeOfString:textView.text].length) {
           result = YES;
           return result;
         }
       }
       
       //FIXME: emailProperty Ref always null
-      ABMultiValueRef emailProperty = ABRecordCopyValue((__bridge ABRecordRef)evaluatedObject, kABPersonEmailProperty);
-      if (emailProperty) {
-        NSArray *emails = (__bridge_transfer NSArray*)ABMultiValueCopyArrayOfAllValues(emailProperty);
-        
-        NSPredicate *emailSubstring = [NSPredicate predicateWithFormat:@"SELF beginswith %@", textView.text];
-        NSArray *searchedEmail = [emails filteredArrayUsingPredicate:emailSubstring];
-        if ([searchedEmail count]) {
-          result = YES;
-          return result;
+      NSMutableArray *emails = [[NSMutableArray alloc] init];
+      ABRecordID personID = ABRecordGetRecordID((__bridge ABRecordRef)evaluatedObject);
+      ABMultiValueRef emailRef = ABRecordCopyValue(ABAddressBookGetPersonWithRecordID(self.addressBook, personID), kABPersonEmailProperty);
+      
+      if (ABMultiValueGetCount(emailRef)) {
+        CFArrayRef allEmail = ABMultiValueCopyArrayOfAllValues(emailRef);
+        if (CFArrayGetCount(allEmail)) {
+          emails = [NSMutableArray arrayWithArray:(__bridge NSMutableArray*)allEmail];
+          
+          NSPredicate *emailSubstring = [NSPredicate predicateWithFormat:@"SELF beginswith %@", textView.text];
+          NSArray *searchedEmail = [emails filteredArrayUsingPredicate:emailSubstring];
+          if ([searchedEmail count]) {
+            result = YES;
+            return result;
+          }
         }
+        CFRelease(allEmail);
+        CFRelease(emailRef);
       }
       
       return result;
@@ -158,21 +168,25 @@ NSString *kPlaceholderChooseFriends;
     }];
     
     NSArray *filteredContacts = [self.contacts filteredArrayUsingPredicate:predicate];
-    if ([filteredContacts count]) {
-      self.dataSource = filteredContacts;
-      [self.tableView reloadData];
+    self.dataDisplay = filteredContacts;
+    [self.tableView reloadData];
     
-    } else {
+    if (![filteredContacts count]) {
       if ([self NSStringIsValidEmail:textView.text]) {
-        NSDictionary *aPerson = @{@"name": textView.text, @"email": @[textView.text]};
-        self.dataSource = [NSArray arrayWithObject:aPerson];
+        ABRecordRef aPerson = ABPersonCreate();
+        CFErrorRef Error = NULL;
+        ABRecordSetValue(aPerson, kABPersonFirstNameProperty, (__bridge CFStringRef)textView.text, &Error);
+        ABMutableMultiValueRef emailMutableValue = ABMultiValueCreateMutable(kABPersonEmailProperty);
+        ABMultiValueAddValueAndLabel(emailMutableValue, (__bridge CFStringRef)textView.text, (__bridge CFStringRef)@"Email", NULL);
+        ABRecordSetValue(aPerson, kABPersonEmailProperty, emailMutableValue, &Error);
+        self.dataDisplay = [NSArray arrayWithObject:(__bridge id)(aPerson)];
         [self.tableView reloadData];
       }
     }
     
   
   } else {
-    self.dataSource = self.contacts;
+    self.dataDisplay = self.contacts;
     [self.tableView reloadData];
   }
 }
@@ -183,7 +197,7 @@ NSString *kPlaceholderChooseFriends;
   // editing and no message has been entered.
   if ([textView.text isEqualToString:@""]) {
     [self resetPlaceholder];
-    self.dataSource = self.contacts;
+    self.dataDisplay = self.contacts;
     [self.tableView reloadData];
   }
 }
@@ -209,14 +223,14 @@ NSString *kPlaceholderChooseFriends;
   
   // ABAddressBookRef is used by only one thread
   CFErrorRef Error = NULL;
-  ABAddressBookRef addressBook = ABAddressBookCreateWithOptions(NULL, &Error);
-  if (addressBook == NULL) {
+  self.addressBook = ABAddressBookCreateWithOptions(NULL, &Error);
+  if (self.addressBook == NULL) {
     NSLog(@"Address Book Create: %@", Error);
   }
   
   BOOL granted = NO;
   if (ABAddressBookGetAuthorizationStatus() == kABAuthorizationStatusNotDetermined) {
-    ABAddressBookRequestAccessWithCompletion(addressBook, ^(bool granted, CFErrorRef error) {
+    ABAddressBookRequestAccessWithCompletion(self.addressBook, ^(bool granted, CFErrorRef error) {
       granted = YES;
       
     });
@@ -234,7 +248,7 @@ NSString *kPlaceholderChooseFriends;
   }
 
   if (granted) {
-    CFArrayRef people = ABAddressBookCopyArrayOfAllPeople(addressBook);
+    CFArrayRef people = ABAddressBookCopyArrayOfAllPeople(self.addressBook);
     CFMutableArrayRef peopleMutable = CFArrayCreateMutableCopy(kCFAllocatorDefault,
                                                                CFArrayGetCount(people),
                                                                people);
@@ -245,7 +259,6 @@ NSString *kPlaceholderChooseFriends;
     
     self.contacts = (__bridge_transfer NSArray *)peopleMutable;
     
-    CFRelease(addressBook);
     CFRelease(people);
     
   }
@@ -273,7 +286,7 @@ NSString *kPlaceholderChooseFriends;
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
   // Return the number of rows in the section.
-  return [self.dataSource count];
+  return [self.dataDisplay count];
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
@@ -302,12 +315,22 @@ NSString *kPlaceholderChooseFriends;
   cell.textLabel.font = [UIFont fontWithName:@"OpenSans-Regular" size:20.f];
   cell.detailTextLabel.font = [UIFont fontWithName:@"OpenSans-Regular" size:12.f];
   
-  //TODO: fetch local contact's avatar
-  static UIImage *avatar;
-  avatar = [UIImage imageNamed:@"Avatar"];
-  cell.imageView.image = avatar;
+  ABRecordRef person = (__bridge ABRecordRef)self.dataDisplay[indexPath.row]; // get address book record
   
-  ABRecordRef person = (__bridge ABRecordRef)self.dataSource[indexPath.row]; // get address book record
+  static UIImage *avatar;
+  if (ABPersonHasImageData(person)) {
+    NSData *data = (__bridge NSData *)ABPersonCopyImageDataWithFormat(person, kABPersonImageFormatThumbnail);
+    if (data) {
+      avatar = [[UIImage alloc] initWithData:data];
+    }
+  } else {
+    avatar = [UIImage imageNamed:@"Avatar"];
+  }
+  cell.imageView.image = avatar;
+  cell.imageView.frame = (CGRect){CGPointZero, avatar.size};
+  cell.imageView.layer.cornerRadius = 3.f;
+  cell.imageView.clipsToBounds = YES;
+  
   NSString *firstname = (__bridge_transfer NSString*)ABRecordCopyValue(person, kABPersonFirstNameProperty);
   NSString *lastname = (__bridge_transfer NSString*)ABRecordCopyValue(person, kABPersonLastNameProperty);
   NSString *name = @"";
@@ -386,7 +409,7 @@ NSString *kPlaceholderChooseFriends;
   
   UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
   NSString *name = cell.textLabel.text;
-  ABRecordRef person = (__bridge ABRecordRef)([self.dataSource objectAtIndex:indexPath.row]);
+  ABRecordRef person = (__bridge ABRecordRef)([self.dataDisplay objectAtIndex:indexPath.row]);
   
   NSMutableArray *emails = [[NSMutableArray alloc] init];
   CFErrorRef Error = nil;
@@ -411,8 +434,8 @@ NSString *kPlaceholderChooseFriends;
     if (![self.members containsObject:aPerson]) {
       [self.members addObject:aPerson];
       
-      if (![self.dataSource isEqual:self.contacts]) {
-        self.dataSource = self.contacts;
+      if (![self.dataDisplay isEqual:self.contacts]) {
+        self.dataDisplay = self.contacts;
         [self.tableView reloadData];
       }      
       
