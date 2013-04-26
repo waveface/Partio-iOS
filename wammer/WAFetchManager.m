@@ -46,7 +46,7 @@
 
     self.recurrenceMachine = [[IRRecurrenceMachine alloc] init];
     [self.recurrenceMachine.queue setMaxConcurrentOperationCount:1];
-    self.recurrenceMachine.recurrenceInterval = 10;
+    self.recurrenceMachine.recurrenceInterval = 5;
 
 //    [self.recurrenceMachine addRecurringOperation:[self remoteCollectionFetchOperationPrototype]];
     [self.recurrenceMachine addRecurringOperation:[self remoteIndexFetchOperationPrototype]];
