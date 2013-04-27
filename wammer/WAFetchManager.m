@@ -14,6 +14,7 @@
 #import "WAFetchManager+RemoteCollectionFetch.h"
 #import "WAFetchManager+RemoteChangeFetch.h"
 #import "WAFetchManager+RemoteFileMetadataFetch.h"
+#import "WAFetchManager+FBCheckinFetch.h"
 #import "WADefines.h"
 
 @interface WAFetchManager ()
@@ -52,6 +53,7 @@
     [self.recurrenceMachine addRecurringOperation:[self remoteIndexFetchOperationPrototype]];
 //    [self.recurrenceMachine addRecurringOperation:[self remoteArticlesFetchOperationPrototype]];
     [self.recurrenceMachine addRecurringOperation:[self remoteChangeFetchOperationPrototype]];
+    [self.recurrenceMachine addRecurringOperation:[self fbCheckinFetchPrototype]];
     [self.recurrenceMachine addRecurringOperation:[self remoteFileMetadataFetchOperationPrototype]];
 
   }

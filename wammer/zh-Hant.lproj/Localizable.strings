@@ -19,6 +19,9 @@
 /* Adding to collection action in the event view */
 "ACTION_ADD_COLLECTION" = "新增至";
 
+/* Add photos */
+"ACTION_ADD_PHOTOS" = "新增照片";
+
 /* Action title for cancelling stuff
    ACTION_CANCEL
    Cancel
@@ -472,10 +475,6 @@
 /* Navigation bar title for web preview while loading */
 "NAVI_TITLE_WEB_LOADING" = "載入中..";
 
-/* action next
-   Next */
-"NEXT_ACTION" = "下一步";
-
 /* Nickname placeholder in signup page */
 "NICKNAME_PLACEHOLDER" = "John Appleseed";
 
@@ -540,6 +539,9 @@
 /* in day view */
 "PHOTOS_TITLE" = "照片";
 
+/* action pick contacts */
+"PICKCONTACTS_ACTION" = "邀請朋友";
+
 /* business plan in settings page */
 "PLAN_FREE" = "免費";
 
@@ -554,6 +556,9 @@
 
 /* Premium plan details in plans page */
 "PREMIUM_PLAN_DESCRIPTION" = "250GB 雲端儲存空間，PC 備份數量無限制。";
+
+/* Preview */
+"PREVIEW_ACTION" = "預覽結果";
 
 /* REACHABILITY_STATE_AVAILABLE */
 "REACHABILITY_STATE_AVAILABLE" = "可用";

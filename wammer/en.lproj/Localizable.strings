@@ -19,6 +19,9 @@
 /* Adding to collection action in the event view */
 "ACTION_ADD_COLLECTION" = "Add to";
 
+/* Add photos */
+"ACTION_ADD_PHOTOS" = "Add Selected";
+
 /* Action title for cancelling stuff
    ACTION_CANCEL
    Cancel
@@ -472,10 +475,6 @@
 /* Navigation bar title for web preview while loading */
 "NAVI_TITLE_WEB_LOADING" = "Loading..";
 
-/* action next
-   Next */
-"NEXT_ACTION" = "Next";
-
 /* Nickname placeholder in signup page */
 "NICKNAME_PLACEHOLDER" = "Johnny Appleseed";
 
@@ -540,6 +539,9 @@
 /* in day view */
 "PHOTOS_TITLE" = "PHOTOS";
 
+/* action pick contacts */
+"PICKCONTACTS_ACTION" = "Invite";
+
 /* business plan in settings page */
 "PLAN_FREE" = "aostream Free";
 
@@ -554,6 +556,9 @@
 
 /* Premium plan details in plans page */
 "PREMIUM_PLAN_DESCRIPTION" = "250GB cloud storage & multi-PC storage management";
+
+/* Preview */
+"PREVIEW_ACTION" = "Preview";
 
 /* REACHABILITY_STATE_AVAILABLE */
 "REACHABILITY_STATE_AVAILABLE" = "Available";

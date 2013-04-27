@@ -8,7 +8,7 @@
 
 #import "WASharedEventViewController.h"
 #import "WASharedEventViewCell.h"
-#import "WAPhotoHighlightsViewController.h"
+#import "WADayPhotoPickerViewController.h"
 #import "WAPhotoTimelineViewController.h"
 #import "WATransparentToolbar.h"
 #import "WANavigationController.h"
@@ -345,8 +345,16 @@ static NSString * const kWASharedEventViewController_CoachMarks = @"kWASharedEve
   [self.view removeGestureRecognizer:self.tapGesture];
   self.tapGesture = nil;
 
-  WANavigationController *phVC = [WAPhotoHighlightsViewController viewControllerWithNavigationControllerWrapped];
-  [self presentViewController:phVC animated:YES completion:nil];
+  WANavigationController *navVC = [WADayPhotoPickerViewController viewControllerWithNavigationControllerWrapped];
+  __weak WADayPhotoPickerViewController *picker = (WADayPhotoPickerViewController*)navVC.topViewController;
+  picker.onNextHandler = ^(NSArray *selectedAssets) {
+    
+    WAPhotoTimelineViewController *photoTimeline = [[WAPhotoTimelineViewController alloc] initWithAssets:selectedAssets];
+    [picker.navigationController pushViewController:photoTimeline animated:YES];
+    
+  };
+
+  [self presentViewController:navVC animated:YES completion:nil];
 }
 
 @end

@@ -309,6 +309,7 @@
 		808DAA281675DE36003652BB /* add-O@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 808DAA1C1675DE36003652BB /* add-O@2x.png */; };
 		808DAA291675DE36003652BB /* add-Red.png in Resources */ = {isa = PBXBuildFile; fileRef = 808DAA1D1675DE36003652BB /* add-Red.png */; };
 		808DAA2A1675DE36003652BB /* add-Red@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 808DAA1E1675DE36003652BB /* add-Red@2x.png */; };
+		808E3DDC172B70AC002B2E3F /* WAFetchManager+FBCheckinFetch.m in Sources */ = {isa = PBXBuildFile; fileRef = 808E3DDB172B70AC002B2E3F /* WAFetchManager+FBCheckinFetch.m */; };
 		8090AB271646AE79007E2AC0 /* action.png in Resources */ = {isa = PBXBuildFile; fileRef = 8090AB231646AE79007E2AC0 /* action.png */; };
 		8090AB281646AE79007E2AC0 /* action@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8090AB241646AE79007E2AC0 /* action@2x.png */; };
 		8090AB291646AE79007E2AC0 /* back.png in Resources */ = {isa = PBXBuildFile; fileRef = 8090AB251646AE79007E2AC0 /* back.png */; };
@@ -1365,6 +1366,8 @@
 		808DAA1C1675DE36003652BB /* add-O@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "add-O@2x.png"; path = "Resources/add-O@2x.png"; sourceTree = "<group>"; };
 		808DAA1D1675DE36003652BB /* add-Red.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "add-Red.png"; path = "Resources/add-Red.png"; sourceTree = "<group>"; };
 		808DAA1E1675DE36003652BB /* add-Red@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "add-Red@2x.png"; path = "Resources/add-Red@2x.png"; sourceTree = "<group>"; };
+		808E3DDA172B70AC002B2E3F /* WAFetchManager+FBCheckinFetch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "WAFetchManager+FBCheckinFetch.h"; path = "wammer/WAFetchManager+FBCheckinFetch.h"; sourceTree = "<group>"; };
+		808E3DDB172B70AC002B2E3F /* WAFetchManager+FBCheckinFetch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "WAFetchManager+FBCheckinFetch.m"; path = "wammer/WAFetchManager+FBCheckinFetch.m"; sourceTree = "<group>"; };
 		8090AB231646AE79007E2AC0 /* action.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = action.png; path = Resources/action.png; sourceTree = "<group>"; };
 		8090AB241646AE79007E2AC0 /* action@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "action@2x.png"; path = "Resources/action@2x.png"; sourceTree = "<group>"; };
 		8090AB251646AE79007E2AC0 /* back.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = back.png; path = Resources/back.png; sourceTree = "<group>"; };
@@ -2165,6 +2168,8 @@
 				13CCDE6D168C3C9300962625 /* WAFetchManager+RemoteFileMetadataFetch.m */,
 				13A318CB168CBD0000017E68 /* WAFetchManager+RemoteChangeFetch.h */,
 				13A318CC168CBD0000017E68 /* WAFetchManager+RemoteChangeFetch.m */,
+				808E3DDA172B70AC002B2E3F /* WAFetchManager+FBCheckinFetch.h */,
+				808E3DDB172B70AC002B2E3F /* WAFetchManager+FBCheckinFetch.m */,
 			);
 			name = "Data Fetching";
 			sourceTree = "<group>";
@@ -4923,6 +4928,7 @@
 				80CDF0591727BB2700B359DD /* WAPeople.m in Sources */,
 				80CDF05C1727BBA700B359DD /* WAArticle.m in Sources */,
 				80CDF0611727C62A00B359DD /* WAEventDetailsCell.m in Sources */,
+				808E3DDC172B70AC002B2E3F /* WAFetchManager+FBCheckinFetch.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
