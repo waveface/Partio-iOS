@@ -468,6 +468,14 @@ NSString *kPlaceholderChooseFriends;
   return 44.f;
 }
 
+- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
+{
+  UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0.f, 0.f, CGRectGetWidth(tableView.frame), 44.f)];
+  [view setBackgroundColor:[UIColor clearColor]];
+  
+  return view;
+}
+
 #pragma mark - table view delegate
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -539,6 +547,9 @@ NSString *kPlaceholderChooseFriends;
     
     if ([self.members containsObject:aPerson]) {
       [self.members removeObject:aPerson];
+      
+      NSIndexPath *newIndexPath = [NSIndexPath indexPathForRow:[self.contacts indexOfObject:(__bridge id)(person)] inSection:0];
+      [self.tableView scrollToRowAtIndexPath:newIndexPath atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
     }
     
     if (![self.members count]) {
