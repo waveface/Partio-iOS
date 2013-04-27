@@ -39,7 +39,9 @@ NSString *kPlaceholderChooseFriends;
   kPlaceholderChooseFriends = NSLocalizedString(@"PLACEHOLER_CHOSEN_FRIENDS_ADDRESS_BOOK_PICKER", @"PLACEHOLER_CHOSEN_FRIENDS_ADDRESS_BOOK_PICKER");
   [self.textField setPlaceholder:kPlaceholderChooseFriends];
   [self.textField setFont:[UIFont fontWithName:@"OpenSans-Regular" size:18.f]];
-  
+  [self.textField setLeftViewMode:UITextFieldViewModeAlways];
+  [self.textField setLeftView:[[UIImageView alloc] initWithFrame:CGRectMake(0.f, 0.f, 10.f, 44.f)]];
+   
   __weak WAAddressBookPickerViewController *wSelf = self;
   if (self.navigationController) {
     self.navigationItem.leftBarButtonItem = WAPartioBackButton(^{
@@ -95,7 +97,8 @@ NSString *kPlaceholderChooseFriends;
   [self.textField setText:@""];
   [self.textField resignFirstResponder];
   [self.tap setCancelsTouchesInView:NO];
-  
+  self.dataDisplay = self.contacts;
+  [self.tableView reloadData];
 }
 
 - (UIBarButtonItem *)shareBarButton
@@ -107,18 +110,17 @@ NSString *kPlaceholderChooseFriends;
   });
 }
 
-
-#pragma mark - text view delegate
-
-- (void)textFieldDidBeginEditing:(UITextField *)textField
+- (void)updateNavigationBarTitle
 {
-  if ([textField.text isEqualToString:kPlaceholderChooseFriends]) {
-    textField.text = @"";
-    textField.textColor = [UIColor whiteColor];
-    [self.textField setFont:[UIFont fontWithName:@"OpenSans-Regular" size:20.f]];
-  
+  if (![self.members count]) {
+    [[self.toolbar.items objectAtIndex:1] setEnabled:NO];
+    self.navigationItem.title = NSLocalizedString(@"TITLE_INVITE_CONTACTS", @"TITLE_INVITE_CONTACTS");
+  } else {
+    self.navigationItem.title = [NSString stringWithFormat:NSLocalizedString(@"TITLE_INVITATION_NUMBERS", @"TITLE_INVITATION_NUMBERS"), [self.members count]];
   }
 }
+
+#pragma mark - text view delegate
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
 {
@@ -224,29 +226,28 @@ NSString *kPlaceholderChooseFriends;
     [self.tableView reloadData];
     
     ABRecordRef person = (__bridge ABRecordRef)(self.filteredContacts[0]);
-    NSIndexPath *newIndexPath = [NSIndexPath indexPathForRow:[self.contacts indexOfObject:(__bridge id)(person)] inSection:0];
-    
-    if (!newIndexPath.row) {
-      [self.tableView scrollToRowAtIndexPath:newIndexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
-      
-    } else if (newIndexPath.row == self.contacts.count - 1) {
-      [self.tableView scrollToRowAtIndexPath:newIndexPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
-      
-    } else {
-      [self.tableView scrollToRowAtIndexPath:newIndexPath atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
-      
-    }
-    
     NSString *firstname = (__bridge_transfer NSString*)ABRecordCopyValue(person, kABPersonFirstNameProperty);
     NSMutableArray *emails = [NSMutableArray arrayWithObject:firstname];
     
     NSDictionary *aPerson = @{@"name": firstname, @"email": emails};
     if (![self.members containsObject:aPerson]) {
       [self.members addObject:aPerson];
-
-      [self.tableView reloadRowsAtIndexPaths:@[newIndexPath] withRowAnimation:UITableViewRowAnimationNone];
+      
+      NSIndexPath *newIndexPath = [NSIndexPath indexPathForRow:[self.contacts indexOfObject:(__bridge id)(person)] inSection:0];
+      
+      if (!newIndexPath.row) {
+        [self.tableView scrollToRowAtIndexPath:newIndexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
+        
+      } else if (newIndexPath.row == [self.contacts count] - 1) {
+        [self.tableView scrollToRowAtIndexPath:newIndexPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+        
+      } else {
+        [self.tableView scrollToRowAtIndexPath:newIndexPath atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
+        
+      }
+   
       [[self.toolbar.items objectAtIndex:1] setEnabled:NO];
-      self.navigationItem.title = [NSString stringWithFormat:NSLocalizedString(@"TITLE_INVITATION_NUMBERS", @"TITLE_INVITATION_NUMBERS"), [self.members count]];
+      [self updateNavigationBarTitle];
       
     }
     
@@ -485,7 +486,7 @@ NSString *kPlaceholderChooseFriends;
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-  [tableView deselectRowAtIndexPath:indexPath animated:NO];
+  [tableView deselectRowAtIndexPath:indexPath animated:YES];
   [self.tap setCancelsTouchesInView:YES];
   
   UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
@@ -494,7 +495,7 @@ NSString *kPlaceholderChooseFriends;
   ABRecordRef person = (__bridge ABRecordRef)self.contacts[indexPath.row];
   if ([self.filteredContacts count]) {
     person = (__bridge ABRecordRef)self.filteredContacts[indexPath.row];
-    self.filteredContacts = @[];
+    
   }
   
   NSMutableArray *emails = [[NSMutableArray alloc] init];
@@ -532,14 +533,16 @@ NSString *kPlaceholderChooseFriends;
       
       self.dataDisplay = self.contacts;
       [self.tableView reloadData];
-      NSIndexPath *newIndexPath = [NSIndexPath indexPathForRow:[self.contacts indexOfObject:(__bridge id)(person)] inSection:0];
-      [self.tableView scrollToRowAtIndexPath:newIndexPath atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
-        
+      
+      if ([self.filteredContacts count]) {
+        [self scrollToSelectedPerson:person];
+        self.filteredContacts = @[];
+      }       
     }
   
     if ([self.members count]) {
       [[self.toolbar.items objectAtIndex:1] setEnabled:YES];
-      self.navigationItem.title = [NSString stringWithFormat:NSLocalizedString(@"TITLE_INVITATION_NUMBERS", @"TITLE_INVITATION_NUMBERS"), [self.members count]];
+      [self updateNavigationBarTitle];
     }
     
   } else {
@@ -548,19 +551,23 @@ NSString *kPlaceholderChooseFriends;
     if ([self.members containsObject:aPerson]) {
       [self.members removeObject:aPerson];
       
-      NSIndexPath *newIndexPath = [NSIndexPath indexPathForRow:[self.contacts indexOfObject:(__bridge id)(person)] inSection:0];
-      [self.tableView scrollToRowAtIndexPath:newIndexPath atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
+      if ([self.filteredContacts count]) {
+        [self scrollToSelectedPerson:person];
+        self.filteredContacts = @[];
+      }
+      
     }
     
-    if (![self.members count]) {
-      [[self.toolbar.items objectAtIndex:1] setEnabled:NO];
-      self.navigationItem.title = NSLocalizedString(@"TITLE_INVITE_CONTACTS", @"TITLE_INVITE_CONTACTS");
-    } else {
-      self.navigationItem.title = [NSString stringWithFormat:NSLocalizedString(@"TITLE_INVITATION_NUMBERS", @"TITLE_INVITATION_NUMBERS"), [self.members count]];
-    }
+    [self updateNavigationBarTitle];
 
   }
   
+}
+
+- (void)scrollToSelectedPerson:(ABRecordRef)person
+{
+  NSIndexPath *newIndexPath = [NSIndexPath indexPathForRow:[self.contacts indexOfObject:(__bridge id)(person)] inSection:0];
+  [self.tableView scrollToRowAtIndexPath:newIndexPath atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
 }
 
 @end

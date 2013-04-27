@@ -459,7 +459,7 @@
 "MESSAGE_INPUT_EMAIL" = "Please input your friend's email to invite him/her to share your precious moments with you.";
 
 /* MESSAGE_NO_EMAIL_CONTACT */
-"MESSAGE_NO_EMAIL_CONTACT" = "Oops! This contact has no emails. We're unable to invite him/her.";
+"MESSAGE_NO_EMAIL_CONTACT" = "Oops! This contact has no emails. Please input their email to invite them to share precious memories with you.";
 
 /* MESSAGE_REQUEST_CONTACT_PERMISSION */
 "MESSAGE_REQUEST_CONTACT_PERMISSION" = "You may grant Grupin to access contact in Settings-Privacy-Contact.";
@@ -551,7 +551,7 @@
 "PHOTOS_TITLE" = "PHOTOS";
 
 /* PLACEHOLER_CHOSEN_FRIENDS_ADDRESS_BOOK_PICKER */
-"PLACEHOLER_CHOSEN_FRIENDS_ADDRESS_BOOK_PICKER" = "Name or Email";
+"PLACEHOLER_CHOSEN_FRIENDS_ADDRESS_BOOK_PICKER" = "Input Name or Email";
 
 /* PLACEHOLER_CHOSEN_FRIENDS_ADDRESSBOOKPICKER */
 "PLACEHOLER_CHOSEN_FRIENDS_ADDRESSBOOKPICKER" = "PLACEHOLER_CHOSEN_FRIENDS_ADDRESSBOOKPICKER";
