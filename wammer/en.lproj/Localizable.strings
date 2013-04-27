@@ -458,6 +458,9 @@
 /* Message of dialog to input email */
 "MESSAGE_INPUT_EMAIL" = "Please input your friend's email to invite him/her to share your precious moments with you.";
 
+/* MESSAGE_NO_EMAIL_CONTACT */
+"MESSAGE_NO_EMAIL_CONTACT" = "Oops! This contact has no emails. We're unable to invite him/her.";
+
 /* MESSAGE_REQUEST_CONTACT_PERMISSION */
 "MESSAGE_REQUEST_CONTACT_PERMISSION" = "You may grant Grupin to access contact in Settings-Privacy-Contact.";
 
@@ -666,11 +669,8 @@
 /* TITLE_INPUT_EMAIL_ALERT */
 "TITLE_INPUT_EMAIL_ALERT" = "What's %@'s email?";
 
-/* TITLE_INVITATION_NUMBER_ONE */
-"TITLE_INVITATION_NUMBER_ONE" = "%d contact";
-
 /* TITLE_INVITATION_NUMBERS */
-"TITLE_INVITATION_NUMBERS" = "%d contacts";
+"TITLE_INVITATION_NUMBERS" = "%d Selected";
 
 /* TITLE_INVITE_CONTACTS */
 "TITLE_INVITE_CONTACTS" = "Invite Friends";

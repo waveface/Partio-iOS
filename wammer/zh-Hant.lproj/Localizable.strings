@@ -458,6 +458,9 @@
 /* Message of dialog to input email */
 "MESSAGE_INPUT_EMAIL" = "請輸入您朋友的電子信箱，讓他與您一起共享生活中寶貴的回憶。";
 
+/* MESSAGE_NO_EMAIL_CONTACT */
+"MESSAGE_NO_EMAIL_CONTACT" = "哎呀，這個聯絡人沒有電子郵件信箱，我們無法邀請他/她。";
+
 /* MESSAGE_REQUEST_CONTACT_PERMISSION */
 "MESSAGE_REQUEST_CONTACT_PERMISSION" = "請到設定-隱私-聯絡資訊給予 Grupin 權限";
 
@@ -665,9 +668,6 @@
 
 /* TITLE_INPUT_EMAIL_ALERT */
 "TITLE_INPUT_EMAIL_ALERT" = "%@的Email是？";
-
-/* TITLE_INVITATION_NUMBER_ONE */
-"TITLE_INVITATION_NUMBER_ONE" = "選了%d個朋友";
 
 /* TITLE_INVITATION_NUMBERS */
 "TITLE_INVITATION_NUMBERS" = "選了%d個朋友";
