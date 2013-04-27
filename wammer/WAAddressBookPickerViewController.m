@@ -17,6 +17,7 @@
 @property (nonatomic, weak) IBOutlet WAPartioNavigationBar *navigationBar;
 @property (nonatomic, weak) IBOutlet UITextField *textField;
 @property (nonatomic, weak) IBOutlet UITableView *tableView;
+@property (nonatomic, weak) IBOutlet UIToolbar *toolbar;
 @property (nonatomic, strong) NSMutableArray *contacts;
 @property (nonatomic, strong) UITapGestureRecognizer *tap;
 @property (nonatomic, strong) NSArray *dataDisplay;
@@ -33,7 +34,6 @@ NSString *kPlaceholderChooseFriends;
 - (void)viewDidLoad
 {
   [super viewDidLoad];
-  self.navigationItem.rightBarButtonItem.enabled = NO;
   
   [self.tableView setBackgroundColor:[UIColor colorWithRed:0.168 green:0.168 blue:0.168 alpha:1]];
   kPlaceholderChooseFriends = NSLocalizedString(@"PLACEHOLER_CHOSEN_FRIENDS_ADDRESS_BOOK_PICKER", @"PLACEHOLER_CHOSEN_FRIENDS_ADDRESS_BOOK_PICKER");
@@ -42,24 +42,30 @@ NSString *kPlaceholderChooseFriends;
   
   __weak WAAddressBookPickerViewController *wSelf = self;
   if (self.navigationController) {
+    self.navigationItem.leftBarButtonItem = WAPartioBackButton(^{
+      [wSelf.navigationController popViewControllerAnimated:YES];
+      if (self.onDismissHandler)
+        self.onDismissHandler();
+    });
+  } else {
     self.navigationItem.leftBarButtonItem = (UIBarButtonItem*)WABarButtonItem(nil, NSLocalizedString(@"ACTION_CANCEL", @"cancel"), ^{
       if (wSelf.onDismissHandler)
         wSelf.onDismissHandler();
     });
-    
-    self.navigationItem.rightBarButtonItem = (UIBarButtonItem*)WAPartioToolbarNextButton(@"Share", ^{
-      if (self.onNextHandler) {
-        if ([_members count]) {
-          self.onNextHandler([NSArray arrayWithArray:[self.members copy]]);
-        }
-        
-      }
-    });  }
-  self.navigationItem.rightBarButtonItem.enabled = NO;
+  }
+  
+  
   [self.navigationItem setTitle:NSLocalizedString(@"TITLE_INVITE_CONTACTS", @"TITLE_INVITE_CONTACTS")];
   [self.navigationController setNavigationBarHidden:YES];
   [self.navigationItem setHidesBackButton:YES];
   [self.navigationBar pushNavigationItem:self.navigationItem animated:NO];
+  
+  [self.toolbar setBackgroundImage:[[UIImage alloc] init] forToolbarPosition:UIToolbarPositionAny barMetrics:UIBarMetricsDefault];
+  self.toolbar.backgroundColor = [UIColor colorWithWhite:0.0f alpha:0.4f];
+  UIBarButtonItem *flexspace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+  self.toolbar.items = @[flexspace, [self shareBarButton], flexspace];
+  [[self.toolbar.items objectAtIndex:1] setEnabled:NO];
+  [self.view addSubview:self.toolbar];
   
   self.tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissKeyboard)];
   [self.tap setCancelsTouchesInView:NO];
@@ -73,8 +79,7 @@ NSString *kPlaceholderChooseFriends;
   // add joined members into member list
   self.members = [[NSMutableArray alloc] init];
   self.filteredContacts = [[NSArray alloc] init];
-  self.dataDisplay = [[NSArray alloc] init];
-
+  
 }
 
 - (BOOL) shouldAutorotate {
@@ -101,6 +106,7 @@ NSString *kPlaceholderChooseFriends;
     }
   });
 }
+
 
 #pragma mark - text view delegate
 
@@ -238,11 +244,8 @@ NSString *kPlaceholderChooseFriends;
     if (![self.members containsObject:aPerson]) {
       [self.members addObject:aPerson];
 
-      //FIXME: checkmark no show
-//      UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:newIndexPath];
-//      cell.accessoryView.hidden = NO;
       [self.tableView reloadRowsAtIndexPaths:@[newIndexPath] withRowAnimation:UITableViewRowAnimationNone];
-      self.navigationItem.rightBarButtonItem.enabled = YES;
+      [[self.toolbar.items objectAtIndex:1] setEnabled:NO];
       self.navigationItem.title = [NSString stringWithFormat:NSLocalizedString(@"TITLE_INVITATION_NUMBERS", @"TITLE_INVITATION_NUMBERS"), [self.members count]];
       
     }
@@ -460,6 +463,11 @@ NSString *kPlaceholderChooseFriends;
   return cell;
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
+{
+  return 44.f;
+}
+
 #pragma mark - table view delegate
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -522,7 +530,7 @@ NSString *kPlaceholderChooseFriends;
     }
   
     if ([self.members count]) {
-      self.navigationItem.rightBarButtonItem.enabled = YES;
+      [[self.toolbar.items objectAtIndex:1] setEnabled:YES];
       self.navigationItem.title = [NSString stringWithFormat:NSLocalizedString(@"TITLE_INVITATION_NUMBERS", @"TITLE_INVITATION_NUMBERS"), [self.members count]];
     }
     
@@ -534,7 +542,7 @@ NSString *kPlaceholderChooseFriends;
     }
     
     if (![self.members count]) {
-      self.navigationItem.rightBarButtonItem.enabled = NO;
+      [[self.toolbar.items objectAtIndex:1] setEnabled:NO];
       self.navigationItem.title = NSLocalizedString(@"TITLE_INVITE_CONTACTS", @"TITLE_INVITE_CONTACTS");
     } else {
       self.navigationItem.title = [NSString stringWithFormat:NSLocalizedString(@"TITLE_INVITATION_NUMBERS", @"TITLE_INVITATION_NUMBERS"), [self.members count]];
