@@ -69,10 +69,6 @@ NSString *kPlaceholderChooseFriends;
   [[self.toolbar.items objectAtIndex:1] setEnabled:NO];
   [self.view addSubview:self.toolbar];
   
-  self.tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissKeyboard)];
-  [self.tap setCancelsTouchesInView:NO];
-  [self.view addGestureRecognizer:self.tap];
-
   self.dataDisplay = self.contacts;
 }
 
@@ -96,7 +92,6 @@ NSString *kPlaceholderChooseFriends;
 {
   [self.textField setText:@""];
   [self.textField resignFirstResponder];
-  [self.tap setCancelsTouchesInView:NO];
   self.dataDisplay = self.contacts;
   [self.tableView reloadData];
 }
@@ -246,7 +241,7 @@ NSString *kPlaceholderChooseFriends;
         
       }
    
-      [[self.toolbar.items objectAtIndex:1] setEnabled:NO];
+      [[self.toolbar.items objectAtIndex:1] setEnabled:YES];
       [self updateNavigationBarTitle];
       
     }
@@ -368,6 +363,17 @@ NSString *kPlaceholderChooseFriends;
   return 24.f;
 }
 
+- (UIImage *)scaledImage:(UIImage *)image withSize:(CGSize)size
+{
+  size = CGSizeMake(size.width - 6.f, size.height - 6.f);
+  UIGraphicsBeginImageContext(size);
+  [image drawInRect:(CGRect){CGPointZero, size}];
+  UIImage *scaledImage = UIGraphicsGetImageFromCurrentImageContext();
+  UIGraphicsEndImageContext();
+  
+  return scaledImage;
+}
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
   static NSString *CellIdentifier = @"Cell";
@@ -385,14 +391,11 @@ NSString *kPlaceholderChooseFriends;
   static UIImage *defaultAvatar;
   defaultAvatar = [UIImage imageNamed:@"Avatar"];
   cell.imageView.image = defaultAvatar;
-  cell.imageView.frame = CGRectMake(CGRectGetWidth(cell.imageView.frame)/2.f - defaultAvatar.size.width/2.f,
-                                    CGRectGetHeight(cell.imageView.frame)/2.f - defaultAvatar.size.height/2.f,
-                                    defaultAvatar.size.width,
-                                    defaultAvatar.size.height);
   if (ABPersonHasImageData(person)) {
     NSData *data = (__bridge NSData *)ABPersonCopyImageDataWithFormat(person, kABPersonImageFormatThumbnail);
     if (data) {
-      cell.imageView.image = [[UIImage alloc] initWithData:data];
+      cell.imageView.image = [self scaledImage:[[UIImage alloc] initWithData:data] withSize:defaultAvatar.size] ;
+      
     }
   }
   cell.imageView.layer.cornerRadius = 3.f;
@@ -487,8 +490,11 @@ NSString *kPlaceholderChooseFriends;
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
   [tableView deselectRowAtIndexPath:indexPath animated:YES];
-  [self.tap setCancelsTouchesInView:YES];
-  
+
+  if ([self.textField isFirstResponder]) {
+    [self.textField resignFirstResponder];
+  }
+
   UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
   NSString *name = cell.textLabel.text;
   
@@ -561,7 +567,7 @@ NSString *kPlaceholderChooseFriends;
     [self updateNavigationBarTitle];
 
   }
-  
+ 
 }
 
 - (void)scrollToSelectedPerson:(ABRecordRef)person
