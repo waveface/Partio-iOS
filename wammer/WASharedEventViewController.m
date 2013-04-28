@@ -353,6 +353,9 @@ static NSString * const kWASharedEventViewController_CoachMarks = @"kWASharedEve
     [picker.navigationController pushViewController:photoTimeline animated:YES];
     
   };
+  picker.onCancelHandler = ^{
+    [picker.navigationController dismissViewControllerAnimated:YES completion:nil];
+  };
 
   [self presentViewController:navVC animated:YES completion:nil];
 }
