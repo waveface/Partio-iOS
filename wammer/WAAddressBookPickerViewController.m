@@ -537,6 +537,7 @@ static NSString const *kWAAddressBookViewController_CoachMarks = @"kWAAddressBoo
   }
   
   if ([self.textField isFirstResponder]) {
+    [self.textField setText:@""];
     [self.textField resignFirstResponder];
   }
 
@@ -602,6 +603,7 @@ static NSString const *kWAAddressBookViewController_CoachMarks = @"kWAAddressBoo
     if ([self.members containsObject:aPerson]) {
       [self.members removeObject:aPerson];
       
+      [tableView reloadData];
       if ([self.filteredContacts count]) {
         [self scrollToSelectedPerson:person];
         self.filteredContacts = @[];
