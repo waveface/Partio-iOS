@@ -10,7 +10,6 @@
 #import "WASharedEventViewCell.h"
 #import "WADayPhotoPickerViewController.h"
 #import "WAPhotoTimelineViewController.h"
-#import "WATransparentToolbar.h"
 #import "WANavigationController.h"
 #import "WAGeoLocation.h"
 #import "WADefines.h"
@@ -27,7 +26,7 @@
 @property (nonatomic, strong) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, strong) NSFetchedResultsController *eventFetchedResultsController;
 @property (nonatomic, strong) NSMutableArray *objectChanges;
-@property (nonatomic, strong) WAPartioNavigationBar *navigationBar;
+@property (nonatomic, weak) IBOutlet WAPartioNavigationBar *navigationBar;
 @property (nonatomic, weak) IBOutlet UICollectionView *collectionView;
 @property (nonatomic, weak) IBOutlet UIButton *creationButton;
 
@@ -83,11 +82,11 @@ static NSString * const kWASharedEventViewController_CoachMarks = @"kWASharedEve
   
   [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleCoreDataReinitialization:) name:kWACoreDataReinitialization object:nil];
   
-  self.navigationController.navigationBarHidden = YES;
   [self.navigationItem setTitle:NSLocalizedString(@"LABEL_SHARED_EVENTS", @"LABEL_SHARED_EVENTS")];
-  self.navigationBar = [[WAPartioNavigationBar alloc] initWithFrame:CGRectMake(0.f, 0.f, CGRectGetWidth(self.view.frame), 44.f)];
+  [self.navigationItem setHidesBackButton:YES];
+  [self.navigationController setNavigationBarHidden:YES];
   [self.navigationBar pushNavigationItem:self.navigationItem animated:NO];
-  [self.view addSubview:self.navigationBar];
+
   
   [self.collectionView setFrame:CGRectMake(0.f,
                                            CGRectGetHeight(self.navigationBar.frame),

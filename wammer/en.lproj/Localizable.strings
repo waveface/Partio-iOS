@@ -72,7 +72,8 @@
 /* Short action title for disconnecting Twitter creds */
 "ACTION_DISCONNECT_TWITTER" = "Stop Importing";
 
-/* In iPad composition view */
+/* ACTION_DONE
+   In iPad composition view */
 "ACTION_DONE" = "Stream!";
 
 /* The action to create a new collection */
@@ -433,6 +434,9 @@
 /* Shows ON when auto import is turned on in the settings panel */
 "LABEL_AUTO_IMPORT_VALUE_ON" = "On";
 
+/* LABEL_CONTACTS_FRIENDS */
+"LABEL_CONTACTS_FRIENDS" = "LABEL_CONTACTS_FRIENDS";
+
 /* LABEL_INVITED_BUTTON */
 "LABEL_INVITED_BUTTON" = "Invited";
 
@@ -542,6 +546,9 @@
 /* action pick contacts */
 "PICKCONTACTS_ACTION" = "Invite";
 
+/* PLACEHOLER_CHOSEN_FRIENDS_ADDRESSBOOKPICKER */
+"PLACEHOLER_CHOSEN_FRIENDS_ADDRESSBOOKPICKER" = "PLACEHOLER_CHOSEN_FRIENDS_ADDRESSBOOKPICKER";
+
 /* business plan in settings page */
 "PLAN_FREE" = "aostream Free";
 
@@ -636,6 +643,9 @@
 
 /* The email subject to send user the download link. */
 "SUBJECT_MAIL_LINK" = "Download aostream for Windows here!";
+
+/* TITLE_ADDRESS_BOOK_PICKER */
+"TITLE_ADDRESS_BOOK_PICKER" = "TITLE_ADDRESS_BOOK_PICKER";
 
 /* Title of Canlendar */
 "TITLE_CALENDAR" = "Calendar";

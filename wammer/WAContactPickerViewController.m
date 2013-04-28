@@ -12,13 +12,14 @@
 #import "WAPartioNavigationBar.h"
 
 #import "WAContactPickerSectionHeaderView.h"
+#import "WAAddressBookPickerViewController.h"
 #import <BlocksKit/BlocksKit.h>
 #import <FacebookSDK/FacebookSDK.h>
 
 @interface WAContactPickerViewController () <UITableViewDelegate, UITableViewDataSource, FBFriendPickerDelegate, UITextFieldDelegate>
 @property (nonatomic, weak) IBOutlet UITableView *tableView;
 @property (nonatomic, weak) IBOutlet UIToolbar *toolbar;
-@property (nonatomic, strong) IBOutlet WAPartioNavigationBar *navigationBar;
+@property (nonatomic, weak) IBOutlet WAPartioNavigationBar *navigationBar;
 @property (nonatomic, strong) FBFriendPickerViewController *fbFriendPickerViewController;
 @property (nonatomic, strong) UITextField *textField;
 @property (nonatomic, strong) UITapGestureRecognizer *tap;
@@ -56,22 +57,19 @@
     });
   }
   self.navigationItem.title = NSLocalizedString(@"TITLE_INVITE_CONTACTS", @"TITLE_INVITE_CONTACTS");
-  
-  self.navigationBar = [[WAPartioNavigationBar alloc] initWithFrame:CGRectMake(0.f, 0.f, CGRectGetWidth(self.view.frame), 44.f)];
+  [self.navigationController setNavigationBarHidden:YES];
   [self.navigationBar pushNavigationItem:self.navigationItem animated:NO];
-  [self.view addSubview:self.navigationBar];
   
   [self.toolbar setBackgroundImage:[[UIImage alloc] init] forToolbarPosition:UIToolbarPositionAny barMetrics:UIBarMetricsDefault];
   self.toolbar.backgroundColor = [UIColor colorWithWhite:0.0f alpha:0.4f];
   UIBarButtonItem *flexspace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
-//  self.toolbar = [[WATranslucentToolbar alloc] initWithFrame:CGRectMake(0, CGRectGetHeight(self.view.frame)-44, CGRectGetWidth(self.view.frame), 44)];
-  
   self.toolbar.items = @[flexspace, [self shareBarButton], flexspace];
   [self.view addSubview:self.toolbar];
   
   self.tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissKeyboard)];
   [self.tap setCancelsTouchesInView:NO];
   [self.view addGestureRecognizer:self.tap];
+  
 }
 
 - (UIBarButtonItem *)shareBarButton
@@ -129,9 +127,9 @@
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-  WAContactPickerSectionHeaderView *headerView = [[WAContactPickerSectionHeaderView alloc] initWithFrame:CGRectMake(0.f, 0.f, 320.f, 24.f)];
+  WAContactPickerSectionHeaderView *headerView = [[WAContactPickerSectionHeaderView alloc] initWithFrame:CGRectMake(0.f, 2.f, 320.f, 22.f)];
   headerView.backgroundColor = tableView.backgroundColor;
-
+  
   return headerView;
 }
 
@@ -141,7 +139,7 @@
     return 0.f;
   
   } else {
-    return 24.f;
+    return 22.f;
   
   }
 }
@@ -265,8 +263,9 @@
   NSLog(@"Email input: %@", textField.text);
   if (![textField.text isEqualToString:@""]) {
     [self addEmailIntoInvitedList:textField.text];
-    [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:_members.count-1 inSection:1]] withRowAnimation:UITableViewRowAnimationAutomatic];
+    [self.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:_members.count-1 inSection:1]] withRowAnimation:UITableViewRowAnimationAutomatic];
   }
+  textField.text = @"";
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
@@ -294,6 +293,7 @@
   
   if (![_members containsObject:aPerson]) {
     [_members addObject:aPerson];
+    
   }
 }
 
@@ -310,6 +310,27 @@
 
 #pragma mark - Table view delegate
 
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
+{
+  return YES;
+}
+
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+  if (editingStyle == UITableViewCellEditingStyleDelete) {
+    
+    [tableView beginUpdates];
+    [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationLeft];
+    
+    if ([self.members objectAtIndex:indexPath.row]) {
+      [self.members removeObjectAtIndex:indexPath.row];
+    }
+
+    [tableView endUpdates];
+    
+  }
+}
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
   [tableView deselectRowAtIndexPath:indexPath animated:YES];
@@ -325,8 +346,7 @@
         NSDictionary *contact = @{@"name": email, @"email": @[email]};
         if (![_members containsObject:contact])
           [_members addObject:contact];
-        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:_members.count-1 inSection:1];
-        [self.tableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:YES];
+          [self.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:_members.count-1 inSection:1]] withRowAnimation:YES];
       }];
       
       [self.tap setCancelsTouchesInView:YES];
@@ -335,7 +355,6 @@
     } else if (indexPath.row == 1) {
       ABPeoplePickerNavigationController *abPicker = [[ABPeoplePickerNavigationController alloc] init];
       abPicker.peoplePickerDelegate = self;
-      
       
       [self presentViewController:abPicker animated:YES completion:nil];
     }
@@ -361,7 +380,6 @@
 {
   [self addIntoInvitedList:person];
   [self dismissViewControllerAnimated:YES completion:nil];
-  [self.tableView reloadData];
   
   return NO;
 }
@@ -429,6 +447,7 @@
     [textField setSecureTextEntry:NO];
     
     [alert show];
+    return;
   }
   
   NSString *phone = @"";
@@ -443,12 +462,12 @@
     NSDictionary *aPerson = @{@"name": name,
                               @"email": email,
                               @"phone": phone};
-
+    
     if (![_members containsObject:aPerson]) {
       [_members addObject:aPerson];
+      [self.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:(_members.count-1) inSection:1]] withRowAnimation:UITableViewRowAnimationFade];
     }
   }
-  
 }
 
 #pragma mark - UIAlertViewDelegate
@@ -479,9 +498,9 @@
     
     if (![_members containsObject:aPerson]) {
       [_members addObject:aPerson];
+      [self.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:(_members.count-1) inSection:1]] withRowAnimation:UITableViewRowAnimationFade];
     }
     
-    [self.tableView reloadData];
   }
 }
 
