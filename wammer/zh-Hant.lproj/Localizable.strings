@@ -413,6 +413,9 @@
 /* INPUT_RECEIVER_EMAIL */
 "INPUT_RECEIVER_EMAIL" = "輸入電子郵件信箱";
 
+/* The instruction show to tap contacts then share photos */
+"INSTRUCTION_IN_ADDRESS_BOOK_PICKER" = "點選朋友邀請他們一起分享照片";
+
 /* Instruction shown above the create button in the event list view. */
 "INSTRUCTION_IN_EVENTLIST_CREATE_BUTTON" = "來開始分享照片吧！";
 

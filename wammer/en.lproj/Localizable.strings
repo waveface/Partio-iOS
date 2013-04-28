@@ -413,6 +413,9 @@
 /* INPUT_RECEIVER_EMAIL */
 "INPUT_RECEIVER_EMAIL" = "Input Email";
 
+/* The instruction show to tap contacts then share photos */
+"INSTRUCTION_IN_ADDRESS_BOOK_PICKER" = "Tap contacts then share photos with them";
+
 /* Instruction shown above the create button in the event list view. */
 "INSTRUCTION_IN_EVENTLIST_CREATE_BUTTON" = "Start here to share";
 

@@ -10,7 +10,8 @@
 #import "WAPartioNavigationBar.h"
 #import "WAContactPickerSectionHeaderView.h"
 #import <AddressBook/AddressBook.h>
-#import <AddressBook/ABAddressBook.h>
+#import <SMCalloutView/SMCalloutView.h>
+#import <BlocksKit/BlocksKit.h>
 
 @interface WAAddressBookPickerViewController() <UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate>
 
@@ -19,15 +20,15 @@
 @property (nonatomic, weak) IBOutlet UITableView *tableView;
 @property (nonatomic, weak) IBOutlet UIToolbar *toolbar;
 @property (nonatomic, strong) NSMutableArray *contacts;
-@property (nonatomic, strong) UITapGestureRecognizer *tap;
 @property (nonatomic, strong) NSArray *dataDisplay;
 @property (nonatomic, assign) ABAddressBookRef addressBook;
 @property (nonatomic, strong) NSArray *filteredContacts;
-
-
+@property (nonatomic, strong) UITapGestureRecognizer *tapGesture;
+@property (nonatomic, strong) SMCalloutView *inviteInstructionView;
 @end
 
-NSString *kPlaceholderChooseFriends;
+static NSString const *kPlaceholderChooseFriends;
+static NSString const *kWAAddressBookViewController_CoachMarks = @"kWAAddressBookViewController_CoachMarks";
 
 @implementation WAAddressBookPickerViewController
 
@@ -35,6 +36,28 @@ NSString *kPlaceholderChooseFriends;
 {
   [super viewDidLoad];
   
+  BOOL coachmarkShown = [[NSUserDefaults standardUserDefaults] boolForKey:kWAAddressBookViewController_CoachMarks];
+  if (!coachmarkShown) {
+    __weak WAAddressBookPickerViewController *wSelf = self;
+    if (!self.inviteInstructionView) {
+      self.inviteInstructionView = [SMCalloutView new];
+      self.inviteInstructionView.title = NSLocalizedString(@"INSTRUCTION_IN_ADDRESS_BOOK_PICKER", @"The instruction show to tap contacts then share photos");
+      [self.inviteInstructionView presentCalloutFromRect:CGRectMake(self.view.frame.size.width/2, self.view.frame.size.height-44, 1, 1) inView:self.view constrainedToView:self.view permittedArrowDirections:SMCalloutArrowDirectionDown animated:YES];
+      self.tapGesture = [[UITapGestureRecognizer alloc] initWithHandler:^(UIGestureRecognizer *sender, UIGestureRecognizerState state, CGPoint location) {
+        if (wSelf.inviteInstructionView) {
+          [wSelf.inviteInstructionView dismissCalloutAnimated:YES];
+          wSelf.inviteInstructionView = nil;
+        }
+        [wSelf.view removeGestureRecognizer:wSelf.tapGesture];
+        wSelf.tapGesture = nil;
+      }];
+      [self.view addGestureRecognizer:self.tapGesture];
+    }
+    
+    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:kWAAddressBookViewController_CoachMarks];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+  }
+
   [self.tableView setBackgroundColor:[UIColor colorWithRed:0.168 green:0.168 blue:0.168 alpha:1]];
   kPlaceholderChooseFriends = NSLocalizedString(@"PLACEHOLER_CHOSEN_FRIENDS_ADDRESS_BOOK_PICKER", @"PLACEHOLER_CHOSEN_FRIENDS_ADDRESS_BOOK_PICKER");
   [self.textField setPlaceholder:kPlaceholderChooseFriends];
@@ -80,6 +103,11 @@ NSString *kPlaceholderChooseFriends;
   
 }
 
+- (void) dealloc {
+  if (self.tapGesture)
+    [self.view removeGestureRecognizer:self.tapGesture];
+}
+
 - (BOOL) shouldAutorotate {
   return YES;
 }
@@ -116,6 +144,16 @@ NSString *kPlaceholderChooseFriends;
 }
 
 #pragma mark - text view delegate
+
+- (void)textFieldDidBeginEditing:(UITextField *)textField
+{
+  if (self.inviteInstructionView) {
+    [self.inviteInstructionView dismissCalloutAnimated:YES];
+    self.inviteInstructionView = nil;
+    [self.view removeGestureRecognizer:self.tapGesture];
+    self.tapGesture = nil;
+  }
+}
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
 {
@@ -491,6 +529,13 @@ NSString *kPlaceholderChooseFriends;
 {
   [tableView deselectRowAtIndexPath:indexPath animated:YES];
 
+  if (self.inviteInstructionView) {
+    [self.inviteInstructionView dismissCalloutAnimated:YES];
+    self.inviteInstructionView = nil;
+    [self.view removeGestureRecognizer:self.tapGesture];
+    self.tapGesture = nil;
+  }
+  
   if ([self.textField isFirstResponder]) {
     [self.textField resignFirstResponder];
   }
