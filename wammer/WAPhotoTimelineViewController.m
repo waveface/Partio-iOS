@@ -181,7 +181,7 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks = @"kWAPhotoTi
   if (!self.representingArticle) {
     UIBarButtonItem *flexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
 
-    UIBarButtonItem *nextItem = WAPartioToolbarNextButton(NSLocalizedString(@"NEXT_ACTION", @"action next"), ^{
+    UIBarButtonItem *nextItem = WAPartioToolbarNextButton(NSLocalizedString(@"PICKCONTACTS_ACTION", @"action pick contacts"), ^{
       [wSelf actionButtonClicked:nil];
     });
     
@@ -219,8 +219,9 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks = @"kWAPhotoTi
       photoPicker.onCancelHandler = ^{
         [wpp dismissViewControllerAnimated:YES completion:nil];
       };
+      photoPicker.actionButtonLabelText = NSLocalizedString(@"ACTION_ADD_PHOTOS", @"Add photos");
       
-      // done
+      // doneb
       photoPicker.onNextHandler = ^(NSArray *selectedAssets) {
         [wpp dismissViewControllerAnimated:YES completion:nil];
         

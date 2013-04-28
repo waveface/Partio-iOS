@@ -47,7 +47,6 @@
 						<string key="NSFrame">{{0, 39}, {320, 509}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<object class="NSColor" key="IBUIBackgroundColor">
 							<int key="NSColorSpace">1</int>
@@ -64,7 +63,7 @@
 						<object class="IBUICollectionViewFlowLayout" key="IBUICollectionViewLayout" id="52414026">
 							<reference key="IBUICollectionView" ref="136345448"/>
 							<string key="IBUIItemSize">{92, 92}</string>
-							<string key="IBUIHeaderReferenceSize">{320, 28}</string>
+							<string key="IBUIHeaderReferenceSize">{320, 44}</string>
 							<float key="IBUIMinimumLineSpacing">10</float>
 							<float key="IBUIMinimumInteritemSpacing">10</float>
 							<double key="IBUISectionInset.top">10</double>
@@ -460,7 +459,7 @@
 					<string key="superclassName">UIViewController</string>
 					<dictionary class="NSMutableDictionary" key="outlets">
 						<string key="collectionView">UICollectionView</string>
-						<string key="navigationBar">UINavigationBar</string>
+						<string key="navigationBar">WAPartioNavigationBar</string>
 					</dictionary>
 					<dictionary class="NSMutableDictionary" key="toOneOutletInfosByName">
 						<object class="IBToOneOutletInfo" key="collectionView">
@@ -469,7 +468,7 @@
 						</object>
 						<object class="IBToOneOutletInfo" key="navigationBar">
 							<string key="name">navigationBar</string>
-							<string key="candidateClassName">UINavigationBar</string>
+							<string key="candidateClassName">WAPartioNavigationBar</string>
 						</object>
 					</dictionary>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">

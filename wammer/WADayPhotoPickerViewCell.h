@@ -12,4 +12,7 @@
 
 @property (nonatomic, weak) IBOutlet UIImageView *imageView;
 @property (nonatomic, weak) IBOutlet UIImageView *checkMarkView;
+
+@property (nonatomic, strong) NSOperation *imageLoadingOperation;
+
 @end

@@ -121,7 +121,6 @@
 						<string key="NSFrame">{{108, 475}, {105, 93}}</string>
 						<reference key="NSSuperview" ref="900043650"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIOpaque">NO</bool>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
@@ -192,7 +191,15 @@
 						<reference key="source" ref="372490531"/>
 						<reference key="destination" ref="287835357"/>
 					</object>
-					<int key="connectionID">65</int>
+					<int key="connectionID">87</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">creationButton</string>
+						<reference key="source" ref="372490531"/>
+						<reference key="destination" ref="224693422"/>
+					</object>
+					<int key="connectionID">88</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchOutletConnection" key="connection">
@@ -251,7 +258,6 @@
 						<int key="objectID">14</int>
 						<reference key="object" ref="900043650"/>
 						<array class="NSMutableArray" key="children">
-							<reference ref="287835357"/>
 							<object class="IBNSLayoutConstraint" id="1023540803">
 								<reference key="firstItem" ref="224693422"/>
 								<int key="firstAttribute">4</int>
@@ -430,6 +436,7 @@
 							</object>
 							<reference ref="595396647"/>
 							<reference ref="224693422"/>
+							<reference ref="287835357"/>
 							<reference ref="612846857"/>
 						</array>
 						<reference key="parent" ref="0"/>
@@ -651,7 +658,7 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">83</int>
+			<int key="maxID">88</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
