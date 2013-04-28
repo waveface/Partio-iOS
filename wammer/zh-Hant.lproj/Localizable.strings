@@ -416,6 +416,9 @@
 /* INPUT_RECEIVER_EMAIL */
 "INPUT_RECEIVER_EMAIL" = "輸入電子郵件信箱";
 
+/* The instruction show to tap contacts then share photos */
+"INSTRUCTION_IN_ADDRESS_BOOK_PICKER" = "點選朋友邀請他們一起分享照片";
+
 /* Instruction shown above the create button in the event list view. */
 "INSTRUCTION_IN_EVENTLIST_CREATE_BUTTON" = "來開始分享照片吧！";
 
@@ -435,7 +438,7 @@
 "LABEL_AUTO_IMPORT_VALUE_ON" = "開啟";
 
 /* LABEL_CONTACTS_FRIENDS */
-"LABEL_CONTACTS_FRIENDS" = "LABEL_CONTACTS_FRIENDS";
+"LABEL_CONTACTS_FRIENDS" = "聯絡資訊";
 
 /* LABEL_INVITED_BUTTON */
 "LABEL_INVITED_BUTTON" = "已邀請";
@@ -460,6 +463,12 @@
 
 /* Message of dialog to input email */
 "MESSAGE_INPUT_EMAIL" = "請輸入您朋友的電子信箱，讓他與您一起共享生活中寶貴的回憶。";
+
+/* MESSAGE_NO_EMAIL_CONTACT */
+"MESSAGE_NO_EMAIL_CONTACT" = "哎呀，這個聯絡人沒有電子郵件信箱，請輸入他的電子郵件信箱來邀請他和您一起來共享生活中寶貴的回憶。";
+
+/* MESSAGE_REQUEST_CONTACT_PERMISSION */
+"MESSAGE_REQUEST_CONTACT_PERMISSION" = "請到設定-隱私-聯絡資訊給予 Grupin 權限";
 
 /* No comment provided by engineer. */
 "MINUTE_PLURAL" = "%d分鐘";
@@ -545,6 +554,9 @@
 
 /* action pick contacts */
 "PICKCONTACTS_ACTION" = "邀請朋友";
+
+/* PLACEHOLER_CHOSEN_FRIENDS_ADDRESS_BOOK_PICKER */
+"PLACEHOLER_CHOSEN_FRIENDS_ADDRESS_BOOK_PICKER" = "輸入姓名或電子郵件信箱";
 
 /* PLACEHOLER_CHOSEN_FRIENDS_ADDRESSBOOKPICKER */
 "PLACEHOLER_CHOSEN_FRIENDS_ADDRESSBOOKPICKER" = "PLACEHOLER_CHOSEN_FRIENDS_ADDRESSBOOKPICKER";
@@ -645,7 +657,7 @@
 "SUBJECT_MAIL_LINK" = "立刻下載 aostream Windows版!";
 
 /* TITLE_ADDRESS_BOOK_PICKER */
-"TITLE_ADDRESS_BOOK_PICKER" = "TITLE_ADDRESS_BOOK_PICKER";
+"TITLE_ADDRESS_BOOK_PICKER" = "邀請朋友";
 
 /* Title of Canlendar */
 "TITLE_CALENDAR" = "月曆";
@@ -664,6 +676,9 @@
 
 /* TITLE_INPUT_EMAIL_ALERT */
 "TITLE_INPUT_EMAIL_ALERT" = "%@的Email是？";
+
+/* TITLE_INVITATION_NUMBERS */
+"TITLE_INVITATION_NUMBERS" = "選了%d個朋友";
 
 /* TITLE_INVITE_CONTACTS */
 "TITLE_INVITE_CONTACTS" = "邀請朋友";
