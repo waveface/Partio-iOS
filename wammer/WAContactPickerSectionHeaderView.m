@@ -29,7 +29,7 @@
       [topShadow setShadowOffset:CGSizeMake(0.f, 0 - shadowHeight)];
       [topShadow setShadowColor:[[UIColor blackColor] CGColor]];
       [topShadow setShadowOpacity:0.5f];
-      [self.layer insertSublayer:topShadow above:0];
+      [self.layer addSublayer:topShadow];
       
       [self.layer setMasksToBounds:NO];
       [self.layer setShadowRadius:shadowHeight];

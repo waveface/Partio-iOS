@@ -416,6 +416,9 @@
 /* INPUT_RECEIVER_EMAIL */
 "INPUT_RECEIVER_EMAIL" = "Input Email";
 
+/* The instruction show to tap contacts then share photos */
+"INSTRUCTION_IN_ADDRESS_BOOK_PICKER" = "Tap contacts then share photos with them";
+
 /* Instruction shown above the create button in the event list view. */
 "INSTRUCTION_IN_EVENTLIST_CREATE_BUTTON" = "Start here to share";
 
@@ -435,7 +438,7 @@
 "LABEL_AUTO_IMPORT_VALUE_ON" = "On";
 
 /* LABEL_CONTACTS_FRIENDS */
-"LABEL_CONTACTS_FRIENDS" = "LABEL_CONTACTS_FRIENDS";
+"LABEL_CONTACTS_FRIENDS" = "Contacts";
 
 /* LABEL_INVITED_BUTTON */
 "LABEL_INVITED_BUTTON" = "Invited";
@@ -460,6 +463,12 @@
 
 /* Message of dialog to input email */
 "MESSAGE_INPUT_EMAIL" = "Please input your friend's email to invite him/her to share your precious moments with you.";
+
+/* MESSAGE_NO_EMAIL_CONTACT */
+"MESSAGE_NO_EMAIL_CONTACT" = "Oops! This contact has no emails. Please input their email to invite them to share precious memories with you.";
+
+/* MESSAGE_REQUEST_CONTACT_PERMISSION */
+"MESSAGE_REQUEST_CONTACT_PERMISSION" = "You may grant Grupin to access contact in Settings-Privacy-Contact.";
 
 /* No comment provided by engineer. */
 "MINUTE_PLURAL" = "%d minutes";
@@ -545,6 +554,9 @@
 
 /* action pick contacts */
 "PICKCONTACTS_ACTION" = "Invite";
+
+/* PLACEHOLER_CHOSEN_FRIENDS_ADDRESS_BOOK_PICKER */
+"PLACEHOLER_CHOSEN_FRIENDS_ADDRESS_BOOK_PICKER" = "Input Name or Email";
 
 /* PLACEHOLER_CHOSEN_FRIENDS_ADDRESSBOOKPICKER */
 "PLACEHOLER_CHOSEN_FRIENDS_ADDRESSBOOKPICKER" = "PLACEHOLER_CHOSEN_FRIENDS_ADDRESSBOOKPICKER";
@@ -664,6 +676,9 @@
 
 /* TITLE_INPUT_EMAIL_ALERT */
 "TITLE_INPUT_EMAIL_ALERT" = "What's %@'s email?";
+
+/* TITLE_INVITATION_NUMBERS */
+"TITLE_INVITATION_NUMBERS" = "%d Selected";
 
 /* TITLE_INVITE_CONTACTS */
 "TITLE_INVITE_CONTACTS" = "Invite Friends";

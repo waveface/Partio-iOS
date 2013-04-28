@@ -10,7 +10,6 @@
 
 @interface WAAddressBookPickerViewController : UIViewController
 
-@property (nonatomic, strong) NSMutableArray *members;
 @property (nonatomic, copy) void (^onNextHandler)(NSArray *selectedContacts);
 @property (nonatomic, copy) void (^onDismissHandler)();
 
