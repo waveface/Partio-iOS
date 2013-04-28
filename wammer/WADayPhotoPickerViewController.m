@@ -13,7 +13,9 @@
 #import "WAOverlayBezel.h"
 #import "WAPartioNavigationBar.h"
 #import "NSDate+WAAdditions.h"
+#import "WADataStore+FetchingConveniences.h"
 #import "WAPhotoTimelineViewController.h"
+#import "WANavigationController.h"
 #import <BlocksKit/BlocksKit.h>
 
 @interface WADayPhotoPickerViewController () <UICollectionViewDelegateFlowLayout, UICollectionViewDataSource>
@@ -31,6 +33,15 @@
 
 @implementation WADayPhotoPickerViewController
 
++ (id) viewControllerWithNavigationControllerWrapped {
+  
+  WADayPhotoPickerViewController *vc = [[WADayPhotoPickerViewController alloc] initWithSelectedAssets:nil];
+  WANavigationController *navigationController = [[WANavigationController alloc] initWithRootViewController:vc];
+  navigationController.navigationBarHidden = YES;
+  navigationController.toolbarHidden = YES;
+  return navigationController;
+  
+}
 
 - (id) initWithSelectedAssets:(NSArray *)assets {
   self = [super initWithNibName:nil bundle:nil];
@@ -60,7 +71,11 @@
   self.imageDisplayQueue.maxConcurrentOperationCount = 1;
   
   __weak WADayPhotoPickerViewController *wSelf = self;
-  UIBarButtonItem *buttonItem = WAPartioNaviBarButton(NSLocalizedString(@"NEXT_ACTION", @"Next"), [UIImage imageNamed:@"Btn"], nil, ^{
+  
+  if (!self.actionButtonLabelText)
+    self.actionButtonLabelText = NSLocalizedString(@"PREVIEW_ACTION", @"Preview");
+
+  UIBarButtonItem *buttonItem = WAPartioNaviBarButton(self.actionButtonLabelText, [UIImage imageNamed:@"Btn"], nil, ^{
     if (wSelf.onNextHandler)
       wSelf.onNextHandler(wSelf.selectedAssets);
   });
@@ -106,7 +121,7 @@
     if (wSelf.selectedAssets.count) {
       [wSelf.collectionView reloadData];
 
-      [wSelf.collectionView scrollToItemAtIndexPath:[wSelf indexPathForAsset:wSelf.selectedAssets[0]] atScrollPosition:UICollectionViewScrollPositionTop animated:YES];
+      [wSelf.collectionView scrollToItemAtIndexPath:[wSelf indexPathForAsset:wSelf.selectedAssets[0]] atScrollPosition:UICollectionViewScrollPositionTop animated:NO];
     } else if (self.selectedRangeFromDate && self.selectedRangeToDate) {
       
       for (ALAsset *asset in self.allTimeSortedAssets) {
@@ -127,7 +142,7 @@
         NSIndexPath *indexPath = [wSelf indexPathForAsset:self.selectedAssets[0]];
         dispatch_async(dispatch_get_main_queue(), ^{
           [wSelf updateNavigationBarTitle];
-          [wSelf.collectionView scrollToItemAtIndexPath:indexPath atScrollPosition:UICollectionViewScrollPositionTop animated:YES];
+          [wSelf.collectionView scrollToItemAtIndexPath:indexPath atScrollPosition:UICollectionViewScrollPositionTop animated:NO];
         });
       }
     } else {
@@ -256,7 +271,7 @@
     index ++;
   }
   
-  [self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:index] atScrollPosition:UICollectionViewScrollPositionCenteredVertically animated:YES];
+  [self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:index] atScrollPosition:UICollectionViewScrollPositionCenteredVertically animated:NO];
 }
 
 
@@ -274,8 +289,12 @@
   
   __weak WADayPhotoPickerViewController *wSelf = self;
   WADayPhotoPickerViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"WADayPhotoPickerViewCell" forIndexPath:indexPath];
+
+  if (cell.imageLoadingOperation) {
+    [cell.imageLoadingOperation cancel];
+  }
   
-  NSBlockOperation *op = [NSBlockOperation blockOperationWithBlock:^{
+  cell.imageLoadingOperation = [NSBlockOperation blockOperationWithBlock:^{
     
     UIImage *image = [UIImage imageWithCGImage:[(ALAsset*)wSelf.photoGroups[indexPath.section][indexPath.row] thumbnail]];
     
@@ -288,10 +307,21 @@
 
     }];
   }];
-  [self.imageDisplayQueue addOperation:op];
+  [self.imageDisplayQueue addOperation:cell.imageLoadingOperation];
   
   
   return cell;
+}
+
+- (NSDictionary *)gpsMetaWithinPhotos:(NSArray*)assets {
+
+  for (ALAsset *asset in assets) {
+    NSDictionary *imageMeta = [[asset defaultRepresentation] metadata];
+    if (imageMeta && imageMeta[@"{GPS}"]) {
+      return imageMeta[@"{GPS}"];
+    }
+  }
+  return nil;
 }
 
 - (UICollectionReusableView*)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath {
@@ -308,6 +338,49 @@
     formatter.timeStyle = NSDateFormatterNoStyle;
     header.titleLabel.text = [formatter stringFromDate:date];
 
+    header.locationLabel.text = @"";
+    
+    NSDate *beginDate = [(ALAsset*)[self.photoGroups[indexPath.section] lastObject] valueForProperty:ALAssetPropertyDate];
+    NSDate *endDate = [(ALAsset*)self.photoGroups[indexPath.section][0] valueForProperty:ALAssetPropertyDate];
+    NSFetchRequest * fetchRequest = [[WADataStore defaultStore] newFetchReuqestForCheckinFrom:beginDate to:endDate];
+    
+    NSError *error = nil;
+    NSArray *checkins = [[[WADataStore defaultStore] disposableMOC] executeFetchRequest:fetchRequest error:&error];
+    if (error) {
+      NSLog(@"error to query checkin db: %@", error);
+    } else if (checkins.count) {
+      header.locationLabel.text = [[checkins valueForKeyPath:@"name"] componentsJoinedByString:@","];
+    }
+
+    NSDictionary *gps = [self gpsMetaWithinPhotos:self.photoGroups[indexPath.section]];
+    if (gps) {
+      CLLocationCoordinate2D coordinate;
+      coordinate.latitude = [(NSNumber*)gps[@"Latitude"] doubleValue];
+      coordinate.longitude = [(NSNumber*)gps[@"Longitude"] doubleValue];
+
+      if (header.geoLocation)
+        [header.geoLocation cancel];
+      
+      header.geoLocation = [[WAGeoLocation alloc] init];
+      [header.geoLocation identifyLocation:coordinate
+                              onComplete:^(NSArray *results) {
+                                
+                                dispatch_async(dispatch_get_main_queue(), ^{
+                                  
+                                  if (header.locationLabel.text.length)
+                                    header.locationLabel.text = [NSString stringWithFormat:@"%@,%@", header.locationLabel.text, [results componentsJoinedByString:@","]];
+                                  else
+                                    header.locationLabel.text = [results componentsJoinedByString:@","];
+                                  
+                                });
+                                
+                              } onError:^(NSError *error) {
+                                
+                                NSLog(@"geolocation error: %@", error);
+                                
+                              }];
+
+    }
     return header;
   }
   

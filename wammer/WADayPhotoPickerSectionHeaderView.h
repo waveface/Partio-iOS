@@ -7,9 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "WAGeoLocation.h"
 
 @interface WADayPhotoPickerSectionHeaderView : UICollectionReusableView
 
 @property (nonatomic, weak) IBOutlet UILabel *titleLabel;
+@property (nonatomic, weak) IBOutlet UILabel *locationLabel;
+@property (nonatomic, strong) WAGeoLocation *geoLocation;
 
 @end

@@ -19,6 +19,9 @@
 /* Adding to collection action in the event view */
 "ACTION_ADD_COLLECTION" = "Add to";
 
+/* Add photos */
+"ACTION_ADD_PHOTOS" = "Add Selected";
+
 /* Action title for cancelling stuff
    ACTION_CANCEL
    Cancel
@@ -476,10 +479,6 @@
 /* Navigation bar title for web preview while loading */
 "NAVI_TITLE_WEB_LOADING" = "Loading..";
 
-/* action next
-   Next */
-"NEXT_ACTION" = "Next";
-
 /* Nickname placeholder in signup page */
 "NICKNAME_PLACEHOLDER" = "Johnny Appleseed";
 
@@ -530,7 +529,7 @@
 "PHOTO_UPLOAD_STATUS_BAR_COMPLETE" = "Sync completed";
 
 /* String on customized status bar */
-"PHOTO_UPLOAD_STATUS_BAR_FAIL" = "Sync failed";
+"PHOTO_UPLOAD_STATUS_BAR_FAIL" = "Upload failed";
 
 /* String on customized status bar */
 "PHOTO_UPLOAD_STATUS_BAR_IMPORTING" = "Scanning %d/%d";
@@ -539,10 +538,13 @@
 "PHOTO_UPLOAD_STATUS_BAR_SYNCING" = "Syncing";
 
 /* String on customized status bar */
-"PHOTO_UPLOAD_STATUS_BAR_UPLOADING" = "Syncing %d photos";
+"PHOTO_UPLOAD_STATUS_BAR_UPLOADING" = "Uploading %d photos";
 
 /* in day view */
 "PHOTOS_TITLE" = "PHOTOS";
+
+/* action pick contacts */
+"PICKCONTACTS_ACTION" = "Invite";
 
 /* PLACEHOLER_CHOSEN_FRIENDS_ADDRESSBOOKPICKER */
 "PLACEHOLER_CHOSEN_FRIENDS_ADDRESSBOOKPICKER" = "PLACEHOLER_CHOSEN_FRIENDS_ADDRESSBOOKPICKER";
@@ -561,6 +563,9 @@
 
 /* Premium plan details in plans page */
 "PREMIUM_PLAN_DESCRIPTION" = "250GB cloud storage & multi-PC storage management";
+
+/* Preview */
+"PREVIEW_ACTION" = "Preview";
 
 /* REACHABILITY_STATE_AVAILABLE */
 "REACHABILITY_STATE_AVAILABLE" = "Available";

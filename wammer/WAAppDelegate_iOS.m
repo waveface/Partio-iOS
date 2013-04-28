@@ -237,6 +237,8 @@ extern CFAbsoluteTime StartTime;
     
   }
   
+  application.applicationIconBadgeNumber = 0;// dismiss the badge number
+  
   [[GAI sharedInstance].defaultTracker trackEventWithCategory:@"Application" withAction:@"Launched" withLabel:nil withValue:@0];
   
   [[WARemoteInterface sharedInterface] enableAutomaticRemoteUpdatesTimer];
@@ -308,6 +310,7 @@ extern CFAbsoluteTime StartTime;
 
 - (void) application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
   
+  application.applicationIconBadgeNumber = 0;
   
 }
 
