@@ -25,6 +25,7 @@
 @property (nonatomic, strong) NSArray *filteredContacts;
 @property (nonatomic, strong) UITapGestureRecognizer *tapGesture;
 @property (nonatomic, strong) SMCalloutView *inviteInstructionView;
+
 @end
 
 static NSString const *kPlaceholderChooseFriends;
@@ -350,6 +351,7 @@ static NSString const *kWAAddressBookViewController_CoachMarks = @"kWAAddressBoo
     CFMutableArrayRef peopleMutable = CFArrayCreateMutableCopy(kCFAllocatorDefault,
                                                                CFArrayGetCount(people),
                                                                people);
+        
     CFArraySortValues(peopleMutable,
                       CFRangeMake(0, CFArrayGetCount(people)),
                       (CFComparatorFunction) ABPersonComparePeopleByName,
@@ -361,44 +363,163 @@ static NSString const *kWAAddressBookViewController_CoachMarks = @"kWAAddressBoo
     
   }
   
+  self.contacts = [self sectionObjects:self.contacts collationStringSelector:@selector(self)];
   
   return self.contacts;
 }
 
-//TODO: table view index
-//-(NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView
-//{
-//
-//}
-//
-//- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
-//{
-//
-//}
-//
-//- (NSInteger)tableView:(UITableView *)tableView sectionForSectionIndexTitle:(NSString *)title atIndex:(NSInteger)index
-//{
-//
-//}
+- (NSMutableArray *)sectionObjects:(NSArray *)objects collationStringSelector:(SEL)selector
+{
+  UILocalizedIndexedCollation *collation = [UILocalizedIndexedCollation currentCollation];
+  
+  NSInteger sectionCount = [[collation sectionTitles] count];
+  NSMutableArray *unsortedSections = [NSMutableArray arrayWithCapacity:sectionCount];
+  for (NSInteger i = 0; i < sectionCount; i++) {
+    [unsortedSections addObject:[NSMutableArray array]];
+  }
+  
+  for (id object in objects) {
+    ABRecordRef person = (__bridge ABRecordRef)(object);
+    NSString *name = (__bridge NSString *)ABRecordCopyCompositeName(person);
+    NSArray *emails = [self EmailsOfPerson:person];
+    
+    NSInteger index;
+    if (!name || [name isEqualToString:@""]) {
+      if ([emails count]) {
+        index = [collation sectionForObject:emails[0] collationStringSelector:selector];
+        [unsortedSections[index] addObject:object];
+      }      
+    } else {
+      index = [collation sectionForObject:name collationStringSelector:selector];
+      [unsortedSections[index] addObject:object];
+    }
+  }
+
+  NSMutableArray *sortedSections = [NSMutableArray arrayWithCapacity:sectionCount];
+  for (NSMutableArray *section in unsortedSections) {
+    NSMutableArray *sectionNames = [NSMutableArray array];
+    for (id object in section) {
+      ABRecordRef person = (__bridge ABRecordRef)object;
+      NSString *name = (__bridge NSString *)ABRecordCopyCompositeName(person);
+      NSArray *emails = [self EmailsOfPerson:person];
+      
+      if (!name || [name isEqualToString:@""]) {
+        if ([emails count]) {
+          [sectionNames addObject:emails[0]];
+        }
+      } else {
+        [sectionNames addObject:name];
+      }
+    }
+    
+    NSArray *sortedNames = [collation sortedArrayFromArray:sectionNames collationStringSelector:selector];
+    NSMutableArray *sortedSection = [NSMutableArray arrayWithCapacity:[sortedNames count]];
+    for (NSInteger i = 0; i < [sortedNames count]; i++) {
+      NSInteger index = [self indexOfPerson:sortedNames[i] InArray:section];
+      if (index > 0) {
+        [sortedSection addObject:section[index]];
+      }    
+    }
+    
+    [sortedSections addObject:sortedSection];
+  }
+  
+  return sortedSections;
+}
+
+- (NSArray *)EmailsOfPerson:(ABRecordRef)person
+{
+  NSMutableArray *emails = [[NSMutableArray alloc] init];
+  ABRecordID personID = ABRecordGetRecordID(person);
+  
+  if (personID < 0) {
+    
+  } else {
+    ABMultiValueRef emailRef = ABRecordCopyValue(ABAddressBookGetPersonWithRecordID(self.addressBook, personID), kABPersonEmailProperty);
+    
+    if (ABMultiValueGetCount(emailRef)) {
+      CFArrayRef allEmail = ABMultiValueCopyArrayOfAllValues(emailRef);
+      if (CFArrayGetCount(allEmail)) {
+        emails = [NSMutableArray arrayWithArray:(__bridge NSMutableArray*)allEmail];
+      }
+      
+      CFRelease(allEmail);
+      CFRelease(emailRef);
+    }
+  }
+  
+  return emails;
+}
+
+- (NSInteger)indexOfPerson:(NSString *)targetName InArray:(NSArray *)array
+{
+  for (NSInteger i = 0; i < [array count]; i++) {
+    ABRecordRef person = (__bridge ABRecordRef)array[i];
+    NSString *name = (__bridge NSString *)ABRecordCopyCompositeName(person);
+    NSArray *emails = [self EmailsOfPerson:person];
+    
+    if (!name || [name isEqualToString:@""]) {
+      if ([emails count]) {
+        if ([emails[0] isEqualToString:targetName]) {
+          return i;
+        }
+      }
+    } else {
+      if ([name isEqualToString:targetName]) {
+        return i;
+      }
+    }   
+  }
+  
+  return -1;
+}
+
+- (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView
+{
+  NSMutableArray *titles = [[[UILocalizedIndexedCollation currentCollation] sectionTitles] mutableCopy];
+  for (NSInteger i = 0; i < [titles count]; i++) {
+    NSArray *words = [titles[i] componentsSeparatedByString:@" "];
+    titles[i] = words[0];
+  }
+  return titles;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView sectionForSectionIndexTitle:(NSString *)title atIndex:(NSInteger)index
+{
+  return [[UILocalizedIndexedCollation currentCollation] sectionForSectionIndexTitleAtIndex:index];
+  
+}
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+  return [[[UILocalizedIndexedCollation currentCollation] sectionTitles] count];
+}
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
   // Return the number of rows in the section.
-  return [self.dataDisplay count];
+  return [self.dataDisplay[section] count];
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
   WAContactPickerSectionHeaderView *headerView = [[WAContactPickerSectionHeaderView alloc] initWithFrame:CGRectMake(0.f, 2.f, 320.f, 22.f)];
   headerView.backgroundColor = tableView.backgroundColor;
-  headerView.title.text = NSLocalizedString(@"LABEL_CONTACTS_FRIENDS", @"LABEL_CONTACTS_FRIENDS");
+  //headerView.title.text = NSLocalizedString(@"LABEL_CONTACTS_FRIENDS", @"LABEL_CONTACTS_FRIENDS");
+  
+  headerView.title.text = [[[UILocalizedIndexedCollation currentCollation] sectionTitles] objectAtIndex:section];
   
   return headerView;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-  return 24.f;
+//  if ([self.dataDisplay[section] count]) {
+//    return 22.f;
+//  } else {
+//    return 0.f;
+//  }
+  return 22.f;
 }
 
 - (UIImage *)scaledImage:(UIImage *)image withSize:(CGSize)size
@@ -424,82 +545,63 @@ static NSString const *kWAAddressBookViewController_CoachMarks = @"kWAAddressBoo
   cell.textLabel.font = [UIFont fontWithName:@"OpenSans-Regular" size:20.f];
   cell.detailTextLabel.font = [UIFont fontWithName:@"OpenSans-Regular" size:12.f];
   
-  ABRecordRef person = (__bridge ABRecordRef)self.dataDisplay[indexPath.row]; // get address book record
+  ABRecordRef person;
+  NSArray *section = [self.dataDisplay objectAtIndex:indexPath.section];
+  if ([section count]) {
+    person = (__bridge ABRecordRef)section[indexPath.row]; // get address book record
   
-  static UIImage *defaultAvatar;
-  defaultAvatar = [UIImage imageNamed:@"Avatar"];
-  cell.imageView.image = defaultAvatar;
-  if (ABPersonHasImageData(person)) {
-    NSData *data = (__bridge NSData *)ABPersonCopyImageDataWithFormat(person, kABPersonImageFormatThumbnail);
-    if (data) {
-      cell.imageView.image = [self scaledImage:[[UIImage alloc] initWithData:data] withSize:defaultAvatar.size] ;
-      
-    }
-  }
-  cell.imageView.layer.cornerRadius = 3.f;
-  cell.imageView.clipsToBounds = YES;
-  
-  NSString *firstname = (__bridge_transfer NSString*)ABRecordCopyValue(person, kABPersonFirstNameProperty);
-  NSString *lastname = (__bridge_transfer NSString*)ABRecordCopyValue(person, kABPersonLastNameProperty);
-  NSString *name = @"";
-  
-  if (firstname && lastname) {
-    if (ABPersonGetCompositeNameFormat() == kABPersonCompositeNameFormatFirstNameFirst) {
-      name = [NSString stringWithFormat:@"%@ %@", firstname, lastname];
-      
-    } else {
-      name = [NSString stringWithFormat:@"%@ %@", lastname, firstname];
-      
-    }
-  } else if (firstname && !lastname) {
-    name = firstname;
-    
-  } else if (!firstname && lastname) {
-    name = lastname;
-    
-  }
-  
-  cell.textLabel.text = name;
-  
-  cell.detailTextLabel.text = @"";
-  NSMutableArray *emails = [[NSMutableArray alloc] init];
-  ABRecordID personID = ABRecordGetRecordID(person);
-  
-  if (personID < 0) {
-    emails = [NSMutableArray arrayWithObject:name];
-  
-  } else {
-    ABMultiValueRef emailRef = ABRecordCopyValue(ABAddressBookGetPersonWithRecordID(self.addressBook, personID), kABPersonEmailProperty);
-    
-    if (ABMultiValueGetCount(emailRef)) {
-      CFArrayRef allEmail = ABMultiValueCopyArrayOfAllValues(emailRef);
-      if (CFArrayGetCount(allEmail)) {
-        emails = [NSMutableArray arrayWithArray:(__bridge NSMutableArray*)allEmail];
-        cell.detailTextLabel.text = emails[0];
-        
-        if ([name isEqualToString:@""]) {
-          cell.textLabel.text = emails[0];
-          cell.detailTextLabel.text = @"";
-        }
+    static UIImage *defaultAvatar;
+    defaultAvatar = [UIImage imageNamed:@"Avatar"];
+    cell.imageView.image = defaultAvatar;
+    if (ABPersonHasImageData(person)) {
+      NSData *data = (__bridge NSData *)ABPersonCopyImageDataWithFormat(person, kABPersonImageFormatThumbnail);
+      if (data) {
+        cell.imageView.image = [self scaledImage:[[UIImage alloc] initWithData:data] withSize:defaultAvatar.size] ;
         
       }
+    }
+    cell.imageView.layer.cornerRadius = 3.f;
+    cell.imageView.clipsToBounds = YES;
+    
+    NSString *firstname = (__bridge_transfer NSString*)ABRecordCopyValue(person, kABPersonFirstNameProperty);
+    NSString *lastname = (__bridge_transfer NSString*)ABRecordCopyValue(person, kABPersonLastNameProperty);
+    NSString *name = @"";
+    
+    if (firstname && lastname) {
+      if (ABPersonGetCompositeNameFormat() == kABPersonCompositeNameFormatFirstNameFirst) {
+        name = [NSString stringWithFormat:@"%@ %@", firstname, lastname];
+        
+      } else {
+        name = [NSString stringWithFormat:@"%@ %@", lastname, firstname];
+        
+      }
+    } else if (firstname && !lastname) {
+      name = firstname;
       
-      CFRelease(allEmail);
-      CFRelease(emailRef);
+    } else if (!firstname && lastname) {
+      name = lastname;
       
     }
-  }
-  
-  static UIImage *checkmark;
-  checkmark = [UIImage imageNamed:@"Checked"];
-  cell.accessoryType = UITableViewCellAccessoryCheckmark;
-  cell.accessoryView = [[UIImageView alloc] initWithImage:checkmark];
-  
-  NSDictionary *aPerson = @{@"name": name, @"email": emails};
-  if ([self.members containsObject:aPerson]) {
-    cell.accessoryView.hidden = NO;
-  } else {
-    cell.accessoryView.hidden = YES;
+    
+    cell.textLabel.text = name;
+    
+    cell.detailTextLabel.text = @"";
+    NSArray *emails = [self EmailsOfPerson:person];
+    if ([emails count]) {
+      cell.detailTextLabel.text = emails[0];
+    }
+    
+    static UIImage *checkmark;
+    checkmark = [UIImage imageNamed:@"Checked"];
+    cell.accessoryType = UITableViewCellAccessoryCheckmark;
+    cell.accessoryView = [[UIImageView alloc] initWithImage:checkmark];
+    
+    NSDictionary *aPerson = @{@"name": name, @"email": emails};
+    if ([self.members containsObject:aPerson]) {
+      cell.accessoryView.hidden = NO;
+    } else {
+      cell.accessoryView.hidden = YES;
+    }
   }
   
   return cell;
@@ -507,7 +609,11 @@ static NSString const *kWAAddressBookViewController_CoachMarks = @"kWAAddressBoo
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
-  return 44.f;
+  if (section != [tableView numberOfSections] - 1) {
+    return 3.f;
+  } else {
+    return 44.f;
+  }
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
@@ -544,30 +650,13 @@ static NSString const *kWAAddressBookViewController_CoachMarks = @"kWAAddressBoo
   UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
   NSString *name = cell.textLabel.text;
   
-  ABRecordRef person = (__bridge ABRecordRef)self.contacts[indexPath.row];
+  ABRecordRef person = (__bridge ABRecordRef)self.contacts[indexPath.section][indexPath.row];
   if ([self.filteredContacts count]) {
-    person = (__bridge ABRecordRef)self.filteredContacts[indexPath.row];
+    person = (__bridge ABRecordRef)self.filteredContacts[indexPath.section][indexPath.row];
     
   }
   
-  NSMutableArray *emails = [[NSMutableArray alloc] init];
-  ABRecordID personID = ABRecordGetRecordID(person);
-  
-  if (personID < 0) { // manual created record
-    emails = [NSMutableArray arrayWithObject:name];
-  
-  } else {
-    ABMultiValueRef emailRef = ABRecordCopyValue(ABAddressBookGetPersonWithRecordID(self.addressBook, personID), kABPersonEmailProperty);
-    
-    if (ABMultiValueGetCount(emailRef)) {
-      CFArrayRef allEmails = ABMultiValueCopyArrayOfAllValues(emailRef);
-      if (CFArrayGetCount(allEmails)) {
-        emails = [NSMutableArray arrayWithArray:(__bridge NSMutableArray*)allEmails];
-        
-      }
-    }
-  }
-  
+  NSArray *emails = [self EmailsOfPerson:person];
   NSDictionary *aPerson = @{@"name": name, @"email": emails};
   
   if (cell.accessoryView.hidden) {
