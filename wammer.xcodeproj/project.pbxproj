@@ -2171,6 +2171,8 @@
 				13CCDE6D168C3C9300962625 /* WAFetchManager+RemoteFileMetadataFetch.m */,
 				13A318CB168CBD0000017E68 /* WAFetchManager+RemoteChangeFetch.h */,
 				13A318CC168CBD0000017E68 /* WAFetchManager+RemoteChangeFetch.m */,
+				80C768E81710789D000F10A8 /* FBRequestConnection+WAAdditions.h */,
+				80C768E91710789D000F10A8 /* FBRequestConnection+WAAdditions.m */,
 				808E3DDA172B70AC002B2E3F /* WAFetchManager+FBCheckinFetch.h */,
 				808E3DDB172B70AC002B2E3F /* WAFetchManager+FBCheckinFetch.m */,
 			);
@@ -2680,8 +2682,6 @@
 			children = (
 				80090B45170E8BBF005AF6B8 /* WAGeoLocation.h */,
 				80090B46170E8BBF005AF6B8 /* WAGeoLocation.m */,
-				80C768E81710789D000F10A8 /* FBRequestConnection+WAAdditions.h */,
-				80C768E91710789D000F10A8 /* FBRequestConnection+WAAdditions.m */,
 				80B1138B170DD0D90087EBC4 /* WAPhotoHighlightsViewController.h */,
 				80B1138C170DD0D90087EBC4 /* WAPhotoHighlightsViewController.m */,
 				80C9F37F1719AA81003E7C6E /* WAPhotoHighlightsViewController.xib */,

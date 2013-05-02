@@ -10,12 +10,15 @@
 
 @implementation FBRequestConnection (WAAdditions)
 
-+ (FBRequestConnection*)startForUserCheckinsAfterId:(NSNumber*)checkinID completeHandler:(FBRequestHandler)completionBlock {
++ (FBRequestConnection*)startForUserCheckinsAfterId:(NSString*)checkinID completeHandler:(FBRequestHandler)completionBlock {
   
   NSString *checkinQueryName = @"checkinQuery";
   NSString *placeQueryName = @"placeQuery";
+  if (!checkinID) {
+    checkinID = @"0";
+  }
   NSDictionary *queries = @{
-                            checkinQueryName:@"SELECT checkin_id,coords,tagged_uids,page_id,message,timestamp FROM checkin WHERE author_uid = me()",
+                            checkinQueryName:[NSString stringWithFormat:@"SELECT checkin_id,coords,tagged_uids,page_id,message,timestamp FROM checkin WHERE author_uid = me() AND checkin_id > %@", checkinID],
                             placeQueryName:[NSString stringWithFormat:@"SELECT name,page_id from place WHERE page_id IN (SELECT page_id FROM #%@)", checkinQueryName]
                             };
   
