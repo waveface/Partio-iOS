@@ -5113,7 +5113,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 5AE49661BAA04638AA81DC49 /* Pods.xcconfig */;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Shih-Yun Shen (ZBB2QV4YJ7)";
 				COMPRESS_PNG_FILES = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -5166,7 +5166,7 @@
 					Social,
 				);
 				PRODUCT_NAME = Grupin;
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "476BFE3A-493E-4D29-82BE-0B13B62902D6";
 				SDKROOT = iphoneos;
 				STREAM_BUNDLE_ID_SUFFIX = .beta;
 				STREAM_FACEBOOK_ID = 356863037711668;
@@ -5654,7 +5654,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 5AE49661BAA04638AA81DC49 /* Pods.xcconfig */;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Shih-Yun Shen (ZBB2QV4YJ7)";
 				COMPRESS_PNG_FILES = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -5707,7 +5707,7 @@
 					Social,
 				);
 				PRODUCT_NAME = Grupin;
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "476BFE3A-493E-4D29-82BE-0B13B62902D6";
 				SDKROOT = iphoneos;
 				STREAM_BUNDLE_ID_SUFFIX = .develop;
 				STREAM_FACEBOOK_ID = 357087874306060;
@@ -5723,7 +5723,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 5AE49661BAA04638AA81DC49 /* Pods.xcconfig */;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Shih-Yun Shen (ZBB2QV4YJ7)";
 				COMPRESS_PNG_FILES = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -5776,7 +5776,7 @@
 					Social,
 				);
 				PRODUCT_NAME = Grupin;
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "476BFE3A-493E-4D29-82BE-0B13B62902D6";
 				SDKROOT = iphoneos;
 				STREAM_BUNDLE_ID_SUFFIX = "";
 				STREAM_FACEBOOK_ID = 234823683291756;

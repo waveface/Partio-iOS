@@ -61,6 +61,8 @@
                       cancelAction:cancelAction
                       otherActions:nil] show];
   */
+  self.experienceButton.enabled = NO;
+  self.signupButton.enabled = NO;
   WAPartioFirstUseViewController *firstUse = (WAPartioFirstUseViewController *)self.navigationController;
   if (firstUse.completionBlock) {
     firstUse.completionBlock();
@@ -71,6 +73,8 @@
   
   WAPartioFirstUseViewController *firstUse = (WAPartioFirstUseViewController*)self.navigationController;
   
+  self.experienceButton.enabled = NO;
+  self.signupButton.enabled = NO;
   WAOverlayBezel *busyBezel = [WAOverlayBezel bezelWithStyle:WAActivityIndicatorBezelStyle];
   [busyBezel showWithAnimation:WAOverlayBezelAnimationFade];
   
@@ -96,6 +100,8 @@
     }
   }
   
+  __weak WAPartioWelcomeViewController *wSelf = self;
+  
   [FBSession
    openActiveSessionWithReadPermissions:@[@"email", @"user_photos", @"user_videos", @"user_notes", @"user_status", @"user_likes", @"read_stream", @"friends_photos", @"friends_videos", @"friends_status", @"friends_notes", @"friends_likes"]
    allowLoginUI:YES
@@ -107,6 +113,9 @@
        dispatch_async(dispatch_get_main_queue(), ^{
          
          [busyBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
+         wSelf.experienceButton.enabled = YES;
+         wSelf.signupButton.enabled = YES;
+         
          if (firstUse.failureBlock)
            firstUse.failureBlock(error);
          
@@ -144,7 +153,9 @@
         dispatch_async(dispatch_get_main_queue(), ^{
           
           [busyBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
-          
+          wSelf.experienceButton.enabled = YES;
+          wSelf.signupButton.enabled = YES;
+
           if (firstUse.failureBlock)
             firstUse.failureBlock(error);
           
