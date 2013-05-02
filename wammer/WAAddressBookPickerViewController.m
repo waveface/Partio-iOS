@@ -377,7 +377,7 @@ static NSString const *kWAAddressBookViewController_CoachMarks = @"kWAAddressBoo
     
   }
   
-  self.contacts = [self omitPossibleFacebookContacts:self.contacts];
+  //self.contacts = [self omitPossibleFacebookContacts:self.contacts];
   self.contacts = [self sectionObjects:self.contacts collationStringSelector:@selector(self)];
   
   return self.contacts;
@@ -597,18 +597,30 @@ static NSString const *kWAAddressBookViewController_CoachMarks = @"kWAAddressBoo
   if ([section count]) {
     person = (__bridge ABRecordRef)section[indexPath.row]; // get address book record
   
+    for (UIView *subview in cell.imageView.subviews) {
+      [subview removeFromSuperview];
+    }
     static UIImage *defaultAvatar;
     defaultAvatar = [UIImage imageNamed:@"Avatar"];
     cell.imageView.image = defaultAvatar;
+    UIImageView *avatar = [[UIImageView alloc] initWithImage:defaultAvatar];
+    avatar.frame = (CGRect){CGPointMake(2.f, 2.f), CGSizeMake(defaultAvatar.size.width - 4.f, defaultAvatar.size.height - 4.f)};
     if (ABPersonHasImageData(person)) {
       NSData *data = (__bridge NSData *)ABPersonCopyImageDataWithFormat(person, kABPersonImageFormatThumbnail);
       if (data) {
-        cell.imageView.image = [self scaledImage:[[UIImage alloc] initWithData:data] withSize:defaultAvatar.size] ;
-        
+        avatar.image = [[UIImage alloc] initWithData:data];
+        avatar.layer.cornerRadius = 3.f;
+        avatar.clipsToBounds = YES;
       }
+      
+      [cell.imageView addSubview:avatar];
+      cell.imageView.clipsToBounds = NO;
+      cell.imageView.layer.shadowColor = [[UIColor blackColor] CGColor];
+      cell.imageView.layer.shadowOffset = CGSizeMake(0.f, 0.f);
+      cell.imageView.layer.shadowOpacity = 0.5f;
+      cell.imageView.layer.shadowRadius = 3.f;
     }
-    cell.imageView.layer.cornerRadius = 3.f;
-    cell.imageView.clipsToBounds = YES;
+    
     
     NSString *firstname = (__bridge_transfer NSString*)ABRecordCopyValue(person, kABPersonFirstNameProperty);
     NSString *lastname = (__bridge_transfer NSString*)ABRecordCopyValue(person, kABPersonLastNameProperty);
