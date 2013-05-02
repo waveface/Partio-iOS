@@ -166,22 +166,18 @@ static NSString * const kWASharedEventViewController_CoachMarks = @"kWASharedEve
   switch(type) {
       
     case NSFetchedResultsChangeInsert:
-      NSLog(@"Insert, objectID: %@, indexPath: %@, newIndexPath: %@", [anObject objectID], indexPath, newIndexPath);
       change[@(type)] = newIndexPath;
       break;
       
     case NSFetchedResultsChangeDelete:
-      NSLog(@"Delete, objectID: %@, indexPath: %@", [anObject objectID], indexPath);
       change[@(type)] = indexPath;
       break;
       
     case NSFetchedResultsChangeUpdate:
-      NSLog(@"Update, objectID: %@, indexPath: %@", [anObject objectID], indexPath);
       change[@(type)] = indexPath;
       break;
       
     case NSFetchedResultsChangeMove:
-      NSLog(@"Move, objectID: %@, indexPath: %@, newIndexPath: %@", [anObject objectID], indexPath, newIndexPath);
       change[@(type)] = @[indexPath, newIndexPath];
       break;
       
