@@ -10,6 +10,7 @@
 #import "WAPhotoTimelineNavigationBar.h"
 #import "WAPhotoTimelineCover.h"
 #import "WAPhotoTimelineLayout.h"
+#import "WAPhotoTimelineGalleryLayout.h"
 #import "WATimelineIndexView.h"
 #import "WAPartioSignupViewController.h"
 #import "WAEventDetailsViewController.h"
@@ -17,7 +18,7 @@
 #import "WAGalleryViewController.h"
 #import "WAAddressBookPickerViewController.h"
 
-#import "WAPhotoCollageCell.h"
+#import "WAPhotoGalleryCell.h"
 #import "WADefines.h"
 
 #import "WAAssetsLibraryManager.h"
@@ -86,6 +87,7 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks = @"kWAPhotoTi
 @implementation WAPhotoTimelineViewController {
   BOOL naviBarShown;
   BOOL toolBarShown;
+  BOOL galleryMode;
   CGFloat previousYOffset;
   CLLocationCoordinate2D _coordinate;
 }
@@ -128,6 +130,7 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks = @"kWAPhotoTi
   
   naviBarShown = NO;
   toolBarShown = YES;
+  galleryMode = NO;
   previousYOffset = 0;
   
   if (self.representingArticle) {
@@ -153,7 +156,7 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks = @"kWAPhotoTi
   [self.view addSubview:self.navigationBar];
   
   [self.collectionView setBackgroundColor:[UIColor blackColor]];
-  ((UICollectionViewFlowLayout*)self.collectionView.collectionViewLayout).minimumLineSpacing = 0.0f;
+//  ((UICollectionViewFlowLayout*)self.collectionView.collectionViewLayout).minimumLineSpacing = 0.0f;
   
   self.collectionView.showsVerticalScrollIndicator = NO;
   
@@ -161,14 +164,7 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks = @"kWAPhotoTi
         forSupplementaryViewOfKind:UICollectionElementKindSectionHeader
                withReuseIdentifier:@"PhotoTimelineCover"];
   
-  [self.collectionView registerNib:[UINib nibWithNibName:@"WAPhotoCollageCell_Stack4" bundle:nil]
-        forCellWithReuseIdentifier:@"CollectionItemCell4"];
-  [self.collectionView registerNib:[UINib nibWithNibName:@"WAPhotoCollageCell_Stack3" bundle:nil]
-        forCellWithReuseIdentifier:@"CollectionItemCell3"];
-  [self.collectionView registerNib:[UINib nibWithNibName:@"WAPhotoCollageCell_Stack2" bundle:nil]
-        forCellWithReuseIdentifier:@"CollectionItemCell2"];
-  [self.collectionView registerNib:[UINib nibWithNibName:@"WAPhotoCollageCell_Stack1" bundle:nil]
-        forCellWithReuseIdentifier:@"CollectionItemCell1"];
+  [self.collectionView registerNib:[UINib nibWithNibName:@"WAPhotoGalleryCell" bundle:nil] forCellWithReuseIdentifier:@"PhotoGallery"];
 
   NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
   formatter = [[NSDateFormatter alloc] init];
@@ -338,7 +334,7 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks = @"kWAPhotoTi
   }
   
   if (contacts.count) {
-    NSArray *emailsFromContacts = [contacts valueForKey:@"email"];
+    NSArray *emailsFromContacts = [[NSSet setWithArray:[contacts valueForKey:@"email"]] allObjects];
     NSMutableArray *invitingEmails = [NSMutableArray array];
     for (NSArray *contactEmails in emailsFromContacts) {
       [invitingEmails addObjectsFromArray:[contactEmails filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(NSString *evaluatedObject, NSDictionary *bindings) {
@@ -457,7 +453,7 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks = @"kWAPhotoTi
   article.creationDate = [NSDate date];
   
   if (contacts.count) {
-    NSArray *emailsFromContacts = [contacts valueForKey:@"email"];
+    NSArray *emailsFromContacts = [[NSSet setWithArray:[contacts valueForKey:@"email"]] allObjects];
     NSMutableArray *invitingEmails = [NSMutableArray array];
     for (NSArray *contactEmails in emailsFromContacts) {
       [invitingEmails addObjectsFromArray:[contactEmails filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(NSString *evaluatedObject, NSDictionary *bindings) {
@@ -529,18 +525,40 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks = @"kWAPhotoTi
 
 - (NSUInteger) supportedInterfaceOrientations {
   
-  return UIInterfaceOrientationMaskPortrait;
+  if (self.representingArticle)
+    return UIInterfaceOrientationMaskAll;
+  else
+    return UIInterfaceOrientationMaskPortrait;
 
 }
 
-- (void) didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
-  if (UIInterfaceOrientationIsPortrait(fromInterfaceOrientation)) {
-    if (self.representingArticle) {
-      WAGalleryViewController *gallery = [WAGalleryViewController controllerRepresentingArticleAtURI:[[self.representingArticle objectID] URIRepresentation] context:nil];
-      [self.navigationController pushViewController:gallery animated:YES];
-
+- (void) willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
+  if (UIInterfaceOrientationIsLandscape(toInterfaceOrientation)) {
+    if (!galleryMode) {
+      galleryMode = YES;
+      
+      self.indexView.hidden = YES;
+      self.navigationBar.hidden = YES;
+      self.toolbar.hidden = YES;
+      [self.collectionView reloadData];
+      WAPhotoTimelineGalleryLayout *galleryLayout = [[WAPhotoTimelineGalleryLayout alloc] init];
+      [self.collectionView setCollectionViewLayout:galleryLayout animated:YES];
+      //    [self.collectionView reloadData];
+    }
+  } else {
+    if (galleryMode){
+      galleryMode = NO;
+    
+      WAPhotoTimelineLayout *timelineLayout = [[WAPhotoTimelineLayout alloc] init];
+      [self.collectionView reloadData];
+      [self.collectionView setCollectionViewLayout:timelineLayout animated:YES];
+//      [self.collectionView reloadData];
+      self.indexView.hidden = NO;
+      self.navigationBar.hidden = NO;
+      self.toolbar.hidden = NO;
     }
   }
+  
 }
 
 - (void) backButtonClicked:(id)sender {
@@ -750,86 +768,44 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks = @"kWAPhotoTi
 
 - (NSInteger) collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
   
-  NSUInteger numOfPhotos = self.allAssets.count;
   if (self.representingArticle)
-    numOfPhotos = self.sortedImages.count;
-  NSUInteger totalItem = (numOfPhotos / 10) * 4;
-  NSUInteger mod = numOfPhotos % 10;
-  if (mod == 0)
-    return totalItem;
-  else if (mod < 5)
-    return totalItem + 1;
-  else if (mod < 8)
-    return totalItem + 2;
-  else if (mod < 10)
-    return totalItem + 3;
+    return self.sortedImages.count;
   else
-    return totalItem + 4;
+    return self.allAssets.count;
   
 }
 
 - (UICollectionViewCell*)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
   
-  NSUInteger totalNumber = self.allAssets.count;
-  if (self.representingArticle)
-    totalNumber = self.sortedImages.count;
-
-  NSUInteger numOfPhotos = 4 - (indexPath.row % 4);
-  NSString *identifier = [NSString stringWithFormat:@"CollectionItemCell%d", numOfPhotos];
+  WAPhotoGalleryCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"PhotoGallery" forIndexPath:indexPath];
   
-  WAPhotoCollageCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:identifier forIndexPath:indexPath];
-  
-  NSUInteger base = 0;
-  switch(indexPath.row % 4) {
-    case 3:
-      base = (indexPath.row / 4) * 10 + 9;
-      break;
-    case 2:
-      base = (indexPath.row / 4) * 10 + 7;
-      break;
-    case 1:
-      base = (indexPath.row / 4) * 10 + 4;
-      break;
-    case 0:
-      base = (indexPath.row / 4) * 10;
-      break;
+  if (self.representingArticle) {
+    [self.sortedImages[indexPath.row] irObserve:@"thumbnailImage"
+                                        options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionNew
+                                        context:nil
+                                      withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
+                                        UIImage *image = (UIImage*)toValue;
+                                        
+                                        [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+                                          cell.imageView.image = image;
+                                        }];
+                                      }];
+  } else {
+    ALAsset *asset = self.allAssets[indexPath.row];
+    [cell.imageView irUnbind:@"image"];
+    [cell.imageView irBind:@"image"
+                  toObject:asset
+                   keyPath:@"cachedPresentableImage"
+                   options:@{kIRBindingsAssignOnMainThreadOption: (id)kCFBooleanTrue}];
   }
   
-  __weak WAPhotoTimelineViewController *wSelf = self;
-  for (NSUInteger i = 0; i < numOfPhotos; i++) {
-    
-    if ((base+i) < totalNumber) {
-      if (self.representingArticle) {
-        
-        [self.sortedImages[base+i]
-         irObserve:@"thumbnailImage"
-         options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionNew
-         context:nil
-         withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
-           
-           UIImage *image = (UIImage*)toValue;
-           [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-             ((UIImageView *)cell.imageViews[i]).image = image;
-           }];
-           
-         }];
-        
-      } else {
-        ALAsset *asset = wSelf.allAssets[base+i];
-        
-        [cell.imageViews[i] irUnbind:@"image"];
-        [cell.imageViews[i] irBind:@"image" toObject:asset keyPath:@"cachedPresentableImage" options:@{kIRBindingsAssignOnMainThreadOption: (id)kCFBooleanTrue}];
-        
-      }
-    } else {
-      [(UIImageView*)cell.imageViews[i] setBackgroundColor:[UIColor clearColor]];
-    }
-  }
-  
-  return cell;
+    return cell;
 }
 
 - (UICollectionReusableView*)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath {
+
+  if (galleryMode)
+    return nil;
   
   __weak WAPhotoTimelineViewController *wSelf = self;
   if ([kind isEqualToString:UICollectionElementKindSectionHeader]) {
@@ -943,28 +919,10 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks = @"kWAPhotoTi
 
 - (CGSize) collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section {
   
-  return CGSizeMake(self.collectionView.frame.size.width, 250);
-  
-}
-
-- (CGSize) collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
-  
-  CGFloat height = 200;
-  switch (indexPath.row % 4) {
-    case 0:
-      height = 210;
-      break;
-    case 1:
-      height = 90;
-      break;
-    case 2:
-      height = 130;
-      break;
-    case 3:
-      height = 210;
-      break;
-  }
-  return CGSizeMake(self.collectionView.frame.size.width, height);
+  if (galleryMode)
+    return CGSizeMake(0, 0);
+  else
+    return CGSizeMake(self.collectionView.frame.size.width, 250);
   
 }
 
@@ -1034,17 +992,17 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks = @"kWAPhotoTi
     self.tapGesture = nil;
   }
   
-  if (self.indexView.hidden && scrollView.contentOffset.y > 0)
+  if (!galleryMode && self.indexView.hidden && scrollView.contentOffset.y > 0)
     self.indexView.hidden = NO;
   
-  if (!naviBarShown && scrollView.contentOffset.y >= (250-44-50)) {
+  if (!galleryMode && !naviBarShown && scrollView.contentOffset.y >= (250-44-50)) {
     
     [self performSelectorOnMainThread:@selector(showingNavigationBar) withObject:nil waitUntilDone:NO modes:@[NSRunLoopCommonModes]];
     naviBarShown = YES;
     
   }
   
-  if (naviBarShown && scrollView.contentOffset.y <= (250-44-50)) {
+  if (!galleryMode && naviBarShown && scrollView.contentOffset.y <= (250-44-50)) {
     [self performSelectorOnMainThread:@selector(hideNavigationBar) withObject:nil waitUntilDone:NO modes:@[NSRunLoopCommonModes]];
     naviBarShown = NO;
   }
@@ -1055,7 +1013,7 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks = @"kWAPhotoTi
     self.indexView.percentage = percent;
   }
   
-  if (scrollView.contentOffset.y > 0) {
+  if (!galleryMode && scrollView.contentOffset.y > 0) {
     if (scrollView.contentOffset.y > previousYOffset) {
       if (toolBarShown) {
         toolBarShown = NO;
