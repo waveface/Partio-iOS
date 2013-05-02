@@ -518,9 +518,15 @@ static NSString const *kWAAddressBookViewController_CoachMarks = @"kWAAddressBoo
 
 - (NSInteger)tableView:(UITableView *)tableView sectionForSectionIndexTitle:(NSString *)title atIndex:(NSInteger)index
 {
-  //FIXME: incorrect section and index mapping if language is chinese
-  return [[UILocalizedIndexedCollation currentCollation] sectionForSectionIndexTitleAtIndex:index];
+  NSArray *sectionTitles = [self sectionIndexTitlesForTableView:self.tableView];
+  if (index < [sectionTitles count]) {
+    NSString *sectionTitle = [sectionTitles objectAtIndex:index];
+    if ([sectionTitle isEqualToString:title]) {
+      return index;
+    }
+  }
   
+  return 0;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
