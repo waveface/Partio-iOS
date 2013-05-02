@@ -98,10 +98,10 @@ static NSString * const kWASharedEventViewController_CoachMarks = @"kWASharedEve
   _objectChanges = [[NSMutableArray alloc] init];
 }
 
+
 - (void)viewDidAppear:(BOOL)animated
 {
   [super viewDidAppear:animated];
-  
   BOOL coachmarkShown = [[NSUserDefaults standardUserDefaults] boolForKey:kWASharedEventViewController_CoachMarks];
   if (!coachmarkShown) {
     __weak WASharedEventViewController *wSelf = self;
@@ -194,7 +194,7 @@ static NSString * const kWASharedEventViewController_CoachMarks = @"kWASharedEve
   __weak WASharedEventViewController *wSelf = self;
   if ([self.objectChanges count]) {
     dispatch_async(dispatch_get_main_queue(), ^{
-      
+/*
       if ([[[wSelf.eventFetchedResultsController sections] objectAtIndex:0] numberOfObjects] == 0) {
         // first item
         [wSelf.collectionView reloadData];
@@ -234,6 +234,9 @@ static NSString * const kWASharedEventViewController_CoachMarks = @"kWASharedEve
       
         }];
       }
+ */
+      [wSelf.collectionView reloadData];
+      [wSelf.objectChanges removeAllObjects];
     });
   }
   
