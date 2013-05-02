@@ -36,6 +36,7 @@
 
 #import "WADataStore+FetchingConveniences.h"
 #import "WAContactPickerViewController.h"
+#import "WAAddressBookPickerViewController.h"
 #import "WAGeoLocation.h"
 #import <CoreLocation/CoreLocation.h>
 #import <BlocksKit/BlocksKit.h>
@@ -194,8 +195,8 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks = @"kWAPhotoTi
     
     // add contacts button
     UIBarButtonItem *addContacts = WAPartioToolbarButton(nil, [UIImage imageNamed:@"AddPplBtn"],nil, ^{
-      WAContactPickerViewController *contactPicker = [[WAContactPickerViewController alloc] init];
-      __weak WAContactPickerViewController *wcp = contactPicker;
+      WAAddressBookPickerViewController *contactPicker = [[WAAddressBookPickerViewController alloc] init];
+      __weak WAAddressBookPickerViewController *wcp = contactPicker;
       contactPicker.onNextHandler = ^(NSArray *selectedContacts){
         [wcp dismissViewControllerAnimated:YES completion:nil];
         [wSelf updateSharingEventWithPhotoChanges:nil contacts:selectedContacts onComplete:^{
