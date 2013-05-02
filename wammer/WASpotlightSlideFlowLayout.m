@@ -98,14 +98,18 @@
   }
   return attributes;
 }
-/*
+
 - (UICollectionViewLayoutAttributes*)layoutAttributesForItemAtIndexPath:(NSIndexPath *)indexPath {
 
   UICollectionViewLayoutAttributes *attributes = [super layoutAttributesForItemAtIndexPath:indexPath];
+  if (!attributes)
+    attributes = [UICollectionViewLayoutAttributes layoutAttributesForCellWithIndexPath:indexPath];
+
   [self relayoutAttributesForAttributes:attributes];
+
   return attributes;
 }
-
+/*
 - (UICollectionViewLayoutAttributes*)initialLayoutAttributesForAppearingItemAtIndexPath:(NSIndexPath *)itemIndexPath {
   UICollectionViewLayoutAttributes *attributes = [super initialLayoutAttributesForAppearingItemAtIndexPath:itemIndexPath];
   [self relayoutAttributesForAttributes:attributes];
@@ -120,7 +124,10 @@
     base += 1;
   } else if (velocity.y > 0){
     base += 1;
-  } 
+  }
+  
+  if (self.collectionView.contentOffset.y < 0)
+    base = 0;
   
   return CGPointMake(proposedContentOffset.x, base * self.minItemSize);
 }

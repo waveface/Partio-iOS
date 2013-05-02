@@ -10,6 +10,6 @@
 
 @interface FBRequestConnection (WAAdditions)
 
-+ (FBRequestConnection*)startForUserCheckinsAfterId:(NSNumber*)latestCheckinID completeHandler:(FBRequestHandler)completionBlock;
++ (FBRequestConnection*)startForUserCheckinsAfterId:(NSString*)latestCheckinID completeHandler:(FBRequestHandler)completionBlock;
 
 @end
