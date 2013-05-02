@@ -377,21 +377,21 @@ static NSString const *kWAAddressBookViewController_CoachMarks = @"kWAAddressBoo
     
   }
   
-  //self.contacts = [self omitFacebookContacts:self.contacts];
+  self.contacts = [self omitPossibleFacebookContacts:self.contacts];
   self.contacts = [self sectionObjects:self.contacts collationStringSelector:@selector(self)];
   
   return self.contacts;
 }
 
-- (NSMutableArray *)omitFacebookContacts:(NSArray *)contacts
+- (NSMutableArray *)omitPossibleFacebookContacts:(NSArray *)contacts
 {
-  //TODO: omit contacts from Facebook source
   NSMutableArray *filteredContacts = [NSMutableArray array];
   for (id object in contacts) {
     ABRecordRef person = (__bridge ABRecordRef)object;
     NSString *name = (__bridge NSString *)ABRecordCopyValue(person, kABPersonFirstNameProperty);
-    ABRecordRef sourceType = ABPersonCopySource(person);
-    if ([(__bridge NSNumber *)sourceType intValue] != 4) {
+    ABRecordRef source = ABPersonCopySource(person);
+    NSNumber *sourceTypeRef = (__bridge NSNumber *)(CFNumberRef)ABRecordCopyValue(source, kABSourceTypeProperty);
+    if ([sourceTypeRef intValue] != kABSourceTypeCardDAV) { //possible Facebook contacts
       [filteredContacts addObject:object];
     }
   }
