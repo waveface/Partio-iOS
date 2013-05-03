@@ -123,13 +123,15 @@
 
       [wSelf.collectionView scrollToItemAtIndexPath:[wSelf indexPathForAsset:wSelf.selectedAssets[0]] atScrollPosition:UICollectionViewScrollPositionTop animated:NO];
     } else if (self.selectedRangeFromDate && self.selectedRangeToDate) {
+      NSDate *fromDate = [NSDate dateWithTimeInterval:-30*60 sinceDate:self.selectedRangeFromDate];
+      NSDate *toDate = [NSDate dateWithTimeInterval:30*60 sinceDate:self.selectedRangeToDate];
       
       for (ALAsset *asset in self.allTimeSortedAssets) {
         NSDate *assetDate = [asset valueForProperty:ALAssetPropertyDate];
-        if ([assetDate compare:self.selectedRangeFromDate] == NSOrderedAscending)
+        if ([assetDate compare:fromDate] == NSOrderedAscending)
           break;
         
-        if ([assetDate compare:self.selectedRangeToDate] == NSOrderedDescending) {
+        if ([assetDate compare:toDate] == NSOrderedDescending) {
           continue;
         }
         [self.selectedAssets addObject:asset];
