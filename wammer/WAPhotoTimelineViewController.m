@@ -898,7 +898,7 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
     
 //    NSUInteger zoomLevel = 15; // hardcoded, but we may tune this in the future
     
-    MKCoordinateRegion region = MKCoordinateRegionMake(self.coordinate, MKCoordinateSpanMake(0.02, 0.02));
+    MKCoordinateRegion region = MKCoordinateRegionMake(self.coordinate, MKCoordinateSpanMake(0.03, 0.03));
 //    cover.mapView.region = [cover.mapView regionThatFits:region];
     cover.mapView.region = region;
 //    GMSCameraPosition *camera = [GMSCameraPosition cameraWithLatitude:self.coordinate.latitude

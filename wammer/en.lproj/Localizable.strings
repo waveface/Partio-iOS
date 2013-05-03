@@ -20,7 +20,7 @@
 "ACTION_ADD_COLLECTION" = "Add to";
 
 /* Add photos */
-"ACTION_ADD_PHOTOS" = "Add Selected";
+"ACTION_ADD_PHOTOS" = "Add";
 
 /* Action title for cancelling stuff
    ACTION_CANCEL
@@ -237,7 +237,7 @@
 "DATE_AGO" = "%@ ago";
 
 /* Show how many photos selected in the day photo picker */
-"DAY_PHOTO_PICKER_PHOTOS_SELECTED" = "%d Photos Selected";
+"DAY_PHOTO_PICKER_PHOTOS_SELECTED" = "%d Selected";
 
 /* No comment provided by engineer. */
 "DAY_PLURAL" = "%d days";
