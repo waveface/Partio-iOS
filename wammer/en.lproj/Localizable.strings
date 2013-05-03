@@ -426,7 +426,7 @@
 "INSTRUCTION_IN_EVENTLIST_CREATE_BUTTON" = "Start here to share";
 
 /* The instruction show to go next in the preview view */
-"INSTRUCTION_IN_PREVIEW_SHARE_BUTTON" = "Tap Next to invite your friends.";
+"INSTRUCTION_IN_PREVIEW_SHARE_BUTTON" = "Tap here to invite your friends.";
 
 /* Invite more people */
 "INSTRUCTION_INVITE_MORE" = "Invite more friends to share this event";

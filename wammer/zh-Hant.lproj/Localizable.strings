@@ -426,7 +426,7 @@
 "INSTRUCTION_IN_EVENTLIST_CREATE_BUTTON" = "來開始分享照片吧！";
 
 /* The instruction show to go next in the preview view */
-"INSTRUCTION_IN_PREVIEW_SHARE_BUTTON" = "點「下一步」來邀請朋友";
+"INSTRUCTION_IN_PREVIEW_SHARE_BUTTON" = "下一步來邀請一些朋友吧";
 
 /* Invite more people */
 "INSTRUCTION_INVITE_MORE" = "邀請更多朋友一起來共享";
