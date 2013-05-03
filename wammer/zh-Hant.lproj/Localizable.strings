@@ -416,6 +416,9 @@
 /* INPUT_RECEIVER_EMAIL */
 "INPUT_RECEIVER_EMAIL" = "輸入電子郵件信箱";
 
+/* Add more photos */
+"INSTRUCTION_ADD_MORE_PHOTOS" = "幫這個事件加入更多照片吧！";
+
 /* The instruction show to tap contacts then share photos */
 "INSTRUCTION_IN_ADDRESS_BOOK_PICKER" = "點選朋友邀請他們一起分享照片";
 
@@ -423,7 +426,10 @@
 "INSTRUCTION_IN_EVENTLIST_CREATE_BUTTON" = "來開始分享照片吧！";
 
 /* The instruction show to go next in the preview view */
-"INSTRUCTION_IN_PREVIEW_SHARE_BUTTON" = "點「下一步」來邀請朋友";
+"INSTRUCTION_IN_PREVIEW_SHARE_BUTTON" = "下一步來邀請一些朋友吧";
+
+/* Invite more people */
+"INSTRUCTION_INVITE_MORE" = "邀請更多朋友一起來共享";
 
 /* Title on introduction pages */
 "INTRODUCTION_TITLE" = "aostream 是什麼？";
