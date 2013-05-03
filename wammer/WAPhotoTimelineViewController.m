@@ -53,6 +53,7 @@
 #import "WAAppDelegate_iOS.h"
 
 static NSString * const kWAPhotoTimelineViewController_CoachMarks = @"kWAPhotoTimelineViewController_CoachMarks";
+static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoTimelineViewController_CoachMarks2";
 
 @interface WAPhotoTimelineViewController () <UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UIScrollViewDelegate>
 
@@ -81,6 +82,8 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks = @"kWAPhotoTi
 
 @property (nonatomic, strong) UITapGestureRecognizer *tapGesture;
 @property (nonatomic, strong) SMCalloutView *shareInstructionView;
+@property (nonatomic, strong) SMCalloutView *addMorePhotosInstructionView;
+@property (nonatomic, strong) SMCalloutView *inviteMoreInstructionView;
 @end
 
 @implementation WAPhotoTimelineViewController {
@@ -253,26 +256,51 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks = @"kWAPhotoTi
   
   [super viewDidAppear:animated];
 
-  BOOL coachmarkShown = [[NSUserDefaults standardUserDefaults] boolForKey:kWAPhotoTimelineViewController_CoachMarks];
-  if (!coachmarkShown) {
-    __weak WAPhotoTimelineViewController *wSelf = self;
-    if (!self.shareInstructionView) {
-      self.shareInstructionView = [SMCalloutView new];
-      self.shareInstructionView.title = NSLocalizedString(@"INSTRUCTION_IN_PREVIEW_SHARE_BUTTON", @"The instruction show to go next in the preview view");
-      [self.shareInstructionView presentCalloutFromRect:CGRectMake(self.view.frame.size.width/2, self.view.frame.size.height-44, 1, 1) inView:self.view constrainedToView:self.view permittedArrowDirections:SMCalloutArrowDirectionDown animated:YES];
-      self.tapGesture = [[UITapGestureRecognizer alloc] initWithHandler:^(UIGestureRecognizer *sender, UIGestureRecognizerState state, CGPoint location) {
-        if (wSelf.shareInstructionView) {
-          [wSelf.shareInstructionView dismissCalloutAnimated:YES];
-          wSelf.shareInstructionView = nil;
-        }
-        [wSelf.view removeGestureRecognizer:wSelf.tapGesture];
-        wSelf.tapGesture = nil;
-      }];
-      [self.view addGestureRecognizer:self.tapGesture];
+  if (!self.representingArticle) {
+    BOOL coachmarkShown = [[NSUserDefaults standardUserDefaults] boolForKey:kWAPhotoTimelineViewController_CoachMarks];
+    if (!coachmarkShown) {
+      __weak WAPhotoTimelineViewController *wSelf = self;
+      if (!self.shareInstructionView) {
+        self.shareInstructionView = [SMCalloutView new];
+        self.shareInstructionView.title = NSLocalizedString(@"INSTRUCTION_IN_PREVIEW_SHARE_BUTTON", @"The instruction show to go next in the preview view");
+        [self.shareInstructionView presentCalloutFromRect:CGRectMake(self.view.frame.size.width/2, self.view.frame.size.height-44, 1, 1) inView:self.view constrainedToView:self.view permittedArrowDirections:SMCalloutArrowDirectionDown animated:YES];
+        self.tapGesture = [[UITapGestureRecognizer alloc] initWithHandler:^(UIGestureRecognizer *sender, UIGestureRecognizerState state, CGPoint location) {
+          if (wSelf.shareInstructionView) {
+            [wSelf.shareInstructionView dismissCalloutAnimated:YES];
+            wSelf.shareInstructionView = nil;
+          }
+          [wSelf.view removeGestureRecognizer:wSelf.tapGesture];
+          wSelf.tapGesture = nil;
+        }];
+        [self.view addGestureRecognizer:self.tapGesture];
+      }
+      
+      [[NSUserDefaults standardUserDefaults] setBool:YES forKey:kWAPhotoTimelineViewController_CoachMarks];
+      [[NSUserDefaults standardUserDefaults] synchronize];
     }
-    
-    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:kWAPhotoTimelineViewController_CoachMarks];
-    [[NSUserDefaults standardUserDefaults] synchronize];
+  } else {
+    BOOL coachmarkShown = [[NSUserDefaults standardUserDefaults] boolForKey:kWAPhotoTimelineViewController_CoachMarks2];
+    if (!coachmarkShown) {
+      __weak WAPhotoTimelineViewController *wSelf = self;
+      
+      self.addMorePhotosInstructionView = [SMCalloutView new];
+      self.addMorePhotosInstructionView.title = NSLocalizedString(@"INSTRUCTION_ADD_MORE_PHOTOS", @"Add more photos");
+      [self.addMorePhotosInstructionView presentCalloutFromRect:CGRectMake(self.toolbar.frame.size.width - 50, self.toolbar.frame.origin.y, 1, 1) inView:self.view constrainedToView:self.view permittedArrowDirections:SMCalloutArrowDirectionDown animated:YES];
+      [self performBlock:^(id sender) {
+        [wSelf.addMorePhotosInstructionView dismissCalloutAnimated:YES];
+        wSelf.addMorePhotosInstructionView = nil;
+        wSelf.inviteMoreInstructionView = [SMCalloutView new];
+        wSelf.inviteMoreInstructionView.title = NSLocalizedString(@"INSTRUCTION_INVITE_MORE", @"Invite more people");
+        [wSelf.inviteMoreInstructionView presentCalloutFromRect:CGRectMake(50, self.toolbar.frame.origin.y, 1, 1) inView:self.view constrainedToView:self.view permittedArrowDirections:SMCalloutArrowDirectionDown animated:YES];
+        [wSelf performBlock:^(id sender) {
+          [wSelf.inviteMoreInstructionView dismissCalloutAnimated:YES];
+          wSelf.inviteMoreInstructionView = nil;
+        } afterDelay:2.0f];
+        
+      } afterDelay:2.0f];
+      [[NSUserDefaults standardUserDefaults] setBool:YES forKey:kWAPhotoTimelineViewController_CoachMarks2];
+      [[NSUserDefaults standardUserDefaults] synchronize];
+    }
   }
 }
 
@@ -870,7 +898,7 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks = @"kWAPhotoTi
     
 //    NSUInteger zoomLevel = 15; // hardcoded, but we may tune this in the future
     
-    MKCoordinateRegion region = MKCoordinateRegionMake(self.coordinate, MKCoordinateSpanMake(0.02, 0.02));
+    MKCoordinateRegion region = MKCoordinateRegionMake(self.coordinate, MKCoordinateSpanMake(0.03, 0.03));
 //    cover.mapView.region = [cover.mapView regionThatFits:region];
     cover.mapView.region = region;
 //    GMSCameraPosition *camera = [GMSCameraPosition cameraWithLatitude:self.coordinate.latitude

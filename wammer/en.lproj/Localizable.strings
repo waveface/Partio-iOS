@@ -20,7 +20,7 @@
 "ACTION_ADD_COLLECTION" = "Add to";
 
 /* Add photos */
-"ACTION_ADD_PHOTOS" = "Add Selected";
+"ACTION_ADD_PHOTOS" = "Add";
 
 /* Action title for cancelling stuff
    ACTION_CANCEL
@@ -237,7 +237,7 @@
 "DATE_AGO" = "%@ ago";
 
 /* Show how many photos selected in the day photo picker */
-"DAY_PHOTO_PICKER_PHOTOS_SELECTED" = "%d Photos Selected";
+"DAY_PHOTO_PICKER_PHOTOS_SELECTED" = "%d Selected";
 
 /* No comment provided by engineer. */
 "DAY_PLURAL" = "%d days";
@@ -416,6 +416,9 @@
 /* INPUT_RECEIVER_EMAIL */
 "INPUT_RECEIVER_EMAIL" = "Input Email";
 
+/* Add more photos */
+"INSTRUCTION_ADD_MORE_PHOTOS" = "Upload more photos in the same event";
+
 /* The instruction show to tap contacts then share photos */
 "INSTRUCTION_IN_ADDRESS_BOOK_PICKER" = "Tap contacts then share photos with them";
 
@@ -423,7 +426,10 @@
 "INSTRUCTION_IN_EVENTLIST_CREATE_BUTTON" = "Start here to share";
 
 /* The instruction show to go next in the preview view */
-"INSTRUCTION_IN_PREVIEW_SHARE_BUTTON" = "Tap Next to invite your friends.";
+"INSTRUCTION_IN_PREVIEW_SHARE_BUTTON" = "Tap here to invite your friends.";
+
+/* Invite more people */
+"INSTRUCTION_INVITE_MORE" = "Invite more friends to share this event";
 
 /* Title on introduction pages */
 "INTRODUCTION_TITLE" = "What is aostream?";
