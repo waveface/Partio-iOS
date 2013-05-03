@@ -416,6 +416,9 @@
 /* INPUT_RECEIVER_EMAIL */
 "INPUT_RECEIVER_EMAIL" = "Input Email";
 
+/* Add more photos */
+"INSTRUCTION_ADD_MORE_PHOTOS" = "Upload more photos in the same event";
+
 /* The instruction show to tap contacts then share photos */
 "INSTRUCTION_IN_ADDRESS_BOOK_PICKER" = "Tap contacts then share photos with them";
 
@@ -424,6 +427,9 @@
 
 /* The instruction show to go next in the preview view */
 "INSTRUCTION_IN_PREVIEW_SHARE_BUTTON" = "Tap Next to invite your friends.";
+
+/* Invite more people */
+"INSTRUCTION_INVITE_MORE" = "Invite more friends to share this event";
 
 /* Title on introduction pages */
 "INTRODUCTION_TITLE" = "What is aostream?";
