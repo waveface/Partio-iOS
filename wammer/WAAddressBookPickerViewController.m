@@ -30,8 +30,8 @@
 
 @end
 
-static NSString const *kPlaceholderChooseFriends;
-static NSString const *kWAAddressBookViewController_CoachMarks = @"kWAAddressBookViewController_CoachMarks";
+static NSString *kPlaceholderChooseFriends;
+static NSString *kWAAddressBookViewController_CoachMarks = @"kWAAddressBookViewController_CoachMarks";
 
 @implementation WAAddressBookPickerViewController
 
@@ -373,11 +373,9 @@ static NSString const *kWAAddressBookViewController_CoachMarks = @"kWAAddressBoo
                       (void*)ABPersonGetSortOrdering());
     
     self.contacts = [(__bridge_transfer NSArray *)peopleMutable copy];
-    
-    
   }
   
-  //self.contacts = [self omitPossibleFacebookContacts:self.contacts];
+  self.contacts = [self omitPossibleFacebookContacts:self.contacts];
   self.contacts = [self sectionObjects:self.contacts collationStringSelector:@selector(self)];
   
   return self.contacts;
@@ -389,10 +387,16 @@ static NSString const *kWAAddressBookViewController_CoachMarks = @"kWAAddressBoo
   for (id object in contacts) {
     ABRecordRef person = (__bridge ABRecordRef)object;
     NSString *name = (__bridge NSString *)ABRecordCopyValue(person, kABPersonFirstNameProperty);
-    ABRecordRef source = ABPersonCopySource(person);
-    NSNumber *sourceTypeRef = (__bridge NSNumber *)(CFNumberRef)ABRecordCopyValue(source, kABSourceTypeProperty);
-    if ([sourceTypeRef intValue] != kABSourceTypeCardDAV) { //possible Facebook contacts
-      [filteredContacts addObject:object];
+    
+    NSArray *linkedRecordsArray = (__bridge NSArray *)ABPersonCopyArrayOfAllLinkedPeople(person);
+    for (NSInteger i = 0; i < [linkedRecordsArray count]; i++) {
+      ABMultiValueRef im = ABRecordCopyValue((__bridge ABRecordRef)linkedRecordsArray[i], kABPersonInstantMessageProperty);
+      if (!ABMultiValueGetCount(im)) { // omit any IM linked people, e.g. Facebook, twitter, ...
+        if (![filteredContacts containsObject:linkedRecordsArray[i]]) {
+          [filteredContacts addObject:linkedRecordsArray[i]];
+        }
+      }
+      
     }
   }
   
