@@ -56,8 +56,12 @@ static NSString * const kWALastFBCheckinID = @"kWLastFBCheckinID";
                                
                                for (NSDictionary *checkinItem in result) {
                                
-                                 NSString *checkinIDString = checkinItem[@"checkin_id"];
-                                 NSNumber *checkinID = [numFormatter numberFromString:checkinIDString];
+                                 id checkinIDRep = checkinItem[@"checkin_id"];
+                                 NSNumber *checkinID = nil;
+                                 if ([checkinIDRep isKindOfClass:[NSString class]])
+                                   checkinID = [numFormatter numberFromString:checkinIDRep];
+                                 else if ([checkinIDRep isKindOfClass:[NSNumber class]])
+                                   checkinID = checkinIDRep;
                                  if ([checkinID compare:lastCheckinIDNumber] == NSOrderedDescending)
                                    lastCheckinIDNumber = checkinID;
                                  
