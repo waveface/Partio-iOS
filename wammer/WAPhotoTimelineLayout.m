@@ -25,8 +25,9 @@
   self.sectionInset = UIEdgeInsetsMake(0, 5, 0, 0);
   self.itemSize = CGSizeMake(1, 1);
   self.scrollDirection = UICollectionViewScrollDirectionVertical;
-  self.collectionView.alwaysBounceVertical = YES;
-  
+//  self.collectionView.bounces = YES;
+//  self.collectionView.alwaysBounceVertical = YES;
+
   _numberOfItems = [self.collectionView numberOfItemsInSection:0];
   
   _layouts = @[
@@ -63,6 +64,7 @@
                      @{@"x": @(0), @"y": @(0), @"width": @(310), @"height":@(203)}
                      ]}
                ];
+
   
 }
 
@@ -79,7 +81,7 @@
     if (layoutIdx == 4)
       layoutIdx = 0;
   }
-  
+
   return CGSizeMake(self.collectionView.frame.size.width, height);
 }
 
@@ -90,7 +92,6 @@
   CGFloat hBase = 250;
   NSInteger layoutIndex = 0;
   NSInteger itemsBeforeLayout = 0;
-  
   while (itemsBeforeLayout < self.numberOfItems) {
     if (attr.indexPath.row < itemsBeforeLayout + [self.layouts[layoutIndex][@"numOfItems"] intValue]) {
       
@@ -102,7 +103,6 @@
       CGFloat h = [frames[idxInFrames][@"height"] floatValue];
       
       attr.frame = CGRectMake(x + self.sectionInset.left, hBase + y, w, h);
-      NSLog(@"new frame (%f, %f, %f, %f): %@", x, y, w, h, NSStringFromCGRect(attr.frame));
       return attr;
       
     } else {
@@ -144,20 +144,21 @@
       [self layoutAttributesForItemAttributes:attr];
       
     }
-   
-   }];
+    
+  }];
   
   return attrs;
   
 }
 
 - (UICollectionViewLayoutAttributes*)layoutAttributesForItemAtIndexPath:(NSIndexPath *)indexPath {
+
   UICollectionViewLayoutAttributes *attr = [super layoutAttributesForItemAtIndexPath:indexPath];
   if (attr)
     return [self layoutAttributesForItemAttributes:attr];
   
   attr = [UICollectionViewLayoutAttributes layoutAttributesForCellWithIndexPath:indexPath];
-  
+
   return [self layoutAttributesForItemAttributes:attr];
 }
 

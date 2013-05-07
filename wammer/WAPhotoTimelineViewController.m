@@ -570,23 +570,31 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
       self.toolbar.hidden = YES;
       [self.collectionView reloadData];
       WAPhotoTimelineGalleryLayout *galleryLayout = [[WAPhotoTimelineGalleryLayout alloc] init];
-      [self.collectionView setCollectionViewLayout:galleryLayout animated:YES];
+      [self.collectionView setCollectionViewLayout:galleryLayout animated:NO];
       //    [self.collectionView reloadData];
     }
   } else {
     if (galleryMode){
-      galleryMode = NO;
-    
-      WAPhotoTimelineLayout *timelineLayout = [[WAPhotoTimelineLayout alloc] init];
-      [self.collectionView reloadData];
-      [self.collectionView setCollectionViewLayout:timelineLayout animated:YES];
-//      [self.collectionView reloadData];
-      self.indexView.hidden = NO;
-      self.navigationBar.hidden = NO;
-      self.toolbar.hidden = NO;
     }
   }
   
+}
+
+- (void) didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
+  if (UIInterfaceOrientationIsLandscape(fromInterfaceOrientation)) {
+    if (galleryMode) {
+      galleryMode = NO;
+      
+      WAPhotoTimelineLayout *timelineLayout = [[WAPhotoTimelineLayout alloc] init];
+      self.collectionView.bounces = YES;
+      self.collectionView.alwaysBounceVertical = YES;
+      [self.collectionView setCollectionViewLayout:timelineLayout animated:NO];
+      self.indexView.hidden = NO;
+      self.navigationBar.hidden = NO;
+      self.toolbar.hidden = NO;
+      
+    }
+  }
 }
 
 - (void) backButtonClicked:(id)sender {
@@ -795,7 +803,6 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
 }
 
 - (NSInteger) collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-  
   if (self.representingArticle)
     return self.sortedImages.count;
   else
@@ -804,7 +811,8 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
 }
 
 - (UICollectionViewCell*)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
-  
+ 
+//  NSLog(@"cellForItemAtIndexPath:%@", indexPath);
   WAPhotoGalleryCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"PhotoGallery" forIndexPath:indexPath];
   
   if (self.representingArticle) {
@@ -826,6 +834,7 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
                    keyPath:@"cachedPresentableImage"
                    options:@{kIRBindingsAssignOnMainThreadOption: (id)kCFBooleanTrue}];
   }
+//  NSLog(@"return cellForItemAtIndexPath:%@", indexPath);
   
     return cell;
 }
@@ -924,9 +933,11 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
       cover.informationLabel.text = [NSString stringWithFormat:NSLocalizedString(@"INFO_EVENT_FRIENDS", @"show how many friends with creator"), self.representingArticle.sharingContacts.count - 1];
     else
       cover.informationLabel.text = NSLocalizedString(@"INFO_HINT", @"information in event view to show hint");
+
     return cover;
     
   }
+
   return nil;
 }
 

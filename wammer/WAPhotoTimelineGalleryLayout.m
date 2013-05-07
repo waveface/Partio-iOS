@@ -12,37 +12,36 @@
 
 - (void) prepareLayout {
   self.minimumInteritemSpacing = 0.0f;
-  self.minimumLineSpacing = 0.0f;
+  self.minimumLineSpacing = 20.0f;
   self.sectionInset = UIEdgeInsetsMake(0, 0, 0, 0);
   self.itemSize = CGSizeMake(568, 320-22);
   self.scrollDirection = UICollectionViewScrollDirectionHorizontal;
-//  self.collectionView.pagingEnabled = YES;
   self.collectionView.alwaysBounceVertical = NO;
-  NSLog(@"itemSize: %@", NSStringFromCGSize(self.itemSize));
 }
 
 //- (CGSize) collectionViewContentSize {
 //  NSInteger numOfItems = [self.collectionView numberOfItemsInSection:0];
-//  return CGSizeMake(self.collectionView.frame.size.height * numOfItems, self.collectionView.frame.size.width);
+//  return CGSizeMake((self.collectionView.frame.size.height + self.minimumInteritemSpacing)* numOfItems, self.collectionView.frame.size.width);
 //}
 
-- (NSArray*) layoutAttributesForElementsInRect:(CGRect)rect {
-  
-  NSArray *array = [super layoutAttributesForElementsInRect:rect];
-  for (UICollectionViewLayoutAttributes *attr in array) {
-    NSLog(@"index: %@, frame: %@", attr.indexPath, NSStringFromCGRect(attr.frame));
-  } 
-  
-  return array;
-  
-}
+//- (NSArray*) layoutAttributesForElementsInRect:(CGRect)rect {
+//  
+//  NSArray *array = [super layoutAttributesForElementsInRect:rect];
+//  for (UICollectionViewLayoutAttributes *attr in array) {
+//    NSLog(@"index: %@, frame: %@", attr.indexPath, NSStringFromCGRect(attr.frame));
+//  } 
+//  
+//  return array;
+//}
 
 - (CGPoint) targetContentOffsetForProposedContentOffset:(CGPoint)proposedContentOffset withScrollingVelocity:(CGPoint)velocity {
-
-  int closestPage = (int)(self.collectionView.contentOffset.x / self.itemSize.width);
+  int closestPage = (int)(self.collectionView.contentOffset.x / (self.itemSize.width + self.minimumLineSpacing));
+  if (velocity.x > 0)
+    closestPage += 1;
   if (closestPage < 0)
     closestPage = 0;
-  return CGPointMake(closestPage * self.itemSize.width, proposedContentOffset.y);
+  
+  return CGPointMake(closestPage * (self.itemSize.width + self.minimumLineSpacing), proposedContentOffset.y);
   
 }
 @end
