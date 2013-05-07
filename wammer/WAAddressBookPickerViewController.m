@@ -94,8 +94,9 @@ static NSString *kWAAddressBookViewController_CoachMarks = @"kWAAddressBookViewC
   self.toolbar.items = @[flexspace, [self shareBarButton], flexspace];
   [[self.toolbar.items objectAtIndex:1] setEnabled:NO];
   [self.view addSubview:self.toolbar];
-  
+
   self.dataDisplay = self.contacts;
+  
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -247,7 +248,7 @@ static NSString *kWAAddressBookViewController_CoachMarks = @"kWAAddressBookViewC
     self.dataDisplay = self.contacts;
     [self.tableView reloadData];
     
-    if ([self filteredContatcsCount]) {
+    if ([self filteredContatcsCount] == 1) {
       ABRecordRef person = (__bridge ABRecordRef)(self.filteredContacts[section][0]);
       NSString *firstname = (__bridge_transfer NSString*)ABRecordCopyValue(person, kABPersonFirstNameProperty);
       NSString *lastname = (__bridge_transfer NSString*)ABRecordCopyValue(person, kABPersonLastNameProperty);
@@ -731,6 +732,12 @@ static NSString *kWAAddressBookViewController_CoachMarks = @"kWAAddressBookViewC
   if ([self filteredContatcsCount]) {
     person = (__bridge ABRecordRef)self.filteredContacts[indexPath.section][indexPath.row];
     
+    ABRecordID personID = ABRecordGetRecordID(person);
+    if (personID < 0) {
+      [self.contacts[indexPath.section] insertObject:self.filteredContacts[indexPath.section][indexPath.row] atIndex:0];
+     
+    }
+    
   }
   
   NSArray *emails = [self emailsOfPerson:person];
@@ -768,7 +775,6 @@ static NSString *kWAAddressBookViewController_CoachMarks = @"kWAAddressBookViewC
     
     if (![self.members containsObject:aPerson]) {
       [self.members addObject:aPerson];
-      cell.accessoryView.hidden = NO;
       
       self.dataDisplay = self.contacts;
       [self.tableView reloadData];
@@ -785,7 +791,6 @@ static NSString *kWAAddressBookViewController_CoachMarks = @"kWAAddressBookViewC
     }
     
   } else {
-    cell.accessoryView.hidden = YES;
     
     if ([emails count]) {
       NSDictionary *aPerson;
@@ -825,6 +830,8 @@ static NSString *kWAAddressBookViewController_CoachMarks = @"kWAAddressBookViewC
     }
   }
   [self.tableView scrollToRowAtIndexPath:newIndexPath atScrollPosition:UITableViewScrollPositionMiddle animated:NO];
+  [self.tableView reloadRowsAtIndexPaths:@[newIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+
 }
 
 #pragma mark - UIActionSheetDelegate
