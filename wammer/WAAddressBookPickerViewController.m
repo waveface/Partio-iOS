@@ -171,24 +171,15 @@ static NSString *kWAAddressBookViewController_CoachMarks = @"kWAAddressBookViewC
   if (![textInput isEqual:@""]) {
     NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary *bindings) {
       BOOL result = NO;
-      NSString *firstname = (__bridge_transfer NSString*)ABRecordCopyValue((__bridge ABRecordRef)evaluatedObject, kABPersonFirstNameProperty);
+      NSString *name = (__bridge_transfer NSString*)ABRecordCopyCompositeName((__bridge ABRecordRef)evaluatedObject);
       
-      if (firstname) {
-        if ([firstname rangeOfString:textInput].location != NSNotFound) {
+      if (name) {
+        if ([name rangeOfString:textInput].location != NSNotFound) {
           result = YES;
           return result;
         }
       }
-      
-      NSString *lastname = (__bridge_transfer NSString*)ABRecordCopyValue((__bridge ABRecordRef)evaluatedObject, kABPersonLastNameProperty);
-      
-      if (lastname) {
-        if ([lastname rangeOfString:textInput].location != NSNotFound) {
-          result = YES;
-          return result;
-        }
-      }
-      
+        
       NSArray *emails = [self emailsOfPerson:(__bridge ABRecordRef)evaluatedObject];
       
       NSPredicate *emailSubstring = [NSPredicate predicateWithFormat:@"SELF beginswith %@", textInput];
@@ -241,8 +232,8 @@ static NSString *kWAAddressBookViewController_CoachMarks = @"kWAAddressBookViewC
       if ([self.dataDisplay[section] count]) {
         if (![self contactsContainPerson:self.dataDisplay[section][0] inSection:section]) {
           [self.contacts[section] insertObject:self.dataDisplay[section][0] atIndex:0];
-          break;
         }
+        break;
       }    
     }
     self.dataDisplay = self.contacts;
@@ -250,9 +241,7 @@ static NSString *kWAAddressBookViewController_CoachMarks = @"kWAAddressBookViewC
     
     if ([self filteredContatcsCount] == 1) {
       ABRecordRef person = (__bridge ABRecordRef)(self.filteredContacts[section][0]);
-      NSString *firstname = (__bridge_transfer NSString*)ABRecordCopyValue(person, kABPersonFirstNameProperty);
-      NSString *lastname = (__bridge_transfer NSString*)ABRecordCopyValue(person, kABPersonLastNameProperty);
-      NSString *name = [self compositeNameFormatWithFirstname:firstname lastname:lastname];
+      NSString *name = (__bridge_transfer NSString*)ABRecordCopyCompositeName(person);
       NSArray *emails = [self emailsOfPerson:person];
       
       NSDictionary *aPerson;
@@ -264,10 +253,7 @@ static NSString *kWAAddressBookViewController_CoachMarks = @"kWAAddressBookViewC
       
       if (![self.members containsObject:aPerson]) {
         [self.members addObject:aPerson];
-        
-        CFErrorRef Error = NULL;
-        ABAddressBookAddRecord(self.addressBook, person, &Error);
-        
+                
         NSIndexPath *newIndexPath = [NSIndexPath indexPathForRow:0 inSection:section];
         [self.tableView scrollToRowAtIndexPath:newIndexPath atScrollPosition:UITableViewScrollPositionMiddle animated:NO];
         [self.tableView reloadRowsAtIndexPaths:@[newIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
@@ -387,8 +373,6 @@ static NSString *kWAAddressBookViewController_CoachMarks = @"kWAAddressBookViewC
   NSMutableArray *filteredContacts = [NSMutableArray array];
   for (id object in contacts) {
     ABRecordRef person = (__bridge ABRecordRef)object;
-    NSString *name = (__bridge NSString *)ABRecordCopyValue(person, kABPersonFirstNameProperty);
-    
     NSArray *linkedRecordsArray = (__bridge NSArray *)ABPersonCopyArrayOfAllLinkedPeople(person);
     for (NSInteger i = 0; i < [linkedRecordsArray count]; i++) {
       ABMultiValueRef im = ABRecordCopyValue((__bridge ABRecordRef)linkedRecordsArray[i], kABPersonInstantMessageProperty);
@@ -626,10 +610,7 @@ static NSString *kWAAddressBookViewController_CoachMarks = @"kWAAddressBookViewC
       cell.imageView.layer.shadowRadius = 3.f;
     }
     
-    
-    NSString *firstname = (__bridge_transfer NSString*)ABRecordCopyValue(person, kABPersonFirstNameProperty);
-    NSString *lastname = (__bridge_transfer NSString*)ABRecordCopyValue(person, kABPersonLastNameProperty);
-    NSString *name = [self compositeNameFormatWithFirstname:firstname lastname:lastname];
+    NSString *name = (__bridge_transfer NSString*)ABRecordCopyCompositeName(person);
     
     cell.textLabel.text = name;
     
@@ -647,6 +628,9 @@ static NSString *kWAAddressBookViewController_CoachMarks = @"kWAAddressBookViewC
     cell.accessoryView.hidden = YES;
     if ([emails count]) {
       NSDictionary *aPerson;
+      if (!name) {
+        name = @"";
+      }
       for (NSInteger i = 0; i < [emails count]; i++) {
         aPerson = @{@"name": name, @"email": @[emails[i]]};
         
@@ -660,29 +644,6 @@ static NSString *kWAAddressBookViewController_CoachMarks = @"kWAAddressBookViewC
   }
   
   return cell;
-}
-
-- (NSString *)compositeNameFormatWithFirstname:(NSString *)firstname lastname:(NSString *)lastname
-{
-  NSString *name = @"";
-  
-  if (firstname && lastname) {
-    if (ABPersonGetCompositeNameFormat() == kABPersonCompositeNameFormatFirstNameFirst) {
-      name = [NSString stringWithFormat:@"%@ %@", firstname, lastname];
-      
-    } else {
-      name = [NSString stringWithFormat:@"%@ %@", lastname, firstname];
-      
-    }
-  } else if (firstname && !lastname) {
-    name = firstname;
-    
-  } else if (!firstname && lastname) {
-    name = lastname;
-    
-  }
-  
-  return name;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
@@ -734,8 +695,9 @@ static NSString *kWAAddressBookViewController_CoachMarks = @"kWAAddressBookViewC
     
     ABRecordID personID = ABRecordGetRecordID(person);
     if (personID < 0) {
-      [self.contacts[indexPath.section] insertObject:self.filteredContacts[indexPath.section][indexPath.row] atIndex:0];
-     
+      if (![self contactsContainPerson:self.filteredContacts[indexPath.section][indexPath.row] inSection:indexPath.section]) {
+        [self.contacts[indexPath.section] insertObject:self.filteredContacts[indexPath.section][indexPath.row] atIndex:0];
+      }
     }
     
   }
@@ -838,9 +800,7 @@ static NSString *kWAAddressBookViewController_CoachMarks = @"kWAAddressBookViewC
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-  NSString *firstname = (__bridge_transfer NSString*)ABRecordCopyValue(self.selectedPerson, kABPersonFirstNameProperty);
-  NSString *lastname = (__bridge_transfer NSString*)ABRecordCopyValue(self.selectedPerson, kABPersonLastNameProperty);
-  NSString *name = [self compositeNameFormatWithFirstname:firstname lastname:lastname];
+  NSString *name = (__bridge_transfer NSString*)ABRecordCopyCompositeName(self.selectedPerson);
   NSMutableArray *emails = [[self emailsOfPerson:self.selectedPerson] mutableCopy];
   
   if (buttonIndex == [emails count]) {
