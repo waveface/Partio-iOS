@@ -62,7 +62,7 @@ NSString * const kWACrashlyticsAPIKey = @"d79b0f823e42fdf1cdeb7e988a8453032fd851
 NSString * const kWAGoogleAnalyticsAccountID = @"UA-27817516-3";
 NSInteger  const kWAGoogleAnalyticsDispatchInterval = 10;
 			
-NSString * const kWARemoteEndpointApplicationKeyPhone = @"ca5c3c5c-287d-5805-93c1-a6c2cbf9977c";
+NSString * const kWARemoteEndpointApplicationKeyPhone = @"6d095eaa-73f8-5087-9797-f5633979045b";
 NSString * const kWARemoteEndpointApplicationKeyPad = @"ba15e628-44e6-51bc-8146-0611fdfa130b";
 NSString * const kWARemoteEndpointApplicationKeyMac = @"ba15e628-44e6-51bc-8146-0611fdfa130b";
 

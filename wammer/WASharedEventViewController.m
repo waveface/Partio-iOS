@@ -98,10 +98,10 @@ static NSString * const kWASharedEventViewController_CoachMarks = @"kWASharedEve
   _objectChanges = [[NSMutableArray alloc] init];
 }
 
+
 - (void)viewDidAppear:(BOOL)animated
 {
   [super viewDidAppear:animated];
-  
   BOOL coachmarkShown = [[NSUserDefaults standardUserDefaults] boolForKey:kWASharedEventViewController_CoachMarks];
   if (!coachmarkShown) {
     __weak WASharedEventViewController *wSelf = self;
@@ -166,22 +166,18 @@ static NSString * const kWASharedEventViewController_CoachMarks = @"kWASharedEve
   switch(type) {
       
     case NSFetchedResultsChangeInsert:
-      NSLog(@"Insert, objectID: %@, indexPath: %@, newIndexPath: %@", [anObject objectID], indexPath, newIndexPath);
       change[@(type)] = newIndexPath;
       break;
       
     case NSFetchedResultsChangeDelete:
-      NSLog(@"Delete, objectID: %@, indexPath: %@", [anObject objectID], indexPath);
       change[@(type)] = indexPath;
       break;
       
     case NSFetchedResultsChangeUpdate:
-      NSLog(@"Update, objectID: %@, indexPath: %@", [anObject objectID], indexPath);
       change[@(type)] = indexPath;
       break;
       
     case NSFetchedResultsChangeMove:
-      NSLog(@"Move, objectID: %@, indexPath: %@, newIndexPath: %@", [anObject objectID], indexPath, newIndexPath);
       change[@(type)] = @[indexPath, newIndexPath];
       break;
       
@@ -197,47 +193,51 @@ static NSString * const kWASharedEventViewController_CoachMarks = @"kWASharedEve
   
   __weak WASharedEventViewController *wSelf = self;
   if ([self.objectChanges count]) {
-/* FIXME: Bugs here
     dispatch_async(dispatch_get_main_queue(), ^{
-      
-    [self.collectionView performBatchUpdates:^{
-      
-      for (NSDictionary *change in self.objectChanges) {
-        [change enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+/*
+      if ([[[wSelf.eventFetchedResultsController sections] objectAtIndex:0] numberOfObjects] == 0) {
+        // first item
+        [wSelf.collectionView reloadData];
+      } else {
+        [self.collectionView performBatchUpdates:^{
           
-          NSFetchedResultsChangeType type = [key unsignedIntegerValue];
-          
-          switch (type) {
-            case NSFetchedResultsChangeInsert:
-              [wSelf.collectionView insertItemsAtIndexPaths:@[obj]];
-              break;
+          for (NSDictionary *change in self.objectChanges) {
+            [change enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
               
-            case NSFetchedResultsChangeDelete:
-              [wSelf.collectionView deleteItemsAtIndexPaths:@[obj]];
-              break;
+              NSFetchedResultsChangeType type = [key unsignedIntegerValue];
               
-            case NSFetchedResultsChangeUpdate:
-              [wSelf.collectionView reloadItemsAtIndexPaths:@[obj]];
-              break;
+              switch (type) {
+                case NSFetchedResultsChangeInsert:
+                  [wSelf.collectionView insertItemsAtIndexPaths:@[obj]];
+                  break;
+                  
+                case NSFetchedResultsChangeDelete:
+                  [wSelf.collectionView deleteItemsAtIndexPaths:@[obj]];
+                  break;
+                  
+                case NSFetchedResultsChangeUpdate:
+                  [wSelf.collectionView reloadItemsAtIndexPaths:@[obj]];
+                  break;
+                  
+                case NSFetchedResultsChangeMove:
+                  [wSelf.collectionView moveItemAtIndexPath:obj[0] toIndexPath:obj[1]];
+                  break;
+                  
+              }
               
-            case NSFetchedResultsChangeMove:
-              [wSelf.collectionView moveItemAtIndexPath:obj[0] toIndexPath:obj[1]];
-              break;
-              
+            }];
           }
-          
+      
+        } completion:^(BOOL finished) {
+      
+          [wSelf.objectChanges removeAllObjects];
+      
         }];
       }
-      
-    } completion:^(BOOL finished) {
-      
+ */
+      [wSelf.collectionView reloadData];
       [wSelf.objectChanges removeAllObjects];
-      
-    }];
     });
-*/
-    [self.collectionView reloadData];
-    [wSelf.objectChanges removeAllObjects];
   }
   
 }
@@ -301,7 +301,7 @@ static NSString * const kWASharedEventViewController_CoachMarks = @"kWASharedEve
     }
   }
   
-  if (!aArticle.lastRead && [aArticle.lastRead compare:aArticle.modificationDate] == NSOrderedDescending) {
+  if (!aArticle.lastRead || [aArticle.lastRead compare:aArticle.modificationDate] == NSOrderedAscending) {
     [cell.stickerNew setHidden:NO];
   } else {
     [cell.stickerNew setHidden:YES];

@@ -15,6 +15,7 @@
 #import "FBRequestConnection+WAAdditions.h"
 
 static NSString * const kWAFBRequestConnection = @"kWAFBRequestionConnection";
+static NSString * const kWALastFBCheckinID = @"kWLastFBCheckinID";
 @implementation WAFetchManager (FBCheckinFetch)
 
 - (FBRequestConnection *)fbConnection {
@@ -32,8 +33,9 @@ static NSString * const kWAFBRequestConnection = @"kWAFBRequestionConnection";
     [wSelf beginPostponingFetch];
 
     void (^initRequest)(void) = ^{
+      NSString *lastCheckinID = [[NSUserDefaults standardUserDefaults] stringForKey:kWALastFBCheckinID];
       self.fbConnection = [FBRequestConnection
-                           startForUserCheckinsAfterId:nil
+                           startForUserCheckinsAfterId:lastCheckinID
                            completeHandler:^(FBRequestConnection *connection, NSArray *result, NSError *error) {
        
                              if (error) {
@@ -43,16 +45,32 @@ static NSString * const kWAFBRequestConnection = @"kWAFBRequestionConnection";
                                [wSelf endPostponingFetch];
                                
                              } else {
-                               //                                                          NSLog(@"fb request success: %@", result);
          
                                NSManagedObjectContext *context = [[WADataStore defaultStore] disposableMOC];
+                               NSNumberFormatter *numFormatter = [[NSNumberFormatter alloc] init];
+                               [numFormatter setNumberStyle:NSNumberFormatterDecimalStyle];
+                               NSNumber *lastCheckinIDNumber = @(0);
+                               if (lastCheckinID) {
+                                 lastCheckinIDNumber = [numFormatter numberFromString:lastCheckinID];
+                               }
                                
                                for (NSDictionary *checkinItem in result) {
-                                 
+                               
+                                 id checkinIDRep = checkinItem[@"checkin_id"];
+                                 NSNumber *checkinID = nil;
+                                 if ([checkinIDRep isKindOfClass:[NSString class]])
+                                   checkinID = [numFormatter numberFromString:checkinIDRep];
+                                 else if ([checkinIDRep isKindOfClass:[NSNumber class]])
+                                   checkinID = checkinIDRep;
+                                 if ([checkinID compare:lastCheckinIDNumber] == NSOrderedDescending)
+                                   lastCheckinIDNumber = checkinID;
                                  
                                  [WACheckin insertOrUpdateObjectsUsingContext:context withRemoteResponse:result usingMapping:nil options:IRManagedObjectOptionIndividualOperations];
            
                                }
+                               
+                               [[NSUserDefaults standardUserDefaults] setValue:[NSString stringWithFormat:@"%@", lastCheckinIDNumber] forKey:kWALastFBCheckinID];
+                               [[NSUserDefaults standardUserDefaults] synchronize];
                                
                                NSError *error = nil;
                                [context save:&error];

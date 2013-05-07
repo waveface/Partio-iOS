@@ -275,6 +275,7 @@
 		80557BA915FDE38000336F3C /* WARemoteInterface+RemoteNotifications.m in Sources */ = {isa = PBXBuildFile; fileRef = 80557BA815FDE38000336F3C /* WARemoteInterface+RemoteNotifications.m */; };
 		8056C9861682C4B2001C9199 /* WAWebPreviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8056C9851682C4B2001C9199 /* WAWebPreviewViewController.m */; };
 		8056C9881682C4CC001C9199 /* WAWebPreviewViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8056C9871682C4CC001C9199 /* WAWebPreviewViewController.xib */; };
+		805B8EC81732117F00D6CEE1 /* WAPeople.m in Sources */ = {isa = PBXBuildFile; fileRef = 805B8EC71732117F00D6CEE1 /* WAPeople.m */; };
 		80638BF2164CA663005695E3 /* WATag.m in Sources */ = {isa = PBXBuildFile; fileRef = 80638BF1164CA663005695E3 /* WATag.m */; };
 		80638BFC164CA7DA005695E3 /* WATagGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = 80638BFB164CA7DA005695E3 /* WATagGroup.m */; };
 		806A5C851623C6C500867E56 /* WAContextMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 806A5C841623C6C500867E56 /* WAContextMenuViewController.m */; };
@@ -399,7 +400,6 @@
 		80C9F3871719B761003E7C6E /* WAContactPickerSectionHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 80C9F3861719B761003E7C6E /* WAContactPickerSectionHeaderView.m */; };
 		80CBC7721713FBDE0056D9CF /* partioIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 80CBC7711713FBDE0056D9CF /* partioIcon.png */; };
 		80CDF0401727B02200B359DD /* WACheckin.m in Sources */ = {isa = PBXBuildFile; fileRef = 80CDF03F1727B02200B359DD /* WACheckin.m */; };
-		80CDF0591727BB2700B359DD /* WAPeople.m in Sources */ = {isa = PBXBuildFile; fileRef = 80CDF0581727BB2700B359DD /* WAPeople.m */; };
 		80CDF05C1727BBA700B359DD /* WAArticle.m in Sources */ = {isa = PBXBuildFile; fileRef = 80CDF05B1727BBA700B359DD /* WAArticle.m */; };
 		80CDF05E1727C5B300B359DD /* WAEventDetailsCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 80CDF05D1727C5B300B359DD /* WAEventDetailsCell.xib */; };
 		80CDF0611727C62A00B359DD /* WAEventDetailsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 80CDF0601727C62A00B359DD /* WAEventDetailsCell.m */; };
@@ -1323,6 +1323,9 @@
 		8056C9841682C4B2001C9199 /* WAWebPreviewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAWebPreviewViewController.h; sourceTree = "<group>"; };
 		8056C9851682C4B2001C9199 /* WAWebPreviewViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAWebPreviewViewController.m; sourceTree = "<group>"; };
 		8056C9871682C4CC001C9199 /* WAWebPreviewViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WAWebPreviewViewController.xib; sourceTree = "<group>"; };
+		805B8EC61732117F00D6CEE1 /* WAPeople.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAPeople.h; sourceTree = "<group>"; };
+		805B8EC71732117F00D6CEE1 /* WAPeople.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAPeople.m; sourceTree = "<group>"; };
+		805B8ED6173213DE00D6CEE1 /* WAModel 45.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WAModel 45.xcdatamodel"; sourceTree = "<group>"; };
 		80638BF0164CA663005695E3 /* WATag.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WATag.h; sourceTree = "<group>"; };
 		80638BF1164CA663005695E3 /* WATag.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WATag.m; sourceTree = "<group>"; };
 		80638BFA164CA7DA005695E3 /* WATagGroup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WATagGroup.h; sourceTree = "<group>"; };
@@ -1489,8 +1492,6 @@
 		80CBC7711713FBDE0056D9CF /* partioIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = partioIcon.png; path = Resources/partioIcon.png; sourceTree = "<group>"; };
 		80CDF03E1727B02200B359DD /* WACheckin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WACheckin.h; sourceTree = "<group>"; };
 		80CDF03F1727B02200B359DD /* WACheckin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WACheckin.m; sourceTree = "<group>"; };
-		80CDF0571727BB2700B359DD /* WAPeople.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAPeople.h; sourceTree = "<group>"; };
-		80CDF0581727BB2700B359DD /* WAPeople.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAPeople.m; sourceTree = "<group>"; };
 		80CDF05A1727BBA600B359DD /* WAArticle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAArticle.h; sourceTree = "<group>"; };
 		80CDF05B1727BBA700B359DD /* WAArticle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAArticle.m; sourceTree = "<group>"; };
 		80CDF05D1727C5B300B359DD /* WAEventDetailsCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = WAEventDetailsCell.xib; path = wammer/WAEventDetailsCell.xib; sourceTree = "<group>"; };
@@ -2178,6 +2179,8 @@
 				13CCDE6D168C3C9300962625 /* WAFetchManager+RemoteFileMetadataFetch.m */,
 				13A318CB168CBD0000017E68 /* WAFetchManager+RemoteChangeFetch.h */,
 				13A318CC168CBD0000017E68 /* WAFetchManager+RemoteChangeFetch.m */,
+				80C768E81710789D000F10A8 /* FBRequestConnection+WAAdditions.h */,
+				80C768E91710789D000F10A8 /* FBRequestConnection+WAAdditions.m */,
 				808E3DDA172B70AC002B2E3F /* WAFetchManager+FBCheckinFetch.h */,
 				808E3DDB172B70AC002B2E3F /* WAFetchManager+FBCheckinFetch.m */,
 			);
@@ -2692,8 +2695,6 @@
 			children = (
 				80090B45170E8BBF005AF6B8 /* WAGeoLocation.h */,
 				80090B46170E8BBF005AF6B8 /* WAGeoLocation.m */,
-				80C768E81710789D000F10A8 /* FBRequestConnection+WAAdditions.h */,
-				80C768E91710789D000F10A8 /* FBRequestConnection+WAAdditions.m */,
 				80B1138B170DD0D90087EBC4 /* WAPhotoHighlightsViewController.h */,
 				80B1138C170DD0D90087EBC4 /* WAPhotoHighlightsViewController.m */,
 				80C9F37F1719AA81003E7C6E /* WAPhotoHighlightsViewController.xib */,
@@ -2976,8 +2977,8 @@
 				80E5173B1670F3B200E1C3AD /* WALocation.m */,
 				80638BFA164CA7DA005695E3 /* WATagGroup.h */,
 				80638BFB164CA7DA005695E3 /* WATagGroup.m */,
-				80CDF0571727BB2700B359DD /* WAPeople.h */,
-				80CDF0581727BB2700B359DD /* WAPeople.m */,
+				805B8EC61732117F00D6CEE1 /* WAPeople.h */,
+				805B8EC71732117F00D6CEE1 /* WAPeople.m */,
 				80638BF0164CA663005695E3 /* WATag.h */,
 				80638BF1164CA663005695E3 /* WATag.m */,
 				FF88E14314E8D7DC00B347A8 /* WAArticle+WAAdditions.h */,
@@ -4950,13 +4951,13 @@
 				80B3A3B6171FA9F100A9B57B /* WAEventDetailsMapCell.m in Sources */,
 				800096071721235B0082E1B5 /* WAPartioNavigationBar.m in Sources */,
 				80CDF0401727B02200B359DD /* WACheckin.m in Sources */,
-				80CDF0591727BB2700B359DD /* WAPeople.m in Sources */,
 				80CDF05C1727BBA700B359DD /* WAArticle.m in Sources */,
 				80CDF0611727C62A00B359DD /* WAEventDetailsCell.m in Sources */,
 				DE0F9E1F17297165008E94CE /* WAAddressBookPickerViewController.m in Sources */,
 				808E3DDC172B70AC002B2E3F /* WAFetchManager+FBCheckinFetch.m in Sources */,
 				80E7E586172FB5E1003E525E /* WAPhotoTimelineGalleryLayout.m in Sources */,
 				80E7E596172FBAC7003E525E /* WAPhotoGalleryCell.m in Sources */,
+				805B8EC81732117F00D6CEE1 /* WAPeople.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5074,7 +5075,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 591;
+				CURRENT_PROJECT_VERSION = 592;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"WF_USES_TESTFLIGHT=$(WF_USES_TESTFLIGHT)",
@@ -5553,7 +5554,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 591;
+				CURRENT_PROJECT_VERSION = 592;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -5616,7 +5617,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 591;
+				CURRENT_PROJECT_VERSION = 592;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"WF_USES_TESTFLIGHT=$(WF_USES_TESTFLIGHT)",
@@ -5852,10 +5853,11 @@
 		4B603C4C16C37D6C003692CB /* WAModel.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				805B8ED6173213DE00D6CEE1 /* WAModel 45.xcdatamodel */,
 				80C768EB1711B84B000F10A8 /* WAModel 44.xcdatamodel */,
 				4B603C4D16C37D6C003692CB /* WAModel 43.xcdatamodel */,
 			);
-			currentVersion = 80C768EB1711B84B000F10A8 /* WAModel 44.xcdatamodel */;
+			currentVersion = 805B8ED6173213DE00D6CEE1 /* WAModel 45.xcdatamodel */;
 			path = WAModel.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
