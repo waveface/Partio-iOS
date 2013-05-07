@@ -14,7 +14,9 @@
   self.minimumInteritemSpacing = 0.0f;
   self.minimumLineSpacing = 20.0f;
   self.sectionInset = UIEdgeInsetsMake(0, 0, 0, 0);
-  self.itemSize = CGSizeMake(568, 320-22);
+  
+  CGRect fullScreenBounds = [[UIScreen mainScreen] bounds];
+  self.itemSize = CGSizeMake(fullScreenBounds.size.height, fullScreenBounds.size.width);
   self.scrollDirection = UICollectionViewScrollDirectionHorizontal;
   self.collectionView.alwaysBounceVertical = NO;
 }

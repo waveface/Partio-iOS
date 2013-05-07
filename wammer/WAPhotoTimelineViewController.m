@@ -569,12 +569,14 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
       self.navigationBar.hidden = YES;
       self.toolbar.hidden = YES;
       [self.collectionView reloadData];
+      [[UIApplication sharedApplication] setStatusBarHidden:YES];
       WAPhotoTimelineGalleryLayout *galleryLayout = [[WAPhotoTimelineGalleryLayout alloc] init];
       [self.collectionView setCollectionViewLayout:galleryLayout animated:NO];
       //    [self.collectionView reloadData];
     }
   } else {
     if (galleryMode){
+      [[UIApplication sharedApplication] setStatusBarHidden:NO];
     }
   }
   
@@ -966,7 +968,7 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
 }
 
 - (void) collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-  if (self.representingArticle) {
+  if (self.representingArticle && !galleryMode) {
     WAFile *file = self.sortedImages[indexPath.row];
     WAGalleryViewController *gallery = [WAGalleryViewController controllerRepresentingArticleAtURI:[[self.representingArticle objectID] URIRepresentation] context:@{kWAGalleryViewControllerContextPreferredFileObjectURI: file.objectID.URIRepresentation}];
     [self.navigationController pushViewController:gallery animated:YES];
