@@ -376,13 +376,13 @@ static NSString *kWAAddressBookViewController_CoachMarks = @"kWAAddressBookViewC
     self.contacts = [(__bridge_transfer NSArray *)peopleMutable copy];
   }
   
-  self.contacts = [self omitPossibleFacebookContacts:self.contacts];
+  self.contacts = [self omitIMLinkedContacts:self.contacts];
   self.contacts = [self sectionObjects:self.contacts collationStringSelector:@selector(self)];
   
   return self.contacts;
 }
 
-- (NSMutableArray *)omitPossibleFacebookContacts:(NSArray *)contacts
+- (NSMutableArray *)omitIMLinkedContacts:(NSArray *)contacts
 {
   NSMutableArray *filteredContacts = [NSMutableArray array];
   for (id object in contacts) {
