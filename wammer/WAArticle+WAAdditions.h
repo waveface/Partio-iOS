@@ -14,5 +14,6 @@
 - (BOOL) hasMeaningfulContent;
 
 @property (nonatomic, readonly, strong) NSDate *presentationDate;
+@property (nonatomic, readonly, strong) NSArray *uniqueCheckins;
 
 @end

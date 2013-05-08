@@ -293,9 +293,9 @@ static NSString * const kWASharedEventViewController_CoachMarks = @"kWASharedEve
     location = aArticle.location.name;
   }
 
-  NSInteger checkinNumbers = [aArticle.checkins count];
+  NSInteger checkinNumbers = [aArticle.uniqueCheckins count];
   if (checkinNumbers) {
-    NSString *checkinString = [[[aArticle.checkins allObjects] valueForKey:@"name"] componentsJoinedByString:@","];
+    NSString *checkinString = [[aArticle.uniqueCheckins valueForKey:@"name"] componentsJoinedByString:@","];
     if (location.length && checkinString.length) {
       location = [NSString stringWithFormat:@"%@,%@", checkinString, location];
     }

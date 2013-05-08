@@ -600,13 +600,6 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
         __weak WAPartioSignupViewController *sCreateAccountVC = createAccountVC;
         createAccountVC.completeHandler = ^(NSError *error) {
         
-          if ([WARemoteInterface sharedInterface].userToken) {
-            
-            WAAppDelegate_iOS *appDelegate = (WAAppDelegate_iOS*)AppDelegate();
-            [appDelegate bootstrapWhenUserLogin];
-            
-          }
-          
           [wSelf finishCreatingSharingEventForSharingTargets:results];
 
           [[NSNotificationCenter defaultCenter] postNotificationName:kWACoreDataReinitialization object:self];
@@ -705,9 +698,9 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
 
 - (NSArray *)checkins {
   
-  if (self.representingArticle)
-    return [self.representingArticle.checkins allObjects];
-  else {
+  if (self.representingArticle) {
+    return self.representingArticle.uniqueCheckins;
+  } else {
     NSDate *beginDate = [NSDate dateWithTimeInterval:(-30*60) sinceDate:self.beginDate];
     NSDate *endDate = [NSDate dateWithTimeInterval:(30*60) sinceDate:self.endDate];
     NSFetchRequest * fetchRequest = [[WADataStore defaultStore] newFetchReuqestForCheckinFrom:beginDate to:endDate];
