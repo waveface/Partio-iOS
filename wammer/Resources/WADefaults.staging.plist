@@ -50,5 +50,7 @@
 	<string>ZglRcsve5lAp5h12nJ4APA</string>
 	<key>WATwitterConsumerSecret</key>
 	<string>zBch3rtBh9AmaHY4EitodNdbKVgsuiqzB4dWzDvG3RQ</string>
+	<key>WAPhotoImportEnabled</key>
+	<true/>
 </dict>
 </plist>
