@@ -336,26 +336,28 @@ static NSString *kWAAddressBookViewController_CoachMarks = @"kWAAddressBookViewC
     NSLog(@"Address Book Create: %@", Error);
   }
   
-  BOOL granted = NO;
+  __block BOOL accessGranted = NO;
   if (ABAddressBookGetAuthorizationStatus() == kABAuthorizationStatusNotDetermined) {
+    dispatch_semaphore_t sema = dispatch_semaphore_create(0);
+
     ABAddressBookRequestAccessWithCompletion(self.addressBook, ^(bool granted, CFErrorRef error) {
-      granted = YES;
-      
+      accessGranted = granted;
+      dispatch_semaphore_signal(sema);
     });
+    
+    dispatch_semaphore_wait(sema, DISPATCH_TIME_FOREVER);
+
+    
   } else if (ABAddressBookGetAuthorizationStatus() == kABAuthorizationStatusAuthorized) {
-    granted = YES;
+    accessGranted = YES;
 
   }
   else {
-    // The user has previously denied access
-    // Send an alert telling user to change privacy setting in settings app
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"MESSAGE_REQUEST_CONTACT_PERMISSION", @"MESSAGE_REQUEST_CONTACT_PERMISSION") message:nil delegate:self cancelButtonTitle:NSLocalizedString(@"ACTION_OKAY", @"ACTION_OKAY") otherButtonTitles:nil];
-    [alert show];
-    
-    return @[];
+    [self showContactPermissionAlert];
+    return NULL;
   }
 
-  if (granted) {
+  if (accessGranted) {
     CFArrayRef people = ABAddressBookCopyArrayOfAllPeople(self.addressBook);
     CFMutableArrayRef peopleMutable = CFArrayCreateMutableCopy(kCFAllocatorDefault,
                                                                CFArrayGetCount(people),
@@ -367,12 +369,27 @@ static NSString *kWAAddressBookViewController_CoachMarks = @"kWAAddressBookViewC
                       (void*)ABPersonGetSortOrdering());
     
     self.contacts = [(__bridge_transfer NSArray *)peopleMutable copy];
+    self.contacts = [self omitIMLinkedContacts:self.contacts];
+    self.contacts = [self sectionObjects:self.contacts collationStringSelector:@selector(self)];
+
+    return self.contacts;
+  
+  } else {
+    [self showContactPermissionAlert];
+    return NULL;
+    
   }
   
-  self.contacts = [self omitIMLinkedContacts:self.contacts];
-  self.contacts = [self sectionObjects:self.contacts collationStringSelector:@selector(self)];
   
-  return self.contacts;
+}
+
+- (void)showContactPermissionAlert
+{
+  // The user has previously denied access
+  // Send an alert telling user to change privacy setting in settings app
+  UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"MESSAGE_REQUEST_CONTACT_PERMISSION", @"MESSAGE_REQUEST_CONTACT_PERMISSION") message:nil delegate:self cancelButtonTitle:NSLocalizedString(@"ACTION_OKAY", @"ACTION_OKAY") otherButtonTitles:nil];
+  [alert show];
+
 }
 
 - (NSMutableArray *)omitIMLinkedContacts:(NSArray *)contacts
