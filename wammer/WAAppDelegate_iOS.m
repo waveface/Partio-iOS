@@ -116,6 +116,7 @@ static NSString *const kTrackingId = @"UA-27817516-8";
 @property (nonatomic, strong) WAFetchManager *fetchManager;
 @property (nonatomic, strong) WASlidingMenuViewController *slidingMenu;
 @property (nonatomic, strong) WAStatusBar *statusBar;
+@property (nonatomic, strong) WAOverlayBezel *busyOverlay;
 
 - (void) clearViewHierarchy;
 - (void) recreateViewHierarchy;
@@ -176,6 +177,7 @@ static NSString *const kTrackingId = @"UA-27817516-8";
   
 }
 
+
 - (void) bootstrapWhenUserLogin {
   
   WARemoteInterface *ri = [WARemoteInterface sharedInterface];
@@ -206,7 +208,6 @@ extern CFAbsoluteTime StartTime;
   
   [self bootstrap];
   
-//  WADefaultAppearance();
   WAPartioDefaultAppearance();
   
   self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
@@ -460,12 +461,10 @@ extern CFAbsoluteTime StartTime;
         
       } else {
 
-        [wSelf cacheManager];
-        [wSelf bootstrapWhenUserLogin];
-
         WASharedEventViewController *sharedEventsVC = [[WASharedEventViewController alloc] init];
         WANavigationController *navVC = [[WANavigationController alloc] initWithRootViewController:sharedEventsVC];
         wSelf.window.rootViewController = navVC;
+        
       }
     
     }];
@@ -796,7 +795,6 @@ extern CFAbsoluteTime StartTime;
   __weak WAAppDelegate_iOS *wSelf = self;
   __block WAPartioFirstUseViewController *partioFirstUse = [WAPartioFirstUseViewController firstUseViewControllerWithCompletionBlock:^{
 
-    [self bootstrapWhenUserLogin];
     [partioFirstUse popToRootViewControllerAnimated:NO];
     
     [partioFirstUse dismissViewControllerAnimated:NO completion:^{
@@ -807,7 +805,7 @@ extern CFAbsoluteTime StartTime;
     WASharedEventViewController *sharedEventsVC = [[WASharedEventViewController alloc] init];
     WANavigationController *navVC = [[WANavigationController alloc] initWithRootViewController:sharedEventsVC];
     wSelf.window.rootViewController = navVC;
-
+    
   } failure:^(NSError *error) {
     NSLog(@"fail to sign up for error: %@", error);
     IRAction *okAction = [IRAction actionWithTitle:NSLocalizedString(@"ACTION_OKAY", @"Alert Dismissal Action") block:nil];

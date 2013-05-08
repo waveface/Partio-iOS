@@ -56,6 +56,7 @@
     [self.recurrenceMachine addRecurringOperation:[self fbCheckinFetchPrototype]];
     [self.recurrenceMachine addRecurringOperation:[self remoteFileMetadataFetchOperationPrototype]];
 
+    [self.recurrenceMachine scheduleOperationsNow];
   }
 
   return self;

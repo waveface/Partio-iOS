@@ -72,174 +72,169 @@
 		}
 		
 
-		[wSelf endPostponingFetch];
-        
-		callback(nil);
 
 	  } onFailure:^(NSError *error) {
 		
-		[wSelf endPostponingFetch];
-
-		callback(error);
 
 	  }];
 		
-	} else {// if (currentSeq)
+	} 
 		
-	  WADataStore *ds = [WADataStore defaultStore];
-	  NSDate *currentFetchedDate = [ds earliestDate];
-	  if (!currentFetchedDate)
-		currentFetchedDate = [NSDate date];
-	  
-	  WARemoteInterface *ri = [WARemoteInterface sharedInterface];
-	  
-	  NSInteger offsetDays = -30;
-	  [ri retrieveSummariesSince:currentFetchedDate
-					  daysOffset:offsetDays
-						 inGroup:ri.primaryGroupIdentifier
-					   onSuccess:^(NSArray *summaries, BOOL hasMore) {
-						 
-						 NSMutableArray *toFetchPostIdList = [NSMutableArray array];
-						 NSMutableArray *toFetchImageIdList = [NSMutableArray array];
-						 for (NSDictionary *entry in summaries) {
-						   
-						   NSArray *eventIDList = [entry valueForKey:@"event_id_list"];
-						   NSArray *imageIdList = [entry valueForKey:@"image_id_list"];
-						   NSArray *docIdList = [entry valueForKey:@"doc_id_list"];
-						   NSArray *webthumbIdList = [entry valueForKey:@"webthumb_id_list"];
-						   
-						   if ([eventIDList count]) {
-							 [toFetchPostIdList addObjectsFromArray:eventIDList];
-						   }
-						   
-						   if ([imageIdList count]) {
-							 [toFetchImageIdList addObjectsFromArray:imageIdList];
-						   }
-						   
-						   if ([docIdList count]) {
-							 [toFetchImageIdList addObjectsFromArray:docIdList];
-						   }
-						   
-						   if ([webthumbIdList count]) {
-							 [toFetchImageIdList addObjectsFromArray:webthumbIdList];
-						   }
-						   
-						 }
-						 
-						 if ([toFetchImageIdList count]) {
-						   
-						   NSManagedObjectContext *context = [[WADataStore defaultStore] disposableMOC];
-						   context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
-						   
-						   for (NSString *identifier in toFetchImageIdList) {
+    NSDate *currentFetchedDate = [ds earliestDate];
+    if (!currentFetchedDate)
+      currentFetchedDate = [NSDate date];
+    
+    WARemoteInterface *ri = [WARemoteInterface sharedInterface];
+    
+    NSInteger offsetDays = -30;
+    [ri retrieveSummariesSince:currentFetchedDate
+                    daysOffset:offsetDays
+                       inGroup:ri.primaryGroupIdentifier
+                     onSuccess:^(NSArray *summaries, BOOL hasMore) {
+                       
+                       NSMutableArray *toFetchPostIdList = [NSMutableArray array];
+                       NSMutableArray *toFetchImageIdList = [NSMutableArray array];
+                       for (NSDictionary *entry in summaries) {
+                         
+                         NSArray *eventIDList = [entry valueForKey:@"event_id_list"];
+                         NSArray *imageIdList = [entry valueForKey:@"image_id_list"];
+                         NSArray *docIdList = [entry valueForKey:@"doc_id_list"];
+                         NSArray *webthumbIdList = [entry valueForKey:@"webthumb_id_list"];
+                         
+                         if ([eventIDList count]) {
+                           [toFetchPostIdList addObjectsFromArray:eventIDList];
+                         }
+                         
+                         if ([imageIdList count]) {
+                           [toFetchImageIdList addObjectsFromArray:imageIdList];
+                         }
+                         
+                         if ([docIdList count]) {
+                           [toFetchImageIdList addObjectsFromArray:docIdList];
+                         }
+                         
+                         if ([webthumbIdList count]) {
+                           [toFetchImageIdList addObjectsFromArray:webthumbIdList];
+                         }
+                         
+                       }
+                       
+                       if ([toFetchImageIdList count]) {
+                         
+                         NSManagedObjectContext *context = [[WADataStore defaultStore] disposableMOC];
+                         context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
+                         
+                         for (NSString *identifier in toFetchImageIdList) {
+                           
+                           NSMutableDictionary *attach = [@{
+                                                          @"object_id": identifier,
+                                                          @"outdated": @YES,	// outdated, require sync from cloud
+                                                          } mutableCopy];
 							 
-							 NSMutableDictionary *attach = [@{
-															@"object_id": identifier,
-															@"outdated": @YES,	// outdated, require sync from cloud
-															} mutableCopy];
-							 
-							 // create an WAFile entry for updateAttachmentsMetaOnSuccess to batch retrieve attachment metas
-							 [WAFile insertOrUpdateObjectsUsingContext:context
-													withRemoteResponse:[NSArray arrayWithObject:attach]
-														  usingMapping:nil
-															   options:IRManagedObjectOptionIndividualOperations];
-							 
-						   }
-						   [context save:nil];
-						   
-						 }
-						 
-						 if ([toFetchPostIdList count]) {
-						   
-						   IRAsyncOperation *operation = [IRAsyncOperation operationWithWorker:^(IRAsyncOperationCallback callback) {
-							 
-							 [ri retrievePostsInGroup:ri.primaryGroupIdentifier withIdentifiers:toFetchPostIdList onSuccess:^(NSArray *postReps) {
-							   
-							   [ds performBlock:^{
-								 
-								 NSManagedObjectContext *context = [ds autoUpdatingMOC];
-								 NSArray *touchedArticles = [WAArticle insertOrUpdateObjectsUsingContext:context withRemoteResponse:postReps usingMapping:nil options:IRManagedObjectOptionIndividualOperations];
-								   
-								 [touchedArticles enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-								   
-								   WAArticle *article = obj;
-								   if ([ds isUpdatingArticle:[[article objectID] URIRepresentation]]) {
-									 [context refreshObject:article mergeChanges:NO];
-								   }
-								   
-								 }];
-								 
-								 [context save:nil];
-								 
-							   } waitUntilDone:YES];
-							   
-							   callback(nil);
-							   
-							 } onFailure:^(NSError *error) {
-							   
-							   NSLog(@"Unable to fetch posts in %@, error:%@", toFetchPostIdList, error);
-							   callback(error);
-							   
-							 }];
-							 
-						   } trampoline:^(IRAsyncOperationInvoker callback) {
-							 
-							 NSCParameterAssert(![NSThread isMainThread]);
-							 callback();
-							 
-						   } callback:^(id results) {
-							 
-							 // NO OP
-							 
-						   } callbackTrampoline:^(IRAsyncOperationInvoker callback) {
-							   
-							 NSCParameterAssert(![NSThread isMainThread]);
-							 callback();
-							   
-						   }];
-
-						   [wSelf.articleFetchOperationQueue addOperation:operation];
-
-						 }
-						 
-						 IRAsyncBarrierOperation *tailOp = [IRAsyncBarrierOperation operationWithWorker:^(IRAsyncOperationCallback callback) {
-						   
-						   NSDate *nextFetchedDate = [NSDate dateWithTimeInterval:offsetDays*24*60*60 sinceDate:currentFetchedDate];
-						   [ds setEarliestDate:nextFetchedDate];
-						   
-						   if (!hasMore) {
-							 [[NSUserDefaults standardUserDefaults] setBool:YES forKey:kWAFirstArticleFetched];
-							 [[NSUserDefaults standardUserDefaults] synchronize];
-						   }
-
-						   callback(nil);
-						 } trampoline:^(IRAsyncOperationInvoker callback) {
-						   NSCParameterAssert(![NSThread isMainThread]);
-						   callback();
-						 } callback:^(id results) {
-						   [wSelf endPostponingFetch];
-						   callback(results);
-						 } callbackTrampoline:^(IRAsyncOperationInvoker callback) {
-						   NSCParameterAssert(![NSThread isMainThread]);
-						   callback();
-						 }];
-						 
-						 for (IRAsyncOperation *operation in [wSelf.articleFetchOperationQueue operations]) {
-						   [tailOp addDependency:operation];
-						 }
-						 
-						 [wSelf.articleFetchOperationQueue addOperation:tailOp];
-
-						 callback(nil);
-						 
-					   } onFailure:^(NSError *error) {
-						 
-						 [wSelf endPostponingFetch];
-
-						 callback(error);
-						 
-					   }];
-	}
+                           // create an WAFile entry for updateAttachmentsMetaOnSuccess to batch retrieve attachment metas
+                           [WAFile insertOrUpdateObjectsUsingContext:context
+                                                  withRemoteResponse:[NSArray arrayWithObject:attach]
+                                                        usingMapping:nil
+                                                             options:IRManagedObjectOptionIndividualOperations];
+                           
+                         }
+                         [context save:nil];
+                         
+                       }
+                       
+                       if ([toFetchPostIdList count]) {
+                         
+                         IRAsyncOperation *operation = [IRAsyncOperation operationWithWorker:^(IRAsyncOperationCallback callback) {
+                           
+                           [ri retrievePostsInGroup:ri.primaryGroupIdentifier withIdentifiers:toFetchPostIdList onSuccess:^(NSArray *postReps) {
+                             
+                             [ds performBlock:^{
+                               
+                               NSManagedObjectContext *context = [ds autoUpdatingMOC];
+                               NSArray *touchedArticles = [WAArticle insertOrUpdateObjectsUsingContext:context withRemoteResponse:postReps usingMapping:nil options:IRManagedObjectOptionIndividualOperations];
+                               
+                               [touchedArticles enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+                                 
+                                 WAArticle *article = obj;
+                                 if ([ds isUpdatingArticle:[[article objectID] URIRepresentation]]) {
+                                   [context refreshObject:article mergeChanges:NO];
+                                 }
+                                 
+                               }];
+                               
+                               [context save:nil];
+                               
+                             } waitUntilDone:YES];
+                             
+                             callback(nil);
+                             
+                           } onFailure:^(NSError *error) {
+                             
+                             NSLog(@"Unable to fetch posts in %@, error:%@", toFetchPostIdList, error);
+                             callback(error);
+                             
+                           }];
+                           
+                         } trampoline:^(IRAsyncOperationInvoker callback) {
+                           
+                           NSCParameterAssert(![NSThread isMainThread]);
+                           callback();
+                           
+                         } callback:^(id results) {
+                           
+                           // NO OP
+                           
+                         } callbackTrampoline:^(IRAsyncOperationInvoker callback) {
+                           
+                           NSCParameterAssert(![NSThread isMainThread]);
+                           callback();
+                           
+                         }];
+                         
+                         [wSelf.articleFetchOperationQueue addOperation:operation];
+                         
+                       }
+                       
+                       IRAsyncBarrierOperation *tailOp = [IRAsyncBarrierOperation operationWithWorker:^(IRAsyncOperationCallback callback) {
+                         
+                         [[NSNotificationCenter defaultCenter] postNotificationName:kWARemoteInterfaceDidFetchArticleNotification object:nil];
+                         
+                         NSDate *nextFetchedDate = [NSDate dateWithTimeInterval:offsetDays*24*60*60 sinceDate:currentFetchedDate];
+                         [ds setEarliestDate:nextFetchedDate];
+                         
+                         if (!hasMore) {
+                           [[NSUserDefaults standardUserDefaults] setBool:YES forKey:kWAFirstArticleFetched];
+                           [[NSUserDefaults standardUserDefaults] synchronize];
+                         }
+                         
+                         callback(nil);
+                       } trampoline:^(IRAsyncOperationInvoker callback) {
+                         NSCParameterAssert(![NSThread isMainThread]);
+                         callback();
+                       } callback:^(id results) {
+                         [wSelf endPostponingFetch];
+                         callback(results);
+                       } callbackTrampoline:^(IRAsyncOperationInvoker callback) {
+                         NSCParameterAssert(![NSThread isMainThread]);
+                         callback();
+                       }];
+                       
+                       for (IRAsyncOperation *operation in [wSelf.articleFetchOperationQueue operations]) {
+                         [tailOp addDependency:operation];
+                       }
+                       
+                       [wSelf.articleFetchOperationQueue addOperation:tailOp];
+                       
+                       callback(nil);
+                       
+                     } onFailure:^(NSError *error) {
+                       
+                       [wSelf endPostponingFetch];
+                       
+                       callback(error);
+                       
+                     }];
+    
 	
   } trampoline:^(IRAsyncOperationInvoker callback) {
 

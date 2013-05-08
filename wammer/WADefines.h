@@ -90,6 +90,7 @@ extern NSString * const kWASNSFoursquareConnectEnabled;
 
 extern NSString * const kWAFirstArticleFetched;
 extern NSString * const kWAAllCollectionsFetchOnce;
+extern NSString * const kWARemoteInterfaceDidFetchArticleNotification;
 
 extern NSString * const WAFeedbackRecipient;
 extern NSString * const WAStreamFeaturesURL;

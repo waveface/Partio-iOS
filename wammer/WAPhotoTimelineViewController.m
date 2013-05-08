@@ -600,13 +600,6 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
         __weak WAPartioSignupViewController *sCreateAccountVC = createAccountVC;
         createAccountVC.completeHandler = ^(NSError *error) {
         
-          if ([WARemoteInterface sharedInterface].userToken) {
-            
-            WAAppDelegate_iOS *appDelegate = (WAAppDelegate_iOS*)AppDelegate();
-            [appDelegate bootstrapWhenUserLogin];
-            
-          }
-          
           [wSelf finishCreatingSharingEventForSharingTargets:results];
 
           [[NSNotificationCenter defaultCenter] postNotificationName:kWACoreDataReinitialization object:self];
