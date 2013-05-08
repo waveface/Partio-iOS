@@ -62,10 +62,10 @@
     if (wSelf.busyBezel) {
       [wSelf.busyBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
       wSelf.busyBezel = nil;
-      [[NSNotificationCenter defaultCenter] removeObserver:self name:kWARemoteInterfaceDidFetchArticleNotification object:nil];
+      [[NSNotificationCenter defaultCenter] removeObserver:wSelf name:kWARemoteInterfaceDidFetchArticleNotification object:nil];
     }
     
-    WAPartioFirstUseViewController *firstUse = (WAPartioFirstUseViewController*)self.navigationController;
+    WAPartioFirstUseViewController *firstUse = (WAPartioFirstUseViewController*)wSelf.navigationController;
     if (firstUse.completionBlock) {
       firstUse.completionBlock();
       firstUse.completionBlock = nil;
