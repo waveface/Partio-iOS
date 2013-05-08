@@ -88,6 +88,8 @@ NSString * const kWASNSFoursquareConnectEnabled = @"WAFoursquareConnectEnabled";
 
 NSString * const kWAFirstArticleFetched = @"WAFirstArticleSynced";
 NSString * const kWAAllCollectionsFetchOnce = @"WAAllCollectionsFetchOnce";
+NSString * const kWARemoteInterfaceDidFetchArticleNotification = @"WARemoteInterfaceDidFetchArticleNotification";
+
 
 void WARegisterUserDefaults () {
 

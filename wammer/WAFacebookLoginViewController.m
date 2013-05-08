@@ -10,6 +10,7 @@
 #import "UIKit+IRAdditions.h"
 #import "WAOverlayBezel.h"
 #import "WARemoteInterface.h"
+#import "WAAppDelegate_iOS.h"
 #import <FacebookSDK/FacebookSDK.h>
 #import <Accounts/Accounts.h>
 
@@ -93,23 +94,29 @@
         ri.userIdentifier = userID;
         ri.userToken = token;
         ri.primaryGroupIdentifier = primaryGroupID;
+
+        WAAppDelegate_iOS *appDelegate = (WAAppDelegate_iOS*)AppDelegate();
+        [appDelegate bootstrapWhenUserLogin];
         
         dispatch_async(dispatch_get_main_queue(), ^{
+
           [busyBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
+
           if (completionHandler)
-            completionHandler(nil);
+            completionHandler(nil);          
+          
         });
         
         
       } onFailure:^(NSError *error) {
         
         dispatch_async(dispatch_get_main_queue(), ^{
-          
+                    
           [busyBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
           
           if (completionHandler)
             completionHandler(error);
-          
+
         });
         
       }];

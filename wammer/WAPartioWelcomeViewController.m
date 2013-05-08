@@ -12,6 +12,8 @@
 #import "WAOverlayBezel.h"
 #import "WARemoteInterface.h"
 #import "WAPartioFirstUseViewController.h"
+#import "WAAppDelegate_iOS.h"
+#import "WADefines.h"
 #import <Accounts/Accounts.h>
 #import <FacebookSDK/FacebookSDK.h>
 
@@ -19,6 +21,7 @@
 @property (nonatomic, weak) IBOutlet UIImageView *backgroundImageView;
 @property (nonatomic, weak) IBOutlet UIButton *experienceButton;
 @property (nonatomic, weak) IBOutlet UIButton *signupButton;
+@property (nonatomic, strong) WAOverlayBezel *busyBezel;
 @end
 
 
@@ -52,6 +55,27 @@
     self.backgroundImageView.image = [UIImage imageNamed:@"PartioLogin"];
 }
 
+- (void)firstArticleFetchedHandler:(NSNotification*)aNotification {
+  __weak WAPartioWelcomeViewController *wSelf = self;
+  dispatch_async(dispatch_get_main_queue(), ^{
+  
+    if (wSelf.busyBezel) {
+      [wSelf.busyBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
+      wSelf.busyBezel = nil;
+      [[NSNotificationCenter defaultCenter] removeObserver:wSelf name:kWARemoteInterfaceDidFetchArticleNotification object:nil];
+    }
+    
+    WAPartioFirstUseViewController *firstUse = (WAPartioFirstUseViewController*)wSelf.navigationController;
+    if (firstUse.completionBlock) {
+      firstUse.completionBlock();
+      firstUse.completionBlock = nil;
+    }
+  });
+
+}
+
+
+
 - (IBAction) experienceButtonClicked:(id)sender {
 /*
   IRAction *cancelAction = [IRAction actionWithTitle:@"OK" block:nil];
@@ -75,8 +99,9 @@
   
   self.experienceButton.enabled = NO;
   self.signupButton.enabled = NO;
-  WAOverlayBezel *busyBezel = [WAOverlayBezel bezelWithStyle:WAActivityIndicatorBezelStyle];
-  [busyBezel showWithAnimation:WAOverlayBezelAnimationFade];
+  self.busyBezel = [WAOverlayBezel bezelWithStyle:WAActivityIndicatorBezelStyle];
+  [self.busyBezel showWithAnimation:WAOverlayBezelAnimationFade];
+  self.busyBezel.caption = @"Signin...";
   
   // http://stackoverflow.com/questions/12601191/facebook-sdk-3-1-error-validating-access-token
   // This should and will be fixed from FB SDK
@@ -112,7 +137,7 @@
        NSLog(@"Facebook auth error: %@", error);
        dispatch_async(dispatch_get_main_queue(), ^{
          
-         [busyBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
+         [wSelf.busyBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
          wSelf.experienceButton.enabled = YES;
          wSelf.signupButton.enabled = YES;
          
@@ -142,17 +167,18 @@
         ri.userToken = token;
         ri.primaryGroupIdentifier = primaryGroupID;
         
-        dispatch_async(dispatch_get_main_queue(), ^{
-          if (firstUse.completionBlock)
-            firstUse.completionBlock();
-        });
-        
-        
+        wSelf.busyBezel.caption = @"Loading...";
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(firstArticleFetchedHandler:) name:kWARemoteInterfaceDidFetchArticleNotification object:nil];
+        [wSelf performSelector:@selector(firstArticleFetchedHandler:) withObject:nil afterDelay:10];
+
+        WAAppDelegate_iOS *appDelegate = (WAAppDelegate_iOS*)AppDelegate();
+        [appDelegate bootstrapWhenUserLogin];
+
       } onFailure:^(NSError *error) {
         
         dispatch_async(dispatch_get_main_queue(), ^{
           
-          [busyBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
+          [wSelf.busyBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
           wSelf.experienceButton.enabled = YES;
           wSelf.signupButton.enabled = YES;
 
