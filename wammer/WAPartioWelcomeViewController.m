@@ -137,7 +137,7 @@
        NSLog(@"Facebook auth error: %@", error);
        dispatch_async(dispatch_get_main_queue(), ^{
          
-         [self.busyBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
+         [wSelf.busyBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
          wSelf.experienceButton.enabled = YES;
          wSelf.signupButton.enabled = YES;
          
@@ -169,7 +169,7 @@
         
         wSelf.busyBezel.caption = @"Loading...";
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(firstArticleFetchedHandler:) name:kWARemoteInterfaceDidFetchArticleNotification object:nil];
-        [self performSelector:@selector(firstArticleFetchedHandler:) withObject:nil afterDelay:10];
+        [wSelf performSelector:@selector(firstArticleFetchedHandler:) withObject:nil afterDelay:10];
 
         WAAppDelegate_iOS *appDelegate = (WAAppDelegate_iOS*)AppDelegate();
         [appDelegate bootstrapWhenUserLogin];
@@ -178,7 +178,7 @@
         
         dispatch_async(dispatch_get_main_queue(), ^{
           
-          [self.busyBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
+          [wSelf.busyBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
           wSelf.experienceButton.enabled = YES;
           wSelf.signupButton.enabled = YES;
 
