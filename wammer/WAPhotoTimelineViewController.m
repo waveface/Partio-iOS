@@ -705,9 +705,9 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
 
 - (NSArray *)checkins {
   
-  if (self.representingArticle)
-    return [self.representingArticle.checkins allObjects];
-  else {
+  if (self.representingArticle) {
+    return self.representingArticle.uniqueCheckins;
+  } else {
     NSDate *beginDate = [NSDate dateWithTimeInterval:(-30*60) sinceDate:self.beginDate];
     NSDate *endDate = [NSDate dateWithTimeInterval:(30*60) sinceDate:self.endDate];
     NSFetchRequest * fetchRequest = [[WADataStore defaultStore] newFetchReuqestForCheckinFrom:beginDate to:endDate];
