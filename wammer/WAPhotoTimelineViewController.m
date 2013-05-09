@@ -653,6 +653,13 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
         if (gps) {
           _coordinate.latitude = [(NSNumber*)[gps valueForKey:@"Latitude"] doubleValue];
           _coordinate.longitude = [(NSNumber*)[gps valueForKey:@"Longitude"] doubleValue];
+          if ([gps[@"LongitudeRef"] isEqualToString:@"W"]) {
+            _coordinate.longitude = -_coordinate.longitude;
+          }
+          if ([gps[@"LatitudeRef"] isEqualToString:@"S"]) {
+            _coordinate.latitude = -_coordinate.latitude;
+          }
+
           break;
         }
       }
