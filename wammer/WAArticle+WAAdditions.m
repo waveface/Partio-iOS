@@ -7,7 +7,7 @@
 //
 
 #import "WAArticle+WAAdditions.h"
-
+#import "WACheckin.h"
 #import "WADataStore.h"
 
 @implementation WAArticle (WAAdditions)
@@ -89,6 +89,25 @@
 - (NSDate *) presentationDate {
 
 	return self.eventStartDate;
+
+}
+
+- (NSArray*) uniqueCheckins {
+  
+  NSMutableArray *uniqueCheckins = [NSMutableArray array];
+  for (WACheckin *checkin in self.checkins) {
+    NSUInteger index = [uniqueCheckins indexOfObjectPassingTest:^BOOL(WACheckin *target, NSUInteger idx, BOOL *stop) {
+      if ([checkin.name isEqualToString:target.name]) {
+        *stop = YES;
+        return YES;
+      }
+      return NO;
+    }];
+    
+    if (index == NSNotFound)
+      [uniqueCheckins addObject:checkin];
+  }
+  return [NSArray arrayWithArray:uniqueCheckins];
 
 }
 
