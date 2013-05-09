@@ -5113,7 +5113,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 5AE49661BAA04638AA81DC49 /* Pods.xcconfig */;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				COMPRESS_PNG_FILES = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -5654,7 +5654,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 5AE49661BAA04638AA81DC49 /* Pods.xcconfig */;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				COMPRESS_PNG_FILES = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -5723,7 +5723,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 5AE49661BAA04638AA81DC49 /* Pods.xcconfig */;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				COMPRESS_PNG_FILES = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
