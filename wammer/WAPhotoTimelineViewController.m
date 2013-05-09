@@ -56,7 +56,7 @@
 static NSString * const kWAPhotoTimelineViewController_CoachMarks = @"kWAPhotoTimelineViewController_CoachMarks";
 static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoTimelineViewController_CoachMarks2";
 
-@interface WAPhotoTimelineViewController () <UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UIScrollViewDelegate>
+@interface WAPhotoTimelineViewController () <UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UIScrollViewDelegate, WATimelineIndexDataSource>
 
 @property (nonatomic, strong) WAPhotoTimelineCover *headerView;
 @property (nonatomic, strong) WAPhotoTimelineNavigationBar *navigationBar;
@@ -169,14 +169,6 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
   
   [self.collectionView registerNib:[UINib nibWithNibName:@"WAPhotoGalleryCell" bundle:nil] forCellWithReuseIdentifier:@"PhotoGallery"];
 
-  NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-  formatter = [[NSDateFormatter alloc] init];
-  formatter.dateStyle = NSDateFormatterNoStyle;
-  formatter.timeStyle = NSDateFormatterShortStyle;
-
-  [self.indexView addIndex:0.01 label:[formatter stringFromDate:self.beginDate]];
-  [self.indexView addIndex:0.99 label:[formatter stringFromDate:self.endDate]];
-
   [self.toolbar setBackgroundImage:[[UIImage alloc] init] forToolbarPosition:UIToolbarPositionAny barMetrics:UIBarMetricsDefault];
   self.toolbar.backgroundColor = [UIColor colorWithWhite:0.0f alpha:0.4f];
   if (!self.representingArticle) {
@@ -245,6 +237,8 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
     self.toolbar.items = @[ addContacts, flexibleSpace, addPhotos];
     [self.view addSubview:self.toolbar];
   }
+  
+  [self.indexView reloadViews];
   
 }
 
@@ -818,25 +812,18 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
   WAPhotoGalleryCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"PhotoGallery" forIndexPath:indexPath];
   
   if (self.representingArticle) {
-    [self.sortedImages[indexPath.row] irObserve:@"thumbnailImage"
-                                        options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionNew
-                                        context:nil
-                                      withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
-                                        UIImage *image = (UIImage*)toValue;
-                                        
-                                        [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-                                          cell.imageView.image = image;
-                                        }];
-                                      }];
+    cell.imageView.image = nil;
+    [cell.imageView irUnbind:@"image"];
+    [cell.imageView irBind:@"image" toObject:self.sortedImages[indexPath.row] keyPath:@"thumbnailImage" options:@{kIRBindingsAssignOnMainThreadOption: (id)kCFBooleanTrue}];
   } else {
     ALAsset *asset = self.allAssets[indexPath.row];
+    cell.imageView.image = nil;
     [cell.imageView irUnbind:@"image"];
     [cell.imageView irBind:@"image"
                   toObject:asset
                    keyPath:@"cachedPresentableImage"
                    options:@{kIRBindingsAssignOnMainThreadOption: (id)kCFBooleanTrue}];
   }
-//  NSLog(@"return cellForItemAtIndexPath:%@", indexPath);
   
     return cell;
 }
@@ -1082,6 +1069,47 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
       
     }];
   }
+}
+
+#pragma mark - WATimelineIndexDataSource
+- (NSInteger) numberOfIndexicsForIndexView:(WATimelineIndexView *)indexView {
+  NSLog(@"number of index");
+  return self.checkins.count + 2;
+}
+
+- (WATimelineIndexLabel*) labelForIndex:(NSInteger)index inIndexView:(WATimelineIndexView *)indexView {
+
+  WATimelineIndexLabel *label = [[WATimelineIndexLabel alloc] init];
+  
+  NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+  formatter = [[NSDateFormatter alloc] init];
+  formatter.dateStyle = NSDateFormatterNoStyle;
+  formatter.timeStyle = NSDateFormatterShortStyle;
+
+  if (index == 0) {
+    label.relativePercent = 0.01f;
+    label.text = [formatter stringFromDate:self.beginDate];
+  } else if (index == (self.checkins.count + 1)) {
+    label.relativePercent = 99.0f;
+    label.text = [formatter stringFromDate:self.endDate];
+  } else {
+    NSTimeInterval timeIntervalBegin = [self.beginDate timeIntervalSince1970];
+    NSTimeInterval timeIntervalEnd = [self.endDate timeIntervalSince1970];
+    
+    WACheckin *checkin = self.checkins[index - 1];
+    NSTimeInterval checkinTime = [checkin.createDate timeIntervalSince1970];
+    if (checkinTime < timeIntervalBegin)
+      label.relativePercent = 0.02f;
+    else if (checkinTime > timeIntervalEnd)
+      label.relativePercent = 98.0f;
+    else
+      label.relativePercent =  (checkinTime - timeIntervalBegin) / (timeIntervalEnd - timeIntervalBegin);
+    
+    label.text = checkin.name;
+    
+  }
+  
+  return label;
 }
 
 @end

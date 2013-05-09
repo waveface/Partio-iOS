@@ -8,15 +8,9 @@
 
 #import "WATimelineIndexView.h"
 
-@interface WATimelineIndexLabel : UILabel
-
+@interface WATimelineIndexLabel ()
 - (void) show;
 - (void) hide;
-@property (nonatomic, readonly) BOOL showing;
-
-@end
-
-@interface WATimelineIndexLabel ()
 @property (nonatomic, assign) BOOL showing;
 @end
 
@@ -80,12 +74,18 @@
 {
   self = [super initWithFrame:frame];
   if (self) {
-    // Initialization code
+    [self initialize];
   }
   return self;
 }
 
 - (void) awakeFromNib {
+  
+  [self initialize];
+  
+}
+
+- (void) initialize {
     
   self.backgroundColor = [UIColor colorWithWhite:0 alpha:0.5];
   self.layer.cornerRadius = self.frame.size.width/2;
@@ -99,31 +99,40 @@
 }
 
 
-- (void) addIndex:(CGFloat)index label:(NSString*)label {
-
-  NSInteger i = 0;
-  for (NSNumber *value in self.indexics) {
-    if (index > [value floatValue]) {
-      break;
+- (void) reloadViews {
+  if (self.dataSource) {
+    // remove all subview labels
+    if (self.labels) {
+      [self.labels enumerateObjectsUsingBlock:^(WATimelineIndexLabel *label, NSUInteger idx, BOOL *stop) {
+        [label removeFromSuperview];
+      }];
     }
-    i++;
+    [self.indexics removeAllObjects];
+    [self.labels removeAllObjects];
+    
+    NSInteger numOfItems = [self.dataSource numberOfIndexicsForIndexView:self];
+    if (numOfItems == 0)
+      return;
+    self.indexics = [NSMutableArray arrayWithCapacity:numOfItems];
+    self.labels = [NSMutableArray arrayWithCapacity:numOfItems];
+    
+    for (NSInteger i = 0; i < numOfItems; i ++) {
+      WATimelineIndexLabel *aLabel = [self.dataSource labelForIndex:i inIndexView:self] ;
+      if (!aLabel)
+        continue;
+      [self.indexics addObject:@(aLabel.relativePercent)];
+      aLabel.backgroundColor = [UIColor blackColor];
+      aLabel.textColor = [UIColor whiteColor];
+      aLabel.textAlignment = NSTextAlignmentCenter;
+      [aLabel sizeToFit];
+      aLabel.frame = CGRectMake(-100, 0, 90, 22);
+      [self addSubview:aLabel];
+      CGRect newFrame = aLabel.frame;
+      newFrame.origin.x = -10 - newFrame.size.width;
+      aLabel.frame = newFrame;
+      [self.labels addObject:aLabel];
+    }
   }
-  
-  [self.indexics insertObject:[NSNumber numberWithFloat:index] atIndex:i];
-  
-  WATimelineIndexLabel *newLabel = [[WATimelineIndexLabel alloc] initWithFrame:CGRectMake(-100, 0, 90, 22)];
-  newLabel.backgroundColor = [UIColor blackColor];
-  newLabel.textColor = [UIColor whiteColor];
-  newLabel.textAlignment = NSTextAlignmentCenter;
-  newLabel.text = label;
-  [newLabel sizeToFit];
-  [self addSubview:newLabel];
-  CGRect newFrame = newLabel.frame;
-  newFrame.origin.x = -10 - newFrame.size.width;
-  newLabel.frame = newFrame;
-  
-  [self.labels insertObject:newLabel atIndex:i];
-  
 }
 
 - (NSInteger) indexForPercentage:(CGFloat)percentage {
