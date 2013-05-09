@@ -359,6 +359,12 @@
       CLLocationCoordinate2D coordinate;
       coordinate.latitude = [(NSNumber*)gps[@"Latitude"] doubleValue];
       coordinate.longitude = [(NSNumber*)gps[@"Longitude"] doubleValue];
+      if ([gps[@"LongitudeRef"] isEqualToString:@"W"]) {
+        coordinate.longitude = -coordinate.longitude;
+      }
+      if ([gps[@"LatitudeRef"] isEqualToString:@"S"]) {
+        coordinate.latitude = -coordinate.latitude;
+      }
 
       if (header.geoLocation)
         [header.geoLocation cancel];
