@@ -713,7 +713,7 @@ static NSString *kWAAddressBookViewController_CoachMarks = @"kWAAddressBookViewC
   UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
   NSString *name = cell.textLabel.text;
   
-  ABRecordRef person = (__bridge ABRecordRef)self.contacts[indexPath.section][indexPath.row];
+  ABRecordRef person;
   if ([self filteredContatcsCount]) {
     person = (__bridge ABRecordRef)self.filteredContacts[indexPath.section][indexPath.row];
     
@@ -724,6 +724,8 @@ static NSString *kWAAddressBookViewController_CoachMarks = @"kWAAddressBookViewC
       }
     }
     
+  } else {
+    person = (__bridge ABRecordRef)self.contacts[indexPath.section][indexPath.row];
   }
   
   NSArray *emails = [self emailsOfPerson:person];
