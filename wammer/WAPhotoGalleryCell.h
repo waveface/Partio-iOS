@@ -10,6 +10,8 @@
 
 @interface WAPhotoGalleryCell : UICollectionViewCell
 
-@property (nonatomic, strong) IBOutlet UIImageView *imageView;
+@property (nonatomic, weak) IBOutlet UIImageView *imageView;
+@property (nonatomic, weak) IBOutlet UIView *subtitleView;
+@property (nonatomic, weak) IBOutlet UILabel *subtitleLabel;
 
 @end

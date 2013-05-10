@@ -19,6 +19,7 @@
 #import "WAAddressBookPickerViewController.h"
 
 #import "WAPhotoGalleryCell.h"
+#import "WAPhotoTimelineCell.h"
 #import "WADefines.h"
 
 #import "WAAssetsLibraryManager.h"
@@ -168,6 +169,7 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
                withReuseIdentifier:@"PhotoTimelineCover"];
   
   [self.collectionView registerNib:[UINib nibWithNibName:@"WAPhotoGalleryCell" bundle:nil] forCellWithReuseIdentifier:@"PhotoGallery"];
+  [self.collectionView registerNib:[UINib nibWithNibName:@"WAPhotoTimelineCell" bundle:nil] forCellWithReuseIdentifier:@"PhotoTimelineCell"];
 
   [self.toolbar setBackgroundImage:[[UIImage alloc] init] forToolbarPosition:UIToolbarPositionAny barMetrics:UIBarMetricsDefault];
   self.toolbar.backgroundColor = [UIColor colorWithWhite:0.0f alpha:0.4f];
@@ -808,24 +810,58 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
 
 - (UICollectionViewCell*)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
  
-//  NSLog(@"cellForItemAtIndexPath:%@", indexPath);
-  WAPhotoGalleryCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"PhotoGallery" forIndexPath:indexPath];
-  
-  if (self.representingArticle) {
-    cell.imageView.image = nil;
-    [cell.imageView irUnbind:@"image"];
-    [cell.imageView irBind:@"image" toObject:self.sortedImages[indexPath.row] keyPath:@"thumbnailImage" options:@{kIRBindingsAssignOnMainThreadOption: (id)kCFBooleanTrue}];
-  } else {
-    ALAsset *asset = self.allAssets[indexPath.row];
-    cell.imageView.image = nil;
-    [cell.imageView irUnbind:@"image"];
-    [cell.imageView irBind:@"image"
-                  toObject:asset
-                   keyPath:@"cachedPresentableImage"
-                   options:@{kIRBindingsAssignOnMainThreadOption: (id)kCFBooleanTrue}];
-  }
-  
+  if (!galleryMode) {
+    WAPhotoTimelineCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"PhotoTimelineCell" forIndexPath:indexPath];
+
+    if (self.representingArticle) {
+      cell.imageView.image = nil;
+      [cell.imageView irUnbind:@"image"];
+      [cell.imageView irBind:@"image" toObject:self.sortedImages[indexPath.row] keyPath:@"thumbnailImage" options:@{kIRBindingsAssignOnMainThreadOption: (id)kCFBooleanTrue}];
+      
+    } else {
+      ALAsset *asset = self.allAssets[indexPath.row];
+      cell.imageView.image = nil;
+      [cell.imageView irUnbind:@"image"];
+      [cell.imageView irBind:@"image"
+                    toObject:asset
+                     keyPath:@"cachedPresentableImage"
+                     options:@{kIRBindingsAssignOnMainThreadOption: (id)kCFBooleanTrue}];
+    }
+        
+
     return cell;
+    
+  } else {
+    WAPhotoGalleryCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"PhotoGallery" forIndexPath:indexPath];
+    
+    if (self.representingArticle) {
+      cell.imageView.image = nil;
+      [cell.imageView irUnbind:@"image"];
+      [cell.imageView irBind:@"image" toObject:self.sortedImages[indexPath.row] keyPath:@"thumbnailImage" options:@{kIRBindingsAssignOnMainThreadOption: (id)kCFBooleanTrue}];
+      
+      WAFile *file = self.sortedImages[indexPath.row];
+      cell.subtitleLabel.text = @"";
+      if (file.exif.gpsLongitude && file.exif.gpsLongitude) {
+        WAGeoLocation *geoLocation = [[WAGeoLocation alloc] init];
+        [geoLocation identifyLocation:CLLocationCoordinate2DMake(file.exif.gpsLatitude.floatValue, file.exif.gpsLongitude.floatValue)
+                           onComplete:^(NSArray *results) {
+                             if (results.count)
+                               cell.subtitleLabel.text = results[0];
+                           } onError:nil];
+      }
+
+    } else {
+      ALAsset *asset = self.allAssets[indexPath.row];
+      cell.imageView.image = nil;
+      [cell.imageView irUnbind:@"image"];
+      [cell.imageView irBind:@"image"
+                    toObject:asset
+                     keyPath:@"cachedPresentableImage"
+                     options:@{kIRBindingsAssignOnMainThreadOption: (id)kCFBooleanTrue}];
+    }
+    
+    return cell;
+  }
 }
 
 - (UICollectionReusableView*)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath {
@@ -1110,6 +1146,10 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
   }
   
   return label;
+}
+
+- (NSString*)labelStringForItemIndex:(NSInteger)itemIndex {
+  
 }
 
 @end
