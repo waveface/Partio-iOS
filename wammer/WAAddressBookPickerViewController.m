@@ -164,20 +164,6 @@ static NSString *kWAAddressBookViewController_CoachMarks = @"kWAAddressBookViewC
   }
 }
 
-- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
-{
-  NSString *textInput = @"";
-  if (range.length) {
-    textInput = [textField.text substringToIndex:range.location];
-  } else {
-    textInput = [textField.text stringByAppendingString:string];
-  }
-
-  [self filterContactsWithString:textInput];
-  
-  return YES;
-}
-
 - (IBAction)textFieldDidChange:(id)sender
 {
   [self filterContactsWithString:self.textField.text];
@@ -684,11 +670,23 @@ static NSString *kWAAddressBookViewController_CoachMarks = @"kWAAddressBookViewC
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
-  if (section != [tableView numberOfSections] - 1) { //FIXME: the end of displayed sections
+  if (section != [self lastRowOfDisplayedContact]) { 
     return 1.f;
   } else {
     return 44.f;
   }
+}
+
+- (NSInteger)lastRowOfDisplayedContact
+{
+  NSInteger rowNumberOfDisplayedContact = [self.dataDisplay count];
+  for (NSInteger i = (rowNumberOfDisplayedContact - 1); i >= 0 ; i--) {
+    if ([self.dataDisplay[i] count]) {
+      return i;
+    }
+  }
+  
+  return 0;
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
