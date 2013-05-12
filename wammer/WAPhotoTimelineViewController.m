@@ -81,6 +81,7 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
 @property (nonatomic, strong) NSArray *checkins;
 @property (nonatomic, readonly) CLLocationCoordinate2D coordinate;
 @property (nonatomic, strong) NSString *locationName;
+@property (nonatomic, strong) NSMutableArray *indexingLabels;
 
 @property (nonatomic, strong) UITapGestureRecognizer *tapGesture;
 @property (nonatomic, strong) SMCalloutView *shareInstructionView;
@@ -104,7 +105,12 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
     for (ALAsset *element in enumerator) {
       [array addObject:element];
     }
-    self.allAssets = [NSArray arrayWithArray:array];
+    
+    self.allAssets = [NSArray arrayWithArray:[array sortedArrayUsingComparator:^NSComparisonResult(ALAsset* asset1, ALAsset* asset2) {
+      NSDate *date1 = [asset1 valueForProperty:ALAssetPropertyDate];
+      NSDate *date2 = [asset2 valueForProperty:ALAssetPropertyDate];
+      return [date1 compare:date2];
+    }]];
     
     _coordinate.latitude = 0;
     _coordinate.longitude = 0;
@@ -143,6 +149,7 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
   
   self.imageDisplayQueue = [[NSOperationQueue alloc] init];
   self.imageDisplayQueue.maxConcurrentOperationCount = 1;
+  [self reloadLabels];
   
   __weak WAPhotoTimelineViewController *wSelf = self;
   self.navigationItem.leftBarButtonItem = WAPartioBackButton(^{
@@ -547,6 +554,121 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
   
 }
 
+- (void) reloadLabels {
+  self.indexingLabels = [NSMutableArray array];
+  [self.checkins enumerateObjectsUsingBlock:^(WACheckin *checkin, NSUInteger idx, BOOL *stop) {
+    if (checkin.createDate) {
+      NSDictionary *newLabel = @{@"name": checkin.name, @"date": checkin.createDate};
+      [self.indexingLabels addObject:newLabel];
+    }
+  }];
+  __weak WAPhotoTimelineViewController *wSelf = self;
+
+  if (self.representingArticle) {
+    [self.sortedImages enumerateObjectsUsingBlock:^(WAFile *file, NSUInteger idx, BOOL *stop) {
+      if (file.exif.gpsLongitude && file.exif.gpsLongitude) {
+        CLLocation *location = [[CLLocation alloc] initWithLatitude:file.exif.gpsLatitude.floatValue longitude:file.exif.gpsLongitude.floatValue];
+        CLGeocoder *geocoder = [[CLGeocoder alloc] init];
+        [geocoder reverseGeocodeLocation:location completionHandler:^(NSArray *placemarks, NSError *error) {
+          if (error) {
+            NSLog(@"Failed to query reversed geocoding: %@", error);
+          } else {
+            
+            if (placemarks.count) {
+              __block BOOL changed = NO;
+              CLPlacemark *placemark = placemarks[0];
+              NSDictionary *newLabel = @{@"name": placemark.locality, @"date": file.created};
+              if (!wSelf.indexingLabels.count) {
+                [wSelf.indexingLabels addObject:newLabel];
+                changed = YES;
+              } else {
+                [wSelf.indexingLabels enumerateObjectsUsingBlock:^(NSDictionary *aLabel, NSUInteger idx, BOOL *stop) {
+                  if ([file.created compare:(NSDate *)aLabel[@"date"]] != NSOrderedAscending) {
+                    if (idx == 0) {
+                      if (![wSelf.indexingLabels[0][@"name"] isEqual:newLabel[@"name"]])
+                        [wSelf.indexingLabels insertObject:newLabel atIndex:0];
+                    } else {
+                      if (![wSelf.indexingLabels[idx][@"name"] isEqual:newLabel[@"name"]]) {
+                        if (idx >= wSelf.indexingLabels.count)
+                          [wSelf.indexingLabels addObject:newLabel];
+                        else
+                          [wSelf.indexingLabels insertObject:newLabel atIndex:idx];
+                      }
+                    }
+                    changed = YES;
+                    *stop = YES;
+                    return;
+                  }
+                }];
+              }
+              
+              if (changed)
+                [wSelf.indexView reloadViews];
+            }
+            
+          }
+        }];
+      }
+      
+    }];
+  } else {
+    [self.allAssets enumerateObjectsUsingBlock:^(ALAsset *asset, NSUInteger idx, BOOL *stop) {
+      NSDictionary *meta = [asset defaultRepresentation].metadata;
+      if (!meta)
+        return;
+      NSDictionary *gps = meta[@"{GPS}"];
+      if (!gps)
+        return;
+      NSDate *createDate = [asset valueForProperty:ALAssetPropertyDate];
+
+      if (gps[@"Longitude"] && gps[@"Longitude"]) {
+        CLLocation *location = [[CLLocation alloc] initWithLatitude:[gps[@"Latitude"] doubleValue] longitude:[gps[@"Longitude"] doubleValue]];
+        CLGeocoder *geocoder = [[CLGeocoder alloc] init];
+        [geocoder reverseGeocodeLocation:location completionHandler:^(NSArray *placemarks, NSError *error) {
+          if (error) {
+            NSLog(@"Failed to query reversed geocoding: %@", error);
+          } else {
+            
+            if (placemarks.count) {
+              __block BOOL changed = NO;
+              CLPlacemark *placemark = placemarks[0];
+              NSDictionary *newLabel = @{@"name": placemark.locality, @"date": createDate};
+              if (!wSelf.indexingLabels.count) {
+                [wSelf.indexingLabels addObject:newLabel];
+                changed = YES;
+              } else {
+                [wSelf.indexingLabels enumerateObjectsUsingBlock:^(NSDictionary *aLabel, NSUInteger idx, BOOL *stop) {
+                  if ([createDate compare:(NSDate *)aLabel[@"date"]] != NSOrderedAscending) {
+                    if (idx == 0) {
+                      if (![wSelf.indexingLabels[0][@"name"] isEqual:newLabel[@"name"]])
+                        [wSelf.indexingLabels insertObject:newLabel atIndex:0];
+                    } else {
+                      if (![wSelf.indexingLabels[idx][@"name"] isEqual:newLabel[@"name"]]) {
+                        if (idx >= wSelf.indexingLabels.count)
+                          [wSelf.indexingLabels addObject:newLabel];
+                        else
+                          [wSelf.indexingLabels insertObject:newLabel atIndex:idx];
+                      }
+                    }
+                    changed = YES;
+                    *stop = YES;
+                    return;
+                  }
+                }];
+              }
+              
+              if (changed)
+                [wSelf.indexView reloadViews];
+            }
+            
+          }
+        }];
+      }
+      
+    }];
+  }
+}
+
 - (NSUInteger) supportedInterfaceOrientations {
   
   if (self.representingArticle)
@@ -842,12 +964,19 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
       WAFile *file = self.sortedImages[indexPath.row];
       cell.subtitleLabel.text = @"";
       if (file.exif.gpsLongitude && file.exif.gpsLongitude) {
-        WAGeoLocation *geoLocation = [[WAGeoLocation alloc] init];
-        [geoLocation identifyLocation:CLLocationCoordinate2DMake(file.exif.gpsLatitude.floatValue, file.exif.gpsLongitude.floatValue)
-                           onComplete:^(NSArray *results) {
-                             if (results.count)
-                               cell.subtitleLabel.text = results[0];
-                           } onError:nil];
+
+        CLLocation *location = [[CLLocation alloc] initWithLatitude:file.exif.gpsLatitude.floatValue longitude:file.exif.gpsLongitude.floatValue];
+        CLGeocoder *geocoder = [[CLGeocoder alloc] init];
+        [geocoder reverseGeocodeLocation:location completionHandler:^(NSArray *placemarks, NSError *error) {
+          if (error) {
+            NSLog(@"Unable to query reversed geocoding for error: %@", error);
+          } else {
+            if (placemarks.count) {
+              cell.subtitleLabel.text = [placemarks[0] locality];
+            }
+          }
+        }];
+        
       }
 
     } else {
@@ -1107,10 +1236,10 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
   }
 }
 
+
 #pragma mark - WATimelineIndexDataSource
 - (NSInteger) numberOfIndexicsForIndexView:(WATimelineIndexView *)indexView {
-  NSLog(@"number of index");
-  return self.checkins.count + 2;
+  return self.indexingLabels.count + 2;
 }
 
 - (WATimelineIndexLabel*) labelForIndex:(NSInteger)index inIndexView:(WATimelineIndexView *)indexView {
@@ -1125,31 +1254,27 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
   if (index == 0) {
     label.relativePercent = 0.01f;
     label.text = [formatter stringFromDate:self.beginDate];
-  } else if (index == (self.checkins.count + 1)) {
+  } else if (index == (self.indexingLabels.count + 1)) {
     label.relativePercent = 99.0f;
     label.text = [formatter stringFromDate:self.endDate];
   } else {
     NSTimeInterval timeIntervalBegin = [self.beginDate timeIntervalSince1970];
     NSTimeInterval timeIntervalEnd = [self.endDate timeIntervalSince1970];
     
-    WACheckin *checkin = self.checkins[index - 1];
-    NSTimeInterval checkinTime = [checkin.createDate timeIntervalSince1970];
-    if (checkinTime < timeIntervalBegin)
+    NSDictionary *dict = self.indexingLabels[index - 1];
+    NSTimeInterval labelTime = [(NSDate*)dict[@"date"] timeIntervalSince1970];
+    if (labelTime < timeIntervalBegin)
       label.relativePercent = 0.02f;
-    else if (checkinTime > timeIntervalEnd)
+    else if (labelTime > timeIntervalEnd)
       label.relativePercent = 98.0f;
     else
-      label.relativePercent =  (checkinTime - timeIntervalBegin) / (timeIntervalEnd - timeIntervalBegin);
-    
-    label.text = checkin.name;
+      label.relativePercent = (labelTime - timeIntervalBegin) / (timeIntervalEnd - timeIntervalBegin);
+    label.text = dict[@"name"];
     
   }
   
   return label;
 }
 
-- (NSString*)labelStringForItemIndex:(NSInteger)itemIndex {
-  
-}
 
 @end

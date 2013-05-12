@@ -52,7 +52,6 @@
     [transformedRepresentation setValue:numberFromArray(focalLength) forKey:@"FocalLength"];
   }
   
-  NSLog(@"transform %@", transformedRepresentation);
   return transformedRepresentation;
   
 }

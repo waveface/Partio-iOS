@@ -19,6 +19,10 @@
     return self;
 }
 
+- (void) awakeFromNib {
+  self.imageView.layer.cornerRadius = 5.0f;
+}
+
 /*
 // Only override drawRect: if you perform custom drawing.
 // An empty implementation adversely affects performance during animation.

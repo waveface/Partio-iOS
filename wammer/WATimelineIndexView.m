@@ -124,11 +124,12 @@
       aLabel.backgroundColor = [UIColor blackColor];
       aLabel.textColor = [UIColor whiteColor];
       aLabel.textAlignment = NSTextAlignmentCenter;
+      aLabel.frame = CGRectMake(-200, 0, 195, 22);
+      aLabel.layer.cornerRadius = 3;
       [aLabel sizeToFit];
-      aLabel.frame = CGRectMake(-100, 0, 90, 22);
       [self addSubview:aLabel];
       CGRect newFrame = aLabel.frame;
-      newFrame.origin.x = -10 - newFrame.size.width;
+      newFrame.origin.x = -5 - newFrame.size.width;
       aLabel.frame = newFrame;
       [self.labels addObject:aLabel];
     }
