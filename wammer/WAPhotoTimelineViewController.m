@@ -562,7 +562,53 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
       [self.indexingLabels addObject:newLabel];
     }
   }];
+  
   __weak WAPhotoTimelineViewController *wSelf = self;
+  
+  void (^congregatedAndSortedLabels)(NSDictionary *newLabel) = ^(NSDictionary *newLabel) {
+    __block BOOL changed = NO;
+    NSDate *creationDate = newLabel[@"date"];
+    if (!wSelf.indexingLabels.count) {
+      [wSelf.indexingLabels addObject:newLabel];
+      changed = YES;
+    } else {
+      __block BOOL found = NO;
+      [wSelf.indexingLabels enumerateObjectsUsingBlock:^(NSDictionary *aLabel, NSUInteger idx, BOOL *stop) {
+        if ([creationDate compare:(NSDate *)aLabel[@"date"]] != NSOrderedDescending) {
+          if (idx == 0) {
+            if (![wSelf.indexingLabels[0][@"name"] isEqual:newLabel[@"name"]])
+              [wSelf.indexingLabels insertObject:newLabel atIndex:0];
+            else
+              wSelf.indexingLabels[0] = newLabel;
+          } else {
+            if (![wSelf.indexingLabels[idx][@"name"] isEqual:newLabel[@"name"]]) {
+              [wSelf.indexingLabels insertObject:newLabel atIndex:idx];
+            } else {
+              wSelf.indexingLabels[idx] = newLabel;
+            }
+          }
+          changed = YES;
+          *stop = YES;
+          found = YES;
+          NSLog(@"%@", wSelf.indexingLabels);
+          return;
+        }
+      }];
+      
+      if (!found) {
+        if (![newLabel[@"name"] isEqualToString:[wSelf.indexingLabels lastObject][@"name"]]) {
+          [wSelf.indexingLabels addObject:newLabel];
+          changed = YES;
+          NSLog(@"%@", wSelf.indexingLabels);
+        }
+      }
+    }
+    
+    if (changed)
+      [wSelf.indexView reloadViews];
+
+  };
+
 
   if (self.representingArticle) {
     [self.sortedImages enumerateObjectsUsingBlock:^(WAFile *file, NSUInteger idx, BOOL *stop) {
@@ -575,37 +621,11 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
           } else {
             
             if (placemarks.count) {
-              __block BOOL changed = NO;
               CLPlacemark *placemark = placemarks[0];
               NSDictionary *newLabel = @{@"name": placemark.locality, @"date": file.created};
-              if (!wSelf.indexingLabels.count) {
-                [wSelf.indexingLabels addObject:newLabel];
-                changed = YES;
-              } else {
-                [wSelf.indexingLabels enumerateObjectsUsingBlock:^(NSDictionary *aLabel, NSUInteger idx, BOOL *stop) {
-                  if ([file.created compare:(NSDate *)aLabel[@"date"]] != NSOrderedAscending) {
-                    if (idx == 0) {
-                      if (![wSelf.indexingLabels[0][@"name"] isEqual:newLabel[@"name"]])
-                        [wSelf.indexingLabels insertObject:newLabel atIndex:0];
-                    } else {
-                      if (![wSelf.indexingLabels[idx][@"name"] isEqual:newLabel[@"name"]]) {
-                        if (idx >= wSelf.indexingLabels.count)
-                          [wSelf.indexingLabels addObject:newLabel];
-                        else
-                          [wSelf.indexingLabels insertObject:newLabel atIndex:idx];
-                      }
-                    }
-                    changed = YES;
-                    *stop = YES;
-                    return;
-                  }
-                }];
-              }
               
-              if (changed)
-                [wSelf.indexView reloadViews];
+              congregatedAndSortedLabels(newLabel);
             }
-            
           }
         }];
       }
@@ -630,35 +650,10 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
           } else {
             
             if (placemarks.count) {
-              __block BOOL changed = NO;
               CLPlacemark *placemark = placemarks[0];
               NSDictionary *newLabel = @{@"name": placemark.locality, @"date": createDate};
-              if (!wSelf.indexingLabels.count) {
-                [wSelf.indexingLabels addObject:newLabel];
-                changed = YES;
-              } else {
-                [wSelf.indexingLabels enumerateObjectsUsingBlock:^(NSDictionary *aLabel, NSUInteger idx, BOOL *stop) {
-                  if ([createDate compare:(NSDate *)aLabel[@"date"]] != NSOrderedAscending) {
-                    if (idx == 0) {
-                      if (![wSelf.indexingLabels[0][@"name"] isEqual:newLabel[@"name"]])
-                        [wSelf.indexingLabels insertObject:newLabel atIndex:0];
-                    } else {
-                      if (![wSelf.indexingLabels[idx][@"name"] isEqual:newLabel[@"name"]]) {
-                        if (idx >= wSelf.indexingLabels.count)
-                          [wSelf.indexingLabels addObject:newLabel];
-                        else
-                          [wSelf.indexingLabels insertObject:newLabel atIndex:idx];
-                      }
-                    }
-                    changed = YES;
-                    *stop = YES;
-                    return;
-                  }
-                }];
-              }
               
-              if (changed)
-                [wSelf.indexView reloadViews];
+              congregatedAndSortedLabels(newLabel);
             }
             
           }
@@ -695,14 +690,6 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
   } else {
     if (galleryMode){
       [[UIApplication sharedApplication] setStatusBarHidden:NO];
-    }
-  }
-  
-}
-
-- (void) didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
-  if (UIInterfaceOrientationIsLandscape(fromInterfaceOrientation)) {
-    if (galleryMode) {
       galleryMode = NO;
       
       WAPhotoTimelineLayout *timelineLayout = [[WAPhotoTimelineLayout alloc] init];
@@ -712,9 +699,11 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
       self.indexView.hidden = NO;
       self.navigationBar.hidden = NO;
       self.toolbar.hidden = NO;
-      
+      [self.collectionView reloadData];
+
     }
   }
+  
 }
 
 - (void) backButtonClicked:(id)sender {
