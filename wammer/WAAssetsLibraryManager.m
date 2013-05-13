@@ -11,7 +11,8 @@
 
 @interface NSDate (WAAssetsLibraryManager)
 
-- (NSDate *)laterMidnight;
+- (NSDate *) laterMidnight;
+- (NSDate *) earlyMorning;
 
 @end
 
@@ -23,6 +24,14 @@
   NSDateComponents *components = [gregorian components:(NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit) fromDate:self];
   const NSTimeInterval dayTimeInterval = 24 * 60 * 60;
   return [[gregorian dateFromComponents:components] dateByAddingTimeInterval:dayTimeInterval];
+  
+}
+
+- (NSDate *)earlyMorning {
+
+  NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+  NSDateComponents *components = [gregorian components:(NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit) fromDate:self];
+  return [gregorian dateFromComponents:components];
   
 }
 
@@ -104,7 +113,7 @@
 
 }
 
-- (void)enumerateSavedPhotosSince:(NSDate *)sinceDate onProgess:(void (^)(NSArray *))onProgressBlock onComplete:(void (^)())onCompleteBlock onFailure:(void (^)(NSError *))onFailureBlock {
+- (void)enumerateSavedPhotosSince:(NSDate *)sinceDate onProgess:(void (^)(NSArray *, NSDate *, BOOL *stop))onProgressBlock onComplete:(void (^)())onCompleteBlock onFailure:(void (^)(NSError *))onFailureBlock {
   
   NSCalendar *calendar = [NSCalendar currentCalendar];
   NSInteger comps = (NSSecondCalendarUnit|NSMinuteCalendarUnit|NSHourCalendarUnit|NSDayCalendarUnit|NSMonthCalendarUnit|NSYearCalendarUnit);
@@ -114,7 +123,7 @@
   }
   
   __block NSMutableArray *insertedAssets = [[NSMutableArray alloc] init];
-  __block NSDate *midnight = sinceDate ? [sinceDate laterMidnight] : nil;
+  __block NSDate *midnight = sinceDate ? [sinceDate earlyMorning] : nil;
   
   [self.assetsLibrary enumerateGroupsWithTypes:ALAssetsGroupSavedPhotos usingBlock:^(ALAssetsGroup *group, BOOL *stop) {
     
@@ -135,7 +144,7 @@
         if (result) {
           if (![importedFileAssetURLs containsObject:[[[result defaultRepresentation] url] absoluteString]]) {
             NSUInteger indexToInsert = [allAssets indexOfObject:result inSortedRange:NSMakeRange(0, [allAssets count]) options:NSBinarySearchingInsertionIndex usingComparator:^NSComparisonResult(ALAsset *asset1, ALAsset *asset2) {
-              return [[asset1 valueForProperty:ALAssetPropertyDate] compare:[asset2 valueForProperty:ALAssetPropertyDate]];
+              return [[asset2 valueForProperty:ALAssetPropertyDate] compare:[asset1 valueForProperty:ALAssetPropertyDate]];
             }];
             [allAssets insertObject:result atIndex:indexToInsert];
           }
@@ -149,24 +158,30 @@
           NSDate *assetDate = [result valueForProperty:ALAssetPropertyDate];
           NSDateComponents *assetDateComponents = [calendar components:comps fromDate:assetDate];
           assetDate = [calendar dateFromComponents:assetDateComponents];
-          if (sinceDate && ([assetDate compare:sinceDate] != NSOrderedDescending)) {
+          if (sinceDate && ([assetDate compare:sinceDate] != NSOrderedAscending)) {
             return;
           }
-	
+
           if (midnight) {
 	  
-            if ([assetDate compare:midnight] != NSOrderedAscending) {
+            if ([assetDate compare:midnight] != NSOrderedDescending) {
 	    
               NSArray *assets = [insertedAssets copy];
-              onProgressBlock(assets);
+              BOOL stopCallback = NO;
+              onProgressBlock(assets, midnight, &stopCallback);
               [insertedAssets removeAllObjects];
-              midnight = [assetDate laterMidnight];
+              if (stopCallback) {
+                *stop = YES;
+                onCompleteBlock();
+                return;
+              }
+              midnight = [assetDate earlyMorning];
               
             }
             
           } else {
 	  
-            midnight = [assetDate laterMidnight];
+            midnight = [assetDate earlyMorning];
             
           }
 	
@@ -177,9 +192,14 @@
         if (index == [allAssets count] - 1) {
 
           NSArray *assets = [insertedAssets copy];
-          onProgressBlock(assets);
+          BOOL stop = NO;
+          onProgressBlock(assets, midnight, &stop);
           [insertedAssets removeAllObjects];
-          
+          if (stop) {
+            onCompleteBlock();
+            return;
+          }
+
         }
         
       }];

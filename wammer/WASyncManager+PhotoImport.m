@@ -36,7 +36,7 @@
     WADataStore *ds = [WADataStore defaultStore];
     
     __block NSUInteger filesCount = 0;
-    [[WAAssetsLibraryManager defaultManager] enumerateSavedPhotosSince:nil onProgess:^(NSArray *assets) {
+    [[WAAssetsLibraryManager defaultManager] enumerateSavedPhotosSince:nil onProgess:^(NSArray *assets, NSDate *progressDate, BOOL *stop) {
       
       if (![assets count]) {
         return;

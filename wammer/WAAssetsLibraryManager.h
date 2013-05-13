@@ -30,7 +30,7 @@
  *	@param onCompleteBlock The block to invoke when enumeration finishes.
  *	@param onFailureBlock The block to invoke when unable to enumerate assets.
  */
-- (void)enumerateSavedPhotosSince:(NSDate *)sinceDate onProgess:(void (^)(NSArray *assets))onProgressBlock onComplete:(void(^)())onCompleteBlock onFailure:(void(^)(NSError *error))onFailureBlock;
+- (void)enumerateSavedPhotosSince:(NSDate *)sinceDate onProgess:(void (^)(NSArray *assets, NSDate *progressDate, BOOL *stop))onProgressBlock onComplete:(void(^)())onCompleteBlock onFailure:(void(^)(NSError *error))onFailureBlock;
 
 - (void)retrieveTimeSortedPhotosWhenComplete:(void (^)(NSArray *result))onCompleteBlock onFailure:(void (^)(NSError *))onFailureBlock;
 @end

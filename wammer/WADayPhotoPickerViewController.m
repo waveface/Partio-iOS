@@ -11,12 +11,14 @@
 #import "ALAsset+WAAdditions.h"
 #import "WADayPhotoPickerViewCell.h"
 #import "WADayPhotoPickerSectionHeaderView.h"
+#import "WAEventPhotoPickerLoadingView.h"
 #import "WAOverlayBezel.h"
 #import "WAPartioNavigationBar.h"
 #import "NSDate+WAAdditions.h"
 #import "WADataStore+FetchingConveniences.h"
 #import "WAPhotoTimelineViewController.h"
 #import "WANavigationController.h"
+#import "WAEventPhotoPickerDataSource.h"
 #import <BlocksKit/BlocksKit.h>
 
 @interface WADayPhotoPickerViewController () <UICollectionViewDelegateFlowLayout, UICollectionViewDataSource>
@@ -29,6 +31,7 @@
 @property (nonatomic, strong) NSDate *selectedRangeToDate;
 @property (nonatomic, strong) NSArray *allTimeSortedAssets;
 @property (nonatomic, strong) NSMutableSet *selectedSections;
+@property (nonatomic, strong) WAEventPhotoPickerDataSource *dataSource;
 
 @property (nonatomic, weak) IBOutlet WAPartioNavigationBar *navigationBar;
 @end
@@ -101,14 +104,26 @@
   [self.collectionView registerNib:[UINib nibWithNibName:@"WADayPhotoPickerViewCell" bundle:nil] forCellWithReuseIdentifier:@"WADayPhotoPickerViewCell"];
   [self.collectionView registerNib:[UINib nibWithNibName:@"WADayPhotoPickerSectionHeaderView" bundle:nil] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"WADayPhotoPickerSectionHeaderView"];
   
+  [self.collectionView registerNib:[UINib nibWithNibName:@"WAEventPhotoPickerLoadingView" bundle:nil] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"WAEventPhotoPickerLoadingView"];
+  
   if (!self.selectedAssets.count) {
     self.navigationItem.rightBarButtonItem.enabled = NO;
   }
   
   [self updateNavigationBarTitle];
   
+  if (self.selectedRangeFromDate) {
+    NSDate *newFromDate = [self.selectedRangeFromDate dateByAddingTimeInterval:(-24 * 2 * 60 * 60)];
+    self.dataSource = [[WAEventPhotoPickerDataSource alloc] initWithPhotosLoadedUntil:newFromDate completionHandler:^{
+      [self.collectionView reloadData];
+    }];
+  } else {
+    self.dataSource = [[WAEventPhotoPickerDataSource alloc] initWithCompletionHandler:^{
+      [self.collectionView reloadData];
+    }];
+  }
 }
-
+/*
 - (void) viewDidAppear:(BOOL)animated {
   
   [super viewDidAppear:animated];
@@ -159,7 +174,7 @@
     NSLog(@"error: %@", error);
   }];
 
-}
+}*/
 
 - (void) updateNavigationBarTitle {
   if (self.selectedAssets.count) {
@@ -281,13 +296,18 @@
 
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
-  return self.photoGroups.count;
+
+  return [self.dataSource numberOfEvents] + 1;
+  
 }
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
   
-  return [self.photoGroups[section] count];
+  if (section == [self.dataSource numberOfEvents])
+    return 0;
   
+  return [self.dataSource numberOfPhotosInEvent:section];
+
 }
 
 - (UICollectionViewCell*)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
@@ -300,12 +320,13 @@
   }
   
   cell.imageLoadingOperation = [NSBlockOperation blockOperationWithBlock:^{
-    
-    UIImage *image = [UIImage imageWithCGImage:[(ALAsset*)wSelf.photoGroups[indexPath.section][indexPath.row] thumbnail]];
+  
+    ALAsset *asset = [self.dataSource photoAtIndexPath:indexPath];
+    UIImage *image = [UIImage imageWithCGImage:[(ALAsset*)asset thumbnail]];
     
     [[NSOperationQueue mainQueue] addOperationWithBlock:^{
       cell.imageView.image = image;
-      ALAsset *asset = self.photoGroups[indexPath.section][indexPath.row];
+      ALAsset *asset = [self.dataSource photoAtIndexPath:indexPath];
       if (wSelf.selectedAssets != nil && [wSelf.selectedAssets indexOfObject:asset] != NSNotFound) {
         [wSelf.collectionView selectItemAtIndexPath:indexPath animated:YES scrollPosition:UICollectionViewScrollPositionNone];
       }
@@ -330,10 +351,12 @@
 
 - (UICollectionReusableView*)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath {
   
-  if ([kind isEqualToString:UICollectionElementKindSectionHeader]) {
+  if (![kind isEqualToString:UICollectionElementKindSectionHeader])
+    return nil;
+  if (indexPath.section != [self.dataSource numberOfEvents]) {
     WADayPhotoPickerSectionHeaderView * header = [collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:@"WADayPhotoPickerSectionHeaderView" forIndexPath:indexPath];
     
-    ALAsset *asset = self.photoGroups[indexPath.section][0];
+    ALAsset *asset = [self.dataSource photoAtIndexPath:indexPath];
     NSDate *date = [asset valueForProperty:ALAssetPropertyDate];
   
     if ([self.selectedSections containsObject:@(indexPath.section)]) {
@@ -350,8 +373,10 @@
 
     header.locationLabel.text = @"";
     
-    NSDate *beginDate = [(ALAsset*)[self.photoGroups[indexPath.section] lastObject] valueForProperty:ALAssetPropertyDate];
-    NSDate *endDate = [(ALAsset*)self.photoGroups[indexPath.section][0] valueForProperty:ALAssetPropertyDate];
+    NSArray *assets = [self.dataSource photosInEvent:indexPath.section];
+    NSDate *beginDate = [[assets lastObject] valueForProperty:ALAssetPropertyDate];
+    NSDate *endDate = [assets[0] valueForProperty:ALAssetPropertyDate];
+                       
     NSFetchRequest * fetchRequest = [[WADataStore defaultStore] newFetchReuqestForCheckinFrom:beginDate to:endDate];
     
     NSError *error = nil;
@@ -362,7 +387,7 @@
       header.locationLabel.text = [[checkins valueForKeyPath:@"name"] componentsJoinedByString:@","];
     }
 
-    CLLocation *gps = [self gpsMetaWithinPhotos:self.photoGroups[indexPath.section]];
+    CLLocation *gps = [self gpsMetaWithinPhotos:assets];
     if (gps) {
       if (header.geoLocation)
         [header.geoLocation cancel];
@@ -389,6 +414,13 @@
     }
     header.addButton.tag = indexPath.section;
     return header;
+  } else {
+    WAEventPhotoPickerLoadingView *loading = [collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:@"WAEventPhotoPickerLoadingView" forIndexPath:indexPath];
+    __weak WADayPhotoPickerViewController *wSelf = self;
+    dispatch_async(dispatch_get_main_queue(), ^{
+      [wSelf.dataSource loadMoreEvents];
+    });
+    return loading;
   }
   
   return nil;
@@ -396,7 +428,7 @@
 
 - (void) collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
 
-  ALAsset *asset = (ALAsset*)self.photoGroups[indexPath.section][indexPath.row];
+  ALAsset *asset = [self.dataSource photoAtIndexPath:indexPath];
   if (self.selectedAssets != nil && [self.selectedAssets indexOfObject:asset] == NSNotFound) {
     [self.selectedAssets addObject:asset];
   }
@@ -410,7 +442,7 @@
 
 - (void) collectionView:(UICollectionView *)collectionView didDeselectItemAtIndexPath:(NSIndexPath *)indexPath {
 
-  ALAsset *asset = (ALAsset*)self.photoGroups[indexPath.section][indexPath.row];
+  ALAsset *asset = [self.dataSource photoAtIndexPath:indexPath];
   if (self.selectedAssets != nil && [self.selectedAssets indexOfObject:asset] != NSNotFound) {
     [self.selectedAssets removeObject:asset];
   }
