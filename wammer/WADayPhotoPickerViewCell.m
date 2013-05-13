@@ -46,10 +46,12 @@
     }
 
   } else {
+    
     self.checkMarkView.hidden = YES;
     self.checkMarkView.image = nil;
     [self.transparentLayer removeFromSuperlayer];
     self.transparentLayer = nil;
+    
   }
 }
 

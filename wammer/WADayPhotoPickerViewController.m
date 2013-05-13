@@ -8,6 +8,7 @@
 
 #import "WADayPhotoPickerViewController.h"
 #import "WAAssetsLibraryManager.h"
+#import "ALAsset+WAAdditions.h"
 #import "WADayPhotoPickerViewCell.h"
 #import "WADayPhotoPickerSectionHeaderView.h"
 #import "WAOverlayBezel.h"
@@ -27,6 +28,7 @@
 @property (nonatomic, strong) NSDate *selectedRangeFromDate;
 @property (nonatomic, strong) NSDate *selectedRangeToDate;
 @property (nonatomic, strong) NSArray *allTimeSortedAssets;
+@property (nonatomic, strong) NSMutableSet *selectedSections;
 
 @property (nonatomic, weak) IBOutlet WAPartioNavigationBar *navigationBar;
 @end
@@ -69,6 +71,7 @@
   [super viewDidLoad];
   self.imageDisplayQueue = [[NSOperationQueue alloc] init];
   self.imageDisplayQueue.maxConcurrentOperationCount = 1;
+  self.selectedSections = [NSMutableSet set];
   
   __weak WADayPhotoPickerViewController *wSelf = self;
   
@@ -315,13 +318,12 @@
   return cell;
 }
 
-- (NSDictionary *)gpsMetaWithinPhotos:(NSArray*)assets {
+- (CLLocation *)gpsMetaWithinPhotos:(NSArray*)assets {
 
   for (ALAsset *asset in assets) {
-    NSDictionary *imageMeta = [[asset defaultRepresentation] metadata];
-    if (imageMeta && imageMeta[@"{GPS}"]) {
-      return imageMeta[@"{GPS}"];
-    }
+    CLLocation *location = asset.gpsLocation;
+    if (location)
+      return location;
   }
   return nil;
 }
@@ -334,6 +336,12 @@
     ALAsset *asset = self.photoGroups[indexPath.section][0];
     NSDate *date = [asset valueForProperty:ALAssetPropertyDate];
   
+    if ([self.selectedSections containsObject:@(indexPath.section)]) {
+      [header.addButton setTitle:NSLocalizedString(@"BUTTON_DESELECT_ALL", @"") forState:UIControlStateNormal];
+    } else {
+      [header.addButton setTitle:NSLocalizedString(@"BUTTON_SELECT_ALL", @"") forState:UIControlStateNormal];
+    }
+    
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     formatter = [[NSDateFormatter alloc] init];
     formatter.dateStyle = NSDateFormatterMediumStyle;
@@ -354,23 +362,13 @@
       header.locationLabel.text = [[checkins valueForKeyPath:@"name"] componentsJoinedByString:@","];
     }
 
-    NSDictionary *gps = [self gpsMetaWithinPhotos:self.photoGroups[indexPath.section]];
+    CLLocation *gps = [self gpsMetaWithinPhotos:self.photoGroups[indexPath.section]];
     if (gps) {
-      CLLocationCoordinate2D coordinate;
-      coordinate.latitude = [(NSNumber*)gps[@"Latitude"] doubleValue];
-      coordinate.longitude = [(NSNumber*)gps[@"Longitude"] doubleValue];
-      if ([gps[@"LongitudeRef"] isEqualToString:@"W"]) {
-        coordinate.longitude = -coordinate.longitude;
-      }
-      if ([gps[@"LatitudeRef"] isEqualToString:@"S"]) {
-        coordinate.latitude = -coordinate.latitude;
-      }
-
       if (header.geoLocation)
         [header.geoLocation cancel];
       
       header.geoLocation = [[WAGeoLocation alloc] init];
-      [header.geoLocation identifyLocation:coordinate
+      [header.geoLocation identifyLocation:gps.coordinate
                               onComplete:^(NSArray *results) {
                                 
                                 dispatch_async(dispatch_get_main_queue(), ^{
@@ -389,6 +387,7 @@
                               }];
 
     }
+    header.addButton.tag = indexPath.section;
     return header;
   }
   
@@ -420,6 +419,29 @@
     [self.navigationItem.rightBarButtonItem setEnabled:NO];
   
   [self updateNavigationBarTitle];
+}
+
+- (void) selectAllInSection:(NSUInteger)section {
+  NSUInteger numberOfItem = [self.collectionView numberOfItemsInSection:section];
+
+  for (int i = 0; i < numberOfItem; i++) {
+    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:i inSection:section];
+
+    [self.collectionView selectItemAtIndexPath:[NSIndexPath indexPathForRow:i inSection:section] animated:NO scrollPosition:UICollectionViewScrollPositionNone];
+    [self collectionView:self.collectionView didSelectItemAtIndexPath:indexPath];
+  }
+  [self.selectedSections addObject:@(section)];
+}
+
+- (void) deselectAllInSection:(NSUInteger)section {
+  NSUInteger numberOfItem = [self.collectionView numberOfItemsInSection:section];
+  
+  for (int i = 0; i < numberOfItem; i++) {
+    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:i inSection:section];
+    [self.collectionView deselectItemAtIndexPath:indexPath animated:NO];
+    [self collectionView:self.collectionView didDeselectItemAtIndexPath:indexPath];
+  }
+  [self.selectedSections removeObject:@(section)];
 }
 
 @end
