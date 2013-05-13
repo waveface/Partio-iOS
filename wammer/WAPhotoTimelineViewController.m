@@ -23,6 +23,7 @@
 #import "WADefines.h"
 
 #import "WAAssetsLibraryManager.h"
+#import "ALAsset+WAAdditions.h"
 #import "WAArticle.h"
 #import "WADataStore.h"
 #import "WAFile.h"
@@ -79,6 +80,7 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
 @property (nonatomic, strong) NSDate *beginDate;
 @property (nonatomic, strong) NSDate *endDate;
 @property (nonatomic, strong) NSArray *checkins;
+@property (nonatomic, strong) NSArray *userCheckins;
 @property (nonatomic, readonly) CLLocationCoordinate2D coordinate;
 @property (nonatomic, strong) NSString *locationName;
 @property (nonatomic, strong) NSMutableArray *indexingLabels;
@@ -393,18 +395,20 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
     }
   }
   
-  if (self.checkins.count) {
-    for (WALocation *checkin in self.checkins) {
+  if (self.userCheckins.count) {
+    for (WACheckin *checkin in self.userCheckins) {
       if (![article.checkins containsObject:checkin]) {
         [[article mutableSetValueForKey:@"checkins"] addObject:checkin];
         changed = YES;
       }
     }
   }
-  
+
   if (changed) {
     article.dirty = (id)kCFBooleanTrue;
     article.modificationDate = [NSDate date];
+    article.eventStartDate = [self beginDate];
+    article.eventEndDate = [self endDate];
     NSError *savingError = nil;
     if ([moc save:&savingError]) {
       NSLog(@"Sharing event successfully updated");
@@ -590,7 +594,6 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
           changed = YES;
           *stop = YES;
           found = YES;
-          NSLog(@"%@", wSelf.indexingLabels);
           return;
         }
       }];
@@ -599,7 +602,6 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
         if (![newLabel[@"name"] isEqualToString:[wSelf.indexingLabels lastObject][@"name"]]) {
           [wSelf.indexingLabels addObject:newLabel];
           changed = YES;
-          NSLog(@"%@", wSelf.indexingLabels);
         }
       }
     }
@@ -633,33 +635,27 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
     }];
   } else {
     [self.allAssets enumerateObjectsUsingBlock:^(ALAsset *asset, NSUInteger idx, BOOL *stop) {
-      NSDictionary *meta = [asset defaultRepresentation].metadata;
-      if (!meta)
-        return;
-      NSDictionary *gps = meta[@"{GPS}"];
+      CLLocation *gps = asset.gpsLocation;
       if (!gps)
         return;
       NSDate *createDate = [asset valueForProperty:ALAssetPropertyDate];
 
-      if (gps[@"Longitude"] && gps[@"Longitude"]) {
-        CLLocation *location = [[CLLocation alloc] initWithLatitude:[gps[@"Latitude"] doubleValue] longitude:[gps[@"Longitude"] doubleValue]];
-        CLGeocoder *geocoder = [[CLGeocoder alloc] init];
-        [geocoder reverseGeocodeLocation:location completionHandler:^(NSArray *placemarks, NSError *error) {
-          if (error) {
-            NSLog(@"Failed to query reversed geocoding: %@", error);
-          } else {
+      CLGeocoder *geocoder = [[CLGeocoder alloc] init];
+      [geocoder reverseGeocodeLocation:gps completionHandler:^(NSArray *placemarks, NSError *error) {
+        if (error) {
+          NSLog(@"Failed to query reversed geocoding: %@", error);
+        } else {
+          
+          if (placemarks.count) {
+            CLPlacemark *placemark = placemarks[0];
+            NSDictionary *newLabel = @{@"name": placemark.locality, @"date": createDate};
             
-            if (placemarks.count) {
-              CLPlacemark *placemark = placemarks[0];
-              NSDictionary *newLabel = @{@"name": placemark.locality, @"date": createDate};
-              
-              congregatedAndSortedLabels(newLabel);
-            }
-            
+            congregatedAndSortedLabels(newLabel);
           }
-        }];
-      }
-      
+          
+        }
+      }];
+     
     }];
   }
 }
@@ -782,21 +778,10 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
     _coordinate.longitude = [self.representingArticle.location.longitude floatValue];
   } else {
     for (ALAsset *asset in self.allAssets) {
-      NSDictionary *meta = [asset defaultRepresentation].metadata;
-      if (meta) {
-        NSDictionary *gps = meta[@"{GPS}"];
-        if (gps) {
-          _coordinate.latitude = [(NSNumber*)[gps valueForKey:@"Latitude"] doubleValue];
-          _coordinate.longitude = [(NSNumber*)[gps valueForKey:@"Longitude"] doubleValue];
-          if ([gps[@"LongitudeRef"] isEqualToString:@"W"]) {
-            _coordinate.longitude = -_coordinate.longitude;
-          }
-          if ([gps[@"LatitudeRef"] isEqualToString:@"S"]) {
-            _coordinate.latitude = -_coordinate.latitude;
-          }
-
-          break;
-        }
+      CLLocation *gps = asset.gpsLocation;
+      if (gps) {
+        _coordinate = gps.coordinate;
+        break;
       }
     }
   }
@@ -838,26 +823,33 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
   return _endDate;
 }
 
+- (NSArray *)userCheckins {
+  if (_userCheckins)
+    return _userCheckins;
+  NSDate *beginDate = [NSDate dateWithTimeInterval:(-30*60) sinceDate:self.beginDate];
+  NSDate *endDate = [NSDate dateWithTimeInterval:(30*60) sinceDate:self.endDate];
+  NSFetchRequest * fetchRequest = [[WADataStore defaultStore] newFetchReuqestForCheckinFrom:beginDate to:endDate];
+  
+  NSError *error = nil;
+  NSArray *checkins = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
+  [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
+  if (error) {
+    NSLog(@"error to query checkin db: %@", error);
+    _userCheckins = @[];
+    return _userCheckins;
+  } else if (checkins.count) {
+    _userCheckins = checkins;
+    return _userCheckins;
+  }
+  return @[];
+}
+
 - (NSArray *)checkins {
   
   if (self.representingArticle) {
     return self.representingArticle.uniqueCheckins;
   } else {
-    NSDate *beginDate = [NSDate dateWithTimeInterval:(-30*60) sinceDate:self.beginDate];
-    NSDate *endDate = [NSDate dateWithTimeInterval:(30*60) sinceDate:self.endDate];
-    NSFetchRequest * fetchRequest = [[WADataStore defaultStore] newFetchReuqestForCheckinFrom:beginDate to:endDate];
-    
-    NSError *error = nil;
-    NSArray *checkins = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
-    [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
-    if (error) {
-      NSLog(@"error to query checkin db: %@", error);
-      _checkins = @[];
-      return _checkins;
-    } else if (checkins.count) {
-      _checkins = checkins;
-      return _checkins;
-    }
+    return [self userCheckins];
   }
   return @[];
 }
