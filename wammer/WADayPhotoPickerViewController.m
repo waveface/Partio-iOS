@@ -245,7 +245,7 @@
     [[NSOperationQueue mainQueue] addOperationWithBlock:^{
       cell.imageView.image = image;
       ALAsset *asset = [self.dataSource photoAtIndexPath:indexPath];
-      if (wSelf.selectedAssets != nil && [wSelf.selectedAssets indexOfObject:asset] != NSNotFound) {
+      if (wSelf.selectedAssets != nil && [wSelf.selectedAssets containsObject:asset]) {
         [wSelf.collectionView selectItemAtIndexPath:indexPath animated:YES scrollPosition:UICollectionViewScrollPositionNone];
       }
 
