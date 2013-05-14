@@ -7,11 +7,14 @@
 //
 
 #import <AssetsLibrary/AssetsLibrary.h>
+#import <CoreLocation/CoreLocation.h>
 #import "WAImageProcessing.h"
 
 @interface ALAsset (WAAdditions)
 
 - (void)makeThumbnailWithOptions:(WAThumbnailType)type completeBlock:(WAImageProcessComplete)didCompleteBlock;
 - (UIImage *) cachedPresentableImage;
+
+@property (nonatomic, readonly) CLLocation *gpsLocation;
 
 @end
