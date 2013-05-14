@@ -15,7 +15,7 @@
 #import "WAEventDetailsViewController.h"
 #import "WADayPhotoPickerViewController.h"
 #import "WAGalleryViewController.h"
-#import "WAAddressBookPickerViewController.h"
+#import "WAFBFriendPickerViewController.h"
 
 #import "WAPhotoCollageCell.h"
 #import "WADefines.h"
@@ -35,8 +35,6 @@
 #import "IRBindings.h"
 
 #import "WADataStore+FetchingConveniences.h"
-#import "WAContactPickerViewController.h"
-#import "WAAddressBookPickerViewController.h"
 #import "WAGeoLocation.h"
 #import <CoreLocation/CoreLocation.h>
 #import <BlocksKit/BlocksKit.h>
@@ -198,8 +196,11 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
     
     // add contacts button
     UIBarButtonItem *addContacts = WAPartioToolbarButton(nil, [UIImage imageNamed:@"AddPplBtn"],nil, ^{
-      WAAddressBookPickerViewController *contactPicker = [[WAAddressBookPickerViewController alloc] init];
-      __weak WAAddressBookPickerViewController *wcp = contactPicker;
+      WAFBFriendPickerViewController *contactPicker = [[WAFBFriendPickerViewController alloc] init];
+      [contactPicker loadData];
+      [contactPicker clearSelection];
+      
+      __weak WAFBFriendPickerViewController *wcp = contactPicker;
       contactPicker.onNextHandler = ^(NSArray *selectedContacts){
         [wcp dismissViewControllerAnimated:YES completion:nil];
         [wSelf updateSharingEventWithPhotoChanges:nil contacts:selectedContacts onComplete:^{
@@ -579,8 +580,9 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
 {
   
   __weak WAPhotoTimelineViewController *wSelf = self;
-  //WAContactPickerViewController *contactPicker = [[WAContactPickerViewController alloc] init];
-  WAAddressBookPickerViewController *contactPicker = [[WAAddressBookPickerViewController alloc] init];
+  WAFBFriendPickerViewController *contactPicker = [[WAFBFriendPickerViewController alloc] init];
+  [contactPicker loadData];
+  [contactPicker clearSelection];
   
   if (self.navigationController) {
     contactPicker.onNextHandler = ^(NSArray *results) {

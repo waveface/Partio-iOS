@@ -6,9 +6,9 @@
 //  Copyright (c) 2013 Waveface. All rights reserved.
 //
 
-#import "WAContactPickerSectionHeaderView.h"
+#import "WAPartioTableViewSectionHeaderView.h"
 
-@implementation WAContactPickerSectionHeaderView
+@implementation WAPartioTableViewSectionHeaderView
 
 - (id)initWithFrame:(CGRect)frame
 {

@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface WAContactPickerSectionHeaderView : UIView
+@interface WAPartioTableViewSectionHeaderView : UIView
 
 @property (nonatomic, strong) IBOutlet UILabel *title;
 

@@ -76,9 +76,6 @@
    In iPad composition view */
 "ACTION_DONE" = "完成";
 
-/* The action to create a new collection */
-"ACTION_INPUT_EMAIL" = "輸入電子郵件信箱";
-
 /* Button title for showing an image picker */
 "ACTION_INSERT_PHOTO_FROM_LIBRARY" = "相片庫";
 
@@ -413,9 +410,6 @@
 /* information in event view to show hint */
 "INFO_HINT" = "邀一些好友來一起分享吧！";
 
-/* INPUT_RECEIVER_EMAIL */
-"INPUT_RECEIVER_EMAIL" = "輸入電子郵件信箱";
-
 /* Add more photos */
 "INSTRUCTION_ADD_MORE_PHOTOS" = "幫這個事件加入更多照片吧！";
 
@@ -466,9 +460,6 @@
 
 /* MESSAGE_EMAIL_REQUEST */
 "MESSAGE_EMAIL_REQUEST" = "我們會送封電子郵件邀請他/她一起共享生活中的寶貴回憶。";
-
-/* Message of dialog to input email */
-"MESSAGE_INPUT_EMAIL" = "請輸入您朋友的電子信箱，讓他與您一起共享生活中寶貴的回憶。";
 
 /* MESSAGE_NO_EMAIL_CONTACT */
 "MESSAGE_NO_EMAIL_CONTACT" = "哎呀，這個聯絡人沒有電子郵件信箱，請輸入他的電子郵件信箱來邀請他和您一起來共享生活中寶貴的回憶。";
@@ -676,9 +667,6 @@
 
 /* title of highlights */
 "TITLE_HIGHLIGHT" = "選輯";
-
-/* Title of dialog to input email */
-"TITLE_INPUT_EMAIL" = "輸入電子郵件信箱";
 
 /* TITLE_INPUT_EMAIL_ALERT */
 "TITLE_INPUT_EMAIL_ALERT" = "%@的Email是？";

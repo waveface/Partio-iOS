@@ -8,7 +8,7 @@
 
 #import "WAAddressBookPickerViewController.h"
 #import "WAPartioNavigationBar.h"
-#import "WAContactPickerSectionHeaderView.h"
+#import "WAPartioTableViewSectionHeaderView.h"
 #import <AddressBook/AddressBook.h>
 #import <SMCalloutView/SMCalloutView.h>
 #import <BlocksKit/BlocksKit.h>
@@ -558,7 +558,7 @@ static NSString *kWAAddressBookViewController_CoachMarks = @"kWAAddressBookViewC
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-  WAContactPickerSectionHeaderView *headerView = [[WAContactPickerSectionHeaderView alloc] initWithFrame:CGRectMake(0.f, 2.f, 320.f, 22.f)];
+  WAPartioTableViewSectionHeaderView *headerView = [[WAPartioTableViewSectionHeaderView alloc] initWithFrame:CGRectMake(0.f, 2.f, 320.f, 22.f)];
   headerView.backgroundColor = tableView.backgroundColor;
   //headerView.title.text = NSLocalizedString(@"LABEL_CONTACTS_FRIENDS", @"LABEL_CONTACTS_FRIENDS");
   
