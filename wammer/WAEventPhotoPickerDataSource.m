@@ -41,7 +41,6 @@
 
 - (void) loadMorePhotosSinceDate:(NSDate*)date until:(NSDate*)until{
   __weak WAEventPhotoPickerDataSource *wSelf = self;
-  NSMutableArray *group = [NSMutableArray array];
   __block NSUInteger processingEvents = 0;
   NSMutableIndexSet *changedIndexices = [NSMutableIndexSet indexSet];
   
@@ -70,8 +69,7 @@
            
            previousDate = assetDate;
            [changedIndexices addIndex:(wSelf.photoGroups.count + processingEvents)];
-           [group addObject:[photoList copy]];
-//           [wSelf.photoGroups addObject:[photoList copy]];
+           [wSelf.photoGroups addObject:[photoList copy]];
            processingEvents ++;
            
            [photoList removeAllObjects];
@@ -87,8 +85,7 @@
      }];
      if (photoList.count) {
        [changedIndexices addIndex:(wSelf.photoGroups.count + processingEvents)];
-//       [wSelf.photoGroups addObject:[photoList copy]];
-       [group addObject:[photoList copy]];
+       [wSelf.photoGroups addObject:[photoList copy]];
        processingEvents ++;
        
        [photoList removeAllObjects];
@@ -112,8 +109,7 @@
    } onComplete:^{
      
      if (wSelf.completionHandler) {
-       
-       [wSelf.photoGroups insertObjects:group atIndexes:changedIndexices];
+
        wSelf.completionHandler([changedIndexices copy]);
 
      }

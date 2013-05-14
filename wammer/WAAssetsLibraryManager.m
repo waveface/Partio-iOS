@@ -142,12 +142,10 @@
       NSMutableArray *allAssets = [NSMutableArray array];
       [group enumerateAssetsUsingBlock:^(ALAsset *result, NSUInteger index, BOOL *stop) {
         if (result) {
-          if (![importedFileAssetURLs containsObject:[[[result defaultRepresentation] url] absoluteString]]) {
-            NSUInteger indexToInsert = [allAssets indexOfObject:result inSortedRange:NSMakeRange(0, [allAssets count]) options:NSBinarySearchingInsertionIndex usingComparator:^NSComparisonResult(ALAsset *asset1, ALAsset *asset2) {
-              return [[asset2 valueForProperty:ALAssetPropertyDate] compare:[asset1 valueForProperty:ALAssetPropertyDate]];
-            }];
-            [allAssets insertObject:result atIndex:indexToInsert];
-          }
+          NSUInteger indexToInsert = [allAssets indexOfObject:result inSortedRange:NSMakeRange(0, [allAssets count]) options:NSBinarySearchingInsertionIndex usingComparator:^NSComparisonResult(ALAsset *asset1, ALAsset *asset2) {
+            return [[asset2 valueForProperty:ALAssetPropertyDate] compare:[asset1 valueForProperty:ALAssetPropertyDate]];
+          }];
+          [allAssets insertObject:result atIndex:indexToInsert];
         }
       }];
 
@@ -161,7 +159,7 @@
           if (sinceDate && ([assetDate compare:sinceDate] != NSOrderedAscending)) {
             return;
           }
-
+          
           if (midnight) {
 	  
             if ([assetDate compare:midnight] != NSOrderedDescending) {
@@ -180,11 +178,11 @@
             }
             
           } else {
-	  
+            
             midnight = [assetDate earlyMorning];
             
           }
-	
+          
           [insertedAssets addObject:result];
 	
         }

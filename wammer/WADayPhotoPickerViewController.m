@@ -113,58 +113,6 @@
   [self updateNavigationBarTitle];
   
 }
-/*
-- (void) viewDidAppear:(BOOL)animated {
-  
-  [super viewDidAppear:animated];
-
-  __weak WADayPhotoPickerViewController *wSelf = self;
-  WAOverlayBezel *busyBezel = [[WAOverlayBezel alloc] initWithStyle:WAActivityIndicatorBezelStyle];
-  [busyBezel show];
-  
-  [[WAAssetsLibraryManager defaultManager] retrieveTimeSortedPhotosWhenComplete:^(NSArray *result) {
-    wSelf.allTimeSortedAssets = result;
-    [busyBezel dismiss];
-    
-    if (wSelf.selectedAssets.count) {
-      [wSelf.collectionView reloadData];
-
-      [wSelf.collectionView scrollToItemAtIndexPath:[wSelf indexPathForAsset:wSelf.selectedAssets[0]] atScrollPosition:UICollectionViewScrollPositionTop animated:NO];
-    } else if (self.selectedRangeFromDate && self.selectedRangeToDate) {
-      NSDate *fromDate = [NSDate dateWithTimeInterval:-30*60 sinceDate:self.selectedRangeFromDate];
-      NSDate *toDate = [NSDate dateWithTimeInterval:30*60 sinceDate:self.selectedRangeToDate];
-      
-      for (ALAsset *asset in self.allTimeSortedAssets) {
-        NSDate *assetDate = [asset valueForProperty:ALAssetPropertyDate];
-        if ([assetDate compare:fromDate] == NSOrderedAscending)
-          break;
-        
-        if ([assetDate compare:toDate] == NSOrderedDescending) {
-          continue;
-        }
-        [self.selectedAssets addObject:asset];
-        
-      }
-      
-      [wSelf.collectionView reloadData];
-      if (self.selectedAssets.count) {
-        self.navigationItem.rightBarButtonItem.enabled = YES;
-        NSIndexPath *indexPath = [wSelf indexPathForAsset:self.selectedAssets[0]];
-        dispatch_async(dispatch_get_main_queue(), ^{
-          [wSelf updateNavigationBarTitle];
-          [wSelf.collectionView scrollToItemAtIndexPath:indexPath atScrollPosition:UICollectionViewScrollPositionTop animated:NO];
-        });
-      }
-    } else {
-      [wSelf.collectionView reloadData];
-    }
-  } onFailure:^(NSError *error) {
-    [busyBezel dismiss];
-    
-    NSLog(@"error: %@", error);
-  }];
-
-}*/
 
 - (void) updateNavigationBarTitle {
   if (self.selectedAssets.count) {
@@ -191,49 +139,6 @@
 {
   [super didReceiveMemoryWarning];
   // Dispose of any resources that can be recreated.
-}
-
-- (NSArray*) photoGroups {
-  
-  if (_photoGroups.count > 0)
-    return _photoGroups;
-  
-  if (_allTimeSortedAssets.count == 0)
-    return @[];
-  
-  NSMutableArray *sortedGroups = [NSMutableArray array];
-  NSMutableArray *photoList = [NSMutableArray array];
-  __block NSDate *previousDate = nil;
-  
-  [_allTimeSortedAssets enumerateObjectsUsingBlock:^(ALAsset *asset, NSUInteger idx, BOOL *stop) {
-    
-    if (!previousDate) {
-      [photoList addObject:asset];
-      previousDate = [asset valueForProperty:ALAssetPropertyDate];
-      
-    } else {
-      
-      NSDate *assetDate = [asset valueForProperty:ALAssetPropertyDate];
-      
-      if(!isSameDay(assetDate, previousDate)) {
-        
-        previousDate = assetDate;
-        [sortedGroups addObject:[photoList copy]];
-        [photoList removeAllObjects];
-        [photoList addObject:asset];
-        
-      } else {
-        
-        previousDate = assetDate;
-        [photoList addObject:asset];
-        
-      }
-    }
-    
-  }];
-  
-  _photoGroups = [NSArray arrayWithArray:sortedGroups];
-  return _photoGroups;
 }
 
 - (NSIndexPath *)indexPathForAsset:(ALAsset*)targetAsset {
@@ -266,24 +171,47 @@
   return [NSIndexPath indexPathForRow:0 inSection:0];
 }
 
-- (void) scrollToDate:(NSDate*)targetDate {
-
-  NSInteger index = 0;
+- (void) selectAssetsFrom:(NSDate*)fromDate to:(NSDate*)toDate {
+  NSUInteger section = 0;
+  NSIndexPath *firstIndexPath = nil;
   
-  for (NSArray *group in self.photoGroups) {
-    NSDate *date = [(ALAsset*)group[0] valueForProperty:ALAssetPropertyDate];
-    if (isSameDay(targetDate, date))
-      break;
-    
-    if ([targetDate compare:date] == NSOrderedDescending)
-      break;
+  NSAssert(fromDate && toDate, @"require the date range");
+  
+  NSMutableArray *changedIndexPaths = [NSMutableArray array];
+  for (section = 0; section < self.dataSource.numberOfEvents; section++) {
+    NSArray *assets = [self.dataSource photosInEvent:section] ;
+    NSUInteger row = 0;
+    BOOL stop = NO;
+    for (row = 0; row < assets.count; row ++) {
+      ALAsset *asset = assets[row];
+      NSDate *date = [asset valueForProperty:ALAssetPropertyDate];
+      if ([toDate compare:date] == NSOrderedAscending)
+        continue;
+      if ([fromDate compare:date] == NSOrderedDescending) {
+        stop = YES;
+        break;
+      }
       
-    index ++;
+      NSIndexPath *indexPath = [NSIndexPath indexPathForRow:row inSection:section];
+      if (!firstIndexPath)
+        firstIndexPath = indexPath;
+      [self.collectionView selectItemAtIndexPath:indexPath
+                                        animated:NO
+                                  scrollPosition:UICollectionViewScrollPositionNone];
+      [self collectionView:self.collectionView didSelectItemAtIndexPath:indexPath];
+      [changedIndexPaths addObject:indexPath];
+    }
+    if (stop)
+      break;
   }
   
-  [self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:index] atScrollPosition:UICollectionViewScrollPositionCenteredVertically animated:NO];
+  if (firstIndexPath) {
+    [self.collectionView reloadItemsAtIndexPaths:changedIndexPaths];
+    [self.collectionView scrollToItemAtIndexPath:firstIndexPath
+                                atScrollPosition:UICollectionViewScrollPositionTop
+                                        animated:YES];
+  }
 }
-
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
 
@@ -324,8 +252,7 @@
     }];
   }];
   [self.imageDisplayQueue addOperation:cell.imageLoadingOperation];
-  
-  
+    
   return cell;
 }
 
@@ -409,13 +336,20 @@
     __weak WADayPhotoPickerViewController *wSelf = self;
     
     if (!self.dataSource) {
+      // initial loading
       if (self.selectedRangeFromDate) {
         NSDate *newFromDate = [self.selectedRangeFromDate dateByAddingTimeInterval:(-24 * 2 * 60 * 60)];
-        self.selectedRangeFromDate = nil;
+
         dispatch_async(dispatch_get_main_queue(), ^{
           
-          self.dataSource = [[WAEventPhotoPickerDataSource alloc] initWithPhotosLoadedUntil:newFromDate completionHandler:^(NSIndexSet *changedSections) {
+          wSelf.dataSource = [[WAEventPhotoPickerDataSource alloc] initWithPhotosLoadedUntil:newFromDate completionHandler:^(NSIndexSet *changedSections) {
             [wSelf.collectionView reloadData];
+            [wSelf performBlock:^(id sender) {
+              
+              [wSelf selectAssetsFrom:wSelf.selectedRangeFromDate to:wSelf.selectedRangeToDate];
+              
+            } afterDelay:0.8];
+            
           }];
           
         });
@@ -423,7 +357,7 @@
       } else {
         dispatch_async(dispatch_get_main_queue(), ^{
           
-          self.dataSource = [[WAEventPhotoPickerDataSource alloc] initWithCompletionHandler:^(NSIndexSet *changedSections) {
+          wSelf.dataSource = [[WAEventPhotoPickerDataSource alloc] initWithCompletionHandler:^(NSIndexSet *changedSections) {
             [wSelf.collectionView reloadData];
           }];
         });
@@ -431,7 +365,7 @@
       }
     } else {
       dispatch_async(dispatch_get_main_queue(), ^{
-        [self.dataSource loadMoreEvents];
+        [wSelf.dataSource loadMoreEvents];
       });
 
     }
