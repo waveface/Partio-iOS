@@ -10,7 +10,7 @@
 #import "WAAssetsLibraryManager.h"
 
 @interface WAEventPhotoPickerDataSource ()
-@property (nonatomic, copy) void (^completionHandler)(void);
+@property (nonatomic, copy) void (^completionHandler)(NSIndexSet *);
 @property (nonatomic, strong) NSDate *lastLoadedDate;
 @property (nonatomic, strong) NSMutableArray *photoGroups;
 @end
@@ -19,7 +19,7 @@
 #define BATCH_PROCESS_EVENTS 20
 @implementation WAEventPhotoPickerDataSource
 
-- (id) initWithPhotosLoadedUntil:(NSDate*)until completionHandler:(void(^)(void))completionHandler {
+- (id) initWithPhotosLoadedUntil:(NSDate*)until completionHandler:(void(^)(NSIndexSet *changedSections))completionHandler {
   self = [super init];
   if (self) {
     self.photoGroups = [NSMutableArray array];
@@ -29,7 +29,7 @@
   return self;
 }
 
-- (id) initWithCompletionHandler:(void(^)(void))completionHandler {
+- (id) initWithCompletionHandler:(void(^)(NSIndexSet *changedSections))completionHandler {
   self = [super init];
   if (self) {
     self.photoGroups = [NSMutableArray array];
@@ -41,7 +41,9 @@
 
 - (void) loadMorePhotosSinceDate:(NSDate*)date until:(NSDate*)until{
   __weak WAEventPhotoPickerDataSource *wSelf = self;
+  NSMutableArray *group = [NSMutableArray array];
   __block NSUInteger processingEvents = 0;
+  NSMutableIndexSet *changedIndexices = [NSMutableIndexSet indexSet];
   
   [[WAAssetsLibraryManager defaultManager]
    enumerateSavedPhotosSince:date
@@ -67,7 +69,9 @@
          if ((previousInterval - assetInterval) > EVENT_GROUPING_THRESHOLD) {
            
            previousDate = assetDate;
-           [wSelf.photoGroups addObject:[photoList copy]];
+           [changedIndexices addIndex:(wSelf.photoGroups.count + processingEvents)];
+           [group addObject:[photoList copy]];
+//           [wSelf.photoGroups addObject:[photoList copy]];
            processingEvents ++;
            
            [photoList removeAllObjects];
@@ -82,7 +86,9 @@
        }
      }];
      if (photoList.count) {
-       [wSelf.photoGroups addObject:[photoList copy]];
+       [changedIndexices addIndex:(wSelf.photoGroups.count + processingEvents)];
+//       [wSelf.photoGroups addObject:[photoList copy]];
+       [group addObject:[photoList copy]];
        processingEvents ++;
        
        [photoList removeAllObjects];
@@ -105,8 +111,11 @@
      
    } onComplete:^{
      
-     if (self.completionHandler) {
-       self.completionHandler();
+     if (wSelf.completionHandler) {
+       
+       [wSelf.photoGroups insertObjects:group atIndexes:changedIndexices];
+       wSelf.completionHandler([changedIndexices copy]);
+
      }
      
    } onFailure:^(NSError *error) {

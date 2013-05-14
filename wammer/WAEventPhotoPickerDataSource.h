@@ -11,8 +11,8 @@
 
 @interface WAEventPhotoPickerDataSource : NSObject
 
-- (id) initWithPhotosLoadedUntil:(NSDate*)until completionHandler:(void(^)(void))completionHandler;
-- (id) initWithCompletionHandler:(void(^)(void))completionHandler;
+- (id) initWithPhotosLoadedUntil:(NSDate*)until completionHandler:(void(^)(NSIndexSet *changedSections))completionHandler;
+- (id) initWithCompletionHandler:(void(^)(NSIndexSet *changedSection))completionHandler;
 - (NSUInteger) numberOfEvents;
 - (NSUInteger) numberOfPhotosInEvent:(NSUInteger)eventSection;
 - (NSArray*) photosInEvent:(NSUInteger)eventSection;

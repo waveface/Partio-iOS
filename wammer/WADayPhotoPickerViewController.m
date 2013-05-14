@@ -112,16 +112,6 @@
   
   [self updateNavigationBarTitle];
   
-  if (self.selectedRangeFromDate) {
-    NSDate *newFromDate = [self.selectedRangeFromDate dateByAddingTimeInterval:(-24 * 2 * 60 * 60)];
-    self.dataSource = [[WAEventPhotoPickerDataSource alloc] initWithPhotosLoadedUntil:newFromDate completionHandler:^{
-      [self.collectionView reloadData];
-    }];
-  } else {
-    self.dataSource = [[WAEventPhotoPickerDataSource alloc] initWithCompletionHandler:^{
-      [self.collectionView reloadData];
-    }];
-  }
 }
 /*
 - (void) viewDidAppear:(BOOL)animated {
@@ -417,9 +407,35 @@
   } else {
     WAEventPhotoPickerLoadingView *loading = [collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:@"WAEventPhotoPickerLoadingView" forIndexPath:indexPath];
     __weak WADayPhotoPickerViewController *wSelf = self;
-    dispatch_async(dispatch_get_main_queue(), ^{
-      [wSelf.dataSource loadMoreEvents];
-    });
+    
+    if (!self.dataSource) {
+      if (self.selectedRangeFromDate) {
+        NSDate *newFromDate = [self.selectedRangeFromDate dateByAddingTimeInterval:(-24 * 2 * 60 * 60)];
+        self.selectedRangeFromDate = nil;
+        dispatch_async(dispatch_get_main_queue(), ^{
+          
+          self.dataSource = [[WAEventPhotoPickerDataSource alloc] initWithPhotosLoadedUntil:newFromDate completionHandler:^(NSIndexSet *changedSections) {
+            [wSelf.collectionView reloadData];
+          }];
+          
+        });
+
+      } else {
+        dispatch_async(dispatch_get_main_queue(), ^{
+          
+          self.dataSource = [[WAEventPhotoPickerDataSource alloc] initWithCompletionHandler:^(NSIndexSet *changedSections) {
+            [wSelf.collectionView reloadData];
+          }];
+        });
+
+      }
+    } else {
+      dispatch_async(dispatch_get_main_queue(), ^{
+        [self.dataSource loadMoreEvents];
+      });
+
+    }
+    
     return loading;
   }
   
