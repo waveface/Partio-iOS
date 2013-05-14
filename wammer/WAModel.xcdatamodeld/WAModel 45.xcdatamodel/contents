@@ -147,6 +147,7 @@
         <relationship name="collections" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="WACollection" inverseName="files" inverseEntity="WACollection" syncable="YES"/>
         <relationship name="coverOfCollection" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="WACollection" inverseName="cover" inverseEntity="WACollection" syncable="YES"/>
         <relationship name="exif" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="WAFileExif" inverseName="file" inverseEntity="WAFileExif" syncable="YES"/>
+        <relationship name="locationMeta" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="WALocation" inverseName="file" inverseEntity="WALocation" syncable="YES"/>
         <relationship name="owner" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="WAUser" inverseName="files" inverseEntity="WAUser">
             <userInfo/>
         </relationship>
@@ -215,6 +216,7 @@
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="zoomLevel" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <relationship name="article" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="WAArticle" syncable="YES"/>
+        <relationship name="file" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="WAFile" inverseName="locationMeta" inverseEntity="WAFile" syncable="YES"/>
         <relationship name="tags" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="WATag" inverseName="location" inverseEntity="WATag" syncable="YES"/>
     </entity>
     <entity name="WAPeople" representedClassName="WAPeople" syncable="YES">
@@ -320,12 +322,12 @@
         <element name="WACollection" positionX="0" positionY="0" width="128" height="195"/>
         <element name="WADocumentDay" positionX="0" positionY="0" width="128" height="75"/>
         <element name="WAEventDay" positionX="160" positionY="192" width="128" height="75"/>
-        <element name="WAFile" positionX="0" positionY="0" width="128" height="660"/>
+        <element name="WAFile" positionX="0" positionY="0" width="128" height="675"/>
         <element name="WAFileAccessLog" positionX="160" positionY="192" width="128" height="150"/>
         <element name="WAFileExif" positionX="0" positionY="0" width="128" height="315"/>
         <element name="WAFilePageElement" positionX="0" positionY="0" width="128" height="135"/>
         <element name="WAGroup" positionX="0" positionY="0" width="128" height="120"/>
-        <element name="WALocation" positionX="0" positionY="0" width="128" height="135"/>
+        <element name="WALocation" positionX="0" positionY="0" width="128" height="150"/>
         <element name="WAPeople" positionX="0" positionY="0" width="128" height="150"/>
         <element name="WAPhotoDay" positionX="160" positionY="192" width="128" height="75"/>
         <element name="WAStation" positionX="160" positionY="192" width="128" height="120"/>

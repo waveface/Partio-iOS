@@ -110,7 +110,7 @@
         
         dispatch_async(dispatch_get_main_queue(), ^{
           if (firstUse.completionBlock)
-            firstUse.completionBlock();
+            firstUse.completionBlock(YES);
         });
         
         

@@ -33,8 +33,8 @@
     mapping = @{
                 @"name": @"name",
                 @"message": @"message",
-                @"identifier": @"identifier",
-                @"create_time": @"createDate",
+                @"checkin_id": @"identifier",
+                @"timestamp": @"createDate",
                 @"tagged_uids": @"taggedUsers",
                 @"latitude": @"latitude",
                 @"longitude": @"longitude"
@@ -46,24 +46,15 @@
   
 }
 
-+ (NSDictionary *) transformedRepresentationForRemoteRepresentation:(NSDictionary *)incomingDictionary {
-  NSMutableDictionary *returnedDictionary = [incomingDictionary mutableCopy];
-  
-  NSNumber *timestampNumber = incomingDictionary[@"timestamp"];
-  if (timestampNumber) {
-    returnedDictionary[@"create_time"] = [NSDate dateWithTimeIntervalSince1970:timestampNumber.intValue];
-  }
-  
-  NSNumber *checkinID = incomingDictionary[@"checkin_id"];
-  if (checkinID) {
-    returnedDictionary[@"identifier"] = [NSString stringWithFormat:@"%@", checkinID];
-  }
-  return returnedDictionary;
-}
-
 + (id) transformedValue:(id)aValue
       fromRemoteKeyPath:(NSString *)aRemoteKeyPath
          toLocalKeyPath:(NSString *)aLocalKeyPath {
+
+  if ([aRemoteKeyPath isEqualToString:@"timestamp"])
+    return [NSDate dateWithTimeIntervalSince1970:[aValue intValue]];
+  
+  if ([aRemoteKeyPath isEqualToString:@"checkin_id"])
+    return [NSString stringWithFormat:@"%@", aValue];
 
   if ( [aRemoteKeyPath isEqualToString:@"tagged_uids"])
     return [[NSString alloc] initWithData:[NSJSONSerialization dataWithJSONObject:(NSArray*)aValue options:0 error:nil] encoding:NSUTF8StringEncoding];

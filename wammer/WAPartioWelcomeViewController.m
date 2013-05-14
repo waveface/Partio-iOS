@@ -67,7 +67,7 @@
     
     WAPartioFirstUseViewController *firstUse = (WAPartioFirstUseViewController*)wSelf.navigationController;
     if (firstUse.completionBlock) {
-      firstUse.completionBlock();
+      firstUse.completionBlock(YES);
       firstUse.completionBlock = nil;
     }
   });
@@ -77,19 +77,17 @@
 
 
 - (IBAction) experienceButtonClicked:(id)sender {
-/*
-  IRAction *cancelAction = [IRAction actionWithTitle:@"OK" block:nil];
   
-  [[IRAlertView alertViewWithTitle:@"Not support yet"
-                           message:@"Current version requires you to login with Facebook account first. 'Try' scenario will be implemented in the near future."
-                      cancelAction:cancelAction
-                      otherActions:nil] show];
-  */
   self.experienceButton.enabled = NO;
   self.signupButton.enabled = NO;
+  __weak WAPartioWelcomeViewController *wSelf = self;
   WAPartioFirstUseViewController *firstUse = (WAPartioFirstUseViewController *)self.navigationController;
   if (firstUse.completionBlock) {
-    firstUse.completionBlock();
+    firstUse.completionBlock(NO);
+    
+    wSelf.experienceButton.enabled = YES;
+    wSelf.signupButton.enabled = YES;
+    
   }
 }
 

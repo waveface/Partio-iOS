@@ -17,6 +17,7 @@
 #import "WADataStore.h"
 #import "WAPartioNavigationBar.h"
 #import "NSDate+WAAdditions.h"
+#import "WARemoteInterface.h"
 #import <SMCalloutView/SMCalloutView.h>
 #import <BlocksKit/BlocksKit.h>
 #import <QuartzCore/QuartzCore.h>
@@ -102,6 +103,14 @@ static NSString * const kWASharedEventViewController_CoachMarks = @"kWASharedEve
 - (void)viewDidAppear:(BOOL)animated
 {
   [super viewDidAppear:animated];
+  if (![WARemoteInterface sharedInterface].userToken) {
+    self.navigationItem.leftBarButtonItem = WAPartioBackButton(^{
+      [self.navigationController popViewControllerAnimated:YES];
+    });
+  } else {
+    self.navigationItem.leftBarButtonItem = nil;
+  }
+
   BOOL coachmarkShown = [[NSUserDefaults standardUserDefaults] boolForKey:kWASharedEventViewController_CoachMarks];
   if (!coachmarkShown) {
     __weak WASharedEventViewController *wSelf = self;

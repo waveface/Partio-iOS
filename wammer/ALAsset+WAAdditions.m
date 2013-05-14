@@ -76,4 +76,28 @@
     
   }
 }
+
+- (CLLocation*) gpsLocation {
+  NSDictionary *meta = [self defaultRepresentation].metadata;
+  if (meta) {
+    NSDictionary *gps = meta[@"{GPS}"];
+    if (gps) {
+      CLLocationCoordinate2D coordinate;
+      coordinate.latitude = [(NSNumber*)[gps valueForKey:@"Latitude"] doubleValue];
+      coordinate.longitude = [(NSNumber*)[gps valueForKey:@"Longitude"] doubleValue];
+      if ([gps[@"LongitudeRef"] isEqualToString:@"W"]) {
+        coordinate.longitude = -coordinate.longitude;
+      }
+      if ([gps[@"LatitudeRef"] isEqualToString:@"S"]) {
+        coordinate.latitude = -coordinate.latitude;
+      }
+      
+      CLLocationDistance altitude = [(NSNumber*)[gps valueForKey:@"Altitude"] doubleValue];
+      
+      return [[CLLocation alloc] initWithCoordinate:coordinate altitude:altitude horizontalAccuracy:0 verticalAccuracy:0 timestamp:nil];
+    }
+  }
+  
+  return  nil;
+}
 @end

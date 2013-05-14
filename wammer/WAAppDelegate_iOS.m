@@ -793,19 +793,23 @@ extern CFAbsoluteTime StartTime;
 - (void) handlePartioAuthRequest {
 
   __weak WAAppDelegate_iOS *wSelf = self;
-  __block WAPartioFirstUseViewController *partioFirstUse = [WAPartioFirstUseViewController firstUseViewControllerWithCompletionBlock:^{
+  __block WAPartioFirstUseViewController *partioFirstUse = [WAPartioFirstUseViewController firstUseViewControllerWithCompletionBlock:^(BOOL signupSuccess){
 
     [partioFirstUse popToRootViewControllerAnimated:NO];
-    
-    [partioFirstUse dismissViewControllerAnimated:NO completion:^{
-      wSelf.window.rootViewController = nil;
-      [wSelf recreateViewHierarchy];
-    }];
-    
-    WASharedEventViewController *sharedEventsVC = [[WASharedEventViewController alloc] init];
-    WANavigationController *navVC = [[WANavigationController alloc] initWithRootViewController:sharedEventsVC];
-    wSelf.window.rootViewController = navVC;
-    
+
+    if (signupSuccess) {
+      [partioFirstUse dismissViewControllerAnimated:NO completion:^{
+        wSelf.window.rootViewController = nil;
+        [wSelf recreateViewHierarchy];
+      }];
+      
+      WASharedEventViewController *sharedEventsVC = [[WASharedEventViewController alloc] init];
+      WANavigationController *navVC = [[WANavigationController alloc] initWithRootViewController:sharedEventsVC];
+      wSelf.window.rootViewController = navVC;
+    } else {
+      WASharedEventViewController *sharedEventsVC = [[WASharedEventViewController alloc] init];
+      [partioFirstUse pushViewController:sharedEventsVC animated:YES];
+    }
   } failure:^(NSError *error) {
     NSLog(@"fail to sign up for error: %@", error);
     IRAction *okAction = [IRAction actionWithTitle:NSLocalizedString(@"ACTION_OKAY", @"Alert Dismissal Action") block:nil];

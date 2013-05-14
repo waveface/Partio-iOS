@@ -13,6 +13,8 @@
 - (id) initWithSelectedAssets:(NSArray *)assets;
 - (id) initWithSuggestedDateRangeFrom:(NSDate*)from to:(NSDate*)to;
 + (id) viewControllerWithNavigationControllerWrapped;
+- (void) selectAllInSection:(NSUInteger)section;
+- (void) deselectAllInSection:(NSUInteger)section;
 
 @property (nonatomic, copy) void (^onNextHandler)(NSArray *selectedAssets);
 @property (nonatomic, copy) void (^onCancelHandler)();

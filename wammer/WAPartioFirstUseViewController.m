@@ -13,7 +13,7 @@
 @end
 
 @implementation WAPartioFirstUseViewController
-+ (WAPartioFirstUseViewController*) firstUseViewControllerWithCompletionBlock:(void(^)(void))completion failure:(void(^)(NSError*))failure {
++ (WAPartioFirstUseViewController*) firstUseViewControllerWithCompletionBlock:(void(^)(BOOL signupSuccess))completion failure:(void(^)(NSError*))failure {
 
   UIStoryboard *sb = [UIStoryboard storyboardWithName:@"WAPartioFirstUse" bundle:nil];
   WAPartioFirstUseViewController *vc = [sb instantiateInitialViewController];
