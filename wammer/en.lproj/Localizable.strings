@@ -76,9 +76,6 @@
    In iPad composition view */
 "ACTION_DONE" = "Stream!";
 
-/* The action to create a new collection */
-"ACTION_INPUT_EMAIL" = "Add";
-
 /* Button title for showing an image picker */
 "ACTION_INSERT_PHOTO_FROM_LIBRARY" = "Photo Library";
 
@@ -429,9 +426,6 @@
 /* information in event view to show hint */
 "INFO_HINT" = "Invite some friends to share this event.";
 
-/* INPUT_RECEIVER_EMAIL */
-"INPUT_RECEIVER_EMAIL" = "Input Email";
-
 /* Add more photos */
 "INSTRUCTION_ADD_MORE_PHOTOS" = "Upload more photos in the same event";
 
@@ -482,9 +476,6 @@
 
 /* MESSAGE_EMAIL_REQUEST */
 "MESSAGE_EMAIL_REQUEST" = "We'll invite your friend by email.";
-
-/* Message of dialog to input email */
-"MESSAGE_INPUT_EMAIL" = "Please input your friend's email to invite him/her to share your precious moments with you.";
 
 /* MESSAGE_NO_EMAIL_CONTACT */
 "MESSAGE_NO_EMAIL_CONTACT" = "Oops! This contact has no emails. Please input their email to invite them to share precious memories with you.";
@@ -693,9 +684,6 @@
 
 /* title of highlights */
 "TITLE_HIGHLIGHT" = "Highlights";
-
-/* Title of dialog to input email */
-"TITLE_INPUT_EMAIL" = "Your friend's Email";
 
 /* TITLE_INPUT_EMAIL_ALERT */
 "TITLE_INPUT_EMAIL_ALERT" = "What's %@'s email?";

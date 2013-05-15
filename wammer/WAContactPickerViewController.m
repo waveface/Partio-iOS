@@ -11,8 +11,9 @@
 #import "WAAppearance.h"
 #import "WAPartioNavigationBar.h"
 
-#import "WAContactPickerSectionHeaderView.h"
+#import "WAPartioTableViewSectionHeaderView.h"
 #import "WAAddressBookPickerViewController.h"
+#import "WAFBFriendPickerViewController.h"
 #import <BlocksKit/BlocksKit.h>
 #import <FacebookSDK/FacebookSDK.h>
 
@@ -127,7 +128,7 @@
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-  WAContactPickerSectionHeaderView *headerView = [[WAContactPickerSectionHeaderView alloc] initWithFrame:CGRectMake(0.f, 2.f, 320.f, 22.f)];
+  WAPartioTableViewSectionHeaderView *headerView = [[WAPartioTableViewSectionHeaderView alloc] initWithFrame:CGRectMake(0.f, 2.f, 320.f, 22.f)];
   headerView.backgroundColor = tableView.backgroundColor;
   
   return headerView;
@@ -161,38 +162,11 @@
     [cell.textLabel setFont:[UIFont fontWithName:@"OpenSans-Semibold" size:20.f]];
     
     if (indexPath.row == 0) {
-      [cell setSelectionStyle:UITableViewCellSelectionStyleGray];
-      
-      for (UIView *subview in cell.contentView.subviews) {
-        [subview removeFromSuperview];
-      }
-      
-      self.textField = [[UITextField alloc] initWithFrame:CGRectMake(5.f, 5.f, 310.f, 34.f)];
-      [self.textField setBorderStyle:UITextBorderStyleRoundedRect];
-      [self.textField setPlaceholder:NSLocalizedString(@"INPUT_RECEIVER_EMAIL", @"INPUT_RECEIVER_EMAIL")];
-      [self.textField setClearButtonMode:UITextFieldViewModeWhileEditing];
-      [self.textField setContentVerticalAlignment:UIControlContentVerticalAlignmentCenter];
-      
-      // Manage keyboard for email input
-      [self.textField setAutocapitalizationType:UITextAutocapitalizationTypeNone];
-      [self.textField setAutocorrectionType:UITextAutocorrectionTypeNo];
-      [self.textField setSpellCheckingType:UITextSpellCheckingTypeNo];
-      [self.textField setEnablesReturnKeyAutomatically:YES];
-      [self.textField setKeyboardAppearance:UIKeyboardAppearanceDefault];
-      [self.textField setKeyboardType:UIKeyboardTypeEmailAddress];
-      [self.textField setReturnKeyType:UIReturnKeyDone];
-      [self.textField setSecureTextEntry:NO];
-      self.textField.delegate = self;
-      
-      [cell.contentView addSubview:self.textField];
-      
-      
-    } else if (indexPath.row == 1) {
       cell.imageView.image = [UIImage imageNamed:@"contact"];
       cell.textLabel.text = @"Contacts";
       cell.detailTextLabel.text = @"Find friends from your contacts.";
       
-    } else if (indexPath.row == 2) {
+    } else if (indexPath.row == 1) {
       cell.imageView.image = [UIImage imageNamed:@"FB"];
       cell.textLabel.text = @"Facebook";
       cell.detailTextLabel.text = @"Find friends from Facebook.";
@@ -214,8 +188,8 @@
       cell.detailTextLabel.text = emails[0];
     }
     
-    cell.accessoryType = UITableViewCellAccessoryCheckmark;
-    cell.accessoryView = [self checkmark];
+//    cell.accessoryType = UITableViewCellAccessoryCheckmark;
+//    cell.accessoryView = [self checkmark];
     
   }
   
@@ -336,27 +310,14 @@
   [tableView deselectRowAtIndexPath:indexPath animated:YES];
   
   if (indexPath.section == 0) {
-    if (!indexPath.row) {
-      UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"TITLE_INPUT_EMAIL", @"Title of dialog to input email") message:NSLocalizedString(@"MESSAGE_INPUT_EMAIL", @"Message of dialog to input email")];
-      __weak UIAlertView *wAlert = alert;
-      alert.alertViewStyle = UIAlertViewStylePlainTextInput;
-      [alert setCancelButtonWithTitle:NSLocalizedString(@"ACTION_CANCEL", @"Cancel adding selected photos into collection") handler:nil];
-      [alert addButtonWithTitle:NSLocalizedString(@"ACTION_INPUT_EMAIL", @"The action to create a new collection") handler:^{
-        NSString *email = [wAlert textFieldAtIndex:0].text;
-        NSDictionary *contact = @{@"name": email, @"email": @[email]};
-        if (![_members containsObject:contact])
-          [_members addObject:contact];
-          [self.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:_members.count-1 inSection:1]] withRowAnimation:YES];
-      }];
-      
-      [self.tap setCancelsTouchesInView:YES];
-      [alert show];
+    if (indexPath.row == 0) {
+      WAAddressBookPickerViewController *abPicker = [[WAAddressBookPickerViewController alloc] init];
+      [self presentViewController:abPicker animated:YES completion:nil];
       
     } else if (indexPath.row == 1) {
-      ABPeoplePickerNavigationController *abPicker = [[ABPeoplePickerNavigationController alloc] init];
-      abPicker.peoplePickerDelegate = self;
+      WAFBFriendPickerViewController *fbPicker = [[WAFBFriendPickerViewController alloc] init];
+      [self presentViewController:fbPicker animated:YES completion:nil];
       
-      [self presentViewController:abPicker animated:YES completion:nil];
     }
   }
 }
