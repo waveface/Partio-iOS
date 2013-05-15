@@ -578,6 +578,26 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
 
 - (void)actionButtonClicked:(id)sender
 {
+  if (!FBSession.activeSession.isOpen) {
+    // if the session is closed, then we open it here, and establish a handler for state changes
+    [FBSession openActiveSessionWithReadPermissions:nil
+                                       allowLoginUI:YES
+                                  completionHandler:^(FBSession *session,
+                                                      FBSessionState state,
+                                                      NSError *error) {
+                                    if (error) {
+                                      UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                                                          message:error.localizedDescription
+                                                                                         delegate:nil
+                                                                                cancelButtonTitle:@"OK"
+                                                                                otherButtonTitles:nil];
+                                      [alertView show];
+                                    } else if (session.isOpen) {
+                                      [self actionButtonClicked:sender];
+                                    }
+                                  }];
+    return;
+  }
   
   __weak WAPhotoTimelineViewController *wSelf = self;
   WAFBFriendPickerViewController *contactPicker = [[WAFBFriendPickerViewController alloc] init];
