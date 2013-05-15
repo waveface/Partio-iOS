@@ -46,6 +46,20 @@
   
 }
 
++ (NSDictionary *) transformedRepresentationForRemoteRepresentation:(NSDictionary *)incomingRepresentation {
+  
+  NSMutableDictionary *transformedRepresentation = [NSMutableDictionary dictionaryWithDictionary:incomingRepresentation];
+
+  id checkinIdRep = incomingRepresentation[@"checkin_id"];
+  if (checkinIdRep) {
+    if ([checkinIdRep isKindOfClass:[NSNumber class]]) {
+      transformedRepresentation[@"checkin_id"] = [NSString stringWithFormat:@"%@", checkinIdRep];
+    }
+  }
+  
+  return transformedRepresentation;
+}
+
 + (id) transformedValue:(id)aValue
       fromRemoteKeyPath:(NSString *)aRemoteKeyPath
          toLocalKeyPath:(NSString *)aLocalKeyPath {

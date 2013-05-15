@@ -167,10 +167,7 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
   [self.navigationBar pushNavigationItem:self.navigationItem animated:NO];
   
   [self.view addSubview:self.navigationBar];
-  
-  [self.collectionView setBackgroundColor:[UIColor blackColor]];
-//  ((UICollectionViewFlowLayout*)self.collectionView.collectionViewLayout).minimumLineSpacing = 0.0f;
-  
+    
   self.collectionView.showsVerticalScrollIndicator = NO;
   
   [self.collectionView registerNib:[UINib nibWithNibName:@"WAPhotoTimelineCover" bundle:nil]
@@ -179,7 +176,8 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
   
   [self.collectionView registerNib:[UINib nibWithNibName:@"WAPhotoGalleryCell" bundle:nil] forCellWithReuseIdentifier:@"PhotoGallery"];
   [self.collectionView registerNib:[UINib nibWithNibName:@"WAPhotoTimelineCell" bundle:nil] forCellWithReuseIdentifier:@"PhotoTimelineCell"];
-
+  self.collectionView.backgroundColor = [UIColor colorWithRed:43/255 green:43/255 blue:43/255 alpha:1];
+  
   [self.toolbar setBackgroundImage:[[UIImage alloc] init] forToolbarPosition:UIToolbarPositionAny barMetrics:UIBarMetricsDefault];
   self.toolbar.backgroundColor = [UIColor colorWithWhite:0.0f alpha:0.4f];
   if (!self.representingArticle) {
