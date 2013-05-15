@@ -185,8 +185,9 @@
 /* Unknown Error */
 "AUTH_UNKNOWN_ERROR" = "Unknown error";
 
-/* The content of email body to send user the download link */
-"BODY_MAIL_LINK" = "Go to the aostream website to download the Windows version for FREE! Click here: www.waveface.com/";
+/* The content of email body to send user the download link
+   The content of email body to send waveface support */
+"BODY_MAIL_LINK" = "Dear Grupin support, \n\n\n";
 
 /* No comment provided by engineer. */
 "BUTTON_DESELECT_ALL" = "Deselect All";
@@ -403,6 +404,15 @@
 
 /* greeting text of day summary view */
 "GREETING_TEXT_WITH_EVENTS_TODAY" = "Hi, %@.\nCheck out what you did today!";
+
+/* No comment provided by engineer. */
+"GRUPIN_ABOUT_DESC" = "Grupin is a collabroative group photo album that you and your friends create together. We create Grupin to aim to bring users a great experience to exchange photos with your friends in the same event. We also hope you and your friends will enjoy those wonderful memories thru Grupin.";
+
+/* No comment provided by engineer. */
+"GRUPIN_ABOUT_SUBDESC" = "We are working hard to make it better, and your feedbacks can help us!";
+
+/* No comment provided by engineer. */
+"GRUPIN_ABOUT_TEXT" = "About Grupin";
 
 /* description of what is highlight */
 "HIGHLIGHT_DESCRIPTION" = "Highlight is a smart group of your photos. You can choose one of them to share, or select from all photos.";
@@ -665,8 +675,9 @@
 /* storage usage detail in settings page */
 "STORAGE_USAGE_DETAIL" = "%.1f%% of %@";
 
-/* The email subject to send user the download link. */
-"SUBJECT_MAIL_LINK" = "Download aostream for Windows here!";
+/* The email subject to send user the download link.
+   The email subject to send waveface support */
+"SUBJECT_MAIL_LINK" = "To Grupin Support";
 
 /* TITLE_ADDRESS_BOOK_PICKER */
 "TITLE_ADDRESS_BOOK_PICKER" = "TITLE_ADDRESS_BOOK_PICKER";
@@ -887,6 +898,9 @@
 
 /* Class = "IBUIButton"; normalTitle = "NOSIGNUP_BUTTON"; ObjectID = "ZCd-nx-9I5"; */
 "NOSIGNUP_BUTTON" = "Experience without Signup";
+
+/* Class = "IBUIButton"; normalTitle = "BUG_REPORT_OR_FEEDBACKS_BUTTON"; ObjectID = "14"; */
+"BUG_REPORT_OR_FEEDBACKS_BUTTON" = "Bugs Report or Feedbacks";
 
 /* Class = "IBUIButton"; normalTitle = "FACEBOOK_SIGNUP_BUTTON"; ObjectID = "4"; */
 "FACEBOOK_SIGNUP_BUTTON" = "Signup with Facebook";

@@ -112,6 +112,12 @@
   
   [self updateNavigationBarTitle];
   
+  
+  UIImage *wmImage = [UIImage imageNamed:@"watermark"];
+  UIImageView *waterMark = [[UIImageView alloc] initWithImage:wmImage];
+  waterMark.frame = CGRectMake(self.collectionView.frame.size.width/2-wmImage.size.width/2, -(wmImage.size.height)-30, wmImage.size.width, wmImage.size.height);
+  [self.collectionView addSubview:waterMark];
+
 }
 
 - (void) updateNavigationBarTitle {

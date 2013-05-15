@@ -39,6 +39,7 @@
   [self.layer setShadowColor:[[UIColor blackColor] CGColor]];
   [self.layer setShadowOpacity:0.5f];
   
+  [self.addButton invalidateIntrinsicContentSize];
 }
 
 - (IBAction)selectAllButtonTapped:(id)sender {

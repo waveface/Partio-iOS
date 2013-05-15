@@ -185,8 +185,9 @@
 /* Unknown Error */
 "AUTH_UNKNOWN_ERROR" = "未知錯誤";
 
-/* The content of email body to send user the download link */
-"BODY_MAIL_LINK" = "到官方網站立刻免費下載 aostream Windows版本。 點擊這裡: www.waveface.com/";
+/* The content of email body to send user the download link
+   The content of email body to send waveface support */
+"BODY_MAIL_LINK" = "親愛的 Grupin 團隊，\n\n";
 
 /* No comment provided by engineer. */
 "BUTTON_DESELECT_ALL" = "取消全選";
@@ -403,6 +404,15 @@
 
 /* greeting text of day summary view */
 "GREETING_TEXT_WITH_EVENTS_TODAY" = "哈囉, %@.\n今天也是愉快的一天嗎？";
+
+/* No comment provided by engineer. */
+"GRUPIN_ABOUT_DESC" = "Grupin 是一個群組相簿 app，透過 Grupin 你可以簡單的與朋友交換聚會中所拍攝的照片，並且讓您跟您的朋友可以透過瀏覽照片喚起美麗的回憶。我們的目標是讓這個 app 更簡單、更好用，並且希望這個 app 可以真正解決到您的問題。";
+
+/* No comment provided by engineer. */
+"GRUPIN_ABOUT_SUBDESC" = "我們正努力讓 Grupin 變得更好，您的建議跟回饋將能夠帶給我們極大的幫助！";
+
+/* No comment provided by engineer. */
+"GRUPIN_ABOUT_TEXT" = "關於 Grupin";
 
 /* description of what is highlight */
 "HIGHLIGHT_DESCRIPTION" = "我們從你的相簿中挑選出一些不錯的選輯，你可以選擇其中之一來分享，或者從所有照片裡去自行挑選。";
@@ -665,8 +675,9 @@
 /* storage usage detail in settings page */
 "STORAGE_USAGE_DETAIL" = "%.1f%% of %@";
 
-/* The email subject to send user the download link. */
-"SUBJECT_MAIL_LINK" = "立刻下載 aostream Windows版!";
+/* The email subject to send user the download link.
+   The email subject to send waveface support */
+"SUBJECT_MAIL_LINK" = "致 Grupin 團隊";
 
 /* TITLE_ADDRESS_BOOK_PICKER */
 "TITLE_ADDRESS_BOOK_PICKER" = "邀請朋友";
@@ -887,6 +898,9 @@
 
 /* Class = "IBUIButton"; normalTitle = "NOSIGNUP_BUTTON"; ObjectID = "ZCd-nx-9I5"; */
 "NOSIGNUP_BUTTON" = "先行體驗";
+
+/* Class = "IBUIButton"; normalTitle = "BUG_REPORT_OR_FEEDBACKS_BUTTON"; ObjectID = "14"; */
+"BUG_REPORT_OR_FEEDBACKS_BUTTON" = "告訴我們您的想法";
 
 /* Class = "IBUIButton"; normalTitle = "FACEBOOK_SIGNUP_BUTTON"; ObjectID = "4"; */
 "FACEBOOK_SIGNUP_BUTTON" = "使用 Facebook 帳號註冊";

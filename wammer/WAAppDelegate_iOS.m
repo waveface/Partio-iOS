@@ -48,7 +48,6 @@
 
 #import "WAWelcomeViewController.h"
 
-#import "IIViewDeckController.h"
 #import "WASlidingMenuViewController.h"
 #import "WADayViewController.h"
 #import "WACacheManager.h"
@@ -421,30 +420,7 @@ extern CFAbsoluteTime StartTime;
 - (void) recreateViewHierarchy {
   
   [[IRRemoteResourcesManager sharedManager].queue cancelAllOperations];
-  
-//  self.slidingMenu = [[WASlidingMenuViewController alloc] init];
-//  self.slidingMenu.delegate = self;
-//  WANavigationController *navSlide = [[WANavigationController alloc] initWithRootViewController:self.slidingMenu];
-//  navSlide.navigationBarHidden = YES;
-//  
-//  NSParameterAssert(self.syncManager);
-//  
-//  IIViewDeckController *viewDeckController = [[IIViewDeckController alloc] initWithCenterViewController:[WASlidingMenuViewController dayViewControllerForViewStyle:WAEventsViewStyle]
-//                                                                                     leftViewController:navSlide];
-//  viewDeckController.view.backgroundColor = [UIColor blackColor];
-//  
-//  if (isPad() && (UIInterfaceOrientationIsLandscape([[UIApplication sharedApplication] statusBarOrientation])))
-//    viewDeckController.leftLedge = self.window.frame.size.height - [WASlidingMenuViewController ledgeSize];
-//  else
-//    viewDeckController.leftLedge = self.window.frame.size.width - [WASlidingMenuViewController ledgeSize];
-//  
-//  viewDeckController.rotationBehavior = IIViewDeckRotationKeepsLedgeSizes;
-//  //			viewDeckController.animationBehavior = IIViewDeckAnimationPullIn;
-//  viewDeckController.panningMode = IIViewDeckNoPanning;
-//  [viewDeckController setWantsFullScreenLayout:YES];
-//  viewDeckController.delegate = self.slidingMenu;
-//  viewDeckController.centerhiddenInteractivity = IIViewDeckCenterHiddenNotUserInteractiveWithTapToClose;
-  
+    
   __weak WAAppDelegate_iOS *wSelf = self;
   
   if (![FBSession activeSession].isOpen) {
@@ -468,6 +444,7 @@ extern CFAbsoluteTime StartTime;
       }
     
     }];
+    self.window.backgroundColor = [UIColor colorWithRed:43/255 green:43/255 blue:43/255 alpha:1];
     self.window.rootViewController = fbLoginVC;
   } else {
 
@@ -475,6 +452,7 @@ extern CFAbsoluteTime StartTime;
 
     WASharedEventViewController *sharedEventsVC = [[WASharedEventViewController alloc] init];
     WANavigationController *navVC = [[WANavigationController alloc] initWithRootViewController:sharedEventsVC];
+    self.window.backgroundColor = [UIColor colorWithRed:43/255 green:43/255 blue:43/255 alpha:1];
     self.window.rootViewController = navVC;
     
   }
@@ -818,6 +796,7 @@ extern CFAbsoluteTime StartTime;
     [alertView show];
 
   }];
+  self.window.backgroundColor = [UIColor colorWithRed:43/255 green:43/255 blue:43/255 alpha:1];
   self.window.rootViewController = partioFirstUse;
 
 }
@@ -1040,23 +1019,6 @@ static NSInteger networkActivityStackingCount = 0;
   
 }
 
-
-- (void) application:(UIApplication *)application willChangeStatusBarOrientation:(UIInterfaceOrientation)newStatusBarOrientation duration:(NSTimeInterval)duration {
-  UIViewController *vc = self.window.rootViewController;
-  
-  if (!vc || ![vc isKindOfClass:[IIViewDeckController class]])
-    return;
-  
-  if (!isPad())
-    return;
-  
-  IIViewDeckController *viewDeck = (IIViewDeckController*)vc;
-  if (UIInterfaceOrientationIsLandscape(newStatusBarOrientation)) {
-    viewDeck.leftLedge = self.window.frame.size.height - [WASlidingMenuViewController ledgeSize];
-  } else {
-    viewDeck.leftLedge = self.window.frame.size.width - [WASlidingMenuViewController ledgeSize];
-  }
-}
 
 @end
 

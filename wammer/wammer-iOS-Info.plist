@@ -93,7 +93,5 @@
 	</array>
 	<key>UIViewEdgeAntialiasing</key>
 	<true/>
-	<key>WAFeedbackRecipient</key>
-	<string>support@waveface.com</string>
 </dict>
 </plist>
