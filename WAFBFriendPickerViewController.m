@@ -9,10 +9,12 @@
 #import "WAFBFriendPickerViewController.h"
 #import "WAPartioNavigationBar.h"
 #import "WAPartioTableViewSectionHeaderView.h"
+
 #import <SMCalloutView/SMCalloutView.h>
 #import <BlocksKit/BlocksKit.h>
+#import "IRFoundations.h"
 
-@interface WAFBFriendPickerViewController () <FBFriendPickerDelegate, UITableViewDataSource>
+@interface WAFBFriendPickerViewController () <FBFriendPickerDelegate, UITableViewDataSource, UITableViewDelegate>
 
 @property (nonatomic, weak) IBOutlet WAPartioNavigationBar *navigationBar;
 @property (nonatomic, weak) IBOutlet UITextView *textView;
@@ -37,7 +39,6 @@ static NSString *kWAFBFriendPickerViewController_CoachMarks = @"kWAFBFriendPicke
   self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
   if (self) {
     // Custom initialization
-    self.delegate = self;
     
   }
   return self;
@@ -88,8 +89,6 @@ static NSString *kWAFBFriendPickerViewController_CoachMarks = @"kWAFBFriendPicke
     });
   }
   
-  
-  [self.navigationItem setTitle:NSLocalizedString(@"TITLE_INVITE_CONTACTS", @"TITLE_INVITE_CONTACTS")];
   [self.navigationController setNavigationBarHidden:YES];
   [self.navigationItem setHidesBackButton:YES];
   [self.navigationBar pushNavigationItem:self.navigationItem animated:NO];
@@ -98,8 +97,8 @@ static NSString *kWAFBFriendPickerViewController_CoachMarks = @"kWAFBFriendPicke
   self.toolbar.backgroundColor = [UIColor colorWithWhite:0.0f alpha:0.4f];
   UIBarButtonItem *flexspace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
   self.toolbar.items = @[flexspace, [self shareBarButton], flexspace];
-  [[self.toolbar.items objectAtIndex:1] setEnabled:NO];
   [self.view addSubview:self.toolbar];
+  [self updateNavigationBarTitleAndButtonStatus];
   
   [[NSNotificationCenter defaultCenter] addObserver:self
                                            selector:@selector(textViewDidChange:)
@@ -111,6 +110,8 @@ static NSString *kWAFBFriendPickerViewController_CoachMarks = @"kWAFBFriendPicke
     
   FBCacheDescriptor *cacheDescriptor = [WAFBFriendPickerViewController cacheDescriptor];
   [cacheDescriptor prefetchAndCacheForSession:FBSession.activeSession];
+  
+  self.delegate = self;
   
 }
 
@@ -145,9 +146,21 @@ static NSString *kWAFBFriendPickerViewController_CoachMarks = @"kWAFBFriendPicke
 {
   return WAPartioToolbarNextButton(@"Share", ^{
     if (self.onNextHandler) {
-      self.onNextHandler([NSArray arrayWithArray:self.members]);
+      NSLog(@"Invited friends: %@", self.members);      
+      self.onNextHandler([self extractedUserData:self.members]);
     }
   });
+}
+
+- (NSArray *)extractedUserData:(NSArray *)rawData
+{
+  NSMutableArray *extractedData = [NSMutableArray array];
+  for (id<FBGraphUser> user in rawData) {
+    NSDictionary *aPereson = @{@"id": [user id], @"name": [user name]};
+    [extractedData addObject:aPereson];
+  }
+  
+  return [extractedData copy];
 }
 
 - (void)resetTextViewPlaceholder
@@ -155,13 +168,14 @@ static NSString *kWAFBFriendPickerViewController_CoachMarks = @"kWAFBFriendPicke
   [self.textView setText:kPlaceholderChooseFriends];
 }
 
-- (void)updateNavigationBarTitle
+- (void)updateNavigationBarTitleAndButtonStatus
 {
-  if (![self.members count]) {
+  if (!self.members.count) {
     [[self.toolbar.items objectAtIndex:1] setEnabled:NO];
     self.navigationItem.title = NSLocalizedString(@"TITLE_INVITE_CONTACTS", @"TITLE_INVITE_CONTACTS");
   } else {
-    self.navigationItem.title = [NSString stringWithFormat:NSLocalizedString(@"TITLE_INVITATION_NUMBERS", @"TITLE_INVITATION_NUMBERS"), [self.members count]];
+    [[self.toolbar.items objectAtIndex:1] setEnabled:YES];
+    self.navigationItem.title = [NSString stringWithFormat:NSLocalizedString(@"TITLE_INVITATION_NUMBERS", @"TITLE_INVITATION_NUMBERS"), self.members.count];
   }
 }
 
@@ -194,6 +208,31 @@ static NSString *kWAFBFriendPickerViewController_CoachMarks = @"kWAFBFriendPicke
 - (void)friendPickerViewControllerSelectionDidChange:(FBFriendPickerViewController *)friendPicker
 {
   NSLog(@"Current friend selections: %@", friendPicker.selection);
+ 
+  __weak WAFBFriendPickerViewController *wSelf = self;
+  [self irObserve:@"selection" options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:nil withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
+    
+    NSArray *newSelection = (NSArray *)toValue;
+    
+    if (wSelf.members.count > newSelection.count) {
+      for (id<FBGraphUser> user in wSelf.members) {
+        if (![newSelection containsObject:user]) {
+          [wSelf.members removeObject:user];
+        }
+      }
+      
+    } else {
+      id<FBGraphUser> newSelectedUser = [newSelection lastObject];
+      if (![wSelf.members containsObject:newSelectedUser]) {
+        [wSelf.members addObject:newSelectedUser];
+      }
+    
+    }
+    
+  }];
+
+  [self updateNavigationBarTitleAndButtonStatus];
+
 }
 
 #pragma mark - UITableViewDataSource
