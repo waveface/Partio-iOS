@@ -52,5 +52,7 @@
 	<string>zBch3rtBh9AmaHY4EitodNdbKVgsuiqzB4dWzDvG3RQ</string>
 	<key>WAPhotoImportEnabled</key>
 	<true/>
+	<key>WAFeedbackRecipient</key>
+	<string>support@waveface.com</string>
 </dict>
 </plist>

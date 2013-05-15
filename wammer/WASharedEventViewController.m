@@ -18,6 +18,7 @@
 #import "WAPartioNavigationBar.h"
 #import "NSDate+WAAdditions.h"
 #import "WARemoteInterface.h"
+#import "WAPartioSettingsViewController.h"
 #import <SMCalloutView/SMCalloutView.h>
 #import <BlocksKit/BlocksKit.h>
 #import <QuartzCore/QuartzCore.h>
@@ -85,6 +86,14 @@ static NSString * const kWASharedEventViewController_CoachMarks = @"kWASharedEve
   
   [self.navigationItem setTitle:NSLocalizedString(@"LABEL_SHARED_EVENTS", @"LABEL_SHARED_EVENTS")];
   [self.navigationItem setHidesBackButton:YES];
+  __weak WASharedEventViewController *wSelf = self;
+  self.navigationItem.rightBarButtonItem = WAPartioImageBarButton(nil, [UIImage imageNamed:@"about"], nil, ^{
+    WAPartioSettingsViewController *about = [[WAPartioSettingsViewController alloc] initWithNibName:@"WAPartioSettingsViewController" bundle:nil];
+    about.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
+    wSelf.modalPresentationStyle = UIModalPresentationCurrentContext;
+    [wSelf presentViewController:about animated:YES completion:nil];
+  });
+  
   [self.navigationController setNavigationBarHidden:YES];
   [self.navigationBar pushNavigationItem:self.navigationItem animated:NO];
 
