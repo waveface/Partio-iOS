@@ -185,6 +185,12 @@
 /* The content of email body to send user the download link */
 "BODY_MAIL_LINK" = "Go to the aostream website to download the Windows version for FREE! Click here: www.waveface.com/";
 
+/* No comment provided by engineer. */
+"BUTTON_DESELECT_ALL" = "Deselect All";
+
+/* No comment provided by engineer. */
+"BUTTON_SELECT_ALL" = "Select All";
+
 /* Collection View Navigation Bar */
 "By Date" = "By Date";
 
@@ -758,6 +764,9 @@
 
 /* Class = "IBUILabel"; text = "MONDAY"; ObjectID = "39"; */
 "MONDAY" = "MONDAY";
+
+/* Class = "IBUIButton"; normalTitle = "BUTTON_SELECT_ALL"; ObjectID = "81"; */
+"BUTTON_SELECT_ALL" = "Select All";
 
 /* Class = "IBUILabel"; text = "PHOTOS"; ObjectID = "627"; */
 "PHOTOS" = "PHOTOS";

@@ -10,6 +10,7 @@
 #import "WAPhotoTimelineNavigationBar.h"
 #import "WAPhotoTimelineCover.h"
 #import "WAPhotoTimelineLayout.h"
+#import "WAPhotoTimelineGalleryLayout.h"
 #import "WATimelineIndexView.h"
 #import "WAPartioSignupViewController.h"
 #import "WAEventDetailsViewController.h"
@@ -17,10 +18,12 @@
 #import "WAGalleryViewController.h"
 #import "WAFBFriendPickerViewController.h"
 
-#import "WAPhotoCollageCell.h"
+#import "WAPhotoGalleryCell.h"
+#import "WAPhotoTimelineCell.h"
 #import "WADefines.h"
 
 #import "WAAssetsLibraryManager.h"
+#import "ALAsset+WAAdditions.h"
 #import "WAArticle.h"
 #import "WADataStore.h"
 #import "WAFile.h"
@@ -53,7 +56,7 @@
 static NSString * const kWAPhotoTimelineViewController_CoachMarks = @"kWAPhotoTimelineViewController_CoachMarks";
 static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoTimelineViewController_CoachMarks2";
 
-@interface WAPhotoTimelineViewController () <UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UIScrollViewDelegate>
+@interface WAPhotoTimelineViewController () <UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UIScrollViewDelegate, WATimelineIndexDataSource>
 
 @property (nonatomic, strong) WAPhotoTimelineCover *headerView;
 @property (nonatomic, strong) WAPhotoTimelineNavigationBar *navigationBar;
@@ -75,8 +78,10 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
 @property (nonatomic, strong) NSDate *beginDate;
 @property (nonatomic, strong) NSDate *endDate;
 @property (nonatomic, strong) NSArray *checkins;
+@property (nonatomic, strong) NSArray *userCheckins;
 @property (nonatomic, readonly) CLLocationCoordinate2D coordinate;
 @property (nonatomic, strong) NSString *locationName;
+@property (nonatomic, strong) NSMutableArray *indexingLabels;
 
 @property (nonatomic, strong) UITapGestureRecognizer *tapGesture;
 @property (nonatomic, strong) SMCalloutView *shareInstructionView;
@@ -87,6 +92,7 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
 @implementation WAPhotoTimelineViewController {
   BOOL naviBarShown;
   BOOL toolBarShown;
+  BOOL galleryMode;
   CGFloat previousYOffset;
   CLLocationCoordinate2D _coordinate;
 }
@@ -99,7 +105,12 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
     for (ALAsset *element in enumerator) {
       [array addObject:element];
     }
-    self.allAssets = [NSArray arrayWithArray:array];
+    
+    self.allAssets = [NSArray arrayWithArray:[array sortedArrayUsingComparator:^NSComparisonResult(ALAsset* asset1, ALAsset* asset2) {
+      NSDate *date1 = [asset1 valueForProperty:ALAssetPropertyDate];
+      NSDate *date2 = [asset2 valueForProperty:ALAssetPropertyDate];
+      return [date1 compare:date2];
+    }]];
     
     _coordinate.latitude = 0;
     _coordinate.longitude = 0;
@@ -129,6 +140,7 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
   
   naviBarShown = NO;
   toolBarShown = YES;
+  galleryMode = NO;
   previousYOffset = 0;
   
   if (self.representingArticle) {
@@ -137,6 +149,7 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
   
   self.imageDisplayQueue = [[NSOperationQueue alloc] init];
   self.imageDisplayQueue.maxConcurrentOperationCount = 1;
+  [self reloadLabels];
   
   __weak WAPhotoTimelineViewController *wSelf = self;
   self.navigationItem.leftBarButtonItem = WAPartioBackButton(^{
@@ -154,7 +167,7 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
   [self.view addSubview:self.navigationBar];
   
   [self.collectionView setBackgroundColor:[UIColor blackColor]];
-  ((UICollectionViewFlowLayout*)self.collectionView.collectionViewLayout).minimumLineSpacing = 0.0f;
+//  ((UICollectionViewFlowLayout*)self.collectionView.collectionViewLayout).minimumLineSpacing = 0.0f;
   
   self.collectionView.showsVerticalScrollIndicator = NO;
   
@@ -162,22 +175,8 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
         forSupplementaryViewOfKind:UICollectionElementKindSectionHeader
                withReuseIdentifier:@"PhotoTimelineCover"];
   
-  [self.collectionView registerNib:[UINib nibWithNibName:@"WAPhotoCollageCell_Stack4" bundle:nil]
-        forCellWithReuseIdentifier:@"CollectionItemCell4"];
-  [self.collectionView registerNib:[UINib nibWithNibName:@"WAPhotoCollageCell_Stack3" bundle:nil]
-        forCellWithReuseIdentifier:@"CollectionItemCell3"];
-  [self.collectionView registerNib:[UINib nibWithNibName:@"WAPhotoCollageCell_Stack2" bundle:nil]
-        forCellWithReuseIdentifier:@"CollectionItemCell2"];
-  [self.collectionView registerNib:[UINib nibWithNibName:@"WAPhotoCollageCell_Stack1" bundle:nil]
-        forCellWithReuseIdentifier:@"CollectionItemCell1"];
-
-  NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-  formatter = [[NSDateFormatter alloc] init];
-  formatter.dateStyle = NSDateFormatterNoStyle;
-  formatter.timeStyle = NSDateFormatterShortStyle;
-
-  [self.indexView addIndex:0.01 label:[formatter stringFromDate:self.beginDate]];
-  [self.indexView addIndex:0.99 label:[formatter stringFromDate:self.endDate]];
+  [self.collectionView registerNib:[UINib nibWithNibName:@"WAPhotoGalleryCell" bundle:nil] forCellWithReuseIdentifier:@"PhotoGallery"];
+  [self.collectionView registerNib:[UINib nibWithNibName:@"WAPhotoTimelineCell" bundle:nil] forCellWithReuseIdentifier:@"PhotoTimelineCell"];
 
   [self.toolbar setBackgroundImage:[[UIImage alloc] init] forToolbarPosition:UIToolbarPositionAny barMetrics:UIBarMetricsDefault];
   self.toolbar.backgroundColor = [UIColor colorWithWhite:0.0f alpha:0.4f];
@@ -250,6 +249,8 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
     self.toolbar.items = @[ addContacts, flexibleSpace, addPhotos];
     [self.view addSubview:self.toolbar];
   }
+  
+  [self.indexView reloadViews];
   
 }
 
@@ -367,7 +368,7 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
   }
   
   if (contacts.count) {
-    NSArray *emailsFromContacts = [contacts valueForKey:@"email"];
+    NSArray *emailsFromContacts = [[NSSet setWithArray:[contacts valueForKey:@"email"]] allObjects];
     NSMutableArray *invitingEmails = [NSMutableArray array];
     for (NSArray *contactEmails in emailsFromContacts) {
       [invitingEmails addObjectsFromArray:[contactEmails filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(NSString *evaluatedObject, NSDictionary *bindings) {
@@ -395,18 +396,20 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
     }
   }
   
-  if (self.checkins.count) {
-    for (WALocation *checkin in self.checkins) {
+  if (self.userCheckins.count) {
+    for (WACheckin *checkin in self.userCheckins) {
       if (![article.checkins containsObject:checkin]) {
         [[article mutableSetValueForKey:@"checkins"] addObject:checkin];
         changed = YES;
       }
     }
   }
-  
+
   if (changed) {
     article.dirty = (id)kCFBooleanTrue;
     article.modificationDate = [NSDate date];
+    article.eventStartDate = [self beginDate];
+    article.eventEndDate = [self endDate];
     NSError *savingError = nil;
     if ([moc save:&savingError]) {
       NSLog(@"Sharing event successfully updated");
@@ -486,7 +489,7 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
   article.creationDate = [NSDate date];
   
   if (contacts.count) {
-    NSArray *emailsFromContacts = [contacts valueForKey:@"email"];
+    NSArray *emailsFromContacts = [[NSSet setWithArray:[contacts valueForKey:@"email"]] allObjects];
     NSMutableArray *invitingEmails = [NSMutableArray array];
     for (NSArray *contactEmails in emailsFromContacts) {
       [invitingEmails addObjectsFromArray:[contactEmails filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(NSString *evaluatedObject, NSDictionary *bindings) {
@@ -556,20 +559,148 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
   
 }
 
+- (void) reloadLabels {
+  self.indexingLabels = [NSMutableArray array];
+  [self.checkins enumerateObjectsUsingBlock:^(WACheckin *checkin, NSUInteger idx, BOOL *stop) {
+    if (checkin.createDate) {
+      NSDictionary *newLabel = @{@"name": checkin.name, @"date": checkin.createDate};
+      [self.indexingLabels addObject:newLabel];
+    }
+  }];
+  
+  __weak WAPhotoTimelineViewController *wSelf = self;
+  
+  void (^congregatedAndSortedLabels)(NSDictionary *newLabel) = ^(NSDictionary *newLabel) {
+    __block BOOL changed = NO;
+    NSDate *creationDate = newLabel[@"date"];
+    if (!wSelf.indexingLabels.count) {
+      [wSelf.indexingLabels addObject:newLabel];
+      changed = YES;
+    } else {
+      __block BOOL found = NO;
+      [wSelf.indexingLabels enumerateObjectsUsingBlock:^(NSDictionary *aLabel, NSUInteger idx, BOOL *stop) {
+        if ([creationDate compare:(NSDate *)aLabel[@"date"]] != NSOrderedDescending) {
+          if (idx == 0) {
+            if (![wSelf.indexingLabels[0][@"name"] isEqual:newLabel[@"name"]])
+              [wSelf.indexingLabels insertObject:newLabel atIndex:0];
+            else
+              wSelf.indexingLabels[0] = newLabel;
+          } else {
+            if (![wSelf.indexingLabels[idx][@"name"] isEqual:newLabel[@"name"]]) {
+              [wSelf.indexingLabels insertObject:newLabel atIndex:idx];
+            } else {
+              wSelf.indexingLabels[idx] = newLabel;
+            }
+          }
+          changed = YES;
+          *stop = YES;
+          found = YES;
+          return;
+        }
+      }];
+      
+      if (!found) {
+        if (![newLabel[@"name"] isEqualToString:[wSelf.indexingLabels lastObject][@"name"]]) {
+          [wSelf.indexingLabels addObject:newLabel];
+          changed = YES;
+        }
+      }
+    }
+    
+    if (changed)
+      [wSelf.indexView reloadViews];
+
+  };
+
+
+  if (self.representingArticle) {
+    [self.sortedImages enumerateObjectsUsingBlock:^(WAFile *file, NSUInteger idx, BOOL *stop) {
+      if (file.exif.gpsLongitude && file.exif.gpsLongitude) {
+        CLLocation *location = [[CLLocation alloc] initWithLatitude:file.exif.gpsLatitude.floatValue longitude:file.exif.gpsLongitude.floatValue];
+        CLGeocoder *geocoder = [[CLGeocoder alloc] init];
+        [geocoder reverseGeocodeLocation:location completionHandler:^(NSArray *placemarks, NSError *error) {
+          if (error) {
+            NSLog(@"Failed to query reversed geocoding: %@", error);
+          } else {
+            
+            if (placemarks.count) {
+              CLPlacemark *placemark = placemarks[0];
+              NSDictionary *newLabel = @{@"name": placemark.locality, @"date": file.created};
+              
+              congregatedAndSortedLabels(newLabel);
+            }
+          }
+        }];
+      }
+      
+    }];
+  } else {
+    [self.allAssets enumerateObjectsUsingBlock:^(ALAsset *asset, NSUInteger idx, BOOL *stop) {
+      CLLocation *gps = asset.gpsLocation;
+      if (!gps)
+        return;
+      NSDate *createDate = [asset valueForProperty:ALAssetPropertyDate];
+
+      CLGeocoder *geocoder = [[CLGeocoder alloc] init];
+      [geocoder reverseGeocodeLocation:gps completionHandler:^(NSArray *placemarks, NSError *error) {
+        if (error) {
+          NSLog(@"Failed to query reversed geocoding: %@", error);
+        } else {
+          
+          if (placemarks.count) {
+            CLPlacemark *placemark = placemarks[0];
+            NSDictionary *newLabel = @{@"name": placemark.locality, @"date": createDate};
+            
+            congregatedAndSortedLabels(newLabel);
+          }
+          
+        }
+      }];
+     
+    }];
+  }
+}
+
 - (NSUInteger) supportedInterfaceOrientations {
   
-  return UIInterfaceOrientationMaskPortrait;
+  if (self.representingArticle)
+    return UIInterfaceOrientationMaskAll;
+  else
+    return UIInterfaceOrientationMaskPortrait;
 
 }
 
-- (void) didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
-  if (UIInterfaceOrientationIsPortrait(fromInterfaceOrientation)) {
-    if (self.representingArticle) {
-      WAGalleryViewController *gallery = [WAGalleryViewController controllerRepresentingArticleAtURI:[[self.representingArticle objectID] URIRepresentation] context:nil];
-      [self.navigationController pushViewController:gallery animated:YES];
+- (void) willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
+  if (UIInterfaceOrientationIsLandscape(toInterfaceOrientation)) {
+    if (!galleryMode) {
+      galleryMode = YES;
+      
+      self.indexView.hidden = YES;
+      self.navigationBar.hidden = YES;
+      self.toolbar.hidden = YES;
+      [self.collectionView reloadData];
+      [[UIApplication sharedApplication] setStatusBarHidden:YES];
+      WAPhotoTimelineGalleryLayout *galleryLayout = [[WAPhotoTimelineGalleryLayout alloc] init];
+      [self.collectionView setCollectionViewLayout:galleryLayout animated:NO];
+      //    [self.collectionView reloadData];
+    }
+  } else {
+    if (galleryMode){
+      [[UIApplication sharedApplication] setStatusBarHidden:NO];
+      galleryMode = NO;
+      
+      WAPhotoTimelineLayout *timelineLayout = [[WAPhotoTimelineLayout alloc] init];
+      self.collectionView.bounces = YES;
+      self.collectionView.alwaysBounceVertical = YES;
+      [self.collectionView setCollectionViewLayout:timelineLayout animated:NO];
+      self.indexView.hidden = NO;
+      self.navigationBar.hidden = NO;
+      self.toolbar.hidden = NO;
+      [self.collectionView reloadData];
 
     }
   }
+  
 }
 
 - (void) backButtonClicked:(id)sender {
@@ -669,21 +800,10 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
     _coordinate.longitude = [self.representingArticle.location.longitude floatValue];
   } else {
     for (ALAsset *asset in self.allAssets) {
-      NSDictionary *meta = [asset defaultRepresentation].metadata;
-      if (meta) {
-        NSDictionary *gps = meta[@"{GPS}"];
-        if (gps) {
-          _coordinate.latitude = [(NSNumber*)[gps valueForKey:@"Latitude"] doubleValue];
-          _coordinate.longitude = [(NSNumber*)[gps valueForKey:@"Longitude"] doubleValue];
-          if ([gps[@"LongitudeRef"] isEqualToString:@"W"]) {
-            _coordinate.longitude = -_coordinate.longitude;
-          }
-          if ([gps[@"LatitudeRef"] isEqualToString:@"S"]) {
-            _coordinate.latitude = -_coordinate.latitude;
-          }
-
-          break;
-        }
+      CLLocation *gps = asset.gpsLocation;
+      if (gps) {
+        _coordinate = gps.coordinate;
+        break;
       }
     }
   }
@@ -725,26 +845,33 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
   return _endDate;
 }
 
+- (NSArray *)userCheckins {
+  if (_userCheckins)
+    return _userCheckins;
+  NSDate *beginDate = [NSDate dateWithTimeInterval:(-30*60) sinceDate:self.beginDate];
+  NSDate *endDate = [NSDate dateWithTimeInterval:(30*60) sinceDate:self.endDate];
+  NSFetchRequest * fetchRequest = [[WADataStore defaultStore] newFetchReuqestForCheckinFrom:beginDate to:endDate];
+  
+  NSError *error = nil;
+  NSArray *checkins = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
+  [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
+  if (error) {
+    NSLog(@"error to query checkin db: %@", error);
+    _userCheckins = @[];
+    return _userCheckins;
+  } else if (checkins.count) {
+    _userCheckins = checkins;
+    return _userCheckins;
+  }
+  return @[];
+}
+
 - (NSArray *)checkins {
   
   if (self.representingArticle) {
     return self.representingArticle.uniqueCheckins;
   } else {
-    NSDate *beginDate = [NSDate dateWithTimeInterval:(-30*60) sinceDate:self.beginDate];
-    NSDate *endDate = [NSDate dateWithTimeInterval:(30*60) sinceDate:self.endDate];
-    NSFetchRequest * fetchRequest = [[WADataStore defaultStore] newFetchReuqestForCheckinFrom:beginDate to:endDate];
-    
-    NSError *error = nil;
-    NSArray *checkins = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
-    [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
-    if (error) {
-      NSLog(@"error to query checkin db: %@", error);
-      _checkins = @[];
-      return _checkins;
-    } else if (checkins.count) {
-      _checkins = checkins;
-      return _checkins;
-    }
+    return [self userCheckins];
   }
   return @[];
 }
@@ -799,87 +926,80 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
 }
 
 - (NSInteger) collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-  
-  NSUInteger numOfPhotos = self.allAssets.count;
   if (self.representingArticle)
-    numOfPhotos = self.sortedImages.count;
-  NSUInteger totalItem = (numOfPhotos / 10) * 4;
-  NSUInteger mod = numOfPhotos % 10;
-  if (mod == 0)
-    return totalItem;
-  else if (mod < 5)
-    return totalItem + 1;
-  else if (mod < 8)
-    return totalItem + 2;
-  else if (mod < 10)
-    return totalItem + 3;
+    return self.sortedImages.count;
   else
-    return totalItem + 4;
+    return self.allAssets.count;
   
 }
 
 - (UICollectionViewCell*)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
-  
-  NSUInteger totalNumber = self.allAssets.count;
-  if (self.representingArticle)
-    totalNumber = self.sortedImages.count;
+ 
+  if (!galleryMode) {
+    WAPhotoTimelineCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"PhotoTimelineCell" forIndexPath:indexPath];
 
-  NSUInteger numOfPhotos = 4 - (indexPath.row % 4);
-  NSString *identifier = [NSString stringWithFormat:@"CollectionItemCell%d", numOfPhotos];
-  
-  WAPhotoCollageCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:identifier forIndexPath:indexPath];
-  
-  NSUInteger base = 0;
-  switch(indexPath.row % 4) {
-    case 3:
-      base = (indexPath.row / 4) * 10 + 9;
-      break;
-    case 2:
-      base = (indexPath.row / 4) * 10 + 7;
-      break;
-    case 1:
-      base = (indexPath.row / 4) * 10 + 4;
-      break;
-    case 0:
-      base = (indexPath.row / 4) * 10;
-      break;
-  }
-  
-  __weak WAPhotoTimelineViewController *wSelf = self;
-  for (NSUInteger i = 0; i < numOfPhotos; i++) {
+    if (self.representingArticle) {
+      cell.imageView.image = nil;
+      [cell.imageView irUnbind:@"image"];
+      [cell.imageView irBind:@"image" toObject:self.sortedImages[indexPath.row] keyPath:@"thumbnailImage" options:@{kIRBindingsAssignOnMainThreadOption: (id)kCFBooleanTrue}];
+      
+    } else {
+      ALAsset *asset = self.allAssets[indexPath.row];
+      cell.imageView.image = nil;
+      [cell.imageView irUnbind:@"image"];
+      [cell.imageView irBind:@"image"
+                    toObject:asset
+                     keyPath:@"cachedPresentableImage"
+                     options:@{kIRBindingsAssignOnMainThreadOption: (id)kCFBooleanTrue}];
+    }
+        
+
+    return cell;
     
-    if ((base+i) < totalNumber) {
-      if (self.representingArticle) {
-        
-        [self.sortedImages[base+i]
-         irObserve:@"thumbnailImage"
-         options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionNew
-         context:nil
-         withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
-           
-           UIImage *image = (UIImage*)toValue;
-           [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-             ((UIImageView *)cell.imageViews[i]).image = image;
-           }];
-           
-         }];
-        
-      } else {
-        ALAsset *asset = wSelf.allAssets[base+i];
-        
-        [cell.imageViews[i] irUnbind:@"image"];
-        [cell.imageViews[i] irBind:@"image" toObject:asset keyPath:@"cachedPresentableImage" options:@{kIRBindingsAssignOnMainThreadOption: (id)kCFBooleanTrue}];
+  } else {
+    WAPhotoGalleryCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"PhotoGallery" forIndexPath:indexPath];
+    
+    if (self.representingArticle) {
+      cell.imageView.image = nil;
+      [cell.imageView irUnbind:@"image"];
+      [cell.imageView irBind:@"image" toObject:self.sortedImages[indexPath.row] keyPath:@"thumbnailImage" options:@{kIRBindingsAssignOnMainThreadOption: (id)kCFBooleanTrue}];
+      
+      WAFile *file = self.sortedImages[indexPath.row];
+      cell.subtitleLabel.text = @"";
+      if (file.exif.gpsLongitude && file.exif.gpsLongitude) {
+
+        CLLocation *location = [[CLLocation alloc] initWithLatitude:file.exif.gpsLatitude.floatValue longitude:file.exif.gpsLongitude.floatValue];
+        CLGeocoder *geocoder = [[CLGeocoder alloc] init];
+        [geocoder reverseGeocodeLocation:location completionHandler:^(NSArray *placemarks, NSError *error) {
+          if (error) {
+            NSLog(@"Unable to query reversed geocoding for error: %@", error);
+          } else {
+            if (placemarks.count) {
+              cell.subtitleLabel.text = [placemarks[0] locality];
+            }
+          }
+        }];
         
       }
+
     } else {
-      [(UIImageView*)cell.imageViews[i] setBackgroundColor:[UIColor clearColor]];
+      ALAsset *asset = self.allAssets[indexPath.row];
+      cell.imageView.image = nil;
+      [cell.imageView irUnbind:@"image"];
+      [cell.imageView irBind:@"image"
+                    toObject:asset
+                     keyPath:@"cachedPresentableImage"
+                     options:@{kIRBindingsAssignOnMainThreadOption: (id)kCFBooleanTrue}];
     }
+    
+    return cell;
   }
-  
-  return cell;
 }
 
 - (UICollectionReusableView*)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath {
+
+  if (galleryMode)
+    return nil;
   
   __weak WAPhotoTimelineViewController *wSelf = self;
   if ([kind isEqualToString:UICollectionElementKindSectionHeader]) {
@@ -970,9 +1090,11 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
       cover.informationLabel.text = [NSString stringWithFormat:NSLocalizedString(@"INFO_EVENT_FRIENDS", @"show how many friends with creator"), self.representingArticle.sharingContacts.count - 1];
     else
       cover.informationLabel.text = NSLocalizedString(@"INFO_HINT", @"information in event view to show hint");
+
     return cover;
     
   }
+
   return nil;
 }
 
@@ -993,33 +1115,15 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
 
 - (CGSize) collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section {
   
-  return CGSizeMake(self.collectionView.frame.size.width, 250);
-  
-}
-
-- (CGSize) collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
-  
-  CGFloat height = 200;
-  switch (indexPath.row % 4) {
-    case 0:
-      height = 210;
-      break;
-    case 1:
-      height = 90;
-      break;
-    case 2:
-      height = 130;
-      break;
-    case 3:
-      height = 210;
-      break;
-  }
-  return CGSizeMake(self.collectionView.frame.size.width, height);
+  if (galleryMode)
+    return CGSizeMake(0, 0);
+  else
+    return CGSizeMake(self.collectionView.frame.size.width, 250);
   
 }
 
 - (void) collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-  if (self.representingArticle) {
+  if (self.representingArticle && !galleryMode) {
     WAFile *file = self.sortedImages[indexPath.row];
     WAGalleryViewController *gallery = [WAGalleryViewController controllerRepresentingArticleAtURI:[[self.representingArticle objectID] URIRepresentation] context:@{kWAGalleryViewControllerContextPreferredFileObjectURI: file.objectID.URIRepresentation}];
     [self.navigationController pushViewController:gallery animated:YES];
@@ -1084,17 +1188,17 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
     self.tapGesture = nil;
   }
   
-  if (self.indexView.hidden && scrollView.contentOffset.y > 0)
+  if (!galleryMode && self.indexView.hidden && scrollView.contentOffset.y > 0)
     self.indexView.hidden = NO;
   
-  if (!naviBarShown && scrollView.contentOffset.y >= (250-44-50)) {
+  if (!galleryMode && !naviBarShown && scrollView.contentOffset.y >= (250-44-50)) {
     
     [self performSelectorOnMainThread:@selector(showingNavigationBar) withObject:nil waitUntilDone:NO modes:@[NSRunLoopCommonModes]];
     naviBarShown = YES;
     
   }
   
-  if (naviBarShown && scrollView.contentOffset.y <= (250-44-50)) {
+  if (!galleryMode && naviBarShown && scrollView.contentOffset.y <= (250-44-50)) {
     [self performSelectorOnMainThread:@selector(hideNavigationBar) withObject:nil waitUntilDone:NO modes:@[NSRunLoopCommonModes]];
     naviBarShown = NO;
   }
@@ -1105,7 +1209,7 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
     self.indexView.percentage = percent;
   }
   
-  if (scrollView.contentOffset.y > 0) {
+  if (!galleryMode && scrollView.contentOffset.y > 0) {
     if (scrollView.contentOffset.y > previousYOffset) {
       if (toolBarShown) {
         toolBarShown = NO;
@@ -1134,5 +1238,46 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
     }];
   }
 }
+
+
+#pragma mark - WATimelineIndexDataSource
+- (NSInteger) numberOfIndexicsForIndexView:(WATimelineIndexView *)indexView {
+  return self.indexingLabels.count + 2;
+}
+
+- (WATimelineIndexLabel*) labelForIndex:(NSInteger)index inIndexView:(WATimelineIndexView *)indexView {
+
+  WATimelineIndexLabel *label = [[WATimelineIndexLabel alloc] init];
+  
+  NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+  formatter = [[NSDateFormatter alloc] init];
+  formatter.dateStyle = NSDateFormatterNoStyle;
+  formatter.timeStyle = NSDateFormatterShortStyle;
+
+  if (index == 0) {
+    label.relativePercent = 0.01f;
+    label.text = [formatter stringFromDate:self.beginDate];
+  } else if (index == (self.indexingLabels.count + 1)) {
+    label.relativePercent = 99.0f;
+    label.text = [formatter stringFromDate:self.endDate];
+  } else {
+    NSTimeInterval timeIntervalBegin = [self.beginDate timeIntervalSince1970];
+    NSTimeInterval timeIntervalEnd = [self.endDate timeIntervalSince1970];
+    
+    NSDictionary *dict = self.indexingLabels[index - 1];
+    NSTimeInterval labelTime = [(NSDate*)dict[@"date"] timeIntervalSince1970];
+    if (labelTime < timeIntervalBegin)
+      label.relativePercent = 0.02f;
+    else if (labelTime > timeIntervalEnd)
+      label.relativePercent = 98.0f;
+    else
+      label.relativePercent = (labelTime - timeIntervalBegin) / (timeIntervalEnd - timeIntervalBegin);
+    label.text = dict[@"name"];
+    
+  }
+  
+  return label;
+}
+
 
 @end

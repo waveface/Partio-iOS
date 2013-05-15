@@ -185,6 +185,12 @@
 /* The content of email body to send user the download link */
 "BODY_MAIL_LINK" = "到官方網站立刻免費下載 aostream Windows版本。 點擊這裡: www.waveface.com/";
 
+/* No comment provided by engineer. */
+"BUTTON_DESELECT_ALL" = "取消全選";
+
+/* No comment provided by engineer. */
+"BUTTON_SELECT_ALL" = "全選";
+
 /* Collection View Navigation Bar */
 "By Date" = "按日期";
 
@@ -758,6 +764,9 @@
 
 /* Class = "IBUILabel"; text = "MONDAY"; ObjectID = "39"; */
 "MONDAY" = "MONDAY";
+
+/* Class = "IBUIButton"; normalTitle = "BUTTON_SELECT_ALL"; ObjectID = "81"; */
+"BUTTON_SELECT_ALL" = "全選";
 
 /* Class = "IBUILabel"; text = "PHOTOS"; ObjectID = "627"; */
 "PHOTOS" = "照片";
