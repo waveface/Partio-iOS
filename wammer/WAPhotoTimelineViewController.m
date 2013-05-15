@@ -16,7 +16,7 @@
 #import "WAEventDetailsViewController.h"
 #import "WADayPhotoPickerViewController.h"
 #import "WAGalleryViewController.h"
-#import "WAAddressBookPickerViewController.h"
+#import "WAFBFriendPickerViewController.h"
 
 #import "WAPhotoGalleryCell.h"
 #import "WAPhotoTimelineCell.h"
@@ -38,8 +38,6 @@
 #import "IRBindings.h"
 
 #import "WADataStore+FetchingConveniences.h"
-#import "WAContactPickerViewController.h"
-#import "WAAddressBookPickerViewController.h"
 #import "WAGeoLocation.h"
 #import <CoreLocation/CoreLocation.h>
 #import <BlocksKit/BlocksKit.h>
@@ -195,8 +193,11 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
     
     // add contacts button
     UIBarButtonItem *addContacts = WAPartioToolbarButton(nil, [UIImage imageNamed:@"AddPplBtn"],nil, ^{
-      WAAddressBookPickerViewController *contactPicker = [[WAAddressBookPickerViewController alloc] init];
-      __weak WAAddressBookPickerViewController *wcp = contactPicker;
+      WAFBFriendPickerViewController *contactPicker = [[WAFBFriendPickerViewController alloc] init];
+      [contactPicker loadData];
+      [contactPicker clearSelection];
+      
+      __weak WAFBFriendPickerViewController *wcp = contactPicker;
       contactPicker.onNextHandler = ^(NSArray *selectedContacts){
         [wcp dismissViewControllerAnimated:YES completion:nil];
         [wSelf updateSharingEventWithPhotoChanges:nil contacts:selectedContacts onComplete:^{
@@ -706,10 +707,31 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
 
 - (void)actionButtonClicked:(id)sender
 {
+  if (!FBSession.activeSession.isOpen) {
+    // if the session is closed, then we open it here, and establish a handler for state changes
+    [FBSession openActiveSessionWithReadPermissions:nil
+                                       allowLoginUI:YES
+                                  completionHandler:^(FBSession *session,
+                                                      FBSessionState state,
+                                                      NSError *error) {
+                                    if (error) {
+                                      UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                                                          message:error.localizedDescription
+                                                                                         delegate:nil
+                                                                                cancelButtonTitle:@"OK"
+                                                                                otherButtonTitles:nil];
+                                      [alertView show];
+                                    } else if (session.isOpen) {
+                                      [self actionButtonClicked:sender];
+                                    }
+                                  }];
+    return;
+  }
   
   __weak WAPhotoTimelineViewController *wSelf = self;
-  //WAContactPickerViewController *contactPicker = [[WAContactPickerViewController alloc] init];
-  WAAddressBookPickerViewController *contactPicker = [[WAAddressBookPickerViewController alloc] init];
+  WAFBFriendPickerViewController *contactPicker = [[WAFBFriendPickerViewController alloc] init];
+  [contactPicker loadData];
+  [contactPicker clearSelection];
   
   if (self.navigationController) {
     contactPicker.onNextHandler = ^(NSArray *results) {
