@@ -560,7 +560,7 @@
 "PHOTO_UPLOAD_STATUS_BAR_SYNCING" = "同步進行中";
 
 /* String on customized status bar */
-"PHOTO_UPLOAD_STATUS_BAR_UPLOADING" = "待上傳 %d 張照片";
+"PHOTO_UPLOAD_STATUS_BAR_UPLOADING" = "上傳照片中 (%d/%d) ";
 
 /* in day view */
 "PHOTOS_TITLE" = "照片";

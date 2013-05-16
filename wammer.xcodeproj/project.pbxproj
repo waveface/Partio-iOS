@@ -288,7 +288,6 @@
 		80557BA915FDE38000336F3C /* WARemoteInterface+RemoteNotifications.m in Sources */ = {isa = PBXBuildFile; fileRef = 80557BA815FDE38000336F3C /* WARemoteInterface+RemoteNotifications.m */; };
 		8056C9861682C4B2001C9199 /* WAWebPreviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8056C9851682C4B2001C9199 /* WAWebPreviewViewController.m */; };
 		8056C9881682C4CC001C9199 /* WAWebPreviewViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8056C9871682C4CC001C9199 /* WAWebPreviewViewController.xib */; };
-		805B8EC81732117F00D6CEE1 /* WAPeople.m in Sources */ = {isa = PBXBuildFile; fileRef = 805B8EC71732117F00D6CEE1 /* WAPeople.m */; };
 		80638BF2164CA663005695E3 /* WATag.m in Sources */ = {isa = PBXBuildFile; fileRef = 80638BF1164CA663005695E3 /* WATag.m */; };
 		80638BFC164CA7DA005695E3 /* WATagGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = 80638BFB164CA7DA005695E3 /* WATagGroup.m */; };
 		806A5C851623C6C500867E56 /* WAContextMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 806A5C841623C6C500867E56 /* WAContextMenuViewController.m */; };
@@ -388,6 +387,7 @@
 		80B9E50E16719B1200222F57 /* P3@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 80B9E50416719B1100222F57 /* P3@2x.png */; };
 		80BC54D51680740D005D1967 /* WAWebpageDay+WARemoteInterfaceEntitySyncing.m in Sources */ = {isa = PBXBuildFile; fileRef = 80BC54D41680740D005D1967 /* WAWebpageDay+WARemoteInterfaceEntitySyncing.m */; };
 		80BE685B161DC13800A37CEB /* WADayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 80BE685A161DC13800A37CEB /* WADayViewController.m */; };
+		80BEBFB81744BF4C00E4E694 /* WAPeople.m in Sources */ = {isa = PBXBuildFile; fileRef = 80BEBFB71744BF4C00E4E694 /* WAPeople.m */; };
 		80C058431682FB4900BC46A7 /* libPods-UnitTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 80C058421682FB4900BC46A7 /* libPods-UnitTests.a */; };
 		80C058441682FBAE00BC46A7 /* libIRWebAPIKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FF73A5A713D6DC6A00D54EC6 /* libIRWebAPIKit.a */; };
 		80C058491682FC6500BC46A7 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B8CA96914BBE7BA006E06BB /* SenTestingKit.framework */; };
@@ -1334,8 +1334,6 @@
 		8056C9841682C4B2001C9199 /* WAWebPreviewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAWebPreviewViewController.h; sourceTree = "<group>"; };
 		8056C9851682C4B2001C9199 /* WAWebPreviewViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAWebPreviewViewController.m; sourceTree = "<group>"; };
 		8056C9871682C4CC001C9199 /* WAWebPreviewViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WAWebPreviewViewController.xib; sourceTree = "<group>"; };
-		805B8EC61732117F00D6CEE1 /* WAPeople.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAPeople.h; sourceTree = "<group>"; };
-		805B8EC71732117F00D6CEE1 /* WAPeople.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAPeople.m; sourceTree = "<group>"; };
 		805B8ED6173213DE00D6CEE1 /* WAModel 45.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WAModel 45.xcdatamodel"; sourceTree = "<group>"; };
 		80638BF0164CA663005695E3 /* WATag.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WATag.h; sourceTree = "<group>"; };
 		80638BF1164CA663005695E3 /* WATag.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WATag.m; sourceTree = "<group>"; };
@@ -1473,6 +1471,9 @@
 		80BC54D41680740D005D1967 /* WAWebpageDay+WARemoteInterfaceEntitySyncing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WAWebpageDay+WARemoteInterfaceEntitySyncing.m"; sourceTree = "<group>"; };
 		80BE6859161DC13800A37CEB /* WADayViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WADayViewController.h; sourceTree = "<group>"; };
 		80BE685A161DC13800A37CEB /* WADayViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WADayViewController.m; sourceTree = "<group>"; };
+		80BEBFB61744BF4C00E4E694 /* WAPeople.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAPeople.h; sourceTree = "<group>"; };
+		80BEBFB71744BF4C00E4E694 /* WAPeople.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAPeople.m; sourceTree = "<group>"; };
+		80BEBFC61744BF7600E4E694 /* WAModel 46.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = file; path = "WAModel 46.xcdatamodel"; sourceTree = "<group>"; };
 		80C058421682FB4900BC46A7 /* libPods-UnitTests.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-UnitTests.a"; path = "Pods/build/Release-iphoneos/libPods-UnitTests.a"; sourceTree = "<group>"; };
 		80C129B616398933001DDFE2 /* WADayHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WADayHeaderView.h; sourceTree = "<group>"; };
 		80C129B716398933001DDFE2 /* WADayHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WADayHeaderView.m; sourceTree = "<group>"; };
@@ -2999,8 +3000,8 @@
 				80E5173B1670F3B200E1C3AD /* WALocation.m */,
 				80638BFA164CA7DA005695E3 /* WATagGroup.h */,
 				80638BFB164CA7DA005695E3 /* WATagGroup.m */,
-				805B8EC61732117F00D6CEE1 /* WAPeople.h */,
-				805B8EC71732117F00D6CEE1 /* WAPeople.m */,
+				80BEBFB61744BF4C00E4E694 /* WAPeople.h */,
+				80BEBFB71744BF4C00E4E694 /* WAPeople.m */,
 				80638BF0164CA663005695E3 /* WATag.h */,
 				80638BF1164CA663005695E3 /* WATag.m */,
 				FF88E14314E8D7DC00B347A8 /* WAArticle+WAAdditions.h */,
@@ -4947,13 +4948,13 @@
 				808E3DDC172B70AC002B2E3F /* WAFetchManager+FBCheckinFetch.m in Sources */,
 				80E7E586172FB5E1003E525E /* WAPhotoTimelineGalleryLayout.m in Sources */,
 				80E7E596172FBAC7003E525E /* WAPhotoGalleryCell.m in Sources */,
-				805B8EC81732117F00D6CEE1 /* WAPeople.m in Sources */,
 				DE876D4C1740E3AE000CBA5B /* WAFBFriendPickerViewController.m in Sources */,
 				806EA8F6173BB45600B32BFC /* WAPhotoTimelineCell.m in Sources */,
 				804E6F5A173C9ABD00A3006C /* WAFileExif+WARemoteInterfaceEntitySyncing.m in Sources */,
 				802291A31740DE3800408C2B /* WAEventPhotoPickerDataSource.m in Sources */,
 				80517A3E17412B0D00601704 /* WAEventPhotoPickerLoadingView.m in Sources */,
 				801A1B711743309400846168 /* WAPartioSettingsViewController.m in Sources */,
+				80BEBFB81744BF4C00E4E694 /* WAPeople.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5849,11 +5850,12 @@
 		4B603C4C16C37D6C003692CB /* WAModel.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				80BEBFC61744BF7600E4E694 /* WAModel 46.xcdatamodel */,
 				805B8ED6173213DE00D6CEE1 /* WAModel 45.xcdatamodel */,
 				80C768EB1711B84B000F10A8 /* WAModel 44.xcdatamodel */,
 				4B603C4D16C37D6C003692CB /* WAModel 43.xcdatamodel */,
 			);
-			currentVersion = 805B8ED6173213DE00D6CEE1 /* WAModel 45.xcdatamodel */;
+			currentVersion = 80BEBFC61744BF7600E4E694 /* WAModel 46.xcdatamodel */;
 			path = WAModel.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;

@@ -289,6 +289,17 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
   NSDate * const eventStartTime = self.eventStartDate;
   NSDate * const eventEndTime = self.eventEndDate;
   NSArray * invitingEmails = [(NSSet*)[self.sharingContacts valueForKey:@"email"] allObjects];
+  NSMutableArray * invitee = [NSMutableArray array];
+  for (WAPeople *person in [self.sharingContacts allObjects]) {
+    NSMutableDictionary *dict = [NSMutableDictionary dictionary];
+    if (person.name)
+      dict[@"name"] = person.name;
+    if (person.email)
+      dict[@"email"] = person.email;
+    if (person.fbID)
+      dict[@"fbid"] = person.fbID;
+    [invitee addObject:[NSDictionary dictionaryWithDictionary:dict]];
+  }
   WAEventArticleType eventType = [self.eventType intValue];
   
   NSMutableDictionary *postLocation = nil;

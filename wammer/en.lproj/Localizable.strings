@@ -560,7 +560,7 @@
 "PHOTO_UPLOAD_STATUS_BAR_SYNCING" = "Syncing";
 
 /* String on customized status bar */
-"PHOTO_UPLOAD_STATUS_BAR_UPLOADING" = "%d photos to be uploaded";
+"PHOTO_UPLOAD_STATUS_BAR_UPLOADING" = "upload %d/%d photos";
 
 /* in day view */
 "PHOTOS_TITLE" = "PHOTOS";

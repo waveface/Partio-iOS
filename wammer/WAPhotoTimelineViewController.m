@@ -16,6 +16,7 @@
 #import "WAEventDetailsViewController.h"
 #import "WADayPhotoPickerViewController.h"
 #import "WAGalleryViewController.h"
+#import "WAAddressBookPickerViewController.h"
 #import "WAFBFriendPickerViewController.h"
 
 #import "WAPhotoGalleryCell.h"
@@ -195,11 +196,13 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
     
     // add contacts button
     UIBarButtonItem *addContacts = WAPartioToolbarButton(nil, [UIImage imageNamed:@"AddPplBtn"],nil, ^{
-      WAFBFriendPickerViewController *contactPicker = [[WAFBFriendPickerViewController alloc] init];
-      [contactPicker loadData];
-      [contactPicker clearSelection];
+      WAAddressBookPickerViewController *contactPicker = [[WAAddressBookPickerViewController alloc] init];
       
-      __weak WAFBFriendPickerViewController *wcp = contactPicker;
+//      WAFBFriendPickerViewController *contactPicker = [[WAFBFriendPickerViewController alloc] init];
+//      [contactPicker loadData];
+//      [contactPicker clearSelection];
+      
+      __weak WAAddressBookPickerViewController *wcp = contactPicker;
       contactPicker.onNextHandler = ^(NSArray *selectedContacts){
         [wcp dismissViewControllerAnimated:YES completion:nil];
         [wSelf updateSharingEventWithPhotoChanges:nil contacts:selectedContacts onComplete:^{
@@ -368,32 +371,37 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
   }
   
   if (contacts.count) {
-    NSArray *emailsFromContacts = [[NSSet setWithArray:[contacts valueForKey:@"email"]] allObjects];
-    NSMutableArray *invitingEmails = [NSMutableArray array];
-    for (NSArray *contactEmails in emailsFromContacts) {
-      [invitingEmails addObjectsFromArray:[contactEmails filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(NSString *evaluatedObject, NSDictionary *bindings) {
-        return evaluatedObject.length!=0;
-      }]]];
-    }
-    NSFetchRequest *fr = [[NSFetchRequest alloc] initWithEntityName:@"WAPeople"];
-    fr.predicate = [NSPredicate predicateWithFormat:@"email IN %@", invitingEmails];
-    NSError *error = nil;
-    NSArray *peopleFound = [moc executeFetchRequest:fr error:&error];
-    if (peopleFound.count) {
-      for (WAPeople *person in peopleFound) {
-        [[article mutableSetValueForKey:@"sharingContacts"] addObject:person];
-        if ([invitingEmails indexOfObject:person.email] != NSNotFound) {
-          [invitingEmails removeObject:person.email];
-        }
-        changed = YES;
+    for (NSDictionary *invitee in contacts) {
+      NSString *email = invitee[@"email"];
+      NSString *fbID = invitee[@"fbid"];
+
+      NSFetchRequest *fr = [[NSFetchRequest alloc] initWithEntityName:@"WAPeople"];
+      if (fbID) {
+        fr.predicate = [NSPredicate predicateWithFormat:@"fbID IN %@", fbID];
+      } else if (email) {
+        fr.predicate = [NSPredicate predicateWithFormat:@"email IN %@", email];
+      } else {
+        continue;
       }
-    }
-    for (NSString *email in invitingEmails) {
-      WAPeople *person = (WAPeople*)[WAPeople objectInsertingIntoContext:moc withRemoteDictionary:@{}];
-      person.email = email;
+      
+      NSError *error = nil;
+      NSArray *peopleFound = [moc executeFetchRequest:fr error:&error];
+      if (peopleFound.count) {
+        WAPeople *firstRecord = peopleFound[0];
+        [[article mutableSetValueForKey:@"sharingContacts"] addObject:firstRecord];
+        changed = YES;
+        continue;
+      }
+      
+      WAPeople *person = (WAPeople *)[WAPeople objectInsertingIntoContext:moc withRemoteDictionary:@{}];
+      if (email)
+        person.email = email;
+      if (fbID)
+        person.fbID = fbID;
       [[article mutableSetValueForKey:@"sharingContacts"] addObject:person];
       changed = YES;
     }
+    
   }
   
   if (self.userCheckins.count) {
@@ -489,32 +497,35 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
   article.creationDate = [NSDate date];
   
   if (contacts.count) {
-    NSArray *emailsFromContacts = [[NSSet setWithArray:[contacts valueForKey:@"email"]] allObjects];
-    NSMutableArray *invitingEmails = [NSMutableArray array];
-    for (NSArray *contactEmails in emailsFromContacts) {
-      [invitingEmails addObjectsFromArray:[contactEmails filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(NSString *evaluatedObject, NSDictionary *bindings) {
-        return evaluatedObject.length!=0;
-      }]]];
-    }
-    NSFetchRequest *fr = [[NSFetchRequest alloc] initWithEntityName:@"WAPeople"];
-    fr.predicate = [NSPredicate predicateWithFormat:@"email IN %@", invitingEmails];
-    NSError *error = nil;
-    NSArray *peopleFound = [moc executeFetchRequest:fr error:&error];
-    if (peopleFound.count) {
-      for (WAPeople *person in peopleFound) {
-        [[article mutableSetValueForKey:@"sharingContacts"] addObject:person];
-        if ([invitingEmails indexOfObject:person.email] != NSNotFound) {
-          [invitingEmails removeObject:person.email];
-        }
+    for (NSDictionary *invitee in contacts) {
+      NSString *email = invitee[@"email"];
+      NSString *fbID = invitee[@"fbid"];
+      
+      NSFetchRequest *fr = [[NSFetchRequest alloc] initWithEntityName:@"WAPeople"];
+      if (fbID) {
+        fr.predicate = [NSPredicate predicateWithFormat:@"fbID IN %@", fbID];
+      } else if (email) {
+        fr.predicate = [NSPredicate predicateWithFormat:@"email IN %@", email];
+      } else {
+        continue;
       }
-    }
-    for (NSString *email in invitingEmails) {
-      if (email.length) {
-        WAPeople *person = (WAPeople*)[WAPeople objectInsertingIntoContext:moc withRemoteDictionary:@{}];
+      
+      NSError *error = nil;
+      NSArray *peopleFound = [moc executeFetchRequest:fr error:&error];
+      if (peopleFound.count) {
+        WAPeople *firstRecord = peopleFound[0];
+        [[article mutableSetValueForKey:@"sharingContacts"] addObject:firstRecord];
+        continue;
+      }
+      
+      WAPeople *person = (WAPeople *)[WAPeople objectInsertingIntoContext:moc withRemoteDictionary:@{}];
+      if (email)
         person.email = email;
-        [[article mutableSetValueForKey:@"sharingContacts"] addObject:person];
-      }
+      if (fbID)
+        person.fbID = fbID;
+      [[article mutableSetValueForKey:@"sharingContacts"] addObject:person];
     }
+    
   }
   
   WALocation *location = (WALocation*)[WALocation objectInsertingIntoContext:moc withRemoteDictionary:@{}];
@@ -731,9 +742,10 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
   }
   
   __weak WAPhotoTimelineViewController *wSelf = self;
-  WAFBFriendPickerViewController *contactPicker = [[WAFBFriendPickerViewController alloc] init];
-  [contactPicker loadData];
-  [contactPicker clearSelection];
+  WAAddressBookPickerViewController *contactPicker = [[WAAddressBookPickerViewController alloc] init];
+//  WAFBFriendPickerViewController *contactPicker = [[WAFBFriendPickerViewController alloc] init];
+//  [contactPicker loadData];
+//  [contactPicker clearSelection];
   
   if (self.navigationController) {
     contactPicker.onNextHandler = ^(NSArray *results) {
