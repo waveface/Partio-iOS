@@ -22,9 +22,10 @@
 - (void)drawRect:(CGRect)rect
 {
   if (self.solid) {
-    UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 320, 250)];
+    
+    UIImageView *imageView = [[UIImageView alloc] initWithFrame:(CGRect){CGPointZero, self.overlayImageSize}];
     imageView.contentMode = UIViewContentModeScaleAspectFill;
-    imageView.image = [UIImage imageNamed:@"Cover1"];
+    imageView.image = self.overlayImage;
     imageView.layer.opacity = 0.9;
     imageView.layer.opaque = NO;
     CALayer *darken = [[CALayer alloc] init];
@@ -33,9 +34,8 @@
     darken.opacity = 0.6;
     darken.backgroundColor = [UIColor blackColor].CGColor;
     [imageView.layer insertSublayer:darken above:imageView.layer];
-    //    NSLog(@"%@", NSStringFromCGRect(rect));
     
-    UIGraphicsBeginImageContext(CGSizeMake(320, 250));
+    UIGraphicsBeginImageContext(self.overlayImageSize);
     CGContextRef context = UIGraphicsGetCurrentContext();
     //    UIGraphicsPushContext(context);
     [imageView.layer renderInContext:context];
@@ -52,15 +52,16 @@
     
     CGAffineTransform transform = CGAffineTransformIdentity;
     
-    transform = CGAffineTransformTranslate(transform, 320, 250);
+    transform = CGAffineTransformTranslate(transform, self.overlayImageSize.width, self.overlayImageSize.height);
     transform = CGAffineTransformRotate(transform, M_PI);
     //    transform = CGAffineTransformTranslate(transform, 320, 0);
     //    transform = CGAffineTransformScale(transform, -1, 1);
-    transform = CGAffineTransformTranslate(transform, 320, 0);
+    transform = CGAffineTransformTranslate(transform, self.overlayImageSize.width, 0);
     transform = CGAffineTransformScale(transform, -1, 1);
     
     CGContextConcatCTM(context, transform);
-    CGContextDrawImage(context, (CGRect){{0, 250-44}, {320, 250}}, renderingImage.CGImage);
+    CGContextDrawImage(context, (CGRect){{0, self.overlayImageSize.height - self.frame.size.height}, self.overlayImageSize}, renderingImage.CGImage);
+    
   } else {
     
     CGContextRef context = UIGraphicsGetCurrentContext();
