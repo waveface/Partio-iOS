@@ -164,6 +164,8 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
   self.navigationBar.backgroundColor = [UIColor clearColor];
   self.navigationBar.translucent = YES;
   //  self.navigationBar.items = @[backItem, actionItem];
+  self.navigationBar.overlayImageSize = CGSizeMake(320, 200);
+  
   [self.navigationBar pushNavigationItem:self.navigationItem animated:NO];
   
   [self.view addSubview:self.navigationBar];
@@ -992,6 +994,7 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
 
          UIImage *image = (UIImage*)toValue;
          [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+           wSelf.navigationBar.overlayImage = image;
            cover.coverImageView.image = image;
          }];
          
