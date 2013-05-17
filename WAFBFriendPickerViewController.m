@@ -48,7 +48,6 @@ static NSString *kWAPartioTableViewSectionHeaderView = @"WAPartioTableViewSectio
   if (self) {
     // Custom initialization
     [self initialize];
-    [self.tableView registerNib:[UINib nibWithNibName:kWAPartioTableViewSectionHeaderView bundle:nil] forHeaderFooterViewReuseIdentifier:kHeaderID];
   }
   return self;
 }

@@ -128,7 +128,10 @@ static NSString *kHeaderID = @"WAFBTableViewSectionHeaderView";
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-  UIView *headerView = [tableView dequeueReusableHeaderFooterViewWithIdentifier:kHeaderID];
+  static WAPartioTableViewSectionHeaderView *headerView;
+  headerView = [[WAPartioTableViewSectionHeaderView alloc] initWithFrame:CGRectMake(0.f, 2.f, CGRectGetWidth(tableView.frame), 22.f)];
+  headerView.backgroundColor = tableView.backgroundColor;
+  headerView.title.text = [[[UILocalizedIndexedCollation currentCollation] sectionTitles] objectAtIndex:section];
   return headerView;
 }
 
