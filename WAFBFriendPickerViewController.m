@@ -163,7 +163,7 @@ static NSString *kWAPartioTableViewSectionHeaderView = @"WAPartioTableViewSectio
 {
   NSMutableArray *extractedData = [NSMutableArray array];
   for (id<FBGraphUser> user in rawData) {
-    [extractedData addObject:@{@"name": [user name], @"email": @[], @"fbid":[user id]}];
+    [extractedData addObject:@{@"name": [user name], @"email": @"", @"fbid":[user id]}];
   }
   
   return [extractedData copy];
