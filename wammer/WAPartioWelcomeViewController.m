@@ -53,6 +53,20 @@
     self.backgroundImageView.image = [UIImage imageNamed:@"PartioLogin-568h"];
   else
     self.backgroundImageView.image = [UIImage imageNamed:@"PartioLogin"];
+  
+  UIImageView *fbIcon = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"fbicon"]];
+  fbIcon.frame = (CGRect){{20, 0}, {44, 44}};
+  fbIcon.contentMode = UIViewContentModeScaleAspectFit;
+  UILabel *signupLabel = [[UILabel alloc] init];
+  signupLabel.text = NSLocalizedString(@"SIGNUP_BUTTON", @"");
+  signupLabel.backgroundColor = [UIColor clearColor];
+  signupLabel.font = [UIFont fontWithName:@"OpenSans-Semibold" size:15.f];
+  signupLabel.textColor = [UIColor whiteColor];
+  [signupLabel sizeToFit];
+  signupLabel.frame = (CGRect){{67, 0}, {signupLabel.frame.size.width, 44}};
+  [self.signupButton addSubview:fbIcon];
+  [self.signupButton addSubview:signupLabel];
+  
 }
 
 - (void)firstArticleFetchedHandler:(NSNotification*)aNotification {

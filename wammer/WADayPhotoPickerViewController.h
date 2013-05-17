@@ -19,5 +19,7 @@
 @property (nonatomic, copy) void (^onNextHandler)(NSArray *selectedAssets);
 @property (nonatomic, copy) void (^onCancelHandler)();
 @property (nonatomic, strong) NSString *actionButtonLabelText;
+@property (nonatomic, assign) BOOL allowTitleEditing;
+@property (nonatomic, strong) NSString *titleText;
 
 @end

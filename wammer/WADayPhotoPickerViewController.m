@@ -19,6 +19,7 @@
 #import "WAPhotoTimelineViewController.h"
 #import "WANavigationController.h"
 #import "WAEventPhotoPickerDataSource.h"
+#import "WAEventTitleInputView.h"
 #import <BlocksKit/BlocksKit.h>
 
 @interface WADayPhotoPickerViewController () <UICollectionViewDelegateFlowLayout, UICollectionViewDataSource>
@@ -34,9 +35,12 @@
 @property (nonatomic, strong) WAEventPhotoPickerDataSource *dataSource;
 
 @property (nonatomic, weak) IBOutlet WAPartioNavigationBar *navigationBar;
+@property (nonatomic, strong) WAEventTitleInputView *titleInputView;
 @end
 
-@implementation WADayPhotoPickerViewController
+@implementation WADayPhotoPickerViewController {
+  BOOL titleInputViewShown;
+}
 
 + (id) viewControllerWithNavigationControllerWrapped {
   
@@ -55,6 +59,7 @@
       self.selectedAssets = [NSMutableArray arrayWithArray:assets];
     else
       self.selectedAssets = [NSMutableArray array];
+    self.allowTitleEditing = YES;
   }
   return self;
 }
@@ -65,6 +70,7 @@
     self.selectedAssets = [NSMutableArray array];
     self.selectedRangeFromDate = from;
     self.selectedRangeToDate = to;
+    self.allowTitleEditing = NO;
   }
   return self;
 }
@@ -112,6 +118,15 @@
   
   [self updateNavigationBarTitle];
   
+  if (self.allowTitleEditing) {
+    titleInputViewShown = NO;
+    self.titleInputView = [WAEventTitleInputView viewFromNib];
+    self.titleInputView.frame = CGRectMake(0, self.view.frame.size.height, self.view.frame.size.width, 44);
+    self.titleInputView.onTitleChange = ^(NSString *newTitleText) {
+      wSelf.titleText = newTitleText;
+    };
+    [self.view addSubview:self.titleInputView];
+  }
   
   UIImage *wmImage = [UIImage imageNamed:@"watermark"];
   UIImageView *waterMark = [[UIImageView alloc] initWithImage:wmImage];
@@ -126,6 +141,21 @@
   } else {
     self.navigationItem.title = NSLocalizedString(@"TITLE_OF_DAY_PHOTO_PICKER", @"Title of the day photo picker view");
   }
+}
+
+- (void) viewDidAppear:(BOOL)animated {
+  [super viewDidAppear:animated];
+  
+  if (self.allowTitleEditing && !titleInputViewShown) {
+    __weak WADayPhotoPickerViewController *wSelf = self;
+    titleInputViewShown = YES;
+    [UIView animateWithDuration:0.3 animations:^{
+      CGRect newFrame = wSelf.titleInputView.frame;
+      newFrame.origin.y -= newFrame.size.height;
+      wSelf.titleInputView.frame = newFrame;
+    }];
+  }
+  
 }
 
 - (void) viewDidDisappear:(BOOL)animated {
