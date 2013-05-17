@@ -2,7 +2,7 @@
 //  WAArticle.h
 //  wammer
 //
-//  Created by Shen Steven on 4/24/13.
+//  Created by Shen Steven on 5/17/13.
 //  Copyright (c) 2013 Waveface. All rights reserved.
 //
 
@@ -22,7 +22,6 @@ typedef NS_ENUM(NSUInteger, WAEventArticleType) {
   WAEventArticleSharedType = 2
 };
 
-
 @class WACheckin, WAEventDay, WAFile, WAGroup, WALocation, WAPeople, WATag, WATagGroup, WAUser;
 
 @interface WAArticle : IRManagedObject
@@ -38,10 +37,12 @@ typedef NS_ENUM(NSUInteger, WAEventArticleType) {
 @property (nonatomic, retain) NSNumber * favorite;
 @property (nonatomic, retain) NSNumber * hidden;
 @property (nonatomic, retain) NSString * identifier;
+@property (nonatomic, retain) NSDate * lastRead;
 @property (nonatomic, retain) NSDate * modificationDate;
 @property (nonatomic, retain) NSString * text;
 @property (nonatomic, retain) NSString * textAuto;
-@property (nonatomic, retain) NSDate * lastRead;
+@property (nonatomic, retain) NSString * title;
+@property (nonatomic, retain) NSString * sharedCode;
 @property (nonatomic, retain) NSSet *checkins;
 @property (nonatomic, retain) NSSet *descriptiveTags;
 @property (nonatomic, retain) WAEventDay *eventDay;

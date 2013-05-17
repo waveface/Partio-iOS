@@ -2,7 +2,7 @@
 //  WAArticle.m
 //  wammer
 //
-//  Created by Shen Steven on 4/24/13.
+//  Created by Shen Steven on 5/17/13.
 //  Copyright (c) 2013 Waveface. All rights reserved.
 //
 
@@ -31,10 +31,12 @@
 @dynamic favorite;
 @dynamic hidden;
 @dynamic identifier;
+@dynamic lastRead;
 @dynamic modificationDate;
 @dynamic text;
 @dynamic textAuto;
-@dynamic lastRead;
+@dynamic title;
+@dynamic sharedCode;
 @dynamic checkins;
 @dynamic descriptiveTags;
 @dynamic eventDay;

@@ -13,4 +13,5 @@
 - (id) initWithAssets:(NSArray*)assets;
 - (id) initWithArticleID:(NSManagedObjectID *)articleID;
 
+@property (nonatomic, strong) NSString *titleText;
 @end

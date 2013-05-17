@@ -64,6 +64,7 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
 @property (nonatomic, weak) IBOutlet UIToolbar *toolbar;
 @property (nonatomic, weak) IBOutlet UICollectionView *collectionView;
 @property (nonatomic, weak) IBOutlet WATimelineIndexView *indexView;
+@property (nonatomic, assign) BOOL alwaysHideIndexView;
 @property (nonatomic, strong) WAPartioSignupViewController *signupVC;
 
 @property (nonatomic, strong) NSManagedObjectContext *managedObjectContext;
@@ -125,6 +126,7 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
     
     self.representingArticleID = articleID;
     self.representingArticle = (WAArticle*)[self.managedObjectContext objectWithID:articleID];
+    self.titleText = self.representingArticle.title;
     self.sortedImages = [self.representingArticle.files sortedArrayUsingComparator:^NSComparisonResult(WAFile *obj1, WAFile *obj2) {
       return [obj1.created compare:obj2.created];
     }];
@@ -142,6 +144,7 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
   naviBarShown = NO;
   toolBarShown = YES;
   galleryMode = NO;
+  self.alwaysHideIndexView = NO;
   previousYOffset = 0;
   
   if (self.representingArticle) {
@@ -255,6 +258,10 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
   
   [self.indexView reloadViews];
   
+  if ([self.collectionView numberOfItemsInSection:0] < 8) {
+    self.alwaysHideIndexView = YES;
+    self.indexView.hidden = YES;
+  }
 }
 
 - (void) viewDidAppear:(BOOL)animated {
@@ -377,9 +384,9 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
 
       NSFetchRequest *fr = [[NSFetchRequest alloc] initWithEntityName:@"WAPeople"];
       if (fbID) {
-        fr.predicate = [NSPredicate predicateWithFormat:@"fbID IN %@", fbID];
+        fr.predicate = [NSPredicate predicateWithFormat:@"fbID == %@", fbID];
       } else if (email) {
-        fr.predicate = [NSPredicate predicateWithFormat:@"email IN %@", email];
+        fr.predicate = [NSPredicate predicateWithFormat:@"email == %@", email];
       } else {
         continue;
       }
@@ -412,7 +419,7 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
       }
     }
   }
-
+  
   if (changed) {
     article.dirty = (id)kCFBooleanTrue;
     article.modificationDate = [NSDate date];
@@ -483,6 +490,7 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
     }
   }
   
+  article.title = self.titleText;
   article.event = (id)kCFBooleanTrue;
   article.eventType = [NSNumber numberWithInt:WAEventArticleSharedType];
   article.draft = (id)kCFBooleanFalse;
@@ -503,9 +511,9 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
       
       NSFetchRequest *fr = [[NSFetchRequest alloc] initWithEntityName:@"WAPeople"];
       if (fbID) {
-        fr.predicate = [NSPredicate predicateWithFormat:@"fbID IN %@", fbID];
+        fr.predicate = [NSPredicate predicateWithFormat:@"fbID == %@", fbID];
       } else if (email) {
-        fr.predicate = [NSPredicate predicateWithFormat:@"email IN %@", email];
+        fr.predicate = [NSPredicate predicateWithFormat:@"email == %@", email];
       } else {
         continue;
       }
@@ -704,7 +712,8 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
       self.collectionView.bounces = YES;
       self.collectionView.alwaysBounceVertical = YES;
       [self.collectionView setCollectionViewLayout:timelineLayout animated:NO];
-      self.indexView.hidden = NO;
+      if (!self.alwaysHideIndexView)
+        self.indexView.hidden = NO;
       self.navigationBar.hidden = NO;
       self.toolbar.hidden = NO;
       [self.collectionView reloadData];
@@ -1063,22 +1072,26 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
 //    [cover.mapView setCamera:camera];
 //    cover.mapView.myLocationEnabled = NO;
     
-    if (self.checkins.count) {
-      NSArray *checkinNames = [self.checkins valueForKey:@"name"];
-      cover.titleLabel.text = [checkinNames componentsJoinedByString:@","];
-    } else
-      cover.titleLabel.text = @"";
+    if (self.titleText) {
+      cover.titleLabel.text = self.titleText;
+    } else {
+      if (self.checkins.count) {
+        NSArray *checkinNames = [self.checkins valueForKey:@"name"];
+        cover.titleLabel.text = [checkinNames componentsJoinedByString:@","];
+      } else
+        cover.titleLabel.text = @"";
     
-    self.geoLocation = [[WAGeoLocation alloc] init];
-    [self.geoLocation identifyLocation:self.coordinate onComplete:^(NSArray *results) {
-      wSelf.locationName = [results componentsJoinedByString:@","];
-      if (cover.titleLabel.text.length == 0)
-        cover.titleLabel.text = [results componentsJoinedByString:@","];
-      else
-        cover.titleLabel.text = [NSString stringWithFormat:@"%@,%@", cover.titleLabel.text, [results componentsJoinedByString:@","]];
-    } onError:^(NSError *error) {
-      NSLog(@"Unable to identify location: %@", error);
-    }];
+      self.geoLocation = [[WAGeoLocation alloc] init];
+      [self.geoLocation identifyLocation:self.coordinate onComplete:^(NSArray *results) {
+        wSelf.locationName = [results componentsJoinedByString:@","];
+        if (cover.titleLabel.text.length == 0)
+          cover.titleLabel.text = [results componentsJoinedByString:@","];
+        else
+          cover.titleLabel.text = [NSString stringWithFormat:@"%@,%@", cover.titleLabel.text, [results componentsJoinedByString:@","]];
+      } onError:^(NSError *error) {
+        NSLog(@"Unable to identify location: %@", error);
+      }];
+    }
     
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     formatter = [[NSDateFormatter alloc] init];
@@ -1201,7 +1214,7 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
     self.tapGesture = nil;
   }
   
-  if (!galleryMode && self.indexView.hidden && scrollView.contentOffset.y > 0)
+  if (!galleryMode &&  !self.alwaysHideIndexView && self.indexView.hidden && scrollView.contentOffset.y > 0)
     self.indexView.hidden = NO;
   
   if (!galleryMode && !naviBarShown && scrollView.contentOffset.y >= (250-44-50)) {

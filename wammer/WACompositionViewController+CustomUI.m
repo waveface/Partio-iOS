@@ -88,6 +88,7 @@
 	[ri updatePost:anArticleOrNil.identifier
 		   inGroup:ri.primaryGroupIdentifier
 		  withText:anArticleOrNil.text
+             title:nil
 	   attachments:attachments
 	mainAttachment:postCoverPhotoId
 		   type:WAArticleTypeEvent
