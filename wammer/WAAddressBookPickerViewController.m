@@ -251,9 +251,9 @@ static NSString *kWAAddressBookViewController_CoachMarks = @"kWAAddressBookViewC
         name = @"";
       }
       if ([emails count]) {
-        aPerson = @{@"name": name, @"email": @[emails[0]]};
+        aPerson = @{@"name": name, @"email": emails[0]};
       } else {
-        aPerson = @{@"name": name, @"email": @[]};
+        aPerson = @{@"name": name, @"email": @""};
       }
       
       if (![self.members containsObject:aPerson]) {
@@ -654,7 +654,7 @@ static NSString *kWAAddressBookViewController_CoachMarks = @"kWAAddressBookViewC
         name = @"";
       }
       for (NSInteger i = 0; i < [emails count]; i++) {
-        aPerson = @{@"name": name, @"email": @[emails[i]]};
+        aPerson = @{@"name": name, @"email": emails[i]};
         
         if ([self.members containsObject:aPerson]) {
           cell.accessoryView.hidden = NO;
@@ -744,9 +744,9 @@ static NSString *kWAAddressBookViewController_CoachMarks = @"kWAAddressBookViewC
     name = @"";
   }
   if ([emails count]) {
-    aPerson = @{@"name": name, @"email": @[emails[0]]};
+    aPerson = @{@"name": name, @"email": emails[0]};
   } else {
-    aPerson = @{@"name": name, @"email": @[]};
+    aPerson = @{@"name": name, @"email": @""};
   }
   
   if (cell.accessoryView.hidden) {
@@ -799,7 +799,7 @@ static NSString *kWAAddressBookViewController_CoachMarks = @"kWAAddressBookViewC
         name = @"";
       }
       for (NSInteger i = 0; i < [emails count]; i++) {
-        aPerson = @{@"name": name, @"email": @[emails[i]]};
+        aPerson = @{@"name": name, @"email": emails[i]};
         
         if ([self.members containsObject:aPerson]) {
           [self.members removeObject:aPerson];
@@ -849,13 +849,11 @@ static NSString *kWAAddressBookViewController_CoachMarks = @"kWAAddressBookViewC
     return;
   }
   
-  NSString *selectedEmail = emails[buttonIndex];
-  [emails removeObjectAtIndex:buttonIndex];
-  [emails insertObject:selectedEmail atIndex:0];
   if (!name) {
     name = @"";
   }
-  NSDictionary *aPerson = @{@"name":name, @"email":@[emails[0]]};
+  NSString *selectedEmail = emails[buttonIndex];
+  NSDictionary *aPerson = @{@"name":name, @"email":selectedEmail};
   UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:self.selectedIndexPath];
   if (cell.accessoryView.hidden) {
     if (![self.members containsObject:aPerson]) {
