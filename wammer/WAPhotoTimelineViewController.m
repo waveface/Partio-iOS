@@ -378,9 +378,9 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
 
       NSFetchRequest *fr = [[NSFetchRequest alloc] initWithEntityName:@"WAPeople"];
       if (fbID) {
-        fr.predicate = [NSPredicate predicateWithFormat:@"fbID IN %@", fbID];
+        fr.predicate = [NSPredicate predicateWithFormat:@"fbID == %@", fbID];
       } else if (email) {
-        fr.predicate = [NSPredicate predicateWithFormat:@"email IN %@", email];
+        fr.predicate = [NSPredicate predicateWithFormat:@"email == %@", email];
       } else {
         continue;
       }
@@ -500,14 +500,14 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
   
   if (contacts.count) {
     for (NSDictionary *invitee in contacts) {
-      NSArray *emails = invitee[@"email"];
+      NSString *email = invitee[@"email"];
       NSString *fbID = invitee[@"fbid"];
       
       NSFetchRequest *fr = [[NSFetchRequest alloc] initWithEntityName:@"WAPeople"];
       if (fbID) {
-        fr.predicate = [NSPredicate predicateWithFormat:@"fbID IN %@", fbID];
-      } else if (emails.count) {
-        fr.predicate = [NSPredicate predicateWithFormat:@"email IN %@", emails];
+        fr.predicate = [NSPredicate predicateWithFormat:@"fbID == %@", fbID];
+      } else if (email) {
+        fr.predicate = [NSPredicate predicateWithFormat:@"email == %@", email];
       } else {
         continue;
       }
@@ -521,8 +521,8 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
       }
       
       WAPeople *person = (WAPeople *)[WAPeople objectInsertingIntoContext:moc withRemoteDictionary:@{}];
-      if (emails.count)
-        person.email = emails[0];
+      if (email)
+        person.email = email;
       if (fbID)
         person.fbID = fbID;
       [[article mutableSetValueForKey:@"sharingContacts"] addObject:person];
