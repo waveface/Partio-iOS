@@ -148,6 +148,8 @@ static const CGFloat subtitleHeight = subtitleFontHeight * 1.25;
   } else {
     self.titleSuffixLabel.font = [UIFont fontWithName:@"OpenSans-Regular" size:titleFontHeight];
   }
+  self.titleSuffixLabel.textColor = [UIColor whiteColor];
+  self.titleSuffixLabel.backgroundColor = [UIColor clearColor];
 }
 
 - (void)createTitleSuffixLabel {

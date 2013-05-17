@@ -471,9 +471,6 @@
 /* The text of location label when there is no gps information we can refer to */
 "LABEL_WITHOUT_GPS_DATA" = "您在哪裡？";
 
-/* MEMBERS_LABEL_CONTACT_PICKER */
-"MEMBERS_LABEL_CONTACT_PICKER" = "朋友";
-
 /* MESSAGE_EMAIL_REQUEST */
 "MESSAGE_EMAIL_REQUEST" = "我們會送封電子郵件邀請他/她一起共享生活中的寶貴回憶。";
 

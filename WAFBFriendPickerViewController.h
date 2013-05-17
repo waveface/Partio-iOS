@@ -9,11 +9,22 @@
 #import <UIKit/UIKit.h>
 #import <FBFriendPickerViewController.h>
 
+#import <Foundation/Foundation.h>
+#import <FacebookSDK/FacebookSDK.h>
+
 @interface WAFBFriendPickerViewController : FBFriendPickerViewController
 
-@property (nonatomic, copy) NSString *userID;
+@property (nonatomic, copy) NSSet *extraFieldsForFriendRequest;
 @property (nonatomic, strong) NSMutableArray *members;
+
 @property (nonatomic, copy) void (^onNextHandler)(NSArray *selectedContacts);
 @property (nonatomic, copy) void (^onDismissHandler)();
+
+@end
+
+
+@protocol CacheGraphFriend <FBGraphUser>
+
+@property (nonatomic) NSString *email;
 
 @end

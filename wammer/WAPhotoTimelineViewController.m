@@ -194,6 +194,8 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
     // add contacts button
     UIBarButtonItem *addContacts = WAPartioToolbarButton(nil, [UIImage imageNamed:@"AddPplBtn"],nil, ^{
       WAFBFriendPickerViewController *contactPicker = [[WAFBFriendPickerViewController alloc] init];
+      contactPicker.fieldsForRequest = [NSSet setWithObjects:@"email", nil];
+      contactPicker.extraFieldsForFriendRequest = contactPicker.fieldsForRequest;
       [contactPicker loadData];
       [contactPicker clearSelection];
       
