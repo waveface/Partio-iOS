@@ -33,7 +33,6 @@
 - (void)viewDidLoad
 {
   [super viewDidLoad];
-  CGSize screenSize = [UIScreen mainScreen].bounds.size;
 
   self.aboutTitle.font = [UIFont fontWithName:@"OpenSans-Semibold" size:20.f];
   self.aboutTitle.text = NSLocalizedString(@"GRUPIN_ABOUT_TEXT", @"");
@@ -41,12 +40,7 @@
   self.description.text = NSLocalizedString(@"GRUPIN_ABOUT_DESC", @"");
   self.subdescription.font = [UIFont fontWithName:@"OpenSans-Semibold" size:16.f];
   self.subdescription.text = NSLocalizedString(@"GRUPIN_ABOUT_SUBDESC", @"");
-  
-  UIImage *image = [UIImage imageNamed:@"watermark"];
-  UIImageView *waterMark = [[UIImageView alloc] initWithImage:image];
-  waterMark.frame = CGRectMake(screenSize.width/2-image.size.width/2, screenSize.height + 20, image.size.width, image.size.height);
-  [self.scrollView addSubview:waterMark];
- 
+   
   self.supportButton.layer.cornerRadius = 15;
   
 }

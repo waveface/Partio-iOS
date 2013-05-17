@@ -2,7 +2,7 @@
 //  WAPeople.h
 //  wammer
 //
-//  Created by Shen Steven on 5/2/13.
+//  Created by Shen Steven on 5/16/13.
 //  Copyright (c) 2013 Waveface. All rights reserved.
 //
 
@@ -20,6 +20,7 @@
 @property (nonatomic, retain) NSString * identifier;
 @property (nonatomic, retain) NSString * name;
 @property (nonatomic, retain) NSNumber * state;
+@property (nonatomic, retain) NSString * fbID;
 @property (nonatomic, retain) WAArticle *article;
 @property (nonatomic, retain) NSSet *sharedArticles;
 @end

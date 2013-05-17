@@ -557,7 +557,7 @@
 "PHOTO_UPLOAD_STATUS_BAR_SYNCING" = "Syncing";
 
 /* String on customized status bar */
-"PHOTO_UPLOAD_STATUS_BAR_UPLOADING" = "%d photos to be uploaded";
+"PHOTO_UPLOAD_STATUS_BAR_UPLOADING" = "upload %d/%d photos";
 
 /* in day view */
 "PHOTOS_TITLE" = "PHOTOS";
@@ -628,6 +628,9 @@
 /* Title for view controller signing the user up
    Title of view controller signing the user up */
 "SIGN_UP_CONTROLLER_TITLE" = "Sign Up";
+
+/* No comment provided by engineer. */
+"SIGNUP_BUTTON" = "Signup with Facebook";
 
 /* Font name of the sliding menu */
 "SLIDING_MENU_FONTNAME" = "HelveticaNeue-Medium";
@@ -779,6 +782,9 @@
 /* Class = "IBUILabel"; text = "PHOTOS"; ObjectID = "627"; */
 "PHOTOS" = "PHOTOS";
 
+/* Class = "IBUITextField"; placeholder = "INPUT_TITLE_PLACEHOLDER"; ObjectID = "5"; */
+"INPUT_TITLE_PLACEHOLDER" = "Give a title for your event ...";
+
 /* Class = "IBUILabel"; text = "PHOTO_UPLOAD_SWITCH_TITLE"; ObjectID = "749-zj-beb"; */
 "PHOTO_UPLOAD_SWITCH_TITLE" = "Import Camera Roll";
 
@@ -877,9 +883,6 @@
 
 /* Class = "IBUILabel"; text = "WEEKDAY"; ObjectID = "136"; */
 "WEEKDAY" = "WEEKDAY";
-
-/* Class = "IBUIButton"; normalTitle = "SIGNUP_BUTTON"; ObjectID = "MNF-gq-mhw"; */
-"SIGNUP_BUTTON" = "Signup with Facebook";
 
 /* Class = "IBUIButton"; normalTitle = "NOSIGNUP_BUTTON"; ObjectID = "ZCd-nx-9I5"; */
 "NOSIGNUP_BUTTON" = "Experience without Signup";

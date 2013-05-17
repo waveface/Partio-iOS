@@ -11,7 +11,7 @@
 
 @implementation WARemoteInterface (Posts)
 
-+ (NSDictionary *) postEntityWithGroupID:(NSString *)groupID postID:(NSString *)postID text:(NSString *)text attachments:(NSArray *)attachmentIDs mainAttachment:(NSString *)mainAttachmentID type:(WAArticleType)postType eventType:(WAEventArticleType)eventType isFavorite:(BOOL)isFavorite isHidden:(BOOL)isHidden createTime:(NSDate *)createTime updateTime:(NSDate *)updateTime eventStartTime:(NSDate*)eventStartTime eventEndTime:(NSDate*)eventEndTime invitingEmails:(NSArray*)emails location:(NSDictionary*)location checkins:(NSArray*)checkins {
++ (NSDictionary *) postEntityWithGroupID:(NSString *)groupID postID:(NSString *)postID text:(NSString *)text title:(NSString*)title attachments:(NSArray *)attachmentIDs mainAttachment:(NSString *)mainAttachmentID type:(WAArticleType)postType eventType:(WAEventArticleType)eventType isFavorite:(BOOL)isFavorite isHidden:(BOOL)isHidden createTime:(NSDate *)createTime updateTime:(NSDate *)updateTime eventStartTime:(NSDate*)eventStartTime eventEndTime:(NSDate*)eventEndTime invitingEmails:(NSArray*)emails location:(NSDictionary*)location checkins:(NSArray*)checkins {
   
   NSMutableDictionary *sentData = [NSMutableDictionary dictionary];
   
@@ -44,7 +44,8 @@
   if (eventType == WAEventArticleSharedType)
     sentData[@"event_type"] = @"shared";
   
-  //	This is fubar, we should NOT use 1 to 5 for fave and string literals for hidden status
+  if (title)
+    sentData[@"title"] = title;
   
   sentData[@"hidden"] = (isHidden ? @"true" : @"false");
   sentData[@"favorite"] = (isFavorite ? @"1" : @"0");
@@ -205,11 +206,11 @@
   } failureHandler:WARemoteInterfaceGenericFailureHandler(failureBlock)];
 }
 
-- (void) createPostInGroup:(NSString *)aGroupIdentifier withContentText:(NSString *)contentTextOrNil attachments:(NSArray *)attachmentIdentifiersOrNil type:(WAArticleType)postType eventType:(WAEventArticleType)eventType postId:(NSString *)postID createTime:(NSDate *)createTime updateTime:(NSDate *)updateTime eventStartTime:(NSDate*)eventStartTime eventEndTime:(NSDate*)eventEndTime favorite:(BOOL)isFavorite invitingEmails:(NSArray *)emails location:(NSDictionary*)location checkins:(NSArray*)checkins onSuccess:(void (^)(NSDictionary *))successBlock onFailure:(void (^)(NSError *))failureBlock {
+- (void) createPostInGroup:(NSString *)aGroupIdentifier withContentText:(NSString *)contentTextOrNil title:(NSString*)title attachments:(NSArray *)attachmentIdentifiersOrNil type:(WAArticleType)postType eventType:(WAEventArticleType)eventType postId:(NSString *)postID createTime:(NSDate *)createTime updateTime:(NSDate *)updateTime eventStartTime:(NSDate*)eventStartTime eventEndTime:(NSDate*)eventEndTime favorite:(BOOL)isFavorite invitingEmails:(NSArray *)emails location:(NSDictionary*)location checkins:(NSArray*)checkins onSuccess:(void (^)(NSDictionary *))successBlock onFailure:(void (^)(NSError *))failureBlock {
   
   NSParameterAssert(aGroupIdentifier);
   
-  NSDictionary *postEntity = [[self class] postEntityWithGroupID:aGroupIdentifier postID:postID text:contentTextOrNil attachments:attachmentIdentifiersOrNil mainAttachment:nil type:postType eventType:eventType isFavorite:isFavorite isHidden:NO createTime:createTime updateTime:updateTime eventStartTime:eventStartTime eventEndTime:eventEndTime invitingEmails:emails location:location checkins:checkins];
+  NSDictionary *postEntity = [[self class] postEntityWithGroupID:aGroupIdentifier postID:postID text:contentTextOrNil title:title attachments:attachmentIdentifiersOrNil mainAttachment:nil type:postType eventType:eventType isFavorite:isFavorite isHidden:NO createTime:createTime updateTime:updateTime eventStartTime:eventStartTime eventEndTime:eventEndTime invitingEmails:emails location:location checkins:checkins];
   
   [self.engine fireAPIRequestNamed:@"pio_posts/new" withArguments:nil options:WARemoteInterfaceEnginePostFormEncodedOptionsDictionary(postEntity, nil) validator:WARemoteInterfaceGenericNoErrorValidator() successHandler:^(NSDictionary *inResponseOrNil, IRWebAPIRequestContext *inResponseContext) {
     
@@ -224,9 +225,9 @@
   
 }
 
-- (void) updatePost:(NSString *)postID inGroup:(NSString *)groupID withText:(NSString *)text attachments:(NSArray *)attachmentIDs mainAttachment:(NSString *)mainAttachmentID type:(WAArticleType)postType eventType:(WAEventArticleType)eventType favorite:(BOOL)isFavorite hidden:(BOOL)isHidden replacingDataWithDate:(NSDate *)lastKnownModificationDate updateTime:(NSDate *)updateTime eventStartTime:(NSDate*)eventStartTime eventEndTime:(NSDate*)eventEndTime invitingEmails:(NSArray*)emails location:(NSDictionary*)location checkins:(NSArray*)checkins onSuccess:(void(^)(NSDictionary *postRep))successBlock onFailure:(void(^)(NSError *error))failureBlock {
+- (void) updatePost:(NSString *)postID inGroup:(NSString *)groupID withText:(NSString *)text title:(NSString*)title attachments:(NSArray *)attachmentIDs mainAttachment:(NSString *)mainAttachmentID type:(WAArticleType)postType eventType:(WAEventArticleType)eventType favorite:(BOOL)isFavorite hidden:(BOOL)isHidden replacingDataWithDate:(NSDate *)lastKnownModificationDate updateTime:(NSDate *)updateTime eventStartTime:(NSDate*)eventStartTime eventEndTime:(NSDate*)eventEndTime invitingEmails:(NSArray*)emails location:(NSDictionary*)location checkins:(NSArray*)checkins onSuccess:(void(^)(NSDictionary *postRep))successBlock onFailure:(void(^)(NSError *error))failureBlock {
   
-  NSMutableDictionary *postEntity = [[[self class] postEntityWithGroupID:groupID postID:postID text:text attachments:attachmentIDs mainAttachment:mainAttachmentID type:postType eventType:eventType isFavorite:isFavorite isHidden:isHidden createTime:nil updateTime:updateTime eventStartTime:eventStartTime eventEndTime:eventEndTime invitingEmails:emails location:location checkins:checkins] mutableCopy];
+  NSMutableDictionary *postEntity = [[[self class] postEntityWithGroupID:groupID postID:postID text:text title:title attachments:attachmentIDs mainAttachment:mainAttachmentID type:postType eventType:eventType isFavorite:isFavorite isHidden:isHidden createTime:nil updateTime:updateTime eventStartTime:eventStartTime eventEndTime:eventEndTime invitingEmails:emails location:location checkins:checkins] mutableCopy];
   
   if (lastKnownModificationDate) {
     

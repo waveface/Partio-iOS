@@ -557,7 +557,7 @@
 "PHOTO_UPLOAD_STATUS_BAR_SYNCING" = "同步進行中";
 
 /* String on customized status bar */
-"PHOTO_UPLOAD_STATUS_BAR_UPLOADING" = "待上傳 %d 張照片";
+"PHOTO_UPLOAD_STATUS_BAR_UPLOADING" = "上傳照片中 (%d/%d) ";
 
 /* in day view */
 "PHOTOS_TITLE" = "照片";
@@ -628,6 +628,9 @@
 /* Title for view controller signing the user up
    Title of view controller signing the user up */
 "SIGN_UP_CONTROLLER_TITLE" = "註冊";
+
+/* No comment provided by engineer. */
+"SIGNUP_BUTTON" = "使用 Facebook 帳號登入";
 
 /* Font name of the sliding menu */
 "SLIDING_MENU_FONTNAME" = "HelveticaNeue-Bold";
@@ -779,6 +782,9 @@
 /* Class = "IBUILabel"; text = "PHOTOS"; ObjectID = "627"; */
 "PHOTOS" = "照片";
 
+/* Class = "IBUITextField"; placeholder = "INPUT_TITLE_PLACEHOLDER"; ObjectID = "5"; */
+"INPUT_TITLE_PLACEHOLDER" = "你想要分享的主題是？";
+
 /* Class = "IBUILabel"; text = "PHOTO_UPLOAD_SWITCH_TITLE"; ObjectID = "749-zj-beb"; */
 "PHOTO_UPLOAD_SWITCH_TITLE" = "匯入相機膠卷";
 
@@ -877,9 +883,6 @@
 
 /* Class = "IBUILabel"; text = "WEEKDAY"; ObjectID = "136"; */
 "WEEKDAY" = "WEEKDAY";
-
-/* Class = "IBUIButton"; normalTitle = "SIGNUP_BUTTON"; ObjectID = "MNF-gq-mhw"; */
-"SIGNUP_BUTTON" = "使用 Facebook 帳號登入";
 
 /* Class = "IBUIButton"; normalTitle = "NOSIGNUP_BUTTON"; ObjectID = "ZCd-nx-9I5"; */
 "NOSIGNUP_BUTTON" = "先行體驗";

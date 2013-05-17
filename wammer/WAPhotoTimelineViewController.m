@@ -16,6 +16,7 @@
 #import "WAEventDetailsViewController.h"
 #import "WADayPhotoPickerViewController.h"
 #import "WAGalleryViewController.h"
+#import "WAAddressBookPickerViewController.h"
 #import "WAFBFriendPickerViewController.h"
 
 #import "WAPhotoGalleryCell.h"
@@ -63,6 +64,7 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
 @property (nonatomic, weak) IBOutlet UIToolbar *toolbar;
 @property (nonatomic, weak) IBOutlet UICollectionView *collectionView;
 @property (nonatomic, weak) IBOutlet WATimelineIndexView *indexView;
+@property (nonatomic, assign) BOOL alwaysHideIndexView;
 @property (nonatomic, strong) WAPartioSignupViewController *signupVC;
 
 @property (nonatomic, strong) NSManagedObjectContext *managedObjectContext;
@@ -124,6 +126,7 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
     
     self.representingArticleID = articleID;
     self.representingArticle = (WAArticle*)[self.managedObjectContext objectWithID:articleID];
+    self.titleText = self.representingArticle.title;
     self.sortedImages = [self.representingArticle.files sortedArrayUsingComparator:^NSComparisonResult(WAFile *obj1, WAFile *obj2) {
       return [obj1.created compare:obj2.created];
     }];
@@ -141,6 +144,7 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
   naviBarShown = NO;
   toolBarShown = YES;
   galleryMode = NO;
+  self.alwaysHideIndexView = NO;
   previousYOffset = 0;
   
   if (self.representingArticle) {
@@ -162,6 +166,8 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
   self.navigationBar.backgroundColor = [UIColor clearColor];
   self.navigationBar.translucent = YES;
   //  self.navigationBar.items = @[backItem, actionItem];
+  self.navigationBar.overlayImageSize = CGSizeMake(320, 200);
+  
   [self.navigationBar pushNavigationItem:self.navigationItem animated:NO];
   
   [self.view addSubview:self.navigationBar];
@@ -199,7 +205,7 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
       [contactPicker loadData];
       [contactPicker clearSelection];
       
-      __weak WAFBFriendPickerViewController *wcp = contactPicker;
+      __weak WAAddressBookPickerViewController *wcp = contactPicker;
       contactPicker.onNextHandler = ^(NSArray *selectedContacts){
         [wcp dismissViewControllerAnimated:YES completion:nil];
         [wSelf updateSharingEventWithPhotoChanges:nil contacts:selectedContacts onComplete:^{
@@ -252,6 +258,10 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
   
   [self.indexView reloadViews];
   
+  if ([self.collectionView numberOfItemsInSection:0] < 8) {
+    self.alwaysHideIndexView = YES;
+    self.indexView.hidden = YES;
+  }
 }
 
 - (void) viewDidAppear:(BOOL)animated {
@@ -368,32 +378,37 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
   }
   
   if (contacts.count) {
-    NSArray *emailsFromContacts = [[NSSet setWithArray:[contacts valueForKey:@"email"]] allObjects];
-    NSMutableArray *invitingEmails = [NSMutableArray array];
-    for (NSArray *contactEmails in emailsFromContacts) {
-      [invitingEmails addObjectsFromArray:[contactEmails filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(NSString *evaluatedObject, NSDictionary *bindings) {
-        return evaluatedObject.length!=0;
-      }]]];
-    }
-    NSFetchRequest *fr = [[NSFetchRequest alloc] initWithEntityName:@"WAPeople"];
-    fr.predicate = [NSPredicate predicateWithFormat:@"email IN %@", invitingEmails];
-    NSError *error = nil;
-    NSArray *peopleFound = [moc executeFetchRequest:fr error:&error];
-    if (peopleFound.count) {
-      for (WAPeople *person in peopleFound) {
-        [[article mutableSetValueForKey:@"sharingContacts"] addObject:person];
-        if ([invitingEmails indexOfObject:person.email] != NSNotFound) {
-          [invitingEmails removeObject:person.email];
-        }
-        changed = YES;
+    for (NSDictionary *invitee in contacts) {
+      NSString *email = invitee[@"email"];
+      NSString *fbID = invitee[@"fbid"];
+
+      NSFetchRequest *fr = [[NSFetchRequest alloc] initWithEntityName:@"WAPeople"];
+      if (fbID) {
+        fr.predicate = [NSPredicate predicateWithFormat:@"fbID == %@", fbID];
+      } else if (email) {
+        fr.predicate = [NSPredicate predicateWithFormat:@"email == %@", email];
+      } else {
+        continue;
       }
-    }
-    for (NSString *email in invitingEmails) {
-      WAPeople *person = (WAPeople*)[WAPeople objectInsertingIntoContext:moc withRemoteDictionary:@{}];
-      person.email = email;
+      
+      NSError *error = nil;
+      NSArray *peopleFound = [moc executeFetchRequest:fr error:&error];
+      if (peopleFound.count) {
+        WAPeople *firstRecord = peopleFound[0];
+        [[article mutableSetValueForKey:@"sharingContacts"] addObject:firstRecord];
+        changed = YES;
+        continue;
+      }
+      
+      WAPeople *person = (WAPeople *)[WAPeople objectInsertingIntoContext:moc withRemoteDictionary:@{}];
+      if (email)
+        person.email = email;
+      if (fbID)
+        person.fbID = fbID;
       [[article mutableSetValueForKey:@"sharingContacts"] addObject:person];
       changed = YES;
     }
+    
   }
   
   if (self.userCheckins.count) {
@@ -404,7 +419,7 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
       }
     }
   }
-
+  
   if (changed) {
     article.dirty = (id)kCFBooleanTrue;
     article.modificationDate = [NSDate date];
@@ -475,6 +490,7 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
     }
   }
   
+  article.title = self.titleText;
   article.event = (id)kCFBooleanTrue;
   article.eventType = [NSNumber numberWithInt:WAEventArticleSharedType];
   article.draft = (id)kCFBooleanFalse;
@@ -489,32 +505,35 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
   article.creationDate = [NSDate date];
   
   if (contacts.count) {
-    NSArray *emailsFromContacts = [[NSSet setWithArray:[contacts valueForKey:@"email"]] allObjects];
-    NSMutableArray *invitingEmails = [NSMutableArray array];
-    for (NSArray *contactEmails in emailsFromContacts) {
-      [invitingEmails addObjectsFromArray:[contactEmails filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(NSString *evaluatedObject, NSDictionary *bindings) {
-        return evaluatedObject.length!=0;
-      }]]];
-    }
-    NSFetchRequest *fr = [[NSFetchRequest alloc] initWithEntityName:@"WAPeople"];
-    fr.predicate = [NSPredicate predicateWithFormat:@"email IN %@", invitingEmails];
-    NSError *error = nil;
-    NSArray *peopleFound = [moc executeFetchRequest:fr error:&error];
-    if (peopleFound.count) {
-      for (WAPeople *person in peopleFound) {
-        [[article mutableSetValueForKey:@"sharingContacts"] addObject:person];
-        if ([invitingEmails indexOfObject:person.email] != NSNotFound) {
-          [invitingEmails removeObject:person.email];
-        }
+    for (NSDictionary *invitee in contacts) {
+      NSString *email = invitee[@"email"];
+      NSString *fbID = invitee[@"fbid"];
+      
+      NSFetchRequest *fr = [[NSFetchRequest alloc] initWithEntityName:@"WAPeople"];
+      if (fbID) {
+        fr.predicate = [NSPredicate predicateWithFormat:@"fbID == %@", fbID];
+      } else if (email) {
+        fr.predicate = [NSPredicate predicateWithFormat:@"email == %@", email];
+      } else {
+        continue;
       }
-    }
-    for (NSString *email in invitingEmails) {
-      if (email.length) {
-        WAPeople *person = (WAPeople*)[WAPeople objectInsertingIntoContext:moc withRemoteDictionary:@{}];
+      
+      NSError *error = nil;
+      NSArray *peopleFound = [moc executeFetchRequest:fr error:&error];
+      if (peopleFound.count) {
+        WAPeople *firstRecord = peopleFound[0];
+        [[article mutableSetValueForKey:@"sharingContacts"] addObject:firstRecord];
+        continue;
+      }
+      
+      WAPeople *person = (WAPeople *)[WAPeople objectInsertingIntoContext:moc withRemoteDictionary:@{}];
+      if (email)
         person.email = email;
-        [[article mutableSetValueForKey:@"sharingContacts"] addObject:person];
-      }
+      if (fbID)
+        person.fbID = fbID;
+      [[article mutableSetValueForKey:@"sharingContacts"] addObject:person];
     }
+    
   }
   
   WALocation *location = (WALocation*)[WALocation objectInsertingIntoContext:moc withRemoteDictionary:@{}];
@@ -693,7 +712,8 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
       self.collectionView.bounces = YES;
       self.collectionView.alwaysBounceVertical = YES;
       [self.collectionView setCollectionViewLayout:timelineLayout animated:NO];
-      self.indexView.hidden = NO;
+      if (!self.alwaysHideIndexView)
+        self.indexView.hidden = NO;
       self.navigationBar.hidden = NO;
       self.toolbar.hidden = NO;
       [self.collectionView reloadData];
@@ -731,9 +751,10 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
   }
   
   __weak WAPhotoTimelineViewController *wSelf = self;
-  WAFBFriendPickerViewController *contactPicker = [[WAFBFriendPickerViewController alloc] init];
-  [contactPicker loadData];
-  [contactPicker clearSelection];
+  WAAddressBookPickerViewController *contactPicker = [[WAAddressBookPickerViewController alloc] init];
+//  WAFBFriendPickerViewController *contactPicker = [[WAFBFriendPickerViewController alloc] init];
+//  [contactPicker loadData];
+//  [contactPicker clearSelection];
   
   if (self.navigationController) {
     contactPicker.onNextHandler = ^(NSArray *results) {
@@ -1016,6 +1037,7 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
 
          UIImage *image = (UIImage*)toValue;
          [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+           wSelf.navigationBar.overlayImage = image;
            cover.coverImageView.image = image;
          }];
          
@@ -1050,22 +1072,26 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
 //    [cover.mapView setCamera:camera];
 //    cover.mapView.myLocationEnabled = NO;
     
-    if (self.checkins.count) {
-      NSArray *checkinNames = [self.checkins valueForKey:@"name"];
-      cover.titleLabel.text = [checkinNames componentsJoinedByString:@","];
-    } else
-      cover.titleLabel.text = @"";
+    if (self.titleText) {
+      cover.titleLabel.text = self.titleText;
+    } else {
+      if (self.checkins.count) {
+        NSArray *checkinNames = [self.checkins valueForKey:@"name"];
+        cover.titleLabel.text = [checkinNames componentsJoinedByString:@","];
+      } else
+        cover.titleLabel.text = @"";
     
-    self.geoLocation = [[WAGeoLocation alloc] init];
-    [self.geoLocation identifyLocation:self.coordinate onComplete:^(NSArray *results) {
-      wSelf.locationName = [results componentsJoinedByString:@","];
-      if (cover.titleLabel.text.length == 0)
-        cover.titleLabel.text = [results componentsJoinedByString:@","];
-      else
-        cover.titleLabel.text = [NSString stringWithFormat:@"%@,%@", cover.titleLabel.text, [results componentsJoinedByString:@","]];
-    } onError:^(NSError *error) {
-      NSLog(@"Unable to identify location: %@", error);
-    }];
+      self.geoLocation = [[WAGeoLocation alloc] init];
+      [self.geoLocation identifyLocation:self.coordinate onComplete:^(NSArray *results) {
+        wSelf.locationName = [results componentsJoinedByString:@","];
+        if (cover.titleLabel.text.length == 0)
+          cover.titleLabel.text = [results componentsJoinedByString:@","];
+        else
+          cover.titleLabel.text = [NSString stringWithFormat:@"%@,%@", cover.titleLabel.text, [results componentsJoinedByString:@","]];
+      } onError:^(NSError *error) {
+        NSLog(@"Unable to identify location: %@", error);
+      }];
+    }
     
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     formatter = [[NSDateFormatter alloc] init];
@@ -1188,7 +1214,7 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
     self.tapGesture = nil;
   }
   
-  if (!galleryMode && self.indexView.hidden && scrollView.contentOffset.y > 0)
+  if (!galleryMode &&  !self.alwaysHideIndexView && self.indexView.hidden && scrollView.contentOffset.y > 0)
     self.indexView.hidden = NO;
   
   if (!galleryMode && !naviBarShown && scrollView.contentOffset.y >= (250-44-50)) {
