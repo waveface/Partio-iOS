@@ -327,7 +327,10 @@ static NSString * const kWASharedEventViewController_CoachMarks = @"kWASharedEve
   [cell.photoNumber setText:[NSString stringWithFormat:@"%d", photoNumbers]];
   [cell.checkinNumber setText:[NSString stringWithFormat:@"%d", checkinNumbers]];
   [cell.peopleNumber setText:[NSString stringWithFormat:@"%d", pplNumber]];
-  [cell.date setText:eventDate];
+  if (aArticle.title)
+    [cell.date setText:aArticle.title];
+  else
+    [cell.date setText:eventDate];
   [cell.location setText:location];
   
   return cell;
@@ -367,6 +370,8 @@ static NSString * const kWASharedEventViewController_CoachMarks = @"kWASharedEve
   picker.onNextHandler = ^(NSArray *selectedAssets) {
     
     WAPhotoTimelineViewController *photoTimeline = [[WAPhotoTimelineViewController alloc] initWithAssets:selectedAssets];
+    if (picker.titleText)
+      photoTimeline.titleText = picker.titleText;
     [picker.navigationController pushViewController:photoTimeline animated:YES];
     
   };

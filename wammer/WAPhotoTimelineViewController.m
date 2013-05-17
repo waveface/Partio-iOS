@@ -125,6 +125,7 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
     
     self.representingArticleID = articleID;
     self.representingArticle = (WAArticle*)[self.managedObjectContext objectWithID:articleID];
+    self.titleText = self.representingArticle.title;
     self.sortedImages = [self.representingArticle.files sortedArrayUsingComparator:^NSComparisonResult(WAFile *obj1, WAFile *obj2) {
       return [obj1.created compare:obj2.created];
     }];
@@ -412,7 +413,7 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
       }
     }
   }
-
+  
   if (changed) {
     article.dirty = (id)kCFBooleanTrue;
     article.modificationDate = [NSDate date];
@@ -483,6 +484,7 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
     }
   }
   
+  article.title = self.titleText;
   article.event = (id)kCFBooleanTrue;
   article.eventType = [NSNumber numberWithInt:WAEventArticleSharedType];
   article.draft = (id)kCFBooleanFalse;
@@ -498,14 +500,14 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
   
   if (contacts.count) {
     for (NSDictionary *invitee in contacts) {
-      NSString *email = invitee[@"email"];
+      NSArray *emails = invitee[@"email"];
       NSString *fbID = invitee[@"fbid"];
       
       NSFetchRequest *fr = [[NSFetchRequest alloc] initWithEntityName:@"WAPeople"];
       if (fbID) {
         fr.predicate = [NSPredicate predicateWithFormat:@"fbID IN %@", fbID];
-      } else if (email) {
-        fr.predicate = [NSPredicate predicateWithFormat:@"email IN %@", email];
+      } else if (emails.count) {
+        fr.predicate = [NSPredicate predicateWithFormat:@"email IN %@", emails];
       } else {
         continue;
       }
@@ -519,8 +521,8 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
       }
       
       WAPeople *person = (WAPeople *)[WAPeople objectInsertingIntoContext:moc withRemoteDictionary:@{}];
-      if (email)
-        person.email = email;
+      if (emails.count)
+        person.email = emails[0];
       if (fbID)
         person.fbID = fbID;
       [[article mutableSetValueForKey:@"sharingContacts"] addObject:person];
@@ -1063,22 +1065,26 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
 //    [cover.mapView setCamera:camera];
 //    cover.mapView.myLocationEnabled = NO;
     
-    if (self.checkins.count) {
-      NSArray *checkinNames = [self.checkins valueForKey:@"name"];
-      cover.titleLabel.text = [checkinNames componentsJoinedByString:@","];
-    } else
-      cover.titleLabel.text = @"";
+    if (self.titleText) {
+      cover.titleLabel.text = self.titleText;
+    } else {
+      if (self.checkins.count) {
+        NSArray *checkinNames = [self.checkins valueForKey:@"name"];
+        cover.titleLabel.text = [checkinNames componentsJoinedByString:@","];
+      } else
+        cover.titleLabel.text = @"";
     
-    self.geoLocation = [[WAGeoLocation alloc] init];
-    [self.geoLocation identifyLocation:self.coordinate onComplete:^(NSArray *results) {
-      wSelf.locationName = [results componentsJoinedByString:@","];
-      if (cover.titleLabel.text.length == 0)
-        cover.titleLabel.text = [results componentsJoinedByString:@","];
-      else
-        cover.titleLabel.text = [NSString stringWithFormat:@"%@,%@", cover.titleLabel.text, [results componentsJoinedByString:@","]];
-    } onError:^(NSError *error) {
-      NSLog(@"Unable to identify location: %@", error);
-    }];
+      self.geoLocation = [[WAGeoLocation alloc] init];
+      [self.geoLocation identifyLocation:self.coordinate onComplete:^(NSArray *results) {
+        wSelf.locationName = [results componentsJoinedByString:@","];
+        if (cover.titleLabel.text.length == 0)
+          cover.titleLabel.text = [results componentsJoinedByString:@","];
+        else
+          cover.titleLabel.text = [NSString stringWithFormat:@"%@,%@", cover.titleLabel.text, [results componentsJoinedByString:@","]];
+      } onError:^(NSError *error) {
+        NSLog(@"Unable to identify location: %@", error);
+      }];
+    }
     
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     formatter = [[NSDateFormatter alloc] init];
