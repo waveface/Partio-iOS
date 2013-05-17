@@ -64,6 +64,7 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
 @property (nonatomic, weak) IBOutlet UIToolbar *toolbar;
 @property (nonatomic, weak) IBOutlet UICollectionView *collectionView;
 @property (nonatomic, weak) IBOutlet WATimelineIndexView *indexView;
+@property (nonatomic, assign) BOOL alwaysHideIndexView;
 @property (nonatomic, strong) WAPartioSignupViewController *signupVC;
 
 @property (nonatomic, strong) NSManagedObjectContext *managedObjectContext;
@@ -143,6 +144,7 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
   naviBarShown = NO;
   toolBarShown = YES;
   galleryMode = NO;
+  self.alwaysHideIndexView = NO;
   previousYOffset = 0;
   
   if (self.representingArticle) {
@@ -256,6 +258,10 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
   
   [self.indexView reloadViews];
   
+  if ([self.collectionView numberOfItemsInSection:0] < 8) {
+    self.alwaysHideIndexView = YES;
+    self.indexView.hidden = YES;
+  }
 }
 
 - (void) viewDidAppear:(BOOL)animated {
@@ -706,7 +712,8 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
       self.collectionView.bounces = YES;
       self.collectionView.alwaysBounceVertical = YES;
       [self.collectionView setCollectionViewLayout:timelineLayout animated:NO];
-      self.indexView.hidden = NO;
+      if (!self.alwaysHideIndexView)
+        self.indexView.hidden = NO;
       self.navigationBar.hidden = NO;
       self.toolbar.hidden = NO;
       [self.collectionView reloadData];
@@ -1207,7 +1214,7 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
     self.tapGesture = nil;
   }
   
-  if (!galleryMode && self.indexView.hidden && scrollView.contentOffset.y > 0)
+  if (!galleryMode &&  !self.alwaysHideIndexView && self.indexView.hidden && scrollView.contentOffset.y > 0)
     self.indexView.hidden = NO;
   
   if (!galleryMode && !naviBarShown && scrollView.contentOffset.y >= (250-44-50)) {
