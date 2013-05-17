@@ -11,5 +11,7 @@
 @interface WAPhotoTimelineNavigationBar : UINavigationBar
 
 @property (nonatomic, assign) BOOL solid;
+@property (nonatomic, assign) CGSize overlayImageSize;
+@property (nonatomic, strong) UIImage *overlayImage;
 
 @end
