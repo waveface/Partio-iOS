@@ -237,7 +237,10 @@ extern CFAbsoluteTime StartTime;
     
   }
   
-  application.applicationIconBadgeNumber = 0;// dismiss the badge number
+  NSDictionary *remoteNotificationPayload = launchOptions[UIApplicationLaunchOptionsRemoteNotificationKey];
+  if (remoteNotificationPayload) {
+    application.applicationIconBadgeNumber = 0;// dismiss the badge number
+  }
   
   [[GAI sharedInstance].defaultTracker trackEventWithCategory:@"Application" withAction:@"Launched" withLabel:nil withValue:@0];
   
@@ -977,6 +980,8 @@ static NSInteger networkActivityStackingCount = 0;
 - (void)applicationDidBecomeActive:(UIApplication *)application {
 
   [FBSession.activeSession handleDidBecomeActive];
+
+  application.applicationIconBadgeNumber = 0;
   
 }
 

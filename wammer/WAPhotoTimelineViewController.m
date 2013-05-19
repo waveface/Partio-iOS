@@ -1150,8 +1150,7 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
 
 - (void) collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
   if (self.representingArticle && !galleryMode) {
-    WAFile *file = self.sortedImages[indexPath.row];
-    WAGalleryViewController *gallery = [WAGalleryViewController controllerRepresentingArticleAtURI:[[self.representingArticle objectID] URIRepresentation] context:@{kWAGalleryViewControllerContextPreferredFileObjectURI: file.objectID.URIRepresentation}];
+    WAGalleryViewController *gallery = [[WAGalleryViewController alloc] initWithImageFiles:self.sortedImages atIndex:indexPath.row];
     [self.navigationController pushViewController:gallery animated:YES];
   }
 }
