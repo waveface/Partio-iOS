@@ -471,9 +471,6 @@
 /* The text of location label when there is no gps information we can refer to */
 "LABEL_WITHOUT_GPS_DATA" = "Where were you?";
 
-/* MEMBERS_LABEL_CONTACT_PICKER */
-"MEMBERS_LABEL_CONTACT_PICKER" = "Members";
-
 /* MESSAGE_EMAIL_REQUEST */
 "MESSAGE_EMAIL_REQUEST" = "We'll invite your friend by email.";
 

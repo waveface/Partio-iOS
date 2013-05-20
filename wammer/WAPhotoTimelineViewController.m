@@ -199,11 +199,11 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
     
     // add contacts button
     UIBarButtonItem *addContacts = WAPartioToolbarButton(nil, [UIImage imageNamed:@"AddPplBtn"],nil, ^{
-      WAAddressBookPickerViewController *contactPicker = [[WAAddressBookPickerViewController alloc] init];
-      
-//      WAFBFriendPickerViewController *contactPicker = [[WAFBFriendPickerViewController alloc] init];
-//      [contactPicker loadData];
-//      [contactPicker clearSelection];
+      WAFBFriendPickerViewController *contactPicker = [[WAFBFriendPickerViewController alloc] init];
+      contactPicker.fieldsForRequest = [NSSet setWithObjects:@"email", nil];
+      contactPicker.extraFieldsForFriendRequest = contactPicker.fieldsForRequest;
+      [contactPicker loadData];
+      [contactPicker clearSelection];
       
       __weak WAAddressBookPickerViewController *wcp = contactPicker;
       contactPicker.onNextHandler = ^(NSArray *selectedContacts){

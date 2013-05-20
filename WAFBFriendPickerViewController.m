@@ -9,6 +9,9 @@
 #import "WAFBFriendPickerViewController.h"
 #import "WAPartioNavigationBar.h"
 #import "WAPartioTableViewSectionHeaderView.h"
+#import "WAFBGraphObjectTableDataSource.h"
+#import "WAFBGraphObjectTableSelection.h"
+#import <FBGraphObjectPagingLoader.h>
 
 #import <SMCalloutView/SMCalloutView.h>
 #import <BlocksKit/BlocksKit.h>
@@ -18,21 +21,23 @@
 
 @property (nonatomic, weak) IBOutlet WAPartioNavigationBar *navigationBar;
 @property (nonatomic, weak) IBOutlet UITextField *textField;
-@property (nonatomic, weak) IBOutlet UILabel *placeholder;
 @property (nonatomic, weak) IBOutlet UITableView *tableView;
 @property (nonatomic, weak) IBOutlet UIToolbar *toolbar;
+
 @property (nonatomic, strong) NSMutableArray *contacts;
-@property (nonatomic, strong) NSArray *dataDisplay;
-@property (nonatomic, strong) NSMutableArray *filteredContacts;
 @property (nonatomic, strong) UITapGestureRecognizer *tapGesture;
 @property (nonatomic, strong) SMCalloutView *inviteInstructionView;
-@property (nonatomic, strong) NSIndexPath *selectedIndexPath;
+
+@property (nonatomic, retain) WAFBGraphObjectTableDataSource *dataSource;
+@property (nonatomic, retain) WAFBGraphObjectTableSelection *selectionManager;
+@property (nonatomic, retain) FBGraphObjectPagingLoader *loader;
 
 @end
 
 static NSString *kPlaceholderChooseFriends;
 static NSString *kWAFBFriendPickerViewController_CoachMarks = @"kWAFBFriendPickerViewController_CoachMarks";
-static NSString *kWAFBFriendPickerTableViewSectionHeader = @"kWAFBFriendPickerTableViewSectionHeader";
+static NSString *defaultImageName = @"FacebookSDKResources.bundle/FBFriendPickerView/images/default.png";
+static NSString *kHeaderID = @"WAFBTableViewSectionHeaderView";
 static NSString *kWAPartioTableViewSectionHeaderView = @"WAPartioTableViewSectionHeaderView";
 
 @implementation WAFBFriendPickerViewController
@@ -42,9 +47,37 @@ static NSString *kWAPartioTableViewSectionHeaderView = @"WAPartioTableViewSectio
   self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
   if (self) {
     // Custom initialization
-    
+    [self initialize];
   }
   return self;
+}
+
+- (void)initialize
+{
+  // Data Source
+  WAFBGraphObjectTableDataSource *dataSource = [[WAFBGraphObjectTableDataSource alloc] init];
+  dataSource.defaultPicture = [UIImage imageNamed:defaultImageName];
+  dataSource.controllerDelegate = self;
+  dataSource.itemTitleSuffixEnabled = YES;
+  
+  // Selection Manager
+  WAFBGraphObjectTableSelection *selectionManager = [[WAFBGraphObjectTableSelection alloc] initWithDataSource:dataSource];
+  selectionManager.delegate = self;
+  
+  // Paging loader
+  id loader = [[FBGraphObjectPagingLoader alloc] initWithDataSource:dataSource
+                                                          pagingMode:FBGraphObjectPagingModeImmediate];
+  self.loader = loader;
+  self.loader.delegate = self;
+  
+  self.allowsMultipleSelection = YES;
+  self.dataSource = dataSource;
+  self.delegate = nil;
+  self.itemPicturesEnabled = YES;
+  self.selectionManager = selectionManager;
+  self.userID = @"me";
+  self.sortOrdering = FBFriendSortByFirstName;
+  self.displayOrdering = FBFriendDisplayByFirstName;
 }
 
 - (void)viewDidLoad
@@ -108,17 +141,19 @@ static NSString *kWAPartioTableViewSectionHeaderView = @"WAPartioTableViewSectio
   self.toolbar.items = @[flexspace, [self shareBarButton], flexspace];
   [self.view addSubview:self.toolbar];
   [self updateNavigationBarTitleAndButtonStatus];
-    
-  self.allowsMultipleSelection = YES;
-  self.itemPicturesEnabled = YES;
-    
-  FBCacheDescriptor *cacheDescriptor = [WAFBFriendPickerViewController cacheDescriptor];
-  [cacheDescriptor prefetchAndCacheForSession:FBSession.activeSession];
+  
+  
+  if (FBSession.activeSession.isOpen) {
+    FBCacheDescriptor *cacheDescriptor = [WAFBFriendPickerViewController cacheDescriptorWithUserID:nil
+                                                                                  fieldsForRequest:self.extraFieldsForFriendRequest];
+    [cacheDescriptor prefetchAndCacheForSession:FBSession.activeSession];
+  }
   
   self.delegate = self;
+  self.tableView.delegate = self.selectionManager;
+  [self.dataSource bindTableView:self.tableView];
   [self.tableView setBackgroundColor:[UIColor colorWithRed:0.168 green:0.168 blue:0.168 alpha:1]];
-  [self.tableView registerNib:[UINib nibWithNibName:kWAPartioTableViewSectionHeaderView bundle:nil] forHeaderFooterViewReuseIdentifier:kWAFBFriendPickerTableViewSectionHeader];
-  
+  self.loader.tableView = self.tableView;
 
 }
 
@@ -126,7 +161,6 @@ static NSString *kWAPartioTableViewSectionHeaderView = @"WAPartioTableViewSectio
 {
   // add joined members into member list
   self.members = [[NSMutableArray alloc] init];
-  self.filteredContacts = [[NSMutableArray alloc] init];
   
 }
 
@@ -162,8 +196,8 @@ static NSString *kWAPartioTableViewSectionHeaderView = @"WAPartioTableViewSectio
 - (NSArray *)extractedUserData:(NSArray *)rawData
 {
   NSMutableArray *extractedData = [NSMutableArray array];
-  for (id<FBGraphUser> user in rawData) {
-    [extractedData addObject:@{@"name": [user name], @"email": @[], @"fbid":[user id]}];
+  for (id<CacheGraphFriend> user in rawData) {
+    [extractedData addObject:@{@"name": [user name], @"email": @"", @"fbid":[user id]}];
   }
   
   return [extractedData copy];
@@ -190,10 +224,6 @@ static NSString *kWAPartioTableViewSectionHeaderView = @"WAPartioTableViewSectio
     [self.view removeGestureRecognizer:self.tapGesture];
     self.tapGesture = nil;
   }
-
-  [textView setText:@""];
-  [self.placeholder setText:@""];
-  [self.placeholder setHidden:YES];
 
 }
 
@@ -267,12 +297,4 @@ static NSString *kWAPartioTableViewSectionHeaderView = @"WAPartioTableViewSectio
 
 }
 
-#pragma mark - UITableViewDataSource
-
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
-{
-  UIView *headerview = [tableView dequeueReusableHeaderFooterViewWithIdentifier:kWAFBFriendPickerTableViewSectionHeader];
-  
-  return headerview;
-}
 @end
