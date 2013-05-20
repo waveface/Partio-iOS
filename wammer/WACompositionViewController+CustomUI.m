@@ -97,7 +97,7 @@
 			hidden:NO
 replacingDataWithDate:anArticleOrNil.modificationDate
 		updateTime:nil
-     eventStartTime:nil eventEndTime:nil invitingEmails:nil location:nil checkins:nil
+     eventStartTime:nil eventEndTime:nil invitee:nil location:nil checkins:nil
 		 onSuccess:^(NSDictionary *postRep) {
 
 		   NSError *savingError = nil;

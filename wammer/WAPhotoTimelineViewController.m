@@ -379,6 +379,7 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
   
   if (contacts.count) {
     for (NSDictionary *invitee in contacts) {
+      NSString *name = invitee[@"name"];
       NSString *email = invitee[@"email"];
       NSString *fbID = invitee[@"fbid"];
 
@@ -401,6 +402,8 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
       }
       
       WAPeople *person = (WAPeople *)[WAPeople objectInsertingIntoContext:moc withRemoteDictionary:@{}];
+      if (name)
+        person.name = name;
       if (email)
         person.email = email;
       if (fbID)
@@ -506,6 +509,7 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
   
   if (contacts.count) {
     for (NSDictionary *invitee in contacts) {
+      NSString *name = invitee[@"name"];
       NSString *email = invitee[@"email"];
       NSString *fbID = invitee[@"fbid"];
       
@@ -527,6 +531,8 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
       }
       
       WAPeople *person = (WAPeople *)[WAPeople objectInsertingIntoContext:moc withRemoteDictionary:@{}];
+      if (name)
+        person.name = name;
       if (email)
         person.email = email;
       if (fbID)
@@ -644,9 +650,11 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
             
             if (placemarks.count) {
               CLPlacemark *placemark = placemarks[0];
-              NSDictionary *newLabel = @{@"name": placemark.locality, @"date": file.created};
+              if (placemark.locality) {
+                NSDictionary *newLabel = @{@"name": placemark.locality, @"date": file.created};
               
-              congregatedAndSortedLabels(newLabel);
+                congregatedAndSortedLabels(newLabel);
+              }
             }
           }
         }];
@@ -751,10 +759,10 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
   }
   
   __weak WAPhotoTimelineViewController *wSelf = self;
-  WAAddressBookPickerViewController *contactPicker = [[WAAddressBookPickerViewController alloc] init];
-//  WAFBFriendPickerViewController *contactPicker = [[WAFBFriendPickerViewController alloc] init];
-//  [contactPicker loadData];
-//  [contactPicker clearSelection];
+//  WAAddressBookPickerViewController *contactPicker = [[WAAddressBookPickerViewController alloc] init];
+  WAFBFriendPickerViewController *contactPicker = [[WAFBFriendPickerViewController alloc] init];
+  [contactPicker loadData];
+  [contactPicker clearSelection];
   
   if (self.navigationController) {
     contactPicker.onNextHandler = ^(NSArray *results) {

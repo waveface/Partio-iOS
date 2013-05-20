@@ -301,7 +301,7 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
   for (WAPeople *person in [self.sharingContacts allObjects]) {
     NSMutableDictionary *dict = [NSMutableDictionary dictionary];
     if (person.name)
-      dict[@"name"] = person.name;
+      dict[@"nickname"] = person.name;
     if (person.email)
       dict[@"email"] = person.email;
     if (person.fbID)
@@ -549,7 +549,7 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
                eventStartTime:eventStartTime
                  eventEndTime:eventEndTime
 					 favorite:isFavorite
-               invitingEmails:invitingEmails
+                      invitee:invitee
                      location:postLocation
                      checkins:postCheckins
 					onSuccess:^(NSDictionary *postRep) {
@@ -611,7 +611,7 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 			updateTime:postModificationDate
         eventStartTime:eventStartTime
           eventEndTime:eventEndTime
-        invitingEmails:invitingEmails
+               invitee:invitee
               location:postLocation
               checkins:postCheckins
 			 onSuccess:^(NSDictionary *postRep) {
