@@ -15,6 +15,7 @@
 
 @property (nonatomic, retain) WAFBGraphObjectTableDataSource *dataSource;
 @property (nonatomic, retain) NSArray *selection;
+@property (nonatomic, strong) UITapGestureRecognizer *tapGuesture;
 
 - (void)selectItem:(FBGraphObject *)item
               cell:(UITableViewCell *)cell;
@@ -131,12 +132,40 @@ static NSString *kHeaderID = @"WAFBTableViewSectionHeaderView";
   static WAPartioTableViewSectionHeaderView *headerView;
   headerView = [[WAPartioTableViewSectionHeaderView alloc] initWithFrame:CGRectMake(0.f, 2.f, CGRectGetWidth(tableView.frame), 22.f)];
   headerView.backgroundColor = tableView.backgroundColor;
-  headerView.title.text = [[[UILocalizedIndexedCollation currentCollation] sectionTitles] objectAtIndex:section];
+  headerView.title.text = [self.dataSource titleForSection:section];
   return headerView;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-  return 22.f;
+  NSArray *storedFriendList = [[NSUserDefaults standardUserDefaults] arrayForKey:kFrenquentFriendList];
+  UILocalizedIndexedCollation *collation = [UILocalizedIndexedCollation currentCollation];
+ 
+  if (storedFriendList) {
+    if (!section && storedFriendList.count) {
+      return 22.f;
+    } else if ([[self.dataSource.indexMap valueForKey:collation.sectionIndexTitles[section-1]] count]) {
+      return 22.f;
+    }
+    
+  } else {
+    if ([[self.dataSource.indexMap valueForKey:collation.sectionIndexTitles[section]] count]) {
+      return 22.f;
+    }
+  }
+  
+  return 0.f;
 }
+
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
+{
+  if (section == [tableView numberOfSections] - 1) {
+    return 44.f;
+  } else if ([tableView numberOfRowsInSection:section]) {
+    return 1.f;
+  } else {
+    return 0.f;
+  }
+}
+
 @end

@@ -10,4 +10,6 @@
 
 @interface WAFBGraphObjectTableSelection : FBGraphObjectTableSelection
 
+- (IBAction)dismissAdditionalTapGuesture:(id)sender;
+
 @end

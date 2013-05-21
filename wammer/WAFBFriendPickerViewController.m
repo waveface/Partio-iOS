@@ -37,8 +37,6 @@
 static NSString *kPlaceholderChooseFriends;
 static NSString *kWAFBFriendPickerViewController_CoachMarks = @"kWAFBFriendPickerViewController_CoachMarks";
 static NSString *defaultImageName = @"FacebookSDKResources.bundle/FBFriendPickerView/images/default.png";
-static NSString *kHeaderID = @"WAFBTableViewSectionHeaderView";
-static NSString *kWAPartioTableViewSectionHeaderView = @"WAPartioTableViewSectionHeaderView";
 
 @implementation WAFBFriendPickerViewController
 
@@ -84,7 +82,7 @@ static NSString *kWAPartioTableViewSectionHeaderView = @"WAPartioTableViewSectio
 {
   [super viewDidLoad];
   
-  // Do any additional setup after loading the view from its nib.
+  //FIXME: tap gesture for dismiss keyboard and not affect select table view cell
   BOOL coachmarkShown = [[NSUserDefaults standardUserDefaults] boolForKey:kWAFBFriendPickerViewController_CoachMarks];
   if (!coachmarkShown) {
     __weak WAFBFriendPickerViewController *wSelf = self;
@@ -196,9 +194,42 @@ static NSString *kWAPartioTableViewSectionHeaderView = @"WAPartioTableViewSectio
 - (NSArray *)extractedUserData:(NSArray *)rawData
 {
   NSMutableArray *extractedData = [NSMutableArray array];
-  for (id<CacheGraphFriend> user in rawData) {
-    [extractedData addObject:@{@"name": [user name], @"email": @"", @"fbid":[user id]}];
+  NSMutableArray *usedData = [NSMutableArray array];
+  for (id<FBGraphUser> user in rawData) {
+    [extractedData addObject:@{@"name": user.name, @"email": @"", @"fbid":user.id}];
+    }
+  for (FBGraphObject *user in rawData) {
+    [usedData addObject:@{@"fbFriend": user, @"frequency":[NSNumber numberWithInteger:1], @"updateTime":[NSDate date]}]; //FBGraphObject will be converted to NSDictionary saved in NSUserDefaults
   }
+  
+  NSMutableArray *storedFriendList = [[[NSUserDefaults standardUserDefaults] arrayForKey:kFrenquentFriendList] mutableCopy];
+  if (![storedFriendList count]) {
+    [[NSUserDefaults standardUserDefaults] setObject:[usedData copy] forKey:kFrenquentFriendList];
+  
+  } else {
+    for (FBGraphObject *person in rawData) {
+      NSPredicate *predicate = [NSPredicate predicateWithFormat:@"fbFriend = %@", person];
+      NSArray *recentUsedFriends = [storedFriendList filteredArrayUsingPredicate:predicate];
+      if (![recentUsedFriends count]) {
+        [storedFriendList addObject:@{@"fbFriend":person, @"frequency":[NSNumber numberWithInteger:1], @"updateTime":[NSDate date]}];
+      
+      } else {
+        NSMutableDictionary *aPerson = recentUsedFriends[0];
+        NSInteger freq = [aPerson[@"frequency"] integerValue];
+        aPerson[@"frequency"] = [NSNumber numberWithInteger:freq+1];
+        aPerson[@"updateTime"] = [NSDate date];
+        [storedFriendList replaceObjectAtIndex:[storedFriendList indexOfObject:recentUsedFriends[0]] withObject:aPerson];
+        
+      }
+    }
+    
+    NSSortDescriptor *sortByUpdateTime = [NSSortDescriptor sortDescriptorWithKey:@"updateTime" ascending:NO];
+    NSSortDescriptor *sortByFrequency = [NSSortDescriptor sortDescriptorWithKey:@"frequency" ascending:NO];
+    storedFriendList = [[storedFriendList sortedArrayUsingDescriptors:@[sortByUpdateTime, sortByFrequency]] mutableCopy];
+    [[NSUserDefaults standardUserDefaults] setObject:[storedFriendList copy] forKey:kFrenquentFriendList];
+  }
+  
+  [[NSUserDefaults standardUserDefaults] synchronize];
   
   return [extractedData copy];
 }
@@ -277,14 +308,14 @@ static NSString *kWAPartioTableViewSectionHeaderView = @"WAPartioTableViewSectio
     NSArray *newSelection = (NSArray *)toValue;
     
     if (wSelf.members.count > newSelection.count) {
-      for (id<FBGraphUser> user in wSelf.members) {
+      for (FBGraphObject *user in wSelf.members) {
         if (![newSelection containsObject:user]) {
           [wSelf.members removeObject:user];
         }
       }
       
     } else {
-      id<FBGraphUser> newSelectedUser = [newSelection lastObject];
+      FBGraphObject *newSelectedUser = [newSelection lastObject];
       if (![wSelf.members containsObject:newSelectedUser]) {
         [wSelf.members addObject:newSelectedUser];
       }
@@ -295,6 +326,21 @@ static NSString *kWAPartioTableViewSectionHeaderView = @"WAPartioTableViewSectio
 
   [self updateNavigationBarTitleAndButtonStatus];
 
+}
+
+- (IBAction)dismissAdditionalTapGuesture:(id)sender
+{
+  if (self.inviteInstructionView) {
+    [self.inviteInstructionView dismissCalloutAnimated:YES];
+    self.inviteInstructionView = nil;
+    [self.view removeGestureRecognizer:self.tapGesture];
+    self.tapGesture = nil;
+  }
+  
+  if ([self.textField isFirstResponder]) {
+    [self.textField setText:@""];
+    [self.textField resignFirstResponder];
+  }
 }
 
 @end
