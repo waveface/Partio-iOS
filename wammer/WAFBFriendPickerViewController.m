@@ -17,7 +17,7 @@
 #import <BlocksKit/BlocksKit.h>
 #import "IRFoundations.h"
 
-@interface WAFBFriendPickerViewController () <FBFriendPickerDelegate, UITableViewDataSource, UITextViewDelegate>
+@interface WAFBFriendPickerViewController () <FBFriendPickerDelegate, UITableViewDataSource, UITextFieldDelegate>
 
 @property (nonatomic, weak) IBOutlet WAPartioNavigationBar *navigationBar;
 @property (nonatomic, weak) IBOutlet UITextField *textField;
@@ -153,6 +153,7 @@ static NSString *defaultImageName = @"FacebookSDKResources.bundle/FBFriendPicker
   [self.tableView setBackgroundColor:[UIColor colorWithRed:0.168 green:0.168 blue:0.168 alpha:1]];
   self.loader.tableView = self.tableView;
 
+  self.textField.delegate = self;
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -208,6 +209,7 @@ static NSString *defaultImageName = @"FacebookSDKResources.bundle/FBFriendPicker
   
   } else {
     for (FBGraphObject *person in rawData) {
+      //NSString *fbid = [(id<FBGraphUser>)person id];
       NSPredicate *predicate = [NSPredicate predicateWithFormat:@"fbFriend = %@", person];
       NSArray *recentUsedFriends = [storedFriendList filteredArrayUsingPredicate:predicate];
       if (![recentUsedFriends count]) {
@@ -247,7 +249,7 @@ static NSString *defaultImageName = @"FacebookSDKResources.bundle/FBFriendPicker
 
 #pragma mark - UITextViewDelegate
 
-- (void)textViewDidBeginEditing:(UITextView *)textView
+- (void)textFieldDidBeginEditing:(UITextField *)textField
 {
   if (self.inviteInstructionView) {
     [self.inviteInstructionView dismissCalloutAnimated:YES];
@@ -255,13 +257,14 @@ static NSString *defaultImageName = @"FacebookSDKResources.bundle/FBFriendPicker
     [self.view removeGestureRecognizer:self.tapGesture];
     self.tapGesture = nil;
   }
-
+  
+  //hide recent used friend list
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
+  textField.text = @"";
   [textField resignFirstResponder];
-  
   return YES;
 }
 
@@ -326,21 +329,6 @@ static NSString *defaultImageName = @"FacebookSDKResources.bundle/FBFriendPicker
 
   [self updateNavigationBarTitleAndButtonStatus];
 
-}
-
-- (IBAction)dismissAdditionalTapGuesture:(id)sender
-{
-  if (self.inviteInstructionView) {
-    [self.inviteInstructionView dismissCalloutAnimated:YES];
-    self.inviteInstructionView = nil;
-    [self.view removeGestureRecognizer:self.tapGesture];
-    self.tapGesture = nil;
-  }
-  
-  if ([self.textField isFirstResponder]) {
-    [self.textField setText:@""];
-    [self.textField resignFirstResponder];
-  }
 }
 
 @end

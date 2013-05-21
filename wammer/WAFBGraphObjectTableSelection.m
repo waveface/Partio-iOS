@@ -27,6 +27,7 @@
 @end
 
 static NSString *kHeaderID = @"WAFBTableViewSectionHeaderView";
+static NSString *indexKeyOfRecentUsedContacts = @"★";
 
 @implementation WAFBGraphObjectTableSelection
 
@@ -127,6 +128,23 @@ static NSString *kHeaderID = @"WAFBTableViewSectionHeaderView";
   }
 }
 
+- (void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+  UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+  
+  FBGraphObject *item = [self.dataSource itemAtIndexPath:indexPath];
+
+  if (self.allowsMultipleSelection == NO) {
+    // Only deselect if we are not allowing multi select. Otherwise, the user will manually
+    // deselect this item by clicking on it again.
+    
+    // cell may be nil, which is okay, it will pick up the right selected state when it is created.
+    [self deselectItem:item cell:cell raiseSelectionChanged:NO];
+  } else {
+    [self deselectItem:item cell:cell raiseSelectionChanged:YES];
+  }
+}
+
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
   static WAPartioTableViewSectionHeaderView *headerView;
@@ -142,7 +160,7 @@ static NSString *kHeaderID = @"WAFBTableViewSectionHeaderView";
   UILocalizedIndexedCollation *collation = [UILocalizedIndexedCollation currentCollation];
  
   if (storedFriendList) {
-    if (!section && storedFriendList.count) {
+    if (!section && [[self.dataSource.indexMap valueForKey:indexKeyOfRecentUsedContacts] count]) {
       return 22.f;
     } else if ([[self.dataSource.indexMap valueForKey:collation.sectionIndexTitles[section-1]] count]) {
       return 22.f;
@@ -157,12 +175,17 @@ static NSString *kHeaderID = @"WAFBTableViewSectionHeaderView";
   return 0.f;
 }
 
+- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
+{
+  UIView *footerView = [[UIView alloc] initWithFrame:CGRectMake(0.f, 0.f, CGRectGetWidth(tableView.frame), 44.f)];
+  [footerView setBackgroundColor:[UIColor clearColor]];
+  return footerView;
+}
+
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
   if (section == [tableView numberOfSections] - 1) {
     return 44.f;
-  } else if ([tableView numberOfRowsInSection:section]) {
-    return 1.f;
   } else {
     return 0.f;
   }
