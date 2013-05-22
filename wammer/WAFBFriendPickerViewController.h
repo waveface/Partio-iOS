@@ -21,10 +21,3 @@
 @property (nonatomic, copy) void (^onDismissHandler)();
 
 @end
-
-
-@protocol CacheGraphFriend <FBGraphUser>
-
-@property (nonatomic) NSString *email;
-
-@end

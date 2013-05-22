@@ -10,4 +10,10 @@
 
 @interface WAFBGraphObjectTableDataSource : FBGraphObjectTableDataSource
 
+@property (nonatomic, retain) NSDictionary *indexMap;
+
+- (NSString *)titleForSection:(NSInteger)sectionIndex;
+
 @end
+
+static NSString *kFrenquentFriendList = @"FrenquentFriendList";

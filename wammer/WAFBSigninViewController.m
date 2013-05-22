@@ -6,7 +6,7 @@
 //  Copyright (c) 2013 Waveface. All rights reserved.
 //
 
-#import "WAFacebookLoginViewController.h"
+#import "WAFBSigninViewController.h"
 #import "WADefines.h"
 #import "UIKit+IRAdditions.h"
 #import "WAOverlayBezel.h"
@@ -15,11 +15,11 @@
 #import <FacebookSDK/FacebookSDK.h>
 #import <Accounts/Accounts.h>
 
-@interface WAFacebookLoginViewController ()
+@interface WAFBSigninViewController ()
 @property (nonatomic, copy) void (^completionHandler)(NSError *error);
 @end
 
-@implementation WAFacebookLoginViewController
+@implementation WAFBSigninViewController
 
 - (id) initWithCompletionHandler:(void(^)(NSError *error))completion {
   self = [super initWithNibName:nil bundle:nil];
@@ -137,7 +137,7 @@
 }
 
 - (void) viewDidAppear:(BOOL)animated {
-  __weak WAFacebookLoginViewController *wSelf = self;
+  __weak WAFBSigninViewController *wSelf = self;
   [[self class] backgroundLoginWithFacebookIDWithCompleteHandler:^(NSError *error) {
     wSelf.completionHandler(error);
   }];

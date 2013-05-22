@@ -34,7 +34,6 @@
 #import "WASharedEventViewController.h"
 #import "WAPhotoHighlightsViewController.h"
 #import "WAPartioFirstUseViewController.h"
-#import "WAFacebookLoginViewController.h"
 
 #import "Foundation+IRAdditions.h"
 #import "UIKit+IRAdditions.h"
@@ -453,11 +452,55 @@ extern CFAbsoluteTime StartTime;
           NSNumber *action = wSelf.notificationPayloads[@"action"];
           NSString *postId = wSelf.notificationPayloads[@"pid"];
           if (postId) {
+            UIImage *bgImage = nil;
+            if(IS_WIDESCREEN)
+              bgImage = [UIImage imageNamed:@"Default-568h"];
+            else
+              bgImage = [UIImage imageNamed:@"Default"];
+
+            UIImageView *imageView = [[UIImageView alloc] initWithImage:bgImage];
+            imageView.frame = self.window.frame;
+            [self.window addSubview:imageView];
+            
+            WAOverlayBezel *busyBezel = [WAOverlayBezel bezelWithStyle:WAActivityIndicatorBezelStyle];
+            [busyBezel show];
             sharedEventsVC.requestedToDisplayArticleID = postId;
+            WARemoteInterface *ri = [WARemoteInterface sharedInterface];
+            [ri retrievePost:postId inGroup:ri.primaryGroupIdentifier onSuccess:^(NSDictionary *postRep) {
+              
+              WADataStore *ds = [WADataStore defaultStore];
+              [ds performBlock:^{
+                
+                NSManagedObjectContext *context = [ds disposableMOC];
+                
+                NSArray *touchedArticles = [WAArticle insertOrUpdateObjectsUsingContext:context withRemoteResponse:@[postRep] usingMapping:nil options:IRManagedObjectOptionIndividualOperations];
+                
+                // restore articles in updating
+                for (WAArticle *article in touchedArticles) {
+                  if ([ds isUpdatingArticle:[[article objectID] URIRepresentation]]) {
+                    [context refreshObject:article mergeChanges:NO];
+                  }
+                }
+                
+                [context save:nil];
+                
+              } waitUntilDone:YES];
+              
+              dispatch_async(dispatch_get_main_queue(), ^{
+                [busyBezel dismiss];
+                WANavigationController *navVC = [[WANavigationController alloc] initWithRootViewController:sharedEventsVC];
+                wSelf.window.rootViewController = navVC;
+
+              });
+              
+            } onFailure:^(NSError *error) {
+              
+            }];
           }
+        } else {
+          WANavigationController *navVC = [[WANavigationController alloc] initWithRootViewController:sharedEventsVC];
+          wSelf.window.rootViewController = navVC;
         }
-        WANavigationController *navVC = [[WANavigationController alloc] initWithRootViewController:sharedEventsVC];
-        wSelf.window.rootViewController = navVC;
         
       }
     

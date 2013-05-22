@@ -88,7 +88,9 @@
       sentData[@"shared_snsid_list"] = [[NSString alloc] initWithData:fbIDsDataInJSON encoding:NSUTF8StringEncoding];
     }
     
-    NSArray *emails = [invitee valueForKey:@"email"];
+    NSArray *emails = [[invitee valueForKey:@"email"] filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(NSString *evaluatedObject, NSDictionary *bindings) {
+      return evaluatedObject.length;
+    }]];
     if (emails.count) {
       NSData *emailsDataInJSON = [NSJSONSerialization dataWithJSONObject:emails options:0 error:&error];
       sentData[@"shared_email_list"] = [[NSString alloc] initWithData:emailsDataInJSON encoding:NSUTF8StringEncoding];

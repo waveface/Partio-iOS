@@ -346,7 +346,8 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
 
 - (NSString*) urlStringForSharingEvent:(WAArticle*)article {
   
-  return [NSString stringWithFormat:@"https://devweb.waveface.com/partio/%@", article.sharedCode];
+  NSString *webRemoteEndpointURLString = [[NSUserDefaults standardUserDefaults] stringForKey:kWARemoteEndpointWebURL];
+  return [NSString stringWithFormat:@"%@/%@", [webRemoteEndpointURLString stringByAppendingPathComponent:@"partio"], article.sharedCode];
   
 }
 
@@ -354,7 +355,7 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
   NSString *idString = [fbIDs componentsJoinedByString:@","];
   NSString *privacyString = [NSString stringWithFormat:@"{'value': 'CUSTOM', 'allow': '%@'}", idString];
   
-  NSDictionary *params = @{@"message": @"I would like to share photos with you thru Grupin", @"link": urlString, @"privacy": privacyString, @"to": idString};
+  NSDictionary *params = @{@"message": NSLocalizedString(@"FB_INVITION_MESSAGE", @""), @"link": urlString, @"privacy": privacyString, @"to": idString};
   
   [FBRequestConnection startWithGraphPath:@"feed" parameters:params HTTPMethod:@"POST" completionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
     if (error) {
