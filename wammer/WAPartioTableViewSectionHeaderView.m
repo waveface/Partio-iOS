@@ -15,7 +15,6 @@
     self = [super initWithFrame:frame];
     if (self) {
       self.title = [[UILabel alloc] initWithFrame:(CGRect){CGPointMake(0.f, 2.f), CGSizeMake(CGRectGetWidth(self.frame), CGRectGetHeight(self.frame) - 2.f)}];
-      [self.title setText: NSLocalizedString(@"MEMBERS_LABEL_CONTACT_PICKER", @"MEMBERS_LABEL_CONTACT_PICKER")];
       [self.title setFont:[UIFont fontWithName:@"OpenSans-Semibold" size:14.f]];
       [self.title setTextColor:[UIColor whiteColor]];
       [self.title setTextAlignment:NSTextAlignmentCenter];

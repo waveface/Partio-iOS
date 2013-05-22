@@ -471,9 +471,6 @@
 /* The text of location label when there is no gps information we can refer to */
 "LABEL_WITHOUT_GPS_DATA" = "Where were you?";
 
-/* MEMBERS_LABEL_CONTACT_PICKER */
-"MEMBERS_LABEL_CONTACT_PICKER" = "Members";
-
 /* MESSAGE_EMAIL_REQUEST */
 "MESSAGE_EMAIL_REQUEST" = "We'll invite your friend by email.";
 
@@ -568,7 +565,8 @@
 /* action pick contacts */
 "PICKCONTACTS_ACTION" = "Invite";
 
-/* PLACEHOLER_CHOSEN_FRIENDS_ADDRESS_BOOK_PICKER */
+/* Placeholer in FB Friends Picker
+   PLACEHOLER_CHOSEN_FRIENDS_ADDRESS_BOOK_PICKER */
 "PLACEHOLER_CHOSEN_FRIENDS_ADDRESS_BOOK_PICKER" = "Input Name or Email";
 
 /* PLACEHOLER_CHOSEN_FRIENDS_ADDRESSBOOKPICKER */
@@ -699,6 +697,9 @@
 
 /* Title of the day photo picker view */
 "TITLE_OF_DAY_PHOTO_PICKER" = "Select Photos";
+
+/* Title of recent used contacts or fb friends */
+"TITLE_OF_RECENT_USED_CONTACTS" = "Recent";
 
 /* Alert on no location service enabled when open photo library */
 "TURN_ON_LOCATION_SERVICE" = "Turn on Location Services to allow aostream to access your Photo Library.";
