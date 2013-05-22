@@ -471,9 +471,6 @@
 /* The text of location label when there is no gps information we can refer to */
 "LABEL_WITHOUT_GPS_DATA" = "您在哪裡？";
 
-/* MEMBERS_LABEL_CONTACT_PICKER */
-"MEMBERS_LABEL_CONTACT_PICKER" = "朋友";
-
 /* MESSAGE_EMAIL_REQUEST */
 "MESSAGE_EMAIL_REQUEST" = "我們會送封電子郵件邀請他/她一起共享生活中的寶貴回憶。";
 
@@ -568,7 +565,8 @@
 /* action pick contacts */
 "PICKCONTACTS_ACTION" = "邀請朋友";
 
-/* PLACEHOLER_CHOSEN_FRIENDS_ADDRESS_BOOK_PICKER */
+/* Placeholer in FB Friends Picker
+   PLACEHOLER_CHOSEN_FRIENDS_ADDRESS_BOOK_PICKER */
 "PLACEHOLER_CHOSEN_FRIENDS_ADDRESS_BOOK_PICKER" = "輸入姓名或電子郵件信箱";
 
 /* PLACEHOLER_CHOSEN_FRIENDS_ADDRESSBOOKPICKER */
@@ -699,6 +697,9 @@
 
 /* Title of the day photo picker view */
 "TITLE_OF_DAY_PHOTO_PICKER" = "挑選照片";
+
+/* Title of recent used contacts or fb friends */
+"TITLE_OF_RECENT_USED_CONTACTS" = "最近邀請過的朋友";
 
 /* Alert on no location service enabled when open photo library */
 "TURN_ON_LOCATION_SERVICE" = "aostream 須開啟定位服務才能存取相簿的內容";
