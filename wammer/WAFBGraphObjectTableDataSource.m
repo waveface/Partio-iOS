@@ -13,6 +13,7 @@
 
 // Magic number - iPhone address book doesn't show scrubber for less than 5 contacts
 static const NSInteger kMinimumCountToCollate = 6;
+static const NSInteger kMaximumCountOfListedRecentFriends = 5;
 static NSString *indexKeyOfRecentUsedContacts = @"★";
 
 @interface WAFBGraphObjectTableDataSource()
@@ -41,7 +42,14 @@ static NSString *indexKeyOfRecentUsedContacts = @"★";
   self = [super init];
   if (self) {
     self.storedFriendList = [[[NSUserDefaults standardUserDefaults] arrayForKey:kFrenquentFriendList] mutableCopy];
-
+    
+    id object = @NO;
+    NSMutableArray *buffer = [NSMutableArray arrayWithCapacity:kMaximumCountOfListedRecentFriends];
+    for (NSInteger i = 0; i < kMaximumCountOfListedRecentFriends; i++) {
+      buffer[i] = object;
+    }
+    self.recentFriendImageShown = [NSMutableArray arrayWithArray:buffer];
+    
   }
   return self;
 }
@@ -90,15 +98,23 @@ static NSString *indexKeyOfRecentUsedContacts = @"★";
               
             }
           }
-          if ([recentUsedFBFriends containsObject:item] &&
-              (!self.recentFriendImageShown || [self.recentFriendImageShown[[recentUsedFBFriends indexOfObject:item]] isEqual:@NO])) {
-            NSIndexPath *indexPath = [NSIndexPath indexPathForRow:[recentUsedFBFriends indexOfObject:item] inSection:0];
+          
+          NSRange limits;
+          limits.location = 0;
+          limits.length = kMaximumCountOfListedRecentFriends;
+          NSArray *limitedRecentUsedFBFriends = (recentUsedFBFriends.count > kMaximumCountOfListedRecentFriends)?[recentUsedFBFriends subarrayWithRange:limits]:recentUsedFBFriends;
+    
+          if ([limitedRecentUsedFBFriends containsObject:item] &&
+              ([[self.recentFriendImageShown objectAtIndex:[limitedRecentUsedFBFriends indexOfObject:item]] isEqual:@NO])) {
+            NSIndexPath *indexPath = [NSIndexPath indexPathForRow:[limitedRecentUsedFBFriends indexOfObject:item] inSection:0];
             WAFBGraphObjectTableCell *cell = (WAFBGraphObjectTableCell*)[tableView cellForRowAtIndexPath:indexPath];
             
             if (cell) {
               cell.picture = image;
-              self.recentFriendImageShown[[recentUsedFBFriends indexOfObject:item]] = @YES;
             }
+            
+            self.recentFriendImageShown[[limitedRecentUsedFBFriends indexOfObject:item]] = @YES;
+
           } else {
             NSIndexPath *indexPath = [self indexPathForItem:item];
             if (indexPath) {
@@ -197,11 +213,19 @@ static NSString *indexKeyOfRecentUsedContacts = @"★";
     NSArray *storedItems = [self.storedFriendList valueForKey:@"fbFriend"];
     for (id item in storedItems) {
       if ([item isKindOfClass:[NSDictionary class]]) { // convert saved NSDictionary back to FBGraphObject
-        [sectionItems addObject:[FBGraphObject graphObjectWrappingDictionary:item]];
+        FBGraphObject *restoredItem = (FBGraphObject *)[FBGraphObject graphObjectWrappingDictionary:item];
+        if (![self filterIncludesItem:restoredItem]) {
+          continue;
+        }
+        [sectionItems addObject:[FBGraphObject graphObjectWrappingDictionary:restoredItem]];
         
       }
     }
-    [indexMap setValue:sectionItems forKey:key];
+    NSRange limits;
+    limits.location = 0;
+    limits.length = kMaximumCountOfListedRecentFriends;
+    [indexMap setValue:(sectionItems.count > kMaximumCountOfListedRecentFriends)?[sectionItems subarrayWithRange:limits]:sectionItems
+                forKey:key];
     [indexKeys insertObject:key atIndex:0];
   }
   
@@ -298,7 +322,7 @@ static NSString *indexKeyOfRecentUsedContacts = @"★";
   NSInteger sectionIndex = 0;
   if (self.useCollation) {
     if (self.storedFriendList.count) {
-      sectionIndex = [self.collation.sectionTitles indexOfObject:key] - 1;
+      sectionIndex = [self.collation.sectionTitles indexOfObject:key] + 1;
     } else {
       sectionIndex = [self.collation.sectionTitles indexOfObject:key];
     }
@@ -412,12 +436,9 @@ static NSString *indexKeyOfRecentUsedContacts = @"★";
 
 - (NSInteger)tableView:(UITableView *)tableView sectionForSectionIndexTitle:(NSString *)title atIndex:(NSInteger)index
 {
+  //FIXME: crash when title is '#' and index is 27
   if (self.useCollation) {
-    if (self.storedFriendList.count) {
-      return [self.collation sectionForSectionIndexTitleAtIndex:index] - 1;
-    } else {
-      return [self.collation sectionForSectionIndexTitleAtIndex:index];
-    }
+    return [self.collation sectionForSectionIndexTitleAtIndex:index];
   } else {
     return index;
   }

@@ -217,8 +217,8 @@ static NSString *defaultImageName = @"FacebookSDKResources.bundle/FBFriendPicker
       
       } else {
         NSMutableDictionary *aPerson = recentUsedFriends[0];
-        NSInteger freq = [aPerson[@"frequency"] integerValue];
-        aPerson[@"frequency"] = [NSNumber numberWithInteger:freq+1];
+        NSInteger freq = [aPerson[@"frequency"] integerValue] + 1;
+        aPerson[@"frequency"] = [NSNumber numberWithInteger:freq];
         aPerson[@"updateTime"] = [NSDate date];
         [storedFriendList replaceObjectAtIndex:[storedFriendList indexOfObject:recentUsedFriends[0]] withObject:aPerson];
         

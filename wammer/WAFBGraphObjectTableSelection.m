@@ -159,15 +159,18 @@ static NSString *indexKeyOfRecentUsedContacts = @"★";
   NSArray *storedFriendList = [[NSUserDefaults standardUserDefaults] arrayForKey:kFrenquentFriendList];
   UILocalizedIndexedCollation *collation = [UILocalizedIndexedCollation currentCollation];
  
-  if (storedFriendList) {
-    if (!section && [[self.dataSource.indexMap valueForKey:indexKeyOfRecentUsedContacts] count]) {
-      return 22.f;
-    } else if ([[self.dataSource.indexMap valueForKey:collation.sectionIndexTitles[section-1]] count]) {
+  if (storedFriendList.count) {
+    if (!section) {
+      if ([[self.dataSource.indexMap valueForKey:indexKeyOfRecentUsedContacts] count]) {
+        return 22.f;
+      }
+    
+    } else if ([[self.dataSource.indexMap valueForKey:collation.sectionTitles[section-1]] count]) {
       return 22.f;
     }
     
   } else {
-    if ([[self.dataSource.indexMap valueForKey:collation.sectionIndexTitles[section]] count]) {
+    if ([[self.dataSource.indexMap valueForKey:collation.sectionTitles[section]] count]) {
       return 22.f;
     }
   }
