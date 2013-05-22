@@ -296,6 +296,7 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
   NSDate * const eventStartTime = self.eventStartDate;
   NSDate * const eventEndTime = self.eventEndDate;
   NSString * const postTitleText = self.title;
+  NSString * const sharedCode = self.sharedCode;
   NSArray * invitingEmails = [(NSSet*)[self.sharingContacts valueForKey:@"email"] allObjects];
   NSMutableArray * invitee = [NSMutableArray array];
   for (WAPeople *person in [self.sharingContacts allObjects]) {
@@ -552,8 +553,10 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
                       invitee:invitee
                      location:postLocation
                      checkins:postCheckins
+                   sharedCode:sharedCode
 					onSuccess:^(NSDictionary *postRep) {
 	
+                      
 					  callback(postRep);
 	
         } onFailure: ^ (NSError *error) {
@@ -614,6 +617,7 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
                invitee:invitee
               location:postLocation
               checkins:postCheckins
+            sharedCode:nil
 			 onSuccess:^(NSDictionary *postRep) {
 	
 			   callback(postRep);

@@ -785,6 +785,12 @@
 /* Class = "IBUITextField"; placeholder = "INPUT_TITLE_PLACEHOLDER"; ObjectID = "5"; */
 "INPUT_TITLE_PLACEHOLDER" = "你想要分享的主題是？";
 
+/* Class = "IBUIButton"; normalTitle = "FB_PERMISSION_CONFIRM"; ObjectID = "8"; */
+"FB_PERMISSION_CONFIRM" = "確認";
+
+/* Class = "IBUILabel"; text = "DESCRIPTION_WHY_WRITE_PERMISSION"; ObjectID = "9"; */
+"DESCRIPTION_WHY_WRITE_PERMISSION" = "Grupin 需要透過 Facebook 來通知同一事件中的好友有關於這則新分享，這則訊息將不會公開，只有你跟分享的好友們才能閱讀，請按確認並給予權限。";
+
 /* Class = "IBUILabel"; text = "PHOTO_UPLOAD_SWITCH_TITLE"; ObjectID = "749-zj-beb"; */
 "PHOTO_UPLOAD_SWITCH_TITLE" = "匯入相機膠卷";
 

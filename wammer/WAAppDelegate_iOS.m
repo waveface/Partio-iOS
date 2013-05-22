@@ -116,6 +116,7 @@ static NSString *const kTrackingId = @"UA-27817516-8";
 @property (nonatomic, strong) WASlidingMenuViewController *slidingMenu;
 @property (nonatomic, strong) WAStatusBar *statusBar;
 @property (nonatomic, strong) WAOverlayBezel *busyOverlay;
+@property (nonatomic, strong) NSDictionary *notificationPayloads;
 
 - (void) clearViewHierarchy;
 - (void) recreateViewHierarchy;
@@ -210,9 +211,16 @@ extern CFAbsoluteTime StartTime;
   WAPartioDefaultAppearance();
   
   self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-  self.window.backgroundColor = [UIColor colorWithRed:0.87 green:0.87 blue:0.84 alpha:1.0];
+  self.window.backgroundColor = [UIColor colorWithRed:43/255 green:43/255 blue:43/255 alpha:1];
   
   [self.window makeKeyAndVisible];
+  
+  NSDictionary *remoteNotificationPayload = launchOptions[UIApplicationLaunchOptionsRemoteNotificationKey];
+  if (remoteNotificationPayload) {
+    NSLog(@"remote notification payload: %@", remoteNotificationPayload);
+    application.applicationIconBadgeNumber = 0;// dismiss the badge number
+    self.notificationPayloads = remoteNotificationPayload;
+  }
   
   if ([[NSUserDefaults standardUserDefaults] stringForKey:kWADebugPersistentStoreName]) {
     
@@ -235,11 +243,6 @@ extern CFAbsoluteTime StartTime;
     
     [self recreateViewHierarchy];
     
-  }
-  
-  NSDictionary *remoteNotificationPayload = launchOptions[UIApplicationLaunchOptionsRemoteNotificationKey];
-  if (remoteNotificationPayload) {
-    application.applicationIconBadgeNumber = 0;// dismiss the badge number
   }
   
   [[GAI sharedInstance].defaultTracker trackEventWithCategory:@"Application" withAction:@"Launched" withLabel:nil withValue:@0];
@@ -314,6 +317,8 @@ extern CFAbsoluteTime StartTime;
 - (void) application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
   
   application.applicationIconBadgeNumber = 0;
+  
+  NSLog(@"%@", userInfo);
   
 }
 
@@ -427,8 +432,9 @@ extern CFAbsoluteTime StartTime;
   __weak WAAppDelegate_iOS *wSelf = self;
   
   if (![FBSession activeSession].isOpen) {
-    WAFacebookLoginViewController *fbLoginVC = [[WAFacebookLoginViewController alloc] initWithCompletionHandler:^(NSError *error) {
-          
+    [[FBSession activeSession] openWithCompletionHandler:^(FBSession *session, FBSessionState status, NSError *error) {
+      
+    
       if (error) {
         NSLog(@"failed to login facebook for error: %@", error);
         
@@ -440,22 +446,28 @@ extern CFAbsoluteTime StartTime;
         
       } else {
 
+        [self bootstrapWhenUserLogin];
+        
         WASharedEventViewController *sharedEventsVC = [[WASharedEventViewController alloc] init];
+        if (wSelf.notificationPayloads) {
+          NSNumber *action = wSelf.notificationPayloads[@"action"];
+          NSString *postId = wSelf.notificationPayloads[@"pid"];
+          if (postId) {
+            sharedEventsVC.requestedToDisplayArticleID = postId;
+          }
+        }
         WANavigationController *navVC = [[WANavigationController alloc] initWithRootViewController:sharedEventsVC];
         wSelf.window.rootViewController = navVC;
         
       }
     
     }];
-    self.window.backgroundColor = [UIColor colorWithRed:43/255 green:43/255 blue:43/255 alpha:1];
-    self.window.rootViewController = fbLoginVC;
   } else {
 
     [self bootstrapWhenUserLogin];
 
     WASharedEventViewController *sharedEventsVC = [[WASharedEventViewController alloc] init];
     WANavigationController *navVC = [[WANavigationController alloc] initWithRootViewController:sharedEventsVC];
-    self.window.backgroundColor = [UIColor colorWithRed:43/255 green:43/255 blue:43/255 alpha:1];
     self.window.rootViewController = navVC;
     
   }
@@ -799,7 +811,6 @@ extern CFAbsoluteTime StartTime;
     [alertView show];
 
   }];
-  self.window.backgroundColor = [UIColor colorWithRed:43/255 green:43/255 blue:43/255 alpha:1];
   self.window.rootViewController = partioFirstUse;
 
 }

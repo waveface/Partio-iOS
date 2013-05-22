@@ -189,7 +189,6 @@
 		7DA309311648BC6900B6FABD /* WAPhotoStreamViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7DA3092C1648BC6900B6FABD /* WAPhotoStreamViewController.xib */; };
 		7DA309321648BC6900B6FABD /* WAPhotoStreamViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7DA3092C1648BC6900B6FABD /* WAPhotoStreamViewController.xib */; };
 		7DA474461643C16900EC415C /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF73A69713D6E08100D54EC6 /* CoreData.framework */; };
-		7DAD18A21626A73B00F87495 /* libGoogleAnalytics.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7DAD18A11626A73B00F87495 /* libGoogleAnalytics.a */; };
 		7DB78A631649005E00E165E9 /* WAPhotoStreamViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DB78A621649005E00E165E9 /* WAPhotoStreamViewController.m */; };
 		7DB78A68164900E400E165E9 /* WAPhotoStreamViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DB78A67164900E400E165E9 /* WAPhotoStreamViewCell.m */; };
 		7DB78A6C164900FA00E165E9 /* WAPhotoStreamViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7DB78A6B164900FA00E165E9 /* WAPhotoStreamViewCell.xib */; };
@@ -233,6 +232,8 @@
 		800E4FCE1671DD0C00F50E0B /* WATimelineViewCell-Checkin.xib in Resources */ = {isa = PBXBuildFile; fileRef = 800E4FCD1671DD0C00F50E0B /* WATimelineViewCell-Checkin.xib */; };
 		800F240E16F2D3DC000157C1 /* WAFile.m in Sources */ = {isa = PBXBuildFile; fileRef = 800F240D16F2D3DC000157C1 /* WAFile.m */; };
 		8012DB4F16D4C1150002B163 /* UIViewController+WAAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 8012DB4E16D4C1150002B163 /* UIViewController+WAAdditions.m */; };
+		801943C0174B293800AE7AEA /* WAFBRequestViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 801943BE174B293800AE7AEA /* WAFBRequestViewController.m */; };
+		801943C1174B293800AE7AEA /* WAFBRequestViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 801943BF174B293800AE7AEA /* WAFBRequestViewController.xib */; };
 		801A1B711743309400846168 /* WAPartioSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 801A1B6F1743309400846168 /* WAPartioSettingsViewController.m */; };
 		801A1B721743309400846168 /* WAPartioSettingsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 801A1B701743309400846168 /* WAPartioSettingsViewController.xib */; };
 		801A1B7517435F2500846168 /* about.png in Resources */ = {isa = PBXBuildFile; fileRef = 801A1B7317435F2500846168 /* about.png */; };
@@ -436,6 +437,7 @@
 		80DC6707174601C0000DC8E9 /* WAArticle.m in Sources */ = {isa = PBXBuildFile; fileRef = 80DC6706174601C0000DC8E9 /* WAArticle.m */; };
 		80DC670A17461464000DC8E9 /* fbicon.png in Resources */ = {isa = PBXBuildFile; fileRef = 80DC670817461462000DC8E9 /* fbicon.png */; };
 		80DC670B17461464000DC8E9 /* fbicon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 80DC670917461463000DC8E9 /* fbicon@2x.png */; };
+		80E05A21174C9C0F000FB233 /* libGoogleAnalytics.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 80E05A20174C9C0F000FB233 /* libGoogleAnalytics.a */; };
 		80E5173C1670F3B200E1C3AD /* WALocation.m in Sources */ = {isa = PBXBuildFile; fileRef = 80E5173B1670F3B200E1C3AD /* WALocation.m */; };
 		80E7E586172FB5E1003E525E /* WAPhotoTimelineGalleryLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 80E7E585172FB5E1003E525E /* WAPhotoTimelineGalleryLayout.m */; };
 		80E7E596172FBAC7003E525E /* WAPhotoGalleryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 80E7E595172FBAC7003E525E /* WAPhotoGalleryCell.m */; };
@@ -1206,12 +1208,6 @@
 		7D9B1D8E162BB1E8000E5350 /* AdSupport.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
 		7D9B1D90162BB1F6000E5350 /* Social.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
 		7DA3092C1648BC6900B6FABD /* WAPhotoStreamViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WAPhotoStreamViewController.xib; sourceTree = "<group>"; };
-		7DAD189C1626A73B00F87495 /* GAI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GAI.h; path = wammer/Libraries/GAI.h; sourceTree = SOURCE_ROOT; };
-		7DAD189D1626A73B00F87495 /* GAITrackedViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GAITrackedViewController.h; path = wammer/Libraries/GAITrackedViewController.h; sourceTree = SOURCE_ROOT; };
-		7DAD189E1626A73B00F87495 /* GAITracker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GAITracker.h; path = wammer/Libraries/GAITracker.h; sourceTree = SOURCE_ROOT; };
-		7DAD189F1626A73B00F87495 /* GAITransaction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GAITransaction.h; path = wammer/Libraries/GAITransaction.h; sourceTree = SOURCE_ROOT; };
-		7DAD18A01626A73B00F87495 /* GAITransactionItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GAITransactionItem.h; path = wammer/Libraries/GAITransactionItem.h; sourceTree = SOURCE_ROOT; };
-		7DAD18A11626A73B00F87495 /* libGoogleAnalytics.a */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = archive.ar; name = libGoogleAnalytics.a; path = wammer/Libraries/libGoogleAnalytics.a; sourceTree = SOURCE_ROOT; };
 		7DB78A611649005E00E165E9 /* WAPhotoStreamViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAPhotoStreamViewController.h; sourceTree = "<group>"; };
 		7DB78A621649005E00E165E9 /* WAPhotoStreamViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAPhotoStreamViewController.m; sourceTree = "<group>"; };
 		7DB78A66164900E400E165E9 /* WAPhotoStreamViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAPhotoStreamViewCell.h; sourceTree = "<group>"; };
@@ -1267,6 +1263,9 @@
 		800F240D16F2D3DC000157C1 /* WAFile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAFile.m; sourceTree = "<group>"; };
 		8012DB4D16D4C1150002B163 /* UIViewController+WAAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+WAAdditions.h"; sourceTree = "<group>"; };
 		8012DB4E16D4C1150002B163 /* UIViewController+WAAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+WAAdditions.m"; sourceTree = "<group>"; };
+		801943BD174B293800AE7AEA /* WAFBRequestViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WAFBRequestViewController.h; path = wammer/WAFBRequestViewController.h; sourceTree = "<group>"; };
+		801943BE174B293800AE7AEA /* WAFBRequestViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WAFBRequestViewController.m; path = wammer/WAFBRequestViewController.m; sourceTree = "<group>"; };
+		801943BF174B293800AE7AEA /* WAFBRequestViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = WAFBRequestViewController.xib; path = wammer/WAFBRequestViewController.xib; sourceTree = "<group>"; };
 		801A1B6E1743309400846168 /* WAPartioSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAPartioSettingsViewController.h; sourceTree = "<group>"; };
 		801A1B6F1743309400846168 /* WAPartioSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAPartioSettingsViewController.m; sourceTree = "<group>"; };
 		801A1B701743309400846168 /* WAPartioSettingsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WAPartioSettingsViewController.xib; sourceTree = "<group>"; };
@@ -1550,6 +1549,12 @@
 		80DC6706174601C0000DC8E9 /* WAArticle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAArticle.m; sourceTree = "<group>"; };
 		80DC670817461462000DC8E9 /* fbicon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = fbicon.png; path = Resources/fbicon.png; sourceTree = "<group>"; };
 		80DC670917461463000DC8E9 /* fbicon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "fbicon@2x.png"; path = "Resources/fbicon@2x.png"; sourceTree = "<group>"; };
+		80E05A1B174C9BFB000FB233 /* GAI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GAI.h; path = wammer/Libraries/GoogleAnalytics/Library/GAI.h; sourceTree = "<group>"; };
+		80E05A1C174C9BFB000FB233 /* GAITrackedViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GAITrackedViewController.h; path = wammer/Libraries/GoogleAnalytics/Library/GAITrackedViewController.h; sourceTree = "<group>"; };
+		80E05A1D174C9BFB000FB233 /* GAITracker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GAITracker.h; path = wammer/Libraries/GoogleAnalytics/Library/GAITracker.h; sourceTree = "<group>"; };
+		80E05A1E174C9BFB000FB233 /* GAITransaction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GAITransaction.h; path = wammer/Libraries/GoogleAnalytics/Library/GAITransaction.h; sourceTree = "<group>"; };
+		80E05A1F174C9BFB000FB233 /* GAITransactionItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GAITransactionItem.h; path = wammer/Libraries/GoogleAnalytics/Library/GAITransactionItem.h; sourceTree = "<group>"; };
+		80E05A20174C9C0F000FB233 /* libGoogleAnalytics.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libGoogleAnalytics.a; path = wammer/Libraries/GoogleAnalytics/Library/libGoogleAnalytics.a; sourceTree = "<group>"; };
 		80E5173A1670F3B200E1C3AD /* WALocation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WALocation.h; sourceTree = "<group>"; };
 		80E5173B1670F3B200E1C3AD /* WALocation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WALocation.m; sourceTree = "<group>"; };
 		80E7E584172FB5E1003E525E /* WAPhotoTimelineGalleryLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WAPhotoTimelineGalleryLayout.h; path = wammer/WAPhotoTimelineGalleryLayout.h; sourceTree = "<group>"; };
@@ -2121,10 +2126,10 @@
 				FFB3C17A145E9A7900ED7A56 /* libIRTextAttributor.a in Frameworks */,
 				FFD4F93C157E084E0027BF3F /* libIRObjectQueue.a in Frameworks */,
 				FFB117C6147F8B3D002094E5 /* libIRRecurrenceMachine.a in Frameworks */,
-				7DAD18A21626A73B00F87495 /* libGoogleAnalytics.a in Frameworks */,
 				94EB57761411451780C24560 /* libPods.a in Frameworks */,
 				4BAD7586164DEDA600ADDE56 /* libsqlite3.dylib in Frameworks */,
 				80B0A38716D75BF100E391D2 /* GoogleMaps.framework in Frameworks */,
+				80E05A21174C9C0F000FB233 /* libGoogleAnalytics.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2567,6 +2572,9 @@
 				809A1753171D246C000AF6ED /* WAPartioSignupViewController.h */,
 				809A1754171D246C000AF6ED /* WAPartioSignupViewController.m */,
 				809A1755171D246C000AF6ED /* WAPartioSignupViewController.xib */,
+				801943BD174B293800AE7AEA /* WAFBRequestViewController.h */,
+				801943BE174B293800AE7AEA /* WAFBRequestViewController.m */,
+				801943BF174B293800AE7AEA /* WAFBRequestViewController.xib */,
 			);
 			name = "New Event View";
 			sourceTree = "<group>";
@@ -2807,6 +2815,19 @@
 				80DAA57C16BA7C2400A4E352 /* TWSignedRequest.m */,
 			);
 			name = TwitterReverseAuth;
+			sourceTree = "<group>";
+		};
+		80E05A0D174C9BEA000FB233 /* GoogleAnalytics */ = {
+			isa = PBXGroup;
+			children = (
+				80E05A20174C9C0F000FB233 /* libGoogleAnalytics.a */,
+				80E05A1B174C9BFB000FB233 /* GAI.h */,
+				80E05A1C174C9BFB000FB233 /* GAITrackedViewController.h */,
+				80E05A1D174C9BFB000FB233 /* GAITracker.h */,
+				80E05A1E174C9BFB000FB233 /* GAITransaction.h */,
+				80E05A1F174C9BFB000FB233 /* GAITransactionItem.h */,
+			);
+			name = GoogleAnalytics;
 			sourceTree = "<group>";
 		};
 		80F957B916B8D3DC005121A1 /* Sliding Menu */ = {
@@ -3241,7 +3262,7 @@
 				FF73A59E13D6DC6A00D54EC6 /* IRWebAPIKit.xcodeproj */,
 				DE2BBDD616761AC100EEF922 /* Kal.xcodeproj */,
 				7DC3AC0D1642203C009A8EA7 /* SocketRocket.xcodeproj */,
-				FFC9D96614FF28B2004197EC /* Google Analytics SDK */,
+				80E05A0D174C9BEA000FB233 /* GoogleAnalytics */,
 				FFFDEFB414211D5C0083BEFB /* iOS */,
 				FF59F87914419581005508FC /* OSX */,
 				80DAA56A16BA7BD100A4E352 /* TwitterReverseAuth */,
@@ -3728,20 +3749,6 @@
 				FFC648441445E8D700593E5E /* Credits.rtf */,
 			);
 			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
-		FFC9D96614FF28B2004197EC /* Google Analytics SDK */ = {
-			isa = PBXGroup;
-			children = (
-				7DAD189C1626A73B00F87495 /* GAI.h */,
-				7DAD189D1626A73B00F87495 /* GAITrackedViewController.h */,
-				7DAD189E1626A73B00F87495 /* GAITracker.h */,
-				7DAD189F1626A73B00F87495 /* GAITransaction.h */,
-				7DAD18A01626A73B00F87495 /* GAITransactionItem.h */,
-				7DAD18A11626A73B00F87495 /* libGoogleAnalytics.a */,
-			);
-			name = "Google Analytics SDK";
-			path = external/GoogleAnalyticsSDK;
 			sourceTree = "<group>";
 		};
 		FFCC41FB1553C6F80063DEB8 /* User Interface Additions */ = {
@@ -4477,6 +4484,7 @@
 				80DC66FD1745DF64000DC8E9 /* watermarkcolor@2x.png in Resources */,
 				80DC670A17461464000DC8E9 /* fbicon.png in Resources */,
 				80DC670B17461464000DC8E9 /* fbicon@2x.png in Resources */,
+				801943C1174B293800AE7AEA /* WAFBRequestViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5004,6 +5012,7 @@
 				80BEBFB81744BF4C00E4E694 /* WAPeople.m in Sources */,
 				80DC66EA1745D05B000DC8E9 /* WAEventTitleInputView.m in Sources */,
 				80DC6707174601C0000DC8E9 /* WAArticle.m in Sources */,
+				801943C0174B293800AE7AEA /* WAFBRequestViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5175,7 +5184,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 5AE49661BAA04638AA81DC49 /* Pods.xcconfig */;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Shih-Yun Shen (ZBB2QV4YJ7)";
 				COMPRESS_PNG_FILES = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -5197,6 +5206,7 @@
 					"\"$(SRCROOT)/wammer\"",
 					"\"$(SRCROOT)/wammer/Libraries\"",
 					"\"$(BUILT_PRODUCTS_DIR)\"/**",
+					"\"$(SRCROOT)/wammer/Libraries/GoogleAnalytics/Library\"",
 				);
 				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = (
@@ -5228,7 +5238,7 @@
 					Social,
 				);
 				PRODUCT_NAME = Grupin;
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "476BFE3A-493E-4D29-82BE-0B13B62902D6";
 				SDKROOT = iphoneos;
 				STREAM_BUNDLE_ID_SUFFIX = .beta;
 				STREAM_FACEBOOK_ID = 356863037711668;
@@ -5716,7 +5726,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 5AE49661BAA04638AA81DC49 /* Pods.xcconfig */;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Shih-Yun Shen (ZBB2QV4YJ7)";
 				COMPRESS_PNG_FILES = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -5738,6 +5748,7 @@
 					"\"$(SRCROOT)/wammer\"",
 					"\"$(SRCROOT)/wammer/Libraries\"",
 					"\"$(BUILT_PRODUCTS_DIR)\"/**",
+					"\"$(SRCROOT)/wammer/Libraries/GoogleAnalytics/Library\"",
 				);
 				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = (
@@ -5769,7 +5780,7 @@
 					Social,
 				);
 				PRODUCT_NAME = Grupin;
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "476BFE3A-493E-4D29-82BE-0B13B62902D6";
 				SDKROOT = iphoneos;
 				STREAM_BUNDLE_ID_SUFFIX = .develop;
 				STREAM_FACEBOOK_ID = 357087874306060;
@@ -5785,7 +5796,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 5AE49661BAA04638AA81DC49 /* Pods.xcconfig */;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Shih-Yun Shen (ZBB2QV4YJ7)";
 				COMPRESS_PNG_FILES = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -5807,6 +5818,7 @@
 					"\"$(SRCROOT)/wammer\"",
 					"\"$(SRCROOT)/wammer/Libraries\"",
 					"\"$(BUILT_PRODUCTS_DIR)\"/**",
+					"\"$(SRCROOT)/wammer/Libraries/GoogleAnalytics/Library\"",
 				);
 				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = (
@@ -5838,7 +5850,7 @@
 					Social,
 				);
 				PRODUCT_NAME = Grupin;
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "476BFE3A-493E-4D29-82BE-0B13B62902D6";
 				SDKROOT = iphoneos;
 				STREAM_BUNDLE_ID_SUFFIX = "";
 				STREAM_FACEBOOK_ID = 234823683291756;

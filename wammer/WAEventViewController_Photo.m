@@ -24,7 +24,6 @@
 #import "WAOverlayBezel.h"
 #import "WAAppearance.h"
 #import <BlocksKit/BlocksKit.h>
-#import "GAI.h"
 
 @interface WAEventViewController_Photo () 
 

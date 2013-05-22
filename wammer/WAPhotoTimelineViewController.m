@@ -18,6 +18,7 @@
 #import "WAGalleryViewController.h"
 #import "WAAddressBookPickerViewController.h"
 #import "WAFBFriendPickerViewController.h"
+#import "WAFBRequestViewController.h"
 
 #import "WAPhotoGalleryCell.h"
 #import "WAPhotoTimelineCell.h"
@@ -53,6 +54,10 @@
 #import "WASyncManager.h"
 #import "WAAppDelegate.h"
 #import "WAAppDelegate_iOS.h"
+
+#import <FacebookSDK/FBFrictionlessRequestSettings.h>
+#import <FacebookSDK/FBDialog.h>
+#import <FacebookSDK/FacebookSDK.h>
 
 static NSString * const kWAPhotoTimelineViewController_CoachMarks = @"kWAPhotoTimelineViewController_CoachMarks";
 static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoTimelineViewController_CoachMarks2";
@@ -205,7 +210,7 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
       [contactPicker loadData];
       [contactPicker clearSelection];
       
-      __weak WAAddressBookPickerViewController *wcp = contactPicker;
+      __weak WAFBFriendPickerViewController *wcp = contactPicker;
       contactPicker.onNextHandler = ^(NSArray *selectedContacts){
         [wcp dismissViewControllerAnimated:YES completion:nil];
         [wSelf updateSharingEventWithPhotoChanges:nil contacts:selectedContacts onComplete:^{
@@ -327,6 +332,36 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
     NSError *error = nil;
     [self.managedObjectContext save:&error];
   }
+}
+
+- (NSString*) generateRandomSharedCode {
+  NSString *sharedCode = nil;
+  CFUUIDRef theUUID = CFUUIDCreate(kCFAllocatorDefault);
+  if (theUUID)
+    sharedCode = [[((__bridge_transfer NSString *)CFUUIDCreateString(kCFAllocatorDefault, theUUID)) lowercaseString] stringByReplacingOccurrencesOfString:@"-" withString:@""];
+  CFRelease(theUUID);
+
+  return sharedCode;
+}
+
+- (NSString*) urlStringForSharingEvent:(WAArticle*)article {
+  
+  return [NSString stringWithFormat:@"https://devweb.waveface.com/partio/%@", article.sharedCode];
+  
+}
+
+- (void) notifyFBFriends:(NSArray*)fbIDs url:(NSString *)urlString {
+  NSString *idString = [fbIDs componentsJoinedByString:@","];
+  NSString *privacyString = [NSString stringWithFormat:@"{'value': 'CUSTOM', 'allow': '%@'}", idString];
+  
+  NSDictionary *params = @{@"message": @"I would like to share photos with you thru Grupin", @"link": urlString, @"privacy": privacyString, @"to": idString};
+  
+  [FBRequestConnection startWithGraphPath:@"feed" parameters:params HTTPMethod:@"POST" completionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
+    if (error) {
+      NSLog(@"failed to post: %@", error);
+    }
+  }];
+  
 }
 
 - (void) updateSharingEventWithPhotoChanges:(NSArray*)newAssets contacts:(NSArray*)contacts onComplete:(void(^)(void))completionBlock {
@@ -506,6 +541,7 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
   article.eventStartDate = [self beginDate];
   article.eventEndDate = [self endDate];
   article.creationDate = [NSDate date];
+  article.sharedCode = [self generateRandomSharedCode];
   
   if (contacts.count) {
     for (NSDictionary *invitee in contacts) {
@@ -566,6 +602,11 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
   WAAppDelegate_iOS *appDelegate = (WAAppDelegate_iOS*)AppDelegate();
   [appDelegate.syncManager reload];
   
+  
+  NSArray *fbIDs = [[contacts valueForKey:@"fbid"] filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(NSString *evaluatedObject, NSDictionary *bindings) {
+    return evaluatedObject.length;
+  }]];
+  [self notifyFBFriends:fbIDs url:[self urlStringForSharingEvent:article]];
 }
 
 - (NSManagedObjectContext*)managedObjectContext {
@@ -735,6 +776,8 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
   [self dismissViewControllerAnimated:YES completion:nil];
 }
 
+
+
 - (void)actionButtonClicked:(id)sender
 {
   if (!FBSession.activeSession.isOpen) {
@@ -766,15 +809,40 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
   
   if (self.navigationController) {
     contactPicker.onNextHandler = ^(NSArray *results) {
+
       
       WARemoteInterface *ri = [WARemoteInterface sharedInterface];
       if (ri.userToken) {
-        [wSelf finishCreatingSharingEventForSharingTargets:results];
-
-        [WAOverlayBezel showSuccessBezelWithDuration:1.5 handler:^{
+        
+        if (![[[FBSession activeSession] permissions] containsObject:@"publish_stream"]) {
+          WAFBRequestViewController *fbRequest = [[WAFBRequestViewController alloc] init];
+          fbRequest.completionHandler = ^{
           
-          [wSelf.navigationController dismissViewControllerAnimated:YES completion:nil];
-        }];
+            [wSelf finishCreatingSharingEventForSharingTargets:results];
+            [WAOverlayBezel showSuccessBezelWithDuration:1.5 handler:^{
+              [wSelf.navigationController dismissViewControllerAnimated:YES completion:nil];
+            }];
+            
+          };
+          wSelf.navigationController.modalPresentationStyle = UIModalPresentationCurrentContext;
+          fbRequest.view.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.7];
+          fbRequest.view.alpha = 0;
+          [wSelf presentViewController:fbRequest animated:NO completion:nil];
+          [UIView animateWithDuration:0.5 animations:^{
+            fbRequest.view.alpha = 1;
+          }];
+          
+        } else {
+        
+          
+          [wSelf finishCreatingSharingEventForSharingTargets:results];
+
+          [WAOverlayBezel showSuccessBezelWithDuration:1.5 handler:^{
+          
+            [wSelf.navigationController dismissViewControllerAnimated:YES completion:nil];
+          }];
+          
+        }
       
       } else {
         
@@ -913,6 +981,22 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
   }
 }
 
+- (NSString *)locationName {
+  if (_locationName)
+    return _locationName;
+  
+  self.geoLocation = [[WAGeoLocation alloc] init];
+  [self.geoLocation identifyLocation:self.coordinate onComplete:^(NSArray *results) {
+    
+    _locationName = [results componentsJoinedByString:@","];
+    
+  } onError:^(NSError *error) {
+    NSLog(@"Unable to reversed query geo location for error: %@", error);
+  }];
+  
+  return nil;
+}
+
 - (NSDictionary*) userInfo {
 
   if (self.representingArticle) {
@@ -993,23 +1077,23 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
       [cell.imageView irUnbind:@"image"];
       [cell.imageView irBind:@"image" toObject:self.sortedImages[indexPath.row] keyPath:@"thumbnailImage" options:@{kIRBindingsAssignOnMainThreadOption: (id)kCFBooleanTrue}];
       
-      WAFile *file = self.sortedImages[indexPath.row];
-      cell.subtitleLabel.text = @"";
-      if (file.exif.gpsLongitude && file.exif.gpsLongitude) {
-
-        CLLocation *location = [[CLLocation alloc] initWithLatitude:file.exif.gpsLatitude.floatValue longitude:file.exif.gpsLongitude.floatValue];
-        CLGeocoder *geocoder = [[CLGeocoder alloc] init];
-        [geocoder reverseGeocodeLocation:location completionHandler:^(NSArray *placemarks, NSError *error) {
-          if (error) {
-            NSLog(@"Unable to query reversed geocoding for error: %@", error);
-          } else {
-            if (placemarks.count) {
-              cell.subtitleLabel.text = [placemarks[0] locality];
-            }
-          }
-        }];
-        
-      }
+//      WAFile *file = self.sortedImages[indexPath.row];
+//      cell.subtitleLabel.text = @"";
+//      if (file.exif.gpsLongitude && file.exif.gpsLongitude) {
+//
+//        CLLocation *location = [[CLLocation alloc] initWithLatitude:file.exif.gpsLatitude.floatValue longitude:file.exif.gpsLongitude.floatValue];
+//        CLGeocoder *geocoder = [[CLGeocoder alloc] init];
+//        [geocoder reverseGeocodeLocation:location completionHandler:^(NSArray *placemarks, NSError *error) {
+//          if (error) {
+//            NSLog(@"Unable to query reversed geocoding for error: %@", error);
+//          } else {
+//            if (placemarks.count) {
+//              cell.subtitleLabel.text = [placemarks[0] locality];
+//            }
+//          }
+//        }];
+      
+//      }
 
     } else {
       ALAsset *asset = self.allAssets[indexPath.row];
@@ -1071,14 +1155,8 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
 //    NSUInteger zoomLevel = 15; // hardcoded, but we may tune this in the future
     
     MKCoordinateRegion region = MKCoordinateRegionMake(self.coordinate, MKCoordinateSpanMake(0.03, 0.03));
-//    cover.mapView.region = [cover.mapView regionThatFits:region];
     cover.mapView.region = region;
-//    GMSCameraPosition *camera = [GMSCameraPosition cameraWithLatitude:self.coordinate.latitude
-//                                                            longitude:self.coordinate.longitude
-//                                                                 zoom:zoomLevel];
-//    
-//    [cover.mapView setCamera:camera];
-//    cover.mapView.myLocationEnabled = NO;
+    [self locationName];
     
     if (self.titleText) {
       cover.titleLabel.text = self.titleText;
@@ -1089,16 +1167,19 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
       } else
         cover.titleLabel.text = @"";
     
-      self.geoLocation = [[WAGeoLocation alloc] init];
-      [self.geoLocation identifyLocation:self.coordinate onComplete:^(NSArray *results) {
-        wSelf.locationName = [results componentsJoinedByString:@","];
-        if (cover.titleLabel.text.length == 0)
-          cover.titleLabel.text = [results componentsJoinedByString:@","];
-        else
-          cover.titleLabel.text = [NSString stringWithFormat:@"%@,%@", cover.titleLabel.text, [results componentsJoinedByString:@","]];
-      } onError:^(NSError *error) {
-        NSLog(@"Unable to identify location: %@", error);
+      [self irObserve:@"locationName" options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:nil withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
+        NSString *newLocationName = (NSString*)toValue;
+        dispatch_async(dispatch_get_main_queue(), ^{
+          
+          if (cover.titleLabel.text.length == 0)
+            cover.titleLabel.text = newLocationName;
+          else
+            cover.titleLabel.text = [NSString stringWithFormat:@"%@,%@", cover.titleLabel.text, newLocationName];
+          
+        });
+        
       }];
+      
     }
     
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
@@ -1275,7 +1356,9 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
 
 #pragma mark - WATimelineIndexDataSource
 - (NSInteger) numberOfIndexicsForIndexView:(WATimelineIndexView *)indexView {
-  return self.indexingLabels.count + 2;
+  if (self.indexingLabels.count == 0)
+    return 2;
+  return self.indexingLabels.count+1;
 }
 
 - (WATimelineIndexLabel*) labelForIndex:(NSInteger)index inIndexView:(WATimelineIndexView *)indexView {
@@ -1284,15 +1367,24 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
   
   NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
   formatter = [[NSDateFormatter alloc] init];
-  formatter.dateStyle = NSDateFormatterNoStyle;
-  formatter.timeStyle = NSDateFormatterShortStyle;
+  [formatter setDateFormat:@"h a"];
 
   if (index == 0) {
     label.relativePercent = 0.01f;
-    label.text = [formatter stringFromDate:self.beginDate];
-  } else if (index == (self.indexingLabels.count + 1)) {
-    label.relativePercent = 99.0f;
-    label.text = [formatter stringFromDate:self.endDate];
+    if (self.indexingLabels.count) {
+      NSDictionary *dict = self.indexingLabels[0];
+      label.text = [NSString stringWithFormat:@"%@, %@", dict[@"name"], [formatter stringFromDate:self.beginDate]];
+    } else {
+      label.text = [formatter stringFromDate:self.beginDate];
+    }
+  } else if (index == (self.indexingLabels.count) || ((self.indexingLabels.count == 0) && (index == 1) )) {
+    label.relativePercent = .99f;
+    if (self.indexingLabels.count) {
+      NSDictionary *dict = [self.indexingLabels lastObject];
+      label.text = [NSString stringWithFormat:@"%@, %@", dict[@"name"], [formatter stringFromDate:self.endDate]];
+    } else {
+      label.text = [formatter stringFromDate:self.endDate];
+    }
   } else {
     NSTimeInterval timeIntervalBegin = [self.beginDate timeIntervalSince1970];
     NSTimeInterval timeIntervalEnd = [self.endDate timeIntervalSince1970];
@@ -1302,7 +1394,7 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
     if (labelTime < timeIntervalBegin)
       label.relativePercent = 0.02f;
     else if (labelTime > timeIntervalEnd)
-      label.relativePercent = 98.0f;
+      label.relativePercent = .98f;
     else
       label.relativePercent = (labelTime - timeIntervalBegin) / (timeIntervalEnd - timeIntervalBegin);
     label.text = dict[@"name"];

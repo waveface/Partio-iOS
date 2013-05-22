@@ -27,6 +27,9 @@
   NSMutableDictionary *transformedRepresentation = [NSMutableDictionary dictionaryWithDictionary:incomingRepresentation];
   
   NSNumber *(^numberFromArray)(NSArray *array) = ^(NSArray *array) {
+    if ([array isKindOfClass:[NSNull class]])
+      return [NSNumber numberWithInteger:0];
+    
     if (array.count != 2)
       return [NSNumber numberWithInteger:0];
     return [NSNumber numberWithFloat:(float)([array[0] floatValue]/[array[1] floatValue])];

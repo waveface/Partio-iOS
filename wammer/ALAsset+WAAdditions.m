@@ -60,6 +60,7 @@
     __weak ALAsset *wSelf = self;
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
       [wSelf makeThumbnailWithOptions:WAThumbnailTypeSmall completeBlock:^(UIImage *image) {
+
         
         NSData *data = UIImageJPEGRepresentation(image, 0.85f);
         [wSelf willChangeValueForKey:@"cachedPresentableImage"];

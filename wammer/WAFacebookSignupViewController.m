@@ -72,7 +72,7 @@
   }
   
   [FBSession
-   openActiveSessionWithReadPermissions:@[@"email", @"user_photos", @"user_videos", @"user_notes", @"user_status", @"user_likes", @"read_stream", @"friends_photos", @"friends_videos", @"friends_status", @"friends_notes", @"friends_likes"]
+   openActiveSessionWithReadPermissions:@[@"email", @"user_photos", @"user_status", @"read_stream", @"friends_photos", @"friends_status"]
    allowLoginUI:YES
    completionHandler:^(FBSession *session, FBSessionState status, NSError *error) {
      
