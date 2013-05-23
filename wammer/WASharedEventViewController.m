@@ -108,7 +108,6 @@ static NSString * const kWASharedEventViewController_CoachMarks = @"kWASharedEve
   _objectChanges = [[NSMutableArray alloc] init];
 }
 
-
 - (void)viewDidAppear:(BOOL)animated
 {
   [super viewDidAppear:animated];
@@ -143,6 +142,23 @@ static NSString * const kWASharedEventViewController_CoachMarks = @"kWASharedEve
     [[NSUserDefaults standardUserDefaults] synchronize];
   }
   
+  if (self.requestedToDisplayArticleID) {
+    WAArticle *displayedArticle = nil;
+    for (NSInteger i = 0; i < [self.eventFetchedResultsController.sections[0] numberOfObjects]; i ++) {
+      WAArticle *aArticle = [self.eventFetchedResultsController objectAtIndexPath:[NSIndexPath indexPathForRow:i inSection:0]];
+      if ([aArticle.identifier isEqualToString:self.requestedToDisplayArticleID]) {
+        displayedArticle = aArticle;
+        break;
+      }
+    }
+
+    if (displayedArticle) {
+      WAPhotoTimelineViewController *ptVC = [[WAPhotoTimelineViewController alloc] initWithArticleID:[displayedArticle objectID]];
+      [self.navigationController pushViewController:ptVC animated:YES];
+    }
+    self.requestedToDisplayArticleID = nil;
+  }
+
 }
 
 - (void)didReceiveMemoryWarning

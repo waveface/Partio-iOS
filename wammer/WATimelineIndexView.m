@@ -121,11 +121,16 @@
       if (!aLabel)
         continue;
       [self.indexics addObject:@(aLabel.relativePercent)];
-      aLabel.backgroundColor = [UIColor blackColor];
+      aLabel.backgroundColor = [UIColor colorWithRed:0.168 green:0.168 blue:0.168 alpha:0.8];
       aLabel.textColor = [UIColor whiteColor];
       aLabel.textAlignment = NSTextAlignmentCenter;
       aLabel.frame = CGRectMake(-200, 0, 195, 22);
       aLabel.layer.cornerRadius = 3;
+      aLabel.layer.shadowOffset = CGSizeMake(0, 0);
+      aLabel.layer.shadowRadius = 3;
+      aLabel.layer.shadowOpacity = 0.4;
+      aLabel.layer.shadowColor = [UIColor blackColor].CGColor;
+      aLabel.font = [UIFont fontWithName:@"OpenSans-Semibold" size:12];
       [aLabel sizeToFit];
       [self addSubview:aLabel];
       CGRect newFrame = aLabel.frame;

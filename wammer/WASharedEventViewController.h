@@ -12,6 +12,8 @@
 
 - (IBAction)shareNewEventFromHighlight:(id)sender;
 
+@property (nonatomic, strong) NSString *requestedToDisplayArticleID;
+
 @end
 
 

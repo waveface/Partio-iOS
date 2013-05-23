@@ -41,7 +41,7 @@ static NSString * const kWAFetchingAnimation = @"WAFetchingAnimation";
   if (self) {
     
     self.windowLevel = UIWindowLevelStatusBar + 0.5;
-    self.backgroundColor = [UIColor colorWithRed:0.168 green:0.168 blue:0.168 alpha:1];
+    self.backgroundColor = [UIColor blackColor];
     self.hidden = NO;
     self.opaque = NO;
 	self.isSyncingComplete = NO;
@@ -68,7 +68,7 @@ static NSString * const kWAFetchingAnimation = @"WAFetchingAnimation";
     [self addConstraint:[NSLayoutConstraint constraintWithItem:self.syncingLabel attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeCenterX multiplier:1.0 constant:0]];
     [self addConstraint:[NSLayoutConstraint constraintWithItem:self.fetchingAnimation attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeCenterY multiplier:1.0 constant:0]];
     
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:[fetchingStatus(14)]-3-[syncingStatus(100)]" options:NSLayoutFormatDirectionLeadingToTrailing metrics:nil views:viewDic]];
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:[fetchingStatus(14)]-3-[syncingStatus(140)]" options:NSLayoutFormatDirectionLeadingToTrailing metrics:nil views:viewDic]];
     [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[fetchingStatus(14)]" options:NSLayoutFormatDirectionLeadingToTrailing metrics:nil views:viewDic]];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didChangeStatusBarFrame:) name:UIApplicationDidChangeStatusBarFrameNotification object:nil];

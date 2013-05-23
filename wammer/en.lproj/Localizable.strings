@@ -330,6 +330,9 @@
 /* Title for alert view asking if user wants to disconnect her Facebook account */
 "FACEBOOK_DISCONNECT_REQUEST_TITLE" = "Confirm to stop importing from Facebook.";
 
+/* No comment provided by engineer. */
+"FB_INVITION_MESSAGE" = "";
+
 /* Display title for a fetch request working against all the articles */
 "FETCH_REQUEST_ALL_ARTICLES_DISPLAY_TITLE" = "All (My Days)";
 
@@ -788,6 +791,12 @@
 
 /* Class = "IBUITextField"; placeholder = "INPUT_TITLE_PLACEHOLDER"; ObjectID = "5"; */
 "INPUT_TITLE_PLACEHOLDER" = "Give a title for your event ...";
+
+/* Class = "IBUIButton"; normalTitle = "FB_PERMISSION_CONFIRM"; ObjectID = "8"; */
+"FB_PERMISSION_CONFIRM" = "Ok, let's do it";
+
+/* Class = "IBUILabel"; text = "DESCRIPTION_WHY_WRITE_PERMISSION"; ObjectID = "9"; */
+"DESCRIPTION_WHY_WRITE_PERMISSION" = "To notify your contacts about the events you share with them, we will publish a private post on your wall. The private posts are only seen by you and members in this event. But to do that, please give us the publish permission of Facebook.";
 
 /* Class = "IBUILabel"; text = "PHOTO_UPLOAD_SWITCH_TITLE"; ObjectID = "749-zj-beb"; */
 "PHOTO_UPLOAD_SWITCH_TITLE" = "Import Camera Roll";

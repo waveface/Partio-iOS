@@ -6,7 +6,8 @@
 //  Copyright (c) 2013 Waveface. All rights reserved.
 //
 
-#import "WAFacebookLoginViewController.h"
+#import "WAFBSigninViewController.h"
+#import "WADefines.h"
 #import "UIKit+IRAdditions.h"
 #import "WAOverlayBezel.h"
 #import "WARemoteInterface.h"
@@ -14,11 +15,11 @@
 #import <FacebookSDK/FacebookSDK.h>
 #import <Accounts/Accounts.h>
 
-@interface WAFacebookLoginViewController ()
+@interface WAFBSigninViewController ()
 @property (nonatomic, copy) void (^completionHandler)(NSError *error);
 @end
 
-@implementation WAFacebookLoginViewController
+@implementation WAFBSigninViewController
 
 - (id) initWithCompletionHandler:(void(^)(NSError *error))completion {
   self = [super initWithNibName:nil bundle:nil];
@@ -57,7 +58,7 @@
   
   
   [FBSession
-   openActiveSessionWithReadPermissions:@[@"email", @"user_photos", @"user_videos", @"user_notes", @"user_status", @"user_likes", @"read_stream", @"friends_photos", @"friends_videos", @"friends_status", @"friends_notes", @"friends_likes"]
+   openActiveSessionWithReadPermissions:@[@"email", @"user_photos", @"user_status", @"read_stream", @"friends_photos", @"friends_status"]
    allowLoginUI:YES
    completionHandler:^(FBSession *session, FBSessionState status, NSError *error) {
      
@@ -120,7 +121,7 @@
         });
         
       }];
-     
+  
    }];
   
 }
@@ -136,7 +137,7 @@
 }
 
 - (void) viewDidAppear:(BOOL)animated {
-  __weak WAFacebookLoginViewController *wSelf = self;
+  __weak WAFBSigninViewController *wSelf = self;
   [[self class] backgroundLoginWithFacebookIDWithCompleteHandler:^(NSError *error) {
     wSelf.completionHandler(error);
   }];

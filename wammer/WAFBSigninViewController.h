@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface WAFacebookLoginViewController : UIViewController
+@interface WAFBSigninViewController : UIViewController
 
 @property (nonatomic, strong) IBOutlet UIImageView *imageView;
 
