@@ -347,7 +347,9 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
 - (NSString*) urlStringForSharingEvent:(WAArticle*)article {
   
   NSString *webRemoteEndpointURLString = [[NSUserDefaults standardUserDefaults] stringForKey:kWARemoteEndpointWebURL];
-  return [NSString stringWithFormat:@"%@/%@", [webRemoteEndpointURLString stringByAppendingPathComponent:@"partio"], article.sharedCode];
+  NSURL *webRemoteEndpointURL = [NSURL URLWithString:webRemoteEndpointURLString];
+  NSURL *grupinEndpointURL = [[webRemoteEndpointURL URLByAppendingPathComponent:@"partio"] URLByAppendingPathComponent:article.sharedCode];
+  return [grupinEndpointURL absoluteString];
   
 }
 

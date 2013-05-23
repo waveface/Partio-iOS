@@ -496,6 +496,7 @@ extern CFAbsoluteTime StartTime;
             } onFailure:^(NSError *error) {
               
             }];
+            wSelf.notificationPayloads = nil;
           }
         } else {
           WANavigationController *navVC = [[WANavigationController alloc] initWithRootViewController:sharedEventsVC];
