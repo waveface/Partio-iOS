@@ -23,6 +23,7 @@
 @property (nonatomic, weak) IBOutlet UITextField *textField;
 @property (nonatomic, weak) IBOutlet UITableView *tableView;
 @property (nonatomic, weak) IBOutlet UIToolbar *toolbar;
+@property (nonatomic, weak) IBOutlet UIActivityIndicatorView *spinner;
 
 @property (nonatomic, strong) NSMutableArray *contacts;
 @property (nonatomic, strong) UITapGestureRecognizer *tapGesture;
@@ -81,6 +82,17 @@ static NSString *kDefaultImageName = @"FacebookSDKResources.bundle/FBFriendPicke
 - (void)viewDidLoad
 {
   [super viewDidLoad];
+  
+  if (!self.spinner) {
+    UIActivityIndicatorView *spinner = [[UIActivityIndicatorView alloc]
+                                         initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    spinner.hidesWhenStopped = YES;
+    // We want user to be able to scroll while we load.
+    spinner.userInteractionEnabled = NO;
+    
+    self.spinner = spinner;
+    [self.canvasView addSubview:spinner];
+  }
   
   BOOL coachmarkShown = [[NSUserDefaults standardUserDefaults] boolForKey:kWAFBFriendPickerViewController_CoachMarks];
   if (!coachmarkShown) {
