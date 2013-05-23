@@ -12,7 +12,6 @@
 #import "WAFileExif+WAAdditions.h"
 #import "WAPhotoDay.h"
 #import "WADefines.h"
-#import "GAI.h"
 #import "NSDate+WAAdditions.h"
 
 #import <MobileCoreServices/MobileCoreServices.h>

@@ -169,6 +169,7 @@ static CGFloat const kWAFileLargeImageSideLength = 2048;
   
   // draw image
   CGImageRef outputCGImage = [context createCGImage:outputImage fromRect:[outputImage extent]];
+  outputImage = nil;
   
   UIImage *returnedImage = [UIImage imageWithCGImage:outputCGImage scale:1.0 orientation:UIImageOrientationUp];
   

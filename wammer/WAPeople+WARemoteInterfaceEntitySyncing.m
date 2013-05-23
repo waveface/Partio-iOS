@@ -40,6 +40,7 @@
                    @"avatarURL", @"avatar_url",
                    @"avatarURL", @"avatar",
                    @"identifier", @"user_id",
+                   @"fbID", @"fbid",
                    nil];
 		
 	});

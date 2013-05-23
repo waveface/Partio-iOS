@@ -189,7 +189,6 @@
 		7DA309311648BC6900B6FABD /* WAPhotoStreamViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7DA3092C1648BC6900B6FABD /* WAPhotoStreamViewController.xib */; };
 		7DA309321648BC6900B6FABD /* WAPhotoStreamViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7DA3092C1648BC6900B6FABD /* WAPhotoStreamViewController.xib */; };
 		7DA474461643C16900EC415C /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF73A69713D6E08100D54EC6 /* CoreData.framework */; };
-		7DAD18A21626A73B00F87495 /* libGoogleAnalytics.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7DAD18A11626A73B00F87495 /* libGoogleAnalytics.a */; };
 		7DB78A631649005E00E165E9 /* WAPhotoStreamViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DB78A621649005E00E165E9 /* WAPhotoStreamViewController.m */; };
 		7DB78A68164900E400E165E9 /* WAPhotoStreamViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DB78A67164900E400E165E9 /* WAPhotoStreamViewCell.m */; };
 		7DB78A6C164900FA00E165E9 /* WAPhotoStreamViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7DB78A6B164900FA00E165E9 /* WAPhotoStreamViewCell.xib */; };
@@ -233,6 +232,8 @@
 		800E4FCE1671DD0C00F50E0B /* WATimelineViewCell-Checkin.xib in Resources */ = {isa = PBXBuildFile; fileRef = 800E4FCD1671DD0C00F50E0B /* WATimelineViewCell-Checkin.xib */; };
 		800F240E16F2D3DC000157C1 /* WAFile.m in Sources */ = {isa = PBXBuildFile; fileRef = 800F240D16F2D3DC000157C1 /* WAFile.m */; };
 		8012DB4F16D4C1150002B163 /* UIViewController+WAAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 8012DB4E16D4C1150002B163 /* UIViewController+WAAdditions.m */; };
+		801943C0174B293800AE7AEA /* WAFBRequestViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 801943BE174B293800AE7AEA /* WAFBRequestViewController.m */; };
+		801943C1174B293800AE7AEA /* WAFBRequestViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 801943BF174B293800AE7AEA /* WAFBRequestViewController.xib */; };
 		801A1B711743309400846168 /* WAPartioSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 801A1B6F1743309400846168 /* WAPartioSettingsViewController.m */; };
 		801A1B721743309400846168 /* WAPartioSettingsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 801A1B701743309400846168 /* WAPartioSettingsViewController.xib */; };
 		801A1B7517435F2500846168 /* about.png in Resources */ = {isa = PBXBuildFile; fileRef = 801A1B7317435F2500846168 /* about.png */; };
@@ -338,8 +339,8 @@
 		809A1757171D246C000AF6ED /* WAPartioSignupViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 809A1755171D246C000AF6ED /* WAPartioSignupViewController.xib */; };
 		809A175E171D4EBC000AF6ED /* WATranslucentToolbar.m in Sources */ = {isa = PBXBuildFile; fileRef = 809A175D171D4EBC000AF6ED /* WATranslucentToolbar.m */; };
 		809A1CE51716DBF1004083BA /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 809A1CE41716DBF1004083BA /* Default-568h@2x.png */; };
-		809A1CEB1716F2E9004083BA /* WAFacebookLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 809A1CE91716F2E9004083BA /* WAFacebookLoginViewController.m */; };
-		809A1CEC1716F2E9004083BA /* WAFacebookLoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 809A1CEA1716F2E9004083BA /* WAFacebookLoginViewController.xib */; };
+		809A1CEB1716F2E9004083BA /* WAFBSigninViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 809A1CE91716F2E9004083BA /* WAFBSigninViewController.m */; };
+		809A1CEC1716F2E9004083BA /* WAFBSigninViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 809A1CEA1716F2E9004083BA /* WAFBSigninViewController.xib */; };
 		809C6D26160583A00016E196 /* IIViewDeckController.m in Sources */ = {isa = PBXBuildFile; fileRef = 809C6D23160583A00016E196 /* IIViewDeckController.m */; };
 		809C6D27160583A00016E196 /* WrapController.m in Sources */ = {isa = PBXBuildFile; fileRef = 809C6D25160583A00016E196 /* WrapController.m */; };
 		809C6D2B1605845A0016E196 /* WASlidingMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 809C6D291605845A0016E196 /* WASlidingMenuViewController.m */; };
@@ -436,6 +437,7 @@
 		80DC6707174601C0000DC8E9 /* WAArticle.m in Sources */ = {isa = PBXBuildFile; fileRef = 80DC6706174601C0000DC8E9 /* WAArticle.m */; };
 		80DC670A17461464000DC8E9 /* fbicon.png in Resources */ = {isa = PBXBuildFile; fileRef = 80DC670817461462000DC8E9 /* fbicon.png */; };
 		80DC670B17461464000DC8E9 /* fbicon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 80DC670917461463000DC8E9 /* fbicon@2x.png */; };
+		80E05A21174C9C0F000FB233 /* libGoogleAnalytics.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 80E05A20174C9C0F000FB233 /* libGoogleAnalytics.a */; };
 		80E5173C1670F3B200E1C3AD /* WALocation.m in Sources */ = {isa = PBXBuildFile; fileRef = 80E5173B1670F3B200E1C3AD /* WALocation.m */; };
 		80E7E586172FB5E1003E525E /* WAPhotoTimelineGalleryLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 80E7E585172FB5E1003E525E /* WAPhotoTimelineGalleryLayout.m */; };
 		80E7E596172FBAC7003E525E /* WAPhotoGalleryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 80E7E595172FBAC7003E525E /* WAPhotoGalleryCell.m */; };
@@ -1206,12 +1208,6 @@
 		7D9B1D8E162BB1E8000E5350 /* AdSupport.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
 		7D9B1D90162BB1F6000E5350 /* Social.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
 		7DA3092C1648BC6900B6FABD /* WAPhotoStreamViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WAPhotoStreamViewController.xib; sourceTree = "<group>"; };
-		7DAD189C1626A73B00F87495 /* GAI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GAI.h; path = wammer/Libraries/GAI.h; sourceTree = SOURCE_ROOT; };
-		7DAD189D1626A73B00F87495 /* GAITrackedViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GAITrackedViewController.h; path = wammer/Libraries/GAITrackedViewController.h; sourceTree = SOURCE_ROOT; };
-		7DAD189E1626A73B00F87495 /* GAITracker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GAITracker.h; path = wammer/Libraries/GAITracker.h; sourceTree = SOURCE_ROOT; };
-		7DAD189F1626A73B00F87495 /* GAITransaction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GAITransaction.h; path = wammer/Libraries/GAITransaction.h; sourceTree = SOURCE_ROOT; };
-		7DAD18A01626A73B00F87495 /* GAITransactionItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GAITransactionItem.h; path = wammer/Libraries/GAITransactionItem.h; sourceTree = SOURCE_ROOT; };
-		7DAD18A11626A73B00F87495 /* libGoogleAnalytics.a */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = archive.ar; name = libGoogleAnalytics.a; path = wammer/Libraries/libGoogleAnalytics.a; sourceTree = SOURCE_ROOT; };
 		7DB78A611649005E00E165E9 /* WAPhotoStreamViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAPhotoStreamViewController.h; sourceTree = "<group>"; };
 		7DB78A621649005E00E165E9 /* WAPhotoStreamViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAPhotoStreamViewController.m; sourceTree = "<group>"; };
 		7DB78A66164900E400E165E9 /* WAPhotoStreamViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAPhotoStreamViewCell.h; sourceTree = "<group>"; };
@@ -1267,6 +1263,9 @@
 		800F240D16F2D3DC000157C1 /* WAFile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAFile.m; sourceTree = "<group>"; };
 		8012DB4D16D4C1150002B163 /* UIViewController+WAAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+WAAdditions.h"; sourceTree = "<group>"; };
 		8012DB4E16D4C1150002B163 /* UIViewController+WAAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+WAAdditions.m"; sourceTree = "<group>"; };
+		801943BD174B293800AE7AEA /* WAFBRequestViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WAFBRequestViewController.h; path = wammer/WAFBRequestViewController.h; sourceTree = "<group>"; };
+		801943BE174B293800AE7AEA /* WAFBRequestViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WAFBRequestViewController.m; path = wammer/WAFBRequestViewController.m; sourceTree = "<group>"; };
+		801943BF174B293800AE7AEA /* WAFBRequestViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = WAFBRequestViewController.xib; path = wammer/WAFBRequestViewController.xib; sourceTree = "<group>"; };
 		801A1B6E1743309400846168 /* WAPartioSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAPartioSettingsViewController.h; sourceTree = "<group>"; };
 		801A1B6F1743309400846168 /* WAPartioSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAPartioSettingsViewController.m; sourceTree = "<group>"; };
 		801A1B701743309400846168 /* WAPartioSettingsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WAPartioSettingsViewController.xib; sourceTree = "<group>"; };
@@ -1414,9 +1413,9 @@
 		809A175C171D4EBC000AF6ED /* WATranslucentToolbar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WATranslucentToolbar.h; sourceTree = "<group>"; };
 		809A175D171D4EBC000AF6ED /* WATranslucentToolbar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WATranslucentToolbar.m; sourceTree = "<group>"; };
 		809A1CE41716DBF1004083BA /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default-568h@2x.png"; path = "Resources/Default-568h@2x.png"; sourceTree = "<group>"; };
-		809A1CE81716F2E9004083BA /* WAFacebookLoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WAFacebookLoginViewController.h; path = wammer/WAFacebookLoginViewController.h; sourceTree = "<group>"; };
-		809A1CE91716F2E9004083BA /* WAFacebookLoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WAFacebookLoginViewController.m; path = wammer/WAFacebookLoginViewController.m; sourceTree = "<group>"; };
-		809A1CEA1716F2E9004083BA /* WAFacebookLoginViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = WAFacebookLoginViewController.xib; path = wammer/WAFacebookLoginViewController.xib; sourceTree = "<group>"; };
+		809A1CE81716F2E9004083BA /* WAFBSigninViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WAFBSigninViewController.h; path = wammer/WAFBSigninViewController.h; sourceTree = "<group>"; };
+		809A1CE91716F2E9004083BA /* WAFBSigninViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WAFBSigninViewController.m; path = wammer/WAFBSigninViewController.m; sourceTree = "<group>"; };
+		809A1CEA1716F2E9004083BA /* WAFBSigninViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = WAFBSigninViewController.xib; path = wammer/WAFBSigninViewController.xib; sourceTree = "<group>"; };
 		809C6D22160583A00016E196 /* IIViewDeckController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IIViewDeckController.h; path = external/ViewDeck/ViewDeck/IIViewDeckController.h; sourceTree = "<group>"; };
 		809C6D23160583A00016E196 /* IIViewDeckController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = IIViewDeckController.m; path = external/ViewDeck/ViewDeck/IIViewDeckController.m; sourceTree = "<group>"; };
 		809C6D24160583A00016E196 /* WrapController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WrapController.h; path = external/ViewDeck/ViewDeck/WrapController.h; sourceTree = "<group>"; };
@@ -1550,6 +1549,12 @@
 		80DC6706174601C0000DC8E9 /* WAArticle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAArticle.m; sourceTree = "<group>"; };
 		80DC670817461462000DC8E9 /* fbicon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = fbicon.png; path = Resources/fbicon.png; sourceTree = "<group>"; };
 		80DC670917461463000DC8E9 /* fbicon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "fbicon@2x.png"; path = "Resources/fbicon@2x.png"; sourceTree = "<group>"; };
+		80E05A1B174C9BFB000FB233 /* GAI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GAI.h; path = wammer/Libraries/GoogleAnalytics/Library/GAI.h; sourceTree = "<group>"; };
+		80E05A1C174C9BFB000FB233 /* GAITrackedViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GAITrackedViewController.h; path = wammer/Libraries/GoogleAnalytics/Library/GAITrackedViewController.h; sourceTree = "<group>"; };
+		80E05A1D174C9BFB000FB233 /* GAITracker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GAITracker.h; path = wammer/Libraries/GoogleAnalytics/Library/GAITracker.h; sourceTree = "<group>"; };
+		80E05A1E174C9BFB000FB233 /* GAITransaction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GAITransaction.h; path = wammer/Libraries/GoogleAnalytics/Library/GAITransaction.h; sourceTree = "<group>"; };
+		80E05A1F174C9BFB000FB233 /* GAITransactionItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GAITransactionItem.h; path = wammer/Libraries/GoogleAnalytics/Library/GAITransactionItem.h; sourceTree = "<group>"; };
+		80E05A20174C9C0F000FB233 /* libGoogleAnalytics.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libGoogleAnalytics.a; path = wammer/Libraries/GoogleAnalytics/Library/libGoogleAnalytics.a; sourceTree = "<group>"; };
 		80E5173A1670F3B200E1C3AD /* WALocation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WALocation.h; sourceTree = "<group>"; };
 		80E5173B1670F3B200E1C3AD /* WALocation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WALocation.m; sourceTree = "<group>"; };
 		80E7E584172FB5E1003E525E /* WAPhotoTimelineGalleryLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WAPhotoTimelineGalleryLayout.h; path = wammer/WAPhotoTimelineGalleryLayout.h; sourceTree = "<group>"; };
@@ -2121,10 +2126,10 @@
 				FFB3C17A145E9A7900ED7A56 /* libIRTextAttributor.a in Frameworks */,
 				FFD4F93C157E084E0027BF3F /* libIRObjectQueue.a in Frameworks */,
 				FFB117C6147F8B3D002094E5 /* libIRRecurrenceMachine.a in Frameworks */,
-				7DAD18A21626A73B00F87495 /* libGoogleAnalytics.a in Frameworks */,
 				94EB57761411451780C24560 /* libPods.a in Frameworks */,
 				4BAD7586164DEDA600ADDE56 /* libsqlite3.dylib in Frameworks */,
 				80B0A38716D75BF100E391D2 /* GoogleMaps.framework in Frameworks */,
+				80E05A21174C9C0F000FB233 /* libGoogleAnalytics.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2567,6 +2572,9 @@
 				809A1753171D246C000AF6ED /* WAPartioSignupViewController.h */,
 				809A1754171D246C000AF6ED /* WAPartioSignupViewController.m */,
 				809A1755171D246C000AF6ED /* WAPartioSignupViewController.xib */,
+				801943BD174B293800AE7AEA /* WAFBRequestViewController.h */,
+				801943BE174B293800AE7AEA /* WAFBRequestViewController.m */,
+				801943BF174B293800AE7AEA /* WAFBRequestViewController.xib */,
 			);
 			name = "New Event View";
 			sourceTree = "<group>";
@@ -2776,9 +2784,9 @@
 				8095504E17166FE100BEDDE0 /* WAFacebookSignupViewController.m */,
 				80C768E517105CFC000F10A8 /* WAPartioWelcomeViewController.h */,
 				80C768E617105CFC000F10A8 /* WAPartioWelcomeViewController.m */,
-				809A1CE81716F2E9004083BA /* WAFacebookLoginViewController.h */,
-				809A1CE91716F2E9004083BA /* WAFacebookLoginViewController.m */,
-				809A1CEA1716F2E9004083BA /* WAFacebookLoginViewController.xib */,
+				809A1CE81716F2E9004083BA /* WAFBSigninViewController.h */,
+				809A1CE91716F2E9004083BA /* WAFBSigninViewController.m */,
+				809A1CEA1716F2E9004083BA /* WAFBSigninViewController.xib */,
 			);
 			name = "Partio Welcome";
 			sourceTree = "<group>";
@@ -2807,6 +2815,19 @@
 				80DAA57C16BA7C2400A4E352 /* TWSignedRequest.m */,
 			);
 			name = TwitterReverseAuth;
+			sourceTree = "<group>";
+		};
+		80E05A0D174C9BEA000FB233 /* GoogleAnalytics */ = {
+			isa = PBXGroup;
+			children = (
+				80E05A20174C9C0F000FB233 /* libGoogleAnalytics.a */,
+				80E05A1B174C9BFB000FB233 /* GAI.h */,
+				80E05A1C174C9BFB000FB233 /* GAITrackedViewController.h */,
+				80E05A1D174C9BFB000FB233 /* GAITracker.h */,
+				80E05A1E174C9BFB000FB233 /* GAITransaction.h */,
+				80E05A1F174C9BFB000FB233 /* GAITransactionItem.h */,
+			);
+			name = GoogleAnalytics;
 			sourceTree = "<group>";
 		};
 		80F957B916B8D3DC005121A1 /* Sliding Menu */ = {
@@ -3241,7 +3262,7 @@
 				FF73A59E13D6DC6A00D54EC6 /* IRWebAPIKit.xcodeproj */,
 				DE2BBDD616761AC100EEF922 /* Kal.xcodeproj */,
 				7DC3AC0D1642203C009A8EA7 /* SocketRocket.xcodeproj */,
-				FFC9D96614FF28B2004197EC /* Google Analytics SDK */,
+				80E05A0D174C9BEA000FB233 /* GoogleAnalytics */,
 				FFFDEFB414211D5C0083BEFB /* iOS */,
 				FF59F87914419581005508FC /* OSX */,
 				80DAA56A16BA7BD100A4E352 /* TwitterReverseAuth */,
@@ -3728,20 +3749,6 @@
 				FFC648441445E8D700593E5E /* Credits.rtf */,
 			);
 			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
-		FFC9D96614FF28B2004197EC /* Google Analytics SDK */ = {
-			isa = PBXGroup;
-			children = (
-				7DAD189C1626A73B00F87495 /* GAI.h */,
-				7DAD189D1626A73B00F87495 /* GAITrackedViewController.h */,
-				7DAD189E1626A73B00F87495 /* GAITracker.h */,
-				7DAD189F1626A73B00F87495 /* GAITransaction.h */,
-				7DAD18A01626A73B00F87495 /* GAITransactionItem.h */,
-				7DAD18A11626A73B00F87495 /* libGoogleAnalytics.a */,
-			);
-			name = "Google Analytics SDK";
-			path = external/GoogleAnalyticsSDK;
 			sourceTree = "<group>";
 		};
 		FFCC41FB1553C6F80063DEB8 /* User Interface Additions */ = {
@@ -4412,7 +4419,7 @@
 				808A33811716AC3F00CF5C8D /* Checked.png in Resources */,
 				808A33821716AC3F00CF5C8D /* Checked@2x.png in Resources */,
 				809A1CE51716DBF1004083BA /* Default-568h@2x.png in Resources */,
-				809A1CEC1716F2E9004083BA /* WAFacebookLoginViewController.xib in Resources */,
+				809A1CEC1716F2E9004083BA /* WAFBSigninViewController.xib in Resources */,
 				800D2E04171803BD0028F47F /* Default.png in Resources */,
 				800D2E06171803CF0028F47F /* Default@2x.png in Resources */,
 				800D2E0A171804420028F47F /* PartioLogin-568h@2x.png in Resources */,
@@ -4475,6 +4482,7 @@
 				80DC66FD1745DF64000DC8E9 /* watermarkcolor@2x.png in Resources */,
 				80DC670A17461464000DC8E9 /* fbicon.png in Resources */,
 				80DC670B17461464000DC8E9 /* fbicon@2x.png in Resources */,
+				801943C1174B293800AE7AEA /* WAFBRequestViewController.xib in Resources */,
 				DE19E3AD174A04C5008659BA /* WAFBFriendPickerViewController.xib in Resources */,
 				DE19E3AF174A04C5008659BA /* WAFBGraphObjectTableCell.xib in Resources */,
 			);
@@ -4977,7 +4985,7 @@
 				8028355D1713046100E0A187 /* WADayPhotoPickerSectionHeaderView.m in Sources */,
 				8095504F17166FE100BEDDE0 /* WAFacebookSignupViewController.m in Sources */,
 				808A33681716979D00CF5C8D /* WAFetchManager+RemoteArticlesFetch.m in Sources */,
-				809A1CEB1716F2E9004083BA /* WAFacebookLoginViewController.m in Sources */,
+				809A1CEB1716F2E9004083BA /* WAFBSigninViewController.m in Sources */,
 				80C9F3871719B761003E7C6E /* WAPartioTableViewSectionHeaderView.m in Sources */,
 				DE0870DF171CFDD200FA2A5E /* WASharedEventViewCell.m in Sources */,
 				DE0870E1171CFDD200FA2A5E /* WASpotlightSlideFlowLayout.m in Sources */,
@@ -5000,6 +5008,7 @@
 				80BEBFB81744BF4C00E4E694 /* WAPeople.m in Sources */,
 				80DC66EA1745D05B000DC8E9 /* WAEventTitleInputView.m in Sources */,
 				80DC6707174601C0000DC8E9 /* WAArticle.m in Sources */,
+				801943C0174B293800AE7AEA /* WAFBRequestViewController.m in Sources */,
 				DE19E3AC174A04C5008659BA /* WAFBFriendPickerViewController.m in Sources */,
 				DE19E3AE174A04C5008659BA /* WAFBGraphObjectTableCell.m in Sources */,
 				DE19E3B0174A04C5008659BA /* WAFBGraphObjectTableDataSource.m in Sources */,
@@ -5197,6 +5206,7 @@
 					"\"$(SRCROOT)/wammer\"",
 					"\"$(SRCROOT)/wammer/Libraries\"",
 					"\"$(BUILT_PRODUCTS_DIR)\"/**",
+					"\"$(SRCROOT)/wammer/Libraries/GoogleAnalytics/Library\"",
 				);
 				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = (
@@ -5738,6 +5748,7 @@
 					"\"$(SRCROOT)/wammer\"",
 					"\"$(SRCROOT)/wammer/Libraries\"",
 					"\"$(BUILT_PRODUCTS_DIR)\"/**",
+					"\"$(SRCROOT)/wammer/Libraries/GoogleAnalytics/Library\"",
 				);
 				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = (
@@ -5807,6 +5818,7 @@
 					"\"$(SRCROOT)/wammer\"",
 					"\"$(SRCROOT)/wammer/Libraries\"",
 					"\"$(BUILT_PRODUCTS_DIR)\"/**",
+					"\"$(SRCROOT)/wammer/Libraries/GoogleAnalytics/Library\"",
 				);
 				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = (

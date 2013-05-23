@@ -13,7 +13,6 @@
 #import "WAGoogleConnectSwitch.h"
 #import "WATwitterConnectSwitch.h"
 #import "WAFoursquareConnectSwitch.h"
-#import "GAI.h"
 
 @implementation WASnsConnectSwitch
 
