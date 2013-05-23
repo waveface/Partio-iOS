@@ -14,8 +14,8 @@
 @interface WAFBGraphObjectTableSelection()
 
 @property (nonatomic, retain) WAFBGraphObjectTableDataSource *dataSource;
-@property (nonatomic, retain) NSArray *selection;
 @property (nonatomic, strong) UITapGestureRecognizer *tapGuesture;
+@property (nonatomic, retain) NSArray *selection;
 
 - (void)selectItem:(FBGraphObject *)item
               cell:(UITableViewCell *)cell;
@@ -47,6 +47,17 @@ static NSString *indexKeyOfRecentUsedContacts = @"★";
   }
   
   return self;
+}
+
+- (void)selectItem:(FBGraphObject *)item
+{
+  if ([FBUtility graphObjectInArray:self.selection withSameIDAs:item] == nil) {
+    NSMutableArray *selection = [[NSMutableArray alloc] initWithArray:self.selection];
+    [selection addObject:item];
+    self.selection = selection;
+    
+  }
+  [self selectionChanged];
 }
 
 - (void)selectItem:(FBGraphObject *)item cell:(UITableViewCell *)cell
@@ -156,7 +167,7 @@ static NSString *indexKeyOfRecentUsedContacts = @"★";
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-  NSArray *storedFriendList = [[NSUserDefaults standardUserDefaults] arrayForKey:kFrenquentFriendList];
+  NSArray *storedFriendList = [[NSUserDefaults standardUserDefaults] arrayForKey:kFrequentFriendList];
   UILocalizedIndexedCollation *collation = [UILocalizedIndexedCollation currentCollation];
  
   if (storedFriendList.count) {
