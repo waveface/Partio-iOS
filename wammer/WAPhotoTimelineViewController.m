@@ -483,7 +483,7 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
 
 }
 
-- (void) finishCreatingSharingEventForSharingTargets:(NSArray *)contacts {
+- (void) finishCreatingSharingEventForSharingTargets:(NSArray *)contacts onComplete:(void(^)(WAArticle *createdArticle))completionHandle {
   
   NSDate *importTime = [NSDate date];
   
@@ -605,11 +605,15 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
   WAAppDelegate_iOS *appDelegate = (WAAppDelegate_iOS*)AppDelegate();
   [appDelegate.syncManager reload];
   
+  if (completionHandle) {
+    completionHandle(article);
+  }
+
+//  NSArray *fbIDs = [[contacts valueForKey:@"fbid"] filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(NSString *evaluatedObject, NSDictionary *bindings) {
+//    return evaluatedObject.length;
+//  }]];
+//  [self notifyFBFriends:fbIDs url:[self urlStringForSharingEvent:article]];
   
-  NSArray *fbIDs = [[contacts valueForKey:@"fbid"] filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(NSString *evaluatedObject, NSDictionary *bindings) {
-    return evaluatedObject.length;
-  }]];
-  [self notifyFBFriends:fbIDs url:[self urlStringForSharingEvent:article]];
 }
 
 - (NSManagedObjectContext*)managedObjectContext {
@@ -779,13 +783,11 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
   [self dismissViewControllerAnimated:YES completion:nil];
 }
 
-
-
 - (void)actionButtonClicked:(id)sender
 {
   if (!FBSession.activeSession.isOpen) {
     // if the session is closed, then we open it here, and establish a handler for state changes
-    [FBSession openActiveSessionWithReadPermissions:nil
+    [FBSession openActiveSessionWithReadPermissions:@[@"email"]
                                        allowLoginUI:YES
                                   completionHandler:^(FBSession *session,
                                                       FBSessionState state,
@@ -817,35 +819,58 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
       WARemoteInterface *ri = [WARemoteInterface sharedInterface];
       if (ri.userToken) {
         
-        if (![[[FBSession activeSession] permissions] containsObject:@"publish_stream"]) {
-          WAFBRequestViewController *fbRequest = [[WAFBRequestViewController alloc] init];
-          fbRequest.completionHandler = ^{
-          
-            [wSelf finishCreatingSharingEventForSharingTargets:results];
-            [WAOverlayBezel showSuccessBezelWithDuration:1.5 handler:^{
-              [wSelf.navigationController dismissViewControllerAnimated:YES completion:nil];
-            }];
-            
-          };
-          wSelf.navigationController.modalPresentationStyle = UIModalPresentationCurrentContext;
-          fbRequest.view.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.7];
-          fbRequest.view.alpha = 0;
-          [wSelf presentViewController:fbRequest animated:NO completion:nil];
-          [UIView animateWithDuration:0.5 animations:^{
-            fbRequest.view.alpha = 1;
-          }];
-          
-        } else {
+//        if (![[[FBSession activeSession] permissions] containsObject:@"publish_stream"]) {
+//          WAFBRequestViewController *fbRequest = [[WAFBRequestViewController alloc] init];
+//          fbRequest.completionHandler = ^{
+//          
+//            [wSelf finishCreatingSharingEventForSharingTargets:results];
+//            [WAOverlayBezel showSuccessBezelWithDuration:1.5 handler:^{
+//              [wSelf.navigationController dismissViewControllerAnimated:YES completion:nil];
+//            }];
+//            
+//          };
+//          wSelf.navigationController.modalPresentationStyle = UIModalPresentationCurrentContext;
+//          fbRequest.view.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.7];
+//          fbRequest.view.alpha = 0;
+//          [wSelf presentViewController:fbRequest animated:NO completion:nil];
+//          [UIView animateWithDuration:0.5 animations:^{
+//            fbRequest.view.alpha = 1;
+//          }];
+//          
+//        } else {
         
           
-          [wSelf finishCreatingSharingEventForSharingTargets:results];
-
-          [WAOverlayBezel showSuccessBezelWithDuration:1.5 handler:^{
-          
-            [wSelf.navigationController dismissViewControllerAnimated:YES completion:nil];
+          [wSelf finishCreatingSharingEventForSharingTargets:results onComplete:^(WAArticle *createdArticle) {
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+              NSArray *fbIDs = [[results valueForKey:@"fbid"] filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(NSString *evaluatedObject, NSDictionary *bindings) {
+                return evaluatedObject.length;
+              }]];
+              NSString *jsonString = [fbIDs JSONString];
+              NSString *message = NSLocalizedString(@"FB_INVITE_MESSAGE", @"");
+              if (createdArticle.title) {
+                message = [NSString stringWithFormat:NSLocalizedString(@"FB_INVITE_MESSAGE_WITH_EVENT_TITLE", @""), createdArticle.title];
+              }
+            
+              [FBWebDialogs presentRequestsDialogModallyWithSession:[FBSession activeSession]
+                                                            message:message
+                                                              title:NSLocalizedString(@"FB_INVITE_TITLE", @"")
+                                                         parameters:@{@"to": jsonString, @"data": createdArticle.identifier}
+                                                            handler:^(FBWebDialogResult result, NSURL *resultURL, NSError *error) {
+                                                              if (error) {
+                                                                NSLog(@"Request dialog for error : %@", error);
+                                                              }
+                                                              
+                                                              [WAOverlayBezel showSuccessBezelWithDuration:1.5 handler:^{
+                                                                
+                                                                [wSelf.navigationController dismissViewControllerAnimated:YES completion:nil];
+                                                              }];
+                                                            }];
+              
+            });
           }];
-          
-        }
+
+//        }
       
       } else {
         
@@ -853,18 +878,36 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
         __weak WAPartioSignupViewController *sCreateAccountVC = createAccountVC;
         createAccountVC.completeHandler = ^(NSError *error) {
         
-          [wSelf finishCreatingSharingEventForSharingTargets:results];
-
-          [[NSNotificationCenter defaultCenter] postNotificationName:kWACoreDataReinitialization object:self];
-
-          [WAOverlayBezel showSuccessBezelWithDuration:1.5 handler:^{
+          [wSelf finishCreatingSharingEventForSharingTargets:results onComplete:^(WAArticle *createdArticle) {
             
-            [sCreateAccountVC dismissViewControllerAnimated:YES completion:^{
-              [wSelf.navigationController dismissViewControllerAnimated:YES completion:nil];
-            }];
-        
-          }];
+            dispatch_async(dispatch_get_main_queue(), ^{
+              NSArray *fbIDs = [[results valueForKey:@"fbid"] filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(NSString *evaluatedObject, NSDictionary *bindings) {
+                return evaluatedObject.length;
+              }]];
+              NSString *jsonString = [fbIDs JSONString];
+              
+              [FBWebDialogs presentRequestsDialogModallyWithSession:[FBSession activeSession]
+                                                            message:NSLocalizedString(@"FB_INVITE_MESSAGE", @"")
+                                                              title:NSLocalizedString(@"FB_INVITE_TITLE", @"")
+                                                         parameters:@{@"to": jsonString, @"data": createdArticle.identifier}
+                                                            handler:^(FBWebDialogResult result, NSURL *resultURL, NSError *error) {
+                                                              if (error) {
+                                                                NSLog(@"Request dialog for error : %@", error);
+                                                              }
 
+                                                              [[NSNotificationCenter defaultCenter] postNotificationName:kWACoreDataReinitialization object:self];
+
+                                                              [WAOverlayBezel showSuccessBezelWithDuration:1.5 handler:^{
+            
+                                                                [sCreateAccountVC dismissViewControllerAnimated:YES completion:^{
+                                                                  [wSelf.navigationController dismissViewControllerAnimated:YES completion:nil];
+                                                                }];
+              
+                                                              }];
+                                                            }];
+            });
+            
+          }];
           
         };
         
@@ -928,7 +971,7 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
     return _beginDate;
  
   if (self.representingArticle)
-    _beginDate = self.representingArticle.eventStartDate;
+    _beginDate = [(WAFile*)self.sortedImages[0] created];
   else
     _beginDate = [self.allAssets[0] valueForProperty:ALAssetPropertyDate];
   return _beginDate;
@@ -939,7 +982,7 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
     return _endDate;
   
   if (self.representingArticle)
-    _endDate = self.representingArticle.eventEndDate;
+    _endDate = [(WAFile*)[self.sortedImages lastObject] created];
   else
     _endDate = [self.allAssets.lastObject valueForProperty:ALAssetPropertyDate];
   return _endDate;
