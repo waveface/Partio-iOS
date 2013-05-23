@@ -331,6 +331,15 @@
 "FACEBOOK_DISCONNECT_REQUEST_TITLE" = "Confirm to stop importing from Facebook.";
 
 /* No comment provided by engineer. */
+"FB_INVITE_MESSAGE" = "I would like to share some photos with you.";
+
+/* No comment provided by engineer. */
+"FB_INVITE_MESSAGE_WITH_EVENT_TITLE" = "I would like to share some photos with you in \"%@\".";
+
+/* No comment provided by engineer. */
+"FB_INVITE_TITLE" = "Share some photos with you";
+
+/* No comment provided by engineer. */
 "FB_INVITION_MESSAGE" = "";
 
 /* Display title for a fetch request working against all the articles */

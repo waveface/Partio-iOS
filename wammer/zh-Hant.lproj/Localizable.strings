@@ -331,6 +331,15 @@
 "FACEBOOK_DISCONNECT_REQUEST_TITLE" = "確認取消Facebook同步";
 
 /* No comment provided by engineer. */
+"FB_INVITE_MESSAGE" = "我想要與你分享一些照片。";
+
+/* No comment provided by engineer. */
+"FB_INVITE_MESSAGE_WITH_EVENT_TITLE" = "我想要與你分享一些在\"%@\"的照片。";
+
+/* No comment provided by engineer. */
+"FB_INVITE_TITLE" = "我想要與你分享一些照片";
+
+/* No comment provided by engineer. */
 "FB_INVITION_MESSAGE" = "";
 
 /* Display title for a fetch request working against all the articles */
