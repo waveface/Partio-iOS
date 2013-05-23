@@ -21,3 +21,10 @@
 @property (nonatomic, copy) void (^onDismissHandler)();
 
 @end
+
+
+@protocol WAFBGraphUser <FBGraphUser>
+
+@property (nonatomic, strong) NSString *email;
+
+@end
