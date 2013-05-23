@@ -36,7 +36,7 @@
 
 static NSString *kPlaceholderChooseFriends;
 static NSString *kWAFBFriendPickerViewController_CoachMarks = @"kWAFBFriendPickerViewController_CoachMarks";
-static NSString *defaultImageName = @"FacebookSDKResources.bundle/FBFriendPickerView/images/default.png";
+static NSString *kDefaultImageName = @"FacebookSDKResources.bundle/FBFriendPickerView/images/default.png";
 
 @implementation WAFBFriendPickerViewController
 
@@ -54,7 +54,7 @@ static NSString *defaultImageName = @"FacebookSDKResources.bundle/FBFriendPicker
 {
   // Data Source
   WAFBGraphObjectTableDataSource *dataSource = [[WAFBGraphObjectTableDataSource alloc] init];
-  dataSource.defaultPicture = [UIImage imageNamed:defaultImageName];
+  dataSource.defaultPicture = [UIImage imageNamed:kDefaultImageName];
   dataSource.controllerDelegate = self;
   dataSource.itemTitleSuffixEnabled = YES;
   
@@ -82,7 +82,6 @@ static NSString *defaultImageName = @"FacebookSDKResources.bundle/FBFriendPicker
 {
   [super viewDidLoad];
   
-  //FIXME: tap gesture for dismiss keyboard and not affect select table view cell
   BOOL coachmarkShown = [[NSUserDefaults standardUserDefaults] boolForKey:kWAFBFriendPickerViewController_CoachMarks];
   if (!coachmarkShown) {
     __weak WAFBFriendPickerViewController *wSelf = self;
@@ -196,27 +195,29 @@ static NSString *defaultImageName = @"FacebookSDKResources.bundle/FBFriendPicker
 {
   NSMutableArray *extractedData = [NSMutableArray array];
   NSMutableArray *usedData = [NSMutableArray array];
-  for (id<FBGraphUser> user in rawData) {
-    [extractedData addObject:@{@"name": user.name, @"email": @"", @"fbid":user.id}];
+  for (id<WAFBGraphUser> user in rawData) {
+    [extractedData addObject:@{@"name": user.name, @"email": (user.email)?user.email:@"", @"fbid":(user.id)?user.id:@""}];
     }
-  for (FBGraphObject *user in rawData) {
-    [usedData addObject:@{@"fbFriend": user, @"frequency":[NSNumber numberWithInteger:1], @"updateTime":[NSDate date]}]; //FBGraphObject will be converted to NSDictionary saved in NSUserDefaults
+  for (FBGraphObject *person in rawData) {
+    id<WAFBGraphUser> user = (id<WAFBGraphUser>)person;
+    [usedData addObject:@{@"fbFriend": person, @"email": (user.email)?user.email:@"", @"fbid": (user.id)?user.id:@"", @"frequency":[NSNumber numberWithInteger:1], @"updateTime":[NSDate date]}]; //FBGraphObject will be converted to NSDictionary saved in NSUserDefaults
   }
   
-  NSMutableArray *storedFriendList = [[[NSUserDefaults standardUserDefaults] arrayForKey:kFrenquentFriendList] mutableCopy];
+  NSMutableArray *storedFriendList = [[[NSUserDefaults standardUserDefaults] arrayForKey:kFrequentFriendList] mutableCopy];
   if (![storedFriendList count]) {
-    [[NSUserDefaults standardUserDefaults] setObject:[usedData copy] forKey:kFrenquentFriendList];
+    [[NSUserDefaults standardUserDefaults] setObject:[usedData copy] forKey:kFrequentFriendList];
   
   } else {
     for (FBGraphObject *person in rawData) {
-      //NSString *fbid = [(id<FBGraphUser>)person id];
-      NSPredicate *predicate = [NSPredicate predicateWithFormat:@"fbFriend = %@", person];
+      id<WAFBGraphUser> user = (id<WAFBGraphUser>)person;
+      NSPredicate *predicate = [NSPredicate predicateWithFormat:@"fbid = %@", (user.id)?user.id:@""];
       NSArray *recentUsedFriends = [storedFriendList filteredArrayUsingPredicate:predicate];
       if (![recentUsedFriends count]) {
-        [storedFriendList addObject:@{@"fbFriend":person, @"frequency":[NSNumber numberWithInteger:1], @"updateTime":[NSDate date]}];
+        [storedFriendList addObject:@{@"fbFriend":person, @"email": (user.email)?user.email:@"", @"fbid": (user.id)?user.id:@"", @"frequency":[NSNumber numberWithInteger:1], @"updateTime":[NSDate date]}];
       
       } else {
-        NSMutableDictionary *aPerson = recentUsedFriends[0];
+        NSMutableDictionary *aPerson = [recentUsedFriends[0] mutableCopy];
+        aPerson[@"fbFriend"] = person;
         NSInteger freq = [aPerson[@"frequency"] integerValue] + 1;
         aPerson[@"frequency"] = [NSNumber numberWithInteger:freq];
         aPerson[@"updateTime"] = [NSDate date];
@@ -228,7 +229,7 @@ static NSString *defaultImageName = @"FacebookSDKResources.bundle/FBFriendPicker
     NSSortDescriptor *sortByUpdateTime = [NSSortDescriptor sortDescriptorWithKey:@"updateTime" ascending:NO];
     NSSortDescriptor *sortByFrequency = [NSSortDescriptor sortDescriptorWithKey:@"frequency" ascending:NO];
     storedFriendList = [[storedFriendList sortedArrayUsingDescriptors:@[sortByUpdateTime, sortByFrequency]] mutableCopy];
-    [[NSUserDefaults standardUserDefaults] setObject:[storedFriendList copy] forKey:kFrenquentFriendList];
+    [[NSUserDefaults standardUserDefaults] setObject:[storedFriendList copy] forKey:kFrequentFriendList];
   }
   
   [[NSUserDefaults standardUserDefaults] synchronize];
@@ -258,12 +259,10 @@ static NSString *defaultImageName = @"FacebookSDKResources.bundle/FBFriendPicker
     self.tapGesture = nil;
   }
   
-  //hide recent used friend list
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
-  textField.text = @"";
   [textField resignFirstResponder];
   return YES;
 }
@@ -271,7 +270,58 @@ static NSString *defaultImageName = @"FacebookSDKResources.bundle/FBFriendPicker
 
 - (IBAction)textFieldDidChange:(id)sender
 {
+  if (!self.dataSource.indexMap.count) { // no filtered friends
+    if ([self NSStringIsValidEmail:self.textField.text]) {
+      NSDictionary *aItem = @{@"fbid": @"",
+                              @"first_name": (self.displayOrdering == FBFriendDisplayByFirstName)?self.textField.text:@"",
+                              @"last_name": (self.displayOrdering == FBFriendDisplayByLastName)?self.textField.text:@"",
+                              @"name": self.textField.text,
+                              @"picture:": @{},
+                              @"email": self.textField.text};
+      FBGraphObject *aFBObject = (FBGraphObject *)[FBGraphObject graphObjectWrappingDictionary:aItem];
+      [self.dataSource addItemIntoData:aFBObject];
+    }
+  }
   [self updateView];
+}
+
+- (void)textFieldDidEndEditing:(UITextField *)textField
+{
+  NSIndexPath *newIndexPath;
+  if ([self NSStringIsValidEmail:textField.text]) {
+    NSString *beginningTexts = [textField.text stringByDeletingPathExtension];
+    NSMutableArray *sectionItems = [self.dataSource.indexMap objectForKey:[[textField.text substringToIndex:1] uppercaseString]];
+    for (FBGraphObject *object in sectionItems) {
+      id<FBGraphUser> user = (id<FBGraphUser>)object;
+      if ([user.name hasPrefix:beginningTexts]) {
+        if (![user.name isEqual:textField.text]) {
+          [self.dataSource removeItemFromData:object];
+        } else {
+          [self.selectionManager selectItem:object];
+          newIndexPath = [self.dataSource indexPathForItem:object];
+        }
+      }
+    }
+    
+    [self updateNavigationBarTitleAndButtonStatus];
+  }
+  
+  textField.text = @"";
+  [self updateView];
+  if (newIndexPath) {
+    [self.tableView scrollToRowAtIndexPath:newIndexPath atScrollPosition:UITableViewScrollPositionMiddle animated:NO];
+  }
+}
+
+- (BOOL)NSStringIsValidEmail:(NSString *)checkString
+{
+  BOOL stricterFilter = YES; // Discussion http://blog.logichigh.com/2010/09/02/validating-an-e-mail-address/
+  NSString *stricterFilterString = @"[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}";
+  NSString *laxString = @".+@.+\\.[A-Za-z]{2}[A-Za-z]*";
+  NSString *emailRegex = stricterFilter ? stricterFilterString : laxString;
+  NSPredicate *emailTest = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", emailRegex];
+  
+  return [emailTest evaluateWithObject:checkString];
 }
 
 #pragma mark - FBFriendPickerDelegate
@@ -281,7 +331,7 @@ static NSString *defaultImageName = @"FacebookSDKResources.bundle/FBFriendPicker
   NSLog(@"Error during FB friend data fetch.");
 }
 
-- (BOOL)friendPickerViewController:(FBFriendPickerViewController *)friendPicker shouldIncludeUser:(id<FBGraphUser>)user
+- (BOOL)friendPickerViewController:(FBFriendPickerViewController *)friendPicker shouldIncludeUser:(id<WAFBGraphUser>)user
 {
   if (![self.textField.text isEqualToString:@""]) {
     NSRange result = [user.name rangeOfString:self.textField.text
