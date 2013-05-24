@@ -1291,7 +1291,7 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
 }
 
 - (void) showingNavigationBar {
-  UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(25, 0, 200, 44)];
+  UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(25, 0, self.navigationBar.frame.size.width - 26, 44)];
   label.text = self.headerView.titleLabel.text;
   label.tag = 99;
   label.textColor = [UIColor colorWithWhite:255 alpha:0.2];
@@ -1305,7 +1305,7 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
                    animations:^{
                      
                      label.textColor = [UIColor whiteColor];
-                     label.frame = CGRectMake(50, 0, 200, 44);
+                     label.frame = CGRectMake(50, 0, self.navigationBar.frame.size.width-50, 44);
                      label.alpha = 1.0f;
                    } completion:^(BOOL finished) {
                      

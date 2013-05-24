@@ -70,6 +70,7 @@ void WAPartioDefaultAppearance(void) {
   [[UIBarButtonItem appearance] setBackgroundImage:btnBgImage
                                           forState:UIControlStateNormal
                                         barMetrics:UIBarMetricsDefault];
+
 }
 
 #pragma mark - Origianl appearance settings
@@ -159,7 +160,7 @@ UIBarButtonItem *WAPartioImageBarButton(NSString *labelText, UIImage *image, UII
 }
 
 UIBarButtonItem *WAPartioNaviBarButton(NSString *labelText, UIImage *image, UIImage *imageHighlight, void(^aBlock)(void)) {
-  UIButton *button = [[UIButton alloc] initWithFrame:(CGRect){CGPointZero, CGSizeMake((40/image.size.height)*image.size.width, 30)}];
+  UIButton *button = [[UIButton alloc] initWithFrame:(CGRect){CGPointZero, CGSizeMake((32/image.size.height)*image.size.width, image.size.height)}];
   if (image)
     [button setBackgroundImage:image forState:UIControlStateNormal];
   if (imageHighlight)
