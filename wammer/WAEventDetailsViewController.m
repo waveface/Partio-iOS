@@ -174,6 +174,18 @@
   return nil;
 }
 
+- (BOOL) shouldAutorotate {
+
+  return YES;
+
+}
+
+- (NSUInteger)supportedInterfaceOrientations {
+
+  return UIInterfaceOrientationMaskPortrait;
+
+}
+
 #pragma mark - Table view delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
