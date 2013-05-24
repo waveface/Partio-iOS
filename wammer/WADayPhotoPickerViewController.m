@@ -87,7 +87,7 @@
   if (!self.actionButtonLabelText)
     self.actionButtonLabelText = NSLocalizedString(@"PREVIEW_ACTION", @"Preview");
 
-  UIBarButtonItem *buttonItem = WAPartioNaviBarButton(self.actionButtonLabelText, [UIImage imageNamed:@"Btn"], nil, ^{
+  UIBarButtonItem *buttonItem = WAPartioImageBarButton(self.actionButtonLabelText, [UIImage imageNamed:@"Btn"], nil, ^{
     if (wSelf.onNextHandler)
       wSelf.onNextHandler(wSelf.selectedAssets);
   });
@@ -99,7 +99,7 @@
       [wSelf.navigationController popViewControllerAnimated:YES];
     });
   } else {
-    self.navigationItem.leftBarButtonItem = (UIBarButtonItem*)WAPartioNaviBarButton(NSLocalizedString(@"ACTION_CANCEL", @"Cancel"), [UIImage imageNamed:@"Btn1"], nil, ^{
+    self.navigationItem.leftBarButtonItem = (UIBarButtonItem*)WAPartioImageBarButton(NSLocalizedString(@"ACTION_CANCEL", @""), [UIImage imageNamed:@"Btn1"], nil, ^{
       wSelf.onCancelHandler();
     });
   }

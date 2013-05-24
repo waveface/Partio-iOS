@@ -13,6 +13,7 @@
 #import "WACheckin.h"
 #import "WAGeoLocation.h"
 #import "WAEventDetailsCell.h"
+#import "WANavigationController.h"
 #import <BlocksKit/BlocksKit.h>
 #import <MapKit/MapKit.h>
 
@@ -27,13 +28,13 @@
 
 + (id) wrappedNavigationControllerForDetailInfo:(NSDictionary *)detail {
   WAEventDetailsViewController *vc = [[WAEventDetailsViewController alloc] initWithDetailInfo:detail];
-  UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
+  WANavigationController *nav = [[WANavigationController alloc] initWithRootViewController:vc];
   nav.navigationBar.translucent = YES;
   nav.navigationBar.tintColor = [UIColor blackColor];
   vc.title = NSLocalizedString(@"TITLE_EVENT_DETAILS", @"Title of event details");
-  vc.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Close" style:UIBarButtonItemStyleBordered handler:^(id sender) {
+  vc.navigationItem.leftBarButtonItem = WAPartioNaviBarButton(NSLocalizedString(@"CLOSE_BUTTON", @""), [UIImage imageNamed:@"Btn1"], nil, ^{
     [nav dismissViewControllerAnimated:YES completion:nil];
-  }];
+  });
   
   return nav;
 }
@@ -53,6 +54,11 @@
   [self.tableView registerNib:[UINib nibWithNibName:@"WAEventDetailsMapCell" bundle:nil] forCellReuseIdentifier:@"mapCell"];
   [self.tableView registerNib:[UINib nibWithNibName:@"WAEventDetailsCell" bundle:nil] forCellReuseIdentifier:@"contactCell"];
 
+  UIImage *wmImage = [UIImage imageNamed:@"watermark"];
+  UIImageView *waterMark = [[UIImageView alloc] initWithImage:wmImage];
+  waterMark.frame = CGRectMake(self.tableView.frame.size.width/2-wmImage.size.width/2, -(wmImage.size.height)-30, wmImage.size.width, wmImage.size.height);
+  [self.tableView addSubview:waterMark];
+  
   __weak WAEventDetailsViewController *wSelf = self;
   self.geoLocation = [[WAGeoLocation alloc] init];
   [self.geoLocation identifyLocation:self.coordinate
@@ -172,6 +178,18 @@
     return NSLocalizedString(@"DETAIL_MEMBERS", @"Member section header for detail");
   
   return nil;
+}
+
+- (BOOL) shouldAutorotate {
+
+  return YES;
+
+}
+
+- (NSUInteger)supportedInterfaceOrientations {
+
+  return UIInterfaceOrientationMaskPortrait;
+
 }
 
 #pragma mark - Table view delegate
