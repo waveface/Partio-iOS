@@ -42,33 +42,6 @@
 				<reference key="NSNextResponder"/>
 				<int key="NSvFlags">274</int>
 				<array class="NSMutableArray" key="NSSubviews">
-					<object class="IBUITableView" id="178031679">
-						<reference key="NSNextResponder" ref="410330032"/>
-						<int key="NSvFlags">274</int>
-						<string key="NSFrame">{{0, 88}, {320, 465}}</string>
-						<reference key="NSSuperview" ref="410330032"/>
-						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView" ref="615654021"/>
-						<string key="NSReuseIdentifierKey">_NS:9</string>
-						<object class="NSColor" key="IBUIBackgroundColor">
-							<int key="NSColorSpace">2</int>
-							<bytes key="NSRGB">MC4xNjg2Mjc0NTU4IDAuMTY4NjI3NDU1OCAwLjE2ODYyNzQ1NTgAA</bytes>
-						</object>
-						<bool key="IBUIClipsSubviews">YES</bool>
-						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
-						<bool key="IBUIAlwaysBounceVertical">YES</bool>
-						<int key="IBUISeparatorStyle">1</int>
-						<object class="NSColor" key="IBUISeparatorColor">
-							<int key="NSColorSpace">2</int>
-							<bytes key="NSRGB">MC4yNDcwNTg4Mzg2IDAuMjQ3MDU4ODM4NiAwLjI0NzA1ODgzODYAA</bytes>
-						</object>
-						<int key="IBUISectionIndexMinimumDisplayRowCount">0</int>
-						<bool key="IBUIAllowsMultipleSelection">YES</bool>
-						<bool key="IBUIShowsSelectionImmediatelyOnTouchBegin">YES</bool>
-						<float key="IBUIRowHeight">44</float>
-						<float key="IBUISectionHeaderHeight">22</float>
-						<float key="IBUISectionFooterHeight">22</float>
-					</object>
 					<object class="IBUITextField" id="225656897">
 						<reference key="NSNextResponder" ref="410330032"/>
 						<int key="NSvFlags">292</int>
@@ -108,6 +81,33 @@
 							<double key="NSSize">18</double>
 							<int key="NSfFlags">16</int>
 						</object>
+					</object>
+					<object class="IBUITableView" id="178031679">
+						<reference key="NSNextResponder" ref="410330032"/>
+						<int key="NSvFlags">274</int>
+						<string key="NSFrame">{{0, 88}, {320, 465}}</string>
+						<reference key="NSSuperview" ref="410330032"/>
+						<reference key="NSWindow"/>
+						<reference key="NSNextKeyView" ref="615654021"/>
+						<string key="NSReuseIdentifierKey">_NS:9</string>
+						<object class="NSColor" key="IBUIBackgroundColor">
+							<int key="NSColorSpace">2</int>
+							<bytes key="NSRGB">MC4xNjg2Mjc0NTU4IDAuMTY4NjI3NDU1OCAwLjE2ODYyNzQ1NTgAA</bytes>
+						</object>
+						<bool key="IBUIClipsSubviews">YES</bool>
+						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
+						<bool key="IBUIAlwaysBounceVertical">YES</bool>
+						<int key="IBUISeparatorStyle">1</int>
+						<object class="NSColor" key="IBUISeparatorColor">
+							<int key="NSColorSpace">2</int>
+							<bytes key="NSRGB">MC4yNDcwNTg4Mzg2IDAuMjQ3MDU4ODM4NiAwLjI0NzA1ODgzODYAA</bytes>
+						</object>
+						<int key="IBUISectionIndexMinimumDisplayRowCount">0</int>
+						<bool key="IBUIAllowsMultipleSelection">YES</bool>
+						<bool key="IBUIShowsSelectionImmediatelyOnTouchBegin">YES</bool>
+						<float key="IBUIRowHeight">44</float>
+						<float key="IBUISectionHeaderHeight">22</float>
+						<float key="IBUISectionFooterHeight">22</float>
 					</object>
 					<object class="IBUINavigationBar" id="379515989">
 						<reference key="NSNextResponder" ref="410330032"/>

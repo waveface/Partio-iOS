@@ -198,7 +198,7 @@ static NSString *kDefaultImageName = @"FacebookSDKResources.bundle/FBFriendPicke
   return WAPartioToolbarNextButton(@"Share", ^{
     if (self.onNextHandler) {
       NSLog(@"Invited friends: %@", self.members);      
-      self.onNextHandler([self extractedUserData:self.members]);
+      self.onNextHandler([self extractedUserData:[self.members copy]]);
     }
   });
 }
