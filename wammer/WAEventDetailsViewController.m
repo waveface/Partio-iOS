@@ -13,6 +13,7 @@
 #import "WACheckin.h"
 #import "WAGeoLocation.h"
 #import "WAEventDetailsCell.h"
+#import "WANavigationController.h"
 #import <BlocksKit/BlocksKit.h>
 #import <MapKit/MapKit.h>
 
@@ -27,7 +28,7 @@
 
 + (id) wrappedNavigationControllerForDetailInfo:(NSDictionary *)detail {
   WAEventDetailsViewController *vc = [[WAEventDetailsViewController alloc] initWithDetailInfo:detail];
-  UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
+  WANavigationController *nav = [[WANavigationController alloc] initWithRootViewController:vc];
   nav.navigationBar.translucent = YES;
   nav.navigationBar.tintColor = [UIColor blackColor];
   vc.title = NSLocalizedString(@"TITLE_EVENT_DETAILS", @"Title of event details");
