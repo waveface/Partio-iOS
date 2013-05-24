@@ -13,7 +13,11 @@
 @property (nonatomic, retain) NSDictionary *indexMap;
 
 - (NSString *)titleForSection:(NSInteger)sectionIndex;
+- (NSString *)indexKeyOfItem:(FBGraphObject *)item;
+- (NSIndexPath *)indexPathForItem:(FBGraphObject *)item;
+- (void)addItemIntoData:(FBGraphObject *)item;
+- (void)removeItemFromData:(FBGraphObject *)item;
 
 @end
 
-static NSString *kFrenquentFriendList = @"FrenquentFriendList";
+static NSString *kFrequentFriendList = @"FrenquentFriendList";

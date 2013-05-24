@@ -10,4 +10,6 @@
 
 @interface WAFBGraphObjectTableSelection : FBGraphObjectTableSelection
 
+- (void)selectItem:(FBGraphObject *)item;
+
 @end

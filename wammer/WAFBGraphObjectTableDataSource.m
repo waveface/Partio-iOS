@@ -41,7 +41,7 @@ static NSString *indexKeyOfRecentUsedContacts = @"★";
 {
   self = [super init];
   if (self) {
-    self.storedFriendList = [[[NSUserDefaults standardUserDefaults] arrayForKey:kFrenquentFriendList] mutableCopy];
+    self.storedFriendList = [[[NSUserDefaults standardUserDefaults] arrayForKey:kFrequentFriendList] mutableCopy];
     
     id object = @NO;
     NSMutableArray *buffer = [NSMutableArray arrayWithCapacity:kMaximumCountOfListedRecentFriends];
@@ -221,17 +221,50 @@ static NSString *indexKeyOfRecentUsedContacts = @"★";
         
       }
     }
-    NSRange limits;
-    limits.location = 0;
-    limits.length = kMaximumCountOfListedRecentFriends;
-    [indexMap setValue:(sectionItems.count > kMaximumCountOfListedRecentFriends)?[sectionItems subarrayWithRange:limits]:sectionItems
-                forKey:key];
-    [indexKeys insertObject:key atIndex:0];
+    
+    if (sectionItems.count) {
+      NSRange limits;
+      limits.location = 0;
+      limits.length = kMaximumCountOfListedRecentFriends;
+      [indexMap setValue:(sectionItems.count > kMaximumCountOfListedRecentFriends)?[sectionItems subarrayWithRange:limits]:sectionItems
+                  forKey:key];
+      [indexKeys insertObject:key atIndex:0];
+    }
   }
   
   self.showSections = objectsShown >= kMinimumCountToCollate;
   self.indexKeys = indexKeys;
   self.indexMap = indexMap;
+}
+
+- (void)addItemIntoData:(FBGraphObject *)item
+{
+  if (![self.data containsObject:item]) {
+    NSMutableArray *newData = [self.data mutableCopy];
+    [newData addObject:item];
+    self.data = newData;
+  }
+}
+
+- (void)removeItemFromData:(FBGraphObject *)item
+{
+  if ([self.data containsObject:item]) {
+    NSMutableArray *newData = [self.data mutableCopy];
+    [newData removeObject:item];
+    self.data = newData;
+  }
+
+}
+
+- (BOOL)NSStringIsValidEmail:(NSString *)checkString
+{
+  BOOL stricterFilter = YES; // Discussion http://blog.logichigh.com/2010/09/02/validating-an-e-mail-address/
+  NSString *stricterFilterString = @"[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}";
+  NSString *laxString = @".+@.+\\.[A-Za-z]{2}[A-Za-z]*";
+  NSString *emailRegex = stricterFilter ? stricterFilterString : laxString;
+  NSPredicate *emailTest = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", emailRegex];
+  
+  return [emailTest evaluateWithObject:checkString];
 }
 
 #pragma mark - UITableViewDataSource
@@ -253,10 +286,31 @@ static NSString *indexKeyOfRecentUsedContacts = @"★";
                                             triggeredByIndexPath:indexPath];
   } else {
     FBGraphObject *item = [self itemAtIndexPath:indexPath];
-    
+    NSString *fbid = [item objectForKey:@"id"];
+    NSString *name = [item objectForKey:@"name"];
+    static UIImageView *checkmark;
+    checkmark = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Checked"]];
+       
     // This is a no-op if it doesn't have an activity indicator.
     [cell stopAnimatingActivityIndicator];
-    if (item) {
+    
+    if ([fbid isEqualToString:@""] && [self NSStringIsValidEmail:name]) {
+      cell.picture = (self.itemPicturesEnabled)? self.defaultPicture:nil;
+      cell.title = name;
+      cell.accessoryView.hidden = YES;
+      
+      if ([self.selectionDelegate graphObjectTableDataSource:self
+                                       selectionIncludesItem:item]) {
+        cell.accessoryType = UITableViewCellAccessoryCheckmark;
+        cell.accessoryView = checkmark;
+        cell.accessoryView.hidden = NO;
+        cell.selected = YES;
+      } else {
+        cell.accessoryType = UITableViewCellAccessoryNone;
+        cell.selected = NO;
+      }
+
+    } else if (item) {
       if (self.itemPicturesEnabled) {
         cell.picture = [self tableView:tableView imageForItem:item];
       } else {
@@ -279,9 +333,6 @@ static NSString *indexKeyOfRecentUsedContacts = @"★";
       
       cell.title = [self.controllerDelegate graphObjectTableDataSource:self
                                                            titleOfItem:item];
-      
-      static UIImageView *checkmark;
-      checkmark = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Checked"]];
       
       cell.accessoryView.hidden = YES;
       if ([self.selectionDelegate graphObjectTableDataSource:self
