@@ -21,14 +21,15 @@
       [self.title setBackgroundColor:[UIColor clearColor]];
       [self addSubview:self.title];
       
-      CALayer *topShadow = [[CALayer alloc] init];
       CGFloat shadowHeight = 2.f;
-      [topShadow setMasksToBounds:NO];
-      [topShadow setShadowRadius:shadowHeight];
-      [topShadow setShadowOffset:CGSizeMake(0.f, 0 - shadowHeight)];
-      [topShadow setShadowColor:[[UIColor blackColor] CGColor]];
-      [topShadow setShadowOpacity:0.5f];
-      [self.layer addSublayer:topShadow];
+      UIView *topShadowView = [[UIView alloc] initWithFrame:(CGRect){CGPointMake(0.f, 0 - shadowHeight), CGSizeMake(CGRectGetWidth(self.frame), 2.f)}];
+      static CAGradientLayer *gradientLayer;
+      gradientLayer = [CAGradientLayer layer];
+      gradientLayer.frame = topShadowView.frame;
+      [gradientLayer setColors:@[(id)[[UIColor colorWithWhite:0.f alpha:0.f] CGColor],
+       (id)[[UIColor colorWithWhite:0.f alpha:0.3f] CGColor]]];
+      [topShadowView.layer insertSublayer:gradientLayer atIndex:0];
+      [self addSubview:topShadowView];
       
       [self.layer setMasksToBounds:NO];
       [self.layer setShadowRadius:shadowHeight];

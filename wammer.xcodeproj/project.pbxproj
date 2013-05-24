@@ -456,6 +456,7 @@
 		80F957BE16B8D421005121A1 /* WAConnectionStatusView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 80F957BD16B8D421005121A1 /* WAConnectionStatusView.xib */; };
 		80FA833816F9E79B003BF983 /* WAEventPhotoAddingCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 80FA833716F9E79B003BF983 /* WAEventPhotoAddingCell.m */; };
 		94EB57761411451780C24560 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D215E734098A44479DEC4F88 /* libPods.a */; };
+		DE072671174F605900439193 /* bar.png in Resources */ = {isa = PBXBuildFile; fileRef = DE072670174F605900439193 /* bar.png */; };
 		DE0870A2171C084000FA2A5E /* contact.png in Resources */ = {isa = PBXBuildFile; fileRef = DE0870A0171C084000FA2A5E /* contact.png */; };
 		DE0870A3171C084000FA2A5E /* contact@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DE0870A1171C084000FA2A5E /* contact@2x.png */; };
 		DE0870B3171C085300FA2A5E /* FB.png in Resources */ = {isa = PBXBuildFile; fileRef = DE0870B1171C085300FA2A5E /* FB.png */; };
@@ -1579,6 +1580,7 @@
 		9A79ED179A7140438E44ACD8 /* Pods-UnitTests.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UnitTests.xcconfig"; path = "Pods/Pods-UnitTests.xcconfig"; sourceTree = SOURCE_ROOT; };
 		D215E734098A44479DEC4F88 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		D26DABE040324ABAAAC5058D /* Pods-StreamTests.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-StreamTests.xcconfig"; path = "Pods/Pods-StreamTests.xcconfig"; sourceTree = SOURCE_ROOT; };
+		DE072670174F605900439193 /* bar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = bar.png; path = Resources/bar.png; sourceTree = "<group>"; };
 		DE0870A0171C084000FA2A5E /* contact.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = contact.png; path = Resources/contact.png; sourceTree = "<group>"; };
 		DE0870A1171C084000FA2A5E /* contact@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "contact@2x.png"; path = "Resources/contact@2x.png"; sourceTree = "<group>"; };
 		DE0870B1171C085300FA2A5E /* FB.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = FB.png; path = Resources/FB.png; sourceTree = "<group>"; };
@@ -2635,6 +2637,7 @@
 				DEEFAC9E1718472600AD907B /* Avatar@2x.png */,
 				801A1B7317435F2500846168 /* about.png */,
 				801A1B7417435F2500846168 /* about@2x.png */,
+				DE072670174F605900439193 /* bar.png */,
 				DEEFAC9F1718472600AD907B /* Btn.png */,
 				DEEFACA01718472600AD907B /* Btn@2x.png */,
 				DEEFACA11718472600AD907B /* Btn1.png */,
@@ -4481,6 +4484,7 @@
 				801943C1174B293800AE7AEA /* WAFBRequestViewController.xib in Resources */,
 				DE19E3AD174A04C5008659BA /* WAFBFriendPickerViewController.xib in Resources */,
 				DE19E3AF174A04C5008659BA /* WAFBGraphObjectTableCell.xib in Resources */,
+				DE072671174F605900439193 /* bar.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
