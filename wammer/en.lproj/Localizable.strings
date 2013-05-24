@@ -213,6 +213,9 @@
 /* Title for Cover Image picker */
 "CHANGE_REPRESENTING_FILE_TITLE" = "Pick Photo";
 
+/* No comment provided by engineer. */
+"CLOSE_BUTTON" = "Dismiss";
+
 /* AOStream Cloud Name */
 "CLOUD_NAME" = "aostream Cloud";
 

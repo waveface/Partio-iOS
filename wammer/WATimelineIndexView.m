@@ -65,7 +65,7 @@
 
 @property (nonatomic, strong) NSMutableArray *indexics;
 @property (nonatomic, strong) NSMutableArray *labels;
-@property (nonatomic, strong) UIView *dot;
+@property (nonatomic, strong) UIImageView *dot;
 
 @end
 @implementation WATimelineIndexView
@@ -89,9 +89,9 @@
     
   self.backgroundColor = [UIColor colorWithWhite:0 alpha:0.5];
   self.layer.cornerRadius = self.frame.size.width/2;
-  self.dot = [[UIView alloc] initWithFrame:CGRectMake(self.frame.size.width/2-4, 10, 8, 8)];
-  self.dot.layer.cornerRadius = self.dot.frame.size.width/2;
-  self.dot.backgroundColor = [UIColor colorWithWhite:250 alpha:0.8];
+  self.dot = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"clock"]];
+  CGRect newRect = CGRectMake(self.frame.size.width/2-self.dot.frame.size.width/2, 0, self.dot.frame.size.width, self.dot.frame.size.height);
+  self.dot.frame = newRect;
   [self addSubview:self.dot];
     
   self.indexics = [NSMutableArray array];
@@ -163,7 +163,7 @@
     return ;
   
   CGFloat newY = (self.frame.size.height*0.94) * percentage + (self.frame.size.height*0.02);
-  CGRect newRect = CGRectMake(self.frame.size.width/2-4, newY, 8, 8);
+  CGRect newRect = CGRectMake(self.frame.size.width/2-self.dot.frame.size.width/2, newY - self.dot.frame.size.height/2, self.dot.frame.size.width, self.dot.frame.size.height);
   [UIView animateWithDuration:0.2 animations:^{
     self.dot.frame = newRect;
   }];

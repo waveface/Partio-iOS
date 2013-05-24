@@ -31,9 +31,9 @@
   nav.navigationBar.translucent = YES;
   nav.navigationBar.tintColor = [UIColor blackColor];
   vc.title = NSLocalizedString(@"TITLE_EVENT_DETAILS", @"Title of event details");
-  vc.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Close" style:UIBarButtonItemStyleBordered handler:^(id sender) {
+  vc.navigationItem.leftBarButtonItem = WAPartioNaviBarButton(NSLocalizedString(@"CLOSE_BUTTON", @""), [UIImage imageNamed:@"Btn1"], nil, ^{
     [nav dismissViewControllerAnimated:YES completion:nil];
-  }];
+  });
   
   return nav;
 }
