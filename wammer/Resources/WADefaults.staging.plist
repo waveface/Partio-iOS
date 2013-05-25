@@ -54,5 +54,7 @@
 	<true/>
 	<key>WAFeedbackRecipient</key>
 	<string>support@waveface.com</string>
+	<key>WAGAITrackingID</key>
+	<string>UA-41182989-1</string>
 </dict>
 </plist>

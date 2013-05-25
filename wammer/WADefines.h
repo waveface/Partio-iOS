@@ -68,6 +68,8 @@ extern NSString * const kWAFirstUseVisited;
 extern NSString * const kWAUseCellularEnabled;
 extern NSString * const kWABackupFilesToCloudEnabled;
 
+extern NSString * const kWAGAITrackingID;
+
 extern NSString * const kWABusinessPlan;
 
 typedef NS_ENUM(NSInteger, WABusinessPlanType) {

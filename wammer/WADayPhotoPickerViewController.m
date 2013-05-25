@@ -78,6 +78,9 @@
 - (void)viewDidLoad
 {
   [super viewDidLoad];
+
+  [[[GAI sharedInstance] defaultTracker] sendView:@"photo picker view"];
+
   self.imageDisplayQueue = [[NSOperationQueue alloc] init];
   self.imageDisplayQueue.maxConcurrentOperationCount = 1;
   self.selectedSections = [NSMutableSet set];

@@ -66,8 +66,6 @@
 #define MR_SHORTHAND
 #import "CoreData+MagicalRecord.h"
 
-static NSString *const kTrackingId = @"UA-27817516-8";
-
 @interface WALoginBackgroundViewController : UIViewController
 @end
 
@@ -197,16 +195,17 @@ extern CFAbsoluteTime StartTime;
 
 - (BOOL) application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
   
-  // Init the GAITracker first, ref: https://developers.google.com/analytics/devguides/collection/ios/v2/#initialize
-  // [GAI sharedInstance].debug = YES;
-  [GAI sharedInstance].dispatchInterval = 120;
-  [GAI sharedInstance].trackUncaughtExceptions = YES;
-  [[GAI sharedInstance] trackerWithTrackingId:kTrackingId];
-  
-  [GMSServices provideAPIKey:@"AIzaSyAyGVeC0T7mPhQJjiKk7GVj8Z2Wmxpas5s"];
-  
   [self bootstrap];
   
+  // Init the GAITracker first, ref: https://developers.google.com/analytics/devguides/collection/ios/v2/#initialize
+  // [GAI sharedInstance].debug = YES;
+  [GAI sharedInstance].dispatchInterval = 8;
+  [GAI sharedInstance].trackUncaughtExceptions = YES;
+  NSString *trackingID = [[NSUserDefaults standardUserDefaults] stringForKey:kWAGAITrackingID];
+  [[GAI sharedInstance] trackerWithTrackingId:trackingID];
+  
+  [GMSServices provideAPIKey:@"AIzaSyAyGVeC0T7mPhQJjiKk7GVj8Z2Wmxpas5s"];
+
   WAPartioDefaultAppearance();
   
   self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];

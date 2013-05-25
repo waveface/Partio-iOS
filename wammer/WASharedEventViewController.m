@@ -82,6 +82,8 @@ static NSString * const kWASharedEventViewController_CoachMarks = @"kWASharedEve
 {
   [super viewDidLoad];
   
+  [[[GAI sharedInstance] defaultTracker] sendView:@"WASharedEvent"];
+  
   [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleCoreDataReinitialization:) name:kWACoreDataReinitialization object:nil];
   
   [self.navigationItem setTitle:NSLocalizedString(@"LABEL_SHARED_EVENTS", @"LABEL_SHARED_EVENTS")];

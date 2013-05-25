@@ -438,6 +438,7 @@
 		80DC670A17461464000DC8E9 /* fbicon.png in Resources */ = {isa = PBXBuildFile; fileRef = 80DC670817461462000DC8E9 /* fbicon.png */; };
 		80DC670B17461464000DC8E9 /* fbicon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 80DC670917461463000DC8E9 /* fbicon@2x.png */; };
 		80E05A21174C9C0F000FB233 /* libGoogleAnalytics.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 80E05A20174C9C0F000FB233 /* libGoogleAnalytics.a */; };
+		80E2A5A4175039B000EB1CB6 /* PartioIconProduction.png in Resources */ = {isa = PBXBuildFile; fileRef = 80E2A5A3175039B000EB1CB6 /* PartioIconProduction.png */; };
 		80E5173C1670F3B200E1C3AD /* WALocation.m in Sources */ = {isa = PBXBuildFile; fileRef = 80E5173B1670F3B200E1C3AD /* WALocation.m */; };
 		80E7E586172FB5E1003E525E /* WAPhotoTimelineGalleryLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 80E7E585172FB5E1003E525E /* WAPhotoTimelineGalleryLayout.m */; };
 		80E7E596172FBAC7003E525E /* WAPhotoGalleryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 80E7E595172FBAC7003E525E /* WAPhotoGalleryCell.m */; };
@@ -1555,6 +1556,7 @@
 		80E05A1E174C9BFB000FB233 /* GAITransaction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GAITransaction.h; path = wammer/Libraries/GoogleAnalytics/Library/GAITransaction.h; sourceTree = "<group>"; };
 		80E05A1F174C9BFB000FB233 /* GAITransactionItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GAITransactionItem.h; path = wammer/Libraries/GoogleAnalytics/Library/GAITransactionItem.h; sourceTree = "<group>"; };
 		80E05A20174C9C0F000FB233 /* libGoogleAnalytics.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libGoogleAnalytics.a; path = wammer/Libraries/GoogleAnalytics/Library/libGoogleAnalytics.a; sourceTree = "<group>"; };
+		80E2A5A3175039B000EB1CB6 /* PartioIconProduction.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = PartioIconProduction.png; path = Resources/PartioIconProduction.png; sourceTree = "<group>"; };
 		80E5173A1670F3B200E1C3AD /* WALocation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WALocation.h; sourceTree = "<group>"; };
 		80E5173B1670F3B200E1C3AD /* WALocation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WALocation.m; sourceTree = "<group>"; };
 		80E7E584172FB5E1003E525E /* WAPhotoTimelineGalleryLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WAPhotoTimelineGalleryLayout.h; path = wammer/WAPhotoTimelineGalleryLayout.h; sourceTree = "<group>"; };
@@ -2653,6 +2655,7 @@
 				DE0870B1171C085300FA2A5E /* FB.png */,
 				DE0870B2171C085300FA2A5E /* FB@2x.png */,
 				80CBC7711713FBDE0056D9CF /* partioIcon.png */,
+				80E2A5A3175039B000EB1CB6 /* PartioIconProduction.png */,
 				800D2E07171804420028F47F /* PartioLogin-568h@2x.png */,
 				800D2E08171804420028F47F /* PartioLogin.png */,
 				800D2E09171804420028F47F /* PartioLogin@2x.png */,
@@ -4485,6 +4488,7 @@
 				DE19E3AD174A04C5008659BA /* WAFBFriendPickerViewController.xib in Resources */,
 				DE19E3AF174A04C5008659BA /* WAFBGraphObjectTableCell.xib in Resources */,
 				DE072671174F605900439193 /* bar.png in Resources */,
+				80E2A5A4175039B000EB1CB6 /* PartioIconProduction.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

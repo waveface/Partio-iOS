@@ -83,6 +83,8 @@ static NSString *kDefaultImageName = @"FacebookSDKResources.bundle/FBFriendPicke
 {
   [super viewDidLoad];
   
+  [[[GAI sharedInstance] defaultTracker] sendView:@"WAFBFriendPicker"];
+  
   if (!self.spinner) {
     UIActivityIndicatorView *spinner = [[UIActivityIndicatorView alloc]
                                          initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];

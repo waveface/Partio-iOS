@@ -55,6 +55,7 @@
 #import "WAAppDelegate.h"
 #import "WAAppDelegate_iOS.h"
 
+#import "GAI.h"
 #import <FacebookSDK/FBFrictionlessRequestSettings.h>
 #import <FacebookSDK/FBDialog.h>
 #import <FacebookSDK/FacebookSDK.h>
@@ -154,6 +155,9 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
   
   if (self.representingArticle) {
     [self touchArticleForRead];
+    [[[GAI sharedInstance] defaultTracker] sendView:@"WAPhotoTimeline"];
+  } else {
+    [[[GAI sharedInstance] defaultTracker] sendView:@"WAPhotoTimeline/Preview"];
   }
   
   self.imageDisplayQueue = [[NSOperationQueue alloc] init];
@@ -473,6 +477,10 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
       NSLog(@"error on creating a new import post for error: %@", savingError);
     }
     
+    [[GAI sharedInstance].defaultTracker trackEventWithCategory:@"Event" withAction:@"Reshare" withLabel:@"Photos" withValue:@([newAssets count])];
+    
+    [[GAI sharedInstance].defaultTracker trackEventWithCategory:@"Event" withAction:@"Reshare" withLabel:@"Friends" withValue:@([contacts count])];
+
     WAAppDelegate_iOS *appDelegate = (WAAppDelegate_iOS*)AppDelegate();
     [appDelegate.syncManager reload];
 
@@ -601,6 +609,10 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
   } else {
     NSLog(@"error on creating a new import post for error: %@", savingError);
   }
+  
+  [[GAI sharedInstance].defaultTracker trackEventWithCategory:@"Event" withAction:@"Share" withLabel:@"Photos" withValue:@([article.files count])];
+  
+  [[GAI sharedInstance].defaultTracker trackEventWithCategory:@"Event" withAction:@"Share" withLabel:@"Friends" withValue:@([article.sharingContacts count])];
   
   WAAppDelegate_iOS *appDelegate = (WAAppDelegate_iOS*)AppDelegate();
   [appDelegate.syncManager reload];
