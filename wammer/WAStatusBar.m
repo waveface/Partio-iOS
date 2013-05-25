@@ -40,7 +40,7 @@ static NSString * const kWAFetchingAnimation = @"WAFetchingAnimation";
   self = [super initWithFrame:frame];
   if (self) {
     
-    self.windowLevel = UIWindowLevelStatusBar + 1.0;
+    self.windowLevel = UIWindowLevelStatusBar + 0.5;
     self.backgroundColor = [UIColor blackColor];
     self.hidden = NO;
     self.opaque = NO;
@@ -50,9 +50,9 @@ static NSString * const kWAFetchingAnimation = @"WAFetchingAnimation";
     self.syncingLabel = [[UILabel alloc] init];
     [self.syncingLabel setTranslatesAutoresizingMaskIntoConstraints:NO];
     self.syncingLabel.textColor = [UIColor whiteColor];
-    self.syncingLabel.font = [UIFont boldSystemFontOfSize:13.0];
-    self.syncingLabel.backgroundColor = [UIColor blackColor];
-    self.syncingLabel.textAlignment = NSTextAlignmentRight;
+    self.syncingLabel.font = [UIFont fontWithName:@"OpenSans-Semibold" size:13.f];
+    self.syncingLabel.backgroundColor = [UIColor clearColor];
+    self.syncingLabel.textAlignment = NSTextAlignmentCenter;
     [self addSubview:self.syncingLabel];
     
     self.fetchingAnimation = [[UIImageView alloc] init];
@@ -65,8 +65,10 @@ static NSString * const kWAFetchingAnimation = @"WAFetchingAnimation";
     NSDictionary *viewDic = NSDictionaryOfVariableBindings(syncingStatus, fetchingStatus);
     
     [self addConstraint:[NSLayoutConstraint constraintWithItem:self.syncingLabel attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeCenterY multiplier:1.0 constant:0]];
+    [self addConstraint:[NSLayoutConstraint constraintWithItem:self.syncingLabel attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeCenterX multiplier:1.0 constant:0]];
     [self addConstraint:[NSLayoutConstraint constraintWithItem:self.fetchingAnimation attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeCenterY multiplier:1.0 constant:0]];
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:[syncingStatus(195)]-3-[fetchingStatus(14)]-3-|" options:NSLayoutFormatDirectionLeadingToTrailing metrics:nil views:viewDic]];
+    
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:[fetchingStatus(14)]-3-[syncingStatus(140)]" options:NSLayoutFormatDirectionLeadingToTrailing metrics:nil views:viewDic]];
     [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[fetchingStatus(14)]" options:NSLayoutFormatDirectionLeadingToTrailing metrics:nil views:viewDic]];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didChangeStatusBarFrame:) name:UIApplicationDidChangeStatusBarFrameNotification object:nil];
@@ -95,21 +97,21 @@ static NSString * const kWAFetchingAnimation = @"WAFetchingAnimation";
   UIInterfaceOrientation orientation = [UIApplication sharedApplication].statusBarOrientation;
   if (orientation == UIDeviceOrientationPortrait) {
     self.transform = CGAffineTransformIdentity;
-    self.frame = CGRectMake(kScreenWidth/2-55, 0, kScreenWidth/2+55, kStatusBarHeight);
+    self.frame = CGRectMake(0, 0, kScreenWidth, kStatusBarHeight);
   } else if (orientation == UIDeviceOrientationLandscapeLeft) {
     self.transform = CGAffineTransformMakeRotation(M_PI_2);
-    self.frame = CGRectMake(kScreenWidth-kStatusBarHeight, kScreenHeight/2-55, kStatusBarHeight, kScreenHeight/2+55);
+    self.frame = CGRectMake(kScreenWidth-kStatusBarHeight, kScreenHeight, kStatusBarHeight, kScreenHeight);
   } else if (orientation == UIDeviceOrientationLandscapeRight) {
     self.transform = CGAffineTransformMakeRotation(-M_PI_2);
-    self.frame = CGRectMake(0, 0, kStatusBarHeight, kScreenHeight/2+55);
+    self.frame = CGRectMake(0, 0, kStatusBarHeight, kScreenHeight);
   } else if (orientation == UIDeviceOrientationPortraitUpsideDown) {
     self.transform = CGAffineTransformMakeRotation(M_PI);
-    self.frame = CGRectMake(0, kScreenHeight-kStatusBarHeight, kScreenWidth/2+55, kStatusBarHeight);
+    self.frame = CGRectMake(0, kScreenHeight-kStatusBarHeight, kScreenWidth, kStatusBarHeight);
   }
   
   if (visibleBeforeTransformation) {
     __weak WAStatusBar *wSelf = self;
-    [UIView animateWithDuration:0.0f
+    [UIView animateWithDuration:0.5f
 		      delay:[UIApplication sharedApplication].statusBarOrientationAnimationDuration
 		    options:UIViewAnimationOptionTransitionNone
 		 animations:^{
@@ -142,7 +144,7 @@ static NSString * const kWAFetchingAnimation = @"WAFetchingAnimation";
   }
 
   self.isSyncingPhotos = YES;
-  self.syncingLabel.text = [NSString stringWithFormat:NSLocalizedString(@"PHOTO_UPLOAD_STATUS_BAR_UPLOADING", @"String on customized status bar"), needingSyncFilesCount - syncedFilesCount];
+  self.syncingLabel.text = [NSString stringWithFormat:NSLocalizedString(@"PHOTO_UPLOAD_STATUS_BAR_UPLOADING", @"String on customized status bar"), syncedFilesCount, needingSyncFilesCount];
 
 }
 

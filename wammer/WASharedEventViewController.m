@@ -17,6 +17,8 @@
 #import "WADataStore.h"
 #import "WAPartioNavigationBar.h"
 #import "NSDate+WAAdditions.h"
+#import "WARemoteInterface.h"
+#import "WAPartioSettingsViewController.h"
 #import <SMCalloutView/SMCalloutView.h>
 #import <BlocksKit/BlocksKit.h>
 #import <QuartzCore/QuartzCore.h>
@@ -80,10 +82,20 @@ static NSString * const kWASharedEventViewController_CoachMarks = @"kWASharedEve
 {
   [super viewDidLoad];
   
+  [[[GAI sharedInstance] defaultTracker] sendView:@"WASharedEvent"];
+  
   [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleCoreDataReinitialization:) name:kWACoreDataReinitialization object:nil];
   
   [self.navigationItem setTitle:NSLocalizedString(@"LABEL_SHARED_EVENTS", @"LABEL_SHARED_EVENTS")];
   [self.navigationItem setHidesBackButton:YES];
+  __weak WASharedEventViewController *wSelf = self;
+  self.navigationItem.rightBarButtonItem = WAPartioImageBarButton(nil, [UIImage imageNamed:@"about"], nil, ^{
+    WAPartioSettingsViewController *about = [[WAPartioSettingsViewController alloc] initWithNibName:@"WAPartioSettingsViewController" bundle:nil];
+    about.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
+    wSelf.modalPresentationStyle = UIModalPresentationCurrentContext;
+    [wSelf presentViewController:about animated:YES completion:nil];
+  });
+  
   [self.navigationController setNavigationBarHidden:YES];
   [self.navigationBar pushNavigationItem:self.navigationItem animated:NO];
 
@@ -98,10 +110,17 @@ static NSString * const kWASharedEventViewController_CoachMarks = @"kWASharedEve
   _objectChanges = [[NSMutableArray alloc] init];
 }
 
-
 - (void)viewDidAppear:(BOOL)animated
 {
   [super viewDidAppear:animated];
+  if (![WARemoteInterface sharedInterface].userToken) {
+    self.navigationItem.leftBarButtonItem = WAPartioBackButton(^{
+      [self.navigationController popViewControllerAnimated:YES];
+    });
+  } else {
+    self.navigationItem.leftBarButtonItem = nil;
+  }
+
   BOOL coachmarkShown = [[NSUserDefaults standardUserDefaults] boolForKey:kWASharedEventViewController_CoachMarks];
   if (!coachmarkShown) {
     __weak WASharedEventViewController *wSelf = self;
@@ -125,6 +144,23 @@ static NSString * const kWASharedEventViewController_CoachMarks = @"kWASharedEve
     [[NSUserDefaults standardUserDefaults] synchronize];
   }
   
+  if (self.requestedToDisplayArticleID) {
+    WAArticle *displayedArticle = nil;
+    for (NSInteger i = 0; i < [self.eventFetchedResultsController.sections[0] numberOfObjects]; i ++) {
+      WAArticle *aArticle = [self.eventFetchedResultsController objectAtIndexPath:[NSIndexPath indexPathForRow:i inSection:0]];
+      if ([aArticle.identifier isEqualToString:self.requestedToDisplayArticleID]) {
+        displayedArticle = aArticle;
+        break;
+      }
+    }
+
+    if (displayedArticle) {
+      WAPhotoTimelineViewController *ptVC = [[WAPhotoTimelineViewController alloc] initWithArticleID:[displayedArticle objectID]];
+      [self.navigationController pushViewController:ptVC animated:YES];
+    }
+    self.requestedToDisplayArticleID = nil;
+  }
+
 }
 
 - (void)didReceiveMemoryWarning
@@ -309,7 +345,10 @@ static NSString * const kWASharedEventViewController_CoachMarks = @"kWASharedEve
   [cell.photoNumber setText:[NSString stringWithFormat:@"%d", photoNumbers]];
   [cell.checkinNumber setText:[NSString stringWithFormat:@"%d", checkinNumbers]];
   [cell.peopleNumber setText:[NSString stringWithFormat:@"%d", pplNumber]];
-  [cell.date setText:eventDate];
+  if (aArticle.title)
+    [cell.date setText:aArticle.title];
+  else
+    [cell.date setText:eventDate];
   [cell.location setText:location];
   
   return cell;
@@ -349,6 +388,8 @@ static NSString * const kWASharedEventViewController_CoachMarks = @"kWASharedEve
   picker.onNextHandler = ^(NSArray *selectedAssets) {
     
     WAPhotoTimelineViewController *photoTimeline = [[WAPhotoTimelineViewController alloc] initWithAssets:selectedAssets];
+    if (picker.titleText)
+      photoTimeline.titleText = picker.titleText;
     [picker.navigationController pushViewController:photoTimeline animated:YES];
     
   };

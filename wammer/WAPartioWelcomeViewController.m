@@ -53,6 +53,20 @@
     self.backgroundImageView.image = [UIImage imageNamed:@"PartioLogin-568h"];
   else
     self.backgroundImageView.image = [UIImage imageNamed:@"PartioLogin"];
+  
+  UIImageView *fbIcon = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"fbicon"]];
+  fbIcon.frame = (CGRect){{20, 0}, {44, 44}};
+  fbIcon.contentMode = UIViewContentModeScaleAspectFit;
+  UILabel *signupLabel = [[UILabel alloc] init];
+  signupLabel.text = NSLocalizedString(@"SIGNUP_BUTTON", @"");
+  signupLabel.backgroundColor = [UIColor clearColor];
+  signupLabel.font = [UIFont fontWithName:@"OpenSans-Semibold" size:15.f];
+  signupLabel.textColor = [UIColor whiteColor];
+  [signupLabel sizeToFit];
+  signupLabel.frame = (CGRect){{67, 0}, {signupLabel.frame.size.width, 44}};
+  [self.signupButton addSubview:fbIcon];
+  [self.signupButton addSubview:signupLabel];
+  
 }
 
 - (void)firstArticleFetchedHandler:(NSNotification*)aNotification {
@@ -67,7 +81,7 @@
     
     WAPartioFirstUseViewController *firstUse = (WAPartioFirstUseViewController*)wSelf.navigationController;
     if (firstUse.completionBlock) {
-      firstUse.completionBlock();
+      firstUse.completionBlock(YES);
       firstUse.completionBlock = nil;
     }
   });
@@ -77,19 +91,17 @@
 
 
 - (IBAction) experienceButtonClicked:(id)sender {
-/*
-  IRAction *cancelAction = [IRAction actionWithTitle:@"OK" block:nil];
   
-  [[IRAlertView alertViewWithTitle:@"Not support yet"
-                           message:@"Current version requires you to login with Facebook account first. 'Try' scenario will be implemented in the near future."
-                      cancelAction:cancelAction
-                      otherActions:nil] show];
-  */
   self.experienceButton.enabled = NO;
   self.signupButton.enabled = NO;
+  __weak WAPartioWelcomeViewController *wSelf = self;
   WAPartioFirstUseViewController *firstUse = (WAPartioFirstUseViewController *)self.navigationController;
   if (firstUse.completionBlock) {
-    firstUse.completionBlock();
+    firstUse.completionBlock(NO);
+    
+    wSelf.experienceButton.enabled = YES;
+    wSelf.signupButton.enabled = YES;
+    
   }
 }
 
@@ -128,7 +140,7 @@
   __weak WAPartioWelcomeViewController *wSelf = self;
   
   [FBSession
-   openActiveSessionWithReadPermissions:@[@"email", @"user_photos", @"user_videos", @"user_notes", @"user_status", @"user_likes", @"read_stream", @"friends_photos", @"friends_videos", @"friends_status", @"friends_notes", @"friends_likes"]
+   openActiveSessionWithReadPermissions:@[@"email", @"user_photos", @"user_status", @"read_stream", @"friends_photos", @"friends_status"]
    allowLoginUI:YES
    completionHandler:^(FBSession *session, FBSessionState status, NSError *error) {
      

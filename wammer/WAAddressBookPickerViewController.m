@@ -8,12 +8,12 @@
 
 #import "WAAddressBookPickerViewController.h"
 #import "WAPartioNavigationBar.h"
-#import "WAContactPickerSectionHeaderView.h"
+#import "WAPartioTableViewSectionHeaderView.h"
 #import <AddressBook/AddressBook.h>
 #import <SMCalloutView/SMCalloutView.h>
 #import <BlocksKit/BlocksKit.h>
 
-@interface WAAddressBookPickerViewController() <UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate, UIActionSheetDelegate, UITextInput>
+@interface WAAddressBookPickerViewController() <UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate, UIActionSheetDelegate>
 
 @property (nonatomic, weak) IBOutlet WAPartioNavigationBar *navigationBar;
 @property (nonatomic, weak) IBOutlet UITextField *textField;
@@ -95,6 +95,11 @@ static NSString *kWAAddressBookViewController_CoachMarks = @"kWAAddressBookViewC
   [[self.toolbar.items objectAtIndex:1] setEnabled:NO];
   [self.view addSubview:self.toolbar];
 
+  [[NSNotificationCenter defaultCenter] addObserver:self
+                                           selector:@selector(textFieldDidChange:)
+                                               name:UITextFieldTextDidChangeNotification
+                                             object:self.textField];
+  
   self.dataDisplay = self.contacts;
   
 }
@@ -159,72 +164,65 @@ static NSString *kWAAddressBookViewController_CoachMarks = @"kWAAddressBookViewC
   }
 }
 
-- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
+- (IBAction)textFieldDidChange:(id)sender
 {
-  if (!textField.markedTextRange) { // Commited stage (Multistage Text State: 1. Marked 2. Commited)
-    
-    NSString *textInput = @"";
-    if (range.length) {
-      textInput = [textField.text substringToIndex:range.location];
-    } else {
-      textInput = [textField.text stringByAppendingString:string];
-    }
-    
-    if (![textInput isEqual:@""]) {
-      NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary *bindings) {
-        BOOL result = NO;
-        NSString *name = (__bridge_transfer NSString*)ABRecordCopyCompositeName((__bridge ABRecordRef)evaluatedObject);
-        
-        if (name) {
-          if ([name rangeOfString:textInput].location != NSNotFound) {
-            result = YES;
-            return result;
-          }
-        }
-          
-        NSArray *emails = [self emailsOfPerson:(__bridge ABRecordRef)evaluatedObject];
-        
-        NSPredicate *emailSubstring = [NSPredicate predicateWithFormat:@"SELF beginswith %@", textInput];
-        NSArray *searchedEmail = [emails filteredArrayUsingPredicate:emailSubstring];
-        if ([searchedEmail count]) {
+  [self filterContactsWithString:self.textField.text];
+}
+
+- (void)filterContactsWithString:(NSString *)textInput
+{
+  if (![textInput isEqual:@""]) {
+    NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary *bindings) {
+      BOOL result = NO;
+      NSString *name = (__bridge_transfer NSString*)ABRecordCopyCompositeName((__bridge ABRecordRef)evaluatedObject);
+      
+      if (name) {
+        if ([name rangeOfString:textInput options:NSCaseInsensitiveSearch].location != NSNotFound) {
           result = YES;
           return result;
         }
-        
+      }
+      
+      NSArray *emails = [self emailsOfPerson:(__bridge ABRecordRef)evaluatedObject];
+      
+      NSPredicate *emailSubstring = [NSPredicate predicateWithFormat:@"SELF beginswith %@", textInput];
+      NSArray *searchedEmail = [emails filteredArrayUsingPredicate:emailSubstring];
+      if ([searchedEmail count]) {
+        result = YES;
         return result;
-      }];
-      
-      self.filteredContacts = [NSMutableArray array];
-      for (NSArray *section in self.contacts) {
-        NSMutableArray *filteredItems = [[section filteredArrayUsingPredicate:predicate] mutableCopy];
-        [self.filteredContacts addObject:filteredItems];
-      }
-      self.dataDisplay = self.filteredContacts;
-      [self.tableView reloadData];
-      
-      if (![self filteredContatcsCount]) {
-        if ([self NSStringIsValidEmail:textInput]) {
-          ABRecordRef aPerson = ABPersonCreate();
-          CFErrorRef Error = NULL;
-          ABMutableMultiValueRef emailMutableValue = ABMultiValueCreateMutable(kABPersonEmailProperty);
-          ABMultiValueAddValueAndLabel(emailMutableValue, (__bridge CFStringRef)textInput, (__bridge CFStringRef)@"Email", NULL);
-          ABRecordSetValue(aPerson, kABPersonEmailProperty, emailMutableValue, &Error);
-          NSInteger section = [[UILocalizedIndexedCollation currentCollation] sectionForObject:textInput collationStringSelector:@selector(self)];
-          [self.filteredContacts[section] insertObject:(__bridge id)aPerson atIndex:0];
-          self.dataDisplay = self.filteredContacts;
-          [self.tableView reloadData];
-        }
       }
       
+      return result;
+    }];
     
-    } else {
-      self.dataDisplay = self.contacts;
-      [self.tableView reloadData];
+    self.filteredContacts = [NSMutableArray array];
+    for (NSArray *section in self.contacts) {
+      NSMutableArray *filteredItems = [[section filteredArrayUsingPredicate:predicate] mutableCopy];
+      [self.filteredContacts addObject:filteredItems];
+    }
+    self.dataDisplay = self.filteredContacts;
+    [self.tableView reloadData];
+    
+    if (![self filteredContatcsCount]) {
+      if ([self NSStringIsValidEmail:textInput]) {
+        ABRecordRef aPerson = ABPersonCreate();
+        CFErrorRef Error = NULL;
+        ABMutableMultiValueRef emailMutableValue = ABMultiValueCreateMutable(kABPersonEmailProperty);
+        ABMultiValueAddValueAndLabel(emailMutableValue, (__bridge CFStringRef)textInput, (__bridge CFStringRef)@"Email", NULL);
+        ABRecordSetValue(aPerson, kABPersonEmailProperty, emailMutableValue, &Error);
+        NSInteger section = [[UILocalizedIndexedCollation currentCollation] sectionForObject:textInput collationStringSelector:@selector(self)];
+        [self.filteredContacts[section] insertObject:(__bridge id)aPerson atIndex:0];
+        self.dataDisplay = self.filteredContacts;
+        [self.tableView reloadData];
+      }
     }
     
+    
+  } else {
+    self.dataDisplay = self.contacts;
+    [self.tableView reloadData];
   }
-  
-  return YES;
+
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)textField
@@ -253,9 +251,9 @@ static NSString *kWAAddressBookViewController_CoachMarks = @"kWAAddressBookViewC
         name = @"";
       }
       if ([emails count]) {
-        aPerson = @{@"name": name, @"email": @[emails[0]]};
+        aPerson = @{@"name": name, @"email": emails[0]};
       } else {
-        aPerson = @{@"name": name, @"email": @[]};
+        aPerson = @{@"name": name, @"email": @""};
       }
       
       if (![self.members containsObject:aPerson]) {
@@ -560,7 +558,7 @@ static NSString *kWAAddressBookViewController_CoachMarks = @"kWAAddressBookViewC
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-  WAContactPickerSectionHeaderView *headerView = [[WAContactPickerSectionHeaderView alloc] initWithFrame:CGRectMake(0.f, 2.f, 320.f, 22.f)];
+  WAPartioTableViewSectionHeaderView *headerView = [[WAPartioTableViewSectionHeaderView alloc] initWithFrame:CGRectMake(0.f, 2.f, 320.f, 22.f)];
   headerView.backgroundColor = tableView.backgroundColor;
   //headerView.title.text = NSLocalizedString(@"LABEL_CONTACTS_FRIENDS", @"LABEL_CONTACTS_FRIENDS");
   
@@ -656,7 +654,7 @@ static NSString *kWAAddressBookViewController_CoachMarks = @"kWAAddressBookViewC
         name = @"";
       }
       for (NSInteger i = 0; i < [emails count]; i++) {
-        aPerson = @{@"name": name, @"email": @[emails[i]]};
+        aPerson = @{@"name": name, @"email": emails[i]};
         
         if ([self.members containsObject:aPerson]) {
           cell.accessoryView.hidden = NO;
@@ -672,11 +670,23 @@ static NSString *kWAAddressBookViewController_CoachMarks = @"kWAAddressBookViewC
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
-  if (section != [tableView numberOfSections] - 1) { //FIXME: the end of displayed sections
+  if (section != [self lastRowOfDisplayedContact]) { 
     return 1.f;
   } else {
     return 44.f;
   }
+}
+
+- (NSInteger)lastRowOfDisplayedContact
+{
+  NSInteger rowNumberOfDisplayedContact = [self.dataDisplay count];
+  for (NSInteger i = (rowNumberOfDisplayedContact - 1); i >= 0 ; i--) {
+    if ([self.dataDisplay[i] count]) {
+      return i;
+    }
+  }
+  
+  return 0;
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
@@ -734,9 +744,9 @@ static NSString *kWAAddressBookViewController_CoachMarks = @"kWAAddressBookViewC
     name = @"";
   }
   if ([emails count]) {
-    aPerson = @{@"name": name, @"email": @[emails[0]]};
+    aPerson = @{@"name": name, @"email": emails[0]};
   } else {
-    aPerson = @{@"name": name, @"email": @[]};
+    aPerson = @{@"name": name, @"email": @""};
   }
   
   if (cell.accessoryView.hidden) {
@@ -789,7 +799,7 @@ static NSString *kWAAddressBookViewController_CoachMarks = @"kWAAddressBookViewC
         name = @"";
       }
       for (NSInteger i = 0; i < [emails count]; i++) {
-        aPerson = @{@"name": name, @"email": @[emails[i]]};
+        aPerson = @{@"name": name, @"email": emails[i]};
         
         if ([self.members containsObject:aPerson]) {
           [self.members removeObject:aPerson];
@@ -839,13 +849,11 @@ static NSString *kWAAddressBookViewController_CoachMarks = @"kWAAddressBookViewC
     return;
   }
   
-  NSString *selectedEmail = emails[buttonIndex];
-  [emails removeObjectAtIndex:buttonIndex];
-  [emails insertObject:selectedEmail atIndex:0];
   if (!name) {
     name = @"";
   }
-  NSDictionary *aPerson = @{@"name":name, @"email":@[emails[0]]};
+  NSString *selectedEmail = emails[buttonIndex];
+  NSDictionary *aPerson = @{@"name":name, @"email":selectedEmail};
   UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:self.selectedIndexPath];
   if (cell.accessoryView.hidden) {
     if (![self.members containsObject:aPerson]) {

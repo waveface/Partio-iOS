@@ -18,8 +18,8 @@
     checkinID = @"0";
   }
   NSDictionary *queries = @{
-                            checkinQueryName:[NSString stringWithFormat:@"SELECT checkin_id,coords,tagged_uids,page_id,message,timestamp FROM checkin WHERE author_uid = me() AND checkin_id > %@", checkinID],
-                            placeQueryName:[NSString stringWithFormat:@"SELECT name,page_id from place WHERE page_id IN (SELECT page_id FROM #%@)", checkinQueryName]
+                            checkinQueryName:[NSString stringWithFormat:@"SELECT checkin_id,coords,tagged_uids,target_id,message,timestamp FROM checkin WHERE author_uid = me() AND checkin_id > %@", checkinID],
+                            placeQueryName:[NSString stringWithFormat:@"SELECT name,page_id from place WHERE page_id IN (SELECT target_id FROM #%@)", checkinQueryName]
                             };
   
  
@@ -63,7 +63,7 @@
                                      continue;
                                    
                                    for (NSDictionary *checkin in checkinList) {
-                                     if ([place[@"page_id"] isEqualToNumber:checkin[@"page_id"]]) {
+                                     if ([place[@"page_id"] isEqualToNumber:checkin[@"target_id"]]) {
                                        NSMutableDictionary *returningItem = [NSMutableDictionary dictionaryWithDictionary:checkin];
                                        returningItem[@"name"] = place[@"name"];
                                        if (checkin[@"coords"]) {

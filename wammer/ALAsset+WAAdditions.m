@@ -60,6 +60,7 @@
     __weak ALAsset *wSelf = self;
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
       [wSelf makeThumbnailWithOptions:WAThumbnailTypeSmall completeBlock:^(UIImage *image) {
+
         
         NSData *data = UIImageJPEGRepresentation(image, 0.85f);
         [wSelf willChangeValueForKey:@"cachedPresentableImage"];
@@ -75,5 +76,29 @@
     return [UIImage imageWithCGImage:self.thumbnail];
     
   }
+}
+
+- (CLLocation*) gpsLocation {
+  NSDictionary *meta = [self defaultRepresentation].metadata;
+  if (meta) {
+    NSDictionary *gps = meta[@"{GPS}"];
+    if (gps) {
+      CLLocationCoordinate2D coordinate;
+      coordinate.latitude = [(NSNumber*)[gps valueForKey:@"Latitude"] doubleValue];
+      coordinate.longitude = [(NSNumber*)[gps valueForKey:@"Longitude"] doubleValue];
+      if ([gps[@"LongitudeRef"] isEqualToString:@"W"]) {
+        coordinate.longitude = -coordinate.longitude;
+      }
+      if ([gps[@"LatitudeRef"] isEqualToString:@"S"]) {
+        coordinate.latitude = -coordinate.latitude;
+      }
+      
+      CLLocationDistance altitude = [(NSNumber*)[gps valueForKey:@"Altitude"] doubleValue];
+      
+      return [[CLLocation alloc] initWithCoordinate:coordinate altitude:altitude horizontalAccuracy:0 verticalAccuracy:0 timestamp:nil];
+    }
+  }
+  
+  return  nil;
 }
 @end

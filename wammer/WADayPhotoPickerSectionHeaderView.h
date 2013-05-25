@@ -15,4 +15,5 @@
 @property (nonatomic, weak) IBOutlet UILabel *locationLabel;
 @property (nonatomic, strong) WAGeoLocation *geoLocation;
 
+@property (nonatomic, weak) IBOutlet UIButton *addButton;
 @end

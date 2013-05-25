@@ -10,9 +10,9 @@
 
 @interface WAPartioFirstUseViewController : UINavigationController
 
-@property (nonatomic, copy) void (^completionBlock)(void);
+@property (nonatomic, copy) void (^completionBlock)(BOOL signupSuccess);
 @property (nonatomic, copy) void (^failureBlock)(NSError *);
 
-+ (WAPartioFirstUseViewController*) firstUseViewControllerWithCompletionBlock:(void(^)(void))completion failure:(void(^)(NSError*))failure;
++ (WAPartioFirstUseViewController*) firstUseViewControllerWithCompletionBlock:(void(^)(BOOL signupSuccess))completion failure:(void(^)(NSError*))failure;
 
 @end

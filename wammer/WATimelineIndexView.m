@@ -8,15 +8,9 @@
 
 #import "WATimelineIndexView.h"
 
-@interface WATimelineIndexLabel : UILabel
-
+@interface WATimelineIndexLabel ()
 - (void) show;
 - (void) hide;
-@property (nonatomic, readonly) BOOL showing;
-
-@end
-
-@interface WATimelineIndexLabel ()
 @property (nonatomic, assign) BOOL showing;
 @end
 
@@ -71,7 +65,7 @@
 
 @property (nonatomic, strong) NSMutableArray *indexics;
 @property (nonatomic, strong) NSMutableArray *labels;
-@property (nonatomic, strong) UIView *dot;
+@property (nonatomic, strong) UIImageView *dot;
 
 @end
 @implementation WATimelineIndexView
@@ -80,18 +74,24 @@
 {
   self = [super initWithFrame:frame];
   if (self) {
-    // Initialization code
+    [self initialize];
   }
   return self;
 }
 
 - (void) awakeFromNib {
+  
+  [self initialize];
+  
+}
+
+- (void) initialize {
     
   self.backgroundColor = [UIColor colorWithWhite:0 alpha:0.5];
   self.layer.cornerRadius = self.frame.size.width/2;
-  self.dot = [[UIView alloc] initWithFrame:CGRectMake(self.frame.size.width/2-4, 10, 8, 8)];
-  self.dot.layer.cornerRadius = self.dot.frame.size.width/2;
-  self.dot.backgroundColor = [UIColor colorWithWhite:250 alpha:0.8];
+  self.dot = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"clock"]];
+  CGRect newRect = CGRectMake(self.frame.size.width/2-self.dot.frame.size.width/2, 0, self.dot.frame.size.width, self.dot.frame.size.height);
+  self.dot.frame = newRect;
   [self addSubview:self.dot];
     
   self.indexics = [NSMutableArray array];
@@ -99,31 +99,46 @@
 }
 
 
-- (void) addIndex:(CGFloat)index label:(NSString*)label {
-
-  NSInteger i = 0;
-  for (NSNumber *value in self.indexics) {
-    if (index > [value floatValue]) {
-      break;
+- (void) reloadViews {
+  if (self.dataSource) {
+    // remove all subview labels
+    if (self.labels) {
+      [self.labels enumerateObjectsUsingBlock:^(WATimelineIndexLabel *label, NSUInteger idx, BOOL *stop) {
+        [label removeFromSuperview];
+      }];
     }
-    i++;
+    [self.indexics removeAllObjects];
+    [self.labels removeAllObjects];
+    
+    NSInteger numOfItems = [self.dataSource numberOfIndexicsForIndexView:self];
+    if (numOfItems == 0)
+      return;
+    self.indexics = [NSMutableArray arrayWithCapacity:numOfItems];
+    self.labels = [NSMutableArray arrayWithCapacity:numOfItems];
+    
+    for (NSInteger i = 0; i < numOfItems; i ++) {
+      WATimelineIndexLabel *aLabel = [self.dataSource labelForIndex:i inIndexView:self] ;
+      if (!aLabel)
+        continue;
+      [self.indexics addObject:@(aLabel.relativePercent)];
+      aLabel.backgroundColor = [UIColor colorWithRed:0.168 green:0.168 blue:0.168 alpha:0.8];
+      aLabel.textColor = [UIColor whiteColor];
+      aLabel.textAlignment = NSTextAlignmentCenter;
+      aLabel.frame = CGRectMake(-200, 0, 195, 22);
+      aLabel.layer.cornerRadius = 3;
+      aLabel.layer.shadowOffset = CGSizeMake(0, 0);
+      aLabel.layer.shadowRadius = 3;
+      aLabel.layer.shadowOpacity = 0.4;
+      aLabel.layer.shadowColor = [UIColor blackColor].CGColor;
+      aLabel.font = [UIFont fontWithName:@"OpenSans-Semibold" size:12];
+      [aLabel sizeToFit];
+      [self addSubview:aLabel];
+      CGRect newFrame = aLabel.frame;
+      newFrame.origin.x = -5 - newFrame.size.width;
+      aLabel.frame = newFrame;
+      [self.labels addObject:aLabel];
+    }
   }
-  
-  [self.indexics insertObject:[NSNumber numberWithFloat:index] atIndex:i];
-  
-  WATimelineIndexLabel *newLabel = [[WATimelineIndexLabel alloc] initWithFrame:CGRectMake(-100, 0, 90, 22)];
-  newLabel.backgroundColor = [UIColor blackColor];
-  newLabel.textColor = [UIColor whiteColor];
-  newLabel.textAlignment = NSTextAlignmentCenter;
-  newLabel.text = label;
-  [newLabel sizeToFit];
-  [self addSubview:newLabel];
-  CGRect newFrame = newLabel.frame;
-  newFrame.origin.x = -10 - newFrame.size.width;
-  newLabel.frame = newFrame;
-  
-  [self.labels insertObject:newLabel atIndex:i];
-  
 }
 
 - (NSInteger) indexForPercentage:(CGFloat)percentage {
@@ -148,7 +163,7 @@
     return ;
   
   CGFloat newY = (self.frame.size.height*0.94) * percentage + (self.frame.size.height*0.02);
-  CGRect newRect = CGRectMake(self.frame.size.width/2-4, newY, 8, 8);
+  CGRect newRect = CGRectMake(self.frame.size.width/2-self.dot.frame.size.width/2, newY - self.dot.frame.size.height/2, self.dot.frame.size.width, self.dot.frame.size.height);
   [UIView animateWithDuration:0.2 animations:^{
     self.dot.frame = newRect;
   }];

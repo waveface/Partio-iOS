@@ -12,7 +12,6 @@
 #import "WAFileExif+WAAdditions.h"
 #import "WAPhotoDay.h"
 #import "WADefines.h"
-#import "GAI.h"
 #import "NSDate+WAAdditions.h"
 
 #import <MobileCoreServices/MobileCoreServices.h>
@@ -36,7 +35,7 @@
     WADataStore *ds = [WADataStore defaultStore];
     
     __block NSUInteger filesCount = 0;
-    [[WAAssetsLibraryManager defaultManager] enumerateSavedPhotosSince:nil onProgess:^(NSArray *assets) {
+    [[WAAssetsLibraryManager defaultManager] enumerateSavedPhotosSince:nil onProgess:^(NSArray *assets, NSDate *progressDate, BOOL *stop) {
       
       if (![assets count]) {
         return;

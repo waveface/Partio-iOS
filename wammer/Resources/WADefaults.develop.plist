@@ -52,5 +52,9 @@
 	<string>zBch3rtBh9AmaHY4EitodNdbKVgsuiqzB4dWzDvG3RQ</string>
 	<key>WAPhotoImportEnabled</key>
 	<true/>
+	<key>WAFeedbackRecipient</key>
+	<string>support@waveface.com</string>
+	<key>WAGAITrackingID</key>
+	<string>UA-41182989-2</string>
 </dict>
 </plist>

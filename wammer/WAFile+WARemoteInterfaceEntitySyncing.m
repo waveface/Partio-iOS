@@ -103,6 +103,7 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
     @"image": @"remoteRepresentedImage",
     @"md5": @"remoteResourceHash",
     @"mime_type": @"resourceType",
+    @"exif": @"exif",
     @"object_id": @"identifier",
     @"title": @"title",
     @"type": @"remoteResourceType",
@@ -132,7 +133,8 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
   return @{
   @"photoDay": @"WAPhotoDay",
   @"accessLogs": @"WAFileAccessLog",
-  @"pageElements": @"WAFilePageElement"
+  @"pageElements": @"WAFilePageElement",
+  @"exif": @"WAFileExif"
   };
   
 }
@@ -272,6 +274,19 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
   // only attachments/multiple_get returns attachment meta with md5 or event_time
   if (incomingRepresentation[@"md5"] || incomingRepresentation[@"event_time"] || incomingRepresentation[@"web_meta"] || incomingRepresentation[@"doc_meta"]) {
     returnedDictionary[@"outdated"] = @NO;
+  }
+  
+  NSDictionary *meta = incomingRepresentation[@"image_meta"];
+  if (meta) {
+    NSMutableDictionary *exif =  [NSMutableDictionary dictionaryWithDictionary:meta[@"exif"]];
+    NSDictionary *gps = meta[@"gps"];
+    if (exif && gps) {
+      if (gps[@"latitude"])
+        exif[@"latitude"] = gps[@"latitude"];
+      if (gps[@"longitude"])
+        exif[@"longitude"] = gps[@"longitude"];
+      returnedDictionary[@"exif"] = exif;
+    }
   }
   
   return returnedDictionary;

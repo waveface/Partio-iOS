@@ -82,6 +82,8 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
     @"gps": @"location",
     @"checkins": @"checkins",
     @"people": @"people",
+    @"title": @"title",
+    @"shared_code": @"sharedCode",
     @"shared_users": @"sharingContacts",
     @"extra_parameters": @"descriptiveTags",
     };
@@ -225,6 +227,11 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 //    
 //  }
   
+  NSString *title = incomingRepresentation[@"title"];
+  if (title && !title.length) {
+    [returnedDictionary removeObjectForKey:@"title"];
+  }
+  
   return returnedDictionary;
   
 }
@@ -288,7 +295,20 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
   NSDate * const postModificationDate = self.modificationDate;
   NSDate * const eventStartTime = self.eventStartDate;
   NSDate * const eventEndTime = self.eventEndDate;
+  NSString * const postTitleText = self.title;
+  NSString * const sharedCode = self.sharedCode;
   NSArray * invitingEmails = [(NSSet*)[self.sharingContacts valueForKey:@"email"] allObjects];
+  NSMutableArray * invitee = [NSMutableArray array];
+  for (WAPeople *person in [self.sharingContacts allObjects]) {
+    NSMutableDictionary *dict = [NSMutableDictionary dictionary];
+    if (person.name)
+      dict[@"nickname"] = person.name;
+    if (person.email)
+      dict[@"email"] = person.email;
+    if (person.fbID)
+      dict[@"fbid"] = person.fbID;
+    [invitee addObject:[NSDictionary dictionaryWithDictionary:dict]];
+  }
   WAEventArticleType eventType = [self.eventType intValue];
   
   NSMutableDictionary *postLocation = nil;
@@ -520,6 +540,7 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
         
         [ri createPostInGroup:groupID
 			  withContentText:postText
+                        title:postTitleText
 				  attachments:attachments
 						 type:isEvent?(isSharedEvent?WAArticleTypeSharedEvent:WAArticleTypeEvent):WAArticleTypeImport
                     eventType:isEvent?eventType:WAEventArticleUnknownType
@@ -529,11 +550,13 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
                eventStartTime:eventStartTime
                  eventEndTime:eventEndTime
 					 favorite:isFavorite
-               invitingEmails:invitingEmails
+                      invitee:invitee
                      location:postLocation
                      checkins:postCheckins
+                   sharedCode:sharedCode
 					onSuccess:^(NSDictionary *postRep) {
 	
+                      
 					  callback(postRep);
 	
         } onFailure: ^ (NSError *error) {
@@ -580,6 +603,7 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
         [ri updatePost:postID
 			   inGroup:groupID
 			  withText:postText
+                 title:postTitleText
 		   attachments:attachments
 		mainAttachment:postCoverPhotoID
 				  type:isEvent?(isSharedEvent?WAArticleTypeSharedEvent:WAArticleTypeEvent):WAArticleTypeImport
@@ -590,9 +614,10 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 			updateTime:postModificationDate
         eventStartTime:eventStartTime
           eventEndTime:eventEndTime
-        invitingEmails:invitingEmails
+               invitee:invitee
               location:postLocation
               checkins:postCheckins
+            sharedCode:nil
 			 onSuccess:^(NSDictionary *postRep) {
 	
 			   callback(postRep);

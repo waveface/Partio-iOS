@@ -24,20 +24,20 @@
 
 + (NSDictionary *) transformedRepresentationForRemoteRepresentation:(NSDictionary *)incomingRepresentation {
 
-	NSMutableDictionary *transformedRepresentation = [NSMutableDictionary dictionaryWithDictionary:incomingRepresentation];
-
-	NSArray *tags = [incomingRepresentation objectForKey:@"region_tags"];
-	if ([tags count]) {
+  NSMutableDictionary *transformedRepresentation = [NSMutableDictionary dictionaryWithDictionary:incomingRepresentation];
+  
+  NSArray *tags = [incomingRepresentation objectForKey:@"region_tags"];
+  if ([tags count]) {
 		
-		NSMutableArray *transformedTags = [NSMutableArray arrayWithCapacity:[tags count]];
-		[tags enumerateObjectsUsingBlock:^(NSString *aTagRep, NSUInteger idx, BOOL *stop) {
-			[transformedTags addObject:@{@"tagValue": aTagRep}];
-		}];
-		
-		[transformedRepresentation setObject:transformedTags forKey:@"region_tags"];
-	}
-
-	return transformedRepresentation;
+    NSMutableArray *transformedTags = [NSMutableArray arrayWithCapacity:[tags count]];
+    [tags enumerateObjectsUsingBlock:^(NSString *aTagRep, NSUInteger idx, BOOL *stop) {
+      [transformedTags addObject:@{@"tagValue": aTagRep}];
+    }];
+    
+    [transformedRepresentation setObject:transformedTags forKey:@"region_tags"];
+  }
+  
+  return transformedRepresentation;
 	
 }
 

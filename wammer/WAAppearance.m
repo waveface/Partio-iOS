@@ -70,6 +70,7 @@ void WAPartioDefaultAppearance(void) {
   [[UIBarButtonItem appearance] setBackgroundImage:btnBgImage
                                           forState:UIControlStateNormal
                                         barMetrics:UIBarMetricsDefault];
+
 }
 
 #pragma mark - Origianl appearance settings
@@ -140,8 +141,26 @@ UIBarButtonItem *WAPartioToolbarButton(NSString *labelText, UIImage *image, UIIm
   
 }
 
+UIBarButtonItem *WAPartioImageBarButton(NSString *labelText, UIImage *image, UIImage *imageHighlight, void(^aBlock)(void)) {
+  UIButton *button = [[UIButton alloc] initWithFrame:(CGRect){CGPointZero, image.size}];
+  if (image)
+    [button setBackgroundImage:image forState:UIControlStateNormal];
+  if (imageHighlight)
+    [button setBackgroundImage:imageHighlight forState:UIControlStateHighlighted];
+  [button setTitle:labelText forState:UIControlStateNormal];
+  [button.titleLabel setFont:[UIFont fontWithName:@"OpenSans-Semibold" size:12.f]];
+  [button.titleLabel setTextAlignment:NSTextAlignmentCenter];
+  button.titleLabel.textColor = [UIColor whiteColor];
+  [button addEventHandler:^(id sender) {
+    if (aBlock)
+      aBlock();
+  } forControlEvents:UIControlEventTouchUpInside];
+  UIBarButtonItem *nextItem = [[UIBarButtonItem alloc] initWithCustomView:button];
+  return nextItem;
+}
+
 UIBarButtonItem *WAPartioNaviBarButton(NSString *labelText, UIImage *image, UIImage *imageHighlight, void(^aBlock)(void)) {
-  UIButton *button = [[UIButton alloc] initWithFrame:(CGRect){CGPointZero, CGSizeMake((40/image.size.height)*image.size.width, 30)}];
+  UIButton *button = [[UIButton alloc] initWithFrame:(CGRect){CGPointZero, CGSizeMake((32/image.size.height)*image.size.width, image.size.height)}];
   if (image)
     [button setBackgroundImage:image forState:UIControlStateNormal];
   if (imageHighlight)

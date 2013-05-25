@@ -41,7 +41,7 @@
 	<key>WADucklingsEnabled</key>
 	<false/>
 	<key>WAFacebookAppID</key>
-	<string>234823683291756</string>
+	<string>500894863299357</string>
 	<key>WAStreamFeaturesURL</key>
 	<string>http://waveface.com/stream/features</string>
 	<key>WAUseCellularEnabled</key>
@@ -52,5 +52,9 @@
 	<string>zBch3rtBh9AmaHY4EitodNdbKVgsuiqzB4dWzDvG3RQ</string>
 	<key>WAPhotoImportEnabled</key>
 	<true/>
+	<key>WAFeedbackRecipient</key>
+	<string>support@waveface.com</string>
+	<key>WAGAITrackingID</key>
+	<string>UA-41182989-1</string>
 </dict>
 </plist>

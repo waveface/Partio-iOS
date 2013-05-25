@@ -90,6 +90,7 @@ NSString * const kWAFirstArticleFetched = @"WAFirstArticleSynced";
 NSString * const kWAAllCollectionsFetchOnce = @"WAAllCollectionsFetchOnce";
 NSString * const kWARemoteInterfaceDidFetchArticleNotification = @"WARemoteInterfaceDidFetchArticleNotification";
 
+NSString * const kWAGAITrackingID = @"WAGAITrackingID";
 
 void WARegisterUserDefaults () {
 

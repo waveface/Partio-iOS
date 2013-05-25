@@ -34,7 +34,6 @@
 #import "WASharedEventViewController.h"
 #import "WAPhotoHighlightsViewController.h"
 #import "WAPartioFirstUseViewController.h"
-#import "WAFacebookLoginViewController.h"
 
 #import "Foundation+IRAdditions.h"
 #import "UIKit+IRAdditions.h"
@@ -48,7 +47,6 @@
 
 #import "WAWelcomeViewController.h"
 
-#import "IIViewDeckController.h"
 #import "WASlidingMenuViewController.h"
 #import "WADayViewController.h"
 #import "WACacheManager.h"
@@ -67,8 +65,6 @@
 
 #define MR_SHORTHAND
 #import "CoreData+MagicalRecord.h"
-
-static NSString *const kTrackingId = @"UA-27817516-8";
 
 @interface WALoginBackgroundViewController : UIViewController
 @end
@@ -117,6 +113,7 @@ static NSString *const kTrackingId = @"UA-27817516-8";
 @property (nonatomic, strong) WASlidingMenuViewController *slidingMenu;
 @property (nonatomic, strong) WAStatusBar *statusBar;
 @property (nonatomic, strong) WAOverlayBezel *busyOverlay;
+@property (nonatomic, strong) NSDictionary *notificationPayloads;
 
 - (void) clearViewHierarchy;
 - (void) recreateViewHierarchy;
@@ -198,22 +195,30 @@ extern CFAbsoluteTime StartTime;
 
 - (BOOL) application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
   
-  // Init the GAITracker first, ref: https://developers.google.com/analytics/devguides/collection/ios/v2/#initialize
-  // [GAI sharedInstance].debug = YES;
-  [GAI sharedInstance].dispatchInterval = 120;
-  [GAI sharedInstance].trackUncaughtExceptions = YES;
-  [[GAI sharedInstance] trackerWithTrackingId:kTrackingId];
-  
-  [GMSServices provideAPIKey:@"AIzaSyAyGVeC0T7mPhQJjiKk7GVj8Z2Wmxpas5s"];
-  
   [self bootstrap];
   
+  // Init the GAITracker first, ref: https://developers.google.com/analytics/devguides/collection/ios/v2/#initialize
+  // [GAI sharedInstance].debug = YES;
+  [GAI sharedInstance].dispatchInterval = 8;
+  [GAI sharedInstance].trackUncaughtExceptions = YES;
+  NSString *trackingID = [[NSUserDefaults standardUserDefaults] stringForKey:kWAGAITrackingID];
+  [[GAI sharedInstance] trackerWithTrackingId:trackingID];
+  
+  [GMSServices provideAPIKey:@"AIzaSyAyGVeC0T7mPhQJjiKk7GVj8Z2Wmxpas5s"];
+
   WAPartioDefaultAppearance();
   
   self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-  self.window.backgroundColor = [UIColor colorWithRed:0.87 green:0.87 blue:0.84 alpha:1.0];
+  self.window.backgroundColor = [UIColor colorWithRed:43/255 green:43/255 blue:43/255 alpha:1];
   
   [self.window makeKeyAndVisible];
+  
+  NSDictionary *remoteNotificationPayload = launchOptions[UIApplicationLaunchOptionsRemoteNotificationKey];
+  if (remoteNotificationPayload) {
+    NSLog(@"remote notification payload: %@", remoteNotificationPayload);
+    application.applicationIconBadgeNumber = 0;// dismiss the badge number
+    self.notificationPayloads = remoteNotificationPayload;
+  }
   
   if ([[NSUserDefaults standardUserDefaults] stringForKey:kWADebugPersistentStoreName]) {
     
@@ -237,8 +242,6 @@ extern CFAbsoluteTime StartTime;
     [self recreateViewHierarchy];
     
   }
-  
-  application.applicationIconBadgeNumber = 0;// dismiss the badge number
   
   [[GAI sharedInstance].defaultTracker trackEventWithCategory:@"Application" withAction:@"Launched" withLabel:nil withValue:@0];
   
@@ -312,6 +315,8 @@ extern CFAbsoluteTime StartTime;
 - (void) application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
   
   application.applicationIconBadgeNumber = 0;
+  
+  NSLog(@"%@", userInfo);
   
 }
 
@@ -421,35 +426,13 @@ extern CFAbsoluteTime StartTime;
 - (void) recreateViewHierarchy {
   
   [[IRRemoteResourcesManager sharedManager].queue cancelAllOperations];
-  
-//  self.slidingMenu = [[WASlidingMenuViewController alloc] init];
-//  self.slidingMenu.delegate = self;
-//  WANavigationController *navSlide = [[WANavigationController alloc] initWithRootViewController:self.slidingMenu];
-//  navSlide.navigationBarHidden = YES;
-//  
-//  NSParameterAssert(self.syncManager);
-//  
-//  IIViewDeckController *viewDeckController = [[IIViewDeckController alloc] initWithCenterViewController:[WASlidingMenuViewController dayViewControllerForViewStyle:WAEventsViewStyle]
-//                                                                                     leftViewController:navSlide];
-//  viewDeckController.view.backgroundColor = [UIColor blackColor];
-//  
-//  if (isPad() && (UIInterfaceOrientationIsLandscape([[UIApplication sharedApplication] statusBarOrientation])))
-//    viewDeckController.leftLedge = self.window.frame.size.height - [WASlidingMenuViewController ledgeSize];
-//  else
-//    viewDeckController.leftLedge = self.window.frame.size.width - [WASlidingMenuViewController ledgeSize];
-//  
-//  viewDeckController.rotationBehavior = IIViewDeckRotationKeepsLedgeSizes;
-//  //			viewDeckController.animationBehavior = IIViewDeckAnimationPullIn;
-//  viewDeckController.panningMode = IIViewDeckNoPanning;
-//  [viewDeckController setWantsFullScreenLayout:YES];
-//  viewDeckController.delegate = self.slidingMenu;
-//  viewDeckController.centerhiddenInteractivity = IIViewDeckCenterHiddenNotUserInteractiveWithTapToClose;
-  
+    
   __weak WAAppDelegate_iOS *wSelf = self;
   
   if (![FBSession activeSession].isOpen) {
-    WAFacebookLoginViewController *fbLoginVC = [[WAFacebookLoginViewController alloc] initWithCompletionHandler:^(NSError *error) {
-          
+    [[FBSession activeSession] openWithCompletionHandler:^(FBSession *session, FBSessionState status, NSError *error) {
+      
+    
       if (error) {
         NSLog(@"failed to login facebook for error: %@", error);
         
@@ -461,14 +444,67 @@ extern CFAbsoluteTime StartTime;
         
       } else {
 
+        [self bootstrapWhenUserLogin];
+        
         WASharedEventViewController *sharedEventsVC = [[WASharedEventViewController alloc] init];
-        WANavigationController *navVC = [[WANavigationController alloc] initWithRootViewController:sharedEventsVC];
-        wSelf.window.rootViewController = navVC;
+        if (wSelf.notificationPayloads) {
+          NSNumber *action = wSelf.notificationPayloads[@"action"];
+          NSString *postId = wSelf.notificationPayloads[@"pid"];
+          if (postId) {
+            UIImage *bgImage = nil;
+            if(IS_WIDESCREEN)
+              bgImage = [UIImage imageNamed:@"Default-568h"];
+            else
+              bgImage = [UIImage imageNamed:@"Default"];
+
+            UIImageView *imageView = [[UIImageView alloc] initWithImage:bgImage];
+            imageView.frame = self.window.frame;
+            [self.window addSubview:imageView];
+            
+            WAOverlayBezel *busyBezel = [WAOverlayBezel bezelWithStyle:WAActivityIndicatorBezelStyle];
+            [busyBezel show];
+            sharedEventsVC.requestedToDisplayArticleID = postId;
+            WARemoteInterface *ri = [WARemoteInterface sharedInterface];
+            [ri retrievePost:postId inGroup:ri.primaryGroupIdentifier onSuccess:^(NSDictionary *postRep) {
+              
+              WADataStore *ds = [WADataStore defaultStore];
+              [ds performBlock:^{
+                
+                NSManagedObjectContext *context = [ds disposableMOC];
+                
+                NSArray *touchedArticles = [WAArticle insertOrUpdateObjectsUsingContext:context withRemoteResponse:@[postRep] usingMapping:nil options:IRManagedObjectOptionIndividualOperations];
+                
+                // restore articles in updating
+                for (WAArticle *article in touchedArticles) {
+                  if ([ds isUpdatingArticle:[[article objectID] URIRepresentation]]) {
+                    [context refreshObject:article mergeChanges:NO];
+                  }
+                }
+                
+                [context save:nil];
+                
+              } waitUntilDone:YES];
+              
+              dispatch_async(dispatch_get_main_queue(), ^{
+                [busyBezel dismiss];
+                WANavigationController *navVC = [[WANavigationController alloc] initWithRootViewController:sharedEventsVC];
+                wSelf.window.rootViewController = navVC;
+
+              });
+              
+            } onFailure:^(NSError *error) {
+              
+            }];
+            wSelf.notificationPayloads = nil;
+          }
+        } else {
+          WANavigationController *navVC = [[WANavigationController alloc] initWithRootViewController:sharedEventsVC];
+          wSelf.window.rootViewController = navVC;
+        }
         
       }
     
     }];
-    self.window.rootViewController = fbLoginVC;
   } else {
 
     [self bootstrapWhenUserLogin];
@@ -793,19 +829,23 @@ extern CFAbsoluteTime StartTime;
 - (void) handlePartioAuthRequest {
 
   __weak WAAppDelegate_iOS *wSelf = self;
-  __block WAPartioFirstUseViewController *partioFirstUse = [WAPartioFirstUseViewController firstUseViewControllerWithCompletionBlock:^{
+  __block WAPartioFirstUseViewController *partioFirstUse = [WAPartioFirstUseViewController firstUseViewControllerWithCompletionBlock:^(BOOL signupSuccess){
 
     [partioFirstUse popToRootViewControllerAnimated:NO];
-    
-    [partioFirstUse dismissViewControllerAnimated:NO completion:^{
-      wSelf.window.rootViewController = nil;
-      [wSelf recreateViewHierarchy];
-    }];
-    
-    WASharedEventViewController *sharedEventsVC = [[WASharedEventViewController alloc] init];
-    WANavigationController *navVC = [[WANavigationController alloc] initWithRootViewController:sharedEventsVC];
-    wSelf.window.rootViewController = navVC;
-    
+
+    if (signupSuccess) {
+      [partioFirstUse dismissViewControllerAnimated:NO completion:^{
+        wSelf.window.rootViewController = nil;
+        [wSelf recreateViewHierarchy];
+      }];
+      
+      WASharedEventViewController *sharedEventsVC = [[WASharedEventViewController alloc] init];
+      WANavigationController *navVC = [[WANavigationController alloc] initWithRootViewController:sharedEventsVC];
+      wSelf.window.rootViewController = navVC;
+    } else {
+      WASharedEventViewController *sharedEventsVC = [[WASharedEventViewController alloc] init];
+      [partioFirstUse pushViewController:sharedEventsVC animated:YES];
+    }
   } failure:^(NSError *error) {
     NSLog(@"fail to sign up for error: %@", error);
     IRAction *okAction = [IRAction actionWithTitle:NSLocalizedString(@"ACTION_OKAY", @"Alert Dismissal Action") block:nil];
@@ -994,6 +1034,8 @@ static NSInteger networkActivityStackingCount = 0;
 - (void)applicationDidBecomeActive:(UIApplication *)application {
 
   [FBSession.activeSession handleDidBecomeActive];
+
+  application.applicationIconBadgeNumber = 0;
   
 }
 
@@ -1036,23 +1078,6 @@ static NSInteger networkActivityStackingCount = 0;
   
 }
 
-
-- (void) application:(UIApplication *)application willChangeStatusBarOrientation:(UIInterfaceOrientation)newStatusBarOrientation duration:(NSTimeInterval)duration {
-  UIViewController *vc = self.window.rootViewController;
-  
-  if (!vc || ![vc isKindOfClass:[IIViewDeckController class]])
-    return;
-  
-  if (!isPad())
-    return;
-  
-  IIViewDeckController *viewDeck = (IIViewDeckController*)vc;
-  if (UIInterfaceOrientationIsLandscape(newStatusBarOrientation)) {
-    viewDeck.leftLedge = self.window.frame.size.height - [WASlidingMenuViewController ledgeSize];
-  } else {
-    viewDeck.leftLedge = self.window.frame.size.width - [WASlidingMenuViewController ledgeSize];
-  }
-}
 
 @end
 

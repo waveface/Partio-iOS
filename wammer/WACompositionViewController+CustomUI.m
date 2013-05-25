@@ -88,6 +88,7 @@
 	[ri updatePost:anArticleOrNil.identifier
 		   inGroup:ri.primaryGroupIdentifier
 		  withText:anArticleOrNil.text
+             title:nil
 	   attachments:attachments
 	mainAttachment:postCoverPhotoId
 		   type:WAArticleTypeEvent
@@ -96,7 +97,7 @@
 			hidden:NO
 replacingDataWithDate:anArticleOrNil.modificationDate
 		updateTime:nil
-     eventStartTime:nil eventEndTime:nil invitingEmails:nil location:nil checkins:nil
+     eventStartTime:nil eventEndTime:nil invitee:nil location:nil checkins:nil sharedCode:nil
 		 onSuccess:^(NSDictionary *postRep) {
 
 		   NSError *savingError = nil;

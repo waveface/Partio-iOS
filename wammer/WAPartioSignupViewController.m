@@ -7,7 +7,7 @@
 //
 
 #import "WAPartioSignupViewController.h"
-#import "WAFacebookLoginViewController.h"
+#import "WAFBSigninViewController.h"
 
 @interface WAPartioSignupViewController ()
 @property (nonatomic, weak) IBOutlet UIButton *facebookButton;
@@ -42,7 +42,7 @@
 
 - (IBAction)fbButtonClicked:(id)sender {
   
-  [WAFacebookLoginViewController backgroundLoginWithFacebookIDWithCompleteHandler:^(NSError *error) {
+  [WAFBSigninViewController backgroundLoginWithFacebookIDWithCompleteHandler:^(NSError *error) {
     if (self.completeHandler)
       self.completeHandler(error);
   }];
