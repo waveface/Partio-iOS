@@ -16,10 +16,10 @@
 		<dict>
 			<key>CFBundleIconFiles</key>
 			<array>
-				<string>partioIcon.png</string>
-				<string>partioIcon.png</string>
-				<string>partioIcon.png</string>
-				<string>partioIcon.png</string>
+				<string>PartioIconProduction.png</string>
+				<string>PartioIconProduction.png</string>
+				<string>PartioIconProduction.png</string>
+				<string>PartioIconProduction.png</string>
 			</array>
 			<key>UIPrerenderedIcon</key>
 			<true/>
