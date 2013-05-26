@@ -119,7 +119,7 @@
    </AnalyzeAction>
    <ArchiveAction
       buildConfiguration = "Release"
-      customArchiveName = "AOStream"
+      customArchiveName = "Grupin"
       revealArchiveInOrganizer = "YES">
    </ArchiveAction>
 </Scheme>

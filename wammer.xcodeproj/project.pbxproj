@@ -273,6 +273,7 @@
 		8033024E168853B200004891 /* googlereader@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8033024C168853B200004891 /* googlereader@2x.png */; };
 		80330251168853D500004891 /* twitter.png in Resources */ = {isa = PBXBuildFile; fileRef = 8033024F168853D500004891 /* twitter.png */; };
 		80330252168853D500004891 /* twitter@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 80330250168853D500004891 /* twitter@2x.png */; };
+		803509D61752394A00B9226D /* WADefaults.plist in Resources */ = {isa = PBXBuildFile; fileRef = FFCCDEE615B41B0000AEBB85 /* WADefaults.plist */; };
 		8037A20116D76AF000BE7581 /* FacebookLogo@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8037A20016D76AF000BE7581 /* FacebookLogo@2x.png */; };
 		8037A21416D76E0B00BE7581 /* FlickrLogo@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8037A21016D76E0B00BE7581 /* FlickrLogo@2x.png */; };
 		8037A21516D76E0B00BE7581 /* FourSquareLogo@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8037A21116D76E0B00BE7581 /* FourSquareLogo@2x.png */; };
@@ -4168,6 +4169,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				803509D61752394A00B9226D /* WADefaults.plist in Resources */,
 				DEB41D26167731A60047B6A1 /* Kal.bundle in Resources */,
 				FFCFE0C4142111E100B9E6AF /* InfoPlist.strings in Resources */,
 				FFCFE0D7142111E100B9E6AF /* WACompositionViewControllerPad.xib in Resources */,
