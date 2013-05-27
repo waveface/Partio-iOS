@@ -331,10 +331,12 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
 }
 
 - (void) touchArticleForRead {
-  if (self.representingArticle) {
-    self.representingArticle.lastRead = [NSDate date];
+  if (self.representingArticleID) {
+    NSManagedObjectContext *moc = [[WADataStore defaultStore] autoUpdatingMOC];
+    WAArticle *article = (WAArticle*)[moc objectWithID:self.representingArticleID];
+    article.lastRead = [NSDate date];
     NSError *error = nil;
-    [self.managedObjectContext save:&error];
+    [moc save:&error];
   }
 }
 
