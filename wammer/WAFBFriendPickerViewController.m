@@ -285,45 +285,32 @@ static NSString *kDefaultImageName = @"FacebookSDKResources.bundle/FBFriendPicke
 
 - (IBAction)textFieldDidChange:(id)sender
 {
-  if (!self.dataSource.indexMap.count) { // no filtered friends
-    if ([self NSStringIsValidEmail:self.textField.text]) {
-      NSDictionary *aItem = @{@"fbid": @"",
-                              @"first_name": (self.displayOrdering == FBFriendDisplayByFirstName)?self.textField.text:@"",
-                              @"last_name": (self.displayOrdering == FBFriendDisplayByLastName)?self.textField.text:@"",
-                              @"name": self.textField.text,
-                              @"picture:": @{},
-                              @"email": self.textField.text};
-      FBGraphObject *aFBObject = (FBGraphObject *)[FBGraphObject graphObjectWrappingDictionary:aItem];
-      [self.dataSource addItemIntoData:aFBObject];
-    }
-  }
   [self updateView];
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)textField
 {
   NSIndexPath *newIndexPath;
+  FBGraphObject *aFBObject;
   if ([self NSStringIsValidEmail:textField.text]) {
-    NSString *beginningTexts = [textField.text stringByDeletingPathExtension];
-    NSMutableArray *sectionItems = [self.dataSource.indexMap objectForKey:[[textField.text substringToIndex:1] uppercaseString]];
-    for (FBGraphObject *object in sectionItems) {
-      id<FBGraphUser> user = (id<FBGraphUser>)object;
-      if ([user.name hasPrefix:beginningTexts]) {
-        if (![user.name isEqual:textField.text]) {
-          [self.dataSource removeItemFromData:object];
-        } else {
-          [self.selectionManager selectItem:object];
-          newIndexPath = [self.dataSource indexPathForItem:object];
-        }
-      }
-    }
-    
-    [self updateNavigationBarTitleAndButtonStatus];
+    NSDictionary *aItem = @{@"fbid": @"",
+                            @"first_name": (self.displayOrdering == FBFriendDisplayByFirstName)?self.textField.text:@"",
+                            @"last_name": (self.displayOrdering == FBFriendDisplayByLastName)?self.textField.text:@"",
+                            @"name": self.textField.text,
+                            @"picture:": @{},
+                            @"email": self.textField.text};
+    aFBObject = (FBGraphObject *)[FBGraphObject graphObjectWrappingDictionary:aItem];
+    [self.dataSource addItemIntoData:aFBObject];
+    [self.selectionManager selectItem:aFBObject];
   }
+    
+  [self updateNavigationBarTitleAndButtonStatus];
   
   textField.text = @"";
   [self updateView];
-  if (newIndexPath) {
+  
+  if (aFBObject) {
+    newIndexPath = [self.dataSource indexPathForItem:aFBObject];
     [self.tableView scrollToRowAtIndexPath:newIndexPath atScrollPosition:UITableViewScrollPositionMiddle animated:NO];
   }
 }
