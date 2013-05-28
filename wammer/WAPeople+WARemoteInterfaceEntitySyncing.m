@@ -7,6 +7,9 @@
 //
 
 #import "WAPeople+WARemoteInterfaceEntitySyncing.h"
+#import <MagicalRecord/MagicalRecord.h>
+#import <NSManagedObject+MagicalRecord.h>
+#import <NSManagedObject+MagicalFinders.h>
 
 @implementation WAPeople (WARemoteInterfaceEntitySyncing)
 
@@ -23,8 +26,18 @@
 }
 
 + (NSDictionary *) transformedRepresentationForRemoteRepresentation:(NSDictionary *)incomingRepresentation {
-	
-	return [super transformedRepresentationForRemoteRepresentation:incomingRepresentation];
+  NSMutableDictionary *returnedDictionary = [incomingRepresentation mutableCopy];
+
+  NSString *email = returnedDictionary[@"email"];
+  NSString *fbid = returnedDictionary[@"fbid"];
+  if (!email && fbid) {
+    WAPeople *personRecord = [WAPeople MR_findFirstByAttribute:@"fbid" withValue:fbid];
+    if (personRecord && personRecord.email) {
+      returnedDictionary[@"email"] = personRecord.email;
+    }
+  }
+  
+  return returnedDictionary;
 	
 }
 

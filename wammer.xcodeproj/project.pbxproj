@@ -273,6 +273,7 @@
 		8033024E168853B200004891 /* googlereader@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8033024C168853B200004891 /* googlereader@2x.png */; };
 		80330251168853D500004891 /* twitter.png in Resources */ = {isa = PBXBuildFile; fileRef = 8033024F168853D500004891 /* twitter.png */; };
 		80330252168853D500004891 /* twitter@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 80330250168853D500004891 /* twitter@2x.png */; };
+		803509D61752394A00B9226D /* WADefaults.plist in Resources */ = {isa = PBXBuildFile; fileRef = FFCCDEE615B41B0000AEBB85 /* WADefaults.plist */; };
 		8037A20116D76AF000BE7581 /* FacebookLogo@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8037A20016D76AF000BE7581 /* FacebookLogo@2x.png */; };
 		8037A21416D76E0B00BE7581 /* FlickrLogo@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8037A21016D76E0B00BE7581 /* FlickrLogo@2x.png */; };
 		8037A21516D76E0B00BE7581 /* FourSquareLogo@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8037A21116D76E0B00BE7581 /* FourSquareLogo@2x.png */; };
@@ -438,6 +439,7 @@
 		80DC670A17461464000DC8E9 /* fbicon.png in Resources */ = {isa = PBXBuildFile; fileRef = 80DC670817461462000DC8E9 /* fbicon.png */; };
 		80DC670B17461464000DC8E9 /* fbicon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 80DC670917461463000DC8E9 /* fbicon@2x.png */; };
 		80E05A21174C9C0F000FB233 /* libGoogleAnalytics.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 80E05A20174C9C0F000FB233 /* libGoogleAnalytics.a */; };
+		80E2A5A4175039B000EB1CB6 /* PartioIconProduction.png in Resources */ = {isa = PBXBuildFile; fileRef = 80E2A5A3175039B000EB1CB6 /* PartioIconProduction.png */; };
 		80E5173C1670F3B200E1C3AD /* WALocation.m in Sources */ = {isa = PBXBuildFile; fileRef = 80E5173B1670F3B200E1C3AD /* WALocation.m */; };
 		80E7E586172FB5E1003E525E /* WAPhotoTimelineGalleryLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 80E7E585172FB5E1003E525E /* WAPhotoTimelineGalleryLayout.m */; };
 		80E7E596172FBAC7003E525E /* WAPhotoGalleryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 80E7E595172FBAC7003E525E /* WAPhotoGalleryCell.m */; };
@@ -1555,6 +1557,7 @@
 		80E05A1E174C9BFB000FB233 /* GAITransaction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GAITransaction.h; path = wammer/Libraries/GoogleAnalytics/Library/GAITransaction.h; sourceTree = "<group>"; };
 		80E05A1F174C9BFB000FB233 /* GAITransactionItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GAITransactionItem.h; path = wammer/Libraries/GoogleAnalytics/Library/GAITransactionItem.h; sourceTree = "<group>"; };
 		80E05A20174C9C0F000FB233 /* libGoogleAnalytics.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libGoogleAnalytics.a; path = wammer/Libraries/GoogleAnalytics/Library/libGoogleAnalytics.a; sourceTree = "<group>"; };
+		80E2A5A3175039B000EB1CB6 /* PartioIconProduction.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = PartioIconProduction.png; path = Resources/PartioIconProduction.png; sourceTree = "<group>"; };
 		80E5173A1670F3B200E1C3AD /* WALocation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WALocation.h; sourceTree = "<group>"; };
 		80E5173B1670F3B200E1C3AD /* WALocation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WALocation.m; sourceTree = "<group>"; };
 		80E7E584172FB5E1003E525E /* WAPhotoTimelineGalleryLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WAPhotoTimelineGalleryLayout.h; path = wammer/WAPhotoTimelineGalleryLayout.h; sourceTree = "<group>"; };
@@ -2653,6 +2656,7 @@
 				DE0870B1171C085300FA2A5E /* FB.png */,
 				DE0870B2171C085300FA2A5E /* FB@2x.png */,
 				80CBC7711713FBDE0056D9CF /* partioIcon.png */,
+				80E2A5A3175039B000EB1CB6 /* PartioIconProduction.png */,
 				800D2E07171804420028F47F /* PartioLogin-568h@2x.png */,
 				800D2E08171804420028F47F /* PartioLogin.png */,
 				800D2E09171804420028F47F /* PartioLogin@2x.png */,
@@ -4165,6 +4169,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				803509D61752394A00B9226D /* WADefaults.plist in Resources */,
 				DEB41D26167731A60047B6A1 /* Kal.bundle in Resources */,
 				FFCFE0C4142111E100B9E6AF /* InfoPlist.strings in Resources */,
 				FFCFE0D7142111E100B9E6AF /* WACompositionViewControllerPad.xib in Resources */,
@@ -4485,6 +4490,7 @@
 				DE19E3AD174A04C5008659BA /* WAFBFriendPickerViewController.xib in Resources */,
 				DE19E3AF174A04C5008659BA /* WAFBGraphObjectTableCell.xib in Resources */,
 				DE072671174F605900439193 /* bar.png in Resources */,
+				80E2A5A4175039B000EB1CB6 /* PartioIconProduction.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5130,7 +5136,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 599;
+				CURRENT_PROJECT_VERSION = 601;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"WF_USES_TESTFLIGHT=$(WF_USES_TESTFLIGHT)",
@@ -5610,7 +5616,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 599;
+				CURRENT_PROJECT_VERSION = 601;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -5673,7 +5679,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 599;
+				CURRENT_PROJECT_VERSION = 601;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"WF_USES_TESTFLIGHT=$(WF_USES_TESTFLIGHT)",
@@ -5853,7 +5859,7 @@
 				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos;
 				STREAM_BUNDLE_ID_SUFFIX = "";
-				STREAM_FACEBOOK_ID = 234823683291756;
+				STREAM_FACEBOOK_ID = 500894863299357;
 				STREAM_ICON_NAME_SUFFIX = "";
 				TARGETED_DEVICE_FAMILY = 1;
 				USER_HEADER_SEARCH_PATHS = "\"$(PROJECT_DIR)/external/IRFoundations\"/** \"$(SDKROOT)/usr/include/libxml2\"/** \"$(PROJECT_DIR)/external/IRWebAPIKit\"/** \"$(PROJECT_DIR)/external/IRDiscreteLayoutManager\"/** \"$(PROJECT_DIR)/external/IRTextAttributor\"/** \"$(PROJECT_DIR)/external/IRSlidingSplitViewController\"/** \"$(PROJECT_DIR)/external/IRRecurrenceMachine\"/** \"$(PROJECT_DIR)/external/IRObjectQueue\"/** \"$(PROJECT_DIR)/external/WFPresentation/Bindings/Objective-C\"/** $(CONFIGURATION_BUILD_DIR)/usr/local/include/** \"$(PROJECT_DIR)/external/SocketRocket\"/** \"$(PROJECT_DIR)/external/AQGridView/Classes\"/** \"$(PROJECT_DIR)/external/Kal/src\"/**";

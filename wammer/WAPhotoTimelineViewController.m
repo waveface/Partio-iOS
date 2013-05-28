@@ -55,6 +55,7 @@
 #import "WAAppDelegate.h"
 #import "WAAppDelegate_iOS.h"
 
+#import "GAI.h"
 #import <FacebookSDK/FBFrictionlessRequestSettings.h>
 #import <FacebookSDK/FBDialog.h>
 #import <FacebookSDK/FacebookSDK.h>
@@ -154,6 +155,9 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
   
   if (self.representingArticle) {
     [self touchArticleForRead];
+    [[[GAI sharedInstance] defaultTracker] sendView:@"WAPhotoTimeline"];
+  } else {
+    [[[GAI sharedInstance] defaultTracker] sendView:@"WAPhotoTimeline/Preview"];
   }
   
   self.imageDisplayQueue = [[NSOperationQueue alloc] init];
@@ -327,10 +331,12 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
 }
 
 - (void) touchArticleForRead {
-  if (self.representingArticle) {
-    self.representingArticle.lastRead = [NSDate date];
+  if (self.representingArticleID) {
+    NSManagedObjectContext *moc = [[WADataStore defaultStore] autoUpdatingMOC];
+    WAArticle *article = (WAArticle*)[moc objectWithID:self.representingArticleID];
+    article.lastRead = [NSDate date];
     NSError *error = nil;
-    [self.managedObjectContext save:&error];
+    [moc save:&error];
   }
 }
 
@@ -473,6 +479,10 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
       NSLog(@"error on creating a new import post for error: %@", savingError);
     }
     
+    [[GAI sharedInstance].defaultTracker trackEventWithCategory:@"Event" withAction:@"Reshare" withLabel:@"Photos" withValue:@([newAssets count])];
+    
+    [[GAI sharedInstance].defaultTracker trackEventWithCategory:@"Event" withAction:@"Reshare" withLabel:@"Friends" withValue:@([contacts count])];
+
     WAAppDelegate_iOS *appDelegate = (WAAppDelegate_iOS*)AppDelegate();
     [appDelegate.syncManager reload];
 
@@ -601,6 +611,10 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
   } else {
     NSLog(@"error on creating a new import post for error: %@", savingError);
   }
+  
+  [[GAI sharedInstance].defaultTracker trackEventWithCategory:@"Event" withAction:@"Share" withLabel:@"Photos" withValue:@([article.files count])];
+  
+  [[GAI sharedInstance].defaultTracker trackEventWithCategory:@"Event" withAction:@"Share" withLabel:@"Friends" withValue:@([article.sharingContacts count])];
   
   WAAppDelegate_iOS *appDelegate = (WAAppDelegate_iOS*)AppDelegate();
   [appDelegate.syncManager reload];
@@ -846,6 +860,12 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
               NSArray *fbIDs = [[results valueForKey:@"fbid"] filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(NSString *evaluatedObject, NSDictionary *bindings) {
                 return evaluatedObject.length;
               }]];
+              
+              if (!fbIDs.count) {
+                [wSelf.navigationController dismissViewControllerAnimated:YES completion:nil];
+                return;
+              }
+              
               NSString *jsonString = [fbIDs JSONString];
               NSString *message = NSLocalizedString(@"FB_INVITE_MESSAGE", @"");
               if (createdArticle.title) {
@@ -884,6 +904,12 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
               NSArray *fbIDs = [[results valueForKey:@"fbid"] filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(NSString *evaluatedObject, NSDictionary *bindings) {
                 return evaluatedObject.length;
               }]];
+              
+              if (!fbIDs.count) {
+                [wSelf.navigationController dismissViewControllerAnimated:YES completion:nil];
+                return;
+              }
+              
               NSString *jsonString = [fbIDs JSONString];
               
               [FBWebDialogs presentRequestsDialogModallyWithSession:[FBSession activeSession]
@@ -1100,7 +1126,7 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
     if (self.representingArticle) {
       cell.imageView.image = nil;
       [cell.imageView irUnbind:@"image"];
-      [cell.imageView irBind:@"image" toObject:self.sortedImages[indexPath.row] keyPath:@"thumbnailImage" options:@{kIRBindingsAssignOnMainThreadOption: (id)kCFBooleanTrue}];
+      [cell.imageView irBind:@"image" toObject:self.sortedImages[indexPath.row] keyPath:@"smallThumbnailImage" options:@{kIRBindingsAssignOnMainThreadOption: (id)kCFBooleanTrue}];
       
     } else {
       ALAsset *asset = self.allAssets[indexPath.row];
@@ -1291,7 +1317,7 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
 }
 
 - (void) showingNavigationBar {
-  UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(25, 0, 200, 44)];
+  UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(25, 0, self.navigationBar.frame.size.width - 26, 44)];
   label.text = self.headerView.titleLabel.text;
   label.tag = 99;
   label.textColor = [UIColor colorWithWhite:255 alpha:0.2];
@@ -1305,7 +1331,7 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
                    animations:^{
                      
                      label.textColor = [UIColor whiteColor];
-                     label.frame = CGRectMake(50, 0, 200, 44);
+                     label.frame = CGRectMake(50, 0, self.navigationBar.frame.size.width-50, 44);
                      label.alpha = 1.0f;
                    } completion:^(BOOL finished) {
                      

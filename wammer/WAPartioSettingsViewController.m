@@ -34,6 +34,8 @@
 {
   [super viewDidLoad];
 
+  [[[GAI sharedInstance] defaultTracker] sendView:@"WAPartioSettings"];
+
   self.aboutTitle.font = [UIFont fontWithName:@"OpenSans-Semibold" size:20.f];
   self.aboutTitle.text = NSLocalizedString(@"GRUPIN_ABOUT_TEXT", @"");
   self.description.font = [UIFont fontWithName:@"OpenSans-Regular" size:14.f];
