@@ -165,6 +165,8 @@ static NSString *kDefaultImageName = @"FacebookSDKResources.bundle/FBFriendPicke
       
     }
     
+    [self updateNavigationBarTitleAndButtonStatus];
+
   }];
 }
 
@@ -376,8 +378,6 @@ static NSString *kDefaultImageName = @"FacebookSDKResources.bundle/FBFriendPicke
 - (void)friendPickerViewControllerSelectionDidChange:(FBFriendPickerViewController *)friendPicker
 {
   NSLog(@"Current friend selections: %@", friendPicker.selection);
-
-  [self updateNavigationBarTitleAndButtonStatus];
 
 }
 
