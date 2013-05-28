@@ -145,6 +145,27 @@ static NSString *kDefaultImageName = @"FacebookSDKResources.bundle/FBFriendPicke
   self.loader.tableView = self.tableView;
 
   self.textField.delegate = self;
+  
+  [self irObserve:@"selection" options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:nil withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
+    
+    NSArray *newSelection = (NSArray *)toValue;
+    
+    if (wSelf.members.count > newSelection.count) {
+      for (FBGraphObject *user in wSelf.members) {
+        if (![newSelection containsObject:user]) {
+          [wSelf.members removeObject:user];
+        }
+      }
+      
+    } else {
+      FBGraphObject *newSelectedUser = [newSelection lastObject];
+      if (![wSelf.members containsObject:newSelectedUser]) {
+        [wSelf.members addObject:newSelectedUser];
+      }
+      
+    }
+    
+  }];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -172,7 +193,6 @@ static NSString *kDefaultImageName = @"FacebookSDKResources.bundle/FBFriendPicke
   }
   
 
-  // add joined members into member list
   self.members = [[NSMutableArray alloc] init];
   
 }
@@ -356,28 +376,6 @@ static NSString *kDefaultImageName = @"FacebookSDKResources.bundle/FBFriendPicke
 - (void)friendPickerViewControllerSelectionDidChange:(FBFriendPickerViewController *)friendPicker
 {
   NSLog(@"Current friend selections: %@", friendPicker.selection);
- 
-  __weak WAFBFriendPickerViewController *wSelf = self;
-  [self irObserve:@"selection" options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:nil withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
-    
-    NSArray *newSelection = (NSArray *)toValue;
-    
-    if (wSelf.members.count > newSelection.count) {
-      for (FBGraphObject *user in wSelf.members) {
-        if (![newSelection containsObject:user]) {
-          [wSelf.members removeObject:user];
-        }
-      }
-      
-    } else {
-      FBGraphObject *newSelectedUser = [newSelection lastObject];
-      if (![wSelf.members containsObject:newSelectedUser]) {
-        [wSelf.members addObject:newSelectedUser];
-      }
-    
-    }
-    
-  }];
 
   [self updateNavigationBarTitleAndButtonStatus];
 
