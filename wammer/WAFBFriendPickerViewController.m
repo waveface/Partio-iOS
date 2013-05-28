@@ -145,27 +145,6 @@ static NSString *kDefaultImageName = @"FacebookSDKResources.bundle/FBFriendPicke
   self.loader.tableView = self.tableView;
 
   self.textField.delegate = self;
-  
-  [self irObserve:@"selection" options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:nil withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
-    
-    NSArray *newSelection = (NSArray *)toValue;
-    
-    if (wSelf.members.count > newSelection.count) {
-      for (FBGraphObject *user in wSelf.members) {
-        if (![newSelection containsObject:user]) {
-          [wSelf.members removeObject:user];
-        }
-      }
-      
-    } else {
-      FBGraphObject *newSelectedUser = [newSelection lastObject];
-      if (![wSelf.members containsObject:newSelectedUser]) {
-        [wSelf.members addObject:newSelectedUser];
-      }
-      
-    }
-    
-  }];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -377,6 +356,23 @@ static NSString *kDefaultImageName = @"FacebookSDKResources.bundle/FBFriendPicke
 {
   NSLog(@"Current friend selections: %@", friendPicker.selection);
 
+  NSArray *newSelection = self.selection;
+  
+  if (self.members.count > newSelection.count) {
+    for (FBGraphObject *user in self.members) {
+      if (![newSelection containsObject:user]) {
+        [self.members removeObject:user];
+      }
+    }
+    
+  } else {
+    FBGraphObject *newSelectedUser = [newSelection lastObject];
+    if (![self.members containsObject:newSelectedUser]) {
+      [self.members addObject:newSelectedUser];
+    }
+    
+  }
+  
   [self updateNavigationBarTitleAndButtonStatus];
 
 }
