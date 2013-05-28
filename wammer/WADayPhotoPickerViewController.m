@@ -330,8 +330,8 @@
     header.locationLabel.text = @"";
     
     NSArray *assets = [self.dataSource photosInEvent:indexPath.section];
-    NSDate *beginDate = [[assets lastObject] valueForProperty:ALAssetPropertyDate];
-    NSDate *endDate = [assets[0] valueForProperty:ALAssetPropertyDate];
+    NSDate *beginDate = [[[assets lastObject] valueForProperty:ALAssetPropertyDate] dateByAddingTimeInterval:(-30 * 60)];
+    NSDate *endDate = [[assets[0] valueForProperty:ALAssetPropertyDate] dateByAddingTimeInterval:(30 * 60)];
                        
     NSFetchRequest * fetchRequest = [[WADataStore defaultStore] newFetchReuqestForCheckinFrom:beginDate to:endDate];
     
@@ -379,26 +379,42 @@
       if (self.selectedRangeFromDate) {
         NSDate *newFromDate = [self.selectedRangeFromDate dateByAddingTimeInterval:(-24 * 2 * 60 * 60)];
 
-        dispatch_async(dispatch_get_main_queue(), ^{
+        WAOverlayBezel *busyOverlay = [[WAOverlayBezel alloc] initWithStyle:WAActivityIndicatorBezelStyle];
+        [busyOverlay show];
+        
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
           
           wSelf.dataSource = [[WAEventPhotoPickerDataSource alloc] initWithPhotosLoadedUntil:newFromDate completionHandler:^(NSIndexSet *changedSections) {
-            [wSelf.collectionView reloadData];
-            [wSelf performBlock:^(id sender) {
-              
-              [wSelf selectAssetsFrom:wSelf.selectedRangeFromDate to:wSelf.selectedRangeToDate];
-              
-            } afterDelay:0.8];
+            dispatch_async(dispatch_get_main_queue(), ^{
+              [busyOverlay dismiss];
+              [wSelf.collectionView reloadData];
+              [wSelf performBlock:^(id sender) {
+                
+                [wSelf selectAssetsFrom:wSelf.selectedRangeFromDate to:wSelf.selectedRangeToDate];
+                
+              } afterDelay:0.8];
+            });
+
             
           }];
           
         });
 
       } else {
-        dispatch_async(dispatch_get_main_queue(), ^{
+        
+        WAOverlayBezel *busyOverlay = [[WAOverlayBezel alloc] initWithStyle:WAActivityIndicatorBezelStyle];
+        [busyOverlay show];
+
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
           
           wSelf.dataSource = [[WAEventPhotoPickerDataSource alloc] initWithCompletionHandler:^(NSIndexSet *changedSections) {
-            [wSelf.collectionView reloadData];
+            dispatch_async(dispatch_get_main_queue(), ^{
+              [busyOverlay dismiss];
+              [wSelf.collectionView reloadData];
+            });
+
           }];
+          
         });
 
       }

@@ -96,28 +96,6 @@ static NSString *kDefaultImageName = @"FacebookSDKResources.bundle/FBFriendPicke
     [self.canvasView addSubview:spinner];
   }
   
-  BOOL coachmarkShown = [[NSUserDefaults standardUserDefaults] boolForKey:kWAFBFriendPickerViewController_CoachMarks];
-  if (!coachmarkShown) {
-    __weak WAFBFriendPickerViewController *wSelf = self;
-    if (!self.inviteInstructionView) {
-      self.inviteInstructionView = [SMCalloutView new];
-      self.inviteInstructionView.title = NSLocalizedString(@"INSTRUCTION_IN_ADDRESS_BOOK_PICKER", @"The instruction show to tap contacts then share photos");
-      [self.inviteInstructionView presentCalloutFromRect:CGRectMake(self.view.frame.size.width/2, self.view.frame.size.height-44, 1, 1) inView:self.view constrainedToView:self.view permittedArrowDirections:SMCalloutArrowDirectionDown animated:YES];
-      self.tapGesture = [[UITapGestureRecognizer alloc] initWithHandler:^(UIGestureRecognizer *sender, UIGestureRecognizerState state, CGPoint location) {
-        if (wSelf.inviteInstructionView) {
-          [wSelf.inviteInstructionView dismissCalloutAnimated:YES];
-          wSelf.inviteInstructionView = nil;
-        }
-        [wSelf.view removeGestureRecognizer:wSelf.tapGesture];
-        wSelf.tapGesture = nil;
-      }];
-      [self.view addGestureRecognizer:self.tapGesture];
-    }
-    
-    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:kWAFBFriendPickerViewController_CoachMarks];
-    [[NSUserDefaults standardUserDefaults] synchronize];
-  }
-  
   kPlaceholderChooseFriends = NSLocalizedString(@"PLACEHOLER_CHOSEN_FRIENDS_ADDRESS_BOOK_PICKER", @"Placeholer in FB Friends Picker");
   [self.textField setPlaceholder:kPlaceholderChooseFriends];
   [self.textField setFont:[UIFont fontWithName:@"OpenSans-Regular" size:18.f]];
@@ -167,11 +145,54 @@ static NSString *kDefaultImageName = @"FacebookSDKResources.bundle/FBFriendPicke
   self.loader.tableView = self.tableView;
 
   self.textField.delegate = self;
+  
+  [self irObserve:@"selection" options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:nil withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
+    
+    NSArray *newSelection = (NSArray *)toValue;
+    
+    if (wSelf.members.count > newSelection.count) {
+      for (FBGraphObject *user in wSelf.members) {
+        if (![newSelection containsObject:user]) {
+          [wSelf.members removeObject:user];
+        }
+      }
+      
+    } else {
+      FBGraphObject *newSelectedUser = [newSelection lastObject];
+      if (![wSelf.members containsObject:newSelectedUser]) {
+        [wSelf.members addObject:newSelectedUser];
+      }
+      
+    }
+    
+  }];
 }
 
 - (void)viewDidAppear:(BOOL)animated
 {
-  // add joined members into member list
+  BOOL coachmarkShown = [[NSUserDefaults standardUserDefaults] boolForKey:kWAFBFriendPickerViewController_CoachMarks];
+  if (!coachmarkShown) {
+    __weak WAFBFriendPickerViewController *wSelf = self;
+    if (!self.inviteInstructionView) {
+      self.inviteInstructionView = [SMCalloutView new];
+      self.inviteInstructionView.title = NSLocalizedString(@"INSTRUCTION_IN_ADDRESS_BOOK_PICKER", @"The instruction show to tap contacts then share photos");
+      [self.inviteInstructionView presentCalloutFromRect:CGRectMake(self.view.frame.size.width/2, self.toolbar.frame.origin.y, 1, 1) inView:self.view constrainedToView:self.view permittedArrowDirections:SMCalloutArrowDirectionDown animated:YES];
+      self.tapGesture = [[UITapGestureRecognizer alloc] initWithHandler:^(UIGestureRecognizer *sender, UIGestureRecognizerState state, CGPoint location) {
+        if (wSelf.inviteInstructionView) {
+          [wSelf.inviteInstructionView dismissCalloutAnimated:YES];
+          wSelf.inviteInstructionView = nil;
+        }
+        [wSelf.view removeGestureRecognizer:wSelf.tapGesture];
+        wSelf.tapGesture = nil;
+      }];
+      [self.view addGestureRecognizer:self.tapGesture];
+    }
+    
+    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:kWAFBFriendPickerViewController_CoachMarks];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+  }
+  
+
   self.members = [[NSMutableArray alloc] init];
   
 }
@@ -284,45 +305,32 @@ static NSString *kDefaultImageName = @"FacebookSDKResources.bundle/FBFriendPicke
 
 - (IBAction)textFieldDidChange:(id)sender
 {
-  if (!self.dataSource.indexMap.count) { // no filtered friends
-    if ([self NSStringIsValidEmail:self.textField.text]) {
-      NSDictionary *aItem = @{@"fbid": @"",
-                              @"first_name": (self.displayOrdering == FBFriendDisplayByFirstName)?self.textField.text:@"",
-                              @"last_name": (self.displayOrdering == FBFriendDisplayByLastName)?self.textField.text:@"",
-                              @"name": self.textField.text,
-                              @"picture:": @{},
-                              @"email": self.textField.text};
-      FBGraphObject *aFBObject = (FBGraphObject *)[FBGraphObject graphObjectWrappingDictionary:aItem];
-      [self.dataSource addItemIntoData:aFBObject];
-    }
-  }
   [self updateView];
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)textField
 {
   NSIndexPath *newIndexPath;
+  FBGraphObject *aFBObject;
   if ([self NSStringIsValidEmail:textField.text]) {
-    NSString *beginningTexts = [textField.text stringByDeletingPathExtension];
-    NSMutableArray *sectionItems = [self.dataSource.indexMap objectForKey:[[textField.text substringToIndex:1] uppercaseString]];
-    for (FBGraphObject *object in sectionItems) {
-      id<FBGraphUser> user = (id<FBGraphUser>)object;
-      if ([user.name hasPrefix:beginningTexts]) {
-        if (![user.name isEqual:textField.text]) {
-          [self.dataSource removeItemFromData:object];
-        } else {
-          [self.selectionManager selectItem:object];
-          newIndexPath = [self.dataSource indexPathForItem:object];
-        }
-      }
-    }
-    
-    [self updateNavigationBarTitleAndButtonStatus];
+    NSDictionary *aItem = @{@"fbid": @"",
+                            @"first_name": (self.displayOrdering == FBFriendDisplayByFirstName)?self.textField.text:@"",
+                            @"last_name": (self.displayOrdering == FBFriendDisplayByLastName)?self.textField.text:@"",
+                            @"name": self.textField.text,
+                            @"picture:": @{},
+                            @"email": self.textField.text};
+    aFBObject = (FBGraphObject *)[FBGraphObject graphObjectWrappingDictionary:aItem];
+    [self.dataSource addItemIntoData:aFBObject];
+    [self.selectionManager selectItem:aFBObject];
   }
+    
+  [self updateNavigationBarTitleAndButtonStatus];
   
   textField.text = @"";
   [self updateView];
-  if (newIndexPath) {
+  
+  if (aFBObject) {
+    newIndexPath = [self.dataSource indexPathForItem:aFBObject];
     [self.tableView scrollToRowAtIndexPath:newIndexPath atScrollPosition:UITableViewScrollPositionMiddle animated:NO];
   }
 }
@@ -368,28 +376,6 @@ static NSString *kDefaultImageName = @"FacebookSDKResources.bundle/FBFriendPicke
 - (void)friendPickerViewControllerSelectionDidChange:(FBFriendPickerViewController *)friendPicker
 {
   NSLog(@"Current friend selections: %@", friendPicker.selection);
- 
-  __weak WAFBFriendPickerViewController *wSelf = self;
-  [self irObserve:@"selection" options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:nil withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
-    
-    NSArray *newSelection = (NSArray *)toValue;
-    
-    if (wSelf.members.count > newSelection.count) {
-      for (FBGraphObject *user in wSelf.members) {
-        if (![newSelection containsObject:user]) {
-          [wSelf.members removeObject:user];
-        }
-      }
-      
-    } else {
-      FBGraphObject *newSelectedUser = [newSelection lastObject];
-      if (![wSelf.members containsObject:newSelectedUser]) {
-        [wSelf.members addObject:newSelectedUser];
-      }
-    
-    }
-    
-  }];
 
   [self updateNavigationBarTitleAndButtonStatus];
 

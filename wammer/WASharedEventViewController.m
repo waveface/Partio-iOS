@@ -58,8 +58,9 @@ static NSString * const kWASharedEventViewController_CoachMarks = @"kWASharedEve
   
   NSManagedObjectContext *moc = self.managedObjectContext;
   NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] initWithEntityName:@"WAArticle"];
+  NSSortDescriptor *majorSortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"modificationDate" ascending:NO];
   NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"creationDate" ascending:NO];
-  [fetchRequest setSortDescriptors:@[sortDescriptor]];
+  [fetchRequest setSortDescriptors:@[majorSortDescriptor, sortDescriptor]];
   
   _eventFetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest
                                                                        managedObjectContext:moc
