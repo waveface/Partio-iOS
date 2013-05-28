@@ -1114,7 +1114,7 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
     if (self.representingArticle) {
       cell.imageView.image = nil;
       [cell.imageView irUnbind:@"image"];
-      [cell.imageView irBind:@"image" toObject:self.sortedImages[indexPath.row] keyPath:@"thumbnailImage" options:@{kIRBindingsAssignOnMainThreadOption: (id)kCFBooleanTrue}];
+      [cell.imageView irBind:@"image" toObject:self.sortedImages[indexPath.row] keyPath:@"smallThumbnailImage" options:@{kIRBindingsAssignOnMainThreadOption: (id)kCFBooleanTrue}];
       
     } else {
       ALAsset *asset = self.allAssets[indexPath.row];
