@@ -18,6 +18,8 @@
 @property (nonatomic, weak) IBOutlet UIButton *closedButton;
 @property (nonatomic, weak) IBOutlet UIButton *supportButton;
 @property (nonatomic, weak) IBOutlet UIScrollView *scrollView;
+@property (nonatomic, weak) IBOutlet UILabel *verLabel;
+@property (nonatomic, strong) NSString *verString;
 @end
 
 @implementation WAPartioSettingsViewController
@@ -45,6 +47,11 @@
    
   self.supportButton.layer.cornerRadius = 15;
   
+  NSBundle *bundle = [NSBundle mainBundle];
+  
+  self.verString = [NSString stringWithFormat:@"%@.%@", [bundle infoDictionary][@"CFBundleShortVersionString"], [bundle infoDictionary][(id)kCFBundleVersionKey]];
+  self.verLabel.text = self.verString;
+  
 }
 
 - (IBAction)closedButtonTapped:(id)sender {
@@ -60,7 +67,7 @@
   mailer.mailComposeDelegate = self;
   NSString *subject = NSLocalizedString(@"SUBJECT_MAIL_LINK", @"The email subject to send waveface support");
   [mailer setSubject:subject];
-  NSString *body = NSLocalizedString(@"BODY_MAIL_LINK", @"The content of email body to send waveface support");
+  NSString *body = [NSString stringWithFormat:@"%@\nversion: %@", NSLocalizedString(@"BODY_MAIL_LINK", @"The content of email body to send waveface support"), self.verString];
   [mailer setMessageBody:body isHTML:NO];
   
   NSString *supportEmail = [[NSUserDefaults standardUserDefaults] stringForKey:WAFeedbackRecipient];
