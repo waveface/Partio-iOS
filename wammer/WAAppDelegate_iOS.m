@@ -430,8 +430,10 @@ extern CFAbsoluteTime StartTime;
   __weak WAAppDelegate_iOS *wSelf = self;
   
   if (![FBSession activeSession].isOpen) {
-    [[FBSession activeSession] openWithCompletionHandler:^(FBSession *session, FBSessionState status, NSError *error) {
-      
+    [FBSession
+     openActiveSessionWithReadPermissions:@[@"email", @"user_photos", @"user_status", @"read_stream", @"friends_checkins", @"user_checkins"]
+     allowLoginUI:YES
+    completionHandler:^(FBSession *session, FBSessionState status, NSError *error) {
     
       if (error) {
         NSLog(@"failed to login facebook for error: %@", error);

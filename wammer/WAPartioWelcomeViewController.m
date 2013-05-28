@@ -140,7 +140,7 @@
   __weak WAPartioWelcomeViewController *wSelf = self;
   
   [FBSession
-   openActiveSessionWithReadPermissions:@[@"email", @"user_photos", @"user_status", @"read_stream", @"friends_photos", @"friends_status"]
+   openActiveSessionWithReadPermissions:@[@"email", @"user_photos", @"user_status", @"read_stream", @"friends_checkins", @"user_checkins"]
    allowLoginUI:YES
    completionHandler:^(FBSession *session, FBSessionState status, NSError *error) {
      
