@@ -94,28 +94,6 @@ static NSString *kDefaultImageName = @"FacebookSDKResources.bundle/FBFriendPicke
     [self.canvasView addSubview:spinner];
   }
   
-  BOOL coachmarkShown = [[NSUserDefaults standardUserDefaults] boolForKey:kWAFBFriendPickerViewController_CoachMarks];
-  if (!coachmarkShown) {
-    __weak WAFBFriendPickerViewController *wSelf = self;
-    if (!self.inviteInstructionView) {
-      self.inviteInstructionView = [SMCalloutView new];
-      self.inviteInstructionView.title = NSLocalizedString(@"INSTRUCTION_IN_ADDRESS_BOOK_PICKER", @"The instruction show to tap contacts then share photos");
-      [self.inviteInstructionView presentCalloutFromRect:CGRectMake(self.view.frame.size.width/2, self.view.frame.size.height-44, 1, 1) inView:self.view constrainedToView:self.view permittedArrowDirections:SMCalloutArrowDirectionDown animated:YES];
-      self.tapGesture = [[UITapGestureRecognizer alloc] initWithHandler:^(UIGestureRecognizer *sender, UIGestureRecognizerState state, CGPoint location) {
-        if (wSelf.inviteInstructionView) {
-          [wSelf.inviteInstructionView dismissCalloutAnimated:YES];
-          wSelf.inviteInstructionView = nil;
-        }
-        [wSelf.view removeGestureRecognizer:wSelf.tapGesture];
-        wSelf.tapGesture = nil;
-      }];
-      [self.view addGestureRecognizer:self.tapGesture];
-    }
-    
-    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:kWAFBFriendPickerViewController_CoachMarks];
-    [[NSUserDefaults standardUserDefaults] synchronize];
-  }
-  
   kPlaceholderChooseFriends = NSLocalizedString(@"PLACEHOLER_CHOSEN_FRIENDS_ADDRESS_BOOK_PICKER", @"Placeholer in FB Friends Picker");
   [self.textField setPlaceholder:kPlaceholderChooseFriends];
   [self.textField setFont:[UIFont fontWithName:@"OpenSans-Regular" size:18.f]];
@@ -169,6 +147,29 @@ static NSString *kDefaultImageName = @"FacebookSDKResources.bundle/FBFriendPicke
 
 - (void)viewDidAppear:(BOOL)animated
 {
+  BOOL coachmarkShown = [[NSUserDefaults standardUserDefaults] boolForKey:kWAFBFriendPickerViewController_CoachMarks];
+  if (!coachmarkShown) {
+    __weak WAFBFriendPickerViewController *wSelf = self;
+    if (!self.inviteInstructionView) {
+      self.inviteInstructionView = [SMCalloutView new];
+      self.inviteInstructionView.title = NSLocalizedString(@"INSTRUCTION_IN_ADDRESS_BOOK_PICKER", @"The instruction show to tap contacts then share photos");
+      [self.inviteInstructionView presentCalloutFromRect:CGRectMake(self.view.frame.size.width/2, self.toolbar.frame.origin.y, 1, 1) inView:self.view constrainedToView:self.view permittedArrowDirections:SMCalloutArrowDirectionDown animated:YES];
+      self.tapGesture = [[UITapGestureRecognizer alloc] initWithHandler:^(UIGestureRecognizer *sender, UIGestureRecognizerState state, CGPoint location) {
+        if (wSelf.inviteInstructionView) {
+          [wSelf.inviteInstructionView dismissCalloutAnimated:YES];
+          wSelf.inviteInstructionView = nil;
+        }
+        [wSelf.view removeGestureRecognizer:wSelf.tapGesture];
+        wSelf.tapGesture = nil;
+      }];
+      [self.view addGestureRecognizer:self.tapGesture];
+    }
+    
+    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:kWAFBFriendPickerViewController_CoachMarks];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+  }
+  
+
   // add joined members into member list
   self.members = [[NSMutableArray alloc] init];
   
