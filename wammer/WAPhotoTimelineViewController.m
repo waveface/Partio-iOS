@@ -860,6 +860,12 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
               NSArray *fbIDs = [[results valueForKey:@"fbid"] filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(NSString *evaluatedObject, NSDictionary *bindings) {
                 return evaluatedObject.length;
               }]];
+              
+              if (!fbIDs.count) {
+                [wSelf.navigationController dismissViewControllerAnimated:YES completion:nil];
+                return;
+              }
+              
               NSString *jsonString = [fbIDs JSONString];
               NSString *message = NSLocalizedString(@"FB_INVITE_MESSAGE", @"");
               if (createdArticle.title) {
@@ -898,6 +904,12 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
               NSArray *fbIDs = [[results valueForKey:@"fbid"] filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(NSString *evaluatedObject, NSDictionary *bindings) {
                 return evaluatedObject.length;
               }]];
+              
+              if (!fbIDs.count) {
+                [wSelf.navigationController dismissViewControllerAnimated:YES completion:nil];
+                return;
+              }
+              
               NSString *jsonString = [fbIDs JSONString];
               
               [FBWebDialogs presentRequestsDialogModallyWithSession:[FBSession activeSession]
