@@ -1263,6 +1263,8 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
     
       [self irObserve:@"locationName" options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:nil withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
         NSString *newLocationName = (NSString*)toValue;
+        if (!newLocationName)
+          return;
         dispatch_async(dispatch_get_main_queue(), ^{
           
           if (cover.titleLabel.text.length == 0)
