@@ -143,6 +143,8 @@
                               forDisplaySize:cell.avatarView.frame.size
                                  contentMode:UIViewContentModeScaleAspectFill];
     }
+    cell.textLabel.textColor = [UIColor whiteColor];
+    return cell;
     
   }
   

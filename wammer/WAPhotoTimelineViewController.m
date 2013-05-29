@@ -325,6 +325,19 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
   }
 }
 
+- (void)viewWillDisappear:(BOOL)animated {
+  
+  [super viewWillDisappear:animated];
+  
+  if (self.representingArticle) {
+    for (WAFile *file in self.sortedImages) {
+      file.alreadyRead = @(YES);
+    }
+    NSError *error = nil;
+    [self.managedObjectContext save:&error];
+  }
+}
+
 - (void) dealloc {
   if (self.tapGesture)
     [self.view removeGestureRecognizer:self.tapGesture];
@@ -953,6 +966,7 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
   
 }
 
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
@@ -1125,12 +1139,20 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
 
     if (self.representingArticle) {
       cell.imageView.image = nil;
+      WAFile *file = self.sortedImages[indexPath.row];
+      if (file.alreadyRead && ![file.alreadyRead boolValue]) {
+        cell.ribbonImageView.hidden = NO;
+      } else {
+        cell.ribbonImageView.hidden = YES;
+      }
+      
       [cell.imageView irUnbind:@"image"];
       [cell.imageView irBind:@"image" toObject:self.sortedImages[indexPath.row] keyPath:@"smallThumbnailImage" options:@{kIRBindingsAssignOnMainThreadOption: (id)kCFBooleanTrue}];
       
     } else {
       ALAsset *asset = self.allAssets[indexPath.row];
       cell.imageView.image = nil;
+      cell.ribbonImageView.hidden = YES;
       [cell.imageView irUnbind:@"image"];
       [cell.imageView irBind:@"image"
                     toObject:asset
