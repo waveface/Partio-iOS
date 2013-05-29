@@ -12,6 +12,7 @@
 #import "WAFBGraphObjectTableDataSource.h"
 #import "WAFBGraphObjectTableSelection.h"
 #import <FBGraphObjectPagingLoader.h>
+#import "WAFBGraphUser.h"
 
 #import <SMCalloutView/SMCalloutView.h>
 #import <BlocksKit/BlocksKit.h>
@@ -25,7 +26,7 @@
 @property (nonatomic, weak) IBOutlet UIToolbar *toolbar;
 @property (nonatomic, weak) IBOutlet UIActivityIndicatorView *spinner;
 
-@property (nonatomic, strong) NSMutableArray *contacts;
+@property (nonatomic, strong) NSString *lastEmailRecord;
 @property (nonatomic, strong) UITapGestureRecognizer *tapGesture;
 @property (nonatomic, strong) SMCalloutView *inviteInstructionView;
 
@@ -145,6 +146,7 @@ static NSString *kDefaultImageName = @"FacebookSDKResources.bundle/FBFriendPicke
   self.loader.tableView = self.tableView;
 
   self.textField.delegate = self;
+
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -173,7 +175,7 @@ static NSString *kDefaultImageName = @"FacebookSDKResources.bundle/FBFriendPicke
   
 
   self.members = [[NSMutableArray alloc] init];
-  
+  self.lastEmailRecord = @"";
 }
 
 - (void)didReceiveMemoryWarning
@@ -284,6 +286,25 @@ static NSString *kDefaultImageName = @"FacebookSDKResources.bundle/FBFriendPicke
 
 - (IBAction)textFieldDidChange:(id)sender
 {
+  if (![self.lastEmailRecord isEqualToString:@""] &&
+      [self.lastEmailRecord isEqualToString:[self.dataSource nameOfLastItem]]) {
+    [self.dataSource popItemFromData];
+    
+  }
+  
+  if ([self NSStringIsValidEmail:self.textField.text]) {
+    self.lastEmailRecord = self.textField.text;
+    
+    NSDictionary *aItem = @{@"fbid": @"",
+                            @"first_name": (self.displayOrdering == FBFriendDisplayByFirstName)?self.textField.text:@"",
+                            @"last_name": (self.displayOrdering == FBFriendDisplayByLastName)?self.textField.text:@"",
+                            @"name": self.textField.text,
+                            @"picture": @{},
+                            @"email": self.textField.text};
+    FBGraphObject *aFBObject = (FBGraphObject *)[FBGraphObject graphObjectWrappingDictionary:aItem];
+    [self.dataSource addItemIntoData:aFBObject];
+  }
+  
   [self updateView];
 }
 
@@ -291,27 +312,22 @@ static NSString *kDefaultImageName = @"FacebookSDKResources.bundle/FBFriendPicke
 {
   NSIndexPath *newIndexPath;
   FBGraphObject *aFBObject;
-  if ([self NSStringIsValidEmail:textField.text]) {
-    NSDictionary *aItem = @{@"fbid": @"",
-                            @"first_name": (self.displayOrdering == FBFriendDisplayByFirstName)?self.textField.text:@"",
-                            @"last_name": (self.displayOrdering == FBFriendDisplayByLastName)?self.textField.text:@"",
-                            @"name": self.textField.text,
-                            @"picture:": @{},
-                            @"email": self.textField.text};
-    aFBObject = (FBGraphObject *)[FBGraphObject graphObjectWrappingDictionary:aItem];
-    [self.dataSource addItemIntoData:aFBObject];
-    [self.selectionManager selectItem:aFBObject];
-  }
+  if ([self NSStringIsValidEmail:textField.text] && [self.lastEmailRecord isEqual:textField.text]) {
+    aFBObject = [self.dataSource lastObject];
+    if (![self.selection containsObject:aFBObject]) {
+      [self.selectionManager selectItem:aFBObject];
+    }
     
-  [self updateNavigationBarTitleAndButtonStatus];
-  
+  }
+      
   textField.text = @"";
   [self updateView];
   
   if (aFBObject) {
-    newIndexPath = [self.dataSource indexPathForItem:aFBObject];
+    newIndexPath = [self.dataSource indexPathForLastItem];
     [self.tableView scrollToRowAtIndexPath:newIndexPath atScrollPosition:UITableViewScrollPositionMiddle animated:NO];
   }
+
 }
 
 - (BOOL)NSStringIsValidEmail:(NSString *)checkString

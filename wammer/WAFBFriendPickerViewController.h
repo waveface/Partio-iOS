@@ -9,9 +9,6 @@
 #import <UIKit/UIKit.h>
 #import <FBFriendPickerViewController.h>
 
-#import <Foundation/Foundation.h>
-#import <FacebookSDK/FacebookSDK.h>
-
 @interface WAFBFriendPickerViewController : FBFriendPickerViewController
 
 @property (nonatomic, copy) NSSet *extraFieldsForFriendRequest;
@@ -23,8 +20,3 @@
 @end
 
 
-@protocol WAFBGraphUser <FBGraphUser>
-
-@property (nonatomic, strong) NSString *email;
-
-@end
