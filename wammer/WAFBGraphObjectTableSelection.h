@@ -12,4 +12,6 @@
 
 - (void)selectItem:(FBGraphObject *)item;
 
+@property (nonatomic, retain) NSArray *selection;
+
 @end

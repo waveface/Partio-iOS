@@ -15,8 +15,11 @@
 - (NSString *)titleForSection:(NSInteger)sectionIndex;
 - (NSString *)indexKeyOfItem:(FBGraphObject *)item;
 - (NSIndexPath *)indexPathForItem:(FBGraphObject *)item;
+- (NSIndexPath *)indexPathForLastItem;
 - (void)addItemIntoData:(FBGraphObject *)item;
-- (void)removeItemFromData:(FBGraphObject *)item;
+- (void)popItemFromData;
+- (NSString *)nameOfLastItem;
+- (FBGraphObject *)lastObject;
 
 @end
 

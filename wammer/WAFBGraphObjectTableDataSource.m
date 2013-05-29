@@ -10,6 +10,7 @@
 #import "WAFBGraphObjectTableCell.h"
 #import <FBURLConnection.h>
 #import <FBUtility.h>
+#import "WAFBGraphUser.h"
 
 // Magic number - iPhone address book doesn't show scrubber for less than 5 contacts
 static const NSInteger kMinimumCountToCollate = 6;
@@ -246,14 +247,30 @@ static NSString *indexKeyOfRecentUsedContacts = @"★";
   }
 }
 
-- (void)removeItemFromData:(FBGraphObject *)item
+- (void)popItemFromData
 {
-  if ([self.data containsObject:item]) {
+  if (self.data.count) {
     NSMutableArray *newData = [self.data mutableCopy];
-    [newData removeObject:item];
+    [newData removeObjectAtIndex:self.data.count-1];
     self.data = newData;
   }
+}
 
+- (NSString *)nameOfLastItem
+{
+  if (self.data.count) {
+    id<FBGraphUser> item = (id<FBGraphUser>)self.data[self.data.count-1];
+    return item.name;
+  }
+  
+  return @"";
+}
+
+- (FBGraphObject *)lastObject
+{
+  if (self.data.count) {
+    return self.data[self.data.count-1];
+  }
 }
 
 - (BOOL)NSStringIsValidEmail:(NSString *)checkString
@@ -286,33 +303,20 @@ static NSString *indexKeyOfRecentUsedContacts = @"★";
                                             triggeredByIndexPath:indexPath];
   } else {
     FBGraphObject *item = [self itemAtIndexPath:indexPath];
-    NSString *fbid = [item objectForKey:@"id"];
-    NSString *name = [item objectForKey:@"name"];
     static UIImageView *checkmark;
     checkmark = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Checked"]];
-       
+    NSString *name = [item objectForKey:@"name"];
+    
     // This is a no-op if it doesn't have an activity indicator.
     [cell stopAnimatingActivityIndicator];
     
-    if ([fbid isEqualToString:@""] && [self NSStringIsValidEmail:name]) {
-      cell.picture = (self.itemPicturesEnabled)? self.defaultPicture:nil;
-      cell.title = name;
-      cell.accessoryView.hidden = YES;
-      
-      if ([self.selectionDelegate graphObjectTableDataSource:self
-                                       selectionIncludesItem:item]) {
-        cell.accessoryType = UITableViewCellAccessoryCheckmark;
-        cell.accessoryView = checkmark;
-        cell.accessoryView.hidden = NO;
-        cell.selected = YES;
-      } else {
-        cell.accessoryType = UITableViewCellAccessoryNone;
-        cell.selected = NO;
-      }
-
-    } else if (item) {
+    if (item) {
       if (self.itemPicturesEnabled) {
-        cell.picture = [self tableView:tableView imageForItem:item];
+        if ([self NSStringIsValidEmail:name]) {
+          cell.picture = self.defaultPicture;
+        } else {
+          cell.picture = [self tableView:tableView imageForItem:item];
+        }
       } else {
         cell.picture = nil;
       }
@@ -360,6 +364,14 @@ static NSString *indexKeyOfRecentUsedContacts = @"★";
   }
   
   return cell;
+}
+
+- (NSIndexPath *)indexPathForLastItem
+{
+  if (self.data.count) {
+    return [self indexPathForItem:self.data[self.data.count-1]];
+  }
+  return nil;
 }
 
 - (NSIndexPath *)indexPathForItem:(FBGraphObject *)item

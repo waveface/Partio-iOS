@@ -1584,6 +1584,7 @@
 		D215E734098A44479DEC4F88 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		D26DABE040324ABAAAC5058D /* Pods-StreamTests.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-StreamTests.xcconfig"; path = "Pods/Pods-StreamTests.xcconfig"; sourceTree = SOURCE_ROOT; };
 		DE072670174F605900439193 /* bar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = bar.png; path = Resources/bar.png; sourceTree = "<group>"; };
+		DE0726B21755B97400439193 /* WAFBGraphUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WAFBGraphUser.h; path = wammer/WAFBGraphUser.h; sourceTree = "<group>"; };
 		DE0870A0171C084000FA2A5E /* contact.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = contact.png; path = Resources/contact.png; sourceTree = "<group>"; };
 		DE0870A1171C084000FA2A5E /* contact@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "contact@2x.png"; path = "Resources/contact@2x.png"; sourceTree = "<group>"; };
 		DE0870B1171C085300FA2A5E /* FB.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = FB.png; path = Resources/FB.png; sourceTree = "<group>"; };
@@ -2866,6 +2867,7 @@
 				DE19E3A9174A04C5008659BA /* WAFBGraphObjectTableDataSource.m */,
 				DE19E3AA174A04C5008659BA /* WAFBGraphObjectTableSelection.h */,
 				DE19E3AB174A04C5008659BA /* WAFBGraphObjectTableSelection.m */,
+				DE0726B21755B97400439193 /* WAFBGraphUser.h */,
 			);
 			name = "Contact Picker";
 			sourceTree = "<group>";

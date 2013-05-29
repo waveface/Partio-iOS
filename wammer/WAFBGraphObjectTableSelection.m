@@ -15,7 +15,6 @@
 
 @property (nonatomic, retain) WAFBGraphObjectTableDataSource *dataSource;
 @property (nonatomic, strong) UITapGestureRecognizer *tapGuesture;
-@property (nonatomic, retain) NSArray *selection;
 
 - (void)selectItem:(FBGraphObject *)item
               cell:(UITableViewCell *)cell;
