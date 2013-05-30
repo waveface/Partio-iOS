@@ -20,6 +20,7 @@
 #import "WACompositionViewController.h"
 #import "WAAppDelegate_iOS.h"
 #import "WADefines.h"
+#import "WAFile.h"
 #import "WAOverlayBezel.h"
 #import "WASlidingMenuViewController.h"
 #import <BlocksKit/BlocksKit.h>
@@ -445,6 +446,13 @@ static NSString * kWAGalleryViewControllerKVOContext = @"WAGalleryViewController
 
 }
 
+- (void) touchFileForReaded:(NSManagedObjectID*)fileID {
+  NSManagedObjectContext *moc = [[WADataStore defaultStore] autoUpdatingMOC];
+  WAFile *file = (WAFile*)[moc objectWithID:fileID];
+  file.alreadyRead = @(YES);
+  [moc save:nil];
+}
+
 - (UIView *) viewForPaginatedView:(IRPaginatedView *)aPaginatedView atIndex:(NSUInteger)index {
 	
 	WAGalleryImageView *view = [WAGalleryImageView viewForImage:nil];
@@ -452,6 +460,7 @@ static NSString * kWAGalleryViewControllerKVOContext = @"WAGalleryViewController
 
 	id file = self.imageFiles[index];
 	if ([file isKindOfClass:[WAFile class]]) {
+      [self touchFileForReaded:[file objectID]];
 		return [self configureGalleryImageView:view withFile:file degradeQuality:NO forceSync:YES];
 	} else if ([file isKindOfClass:[WAFilePageElement class]]) {
 		[file irObserve:@"thumbnailImage" options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:&kWAGalleryViewControllerKVOContext withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
