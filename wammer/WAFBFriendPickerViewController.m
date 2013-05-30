@@ -319,7 +319,7 @@ static NSString *kDefaultImageName = @"FacebookSDKResources.bundle/FBFriendPicke
     }
     
   }
-      
+  self.lastEmailRecord = @"";
   textField.text = @"";
   [self updateView];
   
