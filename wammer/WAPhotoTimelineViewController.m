@@ -207,7 +207,9 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
     UIBarButtonItem *flexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
     
     // add contacts button
+    
     UIBarButtonItem *addContacts = WAPartioToolbarButton(nil, [UIImage imageNamed:@"AddPplBtn"],nil, ^{
+
       WAFBFriendPickerViewController *contactPicker = [[WAFBFriendPickerViewController alloc] init];
       contactPicker.fieldsForRequest = [NSSet setWithObjects:@"email", nil];
       contactPicker.extraFieldsForFriendRequest = contactPicker.fieldsForRequest;
@@ -234,7 +236,7 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
     
     // add photos button
     UIBarButtonItem *addPhotos = WAPartioToolbarButton(nil, [UIImage imageNamed:@"AddPhotoBtn"], nil, ^{
-      WADayPhotoPickerViewController *photoPicker = [[WADayPhotoPickerViewController alloc] initWithSuggestedDateRangeFrom:[self beginDate] to:[self endDate]];
+      WADayPhotoPickerViewController *photoPicker = [[WADayPhotoPickerViewController alloc] initWithSuggestedDateRangeFrom:[wSelf beginDate] to:[wSelf endDate]];
       __weak WADayPhotoPickerViewController *wpp = photoPicker;
       photoPicker.onCancelHandler = ^{
         [wpp dismissViewControllerAnimated:YES completion:nil];
@@ -244,12 +246,11 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
       // doneb
       photoPicker.onNextHandler = ^(NSArray *selectedAssets) {
         [wpp dismissViewControllerAnimated:YES completion:nil];
-        
         [wSelf updateSharingEventWithPhotoChanges:selectedAssets contacts:nil onComplete:^{
           dispatch_async(dispatch_get_main_queue(), ^{
             [WAOverlayBezel showSuccessBezelWithDuration:1.5 handler:nil];
-            
-            wSelf.sortedImages = [self.representingArticle.files sortedArrayUsingComparator:^NSComparisonResult(WAFile *obj1, WAFile *obj2) {
+
+            wSelf.sortedImages = [wSelf.representingArticle.files sortedArrayUsingComparator:^NSComparisonResult(WAFile *obj1, WAFile *obj2) {
               return [obj1.created compare:obj2.created];
             }];
 
@@ -263,6 +264,7 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
     
     self.toolbar.items = @[ addContacts, flexibleSpace, addPhotos];
     [self.view addSubview:self.toolbar];
+     
   }
   
   [self.indexView reloadViews];
@@ -325,7 +327,21 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
   }
 }
 
+- (void) viewDidDisappear:(BOOL)animated {
+  [super viewDidDisappear:animated];
+  if (self.imageDisplayQueue)
+    [self.imageDisplayQueue cancelAllOperations];
+}
+
 - (void) dealloc {
+  if (self.representingArticle) {
+    for (WAFile *file in self.sortedImages) {
+      file.alreadyRead = @(YES);
+    }
+    NSError *error = nil;
+    [self.managedObjectContext save:&error];
+  }
+
   if (self.tapGesture)
     [self.view removeGestureRecognizer:self.tapGesture];
 }
@@ -701,6 +717,7 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
 
 
   if (self.representingArticle) {
+    
     [self.sortedImages enumerateObjectsUsingBlock:^(WAFile *file, NSUInteger idx, BOOL *stop) {
       if (file.exif.gpsLongitude && file.exif.gpsLongitude) {
         CLLocation *location = [[CLLocation alloc] initWithLatitude:file.exif.gpsLatitude.floatValue longitude:file.exif.gpsLongitude.floatValue];
@@ -723,6 +740,7 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
       }
       
     }];
+     
   } else {
     [self.allAssets enumerateObjectsUsingBlock:^(ALAsset *asset, NSUInteger idx, BOOL *stop) {
       CLLocation *gps = asset.gpsLocation;
@@ -953,6 +971,7 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
   
 }
 
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
@@ -1125,12 +1144,27 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
 
     if (self.representingArticle) {
       cell.imageView.image = nil;
+      WAFile *file = self.sortedImages[indexPath.row];
+      if (file.alreadyRead && ![file.alreadyRead boolValue]) {
+        cell.ribbonImageView.hidden = NO;
+        
+        [file irObserve:@"alreadyRead" options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionNew context:nil withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
+          BOOL changed = [toValue boolValue];
+          if (changed)
+            cell.ribbonImageView.hidden = YES;
+          
+        }];
+      } else {
+        cell.ribbonImageView.hidden = YES;
+      }
+      
       [cell.imageView irUnbind:@"image"];
       [cell.imageView irBind:@"image" toObject:self.sortedImages[indexPath.row] keyPath:@"smallThumbnailImage" options:@{kIRBindingsAssignOnMainThreadOption: (id)kCFBooleanTrue}];
       
     } else {
       ALAsset *asset = self.allAssets[indexPath.row];
       cell.imageView.image = nil;
+      cell.ribbonImageView.hidden = YES;
       [cell.imageView irUnbind:@"image"];
       [cell.imageView irBind:@"image"
                     toObject:asset
@@ -1238,9 +1272,11 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
         cover.titleLabel.text = [checkinNames componentsJoinedByString:@","];
       } else
         cover.titleLabel.text = @"";
-    
+
       [self irObserve:@"locationName" options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:nil withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
         NSString *newLocationName = (NSString*)toValue;
+        if (!newLocationName)
+          return;
         dispatch_async(dispatch_get_main_queue(), ^{
           
           if (cover.titleLabel.text.length == 0)
@@ -1251,7 +1287,6 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
         });
         
       }];
-      
     }
     
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];

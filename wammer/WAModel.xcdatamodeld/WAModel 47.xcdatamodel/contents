@@ -88,6 +88,7 @@
         <relationship name="article" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="WAArticle" inverseName="eventDay" inverseEntity="WAArticle" syncable="YES"/>
     </entity>
     <entity name="WAFile" representedClassName="WAFile">
+        <attribute name="alreadyRead" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="assetURL" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="codeName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="created" optional="YES" attributeType="Date" syncable="YES"/>
@@ -325,7 +326,7 @@
         <element name="WACollection" positionX="0" positionY="0" width="128" height="195"/>
         <element name="WADocumentDay" positionX="0" positionY="0" width="128" height="75"/>
         <element name="WAEventDay" positionX="160" positionY="192" width="128" height="75"/>
-        <element name="WAFile" positionX="0" positionY="0" width="128" height="675"/>
+        <element name="WAFile" positionX="0" positionY="0" width="128" height="690"/>
         <element name="WAFileAccessLog" positionX="160" positionY="192" width="128" height="150"/>
         <element name="WAFileExif" positionX="0" positionY="0" width="128" height="315"/>
         <element name="WAFilePageElement" positionX="0" positionY="0" width="128" height="135"/>

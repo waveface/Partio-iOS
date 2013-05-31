@@ -2,7 +2,7 @@
 //  WAFile.m
 //  wammer
 //
-//  Created by Shen Steven on 3/15/13.
+//  Created by Shen Steven on 5/29/13.
 //  Copyright (c) 2013 Waveface. All rights reserved.
 //
 
@@ -13,6 +13,7 @@
 #import "WAFileAccessLog.h"
 #import "WAFileExif.h"
 #import "WAFilePageElement.h"
+#import "WALocation.h"
 #import "WAPhotoDay.h"
 #import "WAUser.h"
 
@@ -50,12 +51,14 @@
 @dynamic webFaviconURL;
 @dynamic webTitle;
 @dynamic webURL;
+@dynamic alreadyRead;
 @dynamic accessLogs;
 @dynamic articles;
 @dynamic caches;
 @dynamic collections;
 @dynamic coverOfCollection;
 @dynamic exif;
+@dynamic locationMeta;
 @dynamic owner;
 @dynamic pageElements;
 @dynamic photoDay;
