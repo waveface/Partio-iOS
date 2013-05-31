@@ -332,6 +332,7 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
   if (self.imageDisplayQueue)
     [self.imageDisplayQueue cancelAllOperations];
 }
+
 - (void) dealloc {
   if (self.representingArticle) {
     for (WAFile *file in self.sortedImages) {
@@ -1146,6 +1147,13 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
       WAFile *file = self.sortedImages[indexPath.row];
       if (file.alreadyRead && ![file.alreadyRead boolValue]) {
         cell.ribbonImageView.hidden = NO;
+        
+        [file irObserve:@"alreadyRead" options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionNew context:nil withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
+          BOOL changed = [toValue boolValue];
+          if (changed)
+            cell.ribbonImageView.hidden = YES;
+          
+        }];
       } else {
         cell.ribbonImageView.hidden = YES;
       }
