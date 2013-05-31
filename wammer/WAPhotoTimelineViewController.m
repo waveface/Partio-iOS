@@ -325,10 +325,7 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
   }
 }
 
-- (void)viewWillDisappear:(BOOL)animated {
-  
-  [super viewWillDisappear:animated];
-  
+- (void) dealloc {
   if (self.representingArticle) {
     for (WAFile *file in self.sortedImages) {
       file.alreadyRead = @(YES);
@@ -336,9 +333,7 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
     NSError *error = nil;
     [self.managedObjectContext save:&error];
   }
-}
 
-- (void) dealloc {
   if (self.tapGesture)
     [self.view removeGestureRecognizer:self.tapGesture];
 }

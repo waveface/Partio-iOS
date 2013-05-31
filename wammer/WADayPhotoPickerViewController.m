@@ -82,7 +82,7 @@
   [[[GAI sharedInstance] defaultTracker] sendView:@"photo picker view"];
 
   self.imageDisplayQueue = [[NSOperationQueue alloc] init];
-  self.imageDisplayQueue.maxConcurrentOperationCount = 1;
+  self.imageDisplayQueue.maxConcurrentOperationCount = 3;
   self.selectedSections = [NSMutableSet set];
   
   __weak WADayPhotoPickerViewController *wSelf = self;
@@ -274,6 +274,11 @@
 
   if (cell.imageLoadingOperation) {
     [cell.imageLoadingOperation cancel];
+    cell.imageLoadingOperation = nil;
+  }
+  if (cell.imageDisplayingOperation) {
+    [cell.imageDisplayingOperation cancel];
+    cell.imageDisplayingOperation = nil;
   }
   
   cell.imageLoadingOperation = [NSBlockOperation blockOperationWithBlock:^{
@@ -281,7 +286,7 @@
     ALAsset *asset = [self.dataSource photoAtIndexPath:indexPath];
     UIImage *image = [UIImage imageWithCGImage:[(ALAsset*)asset thumbnail]];
     
-    [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+    cell.imageDisplayingOperation = [NSBlockOperation blockOperationWithBlock:^{
       cell.imageView.image = image;
       ALAsset *asset = [self.dataSource photoAtIndexPath:indexPath];
       if (wSelf.selectedAssets != nil && [wSelf.selectedAssets containsObject:asset]) {
@@ -289,6 +294,8 @@
       }
 
     }];
+    [[NSOperationQueue mainQueue] addOperation:cell.imageDisplayingOperation];
+    
   }];
   [self.imageDisplayQueue addOperation:cell.imageLoadingOperation];
     
@@ -336,38 +343,48 @@
     NSFetchRequest * fetchRequest = [[WADataStore defaultStore] newFetchReuqestForCheckinFrom:beginDate to:endDate];
     
     NSError *error = nil;
+    NSString *locationName = @"";
     NSArray *checkins = [[[WADataStore defaultStore] disposableMOC] executeFetchRequest:fetchRequest error:&error];
     if (error) {
       NSLog(@"error to query checkin db: %@", error);
     } else if (checkins.count) {
       header.locationLabel.text = [[checkins valueForKeyPath:@"name"] componentsJoinedByString:@","];
+      locationName = header.locationLabel.text;
     }
 
-    CLLocation *gps = [self gpsMetaWithinPhotos:assets];
-    if (gps) {
-      if (header.geoLocation)
-        [header.geoLocation cancel];
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
       
-      header.geoLocation = [[WAGeoLocation alloc] init];
-      [header.geoLocation identifyLocation:gps.coordinate
-                              onComplete:^(NSArray *results) {
-                                
-                                dispatch_async(dispatch_get_main_queue(), ^{
-                                  
-                                  if (header.locationLabel.text.length)
-                                    header.locationLabel.text = [NSString stringWithFormat:@"%@,%@", header.locationLabel.text, [results componentsJoinedByString:@","]];
-                                  else
-                                    header.locationLabel.text = [results componentsJoinedByString:@","];
-                                  
-                                });
-                                
-                              } onError:^(NSError *error) {
-                                
-                                NSLog(@"geolocation error: %@", error);
-                                
-                              }];
+      CLLocation *gps = [self gpsMetaWithinPhotos:assets];
+      if (gps) {
 
-    }
+        dispatch_async(dispatch_get_main_queue(), ^{
+
+        if (header.geoLocation)
+          [header.geoLocation cancel];
+        
+          header.geoLocation = [[WAGeoLocation alloc] init];
+          [header.geoLocation identifyLocation:gps.coordinate
+                                    onComplete:^(NSArray *results) {
+                                
+                                      dispatch_async(dispatch_get_main_queue(), ^{
+                                  
+                                        if (locationName.length)
+                                          header.locationLabel.text = [NSString stringWithFormat:@"%@,%@", locationName, [results componentsJoinedByString:@","]];
+                                        else
+                                          header.locationLabel.text = [results componentsJoinedByString:@","];
+                                  
+                                      });
+                                
+                                    } onError:^(NSError *error) {
+                                
+                                      NSLog(@"geolocation error: %@", error);
+                                
+                                    }];
+        });
+
+      }
+    });
+
     header.addButton.tag = indexPath.section;
     return header;
   } else {
