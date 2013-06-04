@@ -230,7 +230,6 @@
 		800D2E0C171804420028F47F /* PartioLogin@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 800D2E09171804420028F47F /* PartioLogin@2x.png */; };
 		800D9A9216719B5D0034CDF6 /* MKMapView+ZoomLevel.m in Sources */ = {isa = PBXBuildFile; fileRef = 800D9A9116719B5D0034CDF6 /* MKMapView+ZoomLevel.m */; };
 		800E4FCE1671DD0C00F50E0B /* WATimelineViewCell-Checkin.xib in Resources */ = {isa = PBXBuildFile; fileRef = 800E4FCD1671DD0C00F50E0B /* WATimelineViewCell-Checkin.xib */; };
-		800F240E16F2D3DC000157C1 /* WAFile.m in Sources */ = {isa = PBXBuildFile; fileRef = 800F240D16F2D3DC000157C1 /* WAFile.m */; };
 		8012DB4F16D4C1150002B163 /* UIViewController+WAAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 8012DB4E16D4C1150002B163 /* UIViewController+WAAdditions.m */; };
 		801943C0174B293800AE7AEA /* WAFBRequestViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 801943BE174B293800AE7AEA /* WAFBRequestViewController.m */; };
 		801943C1174B293800AE7AEA /* WAFBRequestViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 801943BF174B293800AE7AEA /* WAFBRequestViewController.xib */; };
@@ -243,6 +242,7 @@
 		801A1B7C17435FF300846168 /* EventListPlaceHolder@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 801A1B7B17435FF300846168 /* EventListPlaceHolder@2x.png */; };
 		801A1B821743830000846168 /* waclose.png in Resources */ = {isa = PBXBuildFile; fileRef = 801A1B80174382FF00846168 /* waclose.png */; };
 		801A1B831743830000846168 /* waclose@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 801A1B81174382FF00846168 /* waclose@2x.png */; };
+		801F2BB01755BA6C006B4819 /* WAFile.m in Sources */ = {isa = PBXBuildFile; fileRef = 801F2BAF1755BA6C006B4819 /* WAFile.m */; };
 		8020F1B516B23AF900E185EC /* WAUserDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8020F1B416B23AF900E185EC /* WAUserDetailViewController.m */; };
 		802291A31740DE3800408C2B /* WAEventPhotoPickerDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 802291A21740DE3800408C2B /* WAEventPhotoPickerDataSource.m */; };
 		8023BAF116770D2B00E6BED2 /* pindrop.png in Resources */ = {isa = PBXBuildFile; fileRef = 8023BAEF16770D2A00E6BED2 /* pindrop.png */; };
@@ -1261,8 +1261,6 @@
 		800D9A9016719B5D0034CDF6 /* MKMapView+ZoomLevel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "MKMapView+ZoomLevel.h"; path = "wammer/MKMapView+ZoomLevel.h"; sourceTree = "<group>"; };
 		800D9A9116719B5D0034CDF6 /* MKMapView+ZoomLevel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "MKMapView+ZoomLevel.m"; path = "wammer/MKMapView+ZoomLevel.m"; sourceTree = "<group>"; };
 		800E4FCD1671DD0C00F50E0B /* WATimelineViewCell-Checkin.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "WATimelineViewCell-Checkin.xib"; sourceTree = "<group>"; };
-		800F240C16F2D3DC000157C1 /* WAFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAFile.h; sourceTree = "<group>"; };
-		800F240D16F2D3DC000157C1 /* WAFile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAFile.m; sourceTree = "<group>"; };
 		8012DB4D16D4C1150002B163 /* UIViewController+WAAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+WAAdditions.h"; sourceTree = "<group>"; };
 		8012DB4E16D4C1150002B163 /* UIViewController+WAAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+WAAdditions.m"; sourceTree = "<group>"; };
 		801943BD174B293800AE7AEA /* WAFBRequestViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WAFBRequestViewController.h; path = wammer/WAFBRequestViewController.h; sourceTree = "<group>"; };
@@ -1278,6 +1276,8 @@
 		801A1B7B17435FF300846168 /* EventListPlaceHolder@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "EventListPlaceHolder@2x.png"; path = "Resources/EventListPlaceHolder@2x.png"; sourceTree = "<group>"; };
 		801A1B80174382FF00846168 /* waclose.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = waclose.png; path = Resources/waclose.png; sourceTree = "<group>"; };
 		801A1B81174382FF00846168 /* waclose@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "waclose@2x.png"; path = "Resources/waclose@2x.png"; sourceTree = "<group>"; };
+		801F2BAE1755BA6C006B4819 /* WAFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAFile.h; sourceTree = "<group>"; };
+		801F2BAF1755BA6C006B4819 /* WAFile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAFile.m; sourceTree = "<group>"; };
 		8020F1B316B23AF900E185EC /* WAUserDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAUserDetailViewController.h; sourceTree = "<group>"; };
 		8020F1B416B23AF900E185EC /* WAUserDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAUserDetailViewController.m; sourceTree = "<group>"; };
 		802291A11740DE3800408C2B /* WAEventPhotoPickerDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WAEventPhotoPickerDataSource.h; path = wammer/WAEventPhotoPickerDataSource.h; sourceTree = "<group>"; };
@@ -3091,8 +3091,8 @@
 		FF4BDEAD156A53AD00C105D5 /* File */ = {
 			isa = PBXGroup;
 			children = (
-				800F240C16F2D3DC000157C1 /* WAFile.h */,
-				800F240D16F2D3DC000157C1 /* WAFile.m */,
+				801F2BAE1755BA6C006B4819 /* WAFile.h */,
+				801F2BAF1755BA6C006B4819 /* WAFile.m */,
 				803302401688521C00004891 /* WAFileAccessLog.h */,
 				803302411688521C00004891 /* WAFileAccessLog.m */,
 				FFCD325014B9EA4D0035C4F5 /* WAFile+WAAdditions.h */,
@@ -4970,7 +4970,6 @@
 				4B124CAF16DC996300BB7B61 /* WACollectionOverviewViewCell.m in Sources */,
 				802FFDBB16DF746C00237762 /* WAFirstUseCoachmarkController.m in Sources */,
 				80762CF216F1C05800DDA5A7 /* WACollectionPickerViewController.m in Sources */,
-				800F240E16F2D3DC000157C1 /* WAFile.m in Sources */,
 				8093C6F116F3236F00C7D001 /* WACollectionPickerCell.m in Sources */,
 				80FA833816F9E79B003BF983 /* WAEventPhotoAddingCell.m in Sources */,
 				80B1138E170DD0D90087EBC4 /* WAPhotoHighlightsViewController.m in Sources */,
@@ -5021,6 +5020,7 @@
 				DE19E3AE174A04C5008659BA /* WAFBGraphObjectTableCell.m in Sources */,
 				DE19E3B0174A04C5008659BA /* WAFBGraphObjectTableDataSource.m in Sources */,
 				DE19E3B1174A04C5008659BA /* WAFBGraphObjectTableSelection.m in Sources */,
+				801F2BB01755BA6C006B4819 /* WAFile.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5138,7 +5138,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 603;
+				CURRENT_PROJECT_VERSION = 604;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"WF_USES_TESTFLIGHT=$(WF_USES_TESTFLIGHT)",
@@ -5618,7 +5618,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 603;
+				CURRENT_PROJECT_VERSION = 604;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -5681,7 +5681,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 603;
+				CURRENT_PROJECT_VERSION = 604;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"WF_USES_TESTFLIGHT=$(WF_USES_TESTFLIGHT)",

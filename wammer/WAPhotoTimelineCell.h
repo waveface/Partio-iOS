@@ -11,5 +11,6 @@
 @interface WAPhotoTimelineCell : UICollectionViewCell
 
 @property (nonatomic, weak) IBOutlet UIImageView *imageView;
+@property (nonatomic, weak) IBOutlet UIImageView *ribbonImageView;
 
 @end

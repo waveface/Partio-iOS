@@ -14,5 +14,5 @@
 @property (nonatomic, weak) IBOutlet UIImageView *checkMarkView;
 
 @property (nonatomic, strong) NSOperation *imageLoadingOperation;
-
+@property (nonatomic, strong) NSOperation *imageDisplayingOperation;
 @end
