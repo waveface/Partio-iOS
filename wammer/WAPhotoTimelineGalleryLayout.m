@@ -12,13 +12,14 @@
 
 - (void) prepareLayout {
   self.minimumInteritemSpacing = 0.0f;
-  self.minimumLineSpacing = 20.0f;
+  self.minimumLineSpacing = 0.0f;
   self.sectionInset = UIEdgeInsetsMake(0, 0, 0, 0);
   
   CGRect fullScreenBounds = [[UIScreen mainScreen] bounds];
   self.itemSize = CGSizeMake(fullScreenBounds.size.height, fullScreenBounds.size.width);
   self.scrollDirection = UICollectionViewScrollDirectionHorizontal;
   self.collectionView.alwaysBounceVertical = NO;
+  self.collectionView.pagingEnabled = YES;
 }
 
 //- (CGSize) collectionViewContentSize {
@@ -36,14 +37,14 @@
 //  return array;
 //}
 
-- (CGPoint) targetContentOffsetForProposedContentOffset:(CGPoint)proposedContentOffset withScrollingVelocity:(CGPoint)velocity {
-  int closestPage = (int)(self.collectionView.contentOffset.x / (self.itemSize.width + self.minimumLineSpacing));
-  if (velocity.x > 0)
-    closestPage += 1;
-  if (closestPage < 0)
-    closestPage = 0;
-  
-  return CGPointMake(closestPage * (self.itemSize.width + self.minimumLineSpacing), proposedContentOffset.y);
-  
-}
+//- (CGPoint) targetContentOffsetForProposedContentOffset:(CGPoint)proposedContentOffset withScrollingVelocity:(CGPoint)velocity {
+//  int closestPage = (int)(self.collectionView.contentOffset.x / (self.itemSize.width + self.minimumLineSpacing));
+//  if (velocity.x > 0)
+//    closestPage += 1;
+//  if (closestPage < 0)
+//    closestPage = 0;
+//  
+//  return CGPointMake(closestPage * (self.itemSize.width + self.minimumLineSpacing), proposedContentOffset.y);
+//  
+//}
 @end

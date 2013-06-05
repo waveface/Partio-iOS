@@ -149,6 +149,7 @@
         <relationship name="caches" optional="YES" toMany="YES" maxCount="5" deletionRule="Nullify" destinationEntity="WACache" inverseName="file" inverseEntity="WACache" syncable="YES"/>
         <relationship name="collections" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="WACollection" inverseName="files" inverseEntity="WACollection" syncable="YES"/>
         <relationship name="coverOfCollection" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="WACollection" inverseName="cover" inverseEntity="WACollection" syncable="YES"/>
+        <relationship name="creator" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="WAPeople" inverseName="files" inverseEntity="WAPeople" syncable="YES"/>
         <relationship name="exif" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="WAFileExif" inverseName="file" inverseEntity="WAFileExif" syncable="YES"/>
         <relationship name="locationMeta" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="WALocation" inverseName="file" inverseEntity="WALocation" syncable="YES"/>
         <relationship name="owner" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="WAUser" inverseName="files" inverseEntity="WAUser">
@@ -230,6 +231,7 @@
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="state" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <relationship name="article" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="WAArticle" inverseName="people" inverseEntity="WAArticle" syncable="YES"/>
+        <relationship name="files" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="WAFile" inverseName="creator" inverseEntity="WAFile" syncable="YES"/>
         <relationship name="sharedArticles" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="WAArticle" inverseName="sharingContacts" inverseEntity="WAArticle" syncable="YES"/>
     </entity>
     <entity name="WAPhotoDay" representedClassName="WAPhotoDay" syncable="YES">
@@ -326,13 +328,13 @@
         <element name="WACollection" positionX="0" positionY="0" width="128" height="195"/>
         <element name="WADocumentDay" positionX="0" positionY="0" width="128" height="75"/>
         <element name="WAEventDay" positionX="160" positionY="192" width="128" height="75"/>
-        <element name="WAFile" positionX="0" positionY="0" width="128" height="690"/>
+        <element name="WAFile" positionX="0" positionY="0" width="128" height="705"/>
         <element name="WAFileAccessLog" positionX="160" positionY="192" width="128" height="150"/>
         <element name="WAFileExif" positionX="0" positionY="0" width="128" height="315"/>
         <element name="WAFilePageElement" positionX="0" positionY="0" width="128" height="135"/>
         <element name="WAGroup" positionX="0" positionY="0" width="128" height="120"/>
         <element name="WALocation" positionX="0" positionY="0" width="128" height="150"/>
-        <element name="WAPeople" positionX="0" positionY="0" width="128" height="165"/>
+        <element name="WAPeople" positionX="0" positionY="0" width="128" height="180"/>
         <element name="WAPhotoDay" positionX="160" positionY="192" width="128" height="75"/>
         <element name="WAStation" positionX="160" positionY="192" width="128" height="120"/>
         <element name="WAStorage" positionX="0" positionY="0" width="128" height="240"/>
