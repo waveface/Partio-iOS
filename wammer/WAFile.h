@@ -2,7 +2,7 @@
 //  WAFile.h
 //  wammer
 //
-//  Created by Shen Steven on 5/29/13.
+//  Created by Shen Steven on 6/3/13.
 //  Copyright (c) 2013 Waveface. All rights reserved.
 //
 
@@ -11,10 +11,11 @@
 #import <CoreData+IRAdditions.h>
 
 
-@class WAArticle, WACache, WACollection, WAFileAccessLog, WAFileExif, WAFilePageElement, WALocation, WAPhotoDay, WAUser;
+@class WAArticle, WACache, WACollection, WAFileAccessLog, WAFileExif, WAFilePageElement, WALocation, WAPeople, WAPhotoDay, WAUser;
 
 @interface WAFile : IRManagedObject
 
+@property (nonatomic, retain) NSNumber * alreadyRead;
 @property (nonatomic, retain) NSString * assetURL;
 @property (nonatomic, retain) NSString * codeName;
 @property (nonatomic, retain) NSDate * created;
@@ -46,7 +47,6 @@
 @property (nonatomic, retain) NSString * webFaviconURL;
 @property (nonatomic, retain) NSString * webTitle;
 @property (nonatomic, retain) NSString * webURL;
-@property (nonatomic, retain) NSNumber * alreadyRead;
 @property (nonatomic, retain) NSOrderedSet *accessLogs;
 @property (nonatomic, retain) NSOrderedSet *articles;
 @property (nonatomic, retain) NSSet *caches;
@@ -58,6 +58,7 @@
 @property (nonatomic, retain) NSOrderedSet *pageElements;
 @property (nonatomic, retain) WAPhotoDay *photoDay;
 @property (nonatomic, retain) WAArticle *representedArticle;
+@property (nonatomic, retain) WAPeople *creator;
 @end
 
 @interface WAFile (CoreDataGeneratedAccessors)

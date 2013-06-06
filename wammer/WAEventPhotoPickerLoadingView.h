@@ -9,5 +9,5 @@
 #import <UIKit/UIKit.h>
 
 @interface WAEventPhotoPickerLoadingView : UICollectionReusableView
-
+@property (nonatomic, weak) IBOutlet UILabel *loadingLabel;
 @end
