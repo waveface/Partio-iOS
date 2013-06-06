@@ -43,6 +43,8 @@
   __weak WAEventPhotoPickerDataSource *wSelf = self;
   __block NSUInteger processingEvents = 0;
   NSMutableIndexSet *changedIndexices = [NSMutableIndexSet indexSet];
+  NSMutableArray *changedGroups = [NSMutableArray array];
+  __block NSDate *currentProcessingDate = self.lastLoadedDate;
   
   [[WAAssetsLibraryManager defaultManager]
    enumerateSavedPhotosSince:date
@@ -68,8 +70,8 @@
          if ((previousInterval - assetInterval) > EVENT_GROUPING_THRESHOLD) {
            
            previousDate = assetDate;
-           [changedIndexices addIndex:(wSelf.photoGroups.count + processingEvents)];
-           [wSelf.photoGroups addObject:[photoList copy]];
+           [changedIndexices addIndex:(wSelf.photoGroups.count + changedGroups.count + processingEvents)];
+           [changedGroups addObject:[photoList copy]];
            processingEvents ++;
            
            [photoList removeAllObjects];
@@ -84,8 +86,8 @@
        }
      }];
      if (photoList.count) {
-       [changedIndexices addIndex:(wSelf.photoGroups.count + processingEvents)];
-       [wSelf.photoGroups addObject:[photoList copy]];
+       [changedIndexices addIndex:(wSelf.photoGroups.count + changedGroups.count + processingEvents)];
+       [changedGroups addObject:[photoList copy]];
        processingEvents ++;
        
        [photoList removeAllObjects];
@@ -94,24 +96,29 @@
      
      if (!until) {
        if (processingEvents > BATCH_PROCESS_EVENTS) {
-         wSelf.lastLoadedDate = progressDate;
+         currentProcessingDate = progressDate;
          *stop = YES;
          return;
        }
      } else {
        if ([previousDate compare:until] != NSOrderedDescending) {
-         wSelf.lastLoadedDate = progressDate;
+         currentProcessingDate = progressDate;
          *stop = YES;
          return;
        }
      }
      
-   } onComplete:^{
+   } onComplete:^(NSDate *progressDate){
      
      if (wSelf.completionHandler) {
 
-       wSelf.completionHandler([changedIndexices copy]);
-
+       if (!wSelf.lastLoadedDate || ![wSelf.lastLoadedDate isEqualToDate:currentProcessingDate]) {
+         [wSelf.photoGroups addObjectsFromArray:changedGroups];
+         wSelf.lastLoadedDate = progressDate;
+         wSelf.completionHandler([changedIndexices copy]);
+       } else {
+         wSelf.completionHandler(nil);
+       }
      }
      
    } onFailure:^(NSError *error) {
