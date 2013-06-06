@@ -1179,10 +1179,28 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
     WAPhotoGalleryCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"PhotoGallery" forIndexPath:indexPath];
     
     if (self.representingArticle) {
-      cell.imageView.image = nil;
-      [cell.imageView irUnbind:@"image"];
-      [cell.imageView irBind:@"image" toObject:self.sortedImages[indexPath.row] keyPath:@"thumbnailImage" options:@{kIRBindingsAssignOnMainThreadOption: (id)kCFBooleanTrue}];
+      WAFile *file = self.sortedImages[indexPath.row];
+      cell.image = nil;
+      [cell irUnbind:@"image"];
+      [cell irBind:@"image" toObject:file keyPath:@"thumbnailImage" options:@{kIRBindingsAssignOnMainThreadOption: (id)kCFBooleanTrue}];
+
+      cell.creatorNameLabel.text = @"";
+      if (file.creator.name) {
+        cell.creatorNameLabel.text = file.creator.name;
+      } else if (file.creator.email) {
+        cell.creatorNameLabel.text = file.creator.email;
+      }
       
+      if (!file.creator) {
+        cell.placeholderView.hidden = YES;
+      } else {
+        cell.placeholderView.hidden = NO;
+        cell.avatarView.image = [UIImage imageNamed:@"Avatar"];
+        if (file.creator.avatarURL) {
+          [cell.avatarView setPathToNetworkImage:file.creator.avatarURL forDisplaySize:cell.avatarView.frame.size];
+        }
+      }
+
 //      WAFile *file = self.sortedImages[indexPath.row];
 //      cell.subtitleLabel.text = @"";
 //      if (file.exif.gpsLongitude && file.exif.gpsLongitude) {
@@ -1203,9 +1221,9 @@ static NSString * const kWAPhotoTimelineViewController_CoachMarks2 = @"kWAPhotoT
 
     } else {
       ALAsset *asset = self.allAssets[indexPath.row];
-      cell.imageView.image = nil;
-      [cell.imageView irUnbind:@"image"];
-      [cell.imageView irBind:@"image"
+      cell.image = nil;
+      [cell irUnbind:@"image"];
+      [cell irBind:@"image"
                     toObject:asset
                      keyPath:@"cachedPresentableImage"
                      options:@{kIRBindingsAssignOnMainThreadOption: (id)kCFBooleanTrue}];

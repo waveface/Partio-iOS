@@ -404,6 +404,10 @@
           wSelf.dataSource = [[WAEventPhotoPickerDataSource alloc] initWithPhotosLoadedUntil:newFromDate completionHandler:^(NSIndexSet *changedSections) {
             dispatch_async(dispatch_get_main_queue(), ^{
               [busyOverlay dismiss];
+              if (!changedSections) {
+                loading.loadingLabel.hidden = YES;
+                return;
+              }
               [wSelf.collectionView reloadData];
               [wSelf performBlock:^(id sender) {
                 
@@ -427,6 +431,11 @@
           wSelf.dataSource = [[WAEventPhotoPickerDataSource alloc] initWithCompletionHandler:^(NSIndexSet *changedSections) {
             dispatch_async(dispatch_get_main_queue(), ^{
               [busyOverlay dismiss];
+              if (!changedSections) {
+                loading.loadingLabel.hidden = YES;
+                return;
+              }
+
               [wSelf.collectionView reloadData];
             });
 
