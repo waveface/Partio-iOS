@@ -101,7 +101,7 @@
          return;
        }
      } else {
-       if ([previousDate compare:until] != NSOrderedDescending) {
+       if (previousDate && [previousDate compare:until] != NSOrderedDescending) {
          currentProcessingDate = progressDate;
          *stop = YES;
          return;
