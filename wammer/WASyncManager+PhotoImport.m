@@ -127,7 +127,7 @@
       
       [wSelf.photoImportOperationQueue addOperation:operation];
       
-    } onComplete:^{
+    } onComplete:^(NSDate *progressDate){
       
       NSCAssert(wSelf.needingImportFilesCount == 0, @"file import count should be reset before starting photo import");
       wSelf.needingImportFilesCount = filesCount; // display status bar via KVO

@@ -111,6 +111,7 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
     @"small_thumbnail_url": @"smallThumbnailURL",
     @"thumbnail_url": @"thumbnailURL",
     @"large_thumbnail_url": @"largeThumbnailURL",
+    @"creator_info": @"creator",
     
     @"url": @"resourceURL",
     @"file_create_time": @"timestamp",
@@ -134,7 +135,8 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
   @"photoDay": @"WAPhotoDay",
   @"accessLogs": @"WAFileAccessLog",
   @"pageElements": @"WAFilePageElement",
-  @"exif": @"WAFileExif"
+  @"exif": @"WAFileExif",
+  @"creator_info": @"WAPeople"
   };
   
 }
@@ -288,7 +290,7 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
       returnedDictionary[@"exif"] = exif;
     }
   }
-  
+    
   return returnedDictionary;
   
 }

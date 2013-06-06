@@ -113,7 +113,7 @@
 
 }
 
-- (void)enumerateSavedPhotosSince:(NSDate *)sinceDate onProgess:(void (^)(NSArray *, NSDate *, BOOL *stop))onProgressBlock onComplete:(void (^)())onCompleteBlock onFailure:(void (^)(NSError *))onFailureBlock {
+- (void)enumerateSavedPhotosSince:(NSDate *)sinceDate onProgess:(void (^)(NSArray *, NSDate *, BOOL *stop))onProgressBlock onComplete:(void (^)(NSDate *))onCompleteBlock onFailure:(void (^)(NSError *))onFailureBlock {
   
   NSCalendar *calendar = [NSCalendar currentCalendar];
   NSInteger comps = (NSSecondCalendarUnit|NSMinuteCalendarUnit|NSHourCalendarUnit|NSDayCalendarUnit|NSMonthCalendarUnit|NSYearCalendarUnit);
@@ -170,7 +170,7 @@
               [insertedAssets removeAllObjects];
               if (stopCallback) {
                 *stop = YES;
-                onCompleteBlock();
+                onCompleteBlock(midnight);
                 return;
               }
               midnight = [assetDate earlyMorning];
@@ -194,7 +194,7 @@
           onProgressBlock(assets, midnight, &stop);
           [insertedAssets removeAllObjects];
           if (stop) {
-            onCompleteBlock();
+            onCompleteBlock(midnight);
             return;
           }
 
@@ -204,7 +204,7 @@
       
     } else {
       
-      onCompleteBlock();
+      onCompleteBlock(midnight);
       
     }
     
