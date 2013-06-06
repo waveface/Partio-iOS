@@ -402,12 +402,12 @@
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
           
           wSelf.dataSource = [[WAEventPhotoPickerDataSource alloc] initWithPhotosLoadedUntil:newFromDate completionHandler:^(NSIndexSet *changedSections) {
-            if (!changedSections) {
-              loading.loadingLabel.hidden = YES;
-              return;
-            }
             dispatch_async(dispatch_get_main_queue(), ^{
               [busyOverlay dismiss];
+              if (!changedSections) {
+                loading.loadingLabel.hidden = YES;
+                return;
+              }
               [wSelf.collectionView reloadData];
               [wSelf performBlock:^(id sender) {
                 
@@ -429,11 +429,12 @@
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
           
           wSelf.dataSource = [[WAEventPhotoPickerDataSource alloc] initWithCompletionHandler:^(NSIndexSet *changedSections) {
-            if (!changedSections) {
-              loading.loadingLabel.hidden = YES;
-              return;
-            }
             dispatch_async(dispatch_get_main_queue(), ^{
+              if (!changedSections) {
+                loading.loadingLabel.hidden = YES;
+                return;
+              }
+
               [busyOverlay dismiss];
               [wSelf.collectionView reloadData];
             });
