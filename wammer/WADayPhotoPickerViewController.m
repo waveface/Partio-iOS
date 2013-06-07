@@ -31,7 +31,7 @@
 @property (nonatomic, strong) NSDate *selectedRangeFromDate;
 @property (nonatomic, strong) NSDate *selectedRangeToDate;
 @property (nonatomic, strong) NSArray *allTimeSortedAssets;
-@property (nonatomic, strong) NSMutableSet *selectedSections;
+@property (nonatomic, strong) NSMutableIndexSet *selectedSections;
 @property (nonatomic, strong) WAEventPhotoPickerDataSource *dataSource;
 
 @property (nonatomic, weak) IBOutlet WAPartioNavigationBar *navigationBar;
@@ -83,7 +83,7 @@
 
   self.imageDisplayQueue = [[NSOperationQueue alloc] init];
   self.imageDisplayQueue.maxConcurrentOperationCount = 3;
-  self.selectedSections = [NSMutableSet set];
+  self.selectedSections = [NSMutableIndexSet indexSet];
   
   __weak WADayPhotoPickerViewController *wSelf = self;
   
@@ -216,11 +216,12 @@
   
   NSAssert(fromDate && toDate, @"require the date range");
   
-  NSMutableArray *changedIndexPaths = [NSMutableArray array];
+  self.selectedSections = [NSMutableIndexSet indexSet];
   for (section = 0; section < self.dataSource.numberOfEvents; section++) {
     NSArray *assets = [self.dataSource photosInEvent:section] ;
     NSUInteger row = 0;
     BOOL stop = NO;
+    
     for (row = 0; row < assets.count; row ++) {
       ALAsset *asset = assets[row];
       NSDate *date = [asset valueForProperty:ALAssetPropertyDate];
@@ -232,23 +233,25 @@
       }
       
       NSIndexPath *indexPath = [NSIndexPath indexPathForRow:row inSection:section];
-      if (!firstIndexPath)
+      if (!firstIndexPath) {
         firstIndexPath = indexPath;
-      [self.collectionView selectItemAtIndexPath:indexPath
-                                        animated:NO
-                                  scrollPosition:UICollectionViewScrollPositionNone];
-      [self collectionView:self.collectionView didSelectItemAtIndexPath:indexPath];
-      [changedIndexPaths addObject:indexPath];
+        stop = YES;
+        break;
+      }
     }
+    
     if (stop)
       break;
   }
   
   if (firstIndexPath) {
-    [self.collectionView reloadItemsAtIndexPaths:changedIndexPaths];
-    [self.collectionView scrollToItemAtIndexPath:firstIndexPath
-                                atScrollPosition:UICollectionViewScrollPositionTop
-                                        animated:YES];
+    __weak WADayPhotoPickerViewController *wSelf = self;
+    [self performBlock:^(id sender) {
+      [wSelf.collectionView scrollToItemAtIndexPath:firstIndexPath
+                                  atScrollPosition:UICollectionViewScrollPositionTop
+                                          animated:YES];
+      
+    } afterDelay:0.5];
   }
 }
 
@@ -280,7 +283,8 @@
     [cell.imageDisplayingOperation cancel];
     cell.imageDisplayingOperation = nil;
   }
-  
+
+  /*
   cell.imageLoadingOperation = [NSBlockOperation blockOperationWithBlock:^{
   
     ALAsset *asset = [self.dataSource photoAtIndexPath:indexPath];
@@ -298,7 +302,14 @@
     
   }];
   [self.imageDisplayQueue addOperation:cell.imageLoadingOperation];
-    
+    */
+  ALAsset *asset = [self.dataSource photoAtIndexPath:indexPath];
+  UIImage *image = [UIImage imageWithCGImage:[(ALAsset *)asset thumbnail]];
+  cell.imageView.image = image;
+  if (wSelf.selectedAssets != nil && [wSelf.selectedAssets containsObject:asset]) {
+    [wSelf.collectionView selectItemAtIndexPath:indexPath animated:YES scrollPosition:UICollectionViewScrollPositionNone];
+  }
+
   return cell;
 }
 
@@ -322,7 +333,7 @@
     ALAsset *asset = [self.dataSource photoAtIndexPath:indexPath];
     NSDate *date = [asset valueForProperty:ALAssetPropertyDate];
   
-    if ([self.selectedSections containsObject:@(indexPath.section)]) {
+    if ([self.selectedSections containsIndex:indexPath.section]) {
       [header.addButton setTitle:NSLocalizedString(@"BUTTON_DESELECT_ALL", @"") forState:UIControlStateNormal];
     } else {
       [header.addButton setTitle:NSLocalizedString(@"BUTTON_SELECT_ALL", @"") forState:UIControlStateNormal];
@@ -403,17 +414,15 @@
           
           wSelf.dataSource = [[WAEventPhotoPickerDataSource alloc] initWithPhotosLoadedUntil:newFromDate completionHandler:^(NSIndexSet *changedSections) {
             dispatch_async(dispatch_get_main_queue(), ^{
-              [busyOverlay dismiss];
               if (!changedSections) {
+                [busyOverlay dismiss];
                 loading.loadingLabel.hidden = YES;
                 return;
               }
               [wSelf.collectionView reloadData];
-              [wSelf performBlock:^(id sender) {
-                
-                [wSelf selectAssetsFrom:wSelf.selectedRangeFromDate to:wSelf.selectedRangeToDate];
-                
-              } afterDelay:0.8];
+              
+              [wSelf selectAssetsFrom:wSelf.selectedRangeFromDate to:wSelf.selectedRangeToDate];
+              [busyOverlay dismiss];
             });
 
             
@@ -493,7 +502,7 @@
     [self.collectionView selectItemAtIndexPath:[NSIndexPath indexPathForRow:i inSection:section] animated:NO scrollPosition:UICollectionViewScrollPositionNone];
     [self collectionView:self.collectionView didSelectItemAtIndexPath:indexPath];
   }
-  [self.selectedSections addObject:@(section)];
+  [self.selectedSections addIndex:section];
 }
 
 - (void) deselectAllInSection:(NSUInteger)section {
@@ -504,7 +513,7 @@
     [self.collectionView deselectItemAtIndexPath:indexPath animated:NO];
     [self collectionView:self.collectionView didDeselectItemAtIndexPath:indexPath];
   }
-  [self.selectedSections removeObject:@(section)];
+  [self.selectedSections removeIndex:section];
 }
 
 @end
