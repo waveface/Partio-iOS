@@ -56,12 +56,12 @@ static const CGFloat subtitleHeight = subtitleFontHeight * 1.25;
     // Subtitle
     self.detailTextLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     self.detailTextLabel.textColor = [UIColor whiteColor];
-    self.detailTextLabel.font = [UIFont systemFontOfSize:subtitleFontHeight];
+    self.detailTextLabel.font = [UIFont fontWithName:@"OpenSans-Regular" size:subtitleFontHeight];
     
     // Title
     self.textLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     self.textLabel.textColor = [UIColor whiteColor];
-    self.textLabel.font = [UIFont systemFontOfSize:titleFontHeight];
+    self.textLabel.font = [UIFont fontWithName:@"OpenSans-Regular" size:titleFontHeight];
     
     // Content View
     self.contentView.clipsToBounds = YES;

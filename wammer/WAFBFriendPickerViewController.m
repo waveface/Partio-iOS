@@ -13,6 +13,8 @@
 #import "WAFBGraphObjectTableSelection.h"
 #import <FBGraphObjectPagingLoader.h>
 #import "WAFBGraphUser.h"
+#import "WAPartioTokenField.h"
+#import "WAPartioTokenFieldCell.h"
 
 #import <SMCalloutView/SMCalloutView.h>
 #import <BlocksKit/BlocksKit.h>
@@ -21,11 +23,13 @@
 @interface WAFBFriendPickerViewController () <FBFriendPickerDelegate, UITableViewDataSource, UITextFieldDelegate>
 
 @property (nonatomic, weak) IBOutlet WAPartioNavigationBar *navigationBar;
-@property (nonatomic, weak) IBOutlet UITextField *textField;
+//@property (nonatomic, weak) IBOutlet UITextField *textField;
+@property (nonatomic, weak) IBOutlet WAPartioTokenField *textField;
 @property (nonatomic, weak) IBOutlet UITableView *tableView;
 @property (nonatomic, weak) IBOutlet UIToolbar *toolbar;
 @property (nonatomic, weak) IBOutlet UIActivityIndicatorView *spinner;
 
+@property (nonatomic, strong) NSMutableArray *cellViews;
 @property (nonatomic, strong) NSString *lastEmailRecord;
 @property (nonatomic, strong) UITapGestureRecognizer *tapGesture;
 @property (nonatomic, strong) SMCalloutView *inviteInstructionView;
@@ -176,6 +180,7 @@ static NSString *kDefaultImageName = @"FacebookSDKResources.bundle/FBFriendPicke
 
   self.members = [[NSMutableArray alloc] init];
   self.lastEmailRecord = @"";
+  self.cellViews = [[NSMutableArray alloc] init];
 }
 
 - (void)didReceiveMemoryWarning
@@ -275,6 +280,7 @@ static NSString *kDefaultImageName = @"FacebookSDKResources.bundle/FBFriendPicke
     self.tapGesture = nil;
   }
   
+  [self.textField setPlaceholder:@""];
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
@@ -329,6 +335,7 @@ static NSString *kDefaultImageName = @"FacebookSDKResources.bundle/FBFriendPicke
     [self.tableView scrollToRowAtIndexPath:newIndexPath atScrollPosition:UITableViewScrollPositionMiddle animated:NO];
   }
 
+  [self.textField setPlaceholder:(self.members.count)?@" ":kPlaceholderChooseFriends];
 }
 
 - (BOOL)NSStringIsValidEmail:(NSString *)checkString
@@ -376,9 +383,12 @@ static NSString *kDefaultImageName = @"FacebookSDKResources.bundle/FBFriendPicke
   NSArray *newSelection = self.selection;
   
   if (self.members.count > newSelection.count) {
-    for (FBGraphObject *user in self.members) {
+    NSArray *users = [self.members copy];
+    for (FBGraphObject *user in users) {
       if (![newSelection containsObject:user]) {
         [self.members removeObject:user];
+        [self.textField removeCellWithObject:user];
+        break;
       }
     }
     
@@ -386,6 +396,7 @@ static NSString *kDefaultImageName = @"FacebookSDKResources.bundle/FBFriendPicke
     FBGraphObject *newSelectedUser = [newSelection lastObject];
     if (![self.members containsObject:newSelectedUser]) {
       [self.members addObject:newSelectedUser];
+      [self.textField addCellWithObject:newSelectedUser];
     }
     
   }

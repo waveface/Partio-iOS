@@ -475,6 +475,8 @@
 		DE19E3B0174A04C5008659BA /* WAFBGraphObjectTableDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = DE19E3A9174A04C5008659BA /* WAFBGraphObjectTableDataSource.m */; };
 		DE19E3B1174A04C5008659BA /* WAFBGraphObjectTableSelection.m in Sources */ = {isa = PBXBuildFile; fileRef = DE19E3AB174A04C5008659BA /* WAFBGraphObjectTableSelection.m */; };
 		DE46FC17165E228300CC4FFF /* WACalendarPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DE46FC16165E228300CC4FFF /* WACalendarPickerViewController.m */; };
+		DE59D401175D9DF2008C613E /* WAPartioTokenField.m in Sources */ = {isa = PBXBuildFile; fileRef = DE59D400175D9DF2008C613E /* WAPartioTokenField.m */; };
+		DE59D413175DF01B008C613E /* WAPartioTokenFieldCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DE59D412175DF01B008C613E /* WAPartioTokenFieldCell.m */; };
 		DE67A4A21712BA0500099106 /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DE67A4A01712BA0400099106 /* AddressBook.framework */; };
 		DE67A4A31712BA0500099106 /* AddressBookUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DE67A4A11712BA0400099106 /* AddressBookUI.framework */; };
 		DE67A4BF1712BB7700099106 /* WAContactPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DE67A4BD1712BB7700099106 /* WAContactPickerViewController.m */; };
@@ -1610,6 +1612,10 @@
 		DE2BBDD616761AC100EEF922 /* Kal.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Kal.xcodeproj; path = external/Kal/src/Kal.xcodeproj; sourceTree = SOURCE_ROOT; };
 		DE46FC15165E228300CC4FFF /* WACalendarPickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WACalendarPickerViewController.h; path = wammer/WACalendarPickerViewController.h; sourceTree = "<group>"; };
 		DE46FC16165E228300CC4FFF /* WACalendarPickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WACalendarPickerViewController.m; path = wammer/WACalendarPickerViewController.m; sourceTree = "<group>"; };
+		DE59D3FF175D9DF2008C613E /* WAPartioTokenField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAPartioTokenField.h; sourceTree = "<group>"; };
+		DE59D400175D9DF2008C613E /* WAPartioTokenField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAPartioTokenField.m; sourceTree = "<group>"; };
+		DE59D411175DF01B008C613E /* WAPartioTokenFieldCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAPartioTokenFieldCell.h; sourceTree = "<group>"; };
+		DE59D412175DF01B008C613E /* WAPartioTokenFieldCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAPartioTokenFieldCell.m; sourceTree = "<group>"; };
 		DE67A4A01712BA0400099106 /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
 		DE67A4A11712BA0400099106 /* AddressBookUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBookUI.framework; path = System/Library/Frameworks/AddressBookUI.framework; sourceTree = SDKROOT; };
 		DE67A4BC1712BB7700099106 /* WAContactPickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WAContactPickerViewController.h; path = wammer/WAContactPickerViewController.h; sourceTree = "<group>"; };
@@ -3020,6 +3026,10 @@
 				80C9F3851719B761003E7C6E /* WAPartioTableViewSectionHeaderView.h */,
 				80C9F3861719B761003E7C6E /* WAPartioTableViewSectionHeaderView.m */,
 				80C9F3831719B6B8003E7C6E /* WAPartioTableViewSectionHeaderView.xib */,
+				DE59D3FF175D9DF2008C613E /* WAPartioTokenField.h */,
+				DE59D400175D9DF2008C613E /* WAPartioTokenField.m */,
+				DE59D411175DF01B008C613E /* WAPartioTokenFieldCell.h */,
+				DE59D412175DF01B008C613E /* WAPartioTokenFieldCell.m */,
 			);
 			name = Views;
 			path = wammer;
@@ -5021,6 +5031,8 @@
 				DE19E3B1174A04C5008659BA /* WAFBGraphObjectTableSelection.m in Sources */,
 				8038CCEA175C82760015D5F9 /* WAFile.m in Sources */,
 				80607CBB175DBF1B0031E9FD /* WAPeople.m in Sources */,
+				DE59D401175D9DF2008C613E /* WAPartioTokenField.m in Sources */,
+				DE59D413175DF01B008C613E /* WAPartioTokenFieldCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
