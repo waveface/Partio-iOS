@@ -11,6 +11,7 @@
 @interface WAFBGraphObjectTableSelection : FBGraphObjectTableSelection
 
 - (void)selectItem:(FBGraphObject *)item;
+- (void)deselectItem:(FBGraphObject *)item;
 
 @property (nonatomic, retain) NSArray *selection;
 

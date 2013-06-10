@@ -53,8 +53,21 @@ static const CGFloat kMinCursorWidth  = 10.0f;
   [super setText:text];
 }
 
+- (void)deleteBackward
+{
+  [super deleteBackward];
+
+  if (self.selectedCell) {
+    [self removeCellWithObject:self.selectedCell.object];
+    [self layoutCells];
+  } else if (self.cellViews.count && (!self.text || [self.text isEqualToString:@""])) {
+    [self selectLastCell];
+  }
+  
+}
+
 - (CGRect)textRectForBounds:(CGRect)bounds {
-  if (cellViews.count && [self.text isEqualToString:kSelected]) {
+  if (cellViews.count && self.selectedCell) {
     // Hide the cursor while a cell is selected
     return CGRectMake(-10, 0, 0, 0);
     
@@ -158,6 +171,7 @@ static const CGFloat kMinCursorWidth  = 10.0f;
 
 - (CGSize)intrinsicContentSize
 {
+  // invoke autolayout resizing
   if (self.editing) {
     return CGSizeMake(self.frame.size.width, [self layoutCells]);
   } else {
@@ -219,6 +233,18 @@ static const CGFloat kMinCursorWidth  = 10.0f;
   return CGSizeMake(size.width, height);
 }
 
+- (void)touchesBegan:(NSSet*)touches withEvent:(UIEvent*)event {
+  [super touchesBegan:touches withEvent:event];
+  
+  if (cellViews) {
+    UITouch* touch = [touches anyObject];
+    if (touch.view == self) {
+      self.selectedCell = nil;
+      
+    }
+  }
+}
+
 #pragma mark - manage cells
 
 - (void)addCellWithObject:(id)object
@@ -226,6 +252,7 @@ static const CGFloat kMinCursorWidth  = 10.0f;
   WAPartioTokenFieldCell *cell = [[WAPartioTokenFieldCell alloc] init];
   cell.object = object;
   cell.text = [self titleOfObject:object];
+  cell.delegate = self;
   NSMutableArray *cells = [NSMutableArray array];
   if (cellViews) {
     cells = [cellViews mutableCopy];
@@ -243,21 +270,26 @@ static const CGFloat kMinCursorWidth  = 10.0f;
   NSMutableArray *cells = [NSMutableArray array];
   if (cellViews) {
     cells = [cellViews mutableCopy];
-    for (NSInteger i = 0; i < cells.count; i++) {
-      WAPartioTokenFieldCell *cell = cells[i];
-      //FIXME: some cell's object becomes nil
+    for (NSInteger i = 0; i < cellViews.count; i++) {
+      WAPartioTokenFieldCell *cell = cellViews[i];
       if ([cell.object isEqual:object]) {
         [cells removeObject:cell];
         [cell removeFromSuperview];
         if ([selectedCell isEqual:cell]) {
           selectedCell = nil;
         }
+        
+        if ([self.tokenFieldDelegate respondsToSelector:@selector(tokenFieldDidRemoveCell:)]) {
+          [self.tokenFieldDelegate tokenFieldDidRemoveCell:cell];
+        }
+
         break;
       }
     }
     cellViews = [cells copy];
   }
   self.text = @"";
+  
 }
 
 - (void)removeAllCells
@@ -278,6 +310,24 @@ static const CGFloat kMinCursorWidth  = 10.0f;
 - (void)selectLastCell
 {
   selectedCell = [cellViews lastObject];
+  selectedCell.selected = YES;
+}
+
+- (WAPartioTokenFieldCell *)selectedCell
+{
+  if (selectedCell) {
+    return selectedCell;
+  }
+  
+  if (cellViews) {
+    for (WAPartioTokenFieldCell *cell in cellViews) {
+      if (cell.selected) {
+        return cell;
+      }
+    }
+  }
+  
+  return nil;
 }
 
 - (void)setSelectedCell:(WAPartioTokenFieldCell *)cell
@@ -323,5 +373,12 @@ static const CGFloat kMinCursorWidth  = 10.0f;
 //  }
 //}
 
+#pragma mark - WAPartioTokenFieldCellDelegate
 
+- (void)tokenFieldCellSelectedStateDidChange:(WAPartioTokenFieldCell *)cell
+{
+  self.selectedCell = cell.selected? cell : nil;
+  [self becomeFirstResponder];
+
+}
 @end

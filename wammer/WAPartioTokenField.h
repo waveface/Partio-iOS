@@ -9,11 +9,13 @@
 #import <UIKit/UIKit.h>
 #import "WAPartioTokenFieldCell.h"
 
-@interface WAPartioTokenField : UITextField <UITextFieldDelegate> 
+@protocol WAPartioTokenFieldDelegate;
+@interface WAPartioTokenField : UITextField <UITextFieldDelegate, WAPartioTokenFieldCellDelegate>
 
 @property (nonatomic, readonly, strong) NSArray *cellViews;
 @property (nonatomic, weak) WAPartioTokenFieldCell *selectedCell;
 @property (nonatomic, readonly) NSInteger lineCount;
+@property (nonatomic, strong) id<WAPartioTokenFieldDelegate> tokenFieldDelegate;
 
 - (void)addCellWithObject:(id)object;
 - (void)removeCellWithObject:(id)object;
@@ -22,5 +24,13 @@
 - (void)scrollToVisibleLine:(BOOL)animated;
 - (void)scrollToEditingLine:(BOOL)animated;
 - (void)updateHeight;
+- (BOOL)shouldUpdate:(BOOL)emptyText;
+
+@end
+
+
+@protocol WAPartioTokenFieldDelegate <NSObject>
+
+- (void)tokenFieldDidRemoveCell:(WAPartioTokenFieldCell *)removedCell;
 
 @end

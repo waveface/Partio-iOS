@@ -59,6 +59,18 @@ static NSString *indexKeyOfRecentUsedContacts = @"★";
   [self selectionChanged];
 }
 
+- (void)deselectItem:(FBGraphObject *)item
+{
+  if ([FBUtility graphObjectInArray:self.selection withSameIDAs:item]) {
+    NSMutableArray *selection = [[NSMutableArray alloc] initWithArray:self.selection];
+    [selection removeObject:item];
+    self.selection = selection;
+    
+  }
+  [self selectionChanged];
+
+}
+
 - (void)selectItem:(FBGraphObject *)item cell:(UITableViewCell *)cell
 {
   if ([FBUtility graphObjectInArray:self.selection withSameIDAs:item] == nil) {
@@ -72,6 +84,7 @@ static NSString *indexKeyOfRecentUsedContacts = @"★";
   checkmark = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Checked"]];
   cell.accessoryView = checkmark;
   cell.accessoryView.hidden = NO;
+  
   [self selectionChanged];
 }
 

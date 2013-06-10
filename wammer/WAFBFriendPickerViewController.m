@@ -20,7 +20,7 @@
 #import <BlocksKit/BlocksKit.h>
 #import "IRFoundations.h"
 
-@interface WAFBFriendPickerViewController () <FBFriendPickerDelegate, UITableViewDataSource, UITextFieldDelegate>
+@interface WAFBFriendPickerViewController () <FBFriendPickerDelegate, UITableViewDataSource, UITextFieldDelegate, WAPartioTokenFieldDelegate>
 
 @property (nonatomic, weak) IBOutlet WAPartioNavigationBar *navigationBar;
 //@property (nonatomic, weak) IBOutlet UITextField *textField;
@@ -110,6 +110,7 @@ static NSString *kDefaultImageName = @"FacebookSDKResources.bundle/FBFriendPicke
                                            selector:@selector(textFieldDidChange:)
                                                name:UITextFieldTextDidChangeNotification
                                              object:self.textField];
+  self.textField.tokenFieldDelegate = self;
   
   __weak WAFBFriendPickerViewController *wSelf = self;
   if (self.navigationController) {
@@ -126,6 +127,7 @@ static NSString *kDefaultImageName = @"FacebookSDKResources.bundle/FBFriendPicke
   }
   
   [self.navigationController setNavigationBarHidden:YES];
+  self.navigationItem.title = NSLocalizedString(@"TITLE_INVITE_CONTACTS", @"TITLE_INVITE_CONTACTS");
   [self.navigationItem setHidesBackButton:YES];
   [self.navigationBar pushNavigationItem:self.navigationItem animated:NO];
   
@@ -134,7 +136,7 @@ static NSString *kDefaultImageName = @"FacebookSDKResources.bundle/FBFriendPicke
   UIBarButtonItem *flexspace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
   self.toolbar.items = @[flexspace, [self shareBarButton], flexspace];
   [self.view addSubview:self.toolbar];
-  [self updateNavigationBarTitleAndButtonStatus];
+  [self updateShareButtonStatus];
   
   
   if (FBSession.activeSession.isOpen) {
@@ -258,14 +260,12 @@ static NSString *kDefaultImageName = @"FacebookSDKResources.bundle/FBFriendPicke
   return [extractedData copy];
 }
 
-- (void)updateNavigationBarTitleAndButtonStatus
+- (void)updateShareButtonStatus
 {
   if (!self.members.count) {
     [[self.toolbar.items objectAtIndex:1] setEnabled:NO];
-    self.navigationItem.title = NSLocalizedString(@"TITLE_INVITE_CONTACTS", @"TITLE_INVITE_CONTACTS");
   } else {
     [[self.toolbar.items objectAtIndex:1] setEnabled:YES];
-    self.navigationItem.title = [NSString stringWithFormat:NSLocalizedString(@"TITLE_INVITATION_NUMBERS", @"TITLE_INVITATION_NUMBERS"), self.members.count];
   }
 }
 
@@ -335,7 +335,8 @@ static NSString *kDefaultImageName = @"FacebookSDKResources.bundle/FBFriendPicke
     [self.tableView scrollToRowAtIndexPath:newIndexPath atScrollPosition:UITableViewScrollPositionMiddle animated:NO];
   }
 
-  [self.textField setPlaceholder:(self.members.count)?@" ":kPlaceholderChooseFriends];
+  [self.textField setPlaceholder:(self.members.count)?@"":kPlaceholderChooseFriends];
+
 }
 
 - (BOOL)NSStringIsValidEmail:(NSString *)checkString
@@ -347,6 +348,19 @@ static NSString *kDefaultImageName = @"FacebookSDKResources.bundle/FBFriendPicke
   NSPredicate *emailTest = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", emailRegex];
   
   return [emailTest evaluateWithObject:checkString];
+}
+
+#pragma mark - WAPartioTokenFieldDelegate
+
+- (void)tokenFieldDidRemoveCell:(WAPartioTokenFieldCell *)removedCell
+{
+  if ([self.selection containsObject:removedCell.object]) {
+    [self.selectionManager deselectItem:removedCell.object];
+  }
+  if ([self.members containsObject:removedCell.object]) {
+    [self.members removeObject:removedCell.object];
+  }
+  [self updateView];
 }
 
 #pragma mark - FBFriendPickerDelegate
@@ -394,14 +408,15 @@ static NSString *kDefaultImageName = @"FacebookSDKResources.bundle/FBFriendPicke
     
   } else {
     FBGraphObject *newSelectedUser = [newSelection lastObject];
-    if (![self.members containsObject:newSelectedUser]) {
+    if (newSelectedUser && ![self.members containsObject:newSelectedUser]) {
       [self.members addObject:newSelectedUser];
       [self.textField addCellWithObject:newSelectedUser];
     }
     
   }
   
-  [self updateNavigationBarTitleAndButtonStatus];
+  [self.textField setPlaceholder:(self.members.count)?@"":kPlaceholderChooseFriends];
+  [self updateShareButtonStatus];
 
 }
 

@@ -8,11 +8,21 @@
 
 #import <UIKit/UIKit.h>
 
-@interface WAPartioTokenFieldCell : UIView
+@protocol WAPartioTokenFieldCellDelegate;
+
+@interface WAPartioTokenFieldCell : UIView <WAPartioTokenFieldCellDelegate>
 
 @property (nonatomic, weak) id object;
 @property (nonatomic, weak) NSString *text;
 @property (nonatomic, weak) UIFont *font;
 @property (nonatomic, assign) BOOL selected;
+@property (nonatomic, strong) id<WAPartioTokenFieldCellDelegate>delegate;
+
+@end
+
+
+@protocol WAPartioTokenFieldCellDelegate <NSObject>
+
+- (void)tokenFieldCellSelectedStateDidChange:(WAPartioTokenFieldCell *)cell;
 
 @end
